@@ -22,7 +22,8 @@ These techniques provide a practical way to achieve nuanced results until advanc
 
 > **Info**
 >
-> Eleven v3 does not support SSML break tags. Use the techniques described in the [Prompting Eleven v3](#prompting-eleven-v3) section for controlling pauses with v3.
+> Eleven v4 and Eleven v3 do not support SSML break tags. Use the techniques described in the
+> [Prompting Eleven v4](#prompting-eleven-v4) section for controlling pauses.
 
 Use `<break time="x.xs" />` for natural pauses up to 3 seconds.
 
@@ -52,11 +53,11 @@ Alternatives to `<break>` include dashes (- or --) for short pauses or ellipses 
 
 ### Pronunciation
 
-#### IPA with Eleven v3
+#### IPA with Eleven v4
 
-The [Eleven v3](/docs/overview/models#eleven-v3) model (`eleven_v3`) includes native support for International Phonetic Alphabet (IPA) transcription across 70+ languages, allowing precise control over word and phrase pronunciation without XML tags.
+[Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) (`eleven_v4`) includes improved native support for the International Phonetic Alphabet, or IPA, giving you more precise control over pronunciation for names, technical terms, and other words that need special handling. IPA pronunciation is more consistent than in previous models, but results can still vary by voice and phrase. We recommend testing important pronunciations with your chosen voice before relying on them in production.
 
-Unlike older models that require XML-style phoneme tags, v3 natively understands IPA symbols when wrapped in forward slashes directly in your text:
+Unlike older models that require XML-style phoneme tags, Eleven v4 understands IPA symbols when they are wrapped in forward slashes in your text:
 
 **`Syntax`**
 
@@ -81,7 +82,7 @@ client = ElevenLabs()
 audio = client.text_to_speech.convert(
     voice_id="21m00Tcm4TlvDq8ikWAM",
     text='The term "/ˌbaɪoʊˈkemɪstri/" refers to the study of chemical processes.',
-    model_id="eleven_v3",
+    model_id="eleven_v4",
 )
 ```
 
@@ -94,7 +95,7 @@ const client = new ElevenLabsClient();
 
 const audio = await client.textToSpeech.convert("21m00Tcm4TlvDq8ikWAM", {
   text: 'The city of "/ˌsænfrənˈsɪskoʊ/" is located in California.',
-  modelId: "eleven_v3",
+  modelId: "eleven_v4",
 });
 ```
 
@@ -106,7 +107,7 @@ curl -X POST https://api.elevenlabs.io/v1/text-to-speech/{voice_id} \
   -H "Content-Type: application/json" \
   -d '{
     "text": "The concept of \"/fəˈnɛtɪks/\" is central to linguistics.",
-    "model_id": "eleven_v3"
+    "model_id": "eleven_v4"
   }'
 ```
 
@@ -122,7 +123,7 @@ text = 'The medication "/ɡluːˈkoʊs/" and "/ˌɪnsjəˈlɪn/" are commonly us
 audio = client.text_to_speech.convert(
     voice_id="21m00Tcm4TlvDq8ikWAM",
     text=text,
-    model_id="eleven_v3",
+    model_id="eleven_v4",
 )
 ```
 
@@ -136,13 +137,9 @@ const text =
   'The medication "/ɡluːˈkoʊs/" and "/ˌɪnsjəˈlɪn/" are commonly used to manage conditions like "/ˌdaɪəˈbiːtiːz/".';
 const audio = await client.textToSpeech.convert("21m00Tcm4TlvDq8ikWAM", {
   text,
-  modelId: "eleven_v3",
+  modelId: "eleven_v4",
 });
 ```
-
-**Performance**
-
-V3's IPA support achieves 80-90% pronunciation consistency. While significantly more reliable than v2's XML phoneme tags, it is not 100% consistent. The model may occasionally struggle with certain words or produce different outputs even with identical IPA transcriptions. We are continuing to improve IPA reliability.
 
 **Best practices**
 
@@ -161,9 +158,10 @@ some may interpret IPA more accurately than others.
 
 #### Inconsistent results with the same IPA
 
-V3's IPA support is generally reliable but not perfect. The model may occasionally produce
-different outputs even with identical IPA transcriptions. If consistency is critical, test
-multiple generations and select the best result.
+IPA pronunciation is more consistent than in previous models, but results can still vary by
+voice and phrase. We recommend testing important pronunciations with your chosen voice before
+relying on them in production. If you need a consistent result, generate more than once and
+select the best result.
 
 #### Phoneme tags for v2 models
 
@@ -596,72 +594,32 @@ console.log(normalizeText("$1,234.56")); // "one thousand two hundred thirty-fou
 console.log(normalizeText("555-555-5555")); // "five five five, five five five, five five five five"
 ```
 
-## Prompting Eleven v3
+## Prompting Eleven v4
 
-This guide provides the most effective tags and techniques for prompting Eleven v3, including voice selection, changes in capitalization, punctuation, audio tags and multi-speaker dialogue. Experiment with these methods to discover what works best for your specific voice and use case.
+This section is written for Eleven v4. Many of the techniques below also apply to [Eleven v3](#prompting-eleven-v3). In general, Eleven v4 is a net upgrade over Eleven v3, delivering better results in almost every case. We strongly recommend switching to v4 and testing it with your own voices and content to see the difference for yourself. While a few edge cases may call for a different fit, most users should find v4 the better choice.
+
+For what the model changes — voice cloning, accent handling, variants, and comparisons — see [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4).
 
 > **Info**
 >
-> Eleven v3 does not support SSML break tags. Use audio tags, punctuation (ellipses), and text
-> structure to control pauses and pacing with v3.
+> Eleven v4 and Eleven v3 do not support SSML break tags. Use audio tags, punctuation (ellipses),
+> and text structure to control pauses and pacing.
 
 ### Voice selection
 
-The most important parameter for Eleven v3 is the voice you choose. It needs to be similar enough to the desired delivery. For example, if the voice is shouting and you use the audio tag `[whispering]`, it likely won't work well.
-
-When creating IVCs, you should include a broader emotional range than before. As a result, voices in the voice library may produce more variable results compared to the v2 and v2.5 models. We've compiled a [curated collection of voices for V3](https://elevenlabs.io/app/voice-library/collections/aF6JALq9R6tXwCczjhKH).
-
-Choose voices strategically based on your intended use:
-
-#### Emotionally diverse
-
-For expressive IVC voices, vary emotional tones across the recording—include both neutral and
-dynamic samples.
-
-#### Targeted niche
-
-For specific use cases like sports commentary, maintain consistent emotion throughout the
-dataset.
-
-#### Neutral
-
-Neutral voices tend to be more stable across languages and styles, providing reliable baseline
-performance.
-
-> **Info**
->
-> Professional Voice Clones (PVCs) are currently not fully optimized for Eleven v3, resulting in
-> potentially lower clone quality compared to earlier models. During this research preview stage it
-> would be best to find an Instant Voice Clone (IVC) or designed voice for your project if you need
-> to use v3 features.
-
-### Settings
-
-#### Stability
-
-The stability slider is the most important setting in v3, controlling how closely the generated voice adheres to the original reference audio.
-
-![Stability settings in Eleven
-v3](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/291b91ec752d09b8c87004ae7091811eb8b5996c349288c88ed0c7afa1272999/assets/images/product-guides/text-to-speech/text-to-speech-v3-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T103006Z&X-Amz-Expires=604800&X-Amz-Signature=154569d1084f1efb2e2f97bd64ac024751bd8a460c0b2d2c0837e3a844755590&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-
-* **Creative:** More emotional and expressive, but prone to hallucinations.
-* **Natural:** Closest to the original voice recording—balanced and neutral.
-* **Robust:** Highly stable, but less responsive to directional prompts but consistent, similar to v2.
-
-> **Note**
->
-> For maximum expressiveness with audio tags, use Creative or Natural settings. Robust reduces
-> responsiveness to directional prompts.
+The voice still matters. A delivery that is already in the training data — whispering, shouting, a particular delivery — is easier for the model to reproduce. Asking for something outside that data is harder. Eleven v4 follows audio tags more reliably than earlier models, including when the voice wasn’t trained on that delivery. A voice that has never whispered should still be able to follow `[whispering]`, and a voice that has never shouted should still be able to follow `[shouting]`. However, it might be less reliable, and the result may not be optimal. From early testing, it seems to work quite well. We strongly recommend testing it yourself with the voice you want and for your specific use case.
 
 ### Audio tags
 
-Eleven v3 introduces emotional control through audio tags. You can direct voices to laugh, whisper, act sarcastic, or express curiosity among many other styles. Speed is also controlled through audio tags.
+Audio tags (e.g. `[whispering]`, `[shouting]`, `[laughing]`) let you direct delivery with fine-grained control, and Eleven v4 handles them with a level of nuance beyond previous models. They're not perfect yet, and we're continuing to iterate and improve how reliably the model follows tag instructions — this is an active area of ongoing investment, and it will keep getting better.
+
+Being explicit about what you want helps a lot. Because Eleven v4 is trained to generate both vocal delivery styles and sound effects, a tag can occasionally be interpreted as a request for a sound effect rather than a delivery instruction (or vice versa). Writing tags that clearly describe the voice quality you want (e.g. `[low, gravelly voice]` rather than something that could be read as a sound cue) helps the model deliver what you intended. We recommend testing your specific tags and phrasing for your use case, and expect this to keep improving.
 
 > **Note**
 >
-> The voice you choose and its training samples will affect tag effectiveness. Some tags work well
-> with certain voices while others may not. Don't expect a whispering voice to suddenly shout with a
-> `[shout]` tag.
+> Tags land more readily when the delivery is already in the voice's training data. Eleven v4 can
+> still follow a tag the voice was not trained on, such as `[whispering]` or `[shouting]`, though
+> the result may not be optimal.
 
 #### Voice-related
 
@@ -711,7 +669,7 @@ Experimental tags for creative applications:
 
 ### Punctuation
 
-Punctuation significantly affects delivery in v3:
+Punctuation significantly affects delivery in v4:
 
 * **Ellipses (...)** add pauses and weight
 * **Capitalization** increases emphasis
@@ -805,12 +763,12 @@ I mean i DID go to music school.
 
 ### Multi-speaker dialogue
 
-v3 can handle multi-voice prompts effectively. Assign distinct voices from your Voice Library for each speaker to create realistic conversations.
+v4 can handle multi-voice prompts effectively. Assign distinct voices from your Voice Library for each speaker to create realistic conversations.
 
 #### Dialogue showcase
 
 ```text
-Speaker 1: [excitedly] Sam! Have you tried the new Eleven V3?
+Speaker 1: [excitedly] Sam! Have you tried the new Eleven v4?
 
 Speaker 2: [curiously] Just got it! The clarity is amazing. I can actually do whispers now—
 [whispers] like this!
@@ -1007,10 +965,52 @@ respond well to playful tags like `[giggles]` or `[mischievously]`.
 
 #### Text structure
 
-Text structure strongly influences output with v3. Use natural speech patterns, proper
+Text structure strongly influences output with v4. Use natural speech patterns, proper
 punctuation, and clear emotional context for best results.
 
 #### Experimentation
 
 There are likely many more effective tags beyond this list. Experiment with descriptive
 emotional states and actions to discover what works for your specific use case.
+
+### Examples
+
+#### Voice acting
+
+```text
+[Low, steady voice, restrained urgency] Keep the lantern covered. If they see the light, they will know we crossed the river.
+
+[Brief pause]
+
+[Quietly, with controlled fear] I heard them at the bridge. Not soldiers. Something else.
+
+[Voice rising into firm resolve] Then we do not stop. We reach the tower before sunrise, or we do not reach it at all.
+
+[Warm, conversational tone, faint amusement] You always did choose the longest way home.
+
+[Softening, reflective] I used to think that was stubbornness. Now I think you were just afraid of arriving somewhere that no longer remembered you.
+
+[Gentle laugh, then sincere] For what it is worth, I remembered.
+```
+
+#### Long-form narration
+
+```text
+The rain had stopped before dawn, leaving the old road silver beneath the moon. Mara tightened her cloak and listened. Somewhere beyond the pines, a bell rang once, then fell silent.
+
+[Quiet, reflective narration] She had promised herself she would not return. Yet there she was, standing before the gate with mud on her boots and the key cold against her palm.
+
+[Building tension, measured pace] The lock turned easily. Too easily. The door opened inward with a long, weary sigh, and the house breathed out the scent of dust, cedar, and something faintly sweet.
+
+[Softly, with wonder] On the table in the entryway sat a single lantern, already lit.
+
+[Warm, intimate narration] Beside it was a note in her father's handwriting. Only four words were written there.
+
+[Gentle pause, then quiet realization] I knew you would come.
+```
+
+## Prompting Eleven v3
+
+The prompting techniques in [Prompting Eleven v4](#prompting-eleven-v4) also apply to Eleven v3, including voice selection, audio tags, punctuation, and multi-speaker dialogue.
+
+Professional Voice Clones (PVCs) are not fully optimized for Eleven v3, resulting in potentially lower clone quality compared to earlier models. PVCs are supported in v4, so if you'd like to use a Professional Voice Clone or a voice from the Voice Library, we recommend trying [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) instead.

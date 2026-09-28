@@ -111,9 +111,9 @@ Opt in by sending the `X-OpenRouter-Metadata` request header with the value `ena
 
 The header accepts the following values, matched case-insensitively:
 
-| Value      | Behavior                                                    |
-| ---------- | ----------------------------------------------------------- |
-| `enabled`  | Surface `openrouter_metadata` on the response.              |
+| Value | Behavior |
+| - | - |
+| `enabled` | Surface `openrouter_metadata` on the response. |
 | `disabled` | Do not surface metadata. Equivalent to omitting the header. |
 
 Any other value (including misspellings, empty strings, and unknown levels) falls back to `disabled`. The default behavior, when the header is absent, is `disabled`.
@@ -177,18 +177,18 @@ When opted in, successful responses include an `openrouter_metadata` object alon
 
 ### Field Reference
 
-| Field       | Type                | Description                                                                                                               |
-| ----------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `requested` | `string`            | The model slug (or alias) the client sent. May differ from the provider/model that actually served the request.           |
-| `strategy`  | `string`            | Routing strategy used: `direct`, `auto`, `free`, `latest`, `alias`, `fallback`, `pareto`, `bodybuilder`, `fusion`.        |
-| `region`    | `string \| null`    | Edge region that handled the request, when available.                                                                     |
-| `summary`   | `string`            | Human-readable one-liner describing the routing decision (e.g. candidate count, selected provider).                       |
-| `attempt`   | `integer`           | 1-indexed attempt number that succeeded. Greater than 1 means earlier attempts failed and fell back.                      |
-| `is_byok`   | `boolean`           | Whether the request used a Bring-Your-Own-Key provider key.                                                               |
-| `endpoints` | `EndpointsMetadata` | Snapshot of endpoint candidates considered, and which one was selected.                                                   |
-| `params`    | `RouterParams`      | Optional. Router-level parameters that influenced selection (e.g. `quality_floor`, `throughput_floor`).                   |
-| `attempts`  | `Attempt[]`         | Optional. Per-attempt provider/model/status when the router retried against fallbacks.                                    |
-| `pipeline`  | `PipelineStage[]`   | Optional. Plugins that materially altered the request or response (compression, guardrails, healing, server tools, etc.). |
+| Field | Type | Description |
+| - | - | - |
+| `requested` | `string` | The model slug (or alias) the client sent. May differ from the provider/model that actually served the request. |
+| `strategy` | `string` | Routing strategy used: `direct`, `auto`, `free`, `latest`, `alias`, `fallback`, `pareto`, `bodybuilder`, `fusion`. |
+| `region` | `string \| null` | Edge region that handled the request, when available. |
+| `summary` | `string` | Human-readable one-liner describing the routing decision (e.g. candidate count, selected provider). |
+| `attempt` | `integer` | 1-indexed attempt number that succeeded. Greater than 1 means earlier attempts failed and fell back. |
+| `is_byok` | `boolean` | Whether the request used a Bring-Your-Own-Key provider key. |
+| `endpoints` | `EndpointsMetadata` | Snapshot of endpoint candidates considered, and which one was selected. |
+| `params` | `RouterParams` | Optional. Router-level parameters that influenced selection (e.g. `quality_floor`, `throughput_floor`). |
+| `attempts` | `Attempt[]` | Optional. Per-attempt provider/model/status when the router retried against fallbacks. |
+| `pipeline` | `PipelineStage[]` | Optional. Plugins that materially altered the request or response (compression, guardrails, healing, server tools, etc.). |
 
 The full schema is documented under [`OpenRouterMetadata`](/docs/agent-sdk/call-model/api-reference) in the OpenAPI spec, including SDK type definitions for [TypeScript](/docs/client-sdks/typescript/overview) and other generated clients.
 
@@ -196,13 +196,13 @@ The full schema is documented under [`OpenRouterMetadata`](/docs/agent-sdk/call-
 
 The `pipeline` array records every plugin that materially affected the request. A plugin only emits a stage when it actually ran; a no-op plugin (e.g. context compression that found the input already fit the budget) is omitted. Today's stage types include:
 
-| `type`                | `name` values                  | What it tells you                                                                                             |
-| --------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `guardrail`           | `content-filter`, `moderation` | `flagged: bool`, plus engine-specific verdict (`decision`, `confidence_level`, `matched_entity_types`, etc.). |
-| `plugin`              | `web-search`, `file-parser`    | Plugin-specific telemetry (e.g. result counts for web search, page count for file parsing).                   |
-| `server_tools`        | `server-tools`                 | Mode (`native` / `sdk`) and the list of tools invoked.                                                        |
-| `response_healing`    | `response-healing`             | Mode (`json_schema` / `json_object`), whether healing improved the response, lengths.                         |
-| `context_compression` | `context-compression`          | Engine used, input type (`messages` / `prompt`), original vs. compressed counts.                              |
+| `type` | `name` values | What it tells you |
+| - | - | - |
+| `guardrail` | `content-filter`, `moderation` | `flagged: bool`, plus engine-specific verdict (`decision`, `confidence_level`, `matched_entity_types`, etc.). |
+| `plugin` | `web-search`, `file-parser` | Plugin-specific telemetry (e.g. result counts for web search, page count for file parsing). |
+| `server_tools` | `server-tools` | Mode (`native` / `sdk`) and the list of tools invoked. |
+| `response_healing` | `response-healing` | Mode (`json_schema` / `json_object`), whether healing improved the response, lengths. |
+| `context_compression` | `context-compression` | Engine used, input type (`messages` / `prompt`), original vs. compressed counts. |
 
 Multiple plugins can share a `type`. To find a specific guardrail (say, the content filter), iterate the array and match on both `type === 'guardrail'` and `name === 'content-filter'`. The full set of guardrail-level plugins emits `type: 'guardrail'` so you can filter all of them together (`pipeline.filter(s => s.type === 'guardrail')`) without enumerating individual plugins.
 

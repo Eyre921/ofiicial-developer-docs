@@ -127,13 +127,13 @@ Output whenever `summary=true` is used
 
 Output whenever `topics=true` is used
 
-- `results` (SharedTopicsResults, optional)
+- `segments` (list of SharedTopicsSegmentsItems, optional)
 
 ### SharedIntents
 
 Output whenever `intents=true` is used
 
-- `results` (SharedIntentsResults, optional)
+- `segments` (list of SharedIntentsSegmentsItems, optional)
 
 ### SharedSentiments
 
@@ -170,13 +170,19 @@ Output whenever `sentiment=true` is used
 
 - `summary` (ReadV1ResponseResultsSummaryResultsSummary, optional)
 
-### SharedTopicsResults
+### SharedTopicsSegmentsItems
 
-- `topics` (SharedTopicsResultsTopics, optional)
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `topics` (list of SharedTopicsSegmentsItemsTopicsItems, optional)
 
-### SharedIntentsResults
+### SharedIntentsSegmentsItems
 
-- `intents` (SharedIntentsResultsIntents, optional)
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `intents` (list of SharedIntentsSegmentsItemsIntentsItems, optional)
 
 ### SharedSentimentsSegmentsItems
 
@@ -195,34 +201,12 @@ Output whenever `sentiment=true` is used
 
 - `text` (string, optional)
 
-### SharedTopicsResultsTopics
-
-- `segments` (list of SharedTopicsResultsTopicsSegmentsItems, optional)
-
-### SharedIntentsResultsIntents
-
-- `segments` (list of SharedIntentsResultsIntentsSegmentsItems, optional)
-
-### SharedTopicsResultsTopicsSegmentsItems
-
-- `text` (string, optional)
-- `start_word` (double, optional)
-- `end_word` (double, optional)
-- `topics` (list of SharedTopicsResultsTopicsSegmentsItemsTopicsItems, optional)
-
-### SharedIntentsResultsIntentsSegmentsItems
-
-- `text` (string, optional)
-- `start_word` (double, optional)
-- `end_word` (double, optional)
-- `intents` (list of SharedIntentsResultsIntentsSegmentsItemsIntentsItems, optional)
-
-### SharedTopicsResultsTopicsSegmentsItemsTopicsItems
+### SharedTopicsSegmentsItemsTopicsItems
 
 - `topic` (string, optional)
 - `confidence_score` (float, optional)
 
-### SharedIntentsResultsIntentsSegmentsItemsIntentsItems
+### SharedIntentsSegmentsItemsIntentsItems
 
 - `intent` (string, optional)
 - `confidence_score` (float, optional)
@@ -281,13 +265,13 @@ Output whenever `sentiment=true` is used
         "topics": {
           "segments": [
             {
-              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
-              "start_word": 32,
               "end_word": 69,
+              "start_word": 32,
+              "text": "And, um, I think if it signifies anything, it is, uh, to honor the the women who came before us who, um, were skilled and qualified, um, and didn't get the the same opportunities that we have today.",
               "topics": [
                 {
-                  "topic": "Spacewalk",
-                  "confidence_score": 0.91581345
+                  "confidence_score": 0.91581345,
+                  "topic": "Spacewalk"
                 }
               ]
             }
@@ -300,15 +284,15 @@ Output whenever `sentiment=true` is used
         "intents": {
           "segments": [
             {
-              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app.",
-              "start_word": 354,
               "end_word": 414,
               "intents": [
                 {
-                  "intent": "Encourage podcasting",
-                  "confidence_score": 0.0038975573
+                  "confidence_score": 0.0038975573,
+                  "intent": "Encourage podcasting"
                 }
-              ]
+              ],
+              "start_word": 354,
+              "text": "If you found this valuable, you can subscribe to the show on spotify or your favorite podcast app."
             }
           ]
         }

@@ -59,10 +59,10 @@ PostHog receives LLM analytics events with custom metadata included as event pro
 OpenRouter maps the reserved `trace` fields below to PostHog's native `$ai_*` properties,
 which power PostHog's built-in LLM analytics dashboards.
 
-| Key               | PostHog Property | Description                                         |
-| ----------------- | ---------------- | --------------------------------------------------- |
-| `trace_id`        | `$ai_trace_id`   | Custom trace identifier for grouping related events |
-| `generation_name` | `$ai_span_name`  | Name for the LLM generation event                   |
+| Key | PostHog Property | Description |
+| - | - | - |
+| `trace_id` | `$ai_trace_id` | Custom trace identifier for grouping related events |
+| `generation_name` | `$ai_span_name` | Name for the LLM generation event |
 
 ### Custom property pass-through
 
@@ -96,12 +96,12 @@ Every other key inside `trace` that is not in the table above is forwarded as
 
 The above request produces a `$ai_generation` event with these properties (among others):
 
-| PostHog property         | Value                       |
-| ------------------------ | --------------------------- |
-| `trace_name`             | `"Product Recommendations"` |
-| `$ai_span_name`          | `"Generate Recommendation"` |
-| `metadata_feature`       | `"shopping-assistant"`      |
-| `metadata_ab_test_group` | `"variant_b"`               |
+| PostHog property | Value |
+| - | - |
+| `trace_name` | `"Product Recommendations"` |
+| `$ai_span_name` | `"Generate Recommendation"` |
+| `metadata_feature` | `"shopping-assistant"` |
+| `metadata_ab_test_group` | `"variant_b"` |
 
 ### Additional Context
 

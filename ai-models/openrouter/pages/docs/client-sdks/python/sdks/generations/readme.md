@@ -49,13 +49,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example        |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The generation ID                                                                                                                                           | gen-1234567890 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The generation ID | gen-1234567890 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -63,17 +63,17 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.PaymentRequiredResponseError    | 402         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.EdgeNetworkTimeoutResponseError | 524         | application/json |
-| errors.ProviderOverloadedResponseError | 529         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.PaymentRequiredResponseError | 402 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.EdgeNetworkTimeoutResponseError | 524 | application/json |
+| errors.ProviderOverloadedResponseError | 529 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_generation\_content
 
@@ -102,13 +102,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example        |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The generation ID                                                                                                                                           | gen-1234567890 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The generation ID | gen-1234567890 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -116,17 +116,17 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.EdgeNetworkTimeoutResponseError | 524         | application/json |
-| errors.ProviderOverloadedResponseError | 529         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.EdgeNetworkTimeoutResponseError | 524 | application/json |
+| errors.ProviderOverloadedResponseError | 529 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## submit\_feedback
 
@@ -155,15 +155,15 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                                                               | Required             | Description                                                                                                                                                 | Example                                            |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `category`                 | [components.SubmitGenerationFeedbackRequestCategory](../../components/submitgenerationfeedbackrequestcategory.mdx) | :heavy\_check\_mark: | The category of feedback being reported                                                                                                                     | incorrect\_response                                |
-| `generation_id`            | *str*                                                                                                              | :heavy\_check\_mark: | The generation to submit feedback on                                                                                                                        | gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG                   |
-| `http_referer`             | *Optional\[str]*                                                                                                   | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                    |
-| `x_open_router_title`      | *Optional\[str]*                                                                                                   | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                    |
-| `x_open_router_categories` | *Optional\[str]*                                                                                                   | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                    |
-| `comment`                  | *Optional\[str]*                                                                                                   | :heavy\_minus\_sign: | An optional free-text comment describing the feedback                                                                                                       | The model repeated the same paragraph three times. |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                                | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                    |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `category` | [components.SubmitGenerationFeedbackRequestCategory](../../components/submitgenerationfeedbackrequestcategory.mdx) | :heavy\_check\_mark: | The category of feedback being reported | incorrect\_response |
+| `generation_id` | *str* | :heavy\_check\_mark: | The generation to submit feedback on | gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `comment` | *Optional\[str]* | :heavy\_minus\_sign: | An optional free-text comment describing the feedback | The model repeated the same paragraph three times. |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -171,12 +171,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                          | Status Code | Content Type     |
-| ----------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError      | 400         | application/json |
-| errors.UnauthorizedResponseError    | 401         | application/json |
-| errors.NotFoundResponseError        | 404         | application/json |
-| errors.TooManyRequestsResponseError | 429         | application/json |
-| errors.InternalServerResponseError  | 500         | application/json |
-| errors.OpenRouterDefaultError       | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

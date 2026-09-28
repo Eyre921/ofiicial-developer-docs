@@ -132,12 +132,12 @@ func main() {
 
 ### Parameters
 
-| Parameter             | Type                                                                    | Required             | Description                                                                                                                                                                                                 | Example                                                                                                                                                                                                                                                                                         |
-| --------------------- | ----------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ctx`                 | [context.Context](https://pkg.go.dev/context#Context)                   | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                         |                                                                                                                                                                                                                                                                                                 |
-| `chatRequest`         | [components.ChatRequest](../../models/components/chatrequest.mdx)       | :heavy\_check\_mark: | N/A                                                                                                                                                                                                         | \{<br />"max\_tokens": 150,<br />"messages": \[<br />\{<br />"content": "You are a helpful assistant.",<br />"role": "system"<br />},<br />\{<br />"content": "What is the capital of France?",<br />"role": "user"<br />}<br />],<br />"model": "openai/gpt-4",<br />"temperature": 0.7<br />} |
-| `xOpenRouterMetadata` | [\*components.MetadataLevel](../../models/components/metadatalevel.mdx) | :heavy\_minus\_sign: | Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility. | enabled                                                                                                                                                                                                                                                                                         |
-| `opts`                | \[][operations.Option](../../models/operations/option.mdx)              | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                               |                                                                                                                                                                                                                                                                                                 |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"max\_tokens": 150,<br />"messages": \[<br />\{<br />"content": "You are a helpful assistant.",<br />"role": "system"<br />},<br />\{<br />"content": "What is the capital of France?",<br />"role": "user"<br />}<br />],<br />"model": "openai/gpt-4",<br />"temperature": 0.7<br />} |
+| `xOpenRouterMetadata` | [\*components.MetadataLevel](../../models/components/metadatalevel.mdx) | :heavy\_minus\_sign: | Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility. | enabled |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -145,21 +145,21 @@ func main() {
 
 ### Errors
 
-| Error Type                                 | Status Code | Content Type     |
-| ------------------------------------------ | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError          | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError        | 401         | application/json |
-| sdkerrors.PaymentRequiredResponseError     | 402         | application/json |
-| sdkerrors.ForbiddenResponseError           | 403         | application/json |
-| sdkerrors.NotFoundResponseError            | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError      | 408         | application/json |
-| sdkerrors.PayloadTooLargeResponseError     | 413         | application/json |
-| sdkerrors.UnprocessableEntityResponseError | 422         | application/json |
-| sdkerrors.TooManyRequestsResponseError     | 429         | application/json |
-| sdkerrors.InternalServerResponseError      | 500         | application/json |
-| sdkerrors.BadGatewayResponseError          | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError  | 503         | application/json |
-| sdkerrors.EdgeNetworkTimeoutResponseError  | 524         | application/json |
-| sdkerrors.ProviderOverloadedResponseError  | 529         | application/json |
-| sdkerrors.APIError                         | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.PaymentRequiredResponseError | 402 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
+| sdkerrors.UnprocessableEntityResponseError | 422 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.EdgeNetworkTimeoutResponseError | 524 | application/json |
+| sdkerrors.ProviderOverloadedResponseError | 529 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

@@ -160,11 +160,11 @@ Below are drop-in request configurations for common developer experience (DX) op
 
 ## Quick Reference Summary
 
-| Goal                               | Recommended Configuration                                         | Latency Impact                                                                                      |
-| :--------------------------------- | :---------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| **Bound Worst-Case Peak Delays**   | `preferred_max_latency: { p90: 2.5 }`                             | Evades congested queues; evaluates 5-min rolling percentiles.                                       |
-| **Fastest Generation on a Budget** | `sort: "price"` + `preferred_min_throughput: { p90: 40 }`         | Prevents routing to oversubscribed slow commodity hosts.                                            |
-| **Agent Loops / Long Contexts**    | Stable `session_id` + static prompt prefix                        | Slashes prefill time and cost (up to 80–90%) via provider KV cache.                                 |
-| **Shrink Tool-Heavy Prefixes**     | `openrouter:tool_search` + `defer_loading: true`                  | Defer most tool definitions out of the prompt; keeps cacheable prefix lean and stable across turns. |
-| **Global Speed Across Models**     | `models: [...]` + `sort: { by: "throughput", partition: "none" }` | Routes to fastest available endpoint across all candidate models.                                   |
+| Goal | Recommended Configuration | Latency Impact |
+| :- | :- | :- |
+| **Bound Worst-Case Peak Delays** | `preferred_max_latency: { p90: 2.5 }` | Evades congested queues; evaluates 5-min rolling percentiles. |
+| **Fastest Generation on a Budget** | `sort: "price"` + `preferred_min_throughput: { p90: 40 }` | Prevents routing to oversubscribed slow commodity hosts. |
+| **Agent Loops / Long Contexts** | Stable `session_id` + static prompt prefix | Slashes prefill time and cost (up to 80–90%) via provider KV cache. |
+| **Shrink Tool-Heavy Prefixes** | `openrouter:tool_search` + `defer_loading: true` | Defer most tool definitions out of the prompt; keeps cacheable prefix lean and stable across turns. |
+| **Global Speed Across Models** | `models: [...]` + `sort: { by: "throughput", partition: "none" }` | Routes to fastest available endpoint across all candidate models. |
 

@@ -14,26 +14,29 @@ path: docs/help-center/technical/what-models-do-you-offer-and-what-is-the-differ
 \
 
 
-**Eleven v3 (model\_id = eleven\_v3)**- Eleven v3 is our latest and most advanced speech
+**Eleven v4 (model\_id = eleven\_v4)**- Eleven v4 is our latest and most advanced speech
 synthesis model. It is a state-of-the-art model that produces natural, life-like speech with high
 emotional range and contextual understanding across multiple languages.
 
 For UI generations, 1 character costs 1 credit, excluding credit multipliers. API generations are discounted - for details, see our [API Pricing.](https://elevenlabs.io/pricing)\
 \
-Eleven v3 supports 74 languages:
+Eleven v4 supports 90+ languages:
 
 * **AFR** Afrikaans
+* **AMH** Amharic
 * **ARA** Arabic
 * **HYE** Armenian
 * **ASM** Assamese
+* **AST** Asturian
 * **AZE** Azerbaijani
 * **BEL** Belarusian
 * **BEN** Bengali
 * **BOS** Bosnian
 * **BUL** Bulgarian
+* **MYA** Burmese
+* **YUE** Cantonese
 * **CAT** Catalan
 * **CEB** Cebuano
-* **NYA** Chichewa
 * **HRV** Croatian
 * **CES** Czech
 * **DAN** Danish
@@ -43,6 +46,7 @@ Eleven v3 supports 74 languages:
 * **FIL** Filipino
 * **FIN** Finnish
 * **FRA** French
+* **FUL** Fula (Pulaar)
 * **GLG** Galician
 * **KAT** Georgian
 * **DEU** German
@@ -54,48 +58,61 @@ Eleven v3 supports 74 languages:
 * **HUN** Hungarian
 * **ISL** Icelandic
 * **IND** Indonesian
-* **GLE** Irish
 * **ITA** Italian
 * **JPN** Japanese
 * **JAV** Javanese
+* **KAM** Kamba
 * **KAN** Kannada
 * **KAZ** Kazakh
-* **KIR** Kirghiz
 * **KOR** Korean
+* **KIR** Kyrgyz
+* **LAO** Lao
 * **LAV** Latvian
 * **LIN** Lingala
 * **LIT** Lithuanian
+* **LUG** Luganda
 * **LTZ** Luxembourgish
 * **MKD** Macedonian
 * **MSA** Malay
 * **MAL** Malayalam
+* **MLT** Maltese
 * **CMN** Mandarin Chinese
+* **MRI** Māori
 * **MAR** Marathi
+* **MON** Mongolian
 * **NEP** Nepali
-* **NOR** Norwegian
+* **NOB** Norwegian Bokmål
+* **OCI** Occitan
+* **ORI** Odia
 * **PUS** Pashto
 * **FAS** Persian
 * **POL** Polish
-* **POR** Portuguese
+* **POR** Portuguese (Brazil)
 * **PAN** Punjabi
 * **RON** Romanian
 * **RUS** Russian
 * **SRP** Serbian
+* **SNA** Shona
 * **SND** Sindhi
 * **SLK** Slovak
 * **SLV** Slovenian
 * **SOM** Somali
-* **SPA** Spanish
+* **CKB** Sorani Kurdish
+* **SPA** Spanish (LatAm)
 * **SWA** Swahili
 * **SWE** Swedish
+* **TGK** Tajik
 * **TAM** Tamil
 * **TEL** Telugu
 * **THA** Thai
 * **TUR** Turkish
 * **UKR** Ukrainian
 * **URD** Urdu
+* **UZB** Uzbek
 * **VIE** Vietnamese
 * **CYM** Welsh
+* **WOL** Wolof
+* **ZUL** Zulu
 
 **Multilingual v2 (model\_id = eleven\_multilingual\_v2)** - Multilingual v2 is our most
 life-like, emotionally rich model. It's best for voiceovers, audiobooks, and content creation.

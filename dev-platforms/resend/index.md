@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 388 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -252,6 +252,7 @@
 - `docs/knowledge-base/dreamhost` — [DreamHost](pages/docs/knowledge-base/dreamhost.md) · [原文](https://resend.com/docs/knowledge-base/dreamhost)
 - `docs/knowledge-base/embed-react-email-editor` — [Embed the React Email editor in your app](pages/docs/knowledge-base/embed-react-email-editor.md) · [原文](https://resend.com/docs/knowledge-base/embed-react-email-editor)
 - `docs/knowledge-base/end-to-end-testing-with-playwright` — [How to set up E2E testing with Playwright](pages/docs/knowledge-base/end-to-end-testing-with-playwright.md) · [原文](https://resend.com/docs/knowledge-base/end-to-end-testing-with-playwright)
+- `docs/knowledge-base/eve` — [Eve](pages/docs/knowledge-base/eve.md) · [原文](https://resend.com/docs/knowledge-base/eve)
 - `docs/knowledge-base/forward-emails-with-resend-inbound` — [Forward emails with Resend Inbound](pages/docs/knowledge-base/forward-emails-with-resend-inbound.md) · [原文](https://resend.com/docs/knowledge-base/forward-emails-with-resend-inbound)
 - `docs/knowledge-base/gandi` — [Gandi](pages/docs/knowledge-base/gandi.md) · [原文](https://resend.com/docs/knowledge-base/gandi)
 - `docs/knowledge-base/getting-started-with-resend-and-supabase` — [Get Started with Resend and Supabase](pages/docs/knowledge-base/getting-started-with-resend-and-supabase.md) · [原文](https://resend.com/docs/knowledge-base/getting-started-with-resend-and-supabase)

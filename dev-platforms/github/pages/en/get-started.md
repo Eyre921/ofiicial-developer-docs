@@ -12,7 +12,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Start your journey](/en/get-started/start-your-journey)
 
-  <p>Brand new to GitHub? Learn the basics here.</p>
+  Brand new to GitHub? Learn the basics here.
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 

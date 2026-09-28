@@ -12,17 +12,17 @@ Give Fireworks your data and configuration. The platform handles scheduling, tra
 
 These interfaces create the same underlying managed jobs:
 
-| Interface        | Use when                                                         |
-| ---------------- | ---------------------------------------------------------------- |
-| **Fireworks UI** | You want guided configuration and visual monitoring              |
-| **CLI or API**   | You want scripted and reproducible job operations                |
-| **Your agent**   | You want help configuring, running, and troubleshooting training |
+| Interface | Use when |
+| - | - |
+| **Fireworks UI** | You want guided configuration and visual monitoring |
+| **CLI or API** | You want scripted and reproducible job operations |
+| **Your agent** | You want help configuring, running, and troubleshooting training |
 
 The Fireworks CLI is called `firectl`. [Install the training skill](/fine-tuning/agent/use-with-coding-agents) to use your agent, or continue with the method-specific managed guides below. For custom Python training loops, start with the [Training API overview](/fine-tuning/training-api/introduction).
 
-<Note>
-  Per-step managed training metric artifacts are retained for 7 days after they are written. Historical loss and learning-rate charts may show no data after those artifacts expire. For longer-term metric history, configure [Weights & Biases](/ecosystem/integrations/wandb) before launching the job.
-</Note>
+## Training metrics
+
+Per-step loss and learning-rate artifacts are retained for 7 days after they are written. After that, the job page explains that the chart is no longer available. For longer-term metric history, configure [Weights & Biases](/ecosystem/integrations/wandb) before launching the job.
 
 ## Methods
 

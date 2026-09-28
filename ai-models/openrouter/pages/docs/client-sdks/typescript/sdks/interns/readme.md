@@ -23,7 +23,8 @@ Create, inspect, update, provision, suspend and delete OpenRouter interns throug
 * [deleteIntern](#deleteintern) - Delete an intern
 * [getIntern](#getintern) - Get an intern
 * [updateIntern](#updateintern) - Update an intern
-* [getInternDaemonAccess](#getinterndaemonaccess) - Get an intern's daemon access
+* [getInternDaemon](#getinterndaemon) - Get an intern's daemon access
+* [~~getInternDaemonAccess~~](#getinterndaemonaccess) - Get an intern's daemon access (deprecated alias) :warning: **Deprecated**
 * [provisionIntern](#provisionintern) - Provision an intern
 * [suspendIntern](#suspendintern) - Suspend an intern
 * [chat](#chat) - Stream a chat completion with an intern
@@ -86,12 +87,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListInternsRequest](../../models/operations/listinternsrequest.mdx)         | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListInternsRequest](../../models/operations/listinternsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -99,11 +100,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code             | Content Type     |
-| ----------------------------- | ----------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408 | application/json |
-| errors.InternLifecycleError   | 500                     | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## createIntern
 
@@ -174,12 +175,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateInternRequest](../../models/operations/createinternrequest.mdx)       | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.CreateInternRequest](../../models/operations/createinternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -187,11 +188,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## deleteIntern
 
@@ -260,12 +261,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteInternRequest](../../models/operations/deleteinternrequest.mdx)       | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.DeleteInternRequest](../../models/operations/deleteinternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -273,11 +274,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## getIntern
 
@@ -340,12 +341,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetInternRequest](../../models/operations/getinternrequest.mdx)             | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.GetInternRequest](../../models/operations/getinternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -353,11 +354,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code        | Content Type     |
-| ----------------------------- | ------------------ | ---------------- |
-| errors.InternLifecycleError   | 401, 403, 404, 408 | application/json |
-| errors.InternLifecycleError   | 500                | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX           | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## updateIntern
 
@@ -428,12 +429,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.UpdateInternRequest](../../models/operations/updateinternrequest.mdx)       | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.UpdateInternRequest](../../models/operations/updateinternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -441,15 +442,97 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500                                    | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
-## getInternDaemonAccess
+## getInternDaemon
 
 Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/typescript/docs/api-reference/authentication) required.
+
+### Example Usage
+
+```typescript theme={null}
+import { OpenRouter } from "@openrouter/sdk";
+
+const openRouter = new OpenRouter({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await openRouter.interns.getInternDaemon({
+    internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript theme={null}
+import { OpenRouterCore } from "@openrouter/sdk/core.js";
+import { internsGetInternDaemon } from "@openrouter/sdk/funcs/internsGetInternDaemon.js";
+
+// Use `OpenRouterCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const openRouter = new OpenRouterCore({
+  httpReferer: "<value>",
+  appTitle: "<value>",
+  appCategories: "<value>",
+  apiKey: process.env["OPENROUTER_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await internsGetInternDaemon(openRouter, {
+    internId: "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("internsGetInternDaemon failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.GetInternDaemonRequest](../../models/operations/getinterndaemonrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+
+### Response
+
+**Promise\<[models.InternDaemonAccess](../../models/interndaemonaccess.mdx)>**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408, 409 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
+
+## ~~getInternDaemonAccess~~
+
+Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/typescript/docs/api-reference/authentication) required.
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -508,12 +591,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetInternDaemonAccessRequest](../../models/operations/getinterndaemonaccessrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                      | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)             | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                      | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.GetInternDaemonAccessRequest](../../models/operations/getinterndaemonaccessrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -521,11 +604,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code             | Content Type     |
-| ----------------------------- | ----------------------- | ---------------- |
-| errors.InternLifecycleError   | 401, 403, 404, 408, 409 | application/json |
-| errors.InternLifecycleError   | 500                     | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408, 409 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## provisionIntern
 
@@ -588,12 +671,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ProvisionInternRequest](../../models/operations/provisioninternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ProvisionInternRequest](../../models/operations/provisioninternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -601,11 +684,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## suspendIntern
 
@@ -668,12 +751,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.SuspendInternRequest](../../models/operations/suspendinternrequest.mdx)     | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.SuspendInternRequest](../../models/operations/suspendinternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -681,11 +764,11 @@ run();
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## chat
 
@@ -784,12 +867,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                          | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateInternChatCompletionRequest](../../models/operations/createinternchatcompletionrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                                | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                       | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                                | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.CreateInternChatCompletionRequest](../../models/operations/createinternchatcompletionrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -797,13 +880,13 @@ run();
 
 ### Errors
 
-| Error Type                     | Status Code                       | Content Type     |
-| ------------------------------ | --------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | errors.InternChatErrorResponse | 400, 401, 403, 404, 408, 410, 413 | application/json |
-| errors.InternChatErrorResponse | 409, 429                          | application/json |
-| errors.InternChatErrorResponse | 503                               | application/json |
-| errors.InternChatErrorResponse | 502, 504                          | application/json |
-| errors.OpenRouterDefaultError  | 4XX, 5XX                          | \*/\*            |
+| errors.InternChatErrorResponse | 409, 429 | application/json |
+| errors.InternChatErrorResponse | 503 | application/json |
+| errors.InternChatErrorResponse | 502, 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## invoke
 
@@ -878,12 +961,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.InvokeInternRequest](../../models/operations/invokeinternrequest.mdx)       | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.InvokeInternRequest](../../models/operations/invokeinternrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -891,11 +974,11 @@ run();
 
 ### Errors
 
-| Error Type                     | Status Code                  | Content Type     |
-| ------------------------------ | ---------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | errors.InternChatErrorResponse | 400, 401, 403, 404, 408, 413 | application/json |
-| errors.InternChatErrorResponse | 409, 429                     | application/json |
-| errors.InternChatErrorResponse | 503                          | application/json |
-| errors.InternChatErrorResponse | 500, 502, 504                | application/json |
-| errors.OpenRouterDefaultError  | 4XX, 5XX                     | \*/\*            |
+| errors.InternChatErrorResponse | 409, 429 | application/json |
+| errors.InternChatErrorResponse | 503 | application/json |
+| errors.InternChatErrorResponse | 500, 502, 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

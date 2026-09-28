@@ -116,15 +116,15 @@ The response returns a `data` array where each model includes:
 }
 ```
 
-| Field                            | Description                                                                       |
-| -------------------------------- | --------------------------------------------------------------------------------- |
-| `id`                             | Model slug to use in generation requests                                          |
-| `canonical_slug`                 | Permanent model identifier                                                        |
-| `supported_durations`            | List of supported output durations in seconds                                     |
-| `supported_resolutions`          | List of supported output resolutions (e.g., `720p`, `1080p`)                      |
-| `supported_aspect_ratios`        | List of supported aspect ratios (e.g., `16:9`, `9:16`)                            |
-| `supported_sizes`                | List of supported pixel dimensions (e.g., `1280x720`)                             |
-| `pricing_skus`                   | Pricing information per SKU                                                       |
+| Field | Description |
+| - | - |
+| `id` | Model slug to use in generation requests |
+| `canonical_slug` | Permanent model identifier |
+| `supported_durations` | List of supported output durations in seconds |
+| `supported_resolutions` | List of supported output resolutions (e.g., `720p`, `1080p`) |
+| `supported_aspect_ratios` | List of supported aspect ratios (e.g., `16:9`, `9:16`) |
+| `supported_sizes` | List of supported pixel dimensions (e.g., `1280x720`) |
+| `pricing_skus` | Pricing information per SKU |
 | `allowed_passthrough_parameters` | Provider-specific parameters that can be passed through via the `provider` option |
 
 Use this endpoint to check which resolutions, aspect ratios, and passthrough parameters are supported by each model before submitting a generation request.
@@ -289,20 +289,20 @@ MODEL: 'google/veo-3.1'
 
 ### Request Parameters
 
-| Parameter          | Type    | Required | Description                                                                                                                            |
-| ------------------ | ------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`            | string  | Yes      | The model to use for video generation (e.g., `google/veo-3.1`)                                                                         |
-| `prompt`           | string  | Yes      | Text description of the video to generate                                                                                              |
-| `duration`         | integer | No       | Duration of the generated video in seconds                                                                                             |
-| `resolution`       | string  | No       | Resolution of the output video (e.g., `720p`, `1080p`)                                                                                 |
-| `aspect_ratio`     | string  | No       | Aspect ratio of the output video (e.g., `16:9`, `9:16`, `3:2`)                                                                         |
-| `size`             | string  | No       | Exact pixel dimensions in `WIDTHxHEIGHT` format (e.g., `1280x720`). Interchangeable with `resolution` + `aspect_ratio`                 |
-| `frame_images`     | array   | No       | Images for first/last frames (image-to-video)                                                                                          |
-| `input_references` | array   | No       | Reference images for style guidance (reference-to-video)                                                                               |
-| `generate_audio`   | boolean | No       | Whether to generate audio alongside the video. Defaults to `true` for models that support audio output                                 |
-| `seed`             | integer | No       | Seed for deterministic generation (not guaranteed by all providers)                                                                    |
-| `callback_url`     | string  | No       | URL to receive a webhook notification when the job completes. Overrides the workspace-level default callback URL if set. Must be HTTPS |
-| `provider`         | object  | No       | Provider-specific passthrough configuration                                                                                            |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `model` | string | Yes | The model to use for video generation (e.g., `google/veo-3.1`) |
+| `prompt` | string | Yes | Text description of the video to generate |
+| `duration` | integer | No | Duration of the generated video in seconds |
+| `resolution` | string | No | Resolution of the output video (e.g., `720p`, `1080p`) |
+| `aspect_ratio` | string | No | Aspect ratio of the output video (e.g., `16:9`, `9:16`, `3:2`) |
+| `size` | string | No | Exact pixel dimensions in `WIDTHxHEIGHT` format (e.g., `1280x720`). Interchangeable with `resolution` + `aspect_ratio` |
+| `frame_images` | array | No | Images for first/last frames (image-to-video) |
+| `input_references` | array | No | Reference images for style guidance (reference-to-video) |
+| `generate_audio` | boolean | No | Whether to generate audio alongside the video. Defaults to `true` for models that support audio output |
+| `seed` | integer | No | Seed for deterministic generation (not guaranteed by all providers) |
+| `callback_url` | string | No | URL to receive a webhook notification when the job completes. Overrides the workspace-level default callback URL if set. Must be HTTPS |
+| `provider` | object | No | Provider-specific passthrough configuration |
 
 ### Supported Resolutions
 
@@ -440,12 +440,12 @@ When polling the job status, the response includes additional fields as the job 
 
 ### Job Statuses
 
-| Status        | Description                                     |
-| ------------- | ----------------------------------------------- |
-| `pending`     | The job has been submitted and is queued        |
-| `in_progress` | The video is being generated                    |
-| `completed`   | The video is ready to download                  |
-| `failed`      | The generation failed (check the `error` field) |
+| Status | Description |
+| - | - |
+| `pending` | The job has been submitted and is queued |
+| `in_progress` | The video is being generated |
+| `completed` | The video is ready to download |
+| `failed` | The generation failed (check the `error` field) |
 
 ### Downloading the Video
 

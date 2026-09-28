@@ -29,12 +29,12 @@ rlor_mgr = TrainerJobManager(
 )
 ```
 
-| Parameter            | Type           | Default                      | Description               |
-| -------------------- | -------------- | ---------------------------- | ------------------------- |
-| `api_key`            | `str`          | —                            | Fireworks API key         |
-| `base_url`           | `str`          | `"https://api.fireworks.ai"` | Control-plane URL         |
-| `additional_headers` | `dict \| None` | `None`                       | Extra HTTP headers        |
-| `verify_ssl`         | `bool \| None` | `None`                       | SSL verification override |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `api_key` | `str` | — | Fireworks API key |
+| `base_url` | `str` | `"https://api.fireworks.ai"` | Control-plane URL |
+| `additional_headers` | `dict \| None` | `None` | Extra HTTP headers |
+| `verify_ssl` | `bool \| None` | `None` | SSL verification override |
 
 ## Methods
 
@@ -111,12 +111,12 @@ endpoint = rlor_mgr.reconnect_and_wait(
 
 More robust than `resume_and_wait()` — retries when the job is in a transitional state (e.g. the control plane is still processing a pod death).
 
-| Parameter                  | Type    | Default | Description                                   |
-| -------------------------- | ------- | ------- | --------------------------------------------- |
-| `job_id`                   | `str`   | —       | The RLOR job ID to reconnect                  |
-| `poll_interval_s`          | `float` | `5.0`   | Seconds between health checks after resume    |
-| `timeout_s`                | `float` | `600`   | Overall timeout for the job to become RUNNING |
-| `max_wait_for_resumable_s` | `float` | `120`   | Max seconds to wait for a resumable state     |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `job_id` | `str` | — | The RLOR job ID to reconnect |
+| `poll_interval_s` | `float` | `5.0` | Seconds between health checks after resume |
+| `timeout_s` | `float` | `600` | Overall timeout for the job to become RUNNING |
+| `max_wait_for_resumable_s` | `float` | `120` | Max seconds to wait for a resumable state |
 
 ### `get(job_id)`
 
@@ -180,19 +180,19 @@ Launching through a training shape is the recommended path. In normal user code,
 
 When `training_shape_ref` is set (the recommended **shape path**), the training shape owns the trainer's hardware and image configuration. The fields below are what you set as a user:
 
-| Field                        | Type                                | Default | Description                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------------------- | ----------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `base_model`                 | `str`                               | —       | Base model name (e.g. `"accounts/fireworks/models/qwen3-8b"`)                                                                                                                                                                                                                                                                                                   |
-| `training_shape_ref`         | `str \| None`                       | `None`  | Full training-shape resource name (e.g. `accounts/fireworks/trainingShapes/<shape>` or `.../versions/<ver>`). Use `mgr.resolve_training_profile(...)` to get the pinned versioned ref. See [Training shapes](/fine-tuning/training-api/training-shapes).                                                                                                        |
-| `lora_rank`                  | `int`                               | `0`     | LoRA rank. `0` for full-parameter tuning, or a positive integer (e.g. `16`, `64`) for LoRA                                                                                                                                                                                                                                                                      |
-| `max_context_length`         | `int \| None`                       | `None`  | Maximum sequence length. Usually inherited from the training shape on the shape path.                                                                                                                                                                                                                                                                           |
-| `learning_rate`              | `float`                             | `1e-5`  | Learning rate for the optimizer                                                                                                                                                                                                                                                                                                                                 |
-| `display_name`               | `str \| None`                       | `None`  | Human-readable trainer name                                                                                                                                                                                                                                                                                                                                     |
-| `region`                     | `str \| None`                       | `None`  | Region for the job                                                                                                                                                                                                                                                                                                                                              |
-| `extra_args`                 | `list[str] \| None`                 | `None`  | Extra trainer arguments                                                                                                                                                                                                                                                                                                                                         |
-| `forward_only`               | `bool`                              | `False` | Deprecated. Created a forward-only reference trainer. Use the model's LoRA shape with the adapter disabled instead.                                                                                                                                                                                                                                             |
-| `inactivity_timeout`         | `datetime.timedelta \| str \| None` | `None`  | Trainer inactivity timeout. The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. When unset or `0`, Fireworks uses the 10-minute default. String values must use protobuf JSON duration format, such as `"1800s"`. |
-| `disable_inactivity_cleanup` | `bool`                              | `False` | Disable trainer inactivity cleanup. GPU usage continues to accrue while the trainer is running.                                                                                                                                                                                                                                                                 |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `base_model` | `str` | — | Base model name (e.g. `"accounts/fireworks/models/qwen3-8b"`) |
+| `training_shape_ref` | `str \| None` | `None` | Full training-shape resource name (e.g. `accounts/fireworks/trainingShapes/<shape>` or `.../versions/<ver>`). Use `mgr.resolve_training_profile(...)` to get the pinned versioned ref. See [Training shapes](/fine-tuning/training-api/training-shapes). |
+| `lora_rank` | `int` | `0` | LoRA rank. `0` for full-parameter tuning, or a positive integer (e.g. `16`, `64`) for LoRA |
+| `max_context_length` | `int \| None` | `None` | Maximum sequence length. Usually inherited from the training shape on the shape path. |
+| `learning_rate` | `float` | `1e-5` | Learning rate for the optimizer |
+| `display_name` | `str \| None` | `None` | Human-readable trainer name |
+| `region` | `str \| None` | `None` | Region for the job |
+| `extra_args` | `list[str] \| None` | `None` | Extra trainer arguments |
+| `forward_only` | `bool` | `False` | Deprecated. Created a forward-only reference trainer. Use the model's LoRA shape with the adapter disabled instead. |
+| `inactivity_timeout` | `datetime.timedelta \| str \| None` | `None` | Trainer inactivity timeout. The trainer reports tracked activity, including trainer API operations and active-session heartbeats. If no tracked activity is observed for this duration, the trainer is automatically stopped. When unset or `0`, Fireworks uses the 10-minute default. String values must use protobuf JSON duration format, such as `"1800s"`. |
+| `disable_inactivity_cleanup` | `bool` | `False` | Disable trainer inactivity cleanup. GPU usage continues to accrue while the trainer is running. |
 
 <Warning>
   `gradient_accumulation_steps` is deprecated in `TrainerJobConfig`. Do not use it to request server-side accumulation. Accumulate gradients in client code by calling `forward_backward...` multiple times before one `optim_step(...)`; see [Loss Functions](/fine-tuning/training-api/dedicated#loss-functions).
@@ -206,19 +206,19 @@ When `training_shape_ref` is set (the recommended **shape path**), the training 
 
 Returned by `create()`:
 
-| Field      | Type  | Description                                               |
-| ---------- | ----- | --------------------------------------------------------- |
+| Field | Type | Description |
+| - | - | - |
 | `job_name` | `str` | Full resource name (`accounts/<id>/rlorTrainerJobs/<id>`) |
-| `job_id`   | `str` | RLOR trainer job ID                                       |
+| `job_id` | `str` | RLOR trainer job ID |
 
 ## TrainerServiceEndpoint
 
 Returned by `create_and_wait`, `wait_for_ready`, `wait_for_existing`, `resume_and_wait`, and `reconnect_and_wait`:
 
-| Field      | Type  | Description                                               |
-| ---------- | ----- | --------------------------------------------------------- |
-| `base_url` | `str` | Trainer endpoint URL for connecting a training client     |
-| `job_id`   | `str` | RLOR trainer job ID                                       |
+| Field | Type | Description |
+| - | - | - |
+| `base_url` | `str` | Trainer endpoint URL for connecting a training client |
+| `job_id` | `str` | RLOR trainer job ID |
 | `job_name` | `str` | Full resource name (`accounts/<id>/rlorTrainerJobs/<id>`) |
 
 ## TrainingShapeProfile
@@ -227,15 +227,15 @@ See [`FireworksClient` > TrainingShapeProfile](/fine-tuning/training-api/referen
 
 ## Job states
 
-| State                 | Meaning                                              |
-| --------------------- | ---------------------------------------------------- |
-| `JOB_STATE_CREATING`  | Resources being provisioned                          |
-| `JOB_STATE_PENDING`   | Queued, waiting for GPU availability                 |
-| `JOB_STATE_RUNNING`   | Trainer is ready — you can connect a training client |
-| `JOB_STATE_IDLE`      | Service-mode job is idle                             |
-| `JOB_STATE_COMPLETED` | Job finished successfully                            |
-| `JOB_STATE_FAILED`    | Job failed                                           |
-| `JOB_STATE_CANCELLED` | Job was cancelled                                    |
+| State | Meaning |
+| - | - |
+| `JOB_STATE_CREATING` | Resources being provisioned |
+| `JOB_STATE_PENDING` | Queued, waiting for GPU availability |
+| `JOB_STATE_RUNNING` | Trainer is ready — you can connect a training client |
+| `JOB_STATE_IDLE` | Service-mode job is idle |
+| `JOB_STATE_COMPLETED` | Job finished successfully |
+| `JOB_STATE_FAILED` | Job failed |
+| `JOB_STATE_CANCELLED` | Job was cancelled |
 
 ## Related guides
 

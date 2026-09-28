@@ -14,15 +14,15 @@ You can use the break tag when generating audio via the API. This will create an
 
 The syntax for the break tag is `<break time="1.5s" />` and the AI can handle pauses of up to 3 seconds in length.
 
-All of our models, **with the exception of Eleven v3**, support SSML break tags, and these can be used when generating audio via the API.
+All of our models, **with the exception of [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) and Eleven v3**, support SSML break tags, and these can be used when generating audio via the API.
 
-If you are using **Eleven v3**, you can instead incorporate expressive pause tags such as **\[pause]**, **\[short pause]**, and **\[long pause]**. These tags are exclusive to Eleven v3 and are not supported by other models.
+If you are using **Eleven v4** or **Eleven v3**, use audio tags, punctuation, and text structure to control pauses. See [Prompting Eleven v4](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4).
 
 For more information, please see the [Pause](/docs/overview/capabilities/text-to-speech/best-practices#pauses) section of our [guide to Prompting](/docs/overview/capabilities/text-to-speech/best-practices).
 
 **Phonemes:**
 
-Eleven v3 natively supports IPA. For more information, see [IPA with Eleven v3](/docs/overview/capabilities/text-to-speech/best-practices#ipa-with-eleven-v3).
+[Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) has improved native support for IPA. For more information, see [IPA with Eleven v4](/docs/overview/capabilities/text-to-speech/best-practices#ipa-with-eleven-v4).
 
 Our **Eleven Flash v2** and **Eleven Turbo v2** models support **SSML phoneme tags**, and these can be used when generating audio via the API using these models.
 

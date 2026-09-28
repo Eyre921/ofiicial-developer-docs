@@ -37,11 +37,11 @@ Fast is a high-speed mode, useful for interactive applications that require fast
 
 Fast is available for select models. To use Fast, change the `model` ID as listed below.
 
-| Model             | `model` ID                                   |
-| ----------------- | -------------------------------------------- |
-| Kimi K3 Fast      | `accounts/fireworks/routers/kimi-k3-fast`    |
-| GLM 5.3 Fast      | `accounts/fireworks/routers/glm-5p3-fast`    |
-| GLM 5.2 Fast      | `accounts/fireworks/routers/glm-5p2-fast`    |
+| Model | `model` ID |
+| - | - |
+| Kimi K3 Fast | `accounts/fireworks/routers/kimi-k3-fast` |
+| GLM 5.3 Fast | `accounts/fireworks/routers/glm-5p3-fast` |
+| GLM 5.2 Fast | `accounts/fireworks/routers/glm-5p2-fast` |
 | GLM 5.2 Fast (US) | `accounts/fireworks/routers/glm-5p2-fast-us` |
 
 For the US-only Fast variant, call `https://us.api.fireworks.ai`. See [US-only Serverless](/serverless/us-only-serverless).

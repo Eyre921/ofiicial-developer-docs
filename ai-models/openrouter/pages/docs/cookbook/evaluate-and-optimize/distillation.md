@@ -39,9 +39,9 @@ This filter shows you all models where the author has permitted their outputs to
 
 For programmatic control, you can use the `enforce_distillable_text` parameter in your API requests. When set to `true`, OpenRouter will only route your request to models that allow text distillation.
 
-| Field                      | Type    | Default | Description                                                   |
-| -------------------------- | ------- | ------- | ------------------------------------------------------------- |
-| `enforce_distillable_text` | boolean | -       | Restrict routing to only models that allow text distillation. |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `enforce_distillable_text` | boolean | - | Restrict routing to only models that allow text distillation. |
 
 When `enforce_distillable_text` is set to `true`, the request will only be routed to models where the author has explicitly enabled text distillation. If no distillable models are available for your request, you'll receive an error.
 

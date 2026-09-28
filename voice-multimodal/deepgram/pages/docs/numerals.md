@@ -49,7 +49,7 @@ Numerals are supported on both Flux models:
 * **Flux English** (`model=flux-general-en`) — full numeral formatting.
 * **Flux Multilingual** (`model=flux-general-multi`) — numeral formatting for English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
 
-On Flux, set `numerals` as a query parameter when you open the connection. Flux does not support toggling `numerals` mid-stream through the `Configure` message.
+On Flux STT, set the initial value with the `numerals` query parameter when you open the connection. To change it mid-stream, send a [`Configure`](/docs/flux/configure) message.
 
 **`Direct WebSocket`**
 
@@ -82,7 +82,7 @@ curl \
 
 ### Toggling Numerals during a real-time stream
 
-In addition to the query string parameter, if you're sending real-time streaming data, you can turn Numerals on or off at any point during the stream. To do so, send the following JSON message to the websocket:
+On the streaming API (`/v1/listen`), you can turn Numerals on or off at any point during the stream. Send the following JSON message to the WebSocket:
 
 **`JSON`**
 
@@ -97,9 +97,24 @@ In addition to the query string parameter, if you're sending real-time streaming
 
 Numerals can be turned on and off multiple times during a stream if desired.
 
-> **Info**
+### Toggling Numerals during a Flux STT stream
+
+On Flux STT (`/v2/listen`), send `numerals` as a top-level field in a [`Configure`](/docs/flux/configure) message, alongside `type`. Flux STT rejects the `/v1/listen` form nested under `features` and closes the connection.
+
+**`JSON`**
+
+```json JSON
+{
+  "type": "Configure",
+  "numerals": true
+}
+```
+
+Flux STT replies with a `ConfigureSuccess` message that echoes the full active configuration, including `numerals`. The update applies to transcripts Flux STT sends after it processes the message; it doesn't reformat transcripts it has already sent. You can toggle `numerals` as many times as needed during a stream.
+
+> **Warning**
 >
-> Mid-stream toggling applies to the streaming API (`/v1/listen`). On Flux (`/v2/listen`), set `numerals` only as a connection-time query parameter. Including it in a `Configure` message returns an `UNPARSABLE_CLIENT_MESSAGE` error and closes the connection.
+> `numerals` must be a JSON boolean. A string such as `"true"` fails schema validation: Flux STT returns a message with `type: Error` and code `UNPARSABLE_CLIENT_MESSAGE`, and closes the connection. `ConfigureFailure` can carry the same code, so check `type` to tell the two apart.
 
 ## Results
 

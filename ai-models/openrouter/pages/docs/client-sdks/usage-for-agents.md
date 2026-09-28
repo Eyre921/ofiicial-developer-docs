@@ -45,16 +45,16 @@ gh skill install OpenRouterTeam/skills openrouter-typescript-sdk
 
 The skill works with any AI coding assistant that supports the [Agent Skills](https://agentskills.io/home) standard:
 
-| Assistant                                                     | Status    |
-| ------------------------------------------------------------- | --------- |
+| Assistant | Status |
+| - | - |
 | [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | Supported |
-| [Cursor](https://cursor.com)                                  | Supported |
-| [OpenCode](https://opencode.ai)                               | Supported |
-| [GitHub Copilot](https://github.com/features/copilot)         | Supported |
-| [Codex](https://openai.com/index/openai-codex)                | Supported |
-| [Amp](https://amp.dev)                                        | Supported |
-| [Roo Code](https://roo.dev)                                   | Supported |
-| [Antigravity](https://antigravity.dev)                        | Supported |
+| [Cursor](https://cursor.com) | Supported |
+| [OpenCode](https://opencode.ai) | Supported |
+| [GitHub Copilot](https://github.com/features/copilot) | Supported |
+| [Codex](https://openai.com/index/openai-codex) | Supported |
+| [Amp](https://amp.dev) | Supported |
+| [Roo Code](https://roo.dev) | Supported |
+| [Antigravity](https://antigravity.dev) | Supported |
 
 ## What the Skill Provides
 

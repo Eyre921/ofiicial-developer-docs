@@ -10,7 +10,7 @@ path: docs/overview/capabilities/text-to-dialogue
 
 ## Overview
 
-The ElevenLabs [Text to Dialogue](/docs/api-reference/text-to-dialogue/convert) API creates natural sounding expressive dialogue from text using the Eleven v3 model. Popular use cases include:
+The ElevenLabs [Text to Dialogue](/docs/api-reference/text-to-dialogue/convert) API creates natural sounding expressive dialogue from text using [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) and Eleven v3. We recommend Eleven v4. Popular use cases include:
 
 * Generating pitch perfect conversations for video games
 * Creating immersive dialogue for podcasts and other audio content
@@ -26,9 +26,9 @@ Listen to a sample:
 
 Learn how to integrate text to dialogue into your application.
 
-#### [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+#### [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4)
 
-Learn how to use the Eleven v3 model to generate expressive dialogue.
+Learn how to prompt expressive dialogue with audio tags.
 
 #### [API reference](/docs/api-reference/text-to-dialogue/convert)
 
@@ -36,7 +36,7 @@ Full API reference for the Text to Dialogue endpoint.
 
 ## Voice options
 
-ElevenLabs offers thousands of voices across 70+ languages through multiple creation methods:
+ElevenLabs offers thousands of voices through multiple creation methods. Eleven v4 supports 90+ languages and Eleven v3 supports 70+ languages.
 
 * [Voice library](/docs/overview/capabilities/voices) with 3,000+ community-shared voices
 * [Professional voice cloning](/docs/overview/capabilities/voices#cloned) for highest-fidelity replicas
@@ -52,7 +52,7 @@ descriptive text like "she said excitedly" or using exclamation marks will influ
 emotion. Voice settings like Stability and Similarity help control the consistency, while the
 underlying emotion comes from textual cues.
 
-Read the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more details.
+Read the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more details.
 
 ### Emotional deliveries with audio tags
 
@@ -60,13 +60,13 @@ Read the [prompting guide](/docs/overview/capabilities/text-to-speech/best-pract
 >
 > This feature is still under active development, actual results may vary.
 
-The Eleven v3 model allows the use of non-speech audio events to influence the delivery of the dialogue. This is done by inserting the audio events into the text input wrapped in square brackets.
+Eleven v4 and Eleven v3 allow the use of non-speech audio events to influence the delivery of the dialogue. This is done by inserting the audio events into the text input wrapped in square brackets.
 
 In Text to Dialogue, each dialogue turn has its own text and voice. Add audio tags inside the text for the turn they should affect. The `voice_id` still selects the speaker voice for that turn, while the tags guide delivery.
 
 For example, a speaker can use one voice while the text starts with `[giggling]`, and the next speaker can use a different voice while the text starts with `[whispering]`. For an API example that combines tags with `voice_id`, see the [Text to Dialogue quickstart](/docs/eleven-api/guides/cookbooks/text-to-dialogue).
 
-Audio tags are natural-language instructions, not an enum parameter. Wrap the instruction in square brackets and place it in the text where the delivery should change. The examples below are not exhaustive; use the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more guidance on effective tags.
+Audio tags are natural-language instructions, not an enum parameter. Wrap the instruction in square brackets and place it in the text where the delivery should change. The examples below are not exhaustive; use the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more guidance on effective tags.
 
 Audio tags come in a few different forms:
 
@@ -140,15 +140,13 @@ The default response format is `mp3`, but other formats like `pcm` and `ulaw` ar
 
 ## Supported languages
 
-The Eleven v3 model supports 70+ languages, including:
-
-*Afrikaans (afr), Arabic (ara), Armenian (hye), Assamese (asm), Azerbaijani (aze), Belarusian (bel), Bengali (ben), Bosnian (bos), Bulgarian (bul), Catalan (cat), Cebuano (ceb), Chichewa (nya), Croatian (hrv), Czech (ces), Danish (dan), Dutch (nld), English (eng), Estonian (est), Filipino (fil), Finnish (fin), French (fra), Galician (glg), Georgian (kat), German (deu), Greek (ell), Gujarati (guj), Hausa (hau), Hebrew (heb), Hindi (hin), Hungarian (hun), Icelandic (isl), Indonesian (ind), Irish (gle), Italian (ita), Japanese (jpn), Javanese (jav), Kannada (kan), Kazakh (kaz), Kirghiz (kir), Korean (kor), Latvian (lav), Lingala (lin), Lithuanian (lit), Luxembourgish (ltz), Macedonian (mkd), Malay (msa), Malayalam (mal), Mandarin Chinese (cmn), Marathi (mar), Nepali (nep), Norwegian (nor), Pashto (pus), Persian (fas), Polish (pol), Portuguese (por), Punjabi (pan), Romanian (ron), Russian (rus), Serbian (srp), Sindhi (snd), Slovak (slk), Slovenian (slv), Somali (som), Spanish (spa), Swahili (swa), Swedish (swe), Tamil (tam), Telugu (tel), Thai (tha), Turkish (tur), Ukrainian (ukr), Urdu (urd), Vietnamese (vie), Welsh (cym).*
+Eleven v4 supports 90+ languages. Eleven v3 supports 70+ languages. See [Eleven v4](/docs/overview/models#eleven-v4) and [Eleven v3](/docs/overview/models#eleven-v3) for the full lists.
 
 ## FAQ
 
 #### Which models can I use?
 
-Text to Dialogue is only available on the Eleven v3 model.
+Text to Dialogue is available on the Eleven v4 and Eleven v3 models.
 
 #### Do I own the audio output?
 
@@ -181,7 +179,7 @@ Keep the total length of all `inputs[].text` values at or below 2,000 characters
 
 ## Key facts
 
-* **Model**: Only available with Eleven v3
+* **Models**: Available with Eleven v4 and Eleven v3
 * **Speakers**: No limit on number of speakers per dialogue
 * **Request size**: Keep the total length of all `inputs[].text` values at or below 2,000 characters per request
 * **Determinism**: Output is nondeterministic — use the `seed` parameter for more consistent results

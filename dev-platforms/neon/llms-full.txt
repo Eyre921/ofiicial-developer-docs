@@ -12274,10 +12274,11 @@ Each search contributes its top 40 candidates. `RANK()` gives tied scores the sa
 
 - [lakebase_vector reference](https://neon.com/docs/extensions/lakebase-vector): index options, operator classes, tuning guide
 - [lakebase_text reference](https://neon.com/docs/extensions/lakebase-text): BM25 operators, functions, fallback parameters, prefilter
+- [lakebase_tokenizer reference](https://neon.com/docs/extensions/lakebase-tokenizer): optional configurable tokenization, stop words, synonyms, and stemming
 
 --- [Document source](https://neon.com/docs/ai/lakebase-search.md) ---
 
-> Summary: Lakebase Search adds vector, keyword, and hybrid search to Neon through the lakebase_vector and lakebase_text Postgres extensions. Use this page to understand the search types, how the extensions work, the scale-to-zero architecture advantages, and where to get started.
+> Summary: Lakebase Search adds vector, keyword, and hybrid search to Neon through the lakebase_vector and lakebase_text Postgres extensions, with optional configurable tokenization from lakebase_tokenizer. Use this page to understand the search types, how the extensions work, the scale-to-zero architecture advantages, and where to get started.
 
 # Lakebase Search
 
@@ -12287,7 +12288,7 @@ Scalable vector and full-text search for Postgres
 
 Lakebase Search is developed by Databricks. These extensions are part of the shared technology foundation between Neon and the Databricks Lakebase platform.
 
-Lakebase Search adds vector, keyword, and hybrid search to your Neon project. Install the `lakebase_vector` and `lakebase_text` Postgres extensions to start building search features.
+Lakebase Search adds vector, keyword, and hybrid search to your Neon project. Install `lakebase_vector` for vector search, `lakebase_text` for BM25 keyword search, and `lakebase_tokenizer` for configurable tokenization.
 
 ## Vector, keyword, and hybrid search
 
@@ -12301,10 +12302,11 @@ Lakebase Search gives you two complementary ways to search. Use either on its ow
 
 ## How it works
 
-Lakebase Search is two Postgres extensions:
+Lakebase Search is built on three Postgres extensions:
 
 - **[`lakebase_vector`](https://neon.com/docs/extensions/lakebase-vector)**: adds the `lakebase_ann` index type for vector similarity search. No migration from `pgvector` required. The same `vector` types, distance operators, and query syntax work unchanged. Scales to over 1 billion vectors on a single index.
 - **[`lakebase_text`](https://neon.com/docs/extensions/lakebase-text)**: adds the `lakebase_bm25` index type for BM25 keyword search. No migration from Postgres full-text search required. Standard `tsvector` types and query operators work unchanged. Adds BM25 ranking and top-K pushdown that native GIN lacks.
+- **[`lakebase_tokenizer`](https://neon.com/docs/extensions/lakebase-tokenizer)**: adds configurable whole-word tokenization through Postgres's text-search dictionary interface. It produces standard `tsvector` values that work with GIN and `lakebase_bm25` indexes.
 
 ## How `lakebase_ann` scales
 
@@ -12319,9 +12321,10 @@ It uses IVF (Inverted File) partitioning to divide the vector space into lists a
 
 ## Get started
 
-- [Quickstart](https://neon.com/docs/ai/lakebase-search-get-started): Enable both extensions, create a schema, insert documents with embeddings, and run your first searches
+- [Quickstart](https://neon.com/docs/ai/lakebase-search-get-started): Install lakebase_vector and lakebase_text, create a schema, insert documents with embeddings, and run your first searches
 - [lakebase_vector reference](https://neon.com/docs/extensions/lakebase-vector): Index options, operator classes, and tuning reference for lakebase_vector
 - [lakebase_text reference](https://neon.com/docs/extensions/lakebase-text): BM25 operators, functions, fallback parameters, and prefilter reference for lakebase_text
+- [lakebase_tokenizer reference](https://neon.com/docs/extensions/lakebase-tokenizer): Whole-word tokenization options, custom stop words, synonyms, and stemming
 
 --- [Document source](https://neon.com/docs/ai/langchain.md) ---
 
@@ -44360,6 +44363,193 @@ Prefilter is recommended when the filter is **strict** (eliminates many rows) or
 | `lakebase_bm25.prefilter`     | boolean | `false` | Enables filter evaluation before BM25 score computation. Recommended for strict, cheap filters.       |
 | `lakebase_bm25.enable_scan`   | boolean | `on`    | Enables or disables `lakebase_bm25` index scans. Set to `off` for testing to force a sequential scan. |
 
+--- [Document source](https://neon.com/docs/extensions/lakebase-tokenizer.md) ---
+
+> Summary: The lakebase_tokenizer extension adds configurable whole-word tokenization to Postgres full-text search, including lowercase conversion, Unicode normalization, accent removal, English possessive removal, custom stop words, one-to-one synonyms, and English stemming.
+
+# The lakebase_tokenizer extension
+
+Configurable tokenization for Postgres full-text search
+
+The `lakebase_tokenizer` extension adds configurable whole-word tokenization to Postgres full-text search. Text-search configurations built with the extension work with `to_tsvector`, the `@@` operator, ranking functions, and GIN indexes. You can also use generated `tsvector` values with [`lakebase_text`](https://neon.com/docs/extensions/lakebase-text) for BM25 ranking.
+
+The extension provides the `tokenizer_wholeword` template through Postgres's standard text-search dictionary interface. The template supports lowercase conversion, Unicode normalization, accent removal, English possessive removal, custom stop words, one-to-one synonyms, and English stemming.
+
+## Install the extension
+
+Install the extension in the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or from a client such as [psql](https://neon.com/docs/connect/query-with-psql-editor). The examples on this page use a dedicated schema so the extension objects are easy to identify:
+
+```sql
+CREATE SCHEMA IF NOT EXISTS tokenizer_ext;
+CREATE EXTENSION IF NOT EXISTS lakebase_tokenizer WITH SCHEMA tokenizer_ext;
+```
+
+`lakebase_tokenizer` requires Postgres 16 or later. The extension is relocatable. You can replace `tokenizer_ext` with another schema when you install it.
+
+### Upgrade the extension
+
+A new Lakebase Search release can add features, fixes, and performance improvements. Although Lakebase Search is released as part of Neon updates, it does not upgrade everything automatically.
+
+Upgrading is not urgent. The extension is compatible with SQL objects from older versions, but staying current keeps you on the supported, best-performing path and avoids a larger migration later, so upgrade when convenient rather than deferring indefinitely.
+
+`ALTER EXTENSION` does not regenerate stored `tsvector` values or rebuild dependent GIN or `lakebase_bm25` indexes. If an update changes tokenization output, regenerate stored `tsvector` values and follow the release notes for any required index maintenance.
+
+## Quick start with `tokenizer_wholeword`
+
+The following example creates a dictionary from the `tokenizer_wholeword` template, then maps common Postgres token types to it in a text-search configuration:
+
+```sql
+CREATE TEXT SEARCH DICTIONARY documents_dict (
+  TEMPLATE          = tokenizer_ext.tokenizer_wholeword,
+  Lowercase         = 'true',
+  StripAccents      = 'true',
+  Stemmer           = 'english'
+);
+
+CREATE TEXT SEARCH CONFIGURATION documents_cfg (COPY = pg_catalog.simple);
+
+ALTER TEXT SEARCH CONFIGURATION documents_cfg
+  ALTER MAPPING FOR asciiword, word, numword, hword_numpart, hword_part, hword_asciipart
+  WITH documents_dict;
+```
+
+Use the configuration to produce a `tsvector`, create a GIN index, and run full-text queries:
+
+```sql
+CREATE TABLE documents (
+  id            BIGSERIAL PRIMARY KEY,
+  body          TEXT NOT NULL,
+  search_vector TSVECTOR GENERATED ALWAYS AS (
+    to_tsvector('documents_cfg', body)
+  ) STORED
+);
+
+INSERT INTO documents (body) VALUES
+  ('Cats are running near the café.'),
+  ('A dog is sleeping in the house.');
+
+CREATE INDEX documents_search_idx ON documents USING gin (search_vector);
+
+SELECT id, body
+FROM documents
+WHERE search_vector @@ plainto_tsquery('documents_cfg', 'running café');
+```
+
+Use the same text-search configuration for documents and queries so both sides apply the same tokenization strategy and options.
+
+## Template: `tokenizer_wholeword`
+
+### How it works
+
+For each token passed to the dictionary by Postgres's text-search parser, `tokenizer_wholeword` applies these operations:
+
+1. `Lowercase`: Convert the token to lowercase.
+2. `Normalize`: Apply Unicode normalization.
+3. `StripAccents`: Remove accents.
+4. `EnglishPossessive`: Remove an English possessive suffix when at least one character remains.
+5. `Stopwords`: Emit no lexeme and stop processing if the token matches a configured stop word. The token is omitted from the generated `tsvector`.
+6. `Synonyms`: Emit the configured replacement and stop processing if the token matches a synonym.
+7. `Stemmer`: If no synonym matched and stemming is enabled, apply the English stemmer.
+
+### Add stop words and synonyms
+
+The `tokenizer_wholeword` template can load custom stop words and synonyms from the extension-managed `lakebase_tokenizer_stopwords` and `lakebase_tokenizer_synonyms` SQL tables. The `name` column groups rows into a set that you select with the `Stopwords` or `Synonyms` dictionary option.
+
+```sql
+INSERT INTO tokenizer_ext.lakebase_tokenizer_stopwords (name, word) VALUES
+  ('app_stopwords', 'the'),
+  ('app_stopwords', 'and'),
+  ('app_stopwords', 'or');
+
+INSERT INTO tokenizer_ext.lakebase_tokenizer_synonyms (name, word, synonym) VALUES
+  ('app_synonyms', 'usa', 'united_states'),
+  ('app_synonyms', 'uk', 'united_kingdom');
+```
+
+Reference the sets when you create or alter a `tokenizer_wholeword` dictionary:
+
+```sql
+ALTER TEXT SEARCH DICTIONARY documents_dict (
+  Stopwords = 'app_stopwords',
+  Synonyms  = 'app_synonyms'
+);
+```
+
+The extension compares stop words and synonym source words with each token after applying `Lowercase`, `Normalize`, `StripAccents`, and `EnglishPossessive`, but before applying `Stemmer`. Catalog entries are not transformed automatically, so store them in the exact form produced by those enabled options:
+
+- With `Lowercase = 'true'`, use lowercase entries. With `Lowercase = 'false'`, capitalization must match the token.
+- With `Normalize` enabled, store entries in the selected Unicode normalization form.
+- With `StripAccents = 'true'`, store the accent-stripped form. For example, store `cafe` to match `café`.
+- Store the form before stemming. For example, with `Stemmer = 'english'`, a `run` entry does not match `running`. Add `running` to filter or replace that token.
+
+Set names can contain up to 256 bytes. Words and synonyms can contain up to 1024 bytes. Each named stop-word or synonym set can contain up to 100,000 rows.
+
+A synonym replacement is emitted exactly as stored and is not processed by the stemmer. Synonyms support one replacement for each source word. To represent a multiword replacement as one lexeme, use a separator such as an underscore, as in `united_states`.
+
+After changing a set, the owner of each dictionary that references the set must run a no-op `ALTER TEXT SEARCH DICTIONARY` to force a reload:
+
+```sql
+ALTER TEXT SEARCH DICTIONARY documents_dict (dummy);
+```
+
+The `dummy` option does not exist on `tokenizer_wholeword`. Omitting a value asks Postgres to remove this nonexistent option, which invalidates the cache without changing any of the dictionary's configured options.
+
+After reloading the dictionary, regenerate the stored `tsvector` values by rewriting the source rows:
+
+```sql
+UPDATE documents SET body = body;
+```
+
+### Roles and access
+
+Use two roles to separate application access from tokenizer administration. The examples assume these roles already exist:
+
+- `app_role` uses existing dictionaries. It needs `USAGE` on the relevant schemas and `SELECT` on the extension catalog tables, but it does not need to own the dictionaries.
+- `tokenizer_admin` manages stop-word and synonym sets, creates and owns dictionaries and text-search configurations, and runs the reload command after changing a set.
+
+Grant access to the extension schema and catalog tables:
+
+```sql
+GRANT USAGE ON SCHEMA tokenizer_ext TO app_role, tokenizer_admin;
+
+GRANT SELECT ON
+  tokenizer_ext.lakebase_tokenizer_stopwords,
+  tokenizer_ext.lakebase_tokenizer_synonyms
+TO app_role;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON
+  tokenizer_ext.lakebase_tokenizer_stopwords,
+  tokenizer_ext.lakebase_tokenizer_synonyms
+TO tokenizer_admin;
+```
+
+`tokenizer_admin` also needs `CREATE` on the schema where dictionaries and text-search configurations are stored. Create these objects as `tokenizer_admin`, or transfer their ownership to it. Write access to the catalog tables does not grant ownership of existing dictionaries.
+
+### Options
+
+Specify `tokenizer_wholeword` options in `CREATE TEXT SEARCH DICTIONARY` or `ALTER TEXT SEARCH DICTIONARY`. Option names are case-insensitive.
+
+| Option              | Type                                    | Default | Description                                                                                                                                                                                                              |
+| :------------------ | :-------------------------------------- | :------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Lowercase`         | boolean                                 | `true`  | Converts tokens to lowercase before applying other operations. `Stemmer = 'english'` requires `Lowercase = 'true'`.                                                                                                      |
+| `Normalize`         | `NFC`, `NFD`, `NFKC`, `NFKD`, or `none` | `none`  | Applies the selected Unicode normalization form. This canonicalizes the representation but does not remove characters. For example, `NFC` makes precomposed `é` and `e` followed by a combining acute accent equivalent. |
+| `EnglishPossessive` | boolean                                 | `true`  | Removes a trailing `'s`, `'s`, or `'s` when at least one character precedes the suffix. A standalone suffix remains unchanged.                                                                                           |
+| `StripAccents`      | boolean                                 | `false` | Applies NFKD normalization and removes combining marks. For example, `café` becomes `cafe`. When this option is enabled, omit `Normalize` because the NFKD step makes any separate Unicode normalization redundant.      |
+| `Stopwords`         | set name                                | None    | Uses the named set from `tokenizer_ext.lakebase_tokenizer_stopwords`.                                                                                                                                                    |
+| `Synonyms`          | set name                                | None    | Uses the named set of one-to-one replacements from `tokenizer_ext.lakebase_tokenizer_synonyms`.                                                                                                                          |
+| `Stemmer`           | `english`                               | None    | Uses the bundled Snowball 3.1.0 English stemmer. Omit this option to disable stemming. The stemmer does not include a stop-word list.                                                                                    |
+
+### Catalog tables
+
+| Table                          | Columns                                  | Description                                                                                                              |
+| :----------------------------- | :--------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
+| `lakebase_tokenizer_stopwords` | `name text`, `word text`                 | Stores named stop-word sets for tokenizer templates that support `Stopwords`. The primary key is `(name, word)`.         |
+| `lakebase_tokenizer_synonyms`  | `name text`, `word text`, `synonym text` | Stores named one-to-one replacements for tokenizer templates that support `Synonyms`. The primary key is `(name, word)`. |
+
+## Use BM25 ranking with lakebase_text
+
+Text-search configurations built with `lakebase_tokenizer` produce standard Postgres `tsvector` values that are compatible with `lakebase_text`. To use BM25 relevance ranking and top-K retrieval, create a `lakebase_bm25` index on the same `tsvector` column. For installation, index creation, and query syntax, see [The lakebase_text extension](https://neon.com/docs/extensions/lakebase-text).
+
 --- [Document source](https://neon.com/docs/extensions/lakebase-vector.md) ---
 
 > Summary: The lakebase_vector extension adds the lakebase_ann index type to Lakebase Postgres for fast approximate nearest-neighbor vector search. It requires no migration from pgvector — the same vector types, distance operators, and query syntax work unchanged. Use this page to enable the extension, create a lakebase_ann index, configure build_mode, tune search with the lakebase_ann.probes, lakebase_ann.epsilon, and lakebase_ann.prefilter GUCs, and reference all operator classes and index options.
@@ -48480,7 +48670,7 @@ Neon supports the Postgres extensions shown below. Extension versions may differ
 | [ip4r](https://github.com/RhodiumToad/ip4r)                                                                    |     2.4 |     2.4 |     2.4 |     2.4 |    2.4 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [isn](https://www.postgresql.org/docs/16/isn.html)                                                             |     1.2 |     1.2 |     1.2 |     1.2 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [lakebase\_text](https://neon.com/docs/extensions/lakebase-text)                                               |       - |       - |   0.1.3 |   0.1.3 |  0.1.3 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
-| [lakebase\_tokenizer](https://neon.com/docs/ai/lakebase-search)                                                |       - |       - |   0.1.1 |   0.1.1 |  0.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
+| [lakebase\_tokenizer](https://neon.com/docs/extensions/lakebase-tokenizer)                                     |       - |       - |   0.1.1 |   0.1.1 |  0.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lakebase\_vector](https://neon.com/docs/extensions/lakebase-vector)                                           |       - |       - |   1.1.1 |   1.1.1 |  1.1.1 | See [Lakebase Search](https://neon.com/docs/ai/lakebase-search).                                                                                                                                                                                                                                                                                                                                                                                               |
 | [lo](https://www.postgresql.org/docs/16/lo.html)                                                               |     1.1 |     1.1 |     1.1 |     1.1 |    1.2 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | [ltree](https://neon.com/docs/extensions/ltree)                                                                |     1.2 |     1.2 |     1.2 |     1.3 |    1.3 |                                                                                                                                                                                                                                                                                                                                                                                                                                                                |

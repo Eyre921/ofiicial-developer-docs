@@ -88,12 +88,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListScimGroupMappingsRequest](../../models/operations/listscimgroupmappingsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                      | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)             | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                      | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListScimGroupMappingsRequest](../../models/operations/listscimgroupmappingsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -101,12 +101,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create
 
@@ -177,12 +177,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                  | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateScimGroupMappingRequest](../../models/operations/createscimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                        | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)               | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                        | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.CreateScimGroupMappingRequest](../../models/operations/createscimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -190,14 +190,14 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.ConflictResponseError       | 409         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete
 
@@ -262,12 +262,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                  | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteScimGroupMappingRequest](../../models/operations/deletescimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                        | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)               | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                        | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.DeleteScimGroupMappingRequest](../../models/operations/deletescimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -275,13 +275,13 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## read
 
@@ -344,12 +344,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                            | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetScimGroupMappingRequest](../../models/operations/getscimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                  | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)         | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                  | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.GetScimGroupMappingRequest](../../models/operations/getscimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -357,12 +357,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## update
 
@@ -431,12 +431,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                  | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.UpdateScimGroupMappingRequest](../../models/operations/updatescimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                        | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)               | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                        | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.UpdateScimGroupMappingRequest](../../models/operations/updatescimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -444,13 +444,13 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## listGroups
 
@@ -513,12 +513,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListScimGroupsRequest](../../models/operations/listscimgroupsrequest.mdx)   | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListScimGroupsRequest](../../models/operations/listscimgroupsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -526,12 +526,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## createSyncJob
 
@@ -590,12 +590,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                        | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateScimSyncJobRequest](../../models/operations/createscimsyncjobrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                              | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)     | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                              | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.CreateScimSyncJobRequest](../../models/operations/createscimsyncjobrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -603,12 +603,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## getSyncJob
 
@@ -671,12 +671,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetScimSyncJobRequest](../../models/operations/getscimsyncjobrequest.mdx)   | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.GetScimSyncJobRequest](../../models/operations/getscimsyncjobrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -684,10 +684,10 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

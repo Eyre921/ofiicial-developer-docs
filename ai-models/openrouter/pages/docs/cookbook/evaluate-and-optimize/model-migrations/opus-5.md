@@ -52,10 +52,10 @@ Like Sonnet 5, Opus 5 supports only adaptive thinking: token budgets (`reasoning
 
 Anthropic only allows disabling thinking at effort levels up to and including `high`. Combining disabled reasoning with `xhigh` or `max` effort returns a 400 from Anthropic:
 
-| Effort level            | Reasoning disabled      |
-| ----------------------- | ----------------------- |
-| `low`, `medium`, `high` | Allowed                 |
-| `xhigh`, `max`          | Rejected upstream (400) |
+| Effort level | Reasoning disabled |
+| - | - |
+| `low`, `medium`, `high` | Allowed |
+| `xhigh`, `max` | Rejected upstream (400) |
 
 ```json lines theme={null}
 // Chat Completions API — OK: disabled reasoning at high effort
@@ -140,11 +140,11 @@ The dedicated [`anthropic/claude-opus-5-fast`](https://openrouter.ai/anthropic/c
 
 ## Breaking Changes
 
-| Behavior                                          | Opus 4.8           | Opus 5                          |
-| ------------------------------------------------- | ------------------ | ------------------------------- |
-| Reasoning default                                 | Off unless enabled | **On** unless disabled          |
-| `reasoning.enabled: false` + `xhigh`/`max` effort | Allowed            | Rejected upstream (400)         |
-| Thinking modes (when enabled)                     | Adaptive           | Adaptive only (budgets ignored) |
+| Behavior | Opus 4.8 | Opus 5 |
+| - | - | - |
+| Reasoning default | Off unless enabled | **On** unless disabled |
+| `reasoning.enabled: false` + `xhigh`/`max` effort | Allowed | Rejected upstream (400) |
+| Thinking modes (when enabled) | Adaptive | Adaptive only (budgets ignored) |
 
 ## Resources
 

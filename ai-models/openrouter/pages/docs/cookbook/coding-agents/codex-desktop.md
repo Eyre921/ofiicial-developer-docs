@@ -84,15 +84,15 @@ Quit the app completely (not just the window), reopen it, choose **Codex**, and 
 
 ## Configuration Reference
 
-| Setting                                          | Description                                                                                       | Example                                               |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `model_provider`                                 | Provider to use for model requests                                                                | `"openrouter"`                                        |
-| `model`                                          | OpenRouter model ID                                                                               | `"openai/gpt-6-astra"`                                |
-| `model_reasoning_effort`                         | Reasoning effort level                                                                            | `"minimal"`, `"low"`, `"medium"`, `"high"`, `"xhigh"` |
-| `model_providers.openrouter.base_url`            | OpenRouter API endpoint                                                                           | `"https://openrouter.ai/api/v1"`                      |
-| `model_providers.openrouter.env_key`             | Environment variable holding your API key                                                         | `"OPENROUTER_API_KEY"`                                |
-| `model_providers.openrouter.wire_api`            | Protocol Codex speaks to the provider. `responses` is the only supported value                    | `"responses"`                                         |
-| `model_providers.openrouter.supports_websockets` | Whether the provider supports the Responses API WebSocket transport. Leave `false` for OpenRouter | `false`                                               |
+| Setting | Description | Example |
+| - | - | - |
+| `model_provider` | Provider to use for model requests | `"openrouter"` |
+| `model` | OpenRouter model ID | `"openai/gpt-6-astra"` |
+| `model_reasoning_effort` | Reasoning effort level | `"minimal"`, `"low"`, `"medium"`, `"high"`, `"xhigh"` |
+| `model_providers.openrouter.base_url` | OpenRouter API endpoint | `"https://openrouter.ai/api/v1"` |
+| `model_providers.openrouter.env_key` | Environment variable holding your API key | `"OPENROUTER_API_KEY"` |
+| `model_providers.openrouter.wire_api` | Protocol Codex speaks to the provider. `responses` is the only supported value | `"responses"` |
+| `model_providers.openrouter.supports_websockets` | Whether the provider supports the Responses API WebSocket transport. Leave `false` for OpenRouter | `false` |
 
 <Note>
   With `env_key` authentication Codex does not fetch the OpenRouter model catalog, so non-OpenAI models may show an "Unknown model" fallback-metadata warning. The command-based `auth` block on the [Codex CLI page](/docs/cookbook/coding-agents/codex-cli#step-3-configure-codex-for-openrouter) triggers the catalog refresh and works in the desktop app as long as `OPENROUTER_API_KEY` is visible to it as described above.

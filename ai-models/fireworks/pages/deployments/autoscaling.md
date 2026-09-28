@@ -10,14 +10,14 @@ Control how your deployment scales based on traffic and load.
 
 ## Configuration options
 
-| Flag                     | Type      | Default       | Description                                            |
-| ------------------------ | --------- | ------------- | ------------------------------------------------------ |
-| `--min-replica-count`    | Integer   | 0             | Minimum number of replicas. Set to 0 for scale-to-zero |
-| `--max-replica-count`    | Integer   | 1             | Maximum number of replicas                             |
-| `--scale-up-window`      | Duration  | 30s           | Wait time before scaling up                            |
-| `--scale-down-window`    | Duration  | 10m           | Wait time before scaling down                          |
-| `--scale-to-zero-window` | Duration  | 1h            | Idle time before scaling to zero (min: 5m)             |
-| `--load-targets`         | Key-value | `default=0.8` | Scaling thresholds. See options below                  |
+| Flag | Type | Default | Description |
+| - | - | - | - |
+| `--min-replica-count` | Integer | 0 | Minimum number of replicas. Set to 0 for scale-to-zero |
+| `--max-replica-count` | Integer | 1 | Maximum number of replicas |
+| `--scale-up-window` | Duration | 30s | Wait time before scaling up |
+| `--scale-down-window` | Duration | 10m | Wait time before scaling down |
+| `--scale-to-zero-window` | Duration | 1h | Idle time before scaling to zero (min: 5m) |
+| `--load-targets` | Key-value | `default=0.8` | Scaling thresholds. See options below |
 
 **Load target options** (use as `--load-targets <key>=<value>[,<key>=<value>...]`):
 

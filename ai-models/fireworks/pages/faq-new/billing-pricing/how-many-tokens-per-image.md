@@ -13,14 +13,14 @@ Image token consumption varies by model and resolution, typically ranging from 1
 The following table shows the token counts for a single image for Qwen2.5 VL at different image resolutions:
 
 | Resolution | Token Count |
-| ---------- | ----------- |
-| 336×336    | 144         |
-| 672×672    | 576         |
-| 1024×1024  | 1,369       |
-| 1280×720   | 1,196       |
-| 1920×1080  | 2,769       |
-| 2560×1440  | 4,641       |
-| 3840×2160  | 10,549      |
+| - | - |
+| 336×336 | 144 |
+| 672×672 | 576 |
+| 1024×1024 | 1,369 |
+| 1280×720 | 1,196 |
+| 1920×1080 | 2,769 |
+| 2560×1440 | 4,641 |
+| 3840×2160 | 10,549 |
 
 ## Calculating exact token count for your images
 

@@ -108,13 +108,13 @@ Your API key works with the full [OpenRouter API](/docs/quickstart), giving you 
 
 ## Service details
 
-|              |                                                                                |
-| ------------ | ------------------------------------------------------------------------------ |
-| **Provider** | OpenRouter                                                                     |
-| **Service**  | `openrouter/api`                                                               |
-| **Category** | AI                                                                             |
-| **Plans**    | `free` (no credit card required) or `pay-as-you-go` (per-token usage pricing)  |
-| **Pricing**  | Per-token, varies by model. See [model pricing](https://openrouter.ai/models). |
+| | |
+| - | - |
+| **Provider** | OpenRouter |
+| **Service** | `openrouter/api` |
+| **Category** | AI |
+| **Plans** | `free` (no credit card required) or `pay-as-you-go` (per-token usage pricing) |
+| **Pricing** | Per-token, varies by model. See [model pricing](https://openrouter.ai/models). |
 
 ### Choose a plan
 

@@ -10,6 +10,8 @@ Learn about filing and remitting tax.
 
 You must file and remit the tax you collect for every location where you’re [registered](https://docs.stripe.com/tax/registering.md). Each location has its own rules for reporting and filing taxes. Additionally, each location determines when you must pay (or remit) taxes, which could vary by the volume of your sales into that location.
 
+Registration and filing are separate services. Register with each tax authority yourself, or select [**Register for me** with Tax Complete](https://docs.stripe.com/tax/use-stripe-to-register.md) in supported locations to have Stripe register for you. **Register for me** doesn’t prepare returns or remit tax. After registering, choose how to file returns and remit tax. You can use [automated filing with Stripe](https://docs.stripe.com/tax/file-with-stripe.md), use a filing partner, or self-file with [Stripe Tax reports](https://docs.stripe.com/tax/reports.md).
+
 ## Filing frequency
 
 Each local tax authority determines how often you must file your taxes and when you must register to collect tax. You might need to remit tax monthly, quarterly, annually, or on another frequency. How often you file can vary based on annual revenue and local regulations.

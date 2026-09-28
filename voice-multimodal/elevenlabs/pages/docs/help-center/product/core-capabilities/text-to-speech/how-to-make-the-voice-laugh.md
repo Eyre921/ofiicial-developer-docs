@@ -8,6 +8,6 @@ path: docs/help-center/product/core-capabilities/text-to-speech/how-to-make-the-
 
 # How to make the voice laugh?
 
-With Eleven v3, you can use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-alpha) such as `[laughs]` to add laughter and other reactions to generated speech. See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail.
+With Eleven v4 and Eleven v3, you can use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-and-v4) such as `[laughs]` to add laughter and other reactions to generated speech. See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more detail.
 
 For other models, emotional delivery depends on context, punctuation, and voice settings. See [How to produce emotions?](/docs/help-center/product/core-capabilities/text-to-speech/how-to-produce-emotions).

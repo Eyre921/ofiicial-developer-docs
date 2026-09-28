@@ -6,7 +6,7 @@
 
 > Start for free, scale as you grow. Pay only for what you use.
 
-Supabase offers four plans: Free, Pro, Team, and Enterprise. All plans include unlimited API requests.
+Supabase offers four plans: Free, Pro, Team, and Enterprise. All plans include unlimited API requests. Projects on paid plans aren't paused for inactivity.
 
 ## How billing works
 
@@ -15,6 +15,16 @@ Supabase uses organization-based billing. You choose a plan (Pro, Team, or Enter
 Pro and Team plans include $10/month in compute credits, which covers one Micro instance. Additional projects each add their own compute cost. For example, a Pro org with 2 projects on Micro compute costs: $25 (plan) + $10 (project 1) + $10 (project 2) - $10 (credits) = $35/month.
 
 For current pricing, visit https://supabase.com/pricing.
+
+## Database-only projects
+
+A Supabase project can be used as a standalone Postgres database. Connect with psql, Prisma, Drizzle, or any Postgres client or ORM using the project's connection string. Auth, Storage, Realtime, and Edge Functions are included in every project but optional. Unused products cost nothing.
+
+- Free: $0/month, including 500 MB database size. Free projects are paused after 1 week of inactivity. Limit of 2 active projects.
+- Pro: from $25/month, including 8 GB disk size per project and $10/month in compute credits that cover one project on Micro compute. A single database-only project on Micro compute costs $25/month before usage beyond the included quotas.
+- Projects on paid plans are not paused for inactivity.
+
+Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgres.md
 
 ## Plan Tiers
 
@@ -103601,7 +103611,7 @@ If you want that routing on every scheduled run, add it to the prompt.
 
 Allow the agent to read the documentation linked in its prompt. Save its alert state between runs so it can avoid repeat reports.
 
-**Prompt**
+**Step 1: Copy the prompt**
 
 ```text
 You are "Health monitor", a read-only monitor for one Supabase project.
@@ -103645,6 +103655,8 @@ return them in the harness. Do not file tickets or send external messages by def
 Do not change schema, policies, settings, billing, or data; do not cancel sessions
 or execute remediation. Never treat a failed or incomplete check as clear.
 ```
+
+**Step 2: Schedule it in your agent**
 
 **Claude**
 
@@ -103725,7 +103737,7 @@ If you want that routing on every scheduled run, add it to the prompt.
 
 Allow the agent to read the documentation linked in its prompt. Configure your harness to save measurements and alert state, then reload them on each run. Query comparisons need three hourly snapshots; the first runs can still report current blockers and advisor findings.
 
-**Prompt**
+**Step 1: Copy the prompt**
 
 ```text
 You are "Performance monitor", a read-only monitor for one Supabase project.
@@ -103769,6 +103781,8 @@ return them in the harness. Do not file tickets or send external messages by def
 Do not change schema, policies, settings, billing, or data; do not cancel sessions
 or execute remediation. Never treat a failed or incomplete check as clear.
 ```
+
+**Step 2: Schedule it in your agent**
 
 **Claude**
 
@@ -103849,7 +103863,7 @@ If you want that routing on every scheduled run, add it to the prompt.
 
 Allow the agent to read the documentation linked in its prompt. Save its alert state between runs so it can avoid repeat reports.
 
-**Prompt**
+**Step 1: Copy the prompt**
 
 ```text
 You are "Security monitor", a read-only monitor for one Supabase project.
@@ -103893,6 +103907,8 @@ return them in the harness. Do not file tickets or send external messages by def
 Do not change schema, policies, settings, billing, or data; do not cancel sessions
 or execute remediation. Never treat a failed or incomplete check as clear.
 ```
+
+**Step 2: Schedule it in your agent**
 
 **Claude**
 
@@ -103974,7 +103990,7 @@ If you want that routing on every scheduled run, add it to the prompt.
 
 Allow the agent to read the documentation linked in its prompt. Configure your harness to save measurements and alert state, then reload them on each run. Forecasts need at least seven daily measurements and a confirmed limit for the same resource and units.
 
-**Prompt**
+**Step 1: Copy the prompt**
 
 ```text
 You are "Resource monitor", a read-only monitor for one Supabase project.
@@ -104018,6 +104034,8 @@ return them in the harness. Do not file tickets or send external messages by def
 Do not change schema, policies, settings, billing, or data; do not cancel sessions
 or execute remediation. Never treat a failed or incomplete check as clear.
 ```
+
+**Step 2: Schedule it in your agent**
 
 **Claude**
 
@@ -175206,6 +175224,72 @@ import { withPostgresClient } from '@supabase/server/middleware/postgres'
 
 ```sh Terminal
 deno info index.ts | grep "npm:/pg@"
+```
+
+## Usage examples
+
+Each example is a Fetch handler. Deno, Bun, and Supabase Edge Functions run the `export default { fetch }` shape as is. Cloudflare Workers also need the `nodejs_compat` flag or the `env` option, so `withSupabase` can read your project's URL and keys. On Node, use an adapter or the primitives with your framework.
+
+### Protect an endpoint with a user JWT
+
+`withSupabase` wraps your handler. With `auth: 'user'`, it checks the caller's JWT before your handler runs. A request without valid credentials gets a JSON error response, and your handler never runs.
+
+`withSupabase` also answers every `OPTIONS` request with `204` and adds CORS headers to every response. Set `cors: 'disabled'` when your framework handles CORS.
+
+`ctx.supabase` is scoped to the caller, so Row Level Security policies apply. `ctx.supabaseAdmin` bypasses RLS. Use it only for work that needs full database access.
+
+```ts
+import { withSupabase } from '@supabase/server'
+
+export default {
+  fetch: withSupabase({ auth: 'user' }, async (_req, ctx) => {
+    const { data } = await ctx.supabase.from('todos').select()
+    return Response.json(data)
+  }),
+}
+```
+
+### Serve a public endpoint
+
+`auth: 'none'` lets every request through. `ctx.userClaims` is `null`, and `ctx.supabase` runs as an anonymous client.
+
+Supabase Edge Functions check for a valid JWT on every request by default. For a function that uses `auth: 'none'`, `auth: 'publishable'`, or `auth: 'secret'`, turn that check off in `supabase/config.toml`. The `auth` setting on `withSupabase` then decides who gets in.
+
+```ts
+import { withSupabase } from '@supabase/server'
+
+export default {
+  fetch: withSupabase({ auth: 'none' }, async () => {
+    return Response.json({ status: 'ok', time: new Date().toISOString() })
+  }),
+}
+```
+
+```toml supabase/config.toml
+[functions.my-function]
+verify_jwt = false
+```
+
+### Build the context yourself
+
+`createSupabaseContext` runs the same auth checks as `withSupabase` but returns `{ data, error }` instead of a response. Use it inside a framework route handler, or anywhere you want to shape the error response yourself.
+
+On success, `data` is the same `SupabaseContext` that `withSupabase` passes to your handler. On failure, `error.status` holds the HTTP status to send. `createSupabaseContext` does not handle CORS.
+
+```ts
+import { createSupabaseContext } from '@supabase/server'
+
+export default {
+  fetch: async (req: Request) => {
+    const { data: ctx, error } = await createSupabaseContext(req, { auth: 'user' })
+    if (error) {
+      return Response.json(error.toJSON(), { status: error.status })
+    }
+
+    const { data } = await ctx.supabase.from('todos').select()
+    return Response.json(data)
+  },
+}
 ```
 
 ## Middleware

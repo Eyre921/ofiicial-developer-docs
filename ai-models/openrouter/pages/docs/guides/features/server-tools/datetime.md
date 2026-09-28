@@ -156,9 +156,9 @@ The datetime tool accepts an optional `timezone` parameter:
 }
 ```
 
-| Parameter  | Type   | Default | Description                                                                       |
-| ---------- | ------ | ------- | --------------------------------------------------------------------------------- |
-| `timezone` | string | `UTC`   | IANA timezone name (e.g. `"America/New_York"`, `"Europe/London"`, `"Asia/Tokyo"`) |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `timezone` | string | `UTC` | IANA timezone name (e.g. `"America/New_York"`, `"Europe/London"`, `"Asia/Tokyo"`) |
 
 ## Response
 

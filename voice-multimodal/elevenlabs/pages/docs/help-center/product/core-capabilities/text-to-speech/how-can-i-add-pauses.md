@@ -10,11 +10,11 @@ path: docs/help-center/product/core-capabilities/text-to-speech/how-can-i-add-pa
 
 There are a few ways to introduce a pause or break and influence the rhythm and cadence of the speaker. The method you use depends on the model.
 
-## Audio tags (Eleven v3 only)
+## Audio tags (Eleven v4 and Eleven v3)
 
-With Eleven v3, use audio tags and punctuation to control pacing and delivery. Eleven v3 does not support SSML break tags.
+With Eleven v4 and Eleven v3, use audio tags and punctuation to control pacing and delivery. These models do not support SSML break tags.
 
-See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for guidance on prompting pauses and delivery with v3.
+See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for guidance on prompting pauses and delivery.
 
 ## Break tags (Multilingual v2, Flash v2, and Flash v2.5)
 

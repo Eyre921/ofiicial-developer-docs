@@ -77,9 +77,9 @@ A new `'max'` effort level is available for Claude 4.6 Opus and 4.6 Sonnet via t
 
 On Claude 4.6, both parameters set the same upstream value: Anthropic's `output_config.effort`.
 
-| Parameter          | When it applies           | Effect on 4.6               |
-| ------------------ | ------------------------- | --------------------------- |
-| `verbosity`        | Always                    | Sets `output_config.effort` |
+| Parameter | When it applies | Effect on 4.6 |
+| - | - | - |
+| `verbosity` | Always | Sets `output_config.effort` |
 | `reasoning.effort` | When reasoning is enabled | Sets `output_config.effort` |
 
 Details:
@@ -106,10 +106,10 @@ None. Existing requests continue to work:
 * `reasoning.effort` values still convert to `thinking.budget_tokens` for older models. For Opus 4.6 and Sonnet 4.6, `reasoning.effort` instead maps to Anthropic's `output_config.effort` (same as `verbosity`; `verbosity` wins if both are passed).
 * Older models (4.5 Opus, 3.7 Sonnet, etc.) behave exactly as before
 
-| Feature                | Opus 4.5                             | Opus 4.6 / Sonnet 4.6          |
-| ---------------------- | ------------------------------------ | ------------------------------ |
-| Default thinking mode  | Budget-based                         | Adaptive                       |
-| `reasoning.max_tokens` | Sets a thinking budget               | Sets a thinking budget         |
-| `reasoning.effort`     | Converts to `thinking.budget_tokens` | Maps to `output_config.effort` |
-| `'max'` effort level   | Falls back to `'high'`               | Supported                      |
+| Feature | Opus 4.5 | Opus 4.6 / Sonnet 4.6 |
+| - | - | - |
+| Default thinking mode | Budget-based | Adaptive |
+| `reasoning.max_tokens` | Sets a thinking budget | Sets a thinking budget |
+| `reasoning.effort` | Converts to `thinking.budget_tokens` | Maps to `output_config.effort` |
+| `'max'` effort level | Falls back to `'high'` | Supported |
 

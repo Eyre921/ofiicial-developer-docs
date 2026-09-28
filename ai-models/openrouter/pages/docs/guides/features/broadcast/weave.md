@@ -61,11 +61,11 @@ W\&B Weave supports custom attributes and structured inputs for organizing and a
 
 ### Supported Metadata Keys
 
-| Key               | Weave Mapping                   | Description                                            |
-| ----------------- | ------------------------------- | ------------------------------------------------------ |
-| `trace_id`        | `openrouter_trace_id` attribute | Custom trace identifier stored in attributes           |
-| `trace_name`      | `op_name`                       | Custom operation name displayed in the Weave call list |
-| `generation_name` | `op_name`                       | Name for the LLM call                                  |
+| Key | Weave Mapping | Description |
+| - | - | - |
+| `trace_id` | `openrouter_trace_id` attribute | Custom trace identifier stored in attributes |
+| `trace_name` | `op_name` | Custom operation name displayed in the Weave call list |
+| `generation_name` | `op_name` | Name for the LLM call |
 
 ### Example
 

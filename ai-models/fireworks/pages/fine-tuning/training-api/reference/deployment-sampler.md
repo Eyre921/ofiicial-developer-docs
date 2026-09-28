@@ -37,12 +37,12 @@ sampler = DeploymentSampler(
   on this page require `fireworks-ai[training]>=1.2.11`.
 </Note>
 
-| Parameter                | Type                                                                  | Description                                                                                                                                                                                          |
-| ------------------------ | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `inference_url`          | `str`                                                                 | Gateway URL for inference completions                                                                                                                                                                |
-| `model`                  | `str`                                                                 | Deployment model path (`accounts/<id>/deployments/<id>`)                                                                                                                                             |
-| `api_key`                | `str`                                                                 | Fireworks API key                                                                                                                                                                                    |
-| `tokenizer`              | `PreTrainedTokenizerBase`                                             | HuggingFace tokenizer matching the base model                                                                                                                                                        |
+| Parameter | Type | Description |
+| - | - | - |
+| `inference_url` | `str` | Gateway URL for inference completions |
+| `model` | `str` | Deployment model path (`accounts/<id>/deployments/<id>`) |
+| `api_key` | `str` | Fireworks API key |
+| `tokenizer` | `PreTrainedTokenizerBase` | HuggingFace tokenizer matching the base model |
 | `concurrency_controller` | `AdaptiveConcurrencyController \| FixedConcurrencyController \| None` | Controls concurrent HTTP requests. `None` constructs the default `AdaptiveConcurrencyController`; pass a fixed controller for a static limit. See [Concurrency Control](#concurrency-control) below. |
 
 ## Concurrency Control
@@ -264,16 +264,16 @@ lifecycle, retry policy, and conversion from the compact TITO artifact to
 
 Each completion returned by `sample_with_tokens` or `sample_with_prompt_tokens`:
 
-| Field                | Type                  | Description                                                                      |
-| -------------------- | --------------------- | -------------------------------------------------------------------------------- |
-| `text`               | `str`                 | Decoded completion text                                                          |
-| `full_tokens`        | `List[int]`           | Prompt + completion token IDs                                                    |
-| `prompt_len`         | `int`                 | Number of prompt tokens                                                          |
-| `finish_reason`      | `str`                 | `"stop"`, `"length"`, etc.                                                       |
-| `completion_len`     | `int`                 | Number of completion tokens                                                      |
-| `inference_logprobs` | `List[float] \| None` | Per-token logprobs (when `logprobs=True` is passed)                              |
-| `logprobs_echoed`    | `bool`                | `True` when `echo=True` was used — logprobs are training-aligned (P+C-1 entries) |
-| `routing_matrices`   | `List[str] \| None`   | Base64-encoded per-token routing matrices for MoE Router Replay (R3)             |
+| Field | Type | Description |
+| - | - | - |
+| `text` | `str` | Decoded completion text |
+| `full_tokens` | `List[int]` | Prompt + completion token IDs |
+| `prompt_len` | `int` | Number of prompt tokens |
+| `finish_reason` | `str` | `"stop"`, `"length"`, etc. |
+| `completion_len` | `int` | Number of completion tokens |
+| `inference_logprobs` | `List[float] \| None` | Per-token logprobs (when `logprobs=True` is passed) |
+| `logprobs_echoed` | `bool` | `True` when `echo=True` was used — logprobs are training-aligned (P+C-1 entries) |
+| `routing_matrices` | `List[str] \| None` | Base64-encoded per-token routing matrices for MoE Router Replay (R3) |
 
 ## Related guides
 

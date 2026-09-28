@@ -216,13 +216,13 @@ The diarizer that produced the speaker labels. Present only when a diarizer ran.
 
 Output whenever `topics=true` is used
 
-- `results` (SharedTopicsResults, optional)
+- `segments` (list of SharedTopicsSegmentsItems, optional)
 
 ### SharedIntents
 
 Output whenever `intents=true` is used
 
-- `results` (SharedIntentsResults, optional)
+- `segments` (list of SharedIntentsSegmentsItems, optional)
 
 ### SharedSentiments
 
@@ -256,13 +256,19 @@ Output whenever `sentiment=true` is used
 - `speaker_confidence` (float, optional)
 - `punctuated_word` (string, optional)
 
-### SharedTopicsResults
+### SharedTopicsSegmentsItems
 
-- `topics` (SharedTopicsResultsTopics, optional)
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `topics` (list of SharedTopicsSegmentsItemsTopicsItems, optional)
 
-### SharedIntentsResults
+### SharedIntentsSegmentsItems
 
-- `intents` (SharedIntentsResultsIntents, optional)
+- `text` (string, optional)
+- `start_word` (double, optional)
+- `end_word` (double, optional)
+- `intents` (list of SharedIntentsSegmentsItemsIntentsItems, optional)
 
 ### SharedSentimentsSegmentsItems
 
@@ -320,13 +326,15 @@ Output whenever `sentiment=true` is used
 - `end_word` (float, optional)
 - `topics` (list of string, optional)
 
-### SharedTopicsResultsTopics
+### SharedTopicsSegmentsItemsTopicsItems
 
-- `segments` (list of SharedTopicsResultsTopicsSegmentsItems, optional)
+- `topic` (string, optional)
+- `confidence_score` (float, optional)
 
-### SharedIntentsResultsIntents
+### SharedIntentsSegmentsItemsIntentsItems
 
-- `segments` (list of SharedIntentsResultsIntentsSegmentsItems, optional)
+- `intent` (string, optional)
+- `confidence_score` (float, optional)
 
 ### ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItems
 
@@ -336,35 +344,11 @@ Output whenever `sentiment=true` is used
 - `start` (float, optional)
 - `end` (float, optional)
 
-### SharedTopicsResultsTopicsSegmentsItems
-
-- `text` (string, optional)
-- `start_word` (double, optional)
-- `end_word` (double, optional)
-- `topics` (list of SharedTopicsResultsTopicsSegmentsItemsTopicsItems, optional)
-
-### SharedIntentsResultsIntentsSegmentsItems
-
-- `text` (string, optional)
-- `start_word` (double, optional)
-- `end_word` (double, optional)
-- `intents` (list of SharedIntentsResultsIntentsSegmentsItemsIntentsItems, optional)
-
 ### ListenV1ResponseResultsChannelsItemsAlternativesItemsParagraphsParagraphsItemsSentencesItems
 
 - `text` (string, optional)
 - `start` (float, optional)
 - `end` (float, optional)
-
-### SharedTopicsResultsTopicsSegmentsItemsTopicsItems
-
-- `topic` (string, optional)
-- `confidence_score` (float, optional)
-
-### SharedIntentsResultsIntentsSegmentsItemsIntentsItems
-
-- `intent` (string, optional)
-- `confidence_score` (float, optional)
 
 ## Examples
 

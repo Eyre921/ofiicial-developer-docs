@@ -64,12 +64,12 @@ Braintrust supports custom metadata, tags, and nested span structures for organi
 
 ### Supported Metadata Keys
 
-| Key               | Braintrust Mapping     | Description                                      |
-| ----------------- | ---------------------- | ------------------------------------------------ |
-| `trace_id`        | Span ID / Root Span ID | Group multiple logs into a single trace          |
-| `trace_name`      | Name                   | Custom name displayed in the Braintrust log view |
-| `span_name`       | Name                   | Name for intermediate spans in the hierarchy     |
-| `generation_name` | Name                   | Name for the LLM span                            |
+| Key | Braintrust Mapping | Description |
+| - | - | - |
+| `trace_id` | Span ID / Root Span ID | Group multiple logs into a single trace |
+| `trace_name` | Name | Custom name displayed in the Braintrust log view |
+| `span_name` | Name | Name for intermediate spans in the hierarchy |
+| `generation_name` | Name | Name for the LLM span |
 
 ### Example
 

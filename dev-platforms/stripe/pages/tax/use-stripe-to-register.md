@@ -8,7 +8,15 @@ path: tax/use-stripe-to-register
 
 Learn how Stripe can register you for sales tax in the US.
 
-Sales tax registration is the process of formally enrolling with a tax authority so you’re authorized to collect sales tax from customers in that location. In the United States, you must register in a state before collecting sales tax there. This legal requirement applies after your sales to customers in that state exceed its economic nexus threshold. If you’re an eligible remote seller, select **Register for me** in the Dashboard, and Stripe registers with the US tax authority on your behalf.
+Sales tax registration is the process of formally enrolling with a tax authority so you’re authorized to collect sales tax from customers in that location. In the US, you must register in a state before collecting sales tax there. This legal requirement applies after your sales to customers in that state exceed its economic nexus threshold.
+
+If you’re an eligible remote seller with Tax Complete, select **Register for me** in the Dashboard to have Stripe prepare and submit your registration to the US tax authority.
+
+## Tax Complete registration and automated filing features 
+
+Tax Complete connects registration to your ongoing tax compliance workflow. **Register for me** reduces manual registration work by collecting your business information, preparing your application, submitting it to the tax authority, and adding the completed registration to the Dashboard. You can then configure Stripe Tax to calculate and collect tax.
+
+Registration and filing are separate services. **Register for me** registers you with the tax authority. It doesn’t prepare returns or remit tax. After registering, choose how to file returns and remit tax. You can use [automated filing with Stripe in the US](https://docs.stripe.com/tax/file-with-stripe.md), use a [filing partner](https://docs.stripe.com/tax/filing.md), or file on your own with [Stripe Tax reports](https://docs.stripe.com/tax/reports.md). Tax Complete includes a certain number of filing entitlements (credits) you can use toward TaxJar and Taxually. Other filing partners have separate pricing. See [Tax Complete pricing](https://stripe.com/tax/pricing) for details.
 
 ## Eligibility
 
@@ -194,9 +202,9 @@ If Stripe registers on your behalf, one of our tax experts automatically adds th
   - **Single-owner entities** (individual, sole proprietor, single-member LLC): *One SSN or ITIN* for the business owner.
   - **Multi-owner entities** (any entity type with multiple owners): *Two SSNs or ITINs*, which can include the business representative as one of them.
 
-### Filing assistance post-registration
+### Choose how to file returns after registration
 
-Stripe doesn’t provide an in-house filing solution. See [tax filing](https://docs.stripe.com/tax/filing.md) to learn more about our trusted filing partners.
+The **Register for me** service ends after Stripe completes your registration and adds it to the Dashboard. It doesn’t prepare returns or remit tax. After registering, choose how to file returns and remit tax. You can use [automated US filing with Stripe](https://docs.stripe.com/tax/file-with-stripe.md), use a [filing partner](https://docs.stripe.com/tax/filing.md), or self-file with [Stripe Tax reports](https://docs.stripe.com/tax/reports.md).
 
 ### Determining NAICS and SIC codes
 

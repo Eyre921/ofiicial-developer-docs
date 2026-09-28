@@ -131,13 +131,13 @@ Both fields accept an array of domain strings. You can use wildcards (`*.substac
 
 ### Engine Compatibility
 
-| Engine         | `include_domains` | `exclude_domains` | Notes                                                           |
-| -------------- | :---------------: | :---------------: | --------------------------------------------------------------- |
-| **Exa**        |        Yes        |        Yes        | Both can be used simultaneously                                 |
-| **Parallel**   |        Yes        |        Yes        | Either can be used, they are mutually exclusive                 |
-| **Perplexity** |        Yes        |        Yes        | Mutually exclusive (when both provided, `include_domains` wins) |
-| **Native**     |       Varies      |       Varies      | See provider notes below                                        |
-| **Firecrawl**  |        Yes        |        Yes        | Mutually exclusive (cannot use both at once)                    |
+| Engine | `include_domains` | `exclude_domains` | Notes |
+| - | :-: | :-: | - |
+| **Exa** | Yes | Yes | Both can be used simultaneously |
+| **Parallel** | Yes | Yes | Either can be used, they are mutually exclusive |
+| **Perplexity** | Yes | Yes | Mutually exclusive (when both provided, `include_domains` wins) |
+| **Native** | Varies | Varies | See provider notes below |
+| **Firecrawl** | Yes | Yes | Mutually exclusive (cannot use both at once) |
 
 ### Native Provider Behavior
 
@@ -215,14 +215,14 @@ which is the preferred surface.
 
 ### Filter Parameters
 
-| Parameter                    | Type      | Description                                                 |
-| ---------------------------- | --------- | ----------------------------------------------------------- |
-| `allowed_x_handles`          | string\[] | Only include posts from these handles (max 20)              |
-| `excluded_x_handles`         | string\[] | Exclude posts from these handles (max 20)                   |
-| `from_date`                  | string    | Start date for search range (ISO 8601, e.g. `"2025-01-01"`) |
-| `to_date`                    | string    | End date for search range (ISO 8601, e.g. `"2025-12-31"`)   |
-| `enable_image_understanding` | boolean   | Enable analysis of images within posts                      |
-| `enable_video_understanding` | boolean   | Enable analysis of videos within posts                      |
+| Parameter | Type | Description |
+| - | - | - |
+| `allowed_x_handles` | string\[] | Only include posts from these handles (max 20) |
+| `excluded_x_handles` | string\[] | Exclude posts from these handles (max 20) |
+| `from_date` | string | Start date for search range (ISO 8601, e.g. `"2025-01-01"`) |
+| `to_date` | string | End date for search range (ISO 8601, e.g. `"2025-12-31"`) |
+| `enable_image_understanding` | boolean | Enable analysis of images within posts |
+| `enable_video_understanding` | boolean | Enable analysis of videos within posts |
 
 <Warning>
   `allowed_x_handles` and `excluded_x_handles` are
@@ -315,12 +315,12 @@ Once set up, Firecrawl searches use your Firecrawl credits directly — there is
 
 [Parallel](https://parallel.ai) is a search engine that supports domain filtering. Set `mode` when `engine` is `parallel`. OpenRouter uses `basic` by default and sends the resolved mode explicitly.
 
-| Mode              | Latency     | Request cost           | Language availability      |
-| ----------------- | ----------- | ---------------------- | -------------------------- |
-| `turbo`           | \~200 ms    | \$1 per 1,000 requests | English and Japanese       |
-| `fast`            | \~550 ms    | \$1 per 1,000 requests | Not documented by Parallel |
-| `basic` (default) | \~1 second  | \$5 per 1,000 requests | Broad language support     |
-| `advanced`        | \~3 seconds | \$5 per 1,000 requests | Broad language support     |
+| Mode | Latency | Request cost | Language availability |
+| - | - | - | - |
+| `turbo` | \~200 ms | \$1 per 1,000 requests | English and Japanese |
+| `fast` | \~550 ms | \$1 per 1,000 requests | Not documented by Parallel |
+| `basic` (default) | \~1 second | \$5 per 1,000 requests | Broad language support |
+| `advanced` | \~3 seconds | \$5 per 1,000 requests | Broad language support |
 
 Each mode includes up to 10 results. Additional results cost \$1 per 1,000 results.
 
@@ -343,14 +343,14 @@ Each mode includes up to 10 results. Additional results cost \$1 per 1,000 resul
 
 Exa uses `auto` by default. Choose a mode to trade latency and search depth:
 
-| Mode             | Approximate latency | Request cost            |
-| ---------------- | ------------------- | ----------------------- |
-| `instant`        | \~250 ms            | \$7 per 1,000 requests  |
-| `fast`           | \~450 ms            | \$7 per 1,000 requests  |
-| `auto` (default) | \~1 second          | \$7 per 1,000 requests  |
-| `deep-lite`      | \~4 seconds         | \$12 per 1,000 requests |
-| `deep`           | \~4–15 seconds      | \$12 per 1,000 requests |
-| `deep-reasoning` | \~12–40 seconds     | \$15 per 1,000 requests |
+| Mode | Approximate latency | Request cost |
+| - | - | - |
+| `instant` | \~250 ms | \$7 per 1,000 requests |
+| `fast` | \~450 ms | \$7 per 1,000 requests |
+| `auto` (default) | \~1 second | \$7 per 1,000 requests |
+| `deep-lite` | \~4 seconds | \$12 per 1,000 requests |
+| `deep` | \~4–15 seconds | \$12 per 1,000 requests |
+| `deep-reasoning` | \~12–40 seconds | \$15 per 1,000 requests |
 
 Each mode includes up to 10 results. Additional results cost \$1 per 1,000 results.
 

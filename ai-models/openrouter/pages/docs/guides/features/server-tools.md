@@ -64,13 +64,13 @@ Server tools are specialized tools operated by OpenRouter that any model can cal
 
 ## Server Tools vs Plugins vs User-Defined Tools
 
-|                           | Server Tools             | Plugins          | User-Defined Tools       |
-| ------------------------- | ------------------------ | ---------------- | ------------------------ |
-| **Who decides to use it** | The model                | Always runs      | The model                |
-| **Who executes it**       | OpenRouter               | OpenRouter       | Your application         |
-| **Call frequency**        | 0 to N times per request | Once per request | 0 to N times per request |
-| **Specified via**         | `tools` array            | `plugins` array  | `tools` array            |
-| **Type prefix**           | `openrouter:*`           | N/A              | `function`               |
+| | Server Tools | Plugins | User-Defined Tools |
+| - | - | - | - |
+| **Who decides to use it** | The model | Always runs | The model |
+| **Who executes it** | OpenRouter | OpenRouter | Your application |
+| **Call frequency** | 0 to N times per request | Once per request | 0 to N times per request |
+| **Specified via** | `tools` array | `plugins` array | `tools` array |
+| **Type prefix** | `openrouter:*` | N/A | `function` |
 
 **Server tools** are tools the model can invoke zero or more times during a request. OpenRouter handles execution transparently.
 
@@ -80,20 +80,20 @@ Server tools are specialized tools operated by OpenRouter that any model can cal
 
 ## Available Server Tools
 
-| Tool                                                                   | Type                                     | Description                                                                                 |
-| ---------------------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------------------------------------- |
-| [**Web Search**](/docs/guides/features/server-tools/web-search)             | `openrouter:web_search`                  | Search the web for current information                                                      |
-| [**Datetime**](/docs/guides/features/server-tools/datetime)                 | `openrouter:datetime`                    | Get the current date and time                                                               |
-| [**Image Generation**](/docs/guides/features/server-tools/image-generation) | `openrouter:image_generation`            | Generate images from text prompts                                                           |
-| [**Web Fetch**](/docs/guides/features/server-tools/web-fetch)               | `openrouter:web_fetch`                   | Fetch and extract content from URLs                                                         |
-| [**Apply Patch**](/docs/guides/features/server-tools/apply-patch)           | `openrouter:apply_patch`                 | Propose file edits via V4A diff patches (Responses API only)                                |
-| [**Shell**](/docs/guides/features/server-tools/shell)                       | `openrouter:shell`                       | Run commands in a hosted, sandboxed shell (Responses and Messages APIs)                     |
-| [**Bash**](/docs/guides/features/server-tools/bash)                         | `openrouter:bash`                        | Anthropic-style bash tool with optional sandboxed server-side execution (Messages API only) |
-| [**Fusion**](/docs/guides/features/server-tools/fusion)                     | `openrouter:fusion`                      | Run a panel of models and an analyst for multi-model analysis                               |
-| [**Advisor**](/docs/guides/features/server-tools/advisor)                   | `openrouter:advisor`                     | Consult a stronger model for guidance mid-generation                                        |
-| [**Subagent**](/docs/guides/features/server-tools/subagent)                 | `openrouter:subagent`                    | Delegate self-contained tasks to a smaller, faster worker model                             |
-| [**Search Models**](/docs/guides/features/server-tools/search-models)       | `openrouter:experimental__search_models` | Search and filter the OpenRouter model catalog                                              |
-| [**Tool Search**](/docs/guides/features/server-tools/tool-search)           | `openrouter:tool_search`                 | Discover and load deferred tools on demand (Responses and Messages APIs)                    |
+| Tool | Type | Description |
+| - | - | - |
+| [**Web Search**](/docs/guides/features/server-tools/web-search) | `openrouter:web_search` | Search the web for current information |
+| [**Datetime**](/docs/guides/features/server-tools/datetime) | `openrouter:datetime` | Get the current date and time |
+| [**Image Generation**](/docs/guides/features/server-tools/image-generation) | `openrouter:image_generation` | Generate images from text prompts |
+| [**Web Fetch**](/docs/guides/features/server-tools/web-fetch) | `openrouter:web_fetch` | Fetch and extract content from URLs |
+| [**Apply Patch**](/docs/guides/features/server-tools/apply-patch) | `openrouter:apply_patch` | Propose file edits via V4A diff patches (Responses API only) |
+| [**Shell**](/docs/guides/features/server-tools/shell) | `openrouter:shell` | Run commands in a hosted, sandboxed shell (Responses and Messages APIs) |
+| [**Bash**](/docs/guides/features/server-tools/bash) | `openrouter:bash` | Anthropic-style bash tool with optional sandboxed server-side execution (Messages API only) |
+| [**Fusion**](/docs/guides/features/server-tools/fusion) | `openrouter:fusion` | Run a panel of models and an analyst for multi-model analysis |
+| [**Advisor**](/docs/guides/features/server-tools/advisor) | `openrouter:advisor` | Consult a stronger model for guidance mid-generation |
+| [**Subagent**](/docs/guides/features/server-tools/subagent) | `openrouter:subagent` | Delegate self-contained tasks to a smaller, faster worker model |
+| [**Search Models**](/docs/guides/features/server-tools/search-models) | `openrouter:experimental__search_models` | Search and filter the OpenRouter model catalog |
+| [**Tool Search**](/docs/guides/features/server-tools/tool-search) | `openrouter:tool_search` | Discover and load deferred tools on demand (Responses and Messages APIs) |
 
 ## How Server Tools Work
 
@@ -104,22 +104,48 @@ Server tools are specialized tools operated by OpenRouter that any model can cal
 
 Server tools work alongside your own user-defined tools. You can include both in the same request.
 
+## Native Execution
+
+Some providers have a built-in version of a server tool. For example, OpenAI and Anthropic (as well as other providers) have built-in web search tools. When the model's endpoint has a "native" version of a tool available, OpenRouter can request the tool to be executed through the provider instead of running its own engine. This is the `native` engine in the server tool configuration.
+
+### Which endpoints run a tool natively
+
+Each endpoint object returned by the [endpoints API](/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model) has a `native_tools` field. The key is the canonical OpenRouter server tool name. For example, for web search, it is `openrouter:web_search`. The value is the name of the provider's tool. For most tools the provider runs it. Bash is the exception: Anthropic's built-in bash tool returns the command to your application, which runs it. See [Bash](/docs/guides/features/server-tools/bash#execution-engine).
+
+```json lines theme={null}
+{
+  "name": "Anthropic | anthropic/claude-sonnet-4.5",
+  "native_tools": {
+    "openrouter:web_search": { "type": "web_search_20260209" },
+    "openrouter:web_fetch": { "type": "web_fetch_20260209" },
+    "openrouter:bash": { "type": "bash_20250124" }
+  }
+}
+```
+
+The fallback rules, and which parameters carry over to the provider's tool, differ per tool:
+
+* [Web Search](/docs/guides/features/server-tools/web-search#engine-selection)
+* [Web Fetch](/docs/guides/features/server-tools/web-fetch#engine-selection)
+* [Apply Patch](/docs/guides/features/server-tools/apply-patch#engine-behavior)
+* [Bash](/docs/guides/features/server-tools/bash#execution-engine)
+
 ## Tool Call Limits
 
 Every request that uses server tools runs an agent loop with a step budget. Each tool call the model makes (a web search, an image generation, etc.) consumes one step; when the budget is exhausted, the model is asked to produce its final answer with the context gathered so far.
 
 Two top-level request fields control the outer loop (both are siblings of `messages` and `tools`):
 
-| Field                    | Default | Max  | Behavior                                                                                                |
-| ------------------------ | ------- | ---- | ------------------------------------------------------------------------------------------------------- |
-| `max_tool_calls`         | `30`    | `30` | Total server-tool steps allowed for the request, across all server tools                                |
-| `stop_server_tools_when` | None    | None | Array of stop conditions (step count, spend cap, and more). When set, it **overrides** `max_tool_calls` |
+| Field | Default | Max | Behavior |
+| - | - | - | - |
+| `max_tool_calls` | `30` | `30` | Total server-tool steps allowed for the request, across all server tools |
+| `stop_server_tools_when` | None | None | Array of stop conditions (step count, spend cap, and more). When set, it **overrides** `max_tool_calls` |
 
 Tools that run their own inner agent loops have separate, per-tool budgets configured via the tool's `parameters`:
 
-| Tool                                               | Parameter        | Default          | Max  |
-| -------------------------------------------------- | ---------------- | ---------------- | ---- |
-| [Fusion](/docs/guides/features/server-tools/fusion)     | `max_tool_calls` | `4`              | `16` |
+| Tool | Parameter | Default | Max |
+| - | - | - | - |
+| [Fusion](/docs/guides/features/server-tools/fusion) | `max_tool_calls` | `4` | `16` |
 | [Subagent](/docs/guides/features/server-tools/subagent) | `max_tool_calls` | Provider default | `25` |
 
 These inner budgets bound each panelist or worker model's own tool loop and are independent of the outer request budget.

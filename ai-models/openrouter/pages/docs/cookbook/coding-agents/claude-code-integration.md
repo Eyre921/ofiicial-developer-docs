@@ -207,13 +207,13 @@ export ANTHROPIC_DEFAULT_HAIKU_MODEL="~anthropic/claude-haiku-latest"
 export CLAUDE_CODE_SUBAGENT_MODEL="~anthropic/claude-opus-latest[1m]"
 ```
 
-| Variable                         | Description                                                                               |
-| -------------------------------- | ----------------------------------------------------------------------------------------- |
-| `ANTHROPIC_DEFAULT_FABLE_MODEL`  | The model used for Fable-class tasks (the most demanding reasoning and long-horizon work) |
-| `ANTHROPIC_DEFAULT_OPUS_MODEL`   | The model used for Opus-class tasks (e.g. complex reasoning)                              |
-| `ANTHROPIC_DEFAULT_SONNET_MODEL` | The model used for Sonnet-class tasks (e.g. general coding)                               |
-| `ANTHROPIC_DEFAULT_HAIKU_MODEL`  | The model used for Haiku-class tasks (e.g. quick completions)                             |
-| `CLAUDE_CODE_SUBAGENT_MODEL`     | The model used for sub-agent tasks spawned by Claude Code                                 |
+| Variable | Description |
+| - | - |
+| `ANTHROPIC_DEFAULT_FABLE_MODEL` | The model used for Fable-class tasks (the most demanding reasoning and long-horizon work) |
+| `ANTHROPIC_DEFAULT_OPUS_MODEL` | The model used for Opus-class tasks (e.g. complex reasoning) |
+| `ANTHROPIC_DEFAULT_SONNET_MODEL` | The model used for Sonnet-class tasks (e.g. general coding) |
+| `ANTHROPIC_DEFAULT_HAIKU_MODEL` | The model used for Haiku-class tasks (e.g. quick completions) |
+| `CLAUDE_CODE_SUBAGENT_MODEL` | The model used for sub-agent tasks spawned by Claude Code |
 
 <Warning>
   Claude Code 2.1.x added Fable as a fourth model class. When Claude Code points at OpenRouter, Fable is **not** offered in `/model` by default — setting `ANTHROPIC_DEFAULT_FABLE_MODEL` is the only way to make it selectable.

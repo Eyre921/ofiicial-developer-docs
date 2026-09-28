@@ -32,12 +32,12 @@ Generations in that workspace will now be classified by the selected model. Open
 
 Presets are templatized classifiers that you can use as a starting point to customize to your use case, or use as-is. Each comes with a tuned prompt, pre-selected dimensions, and sensible defaults.
 
-| Preset                             | What it does                                                                                                                                                                                                              |
-| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Department**                     | Tags each request by business function: Engineering, Sales, Marketing, Legal, HR, Finance, Operations                                                                                                                     |
-| **Audience**                       | Tags by who the output is for: Internal, Client-facing, Regulator, Public                                                                                                                                                 |
-| **Engineering work**               | Tags by work type: Feature development, Bug fixing, Documentation, Refactoring, Code review, etc.                                                                                                                         |
-| **Agent complexity**               | Two dimensions: `difficulty_tier` (7 levels from trivial tool calls to frontier-expert work) and `task_family` (10 categories like coding, analysis, planning)                                                            |
+| Preset | What it does |
+| - | - |
+| **Department** | Tags each request by business function: Engineering, Sales, Marketing, Legal, HR, Finance, Operations |
+| **Audience** | Tags by who the output is for: Internal, Client-facing, Regulator, Public |
+| **Engineering work** | Tags by work type: Feature development, Bug fixing, Documentation, Refactoring, Code review, etc. |
+| **Agent complexity** | Two dimensions: `difficulty_tier` (7 levels from trivial tool calls to frontier-expert work) and `task_family` (10 categories like coding, analysis, planning) |
 | **Capitalizable software expense** | You will need to give additional information about which projects and activities are capitalizable. Customers are responsible for the accuracy of any final financial or tax data submitted or shared with third parties. |
 
 ## Build Your Own

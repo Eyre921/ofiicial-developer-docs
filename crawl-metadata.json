@@ -30,14 +30,15 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "status": "error: curl failed (28) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 1916049 out of 6174349 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) OpenSSL SSL_"
+    "pages": 0,
+    "status": "ok"
   },
   "agent-frameworks/mcp": {
     "pages": 152,
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 354,
+    "pages": 238,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
@@ -45,7 +46,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1196,
+    "pages": 1656,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -96,7 +97,7 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 388,
+    "pages": 389,
     "status": "ok"
   },
   "ai-models/google-gemini": {
@@ -119,7 +120,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 955,
+    "pages": 957,
     "status": "ok"
   },
   "dev-platforms/expo": {
@@ -185,7 +186,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 102,
+    "pages": 105,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -193,7 +194,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 470,
+    "pages": 484,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -201,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1320,
+    "pages": 1324,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-28T11:30:26Z"
+  "_last_crawl": "2026-09-28T23:30:40Z"
 }

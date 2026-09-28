@@ -298,14 +298,14 @@ The equivalent HTTP field is `systemPrompt`:
   <Accordion title="Job states">
     Batch jobs progress through several states:
 
-    | State          | Description                                                                    |
-    | -------------- | ------------------------------------------------------------------------------ |
-    | **VALIDATING** | Dataset is being validated for format requirements                             |
-    | **PENDING**    | Job is queued and waiting for resources                                        |
-    | **RUNNING**    | Actively processing requests                                                   |
-    | **COMPLETED**  | All requests successfully processed                                            |
-    | **FAILED**     | Unrecoverable error occurred (check status message)                            |
-    | **EXPIRED**    | Exceeded chosen time limit (12, 24, 48, 72 hrs). Completed requests are saved. |
+    | State | Description |
+    | - | - |
+    | **VALIDATING** | Dataset is being validated for format requirements |
+    | **PENDING** | Job is queued and waiting for resources |
+    | **RUNNING** | Actively processing requests |
+    | **COMPLETED** | All requests successfully processed |
+    | **FAILED** | Unrecoverable error occurred (check status message) |
+    | **EXPIRED** | Exceeded chosen time limit (12, 24, 48, 72 hrs). Completed requests are saved. |
   </Accordion>
 
   <Accordion title="Supported models">

@@ -4,4 +4,5 @@ source: https://docs.langchain.com/langsmith/smith-api/sandboxes/create-a-snapsh
 path: langsmith/smith-api/sandboxes/create-a-snapshot
 ---
 
-
+/langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/snapshots
+Create a snapshot from a Docker image (async build). Names use lowercase registry-style components separated by slashes, up to 255 characters. The system/ namespace is read-only.

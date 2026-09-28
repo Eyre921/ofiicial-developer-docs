@@ -44,11 +44,11 @@ Shift traffic from an old deployment to a new one with zero downtime by scaling 
 
 Traffic is distributed based on **replica count**. Each replica across all deployments in the router receives an equal share of traffic.
 
-| Deployment     | Replicas | Traffic share |
-| -------------- | -------- | ------------- |
-| `deployment-a` | 3        | 60%           |
-| `deployment-b` | 2        | 40%           |
-| **Total**      | **5**    | **100%**      |
+| Deployment | Replicas | Traffic share |
+| - | - | - |
+| `deployment-a` | 3 | 60% |
+| `deployment-b` | 2 | 40% |
+| **Total** | **5** | **100%** |
 
 To shift traffic, scale the replica counts on the underlying deployments. The router automatically adjusts the distribution.
 
@@ -83,13 +83,13 @@ firectl router create \
 
 Optional flags:
 
-| Flag             | Description                                                    |
-| ---------------- | -------------------------------------------------------------- |
-| `--router-id`    | Set a specific router ID. If omitted, a random ID is generated |
-| `--display-name` | Human-readable name for the router                             |
-| `--model`        | The model to route traffic to                                  |
-| `--strategy`     | Routing strategy. Default: `weighted-random`                   |
-| `--public`       | Make the router accessible to other accounts                   |
+| Flag | Description |
+| - | - |
+| `--router-id` | Set a specific router ID. If omitted, a random ID is generated |
+| `--display-name` | Human-readable name for the router |
+| `--model` | The model to route traffic to |
+| `--strategy` | Routing strategy. Default: `weighted-random` |
+| `--public` | Make the router accessible to other accounts |
 
 ### Listing routers
 

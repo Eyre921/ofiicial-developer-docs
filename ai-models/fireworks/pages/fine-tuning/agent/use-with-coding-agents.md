@@ -8,11 +8,11 @@ Install Fireworks training skills for your coding agent — research, configure,
 
 One installation gives you three entry points. Open a chat and describe your goal in plain language.
 
-| Skill         | Use it for                                                                                                       |
-| ------------- | ---------------------------------------------------------------------------------------------------------------- |
-| **research**  | Choose method, data, evaluation, and the closest [cookbook](https://github.com/fw-ai/cookbook) entry. Read-only. |
+| Skill | Use it for |
+| - | - |
+| **research** | Choose method, data, evaluation, and the closest [cookbook](https://github.com/fw-ai/cookbook) entry. Read-only. |
 | **configure** | Plan, run, monitor, deploy, or resume training. Shows parameters and cost, then waits for approval before spend. |
-| **debug**     | Diagnose a stuck, failed, or low-quality run. Read-only until you approve a retry.                               |
+| **debug** | Diagnose a stuck, failed, or low-quality run. Read-only until you approve a retry. |
 
 The **fireworks-training** compatibility skill carries shared detailed references that **configure** and **debug** load. Keep it installed with the three entry skills.
 

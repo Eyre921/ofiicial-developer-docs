@@ -8,12 +8,15 @@ path: docs/help-center/other/what-languages-do-you-support
 
 # What languages do you support?
 
-**Eleven v3 -** our latest and most advanced speech synthesis model. It is a
-state-of-the-art model that produces natural, life-like speech with high emotional range and
-contextual understanding across multiple languages.
+**[Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) -** our latest and
+most advanced speech synthesis model. See that page for language coverage and what changed from
+Eleven v3.
 
-**Eleven v3 Conversational** - our most emotionally intelligent, context-aware Text to
-Speech model, built on Eleven v3 and optimized for real-time dialogue.
+**Eleven v3 -** a previous expressive speech synthesis model. It produces natural,
+life-like speech with high emotional range and contextual understanding across multiple languages.
+
+**Eleven v3 Conversational** - a previous realtime Text to Speech model, built on
+Eleven v3 and optimized for real-time dialogue.
 
 \
 \

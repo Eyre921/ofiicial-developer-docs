@@ -203,15 +203,15 @@ MODEL: 'openai/gpt-4o-mini-tts-2025-12-15'
 
 ### Request Parameters
 
-| Parameter          | Type   | Required           | Description                                                                                                                                                                                                                                                              |
-| ------------------ | ------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `model`            | string | Yes                | The TTS model to use (e.g., `openai/gpt-4o-mini-tts-2025-12-15`, `mistralai/voxtral-mini-tts-2603`)                                                                                                                                                                      |
-| `input`            | string | Yes                | The text to synthesize into speech                                                                                                                                                                                                                                       |
-| `voice`            | string | Provider-dependent | Voice identifier. Available voices vary by model, so check each model's page on the [Models page](/docs/guides/overview/models) for supported voices. Omit this parameter only when the selected provider documents a default voice; otherwise an explicit voice is required. |
-| `response_format`  | string | No                 | Audio output format: `mp3` or `pcm`. Defaults to `pcm`                                                                                                                                                                                                                   |
-| `speed`            | number | No                 | Playback speed multiplier. Only used by models that support it (e.g., OpenAI TTS). Ignored by other providers. Defaults to `1.0`                                                                                                                                         |
-| `input_references` | array  | No                 | Reference content for stateless voice cloning: one `input_audio` part carrying the voice sample, optionally accompanied by one `text` part with its transcript. See [Voice Cloning](#voice-cloning) below                                                                |
-| `provider`         | object | No                 | Provider-specific passthrough configuration                                                                                                                                                                                                                              |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `model` | string | Yes | The TTS model to use (e.g., `openai/gpt-4o-mini-tts-2025-12-15`, `mistralai/voxtral-mini-tts-2603`) |
+| `input` | string | Yes | The text to synthesize into speech |
+| `voice` | string | Provider-dependent | Voice identifier. Available voices vary by model, so check each model's page on the [Models page](/docs/guides/overview/models) for supported voices. Omit this parameter only when the selected provider documents a default voice; otherwise an explicit voice is required. |
+| `response_format` | string | No | Audio output format: `mp3` or `pcm`. Defaults to `pcm` |
+| `speed` | number | No | Playback speed multiplier. Only used by models that support it (e.g., OpenAI TTS). Ignored by other providers. Defaults to `1.0` |
+| `input_references` | array | No | Reference content for stateless voice cloning: one `input_audio` part carrying the voice sample, optionally accompanied by one `text` part with its transcript. See [Voice Cloning](#voice-cloning) below |
+| `provider` | object | No | Provider-specific passthrough configuration |
 
 When `voice` is omitted, OpenRouter only forwards the request to providers whose adapter supports a provider-side default voice. For other providers, the request is rejected with a validation error.
 
@@ -284,10 +284,10 @@ For expressive synthesis, pass `style` and optionally `styledegree` via provider
 }
 ```
 
-| Option        | Type   | Description                                                                                                    |
-| ------------- | ------ | -------------------------------------------------------------------------------------------------------------- |
-| `style`       | string | Expressive speaking style (e.g., `cheerful`, `sad`, `angry`, `excited`). Available styles depend on the voice. |
-| `styledegree` | number | Intensity of the style effect. Default is `1.0`; higher values increase expressiveness.                        |
+| Option | Type | Description |
+| - | - | - |
+| `style` | string | Expressive speaking style (e.g., `cheerful`, `sad`, `angry`, `excited`). Available styles depend on the voice. |
+| `styledegree` | number | Intensity of the style effect. Default is `1.0`; higher values increase expressiveness. |
 
 #### Google (Gemini TTS)
 
@@ -311,25 +311,25 @@ Gemini 3.8 TTS models read `input` verbatim, so delivery directions written into
 }
 ```
 
-| Option                  | Type   | Description                                                                           |
-| ----------------------- | ------ | ------------------------------------------------------------------------------------- |
+| Option | Type | Description |
+| - | - | - |
 | `speech_metadata.style` | string | Sustained delivery style for the input (e.g., `cheerful and friendly`, `whispering`). |
 
 ## Response Format
 
 The TTS endpoint returns a **raw audio byte stream**, not JSON. The response includes the following headers:
 
-| Header            | Description                                                                             |
-| ----------------- | --------------------------------------------------------------------------------------- |
-| `Content-Type`    | The MIME type of the audio. `audio/mpeg` for `mp3` format, `audio/pcm` for `pcm` format |
-| `X-Generation-Id` | The unique generation ID for the request, useful for tracking and debugging             |
+| Header | Description |
+| - | - |
+| `Content-Type` | The MIME type of the audio. `audio/mpeg` for `mp3` format, `audio/pcm` for `pcm` format |
+| `X-Generation-Id` | The unique generation ID for the request, useful for tracking and debugging |
 
 ### Output Formats
 
-| Format | Content-Type | Description                                                                       |
-| ------ | ------------ | --------------------------------------------------------------------------------- |
-| `mp3`  | `audio/mpeg` | Compressed audio, smaller file size. Good for storage and playback                |
-| `pcm`  | `audio/pcm`  | Uncompressed raw audio. Lower latency, suitable for real-time streaming pipelines |
+| Format | Content-Type | Description |
+| - | - | - |
+| `mp3` | `audio/mpeg` | Compressed audio, smaller file size. Good for storage and playback |
+| `pcm` | `audio/pcm` | Uncompressed raw audio. Lower latency, suitable for real-time streaming pipelines |
 
 ## Pricing
 

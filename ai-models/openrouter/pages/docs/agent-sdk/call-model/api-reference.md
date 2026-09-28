@@ -22,40 +22,40 @@ Creates a response using the OpenResponses API with multiple consumption pattern
 
 ### CallModelInput
 
-| Parameter             | Type                                       | Required | Description                                                                                                                                                                                                                                                                                                |
-| --------------------- | ------------------------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`               | `string \| ((ctx: TurnContext) => string)` | Yes\*    | Model ID (e.g., "openai/gpt-5-nano")                                                                                                                                                                                                                                                                       |
-| `models`              | `string[]`                                 | Yes\*    | Model fallback array                                                                                                                                                                                                                                                                                       |
-| `input`               | `OpenResponsesInput`                       | Yes      | Input messages or string                                                                                                                                                                                                                                                                                   |
-| `instructions`        | `string \| ((ctx: TurnContext) => string)` | No       | System instructions                                                                                                                                                                                                                                                                                        |
-| `tools`               | `Tool[]`                                   | No       | Tools available to the model                                                                                                                                                                                                                                                                               |
-| `maxToolRounds`       | `MaxToolRounds`                            | No       | Tool execution limit (deprecated)                                                                                                                                                                                                                                                                          |
-| `stopWhen`            | `StopWhen`                                 | No       | Stop conditions                                                                                                                                                                                                                                                                                            |
-| `allowFinalResponse`  | `boolean \| string`                        | No       | Final text turn when `stopWhen` halts mid-tool-call. Default on: makes one more turn with `toolChoice: 'none'` and a built-in final-answer directive (`DEFAULT_FINAL_RESPONSE_DIRECTIVE`). A string overrides the directive wording; `''` appends no message; `false` disables the final turn              |
-| `strictFinalResponse` | `boolean`                                  | No       | Throw if the final response has empty `output` even after completed tool rounds (pre-0.8.0 behavior). Default `false`: retry the follow-up once, then resolve successfully with empty text so tool-terminal runs aren't reported as failures. Runs with no completed tool work still throw on empty output |
-| `temperature`         | `number \| ((ctx: TurnContext) => number)` | No       | Sampling temperature (0-2)                                                                                                                                                                                                                                                                                 |
-| `maxOutputTokens`     | `number \| ((ctx: TurnContext) => number)` | No       | Maximum tokens to generate                                                                                                                                                                                                                                                                                 |
-| `topP`                | `number`                                   | No       | Top-p sampling                                                                                                                                                                                                                                                                                             |
-| `text`                | `ResponseTextConfig`                       | No       | Text format configuration                                                                                                                                                                                                                                                                                  |
-| `provider`            | `ProviderPreferences`                      | No       | Provider routing and configuration                                                                                                                                                                                                                                                                         |
-| `topK`                | `number`                                   | No       | Top-k sampling                                                                                                                                                                                                                                                                                             |
-| `metadata`            | `Record<string, string>`                   | No       | Request metadata                                                                                                                                                                                                                                                                                           |
-| `toolChoice`          | `ToolChoice`                               | No       | Tool choice configuration                                                                                                                                                                                                                                                                                  |
-| `parallelToolCalls`   | `boolean`                                  | No       | Enable parallel tool calling                                                                                                                                                                                                                                                                               |
-| `reasoning`           | `ReasoningConfig`                          | No       | Reasoning configuration                                                                                                                                                                                                                                                                                    |
-| `promptCacheKey`      | `string`                                   | No       | Cache key for prompt caching                                                                                                                                                                                                                                                                               |
-| `previousResponseId`  | `string`                                   | No       | Context from previous response                                                                                                                                                                                                                                                                             |
-| `include`             | `string[]`                                 | No       | Include extra fields in response                                                                                                                                                                                                                                                                           |
-| `background`          | `boolean`                                  | No       | Run request in background                                                                                                                                                                                                                                                                                  |
-| `safetyIdentifier`    | `string`                                   | No       | User safety identifier                                                                                                                                                                                                                                                                                     |
-| `serviceTier`         | `string`                                   | No       | Service tier preference                                                                                                                                                                                                                                                                                    |
-| `truncation`          | `string`                                   | No       | Truncation mode                                                                                                                                                                                                                                                                                            |
-| `plugins`             | `Plugin[]`                                 | No       | Enabled plugins                                                                                                                                                                                                                                                                                            |
-| `user`                | `string`                                   | No       | End-user identifier                                                                                                                                                                                                                                                                                        |
-| `sessionId`           | `string`                                   | No       | Session identifier                                                                                                                                                                                                                                                                                         |
-| `store`               | `boolean`                                  | No       | Store request data                                                                                                                                                                                                                                                                                         |
-| `context`             | `ContextInput<ToolContextMap>`             | No       | Tool context keyed by tool name                                                                                                                                                                                                                                                                            |
-| `hooks`               | `InlineHookConfig \| HooksManager`         | No       | Agent lifecycle hooks                                                                                                                                                                                                                                                                                      |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `model` | `string \| ((ctx: TurnContext) => string)` | Yes\* | Model ID (e.g., "openai/gpt-5-nano") |
+| `models` | `string[]` | Yes\* | Model fallback array |
+| `input` | `OpenResponsesInput` | Yes | Input messages or string |
+| `instructions` | `string \| ((ctx: TurnContext) => string)` | No | System instructions |
+| `tools` | `Tool[]` | No | Tools available to the model |
+| `maxToolRounds` | `MaxToolRounds` | No | Tool execution limit (deprecated) |
+| `stopWhen` | `StopWhen` | No | Stop conditions |
+| `allowFinalResponse` | `boolean \| string` | No | Final text turn when `stopWhen` halts mid-tool-call. Default on: makes one more turn with `toolChoice: 'none'` and a built-in final-answer directive (`DEFAULT_FINAL_RESPONSE_DIRECTIVE`). A string overrides the directive wording; `''` appends no message; `false` disables the final turn |
+| `strictFinalResponse` | `boolean` | No | Throw if the final response has empty `output` even after completed tool rounds (pre-0.8.0 behavior). Default `false`: retry the follow-up once, then resolve successfully with empty text so tool-terminal runs aren't reported as failures. Runs with no completed tool work still throw on empty output |
+| `temperature` | `number \| ((ctx: TurnContext) => number)` | No | Sampling temperature (0-2) |
+| `maxOutputTokens` | `number \| ((ctx: TurnContext) => number)` | No | Maximum tokens to generate |
+| `topP` | `number` | No | Top-p sampling |
+| `text` | `ResponseTextConfig` | No | Text format configuration |
+| `provider` | `ProviderPreferences` | No | Provider routing and configuration |
+| `topK` | `number` | No | Top-k sampling |
+| `metadata` | `Record<string, string>` | No | Request metadata |
+| `toolChoice` | `ToolChoice` | No | Tool choice configuration |
+| `parallelToolCalls` | `boolean` | No | Enable parallel tool calling |
+| `reasoning` | `ReasoningConfig` | No | Reasoning configuration |
+| `promptCacheKey` | `string` | No | Cache key for prompt caching |
+| `previousResponseId` | `string` | No | Context from previous response |
+| `include` | `string[]` | No | Include extra fields in response |
+| `background` | `boolean` | No | Run request in background |
+| `safetyIdentifier` | `string` | No | User safety identifier |
+| `serviceTier` | `string` | No | Service tier preference |
+| `truncation` | `string` | No | Truncation mode |
+| `plugins` | `Plugin[]` | No | Enabled plugins |
+| `user` | `string` | No | End-user identifier |
+| `sessionId` | `string` | No | Session identifier |
+| `store` | `boolean` | No | Store request data |
+| `context` | `ContextInput<ToolContextMap>` | No | Tool context keyed by tool name |
+| `hooks` | `InlineHookConfig \| HooksManager` | No | Agent lifecycle hooks |
 
 See [Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks) for hook payloads,
 results, and manager APIs.
@@ -66,26 +66,26 @@ results, and manager APIs.
 
 Configuration for routing and provider selection.
 
-| Parameter                | Type                | Description                                                        |
-| ------------------------ | ------------------- | ------------------------------------------------------------------ |
-| `allowFallbacks`         | `boolean`           | Allow backup providers when primary is unavailable (default: true) |
-| `requireParameters`      | `boolean`           | Only use providers that support all requested parameters           |
-| `dataCollection`         | `"allow" \| "deny"` | Data collection policy (allow/deny)                                |
-| `order`                  | `string[]`          | Custom provider routing order                                      |
-| `only`                   | `string[]`          | Restrict to specific providers                                     |
-| `ignore`                 | `string[]`          | Exclude specific providers                                         |
-| `quantizations`          | `string[]`          | Filter by quantization levels                                      |
-| `sort`                   | `string`            | Load balancing strategy (e.g., "throughput")                       |
-| `maxPrice`               | `object`            | Maximum price limits                                               |
-| `preferredMinThroughput` | `number`            | Minimum tokens per second preference                               |
-| `preferredMaxLatency`    | `number`            | Maximum latency preference                                         |
+| Parameter | Type | Description |
+| - | - | - |
+| `allowFallbacks` | `boolean` | Allow backup providers when primary is unavailable (default: true) |
+| `requireParameters` | `boolean` | Only use providers that support all requested parameters |
+| `dataCollection` | `"allow" \| "deny"` | Data collection policy (allow/deny) |
+| `order` | `string[]` | Custom provider routing order |
+| `only` | `string[]` | Restrict to specific providers |
+| `ignore` | `string[]` | Exclude specific providers |
+| `quantizations` | `string[]` | Filter by quantization levels |
+| `sort` | `string` | Load balancing strategy (e.g., "throughput") |
+| `maxPrice` | `object` | Maximum price limits |
+| `preferredMinThroughput` | `number` | Minimum tokens per second preference |
+| `preferredMaxLatency` | `number` | Maximum latency preference |
 
 ### RequestOptions
 
-| Parameter | Type          | Description                     |
-| --------- | ------------- | ------------------------------- |
-| `timeout` | `number`      | Request timeout in milliseconds |
-| `signal`  | `AbortSignal` | Abort signal for cancellation   |
+| Parameter | Type | Description |
+| - | - | - |
+| `timeout` | `number` | Request timeout in milliseconds |
+| `signal` | `AbortSignal` | Abort signal for cancellation |
 
 ***
 
@@ -198,18 +198,18 @@ Create a typed tool with Zod schema validation.
 
 ### ToolConfig
 
-| Parameter            | Type                      | Required | Description                                                 |
-| -------------------- | ------------------------- | -------- | ----------------------------------------------------------- |
-| `name`               | `string`                  | Yes      | Tool name                                                   |
-| `description`        | `string`                  | No       | Tool description                                            |
-| `inputSchema`        | `ZodObject`               | Yes      | Input parameter schema                                      |
-| `outputSchema`       | `ZodType`                 | No       | Output schema                                               |
-| `eventSchema`        | `ZodType`                 | No       | Event schema (triggers generator mode)                      |
-| `contextSchema`      | `ZodObject`               | No       | Context data this tool needs                                |
-| `execute`            | `function \| false`       | Yes\*    | Execute function, or `false` for manual                     |
-| `onToolCalled`       | `function`                | Yes\*    | HITL hook — return value to auto-respond, `null` to pause   |
-| `onResponseReceived` | `function`                | No       | HITL hook — post-process caller-supplied result (HITL only) |
-| `nextTurnParams`     | `NextTurnParamsFunctions` | No       | Parameters to modify next turn                              |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `name` | `string` | Yes | Tool name |
+| `description` | `string` | No | Tool description |
+| `inputSchema` | `ZodObject` | Yes | Input parameter schema |
+| `outputSchema` | `ZodType` | No | Output schema |
+| `eventSchema` | `ZodType` | No | Event schema (triggers generator mode) |
+| `contextSchema` | `ZodObject` | No | Context data this tool needs |
+| `execute` | `function \| false` | Yes\* | Execute function, or `false` for manual |
+| `onToolCalled` | `function` | Yes\* | HITL hook — return value to auto-respond, `null` to pause |
+| `onResponseReceived` | `function` | No | HITL hook — post-process caller-supplied result (HITL only) |
+| `nextTurnParams` | `NextTurnParamsFunctions` | No | Parameters to modify next turn |
 
 \* Provide exactly one of `execute` or `onToolCalled`. Omitting both (with `execute: false`) makes the tool a manual tool.
 
@@ -610,13 +610,13 @@ interface Warning {
 
 ### Built-in Helpers
 
-| Function         | Signature                           | Description              |
-| ---------------- | ----------------------------------- | ------------------------ |
-| `stepCountIs`    | `(n: number) => StopCondition`      | Stop after n steps       |
-| `hasToolCall`    | `(name: string) => StopCondition`   | Stop when tool is called |
-| `maxTokensUsed`  | `(n: number) => StopCondition`      | Stop after n tokens      |
-| `maxCost`        | `(amount: number) => StopCondition` | Stop after cost limit    |
-| `finishReasonIs` | `(reason: string) => StopCondition` | Stop on finish reason    |
+| Function | Signature | Description |
+| - | - | - |
+| `stepCountIs` | `(n: number) => StopCondition` | Stop after n steps |
+| `hasToolCall` | `(name: string) => StopCondition` | Stop when tool is called |
+| `maxTokensUsed` | `(n: number) => StopCondition` | Stop after n tokens |
+| `maxCost` | `(amount: number) => StopCondition` | Stop after cost limit |
+| `finishReasonIs` | `(reason: string) => StopCondition` | Stop on finish reason |
 
 ***
 

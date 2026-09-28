@@ -8,6 +8,6 @@ path: docs/help-center/product/core-capabilities/text-to-speech/can-you-make-voi
 
 # Can you make voices produce the sound of breathing?
 
-Yes. With Eleven v3, you can use audio tags such as `[sighs]` or `[exhales]` to add breathing and similar reactions to generated speech.
+Yes. With Eleven v4 and Eleven v3, you can use audio tags such as `[sighs]` or `[exhales]` to add breathing and similar reactions to generated speech.
 
-See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail on audio tags and delivery control.
+See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more detail on audio tags and delivery control.

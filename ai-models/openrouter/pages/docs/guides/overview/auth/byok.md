@@ -180,11 +180,11 @@ To use a provider through BYOK, make sure your data policies allow it. The provi
 
 Some providers give your own account zero data retention. The shared endpoint that OpenRouter tracks for that provider can still retain prompts. OpenRouter cannot see your provider agreement. You tell OpenRouter what it covers. Each key card has a **Provider agreement** section with a **Zero data retention** setting. Workspace admins change the setting on the provider page (for example [/settings/integrations/openai](https://openrouter.ai/settings/integrations/openai)). The setting has three options:
 
-| Option                                 | Effect when ZDR is enforced                                                                                                                       |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Option | Effect when ZDR is enforced |
+| - | - |
 | **Use OpenRouter's default** (default) | The key follows the policy that OpenRouter tracks for the endpoint. An endpoint that retains prompts stays blocked. A ZDR endpoint stays allowed. |
-| **My account has ZDR**                 | OpenRouter treats requests through this key as zero data retention. The key can serve the model even when the shared endpoint retains prompts.    |
-| **My account does not have ZDR**       | OpenRouter treats requests through this key as retaining prompts. ZDR enforcement blocks the key even when the shared endpoint has ZDR.           |
+| **My account has ZDR** | OpenRouter treats requests through this key as zero data retention. The key can serve the model even when the shared endpoint retains prompts. |
+| **My account does not have ZDR** | OpenRouter treats requests through this key as retaining prompts. ZDR enforcement blocks the key even when the shared endpoint has ZDR. |
 
 The declaration is your statement about your own provider agreement. OpenRouter does not check it. You can set it on a key for any BYOK provider. It changes only the retention policy of your key's endpoints. Training (`data_collection`) restrictions still follow the policy that OpenRouter tracks for the endpoint.
 
@@ -203,20 +203,21 @@ The declaration follows these rules:
 
 #### Declaring a Data Region on a Key
 
-On a regional domain, OpenRouter routes only to endpoints it has onboarded for that region (see [In-Region Routing](/docs/guides/features/in-region-routing)). OpenRouter cannot see where your own OpenAI account processes requests, so you tell OpenRouter. The **Provider agreement** section on an OpenAI key card has a **Data region** setting, next to the ZDR setting, on the [OpenAI provider detail page](https://openrouter.ai/settings/integrations/openai). It has three options, each labelled with the OpenRouter hostname it applies to:
+On a regional domain, OpenRouter routes only to endpoints it has onboarded for that region (see [In-Region Routing](/docs/guides/features/in-region-routing)). OpenRouter cannot see where your own OpenAI or Azure account processes requests, so you tell OpenRouter. The **Provider agreement** section on an OpenAI or Azure key card has a **Data region** setting, next to the ZDR setting, on the provider detail page (for example [/settings/integrations/openai](https://openrouter.ai/settings/integrations/openai)). It has three options, each labelled with the OpenRouter hostname it applies to:
 
-| Option               | Hostname           | Effect                                                                                                                                                                                        |
-| -------------------- | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Global** (default) | `openrouter.ai`    | The key follows the region OpenRouter tracks for the endpoint. An undeclared key behaves the same way.                                                                                        |
-| **European Union**   | `eu.openrouter.ai` | Requests sent to `eu.openrouter.ai` may use this key for a model on that provider even when OpenRouter has no in-region record for the provider's shared endpoint (see the exceptions below). |
-| **United States**    | `us.openrouter.ai` | Requests sent to `us.openrouter.ai` may use this key for a model on that provider even when OpenRouter has no in-region record for the provider's shared endpoint (see the exceptions below). |
+| Option | Hostname | Effect |
+| - | - | - |
+| **Global** (default) | `openrouter.ai` | The key follows the region OpenRouter tracks for the endpoint. An undeclared key behaves the same way. |
+| **European Union** | `eu.openrouter.ai` | Requests sent to `eu.openrouter.ai` may use this key for a model on that provider even when OpenRouter has no in-region record for the provider's shared endpoint (see the exceptions below). |
+| **United States** | `us.openrouter.ai` | Requests sent to `us.openrouter.ai` may use this key for a model on that provider even when OpenRouter has no in-region record for the provider's shared endpoint (see the exceptions below). |
 
-The declaration is your attestation about where your own OpenAI account processes requests. OpenRouter does not verify it. The selection also sends requests made with that key to the matching OpenAI API host. Sending requests to a regional OpenRouter domain still requires a plan that includes in-region routing.
+The declaration is your attestation about where your own OpenAI project or Azure resource processes requests. OpenRouter does not verify it. For OpenAI, the selection also sends requests made with that key to the matching OpenAI API host. Sending requests to a regional OpenRouter domain still requires a plan that includes in-region routing.
 
 The setting does not change key priority. OpenRouter first removes keys that cannot serve the request's data region, then tries the remaining keys in the order configured on the BYOK page. On the default `openrouter.ai` domain, Global, EU, and US keys are all eligible and keep that configured order.
 
 The declaration follows these rules:
 
+* OpenAI and Azure keys need a declaration on a regional domain. An OpenAI or Azure key without a declaration matching the request's region is never used on `eu.openrouter.ai` or `us.openrouter.ai`, even when the provider's shared endpoint is in-region. OpenRouter sends these keys to a host you control (an OpenAI regional host or your Azure resource), so it relies on your declaration instead of its own endpoint record.
 * OpenRouter judges each key on its own declaration. If you hold two keys for the same provider and declare a region on only one of them, only the declared key can serve a shared endpoint that is outside the region; the other key keeps serving the endpoints it is eligible for anyway.
 * Prioritized and Fallback keys both count, and their order is unchanged. A declared Prioritized key ranks ahead of the shared endpoints that are eligible for the region; a declared Fallback key ranks behind them.
 * A Fallback key with a region declaration has the same limit as with ZDR. A Prioritized key for the same provider can have no declaration and the **Never use shared capacity for models this key applies to** setting. In that case, OpenRouter removes shared capacity for the model and does not use the Fallback key. The request fails with a data region error.
@@ -286,11 +287,11 @@ Filters are evaluated before routing. A key is only used when all of its active 
 
 You can set and update all three filters programmatically using the [BYOK management endpoints](/docs/api/api-reference/byok). The API uses these field names:
 
-| UI filter      | API field                | Type               | Semantics                                                                                                                            |
-| -------------- | ------------------------ | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
-| Model filter   | `allowed_models`         | `string[] \| null` | Allowlist of model slugs (e.g. `["openai/gpt-4o"]`). `null` means no restriction.                                                    |
+| UI filter | API field | Type | Semantics |
+| - | - | - | - |
+| Model filter | `allowed_models` | `string[] \| null` | Allowlist of model slugs (e.g. `["openai/gpt-4o"]`). `null` means no restriction. |
 | API key filter | `allowed_api_key_hashes` | `string[] \| null` | Allowlist of OpenRouter API key hashes (the `hash` field from the [Keys API](/docs/api/api-reference/keys)). `null` means no restriction. |
-| Member filter  | `allowed_user_ids`       | `string[] \| null` | Allowlist of user IDs (Clerk user IDs). `null` means no restriction.                                                                 |
+| Member filter | `allowed_user_ids` | `string[] \| null` | Allowlist of user IDs (Clerk user IDs). `null` means no restriction. |
 
 Each field accepts up to 100 entries. Omission and `null` mean different things, and omission itself means something different depending on whether you're creating or updating:
 
@@ -365,11 +366,11 @@ curl https://openrouter.ai/api/v1/byok/11111111-2222-3333-4444-555555555555 \
 
 The **Shared capacity fallback** setting maps to two boolean fields on the same endpoints:
 
-| UI setting                                               | API fields                                  |
-| -------------------------------------------------------- | ------------------------------------------- |
-| Use shared capacity (default)                            | `is_required: false`, `is_byok_only: false` |
-| Never use shared capacity for models this key applies to | `is_required: true`                         |
-| Never use shared capacity for any model on this provider | `is_byok_only: true`                        |
+| UI setting | API fields |
+| - | - |
+| Use shared capacity (default) | `is_required: false`, `is_byok_only: false` |
+| Never use shared capacity for models this key applies to | `is_required: true` |
+| Never use shared capacity for any model on this provider | `is_byok_only: true` |
 
 Both default to `false` on create, and omitting either on update leaves the stored value unchanged. `is_byok_only` cannot be combined with `is_fallback: true`, because a fallback key only runs after shared endpoints have been tried. Sending both returns a `400` error, whether in the same request or when the stored key already has the other flag set. `is_required` and `is_byok_only` may both be `true`; in that case `is_byok_only` takes precedence and the provider is fully blocked from shared capacity.
 

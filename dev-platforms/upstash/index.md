@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 955 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 957 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -48,12 +48,14 @@
 - `docs/blob/uploads/upload-client` — [Upload Client](pages/docs/blob/uploads/upload-client.md) · [原文](https://upstash.com/docs/blob/uploads/upload-client)
 - `docs/blob/uploads/upload-handler` — [Upload Handler](pages/docs/blob/uploads/upload-handler.md) · [原文](https://upstash.com/docs/blob/uploads/upload-handler)
 - `docs/box/guides/ai-sdk-setup` — [Vercel AI SDK Tools](pages/docs/box/guides/ai-sdk-setup.md) · [原文](https://upstash.com/docs/box/guides/ai-sdk-setup)
+- `docs/box/guides/claude-managed-agents` — [Claude Managed Agents](pages/docs/box/guides/claude-managed-agents.md) · [原文](https://upstash.com/docs/box/guides/claude-managed-agents)
 - `docs/box/guides/code-review-agent` — [Build a Code Review Agent](pages/docs/box/guides/code-review-agent.md) · [原文](https://upstash.com/docs/box/guides/code-review-agent)
 - `docs/box/guides/eve-setup` — [Vercel Eve Sandboxes](pages/docs/box/guides/eve-setup.md) · [原文](https://upstash.com/docs/box/guides/eve-setup)
 - `docs/box/guides/herdr-setup` — [Herdr Plugin Setup](pages/docs/box/guides/herdr-setup.md) · [原文](https://upstash.com/docs/box/guides/herdr-setup)
 - `docs/box/guides/hermes-setup` — [Hermes Setup](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
 - `docs/box/guides/langchain-deep-agents` — [LangChain Deep Agents](pages/docs/box/guides/langchain-deep-agents.md) · [原文](https://upstash.com/docs/box/guides/langchain-deep-agents)
 - `docs/box/guides/nextjs-setup` — [Next.js Setup](pages/docs/box/guides/nextjs-setup.md) · [原文](https://upstash.com/docs/box/guides/nextjs-setup)
+- `docs/box/guides/openai-agents-api` — [OpenAI Agents API](pages/docs/box/guides/openai-agents-api.md) · [原文](https://upstash.com/docs/box/guides/openai-agents-api)
 - `docs/box/guides/openclaw-setup` — [OpenClaw Setup](pages/docs/box/guides/openclaw-setup.md) · [原文](https://upstash.com/docs/box/guides/openclaw-setup)
 - `docs/box/guides/pi-setup` — [Pi Setup](pages/docs/box/guides/pi-setup.md) · [原文](https://upstash.com/docs/box/guides/pi-setup)
 - `docs/box/guides/remote-development` — [Remote Development](pages/docs/box/guides/remote-development.md) · [原文](https://upstash.com/docs/box/guides/remote-development)

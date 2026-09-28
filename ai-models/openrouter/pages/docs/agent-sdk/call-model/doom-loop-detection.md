@@ -52,13 +52,13 @@ A repeat only counts when the model saw the result and tried the same thing agai
 
 You set a threshold for each action you want. When the streak reaches a threshold, that action fires, and the strongest one wins:
 
-| Action     | Effect                                                                                                                                                                                                                                                                        |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `observe`  | Take notes only: emit the `DoomLoopDetected` hook so you can see it happened                                                                                                                                                                                                  |
-| `steer`    | Nudge the agent with a message before its next turn, telling it it's repeating itself (off by default)                                                                                                                                                                        |
-| `escalate` | Call in help: run the next turn on a stronger model and/or a forced `openrouter:advisor` consult, then switch back (off by default; needs an `escalation` config)                                                                                                             |
-| `block`    | Refuse to run the repeated call. The model gets an error explaining why, so it can change course. Text and server-tool repeats can't be blocked (they already happened); those fall through to the strongest weaker action you've enabled (`escalate`, `steer`, or `observe`) |
-| `stop`     | End the run before it wastes more money (`SessionEnd.reason: 'doom_loop'`). Any unfinished tool calls get clean error outputs, so the saved conversation stays valid and can be resumed                                                                                       |
+| Action | Effect |
+| - | - |
+| `observe` | Take notes only: emit the `DoomLoopDetected` hook so you can see it happened |
+| `steer` | Nudge the agent with a message before its next turn, telling it it's repeating itself (off by default) |
+| `escalate` | Call in help: run the next turn on a stronger model and/or a forced `openrouter:advisor` consult, then switch back (off by default; needs an `escalation` config) |
+| `block` | Refuse to run the repeated call. The model gets an error explaining why, so it can change course. Text and server-tool repeats can't be blocked (they already happened); those fall through to the strongest weaker action you've enabled (`escalate`, `steer`, or `observe`) |
+| `stop` | End the run before it wastes more money (`SessionEnd.reason: 'doom_loop'`). Any unfinished tool calls get clean error outputs, so the saved conversation stays valid and can be resumed |
 
 The SDK checks your thresholds make sense and warns about combinations that can't work. For example, `block` without `stop` means a stubborn model can keep retrying the blocked call forever (bounded only by `stopWhen`), and a weaker action set at a higher threshold than a stronger one can never fire.
 

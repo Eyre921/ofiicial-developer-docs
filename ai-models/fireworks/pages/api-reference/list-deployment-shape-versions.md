@@ -23,10 +23,10 @@ curl -s "https://api.fireworks.ai/v1/accounts/-/deploymentShapes/-/versions?filt
 
 The `filter` parameter uses [AIP-160 filtering](https://google.aip.dev/160). Common patterns:
 
-| Filter                                                       | Description                                            |
-| ------------------------------------------------------------ | ------------------------------------------------------ |
-| `snapshot.base_model="accounts/fireworks/models/MODEL_NAME"` | Filter by base model                                   |
-| `latest_validated=true`                                      | Only return the latest validated version of each shape |
+| Filter | Description |
+| - | - |
+| `snapshot.base_model="accounts/fireworks/models/MODEL_NAME"` | Filter by base model |
+| `latest_validated=true` | Only return the latest validated version of each shape |
 
 Combine multiple conditions with `AND`:
 

@@ -16,7 +16,7 @@ To get started generating your first audio using Text to Speech, it's very simpl
 
 ## Guide
 
-![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=279983d7c23bbaf360a15ff23623c27e7af16d0776aaf097a0c6109f2ed32145&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Text to Speech demo](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/32b6abef4b76c8652b0e55dbb26c9694fdc82e191a062678b93c9a5ca5d80c94/assets/images/product-guides/text-to-speech/text-to-speech-demo.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=07edc9c0a632ffdc609c5a9e2e76ef1f5ee3cb16152bf7f6d7d4f0e653fadcff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Adjust settings (optional)
 
@@ -49,7 +49,7 @@ The order of importance goes as follows: **Voice** selection is most important, 
 ### Voices
 
 ![Text to Speech voice
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=221783b6cdbb987ab733be49030f5d14ec5b0dbd23e88a840d7909a978293b81&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1a2f62118fa246f300c666a5a4f3fbd18cc9bfed023a8c6a010782545da1254/assets/images/product-guides/text-to-speech/text-to-speech-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=cebefd99f67f48bff180a133e595d20baa7b935ba59d6c117f09f714b9eaa785&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer many types of voices, including the curated **Default Voices**, our vast **Voices Library&#x20;**&#x77;ith almost any voices you can imagine, completely synthetic voices created using our **Voice Design** tool, and you can create your own collection of cloned voices using our two technologies: **Instant Voice Cloning** and **Professional Voice Cloning**.
 
@@ -72,19 +72,43 @@ Keep in mind, voice remixing only works for specific voices. For example, you ca
 ### Models
 
 ![Text to Speech model
-selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=b0d104728b2b4aea8366003dbf6dbe72c0a14aa1011fe02344ad62fe904b6611&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa32e23cc2a196a48ff47650249e612e7e5da023fd2f69244f27c5fea7968b75/assets/images/product-guides/text-to-speech/text-to-speech-models.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=d4f1ba6f02eb847a937154e9b24ae227cf9dd130f50d8a1ef301a4db0f055679&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 We offer two families of models: **Standard (high-quality)** models and **Flash** models, which are optimized for extremely low latency. Most families include both English-only and multilingual versions.
 
-*The Eleven v3 model currently only comes in one version: the standard multilingual version.*
+[Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) is our latest model. It comes in two variants: Eleven v4 and Eleven v4 Turbo.
 
 Model selection is the second most significant influence on your final audio output, right after voice selection. We recommend taking a moment to test the different models with your chosen voice to find the best fit. All of our models have strengths and weaknesses and work better with some voices than others, so finding a good pairing is important.
 
 If your output will be exclusively in English, we strongly recommend using one of our English-only models. They are often easier to work with, more stable, and generally offer superior performance for English-only content. If your content will be in another language or potentially multilingual, you must use one of the multilingual models.
 
+#### [Eleven v4](/docs/overview/models#eleven-v4)
+
+Our most emotive, high quality speech synthesis model
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+10,000 character limit
+
+Support for natural multi-speaker dialogue
+
+#### [Eleven v4 Turbo](/docs/overview/models#eleven-v4-turbo)
+
+Our most emotive, real-time speech synthesis model
+
+Ultra-low latency (median inference latency of \~100ms†)
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+Audio tags for fine-grained control
+
 #### [Eleven v3](/docs/overview/models#eleven-v3)
 
-Our most emotionally rich, expressive speech synthesis model
+Our emotionally rich, expressive speech synthesis model
 
 Dramatic delivery and performance
 
@@ -96,7 +120,7 @@ Support for natural multi-speaker dialogue
 
 #### [Eleven v3 Conversational](/docs/overview/models#eleven-v3-conversational)
 
-Our most expressive, realtime speech synthesis model
+Our expressive, realtime speech synthesis model
 
 Low latency (\~280ms)
 
@@ -137,7 +161,7 @@ Faster model, 50% lower price per character for API generations
 ### Voice settings
 
 ![Text to Speech voice
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=58f355d7aafce04c06d2d107f8954e4559fd80df9a56b6b4d814acc0d6761f67&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9e08b179bfd640650ca5225b7e2e5b8d9d4c192d63a80d2478e4078e408bf869/assets/images/product-guides/text-to-speech/text-to-speech-settings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=4716d88539f7bd94ca483e079162c16cc0917a2f48b61ae96f1db2b94916b4ef&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The most common setting is stability around 50, similarity around 75, and keeping style at 0, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 
@@ -191,7 +215,7 @@ When using Text to Speech via the UI, we run an automated normalization step on 
 
 A best practice we strongly recommend is to avoid writing numbers as digits or using symbols, especially when using multilingual models (though this also applies to English-only models). Since numbers and symbols are written the same across many languages but pronounced differently, relying on digits creates ambiguity for the AI. For example, the number "1" is written identically in English and many other languages but pronounced differently. Writing out the number in text, such as "one," removes the need for the AI to interpret what it is supposed to do.
 
-We are working on more advanced workflows to allow you to influence the AI's delivery and performance using what we call **Audio Tags**. This feature is available in our Eleven v3 model. If you're interested in learning more about this feature, we recommend reading our [Eleven v3 documentation](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3).
+We are working on more advanced workflows to allow you to influence the AI's delivery and performance using what we call **Audio Tags**. This feature is available in Eleven v4 and Eleven v3. If you're interested in learning more about this feature, we recommend reading our [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4).
 
 ## FAQ
 
@@ -246,19 +270,57 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
   <tr>
     <td>
-      #### What is Eleven v3 (Alpha)?
+      #### What is Eleven v4?
 
-      Eleven v3 is our latest and most expressive Text to Speech model, offering:
+      > **Info**
+      >
+      > We recommend switching to Eleven v4 and testing it with your own content.
 
-      * More human-like generations with higher quality overall
+      Eleven v4 is our latest and most advanced Text to Speech model, and the first in a new generation of models. It improves output quality, voice accuracy, emotion, audio tags, and language coverage compared with Eleven v3.
+
+      Voice cloning accuracy takes a major step forward with Eleven v4. Cloned voices capture the source voice's characteristics — timbre, cadence, and delivery — more faithfully than any previous model.
+
+      Instant Voice Clones (IVCs) are more accurate than ever in Eleven v4. They capture the defining characteristics of a source voice more faithfully, making it easier to create a convincing clone quickly from a short audio sample.
+
+      Professional Voice Clones (PVCs) are fully supported in Eleven v4. They build on the same advances in voice accuracy, offering a more faithful reproduction of the source voice for workflows that require the highest level of consistency and control.
+
+      Eleven v4 comes in two variants, so you can choose the right balance of quality and speed for your use case:
+
+      * **Eleven v4** (`eleven_v4`) — our highest-quality model, ideal for content creation, audiobooks, character voiceovers, and any use case where quality is the top priority.
+      * **Eleven v4 Turbo** (`eleven_v4_turbo`) — extremely high quality while retaining impressively low latency, purpose-built for real-time use cases like conversational agents and interactive voice experiences.
+
+      Both variants use two voice settings: Stability and Similarity. Style and Speed sliders are not available in Eleven v4, and SSML is not supported.
+
+      When the language you're generating matches the language of your reference voice, the original accent is preserved exactly as before. When the language you're generating is different from the reference voice's language, Eleven v4 generates fluent, natural-sounding speech in the target language — rather than carrying over the reference voice's accent from its original language.
+
+      You can generate with [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) using model ID `eleven_v4`. For multiple speakers, use [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue](/docs/api-reference/text-to-dialogue/stream).
+
+      For cloning, accents, comparisons, and the full description, see [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4). For tags and prompting, see [Prompting Eleven v4](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4).
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What is Eleven v3?
+
+      > **Info**
+      >
+      > We recommend switching to [Eleven v4](/docs/help-center/product/core-capabilities/text-to-speech/what-is-eleven-v4) and testing it
+      > with your own content. Many of the prompting techniques for [Eleven v4](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) also apply to
+      > Eleven v3.
+
+      Eleven v3 is an emotionally rich, expressive Text to Speech model. It produces natural, life-like speech with high emotional range and contextual understanding across 70+ languages.
+
+      Eleven v3 offers:
+
       * Support for audio tags
         * emotions: `[sad]` `[angry]` `[happily]`
         * delivery direction: `[whispers]` `[shouts]`
         * non-verbal reactions: `[laughs]` `[clears throat]` `[sighs]`
-      * Dialogue mode to support natural sounding audio with multiple speakers
+      * Dialogue mode for natural-sounding audio with multiple speakers
       * Support for 70+ languages
 
-      It can produce breathtaking output, but its more variable consistency and higher latency mean it’s not suitable for real-time or conversational use cases. For those, we recommend Flash v2 (English) or v2.5 (Multilingual). We’re working on a real-time version of Eleven v3.
+      This model works well for character discussions, audiobook narration, and emotional dialogue.
 
       You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
 
@@ -266,8 +328,8 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       Visit the following resources for more information:
 
-      * [Eleven v3 overview](https://elevenlabs.io/v3)
-      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+      * [Models](/docs/overview/models#eleven-v3)
+      * [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4)
     </td>
   </tr>
 
@@ -283,7 +345,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       This setting is available for all voices and all models. You can find it in the voice settings.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec/assets/images/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=f0a3fd6f063457c70d44f6e06bf006f1460c31ba824236f439e05682b69c8c34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1130594e85e35a2a3073530577fd85e902b7886cbf442a18b4422d9084dfcec/assets/images/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=9ff22c886f0e1201cc200a055698d3eac4f2b639b9e7b071bfbcc8637142f00e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For information on how to control speech when using the API, please see our [API reference.](/docs/api-reference/text-to-speech/convert#request.body.voice_settings.speed)
     </td>
@@ -330,9 +392,9 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### Can you make voices produce the sound of breathing?
 
-      Yes. With Eleven v3, you can use audio tags such as `[sighs]` or `[exhales]` to add breathing and similar reactions to generated speech.
+      Yes. With Eleven v4 and Eleven v3, you can use audio tags such as `[sighs]` or `[exhales]` to add breathing and similar reactions to generated speech.
 
-      See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail on audio tags and delivery control.
+      See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more detail on audio tags and delivery control.
     </td>
   </tr>
 
@@ -361,11 +423,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       There are a few ways to introduce a pause or break and influence the rhythm and cadence of the speaker. The method you use depends on the model.
 
-      ## Audio tags (Eleven v3 only)
+      ## Audio tags (Eleven v4 and Eleven v3)
 
-      With Eleven v3, use audio tags and punctuation to control pacing and delivery. Eleven v3 does not support SSML break tags.
+      With Eleven v4 and Eleven v3, use audio tags and punctuation to control pacing and delivery. These models do not support SSML break tags.
 
-      See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for guidance on prompting pauses and delivery with v3.
+      See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for guidance on prompting pauses and delivery.
 
       ## Break tags (Multilingual v2, Flash v2, and Flash v2.5)
 
@@ -415,24 +477,26 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
   <tr>
     <td>
-      #### How do audio tags work with Eleven v3 (Alpha)?
+      #### How do audio tags work with Eleven v3 and v4?
 
-      Eleven v3 supports audio tags, giving unprecedented control over your generated audio:
+      [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) and Eleven v3 support audio tags. We recommend Eleven v4. Wrap a short instruction in square brackets and place it in the text where the delivery should change. The same tags work with both models.
 
       * Emotions: `[curious]` `[crying]` `[mischievously]`
       * Delivery direction: `[whispers]` `[shouts]`
       * Human reactions: `[laughs]` `[clears throat]` `[sighs]`
 
-      For more detailed information, see our [guide to prompting with Eleven v3](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3).
+      For more detailed information, see our [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4).
 
-      You can generate using v3 via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v3`.
+      You can generate via API using our [Create speech](/docs/api-reference/text-to-speech/convert) and [Stream speech](/docs/api-reference/text-to-speech/stream) endpoints by specifying model ID `eleven_v4` or `eleven_v3`.
 
       You can also use our [Create dialogue](/docs/api-reference/text-to-dialogue/convert) and [Stream dialogue](/docs/api-reference/text-to-dialogue/stream) endpoints to create a natural sounding dialogue with multiple speakers.
 
+      For real-time applications, Eleven v4 Turbo (`eleven_v4_turbo`) also supports audio tags.
+
       Visit the following resources for more information:
 
-      * [Eleven v3 overview](https://elevenlabs.io/v3)
-      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+      * [Models](/docs/overview/models)
+      * [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4)
     </td>
   </tr>
 
@@ -490,7 +554,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
       * **Browse the Voice Library** and use the search filters to find suitable voices that
         match your needs.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=7deeeb24f33038e19f5bceae456eaf9bf85e0916556373eabbbd66640a9573e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3e4de803d69ffbd3aed314c2c5f9defa87d3d7fd6fc1931a4a02278041c1c43/assets/images/help-center/product/core-capabilities/text-to-speech/how-do-i-select-the-language-and-accent.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=fb35e9bfcfc2b041009aab8170f2ca4c46b8b294e0fce75ace4f90e6ef516a7f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -503,7 +567,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
       Visit the following resources for more information:
 
       * [Eleven v3 overview](https://elevenlabs.io/v3)
-      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+      * [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4)
     </td>
   </tr>
 
@@ -511,7 +575,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### How to make the voice laugh?
 
-      With Eleven v3, you can use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-alpha) such as `[laughs]` to add laughter and other reactions to generated speech. See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail.
+      With Eleven v4 and Eleven v3, you can use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-and-v4) such as `[laughs]` to add laughter and other reactions to generated speech. See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more detail.
 
       For other models, emotional delivery depends on context, punctuation, and voice settings. See [How to produce emotions?](/docs/help-center/product/core-capabilities/text-to-speech/how-to-produce-emotions).
     </td>
@@ -530,7 +594,7 @@ We are working on more advanced workflows to allow you to influence the AI's del
       * Add emphasis by putting the relevant words or phrases in quotation marks.
       * For speech generated using a cloned voice, the speaking style in the samples you upload for cloning is replicated in the output. If the speech in the uploaded sample is monotone, the model will struggle to produce expressive output.
 
-      With Eleven v3, you can also use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-alpha) to control emotion and delivery more directly, for example `[happy]`, `[sad]`, `[angry]`, `[whispers]`, and `[laughs]`. See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail.
+      With Eleven v4 and Eleven v3, you can also use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-and-v4) to control emotion and delivery more directly, for example `[happy]`, `[sad]`, `[angry]`, `[whispers]`, and `[laughs]`. See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more detail.
 
       These tips help guide emotional delivery but do not guarantee a specific result.
     </td>
@@ -552,11 +616,11 @@ We are working on more advanced workflows to allow you to influence the AI's del
 
       If this is the case, you will see 'Regenerate speech', and the number of free regenerations remaining will be displayed if you hover over the 'Regenerate speech' button:
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=4fe802a5a070b600c1a4002473f06e71a5ef8707997edaa558ff449cdb92e6ad&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9b75422ebf4bee357d8eb5384d30e03a3c4c5102f422cb87c22ff09c1bfe1c8d/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=95652fccf7373c1c2b888e5b9f7980565ebb9f2b484a9b59c280fd3110f29b97&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Once your free regenerations have been used, the button will return to 'Generate speech', and the number of credits that will be used for the generation will be displayed:
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110543Z&X-Amz-Expires=604800&X-Amz-Signature=fed5815c808a606ec9102ec81dd43a73111ebaea236b82e1270bdf5814a8d9b5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/72b5058ea9066fbad31cf1a38453ba35947cc7486eb06ded307d1ae13c1011d4/assets/images/help-center/product/core-capabilities/text-to-speech/is-there-a-way-to-preview-audio-without-losing-quota-before-downloading-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191616Z&X-Amz-Expires=604800&X-Amz-Signature=97e4e4f5d8806649605b12238ed83022aa425fc82296a1b26f81690815490165&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Free regenerations are only available in Text to Speech via the website. They are not available via the API.
 
@@ -568,19 +632,19 @@ We are working on more advanced workflows to allow you to influence the AI's del
     <td>
       #### What is Dialogue mode?
 
-      Eleven v3 offers Dialogue mode, allowing you to generate dynamic multi-speaker conversations with natural pacing, that handle interruptions, shifts in tone, and emotional cues based on conversational context.
+      [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) and Eleven v3 offer Dialogue mode, allowing you to generate dynamic multi-speaker conversations with natural pacing that handle interruptions, shifts in tone, and emotional cues based on conversational context.
 
       Dialogue mode is available when you use multiple speakers via the website.
 
-      We’ve also created new Text to Dialogue API endpoints for generating multi-speaker interactions. For more information, see our[ API documentation](/docs/capabilities/text-to-dialogue):
+      You can also use the Text to Dialogue API endpoints for generating multi-speaker interactions. For more information, see our [API documentation](/docs/overview/capabilities/text-to-dialogue):
 
       * [Create dialogue](/docs/api-reference/text-to-dialogue/convert)
       * [Stream dialogue](/docs/api-reference/text-to-dialogue/stream)
 
       Visit the following resources for more information:
 
-      * [Eleven v3 overview](https://elevenlabs.io/v3)
-      * [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+      * [Text to Dialogue](/docs/overview/capabilities/text-to-dialogue)
+      * [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4)
     </td>
   </tr>
 

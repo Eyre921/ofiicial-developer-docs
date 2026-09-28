@@ -20,11 +20,11 @@ Use it to:
 
 Fireworks offers three ways to train, differing mainly in **where your training data lives**:
 
-| Surface                     | Where your training data lives                                                                                                             | What Fireworks retains           | Your deletion controls                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | --------------------------------------------------------------------------- |
-| **Managed Training**        | Uploaded to Fireworks-managed storage (GCS); only a reference link is kept in our database                                                 | Dataset, checkpoints, and traces | Delete the dataset anytime after the job; request checkpoint/trace deletion |
-| **Managed Training + BYOB** | Stays in your own cloud bucket; Fireworks reads it in-place during training, with no copy persisted                                        | Checkpoints and traces only      | Revoke bucket access after the job; request checkpoint/trace deletion       |
-| **Training API**            | No dataset upload — you load and tokenize data locally; the trainer receives only transient tokenized batches, never a stored dataset file | Checkpoints and traces only      | Request checkpoint/trace deletion                                           |
+| Surface | Where your training data lives | What Fireworks retains | Your deletion controls |
+| - | - | - | - |
+| **Managed Training** | Uploaded to Fireworks-managed storage (GCS); only a reference link is kept in our database | Dataset, checkpoints, and traces | Delete the dataset anytime after the job; request checkpoint/trace deletion |
+| **Managed Training + BYOB** | Stays in your own cloud bucket; Fireworks reads it in-place during training, with no copy persisted | Checkpoints and traces only | Revoke bucket access after the job; request checkpoint/trace deletion |
+| **Training API** | No dataset upload — you load and tokenize data locally; the trainer receives only transient tokenized batches, never a stored dataset file | Checkpoints and traces only | Request checkpoint/trace deletion |
 
 <Tip>
   For the strictest data governance, use [BYOB](/guides/security_compliance/secure_training/byob) (keep the dataset in your own bucket) or the [Training API](#training-api) (no dataset is ever uploaded to or stored on Fireworks).
@@ -38,13 +38,13 @@ When training runs on Fireworks-managed storage, training data is stored in Goog
 
 Retention behavior depends on the job type:
 
-| Job Type               | Data Generated                                       | Retention / Deletion                                                                                                                                             |
-| ---------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| SFT — Managed Training | Uploaded dataset only                                | Customer-controlled; deletable immediately after the job completes                                                                                               |
-| DPO — Managed Training | Uploaded dataset only                                | Customer-controlled; deletable immediately after the job completes                                                                                               |
+| Job Type | Data Generated | Retention / Deletion |
+| - | - | - |
+| SFT — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
+| DPO — Managed Training | Uploaded dataset only | Customer-controlled; deletable immediately after the job completes |
 | RFT — Managed Training | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
-| Job chunks / artifacts | Intermediate checkpoints                             | Retained for 30 days, then deleted; deletable earlier on request. Kept so jobs can be retrieved or restarted                                                     |
-| Traces / logs          | Request/response metadata                            | Retained for 30 days, then deleted; deletable earlier on request                                                                                                 |
+| Job chunks / artifacts | Intermediate checkpoints | Retained for 30 days, then deleted; deletable earlier on request. Kept so jobs can be retrieved or restarted |
+| Traces / logs | Request/response metadata | Retained for 30 days, then deleted; deletable earlier on request |
 
 ### Training API
 
@@ -70,11 +70,11 @@ Both BYOB and CMEK work by granting a Fireworks identity least-privilege access 
 
 Where federation applies, you pin trust on these values:
 
-| Value                        | Identifier                    |
-| ---------------------------- | ----------------------------- |
-| OIDC issuer                  | `https://accounts.google.com` |
-| Fireworks identity (subject) | Provided at onboarding        |
-| Token audience               | `<YOUR_FIREWORKS_ACCOUNT_ID>` |
+| Value | Identifier |
+| - | - |
+| OIDC issuer | `https://accounts.google.com` |
+| Fireworks identity (subject) | Provided at onboarding |
+| Token audience | `<YOUR_FIREWORKS_ACCOUNT_ID>` |
 
 <Note>
   BYOB and CMEK authenticate as **different** Fireworks service accounts, so their subject identifiers differ — don't reuse one for the other. Two cases don't use this pattern: **GCS BYOB** grants access to Fireworks service account emails directly, with no token audience to scope, and **Azure BYOB** uses the fixed `api://AzureADTokenExchange` audience. Each setup page states which applies.
@@ -84,9 +84,9 @@ Where federation applies, you pin trust on these values:
 
 BYOB and CMEK address different needs and can be used separately or together:
 
-|                                                                                      | What it controls                                                                                          | Use when                                                                 |
-| ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| **[Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob)** | *Where the dataset lives* — it stays in your bucket and is read in place, never copied to Fireworks       | You need the dataset itself to never leave your storage                  |
+| | What it controls | Use when |
+| - | - | - |
+| **[Bring your own bucket (BYOB)](/guides/security_compliance/secure_training/byob)** | *Where the dataset lives* — it stays in your bucket and is read in place, never copied to Fireworks | You need the dataset itself to never leave your storage |
 | **[Customer-managed keys (CMEK)](/guides/security_compliance/secure_training/cmek)** | *Who holds the key* for data Fireworks does store — datasets and checkpoints on Fireworks-managed storage | You use managed storage but need to control encryption and revoke access |
 
 CMEK covers artifacts on Fireworks-managed storage, so it complements rather than replaces BYOB. For the strictest governance, combine BYOB with [secure RFT](/guides/security_compliance/secure_training/secure_rft), or use the [Training API](/fine-tuning/training-api/introduction), where no dataset is stored at all.
@@ -99,14 +99,14 @@ Inference at Fireworks follows Zero Data Retention by default: prompts and gener
 
 The following controls are available for training workloads:
 
-| Control                                                          | How to exercise it                                                                                                                                                                     |
-| ---------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Delete a fine-tuning dataset                                     | Delete via the Fireworks console or API after the job completes.                                                                                                                       |
-| Request deletion of checkpoints, traces, or RFT rollout datasets | Contact your Fireworks account team to delete these retained artifacts.                                                                                                                |
-| Keep data in your own bucket                                     | Use [BYOB integration](/guides/security_compliance/secure_training/byob) to register an external dataset URL.                                                                          |
-| Control encryption of managed data with your own key             | Register a [CMEK](/guides/security_compliance/secure_training/cmek) key from your cloud KMS (AWS, Google Cloud, or Azure); revoke it anytime to cut off Fireworks' ability to decrypt. |
-| Avoid storing a dataset on Fireworks                             | Use the [Training API](#training-api): no dataset is uploaded or stored; the trainer only receives transient tokenized batches.                                                        |
-| Revoke Fireworks access post-training                            | Remove the IAM bindings from your bucket after the job completes.                                                                                                                      |
+| Control | How to exercise it |
+| - | - |
+| Delete a fine-tuning dataset | Delete via the Fireworks console or API after the job completes. |
+| Request deletion of checkpoints, traces, or RFT rollout datasets | Contact your Fireworks account team to delete these retained artifacts. |
+| Keep data in your own bucket | Use [BYOB integration](/guides/security_compliance/secure_training/byob) to register an external dataset URL. |
+| Control encryption of managed data with your own key | Register a [CMEK](/guides/security_compliance/secure_training/cmek) key from your cloud KMS (AWS, Google Cloud, or Azure); revoke it anytime to cut off Fireworks' ability to decrypt. |
+| Avoid storing a dataset on Fireworks | Use the [Training API](#training-api): no dataset is uploaded or stored; the trainer only receives transient tokenized batches. |
+| Revoke Fireworks access post-training | Remove the IAM bindings from your bucket after the job completes. |
 
 For inference-side controls — disabling Response API storage (`store=False`) or deleting a specific response — see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
 

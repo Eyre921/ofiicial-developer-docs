@@ -37,14 +37,14 @@ Run `fireconnect help` for the overview, or `fireconnect claude help` (and simil
 
 ## Sign in and key storage
 
-| Flag               | Use when                                                                                           |
-| ------------------ | -------------------------------------------------------------------------------------------------- |
-| `--paste`          | Skip the browser chooser and paste a key at the prompt                                             |
-| `--api-key fw_...` | Sign in with a key directly (no prompt)                                                            |
-| `--with-token`     | Read a key from stdin (handy in CI): `echo "$FIREWORKS_API_KEY" \| fireconnect login --with-token` |
-| `--account <id>`   | Enterprise SSO sign-in (same account id as `firectl signin`)                                       |
-| `--force`          | Replace an existing stored key without a confirmation prompt                                       |
-| `logout --revoke`  | Clear local credentials **and** revoke the machine key on Fireworks                                |
+| Flag | Use when |
+| - | - |
+| `--paste` | Skip the browser chooser and paste a key at the prompt |
+| `--api-key fw_...` | Sign in with a key directly (no prompt) |
+| `--with-token` | Read a key from stdin (handy in CI): `echo "$FIREWORKS_API_KEY" \| fireconnect login --with-token` |
+| `--account <id>` | Enterprise SSO sign-in (same account id as `firectl signin`) |
+| `--force` | Replace an existing stored key without a confirmation prompt |
+| `logout --revoke` | Clear local credentials **and** revoke the machine key on Fireworks |
 
 ```bash wrap theme={null}
 fireconnect status --json   # machine-readable sign-in and key-storage details
@@ -72,10 +72,10 @@ In `configure`, `--api-key` is the **Azure** endpoint key and requires `--provid
 
 ## Providers
 
-| Provider              | Where inference runs           | Credential        |
-| --------------------- | ------------------------------ | ----------------- |
-| `fireworks` (default) | Fireworks gateway              | Fireworks API key |
-| `azure`               | Fireworks on Microsoft Foundry | Azure API key     |
+| Provider | Where inference runs | Credential |
+| - | - | - |
+| `fireworks` (default) | Fireworks gateway | Fireworks API key |
+| `azure` | Fireworks on Microsoft Foundry | Azure API key |
 
 See [Foundry for Coding Harnesses](/nexus/microsoft-foundry#choose-a-path) for current compatibility. Connections use the configured provider by default. To use Foundry for one command, pass `--azure`, or pass both `--base-url` and `--api-key`.
 

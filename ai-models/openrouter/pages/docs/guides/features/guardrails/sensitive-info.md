@@ -66,16 +66,16 @@ NLP-based presets include:
 
 The following presets are available out of the box. Each can be individually enabled and configured with either the **Redact** or **Block** action.
 
-| Preset                 | Detection Method | Redaction Label        | Example Matches                                          |
-| ---------------------- | ---------------- | ---------------------- | -------------------------------------------------------- |
-| Email address          | Regex            | `[EMAIL]`              | `user@example.com`, `name+tag@domain.co`                 |
-| Phone number           | Regex            | `[PHONE]`              | `914-309-4996`, `914.309.4996`, `9143094996`             |
-| Social Security number | Regex            | `[SSN]`                | `123-45-6789`                                            |
-| Credit card number     | Regex            | `[CREDIT_CARD]`        | `4265 5256 0839 8752`, `4265-5256-0839-8752`             |
-| IP address             | Regex            | `[IP_ADDRESS]`         | `192.168.0.1`, `10.0.0.1`                                |
-| API keys and secrets   | Regex            | `[SECRET:<format-id>]` | `sk-or-v1-...`, `ghp_...`, `pypi-...`                    |
-| Person name *(beta)*   | NLP              | `[PERSON_NAME]`        | `John Smith`, `Dr. Sarah Johnson`, `Maria Garcia-Lopez`  |
-| Address *(beta)*       | NLP              | `[ADDRESS]`            | `123 Main Street, Springfield`, `London, United Kingdom` |
+| Preset | Detection Method | Redaction Label | Example Matches |
+| - | - | - | - |
+| Email address | Regex | `[EMAIL]` | `user@example.com`, `name+tag@domain.co` |
+| Phone number | Regex | `[PHONE]` | `914-309-4996`, `914.309.4996`, `9143094996` |
+| Social Security number | Regex | `[SSN]` | `123-45-6789` |
+| Credit card number | Regex | `[CREDIT_CARD]` | `4265 5256 0839 8752`, `4265-5256-0839-8752` |
+| IP address | Regex | `[IP_ADDRESS]` | `192.168.0.1`, `10.0.0.1` |
+| API keys and secrets | Regex | `[SECRET:<format-id>]` | `sk-or-v1-...`, `ghp_...`, `pypi-...` |
+| Person name *(beta)* | NLP | `[PERSON_NAME]` | `John Smith`, `Dr. Sarah Johnson`, `Maria Garcia-Lopez` |
+| Address *(beta)* | NLP | `[ADDRESS]` | `123 Main Street, Springfield`, `London, United Kingdom` |
 
 ### Secrets Preset
 
@@ -112,11 +112,11 @@ When a custom pattern matches with the **Redact** action, the matched text is re
 
 ### Example Custom Patterns
 
-| Use Case               | Pattern                              | Action |
-| ---------------------- | ------------------------------------ | ------ |
-| Internal project codes | `PROJ-\d{4,6}`                       | Redact |
-| AWS access keys        | `AKIA[0-9A-Z]{16}`                   | Block  |
-| Internal URLs          | `https?://internal\.company\.com\S*` | Redact |
+| Use Case | Pattern | Action |
+| - | - | - |
+| Internal project codes | `PROJ-\d{4,6}` | Redact |
+| AWS access keys | `AKIA[0-9A-Z]{16}` | Block |
+| Internal URLs | `https?://internal\.company\.com\S*` | Redact |
 
 ### Pattern Safety
 

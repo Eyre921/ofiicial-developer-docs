@@ -185,16 +185,16 @@ npm test
 
 ## Full import mapping reference
 
-| Old import path                             | New import path                                       |
-| ------------------------------------------- | ----------------------------------------------------- |
-| `@openrouter/sdk` (client class)            | `@openrouter/agent` or `@openrouter/agent/openrouter` |
-| `@openrouter/sdk/funcs/call-model`          | `@openrouter/agent/call-model`                        |
-| `@openrouter/sdk/lib/model-result`          | `@openrouter/agent/model-result`                      |
-| `@openrouter/sdk/lib/tool`                  | `@openrouter/agent/tool`                              |
-| `@openrouter/sdk/lib/tool-types`            | `@openrouter/agent/tool-types`                        |
-| `@openrouter/sdk/lib/stop-conditions`       | `@openrouter/agent/stop-conditions`                   |
-| `@openrouter/sdk/lib/async-params`          | `@openrouter/agent/async-params`                      |
-| `@openrouter/sdk` (barrel: state, messages) | `@openrouter/agent`                                   |
+| Old import path | New import path |
+| - | - |
+| `@openrouter/sdk` (client class) | `@openrouter/agent` or `@openrouter/agent/openrouter` |
+| `@openrouter/sdk/funcs/call-model` | `@openrouter/agent/call-model` |
+| `@openrouter/sdk/lib/model-result` | `@openrouter/agent/model-result` |
+| `@openrouter/sdk/lib/tool` | `@openrouter/agent/tool` |
+| `@openrouter/sdk/lib/tool-types` | `@openrouter/agent/tool-types` |
+| `@openrouter/sdk/lib/stop-conditions` | `@openrouter/agent/stop-conditions` |
+| `@openrouter/sdk/lib/async-params` | `@openrouter/agent/async-params` |
+| `@openrouter/sdk` (barrel: state, messages) | `@openrouter/agent` |
 
 ## Automated migration
 

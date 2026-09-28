@@ -16,11 +16,11 @@ Manage limits on the [User Limits](#manage-limits-and-monitor-spend) page under 
 
 ## Set defaults, group limits, and exceptions
 
-| Control             | Use it for                                                                                                                                                                                                     |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Control | Use it for |
+| - | - |
 | **Account default** | The per-user ceiling for anyone without a group limit or user override. Productivity-only accounts receive a \$100 default when limits are provisioned. Other accounts have no default until an admin sets one |
-| **Group limit**     | A reusable per-user ceiling for SCIM-synced teams                                                                                                                                                              |
-| **User override**   | An exception for one person                                                                                                                                                                                    |
+| **Group limit** | A reusable per-user ceiling for SCIM-synced teams |
+| **User override** | An exception for one person |
 
 A user override takes precedence. If there is no override, the highest limit among the user's assigned groups applies. If there are no group limits, the account default applies.
 
@@ -54,14 +54,14 @@ Groups come from your identity provider through the group provisioning described
 
 ### Group-limit constraints
 
-| Constraint            | Behavior                                                                                                                                    |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Maximum**           | An account can define at most **9 group limits**. The User Limits page shows 10 slots because the account default occupies one              |
-| **Distinct amounts**  | Each group limit must use a different amount. A group limit may equal the account default                                                   |
-| **Valid amounts**     | Amounts must be non-negative USD values. A **\$0** limit blocks serverless spend after enforcement refreshes                                |
-| **Scope**             | A group limit stores an amount only. Each user still resolves to one effective limit                                                        |
-| **Unassigned groups** | An unassigned group contributes no cap. Its members fall back to another assigned group or the account default                              |
-| **Deletion**          | `firectl` and the REST API reject deletion while groups remain assigned. The User Limits page reassigns those groups to the account default |
+| Constraint | Behavior |
+| - | - |
+| **Maximum** | An account can define at most **9 group limits**. The User Limits page shows 10 slots because the account default occupies one |
+| **Distinct amounts** | Each group limit must use a different amount. A group limit may equal the account default |
+| **Valid amounts** | Amounts must be non-negative USD values. A **\$0** limit blocks serverless spend after enforcement refreshes |
+| **Scope** | A group limit stores an amount only. Each user still resolves to one effective limit |
+| **Unassigned groups** | An unassigned group contributes no cap. Its members fall back to another assigned group or the account default |
+| **Deletion** | `firectl` and the REST API reject deletion while groups remain assigned. The User Limits page reassigns those groups to the account default |
 
 ## Supported models
 
@@ -78,13 +78,13 @@ The User Limits page shows current-period spend, effective limit, and limit sour
 * Raising the limit or starting a new billing period allows requests to supported Fireworks serverless models again after enforcement refreshes.
 * Enforcement refreshes about once per minute, so changes can take 1–2 minutes in practice.
 
-| Condition                                                                 | Result                                                                                                                   |
-| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| **A user reaches their effective limit**                                  | Further requests to supported serverless models return HTTP `402` until the limit is raised or the billing period resets |
-| **The billing period resets**                                             | Current-period usage and blocks reset                                                                                    |
-| **A cap is set to `$0`**                                                  | The user can make no supported serverless spend after enforcement refreshes                                              |
-| **A limit or group membership changes**                                   | The change takes effect during the next enforcement refresh                                                              |
-| **A productivity-only account is still being created and has no default** | Serverless requests return HTTP `412` until provisioning creates the \$100 default                                       |
+| Condition | Result |
+| - | - |
+| **A user reaches their effective limit** | Further requests to supported serverless models return HTTP `402` until the limit is raised or the billing period resets |
+| **The billing period resets** | Current-period usage and blocks reset |
+| **A cap is set to `$0`** | The user can make no supported serverless spend after enforcement refreshes |
+| **A limit or group membership changes** | The change takes effect during the next enforcement refresh |
+| **A productivity-only account is still being created and has no default** | Serverless requests return HTTP `412` until provisioning creates the \$100 default |
 
 Enforcement refreshes about once per minute. Blocking, unblocking, cap changes, group assignments, and directory membership changes can therefore take 1–2 minutes.
 
@@ -92,13 +92,13 @@ Limits count a user's supported serverless usage across the account. Dedicated d
 
 ## Permissions
 
-| Action                                                   | Account admin | Member |
-| -------------------------------------------------------- | ------------: | -----: |
-| View account-level limits and group assignments          |           Yes |    Yes |
-| View own usage and effective limit                       |           Yes |    Yes |
-| View every user's usage and limits                       |           Yes |     No |
-| List all users                                           |           Yes |     No |
-| Change defaults, group limits, assignments, or overrides |           Yes |     No |
+| Action | Account admin | Member |
+| - | -: | -: |
+| View account-level limits and group assignments | Yes | Yes |
+| View own usage and effective limit | Yes | Yes |
+| View every user's usage and limits | Yes | No |
+| List all users | Yes | No |
+| Change defaults, group limits, assignments, or overrides | Yes | No |
 
 The commands below identify any narrower permissions for individual records.
 
@@ -181,14 +181,14 @@ firectl usage-limits user unset <USER_ID>
 
 A user record contains:
 
-| Field             | Meaning                                                             |
-| ----------------- | ------------------------------------------------------------------- |
-| `used`            | Current-period spend                                                |
-| `effective_limit` | The cap selected by the [precedence rules](#limit-precedence)       |
-| `limit_source`    | `USER_OVERRIDE`, `GROUP_ASSIGNMENT`, or `ACCOUNT_DEFAULT`           |
-| `limit_groups`    | For a group-derived cap, the groups assigned at the winning amount  |
-| `override`        | The user's per-user override, if set                                |
-| `exceeded_until`  | When the current block ends. Present only while the user is blocked |
+| Field | Meaning |
+| - | - |
+| `used` | Current-period spend |
+| `effective_limit` | The cap selected by the [precedence rules](#limit-precedence) |
+| `limit_source` | `USER_OVERRIDE`, `GROUP_ASSIGNMENT`, or `ACCOUNT_DEFAULT` |
+| `limit_groups` | For a group-derived cap, the groups assigned at the winning amount |
+| `override` | The user's per-user override, if set |
+| `exceeded_until` | When the current block ends. Present only while the user is blocked |
 
 An override wins outright, so it is also how you lower a single user below their group's limit. Unsetting it resolves the limit again: the highest assigned group cap, then the account default, or no cap if neither exists. Account admins cannot clear the account default.
 

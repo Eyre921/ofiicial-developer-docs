@@ -16,14 +16,14 @@ path: docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6
 
 OpenAI's [GPT-5.6 family](https://openai.com/index/gpt-5-6/) ships in three tiers, each with a pro variant:
 
-| Model                      | Tier                          |
-| -------------------------- | ----------------------------- |
-| `openai/gpt-5.6-sol`       | Flagship capability           |
-| `openai/gpt-5.6-sol-pro`   | Sol with pro reasoning        |
-| `openai/gpt-5.6-terra`     | Balanced performance and cost |
-| `openai/gpt-5.6-terra-pro` | Terra with pro reasoning      |
-| `openai/gpt-5.6-luna`      | Fastest, most affordable      |
-| `openai/gpt-5.6-luna-pro`  | Luna with pro reasoning       |
+| Model | Tier |
+| - | - |
+| `openai/gpt-5.6-sol` | Flagship capability |
+| `openai/gpt-5.6-sol-pro` | Sol with pro reasoning |
+| `openai/gpt-5.6-terra` | Balanced performance and cost |
+| `openai/gpt-5.6-terra-pro` | Terra with pro reasoning |
+| `openai/gpt-5.6-luna` | Fastest, most affordable |
+| `openai/gpt-5.6-luna-pro` | Luna with pro reasoning |
 
 There are no breaking changes. Existing requests keep working as-is — you can swap the model slug and stop there. The rest of this guide covers the additive pieces worth adopting:
 
@@ -67,11 +67,11 @@ See [Reasoning Mode](/docs/guides/best-practices/reasoning-tokens#reasoning-mode
 
 When you echo reasoning items back in conversation history, `reasoning.context` controls which reasoning the model can use:
 
-| Value            | Behavior                                                                        |
-| ---------------- | ------------------------------------------------------------------------------- |
-| omitted / `auto` | The model's default context mode                                                |
-| `all_turns`      | The model can reference reasoning from all turns in the input                   |
-| `current_turn`   | Only reasoning from the current turn is used; prior reasoning items are ignored |
+| Value | Behavior |
+| - | - |
+| omitted / `auto` | The model's default context mode |
+| `all_turns` | The model can reference reasoning from all turns in the input |
+| `current_turn` | Only reasoning from the current turn is used; prior reasoning items are ignored |
 
 Use `all_turns` for multi-turn work where goals stay stable and you want the model to build on its earlier chain of thought. Use `current_turn` for a fresh reasoning pass.
 

@@ -229,11 +229,11 @@ After your application applies (or rejects) the patch, send the result back on t
 }
 ```
 
-| Field     | Type                        | Description                                          |
-| --------- | --------------------------- | ---------------------------------------------------- |
-| `call_id` | string                      | Must match the `call_id` from the `apply_patch_call` |
-| `status`  | `"completed"` or `"failed"` | Whether the patch was applied successfully           |
-| `output`  | string (optional)           | Human-readable log of what happened                  |
+| Field | Type | Description |
+| - | - | - |
+| `call_id` | string | Must match the `call_id` from the `apply_patch_call` |
+| `status` | `"completed"` or `"failed"` | Whether the patch was applied successfully |
+| `output` | string (optional) | Human-readable log of what happened |
 
 ## Configuration
 
@@ -248,11 +248,13 @@ The apply patch tool accepts an optional `engine` parameter:
 }
 ```
 
-| Parameter | Type   | Default | Description                                                                                                                                                                                                                                                                                               |
-| --------- | ------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `engine`  | string | `auto`  | `auto`: uses native passthrough when the endpoint supports incremental diff streaming, otherwise falls back to OpenRouter's HITL validator. `native`: forces native passthrough (falls back to HITL if unsupported). `openrouter`: always uses the HITL validator, even on endpoints with native support. |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `engine` | string | `auto` | `auto`: uses native passthrough when the endpoint supports incremental diff streaming, otherwise falls back to OpenRouter's HITL validator. `native`: forces native passthrough (falls back to HITL if unsupported). `openrouter`: always uses the HITL validator, even on endpoints with native support. |
 
 ### Engine behavior
+
+To check whether an endpoint runs apply\_patch natively, read `native_tools` on the endpoint object. See [Native Execution](/docs/guides/features/server-tools#native-execution).
 
 * **Native passthrough** streams the diff incrementally via `response.apply_patch_call_operation_diff.delta` events, matching OpenAI's streaming format. Currently supported on OpenAI endpoints.
 * **HITL (human-in-the-loop)** buffers the complete diff and delivers it as a single atomic `apply_patch_call` output item.

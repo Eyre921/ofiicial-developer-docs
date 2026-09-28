@@ -13,4 +13,4 @@ The cost of generating with Eleven v3 is 1 credit per character on the website. 
 Visit the following resources for more information:
 
 * [Eleven v3 overview](https://elevenlabs.io/v3)
-* [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3)
+* [Prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4)

@@ -165,18 +165,18 @@ environment:
 }
 ```
 
-| Parameter     | Type   | Default          | Description                                                                                                                                                                                                                                |
-| ------------- | ------ | ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
 | `environment` | object | `container_auto` | Execution environment. Use `{ "type": "container_auto" }` for an OpenRouter-managed container, or `{ "type": "container_reference", "container_id": "..." }` to reuse an existing container. See [Containers](/docs/guides/features/containers) |
-| `engine`      | string | `auto`           | Where commands run: `openrouter` runs them server-side in the OpenRouter sandbox; `auto`/`native` (the default) return the tool call to your application to run client-side. See [Execution engine](#execution-engine)                     |
+| `engine` | string | `auto` | Where commands run: `openrouter` runs them server-side in the OpenRouter sandbox; `auto`/`native` (the default) return the tool call to your application to run client-side. See [Execution engine](#execution-engine) |
 
 Defaults and caps are server-enforced and may change while the tool is in beta:
 
-| Limit                                     | Default             | Maximum             |
-| ----------------------------------------- | ------------------- | ------------------- |
-| `timeout_ms` per batch                    | 120,000 (2 minutes) | 300,000 (5 minutes) |
-| `max_output_length` per stream, per batch | 16,384 characters   | 65,536 characters   |
-| `commands` per call                       | —                   | 100                 |
+| Limit | Default | Maximum |
+| - | - | - |
+| `timeout_ms` per batch | 120,000 (2 minutes) | 300,000 (5 minutes) |
+| `max_output_length` per stream, per batch | 16,384 characters | 65,536 characters |
+| `commands` per call | — | 100 |
 
 When commands run in the OpenRouter sandbox, a `timeout_ms` or `max_output_length` above the maximum is clamped to it. A call with more than 100 commands is rejected.
 
@@ -200,11 +200,11 @@ When commands run in the OpenRouter sandbox (`engine: "openrouter"`), containers
 }
 ```
 
-| Policy                                              | Behavior                                                                                                   |
-| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `{ "type": "disabled" }`                            | No outbound internet access                                                                                |
-| `{ "type": "allowlist", "allowed_domains": [...] }` | Outbound access restricted to hosts matching the listed hostnames or glob patterns (max 50)                |
-| omitted                                             | Defaults to `disabled` — no outbound internet access. For unrestricted egress, use an allowlist of `["*"]` |
+| Policy | Behavior |
+| - | - |
+| `{ "type": "disabled" }` | No outbound internet access |
+| `{ "type": "allowlist", "allowed_domains": [...] }` | Outbound access restricted to hosts matching the listed hostnames or glob patterns (max 50) |
+| omitted | Defaults to `disabled` — no outbound internet access. For unrestricted egress, use an allowlist of `["*"]` |
 
 The policy is **fixed when a container starts**: sending a different `network_policy` to a warm container fails the request with a `409`. Do not try to change a running container's policy — send the same policy for the container's lifetime.
 
@@ -222,13 +222,13 @@ Requests to hosts outside the policy fail inside the container with a connection
 The model generates the call arguments. They mirror Anthropic's native bash
 tool action:
 
-| Field               | Type      | Description                                                                            |
-| ------------------- | --------- | -------------------------------------------------------------------------------------- |
-| `command`           | string    | A single shell command to run                                                          |
-| `commands`          | string\[] | Shell commands to run sequentially                                                     |
-| `restart`           | boolean   | Reset the shell session (see [Restart](#restart))                                      |
-| `timeout_ms`        | integer   | Maximum execution time for the batch                                                   |
-| `max_output_length` | integer   | Maximum characters returned per stream (`stdout` and `stderr` are each capped to this) |
+| Field | Type | Description |
+| - | - | - |
+| `command` | string | A single shell command to run |
+| `commands` | string\[] | Shell commands to run sequentially |
+| `restart` | boolean | Reset the shell session (see [Restart](#restart)) |
+| `timeout_ms` | integer | Maximum execution time for the batch |
+| `max_output_length` | integer | Maximum characters returned per stream (`stdout` and `stderr` are each capped to this) |
 
 ## Anthropic Messages API native bash tool
 
@@ -270,7 +270,9 @@ a container alive across separate API requests in a conversation, send a stable
 
 ## Execution engine
 
-The `engine` parameter controls where commands run:
+The `engine` parameter controls where commands run. To check whether an
+endpoint runs bash natively, read `native_tools` on the endpoint object. See
+[Native Execution](/docs/guides/features/server-tools#native-execution).
 
 * `openrouter`: run commands server-side in the OpenRouter sandbox.
 * `auto` (default) / `native`: local, human-in-the-loop execution. The tool

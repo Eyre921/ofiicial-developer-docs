@@ -71,9 +71,9 @@ Every harness below works two ways. **FireConnect** writes the settings for you 
 
     Every harness uses the same Fireworks endpoints:
 
-    | Harness API                          | Base URL                                |
-    | ------------------------------------ | --------------------------------------- |
-    | Anthropic Messages                   | `https://api.fireworks.ai/inference`    |
+    | Harness API | Base URL |
+    | - | - |
+    | Anthropic Messages | `https://api.fireworks.ai/inference` |
     | OpenAI Chat Completions or Responses | `https://api.fireworks.ai/inference/v1` |
 
     Use any model ID from [Open Models](/nexus/open-models), such as `glm-latest`, or a router from [FireRouter](/nexus/firerouter#supported-models), such as `firerouter/opus`. Back up a settings file before you edit it.
@@ -443,13 +443,13 @@ codex resume <id> -c model_provider="fireworks-ai"
     <Accordion title="See what FireConnect writes">
       Cursor IDE stores AI settings in SQLite (`state.vscdb` under `~/.config/Cursor`, `~/Library/Application Support/Cursor`, or `%APPDATA%\Cursor`):
 
-      | Setting                            | Value                                            |
-      | ---------------------------------- | ------------------------------------------------ |
-      | `cursorAuth/openAIKey`             | Your Fireworks key                               |
-      | `openAIBaseUrl`                    | `https://api.fireworks.ai/inference/v1`          |
-      | `aiSettings.userAddedModels`       | The Fireworks catalog, tracked for a clean `off` |
+      | Setting | Value |
+      | - | - |
+      | `cursorAuth/openAIKey` | Your Fireworks key |
+      | `openAIBaseUrl` | `https://api.fireworks.ai/inference/v1` |
+      | `aiSettings.userAddedModels` | The Fireworks catalog, tracked for a clean `off` |
       | `aiSettings.modelOverrideDisabled` | Cursor's built-in models, hidden while connected |
-      | `aiSettings.modelConfig[<mode>]`   | The Fireworks model for each mode                |
+      | `aiSettings.modelConfig[<mode>]` | The Fireworks model for each mode |
 
       Your previous auth state is saved under `~/.fireconnect/cursor/`. Use `--db-path` for a non-default `state.vscdb`.
     </Accordion>
@@ -520,11 +520,11 @@ FireConnect adds a **Fireworks** provider to GitHub Copilot Chat's custom endpoi
 
       The key is stored separately in `state.vscdb`, encrypted with Electron `safeStorage`. On Linux, encryption needs `libsecret`; without it, VS Code only obfuscates the key and FireConnect warns you.
 
-      | Platform | `chatLanguageModels.json`                  | `state.vscdb`                                            |
-      | -------- | ------------------------------------------ | -------------------------------------------------------- |
-      | Linux    | `~/.config/Code/User/`                     | `~/.config/Code/User/globalStorage/`                     |
-      | macOS    | `~/Library/Application Support/Code/User/` | `~/Library/Application Support/Code/User/globalStorage/` |
-      | Windows  | `%APPDATA%\Code\User\`                     | `%APPDATA%\Code\User\globalStorage\`                     |
+      | Platform | `chatLanguageModels.json` | `state.vscdb` |
+      | - | - | - |
+      | Linux | `~/.config/Code/User/` | `~/.config/Code/User/globalStorage/` |
+      | macOS | `~/Library/Application Support/Code/User/` | `~/Library/Application Support/Code/User/globalStorage/` |
+      | Windows | `%APPDATA%\Code\User\` | `%APPDATA%\Code\User\globalStorage\` |
     </Accordion>
   </Tab>
 
@@ -553,10 +553,10 @@ The GitHub Copilot **desktop app** keeps its built-in models and adds Fireworks 
     <Accordion title="See what FireConnect writes">
       FireConnect writes to `~/.copilot/data.db` (SQLite, movable with `COPILOT_HOME`):
 
-      | Table             | What FireConnect adds                                                                                                                              |
-      | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+      | Table | What FireConnect adds |
+      | - | - |
       | `model_providers` | One `Fireworks` provider of type `openai`, with base URL `https://api.fireworks.ai/inference/v1` and your key as an `Authorization: Bearer` header |
-      | `provider_models` | One row per model, with token limits and reasoning efforts (`low`, `medium`, `high`, `max`)                                                        |
+      | `provider_models` | One row per model, with token limits and reasoning efforts (`low`, `medium`, `high`, `max`) |
 
       `off` deletes the provider and its models. Use `--db-path` for a non-default database.
     </Accordion>
@@ -565,11 +565,11 @@ The GitHub Copilot **desktop app** keeps its built-in models and adds Fireworks 
   <Tab title="Manual setup" icon="wrench">
     In **Settings → Model providers**, add a provider with the values FireConnect uses:
 
-    | Field    | Value                                                |
-    | -------- | ---------------------------------------------------- |
-    | Base URL | `https://api.fireworks.ai/inference/v1`              |
-    | API key  | Your Fireworks key                                   |
-    | Models   | Fireworks IDs, such as `glm-latest` or `kimi-latest` |
+    | Field | Value |
+    | - | - |
+    | Base URL | `https://api.fireworks.ai/inference/v1` |
+    | API key | Your Fireworks key |
+    | Models | Fireworks IDs, such as `glm-latest` or `kimi-latest` |
   </Tab>
 </Tabs>
 

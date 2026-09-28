@@ -12,12 +12,12 @@ Building reliable applications requires handling network conditions, transient e
 
 Set timeouts based on your workload type:
 
-| Workload                             | Recommended client timeout     |
-| ------------------------------------ | ------------------------------ |
-| Interactive / chat                   | 30–60 seconds                  |
-| Agentic (tool calls, multi-step)     | 5–30 minutes                   |
-| Large model inference (long context) | 10–30 minutes                  |
-| Batch job submission                 | 60 seconds (results are async) |
+| Workload | Recommended client timeout |
+| - | - |
+| Interactive / chat | 30–60 seconds |
+| Agentic (tool calls, multi-step) | 5–30 minutes |
+| Large model inference (long context) | 10–30 minutes |
+| Batch job submission | 60 seconds (results are async) |
 
 ### Python SDK
 
@@ -54,17 +54,17 @@ response = requests.post(
 
 ### Which errors are retryable
 
-| Status | Meaning               | Retry?                           |
-| ------ | --------------------- | -------------------------------- |
-| `429`  | Rate limit            | ✅ Yes — with backoff             |
-| `500`  | Internal server error | ✅ Yes — transient                |
-| `502`  | Bad gateway           | ✅ Yes — transient                |
-| `503`  | Service unavailable   | ✅ Yes — with backoff             |
-| `504`  | Gateway timeout       | ✅ Yes — transient                |
-| `400`  | Bad request           | ❌ No — fix the request           |
-| `401`  | Unauthorized          | ❌ No — check API key             |
-| `404`  | Not found             | ❌ No — check model/deployment ID |
-| `422`  | Unprocessable entity  | ❌ No — fix the request body      |
+| Status | Meaning | Retry? |
+| - | - | - |
+| `429` | Rate limit | ✅ Yes — with backoff |
+| `500` | Internal server error | ✅ Yes — transient |
+| `502` | Bad gateway | ✅ Yes — transient |
+| `503` | Service unavailable | ✅ Yes — with backoff |
+| `504` | Gateway timeout | ✅ Yes — transient |
+| `400` | Bad request | ❌ No — fix the request |
+| `401` | Unauthorized | ❌ No — check API key |
+| `404` | Not found | ❌ No — check model/deployment ID |
+| `422` | Unprocessable entity | ❌ No — fix the request body |
 
 ### Exponential backoff with jitter
 

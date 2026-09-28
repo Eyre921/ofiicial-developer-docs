@@ -4,24 +4,23 @@ source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-sand
 path: langsmith/javascript/managed-deep-agents-sandboxes
 ---
 
+Configure an isolated filesystem and shell for a managed deep agent.
+
 A sandbox gives a managed deep agent an isolated filesystem and shell for working with files, running code, and executing commands.
 
 <Note>
-Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
 </Note>
 
 Put the sandbox declaration under `sandbox/`. Add `sandbox/setup.sh` only if you want to provision a snapshot:
 
-
-
-```text
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 my-agent/
   agent.ts
   sandbox/
     index.ts
     setup.sh   # optional
 ```
-
 
 For the full project layout, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
@@ -35,11 +34,9 @@ Use a sandbox when the agent needs to write files, run code, or execute shell co
 
 Managed Deep Agents uses [LangSmith Sandboxes](/langsmith/sandboxes) for this backend. Reuse is always one sandbox per durable thread.
 
-
-
 Declare the sandbox with `defineSandbox`:
 
-```ts sandbox/index.ts
+```ts sandbox/index.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSandbox } from "managed-deepagents";
 
 export const sandbox = defineSandbox({
@@ -48,11 +45,10 @@ export const sandbox = defineSandbox({
 });
 ```
 
-| Option | Default | Description |
-| --- | --- | --- |
-| `idleTtlSeconds` | `600` | Seconds of inactivity before the sandbox and its contents are deleted. Deletion is not recoverable. |
-| `defaultTimeout` | `600` | Seconds allowed for each command. |
-
+| Option           | Default | Description                                                                                         |
+| ---------------- | ------- | --------------------------------------------------------------------------------------------------- |
+| `idleTtlSeconds` | `600`   | Seconds of inactivity before the sandbox and its contents are deleted. Deletion is not recoverable. |
+| `defaultTimeout` | `600`   | Seconds allowed for each command.                                                                   |
 
 ## Configure the sandbox proxy
 
@@ -60,9 +56,7 @@ The sandbox proxy injects headers into matching outbound requests and controls w
 
 For example, to call the OpenAI API from the sandbox, store `OPENAI_API_KEY` in your LangSmith workspace secrets and configure this proxy rule:
 
-
-
-```ts sandbox/index.ts
+```ts sandbox/index.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSandbox } from "managed-deepagents";
 
 export const sandbox = defineSandbox({
@@ -84,7 +78,6 @@ export const sandbox = defineSandbox({
 });
 ```
 
-
 For configuration options and network restrictions, see [Sandbox auth proxy](/langsmith/sandbox-auth-proxy).
 
 ### Use connections in proxy headers
@@ -93,9 +86,7 @@ Use [Connections](/langsmith/javascript/managed-deep-agents-connections) in sand
 
 For example, to call the GitHub API from the sandbox as the current user, create the `github` connection first, then configure the proxy:
 
-
-
-```ts sandbox/index.ts
+```ts sandbox/index.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { bearer, connections, defineSandbox } from "managed-deepagents";
 
 const github = connections.get("github", { type: "user" });
@@ -114,7 +105,6 @@ export const sandbox = defineSandbox({
 });
 ```
 
-
 Use a connection reference as the header value, or format it with `bearer(ref)` or `basic(username, ref)`. Omit the header's `type` for connection values. Managed Deep Agents sets it to `opaque`.
 
 ## Provision a snapshot
@@ -123,7 +113,7 @@ If `sandbox/setup.sh` exists, `mda deploy` and `mda dev` run the script once and
 
 The script runs with `bash -e`. A non-zero exit fails the snapshot and the deploy or `mda dev` session. LangSmith does not update the live deployment to the failed snapshot. Any previously successful snapshot continues to serve.
 
-```bash sandbox/setup.sh
+```bash sandbox/setup.sh theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -139,15 +129,13 @@ Editing `setup.sh` and redeploying does not wipe `/workspace` on live threads. T
 
 With no bake base, LangSmith's default sandbox template is the starting point. To start from something else, set exactly one of these:
 
-
-
-| Option | Use |
-| --- | --- |
+| Option         | Use                                        |
+| -------------- | ------------------------------------------ |
 | `snapshotName` | LangSmith snapshot name. Tags are allowed. |
-| `snapshotId` | LangSmith snapshot id. |
-| `dockerImage` | Published Docker image. |
+| `snapshotId`   | LangSmith snapshot id.                     |
+| `dockerImage`  | Published Docker image.                    |
 
-```ts sandbox/index.ts
+```ts sandbox/index.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSandbox } from "managed-deepagents";
 
 export const sandbox = defineSandbox({
@@ -156,14 +144,11 @@ export const sandbox = defineSandbox({
 });
 ```
 
-
 For a private image, pass the image and a `registry`. Managed Deep Agents creates or updates a deployment-owned Host registry at bake time. Only the variable name is compiled; the credential value does not enter the build or the snapshot.
-
-
 
 Name the password in `passwordEnv`:
 
-```ts sandbox/index.ts
+```ts sandbox/index.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { defineSandbox } from "managed-deepagents";
 
 export const sandbox = defineSandbox({
@@ -176,7 +161,6 @@ export const sandbox = defineSandbox({
 });
 ```
 
-
 Put `GHCR_TOKEN` in the project `.env` or the process environment. After bake, Managed Deep Agents does not forward that value to the running Agent Server.
 
 ## How the agent uses the sandbox
@@ -188,14 +172,12 @@ The agent uses built-in filesystem tools such as [`ls`](/oss/javascript/deepagen
 [Authored tools](/langsmith/javascript/managed-deep-agents-tools) and [middleware](/langsmith/javascript/managed-deep-agents-middleware) reach the sandbox filesystem through `runtime.backend`. Use it when your own code needs a file, rather than prompting the agent to fetch one for you.
 
 <Note>
-`runtime.backend` requires `managed-deepagents>=0.8.0`.
+  `runtime.backend` requires `managed-deepagents>=0.8.0`.
 </Note>
 
 Annotate the `runtime` parameter to receive the typed surface:
 
-
-
-```ts tools/report.ts
+```ts tools/report.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import type { ManagedDeepAgentRuntime } from "managed-deepagents";
 import { z } from "zod";
@@ -221,29 +203,25 @@ export const writeReport = tool(
 );
 ```
 
-
 Each operation binds to the sandbox of the thread handling the current run, so two threads reading `/workspace/report.txt` see their own copy. The backend resolves lazily, and a tool that never touches it never provisions a sandbox.
 
 ### Available operations
 
-
-
-| Method | Purpose |
-| --- | --- |
-| `ls(path)` | List a directory. |
-| `read(filePath, offset, limit)` | Read text, 2000 lines by default. |
-| `readRaw(filePath)` | Read a file without line formatting. |
-| `write(filePath, content)` | Write text, replacing any existing file. |
-| `edit(filePath, oldString, newString, replaceAll)` | Replace a substring in place. |
-| `delete(filePath)` | Remove a file. |
-| `grep(pattern, path, glob, maxCount)` | Search file contents. |
-| `glob(pattern, path)` | Match paths. |
-| `execute(command)` | Run a shell command. |
-| `uploadFiles(files)` | Write `Uint8Array` content from `[path, content]` pairs. |
-| `downloadFiles(paths)` | Read each path as a `Uint8Array`. |
+| Method                                             | Purpose                                                  |
+| -------------------------------------------------- | -------------------------------------------------------- |
+| `ls(path)`                                         | List a directory.                                        |
+| `read(filePath, offset, limit)`                    | Read text, 2000 lines by default.                        |
+| `readRaw(filePath)`                                | Read a file without line formatting.                     |
+| `write(filePath, content)`                         | Write text, replacing any existing file.                 |
+| `edit(filePath, oldString, newString, replaceAll)` | Replace a substring in place.                            |
+| `delete(filePath)`                                 | Remove a file.                                           |
+| `grep(pattern, path, glob, maxCount)`              | Search file contents.                                    |
+| `glob(pattern, path)`                              | Match paths.                                             |
+| `execute(command)`                                 | Run a shell command.                                     |
+| `uploadFiles(files)`                               | Write `Uint8Array` content from `[path, content]` pairs. |
+| `downloadFiles(paths)`                             | Read each path as a `Uint8Array`.                        |
 
 Every method returns a promise.
-
 
 Arguments and return types come from the Deep Agents backend contract. See [Backends](/oss/javascript/deepagents/backends).
 
@@ -251,9 +229,7 @@ Arguments and return types come from the Deep Agents backend contract. See [Back
 
 `upload_files` and `download_files` move raw bytes, so they suit images, archives, and any other file that text operations would corrupt. Download returns the bytes for each requested path:
 
-
-
-```ts tools/checksum.ts
+```ts tools/checksum.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createHash } from "node:crypto";
 
 import { tool } from "langchain";
@@ -281,12 +257,9 @@ export const checksumFile = tool(
 );
 ```
 
-
 Upload takes path and content pairs, one per file:
 
-
-
-```ts
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const [uploaded] = await runtime.backend.uploadFiles([
   ["/workspace/logo.png", payload],
 ]);
@@ -295,22 +268,15 @@ if (uploaded.error) {
 }
 ```
 
-
 Each result carries `path` and `error`, and a download also carries `content`. On failure, `error` is one of `file_not_found`, `permission_denied`, `is_directory`, or `invalid_path`, and the downloaded `content` is empty. Check `error` rather than assuming the transfer succeeded.
 
 ### Limits
 
 `runtime.backend` covers the sandbox only. It has no route to [Context Hub](/langsmith/javascript/managed-deep-agents-context-hub), so [skills](/langsmith/javascript/managed-deep-agents-skills), [instructions](/langsmith/javascript/managed-deep-agents-instructions), and [memory](/langsmith/javascript/managed-deep-agents-memory) are not reachable through it.
 
-
-
 Without a sandbox, `runtime.backend` is `undefined`. Guard on it before every call, because a project can remove `sandbox/` after the tool ships.
 
-
-
-
 `delete`, `uploadFiles`, and `downloadFiles` depend on the installed backend and throw when it does not implement them. A root `glob` returns an error instead of provisioning a sandbox.
-
 
 ## Disable the sandbox
 
@@ -324,21 +290,22 @@ Managed Deep Agents owns sandbox naming, recipe bake, reuse, recovery, and clean
 
 ## When to use a sandbox
 
-| Goal | Use |
-| --- | --- |
-| Write files, run code, or execute shell commands in isolation | Sandbox |
-| Store durable knowledge across threads | [Memory](/langsmith/javascript/managed-deep-agents-memory) |
-| Always-on behavior without a filesystem | [Instructions](/langsmith/javascript/managed-deep-agents-instructions) |
+| Goal                                                          | Use                                                                    |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Write files, run code, or execute shell commands in isolation | Sandbox                                                                |
+| Store durable knowledge across threads                        | [Memory](/langsmith/javascript/managed-deep-agents-memory)             |
+| Always-on behavior without a filesystem                       | [Instructions](/langsmith/javascript/managed-deep-agents-instructions) |
 
 For more information, see [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-sandboxes.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

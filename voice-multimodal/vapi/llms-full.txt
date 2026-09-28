@@ -55,7 +55,7 @@
 - [Handle API Request tool latency and retries](https://docs.vapi.ai/tools/api-request/reliability.md): Configure API Request Tool timeouts, retry backoff, excluded status codes, and caller messages for slow or failed HTTP requests with practical cURL examples.
 - [Handle API Request tool responses and errors](https://docs.vapi.ai/tools/api-request/response-handling.md): Handle successful and failed API Request Tool responses, test structured errors, guide assistant recovery, and inspect call results in the Dashboard or with cURL.
 - [Use API Request tool response data](https://docs.vapi.ai/tools/api-request/response-data.md): Use API Request Tool JSON responses immediately, extract response fields with schemas or aliases, and pass extracted variables to subsequent tools.
-- [Function tools](https://docs.vapi.ai/tools/custom-tools.md): Create custom tools, including Function tools, for Vapi assistants using the dashboard's visual Tools section or the API to connect to your server-side logic.
+- [Function tools](https://docs.vapi.ai/tools/custom-tools.md): Create and manage Function tools through the Vapi dashboard or API, connect them to server-side logic, test webhooks locally, and reuse them across assistants.
 - [Transfer Call tool](https://docs.vapi.ai/tools/transfer-call.md): Create a transfer call tool in the Vapi Dashboard or API, add it to an assistant, configure destinations, and troubleshoot invocation and routing failures.
 - [Configure blind transfer modes](https://docs.vapi.ai/tools/transfer-call/blind-transfer.md): Configure blind call transfers in the Vapi Dashboard or API, choose a SIP transfer method, add a summary header, verify routing, and diagnose failures.
 - [Configure warm transfer modes](https://docs.vapi.ai/tools/transfer-call/warm-transfer.md): Configure traditional warm transfer modes in the Vapi Dashboard or API, including messages, summaries, operator-first timing, TwiML, and timeouts.
@@ -87,7 +87,7 @@
 - [Dynamic tool messages](https://docs.vapi.ai/tools/dynamic-tool-messages.md): Configure bot_say for Function and Handoff tools so an assistant speaks a context-aware message before execution and handles multiple tool calls correctly.
 - [Tool rejection plan](https://docs.vapi.ai/tools/tool-rejection-plan.md): Prevent unintended Vapi tool calls with a rejection plan that evaluates recent conversation state and blocks a tool when your conditions are met.
 - [Tool argument encryption](https://docs.vapi.ai/tools/encryption.md): Encrypt sensitive tool arguments like SSNs and card numbers in Vapi, protecting specific fields before they are sent to your server during a tool call.
-- [Troubleshoot tools](https://docs.vapi.ai/tools/custom-tools-troubleshooting.md): Resolve common issues with custom tool integrations
+- [Troubleshoot tools](https://docs.vapi.ai/tools/custom-tools-troubleshooting.md): Troubleshoot Function tool integrations in Vapi, including trigger failures, response errors, token truncation, multiple tool responses, and async behavior.
 - [GPT-Live](https://docs.vapi.ai/gpt-live/overview.md): Learn what GPT-Live brings to Vapi, how its speaker and reasoner work together, and where to start with conversation design, configuration, and compatibility.
 - [Design your GPT-Live assistant](https://docs.vapi.ai/gpt-live/design.md): Design GPT-Live conversations with speaker and reasoner roles, outcome-based delegation, useful overlap during tools, flexible pacing, and personality packs.
 - [Configure GPT-Live](https://docs.vapi.ai/gpt-live/configuration.md): Configure a GPT-Live assistant in Vapi using the dashboard or API, with speaker and reasoner settings, voice samples, tools, call connections, and analysis.
@@ -256,13 +256,10 @@
 - [Hume](https://docs.vapi.ai/providers/voice/hume.md): Connect Hume to Vapi to use its expressive Octave text-to-speech voices for your voice agent. Covers the models and how to select a voice in the API.
 - [Inworld](https://docs.vapi.ai/providers/voice/inworld.md): Configure Inworld text-to-speech models, voices, languages, and synthesis options for a Vapi assistant.
 - [LMNT](https://docs.vapi.ai/providers/voice/imnt.md): Configure an LMNT voice for a Vapi assistant and find its voice ID in the Vapi Voice Library.
-- [Microsoft](https://docs.vapi.ai/providers/voice/microsoft.md): Connect Microsoft to Vapi to use its MAI-Voice-2 text-to-speech voices for your voice agent. Covers how to select a Microsoft voice in the API.
 - [MiniMax](https://docs.vapi.ai/providers/voice/minimax.md): Configure MiniMax as your Vapi assistant's text-to-speech provider, including voice models, voice IDs, and subtitle timing.
 - [Neuphonic](https://docs.vapi.ai/providers/voice/neuphonic.md): Connect Neuphonic to Vapi to use its text-to-speech voices for your voice agent. Covers how to select a Neuphonic voice in the API.
 - [OpenAI](https://docs.vapi.ai/providers/voice/openai.md): Configure OpenAI as your Vapi assistant's text-to-speech provider, including TTS models and voice selection.
-- [PlayHT](https://docs.vapi.ai/providers/voice/playht.md): Configure a PlayHT voice for a Vapi assistant and find its voice ID in the Vapi Voice Library.
 - [Rime AI](https://docs.vapi.ai/providers/voice/rimeai.md): Configure a Rime AI model and voice for a Vapi assistant and find its voice ID in the Vapi Voice Library.
-- [Sesame](https://docs.vapi.ai/providers/voice/sesame.md): Connect Sesame to Vapi to use its conversational text-to-speech voices for your voice agent. Covers the model, the available voices, and how to select one in the API.
 - [Smallest AI](https://docs.vapi.ai/providers/voice/smallest-ai.md): Connect Smallest AI to Vapi to use its low-latency text-to-speech voices for your voice agent. Covers the model and how to select a voice in the API.
 - [WellSaid](https://docs.vapi.ai/providers/voice/wellsaid.md): Connect WellSaid Labs to Vapi to use its studio-quality text-to-speech voices for your voice agent. Covers the models and how to select a voice in the API.
 - [xAI](https://docs.vapi.ai/providers/voice/xai.md): Configure xAI as your Vapi assistant's text-to-speech provider, including supported voices, languages, and voice options.

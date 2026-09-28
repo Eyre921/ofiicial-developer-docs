@@ -30,16 +30,16 @@ Models expose one of four capability shapes:
 * **Fixed Preserved:** only Preserved is supported.
 * **Automatic:** neither explicit mode describes the model-native behavior; the renderer selects behavior from each dataset row's input shape.
 
-| Base model                | Available modes                | Default                   | Interleaved boundary                                                       | Managed SFT datums                                                    |
-| ------------------------- | ------------------------------ | ------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| GLM 5.1                   | Interleaved, Preserved         | Interleaved               | Last real user query; keeps the complete current assistant/tool trajectory | Both modes unroll per user turn                                       |
-| GLM 5.2                   | Interleaved, Preserved         | Interleaved               | Same as GLM 5.1                                                            | Interleaved unrolls; Preserved keeps one complete datum               |
-| Qwen 3.5                  | Interleaved only               | Interleaved               | Last real user query; tool results do not reset the boundary               | Unrolls per user turn                                                 |
-| Qwen 3.6                  | Interleaved, Preserved         | Interleaved               | Same as Qwen 3.5                                                           | Interleaved unrolls; Preserved keeps one complete datum               |
-| Kimi K2.5                 | Interleaved only               | Interleaved               | Keeps thinking in the trailing/current assistant-tool trajectory           | Unrolls per user turn                                                 |
-| Kimi K2.6                 | Interleaved, Preserved         | Interleaved               | Same as Kimi K2.5                                                          | Interleaved unrolls; Preserved keeps one complete datum               |
-| Kimi K2.7 Code            | Preserved only                 | Preserved                 | Not applicable                                                             | Keeps one complete datum                                              |
-| DeepSeek V4 Flash and Pro | Automatic only; no mode toggle | Automatic (`UNSPECIFIED`) | Depends on whether the row declares tools                                  | Without tools, unrolls; with declared tools, keeps one complete datum |
+| Base model | Available modes | Default | Interleaved boundary | Managed SFT datums |
+| - | - | - | - | - |
+| GLM 5.1 | Interleaved, Preserved | Interleaved | Last real user query; keeps the complete current assistant/tool trajectory | Both modes unroll per user turn |
+| GLM 5.2 | Interleaved, Preserved | Interleaved | Same as GLM 5.1 | Interleaved unrolls; Preserved keeps one complete datum |
+| Qwen 3.5 | Interleaved only | Interleaved | Last real user query; tool results do not reset the boundary | Unrolls per user turn |
+| Qwen 3.6 | Interleaved, Preserved | Interleaved | Same as Qwen 3.5 | Interleaved unrolls; Preserved keeps one complete datum |
+| Kimi K2.5 | Interleaved only | Interleaved | Keeps thinking in the trailing/current assistant-tool trajectory | Unrolls per user turn |
+| Kimi K2.6 | Interleaved, Preserved | Interleaved | Same as Kimi K2.5 | Interleaved unrolls; Preserved keeps one complete datum |
+| Kimi K2.7 Code | Preserved only | Preserved | Not applicable | Keeps one complete datum |
+| DeepSeek V4 Flash and Pro | Automatic only; no mode toggle | Automatic (`UNSPECIFIED`) | Depends on whether the row declares tools | Without tools, unrolls; with declared tools, keeps one complete datum |
 
 Base models not listed above keep their existing model-default renderer behavior and do not expose an explicit thinking-history choice.
 

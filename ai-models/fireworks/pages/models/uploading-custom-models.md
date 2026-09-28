@@ -311,27 +311,27 @@ Add a `fireworks.json` file to the directory containing your adapter files:
   <Accordion title="defaults options">
     These defaults are applied when the user doesn't specify values in their API request:
 
-    | Field                | Type    | Example                    | Description                           |
-    | -------------------- | ------- | -------------------------- | ------------------------------------- |
-    | `stop`               | array   | `["<\|im_end\|>", "</s>"]` | Default stop sequences                |
-    | `max_tokens`         | integer | `1024`                     | Default maximum tokens to generate    |
-    | `temperature`        | float   | `0.7`                      | Default sampling temperature          |
-    | `top_k`              | integer | `50`                       | Default top-k sampling                |
-    | `top_p`              | float   | `0.9`                      | Default nucleus sampling probability  |
-    | `min_p`              | float   | `0.0`                      | Default minimum probability threshold |
-    | `typical_p`          | float   | `1.0`                      | Default typical sampling probability  |
-    | `frequency_penalty`  | float   | `0.0`                      | Default frequency penalty             |
-    | `presence_penalty`   | float   | `0.0`                      | Default presence penalty              |
-    | `repetition_penalty` | float   | `1.0`                      | Default repetition penalty            |
+    | Field | Type | Example | Description |
+    | - | - | - | - |
+    | `stop` | array | `["<\|im_end\|>", "</s>"]` | Default stop sequences |
+    | `max_tokens` | integer | `1024` | Default maximum tokens to generate |
+    | `temperature` | float | `0.7` | Default sampling temperature |
+    | `top_k` | integer | `50` | Default top-k sampling |
+    | `top_p` | float | `0.9` | Default nucleus sampling probability |
+    | `min_p` | float | `0.0` | Default minimum probability threshold |
+    | `typical_p` | float | `1.0` | Default typical sampling probability |
+    | `frequency_penalty` | float | `0.0` | Default frequency penalty |
+    | `presence_penalty` | float | `0.0` | Default presence penalty |
+    | `repetition_penalty` | float | `1.0` | Default repetition penalty |
   </Accordion>
 
   <Accordion title="Additional options">
-    | Field               | Default | Description                                                                            |
-    | ------------------- | ------- | -------------------------------------------------------------------------------------- |
-    | `model_arch`        | null    | Model architecture (e.g., `"qwen2"`, `"llama"`). Usually auto-detected from base model |
-    | `model_config_name` | null    | Model configuration name (e.g., `"4B"`). Usually auto-detected from base model         |
-    | `has_lora`          | true    | Set to `true` for LoRA adapters                                                        |
-    | `has_teft`          | false   | Set to `true` if using TEFT (Token-Efficient Training)                                 |
+    | Field | Default | Description |
+    | - | - | - |
+    | `model_arch` | null | Model architecture (e.g., `"qwen2"`, `"llama"`). Usually auto-detected from base model |
+    | `model_config_name` | null | Model configuration name (e.g., `"4B"`). Usually auto-detected from base model |
+    | `has_lora` | true | Set to `true` for LoRA adapters |
+    | `has_teft` | false | Set to `true` if using TEFT (Token-Efficient Training) |
   </Accordion>
 </AccordionGroup>
 

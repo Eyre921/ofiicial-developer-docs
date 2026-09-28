@@ -120,11 +120,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                                        | Required             | Description                                |
-| --------- | --------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                       | :heavy\_check\_mark: | The context to use for the request.        |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
 | `request` | [components.DecisionsRequest](../../models/components/decisionsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx)                  | :heavy\_minus\_sign: | The options for this request.              |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -132,19 +132,19 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.PaymentRequiredResponseError    | 402         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.PayloadTooLargeResponseError    | 413         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.EdgeNetworkTimeoutResponseError | 524         | application/json |
-| sdkerrors.ProviderOverloadedResponseError | 529         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.PaymentRequiredResponseError | 402 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.EdgeNetworkTimeoutResponseError | 524 | application/json |
+| sdkerrors.ProviderOverloadedResponseError | 529 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

@@ -60,12 +60,12 @@ Datadog LLM Observability supports tags and custom metadata for organizing and f
 
 ### Supported Metadata Keys
 
-| Key               | Datadog Mapping | Description                                 |
-| ----------------- | --------------- | ------------------------------------------- |
-| `trace_id`        | Trace ID        | Group multiple requests into a single trace |
-| `trace_name`      | Span Name       | Custom name for the root span               |
-| `span_name`       | Span Name       | Name for intermediate workflow spans        |
-| `generation_name` | Span Name       | Name for the LLM span                       |
+| Key | Datadog Mapping | Description |
+| - | - | - |
+| `trace_id` | Trace ID | Group multiple requests into a single trace |
+| `trace_name` | Span Name | Custom name for the root span |
+| `span_name` | Span Name | Name for intermediate workflow spans |
+| `generation_name` | Span Name | Name for the LLM span |
 
 ### Tags and Metadata
 

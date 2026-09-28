@@ -137,10 +137,10 @@ Tool search is available through the [Responses API](/docs/api_reference/respons
 
 Each API's native spelling is accepted as an alias and answered in kind, so an existing integration does not need rewriting:
 
-| API       | Accepted `type`                                                                       |
-| --------- | ------------------------------------------------------------------------------------- |
-| Responses | `openrouter:tool_search`, `tool_search`                                               |
-| Messages  | `openrouter:tool_search`, `tool_search_tool_regex`, `tool_search_tool_regex_20251119` |
+| API | Accepted `type` |
+| - | - |
+| Responses | `openrouter:tool_search`, `tool_search` |
+| Messages | `openrouter:tool_search`, `tool_search_tool_regex`, `tool_search_tool_regex_20251119` |
 
 Only the regex variant is implemented. Requesting the BM25 variant — `tool_search_tool_bm25` or `tool_search_tool_bm25_20251119` — returns a `400`:
 
@@ -148,9 +148,9 @@ Only the regex variant is implemented. Requesting the BM25 variant — `tool_sea
 
 ## Configuration
 
-| Parameter     | Default | Description                                                                           |
-| ------------- | ------- | ------------------------------------------------------------------------------------- |
-| `max_results` | `5`     | Maximum tools returned by a single search. The model may request fewer. Capped at 50. |
+| Parameter | Default | Description |
+| - | - | - |
+| `max_results` | `5` | Maximum tools returned by a single search. The model may request fewer. Capped at 50. |
 
 ## When to Use It
 

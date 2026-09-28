@@ -21,25 +21,25 @@ A gateway-managed catalog can use a FireRouter model only when that catalog list
 
 ## Connect your Fireworks account
 
-| Gateway                                                                                               | Fireworks integration                                    | Model naming                                                                                                          |
-| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| [LiteLLM](https://docs.litellm.ai/docs/providers/fireworks_ai)                                        | Native `fireworks_ai` provider                           | Add `fireworks_ai/` before the full Fireworks path, such as `fireworks_ai/accounts/fireworks/routers/firerouter/opus` |
-| [Portkey](https://docs.portkey.ai/docs/integrations/llms/fireworks)                                   | Native Fireworks provider with bring your own key (BYOK) | Use the configured provider name, such as `@fireworks-ai/...`                                                         |
-| [Keywords AI](https://keywordsai.mintlify.app/integration/providers/fireworks)                        | Native Fireworks provider with BYOK                      | Use Fireworks models through stored or per-request credentials                                                        |
-| [AISIX / API7](https://docs.api7.ai/ai-gateway/providers/fireworks-ai)                                | Native `fireworks-ai` provider with OpenAI adapter       | Map a gateway alias to a Fireworks model ID                                                                           |
-| [Helicone](https://docs.helicone.ai/getting-started/integration-method/fireworks)                     | Fireworks proxy and provider integration                 | Direct proxy calls preserve Fireworks model IDs                                                                       |
-| [Cloudflare AI Gateway](https://developers.cloudflare.com/ai-gateway/configuration/custom-providers/) | Custom provider, not a native Fireworks provider         | Configure the Fireworks inference base URL and a `custom-` provider slug                                              |
+| Gateway | Fireworks integration | Model naming |
+| - | - | - |
+| [LiteLLM](https://docs.litellm.ai/docs/providers/fireworks_ai) | Native `fireworks_ai` provider | Add `fireworks_ai/` before the full Fireworks path, such as `fireworks_ai/accounts/fireworks/routers/firerouter/opus` |
+| [Portkey](https://docs.portkey.ai/docs/integrations/llms/fireworks) | Native Fireworks provider with bring your own key (BYOK) | Use the configured provider name, such as `@fireworks-ai/...` |
+| [Keywords AI](https://keywordsai.mintlify.app/integration/providers/fireworks) | Native Fireworks provider with BYOK | Use Fireworks models through stored or per-request credentials |
+| [AISIX / API7](https://docs.api7.ai/ai-gateway/providers/fireworks-ai) | Native `fireworks-ai` provider with OpenAI adapter | Map a gateway alias to a Fireworks model ID |
+| [Helicone](https://docs.helicone.ai/getting-started/integration-method/fireworks) | Fireworks proxy and provider integration | Direct proxy calls preserve Fireworks model IDs |
+| [Cloudflare AI Gateway](https://developers.cloudflare.com/ai-gateway/configuration/custom-providers/) | Custom provider, not a native Fireworks provider | Configure the Fireworks inference base URL and a `custom-` provider slug |
 
 ## Use a gateway-managed model catalog
 
 These gateways expose their own model catalogs. Fireworks may serve a request, but you are not connecting an arbitrary Fireworks model ID.
 
-| Gateway                                                                                       | Fireworks support                                                                      |
-| --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| [Vercel AI Gateway](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options) | Native provider slug `fireworks`, including bring your own key for catalog models      |
-| [OpenRouter](https://openrouter.ai/provider/fireworks)                                        | Fireworks is an upstream provider for selected OpenRouter models                       |
-| [Requesty](https://docs.requesty.ai/integrations/opencode)                                    | Fireworks-prefixed catalog models; newer models may need custom provider configuration |
-| [Helicone AI Gateway](https://docs.helicone.ai/gateway/overview)                              | Fireworks appears in the unified gateway model registry                                |
+| Gateway | Fireworks support |
+| - | - |
+| [Vercel AI Gateway](https://vercel.com/docs/ai-gateway/models-and-providers/provider-options) | Native provider slug `fireworks`, including bring your own key for catalog models |
+| [OpenRouter](https://openrouter.ai/provider/fireworks) | Fireworks is an upstream provider for selected OpenRouter models |
+| [Requesty](https://docs.requesty.ai/integrations/opencode) | Fireworks-prefixed catalog models; newer models may need custom provider configuration |
+| [Helicone AI Gateway](https://docs.helicone.ai/gateway/overview) | Fireworks appears in the unified gateway model registry |
 
 ## LiteLLM Proxy
 
@@ -58,10 +58,10 @@ pip install "litellm[proxy]"
 
 Add each model you want to expose to `config.yaml`. Keep the client-facing `model_name` short. In `litellm_params.model`, use `fireworks_ai/` followed by the full Fireworks path:
 
-| Model                                                                             | `litellm_params.model`                         |
-| --------------------------------------------------------------------------------- | ---------------------------------------------- |
+| Model | `litellm_params.model` |
+| - | - |
 | Routers, `auto`, and `-latest` aliases, such as `firerouter/opus` or `glm-latest` | `fireworks_ai/accounts/fireworks/routers/<id>` |
-| Pinned models, such as `glm-5p3`                                                  | `fireworks_ai/accounts/fireworks/models/<id>`  |
+| Pinned models, such as `glm-5p3` | `fireworks_ai/accounts/fireworks/models/<id>` |
 
 Recent LiteLLM versions expand a short ID to `accounts/fireworks/models/<id>`, so a short router ID such as `fireworks_ai/firerouter/opus` returns `404 Model not found`. The full path works on every version.
 
@@ -98,10 +98,10 @@ curl http://localhost:4000/chat/completions \
 
 ### API key layout
 
-| Key                                 | Who holds it                         | Used for                                |
-| ----------------------------------- | ------------------------------------ | --------------------------------------- |
-| Fireworks API key (`fw_...`)        | LiteLLM server (env or secret store) | Upstream Fireworks inference            |
-| LiteLLM virtual key (if configured) | Each developer or service            | Proxy authentication and spend tracking |
+| Key | Who holds it | Used for |
+| - | - | - |
+| Fireworks API key (`fw_...`) | LiteLLM server (env or secret store) | Upstream Fireworks inference |
+| LiteLLM virtual key (if configured) | Each developer or service | Proxy authentication and spend tracking |
 
 ## Use FireRouter through a gateway
 
@@ -117,11 +117,11 @@ A route containing a Claude model needs an Anthropic credential. A route contain
 
 You do not need to pass provider keys from each client or harness. Store them in the gateway once, or connect them as Provider Keys:
 
-| Setup                          | Where the provider key lives         | Clients send                                |
-| ------------------------------ | ------------------------------------ | ------------------------------------------- |
-| **Provider Keys**              | Your Fireworks account               | Only their gateway key                      |
-| **Keys in the gateway config** | The gateway's config or secret store | Only their gateway key                      |
-| **Keys from each client**      | Each client or harness               | Their gateway key and a provider-key header |
+| Setup | Where the provider key lives | Clients send |
+| - | - | - |
+| **Provider Keys** | Your Fireworks account | Only their gateway key |
+| **Keys in the gateway config** | The gateway's config or secret store | Only their gateway key |
+| **Keys from each client** | Each client or harness | Their gateway key and a provider-key header |
 
 <Tabs>
   <Tab title="Provider Keys">

@@ -169,19 +169,19 @@ The web search tool accepts optional `parameters` to customize search behavior:
 }
 ```
 
-| Parameter             | Type      | Default        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| --------------------- | --------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `engine`              | string    | `auto`         | Search engine to use: `auto`, `native`, `exa`, `firecrawl`, `parallel`, or `perplexity`                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `mode`                | string    | Engine default | Engine-specific search mode. Exa: `instant`, `fast`, `auto`, `deep-lite`, `deep`, or `deep-reasoning`. Parallel: `turbo`, `fast`, `basic`, or `advanced`. Ignored by other engines.                                                                                                                                                                                                                                                                                                                    |
-| `max_results`         | integer   | 5              | Maximum results per search call (1–25; 1–20 for Perplexity). Applies to Exa, Firecrawl, Parallel, and Perplexity engines; ignored with native provider search                                                                                                                                                                                                                                                                                                                                          |
-| `max_uses`            | integer   | N/A            | Maximum number of searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers ignore it                                                                                                                                                                                                                                |
-| `max_total_results`   | integer   | N/A            | Maximum total results across all search calls in a single request. Useful for controlling cost and context size in agentic loops                                                                                                                                                                                                                                                                                                                                                                       |
-| `search_context_size` | string    | N/A            | How much context to retrieve: `low`, `medium`, or `high`. For Exa, pins a fixed per-result character cap (5K/15K/30K); when omitted, Exa picks adaptively (\~2-4K per result). For Parallel, controls total characters across all results (defaults to `medium`). For Perplexity, maps directly to the Search API's native `search_context_size` parameter. Ignored with native provider search and Firecrawl. Overridden by `max_characters` when both are set                                        |
-| `max_characters`      | integer   | N/A            | Exact maximum characters of content per result (1–100,000). Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, caps highlight content per result. For Parallel, caps excerpt content per result (default 1,500 when omitted). For Perplexity, converted to a token budget via `max_tokens_per_page` and trimmed to the exact character cap. When both `max_characters` and `search_context_size` are set, `max_characters` takes precedence |
-| `user_location`       | object    | N/A            | Approximate user location for location-biased results. Currently only supported by native provider search; ignored with Exa, Firecrawl, Parallel, and Perplexity (see below)                                                                                                                                                                                                                                                                                                                           |
-| `allowed_domains`     | string\[] | N/A            | Limit results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (see [domain filtering](#domain-filtering))                                                                                                                                                                                                                                                                                                                                               |
-| `excluded_domains`    | string\[] | N/A            | Exclude results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and some native providers (see [domain filtering](#domain-filtering))                                                                                                                                                                                                                                                                                                                                           |
-| `x_search`            | object    | N/A            | Opt in to X/Twitter search on SpaceXAI models, with optional filters. Only used with native provider search on SpaceXAI; ignored elsewhere (see [X search](#x-search-spacexai))                                                                                                                                                                                                                                                                                                                        |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `engine` | string | `auto` | Search engine to use: `auto`, `native`, `exa`, `firecrawl`, `parallel`, or `perplexity` |
+| `mode` | string | Engine default | Engine-specific search mode. Exa: `instant`, `fast`, `auto`, `deep-lite`, `deep`, or `deep-reasoning`. Parallel: `turbo`, `fast`, `basic`, or `advanced`. Ignored by other engines. |
+| `max_results` | integer | 5 | Maximum results per search call (1–25; 1–20 for Perplexity). Applies to Exa, Firecrawl, Parallel, and Perplexity engines; ignored with native provider search |
+| `max_uses` | integer | N/A | Maximum number of searches the model may perform in a single request. Once reached, further search calls return an error result instead of executing. With native provider search, forwarded only to Anthropic (as `max_uses`); other native search providers ignore it |
+| `max_total_results` | integer | N/A | Maximum total results across all search calls in a single request. Useful for controlling cost and context size in agentic loops |
+| `search_context_size` | string | N/A | How much context to retrieve: `low`, `medium`, or `high`. For Exa, pins a fixed per-result character cap (5K/15K/30K); when omitted, Exa picks adaptively (\~2-4K per result). For Parallel, controls total characters across all results (defaults to `medium`). For Perplexity, maps directly to the Search API's native `search_context_size` parameter. Ignored with native provider search and Firecrawl. Overridden by `max_characters` when both are set |
+| `max_characters` | integer | N/A | Exact maximum characters of content per result (1–100,000). Applies to Exa, Parallel, and Perplexity engines; ignored with native provider search and Firecrawl. For Exa, caps highlight content per result. For Parallel, caps excerpt content per result (default 1,500 when omitted). For Perplexity, converted to a token budget via `max_tokens_per_page` and trimmed to the exact character cap. When both `max_characters` and `search_context_size` are set, `max_characters` takes precedence |
+| `user_location` | object | N/A | Approximate user location for location-biased results. Currently only supported by native provider search; ignored with Exa, Firecrawl, Parallel, and Perplexity (see below) |
+| `allowed_domains` | string\[] | N/A | Limit results to these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and most native providers (see [domain filtering](#domain-filtering)) |
+| `excluded_domains` | string\[] | N/A | Exclude results from these domains. Supported by Exa, Firecrawl, Parallel, Perplexity, and some native providers (see [domain filtering](#domain-filtering)) |
+| `x_search` | object | N/A | Opt in to X/Twitter search on SpaceXAI models, with optional filters. Only used with native provider search on SpaceXAI; ignored elsewhere (see [X search](#x-search-spacexai)) |
 
 ### User Location
 
@@ -221,14 +221,14 @@ On SpaceXAI models, native web search sends only xAI's `web_search` tool. To als
 }
 ```
 
-| Field                        | Type      | Description                                                                                  |
-| ---------------------------- | --------- | -------------------------------------------------------------------------------------------- |
-| `allowed_x_handles`          | string\[] | Only include posts from these handles (max 20). Mutually exclusive with `excluded_x_handles` |
-| `excluded_x_handles`         | string\[] | Exclude posts from these handles (max 20). Mutually exclusive with `allowed_x_handles`       |
-| `from_date`                  | string    | Start date (ISO 8601, e.g. `"2025-01-01"`)                                                   |
-| `to_date`                    | string    | End date (ISO 8601, e.g. `"2025-12-31"`)                                                     |
-| `enable_image_understanding` | boolean   | Analyze images in posts                                                                      |
-| `enable_video_understanding` | boolean   | Analyze videos in posts                                                                      |
+| Field | Type | Description |
+| - | - | - |
+| `allowed_x_handles` | string\[] | Only include posts from these handles (max 20). Mutually exclusive with `excluded_x_handles` |
+| `excluded_x_handles` | string\[] | Exclude posts from these handles (max 20). Mutually exclusive with `allowed_x_handles` |
+| `from_date` | string | Start date (ISO 8601, e.g. `"2025-01-01"`) |
+| `to_date` | string | End date (ISO 8601, e.g. `"2025-12-31"`) |
+| `enable_image_understanding` | boolean | Analyze images in posts |
+| `enable_video_understanding` | boolean | Analyze videos in posts |
 
 If a `web` plugin (from `plugins`, an `:online` model suffix, or a preset) is also present, `x_search` follows the same [precedence rules](#migrating-from-the-web-search-plugin) as the other server tool parameters.
 
@@ -250,7 +250,7 @@ When `engine` is `"auto"` (the default) or `"native"`, OpenRouter uses the provi
   Older OpenAI models (including GPT-4o, GPT-4o Mini, and GPT-4 Turbo) do **not** support native web search. If you set `engine: "native"` with these models, the server tool will fall back to Exa search. Use `engine: "auto"` (or omit the field) for equivalent behavior.
 </Note>
 
-You can check whether a specific model supports native search on its [model page](https://openrouter.ai/models); look for the "Web Search" capability badge. For models without native search, set `engine` to one of the other supported options ([Exa](https://exa.ai), [Firecrawl](https://firecrawl.dev), [Parallel](https://parallel.ai), or [Perplexity](https://docs.perplexity.ai)), or leave it as `"auto"` to default to Exa.
+You can check whether a specific model supports native search on its [model page](https://openrouter.ai/models); look for the "Web Search" capability badge. To check programmatically, read `native_tools` on the endpoint object. See [Native Execution](/docs/guides/features/server-tools#native-execution). For models without native search, set `engine` to one of the other supported options ([Exa](https://exa.ai), [Firecrawl](https://firecrawl.dev), [Parallel](https://parallel.ai), or [Perplexity](https://docs.perplexity.ai)), or leave it as `"auto"` to default to Exa.
 
 ## Engine Selection
 
@@ -265,11 +265,11 @@ The web search server tool supports multiple search engines:
 
 ### Engine Capabilities
 
-| Feature                  | Exa         | Firecrawl       | Parallel    | Perplexity  | Native             |
-| ------------------------ | ----------- | --------------- | ----------- | ----------- | ------------------ |
-| **Domain filtering**     | Yes         | Yes             | Yes         | Yes\*\*\*   | Varies by provider |
-| **Context size control** | Yes\*       | No              | Yes\*\*     | Yes         | No                 |
-| **API key**              | Server-side | BYOK (your key) | Server-side | Server-side | Provider-handled   |
+| Feature | Exa | Firecrawl | Parallel | Perplexity | Native |
+| - | - | - | - | - | - |
+| **Domain filtering** | Yes | Yes | Yes | Yes\*\*\* | Varies by provider |
+| **Context size control** | Yes\* | No | Yes\*\* | Yes | No |
+| **API key** | Server-side | BYOK (your key) | Server-side | Server-side | Provider-handled |
 
 <small>
   *\* Exa: limit applies **per result***
@@ -285,14 +285,14 @@ OpenRouter requests Exa [highlights](https://docs.exa.ai/reference/contents-retr
 
 Exa's `mode` controls search latency and depth. The default remains `auto`:
 
-| Mode             | Approximate latency | Request cost |
-| ---------------- | ------------------- | ------------ |
-| `instant`        | \~250 ms            | \$0.007      |
-| `fast`           | \~450 ms            | \$0.007      |
-| `auto` (default) | \~1 second          | \$0.007      |
-| `deep-lite`      | \~4 seconds         | \$0.012      |
-| `deep`           | \~4–15 seconds      | \$0.012      |
-| `deep-reasoning` | \~12–40 seconds     | \$0.015      |
+| Mode | Approximate latency | Request cost |
+| - | - | - |
+| `instant` | \~250 ms | \$0.007 |
+| `fast` | \~450 ms | \$0.007 |
+| `auto` (default) | \~1 second | \$0.007 |
+| `deep-lite` | \~4 seconds | \$0.012 |
+| `deep` | \~4–15 seconds | \$0.012 |
+| `deep-reasoning` | \~12–40 seconds | \$0.015 |
 
 By default, Exa selects an adaptive highlight size per query and document, typically \~2,000–4,000 characters per result. You can control the per-result character budget in two ways:
 
@@ -340,12 +340,12 @@ Firecrawl supports domain filtering (`allowed_domains` / `excluded_domains`), bu
 
 [Parallel](https://parallel.ai) supports domain filtering and context size control (`search_context_size`). Set `mode` to choose the provider mode; OpenRouter uses `basic` by default and sends it explicitly.
 
-| Mode              | Latency     | Request cost           | Language availability      |
-| ----------------- | ----------- | ---------------------- | -------------------------- |
-| `turbo`           | \~200 ms    | \$1 per 1,000 requests | English and Japanese       |
-| `fast`            | \~550 ms    | \$1 per 1,000 requests | Not documented by Parallel |
-| `basic` (default) | \~1 second  | \$5 per 1,000 requests | Broad language support     |
-| `advanced`        | \~3 seconds | \$5 per 1,000 requests | Broad language support     |
+| Mode | Latency | Request cost | Language availability |
+| - | - | - | - |
+| `turbo` | \~200 ms | \$1 per 1,000 requests | English and Japanese |
+| `fast` | \~550 ms | \$1 per 1,000 requests | Not documented by Parallel |
+| `basic` (default) | \~1 second | \$5 per 1,000 requests | Broad language support |
+| `advanced` | \~3 seconds | \$5 per 1,000 requests | Broad language support |
 
 Each mode includes up to 10 results. Additional results cost \$1 per 1,000 results.
 
@@ -367,16 +367,16 @@ Restrict which domains appear in search results using `allowed_domains` and `exc
 }
 ```
 
-| Engine                 | `allowed_domains` | `excluded_domains` | Notes                                                                                                                      |
-| ---------------------- | :---------------: | :----------------: | -------------------------------------------------------------------------------------------------------------------------- |
-| **Exa**                |        Yes        |         Yes        | Both can be used simultaneously                                                                                            |
-| **Parallel**           |        Yes        |         Yes        | Mutually exclusive                                                                                                         |
-| **Firecrawl**          |        Yes        |         Yes        | Mutually exclusive                                                                                                         |
-| **Perplexity**         |        Yes        |         Yes        | Mutually exclusive (when both provided, `allowed_domains` wins)                                                            |
-| **Native (Anthropic)** |        Yes        |         Yes        | Mutually exclusive                                                                                                         |
-| **Native (OpenAI)**    |        Yes        |         No         | `excluded_domains` ignored (no error)                                                                                      |
-| **Native (Google)**    |         No        |         No         | Not supported. With `engine: "auto"`, falls back to Exa when filters are set. With `engine: "native"`, returns a 400 error |
-| **Native (SpaceXAI)**  |        Yes        |         Yes        | Mutually exclusive                                                                                                         |
+| Engine | `allowed_domains` | `excluded_domains` | Notes |
+| - | :-: | :-: | - |
+| **Exa** | Yes | Yes | Both can be used simultaneously |
+| **Parallel** | Yes | Yes | Mutually exclusive |
+| **Firecrawl** | Yes | Yes | Mutually exclusive |
+| **Perplexity** | Yes | Yes | Mutually exclusive (when both provided, `allowed_domains` wins) |
+| **Native (Anthropic)** | Yes | Yes | Mutually exclusive |
+| **Native (OpenAI)** | Yes | No | `excluded_domains` ignored (no error) |
+| **Native (Google)** | No | No | Not supported. With `engine: "auto"`, falls back to Exa when filters are set. With `engine: "native"`, returns a 400 error |
+| **Native (SpaceXAI)** | Yes | Yes | Mutually exclusive |
 
 ## Controlling Total Results
 
@@ -506,13 +506,13 @@ The `web_search_requests` field counts the total number of search queries the mo
 
 ## Pricing
 
-| Engine         | Pricing                                                                                                                                                                                                                                                                                                                                                                                           |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Exa**        | Instant/Fast/Auto: \$0.007 per request; Deep Lite/Deep: \$0.012; Deep Reasoning: \$0.015. Includes up to 10 results, then \$0.001 per additional result                                                                                                                                                                                                                                           |
-| **Parallel**   | Turbo or Fast: \$0.001/request; Basic or Advanced: \$0.005/request. Includes up to 10 results, then \$0.001 per additional result                                                                                                                                                                                                                                                                 |
-| **Perplexity** | \$0.005 per request using OpenRouter credits                                                                                                                                                                                                                                                                                                                                                      |
-| **Firecrawl**  | Uses your Firecrawl credits directly, with no OpenRouter charge. 2 credits per 10 results (search) + 5 credits per result (1 scrape + 4 highlights). See [Firecrawl pricing](https://www.firecrawl.dev/pricing)                                                                                                                                                                                   |
-| **Native**     | Passed through from the provider ([OpenAI](https://platform.openai.com/docs/pricing#built-in-tools), [Anthropic](https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool#usage-and-pricing), [Google](https://ai.google.dev/pricing), [Perplexity](https://docs.perplexity.ai/getting-started/pricing), [SpaceXAI](https://docs.x.ai/developers/pricing#tool-invocation-costs)) |
+| Engine | Pricing |
+| - | - |
+| **Exa** | Instant/Fast/Auto: \$0.007 per request; Deep Lite/Deep: \$0.012; Deep Reasoning: \$0.015. Includes up to 10 results, then \$0.001 per additional result |
+| **Parallel** | Turbo or Fast: \$0.001/request; Basic or Advanced: \$0.005/request. Includes up to 10 results, then \$0.001 per additional result |
+| **Perplexity** | \$0.005 per request using OpenRouter credits |
+| **Firecrawl** | Uses your Firecrawl credits directly, with no OpenRouter charge. 2 credits per 10 results (search) + 5 credits per result (1 scrape + 4 highlights). See [Firecrawl pricing](https://www.firecrawl.dev/pricing) |
+| **Native** | Passed through from the provider ([OpenAI](https://platform.openai.com/docs/pricing#built-in-tools), [Anthropic](https://docs.claude.com/en/docs/agents-and-tools/tool-use/web-search-tool#usage-and-pricing), [Google](https://ai.google.dev/pricing), [Perplexity](https://docs.perplexity.ai/getting-started/pricing), [SpaceXAI](https://docs.x.ai/developers/pricing#tool-invocation-costs)) |
 
 All pricing is in addition to standard LLM token costs for processing the search result content.
 
@@ -524,16 +524,16 @@ All pricing is in addition to standard LLM token costs for processing the search
 
 The key differences:
 
-|                           | Web Search Plugin (deprecated)               | Web Search Server Tool                             |
-| ------------------------- | -------------------------------------------- | -------------------------------------------------- |
-| **How to enable**         | `plugins: [{ id: "web" }]`                   | `tools: [{ type: "openrouter:web_search" }]`       |
-| **Who decides to search** | Always searches once                         | Model decides when/whether to search               |
-| **Call frequency**        | Once per request                             | 0 to N times per request                           |
-| **Engine options**        | Native, Exa, Firecrawl, Parallel, Perplexity | Auto, Native, Exa, Firecrawl, Parallel, Perplexity |
-| **Domain filtering**      | Yes (Exa, Parallel, Perplexity, some native) | Yes (Exa, Parallel, Perplexity, most native)       |
-| **Context size control**  | Via `web_search_options`                     | Via `search_context_size` parameter                |
-| **Total results cap**     | No                                           | Yes (`max_total_results`)                          |
-| **Pricing**               | Varies by engine                             | Varies by engine (same rates)                      |
+| | Web Search Plugin (deprecated) | Web Search Server Tool |
+| - | - | - |
+| **How to enable** | `plugins: [{ id: "web" }]` | `tools: [{ type: "openrouter:web_search" }]` |
+| **Who decides to search** | Always searches once | Model decides when/whether to search |
+| **Call frequency** | Once per request | 0 to N times per request |
+| **Engine options** | Native, Exa, Firecrawl, Parallel, Perplexity | Auto, Native, Exa, Firecrawl, Parallel, Perplexity |
+| **Domain filtering** | Yes (Exa, Parallel, Perplexity, some native) | Yes (Exa, Parallel, Perplexity, most native) |
+| **Context size control** | Via `web_search_options` | Via `search_context_size` parameter |
+| **Total results cap** | No | Yes (`max_total_results`) |
+| **Pricing** | Varies by engine | Varies by engine (same rates) |
 
 Use one surface per request. If a request still carries a `web` plugin (from `plugins`, an `:online` model suffix, or a preset) alongside `openrouter:web_search` and the tool runs as native provider search, the server tool's parameters override the matching plugin settings (`allowed_domains`, `excluded_domains`, `max_results`, `user_location`, `max_uses`, `x_search`), and plugin settings the tool does not set, such as `search_prompt`, are kept. The two domain lists count as one setting: a tool `allowed_domains` or `excluded_domains` replaces both plugin lists, so providers that accept only one list (Anthropic) never receive both. Two cases keep the plugin settings as they are: a `web` plugin pinned to a non-native `engine` (its search has already run, so the tool does not add a second provider-side search), and a `web` setting saved in your account with **Prevent overrides** enabled.
 

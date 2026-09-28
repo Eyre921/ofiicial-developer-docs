@@ -55,10 +55,10 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -66,8 +66,8 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

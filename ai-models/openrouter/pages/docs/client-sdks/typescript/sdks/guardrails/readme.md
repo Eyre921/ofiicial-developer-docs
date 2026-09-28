@@ -93,12 +93,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListGuardrailsRequest](../../models/operations/listguardrailsrequest.mdx)   | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListGuardrailsRequest](../../models/operations/listguardrailsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -106,12 +106,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create
 
@@ -216,12 +216,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateGuardrailRequest](../../models/operations/createguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.CreateGuardrailRequest](../../models/operations/createguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -229,13 +229,13 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete
 
@@ -298,12 +298,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteGuardrailRequest](../../models/operations/deleteguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.DeleteGuardrailRequest](../../models/operations/deleteguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -311,12 +311,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get
 
@@ -379,12 +379,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.GetGuardrailRequest](../../models/operations/getguardrailrequest.mdx)       | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.GetGuardrailRequest](../../models/operations/getguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -392,12 +392,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## update
 
@@ -472,12 +472,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.UpdateGuardrailRequest](../../models/operations/updateguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.UpdateGuardrailRequest](../../models/operations/updateguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -485,15 +485,15 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.ConflictResponseError       | 409         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## listGuardrailKeyAssignments
 
@@ -560,12 +560,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                            | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListGuardrailKeyAssignmentsRequest](../../models/operations/listguardrailkeyassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                                  | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                         | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                                  | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListGuardrailKeyAssignmentsRequest](../../models/operations/listguardrailkeyassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -573,12 +573,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulkAssignKeys
 
@@ -651,12 +651,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                        | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkAssignKeysToGuardrailRequest](../../models/operations/bulkassignkeystoguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                              | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                     | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                              | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.BulkAssignKeysToGuardrailRequest](../../models/operations/bulkassignkeystoguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -664,14 +664,14 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulkUnassignKeys
 
@@ -744,12 +744,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                                | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkUnassignKeysFromGuardrailRequest](../../models/operations/bulkunassignkeysfromguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                                      | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                             | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                                      | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.BulkUnassignKeysFromGuardrailRequest](../../models/operations/bulkunassignkeysfromguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -757,13 +757,13 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## listGuardrailMemberAssignments
 
@@ -830,12 +830,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                                  | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListGuardrailMemberAssignmentsRequest](../../models/operations/listguardrailmemberassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                                        | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                               | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                                        | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListGuardrailMemberAssignmentsRequest](../../models/operations/listguardrailmemberassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -843,12 +843,12 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulkAssignMembers
 
@@ -923,12 +923,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                              | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkAssignMembersToGuardrailRequest](../../models/operations/bulkassignmemberstoguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                                    | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                           | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                                    | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.BulkAssignMembersToGuardrailRequest](../../models/operations/bulkassignmemberstoguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -936,13 +936,13 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulkUnassignMembers
 
@@ -1017,12 +1017,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                                      | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.BulkUnassignMembersFromGuardrailRequest](../../models/operations/bulkunassignmembersfromguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                                            | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                   | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                                            | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.BulkUnassignMembersFromGuardrailRequest](../../models/operations/bulkunassignmembersfromguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -1030,13 +1030,13 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## listKeyAssignments
 
@@ -1099,12 +1099,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                          | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListKeyAssignmentsRequest](../../models/operations/listkeyassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)       | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListKeyAssignmentsRequest](../../models/operations/listkeyassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -1112,11 +1112,11 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## listMemberAssignments
 
@@ -1179,12 +1179,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListMemberAssignmentsRequest](../../models/operations/listmemberassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                      | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)             | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                      | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListMemberAssignmentsRequest](../../models/operations/listmemberassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -1192,9 +1192,9 @@ run();
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

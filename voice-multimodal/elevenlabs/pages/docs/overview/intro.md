@@ -24,25 +24,25 @@ ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voi
 
 **Voices** are the speech persona used in audio generation. Each voice has a unique ID — for example, `JBFqnCBsd6RMkjVDRZzb` — that you select in the dashboard or pass in API requests. ElevenLabs maintains a [library of 10,000+ voices](https://elevenlabs.io/app/voice-library). You can also clone a voice from an audio recording or generate one from a text description.
 
-**Models** control the quality, latency, and language coverage of generated audio. [`eleven_v3`](/docs/overview/models) produces the most expressive output across 70+ languages. [`eleven_flash_v2_5`](/docs/overview/models) targets real-time use at \~75ms latency. Each capability — speech-to-text, music, sound effects — has its own dedicated model.
+**Models** control the quality, latency, and language coverage of generated audio. [`eleven_v4`](/docs/overview/models) produces the most expressive output across 90+ languages. [`eleven_v4_turbo`](/docs/overview/models) targets real-time use at median inference latency of \~100ms. Each capability — speech-to-text, music, sound effects — has its own dedicated model.
 
 **Credits** are the unit of consumption shared across every product. Text-to-speech costs one credit per character of input text. Other operations are charged per second of audio processed. Credits reset monthly and unused credits roll over for up to two months. See [pricing](https://elevenlabs.io/pricing/api) for a full breakdown.
 
 ## Choose your path
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113121Z&X-Amz-Expires=604800&X-Amz-Signature=666f7056032a2b685334a50094fe62f618551e387ab5932ed31f788ed0b73d4c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-creative/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233058Z&X-Amz-Expires=604800&X-Amz-Signature=164db7aac8d2318cd5955a78853a5611e8020c763ad311ca10b892793d05a515&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-creative/overview)
 
 ### ElevenCreative
 
 Learn how to use the ElevenCreative platform with step-by-step guides
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113121Z&X-Amz-Expires=604800&X-Amz-Signature=c3105d9cb119be8ba666a3f273f0ab05017aaa0d44d7f4ccc6c45596216d9a32&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/overview)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233058Z&X-Amz-Expires=604800&X-Amz-Signature=8c357078a215815d9507e54cdcacc09ed675a0dd2a252eeb14a20a040b86c31f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-agents/overview)
 
 ### ElevenAgents
 
 Learn how to build, launch, and scale agents with ElevenLabs
 
-[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T113121Z&X-Amz-Expires=604800&X-Amz-Signature=662be87dac8d932df08db2b1f50e691e754feb90b0e69e2ac461315fae722e23&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-api/quickstart)
+[![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233058Z&X-Amz-Expires=604800&X-Amz-Signature=c63af5f2925be5027af936df7fae665c397b83e20480025548c162e630ecfa3b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)](/docs/eleven-api/quickstart)
 
 ### ElevenAPI
 
@@ -50,9 +50,33 @@ Learn how to integrate with the ElevenLabs API with examples and tutorials
 
 ## Meet the models
 
+#### [Eleven v4](/docs/overview/models#eleven-v4)
+
+Our most emotive, high quality speech synthesis model
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+10,000 character limit
+
+Support for natural multi-speaker dialogue
+
+#### [Eleven v4 Turbo](/docs/overview/models#eleven-v4-turbo)
+
+Our most emotive, real-time speech synthesis model
+
+Ultra-low latency (median inference latency of \~100ms†)
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+Audio tags for fine-grained control
+
 #### [Eleven v3](/docs/overview/models#eleven-v3)
 
-Our most emotionally rich, expressive speech synthesis model
+Our emotionally rich, expressive speech synthesis model
 
 Dramatic delivery and performance
 
@@ -64,7 +88,7 @@ Support for natural multi-speaker dialogue
 
 #### [Eleven v3 Conversational](/docs/overview/models#eleven-v3-conversational)
 
-Our most expressive, realtime speech synthesis model
+Our expressive, realtime speech synthesis model
 
 Low latency (\~280ms)
 

@@ -104,11 +104,11 @@ The Training SDK's Tinker-compatible `sampler.sample(...)` method does not expos
 
 The active request stream, the session ID, and `reset_prompt_cache` are tightly coupled in rollout workflows, but they are not the same mechanism. Keep the three layers separate:
 
-| Layer                 | Scope                                                  | What it controls                                                        | What it does not control                               |
-| --------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------ |
-| Single request stream | One HTTP request that has already started decoding     | Active in-flight KV/state for that stream                               | Future prompt-prefix reuse after the stream ends       |
-| Session ID            | Later requests that use the same stable trajectory key | Sticky routing to the same replica and `new_session` namespace behavior | A cache hit by itself, or active-stream recompute      |
-| `reset_prompt_cache`  | Requests admitted after a checkpoint swap              | Which reusable prompt-prefix KV namespace later requests can use        | The active in-flight KV for a request already decoding |
+| Layer | Scope | What it controls | What it does not control |
+| - | - | - | - |
+| Single request stream | One HTTP request that has already started decoding | Active in-flight KV/state for that stream | Future prompt-prefix reuse after the stream ends |
+| Session ID | Later requests that use the same stable trajectory key | Sticky routing to the same replica and `new_session` namespace behavior | A cache hit by itself, or active-stream recompute |
+| `reset_prompt_cache` | Requests admitted after a checkpoint swap | Which reusable prompt-prefix KV namespace later requests can use | The active in-flight KV for a request already decoding |
 
 ### Active request stream
 
@@ -156,11 +156,11 @@ Configure `reset_prompt_cache` per snapshot in `POST /hot_load/v1/models/hot_loa
 
 This setting applies after the checkpoint swap and controls reusable prompt-prefix KV for later requests.
 
-| `reset_prompt_cache` | Active in-flight request crossing the swap                                                                                      | Later request with the same `x-multi-turn-session-id`          | Later request with a new session ID                           |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------- |
-| `all` (default)      | Not recomputed by this setting. Async pauses and resumes with existing active KV; sync lets the request finish before the swap. | Recomputes prompt-prefix KV under the new snapshot namespace.  | Recomputes prompt-prefix KV under the new snapshot namespace. |
-| `new_session`        | Not recomputed by this setting. Same active-stream behavior as `all`.                                                           | Can reuse eligible prompt-prefix KV for that existing session. | Recomputes prompt-prefix KV under the new snapshot namespace. |
-| `none`               | Not recomputed by this setting. Same active-stream behavior as `all`.                                                           | Can reuse eligible prompt-prefix KV.                           | Can reuse eligible prompt-prefix KV.                          |
+| `reset_prompt_cache` | Active in-flight request crossing the swap | Later request with the same `x-multi-turn-session-id` | Later request with a new session ID |
+| - | - | - | - |
+| `all` (default) | Not recomputed by this setting. Async pauses and resumes with existing active KV; sync lets the request finish before the swap. | Recomputes prompt-prefix KV under the new snapshot namespace. | Recomputes prompt-prefix KV under the new snapshot namespace. |
+| `new_session` | Not recomputed by this setting. Same active-stream behavior as `all`. | Can reuse eligible prompt-prefix KV for that existing session. | Recomputes prompt-prefix KV under the new snapshot namespace. |
+| `none` | Not recomputed by this setting. Same active-stream behavior as `all`. | Can reuse eligible prompt-prefix KV. | Can reuse eligible prompt-prefix KV. |
 
 For RL rollouts, the usual policy is:
 

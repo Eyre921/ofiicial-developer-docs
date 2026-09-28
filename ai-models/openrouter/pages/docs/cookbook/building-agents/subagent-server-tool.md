@@ -366,14 +366,14 @@ const tools = [
 ];
 ```
 
-| Parameter               | What it controls                                                                                                                              |
-| ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`                 | The worker model. Pick the cheapest model that can handle the subtask quality you need.                                                       |
-| `max_completion_tokens` | Output token ceiling (including reasoning). Prevents runaway generation on open-ended tasks.                                                  |
-| `temperature`           | Lower values for deterministic extraction, higher for creative drafting. Range 0 to 2.                                                        |
-| `reasoning`             | `effort` controls reasoning depth. Set to `"low"` for fast, cheap tasks. `max_tokens` sets the upper bound for the worker's reasoning tokens. |
-| `instructions`          | System prompt for the worker. Shape its output format and behavior.                                                                           |
-| `max_tool_calls`        | Range 1 to 25. Ceiling on the worker's own tool-calling loop.                                                                                 |
+| Parameter | What it controls |
+| - | - |
+| `model` | The worker model. Pick the cheapest model that can handle the subtask quality you need. |
+| `max_completion_tokens` | Output token ceiling (including reasoning). Prevents runaway generation on open-ended tasks. |
+| `temperature` | Lower values for deterministic extraction, higher for creative drafting. Range 0 to 2. |
+| `reasoning` | `effort` controls reasoning depth. Set to `"low"` for fast, cheap tasks. `max_tokens` sets the upper bound for the worker's reasoning tokens. |
+| `instructions` | System prompt for the worker. Shape its output format and behavior. |
+| `max_tool_calls` | Range 1 to 25. Ceiling on the worker's own tool-calling loop. |
 
 The full parameter reference is at [Subagent server tool](/docs/guides/features/server-tools/subagent).
 

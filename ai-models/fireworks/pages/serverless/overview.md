@@ -40,22 +40,22 @@ Headers a Serverless caller will set or read.
 
 ### Request headers
 
-| Header                                     | Notes                                                                                                                                                   |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Authorization: Bearer $FIREWORKS_API_KEY` | Required for all requests.                                                                                                                              |
-| `x-session-affinity`                       | Optional sticky-routing key. Pin repeated requests to the same replica to maximize prompt-cache hit rate. See [Prompt caching](/guides/prompt-caching). |
+| Header | Notes |
+| - | - |
+| `Authorization: Bearer $FIREWORKS_API_KEY` | Required for all requests. |
+| `x-session-affinity` | Optional sticky-routing key. Pin repeated requests to the same replica to maximize prompt-cache hit rate. See [Prompt caching](/guides/prompt-caching). |
 
 ### Response headers
 
 Fireworks sets the following on Serverless inference responses:
 
-| Header                                           | What it tells you                                                                     |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------- |
-| `fireworks-prompt-tokens`                        | Input tokens for the request.                                                         |
-| `fireworks-cached-prompt-tokens`                 | Cached portion of the input. See [Prompt caching](/guides/prompt-caching#monitoring). |
-| `X-Ratelimit-Limit-Tokens-Prompt`                | Your current Total Prompt Tokens per Second Limit.                                    |
-| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Your current Total Uncached Prompt Tokens per Second Limit.                           |
-| `X-Ratelimit-Limit-Tokens-Generated`             | Your current Total Generated Tokens per Second Limit.                                 |
+| Header | What it tells you |
+| - | - |
+| `fireworks-prompt-tokens` | Input tokens for the request. |
+| `fireworks-cached-prompt-tokens` | Cached portion of the input. See [Prompt caching](/guides/prompt-caching#monitoring). |
+| `X-Ratelimit-Limit-Tokens-Prompt` | Your current Total Prompt Tokens per Second Limit. |
+| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Your current Total Uncached Prompt Tokens per Second Limit. |
+| `X-Ratelimit-Limit-Tokens-Generated` | Your current Total Generated Tokens per Second Limit. |
 
 <Tip>
   Streaming responses don't carry per-request perf headers. To get the same metrics in the streaming response body, set the `perf_metrics_in_response` parameter on the request. See [Querying text models](/guides/querying-text-models#usage--performance-tracking).
@@ -75,11 +75,11 @@ For production workloads requiring long-term model stability, we recommend [on-d
 
 ## Serverless vs On-demand
 
-| When Serverless fits                                           | When On-demand fits                                                                |
-| -------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Pay per token, only for what you use                           | Pay per GPU-hour for dedicated capacity                                            |
-| You're using popular base models that Fireworks already hosts  | You're running custom base models or trained LoRA models (LoRA requires On-demand) |
-| You don't want to manage scaling, replicas, or hardware sizing | You have custom latency requirements and want control over hardware and replicas   |
+| When Serverless fits | When On-demand fits |
+| - | - |
+| Pay per token, only for what you use | Pay per GPU-hour for dedicated capacity |
+| You're using popular base models that Fireworks already hosts | You're running custom base models or trained LoRA models (LoRA requires On-demand) |
+| You don't want to manage scaling, replicas, or hardware sizing | You have custom latency requirements and want control over hardware and replicas |
 
 For dedicated infrastructure, see [On-demand deployments](/guides/ondemand-deployments).
 

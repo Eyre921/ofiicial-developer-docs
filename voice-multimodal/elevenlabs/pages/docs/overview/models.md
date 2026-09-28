@@ -14,9 +14,33 @@ path: docs/overview/models
 
 ### Text to Speech
 
+#### [Eleven v4](/docs/overview/models#eleven-v4)
+
+Our most emotive, high quality speech synthesis model
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+10,000 character limit
+
+Support for natural multi-speaker dialogue
+
+#### [Eleven v4 Turbo](/docs/overview/models#eleven-v4-turbo)
+
+Our most emotive, real-time speech synthesis model
+
+Ultra-low latency (median inference latency of \~100ms†)
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+Audio tags for fine-grained control
+
 #### [Eleven v3](/docs/overview/models#eleven-v3)
 
-Our most emotionally rich, expressive speech synthesis model
+Our emotionally rich, expressive speech synthesis model
 
 Dramatic delivery and performance
 
@@ -28,7 +52,7 @@ Support for natural multi-speaker dialogue
 
 #### [Eleven v3 Conversational](/docs/overview/models#eleven-v3-conversational)
 
-Our most expressive, realtime speech synthesis model
+Our expressive, realtime speech synthesis model
 
 Low latency (\~280ms)
 
@@ -142,10 +166,12 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 
 | Model ID                     | Description                                                                                                                                                                            | Languages                                                                                                                                                                     |
 | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `eleven_v3`                  | Human-like and expressive speech generation                                                                                                                                            | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
-| `eleven_v3_conversational`   | Our most expressive, realtime speech synthesis model (\~280ms†)                                                                                                                        | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
-| `eleven_ttv_v3`              | Human-like and expressive voice design model (Text to Voice)                                                                                                                           | [70+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
-| `eleven_multilingual_v2`     | Our most lifelike model with rich emotional expression                                                                                                                                 | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
+| `eleven_v4`                  | Our most emotionally rich, expressive speech synthesis model                                                                                                                           | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
+| `eleven_v4_turbo`            | Our most expressive, real-time speech synthesis model (\~100ms†)                                                                                                                       | [90+ languages](/docs/overview/models#supported-languages)                                                                                                                    |
+| `eleven_v3`                  | Human-like and expressive speech generation                                                                                                                                            | [70+ languages](/docs/overview/models#supported-languages-2)                                                                                                                  |
+| `eleven_v3_conversational`   | Our most expressive, realtime speech synthesis model (\~280ms†)                                                                                                                        | [70+ languages](/docs/overview/models#supported-languages-2)                                                                                                                  |
+| `eleven_ttv_v3`              | Human-like and expressive voice design model (Text to Voice)                                                                                                                           | [70+ languages](/docs/overview/models#supported-languages-2)                                                                                                                  |
+| `eleven_multilingual_v2`     | Our lifelike model with rich emotional expression                                                                                                                                      | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
 | `eleven_flash_v2_5`          | Ultra-fast model optimized for real-time use (\~75ms†)                                                                                                                                 | All `eleven_multilingual_v2` languages plus: `hu`, `no`, `vi`                                                                                                                 |
 | `eleven_flash_v2`            | Ultra-fast model optimized for real-time use (\~75ms†)                                                                                                                                 | `en`                                                                                                                                                                          |
 | `eleven_multilingual_sts_v2` | State-of-the-art multilingual voice changer model (Speech to Speech)                                                                                                                   | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru` |
@@ -177,15 +203,46 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 | `eleven_turbo_v2`   | First generation low-latency model (outclassed by Flash models) | `en`                                                                                                                                                                                            | `eleven_flash_v2`            |
 | `scribe_v1`         | First generation speech recognition (outclassed by v2 models)   | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                                                 | `scribe_v2`                  |
 
-## Eleven v3
+## Eleven v4
 
-Eleven v3 is our latest and most advanced speech synthesis model. It is a state-of-the-art model that produces natural, life-like speech with high emotional range and contextual understanding across multiple languages.
+Eleven v4 is our state of the art speech synthesis model, delivering our highest quality audio, expressiveness, and control over how voices are performed. Eleven v4 supports high-fidelity voice cloning with reliable speaker preservation across long text generations.
 
 This model works well in the following scenarios:
 
-* **Character Discussions**: Excellent for audio experiences with multiple characters that interact with each other.
-* **Audiobook Production**: Perfect for long-form narration with complex emotional delivery.
+* **Character Voiceovers**: Ideal for gaming and animation due to its emotional range.
 * **Emotional Dialogue**: Generate natural, lifelike dialogue with high emotional range and contextual understanding.
+* **Audiobook Production**: Perfect for long-form narration with complex emotional delivery.
+* **Multilingual Projects**: Maintains consistent voice quality across language switches.
+
+Eleven v4 is available via the [Text to Dialogue API](/docs/api-reference/text-to-dialogue/convert).
+
+### Supported languages
+
+The Eleven v4 model family supports 90+ languages, including:
+
+*Afrikaans (afr), Amharic (amh), Arabic (ara), Armenian (hye), Assamese (asm), Asturian (ast), Azerbaijani (aze), Belarusian (bel), Bengali (ben), Bosnian (bos), Bulgarian (bul), Burmese (mya), Cantonese (yue), Catalan (cat), Cebuano (ceb), Croatian (hrv), Czech (ces), Danish (dan), Dutch (nld), English (eng), Estonian (est), Filipino (fil), Finnish (fin), French (fra), Fula/Pulaar (ful), Galician (glg), Georgian (kat), German (deu), Greek (ell), Gujarati (guj), Hausa (hau), Hebrew (heb), Hindi (hin), Hungarian (hun), Icelandic (isl), Indonesian (ind), Italian (ita), Japanese (jpn), Javanese (jav), Kamba (kam), Kannada (kan), Kazakh (kaz), Korean (kor), Kyrgyz (kir), Lao (lao), Latvian (lav), Lingala (lin), Lithuanian (lit), Luganda (lug), Luxembourgish (ltz), Macedonian (mkd), Malay (msa), Malayalam (mal), Maltese (mlt), Mandarin Chinese (cmn), Māori (mri), Marathi (mar), Mongolian (mon), Nepali (nep), Norwegian Bokmål (nob), Occitan (oci), Odia (ori), Pashto (pus), Persian (fas), Polish (pol), Portuguese, Brazil (por), Punjabi (pan), Romanian (ron), Russian (rus), Serbian (srp), Shona (sna), Sindhi (snd), Slovak (slk), Slovenian (slv), Somali (som), Sorani Kurdish (ckb), Spanish, LatAm (spa), Swahili (swa), Swedish (swe), Tajik (tgk), Tamil (tam), Telugu (tel), Thai (tha), Turkish (tur), Ukrainian (ukr), Urdu (urd), Uzbek (uzb), Vietnamese (vie), Welsh (cym), Wolof (wol), Zulu (zul).*
+
+## Eleven v4 Turbo
+
+Eleven v4 Turbo is our state of the art model for real-time speech synthesis, delivering high quality audio, expressiveness, and control over how voices are performed. Eleven v4 Turbo supports high-fidelity voice cloning and delivers results in median inference latency of \~100ms latency.
+
+This model works well in the following scenarios:
+
+* **Support agents**: Power voice agents that resolve customer queries in realtime.
+* **AI assistants**: Generate natural, lifelike dialogue with high emotional range and contextual understanding.
+* **Interactive characters**: Excellent for audio experiences with expressive characters.
+
+Eleven v4 Turbo is available via the [Text to Dialogue websocket](/docs/eleven-api/guides/how-to/websockets/realtime-tdd).
+
+### Supported languages
+
+The Eleven v4 model family supports 90+ languages, including:
+
+*Afrikaans (afr), Amharic (amh), Arabic (ara), Armenian (hye), Assamese (asm), Asturian (ast), Azerbaijani (aze), Belarusian (bel), Bengali (ben), Bosnian (bos), Bulgarian (bul), Burmese (mya), Cantonese (yue), Catalan (cat), Cebuano (ceb), Croatian (hrv), Czech (ces), Danish (dan), Dutch (nld), English (eng), Estonian (est), Filipino (fil), Finnish (fin), French (fra), Fula/Pulaar (ful), Galician (glg), Georgian (kat), German (deu), Greek (ell), Gujarati (guj), Hausa (hau), Hebrew (heb), Hindi (hin), Hungarian (hun), Icelandic (isl), Indonesian (ind), Italian (ita), Japanese (jpn), Javanese (jav), Kamba (kam), Kannada (kan), Kazakh (kaz), Korean (kor), Kyrgyz (kir), Lao (lao), Latvian (lav), Lingala (lin), Lithuanian (lit), Luganda (lug), Luxembourgish (ltz), Macedonian (mkd), Malay (msa), Malayalam (mal), Maltese (mlt), Mandarin Chinese (cmn), Māori (mri), Marathi (mar), Mongolian (mon), Nepali (nep), Norwegian Bokmål (nob), Occitan (oci), Odia (ori), Pashto (pus), Persian (fas), Polish (pol), Portuguese, Brazil (por), Punjabi (pan), Romanian (ron), Russian (rus), Serbian (srp), Shona (sna), Sindhi (snd), Slovak (slk), Slovenian (slv), Somali (som), Sorani Kurdish (ckb), Spanish, LatAm (spa), Swahili (swa), Swedish (swe), Tajik (tgk), Tamil (tam), Telugu (tel), Thai (tha), Turkish (tur), Ukrainian (ukr), Urdu (urd), Uzbek (uzb), Vietnamese (vie), Welsh (cym), Wolof (wol), Zulu (zul).*
+
+## Eleven v3
+
+Eleven v3 is our previous generation speech synthesis model which produces natural, life-like speech with high emotional range and contextual understanding across multiple languages.
 
 With Eleven v3 comes a new Text to Dialogue API, which allows you to generate natural, lifelike dialogue with high emotional range and contextual understanding across multiple languages. Eleven v3 can also be used with the Text to Speech API to generate natural, lifelike speech with high emotional range and contextual understanding across multiple languages.
 
@@ -199,13 +256,9 @@ The Eleven v3 model supports 70+ languages, including:
 
 ## Eleven v3 Conversational
 
-Eleven v3 Conversational is our most expressive model for realtime speech synthesis. It is a state-of-the-art model that produces natural, life-like speech with high emotional range and contextual understanding across multiple languages.
+Eleven v3 Conversational is our previous generation model for realtime speech synthesis. It produces natural, life-like speech with high emotional range and contextual understanding across multiple languages.
 
-This model works well in the following scenarios:
-
-* **Support agents**: Power voice agents that resolve customer queries in realtime.
-* **AI assistants**: Generate natural, lifelike dialogue with high emotional range and contextual understanding.
-* **Interactive characters**: Excellent for audio experiences with expressive characters.
+With Eleven v3 Conversational comes a new Text to Dialogue WebSocket, which allows you to generate natural, lifelike dialogue with high emotional range and contextual understanding across multiple languages.
 
 With Eleven v3 Conversational comes a new Text to Dialogue WebSocket, which allows you to generate natural, lifelike dialogue with high emotional range and contextual understanding across multiple languages.
 
@@ -219,7 +272,7 @@ The Eleven v3 model supports 70+ languages, including:
 
 ## Multilingual v2
 
-Eleven Multilingual v2 is our most advanced, emotionally-aware speech synthesis model. It produces natural, lifelike speech with high emotional range and contextual understanding across multiple languages.
+Eleven Multilingual v2 is a previous generation emotionally-aware speech synthesis model. It produces natural, lifelike speech with high emotional range and contextual understanding across multiple languages.
 
 The model delivers consistent voice quality and personality across all supported languages while maintaining the speaker's unique characteristics and accent.
 
@@ -276,47 +329,29 @@ For guidance on which model best fits your requirements and use case, see the [m
 
 #### Quality
 
-Use `eleven_v3` or `eleven_multilingual_v2`
+Use `eleven_v4` or `eleven_multilingual_v2`
 
 Best for high-fidelity audio output with rich emotional expression
 
 #### Low-latency
 
-Use Flash models
+Use `eleven_v4_turbo`
 
-Optimized for real-time applications (\~75ms latency)
-
-#### Expressive realtime
-
-Use `eleven_v3_conversational`
-
-Our most expressive model for realtime speech synthesis (\~280ms latency)
-
-#### Multilingual
-
-Use either `eleven_v3` or `eleven_v3_conversational`
-
-Both support 70+ languages
-
-#### Balanced
-
-Use `eleven_flash_v2_5` or `eleven_v3_conversational`
-
-Good balance between quality and speed
+Optimized for real-time applications (\~100ms latency)
 
 #### Use case
 
 #### Content creation
 
-Use `eleven_v3` or `eleven_multilingual_v2`
+Use `eleven_v4` or `eleven_multilingual_v2`
 
 Ideal for professional content, audiobooks & video narration.
 
 #### Agents Platform
 
-Use `eleven_v3_conversational`, `eleven_flash_v2_5`, `eleven_flash_v2` or `eleven_multilingual_v2`
+Use `eleven_v4_turbo`, `eleven_flash_v2_5`, `eleven_flash_v2` or `eleven_multilingual_v2`
 
-Perfect for real-time conversational applications. Use `eleven_v3_conversational` for the most expressive delivery.
+Perfect for real-time conversational applications. Use `eleven_v4_turbo` for the most expressive delivery.
 
 #### Voice changer
 
@@ -330,6 +365,7 @@ The maximum number of characters supported in a single text-to-speech request va
 
 | Model ID                 | Character limit | Approximate audio duration |
 | ------------------------ | --------------- | -------------------------- |
+| `eleven_v4`              | 10,000          | \~10 minutes               |
 | `eleven_v3`              | 5,000           | \~5 minutes                |
 | `eleven_flash_v2_5`      | 40,000          | \~40 minutes               |
 | `eleven_flash_v2`        | 30,000          | \~30 minutes               |
@@ -503,7 +539,7 @@ As a general rule of thumb, a concurrency limit of 5 can typically support up to
 This is because of the speed it takes for audio to be generated relative to the time it takes for the TTS request to be processed.
 The diagram below is an example of how 4 concurrent calls with different users can be facilitated while only hitting 2 concurrent requests.
 
-![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T103021Z&X-Amz-Expires=604800&X-Amz-Signature=0a8c06ad066f20b2decadd4762969122406bfb0170ab29f1f7cc96222f4ce92a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Concurrency limits](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/dcc5e3bd18993a9f862bd526f3dc1b32cfa89003a58ded6f4f6a7bda1bd5a2ea/assets/images/product-guides/speech-to-text/tts-concurrency.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T191149Z&X-Amz-Expires=604800&X-Amz-Signature=8a4d918c2bd37c77de350cee4e88c015c9402f2be0153dac857ee9d73f54be34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Building AI Voice Agents
 

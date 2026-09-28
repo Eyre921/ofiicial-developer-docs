@@ -330,15 +330,15 @@ const contextAwareTool = tool({
 
 ### Context Properties
 
-| Property           | Type                                         | Description                         |
-| ------------------ | -------------------------------------------- | ----------------------------------- |
-| `numberOfTurns`    | `number`                                     | Current turn number (1-indexed)     |
-| `turnRequest`      | `OpenResponsesRequest \| undefined`          | Current request object              |
-| `toolCall`         | `OpenResponsesFunctionToolCall \| undefined` | The tool call being executed        |
-| `local`            | `Readonly<TContext>`                         | This tool's own context (read-only) |
-| `setContext`       | `(partial: Partial<TContext>) => void`       | Mutate this tool's context          |
-| `shared`           | `Readonly<TShared>`                          | Shared context visible to all tools |
-| `setSharedContext` | `(partial: Partial<TShared>) => void`        | Mutate shared context               |
+| Property | Type | Description |
+| - | - | - |
+| `numberOfTurns` | `number` | Current turn number (1-indexed) |
+| `turnRequest` | `OpenResponsesRequest \| undefined` | Current request object |
+| `toolCall` | `OpenResponsesFunctionToolCall \| undefined` | The tool call being executed |
+| `local` | `Readonly<TContext>` | This tool's own context (read-only) |
+| `setContext` | `(partial: Partial<TContext>) => void` | Mutate this tool's context |
+| `shared` | `Readonly<TShared>` | Shared context visible to all tools |
+| `setSharedContext` | `(partial: Partial<TShared>) => void` | Mutate shared context |
 
 ## Tool Context
 
@@ -683,9 +683,9 @@ for await (const event of result.getToolStream()) {
 
 #### Event Types
 
-| Type                 | Description                                                |
-| -------------------- | ---------------------------------------------------------- |
-| `delta`              | Raw tool call argument chunks from model                   |
+| Type | Description |
+| - | - |
+| `delta` | Raw tool call argument chunks from model |
 | `preliminary_result` | Progress events from generator tools (intermediate yields) |
 
 ### Tool Result Events

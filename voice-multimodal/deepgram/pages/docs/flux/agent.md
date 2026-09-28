@@ -95,7 +95,7 @@ Once comfortable with End of Turn, you can decide if you need to optimize latenc
 
 > **Info**
 >
-> **Dynamic Tuning**: In production voice agents powered by Flux, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, or keyterms, mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element—see [Keyterm Prompting](/docs/keyterm) for the full syntax rules.
+> **Dynamic Tuning**: In production voice agents powered by Flux STT, you can use the [Configure control message](/docs/flux/configure) to adjust these thresholds, keyterms, or numerals mid-stream as desired behavior changes throughout a conversation. Each `keyterms` entry is a plain string with no weights or intensifiers, and a multi-word phrase is a single array element. See [Keyterm Prompting](/docs/keyterm) for the full syntax rules.
 
 > **Info**
 >

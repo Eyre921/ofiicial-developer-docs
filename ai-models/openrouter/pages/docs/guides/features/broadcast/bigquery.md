@@ -236,12 +236,12 @@ Custom metadata from the `trace` field is stored in the `metadata` JSON column. 
 
 ### Supported Metadata Keys
 
-| Key               | BigQuery Mapping                    | Description                          |
-| ----------------- | ----------------------------------- | ------------------------------------ |
-| `trace_id`        | `trace_id` column / `metadata` JSON | Custom trace identifier for grouping |
-| `trace_name`      | `metadata` JSON                     | Custom name for the trace            |
-| `span_name`       | `metadata` JSON                     | Name for intermediate spans          |
-| `generation_name` | `metadata` JSON                     | Name for the LLM generation          |
+| Key | BigQuery Mapping | Description |
+| - | - | - |
+| `trace_id` | `trace_id` column / `metadata` JSON | Custom trace identifier for grouping |
+| `trace_name` | `metadata` JSON | Custom name for the trace |
+| `span_name` | `metadata` JSON | Name for intermediate spans |
+| `generation_name` | `metadata` JSON | Name for the LLM generation |
 
 ### Example
 

@@ -70,15 +70,15 @@ The skill presents your coding agent with an interactive checklist of tools, mod
 
 ### What `@openrouter/agent` handles
 
-| Concern             | How the SDK handles it                                                                                |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| **Model calls**     | `client.callModel()` — one call, any model on OpenRouter                                              |
-| **Tool execution**  | Define tools with `tool()` and Zod schemas; the SDK validates input and calls your `execute` function |
-| **Multi-turn**      | The SDK loops (call model -> execute tools -> call model) until a stop condition fires                |
-| **Stop conditions** | `stepCountIs(n)`, `maxCost(amount)`, `hasToolCall(name)`, or custom functions                         |
-| **Streaming**       | `result.getTextStream()` for text deltas, `result.getToolCallsStream()` for tool calls                |
-| **Cost tracking**   | `result.getResponse().usage` with input/output token counts                                           |
-| **Shared context**  | Type-safe shared state across tools via `sharedContextSchema`                                         |
+| Concern | How the SDK handles it |
+| - | - |
+| **Model calls** | `client.callModel()` — one call, any model on OpenRouter |
+| **Tool execution** | Define tools with `tool()` and Zod schemas; the SDK validates input and calls your `execute` function |
+| **Multi-turn** | The SDK loops (call model -> execute tools -> call model) until a stop condition fires |
+| **Stop conditions** | `stepCountIs(n)`, `maxCost(amount)`, `hasToolCall(name)`, or custom functions |
+| **Streaming** | `result.getTextStream()` for text deltas, `result.getToolCallsStream()` for tool calls |
+| **Cost tracking** | `result.getResponse().usage` with input/output token counts |
+| **Shared context** | Type-safe shared state across tools via `sharedContextSchema` |
 
 ## Visual customization
 
@@ -88,13 +88,13 @@ Every part of the terminal UI is customizable. The skill lets you choose each st
 
 Choose how tool calls appear during agent execution. Set `display.toolDisplay` in your config or pass `--tool-display` at launch.
 
-| Style                   | Description                                                                        |
-| ----------------------- | ---------------------------------------------------------------------------------- |
+| Style | Description |
+| - | - |
 | **`grouped`** (default) | Bold action labels with tree-branch output; consecutive same-type calls are merged |
-| **`emoji`**             | Per-call markers with tool name, arguments, and timing                             |
-| **`minimal`**           | Aggregated one-liner summaries, flushed when text resumes                          |
-| **`hidden`**            | Suppresses tool output entirely                                                    |
-| **Custom**              | Describe what you want — the skill implements a custom display                     |
+| **`emoji`** | Per-call markers with tool name, arguments, and timing |
+| **`minimal`** | Aggregated one-liner summaries, flushed when text resumes |
+| **`hidden`** | Suppresses tool output entirely |
+| **Custom** | Describe what you want — the skill implements a custom display |
 
 **Grouped** — bold action labels with tree-branch output:
 
@@ -120,12 +120,12 @@ You can also describe a completely custom tool display style and the skill will 
 
 Three input styles are available via `display.inputStyle` or `--input`.
 
-| Style                 | Description                                                                                                                        |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Style | Description |
+| - | - |
 | **`block`** (default) | Full-width background-colored input box with `›` prompt — adapts to your terminal's color scheme using OSC 11 background detection |
-| **`bordered`**        | Horizontal `─` lines above and below the input — works on any terminal                                                             |
-| **`plain`**           | Simple `> ` readline prompt — no raw mode, no escape sequences                                                                     |
-| **Custom**            | Describe what you want — the skill implements a custom input style                                                                 |
+| **`bordered`** | Horizontal `─` lines above and below the input — works on any terminal |
+| **`plain`** | Simple `> ` readline prompt — no raw mode, no escape sequences |
+| **Custom** | Describe what you want — the skill implements a custom input style |
 
 **Block** — full-width background input box that adapts to your terminal theme:
 
@@ -151,12 +151,12 @@ You can also describe a completely custom input style and the skill will impleme
 
 Three loader styles shown while waiting for the model response. Set `display.loader.style` and `display.loader.text` in config.
 
-| Style                    | Description                                                      |
-| ------------------------ | ---------------------------------------------------------------- |
-| **`gradient`** (default) | Scrolling color shimmer over the loader text                     |
-| **`spinner`**            | Braille dot animation (⠋⠙⠹…) to the left of the text             |
-| **`minimal`**            | Trailing dots (`Working···`)                                     |
-| **Custom**               | Describe what you want — the skill implements a custom animation |
+| Style | Description |
+| - | - |
+| **`gradient`** (default) | Scrolling color shimmer over the loader text |
+| **`spinner`** | Braille dot animation (⠋⠙⠹…) to the left of the text |
+| **`minimal`** | Trailing dots (`Working···`) |
+| **Custom** | Describe what you want — the skill implements a custom animation |
 
 **Gradient** — scrolling color shimmer:
 
@@ -240,61 +240,61 @@ The skill presents a checklist when invoked. Items marked **on** are pre-selecte
 
 Executed by OpenRouter server-side — zero client code needed.
 
-| Tool             | Default | Description                                       |
-| ---------------- | ------- | ------------------------------------------------- |
-| Web Search       | on      | Real-time web search via `openrouter:web_search`  |
-| Datetime         | on      | Current date/time via `openrouter:datetime`       |
-| Image Generation | off     | Generate images via `openrouter:image_generation` |
+| Tool | Default | Description |
+| - | - | - |
+| Web Search | on | Real-time web search via `openrouter:web_search` |
+| Datetime | on | Current date/time via `openrouter:datetime` |
+| Image Generation | off | Generate images via `openrouter:image_generation` |
 
 ### User-defined tools
 
 Generated into `src/tools/` with full implementations.
 
-| Tool                 | Default | Description                                   |
-| -------------------- | ------- | --------------------------------------------- |
-| File Read            | on      | Read files with offset/limit, detect images   |
-| File Write           | on      | Write/create files, auto-create directories   |
-| File Edit            | on      | Search-and-replace with diff output           |
-| Glob/Find            | on      | Find files by glob pattern                    |
-| Grep/Search          | on      | Search file contents by regex                 |
-| Directory List       | on      | List directory entries                        |
-| Shell/Bash           | on      | Execute commands with timeout                 |
-| JS REPL              | off     | Persistent Node.js environment                |
-| Sub-agent Spawn      | off     | Delegate tasks to child agents                |
-| Plan/Todo            | off     | Track multi-step task progress                |
-| Request User Input   | off     | Ask structured questions                      |
-| Web Fetch            | off     | Fetch and extract text from URLs              |
-| View Image           | off     | Read local images as base64                   |
-| Custom Tool Template | on      | Empty skeleton for your domain-specific tools |
+| Tool | Default | Description |
+| - | - | - |
+| File Read | on | Read files with offset/limit, detect images |
+| File Write | on | Write/create files, auto-create directories |
+| File Edit | on | Search-and-replace with diff output |
+| Glob/Find | on | Find files by glob pattern |
+| Grep/Search | on | Search file contents by regex |
+| Directory List | on | List directory entries |
+| Shell/Bash | on | Execute commands with timeout |
+| JS REPL | off | Persistent Node.js environment |
+| Sub-agent Spawn | off | Delegate tasks to child agents |
+| Plan/Todo | off | Track multi-step task progress |
+| Request User Input | off | Ask structured questions |
+| Web Fetch | off | Fetch and extract text from URLs |
+| View Image | off | Read local images as base64 |
+| Custom Tool Template | on | Empty skeleton for your domain-specific tools |
 
 ### Harness modules
 
 Architectural components that extend the core agent harness.
 
-| Module                      | Default | Description                                             |
-| --------------------------- | ------- | ------------------------------------------------------- |
-| Session Persistence         | on      | JSONL append-only conversation log                      |
-| ASCII Logo Banner           | off     | Custom ASCII art banner on startup                      |
-| Context Compaction          | off     | Summarize older messages when context gets long         |
-| System Prompt Composition   | off     | Build instructions from static + dynamic context files  |
-| Tool Permissions / Approval | off     | Gate dangerous tools behind user confirmation           |
-| Structured Event Logging    | off     | Emit events for tool calls, API requests, errors        |
-| `@`-file References         | off     | `@filename` to attach file content to the next message  |
-| `!` Shell Shortcut          | off     | `!command` to run shell and inject output into context  |
-| Multi-line Input            | off     | Shift+Enter for multi-line (requires raw terminal mode) |
+| Module | Default | Description |
+| - | - | - |
+| Session Persistence | on | JSONL append-only conversation log |
+| ASCII Logo Banner | off | Custom ASCII art banner on startup |
+| Context Compaction | off | Summarize older messages when context gets long |
+| System Prompt Composition | off | Build instructions from static + dynamic context files |
+| Tool Permissions / Approval | off | Gate dangerous tools behind user confirmation |
+| Structured Event Logging | off | Emit events for tool calls, API requests, errors |
+| `@`-file References | off | `@filename` to attach file content to the next message |
+| `!` Shell Shortcut | off | `!command` to run shell and inject output into context |
+| Multi-line Input | off | Shift+Enter for multi-line (requires raw terminal mode) |
 
 ### Slash commands
 
 User-facing REPL commands generated into `src/commands.ts`.
 
-| Command    | Default | Description                           |
-| ---------- | ------- | ------------------------------------- |
-| `/model`   | on      | Switch model via OpenRouter API       |
-| `/new`     | on      | Start a fresh conversation            |
-| `/help`    | on      | List available commands               |
-| `/compact` | off     | Manually trigger context compaction   |
-| `/session` | off     | Show session metadata and token usage |
-| `/export`  | off     | Save conversation as Markdown         |
+| Command | Default | Description |
+| - | - | - |
+| `/model` | on | Switch model via OpenRouter API |
+| `/new` | on | Start a fresh conversation |
+| `/help` | on | List available commands |
+| `/compact` | off | Manually trigger context compaction |
+| `/session` | off | Show session metadata and token usage |
+| `/export` | off | Save conversation as Markdown |
 
 ## Entry points
 

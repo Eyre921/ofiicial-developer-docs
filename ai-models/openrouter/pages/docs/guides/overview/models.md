@@ -24,18 +24,18 @@ Filter models by their output capabilities. Accepts a comma-separated list of mo
 
 When the parameter is omitted, the endpoint returns text-output models only. Models whose output is not text, such as image generators, embedding models, or decision models like [Jev](https://openrouter.ai/typesafe/jev-1.13), are not in the default response. Pass their modality explicitly, or `all`, to discover them.
 
-| Value           | Description                                                                                                                                                                                                                                       |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `text`          | Models that produce text output (default)                                                                                                                                                                                                         |
-| `image`         | Models that generate images                                                                                                                                                                                                                       |
-| `video`         | Models that generate video                                                                                                                                                                                                                        |
-| `audio`         | Models that produce audio output                                                                                                                                                                                                                  |
-| `speech`        | Text-to-speech models                                                                                                                                                                                                                             |
-| `transcription` | Speech-to-text models                                                                                                                                                                                                                             |
-| `embeddings`    | Embedding models                                                                                                                                                                                                                                  |
-| `rerank`        | Reranking models                                                                                                                                                                                                                                  |
-| `decisions`     | Decision models such as [Jev](https://openrouter.ai/typesafe/jev-1.13) that return typed judgments instead of text. See [Jev Lab](https://openrouter.ai/labs/jev) and the [Jev gating recipe](/docs/cookbook/building-agents/gate-tool-calls-with-jev) |
-| `all`           | Include all models, skip modality filtering                                                                                                                                                                                                       |
+| Value | Description |
+| - | - |
+| `text` | Models that produce text output (default) |
+| `image` | Models that generate images |
+| `video` | Models that generate video |
+| `audio` | Models that produce audio output |
+| `speech` | Text-to-speech models |
+| `transcription` | Speech-to-text models |
+| `embeddings` | Embedding models |
+| `rerank` | Reranking models |
+| `decisions` | Decision models such as [Jev](https://openrouter.ai/typesafe/jev-1.13) that return typed judgments instead of text. See [Jev Lab](https://openrouter.ai/labs/jev) and the [Jev gating recipe](/docs/cookbook/building-agents/gate-tool-calls-with-jev) |
+| `all` | Include all models, skip modality filtering |
 
 Examples:
 
@@ -70,16 +70,16 @@ curl "https://openrouter.ai/api/v1/models?supported_parameters=tools"
 
 Sort models server-side before they're returned. Accepts one of the following values:
 
-| Value                    | Description                                                                                      |
-| ------------------------ | ------------------------------------------------------------------------------------------------ |
-| `pricing-low-to-high`    | Cheapest models first (weighted average of prompt, completion, request, and web\_search pricing) |
-| `pricing-high-to-low`    | Most expensive models first                                                                      |
-| `context-high-to-low`    | Largest context window first                                                                     |
-| `throughput-high-to-low` | Highest tokens/second first (p50 throughput from routing heuristics)                             |
-| `latency-low-to-high`    | Lowest time-to-first-token first (p50 latency)                                                   |
-| `most-popular`           | Most tokens processed in the last week                                                           |
-| `top-weekly`             | Same as `most-popular`                                                                           |
-| `newest`                 | Most recently added to OpenRouter                                                                |
+| Value | Description |
+| - | - |
+| `pricing-low-to-high` | Cheapest models first (weighted average of prompt, completion, request, and web\_search pricing) |
+| `pricing-high-to-low` | Most expensive models first |
+| `context-high-to-low` | Largest context window first |
+| `throughput-high-to-low` | Highest tokens/second first (p50 throughput from routing heuristics) |
+| `latency-low-to-high` | Lowest time-to-first-token first (p50 latency) |
+| `most-popular` | Most tokens processed in the last week |
+| `top-weekly` | Same as `most-popular` |
+| `newest` | Most recently added to OpenRouter |
 
 Models without data for the requested sort dimension (e.g. no pricing, no throughput heuristics) sort last. Omitting `sort` preserves the default ordering (backward compatible).
 
@@ -167,22 +167,22 @@ curl "https://openrouter.ai/api/v1/models?offset=0&limit=500"
 
 Each model in the `data` array contains the following standardized fields:
 
-| Field                  | Type                                          | Description                                                                            |
-| ---------------------- | --------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `id`                   | `string`                                      | Unique model identifier used in API requests (e.g., `"google/gemini-2.5-pro-preview"`) |
-| `canonical_slug`       | `string`                                      | Permanent slug for the model that never changes                                        |
-| `name`                 | `string`                                      | Human-readable display name for the model                                              |
-| `created`              | `number`                                      | Unix timestamp of when the model was added to OpenRouter                               |
-| `description`          | `string`                                      | Detailed description of the model's capabilities and characteristics                   |
-| `context_length`       | `number`                                      | Maximum context window size in tokens                                                  |
-| `architecture`         | `Architecture`                                | Object describing the model's technical capabilities                                   |
-| `pricing`              | `Pricing`                                     | Pricing from the top provider for this model                                           |
-| `top_provider`         | `TopProvider`                                 | Configuration details for the primary provider                                         |
-| `per_request_limits`   | Rate limiting information (null if no limits) |                                                                                        |
-| `supported_parameters` | `string[]`                                    | Array of supported API parameters for this model                                       |
-| `default_parameters`   | `object \| null`                              | Default parameter values for this model (null if none)                                 |
-| `expiration_date`      | `string \| null`                              | Deprecation date for the model endpoint (null if not deprecated)                       |
-| `benchmarks`           | `Benchmarks \| undefined`                     | Third-party benchmark rankings (omitted when no data is available)                     |
+| Field | Type | Description |
+| - | - | - |
+| `id` | `string` | Unique model identifier used in API requests (e.g., `"google/gemini-2.5-pro-preview"`) |
+| `canonical_slug` | `string` | Permanent slug for the model that never changes |
+| `name` | `string` | Human-readable display name for the model |
+| `created` | `number` | Unix timestamp of when the model was added to OpenRouter |
+| `description` | `string` | Detailed description of the model's capabilities and characteristics |
+| `context_length` | `number` | Maximum context window size in tokens |
+| `architecture` | `Architecture` | Object describing the model's technical capabilities |
+| `pricing` | `Pricing` | Pricing from the top provider for this model |
+| `top_provider` | `TopProvider` | Configuration details for the primary provider |
+| `per_request_limits` | Rate limiting information (null if no limits) | |
+| `supported_parameters` | `string[]` | Array of supported API parameters for this model |
+| `default_parameters` | `object \| null` | Default parameter values for this model (null if none) |
+| `expiration_date` | `string \| null` | Deprecation date for the model endpoint (null if not deprecated) |
+| `benchmarks` | `Benchmarks \| undefined` | Third-party benchmark rankings (omitted when no data is available) |
 
 #### Architecture Object
 

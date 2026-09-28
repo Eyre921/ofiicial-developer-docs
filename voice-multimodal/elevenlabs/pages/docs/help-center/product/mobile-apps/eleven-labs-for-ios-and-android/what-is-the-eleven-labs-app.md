@@ -13,7 +13,7 @@ The official ElevenLabs app allows you to access our most powerful voice tools f
 With the ElevenLabs app, you can:
 
 * Choose from your favorite voices and presets, all synced with your web account
-* Create voiceovers using any of our models, including our latest and most powerful model, v3, with support for emotion, tone, and pacing
+* Create voiceovers using any of our models, including [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4), our latest model, with support for emotion, tone, and pacing
 * Export audio clips and instantly drop them into tools like CapCut, iMovie, or Instagram
 * Start with 10,000 free credits per month, with full plan support for existing users
 * Seamless login for existing users — one account with your voices, your projects, anywhere

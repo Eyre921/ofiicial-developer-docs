@@ -89,12 +89,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                  | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListInternVaultSecretsRequest](../../models/operations/listinternvaultsecretsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                        | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)               | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                        | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListInternVaultSecretsRequest](../../models/operations/listinternvaultsecretsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -102,19 +102,19 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.RequestTimeoutResponseError     | 408         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.GatewayTimeoutResponseError     | 504         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.GatewayTimeoutResponseError | 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## deleteInternVaultSecret
 
@@ -179,12 +179,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteInternVaultSecretRequest](../../models/operations/deleteinternvaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                 | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.DeleteInternVaultSecretRequest](../../models/operations/deleteinternvaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -192,19 +192,19 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.RequestTimeoutResponseError     | 408         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.GatewayTimeoutResponseError     | 504         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.GatewayTimeoutResponseError | 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## storeInternVaultSecret
 
@@ -1316,12 +1316,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                  | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.StoreInternVaultSecretRequest](../../models/operations/storeinternvaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                        | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)               | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                        | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.StoreInternVaultSecretRequest](../../models/operations/storeinternvaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -1329,21 +1329,21 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.RequestTimeoutResponseError     | 408         | application/json |
-| errors.ConflictResponseError           | 409         | application/json |
-| errors.PayloadTooLargeResponseError    | 413         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.GatewayTimeoutResponseError     | 504         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.PayloadTooLargeResponseError | 413 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.GatewayTimeoutResponseError | 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## copyVaultSecretsToIntern
 
@@ -2391,12 +2391,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                                      | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CopyVaultSecretsToInternRequest](../../models/operations/copyvaultsecretstointernrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                                            | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                   | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                                            | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.CopyVaultSecretsToInternRequest](../../models/operations/copyvaultsecretstointernrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -2404,21 +2404,21 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.RequestTimeoutResponseError     | 408         | application/json |
-| errors.ConflictResponseError           | 409         | application/json |
-| errors.PayloadTooLargeResponseError    | 413         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.GatewayTimeoutResponseError     | 504         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.PayloadTooLargeResponseError | 413 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.GatewayTimeoutResponseError | 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## listVaultSecrets
 
@@ -2477,12 +2477,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                      | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.ListVaultSecretsRequest](../../models/operations/listvaultsecretsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                            | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)   | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                            | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.ListVaultSecretsRequest](../../models/operations/listvaultsecretsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -2490,19 +2490,19 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.RequestTimeoutResponseError     | 408         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.GatewayTimeoutResponseError     | 504         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.GatewayTimeoutResponseError | 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## deleteVaultSecret
 
@@ -2565,12 +2565,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                        | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.DeleteVaultSecretRequest](../../models/operations/deletevaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                              | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)     | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                              | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.DeleteVaultSecretRequest](../../models/operations/deletevaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -2578,19 +2578,19 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.RequestTimeoutResponseError     | 408         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.GatewayTimeoutResponseError     | 504         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.GatewayTimeoutResponseError | 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## storeVaultSecret
 
@@ -3603,12 +3603,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                      | Required             | Description                                                                                                                                                                    |
-| ---------------------- | ----------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.StoreVaultSecretRequest](../../models/operations/storevaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                            | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)   | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                            | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.StoreVaultSecretRequest](../../models/operations/storevaultsecretrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -3616,18 +3616,18 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.RequestTimeoutResponseError     | 408         | application/json |
-| errors.PayloadTooLargeResponseError    | 413         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.GatewayTimeoutResponseError     | 504         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.RequestTimeoutResponseError | 408 | application/json |
+| errors.PayloadTooLargeResponseError | 413 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.GatewayTimeoutResponseError | 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

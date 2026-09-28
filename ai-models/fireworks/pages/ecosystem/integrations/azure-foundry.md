@@ -28,11 +28,11 @@ Fireworks on Foundry requires a one-time opt-in per Azure subscription before yo
 
 Fireworks on Foundry supports three deployment modes.
 
-| Mode              | Also called                    | Pricing                           | Regions              | Right for                                    |
-| ----------------- | ------------------------------ | --------------------------------- | -------------------- | -------------------------------------------- |
-| **PayGo**         | Serverless, Data Zone Standard | Per token, MACC-eligible          | US Data Zone only    | Prototyping, low-volume workloads            |
-| **PTU**           | Provisioned Throughput         | Per PTU-hour, ACD + MACC eligible | Global               | Production workloads with consistent traffic |
-| **Custom Models** | Bring Your Own Model           | PTU pricing                       | Global (PTU regions) | Trained model deployment                     |
+| Mode | Also called | Pricing | Regions | Right for |
+| - | - | - | - | - |
+| **PayGo** | Serverless, Data Zone Standard | Per token, MACC-eligible | US Data Zone only | Prototyping, low-volume workloads |
+| **PTU** | Provisioned Throughput | Per PTU-hour, ACD + MACC eligible | Global | Production workloads with consistent traffic |
+| **Custom Models** | Bring Your Own Model | PTU pricing | Global (PTU regions) | Trained model deployment |
 
 PTU deployments can be created directly in the Azure portal. For help with PTU sizing on Fireworks models, contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
 
@@ -104,13 +104,13 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 
 ## Troubleshooting
 
-| Issue                           | Resolution                                                                                                                                                                                                                  |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Quota exceeded error            | Request a limit increase at [aka.ms/fireworks-quota](https://aka.ms/fireworks-quota)                                                                                                                                        |
-| Access denied on deployment     | Verify you have the **Azure AI Developer** role on the project                                                                                                                                                              |
-| Opt-in not propagating          | Allow up to 30 minutes after registering `Fireworks.EnableDeploy`                                                                                                                                                           |
+| Issue | Resolution |
+| - | - |
+| Quota exceeded error | Request a limit increase at [aka.ms/fireworks-quota](https://aka.ms/fireworks-quota) |
+| Access denied on deployment | Verify you have the **Azure AI Developer** role on the project |
+| Opt-in not propagating | Allow up to 30 minutes after registering `Fireworks.EnableDeploy` |
 | Custom Model deployment failing | Confirm weights are full-weight (not LoRA adapters) and the architecture is in the [supported list](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models#supported-model-architectures) |
-| PTU provisioning questions      | Contact [sales@fireworks.ai](mailto:sales@fireworks.ai)                                                                                                                                                                     |
+| PTU provisioning questions | Contact [sales@fireworks.ai](mailto:sales@fireworks.ai) |
 
 ## Coding harnesses
 

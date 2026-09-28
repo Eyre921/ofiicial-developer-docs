@@ -149,12 +149,12 @@ run();
 
 ### Parameters
 
-| Parameter              | Type                                                                                    | Required             | Description                                                                                                                                                                    |
-| ---------------------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`              | [operations.CreateSystemoneRequest](../../models/operations/createsystemonerequest.mdx) | :heavy\_check\_mark: | The request object to use for the request.                                                                                                                                     |
-| `options`              | RequestOptions                                                                          | :heavy\_minus\_sign: | Used to set various options for making HTTP requests.                                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `request` | [operations.CreateSystemoneRequest](../../models/operations/createsystemonerequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
+| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
 | `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`      | [RetryConfig](../../lib/utils/retryconfig.mdx)                                          | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -162,19 +162,19 @@ run();
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError         | 400         | application/json |
-| errors.UnauthorizedResponseError       | 401         | application/json |
-| errors.PaymentRequiredResponseError    | 402         | application/json |
-| errors.ForbiddenResponseError          | 403         | application/json |
-| errors.NotFoundResponseError           | 404         | application/json |
-| errors.PayloadTooLargeResponseError    | 413         | application/json |
-| errors.TooManyRequestsResponseError    | 429         | application/json |
-| errors.InternalServerResponseError     | 500         | application/json |
-| errors.BadGatewayResponseError         | 502         | application/json |
-| errors.ServiceUnavailableResponseError | 503         | application/json |
-| errors.EdgeNetworkTimeoutResponseError | 524         | application/json |
-| errors.ProviderOverloadedResponseError | 529         | application/json |
-| errors.OpenRouterDefaultError          | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.PaymentRequiredResponseError | 402 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.PayloadTooLargeResponseError | 413 | application/json |
+| errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.BadGatewayResponseError | 502 | application/json |
+| errors.ServiceUnavailableResponseError | 503 | application/json |
+| errors.EdgeNetworkTimeoutResponseError | 524 | application/json |
+| errors.ProviderOverloadedResponseError | 529 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

@@ -24,26 +24,26 @@ chunks.
 
 ## Messages vs Items
 
-| Traditional (OpenAI Chat, Vercel AI) | callModel (Items-native)    |
-| ------------------------------------ | --------------------------- |
-| Stream chunks, accumulate text       | Stream items, replace by ID |
-| Single message type                  | Multiple item types         |
-| Reconstruct content at end           | Each emission is complete   |
-| Manual state management              | Natural React state updates |
+| Traditional (OpenAI Chat, Vercel AI) | callModel (Items-native) |
+| - | - |
+| Stream chunks, accumulate text | Stream items, replace by ID |
+| Single message type | Multiple item types |
+| Reconstruct content at end | Each emission is complete |
+| Manual state management | Natural React state updates |
 
 ## Item Types
 
 `getItemsStream()` yields these item types:
 
-| Type                    | Description                        |
-| ----------------------- | ---------------------------------- |
-| `message`               | Assistant text responses           |
-| `function_call`         | Tool invocations with arguments    |
-| `reasoning`             | Model thinking (extended thinking) |
-| `web_search_call`       | Web search operations              |
-| `file_search_call`      | File search operations             |
-| `image_generation_call` | Image generation operations        |
-| `function_call_output`  | Results from executed tools        |
+| Type | Description |
+| - | - |
+| `message` | Assistant text responses |
+| `function_call` | Tool invocations with arguments |
+| `reasoning` | Model thinking (extended thinking) |
+| `web_search_call` | Web search operations |
+| `file_search_call` | File search operations |
+| `image_generation_call` | Image generation operations |
+| `function_call_output` | Results from executed tools |
 
 ## How Streaming Works
 

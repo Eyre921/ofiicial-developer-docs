@@ -14,10 +14,11 @@ It’s designed to help when you can’t find the exact voice you need in our Vo
 
 To get started, just type a prompt describing the voice you want. You can include details like accent, gender, pacing, tone, and speaking style. The more specific your prompt, the more closely the voice will match your intent. But if you're unsure, a simple prompt like "a calm male narrator" also works.
 
-Voices created with Voice Design v3 are fully compatible with our latest model, Eleven v3, and support audio tags for our most expressive speech. They’re also backward compatible, meaning you can use them across all our other models.
+Voices created with Voice Design work with [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4), our latest model, and with earlier models including Eleven v3. They support audio tags. On Eleven v4 they may be less performative than on earlier models.
 
 For more tips on writing effective prompts, see our [Voice Design guide.](/docs/creative-platform/voices/voice-design)
 
 **Note:** Voice Design is still experimental. Professional Voice Clones offer the
 highest quality and consistency. If you find a PVC that fits your needs, we recommend using it.
-However, the v3 model does not currently support Professional Voice Clones.
+Professional Voice Clones are fully supported on [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4). They are not fully optimized for Eleven
+v3.

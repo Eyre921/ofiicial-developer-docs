@@ -60,10 +60,10 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -71,11 +71,11 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## List
 
@@ -113,13 +113,13 @@ func main() {
 
 ### Parameters
 
-| Parameter         | Type                                                       | Required             | Description                                                                              | Example                              |
-| ----------------- | ---------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------- | ------------------------------------ |
-| `ctx`             | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                      |                                      |
-| `includeDisabled` | `*bool`                                                    | :heavy\_minus\_sign: | Whether to include disabled API keys in the response                                     | false                                |
-| `offset`          | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | Number of API keys to skip for pagination                                                | 0                                    |
-| `workspaceID`     | `*string`                                                  | :heavy\_minus\_sign: | Filter API keys by workspace ID. By default, keys in the default workspace are returned. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
-| `opts`            | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                            |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `includeDisabled` | `*bool` | :heavy\_minus\_sign: | Whether to include disabled API keys in the response | false |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of API keys to skip for pagination | 0 |
+| `workspaceID` | `*string` | :heavy\_minus\_sign: | Filter API keys by workspace ID. By default, keys in the default workspace are returned. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -127,13 +127,13 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Create
 
@@ -179,11 +179,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                                          | Required             | Description                                |
-| --------- | ----------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                         | :heavy\_check\_mark: | The context to use for the request.        |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
 | `request` | [operations.CreateKeysRequest](../../models/operations/createkeysrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx)                    | :heavy\_minus\_sign: | The options for this request.              |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -191,14 +191,14 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.ForbiddenResponseError       | 403         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Delete
 
@@ -235,11 +235,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                  | Example                                                          |
-| --------- | ---------------------------------------------------------- | -------------------- | -------------------------------------------- | ---------------------------------------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.          |                                                                  |
-| `hash`    | `string`                                                   | :heavy\_check\_mark: | The hash identifier of the API key to delete | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943 |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                |                                                                  |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `hash` | `string` | :heavy\_check\_mark: | The hash identifier of the API key to delete | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -247,13 +247,13 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.NotFoundResponseError        | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Get
 
@@ -290,11 +290,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                    | Example                                                          |
-| --------- | ---------------------------------------------------------- | -------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.            |                                                                  |
-| `hash`    | `string`                                                   | :heavy\_check\_mark: | The hash identifier of the API key to retrieve | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943 |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                  |                                                                  |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `hash` | `string` | :heavy\_check\_mark: | The hash identifier of the API key to retrieve | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -302,13 +302,13 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.NotFoundResponseError        | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Update
 
@@ -353,12 +353,12 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                                                  | Required             | Description                                  | Example                                                                                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)                                 | :heavy\_check\_mark: | The context to use for the request.          |                                                                                                                                                              |
-| `hash`        | `string`                                                                              | :heavy\_check\_mark: | The hash identifier of the API key to update | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943                                                                                             |
-| `requestBody` | [operations.UpdateKeysRequestBody](../../models/operations/updatekeysrequestbody.mdx) | :heavy\_check\_mark: | N/A                                          | \{<br />"disabled": false,<br />"include\_byok\_in\_limit": true,<br />"limit": 75,<br />"limit\_reset": "daily",<br />"name": "Updated API Key Name"<br />} |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx)                            | :heavy\_minus\_sign: | The options for this request.                |                                                                                                                                                              |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `hash` | `string` | :heavy\_check\_mark: | The hash identifier of the API key to update | f01d52606dc8f0a8303a7b5cc3fa07109c2e346cec7c0a16b40de462992ce943 |
+| `requestBody` | [operations.UpdateKeysRequestBody](../../models/operations/updatekeysrequestbody.mdx) | :heavy\_check\_mark: | N/A | \{<br />"disabled": false,<br />"include\_byok\_in\_limit": true,<br />"limit": 75,<br />"limit\_reset": "daily",<br />"name": "Updated API Key Name"<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -366,12 +366,12 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.NotFoundResponseError        | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

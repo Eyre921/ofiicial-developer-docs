@@ -26,6 +26,8 @@ The ASR behavior you want at minute one isn't what you want at minute three. Wit
 
 **Adjust turn detection for critical flows.** When you're collecting a password, OTP, or account number, you don't want Flux cutting off the user mid-utterance. Increase `eot_timeout_ms` and `eot_threshold` values for that segment to allow longer pauses and wait for higher confidence before detecting turn end, then decrease them when you're back to natural conversation.
 
+**Switch number formatting per step.** Turn on `numerals` right before you ask for a PIN, phone number, or order number so the transcript returns digits ("4 8 1 5"), then turn it off when the conversation returns to free-form speech.
+
 **Reduce engineering complexity.** Without dynamic configuration, changing ASR behavior mid-call meant reconnecting (dropping audio, managing state transitions) or worse, managing multiple concurrent streams and swapping between them. That's a state machine you never wanted to build and definitely don't want to maintain. Configure gives you one connection with dynamic behavior.
 
 Configuration updates are processed in order with your audio stream and take effect immediately when processed. The stream continues uninterrupted, and you receive confirmation of successful updates via `ConfigureSuccess` messages.
@@ -34,14 +36,14 @@ Configuration updates are processed in order with your audio stream and take eff
 
 You can update the following parameters mid-stream:
 
-| Parameter             | Type    | Range                    | Description                                                                                                                                                                                                                                    |
-| --------------------- | ------- | ------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `keyterms`            | array   | Up to 100 terms          | Custom vocabulary terms to boost recognition accuracy. **Note:** Sending keyterms replaces the entire list, not merge.                                                                                                                         |
-| `language_hints`      | array   | Supported language codes | Bias `flux-general-multi` toward specific languages. **Note:** Non-empty array replaces current hints. Empty array `[]` clears hints. Omit or `null` to keep current hints unchanged. See [Language Prompting](/docs/flux/language-prompting). |
-| `eot_threshold`       | number  | 0.5-1.0                  | Confidence threshold for standard turn detection. Higher values mean more confidence required before detecting turn end. Set to `1.0` to suppress natural end-of-turn.                                                                         |
-| `eager_eot_threshold` | number  | 0.3-0.9                  | Confidence threshold for eager turn detection. Must be ≤ `eot_threshold`.                                                                                                                                                                      |
-| `eot_timeout_ms`      | number  | 500-60000                | Maximum silence duration (in milliseconds) before forcing turn end.                                                                                                                                                                            |
-| `numerals`            | boolean | `true` / `false`         | Convert numbers from written format to numerical format (for example, "twenty twenty six" to "2026"). Applies to turns transcribed after the update. Can also be set as a query parameter (`numerals=true`) when the stream opens.             |
+| Parameter             | Type    | Range                    | Description                                                                                                                                                                                                                                                           |
+| --------------------- | ------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `keyterms`            | array   | Up to 100 terms          | Custom vocabulary terms to boost recognition accuracy. **Note:** Sending keyterms replaces the entire list, not merge.                                                                                                                                                |
+| `language_hints`      | array   | Supported language codes | Bias `flux-general-multi` toward specific languages. **Note:** Non-empty array replaces current hints. Empty array `[]` clears hints. Omit or `null` to keep current hints unchanged. See [Language Prompting](/docs/flux/language-prompting).                        |
+| `eot_threshold`       | number  | 0.5-1.0                  | Confidence threshold for standard turn detection. Higher values mean more confidence required before detecting turn end. Set to `1.0` to suppress natural end-of-turn.                                                                                                |
+| `eager_eot_threshold` | number  | 0.3-0.9                  | Confidence threshold for eager turn detection. Must be ≤ `eot_threshold`.                                                                                                                                                                                             |
+| `eot_timeout_ms`      | number  | 500-60000                | Maximum silence duration (in milliseconds) before forcing turn end.                                                                                                                                                                                                   |
+| `numerals`            | boolean | `true` / `false`         | Convert numbers from written format to numerical format (for example, "twenty twenty six" to "2026"). Applies to transcripts Flux STT sends after it processes the update. Set the initial value with the `numerals` query parameter. See [Numerals](/docs/numerals). |
 
 All parameters are optional in a Configure message. Omitted parameters retain their current values.
 
@@ -131,11 +133,20 @@ Thresholds must be nested under a `"thresholds"` object. Individual threshold pr
 }
 ```
 
+**`Update Numerals`**
+
+```json Update Numerals
+{
+  "type": "Configure",
+  "numerals": true
+}
+```
+
 ### Response Messages
 
 #### ConfigureSuccess
 
-Returned when configuration update is successfully applied. Echoes back the updated configuration.
+Returned when configuration update is successfully applied. Returns the full active configuration, including fields you didn't change.
 
 ```json
 {
@@ -146,7 +157,10 @@ Returned when configuration update is successfully applied. Echoes back the upda
     "eot_timeout_ms": 6000
   },
   "keyterms": ["apple", "banana", "orange"],
-  "language_hints": ["en", "es"]
+  "language_hints": ["en", "es"],
+  "profanity_filter": false,
+  "redact_usage": false,
+  "numerals": true
 }
 ```
 
@@ -157,9 +171,10 @@ Returned when configuration update fails validation. The stream continues with t
 ```json
 {
   "type": "ConfigureFailure",
-  "sequence_id": 42,
-  "code": "INVALID_THRESHOLD",
-  "description": "eager_eot_threshold must be less than or equal to eot_threshold"
+  "request_id": "01a0e80f-3782-7413-afc3-091fabadf0a8",
+  "sequence_id": 1,
+  "code": "UNPARSABLE_CLIENT_MESSAGE",
+  "description": "eager_eot_threshold cannot be greater than eot_threshold."
 }
 ```
 
@@ -204,6 +219,8 @@ Different behaviors apply when you omit fields versus explicitly clearing them:
 | Omit language\_hints          | `{"type": "Configure", "keyterms": [...]}`      | No change to language hints               |
 | Empty language\_hints array   | `{"type": "Configure", "language_hints": []}`   | Clears all hints (reverts to auto-detect) |
 | Set language\_hints to null   | `{"type": "Configure", "language_hints": null}` | No change to language hints               |
+| Omit numerals                 | `{"type": "Configure", "keyterms": [...]}`      | No change to numerals                     |
+| Set numerals to null          | `{"type": "Configure", "numerals": null}`       | No change to numerals                     |
 
 ### Validation Rules
 
@@ -212,8 +229,15 @@ Configure messages are validated using the same rules as initial connection para
 * `eager_eot_threshold` must be ≤ `eot_threshold` (if both are specified in the message)
 * Threshold values must be within valid ranges
 * Keyterms array must contain ≤ 100 terms
+* `numerals` must be a JSON boolean (`true` or `false`)
 
-**Important:** A failed Configure message (returning `ConfigureFailure`) does NOT affect the stream. The connection continues with the previous configuration unchanged.
+**Important:** A failed Configure message (returning `ConfigureFailure`) does NOT affect the stream. The connection continues with the previous configuration unchanged. Schema errors are the exception: a message that fails schema validation closes the connection (see the warning below).
+
+Flux STT applies all fields in a Configure message together or not at all. If one field fails, such as an invalid `keyterms` list sent alongside `numerals`, none of the fields take effect.
+
+> **Warning**
+>
+> A Configure message that fails schema validation, such as `{"type": "Configure", "numerals": "true"}`, returns a message with `type: Error` and code `UNPARSABLE_CLIENT_MESSAGE`, and Flux STT closes the connection. `ConfigureFailure` can carry the same code, so check `type` to tell the two apart.
 
 ## Related Resources
 

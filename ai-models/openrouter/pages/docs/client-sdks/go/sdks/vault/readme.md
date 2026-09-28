@@ -61,13 +61,13 @@ func main() {
 
 ### Parameters
 
-| Parameter  | Type                                                       | Required             | Description                                                 | Example                              |
-| ---------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------------- | ------------------------------------ |
-| `ctx`      | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                         |                                      |
-| `internID` | `string`                                                   | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `limit`    | `*int64`                                                   | :heavy\_minus\_sign: | Page size, 1 to 100. Defaults to 100.                       | 50                                   |
-| `offset`   | `*int64`                                                   | :heavy\_minus\_sign: | Number of secrets to skip, 0 to 10000. Defaults to 0.       | 0                                    |
-| `opts`     | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                               |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Page size, 1 to 100. Defaults to 100. | 50 |
+| `offset` | `*int64` | :heavy\_minus\_sign: | Number of secrets to skip, 0 to 10000. Defaults to 0. | 0 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -75,19 +75,19 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError     | 408         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.GatewayTimeoutResponseError     | 504         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.GatewayTimeoutResponseError | 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## DeleteInternVaultSecret
 
@@ -121,12 +121,12 @@ func main() {
 
 ### Parameters
 
-| Parameter  | Type                                                       | Required             | Description                                                                                                                                   | Example                              |
-| ---------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `ctx`      | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                           |                                      |
-| `internID` | `string`                                                   | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key.                                                                                   | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `name`     | `string`                                                   | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token                        |
-| `opts`     | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                 |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `name` | `string` | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -134,19 +134,19 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError     | 408         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.GatewayTimeoutResponseError     | 504         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.GatewayTimeoutResponseError | 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## StoreInternVaultSecret
 
@@ -714,13 +714,13 @@ func main() {
 
 ### Parameters
 
-| Parameter                 | Type                                                                                      | Required             | Description                                                                                                                                   | Example                                                                                         |
-| ------------------------- | ----------------------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `ctx`                     | [context.Context](https://pkg.go.dev/context#Context)                                     | :heavy\_check\_mark: | The context to use for the request.                                                                                                           |                                                                                                 |
-| `internID`                | `string`                                                                                  | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key.                                                                                   | 7c9e6679-7425-40de-944b-e07fc1f90ae7                                                            |
-| `name`                    | `string`                                                                                  | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token                                                                                   |
-| `vaultSecretWriteRequest` | [components.VaultSecretWriteRequest](../../models/components/vaultsecretwriterequest.mdx) | :heavy\_check\_mark: | N/A                                                                                                                                           | \{<br />"hosts": \[<br />"api.github.com"<br />],<br />"value": "ghp\_exampleTokenValue"<br />} |
-| `opts`                    | \[][operations.Option](../../models/operations/option.mdx)                                | :heavy\_minus\_sign: | The options for this request.                                                                                                                 |                                                                                                 |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `name` | `string` | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `vaultSecretWriteRequest` | [components.VaultSecretWriteRequest](../../models/components/vaultsecretwriterequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"hosts": \[<br />"api.github.com"<br />],<br />"value": "ghp\_exampleTokenValue"<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -728,21 +728,21 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError     | 408         | application/json |
-| sdkerrors.ConflictResponseError           | 409         | application/json |
-| sdkerrors.PayloadTooLargeResponseError    | 413         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.GatewayTimeoutResponseError     | 504         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.GatewayTimeoutResponseError | 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## CopyVaultSecretsToIntern
 
@@ -1294,12 +1294,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                | Type                                                                                    | Required             | Description                                                 | Example                                                |
-| ------------------------ | --------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------- | ------------------------------------------------------ |
-| `ctx`                    | [context.Context](https://pkg.go.dev/context#Context)                                   | :heavy\_check\_mark: | The context to use for the request.                         |                                                        |
-| `internID`               | `string`                                                                                | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7                   |
-| `vaultSecretCopyRequest` | [components.VaultSecretCopyRequest](../../models/components/vaultsecretcopyrequest.mdx) | :heavy\_check\_mark: | N/A                                                         | \{<br />"names": \[<br />"github\_token"<br />]<br />} |
-| `opts`                   | \[][operations.Option](../../models/operations/option.mdx)                              | :heavy\_minus\_sign: | The options for this request.                               |                                                        |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | UUID of an intern in the workspace selected by the API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `vaultSecretCopyRequest` | [components.VaultSecretCopyRequest](../../models/components/vaultsecretcopyrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"names": \[<br />"github\_token"<br />]<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -1307,21 +1307,21 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError     | 408         | application/json |
-| sdkerrors.ConflictResponseError           | 409         | application/json |
-| sdkerrors.PayloadTooLargeResponseError    | 413         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.GatewayTimeoutResponseError     | 504         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.GatewayTimeoutResponseError | 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## ListVaultSecrets
 
@@ -1358,12 +1358,12 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                           | Example |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------- | ------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                   |         |
-| `limit`   | `*int64`                                                   | :heavy\_minus\_sign: | Page size, 1 to 100. Defaults to 100.                 | 50      |
-| `offset`  | `*int64`                                                   | :heavy\_minus\_sign: | Number of secrets to skip, 0 to 10000. Defaults to 0. | 0       |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                         |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Page size, 1 to 100. Defaults to 100. | 50 |
+| `offset` | `*int64` | :heavy\_minus\_sign: | Number of secrets to skip, 0 to 10000. Defaults to 0. | 0 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -1371,19 +1371,19 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError     | 408         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.GatewayTimeoutResponseError     | 504         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.GatewayTimeoutResponseError | 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## DeleteVaultSecret
 
@@ -1417,11 +1417,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                                                                                                                   | Example       |
-| --------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                           |               |
-| `name`    | `string`                                                   | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                 |               |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `name` | `string` | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -1429,19 +1429,19 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError     | 408         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.GatewayTimeoutResponseError     | 504         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.GatewayTimeoutResponseError | 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## StoreVaultSecret
 
@@ -1974,12 +1974,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                 | Type                                                                                      | Required             | Description                                                                                                                                   | Example                                                                                         |
-| ------------------------- | ----------------------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| `ctx`                     | [context.Context](https://pkg.go.dev/context#Context)                                     | :heavy\_check\_mark: | The context to use for the request.                                                                                                           |                                                                                                 |
-| `name`                    | `string`                                                                                  | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token                                                                                   |
-| `vaultSecretWriteRequest` | [components.VaultSecretWriteRequest](../../models/components/vaultsecretwriterequest.mdx) | :heavy\_check\_mark: | N/A                                                                                                                                           | \{<br />"hosts": \[<br />"api.github.com"<br />],<br />"value": "ghp\_exampleTokenValue"<br />} |
-| `opts`                    | \[][operations.Option](../../models/operations/option.mdx)                                | :heavy\_minus\_sign: | The options for this request.                                                                                                                 |                                                                                                 |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `name` | `string` | :heavy\_check\_mark: | Secret name. Lowercase letters, digits and single underscores, starting with a letter and not ending with an underscore, 1 to 255 characters. | github\_token |
+| `vaultSecretWriteRequest` | [components.VaultSecretWriteRequest](../../models/components/vaultsecretwriterequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"hosts": \[<br />"api.github.com"<br />],<br />"value": "ghp\_exampleTokenValue"<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -1987,18 +1987,18 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.RequestTimeoutResponseError     | 408         | application/json |
-| sdkerrors.PayloadTooLargeResponseError    | 413         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.BadGatewayResponseError         | 502         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.GatewayTimeoutResponseError     | 504         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.GatewayTimeoutResponseError | 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

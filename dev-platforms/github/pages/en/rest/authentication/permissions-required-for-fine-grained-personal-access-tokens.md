@@ -1048,6 +1048,8 @@ Some endpoints require more than one permission. Other endpoints work with any o
 | `DELETE /repos/{owner}/{repo}/issues/{issue_number}/lock` | write | PAT | ✓ |
 | `POST /repos/{owner}/{repo}/issues/{issue_number}/reactions` | write | PAT | ✗ |
 | `DELETE /repos/{owner}/{repo}/issues/{issue_number}/reactions/{reaction_id}` | write | PAT | ✗ |
+| `POST /repos/{owner}/{repo}/issues/{issue_number}/relates_to` | write | PAT | ✗ |
+| `DELETE /repos/{owner}/{repo}/issues/{issue_number}/relates_to/{issue_id}` | write | PAT | ✗ |
 | `DELETE /repos/{owner}/{repo}/issues/{issue_number}/sub_issue` | write | PAT | ✗ |
 | `POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` | write | PAT | ✗ |
 | `PATCH /repos/{owner}/{repo}/issues/{issue_number}/sub_issues/priority` | write | PAT | ✗ |
@@ -1077,6 +1079,7 @@ Some endpoints require more than one permission. Other endpoints work with any o
 | `GET /repos/{owner}/{repo}/issues/{issue_number}/labels` | read | PAT | ✓ |
 | `GET /repos/{owner}/{repo}/issues/{issue_number}/parent` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/issues/{issue_number}/reactions` | read | PAT | ✗ |
+| `GET /repos/{owner}/{repo}/issues/{issue_number}/relates_to` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/issues/{issue_number}/suggestions` | read | PAT | ✓ |
 | `GET /repos/{owner}/{repo}/issues/{issue_number}/timeline` | read | PAT | ✓ |

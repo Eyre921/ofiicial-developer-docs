@@ -26,12 +26,12 @@ If you're using this page as the implementation brief for your coding agent, hav
 
 A static HITL rule checks one simple thing, such as the tool name or a condition on the arguments like `amount_cents < 10000`. The same `refund` tool might be safe in one call and not the next, and the difference is in the ticket, not the code. Jev evaluates the call together with the ticket and answers narrow questions about it, so your code can approve the clearly safe calls, refuse the clear policy violations, and ask a human only about the ones that need judgment.
 
-|                   | Static HITL rule        | Jev gate                                                      |
-| ----------------- | ----------------------- | ------------------------------------------------------------- |
-| **Sees**          | Tool name and arguments | Arguments, ticket, order records, and policy text             |
-| **Outcomes**      | Run or pause            | Run, refuse with a reason, or pause                           |
-| **Human sees**    | Every call to the tool  | Calls where a check is neither clearly true nor clearly false |
-| **Cost per call** | None                    | One Decisions request, under \$0.0001 in our runs             |
+| | Static HITL rule | Jev gate |
+| - | - | - |
+| **Sees** | Tool name and arguments | Arguments, ticket, order records, and policy text |
+| **Outcomes** | Run or pause | Run, refuse with a reason, or pause |
+| **Human sees** | Every call to the tool | Calls where a check is neither clearly true nor clearly false |
+| **Cost per call** | None | One Decisions request, under \$0.0001 in our runs |
 
 Keep the static rule for tools that are always dangerous. The gate is for tools whose safety depends on the call.
 

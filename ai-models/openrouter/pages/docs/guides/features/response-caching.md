@@ -231,10 +231,10 @@ X-OpenRouter-Cache-Source-Id: gen-abc123
 
 You can enable caching for all requests that use a specific [preset](/docs/guides/features/presets) by configuring these fields in the preset:
 
-| Field               | Type      | Description                                                     |
-| ------------------- | --------- | --------------------------------------------------------------- |
-| `cache_enabled`     | `boolean` | Enable caching for all requests using this preset               |
-| `cache_ttl_seconds` | `number`  | Default TTL for cached responses (1-86400 seconds, default 300) |
+| Field | Type | Description |
+| - | - | - |
+| `cache_enabled` | `boolean` | Enable caching for all requests using this preset |
+| `cache_ttl_seconds` | `number` | Default TTL for cached responses (1-86400 seconds, default 300) |
 
 When `cache_enabled` is set on a preset, caching is automatically applied to every request that references that preset. No `X-OpenRouter-Cache` header is required.
 
@@ -285,12 +285,12 @@ If two identical requests arrive simultaneously before the first response is wri
 
 ### Supported endpoints
 
-| Endpoint                                                                          | API Format              |
-| --------------------------------------------------------------------------------- | ----------------------- |
-| [`/api/v1/chat/completions`](/docs/api/api-reference/chat/create-a-chat-completion)    | OpenAI Chat Completions |
-| [`/api/v1/responses`](/docs/api/api-reference/responses/create-a-response)             | OpenAI Responses        |
-| [`/api/v1/messages`](/docs/api/api-reference/anthropic-messages/create-a-message)      | Anthropic Messages      |
-| [`/api/v1/embeddings`](/docs/api/api-reference/embeddings/submit-an-embedding-request) | OpenAI Embeddings       |
+| Endpoint | API Format |
+| - | - |
+| [`/api/v1/chat/completions`](/docs/api/api-reference/chat/create-a-chat-completion) | OpenAI Chat Completions |
+| [`/api/v1/responses`](/docs/api/api-reference/responses/create-a-response) | OpenAI Responses |
+| [`/api/v1/messages`](/docs/api/api-reference/anthropic-messages/create-a-message) | Anthropic Messages |
+| [`/api/v1/embeddings`](/docs/api/api-reference/embeddings/submit-an-embedding-request) | OpenAI Embeddings |
 
 Cache keys include an endpoint type discriminator, so requests to different endpoints with identical bodies will not collide.
 
@@ -300,22 +300,22 @@ Cache keys include an endpoint type discriminator, so requests to different endp
 
 ## Request headers
 
-| Header                     | Value       | Description                                         |
-| -------------------------- | ----------- | --------------------------------------------------- |
-| `X-OpenRouter-Cache`       | `true`      | Enable caching for this request                     |
-| `X-OpenRouter-Cache`       | `false`     | Disable caching for this request (overrides preset) |
-| `X-OpenRouter-Cache-TTL`   | `<seconds>` | Custom TTL (1-86400 seconds, default 300)           |
-| `X-OpenRouter-Cache-Clear` | `true`      | Force a cache refresh for this request              |
+| Header | Value | Description |
+| - | - | - |
+| `X-OpenRouter-Cache` | `true` | Enable caching for this request |
+| `X-OpenRouter-Cache` | `false` | Disable caching for this request (overrides preset) |
+| `X-OpenRouter-Cache-TTL` | `<seconds>` | Custom TTL (1-86400 seconds, default 300) |
+| `X-OpenRouter-Cache-Clear` | `true` | Force a cache refresh for this request |
 
 TTL values that cannot be parsed as an integer (i.e., do not begin with digits) are ignored and fall through to the preset or default TTL. Values beginning with digits are accepted even if they contain trailing non-numeric characters (e.g., `60abc` is treated as `60`); decimal values are truncated (e.g., `1.5` is treated as `1`). Numeric values outside the valid range are clamped to `[1, 86400]`.
 
 ## Response headers
 
-| Header                         | Value             | Description                                                                              |
-| ------------------------------ | ----------------- | ---------------------------------------------------------------------------------------- |
-| `X-OpenRouter-Cache-Status`    | `HIT` or `MISS`   | Whether the response was served from cache                                               |
-| `X-OpenRouter-Cache-Age`       | `<seconds>`       | How long the response has been cached (on `HIT` only)                                    |
-| `X-OpenRouter-Cache-TTL`       | `<seconds>`       | Remaining TTL on `HIT`; full TTL on `MISS`                                               |
+| Header | Value | Description |
+| - | - | - |
+| `X-OpenRouter-Cache-Status` | `HIT` or `MISS` | Whether the response was served from cache |
+| `X-OpenRouter-Cache-Age` | `<seconds>` | How long the response has been cached (on `HIT` only) |
+| `X-OpenRouter-Cache-TTL` | `<seconds>` | Remaining TTL on `HIT`; full TTL on `MISS` |
 | `X-OpenRouter-Cache-Source-Id` | `<generation-id>` | The generation ID of the original request that populated the cache entry (on `HIT` only) |
 
 The `X-Generation-Id` header is also present on every response (cached or not) and is not specific to caching. On a cache hit, the generation ID is unique to that hit–it is not reused from the original response.

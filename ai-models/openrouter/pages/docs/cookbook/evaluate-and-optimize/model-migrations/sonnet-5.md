@@ -107,12 +107,12 @@ Like Opus 4.7 and 4.8, Claude 5 Sonnet ships with real-time cyber classifiers th
 
 With sampling parameters and reasoning budgets removed on Sonnet 5, `output_config.effort` is the remaining lever for influencing overall response effort. You can set it via `verbosity`, or via `reasoning.effort` when reasoning is enabled (`verbosity` wins if both are passed; `'minimal'` maps to `'low'`, and `'none'` disables reasoning entirely so no `output_config.effort` is sent).
 
-| Parameter                       | Claude 5 Sonnet Behavior                                |
-| ------------------------------- | ------------------------------------------------------- |
-| `temperature`, `top_p`, `top_k` | Ignored                                                 |
-| `reasoning.max_tokens`          | Ignored (adaptive used)                                 |
-| `reasoning.effort`              | Sets `output_config.effort` (when reasoning is enabled) |
-| `verbosity`                     | Sets `output_config.effort`                             |
+| Parameter | Claude 5 Sonnet Behavior |
+| - | - |
+| `temperature`, `top_p`, `top_k` | Ignored |
+| `reasoning.max_tokens` | Ignored (adaptive used) |
+| `reasoning.effort` | Sets `output_config.effort` (when reasoning is enabled) |
+| `verbosity` | Sets `output_config.effort` |
 
 ```json lines theme={null}
 { "model": "anthropic/claude-sonnet-5", "verbosity": "xhigh" }
@@ -120,12 +120,12 @@ With sampling parameters and reasoning budgets removed on Sonnet 5, `output_conf
 
 ## Breaking Changes
 
-| Feature                                        | Sonnet 4.6                  | Sonnet 5                    |
-| ---------------------------------------------- | --------------------------- | --------------------------- |
-| `temperature` / `top_p` / `top_k`              | Supported                   | Ignored                     |
-| Thinking modes (when `reasoning.enabled=true`) | Adaptive or budget-based    | Adaptive only               |
-| `reasoning.max_tokens`                         | Sets a thinking budget      | Ignored (adaptive used)     |
-| `reasoning.effort`                             | Sets `output_config.effort` | Sets `output_config.effort` |
-| `'xhigh'` effort level                         | Falls back to `'high'`      | Supported                   |
-| `'max'` effort level                           | Supported                   | Supported                   |
+| Feature | Sonnet 4.6 | Sonnet 5 |
+| - | - | - |
+| `temperature` / `top_p` / `top_k` | Supported | Ignored |
+| Thinking modes (when `reasoning.enabled=true`) | Adaptive or budget-based | Adaptive only |
+| `reasoning.max_tokens` | Sets a thinking budget | Ignored (adaptive used) |
+| `reasoning.effort` | Sets `output_config.effort` | Sets `output_config.effort` |
+| `'xhigh'` effort level | Falls back to `'high'` | Supported |
+| `'max'` effort level | Supported | Supported |
 

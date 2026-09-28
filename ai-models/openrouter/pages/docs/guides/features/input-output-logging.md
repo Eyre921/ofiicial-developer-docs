@@ -62,22 +62,22 @@ At this time, Input & Output Logging does **not** apply to requests routed throu
 
 Input & Output Logging allows you to view your prompts and completions in your logs on the OpenRouter platform. Broadcast sends your data to an external observability tool. Both features are configured in your workspace's [Observability settings](https://openrouter.ai/settings/observability) and can be used together for comprehensive observability.
 
-|                          | Input & Output Logging                                        | Broadcast                              |
-| ------------------------ | ------------------------------------------------------------- | -------------------------------------- |
-| **Where data is stored** | On OpenRouter                                                 | On your external platform              |
-| **Setup**                | Single toggle                                                 | Configure destinations and credentials |
-| **Access**               | Logs page                                                     | Your observability platform            |
-| **Use case**             | Quick debugging, evaluating responses, and optimizing prompts | Production monitoring and analytics    |
-| **Privacy**              | Always private (admin-only access)                            | Configurable per destination           |
+| | Input & Output Logging | Broadcast |
+| - | - | - |
+| **Where data is stored** | On OpenRouter | On your external platform |
+| **Setup** | Single toggle | Configure destinations and credentials |
+| **Access** | Logs page | Your observability platform |
+| **Use case** | Quick debugging, evaluating responses, and optimizing prompts | Production monitoring and analytics |
+| **Privacy** | Always private (admin-only access) | Configurable per destination |
 
 ## Comparison with OpenRouter Using Inputs/Outputs
 
 Input & Output Logging keeps your data strictly private for your own use, makes your prompts and completions visible in logs, and is enabled in Observability. Enabling OpenRouter to use your inputs/outputs is an independent setting, enabled in Privacy, that allows OpenRouter to use your data to improve the product in exchange for a 1% discount on all model usage. You can enable one, the other, or both.
 
-|                     | Input & Output Logging       | Data Discount Logging                          |
-| ------------------- | ---------------------------- | ---------------------------------------------- |
-| **Purpose**         | Private review and debugging | Discount in exchange for data sharing          |
-| **Privacy**         | Never used by OpenRouter     | OpenRouter may use data to improve the product |
-| **Discount**        | No discount                  | 1% discount on all LLMs                        |
-| **Where to enable** | Observability settings       | Privacy settings                               |
+| | Input & Output Logging | Data Discount Logging |
+| - | - | - |
+| **Purpose** | Private review and debugging | Discount in exchange for data sharing |
+| **Privacy** | Never used by OpenRouter | OpenRouter may use data to improve the product |
+| **Discount** | No discount | 1% discount on all LLMs |
+| **Where to enable** | Observability settings | Privacy settings |
 

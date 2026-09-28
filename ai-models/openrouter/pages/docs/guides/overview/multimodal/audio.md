@@ -389,8 +389,8 @@ Audio output requires streaming (`stream: true`). Audio data and transcript are 
 
 The `audio` parameter accepts the following options:
 
-| Option   | Description                                                                                                                        |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `voice`  | The voice to use for audio generation (e.g., `alloy`, `echo`, `fable`, `onyx`, `nova`, `shimmer`). Available voices vary by model. |
-| `format` | The audio format for the output (e.g., `wav`, `mp3`, `flac`, `opus`, `pcm16`). Available formats vary by model.                    |
+| Option | Description |
+| - | - |
+| `voice` | The voice to use for audio generation (e.g., `alloy`, `echo`, `fable`, `onyx`, `nova`, `shimmer`). Available voices vary by model. |
+| `format` | The audio format for the output (e.g., `wav`, `mp3`, `flac`, `opus`, `pcm16`). Available formats vary by model. |
 

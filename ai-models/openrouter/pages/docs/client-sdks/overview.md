@@ -16,11 +16,11 @@ The Client SDKs give you a thin, type-safe layer over the OpenRouter REST API. I
 
 ## Installation
 
-| Language   | Package                                                            |
-| ---------- | ------------------------------------------------------------------ |
+| Language | Package |
+| - | - |
 | TypeScript | [`@openrouter/sdk`](https://www.npmjs.com/package/@openrouter/sdk) |
-| Python     | [`openrouter`](https://pypi.org/project/openrouter/)               |
-| Go         | [`go-sdk`](https://pkg.go.dev/github.com/OpenRouterTeam/go-sdk)    |
+| Python | [`openrouter`](https://pypi.org/project/openrouter/) |
+| Go | [`go-sdk`](https://pkg.go.dev/github.com/OpenRouterTeam/go-sdk) |
 
 <CodeGroup>
   ```bash title="npm" lines theme={null}
@@ -114,13 +114,13 @@ The Client SDKs are intentionally lean. It mirrors the OpenRouter API surface 1:
 
 ## Client SDKs vs Agent SDK
 
-|                        | Client SDKs                                                   | Agent SDK                                                           |
-| ---------------------- | ------------------------------------------------------------- | ------------------------------------------------------------------- |
-| **Focus**              | Lean API client, mirrors the REST API with full type safety   | Agentic primitives, multi-turn loops, tools, stop conditions        |
-| **Use when**           | You want direct model calls and manage orchestration yourself | You want built-in agent loops, tool execution, and state management |
-| **Conversation state** | You manage it                                                 | Managed for you via `callModel`                                     |
-| **Tool execution**     | You dispatch tool calls                                       | Automatic with the `tool()` helper                                  |
-| **Languages**          | TypeScript, Python, Go                                        | TypeScript                                                          |
+| | Client SDKs | Agent SDK |
+| - | - | - |
+| **Focus** | Lean API client, mirrors the REST API with full type safety | Agentic primitives, multi-turn loops, tools, stop conditions |
+| **Use when** | You want direct model calls and manage orchestration yourself | You want built-in agent loops, tool execution, and state management |
+| **Conversation state** | You manage it | Managed for you via `callModel` |
+| **Tool execution** | You dispatch tool calls | Automatic with the `tool()` helper |
+| **Languages** | TypeScript, Python, Go | TypeScript |
 
 ## Next steps
 

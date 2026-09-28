@@ -97,12 +97,12 @@ Once enabled, the configured `min_coding_score` is automatically applied to ever
 
 `min_coding_score` is an optional number between `0` and `1`, where `1` is best. The router maps it to one of three quality tiers, and each tier corresponds to a percentile band on [Artificial Analysis](https://artificialanalysis.ai/) coding scores.
 
-| `min_coding_score`  | Tier           | AA coding percentile band                  |
-| ------------------- | -------------- | ------------------------------------------ |
-| `>= 0.66`           | high           | top of AA's coding field                   |
-| `>= 0.33`, `< 0.66` | medium         | strong modern flagships below the top      |
-| `< 0.33`            | low            | capable coders that still beat AA's median |
-| omitted             | high (default) | top of AA's coding field                   |
+| `min_coding_score` | Tier | AA coding percentile band |
+| - | - | - |
+| `>= 0.66` | high | top of AA's coding field |
+| `>= 0.33`, `< 0.66` | medium | strong modern flagships below the top |
+| `< 0.33` | low | capable coders that still beat AA's median |
+| omitted | high (default) | top of AA's coding field |
 
 If you omit `min_coding_score`, the router defaults to the strongest available coders. Within a tier, the router picks the cheapest available model, or the fastest by p50 throughput when you request the `:nitro` variant.
 

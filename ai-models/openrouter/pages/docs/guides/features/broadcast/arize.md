@@ -59,13 +59,13 @@ Arize AX uses the [OpenInference](https://github.com/Arize-ai/openinference) sem
 
 ### Supported Metadata Keys
 
-| Key               | Arize Mapping  | Description                                      |
-| ----------------- | -------------- | ------------------------------------------------ |
-| `trace_id`        | Trace ID       | Group multiple requests into a single trace      |
-| `trace_name`      | Span Name      | Custom name for the root trace                   |
-| `span_name`       | Span Name      | Name for intermediate spans in the hierarchy     |
-| `generation_name` | Span Name      | Name for the LLM generation span                 |
-| `parent_span_id`  | Parent Span ID | Link to an existing span in your trace hierarchy |
+| Key | Arize Mapping | Description |
+| - | - | - |
+| `trace_id` | Trace ID | Group multiple requests into a single trace |
+| `trace_name` | Span Name | Custom name for the root trace |
+| `span_name` | Span Name | Name for intermediate spans in the hierarchy |
+| `generation_name` | Span Name | Name for the LLM generation span |
+| `parent_span_id` | Parent Span ID | Link to an existing span in your trace hierarchy |
 
 ### Example
 

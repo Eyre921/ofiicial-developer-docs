@@ -56,10 +56,10 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -67,11 +67,11 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## List
 
@@ -108,12 +108,12 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                          | Example |
-| --------- | ---------------------------------------------------------- | -------------------- | ------------------------------------ | ------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.  |         |
-| `author`  | `string`                                                   | :heavy\_check\_mark: | The author/organization of the model | openai  |
-| `slug`    | `string`                                                   | :heavy\_check\_mark: | The model slug                       | gpt-4   |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.        |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `author` | `string` | :heavy\_check\_mark: | The author/organization of the model | openai |
+| `slug` | `string` | :heavy\_check\_mark: | The model slug | gpt-4 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -121,10 +121,10 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

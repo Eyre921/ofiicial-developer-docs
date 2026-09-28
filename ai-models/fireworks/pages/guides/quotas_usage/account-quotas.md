@@ -24,13 +24,13 @@ This shows your rate limits, GPU quotas, spend limits, and usage across serverle
 
 Your spend tier controls available quotas and capacity. For legacy self-serve postpaid accounts, it also determines the maximum monthly spend limit. Prepaid accounts can set a monthly spend limit independently of tier.
 
-| Tier      | Criteria                                                                 | Legacy Postpaid Max Monthly Spend Limit |
-| --------- | ------------------------------------------------------------------------ | --------------------------------------- |
-| Tier 1    | [Valid payment method and billing profile](https://fireworks.ai/billing) | \$50                                    |
-| Tier 2    | Spend or add \$50 in credits                                             | \$500                                   |
-| Tier 3    | Spend or add \$500 in credits                                            | \$5,000                                 |
-| Tier 4    | Spend or add \$5,000 in credits                                          | \$50,000                                |
-| Unlimited | [Contact us](https://fireworks.ai/company/contact-us)                    | Unlimited                               |
+| Tier | Criteria | Legacy Postpaid Max Monthly Spend Limit |
+| - | - | - |
+| Tier 1 | [Valid payment method and billing profile](https://fireworks.ai/billing) | \$50 |
+| Tier 2 | Spend or add \$50 in credits | \$500 |
+| Tier 3 | Spend or add \$500 in credits | \$5,000 |
+| Tier 4 | Spend or add \$5,000 in credits | \$50,000 |
+| Unlimited | [Contact us](https://fireworks.ai/company/contact-us) | Unlimited |
 
 <Tip>
   Add prepaid credits to unlock a higher tier. For example, adding \$100 moves you from Tier 1 to Tier 2. Your new tier activates within minutes.
@@ -71,9 +71,9 @@ For Enterprise quota details, see [Enterprise quotas](/faq/enterprise/service/qu
 
 All API usage on your account shares a single request-throughput envelope:
 
-| Account state                     |  Request-rate limit |
-| --------------------------------- | ------------------: |
-| No payment method or no credits   |              10 RPM |
+| Account state | Request-rate limit |
+| - | -: |
+| No payment method or no credits | 10 RPM |
 | Payment method and active credits | 6,000 RPM (maximum) |
 
 The **6,000 RPM** cap applies account-wide—it is **not** a separate serverless-only limit—and it is a **fixed** ceiling, not adaptive. Per-minute request volume above this cap is rejected (for example HTTP 429), regardless of your spending tier.
@@ -120,16 +120,16 @@ When usage reaches 100% of the limit, all API requests pause automatically acros
 
 On-demand deployments have GPU quotas instead of rate limits. GPU quota is scoped per placement (multi-region or single region). The defaults below apply to the **GLOBAL** multi-region only. For other placements, see [Regions](/deployments/regions).
 
-| GPU Type            | Default Quota (GLOBAL) |
-| ------------------- | ---------------------- |
-| Nvidia H100         | 16 GPUs                |
-| Nvidia H200         | 16 GPUs                |
-| Nvidia B200         | 16 GPUs                |
-| Nvidia B300         | 16 GPUs                |
-| Nvidia GB300        | 0 GPUs                 |
-| Nvidia A100         | 0 GPUs                 |
-| AMD MI325X / MI350X | 0 GPUs                 |
-| LoRAs (on-demand)   | 100                    |
+| GPU Type | Default Quota (GLOBAL) |
+| - | - |
+| Nvidia H100 | 16 GPUs |
+| Nvidia H200 | 16 GPUs |
+| Nvidia B200 | 16 GPUs |
+| Nvidia B300 | 16 GPUs |
+| Nvidia GB300 | 0 GPUs |
+| Nvidia A100 | 0 GPUs |
+| AMD MI325X / MI350X | 0 GPUs |
+| LoRAs (on-demand) | 100 |
 
 <Tip>
   Need more GPUs? [Contact us](https://fireworks.ai/company/contact-us) to request a quota increase.

@@ -10,12 +10,12 @@ Some multimodal models can process audio and/or video inputs directly, enabling 
 
 ## Available models
 
-| Model                                                                                            | Input support      | Notes                         |
-| ------------------------------------------------------------------------------------------------ | ------------------ | ----------------------------- |
-| GLM 5.3 Flash                                                                                    | Image, video, text | Serverless                    |
+| Model | Input support | Notes |
+| - | - | - |
+| GLM 5.3 Flash | Image, video, text | Serverless |
 | [Qwen3 Omni 30B A3B Instruct](https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct) | Video, audio, text | Dedicated deployment required |
-| [Molmo2-4B](https://fireworks.ai/models/fireworks/molmo2-4b)                                     | Video, text        | Dedicated deployment required |
-| [Molmo2-8B](https://fireworks.ai/models/fireworks/molmo2-8b)                                     | Video, text        | Dedicated deployment required |
+| [Molmo2-4B](https://fireworks.ai/models/fireworks/molmo2-4b) | Video, text | Dedicated deployment required |
+| [Molmo2-8B](https://fireworks.ai/models/fireworks/molmo2-8b) | Video, text | Dedicated deployment required |
 
 <Note>
   GLM 5.3 Flash supports image, video, and text inputs. This page does not claim audio input support for GLM 5.3 Flash. Qwen3 Omni supports native video and audio inputs. Molmo2 models are video-only, so use the dedicated request structure below but omit `audio_url`; Molmo2 cannot understand audio from videos.
@@ -211,12 +211,12 @@ ffmpeg -y -i input_video.mp4 \
   processed_video.mp4
 ```
 
-| Parameter      | Description                                     |
-| -------------- | ----------------------------------------------- |
-| `-t 60`        | Limit to first 60 seconds                       |
-| `fps=1`        | Extract 1 frame per second                      |
+| Parameter | Description |
+| - | - |
+| `-t 60` | Limit to first 60 seconds |
+| `fps=1` | Extract 1 frame per second |
 | `scale=-1:360` | Downscale to 360p height, maintain aspect ratio |
-| `-an`          | Remove audio track (extracted separately)       |
+| `-an` | Remove audio track (extracted separately) |
 
 ### Preprocessing audio
 
@@ -233,14 +233,14 @@ ffmpeg -y -i input_video.mp4 \
   audio.ogg
 ```
 
-| Parameter      | Description               |
-| -------------- | ------------------------- |
-| `-t 60`        | Limit to first 60 seconds |
-| `-vn`          | Remove video track        |
-| `-c:a libopus` | Use Opus codec            |
-| `-b:a 24k`     | 24 kbps bitrate           |
-| `-ar 16000`    | 16 kHz sample rate        |
-| `-ac 1`        | Mono audio                |
+| Parameter | Description |
+| - | - |
+| `-t 60` | Limit to first 60 seconds |
+| `-vn` | Remove video track |
+| `-c:a libopus` | Use Opus codec |
+| `-b:a 24k` | 24 kbps bitrate |
+| `-ar 16000` | 16 kHz sample rate |
+| `-ac 1` | Mono audio |
 
 ### Complete preprocessing example
 

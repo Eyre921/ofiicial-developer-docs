@@ -16,18 +16,18 @@ Before you start, [enable Fireworks in Microsoft Foundry](/ecosystem/integration
 
 ## Choose a path
 
-| Path                                          | Best for                                           | Harnesses                                                |
-| --------------------------------------------- | -------------------------------------------------- | -------------------------------------------------------- |
-| [FireConnect](#connect-with-fireconnect)      | The quickest setup, with restore                   | OpenCode, Pi, Cursor IDE, VS Code                        |
+| Path | Best for | Harnesses |
+| - | - | - |
+| [FireConnect](#connect-with-fireconnect) | The quickest setup, with restore | OpenCode, Pi, Cursor IDE, VS Code |
 | [Manual setup](#configure-a-harness-manually) | Harnesses with a custom OpenAI-compatible provider | Any harness that accepts a base URL, key, and model name |
-| [LLM gateway](#use-an-llm-gateway)            | Claude Code, or central key management             | Claude Code and any harness your gateway supports        |
+| [LLM gateway](#use-an-llm-gateway) | Claude Code, or central key management | Claude Code and any harness your gateway supports |
 
-| Harness                                    | FireConnect                    | Manual setup                   | LLM gateway                                                          |
-| ------------------------------------------ | ------------------------------ | ------------------------------ | -------------------------------------------------------------------- |
-| OpenCode, Pi, Cursor IDE, VS Code          | Supported                      | Supported                      | Supported                                                            |
-| Codex CLI, Codex app, ChatGPT desktop      | Not supported by current Codex | Not supported by current Codex | Needs a gateway that serves the Responses API                        |
-| Claude Code                                | Not supported                  | Not supported                  | [Supported, with format translation](#claude-code-through-a-gateway) |
-| DeepSeek Harness, Copilot App, Copilot CLI | Not supported                  | Depends on the harness         | Depends on the harness                                               |
+| Harness | FireConnect | Manual setup | LLM gateway |
+| - | - | - | - |
+| OpenCode, Pi, Cursor IDE, VS Code | Supported | Supported | Supported |
+| Codex CLI, Codex app, ChatGPT desktop | Not supported by current Codex | Not supported by current Codex | Needs a gateway that serves the Responses API |
+| Claude Code | Not supported | Not supported | [Supported, with format translation](#claude-code-through-a-gateway) |
+| DeepSeek Harness, Copilot App, Copilot CLI | Not supported | Depends on the harness | Depends on the harness |
 
 Foundry serves Fireworks models through an OpenAI-compatible Chat Completions API. Claude Code sends Anthropic Messages requests, so it needs a gateway that translates between the two formats. Current Codex releases send only Responses API requests and reject `wire_api = "chat"` in `config.toml`, which is what FireConnect writes for Codex on Foundry.
 
@@ -98,11 +98,11 @@ Find the endpoint in the Microsoft Foundry portal under **Project settings**.
 
 ### Switch or disconnect
 
-| Goal                                         | Commands                                                                   |
-| -------------------------------------------- | -------------------------------------------------------------------------- |
-| Return a harness to direct Fireworks         | `fireconnect configure --provider fireworks`, then `fireconnect <harness>` |
-| Remove FireConnect from one harness          | `fireconnect <harness> off`                                                |
-| Restore all harnesses and remove FireConnect | `fireconnect uninstall`                                                    |
+| Goal | Commands |
+| - | - |
+| Return a harness to direct Fireworks | `fireconnect configure --provider fireworks`, then `fireconnect <harness>` |
+| Remove FireConnect from one harness | `fireconnect <harness> off` |
+| Restore all harnesses and remove FireConnect | `fireconnect uninstall` |
 
 `off` does not change the default provider. If it is still `azure`, the next connection uses Foundry again. The saved Azure endpoint and key remain available if you switch back later.
 
@@ -110,12 +110,12 @@ Find the endpoint in the Microsoft Foundry portal under **Project settings**.
 
 Any harness that supports a custom OpenAI-compatible provider can call Foundry directly. Use these values:
 
-| Setting    | Value                                                   |
-| ---------- | ------------------------------------------------------- |
-| API format | OpenAI Chat Completions                                 |
-| Base URL   | `https://YOUR_RESOURCE.services.ai.azure.com/openai/v1` |
-| API key    | Your Azure API key, sent as a bearer token              |
-| Model      | Your deployment name, such as `FW-GLM-5.2`              |
+| Setting | Value |
+| - | - |
+| API format | OpenAI Chat Completions |
+| Base URL | `https://YOUR_RESOURCE.services.ai.azure.com/openai/v1` |
+| API key | Your Azure API key, sent as a bearer token |
+| Model | Your deployment name, such as `FW-GLM-5.2` |
 
 Check that the endpoint works before you configure the harness:
 

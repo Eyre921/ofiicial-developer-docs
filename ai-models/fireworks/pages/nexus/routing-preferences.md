@@ -12,13 +12,13 @@ Routing preference controls how strongly a `firerouter` request favors its prima
 
 Send an integer from **1** (strongest preference for the primary model) to **5** (strongest preference for lower-cost models):
 
-| Value | Name                | Behavior                                        |
-| ----- | ------------------- | ----------------------------------------------- |
-| `1`   | `max-intelligence`  | Keep the turn on the primary model              |
-| `2`   | `more-intelligence` | Lean toward the primary, compared with balanced |
-| `3`   | `balanced`          | Default when the header is omitted              |
-| `4`   | `more-savings`      | Lean toward lower cost, compared with balanced  |
-| `5`   | `max-savings`       | Prefer the lower-cost models in the route       |
+| Value | Name | Behavior |
+| - | - | - |
+| `1` | `max-intelligence` | Keep the turn on the primary model |
+| `2` | `more-intelligence` | Lean toward the primary, compared with balanced |
+| `3` | `balanced` | Default when the header is omitted |
+| `4` | `more-savings` | Lean toward lower cost, compared with balanced |
+| `5` | `max-savings` | Prefer the lower-cost models in the route |
 
 ## HTTP header
 
@@ -52,11 +52,11 @@ fireconnect pi --model firerouter --routing-preference 5
 
 Every harness can use any FireRouter ID. The table shows which IDs accept FireConnect's `--routing-preference` flag:
 
-| Harness                                                       | IDs that accept `--routing-preference`              |
-| ------------------------------------------------------------- | --------------------------------------------------- |
-| Claude Code                                                   | Bare `firerouter` only                              |
-| OpenCode, Pi, VS Code                                         | `firerouter` or any ID beginning with `firerouter/` |
-| Codex, Cursor IDE, Copilot App, Copilot CLI, DeepSeek Harness | None                                                |
+| Harness | IDs that accept `--routing-preference` |
+| - | - |
+| Claude Code | Bare `firerouter` only |
+| OpenCode, Pi, VS Code | `firerouter` or any ID beginning with `firerouter/` |
+| Codex, Cursor IDE, Copilot App, Copilot CLI, DeepSeek Harness | None |
 
 FireConnect accepts values `1` to `5` or the corresponding level names. In Claude Code, `fireconnect claude --model firerouter/opus` works, but adding `--routing-preference` to that ID returns an error: `--routing-preference requires --model firerouter`.
 

@@ -10,7 +10,7 @@ Fireworks runs a global fleet so you can deploy models close to users, meet data
 
 ## Multi-region (recommended)
 
-By default, deployments are multi-region: Fireworks can move and spread them across regions as needed. Multi-regions (**GLOBAL**, **US**, **EUROPE**, **APAC**) are high-level groupings of single regions. Your deployment may run in any single region(s) within that multi-region.
+By default, deployments are multi-region: Fireworks can move and spread them across regions as needed. Multi-regions (**GLOBAL**, **US**, **CANADA**, **EUROPE**, **APAC**) are high-level groupings of single regions. Your deployment may run in any single region(s) within that multi-region.
 
 <CardGroup>
   <Card title="Flexible, elastic scaling" icon="gauge">
@@ -24,40 +24,40 @@ By default, deployments are multi-region: Fireworks can move and spread them acr
 
 ### Supported multi-regions
 
-Supported multi-regions: `GLOBAL`, `US`, `EUROPE`, `APAC`.
+Supported multi-regions: `GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`.
 
 ## Single region availability
 
 Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, contact [Fireworks](mailto:sales@fireworks.ai) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
 
-| **Region**             | **Accelerator Type(s)**                                                           |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| `AP_MALAYSIA_2`        | `NVIDIA_B300_288GB`                                                               |
-| `AP_NEWSOUTHWALES_1`   | `NVIDIA_B200_180GB`                                                               |
-| `AP_TOKYO_1`           | `NVIDIA_H100_80GB`                                                                |
-| `AP_TOKYO_2`           | `NVIDIA_H200_141GB`                                                               |
-| `EU_FRANKFURT_1`       | `NVIDIA_H100_80GB`                                                                |
-| `EU_ICELAND_1`         | `NVIDIA_H200_141GB`                                                               |
-| `EU_ICELAND_2`         | `NVIDIA_B200_180GB`, `NVIDIA_H200_141GB`                                          |
-| `NA_BRITISHCOLUMBIA_1` | `NVIDIA_B300_288GB`                                                               |
-| `NA_BRITISHCOLUMBIA_2` | `AMD_MI350X_288GB`                                                                |
-| `NA_BRITISHCOLUMBIA_3` | `NVIDIA_B300_288GB`                                                               |
-| `US_ARIZONA_1`         | `NVIDIA_H100_80GB`                                                                |
-| `US_ARIZONA_3`         | `AMD_MI325X_256GB`                                                                |
-| `US_CALIFORNIA_1`      | `NVIDIA_H200_141GB`                                                               |
-| `US_CALIFORNIA_2`      | `AMD_MI325X_256GB`                                                                |
-| `US_GEORGIA_2`         | `NVIDIA_B200_180GB`                                                               |
-| `US_GEORGIA_3`         | `NVIDIA_H200_141GB`                                                               |
-| `US_ILLINOIS_1`        | `NVIDIA_H100_80GB`                                                                |
-| `US_ILLINOIS_2`        | `NVIDIA_A100_80GB`                                                                |
-| `US_IOWA_1`            | `NVIDIA_H100_80GB`                                                                |
-| `US_MINNESOTA_1`       | `NVIDIA_B300_288GB`                                                               |
-| `US_NEWYORK_1`         | `AMD_MI325X_256GB`                                                                |
-| `US_OHIO_1`            | `NVIDIA_B200_180GB`                                                               |
-| `US_VIRGINIA_1`        | `NVIDIA_H100_80GB`, `NVIDIA_H200_141GB`, `NVIDIA_B200_180GB`, `NVIDIA_B300_288GB` |
-| `US_WASHINGTON_3`      | `NVIDIA_B200_180GB`                                                               |
-| `US_WASHINGTON_4`      | `NVIDIA_B200_180GB`                                                               |
-| `US_WASHINGTON_5`      | `NVIDIA_B200_180GB`                                                               |
+| **Region** | **Accelerator Type(s)** |
+| - | - |
+| `AP_MALAYSIA_2` | `NVIDIA_B300_288GB` |
+| `AP_NEWSOUTHWALES_1` | `NVIDIA_B200_180GB` |
+| `AP_TOKYO_1` | `NVIDIA_H100_80GB` |
+| `AP_TOKYO_2` | `NVIDIA_H200_141GB` |
+| `EU_FRANKFURT_1` | `NVIDIA_H100_80GB` |
+| `EU_ICELAND_1` | `NVIDIA_H200_141GB` |
+| `EU_ICELAND_2` | `NVIDIA_B200_180GB`, `NVIDIA_H200_141GB` |
+| `NA_BRITISHCOLUMBIA_1` | `NVIDIA_B300_288GB` |
+| `NA_BRITISHCOLUMBIA_2` | `AMD_MI350X_288GB` |
+| `NA_BRITISHCOLUMBIA_3` | `NVIDIA_B300_288GB` |
+| `US_ARIZONA_1` | `NVIDIA_H100_80GB` |
+| `US_ARIZONA_3` | `AMD_MI325X_256GB` |
+| `US_CALIFORNIA_1` | `NVIDIA_H200_141GB` |
+| `US_CALIFORNIA_2` | `AMD_MI325X_256GB` |
+| `US_GEORGIA_2` | `NVIDIA_B200_180GB` |
+| `US_GEORGIA_3` | `NVIDIA_H200_141GB` |
+| `US_ILLINOIS_1` | `NVIDIA_H100_80GB` |
+| `US_ILLINOIS_2` | `NVIDIA_A100_80GB` |
+| `US_IOWA_1` | `NVIDIA_H100_80GB` |
+| `US_MINNESOTA_1` | `NVIDIA_B300_288GB` |
+| `US_NEWYORK_1` | `AMD_MI325X_256GB` |
+| `US_OHIO_1` | `NVIDIA_B200_180GB` |
+| `US_VIRGINIA_1` | `NVIDIA_H100_80GB`, `NVIDIA_H200_141GB`, `NVIDIA_B200_180GB`, `NVIDIA_B300_288GB` |
+| `US_WASHINGTON_3` | `NVIDIA_B200_180GB` |
+| `US_WASHINGTON_4` | `NVIDIA_B200_180GB` |
+| `US_WASHINGTON_5` | `NVIDIA_B200_180GB` |
 
 ## Using a region
 
@@ -75,7 +75,7 @@ Updating the single region for a deployment in-place is not supported. To move a
 
 ## Quotas
 
-New accounts receive GPU quota for the **GLOBAL** multi-region only. Quota is scoped per placement (multi-region or single region). The **US**, **EUROPE**, and **APAC** multi-regions and all single regions start at zero quota and must be granted by Fireworks. If you deploy with a `--region` you have no quota for, creation is rejected even though that region is generally available.
+New accounts receive GPU quota for the **GLOBAL** multi-region only. Quota is scoped per placement (multi-region or single region). The **US**, **CANADA**, **EUROPE**, and **APAC** multi-regions and all single regions start at zero quota and must be granted by Fireworks. If you deploy with a `--region` you have no quota for, creation is rejected even though that region is generally available.
 
 To view your current quotas, run:
 

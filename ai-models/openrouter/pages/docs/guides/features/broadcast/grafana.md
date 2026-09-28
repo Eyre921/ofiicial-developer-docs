@@ -142,13 +142,13 @@ Grafana Cloud receives traces via the OTLP protocol. Custom metadata from the `t
 
 ### Supported Metadata Keys
 
-| Key               | Grafana Mapping | Description                                      |
-| ----------------- | --------------- | ------------------------------------------------ |
-| `trace_id`        | Trace ID        | Group multiple requests into a single trace      |
-| `trace_name`      | Span Name       | Custom name for the root span                    |
-| `span_name`       | Span Name       | Name for intermediate spans in the hierarchy     |
-| `generation_name` | Span Name       | Name for the LLM generation span                 |
-| `parent_span_id`  | Parent Span ID  | Link to an existing span in your trace hierarchy |
+| Key | Grafana Mapping | Description |
+| - | - | - |
+| `trace_id` | Trace ID | Group multiple requests into a single trace |
+| `trace_name` | Span Name | Custom name for the root span |
+| `span_name` | Span Name | Name for intermediate spans in the hierarchy |
+| `generation_name` | Span Name | Name for the LLM generation span |
+| `parent_span_id` | Parent Span ID | Link to an existing span in your trace hierarchy |
 
 ### Example
 

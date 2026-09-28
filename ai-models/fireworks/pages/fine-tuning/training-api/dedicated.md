@@ -87,12 +87,12 @@ export FIREWORKS_API_KEY="fw_..."
 
 ### Step 2: Choose the closest recipe
 
-| Task         | Start here                                                                                                  |
-| ------------ | ----------------------------------------------------------------------------------------------------------- |
-| SFT          | [`sft_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/sft_loop.py)                   |
-| DPO          | [`dpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py)                   |
-| RL           | [`rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py)                     |
-| Async RL     | [`async_rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py)         |
+| Task | Start here |
+| - | - |
+| SFT | [`sft_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/sft_loop.py) |
+| DPO | [`dpo_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/dpo_loop.py) |
+| RL | [`rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py) |
+| Async RL | [`async_rl_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py) |
 | Distillation | [`distillation_loop.py`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/distillation_loop.py) |
 
 Smoke test (bounded SFT):
@@ -128,11 +128,11 @@ Serverless and dedicated sampling use the same `DeploymentSampler` request contr
 
 ## Loss functions
 
-| Need                   | Start from                                                             |
-| ---------------------- | ---------------------------------------------------------------------- |
-| SFT                    | `sft_loop.py` and its weighted token objective                         |
-| DPO or ORPO            | `dpo_loop.py` or `orpo_loop.py`                                        |
-| Standard RL            | `rl_loop.py` or `async_rl_loop.py`                                     |
+| Need | Start from |
+| - | - |
+| SFT | `sft_loop.py` and its weighted token objective |
+| DPO or ORPO | `dpo_loop.py` or `orpo_loop.py` |
+| Standard RL | `rl_loop.py` or `async_rl_loop.py` |
 | New research objective | Fork the closest recipe and use `forward_backward_custom` deliberately |
 
 Call forward/backward multiple times before one `optim_step()` for gradient accumulation. Validate datum fields, token masks, and normalization locally. Detailed loss and datum routing lives in the [Training API losses skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md).
@@ -141,23 +141,23 @@ Call forward/backward multiple times before one `optim_step()` for gradient accu
 
 Dedicated training has three distinct checkpoint purposes:
 
-| Purpose               | Contains                    | Use                                               |
-| --------------------- | --------------------------- | ------------------------------------------------- |
-| Sampler snapshot      | Weights for inference       | Refresh a rollout or evaluation deployment        |
-| Resumable state       | Weights and optimizer state | Continue an interrupted training run              |
-| Promotable checkpoint | Deployable model artifact   | Register the selected result as a Fireworks model |
+| Purpose | Contains | Use |
+| - | - | - |
+| Sampler snapshot | Weights for inference | Refresh a rollout or evaluation deployment |
+| Resumable state | Weights and optimizer state | Continue an interrupted training run |
+| Promotable checkpoint | Deployable model artifact | Register the selected result as a Fireworks model |
 
 Do not pass a sampler snapshot to a resumable-state API. Keep the same trainer ID and log path for exact continuation; use the recipe's explicit initialization option for a new job. See the [checkpoint skill reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md).
 
 ## Deep dives (cookbook skill)
 
-| Topic                                 | Skill reference                                                                                                                |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| Topic | Skill reference |
+| - | - |
 | Losses, datums, gradient accumulation | [training-api-losses](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/training-api-losses.md) |
-| Checkpoints, resume, promote          | [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md)         |
-| Custom RL objectives                  | [rl-custom-loss](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md)           |
-| Async RL and concurrency              | [rl-async](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md)                       |
-| Recipe catalog                        | [sdk-recipes](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md)                 |
+| Checkpoints, resume, promote | [sdk-checkpoints](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) |
+| Custom RL objectives | [rl-custom-loss](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md) |
+| Async RL and concurrency | [rl-async](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-async.md) |
+| Recipe catalog | [sdk-recipes](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-recipes.md) |
 
 Config class reference (short): [Cookbook Reference](/fine-tuning/training-api/cookbook/reference).
 

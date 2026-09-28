@@ -25,12 +25,12 @@ client = FireworksClient(
 )
 ```
 
-| Parameter            | Type           | Default                      | Description               |
-| -------------------- | -------------- | ---------------------------- | ------------------------- |
-| `api_key`            | `str`          | --                           | Fireworks API key         |
-| `base_url`           | `str`          | `"https://api.fireworks.ai"` | Control-plane URL         |
-| `additional_headers` | `dict \| None` | `None`                       | Extra HTTP headers        |
-| `verify_ssl`         | `bool \| None` | `None`                       | SSL verification override |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `api_key` | `str` | -- | Fireworks API key |
+| `base_url` | `str` | `"https://api.fireworks.ai"` | Control-plane URL |
+| `additional_headers` | `dict \| None` | `None` | Extra HTTP headers |
+| `verify_ssl` | `bool \| None` | `None` | SSL verification override |
 
 ## Methods
 
@@ -58,11 +58,11 @@ model = client.promote_checkpoint(
 print(f"Model state: {model['state']}, kind: {model['kind']}")
 ```
 
-| Parameter         | Type  | Description                                                                                                                     |
-| ----------------- | ----- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `name`            | `str` | Full 4-segment checkpoint resource name (`accounts/<a>/rlorTrainerJobs/<j>/checkpoints/<c>`), as returned by `list_checkpoints` |
-| `output_model_id` | `str` | Desired model ID (1-63 chars, lowercase a-z, 0-9, hyphen only)                                                                  |
-| `base_model`      | `str` | Base model resource name for metadata inheritance (e.g. `accounts/fireworks/models/qwen3-8b`)                                   |
+| Parameter | Type | Description |
+| - | - | - |
+| `name` | `str` | Full 4-segment checkpoint resource name (`accounts/<a>/rlorTrainerJobs/<j>/checkpoints/<c>`), as returned by `list_checkpoints` |
+| `output_model_id` | `str` | Desired model ID (1-63 chars, lowercase a-z, 0-9, hyphen only) |
+| `base_model` | `str` | Base model resource name for metadata inheritance (e.g. `accounts/fireworks/models/qwen3-8b`) |
 
 Returns the model dict from the API (includes `state`, `kind`, `peftDetails`). See [Saving and Loading](/fine-tuning/training-api/dedicated#saving-and-loading) for details, and [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for which checkpoints are promotable.
 
@@ -143,22 +143,22 @@ mgr.delete(endpoint.job_id)
 
 Returned by `resolve_training_profile`:
 
-| Field                          | Type          | Description                                                                                                                                  |
-| ------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `training_shape_version`       | `str`         | Resolved shape version                                                                                                                       |
-| `trainer_image_tag`            | `str`         | Docker image tag for the trainer                                                                                                             |
-| `max_supported_context_length` | `int`         | Maximum supported context length                                                                                                             |
-| `node_count`                   | `int`         | Number of trainer nodes                                                                                                                      |
-| `deployment_shape_version`     | `str`         | Linked deployment shape                                                                                                                      |
-| `deployment_image_tag`         | `str`         | Docker image tag for the linked deployment                                                                                                   |
-| `accelerator_type`             | `str`         | GPU type                                                                                                                                     |
-| `accelerator_count`            | `int`         | Number of GPUs per node                                                                                                                      |
-| `base_model_weight_precision`  | `str`         | Model weight precision                                                                                                                       |
-| `pipeline_parallelism`         | `int`         | Pipeline parallelism degree                                                                                                                  |
-| `trainer_mode`                 | `str`         | Shape mode: `POLICY_TRAINER` or `LORA_TRAINER`. The legacy `FORWARD_ONLY` mode is deprecated and is no longer surfaced in the shape catalog. |
-| `training_shape`               | `str`         | Training shape name (without `/versions/...` suffix)                                                                                         |
-| `deployment_shape`             | `str \| None` | Full versioned deployment shape resource name; pass as-is to `DeploymentConfig.deployment_shape` for pinning                                 |
-| `supports_lora`                | `bool`        | Whether the shape is LoRA-capable (`trainer_mode == "LORA_TRAINER"`)                                                                         |
+| Field | Type | Description |
+| - | - | - |
+| `training_shape_version` | `str` | Resolved shape version |
+| `trainer_image_tag` | `str` | Docker image tag for the trainer |
+| `max_supported_context_length` | `int` | Maximum supported context length |
+| `node_count` | `int` | Number of trainer nodes |
+| `deployment_shape_version` | `str` | Linked deployment shape |
+| `deployment_image_tag` | `str` | Docker image tag for the linked deployment |
+| `accelerator_type` | `str` | GPU type |
+| `accelerator_count` | `int` | Number of GPUs per node |
+| `base_model_weight_precision` | `str` | Model weight precision |
+| `pipeline_parallelism` | `int` | Pipeline parallelism degree |
+| `trainer_mode` | `str` | Shape mode: `POLICY_TRAINER` or `LORA_TRAINER`. The legacy `FORWARD_ONLY` mode is deprecated and is no longer surfaced in the shape catalog. |
+| `training_shape` | `str` | Training shape name (without `/versions/...` suffix) |
+| `deployment_shape` | `str \| None` | Full versioned deployment shape resource name; pass as-is to `DeploymentConfig.deployment_shape` for pinning |
+| `supports_lora` | `bool` | Whether the shape is LoRA-capable (`trainer_mode == "LORA_TRAINER"`) |
 
 ## Related guides
 

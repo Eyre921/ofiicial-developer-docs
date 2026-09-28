@@ -70,11 +70,11 @@ locally and does not require a HUD API key.
 The cookbook installs `fireworks-ai[training]>=1.2.11` and
 `tinker-cookbook>=0.5.7`. Its model defaults are:
 
-| Setting             | Value                                   |
-| ------------------- | --------------------------------------- |
-| `--base-model`      | `accounts/fireworks/models/qwen3p8-27b` |
-| `--tokenizer-model` | `Qwen/Qwen3.8-27B`                      |
-| `--renderer`        | `qwen3_8_disable_thinking`              |
+| Setting | Value |
+| - | - |
+| `--base-model` | `accounts/fireworks/models/qwen3p8-27b` |
+| `--tokenizer-model` | `Qwen/Qwen3.8-27B` |
+| `--renderer` | `qwen3_8_disable_thinking` |
 
 Prompt rendering happens on the client. If you change the model, pass a
 matching tokenizer and renderer with these flags. The default renderer
@@ -96,9 +96,9 @@ uv run train.py \
 
 This collects 24 runs from the initial adapter and reports:
 
-| Metric                    | Meaning                                                         |
-| ------------------------- | --------------------------------------------------------------- |
-| `reward_mean`             | Fraction of correct answers for this binary-reward task         |
+| Metric | Meaning |
+| - | - |
+| `reward_mean` | Fraction of correct answers for this binary-reward task |
 | `within_group_reward_std` | Mean reward standard deviation across attempts at the same task |
 
 The cookbook only sends an update when attempts at the same task have reward
@@ -178,13 +178,13 @@ This requests 512 training runs and 256 evaluation runs. In one run, eight RL
 updates improved Qwen 3.8 27B accuracy on the 128 held-out multiplication
 tasks:
 
-| Held-out metric              |          Before |           After |
-| ---------------------------- | --------------: | --------------: |
-| Correct answers              | 100/128 (78.1%) | 126/128 (98.4%) |
-| Invalid final line           |              19 |               0 |
-| Wrong valid integer          |               9 |               2 |
-| Responses at the token limit |              20 |               0 |
-| Mean output tokens           |           1,085 |             704 |
+| Held-out metric | Before | After |
+| - | -: | -: |
+| Correct answers | 100/128 (78.1%) | 126/128 (98.4%) |
+| Invalid final line | 19 | 0 |
+| Wrong valid integer | 9 | 2 |
+| Responses at the token limit | 20 | 0 |
+| Mean output tokens | 1,085 | 704 |
 
 Most of the gain came from the model learning to finish within the token
 budget. Of the 27 improved tasks, 20 had baseline responses that reached the
@@ -263,10 +263,10 @@ updated adapter.
 
 The script creates two checkpoint types:
 
-| Checkpoint                          | Contents                            | Use                                    |
-| ----------------------------------- | ----------------------------------- | -------------------------------------- |
-| Sampler (`policy-*`, `final`)       | Adapter weights                     | Sample responses or promote to a model |
-| Training (`state-*`, `final-state`) | Adapter weights and optimizer state | Resume training                        |
+| Checkpoint | Contents | Use |
+| - | - | - |
+| Sampler (`policy-*`, `final`) | Adapter weights | Sample responses or promote to a model |
+| Training (`state-*`, `final-state`) | Adapter weights and optimizer state | Resume training |
 
 Each training checkpoint's full path is printed when it is saved. Periodic
 `state-NNNN` checkpoints are saved every five steps by default, followed by

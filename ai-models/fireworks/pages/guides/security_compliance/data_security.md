@@ -82,10 +82,10 @@ Fireworks aligns with leading industry standards to support customer compliance 
 
 Fireworks has achieved all three ISO certifications covering security, privacy, and AI management:
 
-| Certification | Scope                                                             | Status     |
-| ------------- | ----------------------------------------------------------------- | ---------- |
-| **ISO 27001** | Information Security Management Systems (ISMS)                    | ✅ Achieved |
-| **ISO 27701** | Privacy Information Management (extension to ISO 27001)           | ✅ Achieved |
+| Certification | Scope | Status |
+| - | - | - |
+| **ISO 27001** | Information Security Management Systems (ISMS) | ✅ Achieved |
+| **ISO 27701** | Privacy Information Management (extension to ISO 27001) | ✅ Achieved |
 | **ISO 42001** | AI Management Systems — responsible AI development and deployment | ✅ Achieved |
 
 Certificate PDFs for all three certifications are available for download from the [Fireworks Trust Center](https://trust.fireworks.ai).

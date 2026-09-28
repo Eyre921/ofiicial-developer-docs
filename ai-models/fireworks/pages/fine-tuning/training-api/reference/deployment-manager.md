@@ -31,14 +31,14 @@ deploy_mgr = DeploymentManager(
 )
 ```
 
-| Parameter            | Type           | Default                      | Description                                                     |
-| -------------------- | -------------- | ---------------------------- | --------------------------------------------------------------- |
-| `api_key`            | `str`          | —                            | Fireworks API key                                               |
-| `base_url`           | `str`          | `"https://api.fireworks.ai"` | Control-plane URL for deployment CRUD                           |
-| `inference_url`      | `str \| None`  | `None`                       | Gateway URL for inference completions (defaults to `base_url`)  |
-| `hotload_api_url`    | `str \| None`  | `None`                       | Gateway URL for weight-sync operations (defaults to `base_url`) |
-| `additional_headers` | `dict \| None` | `None`                       | Extra HTTP headers                                              |
-| `verify_ssl`         | `bool \| None` | `None`                       | SSL verification override                                       |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `api_key` | `str` | — | Fireworks API key |
+| `base_url` | `str` | `"https://api.fireworks.ai"` | Control-plane URL for deployment CRUD |
+| `inference_url` | `str \| None` | `None` | Gateway URL for inference completions (defaults to `base_url`) |
+| `hotload_api_url` | `str \| None` | `None` | Gateway URL for weight-sync operations (defaults to `base_url`) |
+| `additional_headers` | `dict \| None` | `None` | Extra HTTP headers |
+| `verify_ssl` | `bool \| None` | `None` | SSL verification override |
 
 For most users, all three URLs default to `base_url`. Separate URLs are useful when the control-plane and gateway have different endpoints (e.g. personal dev gateways).
 
@@ -153,21 +153,21 @@ deploy_mgr.delete("research-loop-serving")
 
 When `deployment_shape` is set (the recommended path), the shape owns the deployment's hardware and serving configuration. The fields below are what you set as a user:
 
-| Field                          | Type                     | Default               | Description                                                                                                                                                                                        |
-| ------------------------------ | ------------------------ | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `deployment_id`                | `str`                    | —                     | Stable deployment identifier                                                                                                                                                                       |
-| `base_model`                   | `str`                    | —                     | Base model name. Must match the trainer's base model for weight sync compatibility.                                                                                                                |
-| `deployment_shape`             | `str \| None`            | `None`                | Deployment shape resource name. When set, the shape owns GPU type, node count, and serving engine config.                                                                                          |
-| `region`                       | `str \| None`            | `None`                | Region for the deployment                                                                                                                                                                          |
-| `min_replica_count`            | `int`                    | `0`                   | Minimum replicas (set `0` to scale to zero when idle)                                                                                                                                              |
-| `max_replica_count`            | `int`                    | `1`                   | Maximum replicas for autoscaling                                                                                                                                                                   |
-| `accelerator_type`             | `str`                    | `"NVIDIA_H200_141GB"` | Manual-path deployment GPU type. Do not set when `deployment_shape` is set.                                                                                                                        |
-| `hot_load_bucket_type`         | `str \| None`            | `"FW_HOSTED"`         | Weight sync storage backend                                                                                                                                                                        |
-| `hot_load_trainer_job`         | `str \| None`            | `None`                | Trainer job name whose weight-sync bucket this deployment should use. Format: `accounts/{account}/rlorTrainerJobs/{job_id}`. When set, the deployment shares the trainer's bucket for weight sync. |
-| `disable_speculative_decoding` | `bool`                   | `False`               | Disable speculative decoding                                                                                                                                                                       |
-| `extra_args`                   | `list[str] \| None`      | `None`                | Extra serving arguments                                                                                                                                                                            |
-| `extra_values`                 | `dict[str, str] \| None` | `None`                | Extra deployment Helm values                                                                                                                                                                       |
-| `annotations`                  | `dict[str, str] \| None` | `None`                | Deployment annotations                                                                                                                                                                             |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `deployment_id` | `str` | — | Stable deployment identifier |
+| `base_model` | `str` | — | Base model name. Must match the trainer's base model for weight sync compatibility. |
+| `deployment_shape` | `str \| None` | `None` | Deployment shape resource name. When set, the shape owns GPU type, node count, and serving engine config. |
+| `region` | `str \| None` | `None` | Region for the deployment |
+| `min_replica_count` | `int` | `0` | Minimum replicas (set `0` to scale to zero when idle) |
+| `max_replica_count` | `int` | `1` | Maximum replicas for autoscaling |
+| `accelerator_type` | `str` | `"NVIDIA_H200_141GB"` | Manual-path deployment GPU type. Do not set when `deployment_shape` is set. |
+| `hot_load_bucket_type` | `str \| None` | `"FW_HOSTED"` | Weight sync storage backend |
+| `hot_load_trainer_job` | `str \| None` | `None` | Trainer job name whose weight-sync bucket this deployment should use. Format: `accounts/{account}/rlorTrainerJobs/{job_id}`. When set, the deployment shares the trainer's bucket for weight sync. |
+| `disable_speculative_decoding` | `bool` | `False` | Disable speculative decoding |
+| `extra_args` | `list[str] \| None` | `None` | Extra serving arguments |
+| `extra_values` | `dict[str, str] \| None` | `None` | Extra deployment Helm values |
+| `annotations` | `dict[str, str] \| None` | `None` | Deployment annotations |
 
 <Note>
   On the recommended shape path, `deployment_shape` owns the deployment hardware and serving configuration, so do not override `accelerator_type`. Advanced manual deployments can omit `deployment_shape` and set `accelerator_type` directly. `skip_shape_validation` is for internal development and requires elevated permissions.
@@ -177,13 +177,13 @@ When `deployment_shape` is set (the recommended path), the shape owns the deploy
 
 Returned by `create_or_get`, `wait_for_ready`, and `get`:
 
-| Field                 | Type          | Description                                                              |
-| --------------------- | ------------- | ------------------------------------------------------------------------ |
-| `deployment_id`       | `str`         | Deployment identifier                                                    |
-| `name`                | `str`         | Full resource name                                                       |
-| `state`               | `str`         | Deployment state (e.g. `"READY"`, `"CREATING"`)                          |
-| `hot_load_bucket_url` | `str \| None` | URL for weight sync storage                                              |
-| `inference_model`     | `str \| None` | Model string for completions API (`accounts/{account}/deployments/{id}`) |
+| Field | Type | Description |
+| - | - | - |
+| `deployment_id` | `str` | Deployment identifier |
+| `name` | `str` | Full resource name |
+| `state` | `str` | Deployment state (e.g. `"READY"`, `"CREATING"`) |
+| `hot_load_bucket_url` | `str \| None` | URL for weight sync storage |
+| `inference_model` | `str \| None` | Model string for completions API (`accounts/{account}/deployments/{id}`) |
 
 ## Deployment shape and training shapes
 

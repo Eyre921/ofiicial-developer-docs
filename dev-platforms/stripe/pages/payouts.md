@@ -10,7 +10,7 @@ Set up your bank account to receive payouts.
 
 Stripe sends funds from your available balance to your bank account as payouts:
 
-- **First payout:** After you successfully receive your first live payment, Stripe typically schedules your initial payout to complete within 7–14 days. It can take longer depending on your industry, country of operation, and risk level.
+- **First payout:** After you successfully receive your first live payment, Stripe typically schedules your initial payout to complete within 7–14 days, depending on your industry, country of operation, and risk level.
 - **Subsequent payouts:** Payouts follow your account’s [payout schedule](https://docs.stripe.com/payouts.md#payout-schedule). The time when funds become available depends on your [settlement timing](https://docs.stripe.com/payouts.md#payout-speed), and your bank might take additional time to make the funds available after receiving them.
 - **Track a payout:** View your payouts and their expected deposit dates in the [Dashboard](https://dashboard.stripe.com/test/payouts).
 

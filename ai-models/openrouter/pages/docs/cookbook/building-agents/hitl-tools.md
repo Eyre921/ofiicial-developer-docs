@@ -36,13 +36,13 @@ your existing agent rather than scaffold a separate app.
 
 Both pause for human input, but they solve different problems:
 
-|                       | HITL (`onToolCalled`)                                   | `requireApproval`                               |
-| --------------------- | ------------------------------------------------------- | ----------------------------------------------- |
-| **When it pauses**    | After your tool logic runs and returns `null`           | Before tool execution when approval is required |
-| **Decision type**     | Caller supplies the tool's result                       | Caller approves or rejects execution            |
-| **Auto-resolve path** | Return a value from `onToolCalled` to skip human review | Use an approval predicate to skip approval      |
-| **Post-processing**   | `onResponseReceived` transforms human input             | Not available                                   |
-| **Best for**          | Conditional escalation, tiered approval, enrichment     | Consent gates before risky actions              |
+| | HITL (`onToolCalled`) | `requireApproval` |
+| - | - | - |
+| **When it pauses** | After your tool logic runs and returns `null` | Before tool execution when approval is required |
+| **Decision type** | Caller supplies the tool's result | Caller approves or rejects execution |
+| **Auto-resolve path** | Return a value from `onToolCalled` to skip human review | Use an approval predicate to skip approval |
+| **Post-processing** | `onResponseReceived` transforms human input | Not available |
+| **Best for** | Conditional escalation, tiered approval, enrichment | Consent gates before risky actions |
 
 Use HITL when the decision depends on the input data. Use `requireApproval`
 when you need a human to approve whether a tool should execute. See the [Tool

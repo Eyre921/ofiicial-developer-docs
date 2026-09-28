@@ -12,11 +12,11 @@ Supervised fine-tuning jobs accept an optional `lrScheduler` object on the reque
 
 Configure warmup separately with `learningRateWarmupSteps` (not inside `lrScheduler`).
 
-| Schedule   | Object shape                                             | Notes                                               |
-| ---------- | -------------------------------------------------------- | --------------------------------------------------- |
-| `constant` | `{ "constant": {} }`                                     | Flat LR after warmup                                |
-| `linear`   | `{ "linear": { "minLrRatio": 0.1, "decayRatio": 0.8 } }` | Linear decay toward `learningRate * minLrRatio`     |
-| `cosine`   | `{ "cosine": { "minLrRatio": 0.1, "decayRatio": 0.8 } }` | Cosine annealing toward `learningRate * minLrRatio` |
+| Schedule | Object shape | Notes |
+| - | - | - |
+| `constant` | `{ "constant": {} }` | Flat LR after warmup |
+| `linear` | `{ "linear": { "minLrRatio": 0.1, "decayRatio": 0.8 } }` | Linear decay toward `learningRate * minLrRatio` |
+| `cosine` | `{ "cosine": { "minLrRatio": 0.1, "decayRatio": 0.8 } }` | Cosine annealing toward `learningRate * minLrRatio` |
 
 For `linear` and `cosine`:
 

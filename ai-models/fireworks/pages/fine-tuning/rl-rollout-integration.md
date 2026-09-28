@@ -33,11 +33,11 @@ Fireworks offers three paths for reinforcement learning, along a spectrum that t
 
 ## Where this guide fits
 
-| Path                                                         | You own                                                  | Fireworks owns                                                                    | Use this guide?                                               |
-| ------------------------------------------------------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| **This guide (BYOT rollouts)**                               | Trainer, rewards, environment, checkpoint upload cadence | Hot-load deployment, distributed weight swap, inference, KV cache across rollouts | Yes                                                           |
-| [Training API](/fine-tuning/training-api/introduction)       | Training logic (recipes or SDK)                          | GPUs, trainer lifecycle, often `FW_HOSTED` bucket                                 | Only if you need rollout behavior beyond what the SDK exposes |
-| [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) | Dataset and evaluator                                    | End-to-end hosted RL                                                              | No                                                            |
+| Path | You own | Fireworks owns | Use this guide? |
+| - | - | - | - |
+| **This guide (BYOT rollouts)** | Trainer, rewards, environment, checkpoint upload cadence | Hot-load deployment, distributed weight swap, inference, KV cache across rollouts | Yes |
+| [Training API](/fine-tuning/training-api/introduction) | Training logic (recipes or SDK) | GPUs, trainer lifecycle, often `FW_HOSTED` bucket | Only if you need rollout behavior beyond what the SDK exposes |
+| [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) | Dataset and evaluator | End-to-end hosted RL | No |
 
 **Why BYOT rollout inference?**
 
@@ -52,12 +52,12 @@ For **Online RL** (live user traffic as rollouts with rolling per-replica update
 
 BYOT rollout hot-load is enabled for a curated set of base models from our full [model library](https://fireworks.ai/models). The following are supported today:
 
-| Model         | Base model ID                 |
-| ------------- | ----------------------------- |
-| Kimi K2.5     | `kimi-k2p5`                   |
-| Kimi K2.6     | `kimi-k2p6`                   |
-| Kimi K2.7     | `kimi-k2p7-code`              |
-| GLM 5.2       | `glm-5p2`                     |
+| Model | Base model ID |
+| - | - |
+| Kimi K2.5 | `kimi-k2p5` |
+| Kimi K2.6 | `kimi-k2p6` |
+| Kimi K2.7 | `kimi-k2p7-code` |
+| GLM 5.2 | `glm-5p2` |
 | Qwen3 30B-A3B | `qwen3-30b-a3b-instruct-2507` |
 
 Both full-parameter checkpoints and [LoRA adapters](#lora-rollouts) can be hot-loaded for these models.
@@ -70,14 +70,14 @@ Both full-parameter checkpoints and [LoRA adapters](#lora-rollouts) can be hot-l
 
 Reuse these values in every command below:
 
-| Placeholder                            | Example                                                           |
-| -------------------------------------- | ----------------------------------------------------------------- |
-| `<account_id>`                         | `my-team`                                                         |
-| `<model_id>`                           | `qwen3-30b-a3b`                                                   |
-| `<deployment_id>`                      | `rl-rollout-prod`                                                 |
-| `<fireworks_api_key>`                  | From [API keys](https://app.fireworks.ai/settings/users/api-keys) |
-| `<your_bucket>` / `<your_upload_path>` | Parent prefix configured on the deployment (no trailing slash)    |
-| `<checkpoint_id>`                      | Snapshot directory name, e.g. `version_001` (no slashes)          |
+| Placeholder | Example |
+| - | - |
+| `<account_id>` | `my-team` |
+| `<model_id>` | `qwen3-30b-a3b` |
+| `<deployment_id>` | `rl-rollout-prod` |
+| `<fireworks_api_key>` | From [API keys](https://app.fireworks.ai/settings/users/api-keys) |
+| `<your_bucket>` / `<your_upload_path>` | Parent prefix configured on the deployment (no trailing slash) |
+| `<checkpoint_id>` | Snapshot directory name, e.g. `version_001` (no slashes) |
 
 ## Prerequisites
 
@@ -121,13 +121,13 @@ flowchart LR
 
 Use this table for your **first** rollout end-to-end:
 
-| Step | Action                                                                     | Done when                                                                                   |
-| ---- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
-| 1    | [Create hot-load deployment](#1-create-a-hot-load-deployment)              | `firectl deployment get <deployment_id>` shows a healthy deployment                         |
-| 2    | [Upload full HF snapshot](#2-upload-and-hot-load-an-initial-full-snapshot) | All files exist under `.../<checkpoint_id>/` in object storage                              |
-| 3    | `POST` [signal snapshot](#hot-load-api)                                    | HTTP 200                                                                                    |
-| 4    | `GET` [poll status](#hot-load-api)                                         | Every replica has `readiness: true` and `current_snapshot_identity` matches your `identity` |
-| 5    | [Run rollouts](#3-run-rollouts)                                            | Chat/completions returns tokens                                                             |
+| Step | Action | Done when |
+| - | - | - |
+| 1 | [Create hot-load deployment](#1-create-a-hot-load-deployment) | `firectl deployment get <deployment_id>` shows a healthy deployment |
+| 2 | [Upload full HF snapshot](#2-upload-and-hot-load-an-initial-full-snapshot) | All files exist under `.../<checkpoint_id>/` in object storage |
+| 3 | `POST` [signal snapshot](#hot-load-api) | HTTP 200 |
+| 4 | `GET` [poll status](#hot-load-api) | Every replica has `readiness: true` and `current_snapshot_identity` matches your `identity` |
+| 5 | [Run rollouts](#3-run-rollouts) | Chat/completions returns tokens |
 
 ## 1. Create a hot-load deployment
 
@@ -196,13 +196,13 @@ s3://<your_bucket>/<account_id>/<account_id>-<deployment_id>/version_001/
 
 A full (non-LoRA) snapshot is validated at POST time; it must contain all of:
 
-| File                           | Purpose                                                                | Validation                                                                                                                                                                                                                               |
-| ------------------------------ | ---------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `config.json`                  | HuggingFace model config.                                              | Must be loadable as an `AutoConfig` and **equivalent to the base model's** config (`hidden_size`, `num_hidden_layers`, `rope_parameters`, etc.). A `quantization_config` key is allowed for [quantized snapshots](#quantized-snapshots). |
-| `model.safetensors.index.json` | Maps each tensor name to the shard file that stores it (`weight_map`). | Must be a JSON object with a `weight_map`; every shard file may contain weights from only **one** layer.                                                                                                                                 |
-| `model.weight.spec.json`       | Describes each tensor's `shape` and `dtype` (`tensor_map`).            | Must be a JSON object with a `tensor_map` that covers **every** weight named in `weight_map`.                                                                                                                                            |
-| `model-*.safetensors`          | The weights themselves.                                                | Tensor coverage must match the index/spec; tensors must cover the base model.                                                                                                                                                            |
-| tokenizer files                | `tokenizer.json`, `tokenizer_config.json`, etc.                        | Carried over from the base model.                                                                                                                                                                                                        |
+| File | Purpose | Validation |
+| - | - | - |
+| `config.json` | HuggingFace model config. | Must be loadable as an `AutoConfig` and **equivalent to the base model's** config (`hidden_size`, `num_hidden_layers`, `rope_parameters`, etc.). A `quantization_config` key is allowed for [quantized snapshots](#quantized-snapshots). |
+| `model.safetensors.index.json` | Maps each tensor name to the shard file that stores it (`weight_map`). | Must be a JSON object with a `weight_map`; every shard file may contain weights from only **one** layer. |
+| `model.weight.spec.json` | Describes each tensor's `shape` and `dtype` (`tensor_map`). | Must be a JSON object with a `tensor_map` that covers **every** weight named in `weight_map`. |
+| `model-*.safetensors` | The weights themselves. | Tensor coverage must match the index/spec; tensors must cover the base model. |
+| tokenizer files | `tokenizer.json`, `tokenizer_config.json`, etc. | Carried over from the base model. |
 
 `model.safetensors.index.json` (HuggingFace-standard) maps tensors to shards:
 
@@ -252,17 +252,17 @@ Use the [Hot-load API](#hot-load-api) below with `{ "identity": "<checkpoint_id>
 
 All hot-load requests use these headers:
 
-| Header                 | Value                                               |
-| ---------------------- | --------------------------------------------------- |
-| `Authorization`        | `Bearer <fireworks_api_key>`                        |
-| `fireworks-model`      | `accounts/<account_id>/models/<model_id>`           |
+| Header | Value |
+| - | - |
+| `Authorization` | `Bearer <fireworks_api_key>` |
+| `fireworks-model` | `accounts/<account_id>/models/<model_id>` |
 | `fireworks-deployment` | `accounts/<account_id>/deployments/<deployment_id>` |
-| `Content-Type`         | `application/json`                                  |
+| `Content-Type` | `application/json` |
 
-| Operation                | Method | URL                                                         |
-| ------------------------ | ------ | ----------------------------------------------------------- |
-| Signal snapshot ready    | `POST` | `https://api.fireworks.ai/hot_load/v1/models/hot_load`      |
-| Poll load status         | `GET`  | `https://api.fireworks.ai/hot_load/v1/models/hot_load`      |
+| Operation | Method | URL |
+| - | - | - |
+| Signal snapshot ready | `POST` | `https://api.fireworks.ai/hot_load/v1/models/hot_load` |
+| Poll load status | `GET` | `https://api.fireworks.ai/hot_load/v1/models/hot_load` |
 | Per-file hint (optional) | `POST` | `https://api.fireworks.ai/hot_load/v1/models/hot_load/hint` |
 
 ### Per-file hints (optional)

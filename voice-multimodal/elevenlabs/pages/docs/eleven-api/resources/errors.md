@@ -57,7 +57,7 @@ elevenlabs = ElevenLabs()
 try:
     audio = elevenlabs.text_to_speech.convert(
         voice_id="invalid-voice-id",
-        model_id="eleven_v3",
+        model_id="eleven_v4",
         text="Hello, world!",
     )
 except ApiError as e:
@@ -86,7 +86,7 @@ const elevenlabs = new ElevenLabsClient();
 try {
   const audio = await elevenlabs.textToSpeech.convert("invalid-voice-id", {
     text: "Hello, world!",
-    modelId: "eleven_v3",
+    modelId: "eleven_v4",
   });
 } catch (error) {
   if (error instanceof ElevenLabsError) {

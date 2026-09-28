@@ -80,11 +80,11 @@ Once SSO is enabled, connect your identity provider from the Security tab:
 
 Each connection in the SSO tab shows its domain, how it was created, and its current status:
 
-| Status       | Meaning                                                                                                            |
-| ------------ | ------------------------------------------------------------------------------------------------------------------ |
-| **Pending**  | The connection has been created but isn't active yet (e.g. domain verification or activation is still in progress) |
-| **Active**   | Members of the domain sign in to OpenRouter through your identity provider                                         |
-| **Disabled** | The connection exists but is turned off                                                                            |
+| Status | Meaning |
+| - | - |
+| **Pending** | The connection has been created but isn't active yet (e.g. domain verification or activation is still in progress) |
+| **Active** | Members of the domain sign in to OpenRouter through your identity provider |
+| **Disabled** | The connection exists but is turned off |
 
 Connections are labeled **Self-serve connection** when created through the Security tab, or **Configured by OpenRouter** when set up by our team on your behalf.
 

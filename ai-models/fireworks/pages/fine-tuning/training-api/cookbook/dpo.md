@@ -12,12 +12,12 @@ This guide walks through DPO (Direct Preference Optimization) training using the
 
 ## How DPO differs from GRPO
 
-|                        | DPO                                                          | GRPO                                                                    |
-| ---------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------- |
-| **Trainer jobs**       | 1 for LoRA, 2 for full-parameter (policy + frozen reference) | 1-2 trainers plus an inference deployment, depending on reference needs |
-| **Data**               | Preference pairs (chosen/rejected)                           | Prompts + reward function                                               |
-| **Reference logprobs** | Cached once at initialization                                | Computed every step                                                     |
-| **Loss**               | `-log(sigmoid(beta * margin))`                               | Advantage-weighted policy gradient + KL                                 |
+| | DPO | GRPO |
+| - | - | - |
+| **Trainer jobs** | 1 for LoRA, 2 for full-parameter (policy + frozen reference) | 1-2 trainers plus an inference deployment, depending on reference needs |
+| **Data** | Preference pairs (chosen/rejected) | Prompts + reward function |
+| **Reference logprobs** | Cached once at initialization | Computed every step |
+| **Loss** | `-log(sigmoid(beta * margin))` | Advantage-weighted policy gradient + KL |
 
 ## Architecture
 

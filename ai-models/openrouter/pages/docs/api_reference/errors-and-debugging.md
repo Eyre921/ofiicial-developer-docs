@@ -379,46 +379,46 @@ The HTTP status each `error_type` maps to is listed in the tables below.
 
 ### Token and length limits
 
-| `error_type`              | HTTP Status                   | Description                                                                                                                 |
-| ------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `context_length_exceeded` | {HTTPStatus.S400_Bad_Request} | The combined input and output tokens exceed the model's context window.                                                     |
-| `max_tokens_exceeded`     | {HTTPStatus.S400_Bad_Request} | Generation stopped because `max_tokens` (or `max_completion_tokens`) was reached.                                           |
-| `token_limit_exceeded`    | {HTTPStatus.S400_Bad_Request} | A token budget enforced by OpenRouter (e.g. credit-based cap) was exceeded.                                                 |
-| `string_too_long`         | {HTTPStatus.S400_Bad_Request} | A single string field in the request (system prompt, user message, etc.) exceeded the provider's per-field character limit. |
+| `error_type` | HTTP Status | Description |
+| - | - | - |
+| `context_length_exceeded` | {HTTPStatus.S400_Bad_Request} | The combined input and output tokens exceed the model's context window. |
+| `max_tokens_exceeded` | {HTTPStatus.S400_Bad_Request} | Generation stopped because `max_tokens` (or `max_completion_tokens`) was reached. |
+| `token_limit_exceeded` | {HTTPStatus.S400_Bad_Request} | A token budget enforced by OpenRouter (e.g. credit-based cap) was exceeded. |
+| `string_too_long` | {HTTPStatus.S400_Bad_Request} | A single string field in the request (system prompt, user message, etc.) exceeded the provider's per-field character limit. |
 
 ### Authentication and authorization
 
-| `error_type`        | HTTP Status                        | Description                                                                                                                  |
-| ------------------- | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `authentication`    | {HTTPStatus.S401_Unauthorized}     | The API key is missing, invalid, or revoked.                                                                                 |
-| `permission_denied` | {HTTPStatus.S403_Forbidden}        | The key is valid but lacks the required permission or the request was blocked by a [guardrail](/docs/guides/features/guardrails). |
-| `payment_required`  | {HTTPStatus.S402_Payment_Required} | The account or API key has insufficient credits. [Add credits](https://openrouter.ai/credits) and retry.                     |
+| `error_type` | HTTP Status | Description |
+| - | - | - |
+| `authentication` | {HTTPStatus.S401_Unauthorized} | The API key is missing, invalid, or revoked. |
+| `permission_denied` | {HTTPStatus.S403_Forbidden} | The key is valid but lacks the required permission or the request was blocked by a [guardrail](/docs/guides/features/guardrails). |
+| `payment_required` | {HTTPStatus.S402_Payment_Required} | The account or API key has insufficient credits. [Add credits](https://openrouter.ai/credits) and retry. |
 
 ### Rate limiting and availability
 
-| `error_type`           | HTTP Status                           | Description                                                                                                                                  |
-| ---------------------- | ------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `rate_limit_exceeded`  | {HTTPStatus.S429_Too_Many_Requests}   | Request- or token-level rate limit hit. Respect the `Retry-After` header before retrying.                                                    |
-| `provider_overloaded`  | {HTTPStatus.S503_Service_Unavailable} | The upstream provider is temporarily overloaded. Retry after a short delay.                                                                  |
-| `provider_unavailable` | {HTTPStatus.S502_Bad_Gateway}         | The upstream provider returned an invalid or empty response. OpenRouter may auto-retry with another provider if fallback routing is enabled. |
+| `error_type` | HTTP Status | Description |
+| - | - | - |
+| `rate_limit_exceeded` | {HTTPStatus.S429_Too_Many_Requests} | Request- or token-level rate limit hit. Respect the `Retry-After` header before retrying. |
+| `provider_overloaded` | {HTTPStatus.S503_Service_Unavailable} | The upstream provider is temporarily overloaded. Retry after a short delay. |
+| `provider_unavailable` | {HTTPStatus.S502_Bad_Gateway} | The upstream provider returned an invalid or empty response. OpenRouter may auto-retry with another provider if fallback routing is enabled. |
 
 ### Request validation
 
-| `error_type`          | HTTP Status                            | Description                                                                                   |
-| --------------------- | -------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `invalid_request`     | {HTTPStatus.S400_Bad_Request}          | A request parameter is malformed or missing.                                                  |
-| `invalid_prompt`      | {HTTPStatus.S400_Bad_Request}          | A specific message in the `messages` array is invalid (e.g. unsupported role, empty content). |
-| `not_found`           | {HTTPStatus.S404_Not_Found}            | The requested resource (model, file, etc.) does not exist.                                    |
-| `precondition_failed` | {HTTPStatus.S412_Precondition_Failed}  | A precondition header (e.g. `If-Match`) was not satisfied.                                    |
-| `payload_too_large`   | {HTTPStatus.S413_Payload_Too_Large}    | The request body exceeds the maximum allowed size.                                            |
-| `unprocessable`       | {HTTPStatus.S422_Unprocessable_Entity} | The request is syntactically valid but semantically unprocessable.                            |
+| `error_type` | HTTP Status | Description |
+| - | - | - |
+| `invalid_request` | {HTTPStatus.S400_Bad_Request} | A request parameter is malformed or missing. |
+| `invalid_prompt` | {HTTPStatus.S400_Bad_Request} | A specific message in the `messages` array is invalid (e.g. unsupported role, empty content). |
+| `not_found` | {HTTPStatus.S404_Not_Found} | The requested resource (model, file, etc.) does not exist. |
+| `precondition_failed` | {HTTPStatus.S412_Precondition_Failed} | A precondition header (e.g. `If-Match`) was not satisfied. |
+| `payload_too_large` | {HTTPStatus.S413_Payload_Too_Large} | The request body exceeds the maximum allowed size. |
+| `unprocessable` | {HTTPStatus.S422_Unprocessable_Entity} | The request is syntactically valid but semantically unprocessable. |
 
 ### Content policy
 
-| `error_type`               | HTTP Status                 | Description                                                                                                                                                                                                               |
-| -------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `content_policy_violation` | {HTTPStatus.S403_Forbidden} | The input or output was flagged by a content filter that runs separately from the model (provider- or OpenRouter-level), such as Gemini's `SAFETY` block.                                                                 |
-| `refusal`                  | {HTTPStatus.S403_Forbidden} | The provider reported a model refusal as an error rather than as output (e.g. Anthropic's "refused to respond" / usage-policy error envelopes). `error.message` carries the provider's explanation when one is available. |
+| `error_type` | HTTP Status | Description |
+| - | - | - |
+| `content_policy_violation` | {HTTPStatus.S403_Forbidden} | The input or output was flagged by a content filter that runs separately from the model (provider- or OpenRouter-level), such as Gemini's `SAFETY` block. |
+| `refusal` | {HTTPStatus.S403_Forbidden} | The provider reported a model refusal as an error rather than as output (e.g. Anthropic's "refused to respond" / usage-policy error envelopes). `error.message` carries the provider's explanation when one is available. |
 
 Both policy types share one status: the request was understood and declined, so it is a 403 regardless of whether the model or a filter around it made the call, and regardless of the provider's own wire status. The two `error_type` values only tell you which mechanism declined it. `metadata.provider_name`, `metadata.provider_code`, and `metadata.raw` identify who declined and carry the provider's verbatim payload. The status is the same for every provider and skin, whether the block is the HTTP response or arrives mid-stream (in which case it is the `code` inside the error body, since the HTTP line was already committed).
 
@@ -426,22 +426,22 @@ A refusal that the model produces as its own completed output is not an error. W
 
 ### Image errors
 
-| `error_type`               | HTTP Status                   | Description                                                                                                   |
-| -------------------------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `invalid_image`            | {HTTPStatus.S400_Bad_Request} | An image in the request is corrupt or unreadable.                                                             |
-| `image_too_large`          | {HTTPStatus.S400_Bad_Request} | An image exceeds the provider's maximum file size or pixel dimensions.                                        |
-| `image_too_small`          | {HTTPStatus.S400_Bad_Request} | An image is below the provider's minimum pixel dimensions.                                                    |
-| `unsupported_image_format` | {HTTPStatus.S400_Bad_Request} | The image format is not supported by the provider.                                                            |
-| `image_not_found`          | {HTTPStatus.S404_Not_Found}   | The referenced image URL or file ID could not be resolved.                                                    |
-| `image_download_failed`    | {HTTPStatus.S400_Bad_Request} | OpenRouter could not download the image from the provided URL (DNS failure, timeout, non-200 response, etc.). |
+| `error_type` | HTTP Status | Description |
+| - | - | - |
+| `invalid_image` | {HTTPStatus.S400_Bad_Request} | An image in the request is corrupt or unreadable. |
+| `image_too_large` | {HTTPStatus.S400_Bad_Request} | An image exceeds the provider's maximum file size or pixel dimensions. |
+| `image_too_small` | {HTTPStatus.S400_Bad_Request} | An image is below the provider's minimum pixel dimensions. |
+| `unsupported_image_format` | {HTTPStatus.S400_Bad_Request} | The image format is not supported by the provider. |
+| `image_not_found` | {HTTPStatus.S404_Not_Found} | The referenced image URL or file ID could not be resolved. |
+| `image_download_failed` | {HTTPStatus.S400_Bad_Request} | OpenRouter could not download the image from the provided URL (DNS failure, timeout, non-200 response, etc.). |
 
 ### Generic
 
-| `error_type` | HTTP Status                             | Description                                                                                                             |
-| ------------ | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `server`     | {HTTPStatus.S500_Internal_Server_Error} | An unexpected internal error. The upstream error message is masked on this type.                                        |
-| `timeout`    | {HTTPStatus.S504_Gateway_Timeout}       | The provider did not respond within the allowed time.                                                                   |
-| `unmapped`   | {HTTPStatus.S500_Internal_Server_Error} | An upstream error that doesn't map to any known category. `error.metadata.provider_code` may contain the original code. |
+| `error_type` | HTTP Status | Description |
+| - | - | - |
+| `server` | {HTTPStatus.S500_Internal_Server_Error} | An unexpected internal error. The upstream error message is masked on this type. |
+| `timeout` | {HTTPStatus.S504_Gateway_Timeout} | The provider did not respond within the allowed time. |
+| `unmapped` | {HTTPStatus.S500_Internal_Server_Error} | An upstream error that doesn't map to any known category. `error.metadata.provider_code` may contain the original code. |
 
 ## Skin-specific error formats
 
@@ -471,13 +471,13 @@ For non-streaming requests where a provider error occurs, the error is embedded 
 
 The Responses API maps internal error types to the OpenAI Responses error code set. The mapping is narrower — many distinct internal types collapse to `server_error` — so the precise reason is preserved in a top-level `error_type` field on the response, outside the native `error` object:
 
-| Internal `error_type`                                                                | Responses API `code`             |
-| ------------------------------------------------------------------------------------ | -------------------------------- |
-| `rate_limit_exceeded`                                                                | `rate_limit_exceeded`            |
-| `context_length_exceeded`, `invalid_request`, `refusal`                              | `invalid_prompt`                 |
-| `content_policy_violation`                                                           | `image_content_policy_violation` |
-| `authentication`, `provider_overloaded`, `provider_unavailable`, `timeout`, `server` | `server_error`                   |
-| All others (including `invalid_prompt`)                                              | `server_error`                   |
+| Internal `error_type` | Responses API `code` |
+| - | - |
+| `rate_limit_exceeded` | `rate_limit_exceeded` |
+| `context_length_exceeded`, `invalid_request`, `refusal` | `invalid_prompt` |
+| `content_policy_violation` | `image_content_policy_violation` |
+| `authentication`, `provider_overloaded`, `provider_unavailable`, `timeout`, `server` | `server_error` |
+| All others (including `invalid_prompt`) | `server_error` |
 
 Both the streaming terminal event and the non-streaming JSON body carry the canonical `error_type` at the top level of the response object. For example, an authentication failure collapses to the native `server_error` code but keeps `error_type: "authentication"`:
 
@@ -525,12 +525,12 @@ Streaming errors surface as one of three SSE event types, each wrapping the same
 
 Certain token/length errors are transformed into successful completions instead of failures:
 
-| `error_type`              | Transformed To | Finish Reason |
-| ------------------------- | -------------- | ------------- |
-| `context_length_exceeded` | Success        | `length`      |
-| `max_tokens_exceeded`     | Success        | `length`      |
-| `token_limit_exceeded`    | Success        | `length`      |
-| `string_too_long`         | Success        | `length`      |
+| `error_type` | Transformed To | Finish Reason |
+| - | - | - |
+| `context_length_exceeded` | Success | `length` |
+| `max_tokens_exceeded` | Success | `length` |
+| `token_limit_exceeded` | Success | `length` |
+| `string_too_long` | Success | `length` |
 
 This allows graceful handling of limit-based errors without treating them as failures.
 
@@ -538,17 +538,17 @@ This allows graceful handling of limit-based errors without treating them as fai
 
 The Anthropic Messages skin maps internal types to Anthropic-native error type strings:
 
-| Internal `error_type`                                                                    | Anthropic `error.type`  |
-| ---------------------------------------------------------------------------------------- | ----------------------- |
-| `authentication`                                                                         | `authentication_error`  |
-| `permission_denied`                                                                      | `permission_error`      |
-| `payment_required`                                                                       | `billing_error`         |
-| `not_found`, `image_not_found`                                                           | `not_found_error`       |
-| `rate_limit_exceeded`                                                                    | `rate_limit_error`      |
-| `provider_overloaded`                                                                    | `overloaded_error`      |
-| `timeout`                                                                                | `timeout_error`         |
+| Internal `error_type` | Anthropic `error.type` |
+| - | - |
+| `authentication` | `authentication_error` |
+| `permission_denied` | `permission_error` |
+| `payment_required` | `billing_error` |
+| `not_found`, `image_not_found` | `not_found_error` |
+| `rate_limit_exceeded` | `rate_limit_error` |
+| `provider_overloaded` | `overloaded_error` |
+| `timeout` | `timeout_error` |
 | `context_length_exceeded`, `content_policy_violation`, `refusal`, `invalid_request`, ... | `invalid_request_error` |
-| `provider_unavailable`, `server`, `unmapped`, ...                                        | `api_error`             |
+| `provider_unavailable`, `server`, `unmapped`, ... | `api_error` |
 
 Because the native `error.type` is lossy (many internal types collapse to `api_error`), the canonical `error_type` is added inside the `error` object alongside it. This holds for both the non-streaming error envelope and mid-stream SSE `error` events.
 

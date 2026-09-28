@@ -25,13 +25,13 @@ limits.
 
 ## Responsibilities
 
-| You provide                                                | The recipe owns                                                                    |
-| ---------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Dataset rows through `Config.dataset` or `rows=`           | Trainer and deployment setup, cleanup, and initial weight sync                     |
-| `rollout_fn_factory(setup) -> rollout_fn`                  | Rollout fan-out, admission, grouping, and advantages                               |
-| Environment interaction, scoring, and aligned rollout data | Reference and old-policy forwards, GRPO/TIS/KL, and optimizer steps                |
-| Scheduling and algorithm configuration                     | Training chunks, sampler hotload and version publication, metrics, and checkpoints |
-| Optional `dynamic_filter_fn` and `evaluation_fn`           | Bounded failure handling, evaluation scheduling, and final-step deduplication      |
+| You provide | The recipe owns |
+| - | - |
+| Dataset rows through `Config.dataset` or `rows=` | Trainer and deployment setup, cleanup, and initial weight sync |
+| `rollout_fn_factory(setup) -> rollout_fn` | Rollout fan-out, admission, grouping, and advantages |
+| Environment interaction, scoring, and aligned rollout data | Reference and old-policy forwards, GRPO/TIS/KL, and optimizer steps |
+| Scheduling and algorithm configuration | Training chunks, sampler hotload and version publication, metrics, and checkpoints |
+| Optional `dynamic_filter_fn` and `evaluation_fn` | Bounded failure handling, evaluation scheduling, and final-step deduplication |
 
 ## Minimal setup
 
@@ -93,15 +93,15 @@ Each segment carries aligned `tokens`, `logprobs`, and `loss_mask` lists plus a 
 
 These fields define the rollout/training pipeline:
 
-| Field                            | Default | Meaning                                                                                           |
-| -------------------------------- | ------: | ------------------------------------------------------------------------------------------------- |
-| `completions_per_prompt`         |     `4` | Trajectories per dataset row. Must be at least `2`.                                               |
-| `prompt_groups_per_step`         |     `1` | Dataset rows grouped into one optimizer batch.                                                    |
-| `pipeline_chunks_per_step`       |     `1` | Balanced forward/backward chunks prepared for each optimizer batch.                               |
-| `max_head_offpolicy_versions`    |     `0` | Number of published policy versions that rollout admission may run ahead. `0` is fully on-policy. |
-| `max_concurrency_rollout_sample` |  `None` | Optional cap on in-flight rollout calls. It must fit at least one complete row.                   |
-| `min_group_size`                 |     `1` | Minimum surviving rollout runs required to train a row.                                           |
-| `max_incomplete_group_retries`   |     `0` | Number of times to rebuild a row that finishes below `min_group_size`.                            |
+| Field | Default | Meaning |
+| - | -: | - |
+| `completions_per_prompt` | `4` | Trajectories per dataset row. Must be at least `2`. |
+| `prompt_groups_per_step` | `1` | Dataset rows grouped into one optimizer batch. |
+| `pipeline_chunks_per_step` | `1` | Balanced forward/backward chunks prepared for each optimizer batch. |
+| `max_head_offpolicy_versions` | `0` | Number of published policy versions that rollout admission may run ahead. `0` is fully on-policy. |
+| `max_concurrency_rollout_sample` | `None` | Optional cap on in-flight rollout calls. It must fit at least one complete row. |
+| `min_group_size` | `1` | Minimum surviving rollout runs required to train a row. |
+| `max_incomplete_group_retries` | `0` | Number of times to rebuild a row that finishes below `min_group_size`. |
 
 Admission is row-atomic: the scheduler submits a row only when both the
 staleness budget and concurrency budget can fit all of its completions.

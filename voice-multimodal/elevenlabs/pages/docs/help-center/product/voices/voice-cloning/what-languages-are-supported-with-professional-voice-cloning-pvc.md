@@ -8,46 +8,8 @@ path: docs/help-center/product/voices/voice-cloning/what-languages-are-supported
 
 # What languages are supported with Professional Voice Cloning?
 
-We support Professional Voice Cloning for all languages supported by the Flash v2.5 model.
+Professional Voice Cloning supports all languages available in the Eleven v4 model family — 90+ languages in total.
 
-Currently, these are the languages we support with professional voice cloning:
+The Eleven v4 model family supports 90+ languages, including:
 
-* 🇺🇸 English (USA)
-* 🇬🇧 English (UK)
-* 🇦🇺 English (Australia)
-* 🇨🇦 English (Canada)
-* 🇯🇵 Japanese
-* 🇨🇳 Chinese
-* 🇩🇪 German
-* 🇮🇳 Hindi
-* 🇫🇷 French (France)
-* 🇨🇦 French (Canada)
-* 🇰🇷 Korean
-* 🇧🇷 Portuguese (Brazil)
-* 🇵🇹 Portuguese (Portugal)
-* 🇮🇹 Italian
-* 🇪🇸 Spanish (Spain)
-* 🇲🇽 Spanish (Mexico)
-* 🇮🇩 Indonesian
-* 🇳🇱 Dutch
-* 🇹🇷 Turkish
-* 🇵🇭 Filipino
-* 🇵🇱 Polish
-* 🇸🇪 Swedish
-* 🇧🇬 Bulgarian
-* 🇷🇴 Romanian
-* 🇸🇦 Arabic (Saudi Arabia)
-* 🇦🇪 Arabic (UAE)
-* 🇨🇿 Czech
-* 🇬🇷 Greek
-* 🇫🇮 Finnish
-* 🇭🇷 Croatian
-* 🇲🇾 Malay
-* 🇸🇰 Slovak
-* 🇩🇰 Danish
-* 🇮🇳 Tamil
-* 🇺🇦 Ukrainian
-* 🇷🇺 Russian
-* 🇭🇺 Hungarian
-* 🇳🇴 Norwegian
-* 🇻🇳 Vietnamese
+*Afrikaans (afr), Amharic (amh), Arabic (ara), Armenian (hye), Assamese (asm), Asturian (ast), Azerbaijani (aze), Belarusian (bel), Bengali (ben), Bosnian (bos), Bulgarian (bul), Burmese (mya), Cantonese (yue), Catalan (cat), Cebuano (ceb), Croatian (hrv), Czech (ces), Danish (dan), Dutch (nld), English (eng), Estonian (est), Filipino (fil), Finnish (fin), French (fra), Fula/Pulaar (ful), Galician (glg), Georgian (kat), German (deu), Greek (ell), Gujarati (guj), Hausa (hau), Hebrew (heb), Hindi (hin), Hungarian (hun), Icelandic (isl), Indonesian (ind), Italian (ita), Japanese (jpn), Javanese (jav), Kamba (kam), Kannada (kan), Kazakh (kaz), Korean (kor), Kyrgyz (kir), Lao (lao), Latvian (lav), Lingala (lin), Lithuanian (lit), Luganda (lug), Luxembourgish (ltz), Macedonian (mkd), Malay (msa), Malayalam (mal), Maltese (mlt), Mandarin Chinese (cmn), Māori (mri), Marathi (mar), Mongolian (mon), Nepali (nep), Norwegian Bokmål (nob), Occitan (oci), Odia (ori), Pashto (pus), Persian (fas), Polish (pol), Portuguese, Brazil (por), Punjabi (pan), Romanian (ron), Russian (rus), Serbian (srp), Shona (sna), Sindhi (snd), Slovak (slk), Slovenian (slv), Somali (som), Sorani Kurdish (ckb), Spanish, LatAm (spa), Swahili (swa), Swedish (swe), Tajik (tgk), Tamil (tam), Telugu (tel), Thai (tha), Turkish (tur), Ukrainian (ukr), Urdu (urd), Uzbek (uzb), Vietnamese (vie), Welsh (cym), Wolof (wol), Zulu (zul).*

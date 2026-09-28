@@ -10,20 +10,20 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
 
 <Tabs>
   <Tab title="FireRouter">
-    | Harness                    | Request API      | FireRouter compatibility                                                                             | Local provider credentials                     |
-    | -------------------------- | ---------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-    | Claude Code                | Messages         | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic login, OAuth, or `ANTHROPIC_API_KEY` |
-    | Claude Agent SDK           | Messages         | Supported when the SDK reads the user settings written by FireConnect                                | Same as Claude Code                            |
-    | OpenCode                   | Chat Completions | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic key                                  |
-    | Codex                      | Responses        | Supports `firerouter` and `firerouter/...` IDs                                                       | `ANTHROPIC_API_KEY` environment reference      |
-    | Codex app, ChatGPT desktop | Responses        | Uses the FireRouter IDs registered through the shared Codex configuration                            | No separate local provider-key configuration   |
-    | Pi                         | Chat Completions | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic key                                  |
-    | Cursor IDE                 | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential                             | None                                           |
-    | VS Code                    | Chat Completions | Supports `firerouter` and `firerouter/...` IDs                                                       | Anthropic key                                  |
-    | Copilot App                | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential                             | None                                           |
-    | Copilot CLI                | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential. Manual setup supports them | Provider-key headers in manual setup           |
-    | DeepSeek Harness           | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential. Manual setup supports them | Provider-key headers in manual setup           |
-    | Claude Desktop             | Not applicable   | Not supported by FireConnect                                                                         | Not applicable                                 |
+    | Harness | Request API | FireRouter compatibility | Local provider credentials |
+    | - | - | - | - |
+    | Claude Code | Messages | Supports `firerouter` and `firerouter/...` IDs | Anthropic login, OAuth, or `ANTHROPIC_API_KEY` |
+    | Claude Agent SDK | Messages | Supported when the SDK reads the user settings written by FireConnect | Same as Claude Code |
+    | OpenCode | Chat Completions | Supports `firerouter` and `firerouter/...` IDs | Anthropic key |
+    | Codex | Responses | Supports `firerouter` and `firerouter/...` IDs | `ANTHROPIC_API_KEY` environment reference |
+    | Codex app, ChatGPT desktop | Responses | Uses the FireRouter IDs registered through the shared Codex configuration | No separate local provider-key configuration |
+    | Pi | Chat Completions | Supports `firerouter` and `firerouter/...` IDs | Anthropic key |
+    | Cursor IDE | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential | None |
+    | VS Code | Chat Completions | Supports `firerouter` and `firerouter/...` IDs | Anthropic key |
+    | Copilot App | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential | None |
+    | Copilot CLI | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential. Manual setup supports them | Provider-key headers in manual setup |
+    | DeepSeek Harness | Chat Completions | Partial: FireConnect rejects routes that require an Anthropic credential. Manual setup supports them | Provider-key headers in manual setup |
+    | Claude Desktop | Not applicable | Not supported by FireConnect | Not applicable |
 
     **Provide a local Anthropic key.** Where a harness supports one, pass it
     when you connect, or store it once for every harness:
@@ -83,16 +83,16 @@ Use this page to check whether FireConnect can add FireRouter to your harness an
 
     ### What FireConnect changes
 
-    | Harness                                                             | What happens to MCP                                                                                                                    |
-    | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-    | Claude Code                                                         | Your servers stay in `~/.claude.json`. FireConnect removes only its retired `fireworks-websearch` server and sets `ENABLE_TOOL_SEARCH` |
-    | Codex                                                               | Your servers stay in `[mcp_servers]` in `~/.codex/config.toml`                                                                         |
-    | OpenCode                                                            | Your servers stay in the `mcp` block of `opencode.json`                                                                                |
-    | Codex app                                                           | FireConnect doesn't touch MCP. Set up servers in the app as usual                                                                      |
-    | ChatGPT desktop                                                     | <Badge>Unreliable</Badge> MCP servers and plugins don't work reliably while FireConnect is on                                          |
-    | Pi, Cursor IDE, VS Code, Copilot App, Copilot CLI, DeepSeek Harness | FireConnect doesn't touch MCP. Set up servers in the harness as usual                                                                  |
-    | Claude Agent SDK                                                    | FireConnect doesn't touch MCP. MCP follows the setting sources your application loads                                                  |
-    | Claude Desktop                                                      | <Badge>Not supported</Badge> FireConnect doesn't connect Claude Desktop                                                                |
+    | Harness | What happens to MCP |
+    | - | - |
+    | Claude Code | Your servers stay in `~/.claude.json`. FireConnect removes only its retired `fireworks-websearch` server and sets `ENABLE_TOOL_SEARCH` |
+    | Codex | Your servers stay in `[mcp_servers]` in `~/.codex/config.toml` |
+    | OpenCode | Your servers stay in the `mcp` block of `opencode.json` |
+    | Codex app | FireConnect doesn't touch MCP. Set up servers in the app as usual |
+    | ChatGPT desktop | <Badge>Unreliable</Badge> MCP servers and plugins don't work reliably while FireConnect is on |
+    | Pi, Cursor IDE, VS Code, Copilot App, Copilot CLI, DeepSeek Harness | FireConnect doesn't touch MCP. Set up servers in the harness as usual |
+    | Claude Agent SDK | FireConnect doesn't touch MCP. MCP follows the setting sources your application loads |
+    | Claude Desktop | <Badge>Not supported</Badge> FireConnect doesn't connect Claude Desktop |
 
     <Warning>
       MCP servers and plugins in ChatGPT desktop don't work reliably while

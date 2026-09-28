@@ -152,10 +152,10 @@ This file contains:
 
 When calling `createOpenRouterDevtools()`, you can customize:
 
-| Option        | Type     | Default                                   | Description                           |
-| ------------- | -------- | ----------------------------------------- | ------------------------------------- |
-| `storagePath` | `string` | `'.devtools/openrouter-generations.json'` | Where to store captured telemetry     |
-| `serverUrl`   | `string` | `'http://localhost:4983/api/notify'`      | DevTools server notification endpoint |
+| Option | Type | Default | Description |
+| - | - | - | - |
+| `storagePath` | `string` | `'.devtools/openrouter-generations.json'` | Where to store captured telemetry |
+| `serverUrl` | `string` | `'http://localhost:4983/api/notify'` | DevTools server notification endpoint |
 
 ### DevTools Server Configuration
 

@@ -90,11 +90,11 @@ Set `store=False` to opt out of storage. Responses created with `store=False` ca
 
 ### Managing stored responses
 
-| Operation           | Endpoint                             |
-| ------------------- | ------------------------------------ |
-| Retrieve a response | `GET /v1/responses/{response_id}`    |
-| List responses      | `GET /v1/responses`                  |
-| Delete a response   | `DELETE /v1/responses/{response_id}` |
+| Operation | Endpoint |
+| - | - |
+| Retrieve a response | `GET /v1/responses/{response_id}` |
+| List responses | `GET /v1/responses` |
+| Delete a response | `DELETE /v1/responses/{response_id}` |
 
 Listing responses is a Fireworks extension; OpenAI does not offer it.
 
@@ -290,14 +290,14 @@ Supported request fields: `model`, `input`, `instructions`, `stream`, `store`, `
 
 Not currently supported:
 
-| Feature                                                     | Status                                  |
-| ----------------------------------------------------------- | --------------------------------------- |
-| `code_interpreter`, `file_search`, `image_generation` tools | Not supported                           |
-| `refusal` content parts                                     | Not supported                           |
-| `GET /v1/responses/{id}/input_items`                        | Not supported                           |
-| `background` + `stream` together                            | Not supported                           |
-| `include` values other than `message.output_text.logprobs`  | Not supported                           |
-| `reasoning.summary` configuration                           | Always on when reasoning content exists |
+| Feature | Status |
+| - | - |
+| `code_interpreter`, `file_search`, `image_generation` tools | Not supported |
+| `refusal` content parts | Not supported |
+| `GET /v1/responses/{id}/input_items` | Not supported |
+| `background` + `stream` together | Not supported |
+| `include` values other than `message.output_text.logprobs` | Not supported |
+| `reasoning.summary` configuration | Always on when reasoning content exists |
 
 For the full request and response schema, see the [Responses API reference](/api-reference/post-responses).
 
@@ -320,12 +320,12 @@ Set `wire_api = "responses"` so Codex targets this endpoint rather than chat com
 
 ### Troubleshooting
 
-| Symptom                                                    | Cause and fix                                                                                                                                 |
-| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| Symptom | Cause and fix |
+| - | - |
 | `404` "Model not found, inaccessible, and/or not deployed" | `model` is not a Fireworks model resource name, or it is not deployed to your account. Use the full `accounts/<account>/models/<model>` form. |
-| MCP tools never get called                                 | The namespace wrapper was rejected or its nested entries are not `function` tools. Check the error body for the offending namespace.          |
-| Ambiguous flattened tool name                              | Two namespaces expand to the same `<namespace>__<tool>` name. Rename one of the MCP servers.                                                  |
-| `400` combining background and streaming                   | Codex requested both. Disable one.                                                                                                            |
+| MCP tools never get called | The namespace wrapper was rejected or its nested entries are not `function` tools. Check the error body for the offending namespace. |
+| Ambiguous flattened tool name | Two namespaces expand to the same `<namespace>__<tool>` name. Rename one of the MCP servers. |
+| `400` combining background and streaming | Codex requested both. Disable one. |
 
 ## Cookbook examples
 

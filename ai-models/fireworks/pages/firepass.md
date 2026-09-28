@@ -53,12 +53,12 @@ fireconnect model list
 fireconnect claude
 ```
 
-| FireConnect harness           | Fire Pass                                                                                           |
-| ----------------------------- | --------------------------------------------------------------------------------------------------- |
-| Claude Code, OpenCode, Pi     | Supported                                                                                           |
-| Cursor IDE, VS Code Chat      | Supported                                                                                           |
-| GitHub Copilot app and CLI    | Supported                                                                                           |
-| DeepSeek Harness              | Supported                                                                                           |
+| FireConnect harness | Fire Pass |
+| - | - |
+| Claude Code, OpenCode, Pi | Supported |
+| Cursor IDE, VS Code Chat | Supported |
+| GitHub Copilot app and CLI | Supported |
+| DeepSeek Harness | Supported |
 | Codex CLI and ChatGPT desktop | Not supported. These clients use the Responses API, which does not currently accept Fire Pass keys. |
 
 <Warning>

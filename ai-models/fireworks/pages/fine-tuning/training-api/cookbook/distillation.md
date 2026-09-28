@@ -14,10 +14,10 @@ Use it when you want recipe-managed trainer provisioning, student sampling, teac
 
 ## Modes
 
-| Mode                 | Use when                                                   | Teacher signal                                 | Training loss                         |
-| -------------------- | ---------------------------------------------------------- | ---------------------------------------------- | ------------------------------------- |
-| `sampled_reverse_kl` | You want OPD-style sampled-token distillation              | Teacher logprob on each sampled response token | `importance_sampling`                 |
-| `topk_forward_kl`    | You want sparse SDFT soft labels from teacher top-K tokens | Teacher `top_logprobs=K` per response position | `cross_entropy` with `[N, K]` targets |
+| Mode | Use when | Teacher signal | Training loss |
+| - | - | - | - |
+| `sampled_reverse_kl` | You want OPD-style sampled-token distillation | Teacher logprob on each sampled response token | `importance_sampling` |
+| `topk_forward_kl` | You want sparse SDFT soft labels from teacher top-K tokens | Teacher `top_logprobs=K` per response position | `cross_entropy` with `[N, K]` targets |
 
 `sampled_reverse_kl` is the default. The student samples on policy, the teacher scores the sampled tokens, and the recipe trains on the dense per-token gap:
 
@@ -31,13 +31,13 @@ For `topk_forward_kl`, set `distill_mode=DistillMode.TOPK_FORWARD_KL` and `sdft_
 
 The distillation recipe depends on the public inference `logprobs` response:
 
-| Field or request option | Meaning                                                                                                                                                                            |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `top_k`                 | Request-side sampling filter. It limits which next-token logits remain eligible for sampling and redistributes probability mass over that set.                                     |
-| `sampling_mask`         | Optional request flag for generated tokens. It can return the count or token IDs still eligible after sampling filters such as `top_p` and `top_k`.                                |
-| `logprob`               | Model logprob for the returned token before sampling-temperature and sampling-filter renormalization. In the legacy response, this is `token_logprobs`.                            |
-| `sampling_logprob`      | Generation-only logprob of the sampled token after temperature and sampling filters are applied. Use this when comparing against the distribution that actually sampled the token. |
-| `top_logprobs`          | Response option for returning likely alternatives at each position. The public inference API currently caps this at `5`, so `sdft_top_k` must be at most `5`.                      |
+| Field or request option | Meaning |
+| - | - |
+| `top_k` | Request-side sampling filter. It limits which next-token logits remain eligible for sampling and redistributes probability mass over that set. |
+| `sampling_mask` | Optional request flag for generated tokens. It can return the count or token IDs still eligible after sampling filters such as `top_p` and `top_k`. |
+| `logprob` | Model logprob for the returned token before sampling-temperature and sampling-filter renormalization. In the legacy response, this is `token_logprobs`. |
+| `sampling_logprob` | Generation-only logprob of the sampled token after temperature and sampling filters are applied. Use this when comparing against the distribution that actually sampled the token. |
+| `top_logprobs` | Response option for returning likely alternatives at each position. The public inference API currently caps this at `5`, so `sdft_top_k` must be at most `5`. |
 
 `top_k` and `top_logprobs` are different knobs: `top_k` changes sampling; `top_logprobs` only controls how many alternatives are returned in the response.
 
@@ -77,11 +77,11 @@ Rows are JSONL objects. The only required field is `messages`, the student-visib
 
 Optional fields:
 
-| Field              | Use                                                                                                                                                                      |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `teacher`          | Default route key for routed sampled reverse-KL MOPD. The value must match a configured `TeacherConfig.route_value`, or the teacher `model` when `route_value` is unset. |
-| `teacher_messages` | Teacher-side prompt for privileged-context scoring. If omitted, the teacher scores under `messages`.                                                                     |
-| `expected_answer`  | Optional metadata for eval callbacks and smoke checks.                                                                                                                   |
+| Field | Use |
+| - | - |
+| `teacher` | Default route key for routed sampled reverse-KL MOPD. The value must match a configured `TeacherConfig.route_value`, or the teacher `model` when `route_value` is unset. |
+| `teacher_messages` | Teacher-side prompt for privileged-context scoring. If omitted, the teacher scores under `messages`. |
+| `expected_answer` | Optional metadata for eval callbacks and smoke checks. |
 
 Student and teacher token IDs must use a compatible tokenizer and vocabulary. Prefer teachers from the same model family, and set `TeacherConfig.tokenizer_model` when you want the recipe to validate teacher tokenizers against `DeployConfig.tokenizer_model`.
 
@@ -89,10 +89,10 @@ Student and teacher token IDs must use a compatible tokenizer and vocabulary. Pr
 
 The cookbook includes distillation examples under `training/examples/distillation`:
 
-| Example                     | Path                                    | Use                                                                    |
-| --------------------------- | --------------------------------------- | ---------------------------------------------------------------------- |
-| Privileged-context OPD/SDFT | `gsm8k_privileged`                      | Student sees the problem; teacher can see privileged solution context. |
-| Routed MOPD smoke           | `routed_mopd/train_two_teacher_lora.py` | Tiny generated dataset with two route labels and a LoRA student.       |
+| Example | Path | Use |
+| - | - | - |
+| Privileged-context OPD/SDFT | `gsm8k_privileged` | Student sees the problem; teacher can see privileged solution context. |
+| Routed MOPD smoke | `routed_mopd/train_two_teacher_lora.py` | Tiny generated dataset with two route labels and a LoRA student. |
 
 Run from the cookbook repository:
 

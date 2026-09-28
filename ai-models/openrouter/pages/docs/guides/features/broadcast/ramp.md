@@ -85,13 +85,13 @@ Custom metadata from the `trace` field is sent as span attributes in the OTLP pa
 
 ### Supported Metadata Keys
 
-| Key               | OTLP Mapping   | Description                                      |
-| ----------------- | -------------- | ------------------------------------------------ |
-| `trace_id`        | Trace ID       | Group multiple requests into a single trace      |
-| `trace_name`      | Span Name      | Custom name for the root span                    |
-| `span_name`       | Span Name      | Name for intermediate spans in the hierarchy     |
-| `generation_name` | Span Name      | Name for the LLM generation span                 |
-| `parent_span_id`  | Parent Span ID | Link to an existing span in your trace hierarchy |
+| Key | OTLP Mapping | Description |
+| - | - | - |
+| `trace_id` | Trace ID | Group multiple requests into a single trace |
+| `trace_name` | Span Name | Custom name for the root span |
+| `span_name` | Span Name | Name for intermediate spans in the hierarchy |
+| `generation_name` | Span Name | Name for the LLM generation span |
+| `parent_span_id` | Parent Span ID | Link to an existing span in your trace hierarchy |
 
 ### Example
 

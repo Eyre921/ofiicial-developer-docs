@@ -20,13 +20,15 @@ Download and customize the sample app locally to test your integration.
 
 ### Add your products and prices
 
-Create new *Products* (Products represent what your business sells—whether that's a good or a service) and *Prices* (Prices define how much and how often to charge for products. This includes how much the product costs, what currency to use, and the interval if the price is for subscriptions) that you can use in this sample.
+Create or select *Products* (Products represent what your business sells—whether that's a good or a service) and *Prices* (Prices define how much and how often to charge for products. This includes how much the product costs, what currency to use, and the interval if the price is for subscriptions) that you can use in this sample.
 
 > Sign in to your Stripe account to configure your products and prices.
 
 ### Add features to your product
 
-Create features, such as an annual birthday gift, and associate them with your subscription to [entitle](https://docs.stripe.com/billing/entitlements.md) new subscribers to them. Listen to the [active entitlements summary events](https://docs.stripe.com/billing/entitlements.md#webhooks) for your [event destination](https://docs.stripe.com/event-destinations.md), and use the [list active entitlements API](https://docs.stripe.com/api/entitlements/active-entitlement/list.md) for a given customer to fulfill your customer’s entitlements.
+Create features, such as an annual birthday gift, and associate them with your subscription to [entitle](https://docs.stripe.com/billing/entitlements.md) new subscribers to them.
+
+Listen to the [active entitlements summary events](https://docs.stripe.com/billing/entitlements.md#webhooks) for your [event destination](https://docs.stripe.com/event-destinations.md), and use the [list active entitlements API](https://docs.stripe.com/api/entitlements/active-entitlement/list.md) for a given customer to fulfill your customer’s entitlements.
 
 ### (Optional) Enable additional payment methods
 
@@ -453,7 +455,7 @@ Set the `automatic_tax` parameter to `enabled: true`.
           </g>
       </svg>
       <div class="description Box-root">
-        <h3>Subscription to Starter plan successful!</h3>
+        <h3>Subscription to {{PRODUCT_NAME}} successful!</h3>
       </div>
     </div>
     <form action="/create-portal-session" method="POST">

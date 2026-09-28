@@ -23,7 +23,8 @@ Create, inspect, update, provision, suspend and delete OpenRouter interns throug
 * [delete\_intern](#delete_intern) - Delete an intern
 * [get\_intern](#get_intern) - Get an intern
 * [update\_intern](#update_intern) - Update an intern
-* [get\_intern\_daemon\_access](#get_intern_daemon_access) - Get an intern's daemon access
+* [get\_intern\_daemon](#get_intern_daemon) - Get an intern's daemon access
+* [~~get\_intern\_daemon\_access~~](#get_intern_daemon_access) - Get an intern's daemon access (deprecated alias) :warning: **Deprecated**
 * [provision\_intern](#provision_intern) - Provision an intern
 * [suspend\_intern](#suspend_intern) - Suspend an intern
 * [chat](#chat) - Stream a chat completion with an intern
@@ -56,16 +57,16 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                                                                                |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                                                        |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                                                        |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                                                        |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of interns to return, from 1 through 500.                                                                                                    | 50                                                                                     |
-| `status`                   | List\[[operations.Status](../../operations/status.mdx)]             | :heavy\_minus\_sign: | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed.                                                                            | \[<br />"queued",<br />"running"<br />]                                                |
-| `starting_after`           | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400.               | MjAyNi0wOS0xNlQwODozMDowMC4wMDAwMDBafDdjOWU2Njc5LTc0MjUtNDBkZS05NDRiLWUwN2ZjMWY5MGFlNw |
-| `workspace_id`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Only return interns in this workspace. It must match the API key workspace.                                                                                 | 89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb                                                   |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                                                        |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of interns to return, from 1 through 500. | 50 |
+| `status` | List\[[operations.Status](../../operations/status.mdx)] | :heavy\_minus\_sign: | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed. | \[<br />"queued",<br />"running"<br />] |
+| `starting_after` | *Optional\[str]* | :heavy\_minus\_sign: | The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400. | MjAyNi0wOS0xNlQwODozMDowMC4wMDAwMDBafDdjOWU2Njc5LTc0MjUtNDBkZS05NDRiLWUwN2ZjMWY5MGFlNw |
+| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Only return interns in this workspace. It must match the API key workspace. | 89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -73,11 +74,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code             | Content Type     |
-| ----------------------------- | ----------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408 | application/json |
-| errors.InternLifecycleError   | 500                     | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create\_intern
 
@@ -106,19 +107,19 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                                                                    | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `name`                     | *str*                                                               | :heavy\_check\_mark: | Intern name, unique per creator within the workspace.                                                                                                                                                          |                                      |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                    |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                             |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                    |                                      |
-| `idempotency_key`          | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body. | create-research-assistant-2026-09-16 |
-| `description`              | *OptionalNullable\[str]*                                            | :heavy\_minus\_sign: | Free-form description, or null.                                                                                                                                                                                |                                      |
-| `instructions`             | *OptionalNullable\[str]*                                            | :heavy\_minus\_sign: | Standing instructions the intern boots with, or null.                                                                                                                                                          |                                      |
-| `provision`                | *Optional\[bool]*                                                   | :heavy\_minus\_sign: | Start provisioning during this create operation. Defaults to false.                                                                                                                                            |                                      |
-| `vault_id`                 | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Vault owned by another intern in this workspace to attach as a borrowed vault.                                                                                                                                 |                                      |
-| `workspace_id`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Workspace that will own the intern. Defaults to the workspace the API key resolves to. When given, it must match the API key workspace.                                                                        |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                            |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `name` | *str* | :heavy\_check\_mark: | Intern name, unique per creator within the workspace. | |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `idempotency_key` | *Optional\[str]* | :heavy\_minus\_sign: | Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body. | create-research-assistant-2026-09-16 |
+| `description` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Free-form description, or null. | |
+| `instructions` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Standing instructions the intern boots with, or null. | |
+| `provision` | *Optional\[bool]* | :heavy\_minus\_sign: | Start provisioning during this create operation. Defaults to false. | |
+| `vault_id` | *Optional\[str]* | :heavy\_minus\_sign: | Vault owned by another intern in this workspace to attach as a borrowed vault. | |
+| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Workspace that will own the intern. Defaults to the workspace the API key resolves to. When given, it must match the API key workspace. | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -126,11 +127,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete\_intern
 
@@ -159,14 +160,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                    | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| ---------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `intern_id`                  | *str*                                                               | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key.                                                                                                       | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer`               | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`        | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories`   | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `acknowledge_workspace_loss` | *Optional\[bool]*                                                   | :heavy\_minus\_sign: | Delete even though the workspace backup was not confirmed. Defaults to false, which refuses the teardown when a workspace archive is missing.               |                                      |
-| `retries`                    | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `acknowledge_workspace_loss` | *Optional\[bool]* | :heavy\_minus\_sign: | Delete even though the workspace backup was not confirmed. Defaults to false, which refuses the teardown when a workspace archive is missing. | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -174,11 +175,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get\_intern
 
@@ -207,13 +208,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `intern_id`                | *str*                                                               | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key.                                                                                                       | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -221,11 +222,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code        | Content Type     |
-| ----------------------------- | ------------------ | ---------------- |
-| errors.InternLifecycleError   | 401, 403, 404, 408 | application/json |
-| errors.InternLifecycleError   | 500                | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX           | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## update\_intern
 
@@ -254,17 +255,17 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                                                                                                                                                                        | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------ |
-| `intern_id`                | *str*                                                               | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key.                                                                                                                                                                                                                                                              | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                                                        |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                                                                 |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                                                        |                                      |
-| `description`              | *OptionalNullable\[str]*                                            | :heavy\_minus\_sign: | New free-form description. Null clears it.                                                                                                                                                                                                                                                                         |                                      |
-| `instructions`             | *OptionalNullable\[str]*                                            | :heavy\_minus\_sign: | New standing instructions. Null clears them.                                                                                                                                                                                                                                                                       |                                      |
-| `model`                    | *OptionalNullable\[str]*                                            | :heavy\_minus\_sign: | New OpenRouter model slug in `author/slug` form (an optional `:variant` suffix is accepted). Other shapes are refused with 400. Null restores the workspace default. Takes effect on the next provision: until then `GET` shows this configured model while chat chunks show the model the running intern reports. |                                      |
-| `name`                     | *Optional\[str]*                                                    | :heavy\_minus\_sign: | New intern name, unique per creator within the workspace.                                                                                                                                                                                                                                                          |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `description` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | New free-form description. Null clears it. | |
+| `instructions` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | New standing instructions. Null clears them. | |
+| `model` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | New OpenRouter model slug in `author/slug` form (an optional `:variant` suffix is accepted). Other shapes are refused with 400. Null restores the workspace default. Takes effect on the next provision: until then `GET` shows this configured model while chat chunks show the model the running intern reports. | |
+| `name` | *Optional\[str]* | :heavy\_minus\_sign: | New intern name, unique per creator within the workspace. | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -272,15 +273,64 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500                                    | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
-## get\_intern\_daemon\_access
+## get\_intern\_daemon
 
 Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/python/docs/api-reference/authentication) required.
+
+### Example Usage
+
+```python theme={null}
+from openrouter import OpenRouter
+import os
+
+
+with OpenRouter(
+    http_referer="<value>",
+    x_open_router_title="<value>",
+    x_open_router_categories="<value>",
+    api_key=os.getenv("OPENROUTER_API_KEY", ""),
+) as open_router:
+
+    res = open_router.interns.get_intern_daemon(intern_id="7c9e6679-7425-40de-944b-e07fc1f90ae7")
+
+    # Handle response
+    print(res)
+
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+
+### Response
+
+**[components.InternDaemonAccess](../../components/interndaemonaccess.mdx)**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408, 409 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
+
+## ~~get\_intern\_daemon\_access~~
+
+Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/python/docs/api-reference/authentication) required.
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -305,13 +355,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `intern_id`                | *str*                                                               | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key.                                                                                                       | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -319,11 +369,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code             | Content Type     |
-| ----------------------------- | ----------------------- | ---------------- |
-| errors.InternLifecycleError   | 401, 403, 404, 408, 409 | application/json |
-| errors.InternLifecycleError   | 500                     | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 401, 403, 404, 408, 409 | application/json |
+| errors.InternLifecycleError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## provision\_intern
 
@@ -352,13 +402,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `intern_id`                | *str*                                                               | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key.                                                                                                       | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -366,11 +416,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## suspend\_intern
 
@@ -399,13 +449,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `intern_id`                | *str*                                                               | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key.                                                                                                       | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -413,11 +463,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.InternLifecycleError   | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| errors.InternLifecycleError   | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
+| errors.InternLifecycleError | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## chat
 
@@ -465,17 +515,17 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                                 | Required             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | Example                              |
-| -------------------------- | ------------------------------------------------------------------------------------ | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `intern_id`                | *str*                                                                                | :heavy\_check\_mark: | The intern to talk to.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | a11e0000-0000-4000-8000-000000000005 |
-| `messages`                 | List\[[components.InternChatMessage](../../components/internchatmessage.mdx)]        | :heavy\_check\_mark: | The conversation. Only the last message is read. A last `user` message starts a run. A last `tool` message answers the interaction named by its `tool_call_id` and requires `session_id`.                                                                                                                                                                                                                                                                                                                                                                                                                                              |                                      |
-| `http_referer`             | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |                                      |
-| `approval_mode`            | [Optional\[components.InternApprovalMode\]](../../components/internapprovalmode.mdx) | :heavy\_minus\_sign: | How the run started by this prompt handles tool approvals. `self-drive` (the default when omitted) consents on your behalf and runs the shell unsandboxed. `manual` asks you before an approval-bearing tool runs, as an `openrouter.provide_input` permission request, and keeps the shell sandboxed until an escalation is allowed. The mode applies to the run this prompt starts and is not remembered by the session. Repeat it on each new prompt that should use it. A `tool` reply continues the run under the mode it started with.                                                                                           | manual                               |
-| `model`                    | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | Accepted for OpenAI compatibility and never used. The intern runs the model configured on it (`PATCH` the intern to change it). Streamed chunks report the runtime's identifier for that model as the intern reports it, or `openrouter/intern` on chunks whose event carries no model (before the intern reports one, and on the chunks the API emits itself: the timeout, run-ended and severed-stream error chunks, the stop chunk of a replay that ends without a terminal daemon event, and the final usage chunk after any of them). A usage chunk that follows a daemon completion event carries the model the intern reported. | openrouter/intern                    |
-| `session_id`               | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | The daemon session to continue, as returned in `session_id` on the final chunk of an earlier response. Omit it to start a new session. An id the intern has not seen before is not an error: it starts a new session under that id, so a mistyped id forks the conversation. Sessions are scoped to the intern's own daemon. Required when the last message has role `tool`.                                                                                                                                                                                                                                                           | ses\_7f3c9a                          |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                  | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | The intern to talk to. | a11e0000-0000-4000-8000-000000000005 |
+| `messages` | List\[[components.InternChatMessage](../../components/internchatmessage.mdx)] | :heavy\_check\_mark: | The conversation. Only the last message is read. A last `user` message starts a run. A last `tool` message answers the interaction named by its `tool_call_id` and requires `session_id`. | |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `approval_mode` | [Optional\[components.InternApprovalMode\]](../../components/internapprovalmode.mdx) | :heavy\_minus\_sign: | How the run started by this prompt handles tool approvals. `self-drive` (the default when omitted) consents on your behalf and runs the shell unsandboxed. `manual` asks you before an approval-bearing tool runs, as an `openrouter.provide_input` permission request, and keeps the shell sandboxed until an escalation is allowed. The mode applies to the run this prompt starts and is not remembered by the session. Repeat it on each new prompt that should use it. A `tool` reply continues the run under the mode it started with. | manual |
+| `model` | *Optional\[str]* | :heavy\_minus\_sign: | Accepted for OpenAI compatibility and never used. The intern runs the model configured on it (`PATCH` the intern to change it). Streamed chunks report the runtime's identifier for that model as the intern reports it, or `openrouter/intern` on chunks whose event carries no model (before the intern reports one, and on the chunks the API emits itself: the timeout, run-ended and severed-stream error chunks, the stop chunk of a replay that ends without a terminal daemon event, and the final usage chunk after any of them). A usage chunk that follows a daemon completion event carries the model the intern reported. | openrouter/intern |
+| `session_id` | *Optional\[str]* | :heavy\_minus\_sign: | The daemon session to continue, as returned in `session_id` on the final chunk of an earlier response. Omit it to start a new session. An id the intern has not seen before is not an error: it starts a new session under that id, so a mistyped id forks the conversation. Sessions are scoped to the intern's own daemon. Required when the last message has role `tool`. | ses\_7f3c9a |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -483,13 +533,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                     | Status Code                       | Content Type     |
-| ------------------------------ | --------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | errors.InternChatErrorResponse | 400, 401, 403, 404, 408, 410, 413 | application/json |
-| errors.InternChatErrorResponse | 409, 429                          | application/json |
-| errors.InternChatErrorResponse | 503                               | application/json |
-| errors.InternChatErrorResponse | 502, 504                          | application/json |
-| errors.OpenRouterDefaultError  | 4XX, 5XX                          | \*/\*            |
+| errors.InternChatErrorResponse | 409, 429 | application/json |
+| errors.InternChatErrorResponse | 503 | application/json |
+| errors.InternChatErrorResponse | 502, 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## invoke
 
@@ -524,15 +574,15 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                                                                                                                                                                                       | Example                                                                |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| `intern_id`                | *str*                                                               | :heavy\_check\_mark: | The intern to run.                                                                                                                                                                                                                                                                                                                | a11e0000-0000-4000-8000-000000000005                                   |
-| `input`                    | *str*                                                               | :heavy\_check\_mark: | The prompt for the run, at most 32000 characters.                                                                                                                                                                                                                                                                                 | New support ticket 48213. Case token: ct\_9f2c. Investigate and reply. |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                                                                       |                                                                        |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                                                                                |                                                                        |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                                                                       |                                                                        |
-| `session_id`               | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The session to run in. Send the `session_id` from an earlier `202` to continue that conversation, for example to hand the intern a decision on a case it is working. Omit it to start a new session. Only a `session_id` this endpoint issued to the same caller on the same intern is accepted; any other is refused with `404`. | b51a0e21-368b-4780-a220-14655bf28c55                                   |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                               |                                                                        |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `intern_id` | *str* | :heavy\_check\_mark: | The intern to run. | a11e0000-0000-4000-8000-000000000005 |
+| `input` | *str* | :heavy\_check\_mark: | The prompt for the run, at most 32000 characters. | New support ticket 48213. Case token: ct\_9f2c. Investigate and reply. |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `session_id` | *Optional\[str]* | :heavy\_minus\_sign: | The session to run in. Send the `session_id` from an earlier `202` to continue that conversation, for example to hand the intern a decision on a case it is working. Omit it to start a new session. Only a `session_id` this endpoint issued to the same caller on the same intern is accepted; any other is refused with `404`. | b51a0e21-368b-4780-a220-14655bf28c55 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -540,11 +590,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                     | Status Code                  | Content Type     |
-| ------------------------------ | ---------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | errors.InternChatErrorResponse | 400, 401, 403, 404, 408, 413 | application/json |
-| errors.InternChatErrorResponse | 409, 429                     | application/json |
-| errors.InternChatErrorResponse | 503                          | application/json |
-| errors.InternChatErrorResponse | 500, 502, 504                | application/json |
-| errors.OpenRouterDefaultError  | 4XX, 5XX                     | \*/\*            |
+| errors.InternChatErrorResponse | 409, 429 | application/json |
+| errors.InternChatErrorResponse | 503 | application/json |
+| errors.InternChatErrorResponse | 500, 502, 504 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

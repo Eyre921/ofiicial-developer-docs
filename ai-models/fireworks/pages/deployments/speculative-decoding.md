@@ -49,24 +49,24 @@ firectl deployment create accounts/fireworks/models/<MODEL_ID> \
 
 ## Choose a method
 
-| Method                                         | Best starting point                                                                                               | Configuration                                          |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| Default model-based speculation                | General chat, reasoning, and coding traffic                                                                       | No flags; inherit the model's default                  |
-| Custom draft model                             | A validated drafter for your model or traffic distribution                                                        | `--draft-model` and `--draft-token-count`              |
-| N-gram speculation                             | Repetitive output, code editing, and structured generation where output often repeats the prompt or prior context | `--ngram-speculation-length` and `--draft-token-count` |
-| [Predicted Outputs](/guides/predicted-outputs) | The caller already knows most of the expected response, such as regenerating a file with a small edit             | Request-level `prediction` or `speculation` input      |
+| Method | Best starting point | Configuration |
+| - | - | - |
+| Default model-based speculation | General chat, reasoning, and coding traffic | No flags; inherit the model's default |
+| Custom draft model | A validated drafter for your model or traffic distribution | `--draft-model` and `--draft-token-count` |
+| N-gram speculation | Repetitive output, code editing, and structured generation where output often repeats the prompt or prior context | `--ngram-speculation-length` and `--draft-token-count` |
+| [Predicted Outputs](/guides/predicted-outputs) | The caller already knows most of the expected response, such as regenerating a file with a small edit | Request-level `prediction` or `speculation` input |
 
 Predicted Outputs can be used in addition to a deployment's model-based
 speculative decoding.
 
 ## Configuration options
 
-| Flag                             | Description                                                                                                                                                               |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `--draft-model`                  | Resource name of a Fireworks or custom draft model. If omitted, the deployment inherits the base model's default drafter.                                                 |
-| `--draft-token-count`            | Number of candidate tokens proposed per step. It is required with an explicitly selected draft model or N-gram speculation. Start with `4`, then benchmark nearby values. |
-| `--ngram-speculation-length`     | Length of the previous input sequence used for N-gram matching. This does not require a separate draft model.                                                             |
-| `--disable-speculative-decoding` | Disables inherited speculative-decoding settings when creating a deployment.                                                                                              |
+| Flag | Description |
+| - | - |
+| `--draft-model` | Resource name of a Fireworks or custom draft model. If omitted, the deployment inherits the base model's default drafter. |
+| `--draft-token-count` | Number of candidate tokens proposed per step. It is required with an explicitly selected draft model or N-gram speculation. Start with `4`, then benchmark nearby values. |
+| `--ngram-speculation-length` | Length of the previous input sequence used for N-gram matching. This does not require a separate draft model. |
+| `--disable-speculative-decoding` | Disables inherited speculative-decoding settings when creating a deployment. |
 
 <Note>
   `--draft-model` and `--ngram-speculation-length` are alternative deployment
@@ -86,10 +86,10 @@ If the target model has no default drafter, the following small base models are
 reasonable starting points for an experiment. A purpose-built drafter generally
 performs better.
 
-| Draft model                                        | Use with              |
-| -------------------------------------------------- | --------------------- |
+| Draft model | Use with |
+| - | - |
 | `accounts/fireworks/models/llama-v3p2-1b-instruct` | All Llama models > 3B |
-| `accounts/fireworks/models/qwen2p5-0p5b-instruct`  | All Qwen models > 3B  |
+| `accounts/fireworks/models/qwen2p5-0p5b-instruct` | All Qwen models > 3B |
 
 Fireworks also supports compatible EAGLE, DFlash, DSpark, and Medusa draft
 addons. These formats are architecture-specific and require a checkpoint and

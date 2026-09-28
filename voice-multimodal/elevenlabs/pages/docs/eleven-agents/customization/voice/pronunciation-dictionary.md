@@ -20,13 +20,13 @@ Pronunciation dictionaries allow you to customize how your AI agent pronounces s
 
 > **Note**
 >
-> Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
+> Pronunciation dictionary phoneme tags only work with eleven\_v4, eleven\_flash\_v2 and eleven\_v3 models.
 >
 > Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
 > alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
 >
 > If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-> switch to the eleven\_v3 model.
+> switch to the eleven\_v3 or eleven\_v4 models.
 
 ### Attach a dictionary to your agent
 
@@ -34,7 +34,7 @@ Pronunciation dictionaries allow you to customize how your AI agent pronounces s
 
 Open your agent in the dashboard, navigate to **Voice Settings**, and add a pronunciation dictionary. Save your changes.
 
-![Add a pronunciation dictionary from the agent's voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110613Z&X-Amz-Expires=604800&X-Amz-Signature=76e7e972361558a430abdfc361788bf4fa214a9aedd697737a35893dafe7c3ab&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add a pronunciation dictionary from the agent's voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233123Z&X-Amz-Expires=604800&X-Amz-Signature=f126c76b79ec9d1e7e88548a9e0e69033d148e0f5ed2c7ee364620b229757bea&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update via the CLI
 
@@ -164,14 +164,14 @@ Pronunciation dictionaries support two types of pronunciation notation:
 
 #### Which models support phoneme-based pronunciation?
 
-Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
+Pronunciation dictionary phoneme tags only work with eleven\_v4, eleven\_flash\_v2 and eleven\_v3 models.
 
 Other models skip dictionary phoneme tags and use the default pronunciation. For other models,
 use alias tags instead to substitute spellings or phrases that produce the pronunciation you
 need.
 
 If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-switch to the eleven\_v3 model.
+switch to the eleven\_v4 or eleven\_v3 model.
 
 #### Can I use multiple dictionaries?
 

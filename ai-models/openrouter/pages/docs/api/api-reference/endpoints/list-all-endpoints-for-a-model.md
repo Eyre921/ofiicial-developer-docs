@@ -92,6 +92,8 @@ tags:
     name: Organization
   - description: Presets endpoints
     name: Presets
+  - description: Private Endpoints endpoints
+    name: Private Endpoints
   - description: Provider information endpoints
     name: Providers
   - description: Rerank endpoints
@@ -201,6 +203,7 @@ paths:
                         model_id: openai/gpt-4
                         model_name: GPT-4
                         name: 'OpenAI: GPT-4'
+                        native_tools: {}
                         pricing:
                           completion: '0.00006'
                           image: '0'
@@ -571,6 +574,9 @@ components:
         model_id: openai/gpt-4
         model_name: GPT-4
         name: 'OpenAI: GPT-4'
+        native_tools:
+          openrouter:web_search:
+            type: web_search_20260209
         perf_last_30m_by_workload:
           text_generation:
             latency:
@@ -640,6 +646,29 @@ components:
           type: string
         name:
           type: string
+        native_tools:
+          additionalProperties:
+            properties:
+              type:
+                description: >-
+                  The provider tool type the request is translated to when this
+                  tool runs natively, e.g. `web_search_20260209` on Anthropic or
+                  `google_search` on Gemini.
+                type: string
+            required:
+              - type
+            type: object
+          description: >-
+            The server tools this endpoint accepts as the provider's own
+            built-in tool (`engine: "native"`) instead of an OpenRouter engine,
+            keyed by canonical `openrouter:*` name. Each value names the
+            provider tool type the request is translated to. Where that tool
+            runs (provider-side, or returned to the client as with Anthropic
+            bash) is documented per tool. Empty when the provider has none.
+          example:
+            openrouter:web_search:
+              type: web_search_20260209
+          type: object
         perf_last_30m_by_workload:
           additionalProperties: false
           description: >-
@@ -1062,6 +1091,7 @@ components:
         - uptime_last_5m
         - uptime_last_1d
         - supports_implicit_caching
+        - native_tools
         - latency_last_30m
         - throughput_last_30m
       type: object

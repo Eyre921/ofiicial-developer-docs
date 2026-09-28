@@ -272,22 +272,22 @@ const result = callModel(client, {
 
 ## Options
 
-| Option                                     | Description                                                                 |
-| ------------------------------------------ | --------------------------------------------------------------------------- |
-| `url`                                      | Remote MCP server endpoint.                                                 |
-| `transport`                                | `'streamableHttp'` (default, falls back to SSE) or `'sse'`.                 |
-| `auth`                                     | Bearer token, custom headers, or an `OAuthClientProvider`.                  |
-| `fetch`                                    | Custom `fetch` implementation for all network requests.                     |
-| `clientInfo`                               | Client identity sent during `initialize`.                                   |
-| `toolNamePrefix`                           | Prefix applied to every wrapped tool name.                                  |
-| `includeTools` / `excludeTools`            | Allow/deny lists by MCP tool name.                                          |
-| `onUnconvertibleSchema`                    | `'looseLeaf'` (default) or `'throw'` for exotic JSON Schema.                |
+| Option | Description |
+| - | - |
+| `url` | Remote MCP server endpoint. |
+| `transport` | `'streamableHttp'` (default, falls back to SSE) or `'sse'`. |
+| `auth` | Bearer token, custom headers, or an `OAuthClientProvider`. |
+| `fetch` | Custom `fetch` implementation for all network requests. |
+| `clientInfo` | Client identity sent during `initialize`. |
+| `toolNamePrefix` | Prefix applied to every wrapped tool name. |
+| `includeTools` / `excludeTools` | Allow/deny lists by MCP tool name. |
+| `onUnconvertibleSchema` | `'looseLeaf'` (default) or `'throw'` for exotic JSON Schema. |
 | `cache` / `cacheCredentials` / `staleness` | Caching controls (see [Caching and rehydration](#caching-and-rehydration)). |
-| `resources`                                | Expose synthetic `list_resources` / `read_resource` tools (default on).     |
-| `emitProgress`                             | Stream MCP progress as generator-tool events (default on).                  |
-| `autoRefreshOnListChanged`                 | Re-list on `tools/list_changed` (default on).                               |
-| `onElicitation`                            | Handle server elicitation requests.                                         |
-| `signal`                                   | `AbortSignal` threaded into every tool call.                                |
+| `resources` | Expose synthetic `list_resources` / `read_resource` tools (default on). |
+| `emitProgress` | Stream MCP progress as generator-tool events (default on). |
+| `autoRefreshOnListChanged` | Re-list on `tools/list_changed` (default on). |
+| `onElicitation` | Handle server elicitation requests. |
+| `signal` | `AbortSignal` threaded into every tool call. |
 
 ## Related
 

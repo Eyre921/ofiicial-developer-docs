@@ -21,13 +21,13 @@ Training is worth it when you want:
 
 Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Training](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
 
-|                              | SFT                                                                                                                                                      | DPO                                                                                                         | RL                                                                                                                                                     |
-| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Good for**                 | Classification, extraction, format and tone adherence, distillation                                                                                      | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety      | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
-| **Data you supply**          | Verified input/output pairs, or successful trajectories                                                                                                  | Preference pairs, single-turn only: one prompt, a chosen and a rejected response                            | Prompts, plus an evaluator that can tell a good outcome from a bad one                                                                                 |
-| **Dataset size**             | Hundreds of examples, or roughly 10M+ tokens                                                                                                             | Hundreds to thousands of pairs                                                                              | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough                                                                         |
-| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from                                                                            | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick training experiment               |
-| **Guides**                   | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo)     | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl)                                       |
+| | SFT | DPO | RL |
+| - | - | - | - |
+| **Good for** | Classification, extraction, format and tone adherence, distillation | Steering the model toward a goal you cannot measure objectively, such as style, helpfulness, or safety | Tasks where you have no verified outputs to learn from, but you can tell whether an outcome was good or bad. Pushing the model beyond state-of-the-art |
+| **Data you supply** | Verified input/output pairs, or successful trajectories | Preference pairs, single-turn only: one prompt, a chosen and a rejected response | Prompts, plus an evaluator that can tell a good outcome from a bad one |
+| **Dataset size** | Hundreds of examples, or roughly 10M+ tokens | Hundreds to thousands of pairs | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough |
+| **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick training experiment |
+| **Guides** | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo) | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl) |
 
 <Tip>
   **Verifiable** means you can reliably judge whether a model output is good (rules, unit tests, programmatic checks). RL fits reasoning and agentic tasks where full ground-truth labels are hard to write.
@@ -49,11 +49,11 @@ Compare the last branch in detail on [serverless versus dedicated](/fine-tuning/
 
 Fireworks offers two ways to train: **Managed Training** (Fireworks runs the loop) and the **Training API** (you write the loop in Python).
 
-| Choose Managed Training when                                      | Choose the Training API when                                                               |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| You need a standard SFT, DPO, ORPO, or RFT job                    | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop                |
-| You want Fireworks to own scheduling, training, and checkpointing | You want to fork or write Python training logic                                            |
-| A supported model and managed configuration cover the task        | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
+| Choose Managed Training when | Choose the Training API when |
+| - | - |
+| You need a standard SFT, DPO, ORPO, or RFT job | You need a custom loss, reward, rollout, trajectory, or optimizer-step loop |
+| You want Fireworks to own scheduling, training, and checkpointing | You want to fork or write Python training logic |
+| A supported model and managed configuration cover the task | You need inference in the loop, distillation, per-step diagnostics, or research algorithms |
 
 <CardGroup>
   <Card title="Managed Training" icon="wand-magic-sparkles" href="/fine-tuning/managed-finetuning-intro">
@@ -69,12 +69,12 @@ Fireworks offers two ways to train: **Managed Training** (Fireworks runs the loo
 
 Infrastructure applies to the **Training API** only. Managed Training uses platform-managed compute.
 
-| Choose Serverless Training when                                                   | Choose Dedicated Training when                                                     |
-| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Supported LoRA SFT or RL covers the workload                                      | You need full-parameter, DPO, ORPO, distillation, or broader model support         |
+| Choose Serverless Training when | Choose Dedicated Training when |
+| - | - |
+| Supported LoRA SFT or RL covers the workload | You need full-parameter, DPO, ORPO, distillation, or broader model support |
 | You want shared pooled compute with no trainer or sampler deployment provisioning | You need explicit trainer, deployment, checkpoint, reconnect, or promotion control |
-| Per-token billing fits a small or bursty experiment                               | A sustained, highly utilized time-based run fits the workload                      |
-| In-session sampling is sufficient                                                 | You need provisioned rollout or evaluation deployments                             |
+| Per-token billing fits a small or bursty experiment | A sustained, highly utilized time-based run fits the workload |
+| In-session sampling is sufficient | You need provisioned rollout or evaluation deployments |
 
 <CardGroup>
   <Card title="Serverless Training" icon="bolt" href="/fine-tuning/training-api/serverless">
@@ -126,11 +126,11 @@ Across every training surface, one principle holds: **your training data is neve
 
 ### Choose a surface by data-privacy needs
 
-| Surface              | Where your training data lives                                  | What Fireworks retains       | Your deletion controls                                            |
-| -------------------- | --------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------- |
-| **Managed Training** | Fireworks-managed storage (GCS); reference link in our database | Dataset, checkpoints, traces | Delete dataset after job; request checkpoint/trace deletion       |
-| **Managed + BYOB**   | Your cloud bucket; read in-place during training only           | Checkpoints and traces only  | Revoke bucket access after job; request checkpoint/trace deletion |
-| **Training API**     | No dataset file on Fireworks — transient tokenized batches only | Checkpoints and traces only  | Request checkpoint/trace deletion                                 |
+| Surface | Where your training data lives | What Fireworks retains | Your deletion controls |
+| - | - | - | - |
+| **Managed Training** | Fireworks-managed storage (GCS); reference link in our database | Dataset, checkpoints, traces | Delete dataset after job; request checkpoint/trace deletion |
+| **Managed + BYOB** | Your cloud bucket; read in-place during training only | Checkpoints and traces only | Revoke bucket access after job; request checkpoint/trace deletion |
+| **Training API** | No dataset file on Fireworks — transient tokenized batches only | Checkpoints and traces only | Request checkpoint/trace deletion |
 
 Checkpoints and traces are retained \~30 days by default (deletable on request). Strictest governance: [BYOB](#dataset-storage-byob) (dataset never copied to Fireworks) or the [Training API](/fine-tuning/training-api/introduction) (no stored dataset file).
 

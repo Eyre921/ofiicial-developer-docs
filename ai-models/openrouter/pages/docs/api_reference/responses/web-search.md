@@ -82,13 +82,13 @@ Enable web search using the `plugins` parameter:
 
 Configure web search behavior:
 
-| Parameter         | Type      | Description                                                                       |
-| ----------------- | --------- | --------------------------------------------------------------------------------- |
-| `id`              | string    | **Required.** Must be "web"                                                       |
-| `engine`          | string    | Search engine: `"native"`, `"exa"`, `"firecrawl"`, `"parallel"`, or omit for auto |
-| `max_results`     | integer   | Maximum search results to retrieve (1–25; 1–20 for Perplexity; default 5)         |
-| `include_domains` | string\[] | Restrict results to these domains (supports wildcards like `*.substack.com`)      |
-| `exclude_domains` | string\[] | Exclude results from these domains                                                |
+| Parameter | Type | Description |
+| - | - | - |
+| `id` | string | **Required.** Must be "web" |
+| `engine` | string | Search engine: `"native"`, `"exa"`, `"firecrawl"`, `"parallel"`, or omit for auto |
+| `max_results` | integer | Maximum search results to retrieve (1–25; 1–20 for Perplexity; default 5) |
+| `include_domains` | string\[] | Restrict results to these domains (supports wildcards like `*.substack.com`) |
+| `exclude_domains` | string\[] | Exclude results from these domains |
 
 See the [Web Search plugin docs](/docs/guides/features/plugins/web-search) for full details on engine selection, domain filter compatibility, and pricing.
 
@@ -126,14 +126,14 @@ returned starting September 21, 2026 at 12:00 PM PT
 ($5 per 1,000 posts fetched and $10 per 1,000 user
 profiles fetched, replacing \$5 per 1,000 tool calls).
 
-| Parameter                    | Type      | Description                                    |
-| ---------------------------- | --------- | ---------------------------------------------- |
-| `allowed_x_handles`          | string\[] | Only include posts from these handles (max 20) |
-| `excluded_x_handles`         | string\[] | Exclude posts from these handles (max 20)      |
-| `from_date`                  | string    | Start date (ISO 8601, e.g. `"2025-01-01"`)     |
-| `to_date`                    | string    | End date (ISO 8601, e.g. `"2025-12-31"`)       |
-| `enable_image_understanding` | boolean   | Analyze images in posts                        |
-| `enable_video_understanding` | boolean   | Analyze videos in posts                        |
+| Parameter | Type | Description |
+| - | - | - |
+| `allowed_x_handles` | string\[] | Only include posts from these handles (max 20) |
+| `excluded_x_handles` | string\[] | Exclude posts from these handles (max 20) |
+| `from_date` | string | Start date (ISO 8601, e.g. `"2025-01-01"`) |
+| `to_date` | string | End date (ISO 8601, e.g. `"2025-12-31"`) |
+| `enable_image_understanding` | boolean | Analyze images in posts |
+| `enable_video_understanding` | boolean | Analyze videos in posts |
 
 <Warning>
   `allowed_x_handles` and `excluded_x_handles` are

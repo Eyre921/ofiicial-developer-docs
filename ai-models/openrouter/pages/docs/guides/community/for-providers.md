@@ -231,23 +231,23 @@ Valid input modality types are: `text`, `image`, `video`, `audio`, `file`.
 
 Each input modality entry carries:
 
-| Field                    | Required | Description                                                                                                 |
-| ------------------------ | -------- | ----------------------------------------------------------------------------------------------------------- |
-| `type`                   | Yes      | The modality discriminator                                                                                  |
-| `supported_inputs`       | No       | Typed constraints for this modality (see below)                                                             |
-| `pricing`                | No       | Prices billed against this input (see [Pricing](#3-pricing))                                                |
-| `capacity`               | No       | Declared throughput limits for this input (see [Capacity](#4-capacity))                                     |
-| `passthrough_parameters` | No       | Provider-specific parameters scoped to this input (see [Passthrough Parameters](#5-passthrough-parameters)) |
+| Field | Required | Description |
+| - | - | - |
+| `type` | Yes | The modality discriminator |
+| `supported_inputs` | No | Typed constraints for this modality (see below) |
+| `pricing` | No | Prices billed against this input (see [Pricing](#3-pricing)) |
+| `capacity` | No | Declared throughput limits for this input (see [Capacity](#4-capacity)) |
+| `passthrough_parameters` | No | Provider-specific parameters scoped to this input (see [Passthrough Parameters](#5-passthrough-parameters)) |
 
 The `supported_inputs` object uses the same [capability descriptor](#capability-descriptors) grammar as output `supported_parameters`, with closed enums for every known value domain:
 
-| Modality | Constraint fields                                                                     |
-| -------- | ------------------------------------------------------------------------------------- |
-| `text`   | `max_context_length`, `max_prompt_length`                                             |
-| `image`  | `sources`, `formats`, `detail_levels`, `references`, `role`, `max_content_size_bytes` |
-| `video`  | `sources`, `formats`, `max_duration_seconds`, `max_content_size_bytes`                |
-| `audio`  | `sources`, `formats`, `max_duration_seconds`, `max_content_size_bytes`                |
-| `file`   | `sources`, `formats`, `references`, `max_content_size_bytes`                          |
+| Modality | Constraint fields |
+| - | - |
+| `text` | `max_context_length`, `max_prompt_length` |
+| `image` | `sources`, `formats`, `detail_levels`, `references`, `role`, `max_content_size_bytes` |
+| `video` | `sources`, `formats`, `max_duration_seconds`, `max_content_size_bytes` |
+| `audio` | `sources`, `formats`, `max_duration_seconds`, `max_content_size_bytes` |
+| `file` | `sources`, `formats`, `references`, `max_content_size_bytes` |
 
 Common constraint fields:
 
@@ -389,29 +389,29 @@ Valid output modality types are: `text`, `image`, `video`, `speech`, `transcript
 
 Each output modality entry carries:
 
-| Field                    | Required | Description                                                                                   |
-| ------------------------ | -------- | --------------------------------------------------------------------------------------------- |
-| `type`                   | Yes      | The modality discriminator                                                                    |
-| `supported_parameters`   | Yes      | Descriptor map of the generation parameters this modality accepts                             |
-| `streaming`              | No       | Whether this output supports native SSE streaming (not applicable to `embeddings` / `rerank`) |
-| `max_length`             | No       | Maximum output length (`text` only)                                                           |
-| `pricing`                | No       | Prices billed against this output (see [Pricing](#3-pricing))                                 |
-| `capacity`               | No       | Declared throughput limits for this output (see [Capacity](#4-capacity))                      |
-| `passthrough_parameters` | No       | Provider-specific parameters scoped to this output                                            |
+| Field | Required | Description |
+| - | - | - |
+| `type` | Yes | The modality discriminator |
+| `supported_parameters` | Yes | Descriptor map of the generation parameters this modality accepts |
+| `streaming` | No | Whether this output supports native SSE streaming (not applicable to `embeddings` / `rerank`) |
+| `max_length` | No | Maximum output length (`text` only) |
+| `pricing` | No | Prices billed against this output (see [Pricing](#3-pricing)) |
+| `capacity` | No | Declared throughput limits for this output (see [Capacity](#4-capacity)) |
+| `passthrough_parameters` | No | Provider-specific parameters scoped to this output |
 
 #### Capability descriptors
 
 `supported_parameters` and `passthrough_parameters` are maps from parameter name to a typed descriptor describing what the parameter accepts:
 
-| Type      | Shape                                                             | Meaning                                                 |
-| --------- | ----------------------------------------------------------------- | ------------------------------------------------------- |
-| `range`   | `{ "type": "range", "min": 0, "max": 1 }`                         | Any number in `[min, max]` is valid                     |
-| `integer` | `{ "type": "integer", "min": 1, "max": 128000, "unit": "token" }` | Any integer in `[min, max]` is valid                    |
-| `boolean` | `{ "type": "boolean" }`                                           | Supported (present) or unsupported (absent)             |
-| `enum`    | `{ "type": "enum", "values": ["standard", "priority"] }`          | Discrete allowlist of accepted values                   |
-| `array`   | `{ "type": "array", "items": { ... }, "max_items": 4 }`           | List of values described by `items`                     |
-| `object`  | `{ "type": "object", "properties": { ... } }`                     | Nested object with per-key descriptors                  |
-| `unknown` | `{ "type": "unknown" }`                                           | Accepted, but the value domain is not machine-described |
+| Type | Shape | Meaning |
+| - | - | - |
+| `range` | `{ "type": "range", "min": 0, "max": 1 }` | Any number in `[min, max]` is valid |
+| `integer` | `{ "type": "integer", "min": 1, "max": 128000, "unit": "token" }` | Any integer in `[min, max]` is valid |
+| `boolean` | `{ "type": "boolean" }` | Supported (present) or unsupported (absent) |
+| `enum` | `{ "type": "enum", "values": ["standard", "priority"] }` | Discrete allowlist of accepted values |
+| `array` | `{ "type": "array", "items": { ... }, "max_items": 4 }` | List of values described by `items` |
+| `object` | `{ "type": "object", "properties": { ... } }` | Nested object with per-key descriptors |
+| `unknown` | `{ "type": "unknown" }` | Accepted, but the value domain is not machine-described |
 
 Descriptors may carry an optional `default` and, for numeric types, a `unit`. An absent key means the parameter is unsupported.
 
@@ -431,24 +431,24 @@ A document that validates is a valid declaration, not a guarantee that every dec
 
 **Input pricing types** (on input modality entries):
 
-| Type            | Meaning                               |
-| --------------- | ------------------------------------- |
-| `prompt`        | Cost per unit of this input consumed  |
-| `cached_prompt` | Cost per unit read from prompt cache  |
-| `cache_write`   | Cost per unit written to prompt cache |
+| Type | Meaning |
+| - | - |
+| `prompt` | Cost per unit of this input consumed |
+| `cached_prompt` | Cost per unit read from prompt cache |
+| `cache_write` | Cost per unit written to prompt cache |
 
 **Output pricing types** (on output modality entries):
 
-| Type                 | Meaning                                    |
-| -------------------- | ------------------------------------------ |
-| `completion`         | Cost per unit of this output generated     |
+| Type | Meaning |
+| - | - |
+| `completion` | Cost per unit of this output generated |
 | `internal_reasoning` | Cost per unit of internal reasoning tokens |
 
 **Request pricing types** (root `pricing` array, the only prices at the root):
 
-| Type         | Meaning                       |
-| ------------ | ----------------------------- |
-| `request`    | Flat cost per request         |
+| Type | Meaning |
+| - | - |
+| `request` | Flat cost per request |
 | `web_search` | Cost per web search performed |
 
 Do not zero-stuff prices: omit pricing entries for SKUs you don't bill. A genuinely free SKU exposed as a distinct billable line may use `"0"`. A modality with no `pricing` array is simply unpriced.
@@ -698,14 +698,14 @@ Declare where each endpoint physically serves from and its data-handling posture
 
 The operational fields control model availability and routing:
 
-| Field              | Description                                                                                                |
-| ------------------ | ---------------------------------------------------------------------------------------------------------- |
-| `deprecation_date` | ISO 8601 date or UTC hour. See [Deprecation Date](#deprecation-date)                                       |
-| `is_ready`         | Launch control. See [Controlling Launch with `is_ready`](#controlling-launch-with-is_ready)                |
-| `is_free`          | Free variant marker. See [Free Model Variants with `is_free`](#free-model-variants-with-is_free)           |
-| `service_tier`     | Service tier of this entry. See [Service tiers with `service_tier`](#service-tiers-with-service_tier)      |
+| Field | Description |
+| - | - |
+| `deprecation_date` | ISO 8601 date or UTC hour. See [Deprecation Date](#deprecation-date) |
+| `is_ready` | Launch control. See [Controlling Launch with `is_ready`](#controlling-launch-with-is_ready) |
+| `is_free` | Free variant marker. See [Free Model Variants with `is_free`](#free-model-variants-with-is_free) |
+| `service_tier` | Service tier of this entry. See [Service tiers with `service_tier`](#service-tiers-with-service_tier) |
 | `discount_to_user` | Fractional user-facing discount. See [Discounts with `discount_to_user`](#discounts-with-discount_to_user) |
-| `openrouter.slug`  | The OpenRouter slug this model maps to                                                                     |
+| `openrouter.slug` | The OpenRouter slug this model maps to |
 
 #### Deprecation date
 

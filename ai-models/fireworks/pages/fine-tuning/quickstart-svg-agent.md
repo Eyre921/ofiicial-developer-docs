@@ -115,12 +115,12 @@ If you want to use a local development Vercel server instead, see [Local Develop
 
   **Unsupported features:**
 
-  | Feature                | Status                                    |
-  | ---------------------- | ----------------------------------------- |
+  | Feature | Status |
+  | - | - |
   | Non-Debian base images | ❌ Not supported (no Alpine, CentOS, etc.) |
-  | Multi-stage builds     | ❌ Not supported (only one `FROM` allowed) |
-  | `EXPOSE`               | ⚠️ Ignored                                |
-  | `VOLUME`               | ⚠️ Ignored                                |
+  | Multi-stage builds | ❌ Not supported (only one `FROM` allowed) |
+  | `EXPOSE` | ⚠️ Ignored |
+  | `VOLUME` | ⚠️ Ignored |
 
   **Example Dockerfile:**
 

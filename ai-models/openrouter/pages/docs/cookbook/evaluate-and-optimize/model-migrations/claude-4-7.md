@@ -107,12 +107,12 @@ The full effort scale is now: `low` → `medium` → `high` → `xhigh` → `max
 
 With sampling parameters and reasoning budgets removed on 4.7, `output_config.effort` is the remaining lever for influencing overall response effort. You can set it via `verbosity`, or via `reasoning.effort` when reasoning is enabled (`verbosity` wins if both are passed; `'minimal'` maps to `'low'`, and `'none'` disables reasoning entirely so no `output_config.effort` is sent).
 
-| Parameter                       | Claude 4.7 Opus Behavior                                |
-| ------------------------------- | ------------------------------------------------------- |
-| `temperature`, `top_p`, `top_k` | Ignored                                                 |
-| `reasoning.max_tokens`          | Ignored (adaptive used)                                 |
-| `reasoning.effort`              | Sets `output_config.effort` (when reasoning is enabled) |
-| `verbosity`                     | Sets `output_config.effort`                             |
+| Parameter | Claude 4.7 Opus Behavior |
+| - | - |
+| `temperature`, `top_p`, `top_k` | Ignored |
+| `reasoning.max_tokens` | Ignored (adaptive used) |
+| `reasoning.effort` | Sets `output_config.effort` (when reasoning is enabled) |
+| `verbosity` | Sets `output_config.effort` |
 
 ```json lines theme={null}
 { "model": "anthropic/claude-4.7-opus", "verbosity": "xhigh" }
@@ -120,12 +120,12 @@ With sampling parameters and reasoning budgets removed on 4.7, `output_config.ef
 
 ## Breaking Changes
 
-| Feature                                        | Opus 4.6                    | Opus 4.7                    |
-| ---------------------------------------------- | --------------------------- | --------------------------- |
-| `temperature` / `top_p` / `top_k`              | Supported                   | Ignored                     |
-| Thinking modes (when `reasoning.enabled=true`) | Adaptive or budget-based    | Adaptive only               |
-| `reasoning.max_tokens`                         | Sets a thinking budget      | Ignored (adaptive used)     |
-| `reasoning.effort`                             | Sets `output_config.effort` | Sets `output_config.effort` |
-| `'xhigh'` effort level                         | Falls back to `'high'`      | Supported                   |
-| `'max'` effort level                           | Supported                   | Supported                   |
+| Feature | Opus 4.6 | Opus 4.7 |
+| - | - | - |
+| `temperature` / `top_p` / `top_k` | Supported | Ignored |
+| Thinking modes (when `reasoning.enabled=true`) | Adaptive or budget-based | Adaptive only |
+| `reasoning.max_tokens` | Sets a thinking budget | Ignored (adaptive used) |
+| `reasoning.effort` | Sets `output_config.effort` | Sets `output_config.effort` |
+| `'xhigh'` effort level | Falls back to `'high'` | Supported |
+| `'max'` effort level | Supported | Supported |
 

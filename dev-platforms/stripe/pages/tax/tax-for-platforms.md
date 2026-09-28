@@ -775,7 +775,7 @@ If you believe tax should be applied but a zero amount is returned, verify the [
 
 ### Tax settings status is pending
 
-Before you can calculate tax for a connected account, their tax settings `status` must be `active`. A `pending` status means required fields are missing. Check the [status_details.pending.missing_fields](https://docs.stripe.com/api/tax/settings/object.md#tax_settings_object-status_details-pending-missing_fields) array to determine what’s still needed (typically the head office address or preset tax code).
+Before you can calculate tax for a connected account, their tax settings `status` must be `active`. A `pending` status means required settings are missing, not that activation is still processing. Check the [status_details.pending.missing_fields](https://docs.stripe.com/api/tax/settings/object.md#tax_settings_object-status_details-pending-missing_fields) array for what to provide (typically the head office address or preset tax code).
 
 ## Access Stripe Tax Reports
 

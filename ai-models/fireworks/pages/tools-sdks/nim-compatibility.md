@@ -57,13 +57,13 @@ Set `model` to a Fireworks model resource name (for example `accounts/fireworks/
 
 NIM clients usually toggle thinking with `chat_template_kwargs`. Fireworks maps those onto [`reasoning_effort`](/api-reference/post-chatcompletions):
 
-| What you send                                                               | What Fireworks does                                                                          |
-| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `chat_template_kwargs: {"enable_thinking": false}` (or `"thinking": false`) | Sets `reasoning_effort` to `"none"` and drops the kwargs object                              |
-| `{"enable_thinking": true}` alone (or `"thinking": true`)                   | Drops the kwargs object and leaves thinking at the **model default** (does not force a tier) |
-| `{"reasoning_budget": 512}`                                                 | Sets `reasoning_effort` to that integer token budget (when thinking isn't off)               |
-| `{"low_effort": true}`                                                      | Sets `reasoning_effort` to `"low"` (when no budget is set)                                   |
-| `reasoning_effort: "auto"`                                                  | Drops `"auto"` (Fireworks doesn't accept it) so the model default applies                    |
+| What you send | What Fireworks does |
+| - | - |
+| `chat_template_kwargs: {"enable_thinking": false}` (or `"thinking": false`) | Sets `reasoning_effort` to `"none"` and drops the kwargs object |
+| `{"enable_thinking": true}` alone (or `"thinking": true`) | Drops the kwargs object and leaves thinking at the **model default** (does not force a tier) |
+| `{"reasoning_budget": 512}` | Sets `reasoning_effort` to that integer token budget (when thinking isn't off) |
+| `{"low_effort": true}` | Sets `reasoning_effort` to `"low"` (when no budget is set) |
+| `reasoning_effort: "auto"` | Drops `"auto"` (Fireworks doesn't accept it) so the model default applies |
 
 Other keys inside `chat_template_kwargs` (for example `parallel_reasoning_mode`) are dropped with the object — they aren't applied.
 
@@ -101,8 +101,8 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
 
 ## Prompt truncation
 
-| NIM / vLLM               | Fireworks                        |
-| ------------------------ | -------------------------------- |
+| NIM / vLLM | Fireworks |
+| - | - |
 | `truncate_prompt_tokens` | Renamed to `prompt_truncate_len` |
 
 If you send both, `prompt_truncate_len` wins.
@@ -111,10 +111,10 @@ If you send both, `prompt_truncate_len` wins.
 
 NIM/vLLM guided decoding fields map onto Fireworks [`response_format`](/structured-responses/structured-response-formatting):
 
-| NIM / vLLM                  | Fireworks `response_format`                                                                                    |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `guided_json: <schema>`     | `{"type": "json_schema", "json_schema": {"name": "response", "schema": <schema>}}`                             |
-| `guided_grammar: "<abnf>"`  | `{"type": "grammar", "grammar": "<abnf>"}`                                                                     |
+| NIM / vLLM | Fireworks `response_format` |
+| - | - |
+| `guided_json: <schema>` | `{"type": "json_schema", "json_schema": {"name": "response", "schema": <schema>}}` |
+| `guided_grammar: "<abnf>"` | `{"type": "grammar", "grammar": "<abnf>"}` |
 | `guided_choice: ["a", "b"]` | `{"type": "json_schema", "json_schema": {"name": "choice", "schema": {"type": "string", "enum": ["a", "b"]}}}` |
 
 If more than one `guided_*` field is present, priority is `guided_json` → `guided_grammar` → `guided_choice`. An explicit `response_format` in the request always wins over guided fields.

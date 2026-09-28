@@ -22,12 +22,12 @@ Workspace budgets let you cap how much a workspace can spend on OpenRouter infer
 
 Each workspace can have up to four budgets, one per interval:
 
-| Interval     | Resets                              | Use case                                    |
-| ------------ | ----------------------------------- | ------------------------------------------- |
-| **daily**    | Every day at midnight UTC           | Prevent runaway spend from a single bad day |
-| **weekly**   | Every Monday at midnight UTC        | Smooth out weekly burst usage               |
-| **monthly**  | First of each month at midnight UTC | Enforce a fixed monthly allocation          |
-| **lifetime** | Never                               | Hard cap on total workspace spend           |
+| Interval | Resets | Use case |
+| - | - | - |
+| **daily** | Every day at midnight UTC | Prevent runaway spend from a single bad day |
+| **weekly** | Every Monday at midnight UTC | Smooth out weekly burst usage |
+| **monthly** | First of each month at midnight UTC | Enforce a fixed monthly allocation |
+| **lifetime** | Never | Hard cap on total workspace spend |
 
 When a request comes in, OpenRouter checks the workspace's current spend against every configured budget. If any budget is met or exceeded, the request returns a `403 Forbidden` error:
 

@@ -140,11 +140,11 @@ With `drop_block`, mismatched blocks are discarded upstream and each removal is 
 
 ## Breaking Changes
 
-| Behavior                                       | Fable 5                 | Fable 5.1                                                                                    |
-| ---------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------------- |
-| `tool_choice: {"type": "any"}` or named tool   | Allowed                 | Rejected upstream (400)                                                                      |
-| Effort changes                                 | Whole-conversation only | Per-turn via system `output_config`                                                          |
-| Replaying thinking blocks after a history edit | Allowed                 | Can be rejected (400) on enforced accounts; not enforced via OpenRouter's Anthropic endpoint |
+| Behavior | Fable 5 | Fable 5.1 |
+| - | - | - |
+| `tool_choice: {"type": "any"}` or named tool | Allowed | Rejected upstream (400) |
+| Effort changes | Whole-conversation only | Per-turn via system `output_config` |
+| Replaying thinking blocks after a history edit | Allowed | Can be rejected (400) on enforced accounts; not enforced via OpenRouter's Anthropic endpoint |
 
 ## Resources
 

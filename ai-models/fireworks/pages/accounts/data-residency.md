@@ -22,10 +22,10 @@ Residency applies **account-wide**: every API key on the account is restricted t
 
 ## Available regional restrictions
 
-| Regional restrictions | API endpoint                                  | Serverless                                           | Dedicated deployments                                                                |
-| :-------------------- | :-------------------------------------------- | :--------------------------------------------------- | :----------------------------------------------------------------------------------- |
-| None                  | <span><code>api.fireworks.ai</code></span>    | Any model                                            | Any region                                                                           |
-| US                    | <span><code>us.api.fireworks.ai</code></span> | [US-only Serverless](/serverless/us-only-serverless) | [`US` multi-region](/deployments/regions), or a single US region such as `US_IOWA_1` |
+| Regional restrictions | API endpoint | Serverless | Dedicated deployments |
+| :- | :- | :- | :- |
+| None | <span><code>api.fireworks.ai</code></span> | Any model | Any region |
+| US | <span><code>us.api.fireworks.ai</code></span> | [US-only Serverless](/serverless/us-only-serverless) | [`US` multi-region](/deployments/regions), or a single US region such as `US_IOWA_1` |
 
 **None** is the default. For a region that is not listed, contact [sales](https://fireworks.ai/company/contact-us).
 

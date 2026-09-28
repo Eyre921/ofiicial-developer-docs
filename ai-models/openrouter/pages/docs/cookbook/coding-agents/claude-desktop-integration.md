@@ -67,12 +67,12 @@ Click **Developer > Configure Third-Party Inference…** in the menu bar.
 
 Set the connection to **Gateway** and enter your OpenRouter credentials:
 
-| Field                   | Value                                         |
-| ----------------------- | --------------------------------------------- |
-| **Gateway base URL**    | `https://openrouter.ai/api`                   |
-| **Gateway API key**     | Your OpenRouter API key (e.g. `sk-or-v1-...`) |
-| **Gateway auth scheme** | `bearer`                                      |
-| **Credential kind**     | `Static API key`                              |
+| Field | Value |
+| - | - |
+| **Gateway base URL** | `https://openrouter.ai/api` |
+| **Gateway API key** | Your OpenRouter API key (e.g. `sk-or-v1-...`) |
+| **Gateway auth scheme** | `bearer` |
+| **Credential kind** | `Static API key` |
 
 <Frame>
   <img src="https://mintcdn.com/openrouter-d02e98a0/UJAi9la2xaRSVbm0/assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png?fit=max&auto=format&n=UJAi9la2xaRSVbm0&q=85&s=36ba965652ac6367679f4e58d08a3b21" alt="Claude Desktop third-party inference configuration panel showing Gateway selected with OpenRouter credentials" width="1800" height="1542" data-path="assets/cookbook/coding-agents/claude-desktop-integration/claude-desktop-gateway-credentials.png" />

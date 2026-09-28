@@ -64,14 +64,14 @@ RFT fits when the task is **verifiable** (you can judge output quality), you lac
 
 Use the docs for path choice and quickstarts. Use the **[Fireworks training skill](https://github.com/fw-ai/cookbook/tree/main/skills/fireworks-training)** for launch flags, validation, monitoring, and troubleshooting.
 
-| Topic                                                | Skill reference                                                                                                                                      |
-| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Prerequisites, validation, job states, CLI/UI launch | [managed-rft-operations](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/managed-rft-operations.md)                 |
-| Evaluator design and preference data                 | [preference-data-and-evaluators](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/preference-data-and-evaluators.md) |
-| Remote agent tracing                                 | [rft-agent-tracing](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rft-agent-tracing.md)                           |
-| Parameter tuning and method choice                   | [choose-method](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/choose-method.md)                                   |
-| Failures and stuck jobs                              | [error-reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/error-reference.md)                               |
-| Deploy and prove serving                             | [deploy-and-troubleshoot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/deploy-and-troubleshoot.md)               |
+| Topic | Skill reference |
+| - | - |
+| Prerequisites, validation, job states, CLI/UI launch | [managed-rft-operations](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/managed-rft-operations.md) |
+| Evaluator design and preference data | [preference-data-and-evaluators](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/preference-data-and-evaluators.md) |
+| Remote agent tracing | [rft-agent-tracing](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rft-agent-tracing.md) |
+| Parameter tuning and method choice | [choose-method](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/choose-method.md) |
+| Failures and stuck jobs | [error-reference](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/error-reference.md) |
+| Deploy and prove serving | [deploy-and-troubleshoot](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/deploy-and-troubleshoot.md) |
 
 ### Prerequisites
 

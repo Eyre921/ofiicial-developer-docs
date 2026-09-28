@@ -18,11 +18,11 @@ OpenRouter gives you access to hundreds of AI models through a single API endpoi
 
 There are three ways to integrate with OpenRouter, depending on how much control you want:
 
-| Approach                                  | Best for                                        |
-| ----------------------------------------- | ----------------------------------------------- |
-| **[API](#using-the-openrouter-api)**      | Full control, any language, no dependencies     |
-| **[Client SDKs](#using-the-client-sdks)** | Type-safe model calls with minimal overhead     |
-| **[Agent SDK](#using-the-agent-sdk)**     | Building agents with tool use, loops, and state |
+| Approach | Best for |
+| - | - |
+| **[API](#using-the-openrouter-api)** | Full control, any language, no dependencies |
+| **[Client SDKs](#using-the-client-sdks)** | Type-safe model calls with minimal overhead |
+| **[Agent SDK](#using-the-agent-sdk)** | Building agents with tool use, loops, and state |
 
 <Note>
   Read [github.com/OpenRouterTeam/skills/tree/main/skills/create-agent-tui](https://github.com/OpenRouterTeam/skills/tree/main/skills/create-agent-tui) and follow the instructions to build an agent using OpenRouter.

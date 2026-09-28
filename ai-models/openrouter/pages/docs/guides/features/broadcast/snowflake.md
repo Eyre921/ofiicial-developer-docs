@@ -200,12 +200,12 @@ Custom metadata from the `trace` field is stored in the `METADATA` VARIANT colum
 
 ### Supported Metadata Keys
 
-| Key               | Snowflake Mapping                       | Description                          |
-| ----------------- | --------------------------------------- | ------------------------------------ |
-| `trace_id`        | `TRACE_ID` column / `METADATA:trace_id` | Custom trace identifier for grouping |
-| `trace_name`      | `METADATA:trace_name`                   | Custom name for the trace            |
-| `span_name`       | `METADATA:span_name`                    | Name for intermediate spans          |
-| `generation_name` | `METADATA:generation_name`              | Name for the LLM generation          |
+| Key | Snowflake Mapping | Description |
+| - | - | - |
+| `trace_id` | `TRACE_ID` column / `METADATA:trace_id` | Custom trace identifier for grouping |
+| `trace_name` | `METADATA:trace_name` | Custom name for the trace |
+| `span_name` | `METADATA:span_name` | Name for intermediate spans |
+| `generation_name` | `METADATA:generation_name` | Name for the LLM generation |
 
 ### Example
 

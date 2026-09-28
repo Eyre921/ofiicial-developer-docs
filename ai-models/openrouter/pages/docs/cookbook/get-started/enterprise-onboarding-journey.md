@@ -36,17 +36,17 @@ After go-live, the cadence is the monthly and quarterly reviews described under 
 
 ## Milestones at a glance
 
-| Stage      | Milestone                                                         | Typical timing               |
-| ---------- | ----------------------------------------------------------------- | ---------------------------- |
-| Activation | Organization live, your admin signed in                           | Within 4 hours of signature  |
-| Activation | First API key created                                             | Within 24 hours of signature |
-| Activation | First inference from your environment                             | Within 48 hours of signature |
-| Onboarding | Workspaces mapped to your teams, budgets set                      | Day 3                        |
-| Onboarding | Governance complete: SSO, SCIM, guardrails, data-retention policy | Day 5                        |
-| Onboarding | Observability live in your own monitoring stack                   | Day 7                        |
-| Onboarding | Rollout beyond the first team                                     | Day 10                       |
-| Onboarding | **Go-live sign-off**                                              | **Day 14**                   |
-| Adoption   | Full production pace, confirmed in month-one review               | Day 30                       |
+| Stage | Milestone | Typical timing |
+| - | - | - |
+| Activation | Organization live, your admin signed in | Within 4 hours of signature |
+| Activation | First API key created | Within 24 hours of signature |
+| Activation | First inference from your environment | Within 48 hours of signature |
+| Onboarding | Workspaces mapped to your teams, budgets set | Day 3 |
+| Onboarding | Governance complete: SSO, SCIM, guardrails, data-retention policy | Day 5 |
+| Onboarding | Observability live in your own monitoring stack | Day 7 |
+| Onboarding | Rollout beyond the first team | Day 10 |
+| Onboarding | **Go-live sign-off** | **Day 14** |
+| Adoption | Full production pace, confirmed in month-one review | Day 30 |
 
 The two live sessions are the day-one activation call and the day-five-to-seven inference and observability session, while everything else in this window runs asynchronously in the shared channel.
 
@@ -64,25 +64,25 @@ Your activation call is scheduled before signature and booked for the first busi
 
 ### What we need from you
 
-| Input                                                                             | Why it matters                                     |
-| --------------------------------------------------------------------------------- | -------------------------------------------------- |
-| A named **platform owner** and a named **engineering champion**                   | They own configuration and the first integration   |
-| A verified email address for the person who will create the organization          | Required for organization creation and for SSO     |
-| Your identity provider and the admin who can approve domain verification          | Governs the day-five SSO milestone                 |
-| Billing contact and invoicing preferences                                         | Sets up invoicing on day zero                      |
-| Expected month-one volume and your primary use case                               | Sets rate limits and budgets appropriately         |
+| Input | Why it matters |
+| - | - |
+| A named **platform owner** and a named **engineering champion** | They own configuration and the first integration |
+| A verified email address for the person who will create the organization | Required for organization creation and for SSO |
+| Your identity provider and the admin who can approve domain verification | Governs the day-five SSO milestone |
+| Billing contact and invoicing preferences | Sets up invoicing on day zero |
+| Expected month-one volume and your primary use case | Sets rate limits and budgets appropriately |
 | Outbound network restrictions or firewall rules blocking calls to `openrouter.ai` | The most common cause of a delayed first inference |
-| The observability destination for your traces                                     | Governs the day-seven observability milestone      |
+| The observability destination for your traces | Governs the day-seven observability milestone |
 
 ## Activation: Day 0 to 2
 
 Milestone: your first production inference, within 48 hours of signature.
 
-| When  | What happens                                                       | Who from OpenRouter                       | Who from your team                         | Sync or async |
-| ----- | ------------------------------------------------------------------ | ----------------------------------------- | ------------------------------------------ | ------------- |
-| Day 0 | Account, credits, and invoicing prepared.                          | FDE                                       | Platform owner, billing contact            | Async (Slack) |
-| Day 1 | 60-minute call, pre-booked for first business day after signature. | FDE pairs with your team                  | Platform owner, engineering champion       | Sync (call)   |
-| Day 2 | First real-traffic inference.                                      | FDE works through blockers with your team | Engineering champion, application engineer | Async (Slack) |
+| When | What happens | Who from OpenRouter | Who from your team | Sync or async |
+| - | - | - | - | - |
+| Day 0 | Account, credits, and invoicing prepared. | FDE | Platform owner, billing contact | Async (Slack) |
+| Day 1 | 60-minute call, pre-booked for first business day after signature. | FDE pairs with your team | Platform owner, engineering champion | Sync (call) |
+| Day 2 | First real-traffic inference. | FDE works through blockers with your team | Engineering champion, application engineer | Async (Slack) |
 
 Your team creates and holds its own API keys throughout. OpenRouter never creates keys on your behalf.
 
@@ -113,14 +113,14 @@ Your first real traffic runs from your own application environment. Usual blocke
 
 Milestone: production traffic at your committed pace, signed off in writing by day 14.
 
-| When       | What happens                         | Who from OpenRouter  | Who from your team                          | Sync or async           |
-| ---------- | ------------------------------------ | -------------------- | ------------------------------------------- | ----------------------- |
-| Day 3      | Workspaces mapped and budgets set.   | FDE                  | Platform owner, engineering champion        | Async (Slack)           |
-| Day 5      | Governance controls complete.        | FDE and CSM          | Platform owner, IdP admin                   | Async (Slack)           |
-| Day 5 to 7 | Inference and observability session. | FDE leads, CSM joins | Engineering champion, application engineers | Sync (call)             |
-| Day 7      | Observability live.                  | FDE                  | Platform owner, application engineers       | Async (Slack)           |
-| Day 10     | Rollout beyond first team.           | FDE and CSM          | Platform owner, engineering champion        | Async (Slack)           |
-| Day 14     | **Written go-live sign-off.**        | FDE and CSM          | Platform owner, engineering champion        | Async (written + Slack) |
+| When | What happens | Who from OpenRouter | Who from your team | Sync or async |
+| - | - | - | - | - |
+| Day 3 | Workspaces mapped and budgets set. | FDE | Platform owner, engineering champion | Async (Slack) |
+| Day 5 | Governance controls complete. | FDE and CSM | Platform owner, IdP admin | Async (Slack) |
+| Day 5 to 7 | Inference and observability session. | FDE leads, CSM joins | Engineering champion, application engineers | Sync (call) |
+| Day 7 | Observability live. | FDE | Platform owner, application engineers | Async (Slack) |
+| Day 10 | Rollout beyond first team. | FDE and CSM | Platform owner, engineering champion | Async (Slack) |
+| Day 14 | **Written go-live sign-off.** | FDE and CSM | Platform owner, engineering champion | Async (written + Slack) |
 
 ### Day 3: workspaces and budgets
 
@@ -152,11 +152,11 @@ Production traffic is holding. The FDE and CSM send the written sign-off summary
 
 Milestone: month-to-date usage at or above your commitment by day 30.
 
-| When         | What happens                                       | Who from OpenRouter | Who from your team                                          | Sync or async           |
-| ------------ | -------------------------------------------------- | ------------------- | ----------------------------------------------------------- | ----------------------- |
-| Day 15 to 20 | Scoped workloads in production. Baseline reviewed. | CSM                 | Platform owner, engineering champion, application engineers | Async (Slack)           |
-| Day 21       | Expansion review delivered.                        | CSM                 | Platform owner, executive sponsor                           | Async (written + Slack) |
-| Day 30       | Month-one report delivered.                        | CSM                 | Platform owner, billing contact, executive sponsor          | Async (written + Slack) |
+| When | What happens | Who from OpenRouter | Who from your team | Sync or async |
+| - | - | - | - | - |
+| Day 15 to 20 | Scoped workloads in production. Baseline reviewed. | CSM | Platform owner, engineering champion, application engineers | Async (Slack) |
+| Day 21 | Expansion review delivered. | CSM | Platform owner, executive sponsor | Async (written + Slack) |
+| Day 30 | Month-one report delivered. | CSM | Platform owner, billing contact, executive sponsor | Async (written + Slack) |
 
 ### Day 15 to 20: production ramp
 
@@ -172,10 +172,10 @@ The month-one report covers pace against commitment, spend by team and model, re
 
 ## Optimization: Ongoing
 
-| When      | What happens                          | Who from OpenRouter | Who from your team                    | Sync or async  |
-| --------- | ------------------------------------- | ------------------- | ------------------------------------- | -------------- |
-| Monthly   | Office hours and optimization report. | CSM                 | Platform owner, application engineers | Sync + written |
-| Quarterly | Quarterly business review.            | CSM                 | Executive sponsor, platform owner     | Sync (call)    |
+| When | What happens | Who from OpenRouter | Who from your team | Sync or async |
+| - | - | - | - | - |
+| Monthly | Office hours and optimization report. | CSM | Platform owner, application engineers | Sync + written |
+| Quarterly | Quarterly business review. | CSM | Executive sponsor, platform owner | Sync (call) |
 
 ### Monthly optimization cadence
 

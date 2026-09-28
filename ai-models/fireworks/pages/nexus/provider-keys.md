@@ -45,12 +45,12 @@ FireConnect configures the developer's Fireworks credential through `fireconnect
 
 Each provider is always in one of these states:
 
-| State             | What it means                                          |
-| ----------------- | ------------------------------------------------------ |
-| **Connected**     | The key is active for router requests to that provider |
-| **Connecting**    | A new binding is propagating                           |
-| **Disconnecting** | A binding removal is propagating                       |
-| **Not connected** | No key is set for this provider.                       |
+| State | What it means |
+| - | - |
+| **Connected** | The key is active for router requests to that provider |
+| **Connecting** | A new binding is propagating |
+| **Disconnecting** | A binding removal is propagating |
+| **Not connected** | No key is set for this provider. |
 
 ## Connect a key in the dashboard
 
@@ -106,15 +106,15 @@ The CLI can also stop using a key for routing without deleting it (`provider-key
   First time using `firectl`? Follow <a href="/tools-sdks/firectl/firectl">Getting started</a> to install it.
 </Tip>
 
-| Action                 | Step                               | Command                                                                                             |
-| ---------------------- | ---------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Connect or replace** | Upload a key                       | `firectl provider-key upload --provider-type PROVIDER --api-key $PROVIDER_KEY` / `--from-file PATH` |
-|                        | Use the key                        | `firectl provider-key-binding bind PROVIDER KEY_ID`                                                 |
-|                        | Use a Bedrock key                  | `firectl provider-key-binding bind bedrock KEY_ID --routes-file=./routes.json`                      |
-| **Check status**       | Check stored keys                  | `firectl provider-key list` / `firectl provider-key list --provider-type PROVIDER`                  |
-|                        | Check keys in routing              | `firectl provider-key-binding list` or `firectl provider-key-binding get PROVIDER`                  |
-| **Remove**             | Stop using a key (but keep stored) | `firectl provider-key-binding unbind PROVIDER`                                                      |
-|                        | Delete (needs to stop first)       | `firectl provider-key delete KEY_ID`                                                                |
+| Action | Step | Command |
+| - | - | - |
+| **Connect or replace** | Upload a key | `firectl provider-key upload --provider-type PROVIDER --api-key $PROVIDER_KEY` / `--from-file PATH` |
+| | Use the key | `firectl provider-key-binding bind PROVIDER KEY_ID` |
+| | Use a Bedrock key | `firectl provider-key-binding bind bedrock KEY_ID --routes-file=./routes.json` |
+| **Check status** | Check stored keys | `firectl provider-key list` / `firectl provider-key list --provider-type PROVIDER` |
+| | Check keys in routing | `firectl provider-key-binding list` or `firectl provider-key-binding get PROVIDER` |
+| **Remove** | Stop using a key (but keep stored) | `firectl provider-key-binding unbind PROVIDER` |
+| | Delete (needs to stop first) | `firectl provider-key delete KEY_ID` |
 
 ### Add or replace a key
 

@@ -45,19 +45,19 @@ On either path, set the shape ID yourself when you need a specific GPU layout or
 
 A validated shape version can pin every field below. Together these are the launch profile, and none of them are yours to set. The hardware fields size one trainer replica: `acceleratorCount` × `nodeCount` is the GPU count for a single replica.
 
-| Field                       | What it pins                                                                                                                                                             |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `baseModel`                 | The single base model this shape is validated for. A shape is not portable to another model.                                                                             |
-| `trainerMode`               | The training method, shown as Full-Param or LoRA in the catalog.                                                                                                         |
-| `acceleratorType`           | The GPU type, such as B200 or B300.                                                                                                                                      |
-| `acceleratorCount`          | GPUs per node.                                                                                                                                                           |
-| `nodeCount`                 | Nodes per trainer replica.                                                                                                                                               |
-| `minTotalAcceleratorCount`  | The smallest total world size, across all data-parallel replicas, that the shape has been validated at, when validation recorded one.                                    |
-| `trainerShardingScheme`     | The sharding and parallelism profile validated for the trainer launch.                                                                                                   |
-| `baseModelWeightPrecision`  | The precision for base weights during training, when the shape sets one. `BFLOAT16` applies no quantization; `FP8`, `FP4_FP8`, `INT8`, and `NF4` are quantized variants. |
-| `maxSupportedContextLength` | The validated training context limit for this model and method.                                                                                                          |
-| `trainerImageTag`           | The validated trainer runtime image.                                                                                                                                     |
-| `deploymentShapeVersion`    | The linked deployment shape version used for rollouts and sampling.                                                                                                      |
+| Field | What it pins |
+| - | - |
+| `baseModel` | The single base model this shape is validated for. A shape is not portable to another model. |
+| `trainerMode` | The training method, shown as Full-Param or LoRA in the catalog. |
+| `acceleratorType` | The GPU type, such as B200 or B300. |
+| `acceleratorCount` | GPUs per node. |
+| `nodeCount` | Nodes per trainer replica. |
+| `minTotalAcceleratorCount` | The smallest total world size, across all data-parallel replicas, that the shape has been validated at, when validation recorded one. |
+| `trainerShardingScheme` | The sharding and parallelism profile validated for the trainer launch. |
+| `baseModelWeightPrecision` | The precision for base weights during training, when the shape sets one. `BFLOAT16` applies no quantization; `FP8`, `FP4_FP8`, `INT8`, and `NF4` are quantized variants. |
+| `maxSupportedContextLength` | The validated training context limit for this model and method. |
+| `trainerImageTag` | The validated trainer runtime image. |
+| `deploymentShapeVersion` | The linked deployment shape version used for rollouts and sampling. |
 
 The shape resource also carries metadata that does not affect a launch: `name`, `displayName`, `description`, `createTime`, `updateTime`, `modelType`, and `parameterCount`.
 
@@ -65,20 +65,20 @@ Total GPUs for a run are the shape's per-replica GPUs multiplied by your replica
 
 For example, `qwen3-8b-128k` is the full-parameter shape for Qwen 3 8B. Below is version `vnuk8fdq` in full.
 
-| Field                       | Value in version `vnuk8fdq`                                                 |
-| --------------------------- | --------------------------------------------------------------------------- |
-| `name`                      | `accounts/fireworks/trainingShapes/qwen3-8b-128k`                           |
-| `baseModel`                 | `accounts/fireworks/models/qwen3-8b`                                        |
-| `trainerMode`               | `POLICY_TRAINER`, shown as Full-Param in the catalog. Use `lora_rank=0`.    |
-| `acceleratorType`           | `NVIDIA_B200_180GB`, shown as B200                                          |
-| `acceleratorCount`          | `4`                                                                         |
-| `nodeCount`                 | `1`                                                                         |
-| `trainerShardingScheme`     | Tensor 1, pipeline 1, context 4, expert 1, sequence parallelism not enabled |
-| `maxSupportedContextLength` | `128000`, shown as 128K (128,000 tokens)                                    |
-| `baseModelWeightPrecision`  | `WEIGHT_PRECISION_UNSPECIFIED`, so this shape does not pin a precision      |
-| `minTotalAcceleratorCount`  | Not set on this shape                                                       |
-| `trainerImageTag`           | `0.383.0`                                                                   |
-| `deploymentShapeVersion`    | `accounts/fireworks/deploymentShapes/rft-qwen3-8b/versions/gyiqbrd6`        |
+| Field | Value in version `vnuk8fdq` |
+| - | - |
+| `name` | `accounts/fireworks/trainingShapes/qwen3-8b-128k` |
+| `baseModel` | `accounts/fireworks/models/qwen3-8b` |
+| `trainerMode` | `POLICY_TRAINER`, shown as Full-Param in the catalog. Use `lora_rank=0`. |
+| `acceleratorType` | `NVIDIA_B200_180GB`, shown as B200 |
+| `acceleratorCount` | `4` |
+| `nodeCount` | `1` |
+| `trainerShardingScheme` | Tensor 1, pipeline 1, context 4, expert 1, sequence parallelism not enabled |
+| `maxSupportedContextLength` | `128000`, shown as 128K (128,000 tokens) |
+| `baseModelWeightPrecision` | `WEIGHT_PRECISION_UNSPECIFIED`, so this shape does not pin a precision |
+| `minTotalAcceleratorCount` | Not set on this shape |
+| `trainerImageTag` | `0.383.0` |
+| `deploymentShapeVersion` | `accounts/fireworks/deploymentShapes/rft-qwen3-8b/versions/gyiqbrd6` |
 
 To read the same fields for the version you will actually launch on:
 

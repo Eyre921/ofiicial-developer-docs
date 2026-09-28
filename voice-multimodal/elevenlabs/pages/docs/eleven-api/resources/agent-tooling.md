@@ -29,7 +29,7 @@ Convert text to speech using ElevenLabs voices.
 
 ```text
 Use the text to speech skill to generate audio for the script below.
-Model: eleven_v3
+Model: eleven_v4
 Voice: "Juniper" (or default).
 Output: Save the MP3 file locally and return the file path.
 Script: "Welcome to ElevenLabs. Today we will walk through the new agent tooling."

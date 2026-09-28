@@ -16,14 +16,14 @@ path: docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6
 
 OpenAI's [GPT-6 family](https://developers.openai.com/api/docs/guides/latest-model) ships in three tiers, each with a pro variant. All three can keep working after they call a tool, and all three accept a reasoning effort change partway through a conversation. On earlier OpenAI models every tool call paused the turn until your application returned the result, and effort was a request-level setting. Raising it for one hard turn and lowering it on the next changed the request prefix and invalidated the prompt cache for the whole conversation.
 
-| Model                    | Tier                                |
-| ------------------------ | ----------------------------------- |
-| `openai/gpt-6-astra`     | Highest capability                  |
-| `openai/gpt-6-astra-pro` | Astra with pro reasoning            |
-| `openai/gpt-6-sol`       | Strong reasoning on demanding tasks |
-| `openai/gpt-6-sol-pro`   | Sol with pro reasoning              |
-| `openai/gpt-6-luna`      | Efficient, repeatable work at scale |
-| `openai/gpt-6-luna-pro`  | Luna with pro reasoning             |
+| Model | Tier |
+| - | - |
+| `openai/gpt-6-astra` | Highest capability |
+| `openai/gpt-6-astra-pro` | Astra with pro reasoning |
+| `openai/gpt-6-sol` | Strong reasoning on demanding tasks |
+| `openai/gpt-6-sol-pro` | Sol with pro reasoning |
+| `openai/gpt-6-luna` | Efficient, repeatable work at scale |
+| `openai/gpt-6-luna-pro` | Luna with pro reasoning |
 
 The tiers share one API. Sol and Luna accept `none` as a reasoning effort, Astra does not. Pro reasoning is selected with `reasoning.mode: "pro"` on a standard slug or by using the `-pro` slug, the same as the [GPT-5.6 family](/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6#pro-mode-with-reasoningmode).
 

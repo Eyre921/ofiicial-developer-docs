@@ -18,12 +18,12 @@ Policy applies **account-wide**: every user on the account shares the same rules
 
 Each model can be allowed or denied independently across four capabilities:
 
-| Capability                | What it governs                                                   |
-| :------------------------ | :---------------------------------------------------------------- |
-| **Serverless inference**  | Chat, completions, embeddings, and other serverless API routes    |
-| **Serverless Fast**       | The model's Fast serving mode (separate from standard serverless) |
-| **Dedicated deployments** | Creating on-demand deployments on that base model                 |
-| **Training**              | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs   |
+| Capability | What it governs |
+| :- | :- |
+| **Serverless inference** | Chat, completions, embeddings, and other serverless API routes |
+| **Serverless Fast** | The model's Fast serving mode (separate from standard serverless) |
+| **Dedicated deployments** | Creating on-demand deployments on that base model |
+| **Training** | Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs |
 
 Fast mode is evaluated separately from standard serverless. You can allow one without the other.
 
@@ -31,11 +31,11 @@ Fast mode is evaluated separately from standard serverless. You can allow one wi
 
 Accounts that never configure a policy keep today's open default: **all models are allowed** for all users.
 
-| State                                    | Effect                        |
-| :--------------------------------------- | :---------------------------- |
-| No policy configured                     | All models allowed            |
-| After `policy clear`                     | All models allowed (restored) |
-| Deny-all default + per-model allow rules | Only listed models allowed    |
+| State | Effect |
+| :- | :- |
+| No policy configured | All models allowed |
+| After `policy clear` | All models allowed (restored) |
+| Deny-all default + per-model allow rules | Only listed models allowed |
 
 ## Configure in the console
 
@@ -110,10 +110,10 @@ firectl policy remove <model-id>
 
 ## Authorization
 
-| Action        | Who                |
-| :------------ | :----------------- |
-| View policy   | Any account member |
-| Update policy | Account **Admin**  |
+| Action | Who |
+| :- | :- |
+| View policy | Any account member |
+| Update policy | Account **Admin** |
 
 ## REST API
 

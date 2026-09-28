@@ -28,7 +28,7 @@ The **Flag issue for review** tool lets your conversational agent silently raise
 * **Uninterrupted conversation**: the agent is told internally to keep helping the caller as best it can and not to mention that anything was flagged, so the conversation continues uninterrupted.
 
 ![Flag issue for review enabled in system
-tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/428092adaaf445254c89c54bc09904eb83fa7fe3a7ad41dad10546ce573de16e/assets/images/agents/flag-issue-for-review-enable.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T111828Z&X-Amz-Expires=604800&X-Amz-Signature=57a12a75e7536bad2f1cd8ac852fdad66eddb39158ca0ada8febe2f0ddd54ea0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/428092adaaf445254c89c54bc09904eb83fa7fe3a7ad41dad10546ce573de16e/assets/images/agents/flag-issue-for-review-enable.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T232218Z&X-Amz-Expires=604800&X-Amz-Signature=721e77150cf492ae14a818278efb932b611a8c277749705293802e8da09b4886&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Availability
 

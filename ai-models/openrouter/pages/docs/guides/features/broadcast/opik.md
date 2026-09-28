@@ -58,12 +58,12 @@ Comet Opik supports custom metadata on both traces and spans for organizing and 
 
 ### Supported Metadata Keys
 
-| Key               | Opik Mapping                           | Description                                  |
-| ----------------- | -------------------------------------- | -------------------------------------------- |
-| `trace_id`        | Trace metadata (`openrouter_trace_id`) | Group multiple requests into a single trace  |
-| `trace_name`      | Trace Name                             | Custom name displayed in the Opik trace list |
-| `span_name`       | Span Name                              | Name for intermediate spans in the hierarchy |
-| `generation_name` | Span Name                              | Name for the LLM generation span             |
+| Key | Opik Mapping | Description |
+| - | - | - |
+| `trace_id` | Trace metadata (`openrouter_trace_id`) | Group multiple requests into a single trace |
+| `trace_name` | Trace Name | Custom name displayed in the Opik trace list |
+| `span_name` | Span Name | Name for intermediate spans in the hierarchy |
+| `generation_name` | Span Name | Name for the LLM generation span |
 
 ### Example
 

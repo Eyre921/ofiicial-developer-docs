@@ -47,11 +47,11 @@ The following are governed by separate operational and contractual controls rath
 
 CMEK supports all three major cloud KMS services. Fireworks needs only `Encrypt` and `Decrypt` on your key, and authenticates with short-lived, federated credentials.
 
-| Cloud        | KMS             | How Fireworks authenticates                               |
-| ------------ | --------------- | --------------------------------------------------------- |
-| AWS          | AWS KMS         | IAM role assumed via OIDC web-identity federation         |
-| Google Cloud | Cloud KMS       | Workload Identity Federation via a workload identity pool |
-| Azure        | Azure Key Vault | Workload Identity Federation to an Entra app registration |
+| Cloud | KMS | How Fireworks authenticates |
+| - | - | - |
+| AWS | AWS KMS | IAM role assumed via OIDC web-identity federation |
+| Google Cloud | Cloud KMS | Workload Identity Federation via a workload identity pool |
+| Azure | Azure Key Vault | Workload Identity Federation to an Entra app registration |
 
 ### How Fireworks authenticates
 
@@ -59,11 +59,11 @@ CMEK uses the federated trust model described in [How Fireworks accesses your cl
 
 Pin trust on these values:
 
-| Value                        | Identifier                      |
-| ---------------------------- | ------------------------------- |
-| OIDC issuer                  | `https://accounts.google.com`   |
+| Value | Identifier |
+| - | - |
+| OIDC issuer | `https://accounts.google.com` |
 | Fireworks identity (subject) | `<FIREWORKS_CMEK_OIDC_SUBJECT>` |
-| Token audience               | `<YOUR_FIREWORKS_ACCOUNT_ID>`   |
+| Token audience | `<YOUR_FIREWORKS_ACCOUNT_ID>` |
 
 The subject is stable per environment and is provided during CMEK onboarding; the audience is your own Fireworks account ID. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) if you need the exact subject identifier.
 
@@ -176,11 +176,11 @@ The subject is stable per environment and is provided during CMEK onboarding; th
 
     Depending on your cloud, that is:
 
-    | Cloud        | What to send                                                                              |
-    | ------------ | ----------------------------------------------------------------------------------------- |
-    | AWS          | Key ARN and the ARN of the IAM role Fireworks assumes                                     |
-    | Google Cloud | Cloud KMS key resource name and the workload identity pool provider resource name         |
-    | Azure        | Fully versioned Key Vault key identifier, Entra tenant ID, and app registration client ID |
+    | Cloud | What to send |
+    | - | - |
+    | AWS | Key ARN and the ARN of the IAM role Fireworks assumes |
+    | Google Cloud | Cloud KMS key resource name and the workload identity pool provider resource name |
+    | Azure | Fully versioned Key Vault key identifier, Entra tenant ID, and app registration client ID |
 
     <Note>
       Key registration and CMEK enablement are performed by Fireworks, not self-serve — the underlying commands are restricted to Fireworks operators. Contact [inquiries@fireworks.ai](mailto:inquiries@fireworks.ai) or your account team to start onboarding.

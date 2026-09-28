@@ -49,13 +49,16 @@ firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
     --region US
   firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
     --deployment-shape default \
+    --region CANADA
+  firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
+    --deployment-shape default \
     --region EUROPE
   firectl deployment create accounts/fireworks/models/<MODEL_NAME> \
     --deployment-shape default \
     --region APAC
   ```
 
-  Only **GLOBAL** is available by default. Quota for **US**, **EUROPE**, **APAC**, and single regions must be granted by Fireworks — contact [sales@fireworks.ai](mailto:sales@fireworks.ai). Deploying with a region you have no quota for is rejected at creation. See [Regions](/deployments/regions#quotas) for details.
+  Only **GLOBAL** is available by default. Quota for **US**, **CANADA**, **EUROPE**, **APAC**, and single regions must be granted by Fireworks — contact [sales@fireworks.ai](mailto:sales@fireworks.ai). Deploying with a region you have no quota for is rejected at creation. See [Regions](/deployments/regions#quotas) for details.
 </Warning>
 
 ### Check current placement
@@ -421,14 +424,14 @@ Because the capacity is borrowed, it can be **reclaimed (preempted) at any time*
 
 ### Guarantees vs. risks
 
-|                                                      | Preemptible (`--preemptible`)        | Standard on-demand                             |
-| ---------------------------------------------------- | ------------------------------------ | ---------------------------------------------- |
-| **Capacity model**                                   | Borrows idle reserved GPUs           | Reserves dedicated GPUs for you                |
-| **Cost**                                             | No charge to hold dedicated capacity | Billed by GPU-second while replicas are active |
-| **Can be reclaimed mid-request?**                    | Yes, at any time, without warning    | No                                             |
-| **Availability guarantee**                           | None (treat as best-effort)          | Held for you once scheduled                    |
-| **Safe for production / latency-sensitive traffic?** | No                                   | Yes                                            |
-| **Intended for**                                     | Evaluation, batch, one-off runs      | Production and interactive serving             |
+| | Preemptible (`--preemptible`) | Standard on-demand |
+| - | - | - |
+| **Capacity model** | Borrows idle reserved GPUs | Reserves dedicated GPUs for you |
+| **Cost** | No charge to hold dedicated capacity | Billed by GPU-second while replicas are active |
+| **Can be reclaimed mid-request?** | Yes, at any time, without warning | No |
+| **Availability guarantee** | None (treat as best-effort) | Held for you once scheduled |
+| **Safe for production / latency-sensitive traffic?** | No | Yes |
+| **Intended for** | Evaluation, batch, one-off runs | Production and interactive serving |
 
 <Note>
   **No unique availability risk.** Preemptible does not make capacity *harder* to get. If there is no capacity for a preemptible deployment, there is no capacity for an on-demand one either. The only difference is that a preemptible deployment can also be taken back after it starts.

@@ -213,12 +213,12 @@ Custom metadata from the `trace` field is stored in the `METADATA` column as a J
 
 ### Supported Metadata Keys
 
-| Key               | ClickHouse Mapping                  | Description                          |
-| ----------------- | ----------------------------------- | ------------------------------------ |
-| `trace_id`        | `TRACE_ID` column / `METADATA` JSON | Custom trace identifier for grouping |
-| `trace_name`      | `METADATA` JSON                     | Custom name for the trace            |
-| `span_name`       | `METADATA` JSON                     | Name for intermediate spans          |
-| `generation_name` | `METADATA` JSON                     | Name for the LLM generation          |
+| Key | ClickHouse Mapping | Description |
+| - | - | - |
+| `trace_id` | `TRACE_ID` column / `METADATA` JSON | Custom trace identifier for grouping |
+| `trace_name` | `METADATA` JSON | Custom name for the trace |
+| `span_name` | `METADATA` JSON | Name for intermediate spans |
+| `generation_name` | `METADATA` JSON | Name for the LLM generation |
 
 ### Example
 

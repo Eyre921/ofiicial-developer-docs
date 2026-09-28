@@ -56,14 +56,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |         |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |         |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |         |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0       |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -71,12 +71,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create
 
@@ -105,15 +105,15 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                                                   | Required             | Description                                                                                                                                                 |
-| -------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `role`                     | [components.CreateScimGroupMappingRequestRole](../../components/createscimgroupmappingrequestrole.mdx) | :heavy\_check\_mark: | N/A                                                                                                                                                         |
-| `scim_group_id`            | *str*                                                                                                  | :heavy\_check\_mark: | N/A                                                                                                                                                         |
-| `workspace_id`             | *str*                                                                                                  | :heavy\_check\_mark: | N/A                                                                                                                                                         |
-| `http_referer`             | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title`      | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |
-| `x_open_router_categories` | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                    | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `role` | [components.CreateScimGroupMappingRequestRole](../../components/createscimgroupmappingrequestrole.mdx) | :heavy\_check\_mark: | N/A |
+| `scim_group_id` | *str* | :heavy\_check\_mark: | N/A |
+| `workspace_id` | *str* | :heavy\_check\_mark: | N/A |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
@@ -121,14 +121,14 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.ConflictResponseError       | 409         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete
 
@@ -157,14 +157,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                                                                                                                                                                                                                                                                                      | Example |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | N/A                                                                                                                                                                                                                                                                                                                                                                                                                              |         |
-| `keep_members`             | [operations.KeepMembers](../../operations/keepmembers.mdx)          | :heavy\_check\_mark: | Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required. | false   |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                                                                                                                                                                      |         |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                                                                                                                                                                               |         |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                                                                                                                                                                      |         |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                                                                                                                              |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | N/A | |
+| `keep_members` | [operations.KeepMembers](../../operations/keepmembers.mdx) | :heavy\_check\_mark: | Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required. | false |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -172,13 +172,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## read
 
@@ -207,13 +207,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | N/A                                                                                                                                                         |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | N/A |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
@@ -221,12 +221,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## update
 
@@ -255,14 +255,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                                                   | Required             | Description                                                                                                                                                 |
-| -------------------------- | ------------------------------------------------------------------------------------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                       | *str*                                                                                                  | :heavy\_check\_mark: | N/A                                                                                                                                                         |
-| `role`                     | [components.UpdateScimGroupMappingRequestRole](../../components/updatescimgroupmappingrequestrole.mdx) | :heavy\_check\_mark: | N/A                                                                                                                                                         |
-| `http_referer`             | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title`      | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |
-| `x_open_router_categories` | *Optional\[str]*                                                                                       | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                    | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | N/A |
+| `role` | [components.UpdateScimGroupMappingRequestRole](../../components/updatescimgroupmappingrequestrole.mdx) | :heavy\_check\_mark: | N/A |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
@@ -270,13 +270,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_groups
 
@@ -307,16 +307,16 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                                                                                                   | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                   |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                            |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                   |                                      |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                                                                                                      | 0                                    |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                                                                                                                 | 50                                   |
-| `display_name`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Exact match filter on display\_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external\_id is also present, both must match.                                                                        | Engineering                          |
-| `external_id`              | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Exact match filter on external\_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external\_id (subject to offset/limit). When display\_name is also present, both must match. | a1b2c3d4-e5f6-7890-abcd-ef1234567890 |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                           |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `display_name` | *Optional\[str]* | :heavy\_minus\_sign: | Exact match filter on display\_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external\_id is also present, both must match. | Engineering |
+| `external_id` | *Optional\[str]* | :heavy\_minus\_sign: | Exact match filter on external\_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external\_id (subject to offset/limit). When display\_name is also present, both must match. | a1b2c3d4-e5f6-7890-abcd-ef1234567890 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -324,12 +324,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create\_sync\_job
 
@@ -358,12 +358,12 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
@@ -371,12 +371,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get\_sync\_job
 
@@ -405,13 +405,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | N/A                                                                                                                                                         |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | N/A |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
@@ -419,10 +419,10 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

@@ -22,10 +22,10 @@ Most users should start from [Cookbook recipes](/fine-tuning/training-api/cookbo
 
 Use the Python SDK directly when you need full control over Training API behavior.
 
-| Starting point      | Best for                                                               | How you use it                                              |
-| ------------------- | ---------------------------------------------------------------------- | ----------------------------------------------------------- |
-| **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent   |
-| **Python SDK**      | Full control over training behavior                                    | Write the training flow in Python while Fireworks runs GPUs |
+| Starting point | Best for | How you use it |
+| - | - | - |
+| **Cookbook recipe** | Adapting a working SFT, DPO, GRPO-style, or experimental async RL loop | Run it with the Python SDK directly or through your agent |
+| **Python SDK** | Full control over training behavior | Write the training flow in Python while Fireworks runs GPUs |
 
 ## Choose infrastructure
 
@@ -66,32 +66,32 @@ After choosing the Training API, decide how compute is provided:
 
 ### Comparison
 
-| Dimension         | Serverless                                                       | Dedicated                                                                                                    |
-| ----------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Provisioning      | Shared pooled trainer; no trainer or sampler deployment creation | SDK provisions trainer and deployment resources                                                              |
-| Billing           | Per token; no idle GPU charge                                    | Time-based trainer and deployment billing                                                                    |
-| Parameter mode    | LoRA only                                                        | LoRA and full-parameter                                                                                      |
-| Methods           | SFT, DPO, ORPO, RL, distillation, and custom loops               | SFT, DPO, ORPO, RL, distillation, and custom loops                                                           |
-| Models            | Current serverless model list                                    | Models with an enabled dedicated training shape                                                              |
-| Capacity          | Shared pool and per-account limits                               | Resources allocated to the run, subject to account quota and platform availability                           |
-| Checkpoint resume | In-run snapshots; cross-run resume is limited                    | Explicit checkpoint, reconnect, promotion, and deployment lifecycle                                          |
-| Sampling          | In-session sampler, no deployment to create                      | SDK-managed rollout or evaluation deployment                                                                 |
-| Teardown          | Session lifecycle is managed by the service                      | You must close trainers and delete or scale down deployments                                                 |
-| Best fit          | LoRA workloads on supported models without provisioning          | Full-parameter work, models outside the serverless pool, sustained workloads, and explicit lifecycle control |
+| Dimension | Serverless | Dedicated |
+| - | - | - |
+| Provisioning | Shared pooled trainer; no trainer or sampler deployment creation | SDK provisions trainer and deployment resources |
+| Billing | Per token; no idle GPU charge | Time-based trainer and deployment billing |
+| Parameter mode | LoRA only | LoRA and full-parameter |
+| Methods | SFT, DPO, ORPO, RL, distillation, and custom loops | SFT, DPO, ORPO, RL, distillation, and custom loops |
+| Models | Current serverless model list | Models with an enabled dedicated training shape |
+| Capacity | Shared pool and per-account limits | Resources allocated to the run, subject to account quota and platform availability |
+| Checkpoint resume | In-run snapshots; cross-run resume is limited | Explicit checkpoint, reconnect, promotion, and deployment lifecycle |
+| Sampling | In-session sampler, no deployment to create | SDK-managed rollout or evaluation deployment |
+| Teardown | Session lifecycle is managed by the service | You must close trainers and delete or scale down deployments |
+| Best fit | LoRA workloads on supported models without provisioning | Full-parameter work, models outside the serverless pool, sustained workloads, and explicit lifecycle control |
 
 Always verify current models, limits, prices, and feature status in the [Serverless Training](/fine-tuning/training-api/serverless) and [Dedicated Training](/fine-tuning/training-api/dedicated) pages before launch.
 
 ## Who does what
 
-| Fireworks handles                                                        | Cookbook recipes handle                                                    | Python SDK users implement                                                     |
-| ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| GPU provisioning and cluster management                                  | Training loop structure for supported recipes                              | Training loop logic (`forward_backward_custom` + `optim_step`)                 |
-| Service-mode trainer lifecycle (create, health-check, reconnect, delete) | Resource setup, health checks, reconnect, and cleanup                      | Managed service setup with `FiretitanServiceClient.from_firetitan_config(...)` |
-| Distributed forward pass, backward pass, optimizer execution             | Common losses and reward/evaluation plumbing                               | Loss function and batch construction                                           |
-| Checkpoint storage and export                                            | Checkpoint save, resume, promotion, and sampler refresh                    | Checkpoint calls (`save_weights_for_sampler`, DCP snapshots)                   |
-| Inference deployments and weight sync                                    | Deployment sampling and serving-integrated evaluation for RL recipes       | Custom rollout, sampling, and evaluation logic through the managed service     |
-| Preemption recovery and job resume                                       | Resume logic for supported recipe checkpoints                              | Resume policy and state restoration calls                                      |
-| Distributed training (multi-node, sharding, FSDP)                        | Config surfaces for learning rate, grad accumulation, context length, W\&B | Hyperparameter schedules, data pipeline, and experiment tracking               |
+| Fireworks handles | Cookbook recipes handle | Python SDK users implement |
+| - | - | - |
+| GPU provisioning and cluster management | Training loop structure for supported recipes | Training loop logic (`forward_backward_custom` + `optim_step`) |
+| Service-mode trainer lifecycle (create, health-check, reconnect, delete) | Resource setup, health checks, reconnect, and cleanup | Managed service setup with `FiretitanServiceClient.from_firetitan_config(...)` |
+| Distributed forward pass, backward pass, optimizer execution | Common losses and reward/evaluation plumbing | Loss function and batch construction |
+| Checkpoint storage and export | Checkpoint save, resume, promotion, and sampler refresh | Checkpoint calls (`save_weights_for_sampler`, DCP snapshots) |
+| Inference deployments and weight sync | Deployment sampling and serving-integrated evaluation for RL recipes | Custom rollout, sampling, and evaluation logic through the managed service |
+| Preemption recovery and job resume | Resume logic for supported recipe checkpoints | Resume policy and state restoration calls |
+| Distributed training (multi-node, sharding, FSDP) | Config surfaces for learning rate, grad accumulation, context length, W\&B | Hyperparameter schedules, data pipeline, and experiment tracking |
 
 ## System architecture
 
@@ -198,14 +198,14 @@ When a dedicated RL recipe provisions a hot-load rollout deployment, you can set
 
 ## Key APIs
 
-| API                                                                             | Purpose                                                                                                                                       |
-| ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`FiretitanServiceClient`](/fine-tuning/training-api/reference/service-client)  | Recommended direct SDK entry point. Creates or reattaches trainers/deployments and returns training, reference, and sampling clients.         |
-| [`FiretitanTrainingClient`](/fine-tuning/training-api/reference/service-client) | Tinker-compatible training client: `forward_backward_custom`, `optim_step`, `save_weights_for_sampler`, `save_state`, and load methods.       |
-| [`DeploymentSampler`](/fine-tuning/training-api/reference/deployment-sampler)   | FireTitan-native sampler for tokenized rollout/evaluation from SDK-managed deployments.                                                       |
-| [`FireworksClient`](/fine-tuning/training-api/reference/fireworks-client)       | Standalone checkpoint operations such as listing checkpoints or promoting a model without a live training instance.                           |
-| [`TrainerJobManager`](/fine-tuning/training-api/reference/trainer-job-manager)  | Legacy/compatibility lifecycle manager. Documented for existing SDK users and advanced debugging; not the recommended user-facing path.       |
-| [`DeploymentManager`](/fine-tuning/training-api/reference/deployment-manager)   | Legacy/compatibility deployment manager. Documented for existing SDK users and advanced debugging; normal code uses `FiretitanServiceClient`. |
+| API | Purpose |
+| - | - |
+| [`FiretitanServiceClient`](/fine-tuning/training-api/reference/service-client) | Recommended direct SDK entry point. Creates or reattaches trainers/deployments and returns training, reference, and sampling clients. |
+| [`FiretitanTrainingClient`](/fine-tuning/training-api/reference/service-client) | Tinker-compatible training client: `forward_backward_custom`, `optim_step`, `save_weights_for_sampler`, `save_state`, and load methods. |
+| [`DeploymentSampler`](/fine-tuning/training-api/reference/deployment-sampler) | FireTitan-native sampler for tokenized rollout/evaluation from SDK-managed deployments. |
+| [`FireworksClient`](/fine-tuning/training-api/reference/fireworks-client) | Standalone checkpoint operations such as listing checkpoints or promoting a model without a live training instance. |
+| [`TrainerJobManager`](/fine-tuning/training-api/reference/trainer-job-manager) | Legacy/compatibility lifecycle manager. Documented for existing SDK users and advanced debugging; not the recommended user-facing path. |
+| [`DeploymentManager`](/fine-tuning/training-api/reference/deployment-manager) | Legacy/compatibility deployment manager. Documented for existing SDK users and advanced debugging; normal code uses `FiretitanServiceClient`. |
 
 ## Renderers
 

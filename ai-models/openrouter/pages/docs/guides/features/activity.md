@@ -20,12 +20,12 @@ The [Activity](https://openrouter.ai/activity) page is the aggregate view of Ope
 
 ## Tabs
 
-| Tab            | What it shows                                                                                                                                                                                                                                                                                                               |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Overview**   | Headline metrics for the selected range: total spend, requests, token volume, blended cost per million tokens, and cache hit rate. Ranked cards list top API keys, apps, and users, alongside charts for usage by model, token breakdown (prompt, completion, reasoning), prompt caching, and usage type (credits vs BYOK). |
-| **Trends**     | Time series for requests, spend, or tokens, plus a "Trending" card that highlights the biggest movers versus the prior period.                                                                                                                                                                                              |
-| **Explore**    | A configurable chart and table builder. Pick a metric, group by one or two dimensions, choose a time rollup, and switch between bar, line, and dot plot views.                                                                                                                                                              |
-| **Guardrails** | Guardrail activity across your organization, filterable by model, provider, or status. See [Guardrails](/docs/guides/features/guardrails).                                                                                                                                                                                       |
+| Tab | What it shows |
+| - | - |
+| **Overview** | Headline metrics for the selected range: total spend, requests, token volume, blended cost per million tokens, and cache hit rate. Ranked cards list top API keys, apps, and users, alongside charts for usage by model, token breakdown (prompt, completion, reasoning), prompt caching, and usage type (credits vs BYOK). |
+| **Trends** | Time series for requests, spend, or tokens, plus a "Trending" card that highlights the biggest movers versus the prior period. |
+| **Explore** | A configurable chart and table builder. Pick a metric, group by one or two dimensions, choose a time rollup, and switch between bar, line, and dot plot views. |
+| **Guardrails** | Guardrail activity across your organization, filterable by model, provider, or status. See [Guardrails](/docs/guides/features/guardrails). |
 
 Every tab shares the same date range and filter state, which is stored in the URL. Switching tabs keeps your filters, so you can move from an Overview anomaly to Trends to Explore without re-entering them.
 
@@ -52,11 +52,11 @@ Explore results can be downloaded as CSV or PDF. Exports respect the current fil
 
 The same aggregates are available programmatically with a [Management API key](/docs/guides/overview/auth/management-api-keys).
 
-| Endpoint                                                                                                    | Returns                                                                                                            |
-| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [`GET /api/v1/analytics/meta`](/docs/api/api-reference/analytics/get-available-analytics-metrics-and-dimensions) | The metrics, dimensions, filter operators, and granularities the query endpoint accepts.                           |
-| [`POST /api/v1/analytics/query`](/docs/api/api-reference/analytics/query-analytics-data)                         | The programmatic equivalent of Explore. Pick a metric, group by dimensions, filter, and choose a time granularity. |
-| [`GET /api/v1/activity`](/docs/api/api-reference/analytics/get-user-activity-grouped-by-endpoint)                | Daily usage and spend grouped by model endpoint.                                                                   |
+| Endpoint | Returns |
+| - | - |
+| [`GET /api/v1/analytics/meta`](/docs/api/api-reference/analytics/get-available-analytics-metrics-and-dimensions) | The metrics, dimensions, filter operators, and granularities the query endpoint accepts. |
+| [`POST /api/v1/analytics/query`](/docs/api/api-reference/analytics/query-analytics-data) | The programmatic equivalent of Explore. Pick a metric, group by dimensions, filter, and choose a time granularity. |
+| [`GET /api/v1/activity`](/docs/api/api-reference/analytics/get-user-activity-grouped-by-endpoint) | Daily usage and spend grouped by model endpoint. |
 
 For a worked example of running a cost review against the query endpoint, see [Analytics cost control](/docs/cookbook/administration/analytics-cost-control).
 

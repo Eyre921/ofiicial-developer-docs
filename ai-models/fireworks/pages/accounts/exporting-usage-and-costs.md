@@ -262,16 +262,16 @@ Get just the rated costs, without the usage rows:
 
 ### CLI flags
 
-| Flag                   | Description                                                                        |
-| ---------------------- | ---------------------------------------------------------------------------------- |
-| `--start-time`         | Start time (inclusive), as `YYYY-MM-DD` or `'YYYY-MM-DD hh:mm:ss'`.                |
-| `--end-time`           | End time (exclusive), same formats.                                                |
-| `--usage-type`         | `all`, `serverless`, or `dedicated-deployment`. Defaults to all.                   |
-| `--group-by`           | Dimension to group by. Repeatable.                                                 |
-| `--filter`             | `key=value` filter. Repeatable; repeated values for the same key are OR'ed.        |
-| `--timezone`           | IANA timezone for daily aggregation (e.g. `America/Los_Angeles`). Defaults to UTC. |
-| `--account-costs-only` | Print only account-level cumulative costs for the range.                           |
-| `-o, --output`         | `text` (default) or `json`.                                                        |
+| Flag | Description |
+| - | - |
+| `--start-time` | Start time (inclusive), as `YYYY-MM-DD` or `'YYYY-MM-DD hh:mm:ss'`. |
+| `--end-time` | End time (exclusive), same formats. |
+| `--usage-type` | `all`, `serverless`, or `dedicated-deployment`. Defaults to all. |
+| `--group-by` | Dimension to group by. Repeatable. |
+| `--filter` | `key=value` filter. Repeatable; repeated values for the same key are OR'ed. |
+| `--timezone` | IANA timezone for daily aggregation (e.g. `America/Los_Angeles`). Defaults to UTC. |
+| `--account-costs-only` | Print only account-level cumulative costs for the range. |
+| `-o, --output` | `text` (default) or `json`. |
 
 Run `firectl billing get-usage --help` for the full list.
 

@@ -65,12 +65,12 @@ The exported CSV always has these six columns, regardless of which dimension you
 
 `group_by_value` depends on `--group-by`:
 
-| `--group-by`      | `group_by_value`                                                             |
-| ----------------- | ---------------------------------------------------------------------------- |
-| `model` (default) | Model resource name, e.g. `accounts/my-account/models/glm-5p2`               |
-| `model_tier`      | Serving capability tier used to price the usage, e.g. `GLM 5.2 (Fast)`       |
-| `user`            | User resource name, e.g. `accounts/my-account/users/alice`                   |
-| `api_key`         | Stable API key ID, e.g. `key_4nMFyHCSZP4CRKqa`. Never plaintext key material |
+| `--group-by` | `group_by_value` |
+| - | - |
+| `model` (default) | Model resource name, e.g. `accounts/my-account/models/glm-5p2` |
+| `model_tier` | Serving capability tier used to price the usage, e.g. `GLM 5.2 (Fast)` |
+| `user` | User resource name, e.g. `accounts/my-account/users/alice` |
+| `api_key` | Stable API key ID, e.g. `key_4nMFyHCSZP4CRKqa`. Never plaintext key material |
 
 <Note>
   Two reserved values can appear in `group_by_value`: `unattributed`, when the underlying billing

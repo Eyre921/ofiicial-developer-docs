@@ -71,25 +71,25 @@ Like the TUI skill, the headless skill presents your coding agent with an intera
 
 ### What `@openrouter/agent` handles
 
-| Concern             | How the SDK handles it                                                                                |
-| ------------------- | ----------------------------------------------------------------------------------------------------- |
-| **Model calls**     | `client.callModel()` — one call, any model on OpenRouter                                              |
-| **Tool execution**  | Define tools with `tool()` and Zod schemas; the SDK validates input and calls your `execute` function |
-| **Multi-turn**      | The SDK loops (call model -> execute tools -> call model) until a stop condition fires                |
-| **Stop conditions** | `stepCountIs(n)`, `maxCost(amount)`, `hasToolCall(name)`, or custom functions                         |
-| **Streaming**       | `result.getTextStream()` for text deltas, `result.getToolCallsStream()` for tool calls                |
-| **Cost tracking**   | `result.getResponse().usage` with input/output token counts                                           |
-| **Shared context**  | Type-safe shared state across tools via `sharedContextSchema`                                         |
+| Concern | How the SDK handles it |
+| - | - |
+| **Model calls** | `client.callModel()` — one call, any model on OpenRouter |
+| **Tool execution** | Define tools with `tool()` and Zod schemas; the SDK validates input and calls your `execute` function |
+| **Multi-turn** | The SDK loops (call model -> execute tools -> call model) until a stop condition fires |
+| **Stop conditions** | `stepCountIs(n)`, `maxCost(amount)`, `hasToolCall(name)`, or custom functions |
+| **Streaming** | `result.getTextStream()` for text deltas, `result.getToolCallsStream()` for tool calls |
+| **Cost tracking** | `result.getResponse().usage` with input/output token counts |
+| **Shared context** | Type-safe shared state across tools via `sharedContextSchema` |
 
 ## Output modes
 
 The generated CLI supports three output modes:
 
-| Mode               | Flag             | Description                                     |
-| ------------------ | ---------------- | ----------------------------------------------- |
-| **Text** (default) |                  | Streams text deltas to stdout                   |
-| **JSON**           | `--json` / `-j`  | NDJSON event stream — one `AgentEvent` per line |
-| **Quiet**          | `--quiet` / `-q` | No output; exit 0 on success, 1 on error        |
+| Mode | Flag | Description |
+| - | - | - |
+| **Text** (default) | | Streams text deltas to stdout |
+| **JSON** | `--json` / `-j` | NDJSON event stream — one `AgentEvent` per line |
+| **Quiet** | `--quiet` / `-q` | No output; exit 0 on success, 1 on error |
 
 ```bash lines theme={null}
 # Text mode (default)
@@ -143,41 +143,41 @@ The skill presents a checklist when invoked. Items marked **on** are pre-selecte
 
 Executed by OpenRouter server-side — zero client code needed.
 
-| Tool       | Default | Description                                            |
-| ---------- | ------- | ------------------------------------------------------ |
-| Web Search | on      | Real-time web search via `openrouter:web_search`       |
-| Web Fetch  | on      | Fetch and extract page text via `openrouter:web_fetch` |
-| Datetime   | on      | Current date/time via `openrouter:datetime`            |
+| Tool | Default | Description |
+| - | - | - |
+| Web Search | on | Real-time web search via `openrouter:web_search` |
+| Web Fetch | on | Fetch and extract page text via `openrouter:web_fetch` |
+| Datetime | on | Current date/time via `openrouter:datetime` |
 
 ### Client-side tools
 
 Generated into `src/tools/` with Bun-native implementations.
 
-| Tool           | Default | Description                           |
-| -------------- | ------- | ------------------------------------- |
-| File Read      | on      | Read files with `Bun.file`            |
-| File Write     | on      | Write/create files with `Bun.write`   |
-| File Edit      | on      | Search-and-replace with diff output   |
-| Glob/Find      | on      | Find files by pattern with `Bun.Glob` |
-| Grep/Search    | on      | Search file contents by regex         |
-| Directory List | on      | List directory entries                |
-| Shell          | on      | Execute commands with `Bun.spawn`     |
-| Fetch URL      | on      | Fetch and extract text from URLs      |
+| Tool | Default | Description |
+| - | - | - |
+| File Read | on | Read files with `Bun.file` |
+| File Write | on | Write/create files with `Bun.write` |
+| File Edit | on | Search-and-replace with diff output |
+| Glob/Find | on | Find files by pattern with `Bun.Glob` |
+| Grep/Search | on | Search file contents by regex |
+| Directory List | on | List directory entries |
+| Shell | on | Execute commands with `Bun.spawn` |
+| Fetch URL | on | Fetch and extract text from URLs |
 
 ### Modules
 
 Optional architectural components for the headless agent.
 
-| Module                      | Default | Description                                            |
-| --------------------------- | ------- | ------------------------------------------------------ |
-| Session Persistence         | on      | JSONL append-only conversation log                     |
-| Retry with Backoff          | on      | Automatic retry on transient API errors                |
-| Context Compaction          | off     | Summarize older messages when context gets long        |
-| System Prompt Composition   | off     | Build instructions from static + dynamic context files |
-| Tool Permissions / Approval | off     | Gate dangerous tools behind confirmation               |
-| Structured Event Logging    | off     | Emit structured events for tool calls and errors       |
-| Output Schema Validation    | off     | Validate agent output against a JSON Schema (Ajv)      |
-| Webhook Notifications       | off     | POST events to an external URL on completion or error  |
+| Module | Default | Description |
+| - | - | - |
+| Session Persistence | on | JSONL append-only conversation log |
+| Retry with Backoff | on | Automatic retry on transient API errors |
+| Context Compaction | off | Summarize older messages when context gets long |
+| System Prompt Composition | off | Build instructions from static + dynamic context files |
+| Tool Permissions / Approval | off | Gate dangerous tools behind confirmation |
+| Structured Event Logging | off | Emit structured events for tool calls and errors |
+| Output Schema Validation | off | Validate agent output against a JSON Schema (Ajv) |
+| Webhook Notifications | off | POST events to an external URL on completion or error |
 
 ## Highlighted features
 

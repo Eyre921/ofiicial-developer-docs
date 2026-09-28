@@ -45,26 +45,26 @@ training_client = service.create_training_client(
 
 Core managed config fields:
 
-| Field                                | Type                                  | Default                    | Description                                                                                              |
-| ------------------------------------ | ------------------------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `api_key`                            | `str \| None`                         | `FIREWORKS_API_KEY`        | Fireworks API key.                                                                                       |
-| `base_url`                           | `str \| None`                         | `https://api.fireworks.ai` | Control-plane URL.                                                                                       |
-| `inference_url`                      | `str \| None`                         | `None`                     | Optional inference gateway URL.                                                                          |
-| `base_model`                         | `str`                                 | —                          | Fireworks base model resource name.                                                                      |
-| `tokenizer_model`                    | `str \| None`                         | `None`                     | HuggingFace tokenizer name used by `get_tokenizer()` and sampler setup.                                  |
-| `lora_rank`                          | `int`                                 | `0`                        | `0` for full-parameter training; positive value for LoRA.                                                |
-| `training_shape_id`                  | `str \| None`                         | `None`                     | User-facing training shape ID. The SDK resolves the pinned version.                                      |
-| `reference_training_shape_id`        | `str \| None`                         | `None`                     | Optional separate reference trainer shape. Use the model's LoRA shape.                                   |
-| `trainer_job_id`                     | `str \| None`                         | `None`                     | Reattach to an existing trainer instead of creating one.                                                 |
-| `reference_trainer_job_id`           | `str \| None`                         | `None`                     | Reattach to an existing reference trainer.                                                               |
-| `create_deployment`                  | `bool`                                | `True`                     | Whether to create or reattach an inference deployment. Set `False` for trainer-only SFT/DPO-style loops. |
-| `deployment_id`                      | `str \| None`                         | `None`                     | Create or reattach an inference deployment for sampling and weight sync.                                 |
-| `deployment_shape`                   | `str \| None`                         | Linked shape               | Optional deployment shape override. Usually inherited from the training shape.                           |
-| `trainer_replica_count`              | `int \| None`                         | `None`                     | Data-parallel HSDP replicas for the trainer.                                                             |
-| `replica_count`                      | `int`                                 | `1`                        | Inference deployment replicas.                                                                           |
-| `cleanup_trainer_on_close`           | `bool`                                | `False`                    | Delete the SDK-managed policy trainer when `service.close()` runs.                                       |
-| `cleanup_reference_trainer_on_close` | `bool`                                | `True`                     | Delete SDK-managed separate reference trainers when released/closed.                                     |
-| `cleanup_deployment_on_close`        | `"scale_to_zero" \| "delete" \| None` | `None`                     | Optional deployment cleanup action on close.                                                             |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `api_key` | `str \| None` | `FIREWORKS_API_KEY` | Fireworks API key. |
+| `base_url` | `str \| None` | `https://api.fireworks.ai` | Control-plane URL. |
+| `inference_url` | `str \| None` | `None` | Optional inference gateway URL. |
+| `base_model` | `str` | — | Fireworks base model resource name. |
+| `tokenizer_model` | `str \| None` | `None` | HuggingFace tokenizer name used by `get_tokenizer()` and sampler setup. |
+| `lora_rank` | `int` | `0` | `0` for full-parameter training; positive value for LoRA. |
+| `training_shape_id` | `str \| None` | `None` | User-facing training shape ID. The SDK resolves the pinned version. |
+| `reference_training_shape_id` | `str \| None` | `None` | Optional separate reference trainer shape. Use the model's LoRA shape. |
+| `trainer_job_id` | `str \| None` | `None` | Reattach to an existing trainer instead of creating one. |
+| `reference_trainer_job_id` | `str \| None` | `None` | Reattach to an existing reference trainer. |
+| `create_deployment` | `bool` | `True` | Whether to create or reattach an inference deployment. Set `False` for trainer-only SFT/DPO-style loops. |
+| `deployment_id` | `str \| None` | `None` | Create or reattach an inference deployment for sampling and weight sync. |
+| `deployment_shape` | `str \| None` | Linked shape | Optional deployment shape override. Usually inherited from the training shape. |
+| `trainer_replica_count` | `int \| None` | `None` | Data-parallel HSDP replicas for the trainer. |
+| `replica_count` | `int` | `1` | Inference deployment replicas. |
+| `cleanup_trainer_on_close` | `bool` | `False` | Delete the SDK-managed policy trainer when `service.close()` runs. |
+| `cleanup_reference_trainer_on_close` | `bool` | `True` | Delete SDK-managed separate reference trainers when released/closed. |
+| `cleanup_deployment_on_close` | `"scale_to_zero" \| "delete" \| None` | `None` | Optional deployment cleanup action on close. |
 
 The managed service exposes resolved metadata after provisioning:
 
@@ -97,11 +97,11 @@ training_client = service.create_training_client(
 )
 ```
 
-| Parameter       | Type                     | Default | Description                                                 |
-| --------------- | ------------------------ | ------- | ----------------------------------------------------------- |
-| `base_model`    | `str`                    | —       | Must match the trainer job's `base_model`                   |
-| `lora_rank`     | `int`                    | `0`     | Must match trainer creation config (`0` for full-parameter) |
-| `user_metadata` | `dict[str, str] \| None` | `None`  | Optional run metadata                                       |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `base_model` | `str` | — | Must match the trainer job's `base_model` |
+| `lora_rank` | `int` | `0` | Must match trainer creation config (`0` for full-parameter) |
+| `user_metadata` | `dict[str, str] \| None` | `None` | Optional run metadata |
 
 <Warning>
   A `ValueError` is raised if you attempt to create a second training client with the same `(base_model, lora_rank)` on the same `FiretitanServiceClient` instance. Create a new `FiretitanServiceClient` for a separate trainer.
@@ -289,10 +289,10 @@ result = training_client.save_weights_for_sampler_ext(
 print(result.snapshot_name)  # Session-qualified name for weight sync
 ```
 
-| Parameter         | Type          | Default | Description                                          |
-| ----------------- | ------------- | ------- | ---------------------------------------------------- |
-| `name`            | `str`         | —       | Checkpoint name (auto-suffixed with session ID)      |
-| `checkpoint_type` | `str \| None` | `None`  | `"base"` for full weights, `"delta"` for incremental |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `name` | `str` | — | Checkpoint name (auto-suffixed with session ID) |
+| `checkpoint_type` | `str \| None` | `None` | `"base"` for full weights, `"delta"` for incremental |
 
 <Note>
   On full-parameter training, only `checkpoint_type="base"` produces a promotable blob; `"delta"` cannot be promoted. LoRA is always promotable. See [Checkpoint kinds](/fine-tuning/training-api/cookbook/reference#checkpoints) for the full promotability matrix.
@@ -308,10 +308,10 @@ Save full train state (weights + optimizer) for resume:
 training_client.save_state("train_state_step_100").result()
 ```
 
-| Parameter | Type            | Default | Description                                                   |
-| --------- | --------------- | ------- | ------------------------------------------------------------- |
-| `name`    | `str`           | —       | Checkpoint name                                               |
-| `timeout` | `float \| None` | `None`  | If set, block until the save completes or the timeout expires |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `name` | `str` | — | Checkpoint name |
+| `timeout` | `float \| None` | `None` | If set, block until the save completes or the timeout expires |
 
 ### `load_state_with_optimizer(name)`
 
@@ -362,20 +362,20 @@ training_client.load_state_with_optimizer(checkpoint_ref).result()
 
 Returned by `save_weights_for_sampler_ext`:
 
-| Field           | Type  | Description                                       |
-| --------------- | ----- | ------------------------------------------------- |
-| `path`          | `str` | Snapshot name from trainer                        |
+| Field | Type | Description |
+| - | - | - |
+| `path` | `str` | Snapshot name from trainer |
 | `snapshot_name` | `str` | Session-qualified name for weight sync operations |
 
 ## GradAccNormalization
 
 Enum for the advanced `optim_step` `grad_accumulation_normalization` parameter:
 
-| Enum                                   | Wire value          | Description                                                     |
-| -------------------------------------- | ------------------- | --------------------------------------------------------------- |
+| Enum | Wire value | Description |
+| - | - | - |
 | `GradAccNormalization.NUM_LOSS_TOKENS` | `"num_loss_tokens"` | Normalize by total loss tokens across accumulated micro-batches |
-| `GradAccNormalization.NUM_SEQUENCES`   | `"num_sequences"`   | Normalize by total sequences across accumulated micro-batches   |
-| `GradAccNormalization.NONE`            | `"none"`            | Explicit no normalization (raw gradient sum)                    |
+| `GradAccNormalization.NUM_SEQUENCES` | `"num_sequences"` | Normalize by total sequences across accumulated micro-batches |
+| `GradAccNormalization.NONE` | `"none"` | Explicit no normalization (raw gradient sum) |
 
 ## Related guides
 

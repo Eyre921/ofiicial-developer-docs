@@ -45759,17 +45759,17 @@ const result = streamText({
 
 Without this header, tool inputs and structured outputs may arrive all at once after a delay instead of streaming incrementally.
 
-For `claude-opus-5-5` and `claude-fable-5-1`, the default mode is `"auto"`,
-which uses native structured outputs through `output_config.format`. These
-models reject forced tool use, so the `"jsonTool"` mode cannot be used with
-them. If you request `"jsonTool"` anyway, the provider falls back to
+For `claude-sonnet-5-5`, `claude-opus-5-5`, and `claude-fable-5-1`, the
+default mode is `"auto"`, which uses native structured outputs through
+`output_config.format`. These models reject forced tool use, so the
+`"jsonTool"` mode cannot be used with them. If you request `"jsonTool"` anyway, the provider falls back to
 `"outputFormat"` and emits a warning. Likewise, a `required` or named
 `toolChoice` is downgraded to `auto` with a warning; instruct the model to use
 the tool in your prompt and verify that a tool call was made.
 
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, `claude-sonnet-5`, and `claude-sonnet-5-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
 
@@ -45779,6 +45779,16 @@ On `claude-opus-5-5`, thinking is always adaptive and cannot be disabled, so
 carrying over the setting you used on `claude-opus-5`. Set `maxOutputTokens`
 with room for thinking as well as the reply; thinking counts toward the limit
 even when its content is not returned.
+
+On `claude-sonnet-5-5`, thinking cannot be turned off either, and the API
+default effort is `high`. Its effort levels are not equivalent to those of
+`claude-sonnet-5`, so test several levels rather than carrying over your
+current setting. For agentic coding and other multi-step tool use, start at
+`medium` for well-specified tasks and move to `high` for harder ones. The
+lowest thinking setting, [`between_tools`](#between-tools-thinking), is only
+accepted at `low`, `medium`, and `high` effort. When you combine it with
+`effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high`
+and emits a warning.
 
 ```ts highlight="8-10"
 import { anthropic, AnthropicProviderOptions } from '@ai-sdk/anthropic';
@@ -45843,6 +45853,8 @@ The `inferenceGeo` option accepts `'us'` (US-only infrastructure) or `'global'` 
 ### Safety Classifiers and Fallbacks
 
 Claude Fable 5 has safeguards that limit its performance in certain areas like cybersecurity, biology, and chemistry, and automated safety checks are run on every request.
+
+Claude Sonnet 5.5 also has safety classifiers enabled, including for cybersecurity, biology, and reasoning extraction. Requests that ask the model to reproduce its internal reasoning in the response text can be declined with the `reasoning_extraction` category; use `thinking: { type: 'adaptive', display: 'summarized' }` and read the reasoning parts instead.
 
 When one of these checks blocks a request, the API does not answer it. Instead it returns a classifier block: a `200` response with a `refusal` stop reason and an optional `stop_details` object describing the category that triggered the block. The AI SDK surfaces this as a `content-filter` finish reason, with the details available on `providerMetadata.anthropic.stopDetails`.
 
@@ -45999,13 +46011,19 @@ const { text } = await generateText({
 
 ##### Adaptive-Only Models
 
-`claude-opus-5-5`, `claude-fable-5`, and `claude-fable-5-1` always run adaptive
-thinking. The API rejects `thinking: { type: 'disabled' }` and budget-based
-`thinking: { type: 'enabled' }` for these models. To keep existing code working,
-the provider:
+`claude-sonnet-5-5`, `claude-opus-5-5`, `claude-fable-5`, and
+`claude-fable-5-1` always run adaptive thinking. The API rejects
+`thinking: { type: 'disabled' }` and budget-based
+`thinking: { type: 'enabled' }` for these models. To keep existing code
+working, the provider:
 
 - removes `thinking: { type: 'disabled' }` and emits a warning,
 - converts `thinking: { type: 'enabled', budgetTokens }` to `{ type: 'adaptive' }` and emits a warning.
+
+On `claude-sonnet-5-5`, which supports
+[`between_tools` thinking](#between-tools-thinking), the provider instead
+replaces `thinking: { type: 'disabled' }` with `thinking: { type: 'between_tools' }`
+and emits a warning.
 
 Use `effort` to control how much these models think. On `claude-opus-5-5`, set
 `effort: 'low'` when time to first token matters, and move to `medium` if
@@ -46030,6 +46048,42 @@ const { text } = await generateText({
   assuming the first part is text. Under the default `display: 'omitted'`
   setting, thinking blocks are returned with empty text.
 </Note>
+
+##### Between-Tools Thinking
+
+`claude-sonnet-5-5` supports `thinking: { type: 'between_tools' }`, its lowest
+thinking setting. The model does no upfront thinking, but the short progress
+notes it writes between tool calls are still returned as thinking blocks, each
+with a short summary. They are available as reasoning parts and are sent back
+unchanged on the next step. `between_tools` accepts no other thinking options
+(such as `display` or `blockBinding`) and is only accepted at `low`, `medium`,
+and `high` effort. Per-message effort changes via
+[mid-conversation system messages](#mid-conversation-system-controls) are not
+supported with `between_tools`.
+
+```ts highlight="16-17"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { generateText, stepCountIs, tool } from 'ai';
+import { z } from 'zod';
+
+const { text, steps } = await generateText({
+  model: anthropic('claude-sonnet-5-5'),
+  stopWhen: stepCountIs(5),
+  tools: {
+    weather: tool({
+      inputSchema: z.object({ city: z.string() }),
+      execute: async ({ city }) => ({ city, temperature: 72 }),
+    }),
+  },
+  providerOptions: {
+    anthropic: {
+      thinking: { type: 'between_tools' },
+      effort: 'low',
+    } satisfies AnthropicLanguageModelOptions,
+  },
+  prompt: 'Compare the weather in San Francisco and New York.',
+});
+```
 
 ##### Thinking Display (Opus 4.7+)
 
@@ -46058,11 +46112,11 @@ console.log(text);
 
 ##### Thinking Updates
 
-Use `display: 'updates'` with `claude-opus-5-5` or `claude-fable-5-1` to stream
-thinking summaries between tool calls. These models return progress notes
-between tool calls as thinking blocks rather than text, so without this setting
-a long tool-calling turn can look silent. The provider adds the required
-`thinking-display-updates-2026-08-18` beta header automatically:
+Use `display: 'updates'` with `claude-sonnet-5-5`, `claude-opus-5-5`, or
+`claude-fable-5-1` to stream thinking summaries between tool calls. These models
+return progress notes between tool calls as thinking blocks rather than text, so
+without this setting a long tool-calling turn can look silent. The provider adds
+the required `thinking-display-updates-2026-08-18` beta header automatically:
 
 ```ts highlight="12-16"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -46087,10 +46141,12 @@ const result = streamText({
 
 ##### Thinking Block Binding
 
-Fable 5.1 can recover from a thinking-block prefix mismatch by dropping the
-mismatched block. Set `blockBinding.prefixMismatchBehavior` to `drop_block`.
-You can provide block binding by itself to preserve the model's default
-thinking mode, or combine it with adaptive thinking.
+Fable 5.1, Opus 5.5, and Sonnet 5.5 can recover from a thinking-block prefix
+mismatch by dropping the mismatched block. Set
+`blockBinding.prefixMismatchBehavior` to `drop_block`. You can provide block
+binding by itself to preserve the model's default thinking mode, or combine it
+with adaptive thinking. Block binding is not available with `between_tools`
+thinking; keep the message history append-only instead.
 
 ```ts highlight="7-11"
 const { text } = await generateText({
@@ -46405,10 +46461,10 @@ These tools can be used in conjunction with the `sonnet-3-5-sonnet-20240620` mod
 #### Computer Toolset
 
 Newer models use the computer toolset instead of a versioned computer tool.
-`claude-opus-5-5` accepts computer use only through the toolset and rejects the
-older `computer_*` tool types with a 400. The toolset does not require a beta
-header and has no display size parameters: coordinates are always in the pixel
-space of the screenshots you return. Zoom is enabled by default, and Claude can
+`claude-sonnet-5-5` and `claude-opus-5-5` accept computer use only through the
+toolset and reject the older `computer_*` tool types with a 400. The toolset
+does not require a beta header and has no display size parameters: coordinates
+are always in the pixel space of the screenshots you return. Zoom is enabled by default, and Claude can
 return several actions in one turn, each as its own tool call.
 
 The API returns each action as a separate `tool_use` block with
@@ -46630,10 +46686,10 @@ for await (const part of result.textStream) {
 
 ### Mid-Conversation System Controls
 
-With `claude-opus-5-5` and `claude-fable-5-1`, use an empty system message to
-change effort from the next user turn. A separate system message containing text
-can provide a turn-scoped reminder with `clearAt: 'next_user_message'`: its text
-applies until the next user message. Keep the reminder after a user turn and
+With `claude-sonnet-5-5`, `claude-opus-5-5`, and `claude-fable-5-1`, use an
+empty system message to change effort from the next user turn. A separate
+system message containing text can provide a turn-scoped reminder with
+`clearAt: 'next_user_message'`: its text applies until the next user message. Keep the reminder after a user turn and
 before an assistant turn, or at the end of the messages array.
 The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
@@ -47069,6 +47125,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 | -------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
 | `claude-opus-5-5`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-5`            | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `claude-sonnet-5-5`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-sonnet-5`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-fable-5-1`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-fable-5`           | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -48366,6 +48423,7 @@ const result = await generateText({
 
 Anthropic has reasoning support for Claude 3.7 and Claude 4 models on Bedrock, including:
 
+- `us.anthropic.claude-sonnet-5-5`
 - `us.anthropic.claude-sonnet-5`
 - `us.anthropic.claude-fable-5`
 - `us.anthropic.claude-opus-4-8`
@@ -48412,6 +48470,7 @@ on how to integrate reasoning into your chatbot.
 
 | Model                                          | Image Input         | Object Generation   | Tool Usage          | Computer Use        | Reasoning           |
 | ---------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `us.anthropic.claude-sonnet-5-5`               | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `us.anthropic.claude-sonnet-5`                 | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `us.anthropic.claude-fable-5`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `us.anthropic.claude-opus-4-8`                 | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -57028,12 +57087,14 @@ For more details, see the [Replicate models page](https://replicate.com/explore)
 
 ---
 title: Perplexity
-description: Learn how to use Perplexity's Sonar API with the AI SDK.
+description: Learn how to use Perplexity's Agent API with the AI SDK.
 ---
 
 # Perplexity Provider
 
-The [Perplexity](https://sonar.perplexity.ai) provider offers access to Sonar API - a language model that uniquely combines real-time web search with natural language processing. Each response is grounded in current web data and includes detailed citations, making it ideal for research, fact-checking, and obtaining up-to-date information.
+The [Perplexity](https://www.perplexity.ai) provider offers access to the
+[Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart). The Agent API
+can route across models, search the web, call tools, and return cited answers.
 
 API keys can be obtained from the [Perplexity Platform](https://docs.perplexity.ai).
 
@@ -57104,10 +57165,19 @@ import { perplexity } from '@ai-sdk/perplexity';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
 });
 ```
+
+The Agent API provides the `fast`, `low`, `medium`, `high`, and `xhigh`
+presets. You can also pass an Agent API model ID directly, such as
+`perplexity/sonar`.
+
+Starting with version 2.1.0, language generation uses the Agent API
+exclusively. Legacy Sonar model IDs and provider options are not mapped; see
+[Migrating from Sonar to the Agent API](#migrating-from-sonar-to-the-agent-api)
+before upgrading.
 
 ### Sources
 
@@ -57118,26 +57188,101 @@ import { perplexity } from '@ai-sdk/perplexity';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
 });
 
 console.log(sources);
 ```
 
-### Provider Options & Metadata
+### Agent Tools
+
+Pass native Agent API tools through `providerOptions.perplexity.tools`:
+
+```ts
+import {
+  perplexity,
+  type PerplexityLanguageModelOptions,
+} from '@ai-sdk/perplexity';
+import { generateText } from 'ai';
+
+const { text, sources } = await generateText({
+  model: perplexity('low'),
+  prompt: 'Summarize recent US federal AI policy from official sources.',
+  providerOptions: {
+    perplexity: {
+      tools: [
+        {
+          type: 'web_search',
+          filters: {
+            search_domain_filter: [
+              'whitehouse.gov',
+              'congress.gov',
+              'federalregister.gov',
+            ],
+            search_recency_filter: 'month',
+          },
+          max_results: 10,
+          search_context_size: 'medium',
+        },
+      ],
+    } satisfies PerplexityLanguageModelOptions,
+  },
+});
+```
+
+Supported native tools are `web_search`, `fetch_url`, `people_search`,
+`finance_search`, `sandbox`, `mcp`, and `connector`. Agent API presets include
+preconfigured tools that remain enabled; the `tools` option can add explicit
+tools or supply tools when using a direct model ID.
+
+Search and fetch results are exposed as AI SDK sources. Other native tool traces,
+including finance, sandbox, and MCP results, are available in `response.body`
+and raw stream chunks (`includeRawChunks: true`). They are not exposed as
+AI SDK client tool calls. Accounts with zero data retention may reject
+file-capable tools such as `finance_search` and `sandbox`.
+
+AI SDK function tools can be passed through the top-level `tools` option:
+
+```ts
+import { perplexity } from '@ai-sdk/perplexity';
+import { generateText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = await generateText({
+  model: perplexity('low'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a city',
+      inputSchema: z.object({ city: z.string() }),
+      execute: async ({ city }) => ({ city, temperature: 18 }),
+    }),
+  },
+});
+```
+
+### Provider Options and Metadata
 
 The Perplexity provider includes additional metadata in the response through `providerMetadata`.
 Additional configuration options are available through `providerOptions`.
 
 ```ts
+import {
+  perplexity,
+  type PerplexityLanguageModelOptions,
+} from '@ai-sdk/perplexity';
+import { generateText } from 'ai';
+
 const result = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
   providerOptions: {
     perplexity: {
-      return_images: true, // Enable image responses (Tier-2 Perplexity users only)
-    },
+      max_steps: 5,
+      store: true,
+      reasoning: { effort: 'low' },
+    } satisfies PerplexityLanguageModelOptions,
   },
 });
 
@@ -57145,78 +57290,170 @@ console.log(result.providerMetadata);
 // Example output:
 // {
 //   perplexity: {
-//     usage: { citationTokens: 5286, numSearchQueries: 1 },
-//     images: [
-//       { imageUrl: "https://example.com/image1.jpg", originUrl: "https://elsewhere.com/page1", height: 1280, width: 720 },
-//       { imageUrl: "https://example.com/image2.jpg", originUrl: "https://elsewhere.com/page2", height: 1280, width: 720 }
-//     ]
+//     usage: { citationTokens: null, numSearchQueries: 1 },
+//     images: null,
+//     cost: { totalCost: 0.006, currency: 'USD', ... },
+//     toolCalls: { search_web: { invocation: 1 } },
 //   },
 // }
 ```
 
-The metadata includes:
+#### Provider Options
 
-- `usage`: Object containing `citationTokens` and `numSearchQueries` metrics
-- `images`: Array of image URLs when `return_images` is enabled (Tier-2 users only)
+The following Agent API options are available:
 
-You can enable image responses by setting `return_images: true` in the provider options. This feature is only available to Perplexity Tier-2 users and above.
+- **instructions** _string_
 
-### PDF Support
+  Top-level instructions for the Agent API run.
 
-The Perplexity provider supports reading PDF files.
-You can pass PDF files as part of the message content using the `file` type:
+- **tools** _array_
 
-```ts
-const result = await generateText({
-  model: perplexity('sonar-pro'),
-  messages: [
-    {
-      role: 'user',
-      content: [
-        {
-          type: 'text',
-          text: 'What is this document about?',
-        },
-        {
-          type: 'file',
-          data: fs.readFileSync('./data/ai.pdf'),
-          mediaType: 'application/pdf',
-          filename: 'ai.pdf', // optional
-        },
-      ],
-    },
-  ],
-});
-```
+  Native Agent API tools and their configuration.
 
-You can also pass the URL of a PDF:
+- **models** _string[]_
 
-```ts
-{
-  type: 'file',
-  data: new URL('https://example.com/document.pdf'),
-  mediaType: 'application/pdf',
-  filename: 'document.pdf', // optional
-}
-```
+  A fallback model list for Agent API routing.
 
-The model will have access to the contents of the PDF file and
-respond to questions about it.
+- **max_steps** _number_
+
+  The maximum number of agentic steps.
+
+- **max_tool_calls** _number_
+
+  The maximum number of native tool calls. Setting this to `0` disables all
+  preset tools.
+
+- **previous_response_id** _string_
+
+  Continue a conversation from an earlier Agent API response.
+
+- **store** _boolean_
+
+  Whether the response can be retrieved later. Setting `store: false` hides it
+  from retrieval; it does not disable persistence, and the response can still
+  be used as a `previous_response_id` continuation source. See Perplexity's
+  [conversation state documentation](https://docs.perplexity.ai/docs/agent-api/conversation-state)
+  for retention behavior and account-specific zero data retention restrictions.
+
+- **language_preference** _string_
+
+  Preferred response language as an ISO 639-1 language code.
+
+- **reasoning** _object_
+
+  Reasoning configuration. `effort` supports `'minimal'`, `'low'`, `'medium'`,
+  `'high'`, and `'xhigh'`.
+
+- **skills** _array_
+
+  Agent API skill configuration.
 
 <Note>
-  For more details about Perplexity's capabilities, see the [Perplexity chat
-  completion docs](https://docs.perplexity.ai/api-reference/chat-completions).
+  See the [Perplexity Agent API
+  documentation](https://docs.perplexity.ai/docs/agent-api/quickstart) for
+  details about native request fields.
 </Note>
+
+#### Provider Metadata
+
+The response metadata includes:
+
+- `usage`: `citationTokens` (always `null` for Agent API responses) and the
+  number of search queries
+- `cost`: Token, tool, and total costs returned by Perplexity
+- `toolCalls`: Invocation counts grouped by native tool
+- `images`: Always `null`; the Agent API does not return Sonar image results
+
+### Structured Output
+
+`generateObject`, `streamObject`, and `experimental_output` send an Agent API
+JSON schema response format. JSON output without a schema is not supported.
+
+### Input Images
+
+Image URL and data inputs are converted to Agent API `input_image` parts.
+The Agent API does not provide a Sonar-equivalent PDF input field, so PDF file
+parts are not supported.
+
+### Migrating from Sonar to the Agent API
+
+<Note>
+  Version 2.1.0 is a breaking migration from Sonar Chat Completions to the
+  Agent API. It does not provide legacy model aliases, translate Sonar provider
+  options, or emit migration warnings at runtime.
+</Note>
+
+<Note type="warning">
+  Perplexity supports Sonar Chat Completions only until September 27, 2026.
+  Upgrade language-generation applications to the Agent API before that date;
+  staying on version 2.0.45 or earlier does not preserve service after the
+  Sonar shutdown.
+</Note>
+
+Replace each Sonar model ID with an Agent API preset or direct Agent API model
+ID. These presets are suggested starting points, not equivalent aliases: a
+preset can select different models and tools, so cost, latency, and output can
+change.
+
+| Sonar model           | Suggested Agent API starting point |
+| --------------------- | ---------------------------------- |
+| `sonar`               | `fast`                             |
+| `sonar-pro`           | `low`                              |
+| `sonar-reasoning`     | `medium`                           |
+| `sonar-reasoning-pro` | `medium`                           |
+| `sonar-deep-research` | `high`                             |
+
+For example:
+
+```ts
+// 2.0.45 and earlier (Sonar)
+perplexity('sonar-pro');
+
+// 2.1.0 and later (Agent API)
+perplexity('low');
+```
+
+Move Sonar search and reasoning options to their Agent API locations:
+
+| Sonar provider option                    | Agent API option                       |
+| ---------------------------------------- | -------------------------------------- |
+| Domain, recency, and date filters        | `tools[].filters` on `web_search`      |
+| `num_search_results`                     | `tools[].max_results`                  |
+| `web_search_options.search_context_size` | `tools[].search_context_size`          |
+| `web_search_options.user_location`       | `tools[].user_location`                |
+| `reasoning_effort`                       | `reasoning.effort`                     |
+| `disable_search`                         | Omit `web_search` for direct model IDs |
+
+Preset tools cannot be removed individually. Use a direct model ID without a
+`web_search` tool when search must be disabled, or set `max_tool_calls: 0` to
+disable all preset tool calls.
+
+The Agent API has no equivalent for Sonar PDF or video inputs, image or video
+results, `search_language_filter`, or `stream_mode`. Related questions require
+prompting or structured output. Remove these options during migration.
+
+Language requests now use `/v1/agent`. Custom `baseURL` proxies must route that
+path. Raw responses and streams use the Agent API's typed output and SSE event
+formats, and Perplexity provider metadata, usage, cost, and source identifiers
+can differ. The embeddings API is unchanged.
+
+For PDF inputs, extract the document text before sending it to the Agent API,
+or choose another provider that supports PDF input. Move image/video retrieval
+and language-filtered search to a separate service if your application requires
+those features. Rework consumers of raw Sonar stream events for typed Agent
+events. See Perplexity's [migration
+guide](https://docs.perplexity.ai/docs/agent-api/migrate-from-sonar/how-to)
+for the full API-level comparison.
 
 ## Model Capabilities
 
-| Model                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `sonar-deep-research` | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-reasoning-pro` | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-pro`           | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar`               | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model    | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
+| -------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `fast`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `low`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `medium` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `high`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `xhigh`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   Please see the [Perplexity docs](https://docs.perplexity.ai) for detailed API
@@ -72368,6 +72605,7 @@ try {
 | [Groq](/providers/ai-sdk-providers/groq#transcription-models)                   | `whisper-large-v3-turbo` |
 | [Groq](/providers/ai-sdk-providers/groq#transcription-models)                   | `whisper-large-v3`       |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)          | `whisper-1`              |
+| [Azure Speech](/providers/ai-sdk-providers/azure#mai-transcribe-2)              | `mai-transcribe-2`       |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)          | `gpt-4o-transcribe`      |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)          | `gpt-4o-mini-transcribe` |
 | [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                | `machine`                |
@@ -87916,6 +88154,13 @@ You can use the following optional settings to customize the OpenAI provider ins
   This option is useful for compatibility with certain Azure OpenAI models or deployments
   that require the legacy endpoint format.
 
+- **speechBaseURL** _string_
+
+  URL prefix for Azure Speech transcription requests (MAI-Transcribe-2), for example
+  a regional endpoint such as `https://eastus.api.cognitive.microsoft.com`.
+  Defaults to `https://{resourceName}.cognitiveservices.azure.com`.
+  Speech requests do not use `baseURL` or `apiVersion`.
+
 ## Language Models
 
 The Azure OpenAI provider instance is a function that you can invoke to create a language model:
@@ -88879,13 +89124,112 @@ Azure OpenAI supports DALL-E 2 and DALL-E 3 models through deployments. The capa
 
 ## Transcription Models
 
-You can create models that call the Azure OpenAI transcription API using the `.transcription()` factory method.
+You can create models that call the Azure OpenAI or Azure Speech transcription API using the `.transcription()` factory method.
 
 The first argument is the model id e.g. `whisper-1`.
 
 ```ts
 const model = azure.transcription('whisper-1');
 ```
+
+### MAI-Transcribe-2
+
+MAI-Transcribe-2 is a multilingual speech-to-text model from Microsoft AI, served through Azure.
+`azure.transcription('mai-transcribe-2')` uses the Azure Speech API.
+The model ID is matched case-insensitively and sent to Azure as `MAI-Transcribe-2`.
+All other IDs use the OpenAI API by default, including custom deployment names.
+
+```ts
+import { azure, type AzureTranscriptionModelOptions } from '@ai-sdk/azure';
+import { experimental_transcribe as transcribe } from 'ai';
+import { readFile } from 'fs/promises';
+
+const result = await transcribe({
+  model: azure.transcription('mai-transcribe-2'),
+  audio: await readFile('audio.wav'),
+  providerOptions: {
+    azure: {
+      timestamps: 'word',
+      diarization: { enabled: true },
+      transcribeStyle: 'clean',
+    } satisfies AzureTranscriptionModelOptions,
+  },
+});
+```
+
+MAI-Transcribe-2 requires a Microsoft Foundry (Speech) resource in a region where it is available:
+`centralindia`, `eastus`, `northeurope`, `southeastasia`, `westus`, or `westus2`
+(see [Speech service regions](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/regions?tabs=llmspeech)).
+Resources in other regions reject the request.
+Set `AZURE_RESOURCE_NAME` and `AZURE_API_KEY` to that resource's name and key,
+or pass `resourceName` and `apiKey` to `createAzure`. `tokenProvider`, custom headers,
+and custom fetch are also supported. Keys are sent as `Ocp-Apim-Subscription-Key`.
+
+Speech requests use `https://{resourceName}.cognitiveservices.azure.com/speechtotext/transcriptions:transcribe`
+with API version `2025-10-15`. Use `speechBaseURL` to supply a different Speech URL prefix
+(without `/speechtotext/transcriptions:transcribe`), for example a regional endpoint:
+
+```ts
+import { createAzure } from '@ai-sdk/azure';
+
+const azure = createAzure({
+  speechBaseURL: 'https://eastus.api.cognitive.microsoft.com',
+  apiKey: process.env.AZURE_SPEECH_API_KEY,
+});
+```
+
+Speech requests do not use `baseURL`, `apiVersion`, or `useDeploymentBasedUrls`;
+those settings only apply to Azure OpenAI models.
+
+The following options are available through `providerOptions.azure`:
+
+- **api** _'openai' | 'speech'_
+  Overrides model-based API selection for this request.
+  Set `openai` for an OpenAI deployment named `mai-transcribe-2`, or `speech` to
+  send another model ID to Speech. Other Speech model IDs are sent unchanged.
+
+- **timestamps** _'word' | 'segment' | 'none'_
+  Timing granularity. The AI SDK defaults to `segment` so that results include
+  timed segments (Azure's own default is `none`). `segment` returns one segment
+  per sentence or speaker turn, `word` additionally returns word timing in provider
+  metadata, and `none` returns a single segment that spans the whole audio.
+
+- **transcribeStyle** _'verbatim' | 'clean'_
+  `verbatim` keeps fillers and false starts, `clean` removes them. Defaults to `verbatim`.
+
+- **locales** _string[]_
+  Exactly one language code, such as `['en']`. This is a strong hint; omit it for
+  automatic language detection and code switching.
+
+- **diarization** _object_
+  Set `enabled` to `true` to identify speakers. Speaker IDs are returned in
+  provider metadata. `maxSpeakers` is not supported by MAI-Transcribe-2.
+
+- **phraseList** _object_
+  Set `phrases` to a list of names and domain terms to bias recognition toward them.
+
+Explicit `api` takes precedence over the model ID. Existing OpenAI transcription
+options remain under `providerOptions.openai`. Speech-only Azure options produce
+warnings when used with the OpenAI API. Unknown or unsupported `providerOptions.azure`
+keys (for example `diarization.maxSpeakers`) are rejected before the request is sent.
+
+Results include transcript text, timed segments, duration, and an ISO-639-1
+language code when the reported phrase locales identify one language. Mixed-language
+results, and languages without an ISO-639-1 code such as Filipino (`fil`) or
+Cantonese (`yue`), leave `language` undefined. Speaker IDs, exact locales, and word
+timing are preserved in `providerMetadata.azure.phrases`; use the exported
+`AzureTranscriptionProviderMetadata` type to access them. Phrase timing is in
+milliseconds in metadata and seconds in normalized `segments`.
+
+MAI-Transcribe-2 is a file transcription model: it accepts WAV, MP3, or FLAC files
+shorter than 2 hours and smaller than 250 MB, and does not support streaming
+transcription. The model is in public preview. See
+[Azure's MAI-Transcribe guide](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/mai-transcribe)
+for supported languages and diarization limits.
+
+AI Gateway forwards these provider options, including `azure.api`.
+
+### OpenAI transcription
 
 <Note>
   If you encounter a "DeploymentNotFound" error with transcription models,
@@ -88952,6 +89296,7 @@ The following provider options are available:
 | `whisper-1`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-4o-mini-transcribe` | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
 | `gpt-4o-transcribe`      | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| `mai-transcribe-2`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 ## Speech Models
 
@@ -89208,9 +89553,10 @@ const result = streamText({
 });
 ```
 
-For `claude-opus-5-5` and `claude-fable-5-1`, the default `"auto"` mode uses
-native structured outputs through `output_config.format`. These models reject
-forced tool use, so the `"jsonTool"` mode cannot be used with them. If you
+For `claude-sonnet-5-5`, `claude-opus-5-5`, and `claude-fable-5-1`, the
+default `"auto"` mode uses native structured outputs through
+`output_config.format`. These models reject forced tool use, so the
+`"jsonTool"` mode cannot be used with them. If you
 request `"jsonTool"` anyway, the provider falls back to `"outputFormat"` and
 emits a warning. Likewise, a `required` or named `toolChoice` is downgraded to
 `auto` with a warning; instruct the model to use the tool in your prompt and
@@ -89218,7 +89564,7 @@ verify that a tool call was made.
 
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, `claude-sonnet-5`, and `claude-sonnet-5-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
 
@@ -89228,6 +89574,16 @@ On `claude-opus-5-5`, thinking is always adaptive and cannot be disabled, so
 carrying over the setting you used on `claude-opus-5`. Set `maxOutputTokens`
 with room for thinking as well as the reply; thinking counts toward the limit
 even when its content is not returned.
+
+On `claude-sonnet-5-5`, thinking cannot be turned off either, and the API
+default effort is `high`. Its effort levels are not equivalent to those of
+`claude-sonnet-5`, so test several levels rather than carrying over your
+current setting. For agentic coding and other multi-step tool use, start at
+`medium` for well-specified tasks and move to `high` for harder ones. The
+lowest thinking setting, [`between_tools`](#between-tools-thinking), is only
+accepted at `low`, `medium`, and `high` effort. When you combine it with
+`effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high`
+and emits a warning.
 
 ```ts highlight="8-10"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -89332,6 +89688,8 @@ The `inferenceGeo` option accepts `'us'` (US-only infrastructure) or `'global'` 
 ### Safety Classifiers and Fallbacks
 
 Claude Fable 5 has safeguards that limit its performance in certain areas like cybersecurity, biology, and chemistry, and automated safety checks are run on every request.
+
+Claude Sonnet 5.5 also has safety classifiers enabled, including for cybersecurity, biology, and reasoning extraction. Requests that ask the model to reproduce its internal reasoning in the response text can be declined with the `reasoning_extraction` category; use `thinking: { type: 'adaptive', display: 'summarized' }` and read the reasoning parts instead.
 
 When one of these checks blocks a request, the API does not answer it. Instead it returns a classifier block: a `200` response with a `refusal` stop reason and an optional `stop_details` object describing the category that triggered the block. The AI SDK surfaces this as a `content-filter` finish reason, with the details available on `providerMetadata.anthropic.stopDetails`.
 
@@ -89450,13 +89808,19 @@ const { text } = await generateText({
 
 ##### Adaptive-Only Models
 
-`claude-opus-5-5`, `claude-fable-5`, and `claude-fable-5-1` always run adaptive
-thinking. The API rejects `thinking: { type: 'disabled' }` and budget-based
-`thinking: { type: 'enabled' }` for these models. To keep existing code working,
-the provider:
+`claude-sonnet-5-5`, `claude-opus-5-5`, `claude-fable-5`, and
+`claude-fable-5-1` always run adaptive thinking. The API rejects
+`thinking: { type: 'disabled' }` and budget-based
+`thinking: { type: 'enabled' }` for these models. To keep existing code
+working, the provider:
 
 - removes `thinking: { type: 'disabled' }` and emits a warning,
 - converts `thinking: { type: 'enabled', budgetTokens }` to `{ type: 'adaptive' }` and emits a warning.
+
+On `claude-sonnet-5-5`, which supports
+[`between_tools` thinking](#between-tools-thinking), the provider instead
+replaces `thinking: { type: 'disabled' }` with `thinking: { type: 'between_tools' }`
+and emits a warning.
 
 Use `effort` to control how much these models think. On `claude-opus-5-5`, set
 `effort: 'low'` when time to first token matters, and move to `medium` if
@@ -89481,6 +89845,42 @@ const { text } = await generateText({
   assuming the first part is text. Under the default `display: 'omitted'`
   setting, thinking blocks are returned with empty text.
 </Note>
+
+##### Between-Tools Thinking
+
+`claude-sonnet-5-5` supports `thinking: { type: 'between_tools' }`, its lowest
+thinking setting. The model does no upfront thinking, but the short progress
+notes it writes between tool calls are still returned as thinking blocks, each
+with a short summary. They are available as reasoning parts and are sent back
+unchanged on the next step. `between_tools` accepts no other thinking options
+(such as `display` or `blockBinding`) and is only accepted at `low`, `medium`,
+and `high` effort. Per-message effort changes via
+[mid-conversation system messages](#mid-conversation-system-controls) are not
+supported with `between_tools`.
+
+```ts highlight="16-17"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { generateText, stepCountIs, tool } from 'ai';
+import { z } from 'zod';
+
+const { text, steps } = await generateText({
+  model: anthropic('claude-sonnet-5-5'),
+  stopWhen: stepCountIs(5),
+  tools: {
+    weather: tool({
+      inputSchema: z.object({ city: z.string() }),
+      execute: async ({ city }) => ({ city, temperature: 72 }),
+    }),
+  },
+  providerOptions: {
+    anthropic: {
+      thinking: { type: 'between_tools' },
+      effort: 'low',
+    } satisfies AnthropicLanguageModelOptions,
+  },
+  prompt: 'Compare the weather in San Francisco and New York.',
+});
+```
 
 ##### Thinking Display (Opus 4.7+)
 
@@ -89509,11 +89909,11 @@ console.log(text);
 
 ##### Thinking Updates
 
-Use `display: 'updates'` with `claude-opus-5-5` or `claude-fable-5-1` to stream
-thinking summaries between tool calls. These models return progress notes
-between tool calls as thinking blocks rather than text, so without this setting
-a long tool-calling turn can look silent. The provider adds the required
-`thinking-display-updates-2026-08-18` beta header automatically:
+Use `display: 'updates'` with `claude-sonnet-5-5`, `claude-opus-5-5`, or
+`claude-fable-5-1` to stream thinking summaries between tool calls. These models
+return progress notes between tool calls as thinking blocks rather than text, so
+without this setting a long tool-calling turn can look silent. The provider adds
+the required `thinking-display-updates-2026-08-18` beta header automatically:
 
 ```ts highlight="12-16"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -89538,11 +89938,13 @@ const result = streamText({
 
 ##### Thinking Block Binding
 
-Fable 5.1 can recover from a thinking-block prefix mismatch by dropping the
-mismatched block. Set `blockBinding.prefixMismatchBehavior` to `drop_block`, or
-set it to `error` to reject the request. You can provide block binding by itself
-to preserve the model's default thinking mode, or combine it with adaptive
-thinking.
+Fable 5.1, Opus 5.5, and Sonnet 5.5 can recover from a thinking-block prefix
+mismatch by dropping the mismatched block. Set
+`blockBinding.prefixMismatchBehavior` to `drop_block`, or set it to `error` to
+reject the request. You can provide block binding by itself to preserve the
+model's default thinking mode, or combine it with adaptive thinking. Block
+binding is not available with `between_tools` thinking; keep the message
+history append-only instead.
 
 ```ts highlight="7-11"
 const result = await generateText({
@@ -90057,19 +90459,20 @@ const computerTool = anthropic.tools.computer_20251124({
 ```
 
 <Note>
-  Use `computerToolset_20260801` for Claude Opus 5.5 (required), Opus 5, Sonnet
-  5, Fable 5, Fable 5.1, and Opus 4.8. Use `computer_20251124` for Claude Opus
-  4.5 through Opus 4.7, which support the zoom action. Use `computer_20250124`
-  for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4, Opus 4, and Sonnet 3.7.
+  Use `computerToolset_20260801` for Claude Sonnet 5.5 and Opus 5.5 (required),
+  Opus 5, Sonnet 5, Fable 5, Fable 5.1, and Opus 4.8. Use `computer_20251124`
+  for Claude Opus 4.5 through Opus 4.7, which support the zoom action. Use
+  `computer_20250124` for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4, Opus
+  4, and Sonnet 3.7.
 </Note>
 
 #### Computer Toolset
 
 Newer models use the computer toolset instead of a versioned computer tool.
-`claude-opus-5-5` accepts computer use only through the toolset and rejects the
-older `computer_*` tool types with a 400. The toolset does not require a beta
-header and has no display size parameters: coordinates are always in the pixel
-space of the screenshots you return. Zoom is enabled by default, and Claude can
+`claude-sonnet-5-5` and `claude-opus-5-5` accept computer use only through the
+toolset and reject the older `computer_*` tool types with a 400. The toolset
+does not require a beta header and has no display size parameters: coordinates
+are always in the pixel space of the screenshots you return. Zoom is enabled by default, and Claude can
 return several actions in one turn, each as its own tool call.
 
 The API returns each action as a separate `tool_use` block with
@@ -90395,10 +90798,10 @@ This sends `tool_reference` blocks to Anthropic, which loads the corresponding d
 
 ### Mid-Conversation System Controls
 
-With `claude-opus-5-5` and `claude-fable-5-1`, use an empty system message to
-change effort from the next user turn. A separate system message containing text
-can provide a turn-scoped reminder with `clearAt: 'next_user_message'`: its text
-applies until the next user message. Keep the reminder after a user turn and
+With `claude-sonnet-5-5`, `claude-opus-5-5`, and `claude-fable-5-1`, use an
+empty system message to change effort from the next user turn. A separate
+system message containing text can provide a turn-scoped reminder with
+`clearAt: 'next_user_message'`: its text applies until the next user message. Keep the reminder after a user turn and
 before an assistant turn, or at the end of the messages array.
 The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
@@ -90761,6 +91164,18 @@ In this flow:
   `code_execution_20260120` or `code_execution_20250825` tool.
 </Note>
 
+#### Pruning Programmatic Tool History
+
+When pruning removes a code execution call but keeps a tool call that references
+it through `caller.toolId`, the provider omits the dangling caller metadata from
+history before a subsequent user message and emits a warning. The retained tool
+calls and results are still sent to Anthropic; the removed code execution history
+is not restored.
+
+Tool-result messages do not end a turn. Caller metadata in an active tool
+continuation is preserved, so keep the source code execution call when returning
+programmatic tool results.
+
 #### Container Persistence
 
 When using programmatic tool calling across multiple steps, you need to preserve the container ID between steps using `prepareStep`. You can use the `forwardAnthropicContainerIdFromLastStep` helper function to do this automatically. The container ID is available in `providerMetadata.anthropic.container.id` after each step completes.
@@ -90908,6 +91323,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 | `claude-fable-5-1`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-5-5`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-5`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `claude-sonnet-5-5` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-sonnet-5`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-fable-5`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `claude-opus-4-8`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -92892,6 +93308,7 @@ const result = await generateText({
 
 Anthropic has reasoning support for Claude 3.7 and Claude 4 models on Bedrock, including:
 
+- `us.anthropic.claude-sonnet-5-5`
 - `us.anthropic.claude-sonnet-5`
 - `us.anthropic.claude-fable-5`
 - `us.anthropic.claude-opus-4-8`
@@ -92937,6 +93354,7 @@ on how to integrate reasoning into your chatbot.
 
 | Model                                          | Image Input         | Object Generation   | Tool Usage          | Computer Use        | Reasoning           |
 | ---------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `us.anthropic.claude-sonnet-5-5`               | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `us.anthropic.claude-sonnet-5`                 | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `us.anthropic.claude-fable-5`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `us.anthropic.claude-opus-4-8`                 | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -106290,12 +106708,14 @@ console.log('Elapsed:', metadata?.elapsed);
 
 ---
 title: Perplexity
-description: Learn how to use Perplexity's Sonar API with the AI SDK.
+description: Learn how to use Perplexity's Agent API with the AI SDK.
 ---
 
 # Perplexity Provider
 
-The [Perplexity](https://sonar.perplexity.ai) provider offers access to Sonar API - a language model that uniquely combines real-time web search with natural language processing. Each response is grounded in current web data and includes detailed citations, making it ideal for research, fact-checking, and obtaining up-to-date information.
+The [Perplexity](https://www.perplexity.ai) provider offers access to the
+[Agent API](https://docs.perplexity.ai/docs/agent-api/quickstart). The Agent API
+can route across models, search the web, call tools, and return cited answers.
 
 API keys can be obtained from the [Perplexity Platform](https://docs.perplexity.ai).
 
@@ -106366,10 +106786,19 @@ import { perplexity } from '@ai-sdk/perplexity';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
 });
 ```
+
+The Agent API provides the `fast`, `low`, `medium`, `high`, and `xhigh`
+presets. You can also pass an Agent API model ID directly, such as
+`perplexity/sonar`.
+
+Starting with version 3.1.0, language generation uses the Agent API
+exclusively. Legacy Sonar model IDs and provider options are not mapped; see
+[Migrating from Sonar to the Agent API](#migrating-from-sonar-to-the-agent-api)
+before upgrading.
 
 ### Sources
 
@@ -106380,27 +106809,101 @@ import { perplexity } from '@ai-sdk/perplexity';
 import { generateText } from 'ai';
 
 const { text, sources } = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
 });
 
 console.log(sources);
 ```
 
-### Provider Options & Metadata
+### Agent Tools
+
+Pass native Agent API tools through `providerOptions.perplexity.tools`:
+
+```ts
+import {
+  perplexity,
+  type PerplexityLanguageModelOptions,
+} from '@ai-sdk/perplexity';
+import { generateText } from 'ai';
+
+const { text, sources } = await generateText({
+  model: perplexity('low'),
+  prompt: 'Summarize recent US federal AI policy from official sources.',
+  providerOptions: {
+    perplexity: {
+      tools: [
+        {
+          type: 'web_search',
+          filters: {
+            search_domain_filter: [
+              'whitehouse.gov',
+              'congress.gov',
+              'federalregister.gov',
+            ],
+            search_recency_filter: 'month',
+          },
+          max_results: 10,
+          search_context_size: 'medium',
+        },
+      ],
+    } satisfies PerplexityLanguageModelOptions,
+  },
+});
+```
+
+Supported native tools are `web_search`, `fetch_url`, `people_search`,
+`finance_search`, `sandbox`, `mcp`, and `connector`. Agent API presets include
+preconfigured tools that remain enabled; the `tools` option can add explicit
+tools or supply tools when using a direct model ID.
+
+Search and fetch results are exposed as AI SDK sources. Other native tool traces,
+including finance, sandbox, and MCP results, are available in `response.body`
+and raw stream chunks (`includeRawChunks: true`). They are not exposed as
+AI SDK client tool calls. Accounts with zero data retention may reject
+file-capable tools such as `finance_search` and `sandbox`.
+
+AI SDK function tools can be passed through the top-level `tools` option:
+
+```ts
+import { perplexity } from '@ai-sdk/perplexity';
+import { generateText, tool } from 'ai';
+import { z } from 'zod';
+
+const result = await generateText({
+  model: perplexity('low'),
+  prompt: 'What is the weather in San Francisco?',
+  tools: {
+    weather: tool({
+      description: 'Get the weather for a city',
+      inputSchema: z.object({ city: z.string() }),
+      execute: async ({ city }) => ({ city, temperature: 18 }),
+    }),
+  },
+});
+```
+
+### Provider Options and Metadata
 
 The Perplexity provider includes additional metadata in the response through `providerMetadata`.
 Additional configuration options are available through `providerOptions`.
 
 ```ts
+import {
+  perplexity,
+  type PerplexityLanguageModelOptions,
+} from '@ai-sdk/perplexity';
+import { generateText } from 'ai';
+
 const result = await generateText({
-  model: perplexity('sonar-pro'),
+  model: perplexity('low'),
   prompt: 'What are the latest developments in quantum computing?',
   providerOptions: {
     perplexity: {
-      return_images: true, // Enable image responses (Tier-2 Perplexity users only)
-      search_recency_filter: 'week', // Filter search results by recency
-    },
+      max_steps: 5,
+      store: true,
+      reasoning: { effort: 'low' },
+    } satisfies PerplexityLanguageModelOptions,
   },
 });
 
@@ -106408,86 +106911,160 @@ console.log(result.providerMetadata);
 // Example output:
 // {
 //   perplexity: {
-//     usage: { citationTokens: 5286, numSearchQueries: 1 },
-//     images: [
-//       { imageUrl: "https://example.com/image1.jpg", originUrl: "https://elsewhere.com/page1", height: 1280, width: 720 },
-//       { imageUrl: "https://example.com/image2.jpg", originUrl: "https://elsewhere.com/page2", height: 1280, width: 720 }
-//     ]
+//     usage: { citationTokens: null, numSearchQueries: 1 },
+//     images: null,
+//     cost: { totalCost: 0.006, currency: 'USD', ... },
+//     toolCalls: { search_web: { invocation: 1 } },
 //   },
 // }
 ```
 
 #### Provider Options
 
-The following provider-specific options are available:
+The following Agent API options are available:
 
-- **return_images** _boolean_
+- **instructions** _string_
 
-  Enable image responses. When set to `true`, the response may include relevant images. This feature is only available to Perplexity Tier-2 users and above.
+  Top-level instructions for the Agent API run.
 
-- **search_recency_filter** _string_
+- **tools** _array_
 
-  Filter search results by recency. Possible values: `'hour'`, `'day'`, `'week'`, `'month'`. If not specified, defaults to all time.
+  Native Agent API tools and their configuration.
+
+- **models** _string[]_
+
+  A fallback model list for Agent API routing.
+
+- **max_steps** _number_
+
+  The maximum number of agentic steps.
+
+- **max_tool_calls** _number_
+
+  The maximum number of native tool calls. Setting this to `0` disables all
+  preset tools.
+
+- **previous_response_id** _string_
+
+  Continue a conversation from an earlier Agent API response.
+
+- **store** _boolean_
+
+  Whether the response can be retrieved later. Setting `store: false` hides it
+  from retrieval; it does not disable persistence, and the response can still
+  be used as a `previous_response_id` continuation source. See Perplexity's
+  [conversation state documentation](https://docs.perplexity.ai/docs/agent-api/conversation-state)
+  for retention behavior and account-specific zero data retention restrictions.
+
+- **language_preference** _string_
+
+  Preferred response language as an ISO 639-1 language code.
+
+- **reasoning** _object_
+
+  Reasoning configuration. `effort` supports `'minimal'`, `'low'`, `'medium'`,
+  `'high'`, and `'xhigh'`.
+
+- **skills** _array_
+
+  Agent API skill configuration.
 
 <Note>
-  Any other [Perplexity API
-  parameters](https://docs.perplexity.ai/api-reference/chat-completions) can
-  also be passed through `providerOptions.perplexity`.
+  See the [Perplexity Agent API
+  documentation](https://docs.perplexity.ai/docs/agent-api/quickstart) for
+  details about native request fields.
 </Note>
 
 #### Provider Metadata
 
 The response metadata includes:
 
-- `usage`: Object containing `citationTokens` and `numSearchQueries` metrics
-- `images`: Array of image objects when `return_images` is enabled (Tier-2 users only). Each image contains `imageUrl`, `originUrl`, `height`, and `width`.
+- `usage`: `citationTokens` (always `null` for Agent API responses) and the
+  number of search queries
+- `cost`: Token, tool, and total costs returned by Perplexity
+- `toolCalls`: Invocation counts grouped by native tool
+- `images`: Always `null`; the Agent API does not return Sonar image results
 
-### PDF Support
+### Structured Output
 
-The Perplexity provider supports reading PDF files.
-You can pass PDF files as part of the message content using the `file` type:
+`Output.object` and `Output.array` send an Agent API JSON schema response
+format. JSON output without a schema is not supported.
 
-```ts
-const result = await generateText({
-  model: perplexity('sonar-pro'),
-  messages: [
-    {
-      role: 'user',
-      content: [
-        {
-          type: 'text',
-          text: 'What is this document about?',
-        },
-        {
-          type: 'file',
-          data: fs.readFileSync('./data/ai.pdf'),
-          mediaType: 'application/pdf',
-          filename: 'ai.pdf', // optional
-        },
-      ],
-    },
-  ],
-});
-```
+### Input Images
 
-You can also pass the URL of a PDF:
+Image URL and data inputs are converted to Agent API `input_image` parts.
+The Agent API does not provide a Sonar-equivalent PDF input field, so PDF file
+parts are not supported.
 
-```ts
-{
-  type: 'file',
-  data: new URL('https://example.com/document.pdf'),
-  mediaType: 'application/pdf',
-  filename: 'document.pdf', // optional
-}
-```
-
-The model will have access to the contents of the PDF file and
-respond to questions about it.
+### Migrating from Sonar to the Agent API
 
 <Note>
-  For more details about Perplexity's capabilities, see the [Perplexity chat
-  completion docs](https://docs.perplexity.ai/api-reference/chat-completions).
+  Version 3.1.0 is a breaking migration from Sonar Chat Completions to the
+  Agent API. It does not provide legacy model aliases, translate Sonar provider
+  options, or emit migration warnings at runtime.
 </Note>
+
+<Note type="warning">
+  Perplexity supports Sonar Chat Completions only until September 27, 2026.
+  Upgrade language-generation applications to the Agent API before that date;
+  staying on version 3.0.63 or earlier does not preserve service after the
+  Sonar shutdown.
+</Note>
+
+Replace each Sonar model ID with an Agent API preset or direct Agent API model
+ID. These presets are suggested starting points, not equivalent aliases: a
+preset can select different models and tools, so cost, latency, and output can
+change.
+
+| Sonar model           | Suggested Agent API starting point |
+| --------------------- | ---------------------------------- |
+| `sonar`               | `fast`                             |
+| `sonar-pro`           | `low`                              |
+| `sonar-reasoning`     | `medium`                           |
+| `sonar-reasoning-pro` | `medium`                           |
+| `sonar-deep-research` | `high`                             |
+
+For example:
+
+```ts
+// 3.0.63 and earlier (Sonar)
+perplexity('sonar-pro');
+
+// 3.1.0 and later (Agent API)
+perplexity('low');
+```
+
+Move Sonar search and reasoning options to their Agent API locations:
+
+| Sonar provider option                    | Agent API option                       |
+| ---------------------------------------- | -------------------------------------- |
+| Domain, recency, and date filters        | `tools[].filters` on `web_search`      |
+| `num_search_results`                     | `tools[].max_results`                  |
+| `web_search_options.search_context_size` | `tools[].search_context_size`          |
+| `web_search_options.user_location`       | `tools[].user_location`                |
+| `reasoning_effort`                       | `reasoning.effort`                     |
+| `disable_search`                         | Omit `web_search` for direct model IDs |
+
+Preset tools cannot be removed individually. Use a direct model ID without a
+`web_search` tool when search must be disabled, or set `max_tool_calls: 0` to
+disable all preset tool calls.
+
+The Agent API has no equivalent for Sonar PDF or video inputs, image or video
+results, `search_language_filter`, or `stream_mode`. Related questions require
+prompting or structured output. Remove these options during migration.
+
+Language requests now use `/v1/agent`. Custom `baseURL` proxies must route that
+path. Raw responses and streams use the Agent API's typed output and SSE event
+formats, and Perplexity provider metadata, usage, cost, and source identifiers
+can differ. The embeddings API is unchanged.
+
+For PDF inputs, extract the document text before sending it to the Agent API,
+or choose another provider that supports PDF input. Move image/video retrieval
+and language-filtered search to a separate service if your application requires
+those features. Rework consumers of raw Sonar stream events for typed Agent
+events. See Perplexity's [migration
+guide](https://docs.perplexity.ai/docs/agent-api/migrate-from-sonar/how-to)
+for the full API-level comparison.
 
 ## Embedding Models
 
@@ -106564,13 +107141,13 @@ The following optional provider options are available for embedding models:
 
 ## Model Capabilities
 
-| Model                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `sonar-deep-research` | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-reasoning-pro` | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-pro`           | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar`               | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model    | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
+| -------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `fast`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `low`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `medium` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `high`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `xhigh`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 
 <Note>
   Please see the [Perplexity docs](https://docs.perplexity.ai) for detailed API
@@ -109761,7 +110338,7 @@ export default function Chat() {
 }
 ```
 
-The `useChat` hook enables the streaming of chat messages from your AI provider (you will be using OpenAI via the Vercel AI Gateway), manages the state for chat input, and updates the UI automatically as new messages are received.
+The `useChat` hook enables the streaming of chat messages from your AI provider (you will be using OpenAI via the Vercel AI Gateway) and updates the UI automatically as new messages are received. Manage chat input state in your component.
 
 Run the following command to start the Next.js dev server:
 
@@ -110534,7 +111111,7 @@ With the AI SDK's unified provider interface you can easily switch to other prov
 ```tsx filename="app/api/chat/route.ts"
 // Using Anthropic
 const result = streamText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   messages: await convertToModelMessages(messages),
 });
 
@@ -111956,7 +112533,7 @@ const bashTool = anthropic.tools.bash_20250124({
   execute: async ({ command, restart }) => execSync(command).toString()
 });
 
-const textEditorTool = anthropic.tools.textEditor_20250124({
+const textEditorTool = anthropic.tools.textEditor_20250728({
   execute: async ({
     command,
     path,
@@ -113758,7 +114335,7 @@ const result = await generateText({
 
 ## Migrating from Completions API
 
-Migrating from the OpenAI Completions API (via the AI SDK) to the new Responses API is simple. To migrate, simply change your provider instance from `openai(modelId)` to `openai.responses(modelId)`:
+Migrating from the OpenAI Chat Completions API to the Responses API is simple. To select each API explicitly, change your provider instance from `openai.chat(modelId)` to `openai.responses(modelId)`. The Responses API is also the default for `openai(modelId)`:
 
 ```ts
 import { generateText } from 'ai';
@@ -114003,7 +114580,7 @@ AI SDK Core can be paired with [AI SDK UI](/docs/ai-sdk-ui/overview), another po
 
 AI SDK UI provides robust abstractions that simplify the complex tasks of managing chat streams and UI updates on the frontend, enabling you to develop dynamic AI-driven interfaces more efficiently.
 
-With four main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
+With three main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
 
 Let's explore building a chatbot with [Next.js](https://nextjs.org), the AI SDK, and Claude 3.7 Sonnet:
 
@@ -114318,7 +114895,7 @@ AI SDK Core can be paired with [AI SDK UI](/docs/ai-sdk-ui/overview), another po
 
 AI SDK UI provides robust abstractions that simplify the complex tasks of managing chat streams and UI updates on the frontend, enabling you to develop dynamic AI-driven interfaces more efficiently.
 
-With four main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
+With three main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
 
 Let's explore building a chatbot with [Next.js](https://nextjs.org), the AI SDK, and Llama 3.1 (via [DeepInfra](https://deepinfra.com)):
 
@@ -114793,7 +115370,7 @@ AI SDK Core can be paired with [AI SDK UI](/docs/ai-sdk-ui/overview), another po
 
 AI SDK UI provides robust abstractions that simplify the complex tasks of managing chat streams and UI updates on the frontend, enabling you to develop dynamic AI-driven interfaces more efficiently.
 
-With four main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
+With three main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
 
 Let's explore building a chatbot with [Next.js](https://nextjs.org), the AI SDK, and OpenAI GPT-5:
 
@@ -114995,8 +115572,10 @@ const { text } = await generateText({
 ```
 
 <Note>
-  The `reasoningEffort` parameter is only supported by o1 and has no effect on
-  other models.
+  Reasoning-effort support varies by model. The o1 model supports `low`,
+  `medium`, and `high`; see the [OpenAI provider
+  documentation](/providers/ai-sdk-providers/openai#reasoning-effort) for the
+  values supported by other models.
 </Note>
 
 ### Generating Structured Data
@@ -115107,20 +115686,37 @@ export async function POST(req: Request) {
 'use client';
 
 import { useChat } from '@ai-sdk/react';
+import { type FormEvent, useState } from 'react';
 
 export default function Page() {
-  const { messages, input, handleInputChange, handleSubmit, error } = useChat();
+  const { messages, sendMessage } = useChat();
+  const [input, setInput] = useState('');
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (input.trim()) {
+      sendMessage({ text: input });
+      setInput('');
+    }
+  }
 
   return (
     <>
       {messages.map(message => (
         <div key={message.id}>
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.content}
+          {message.parts.map((part, index) =>
+            part.type === 'text' ? <span key={index}>{part.text}</span> : null,
+          )}
         </div>
       ))}
       <form onSubmit={handleSubmit}>
-        <input name="prompt" value={input} onChange={handleInputChange} />
+        <input
+          name="prompt"
+          value={input}
+          onChange={event => setInput(event.currentTarget.value)}
+        />
         <button type="submit">Submit</button>
       </form>
     </>
@@ -115301,7 +115897,7 @@ AI SDK Core can be paired with [AI SDK UI](/docs/ai-sdk-ui/overview), another po
 
 AI SDK UI provides robust abstractions that simplify the complex tasks of managing chat streams and UI updates on the frontend, enabling you to develop dynamic AI-driven interfaces more efficiently.
 
-With four main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
+With three main hooks — [`useChat`](/docs/reference/ai-sdk-ui/use-chat), [`useCompletion`](/docs/reference/ai-sdk-ui/use-completion), and [`useObject`](/docs/reference/ai-sdk-ui/use-object) — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
 
 Let's explore building a chatbot with [Next.js](https://nextjs.org), the AI SDK, and OpenAI o3-mini:
 
@@ -115344,20 +115940,37 @@ Finally, update the root page (`app/page.tsx`) to use the `useChat` hook:
 'use client';
 
 import { useChat } from '@ai-sdk/react';
+import { type FormEvent, useState } from 'react';
 
 export default function Page() {
-  const { messages, input, handleInputChange, handleSubmit, error } = useChat();
+  const { messages, sendMessage } = useChat();
+  const [input, setInput] = useState('');
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (input.trim()) {
+      sendMessage({ text: input });
+      setInput('');
+    }
+  }
 
   return (
     <>
       {messages.map(message => (
         <div key={message.id}>
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.content}
+          {message.parts.map((part, index) =>
+            part.type === 'text' ? <span key={index}>{part.text}</span> : null,
+          )}
         </div>
       ))}
       <form onSubmit={handleSubmit}>
-        <input name="prompt" value={input} onChange={handleInputChange} />
+        <input
+          name="prompt"
+          value={input}
+          onChange={event => setInput(event.currentTarget.value)}
+        />
         <button type="submit">Submit</button>
       </form>
     </>
@@ -116974,8 +117587,8 @@ Context](/docs/ai-sdk-core/runtime-and-tool-context).
 ### Tools That Use Experimental Sandboxes
 
 Pass `experimental_sandbox` when an agent tool needs a command or code execution
-environment. The experimental sandbox is a per-call value, so provide it to `generate()`,
-`stream()`, or the agent UI stream helper that invokes the agent.
+environment. The experimental sandbox is a per-call value, so provide it to
+`generate()`, `stream()`, or the agent UI stream helper that invokes the agent.
 
 ```ts highlight="13,19-23,31"
 const agent = new ToolLoopAgent({
@@ -118963,7 +119576,7 @@ const toolApproval = opaPolicy({
 
 // 3. Pass it to generateText (or streamText / ToolLoopAgent). Everything else is normal.
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   tools: { git, bash, queryLogs },
   toolApproval,
   prompt: 'find the failing test and push the fix',
@@ -119174,7 +119787,7 @@ import { wasmPolicyClient, opaCapabilityMiddleware } from '@ai-sdk/policy-opa';
 const client = await wasmPolicyClient({ wasm });
 
 const wrappedModel = wrapLanguageModel({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   middleware: opaCapabilityMiddleware({ client, path: 'agent/tools/allowed' }),
 });
 ```
@@ -120068,7 +120681,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   instructions: 'You are a helpful assistant.',
   tools: {
     weather: tool({
@@ -120091,7 +120704,7 @@ The `model` parameter accepts two forms:
 
 ```ts
 // String — AI Gateway model ID
-new WorkflowAgent({ model: 'anthropic/claude-sonnet-5' });
+new WorkflowAgent({ model: 'anthropic/claude-sonnet-5.5' });
 
 // Provider instance
 import { openai } from '@ai-sdk/openai';
@@ -120120,7 +120733,7 @@ export async function chat(messages: UIMessage[]) {
   const modelMessages = await convertToModelMessages(messages);
 
   const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-5',
+    model: 'anthropic/claude-sonnet-5.5',
     instructions: 'You are a flight booking assistant.',
     tools: {
       searchFlights: tool({
@@ -120345,7 +120958,7 @@ the writable stream. The workflow suspends until the user approves or denies:
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   tools: {
     bookFlight: tool({
       description: 'Book a flight',
@@ -120379,7 +120992,7 @@ workflow. For tools that perform sensitive operations, configure
 
 ```ts highlight="4"
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   experimental_toolApprovalSecret: {
     environmentVariable: 'TOOL_APPROVAL_SECRET',
   },
@@ -120543,7 +121156,7 @@ current step:
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   tools: {
     shell: tool({
       description: 'Run a shell command in the sandbox.',
@@ -120578,7 +121191,7 @@ Called once before the agent loop starts. Use it to transform model, instruction
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   prepareCall: async ({ model, tools, messages }) => {
     return {
       instructions: `Current time: ${new Date().toISOString()}`,
@@ -120614,7 +121227,7 @@ Agents provide lifecycle callbacks for logging, observability, and custom teleme
 
 ```ts
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
 
   onStart({ messages }) {
     console.log(`Agent started with ${messages.length} messages`);
@@ -120699,7 +121312,7 @@ export type MyAgentUIMessage = InferWorkflowAgentUIMessage<typeof myAgent>;
 
 - const agent = new DurableAgent({
 + const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-5',
+    model: 'anthropic/claude-sonnet-5.5',
     instructions: 'You are a helpful assistant.',
     tools: { /* ... */ },
   });
@@ -120812,7 +121425,7 @@ For persistence, store `UIMessage[]` as your source of truth and call [`convertT
 
 ```diff
   const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-5',
+    model: 'anthropic/claude-sonnet-5.5',
     tools: { weather: weatherTool },
 -   experimental_context: { tenantId: 'tenant_123', apiKey: 'sk-...' },
 +   runtimeContext: { tenantId: 'tenant_123' },
@@ -124929,7 +125542,7 @@ export default function Chat() {
 }
 ```
 
-`experimental_MCPAppRenderer` renders nothing for ordinary tools. For app-backed tools, it loads the resource, creates the sandbox bridge, sends tool input and result notifications to the iframe, and forwards supported app requests through your handlers.
+For ordinary tools, `experimental_MCPAppRenderer` renders the provided `fallback` (or nothing when no fallback is provided). For app-backed tools, it loads the resource, creates the sandbox bridge, sends tool input and result notifications to the iframe, and forwards supported app requests through your handlers.
 
 ## Best Practices
 
@@ -125590,7 +126203,7 @@ When you create prompts that include tools, getting good results can be tricky a
 
 Here are a few tips to help you get the best results:
 
-1. Use a model that is strong at tool calling, such as `gpt-6-astra` or `claude-sonnet-5`. Weaker models will often struggle to call tools effectively and flawlessly.
+1. Use a model that is strong at tool calling, such as `gpt-6-astra` or `claude-sonnet-5-5`. Weaker models will often struggle to call tools effectively and flawlessly.
 1. Keep the number of tools low, e.g. to 5 or less.
 1. Keep the complexity of the tool parameters low. Complex Zod schemas with many nested and optional elements, unions, etc. can be challenging for the model to work with.
 1. Use semantically meaningful names for your tools, parameters, parameter properties, etc. The more information you pass to the model, the better it can understand what you want.
@@ -126023,7 +126636,7 @@ Many language models support an internal "reasoning" phase (sometimes also calle
 import { generateText } from 'ai';
 
 const { text, reasoning, reasoningText } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   reasoning: 'medium',
   prompt: 'How many people will live in the world in 2040?',
 });
@@ -126795,7 +127408,7 @@ with `AI_GATEWAY_API_KEY` or Vercel OIDC, then pass a Gateway model ID:
 import { experimental_evaluate } from 'ai';
 
 const result = await experimental_evaluate({
-  model: 'typesafe-ai/jev-latest',
+  model: 'typesafe-ai/jev',
   state: 'I was charged twice. Please refund the extra charge.',
   questions: {
     refund: {
@@ -126909,8 +127522,8 @@ if (result.answers.requestsRefund.probability >= 0.8) {
 The model's `supportedQuestionTypes` are checked before calling the provider.
 Any unsupported question fails the entire call with
 `Experimental_EvaluationUnsupportedQuestionTypeError`. Successful calls return
-an answer for every question; there is no partial success or automatic model
-substitution.
+an answer for every question; there is no partial success, and Core does not
+substitute models automatically.
 
 Invalid inputs throw `InvalidArgumentError`. Missing answers, mismatched answer
 types, invalid options, scores, or probabilities throw `InvalidResponseDataError`.
@@ -126929,7 +127542,10 @@ For tests, use `Experimental_EvaluationMockModelV4` from `ai/test`.
 Evaluation currently returns one complete result for one shared state. It does
 not stream answers, perform multilabel classification, or batch unrelated
 states. Run separate calls for separate states. Provider support and judgment
-quality depend on the chosen model; the SDK does not choose a model automatically.
+quality depend on the chosen model. Core does not choose another model, but a
+provider can implement routing through its provider options. For example, AI
+Gateway supports conditional evaluation fallbacks under
+`providerOptions.gateway.models`.
 
 Runnable examples are in
 [`examples/ai-functions/src/evaluate`](https://github.com/vercel/ai/tree/main/examples/ai-functions/src/evaluate),
@@ -127043,6 +127659,44 @@ const { images } = await generateImage({
   n: 10, // Will make 2 calls of 5 images each
 });
 ```
+
+### Checking Image Editing Support
+
+Image model instances can advertise whether they support reference image files
+and masks. Check these capabilities before routing an image editing request:
+
+```ts
+import { openai } from '@ai-sdk/openai';
+
+const model = openai.image('gpt-image-1');
+const needsMask = true;
+
+if ((await model.supportsFileInputs) !== true) {
+  throw new Error(
+    'The selected model does not advertise image editing support.',
+  );
+}
+
+if (needsMask && (await model.supportsMaskInputs) !== true) {
+  throw new Error('The selected model does not advertise mask support.');
+}
+```
+
+`supportsFileInputs` and `supportsMaskInputs` can be `true`, `false`, or
+`undefined` (unknown), and providers may expose any of these values
+asynchronously. Treat only `true` as confirmed support when selecting a model for an edit. File and mask
+support are separate because some models accept reference images but do not
+accept masks.
+
+These capabilities describe support for the SDK's standardized image and mask
+inputs, including the provider's request mapping. A model name that resembles a
+supported family is not sufficient evidence of support. A model may still require
+provider-specific options or impose limits on input formats and counts.
+
+The AI SDK does not automatically reject editing inputs based on these
+capabilities. Applications can decide whether to reject the request, ask the
+user to choose another model, or use a fallback when support is false or
+unknown.
 
 ### Providing a Seed
 
@@ -127927,6 +128581,7 @@ try {
 | [Groq](/providers/ai-sdk-providers/groq#transcription-models)                       | `whisper-large-v3`          |
 | [Mistral](/providers/ai-sdk-providers/mistral#transcription-models)                 | `voxtral-mini-latest`       |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `whisper-1`                 |
+| [Azure Speech](/providers/ai-sdk-providers/azure#mai-transcribe-2)                  | `mai-transcribe-2`          |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-transcribe`         |
 | [Azure OpenAI](/providers/ai-sdk-providers/azure#transcription-models)              | `gpt-4o-mini-transcribe`    |
 | [Rev.ai](/providers/ai-sdk-providers/revai#transcription-models)                    | `machine`                   |
@@ -130255,7 +130910,7 @@ import { customProvider, gateway } from 'ai';
 export const anthropic = customProvider({
   languageModels: {
     opus: gateway('anthropic/claude-opus-5.5'),
-    sonnet: gateway('anthropic/claude-sonnet-5'),
+    sonnet: gateway('anthropic/claude-sonnet-5.5'),
     haiku: gateway('anthropic/claude-haiku-4.5'),
   },
   fallbackProvider: gateway,
@@ -130276,7 +130931,7 @@ import {
 
 export const myProvider = customProvider({
   languageModels: {
-    'text-medium': gateway('anthropic/claude-sonnet-5'),
+    'text-medium': gateway('anthropic/claude-sonnet-5.5'),
     'text-small': gateway('openai/gpt-6-luna'),
     'reasoning-medium': wrapLanguageModel({
       model: gateway('openai/gpt-6-astra'),
@@ -130330,7 +130985,7 @@ const myOpenAI = customProvider({
 // custom provider with skills interface:
 const myAnthropic = customProvider({
   languageModels: {
-    sonnet: anthropic('claude-sonnet-5'),
+    sonnet: anthropic('claude-sonnet-5-5'),
   },
   skills: anthropic.skills(),
 });
@@ -130506,7 +131161,7 @@ import { createProviderRegistry, customProvider, uploadSkill } from 'ai';
 
 const registry = createProviderRegistry({
   anthropic: customProvider({
-    languageModels: { sonnet: anthropic('claude-sonnet-5') },
+    languageModels: { sonnet: anthropic('claude-sonnet-5-5') },
     skills: anthropic.skills(),
   }),
 });
@@ -132606,8 +133261,10 @@ This distinction matters when the step includes local tool execution: the step d
 
 ## Runtime and Tool Context
 
-Lifecycle callbacks receive the full `runtimeContext` and `toolsContext` values that flow through the call.
-This makes callbacks useful for attaching application context without changing prompts or tool inputs.
+Generation and step lifecycle callbacks receive the full `runtimeContext` and
+`toolsContext` values that flow through the call. Tool-execution callbacks receive
+the scoped `toolContext` for the tool being executed. This makes callbacks useful
+for attaching application context without changing prompts or tool inputs.
 
 ```tsx highlight="8-24,26-39"
 import { generateText, tool } from 'ai';
@@ -132654,8 +133311,9 @@ const result = await generateText({
 
 <Note>
   Telemetry integrations can filter `runtimeContext` and `toolsContext` before
-  exporting them. Lifecycle callbacks receive the full context objects. Be
-  careful not to log secrets or sensitive user data from callbacks.
+  exporting them. Generation and step callbacks receive the full context
+  objects; tool-execution callbacks receive scoped tool context. Be careful not
+  to log secrets or sensitive user data from callbacks.
 </Note>
 
 ## Available Callbacks
@@ -133590,8 +134248,9 @@ The AI SDK harness abstraction lets you run established agent harnesses through 
 single AI SDK surface. A harness is a complete agent runtime, such as Claude
 Code, Codex, or Pi. It owns capabilities that are larger than a model call:
 workspace access, built-in coding tools, native session state, compaction,
-permission flows, and runtime-specific configuration. Additionally, all AI SDK
-agent harnesses operate in a sandbox, keeping the host environment safe.
+permission flows, and runtime-specific configuration. Harness adapters can run
+the runtime in a sandbox, but their execution environments differ by adapter;
+review the adapter's runtime location and security guidance before use.
 
 The AI SDK harness abstraction is separate from the provider/model abstraction.
 Providers expose models to AI SDK Core functions such as `generateText` and
@@ -133836,6 +134495,39 @@ Harness runtimes execute their built-in tools internally. For those tools,
 lifecycle after the runtime reports the result. The callbacks are still
 delivered before the tool result is published to the result stream.
 
+## Runtime Context
+
+Set `runtimeContext` on `HarnessAgent` to make application context available to
+every turn. Use `prepareCall` to replace it for each new prompt turn. The
+prepared context is available through `generate()` and `stream()` and remains
+the same during in-memory continuations with `continueGenerate()` and
+`continueStream()`. Lifecycle callbacks receive the full context, and it is
+also available on each result's `finalStep.runtimeContext`.
+
+```ts
+const agent = new HarnessAgent({
+  harness: claudeCode,
+  runtimeContext: {
+    conversationId: 'conversation-123',
+    userId: 'user-456',
+  },
+  telemetry: {
+    includeRuntimeContext: {
+      conversationId: true,
+    },
+  },
+  onEnd: ({ runtimeContext }) => {
+    console.log(runtimeContext.userId);
+  },
+});
+```
+
+Runtime context is excluded from telemetry by default. Use
+`telemetry.includeRuntimeContext` to allowlist individual top-level properties;
+only properties set to `true` are sent to telemetry integrations. Lifecycle
+callbacks and results still receive the full context, so avoid storing secrets
+that those consumers should not access.
+
 ## Generate Structured Output
 
 Set `output` when constructing `HarnessAgent` to require the same typed output
@@ -133925,7 +134617,7 @@ HTTP routes that need multi-turn continuity.
 ## Change Settings Between Turns
 
 Use `callOptionsSchema` and `prepareCall` to derive `model`, `skills`,
-`instructions`, and `tools` for each new turn. This follows the same
+`instructions`, `tools`, and `runtimeContext` for each new turn. This follows the same
 call-options pattern as `ToolLoopAgent`:
 
 ```ts
@@ -133951,6 +134643,7 @@ const agent = new HarnessAgent({
     ...call,
     model: options.useCheaperModel ? 'claude-haiku-4-5' : undefined,
     instructions: `Work as the ${options.area} specialist.`,
+    runtimeContext: { area: options.area },
     skills: [options.area === 'frontend' ? frontendSkill : backendSkill],
     tools: options.enablePolicyTool ? { getPolicy } : undefined,
   }),
@@ -134088,6 +134781,7 @@ const session = await agent.createSession({
   sandboxSession,
   // Rebind this when the suspended turn used host-only tool context:
   toolsContext,
+  runtimeContext,
 });
 
 const result = await agent.continueStream({ session });
@@ -134096,10 +134790,12 @@ const result = await agent.continueStream({ session });
 Use `continueStream()` for incremental output, or `continueGenerate()` to drain
 the continued turn and return a `GenerateTextResult`.
 
-`toolsContext` is intentionally not stored in continuation state because it can
-contain credentials or non-serializable host objects. When a suspended turn
-used static or `prepareCall`-derived tool context, pass the same per-tool map to
-`createSession` to rebind it in the process that continues the turn.
+`toolsContext` and `runtimeContext` are intentionally not stored in
+continuation state because they can contain credentials or non-serializable
+host objects. When a suspended turn used context derived by `prepareCall`,
+pass the same values to `createSession` to rebind them in the process that
+continues the turn. After a process resume without rebinding, the continuation
+uses the agent's constructor-level `runtimeContext` and `toolsContext`.
 
 ## Stop After a Harness Step
 
@@ -134179,9 +134875,10 @@ const agent = new HarnessAgent({
 ```
 
 `workDir` is optional. When provided, it must be relative to the sandbox's
-default working directory and is used as the session working directory. When
-omitted, regular sessions use the default `<harnessId>-<sessionId>` directory,
-while `onBootstrap` receives the sandbox's default working directory.
+default working directory and is used as the session working directory. Set it
+to `'.'` to use the sandbox's default working directory itself. When omitted,
+regular sessions use the default `<harnessId>-<sessionId>` directory, while
+`onBootstrap` receives the sandbox's default working directory.
 
 ## Prepare Reusable Sandboxes
 
@@ -134253,6 +134950,8 @@ supplied, their values must match.
 - `stopWhen`: condition(s) for finishing a result slice after a completed
   harness tool step that can continue into another model step.
 - `tools`: AI SDK tools executed by the host when the harness calls them.
+- `runtimeContext`: application context forwarded to lifecycle callbacks and
+  results for every turn; `prepareCall` can replace it for a new prompt turn.
 - `activeTools`: allowlist of built-in and host-executed tools the harness can
   call.
 - `inactiveTools`: denylist of built-in and host-executed tools the harness
@@ -134261,7 +134960,9 @@ supplied, their values must match.
 - `permissionMode`: built-in tool permission mode.
 - `toolApproval`: approval status map for host-executed tools.
 - `sandboxConfig`: sandbox working-directory and lifecycle hook configuration.
-- `telemetry`, `debug`, and `onLog`: observability and diagnostics.
+- `telemetry`, `debug`, and `onLog`: observability and diagnostics. Use
+  `telemetry.includeRuntimeContext` to allowlist runtime context properties for
+  telemetry.
 
 Telemetry reports each turn's resolved model, instructions, and active
 host-defined tools. Skills are adapter context and do not have a corresponding
@@ -134781,11 +135482,11 @@ The AI SDK includes the following harness adapters:
 | [Claude Code](/providers/ai-sdk-harnesses/claude-code)       | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Check />              | <Check />                    |
 | [Cline](/providers/ai-sdk-harnesses/cline)                   | Host process     | <Check />    | <Check />     | <Check />         | <Check />              | <Check />                    |
 | [Codex](/providers/ai-sdk-harnesses/codex)                   | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Cross />              | <Cross />                    |
-| [Cursor](/providers/ai-sdk-harnesses/cursor)                 | Sandbox via ACP  | <Check />    | <Check />     | <Cross />         | <Check />              | <Cross />                    |
+| [Cursor](/providers/ai-sdk-harnesses/cursor)                 | Sandbox via ACP  | <Check />    | <Check />     | <Cross />         | <Cross />              | <Cross />                    |
 | [Deep Agents](/providers/ai-sdk-harnesses/deepagents)        | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Check />              | <Check /> via auto-rejection |
 | [fx](/providers/ai-sdk-harnesses/fx)                         | Sandbox via ACP  | <Check />    | <Check />     | <Cross />         | <Check />              | <Cross />                    |
-| [GitHub Copilot](/providers/ai-sdk-harnesses/github-copilot) | Sandbox via ACP  | <Check />    | <Check />     | <Cross />         | <Check />              | <Cross />                    |
-| [Grok Build](/providers/ai-sdk-harnesses/grok-build)         | Sandbox via ACP  | <Check />    | <Check />     | <Check />         | <Check />              | <Cross />                    |
+| [GitHub Copilot](/providers/ai-sdk-harnesses/github-copilot) | Sandbox via ACP  | <Check />    | <Check />     | <Cross />         | <Cross />              | <Cross />                    |
+| [Grok Build](/providers/ai-sdk-harnesses/grok-build)         | Sandbox via ACP  | <Check />    | <Check />     | <Check />         | <Cross />              | <Cross />                    |
 | [OpenCode](/providers/ai-sdk-harnesses/opencode)             | Sandbox bridge   | <Check />    | <Check />     | <Check />         | <Check />              | <Check /> via auto-rejection |
 | [Pi](/providers/ai-sdk-harnesses/pi)                         | Host process     | <Check />    | <Check />     | <Cross />         | <Check />              | <Check />                    |
 
@@ -135665,7 +136366,7 @@ AI SDK UI is designed to help you build interactive chat, completion, and assist
 
 AI SDK UI provides robust abstractions that simplify the complex tasks of managing chat streams and UI updates on the frontend, enabling you to develop dynamic AI-driven interfaces more efficiently. With three main hooks — **`useChat`**, **`useCompletion`**, and **`useObject`** — you can incorporate real-time chat capabilities, text completions, streamed JSON, and interactive assistant features into your app.
 
-- **[`useChat`](/docs/ai-sdk-ui/chatbot)** offers real-time streaming of chat messages, abstracting state management for inputs, messages, loading, and errors, allowing for seamless integration into any UI design.
+- **[`useChat`](/docs/ai-sdk-ui/chatbot)** offers real-time streaming of chat messages and manages message, loading, and error state. Manage input state in your component for seamless integration into any UI design.
 - **[`useCompletion`](/docs/ai-sdk-ui/completion)** enables you to handle text completions in your applications, managing the prompt input and automatically updating the UI as new completions are streamed.
 - **[`useObject`](/docs/ai-sdk-ui/object-generation)** is a hook that allows you to consume streamed JSON objects, providing a simple way to handle and display structured data in your application.
 
@@ -136459,6 +137160,15 @@ With `streamText`, you can control how error messages and usage information are 
 
 By default, the error message is masked for security reasons.
 The default error message is "An error occurred."
+
+Tool execution errors marked `providerExecuted: true` are an exception. They
+bypass the UI stream's `onError` callback: strings are forwarded unchanged, and
+other error values are serialized with `JSON.stringify`. This preserves provider
+error codes when chat history is converted back into model messages, as well as
+error messages from harness runtimes. Stream errors and invalid tool calls still
+use `onError`, even for provider-executed tools. Do not rely on this callback to
+redact provider-executed tool execution errors before they reach the client.
+
 You can forward error messages or send your own error message by providing an `onError` function:
 
 ```ts filename="app/api/chat/route.ts" highlight="21-35"
@@ -136648,7 +137358,7 @@ Check out the [stream protocol guide](/docs/ai-sdk-ui/stream-protocol) for more 
 ## Reasoning
 
 Some models such as DeepSeek `deepseek-r1`
-and Anthropic `claude-sonnet-5` support reasoning tokens.
+and Anthropic `claude-sonnet-5-5` support reasoning tokens.
 These tokens are typically sent before the message content.
 You can forward them to the client with the `sendReasoning` option:
 
@@ -136710,10 +137420,12 @@ These are available as `reasoning-file` parts (`ReasoningFileUIPart`) with
 Some providers such as [Perplexity](/providers/ai-sdk-providers/perplexity#sources) and
 [Google](/providers/ai-sdk-providers/google#sources) include sources in the response.
 
-Currently sources are limited to web pages that ground the response.
-You can forward them to the client with the `sendSources` option:
+You can forward sources to the client with the `sendSources` option. This example uses the Perplexity Agent API's `fast` preset to search the web. Install `@ai-sdk/perplexity` and set `PERPLEXITY_API_KEY` in your environment:
 
-```ts filename="app/api/chat/route.ts" highlight="20"
+<InstallPackages packages="@ai-sdk/perplexity" />
+
+```ts filename="app/api/chat/route.ts" highlight="21"
+import { perplexity } from '@ai-sdk/perplexity';
 import {
   convertToModelMessages,
   createUIMessageStreamResponse,
@@ -136726,7 +137438,7 @@ export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();
 
   const result = streamText({
-    model: 'perplexity/sonar-pro',
+    model: perplexity('fast'),
     messages: await convertToModelMessages(messages),
   });
 
@@ -136752,7 +137464,7 @@ messages.map(message => (
     {message.parts
       .filter(part => part.type === 'source-url')
       .map(part => (
-        <span key={`source-${part.id}`}>
+        <span key={`source-${part.sourceId}`}>
           [
           <a href={part.url} target="_blank">
             {part.title ?? new URL(part.url).hostname}
@@ -136765,8 +137477,8 @@ messages.map(message => (
     {message.parts
       .filter(part => part.type === 'source-document')
       .map(part => (
-        <span key={`source-${part.id}`}>
-          [<span>{part.title ?? `Document ${part.id}`}</span>]
+        <span key={`source-${part.sourceId}`}>
+          [<span>{part.title ?? `Document ${part.sourceId}`}</span>]
         </span>
       ))}
   </div>
@@ -137175,6 +137887,14 @@ export async function loadChat(id: string): Promise<UIMessage[]> {
 ## Validating messages on the server
 
 When processing messages on the server that contain tool calls, custom metadata, or data parts, you should validate them using `validateUIMessages` before sending them to the model.
+
+### Persisting streaming tool input
+
+An `input-streaming` tool part includes `rawInput` while tool arguments are
+still arriving. Persist the complete UI message, including this field, so a
+resumed stream can append later tool-input deltas to the exact text received
+before the interruption. AI SDK updates `rawInput` as each delta arrives and
+removes it when the tool input becomes available.
 
 ### Migrating deprecated tool `rawInput`
 
@@ -137814,6 +138534,10 @@ export function Chat({
 
 When you enable `resume`, the `useChat` hook makes a `GET` request to `/api/chat/[id]/stream` on mount to check for and resume any active streams.
 
+The default transport URL-encodes the chat ID as a single path segment. IDs equal
+to `.` or `..` are rejected with an `InvalidArgumentError` because URL parsers
+interpret them as path traversal segments.
+
 Let's start by creating the POST handler to create the resumable stream.
 
 ### 2. Create the POST handler
@@ -137944,6 +138668,9 @@ The diagram above shows the complete lifecycle of a resumable stream:
 
 By default, the `useChat` hook makes a GET request to `/api/chat/[id]/stream` when resuming. Customize this endpoint, credentials, and headers, using the `prepareReconnectToStreamRequest` option in `DefaultChatTransport`:
 
+The callback receives the original, unencoded ID. Its returned `api` URL is used
+verbatim, so encode and validate any ID you include in a custom URL yourself.
+
 ```tsx filename="app/chat/[chatId]/chat.tsx"
 import { useChat } from '@ai-sdk/react';
 import { DefaultChatTransport } from 'ai';
@@ -137957,10 +138684,10 @@ export function Chat({ chatData, resume }) {
       // Customize reconnect settings (optional)
       prepareReconnectToStreamRequest: ({ id }) => {
         return {
-          api: `/api/chat/${id}/stream`, // Default pattern
+          api: `/api/chat/${encodeURIComponent(id)}/stream`,
           // Or use a different pattern:
-          // api: `/api/streams/${id}/resume`,
-          // api: `/api/resume-chat?id=${id}`,
+          // api: `/api/streams/${encodeURIComponent(id)}/resume`,
+          // api: `/api/resume-chat?id=${encodeURIComponent(id)}`,
           credentials: 'include', // Include cookies/auth
           headers: {
             Authorization: 'Bearer token',
@@ -138911,7 +139638,16 @@ export async function POST(req: Request) {
 Language models can make errors when calling tools.
 By default, these errors are masked for security reasons, and show up as "An error occurred" in the UI.
 
-To surface the errors, you can use the `onError` function when calling `toUIMessageResponse`.
+Tool execution errors marked `providerExecuted: true` bypass this masking and the
+UI stream's `onError` callback. String errors pass through unchanged; other error
+values are serialized with `JSON.stringify`. The original error data is needed
+when converting persisted UI messages back into model messages, for example to
+preserve Anthropic tool error codes. Harness runtime tool errors also retain
+their original messages. The callback still handles invalid tool calls and
+stream errors, regardless of whether a tool is provider-executed.
+
+To customize masked errors, pass `onError` to `toUIMessageStream`. This callback
+does not redact provider-executed tool execution errors sent to the client.
 
 ```tsx
 export function errorHandler(error: unknown) {
@@ -139580,7 +140316,10 @@ description: Learn how to use the useObject hook.
 
 # Object Generation
 
-<Note>`useObject` is only available in React, Svelte, and Vue.</Note>
+<Note>
+  `useObject` is available in React, Svelte, Vue, and the SolidJS community
+  integration. Angular provides the equivalent `StructuredObject` service.
+</Note>
 
 The [`useObject`](/docs/reference/ai-sdk-ui/use-object) hook allows you to create interfaces that represent a structured JSON object that is being streamed.
 
@@ -141051,7 +141790,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   instructions: 'You are a helpful assistant.',
   tools: {
     weather: tool({
@@ -141105,7 +141844,7 @@ To see `WorkflowAgent` in action, check out [these examples](#examples).
       type: 'LanguageModel',
       isRequired: true,
       description:
-        "The language model to use. A string compatible with the Vercel AI Gateway (e.g., 'anthropic/claude-sonnet-5') or a provider instance (e.g., `openai('gpt-6-astra')`).",
+        "The language model to use. A string compatible with the Vercel AI Gateway (e.g., 'anthropic/claude-sonnet-5.5') or a provider instance (e.g., `openai('gpt-6-astra')`).",
     },
     {
       name: 'instructions',
@@ -141842,7 +142581,7 @@ Infers the UI message type for a `WorkflowAgent` instance. Optionally accepts a 
 import { WorkflowAgent, InferWorkflowAgentUIMessage } from '@ai-sdk/workflow';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   tools: { weather: weatherTool },
 });
 
@@ -141869,7 +142608,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   instructions: 'You are a helpful assistant.',
   tools: {
     weather: tool({
@@ -141924,7 +142663,7 @@ export async function chat(messages: UIMessage[]) {
   const modelMessages = await convertToModelMessages(messages);
 
   const agent = new WorkflowAgent({
-    model: 'anthropic/claude-sonnet-5',
+    model: 'anthropic/claude-sonnet-5.5',
     instructions: 'You are a flight booking assistant.',
     tools: {
       searchFlights: tool({
@@ -141971,7 +142710,7 @@ import { WorkflowAgent, Output } from '@ai-sdk/workflow';
 import { z } from 'zod';
 
 const analysisAgent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
 });
 
 const result = await analysisAgent.stream({
@@ -142011,7 +142750,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   experimental_toolApprovalSecret: {
     environmentVariable: 'TOOL_APPROVAL_SECRET',
   },
@@ -142043,7 +142782,7 @@ serialize it. A stream-level reference overrides the constructor value.
 import { WorkflowAgent } from '@ai-sdk/workflow';
 
 const agent = new WorkflowAgent({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   tools: { weather: weatherTool },
 
   // Agent-wide callbacks
@@ -144670,7 +145409,7 @@ import { gateway, generateText } from 'ai';
 
 // Make a request
 const result = await generateText({
-  model: gateway('anthropic/claude-sonnet-5'),
+  model: gateway('anthropic/claude-sonnet-5.5'),
   prompt: 'Explain quantum entanglement briefly',
 });
 
@@ -144693,7 +145432,7 @@ With `streamText`, you can capture the generation ID from the first chunk via `s
 import { gateway, streamText } from 'ai';
 
 const result = streamText({
-  model: gateway('anthropic/claude-sonnet-5'),
+  model: gateway('anthropic/claude-sonnet-5.5'),
   prompt: 'Explain quantum entanglement briefly',
 });
 
@@ -144723,7 +145462,7 @@ a tool is running:
 import { gateway, generateText } from 'ai';
 
 await generateText({
-  model: gateway('anthropic/claude-sonnet-5'),
+  model: gateway('anthropic/claude-sonnet-5.5'),
   prompt: 'Explain quantum entanglement briefly',
   onLanguageModelCallEnd({ providerMetadata }) {
     const generationId = providerMetadata?.gateway?.generationId as
@@ -144770,7 +145509,7 @@ It returns a `GatewayGenerationInfo` object with the following fields:
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   prompt: 'Write a haiku about programming',
 });
 
@@ -145425,7 +146164,7 @@ The `getSpendReport()` method accepts the following parameters:
 - **groupBy** _string_ - Aggregation dimension: `'day'` (default), `'user'`, `'model'`, `'tag'`, `'provider'`, or `'credential_type'`
 - **datePart** _string_ - Time granularity when `groupBy` is `'day'`: `'day'` or `'hour'`
 - **userId** _string_ - Filter to a specific user
-- **model** _string_ - Filter to a specific model (e.g. `'anthropic/claude-sonnet-5'`)
+- **model** _string_ - Filter to a specific model (e.g. `'anthropic/claude-sonnet-5.5'`)
 - **provider** _string_ - Filter to a specific provider (e.g. `'anthropic'`)
 - **credentialType** _string_ - Filter by `'byok'` or `'system'` credentials
 - **tags** _string[]_ - Filter to requests matching these tags
@@ -145484,7 +146223,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   prompt: 'Explain quantum computing',
   providerOptions: {
     gateway: {
@@ -145522,11 +146261,15 @@ The following gateway provider options are available:
 
   When `sort` is active, the response's `providerMetadata.gateway.routing.sort` object contains the sort option used, the resulting execution order, per-provider metric values, and any providers that were deprioritized.
 
-- **models** _string[]_
+- **models** _string[] | [GatewayModelFallback, ...string[]]_
 
-  Specifies fallback models to use when the primary model fails or is unavailable. The gateway will try the primary model first (specified in the `model` parameter), then try each model in this array in order until one succeeds.
+  Specifies fallback models in attempt order. String entries keep their existing behavior: the gateway tries them when the primary model fails or is unavailable. Evaluation requests can also start the list with one conditional `{ model, when }` entry to retry a successful but uncertain evaluation with another model. Only the first entry can be conditional, and only one conditional entry is allowed. If the primary model fails, the gateway also advances to the conditional entry under its existing error fallback behavior. Conditional entries are rejected on non-evaluation requests.
 
   Example: `models: ['openai/gpt-5.4-nano', 'google/gemini-3.8-flash']` will try the fallback models in order if the primary model fails.
+
+  A direct condition uses `{ question, confidenceBelow }` for Choice and Score questions, or `{ question, probabilityBetween: [minimum, maximum] }` for Boolean questions. Leave out `question` to check every question of that type: `{ confidenceBelow: 0.6 }` matches when any Choice or Score answer is below 0.6, and a request with no Choice or Score questions never matches it. Boolean probability is P(true), not confidence in the selected Boolean outcome. Bounds are inclusive, finite, ordered, and within `[0, 1]`.
+
+  Combine conditions with `{ any: [...] }`, `{ all: [...] }`, or `{ atLeast: { count, conditions: [...] } }`. Each condition list holds 1 to 20 conditions. `atLeast.count` must be an integer from `1` through the number of conditions. Conditions nest at most 5 levels deep. Question IDs are 1 to 256 characters, and the conditional `model` must not be empty. The SDK checks these bounds before sending the request, and the gateway also checks that each question exists and has a kind that matches its condition. String error fallbacks may follow the conditional entry.
 
 - **user** _string_
 
@@ -145622,7 +146365,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   prompt: 'Write a haiku about programming',
   providerOptions: {
     gateway: {
@@ -145658,6 +146401,63 @@ const { text } = await generateText({
 // 4. Return the result from the first model that succeeds
 ```
 
+#### Conditional Evaluation Fallbacks Example
+
+Conditional model entries are available only for evaluation requests. Keep the
+configuration under `providerOptions.gateway.models`. `experimental_evaluate`
+does not have a top-level fallback option.
+
+```ts
+import type { GatewayProviderOptions } from '@ai-sdk/gateway';
+import { experimental_evaluate } from 'ai';
+
+const questions = {
+  department: {
+    type: 'choice',
+    instructions: 'Which team should handle this?',
+    criteria: { billing: 'Charges and refunds', support: 'Other requests' },
+  },
+  requestsRefund: {
+    type: 'boolean',
+    instructions: 'Is the customer requesting money back?',
+  },
+} as const;
+
+const result = await experimental_evaluate({
+  model: 'typesafe-ai/jev',
+  state: 'I was charged twice. Please refund the duplicate.',
+  questions,
+  providerOptions: {
+    gateway: {
+      models: [
+        {
+          model: 'openai/gpt-5.6-sol',
+          when: {
+            any: [
+              { question: 'department', confidenceBelow: 0.6 },
+              {
+                question: 'requestsRefund',
+                probabilityBetween: [0.4, 0.6],
+              },
+            ],
+          },
+        },
+      ],
+    } satisfies GatewayProviderOptions,
+  },
+});
+
+// The model that produced the answers, the fallback when the condition matched.
+console.log(result.response.modelId);
+console.log(JSON.stringify(result.providerMetadata?.gateway?.routing, null, 2));
+```
+
+When the condition matches, `result.response.modelId` names the fallback model,
+and `providerMetadata.gateway.routing.modelAttempts` lists the primary and
+fallback attempts. The successful attempt of each stage carries its own
+`generationId`, `usage`, and cost fields, and the first fallback attempt lists
+the questions that triggered it in `triggeredBy`.
+
 #### Zero Data Retention Example
 
 Set `zeroDataRetention` to true to route requests to providers with zero data retention agreements with Vercel for AI Gateway. BYOK credentials are skipped by default, since your provider agreements differ from Vercel's. When this filter is on, AI Gateway routes only to providers Vercel has ZDR agreements with for the model. If you have BYOK keys marked as ZDR, those keys are tried first, then AI Gateway falls back to its system credentials. You are responsible for the accuracy of that marking. Applies to both account-wide and request-level ZDR. The request fails if no ZDR-eligible credentials are available. When `zeroDataRetention` is `false` or not specified, there is no enforcement of restricting routing. Request-level ZDR is only available for Vercel Pro and Enterprise plans.
@@ -145667,7 +146467,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   prompt: 'Analyze this sensitive document...',
   providerOptions: {
     gateway: {
@@ -145686,7 +146486,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   prompt: 'Analyze this proprietary business data...',
   providerOptions: {
     gateway: {
@@ -145705,7 +146505,7 @@ import type { GatewayProviderOptions } from '@ai-sdk/gateway';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   prompt: 'Summarize this report...',
   providerOptions: {
     gateway: {
@@ -145743,7 +146543,7 @@ import { generateText } from 'ai';
 import fs from 'node:fs';
 
 const { text } = await generateText({
-  model: 'anthropic/claude-sonnet-5',
+  model: 'anthropic/claude-sonnet-5.5',
   messages: [
     {
       role: 'user',
@@ -150929,6 +151729,7 @@ You can use the following optional settings to customize the OpenAI provider ins
   It defaults to the `AZURE_RESOURCE_NAME` environment variable.
 
   The resource name is used in the assembled URL: `https://{resourceName}.openai.azure.com/openai/v1{path}`.
+  It must be a single DNS label (letters, digits, and hyphens).
   You can use `baseURL` instead to specify the URL prefix.
 
 - **apiKey** _string_
@@ -150990,6 +151791,13 @@ You can use the following optional settings to customize the OpenAI provider ins
 
   This option is useful for compatibility with certain Azure OpenAI models or deployments
   that require the legacy endpoint format.
+
+- **speechBaseURL** _string_
+
+  URL prefix for Azure Speech transcription requests (MAI-Transcribe-2), for example
+  a regional endpoint such as `https://eastus.api.cognitive.microsoft.com`.
+  Defaults to `https://{resourceName}.cognitiveservices.azure.com`.
+  Speech requests do not use `baseURL` or `apiVersion`.
 
 ## Language Models
 
@@ -151939,6 +152747,13 @@ Azure OpenAI supports DALL-E 2 and DALL-E 3 models through deployments. The capa
 | DALL-E 3      | 1024x1024, 1792x1024, 1024x1792 |
 | DALL-E 2      | 256x256, 512x512, 1024x1024     |
 
+Azure deployment names are user-defined and do not identify the backing model.
+Consequently, `supportsFileInputs` and `supportsMaskInputs` are `undefined`
+(unknown) for Azure image model instances. If your application knows the
+capabilities of a deployment, you can advertise them with the
+`overrideSupportsFileInputs` and `overrideSupportsMaskInputs` options of
+[`wrapImageModel`](/docs/reference/ai-sdk-core/wrap-image-model).
+
 <Note>
   DALL-E models do not support the `aspectRatio` parameter. Use the `size`
   parameter instead.
@@ -151951,13 +152766,112 @@ Azure OpenAI supports DALL-E 2 and DALL-E 3 models through deployments. The capa
 
 ## Transcription Models
 
-You can create models that call the Azure OpenAI transcription API using the `.transcription()` factory method.
+You can create models that call the Azure OpenAI or Azure Speech transcription API using the `.transcription()` factory method.
 
 The first argument is the model id e.g. `whisper-1`.
 
 ```ts
 const model = azure.transcription('whisper-1');
 ```
+
+### MAI-Transcribe-2
+
+MAI-Transcribe-2 is a multilingual speech-to-text model from Microsoft AI, served through Azure.
+`azure.transcription('mai-transcribe-2')` uses the Azure Speech API.
+The model ID is matched case-insensitively and sent to Azure as `MAI-Transcribe-2`.
+All other IDs use the OpenAI API by default, including custom deployment names.
+
+```ts
+import { azure, type AzureTranscriptionModelOptions } from '@ai-sdk/azure';
+import { transcribe } from 'ai';
+import { readFile } from 'fs/promises';
+
+const result = await transcribe({
+  model: azure.transcription('mai-transcribe-2'),
+  audio: await readFile('audio.wav'),
+  providerOptions: {
+    azure: {
+      timestamps: 'word',
+      diarization: { enabled: true },
+      transcribeStyle: 'clean',
+    } satisfies AzureTranscriptionModelOptions,
+  },
+});
+```
+
+MAI-Transcribe-2 requires a Microsoft Foundry (Speech) resource in a region where it is available:
+`centralindia`, `eastus`, `northeurope`, `southeastasia`, `westus`, or `westus2`
+(see [Speech service regions](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/regions?tabs=llmspeech)).
+Resources in other regions reject the request.
+Set `AZURE_RESOURCE_NAME` and `AZURE_API_KEY` to that resource's name and key,
+or pass `resourceName` and `apiKey` to `createAzure`. `tokenProvider`, custom headers,
+and custom fetch are also supported. Keys are sent as `Ocp-Apim-Subscription-Key`.
+
+Speech requests use `https://{resourceName}.cognitiveservices.azure.com/speechtotext/transcriptions:transcribe`
+with API version `2025-10-15`. Use `speechBaseURL` to supply a different Speech URL prefix
+(without `/speechtotext/transcriptions:transcribe`), for example a regional endpoint:
+
+```ts
+import { createAzure } from '@ai-sdk/azure';
+
+const azure = createAzure({
+  speechBaseURL: 'https://eastus.api.cognitive.microsoft.com',
+  apiKey: process.env.AZURE_SPEECH_API_KEY,
+});
+```
+
+Speech requests do not use `baseURL`, `apiVersion`, or `useDeploymentBasedUrls`;
+those settings only apply to Azure OpenAI models.
+
+The following options are available through `providerOptions.azure`:
+
+- **api** _'openai' | 'speech'_
+  Overrides model-based API selection for this request.
+  Set `openai` for an OpenAI deployment named `mai-transcribe-2`, or `speech` to
+  send another model ID to Speech. Other Speech model IDs are sent unchanged.
+
+- **timestamps** _'word' | 'segment' | 'none'_
+  Timing granularity. The AI SDK defaults to `segment` so that results include
+  timed segments (Azure's own default is `none`). `segment` returns one segment
+  per sentence or speaker turn, `word` additionally returns word timing in provider
+  metadata, and `none` returns a single segment that spans the whole audio.
+
+- **transcribeStyle** _'verbatim' | 'clean'_
+  `verbatim` keeps fillers and false starts, `clean` removes them. Defaults to `verbatim`.
+
+- **locales** _string[]_
+  Exactly one language code, such as `['en']`. This is a strong hint; omit it for
+  automatic language detection and code switching.
+
+- **diarization** _object_
+  Set `enabled` to `true` to identify speakers. Speaker IDs are returned in
+  provider metadata. `maxSpeakers` is not supported by MAI-Transcribe-2.
+
+- **phraseList** _object_
+  Set `phrases` to a list of names and domain terms to bias recognition toward them.
+
+Explicit `api` takes precedence over the model ID. Existing OpenAI transcription
+options remain under `providerOptions.openai`. Speech-only Azure options produce
+warnings when used with the OpenAI API. Unknown or unsupported `providerOptions.azure`
+keys (for example `diarization.maxSpeakers`) are rejected before the request is sent.
+
+Results include transcript text, timed segments, duration, and an ISO-639-1
+language code when the reported phrase locales identify one language. Mixed-language
+results, and languages without an ISO-639-1 code such as Filipino (`fil`) or
+Cantonese (`yue`), leave `language` undefined. Speaker IDs, exact locales, and word
+timing are preserved in `providerMetadata.azure.phrases`; use the exported
+`AzureTranscriptionProviderMetadata` type to access them. Phrase timing is in
+milliseconds in metadata and seconds in normalized `segments`.
+
+MAI-Transcribe-2 is a file transcription model: it accepts WAV, MP3, or FLAC files
+shorter than 2 hours and smaller than 250 MB, and does not support streaming
+transcription. The model is in public preview. See
+[Azure's MAI-Transcribe guide](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/mai-transcribe)
+for supported languages and diarization limits.
+
+AI Gateway forwards these provider options, including `azure.api`.
+
+### OpenAI transcription
 
 <Note>
   If you encounter a "DeploymentNotFound" error with transcription models,
@@ -152024,6 +152938,7 @@ The following provider options are available:
 | `whisper-1`              | <Check />     | <Check /> | <Check /> | <Check /> |
 | `gpt-4o-mini-transcribe` | <Check />     | <Cross /> | <Cross /> | <Cross /> |
 | `gpt-4o-transcribe`      | <Check />     | <Cross /> | <Cross /> | <Cross /> |
+| `mai-transcribe-2`       | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ## Speech Models
 
@@ -152270,7 +153185,7 @@ import { streamText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = streamText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   tools: {
     writeFile: tool({
       description: 'Write content to a file',
@@ -152288,9 +153203,10 @@ const result = streamText({
 });
 ```
 
-For `claude-opus-5-5` and `claude-fable-5-1`, the default `"auto"` mode uses
-native structured outputs through `output_config.format`. These models reject
-forced tool use, so the `"jsonTool"` mode cannot be used with them. If you
+For `claude-sonnet-5-5`, `claude-opus-5-5`, and `claude-fable-5-1`, the
+default `"auto"` mode uses native structured outputs through
+`output_config.format`. These models reject forced tool use, so the
+`"jsonTool"` mode cannot be used with them. If you
 request `"jsonTool"` anyway, the provider falls back to `"outputFormat"` and
 emits a warning. Likewise, a `required` or named `toolChoice` is downgraded to
 `auto` with a warning; instruct the model to use the tool in your prompt and
@@ -152298,7 +153214,7 @@ verify that a tool call was made.
 
 ### Effort
 
-Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, and `claude-sonnet-5` additionally support `xhigh` for maximum reasoning effort.
+Anthropic introduced an `effort` option with `claude-opus-4-5` that affects thinking, text responses, and function calls. Effort defaults to `high` and you can set it to `medium` or `low` to save tokens and to lower time-to-last-token latency (TTLT). `claude-opus-4-7`, `claude-opus-4-8`, `claude-opus-5`, `claude-opus-5-5`, `claude-fable-5`, `claude-fable-5-1`, `claude-sonnet-5`, and `claude-sonnet-5-5` additionally support `xhigh` for maximum reasoning effort.
 
 On `claude-opus-5`, thinking can only be disabled at effort levels up to and including `high`. When you combine `thinking: { type: 'disabled' }` with `effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high` and emits a warning instead of sending a request that the API would reject.
 
@@ -152308,6 +153224,16 @@ On `claude-opus-5-5`, thinking is always adaptive and cannot be disabled, so
 carrying over the setting you used on `claude-opus-5`. Set `maxOutputTokens`
 with room for thinking as well as the reply; thinking counts toward the limit
 even when its content is not returned.
+
+On `claude-sonnet-5-5`, thinking cannot be turned off either, and the API
+default effort is `high`. Its effort levels are not equivalent to those of
+`claude-sonnet-5`, so test several levels rather than carrying over your
+current setting. For agentic coding and other multi-step tool use, start at
+`medium` for well-specified tasks and move to `high` for harder ones. The
+lowest thinking setting, [`between_tools`](#between-tools-thinking), is only
+accepted at `low`, `medium`, and `high` effort. When you combine it with
+`effort: 'xhigh'` or `effort: 'max'`, the AI SDK lowers the effort to `high`
+and emits a warning.
 
 ```ts highlight="8-10"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -152413,6 +153339,8 @@ The `inferenceGeo` option accepts `'us'` (US-only infrastructure) or `'global'` 
 
 Claude Fable 5 has safeguards that limit its performance in certain areas like cybersecurity, biology, and chemistry, and automated safety checks are run on every request.
 
+Claude Sonnet 5.5 also has safety classifiers enabled, including for cybersecurity, biology, and reasoning extraction. Requests that ask the model to reproduce its internal reasoning in the response text can be declined with the `reasoning_extraction` category; use `thinking: { type: 'adaptive', display: 'summarized' }` and read the reasoning parts instead.
+
 When one of these checks blocks a request, the API does not answer it. Instead it returns a classifier block: a `200` response with a `refusal` stop reason and an optional `stop_details` object describing the category that triggered the block. The AI SDK surfaces this as a `content-filter` finish reason, with the details available on `providerMetadata.anthropic.stopDetails`.
 
 A classifier block looks like this:
@@ -152496,7 +153424,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   prompt: 'Use the bash tool to run: echo hello',
   tools: { bash: tool({ inputSchema: z.object({ command: z.string() }) }) },
   providerOptions: {
@@ -152582,14 +153510,20 @@ const { text } = await generateText({
 
 ##### Adaptive-Only Models
 
-`claude-opus-5-5`, `claude-fable-5`, and `claude-fable-5-1` always run adaptive
-thinking. The API rejects `thinking: { type: 'disabled' }` and budget-based
-`thinking: { type: 'enabled' }` for these models. To keep existing code working,
-the provider:
+`claude-sonnet-5-5`, `claude-opus-5-5`, `claude-fable-5`, and
+`claude-fable-5-1` always run adaptive thinking. The API rejects
+`thinking: { type: 'disabled' }` and budget-based
+`thinking: { type: 'enabled' }` for these models. To keep existing code
+working, the provider:
 
 - removes `thinking: { type: 'disabled' }` and emits a warning,
 - converts `thinking: { type: 'enabled', budgetTokens }` to `{ type: 'adaptive' }` and emits a warning,
 - maps the top-level `reasoning: 'none'` option to `effort: 'low'` and emits a warning.
+
+On `claude-sonnet-5-5`, which supports
+[`between_tools` thinking](#between-tools-thinking), the provider instead
+replaces `thinking: { type: 'disabled' }` with `thinking: { type: 'between_tools' }`
+(with a warning) and maps `reasoning: 'none'` to `between_tools` thinking.
 
 Use `effort` to control how much these models think. On `claude-opus-5-5`, set
 `effort: 'low'` when time to first token matters, and move to `medium` if
@@ -152614,6 +153548,42 @@ const { text } = await generateText({
   assuming the first part is text. Under the default `display: 'omitted'`
   setting, thinking blocks are returned with empty text.
 </Note>
+
+##### Between-Tools Thinking
+
+`claude-sonnet-5-5` supports `thinking: { type: 'between_tools' }`, its lowest
+thinking setting. The model does no upfront thinking, but the short progress
+notes it writes between tool calls are still returned as thinking blocks, each
+with a short summary. They are available as reasoning parts and are sent back
+unchanged on the next step. `between_tools` accepts no other thinking options
+(such as `display` or `blockBinding`) and is only accepted at `low`, `medium`,
+and `high` effort. Per-message effort changes via
+[mid-conversation system messages](#mid-conversation-system-controls) are not
+supported with `between_tools`.
+
+```ts highlight="16-17"
+import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
+import { generateText, isStepCount, tool } from 'ai';
+import { z } from 'zod';
+
+const { text, steps } = await generateText({
+  model: anthropic('claude-sonnet-5-5'),
+  stopWhen: isStepCount(5),
+  tools: {
+    weather: tool({
+      inputSchema: z.object({ city: z.string() }),
+      execute: async ({ city }) => ({ city, temperature: 72 }),
+    }),
+  },
+  providerOptions: {
+    anthropic: {
+      thinking: { type: 'between_tools' },
+      effort: 'low',
+    } satisfies AnthropicLanguageModelOptions,
+  },
+  prompt: 'Compare the weather in San Francisco and New York.',
+});
+```
 
 ##### Thinking Display (Opus 4.7+)
 
@@ -152642,11 +153612,11 @@ console.log(text);
 
 ##### Thinking Updates
 
-Use `display: 'updates'` with `claude-opus-5-5` or `claude-fable-5-1` to stream
-thinking summaries between tool calls. These models return progress notes
-between tool calls as thinking blocks rather than text, so without this setting
-a long tool-calling turn can look silent. The provider adds the required
-`thinking-display-updates-2026-08-18` beta header automatically:
+Use `display: 'updates'` with `claude-sonnet-5-5`, `claude-opus-5-5`, or
+`claude-fable-5-1` to stream thinking summaries between tool calls. These models
+return progress notes between tool calls as thinking blocks rather than text, so
+without this setting a long tool-calling turn can look silent. The provider adds
+the required `thinking-display-updates-2026-08-18` beta header automatically:
 
 ```ts highlight="12-16"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
@@ -152671,11 +153641,13 @@ const result = streamText({
 
 ##### Thinking Binding Controls
 
-Fable 5.1 can recover from a thinking-block prefix mismatch by dropping the
-mismatched block. Set `blockBinding.prefixMismatchBehavior` to `drop_block`, or
-set it to `error` to reject the request. You can provide block binding by itself
-to preserve the model's default thinking mode, or combine it with adaptive
-thinking.
+Fable 5.1, Opus 5.5, and Sonnet 5.5 can recover from a thinking-block prefix
+mismatch by dropping the mismatched block. Set
+`blockBinding.prefixMismatchBehavior` to `drop_block`, or set it to `error` to
+reject the request. You can provide block binding by itself to preserve the
+model's default thinking mode, or combine it with adaptive thinking. Block
+binding is not available with `between_tools` thinking; keep the message
+history append-only instead.
 
 ```ts highlight="7-11"
 const result = await generateText({
@@ -153021,7 +153993,7 @@ import { generateText } from 'ai';
 const errorMessage = '... long error message ...';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   messages: [
     {
       role: 'user',
@@ -153055,7 +154027,7 @@ You can also use cache control on system messages by providing multiple system m
 
 ```ts highlight="3,7-9"
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   messages: [
     {
       role: 'system',
@@ -153297,19 +154269,20 @@ const computerTool = anthropic.tools.computer_20251124({
 ```
 
 <Note>
-  Use `computerToolset_20260801` for Claude Opus 5.5 (required), Opus 5, Sonnet
-  5, Fable 5, Fable 5.1, and Opus 4.8. Use `computer_20251124` for Claude Opus
-  4.5 through Opus 4.7, which support the zoom action. Use `computer_20250124`
-  for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4, Opus 4, and Sonnet 3.7.
+  Use `computerToolset_20260801` for Claude Sonnet 5.5 and Opus 5.5 (required),
+  Opus 5, Sonnet 5, Fable 5, Fable 5.1, and Opus 4.8. Use `computer_20251124`
+  for Claude Opus 4.5 through Opus 4.7, which support the zoom action. Use
+  `computer_20250124` for Claude Sonnet 4.5, Haiku 4.5, Opus 4.1, Sonnet 4, Opus
+  4, and Sonnet 3.7.
 </Note>
 
 #### Computer Toolset
 
 Newer models use the computer toolset instead of a versioned computer tool.
-`claude-opus-5-5` accepts computer use only through the toolset and rejects the
-older `computer_*` tool types with a 400. The toolset does not require a beta
-header and has no display size parameters: coordinates are always in the pixel
-space of the screenshots you return. Zoom is enabled by default, and Claude can
+`claude-sonnet-5-5` and `claude-opus-5-5` accept computer use only through the
+toolset and reject the older `computer_*` tool types with a 400. The toolset
+does not require a beta header and has no display size parameters: coordinates
+are always in the pixel space of the screenshots you return. Zoom is enabled by default, and Claude can
 return several actions in one turn, each as its own tool call.
 
 The API returns each action as a separate `tool_use` block with
@@ -153569,7 +154542,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   prompt: 'What is the weather in San Francisco?',
   tools: {
     toolSearch: anthropic.tools.toolSearchBm25_20251119(),
@@ -153599,7 +154572,7 @@ For more precise tool matching, you can use the regex variant:
 
 ```ts
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   prompt: 'Get the weather data',
   tools: {
     toolSearch: anthropic.tools.toolSearchRegex_20251119(),
@@ -153620,7 +154593,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   prompt: 'What is the weather in San Francisco?',
   tools: {
     // Custom search tool
@@ -153663,10 +154636,10 @@ This sends `tool_reference` blocks to Anthropic, which loads the corresponding d
 
 ### Mid-Conversation System Controls
 
-With `claude-opus-5-5` and `claude-fable-5-1`, use an empty system message to
-change effort from the next user turn. A separate system message containing text
-can provide a turn-scoped reminder with `clearAt: 'next_user_message'`: its text
-applies until the next user message. Keep the reminder after a user turn and
+With `claude-sonnet-5-5`, `claude-opus-5-5`, and `claude-fable-5-1`, use an
+empty system message to change effort from the next user turn. A separate
+system message containing text can provide a turn-scoped reminder with
+`clearAt: 'next_user_message'`: its text applies until the next user message. Keep the reminder after a user turn and
 before an assistant turn, or at the end of the messages array.
 The provider adds the required
 `mid-conversation-system-clear-at-2026-08-21` and
@@ -153802,7 +154775,7 @@ import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   prompt: `Call the echo tool with "hello world". what does it respond with back?`,
   providerOptions: {
     anthropic: {
@@ -154084,6 +155057,18 @@ In this flow:
   `code_execution_20260120` or `code_execution_20250825` tool.
 </Note>
 
+#### Pruning Programmatic Tool History
+
+When pruning removes a code execution call but keeps a tool call that references
+it through `caller.toolId`, the provider omits the dangling caller metadata from
+history before a subsequent user message and emits a warning. The retained tool
+calls and results are still sent to Anthropic; the removed code execution history
+is not restored.
+
+Tool-result messages do not end a turn. Caller metadata in an active tool
+continuation is preserved, so keep the source code execution call when returning
+programmatic tool results.
+
 #### Container Persistence
 
 When using programmatic tool calling across multiple steps, you need to preserve the container ID between steps using `prepareStep`. You can use the `forwardAnthropicContainerIdFromLastStep` helper function to do this automatically. The container ID is available in `providerMetadata.anthropic.container.id` after each step completes.
@@ -154173,7 +155158,7 @@ Option 1: URL-based PDF document
 
 ```ts
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   messages: [
     {
       role: 'user',
@@ -154199,7 +155184,7 @@ Option 2: Base64-encoded PDF document
 
 ```ts
 const result = await generateText({
-  model: anthropic('claude-sonnet-5'),
+  model: anthropic('claude-sonnet-5-5'),
   messages: [
     {
       role: 'user',
@@ -154230,6 +155215,7 @@ and the `mediaType` should be set to `'application/pdf'`.
 | ------------------- | ----------- | ----------------- | ---------- | ------------ | ---------- | ----------- | ---------- |
 | `claude-opus-5-5`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-opus-5`     | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
+| `claude-sonnet-5-5` | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-sonnet-5`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-fable-5-1`  | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
 | `claude-fable-5`    | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
@@ -154399,7 +155385,7 @@ You can use the following optional settings to customize the Open Responses prov
 
 - **userAgentSuffix** _string_
 
-  Overrides the default `ai-sdk/open-responses/<version>` user-agent suffix.
+  Overrides the default `ai-sdk-open-responses/<version>` user-agent suffix.
 
 ### Endpoint Examples
 
@@ -154688,6 +155674,57 @@ const result = await generateText({
 });
 ```
 
+Some Responses-compatible implementations document non-namespaced extension
+discriminators, such as `web_search`, `web_search_call`, or
+`response.custom_tool_call_input.delta`. These are not portable Open Responses
+types. Register each exact value through the dedicated bare fields to opt in:
+
+```ts
+import type { Experimental_OpenResponsesBareExtension } from '@ai-sdk/open-responses';
+
+const webSearchExtension: Experimental_OpenResponsesBareExtension = {
+  id: 'acme.web_search',
+  allowBareTypes: true,
+  bareToolType: 'web_search',
+  bareItemTypes: ['web_search_call'],
+  bareEventTypes: ['response.web_search_call.completed'],
+  encodeTool: ({ name, args }) => ({
+    name,
+    search_context_size: args.searchContextSize,
+  }),
+  decodeItem: ({ item }) => {
+    if (
+      typeof item.call_id !== 'string' ||
+      typeof item.name !== 'string' ||
+      typeof item.query !== 'string'
+    ) {
+      return undefined;
+    }
+
+    return [
+      {
+        type: 'tool-call',
+        toolCallId: item.call_id,
+        toolName: item.name,
+        input: JSON.stringify({ query: item.query }),
+        providerExecuted: true,
+      },
+    ];
+  },
+  decodeEvent: () => undefined,
+};
+```
+
+Set `allowBareTypes: true` when using `bareToolType`, `bareItemTypes`, or
+`bareEventTypes`. These fields accept only non-namespaced values. They do not
+enable unknown JSON passthrough: a bare discriminator is handled only when it
+exactly matches a registered value. Core Open Responses discriminators and
+duplicate registrations are rejected.
+Use the normal namespaced fields whenever the implementation supports them.
+`Experimental_OpenResponsesExtension` remains the namespaced interface;
+use `Experimental_OpenResponsesBareExtension` only for this compatibility
+mode.
+
 Set `providerExecuted` on each decoded `tool-call` or `tool-input-start` part.
 It can vary by item or event.
 
@@ -154697,18 +155734,18 @@ An extension codec can define:
   with an `unsupported` warning. A `toolChoice` that selects the omitted tool is
   also omitted.
 - `encodeToolChoice`: Encodes a specific `toolChoice`. The default is
-  `{ type: toolType }`.
+  an object containing the registered `toolType` or `bareToolType`.
 - `decodeItem`: Maps a completed item to AI SDK content parts. `mode` is either
   `'generate'` or `'stream'`.
 - `encodeInputItem`: Encodes tool-call or tool-result history when the original
   wire item is unavailable. Returned items must include `id`, `status`, and a
-  registered namespaced `type`.
+  `type` registered through `itemTypes` or `bareItemTypes`.
 - `decodeEvent`: Maps a streaming event to AI SDK stream parts. Its `state` map
   lasts for one response stream.
 
 Tool, item, and event capabilities are independent. An item-only extension, for
-example, defines `itemTypes` and `decodeItem` without `toolType` or `encodeTool`.
-Capability fields must be provided in pairs.
+example, defines `itemTypes` (or `bareItemTypes`) and `decodeItem` without a
+tool type or `encodeTool`. Capability fields must be provided in pairs.
 
 Each decoded item adds an `open-responses.extension-replay` custom part that
 stores the original JSON in provider metadata. Other decoded parts reference
@@ -154848,7 +155885,7 @@ You can create models that call the Anthropic Messages API on AWS using the prov
 ```ts
 import { anthropicAws } from '@ai-sdk/anthropic-aws';
 
-const model = anthropicAws('claude-sonnet-5');
+const model = anthropicAws('claude-sonnet-5-5');
 ```
 
 Model IDs are identical to the first-party Anthropic API. See the [Anthropic provider docs](/providers/ai-sdk-providers/anthropic#language-models) for the full list of language model options, prompt caching, computer use, web search, code execution, and Agent Skills. All of these work identically here because Claude Platform on AWS uses Anthropic's runtime directly.
@@ -154860,7 +155897,7 @@ import { anthropicAws } from '@ai-sdk/anthropic-aws';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: anthropicAws('claude-sonnet-5'),
+  model: anthropicAws('claude-sonnet-5-5'),
   prompt: 'Invent a new holiday and describe its traditions.',
 });
 ```
@@ -155419,7 +156456,7 @@ const cyberpunkAnalysis =
   '... literary analysis of cyberpunk themes and concepts ...';
 
 const result = await generateText({
-  model: amazonBedrock('us.anthropic.claude-sonnet-5'),
+  model: amazonBedrock('us.anthropic.claude-sonnet-5-5'),
   messages: [
     {
       role: 'system',
@@ -155455,7 +156492,7 @@ const cyberpunkAnalysis =
   '... literary analysis of cyberpunk themes and concepts ...';
 
 const result = streamText({
-  model: amazonBedrock('us.anthropic.claude-sonnet-5'),
+  model: amazonBedrock('us.anthropic.claude-sonnet-5-5'),
   messages: [
     {
       role: 'assistant',
@@ -156465,10 +157502,10 @@ You can use the following optional settings to customize the Bedrock Anthropic p
 ### Language Models
 
 You can create models that call the [Anthropic Messages API](https://docs.anthropic.com/claude/reference/messages_post) using the provider instance.
-The first argument is the model id, e.g. `us.anthropic.claude-sonnet-5`.
+The first argument is the model id, e.g. `us.anthropic.claude-sonnet-5-5`.
 
 ```ts
-const model = bedrockAnthropic('us.anthropic.claude-sonnet-5');
+const model = bedrockAnthropic('us.anthropic.claude-sonnet-5-5');
 ```
 
 You can use Bedrock Anthropic language models to generate text with the `generateText` function:
@@ -156478,7 +157515,7 @@ import { bedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: bedrockAnthropic('us.anthropic.claude-sonnet-5'),
+  model: bedrockAnthropic('us.anthropic.claude-sonnet-5-5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -156502,7 +157539,7 @@ import { bedrockAnthropic } from '@ai-sdk/amazon-bedrock/anthropic';
 import { generateText } from 'ai';
 
 const result = await generateText({
-  model: bedrockAnthropic('us.anthropic.claude-sonnet-5'),
+  model: bedrockAnthropic('us.anthropic.claude-sonnet-5-5'),
   messages: [
     {
       role: 'system',
@@ -156631,6 +157668,7 @@ const result = await generateText({
 Anthropic has reasoning support for Claude 3.7 and Claude 4 models on Bedrock, including:
 
 - `us.anthropic.claude-fable-5-1`
+- `us.anthropic.claude-sonnet-5-5`
 - `us.anthropic.claude-sonnet-5`
 - `us.anthropic.claude-fable-5`
 - `us.anthropic.claude-opus-4-8`
@@ -156677,6 +157715,7 @@ on how to integrate reasoning into your chatbot.
 | Model                                          | Image Input | Object Generation | Tool Usage | Computer Use | Reasoning |
 | ---------------------------------------------- | ----------- | ----------------- | ---------- | ------------ | --------- |
 | `us.anthropic.claude-fable-5-1`                | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-sonnet-5-5`               | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
 | `us.anthropic.claude-sonnet-5`                 | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
 | `us.anthropic.claude-fable-5`                  | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
 | `us.anthropic.claude-opus-4-8`                 | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
@@ -157488,7 +158527,7 @@ A mask can be passed as well
 
 ```ts
 await generateImage({
-  model: fal.image('fal-ai/flux-pro/kontext/max'),
+  model: fal.image('fal-ai/flux-general/inpainting'),
   prompt: {
     text: 'Put a donut next to the flour.',
     images: [imageBuffer],
@@ -159771,10 +160810,9 @@ The following optional provider options are available for Google models:
 
   Optional. Enable structured output. Default is true.
 
-  This is useful when the JSON Schema contains elements that are
-  not supported by the OpenAPI schema version that
-  Google uses. You can use this to disable
-  structured outputs if you need to.
+  You can disable structured outputs when a schema is not supported or exceeds
+  Google's schema complexity limits. The model will still be instructed to
+  return JSON, but the schema will not be sent to Google.
 
   See [Troubleshooting: Schema Limitations](#schema-limitations) for more details.
 
@@ -160631,14 +161669,21 @@ Example response excerpt:
 
 #### Schema Limitations
 
-The Google Generative AI API uses a subset of the OpenAPI 3.0 schema,
-which does not support features such as unions.
-The errors that you get in this case look like this:
+The Google Generative AI API supports a subset of JSON Schema. Google notes that
+[very large or deeply nested schemas may be rejected](https://ai.google.dev/gemini-api/docs/structured-output#limitations).
+When a schema exceeds Google's complexity limit, the API may return the following
+generic error:
 
-`GenerateContentRequest.generation_config.response_schema.properties[occupation].type: must be specified`
+`Request contains an invalid argument.`
+
+You can work around this by simplifying the schema sent to Google. For example,
+remove unnecessary constraints or reduce nesting while preserving the fields
+and types the model needs to generate. If you need stricter client-side
+validation than the schema sent to Google, use [`jsonSchema`](/docs/reference/ai-sdk-core/json-schema)
+with a custom validation function or validate the generated output separately.
 
 By default, structured outputs are enabled (and for tool calling they are required).
-You can disable structured outputs for object generation as a workaround:
+You can also disable provider-enforced structured outputs for object generation:
 
 ```ts highlight="3,8"
 const { output } = await generateText({
@@ -160668,10 +161713,9 @@ const { output } = await generateText({
 });
 ```
 
-The following Zod features are known to not work with Google:
-
-- `z.union`
-- `z.record`
+When `structuredOutputs` is `false`, Google still receives the JSON response MIME type
+but not the schema. Describe the required schema in your prompt. AI SDK
+will still validate the response against the schema in `Output.object`.
 
 ### Model Capabilities
 
@@ -160782,6 +161826,18 @@ Gemini lifecycle signals that do not have provider-neutral equivalents are
 emitted as custom events. Inspect `rawType` for `goAway`,
 `sessionResumptionUpdate`, and `generationComplete` and use the event's `raw`
 payload for provider-specific details.
+
+With input audio transcription enabled, `parseServerEvent` emits
+`input-transcription-completed` events with a stable `itemId` for each user
+utterance. Each `transcript` contains the accumulated text so far. If you consume
+these events directly, replace the text for that `itemId` with `transcript` on
+each event. The realtime session handles this automatically.
+
+Google's `finished` transcription marker ends an utterance even when the marker
+contains no text. For payloads without this marker, response completion and
+interruption provide fallback boundaries. These fallback boundaries cannot
+unambiguously associate all delayed transcription fragments. Input item IDs use
+their own sequence and need not match the model's response IDs.
 
 ### Live Translation
 
@@ -163761,11 +164817,11 @@ You can use the following optional settings to customize the provider instance:
 ### Language Models
 
 You can create models that call the [Anthropic Messages API](https://docs.anthropic.com/claude/reference/messages_post) using the provider instance.
-The first argument is the model id, e.g. `claude-sonnet-5`.
+The first argument is the model id, e.g. `claude-sonnet-5-5`.
 Some models have multi-modal capabilities.
 
 ```ts
-const model = vertexAnthropic('claude-sonnet-5');
+const model = vertexAnthropic('claude-sonnet-5-5');
 ```
 
 You can use Anthropic language models to generate text with the `generateText` function:
@@ -163775,7 +164831,7 @@ import { vertexAnthropic } from '@ai-sdk/google-vertex/anthropic';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: vertexAnthropic('claude-sonnet-5'),
+  model: vertexAnthropic('claude-sonnet-5-5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -163860,7 +164916,7 @@ import { generateText } from 'ai';
 const errorMessage = '... long error message ...';
 
 const result = await generateText({
-  model: vertexAnthropic('claude-sonnet-5'),
+  model: vertexAnthropic('claude-sonnet-5-5'),
   messages: [
     {
       role: 'user',
@@ -163894,7 +164950,7 @@ You can also use cache control on system messages by providing multiple system m
 
 ```ts highlight="3,7-9"
 const result = await generateText({
-  model: vertexAnthropic('claude-sonnet-5'),
+  model: vertexAnthropic('claude-sonnet-5-5'),
   messages: [
     {
       role: 'system',
@@ -165342,6 +166398,12 @@ QuiverAI supports the following Arrow models:
 | `arrow-1`       | Base text-to-SVG model. Accepts up to 4 reference images.                                                                         |
 | `arrow-1.1`     | Improved text-to-SVG model. Accepts up to 4 reference images.                                                                     |
 | `arrow-1.1-max` | Higher quality variant with extended context. Accepts up to 16 reference images.                                                  |
+
+All models in this table advertise `supportsFileInputs: true` and
+`supportsMaskInputs: false`. Other model IDs leave both capabilities unknown.
+File-input support includes reference images for generation; SVG editing and
+animation still require the corresponding `providerOptions.quiverai.operation`,
+supported input formats, and access to that operation for your API key.
 
 ### Provider Options
 
@@ -166885,11 +167947,20 @@ const { images } = await generateImage({
 
 #### Supported Image Editing Models
 
-| Model                                  | Description                        |
-| -------------------------------------- | ---------------------------------- |
-| `black-forest-labs/FLUX.1-kontext-pro` | Production quality, balanced speed |
-| `black-forest-labs/FLUX.1-kontext-max` | Maximum image fidelity             |
-| `black-forest-labs/FLUX.1-kontext-dev` | Development and experimentation    |
+| Model                                  | Description                                             |
+| -------------------------------------- | ------------------------------------------------------- |
+| `black-forest-labs/FLUX.1-kontext-pro` | Production quality, balanced speed                      |
+| `black-forest-labs/FLUX.1-kontext-max` | Maximum image fidelity                                  |
+| `black-forest-labs/FLUX.1-kontext-dev` | Development and experimentation                         |
+| `black-forest-labs/FLUX.2-pro`         | High fidelity single-image editing                      |
+| `black-forest-labs/FLUX.2-flex`        | Single-image editing with adjustable steps and guidance |
+
+`supportsFileInputs` reports `true` for these models and `supportsMaskInputs`
+reports `false`. The provider sends the first standardized image input as
+`image_url`. FLUX.2 Dev and `google/gemini-3-pro-image` require `reference_images`,
+which this mapping does not send, so their standardized file-input capability is
+`false`. Unrecognized model IDs report `undefined` (unknown), including IDs under
+a known provider namespace.
 
 ### Model Capabilities
 
@@ -170931,8 +172002,13 @@ const { text } = await generateText({
 ```
 
 The Agent API provides the `fast`, `low`, `medium`, `high`, and `xhigh`
-presets. You can also pass an Agent API model ID directly, such as
-`perplexity/sonar`.
+presets. To select a model directly, pass its Agent API model ID, for example
+`perplexity('perplexity/sonar')`.
+
+These examples call Perplexity directly using `PERPLEXITY_API_KEY`. Passing a
+plain model string such as `model: 'perplexity/sonar'` to `generateText` or
+`streamText` uses the [AI Gateway](/providers/ai-sdk-providers/ai-gateway),
+which has its own model catalog and authentication.
 
 Version 5 uses the Agent API exclusively. Legacy Sonar model IDs and provider
 options are not mapped; see [Migrating from v4 Sonar to v5 Agent
@@ -171142,11 +172218,11 @@ parts are not supported.
   options, or emit migration warnings at runtime.
 </Note>
 
-<Warning>
+<Note type="warning">
   Perplexity supports Sonar Chat Completions only until September 27, 2026.
   Upgrade language-generation applications to the Agent API before that date;
   staying on version 4 does not preserve service after the Sonar shutdown.
-</Warning>
+</Note>
 
 Replace each Sonar model ID with an Agent API preset or direct Agent API model
 ID. These presets are suggested starting points, not equivalent aliases: a
@@ -174459,7 +175535,7 @@ try {
   random 32-byte token. Custom implementations must return a suitably secret
   token.
 - `clientApp`: optional client attribution with `name` and `version`. It
-  defaults to the installed `ai-sdk/harness-acp/<version>` identity and is
+  defaults to the installed `ai-sdk-harness-acp/<version>` identity and is
   available to Gateway environment placeholders.
 
 Runtime-specific package names, environment variables, modes, and session
@@ -174858,7 +175934,7 @@ modes enable Codex's internal sandbox, which must not run inside the sandbox
 already provided to `HarnessAgent`.
 
 The `client-app` placeholder resolves to the versioned
-`ai-sdk/harness-acp/<version>` identifier and sends it as both `User-Agent` and
+`ai-sdk-harness-acp/<version>` identifier and sends it as both `User-Agent` and
 `x-client-app`.
 Without Gateway credentials, this profile uses direct `CODEX_API_KEY` or
 `OPENAI_API_KEY` authentication. Gateway `env` values are added to the

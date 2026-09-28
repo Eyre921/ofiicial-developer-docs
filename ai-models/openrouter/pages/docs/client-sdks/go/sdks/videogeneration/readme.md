@@ -65,11 +65,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                                                    | Required             | Description                                |
-| --------- | --------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                                   | :heavy\_check\_mark: | The context to use for the request.        |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
 | `request` | [components.VideoGenerationRequest](../../models/components/videogenerationrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx)                              | :heavy\_minus\_sign: | The options for this request.              |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -77,17 +77,17 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.PaymentRequiredResponseError | 402         | application/json |
-| sdkerrors.ForbiddenResponseError       | 403         | application/json |
-| sdkerrors.NotFoundResponseError        | 404         | application/json |
-| sdkerrors.PayloadTooLargeResponseError | 413         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.PaymentRequiredResponseError | 402 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetGeneration
 
@@ -124,11 +124,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         | Example    |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- | ---------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |            |
-| `jobID`   | `string`                                                   | :heavy\_check\_mark: | N/A                                 | job-abc123 |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `jobID` | `string` | :heavy\_check\_mark: | N/A | job-abc123 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -136,13 +136,13 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetVideoContent
 
@@ -180,12 +180,12 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         | Example    |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- | ---------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |            |
-| `jobID`   | `string`                                                   | :heavy\_check\_mark: | N/A                                 | job-abc123 |
-| `index`   | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | N/A                                 | 0          |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `jobID` | `string` | :heavy\_check\_mark: | N/A | job-abc123 |
+| `index` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | N/A | 0 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -193,17 +193,17 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.ConflictResponseError       | 409         | application/json |
-| sdkerrors.GoneResponseError           | 410         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.BadGatewayResponseError     | 502         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.GoneResponseError | 410 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.BadGatewayResponseError | 502 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## ListVideosModels
 
@@ -240,10 +240,10 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -251,9 +251,9 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

@@ -71,7 +71,7 @@ for paragraph in paragraphs:
     with elevenlabs.text_to_speech.with_raw_response.convert(
         text=paragraph,
         voice_id="T7QGPtToiqH4S8VlIkMJ",
-        model_id="eleven_multilingual_v2",
+        model_id="eleven_v4",
         previous_request_ids=request_ids
     ) as response:
         request_ids.append(response._response.headers.get("request-id"))
@@ -115,7 +115,7 @@ for (const paragraph of paragraphs) {
     const response = await elevenlabs.textToSpeech
         .convert("T7QGPtToiqH4S8VlIkMJ", {
             text: paragraph,
-            modelId: "eleven_multilingual_v2",
+            modelId: "eleven_v4",
             previousRequestIds: requestIds,
         })
         .withRawResponse();

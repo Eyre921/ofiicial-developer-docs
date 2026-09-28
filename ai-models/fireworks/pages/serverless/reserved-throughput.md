@@ -35,12 +35,12 @@ Assume an average workload shape of 8,000 uncached input tokens, 50,000 cached i
 
 You decide to reserve to p95, so you size for 5 QPS × 60 seconds = 300 requests per minute.
 
-| Token type     | Tokens per request | TPM at 300 requests/min | List price  | Cost per minute |
-| -------------- | ------------------ | ----------------------- | ----------- | --------------- |
-| Uncached input | 8,000              | 2.4M                    | \$1.40 / 1M | \$3.36          |
-| Cached input   | 50,000             | 15M                     | \$0.26 / 1M | \$3.90          |
-| Output         | 2,000              | 0.6M                    | \$4.40 / 1M | \$2.64          |
-| **Total**      |                    |                         |             | **\$9.90**      |
+| Token type | Tokens per request | TPM at 300 requests/min | List price | Cost per minute |
+| - | - | - | - | - |
+| Uncached input | 8,000 | 2.4M | \$1.40 / 1M | \$3.36 |
+| Cached input | 50,000 | 15M | \$0.26 / 1M | \$3.90 |
+| Output | 2,000 | 0.6M | \$4.40 / 1M | \$2.64 |
+| **Total** | | | | **\$9.90** |
 
 Your p95 workload costs \$9.90 per minute, so you purchase a **\$10-per-minute reservation** for some headroom.
 
@@ -61,14 +61,14 @@ Reserved Throughput can be allocated to any model served on Serverless. We are w
 
 For example, consider moving all of a \$10-per-minute reservation from GLM 5.3 to MiniMax M3, while holding the workload shape from the previous example constant:
 
-|                          | GLM 5.3     | MiniMax M3  |
-| ------------------------ | ----------- | ----------- |
-| Uncached input           | \$1.40 / 1M | \$0.30 / 1M |
-| Cached input             | \$0.26 / 1M | \$0.06 / 1M |
-| Output                   | \$4.40 / 1M | \$1.20 / 1M |
-| Cost per 1,000 requests  | \$33.00     | \$7.80      |
-| Requests/min at \$10/min | \~303       | \~1,282     |
-| Sustained QPS            | \~5         | \~21        |
+| | GLM 5.3 | MiniMax M3 |
+| - | - | - |
+| Uncached input | \$1.40 / 1M | \$0.30 / 1M |
+| Cached input | \$0.26 / 1M | \$0.06 / 1M |
+| Output | \$4.40 / 1M | \$1.20 / 1M |
+| Cost per 1,000 requests | \$33.00 | \$7.80 |
+| Requests/min at \$10/min | \~303 | \~1,282 |
+| Sustained QPS | \~5 | \~21 |
 
 Because MiniMax M3 has lower token pricing than GLM 5.3, the same \$10-per-minute reservation sustains roughly 4.2 times the throughput—about 21 QPS instead of 5.
 

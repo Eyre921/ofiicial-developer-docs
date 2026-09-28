@@ -82,12 +82,12 @@ Configure reasoning behavior using the `reasoning` parameter:
 
 The `effort` parameter controls how much computational effort the model puts into reasoning:
 
-| Effort Level | Description                                       |
-| ------------ | ------------------------------------------------- |
-| `minimal`    | Basic reasoning with minimal computational effort |
-| `low`        | Light reasoning for simple problems               |
-| `medium`     | Balanced reasoning for moderate complexity        |
-| `high`       | Deep reasoning for complex problems               |
+| Effort Level | Description |
+| - | - |
+| `minimal` | Basic reasoning with minimal computational effort |
+| `low` | Light reasoning for simple problems |
+| `medium` | Balanced reasoning for moderate complexity |
+| `high` | Deep reasoning for complex problems |
 
 To change effort partway through a conversation without invalidating the prompt cache, add a `configuration_update` input item before the user message it should apply to. The item is interchangeable with the Chat Completions and Anthropic Messages API forms. See [Changing Effort Mid-Conversation](/docs/docs/guides/best-practices/reasoning-tokens#mid-conversation-effort) for the request shape, placement rules, and supported models.
 

@@ -275,15 +275,15 @@ Requests that don't use any of these are never routed to a non-default service t
 
 ### Comparing Tier Selection Options
 
-| Option                                       | Eligible pool                                                   | Ordering                                                  | Fallback                                                  |
-| -------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
-| `:nitro` variant                             | Default + priority endpoints                                    | Entire pool sorted by throughput, no tier preference      | Next-fastest endpoint of any tier                         |
-| `:floor` variant                             | Default + flex endpoints                                        | Entire pool sorted by price, no tier preference           | Next-cheapest endpoint of any tier                        |
-| `service_tier: "priority"` (or `"fast"`)     | Default + priority endpoints                                    | Priority endpoints first, each group sorted by throughput | Falls back to non-priority endpoints                      |
-| `service_tier: "flex"`                       | Flex endpoints only (when any exist)                            | Sorted by price                                           | No fallback to default endpoints, capacity errors surface |
-| `provider.only` with a tier slug             | Only the endpoints the slugs name (tier slugs opt in that tier) | Default load-balanced ordering unless a sort is set       | Within the named endpoints only                           |
-| `provider.order` with a tier slug            | Unchanged (tier slugs opt in the named tier endpoints)          | Listed endpoints first, in your order                     | Falls back to unlisted endpoints unless disabled          |
-| `provider.sort` (`"throughput"` / `"price"`) | Unchanged (does not opt into any tier)                          | Entire pool sorted by the chosen metric                   | Next endpoint in sorted order                             |
+| Option | Eligible pool | Ordering | Fallback |
+| - | - | - | - |
+| `:nitro` variant | Default + priority endpoints | Entire pool sorted by throughput, no tier preference | Next-fastest endpoint of any tier |
+| `:floor` variant | Default + flex endpoints | Entire pool sorted by price, no tier preference | Next-cheapest endpoint of any tier |
+| `service_tier: "priority"` (or `"fast"`) | Default + priority endpoints | Priority endpoints first, each group sorted by throughput | Falls back to non-priority endpoints |
+| `service_tier: "flex"` | Flex endpoints only (when any exist) | Sorted by price | No fallback to default endpoints, capacity errors surface |
+| `provider.only` with a tier slug | Only the endpoints the slugs name (tier slugs opt in that tier) | Default load-balanced ordering unless a sort is set | Within the named endpoints only |
+| `provider.order` with a tier slug | Unchanged (tier slugs opt in the named tier endpoints) | Listed endpoints first, in your order | Falls back to unlisted endpoints unless disabled |
+| `provider.sort` (`"throughput"` / `"price"`) | Unchanged (does not opt into any tier) | Entire pool sorted by the chosen metric | Next endpoint in sorted order |
 
 In every case, billing follows the tier that actually served the request: if a provider sheds a tier request to its default tier, you're billed the default rate.
 

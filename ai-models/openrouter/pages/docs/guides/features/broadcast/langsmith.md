@@ -67,13 +67,13 @@ LangSmith supports trace hierarchies, tags, and custom metadata for organizing a
 
 ### Supported Metadata Keys
 
-| Key               | LangSmith Mapping | Description                                       |
-| ----------------- | ----------------- | ------------------------------------------------- |
-| `trace_id`        | Trace ID          | Group multiple runs into a single trace           |
-| `trace_name`      | Run Name          | Custom name displayed in the LangSmith trace list |
-| `span_name`       | Run Name          | Name for intermediate chain/tool runs             |
-| `generation_name` | Run Name          | Name for the LLM run                              |
-| `parent_span_id`  | Parent Run ID     | Link to an existing run in your trace hierarchy   |
+| Key | LangSmith Mapping | Description |
+| - | - | - |
+| `trace_id` | Trace ID | Group multiple runs into a single trace |
+| `trace_name` | Run Name | Custom name displayed in the LangSmith trace list |
+| `span_name` | Run Name | Name for intermediate chain/tool runs |
+| `generation_name` | Run Name | Name for the LLM run |
+| `parent_span_id` | Parent Run ID | Link to an existing run in your trace hierarchy |
 
 ### Tags
 

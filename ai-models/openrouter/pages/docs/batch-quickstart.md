@@ -30,24 +30,24 @@ Multimodal input in batch is URL-only, and support depends on the provider the b
 
 **Images.** Image parts must be public `http(s)` URLs. Base64 and `data:` URI images are rejected on every provider. Image URLs are accepted when the model accepts image input and the batch routes to a provider whose batch API fetches URLs natively:
 
-| Provider                                | Public image URLs | Public file URLs                  |
-| --------------------------------------- | ----------------- | --------------------------------- |
-| OpenAI                                  | Supported         | Supported on `/v1/responses` only |
-| Anthropic                               | Supported         | Supported                         |
-| xAI                                     | Supported         | Not supported                     |
-| Mistral                                 | Not supported     | Supported                         |
-| Google Vertex                           | Not supported     | Not supported                     |
-| Google AI Studio                        | Not supported     | Not supported                     |
-| Together                                | Not supported     | Not supported                     |
-| Parasail                                | Not supported     | Not supported                     |
-| DeepInfra (`/v1/chat/completions` only) | Supported         | Supported                         |
-| Fireworks                               | Not supported     | Not supported                     |
+| Provider | Public image URLs | Public file URLs |
+| - | - | - |
+| OpenAI | Supported | Supported on `/v1/responses` only |
+| Anthropic | Supported | Supported |
+| xAI | Supported | Not supported |
+| Mistral | Not supported | Supported |
+| Google Vertex | Not supported | Not supported |
+| Google AI Studio | Not supported | Not supported |
+| Together | Not supported | Not supported |
+| Parasail | Not supported | Not supported |
+| DeepInfra (`/v1/chat/completions` only) | Supported | Supported |
+| Fireworks | Not supported | Not supported |
 
 **Files.** File parts (Responses `input_file`, Anthropic `document`, chat completions `file`) are accepted only as URL references, only on the providers marked above, and only for models that list file input. Inline file bytes and provider file IDs are rejected.
 
 **Audio and video.** Audio and video input parts are rejected on every provider. On `/v1/chat/completions`, requests that ask for non-text output through `modalities`, `audio`, or `image_config` are also rejected. For embeddings, `input` must be strings or token arrays.
 
-**Web search.** Provider-native web search tools pass through when the resolved provider runs the search itself, for example OpenAI `web_search` on `/v1/responses` and Anthropic `web_search_20250305` on `/v1/messages`. OpenRouter-orchestrated search is not available in batch. A submit for an `:online` model variant is rejected synchronously with `422`. Per request, the `web` plugin, `web_search_options` (except on OpenAI models that execute it natively), and web search tools with an `engine` other than `auto` or `native` are rejected.
+**Web search.** Provider-native web search tools pass through when the resolved provider runs the search itself, for example OpenAI `web_search` on `/v1/responses` and Anthropic `web_search_20250305` on `/v1/messages`. OpenRouter-orchestrated search is not available in batch. Google Vertex batches reject web search tools, because Vertex batch prediction does not import the `google_search` tool. A submit for an `:online` model variant is rejected synchronously with `422`. Per request, the `web` plugin, `web_search_options` (except on OpenAI models that execute it natively), and web search tools with an `engine` other than `auto` or `native` are rejected.
 
 **Other per-request bans.** A request with no input (empty `messages` or `input` and no `prompt`), `stream: true`, `speed`, a max output token cap below 1, and Anthropic beta-gated features are rejected. Unknown parameters are dropped by the provider serializer, matching the sync API.
 
@@ -63,7 +63,7 @@ Batch runs on `:batch` endpoint variants. Filter the [models page by the batch v
 
 ## Pricing
 
-Batch requests are typically billed at 50% of the model's standard per-token pricing, mirroring the batch discounts offered by [OpenAI](https://developers.openai.com/api/docs/guides/batch) and [Anthropic](https://platform.claude.com/docs/en/build-with-claude/batch-processing). For a completed batch, `usage.cost` reports the amount OpenRouter charges. For BYOK-routed batches, that's only the OpenRouter BYOK fee, since the provider bills you directly for inference.
+Batch requests are typically billed at 50% of the model's standard per-token pricing, mirroring the batch discounts offered by [OpenAI](https://developers.openai.com/api/docs/guides/batch) and [Anthropic](https://platform.claude.com/docs/en/build-with-claude/batch-processing). For a completed batch, `usage.cost` reports the amount OpenRouter charges. For BYOK-routed batches, that's only the OpenRouter BYOK fee, since the provider bills you directly for inference. BYOK-routed batches also report the estimated provider inference cost in `usage.cost_details.upstream_inference_cost`, split into `upstream_inference_prompt_cost` and `upstream_inference_completions_cost`, the same fields sync BYOK responses return.
 
 <Note>
   Non-token pricing components aren't uniformly discounted. Web-search calls bill at standard rates, and prompt-caching rates vary by model. The pricing shown on each model's page is the source of truth.
@@ -73,7 +73,7 @@ Batch requests are typically billed at 50% of the model's standard per-token pri
 
 ## BYOK
 
-If you have a [provider key](/docs/guides/overview/auth/byok) configured, batches route through it automatically, the same as sync requests: the provider bills you directly for inference and OpenRouter charges only the BYOK fee (see Pricing above). Completed batches report `usage.is_byok: true`.
+If you have a [provider key](/docs/guides/overview/auth/byok) configured, batches route through it automatically, the same as sync requests: the provider bills you directly for inference and OpenRouter charges only the BYOK fee (see Pricing above). Completed batches report `usage.is_byok: true` and the provider inference estimate in `usage.cost_details`.
 
 Google Vertex uses a bucket in your GCP project for provider input and output. The primary setup is frictionless: omit `bucket` and let OpenRouter create a private, location-compatible bucket on the first batch. You can optionally provide an existing bucket instead. See [Google Vertex API keys](/docs/guides/overview/auth/byok#google-vertex-api-keys) for permissions and storage behavior.
 
@@ -89,18 +89,18 @@ POST https://openrouter.ai/api/v1/batches
 
 The request body has three required top-level fields:
 
-| Field      | Description                                                                                                                                             |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `endpoint` | The API shape used by every request in the batch. Choose `/v1/chat/completions`, `/v1/responses`, `/v1/messages`, or `/v1/embeddings`.                  |
-| `model`    | An OpenRouter model slug, such as `openai/gpt-4o`. This batch-level model is applied to every request.                                                  |
+| Field | Description |
+| - | - |
+| `endpoint` | The API shape used by every request in the batch. Choose `/v1/chat/completions`, `/v1/responses`, `/v1/messages`, or `/v1/embeddings`. |
+| `model` | An OpenRouter model slug, such as `openai/gpt-4o`. This batch-level model is applied to every request. |
 | `requests` | A non-empty array of `{ custom_id, body }` items. `custom_id` must be unique within the batch, and `body` follows the shape of the selected `endpoint`. |
 
 Two optional top-level fields:
 
-| Field               | Description                                                                                                          |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `provider`          | `{ "only": ["<provider-slug>"] }` to pin the batch to specific providers. See [Provider routing](#provider-routing). |
-| `completion_window` | Defaults to `24h`, which is the only accepted value.                                                                 |
+| Field | Description |
+| - | - |
+| `provider` | `{ "only": ["<provider-slug>"] }` to pin the batch to specific providers. See [Provider routing](#provider-routing). |
+| `completion_window` | Defaults to `24h`, which is the only accepted value. |
 
 <Warning>
   Serialize `endpoint`, `model`, and any `provider` or `completion_window` before `requests` in the JSON body. The API stream-parses the request so it can accept very large `requests` arrays without buffering, and it returns a `400` if `requests` appears first. Every example on this page already uses this order.
@@ -351,13 +351,13 @@ Batches are scoped to the workspace, not the key: every API key in the same work
 
 All query parameters are optional:
 
-| Parameter        | Description                                                                                                                                                                                                                                     |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `limit`          | Number of batches to return, from 1 to 100. Defaults to 20.                                                                                                                                                                                     |
-| `after`          | Continue strictly after this batch ID. Pass the previous page's `last_id`.                                                                                                                                                                      |
-| `status`         | Include a public status. Repeat the parameter to include more than one of `validating`, `in_progress`, `completed`, `failed`, `expired`, or `cancelled`. The transient `finalizing` and `cancelling` statuses are not accepted as list filters. |
-| `created_after`  | Include batches created strictly after a Unix timestamp in seconds or an ISO-8601 date or datetime.                                                                                                                                             |
-| `created_before` | Include batches created strictly before a Unix timestamp in seconds or an ISO-8601 date or datetime.                                                                                                                                            |
+| Parameter | Description |
+| - | - |
+| `limit` | Number of batches to return, from 1 to 100. Defaults to 20. |
+| `after` | Continue strictly after this batch ID. Pass the previous page's `last_id`. |
+| `status` | Include a public status. Repeat the parameter to include more than one of `validating`, `in_progress`, `completed`, `failed`, `expired`, or `cancelled`. The transient `finalizing` and `cancelling` statuses are not accepted as list filters. |
+| `created_after` | Include batches created strictly after a Unix timestamp in seconds or an ISO-8601 date or datetime. |
+| `created_before` | Include batches created strictly before a Unix timestamp in seconds or an ISO-8601 date or datetime. |
 
 When `has_more` is `true`, request the next page with `after`. Pagination does not use offsets or a `before` parameter.
 

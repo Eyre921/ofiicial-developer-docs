@@ -178,17 +178,17 @@ MODEL: 'openai/whisper-1'
 
 ### Request Parameters
 
-| Parameter                 | Type      | Required | Description                                                                                                                                                                                                |
-| ------------------------- | --------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `model`                   | string    | Yes      | The STT model to use (e.g., `openai/whisper-1`)                                                                                                                                                            |
-| `input_audio`             | object    | Yes      | Audio data to transcribe                                                                                                                                                                                   |
-| `input_audio.data`        | string    | Yes      | Base64-encoded audio data (raw bytes, not a data URI)                                                                                                                                                      |
-| `input_audio.format`      | string    | Yes      | Audio format (e.g., `wav`, `mp3`, `flac`, `m4a`, `ogg`, `webm`, `aac`)                                                                                                                                     |
-| `language`                | string    | No       | ISO-639-1 language code (e.g., `"en"`, `"ja"`). Auto-detected if omitted                                                                                                                                   |
-| `temperature`             | number    | No       | Sampling temperature between 0 and 1. Lower values produce more deterministic results                                                                                                                      |
-| `response_format`         | string    | No       | `json` (default) or `verbose_json`. See [Verbose Transcripts](#verbose-transcripts-timestamps-and-speakers)                                                                                                |
-| `timestamp_granularities` | string\[] | No       | `["segment"]` and/or `["word"]`. Only used with `verbose_json`                                                                                                                                             |
-| `provider`                | object    | No       | Provider-specific options under `provider.options`. Routing preferences (`order`, `only`, `ignore`) are not applied to transcription requests. See [Provider-Specific Options](#provider-specific-options) |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `model` | string | Yes | The STT model to use (e.g., `openai/whisper-1`) |
+| `input_audio` | object | Yes | Audio data to transcribe |
+| `input_audio.data` | string | Yes | Base64-encoded audio data (raw bytes, not a data URI) |
+| `input_audio.format` | string | Yes | Audio format (e.g., `wav`, `mp3`, `flac`, `m4a`, `ogg`, `webm`, `aac`) |
+| `language` | string | No | ISO-639-1 language code (e.g., `"en"`, `"ja"`). Auto-detected if omitted |
+| `temperature` | number | No | Sampling temperature between 0 and 1. Lower values produce more deterministic results |
+| `response_format` | string | No | `json` (default) or `verbose_json`. See [Verbose Transcripts](#verbose-transcripts-timestamps-and-speakers) |
+| `timestamp_granularities` | string\[] | No | `["segment"]` and/or `["word"]`. Only used with `verbose_json` |
+| `provider` | object | No | Provider-specific options under `provider.options`. Routing preferences (`order`, `only`, `ignore`) are not applied to transcription requests. See [Provider-Specific Options](#provider-specific-options) |
 
 ### OpenAI-Compatible Multipart Requests
 
@@ -319,40 +319,40 @@ The STT endpoint returns a JSON response with the transcribed text:
 
 ### Response Fields
 
-| Field                 | Type   | Description                                                                                                                                                                                                       |
-| --------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `text`                | string | The transcribed text                                                                                                                                                                                              |
-| `task`                | string | `transcribe`. Only with `verbose_json`, when the provider reports it                                                                                                                                              |
-| `language`            | string | Detected or requested language. Only with `verbose_json`                                                                                                                                                          |
-| `duration`            | number | Audio duration in seconds. Only with `verbose_json`                                                                                                                                                               |
-| `confidence`          | number | Provider confidence for the whole transcript, 0 to 1. Only with `verbose_json` and only when the provider scores the full transcript                                                                              |
-| `segments`            | array  | Timestamped segments with `start`, `end`, `text`, and optional `speaker`. Only with `verbose_json`                                                                                                                |
-| `words`               | array  | Timestamped words with `word`, `start`, `end`, optional `speaker`, and optional `confidence` (0 to 1, present when the provider scores words). Only with `verbose_json` and `"word"` in `timestamp_granularities` |
-| `usage.seconds`       | number | Duration of the input audio in seconds                                                                                                                                                                            |
-| `usage.total_tokens`  | number | Total number of tokens used (input + output)                                                                                                                                                                      |
-| `usage.input_tokens`  | number | Number of input tokens billed                                                                                                                                                                                     |
-| `usage.output_tokens` | number | Number of output tokens generated                                                                                                                                                                                 |
-| `usage.cost`          | number | Total cost of the request in USD                                                                                                                                                                                  |
+| Field | Type | Description |
+| - | - | - |
+| `text` | string | The transcribed text |
+| `task` | string | `transcribe`. Only with `verbose_json`, when the provider reports it |
+| `language` | string | Detected or requested language. Only with `verbose_json` |
+| `duration` | number | Audio duration in seconds. Only with `verbose_json` |
+| `confidence` | number | Provider confidence for the whole transcript, 0 to 1. Only with `verbose_json` and only when the provider scores the full transcript |
+| `segments` | array | Timestamped segments with `start`, `end`, `text`, and optional `speaker`. Only with `verbose_json` |
+| `words` | array | Timestamped words with `word`, `start`, `end`, optional `speaker`, and optional `confidence` (0 to 1, present when the provider scores words). Only with `verbose_json` and `"word"` in `timestamp_granularities` |
+| `usage.seconds` | number | Duration of the input audio in seconds |
+| `usage.total_tokens` | number | Total number of tokens used (input + output) |
+| `usage.input_tokens` | number | Number of input tokens billed |
+| `usage.output_tokens` | number | Number of output tokens generated |
+| `usage.cost` | number | Total cost of the request in USD |
 
 ### Response Headers
 
-| Header            | Description                                                             |
-| ----------------- | ----------------------------------------------------------------------- |
+| Header | Description |
+| - | - |
 | `X-Generation-Id` | Unique generation ID for the request, useful for tracking and debugging |
 
 ## Supported Audio Formats
 
 Supported audio formats vary by provider. Common formats include:
 
-| Format | MIME Type    | Description                              |
-| ------ | ------------ | ---------------------------------------- |
-| `wav`  | `audio/wav`  | Uncompressed audio, highest quality      |
-| `mp3`  | `audio/mpeg` | Compressed audio, widely compatible      |
-| `flac` | `audio/flac` | Lossless compressed audio                |
-| `m4a`  | `audio/mp4`  | MPEG-4 audio                             |
-| `ogg`  | `audio/ogg`  | Ogg Vorbis audio                         |
+| Format | MIME Type | Description |
+| - | - | - |
+| `wav` | `audio/wav` | Uncompressed audio, highest quality |
+| `mp3` | `audio/mpeg` | Compressed audio, widely compatible |
+| `flac` | `audio/flac` | Lossless compressed audio |
+| `m4a` | `audio/mp4` | MPEG-4 audio |
+| `ogg` | `audio/ogg` | Ogg Vorbis audio |
 | `webm` | `audio/webm` | WebM audio, common in browser recordings |
-| `aac`  | `audio/aac`  | Advanced Audio Coding                    |
+| `aac` | `audio/aac` | Advanced Audio Coding |
 
 ## Pricing
 

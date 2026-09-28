@@ -34,11 +34,11 @@ Choose the Agent SDK when you need **agentic behavior**: multi-step reasoning wh
 
 ## Installation
 
-| Language   | Package                                                                  |
-| ---------- | ------------------------------------------------------------------------ |
-| TypeScript | [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent)   |
-| Python     | [`openrouter-agent-sdk`](https://pypi.org/project/openrouter-agent-sdk/) |
-| Go         | [`go-agent`](https://pkg.go.dev/github.com/OpenRouterTeam/go-agent)      |
+| Language | Package |
+| - | - |
+| TypeScript | [`@openrouter/agent`](https://www.npmjs.com/package/@openrouter/agent) |
+| Python | [`openrouter-agent-sdk`](https://pypi.org/project/openrouter-agent-sdk/) |
+| Go | [`go-agent`](https://pkg.go.dev/github.com/OpenRouterTeam/go-agent) |
 
 <CodeGroup>
   ```bash title="npm" lines theme={null}
@@ -158,13 +158,13 @@ const result = openrouter.callModel({
 
 ## Agent SDK vs Client SDKs
 
-|                        | Agent SDK                                                           | Client SDKs                                                     |
-| ---------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------- |
-| **Focus**              | Agentic primitives: multi-turn loops, tools, stop conditions        | Lean API client that mirrors the REST API with full type safety |
-| **Use when**           | You want built-in agent loops, tool execution, and state management | You want direct model calls and manage orchestration yourself   |
-| **Conversation state** | Managed for you via `callModel`                                     | You manage it                                                   |
-| **Tool execution**     | Automatic with the `tool()` helper                                  | You dispatch tool calls                                         |
-| **Languages**          | TypeScript, Python, Go                                              | TypeScript, Python, Go                                          |
+| | Agent SDK | Client SDKs |
+| - | - | - |
+| **Focus** | Agentic primitives: multi-turn loops, tools, stop conditions | Lean API client that mirrors the REST API with full type safety |
+| **Use when** | You want built-in agent loops, tool execution, and state management | You want direct model calls and manage orchestration yourself |
+| **Conversation state** | Managed for you via `callModel` | You manage it |
+| **Tool execution** | Automatic with the `tool()` helper | You dispatch tool calls |
+| **Languages** | TypeScript, Python, Go | TypeScript, Python, Go |
 
 ## Next steps
 

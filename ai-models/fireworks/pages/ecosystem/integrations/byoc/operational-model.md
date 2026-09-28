@@ -20,12 +20,12 @@ In steady state, your team owns the cloud account or data center environment, Ku
 
 BYOC is a shared operational model.
 
-| Area                         | Customer owns                                                                           | Fireworks owns                                                                                          |
-| ---------------------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Cloud / hardware environment | Cloud account or data center environment, Kubernetes cluster, GPU nodes, and networking | Guidance during onboarding and validation                                                               |
-| Setup access                 | A dedicated, clearly named, revocable administrative credential during setup            | Installation of the serving stack and creation of scoped runtime identities                             |
-| Model serving                | Available GPU capacity and required customer-side dependencies                          | Model deployment lifecycle, routing, autoscaling, performance optimization, and upgrades                |
-| Reliability                  | Underlying hardware capacity                                                            | GPU and node health monitoring, automated remediation workflows, observability, and operational support |
+| Area | Customer owns | Fireworks owns |
+| - | - | - |
+| Cloud / hardware environment | Cloud account or data center environment, Kubernetes cluster, GPU nodes, and networking | Guidance during onboarding and validation |
+| Setup access | A dedicated, clearly named, revocable administrative credential during setup | Installation of the serving stack and creation of scoped runtime identities |
+| Model serving | Available GPU capacity and required customer-side dependencies | Model deployment lifecycle, routing, autoscaling, performance optimization, and upgrades |
+| Reliability | Underlying hardware capacity | GPU and node health monitoring, automated remediation workflows, observability, and operational support |
 
 ## Model lifecycle
 

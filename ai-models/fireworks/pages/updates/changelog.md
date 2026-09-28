@@ -21,6 +21,26 @@ path: updates/changelog
   See [Serverless pricing](/serverless/pricing) for the full rate card.
 </Update>
 
+<Update label="2026-09-26">
+  <Badge>Inference</Badge>
+
+  # Serverless deprecation: DeepSeek V4 Pro (0813), DeepSeek V4 Flash (0731), and related models
+
+  The serverless deprecation announced for **September 25, 2026** is now in effect. The models below are no longer available on public serverless, including Fast and US-only serverless endpoints where those existed. Dedicated deployments are unaffected.
+
+  ## **Recommended migrations**
+
+  * **[DeepSeek V4 Pro (0813)](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro-0813)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+  * **[DeepSeek V4 Flash (0731)](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-0731)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+  * **[DeepSeek V4 Flash Vision Exp](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash-vision-exp)** — migrate to **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)**
+  * **[Muse Glimmer 30B](https://app.fireworks.ai/models/fireworks/muse-glimmer-30b)** — migrate to **[NVIDIA Nemotron 3.5 Lightning 30B A3B](https://app.fireworks.ai/models/fireworks/nemotron-lightning-3p5-30b-a3b)**
+  * **[Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
+  * **[Kimi K2.7 Code](https://app.fireworks.ai/models/fireworks/kimi-k2p7-code)** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** or **[Kimi K3](https://app.fireworks.ai/models/fireworks/kimi-k3)**
+  * **[GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)**, including **GLM 5.2 Fast**, **GLM 5.2 Fast US**, and **GLM 5.2 US** — migrate to **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)**
+
+  See [Serverless pricing](/serverless/pricing) and [Which model should I use?](/guides/recommended-models).
+</Update>
+
 <Update label="2026-09-16">
   <Badge>Platform</Badge>
 

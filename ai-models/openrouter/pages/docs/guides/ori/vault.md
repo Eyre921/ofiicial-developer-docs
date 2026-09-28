@@ -42,12 +42,12 @@ Every successful response describes secrets without their values.
 }
 ```
 
-| Field         | Meaning                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`        | The secret name you chose.                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| `hosts`       | The exact hostnames the secret may be sent to. `null` marks a secret stored before host binding existed. Store it again with `hosts` to bind it.                                                                                                                                                                                                                                                                                                                                                |
+| Field | Meaning |
+| - | - |
+| `name` | The secret name you chose. |
+| `hosts` | The exact hostnames the secret may be sent to. `null` marks a secret stored before host binding existed. Store it again with `hosts` to bind it. |
 | `fingerprint` | An HMAC-SHA-256 of the value, keyed with the vault's own data key. Compare fingerprints only within one vault: two secrets there with equal fingerprints hold equal values, and storing the same value again keeps its fingerprint. The key differs per vault, so a workspace secret and its intern copy have different fingerprints, and a cross-vault comparison cannot show that a copy matches or that a rotation propagated. `null` for a secret stored before fingerprints were recorded. |
-| `created_at`  | When the secret was first stored, in ISO 8601 format.                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `created_at` | When the secret was first stored, in ISO 8601 format. |
 
 ## Store a secret
 
@@ -184,20 +184,20 @@ Errors use the standard OpenRouter shape.
 }
 ```
 
-| Status | When                                                                                                                                     |
-| ------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `400`  | The name, body, hosts, or query parameters failed validation.                                                                            |
-| `401`  | The API key is missing or invalid.                                                                                                       |
-| `403`  | The key's workspace cannot be used for vault requests, or the request used a regional hostname.                                          |
-| `404`  | The key is outside the Intern API programme, the intern is not in the key's workspace, or the named secret does not exist in that scope. |
-| `408`  | The request or its body took too long to arrive.                                                                                         |
-| `409`  | Copy conflict, or the intern is being transferred. See [Copy workspace secrets to an intern](#copy-workspace-secrets-to-an-intern).      |
-| `413`  | The request body exceeds 425,000 bytes.                                                                                                  |
-| `429`  | Too many vault requests. Retry with backoff.                                                                                             |
-| `500`  | An internal error.                                                                                                                       |
-| `502`  | The vault service returned an unexpected response.                                                                                       |
-| `503`  | Vault writes are not enabled for your account, or the vault service is unavailable.                                                      |
-| `504`  | The vault service did not respond in time.                                                                                               |
+| Status | When |
+| - | - |
+| `400` | The name, body, hosts, or query parameters failed validation. |
+| `401` | The API key is missing or invalid. |
+| `403` | The key's workspace cannot be used for vault requests, or the request used a regional hostname. |
+| `404` | The key is outside the Intern API programme, the intern is not in the key's workspace, or the named secret does not exist in that scope. |
+| `408` | The request or its body took too long to arrive. |
+| `409` | Copy conflict, or the intern is being transferred. See [Copy workspace secrets to an intern](#copy-workspace-secrets-to-an-intern). |
+| `413` | The request body exceeds 425,000 bytes. |
+| `429` | Too many vault requests. Retry with backoff. |
+| `500` | An internal error. |
+| `502` | The vault service returned an unexpected response. |
+| `503` | Vault writes are not enabled for your account, or the vault service is unavailable. |
+| `504` | The vault service did not respond in time. |
 
 ## Writes are enabled per account
 

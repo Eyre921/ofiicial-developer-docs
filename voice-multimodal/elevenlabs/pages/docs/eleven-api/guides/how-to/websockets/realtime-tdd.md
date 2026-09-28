@@ -8,7 +8,7 @@ path: docs/eleven-api/guides/how-to/websockets/realtime-tdd
 
 # Stream dialogue in real-time
 
-The Text to Dialogue WebSocket (`/v1/text-to-dialogue/stream-input`) keeps a single connection open while you send dialogue lines and receive base64-encoded audio chunks. It is intended for **Eleven v3** dialogue models only (`model_id` must start with `eleven_v3`).
+The Text to Dialogue WebSocket (`/v1/text-to-dialogue/stream-input`) keeps a single connection open while you send dialogue lines and receive base64-encoded audio chunks. It is intended for **Eleven v3** and **Eleven v4** dialogue models only (`model_id` must start with `eleven_v3` or `eleven_v4`).
 
 > **Note**
 >
@@ -45,7 +45,7 @@ Create a `.env` file:
 ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
 ```
 
-Pick a **voice ID** from the [Voice Library](https://elevenlabs.io/voice-library). The examples below use `eleven_v3_conversational`, which allows **one** registered voice per connection.
+Pick a **voice ID** from the [Voice Library](https://elevenlabs.io/voice-library). The examples below use `eleven_v4_turbo`, which allows **one** registered voice per connection.
 
 ## Open the WebSocket
 
@@ -65,7 +65,7 @@ import websockets
 load_dotenv()
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 VOICE_ID = "21m00Tcm4TlvDq8ikWAM"
-MODEL_ID = "eleven_v3_conversational"
+MODEL_ID = "eleven_v4_turbo"
 
 URI = (
     "wss://api.elevenlabs.io/v1/text-to-dialogue/stream-input"
@@ -83,7 +83,7 @@ import WebSocket from "ws";
 dotenv.config();
 const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY;
 const voiceId = "21m00Tcm4TlvDq8ikWAM";
-const modelId = "eleven_v3_conversational";
+const modelId = "eleven_v4_turbo";
 
 const uri = `wss://api.elevenlabs.io/v1/text-to-dialogue/stream-input?model_id=${modelId}&output_format=mp3_44100_128`;
 const websocket = new WebSocket(uri);
@@ -220,7 +220,7 @@ Unlike the TTS WebSocket `chunk_length_schedule`, dialogue streaming uses a **fi
 
 ### Turns and voices
 
-Set `new_turn: true` when a speaker finishes a turn so prosody resets cleanly. Changing `voice_id` between `inputs` entries also starts a new turn. With `eleven_v3_conversational`, register **exactly one** voice in `voices`; `eleven_v3` supports up to **10** registered voices.
+Set `new_turn: true` when a speaker finishes a turn so prosody resets cleanly. Changing `voice_id` between `inputs` entries also starts a new turn. With `eleven_v4_turbo`, register **exactly one** voice in `voices`; `eleven_v4` supports up to **10** registered voices.
 
 ### Inactivity
 

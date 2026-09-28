@@ -172,53 +172,53 @@ config file, as a managed-preferences key, and in the machine policy file.
 
 ### Updates and installation
 
-| Setting                   | Accepts                          | What it does                                                                                                                                                                                               |
-| ------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ORI_DISABLE_UPDATES`     | switch                           | Turns off automatic updates, hides the update notice, and makes `ori update` refuse to replace the install. Set this when your builds arrive through your own tooling.                                     |
-| `ORI_DISABLE_AUTOUPDATER` | switch                           | Turns off automatic updates and hides the update notice. An explicit `ori update` still runs.                                                                                                              |
-| `ORI_AUTO_UPDATE`         | `off`, `patch`, `minor`, `major` | Largest version jump `ori start` and the TUI may install on their own. Defaults to `off`.                                                                                                                  |
-| `ORI_CHANNEL`             | `stable`, `alpha`                | Release channel `ori update` and the background updater follow. With no channel set anywhere, an alpha build stays on alpha and everything else takes stable.                                              |
-| `ORI_NO_UPDATE_CHECK`     | switch                           | Skips the background update check for this run. An explicit `--auto-update` flag overrides it wherever it came from, machine policy included, so use `ORI_DISABLE_AUTOUPDATER` for a fleet you want quiet. |
-| `ORI_UPDATE_INTERVAL`     | milliseconds                     | How long Ori waits between background update checks.                                                                                                                                                       |
-| `ORI_UPDATE_RESTART`      | `reexec`, `exit`                 | Whether a long-running Ori re-executes itself after an update or exits for your supervisor to restart.                                                                                                     |
-| `ORI_DRAIN_TIMEOUT`       | milliseconds                     | How long an update waits for in-flight work to finish before restarting.                                                                                                                                   |
-| `ORI_INSTALL_DIR`         | directory path                   | Where the installer writes the `ori` binary. By default it reinstalls over the `ori` already on your `PATH`, and only falls back to `~/.local/bin` for a first install.                                    |
+| Setting | Accepts | What it does |
+| - | - | - |
+| `ORI_DISABLE_UPDATES` | switch | Turns off automatic updates, hides the update notice, and makes `ori update` refuse to replace the install. Set this when your builds arrive through your own tooling. |
+| `ORI_DISABLE_AUTOUPDATER` | switch | Turns off automatic updates and hides the update notice. An explicit `ori update` still runs. |
+| `ORI_AUTO_UPDATE` | `off`, `patch`, `minor`, `major` | Largest version jump `ori start` and the TUI may install on their own. Defaults to `off`. |
+| `ORI_CHANNEL` | `stable`, `alpha` | Release channel `ori update` and the background updater follow. With no channel set anywhere, an alpha build stays on alpha and everything else takes stable. |
+| `ORI_NO_UPDATE_CHECK` | switch | Skips the background update check for this run. An explicit `--auto-update` flag overrides it wherever it came from, machine policy included, so use `ORI_DISABLE_AUTOUPDATER` for a fleet you want quiet. |
+| `ORI_UPDATE_INTERVAL` | milliseconds | How long Ori waits between background update checks. |
+| `ORI_UPDATE_RESTART` | `reexec`, `exit` | Whether a long-running Ori re-executes itself after an update or exits for your supervisor to restart. |
+| `ORI_DRAIN_TIMEOUT` | milliseconds | How long an update waits for in-flight work to finish before restarting. |
+| `ORI_INSTALL_DIR` | directory path | Where the installer writes the `ori` binary. By default it reinstalls over the `ori` already on your `PATH`, and only falls back to `~/.local/bin` for a first install. |
 
 ### Sign-in
 
-| Setting                        | Accepts | What it does                                                                                                                                      |
-| ------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ORI_DISABLE_OAUTH_LOGIN`      | switch  | Removes browser sign-in from `ori login`.                                                                                                         |
-| `ORI_DISABLE_API_KEY_LOGIN`    | switch  | Removes pasting an API key from `ori login`.                                                                                                      |
-| `ORI_DISABLE_ENV_KEY_LOGIN`    | switch  | Stops Ori accepting an `OPENROUTER_API_KEY` it finds in the environment.                                                                          |
-| `ORI_REQUIRE_LOGIN`            | switch  | Refuses to run on any credential that `ori login` did not establish, including an inherited `OPENROUTER_API_KEY` or one in a project dotenv file. |
-| `ORI_FORCE_OPENROUTER_API_KEY` | switch  | Always uses the `OPENROUTER_API_KEY` from the environment instead of a stored credential.                                                         |
+| Setting | Accepts | What it does |
+| - | - | - |
+| `ORI_DISABLE_OAUTH_LOGIN` | switch | Removes browser sign-in from `ori login`. |
+| `ORI_DISABLE_API_KEY_LOGIN` | switch | Removes pasting an API key from `ori login`. |
+| `ORI_DISABLE_ENV_KEY_LOGIN` | switch | Stops Ori accepting an `OPENROUTER_API_KEY` it finds in the environment. |
+| `ORI_REQUIRE_LOGIN` | switch | Refuses to run on any credential that `ori login` did not establish, including an inherited `OPENROUTER_API_KEY` or one in a project dotenv file. |
+| `ORI_FORCE_OPENROUTER_API_KEY` | switch | Always uses the `OPENROUTER_API_KEY` from the environment instead of a stored credential. |
 
 ### Models and output
 
-| Setting                   | Accepts                   | What it does                                                                            |
-| ------------------------- | ------------------------- | --------------------------------------------------------------------------------------- |
-| `ORI_MODEL`               | model slug                | Default model for `ori harness` and `ori code`.                                         |
-| `ORI_OPENROUTER_BASE_URL` | URL                       | OpenRouter API base URL to send inference to.                                           |
-| `ORI_OUTPUT`              | `human`, `json`           | Output mode for commands that support both. Ori otherwise picks `human` for a terminal. |
-| `ORI_TELEMETRY`           | `0` or `false` to disable | Turns off Ori's usage telemetry.                                                        |
+| Setting | Accepts | What it does |
+| - | - | - |
+| `ORI_MODEL` | model slug | Default model for `ori harness` and `ori code`. |
+| `ORI_OPENROUTER_BASE_URL` | URL | OpenRouter API base URL to send inference to. |
+| `ORI_OUTPUT` | `human`, `json` | Output mode for commands that support both. Ori otherwise picks `human` for a terminal. |
+| `ORI_TELEMETRY` | `0` or `false` to disable | Turns off Ori's usage telemetry. |
 
 ### Terminal appearance
 
-| Setting                     | Accepts                                                                              | What it does                                                     |
-| --------------------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| `ORI_TUI_THEME`             | palette name                                                                         | Built-in palette for the chat TUI.                               |
-| `ORI_TUI_THEME_FILE`        | file path                                                                            | Palette file to load instead of a built-in one.                  |
-| `ORI_TUI_DENSITY`           | `compact`, `cozy`, `verbose`                                                         | How much vertical space the transcript uses. Defaults to `cozy`. |
-| `ORI_TUI_WORKING_INDICATOR` | `verb`, `tokens`, `minimal`, `wave`, `bar`, `shimmer`, `glider`, `quadrant`, `meter` | Animation shown while the agent works. Defaults to `glider`.     |
-| `ORI_TUI_WORKING_VERB_MODE` | `rotating`, `gliding-only`                                                           | Whether the working line rotates through verbs.                  |
-| `ORI_TUI_WORKING_CADENCE`   | `calm`, `steady`, `fast`                                                             | Animation speed of the working indicator.                        |
-| `ORI_TUI_WORKSPACE_ROW`     | `top`, `bottom`, `off`                                                               | Where the workspace row sits, or `off` to hide it.               |
+| Setting | Accepts | What it does |
+| - | - | - |
+| `ORI_TUI_THEME` | palette name | Built-in palette for the chat TUI. |
+| `ORI_TUI_THEME_FILE` | file path | Palette file to load instead of a built-in one. |
+| `ORI_TUI_DENSITY` | `compact`, `cozy`, `verbose` | How much vertical space the transcript uses. Defaults to `cozy`. |
+| `ORI_TUI_WORKING_INDICATOR` | `verb`, `tokens`, `minimal`, `wave`, `bar`, `shimmer`, `glider`, `quadrant`, `meter` | Animation shown while the agent works. Defaults to `glider`. |
+| `ORI_TUI_WORKING_VERB_MODE` | `rotating`, `gliding-only` | Whether the working line rotates through verbs. |
+| `ORI_TUI_WORKING_CADENCE` | `calm`, `steady`, `fast` | Animation speed of the working indicator. |
+| `ORI_TUI_WORKSPACE_ROW` | `top`, `bottom`, `off` | Where the workspace row sits, or `off` to hide it. |
 
 ### Files
 
-| Setting            | Accepts        | What it does                                                                               |
-| ------------------ | -------------- | ------------------------------------------------------------------------------------------ |
-| `ORI_STATE_DIR`    | directory path | Where Ori keeps its local state database. See [where Ori writes files](/docs/guides/ori/files). |
-| `ORI_LOG_MAX_RUNS` | count          | How many run logs Ori keeps before pruning the oldest.                                     |
+| Setting | Accepts | What it does |
+| - | - | - |
+| `ORI_STATE_DIR` | directory path | Where Ori keeps its local state database. See [where Ori writes files](/docs/guides/ori/files). |
+| `ORI_LOG_MAX_RUNS` | count | How many run logs Ori keeps before pruning the oldest. |
 

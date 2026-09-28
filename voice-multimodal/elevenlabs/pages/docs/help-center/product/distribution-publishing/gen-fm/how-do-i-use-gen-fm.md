@@ -18,7 +18,7 @@ Click **Workflows**.
 
 Click **Generate a podcast**.
 
-![Audio and Workflows in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/60b09d5f32158709cc6a7ee47eb5358b33a1d0be8814be12c1695b76b973ac94/assets/images/help-center/product/genfm-steps.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T111917Z&X-Amz-Expires=604800&X-Amz-Signature=0aac69668626feff1b58440f51bc380684267e3392e9b2f3b2821805a36157e1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio and Workflows in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/60b09d5f32158709cc6a7ee47eb5358b33a1d0be8814be12c1695b76b973ac94/assets/images/help-center/product/genfm-steps.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T232307Z&X-Amz-Expires=604800&X-Amz-Signature=ab39796639372945bcf64fb143bc61d584490aabacd5de6bfaba1ffd3c326687&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can then select options for your podcast.
 

@@ -72,13 +72,13 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                                   | Example                              |
-| ------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                           |                                      |
-| `offset`      | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | Number of records to skip for pagination                                                      | 0                                    |
-| `limit`       | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                 | 50                                   |
-| `workspaceID` | `*string`                                                  | :heavy\_minus\_sign: | Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace. | 550e8400-e29b-41d4-a716-446655440000 |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                 |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `workspaceID` | `*string` | :heavy\_minus\_sign: | Optional workspace ID to filter by. Defaults to the authenticated entity's default workspace. | 550e8400-e29b-41d4-a716-446655440000 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -86,12 +86,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Create
 
@@ -175,11 +175,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                                                                                  | Required             | Description                                |
-| --------- | --------------------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                                                                 | :heavy\_check\_mark: | The context to use for the request.        |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
 | `request` | [components.CreateObservabilityDestinationRequest](../../models/components/createobservabilitydestinationrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx)                                                            | :heavy\_minus\_sign: | The options for this request.              |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -187,14 +187,14 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.ConflictResponseError       | 409         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Delete
 
@@ -231,11 +231,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         | Example                              |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- | ------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |                                      |
-| `id`      | `string`                                                   | :heavy\_check\_mark: | The destination ID (UUID).          | 99999999-aaaa-bbbb-cccc-dddddddddddd |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -243,12 +243,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Get
 
@@ -324,11 +324,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         | Example                              |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- | ------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |                                      |
-| `id`      | `string`                                                   | :heavy\_check\_mark: | The destination ID (UUID).          | 99999999-aaaa-bbbb-cccc-dddddddddddd |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -336,12 +336,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Update
 
@@ -420,12 +420,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                               | Type                                                                                                                  | Required             | Description                         | Example                                                          |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------- | ---------------------------------------------------------------- |
-| `ctx`                                   | [context.Context](https://pkg.go.dev/context#Context)                                                                 | :heavy\_check\_mark: | The context to use for the request. |                                                                  |
-| `id`                                    | `string`                                                                                                              | :heavy\_check\_mark: | The destination ID (UUID).          | 99999999-aaaa-bbbb-cccc-dddddddddddd                             |
-| `updateObservabilityDestinationRequest` | [components.UpdateObservabilityDestinationRequest](../../models/components/updateobservabilitydestinationrequest.mdx) | :heavy\_check\_mark: | N/A                                 | \{<br />"enabled": false,<br />"name": "Updated Langfuse"<br />} |
-| `opts`                                  | \[][operations.Option](../../models/operations/option.mdx)                                                            | :heavy\_minus\_sign: | The options for this request.       |                                                                  |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | The destination ID (UUID). | 99999999-aaaa-bbbb-cccc-dddddddddddd |
+| `updateObservabilityDestinationRequest` | [components.UpdateObservabilityDestinationRequest](../../models/components/updateobservabilitydestinationrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"enabled": false,<br />"name": "Updated Langfuse"<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -433,13 +433,13 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.ConflictResponseError       | 409         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

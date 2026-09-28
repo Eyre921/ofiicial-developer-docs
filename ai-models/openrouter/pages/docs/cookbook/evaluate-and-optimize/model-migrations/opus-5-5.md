@@ -173,16 +173,16 @@ This applies only if you call Anthropic's API directly. As of September 2026, Op
 
 ## Breaking Changes
 
-| Behavior                                                                         | Opus 5                              | Opus 5.5                                                                |
-| -------------------------------------------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------------- |
-| `thinking: {"type": "disabled"}` / `reasoning.enabled: false` / `effort: "none"` | Allowed (at effort `high` or lower) | Rejected (400 from OpenRouter, reasoning is mandatory)                  |
-| `thinking.budget_tokens` / `reasoning.max_tokens`                                | Sets a thinking budget              | Not forwarded (adaptive used), rejected upstream if sent directly       |
-| Default effort when none is set                                                  | `high`                              | `medium`                                                                |
-| `tool_choice: {"type": "any"}` or named tool                                     | Allowed                             | Rejected (no compatible endpoint via OpenRouter, 400 upstream)          |
-| Progress notes between tool calls                                                | Returned as text                    | Returned as thinking blocks, readable via `display: "updates"`          |
-| Replaying thinking blocks after a history edit                                   | Allowed                             | Can be rejected (400) on enforced accounts, not enforced via OpenRouter |
-| Computer use tool type (direct Anthropic API)                                    | `computer_20251124`                 | `computer_toolset_20260801` only                                        |
-| Pricing (input / output / cache read, per M)                                     | $5 / $25 / \$0.50                   | $4 / $20 / \$0.20                                                       |
+| Behavior | Opus 5 | Opus 5.5 |
+| - | - | - |
+| `thinking: {"type": "disabled"}` / `reasoning.enabled: false` / `effort: "none"` | Allowed (at effort `high` or lower) | Rejected (400 from OpenRouter, reasoning is mandatory) |
+| `thinking.budget_tokens` / `reasoning.max_tokens` | Sets a thinking budget | Not forwarded (adaptive used), rejected upstream if sent directly |
+| Default effort when none is set | `high` | `medium` |
+| `tool_choice: {"type": "any"}` or named tool | Allowed | Rejected (no compatible endpoint via OpenRouter, 400 upstream) |
+| Progress notes between tool calls | Returned as text | Returned as thinking blocks, readable via `display: "updates"` |
+| Replaying thinking blocks after a history edit | Allowed | Can be rejected (400) on enforced accounts, not enforced via OpenRouter |
+| Computer use tool type (direct Anthropic API) | `computer_20251124` | `computer_toolset_20260801` only |
+| Pricing (input / output / cache read, per M) | $5 / $25 / \$0.50 | $4 / $20 / \$0.20 |
 
 ## Resources
 

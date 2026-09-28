@@ -28,11 +28,11 @@ Use `--model` only when you want a specific family, tier, or version:
 fireconnect claude --model glm-latest
 ```
 
-| Kind       | Example IDs                                          | Behavior                                       |
-| ---------- | ---------------------------------------------------- | ---------------------------------------------- |
+| Kind | Example IDs | Behavior |
+| - | - | - |
 | **Latest** | `kimi-latest`, `glm-latest`, `deepseek-flash-latest` | Tracks the current version in the model family |
-| **Fast**   | `kimi-fast-latest`, `glm-fast-latest`                | Favors lower latency at a higher token price   |
-| **Pinned** | `kimi-k3`, `glm-5p3`, `glm-5p3-flash`                | Stays on the named version                     |
+| **Fast** | `kimi-fast-latest`, `glm-fast-latest` | Favors lower latency at a higher token price |
+| **Pinned** | `kimi-k3`, `glm-5p3`, `glm-5p3-flash` | Stays on the named version |
 
 Prefer `*-latest` unless you need a pinned version.
 
@@ -40,16 +40,16 @@ Prefer `*-latest` unless you need a pinned version.
 
 These are all serverless aliases as of September 27, 2026. Aliases can move to newer models or be retired, so treat this list as a snapshot. The [serverless models endpoint](#find-a-model-id) always shows the current set, and `fireconnect model list` shows the current coding aliases.
 
-| Alias                   | Current model         | Tier     | Input           |
-| ----------------------- | --------------------- | -------- | --------------- |
-| `kimi-latest`           | `kimi-k3`             | Standard | Text and images |
-| `kimi-fast-latest`      | `kimi-k3`             | Fast     | Text and images |
-| `glm-latest`            | `glm-5p3`             | Standard | Text            |
-| `glm-fast-latest`       | `glm-5p3`             | Fast     | Text            |
-| `glm-flash-latest`      | `glm-5p3-flash`       | Standard | Text and images |
+| Alias | Current model | Tier | Input |
+| - | - | - | - |
+| `kimi-latest` | `kimi-k3` | Standard | Text and images |
+| `kimi-fast-latest` | `kimi-k3` | Fast | Text and images |
+| `glm-latest` | `glm-5p3` | Standard | Text |
+| `glm-fast-latest` | `glm-5p3` | Fast | Text |
+| `glm-flash-latest` | `glm-5p3-flash` | Standard | Text and images |
 | `deepseek-flash-latest` | `deepseek-v4p1-flash` | Standard | Text and images |
-| `minimax-latest`        | `minimax-m3`          | Standard | Text            |
-| `qwen-max-latest`       | `qwen3p8-max`         | Standard | Text and images |
+| `minimax-latest` | `minimax-m3` | Standard | Text |
+| `qwen-max-latest` | `qwen3p8-max` | Standard | Text and images |
 
 `qwen-max-latest` is not in the coding catalog, so `fireconnect model list` does not show it.
 

@@ -74,11 +74,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                                                                           | Example |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------- | ------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                   |         |
-| `window`  | [\*operations.Window](../../models/operations/window.mdx)  | :heavy\_minus\_sign: | Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported. | 7d      |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                         |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `window` | [\*operations.Window](../../models/operations/window.mdx) | :heavy\_minus\_sign: | Trailing time window for the classification data. Currently only `7d` (trailing 7 days) is supported. | 7d |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -86,11 +86,11 @@ func main() {
 
 ### Errors
 
-| Error Type                             | Status Code | Content Type     |
-| -------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError      | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError    | 401         | application/json |
-| sdkerrors.TooManyRequestsResponseError | 429         | application/json |
-| sdkerrors.InternalServerResponseError  | 500         | application/json |
-| sdkerrors.APIError                     | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

@@ -82,11 +82,11 @@ Voice Design creates 3 voice previews. You just need to provide:
 * A **voice description** between 20 and 1000 characters.
 * Optional **text** to preview the voice, between 100 and 1000 characters.
 
-##### Voice Design with Eleven v3
+##### Voice Design with Eleven v4
 
-Using the [Eleven v3 model](/docs/overview/models#eleven-v3), voices that are capable of a wide range of emotion can be designed via a prompt.
+[Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) is the model to use. Voice Design voices work with it, though they may be less performative than with earlier models. Eleven v3 can also design voices that cover a wide emotional range.
 
-Using v3 gives the following benefits:
+Using these models gives the following benefits:
 
 * More natural and versatile voice generation.
 * Better control over voice characteristics.

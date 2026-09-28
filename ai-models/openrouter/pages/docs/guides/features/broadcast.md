@@ -71,29 +71,29 @@ Each broadcast trace includes comprehensive information about your API request:
 
 Use the root `GENERATION` observation for usage reporting. Its `promptTokens` and `completionTokens` are the token counts used by OpenRouter's accounting layer, normally derived from provider-reported usage. Provider-attempt and timing `SPAN` observations do not carry generation totals.
 
-| Observation field                                                                | Meaning                                                                                                                                                 |
-| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `promptTokens`, `completionTokens`, `totalTokens`                                | Accounted input, output, and total tokens. These can contain fallback estimates when provider usage is missing.                                         |
-| `promptTokensDetails.cachedTokens`                                               | Tokens read from the provider's prompt cache.                                                                                                           |
-| `promptTokensDetails.cacheWriteTokens`                                           | Tokens written to the provider's prompt cache. Uses the provider-reported aggregate when available; otherwise the pricing layer's cache-write quantity. |
-| `promptTokensDetails.cacheCreation.ephemeral_5m_input_tokens`                    | Cache-write tokens with a five-minute TTL, when the provider reports a complete breakdown.                                                              |
-| `promptTokensDetails.cacheCreation.ephemeral_1h_input_tokens`                    | Cache-write tokens with a one-hour TTL, when the provider reports a complete breakdown.                                                                 |
-| `promptTokensDetails.audioTokens`, `promptTokensDetails.videoTokens`             | Available multimodal input-token breakdowns.                                                                                                            |
-| `completionTokensDetails.reasoningTokens`, `completionTokensDetails.imageTokens` | Available reasoning and image output-token breakdowns.                                                                                                  |
-| `inputCost`, `outputCost`                                                        | Prompt and completion portions of the inference cost in USD.                                                                                            |
-| `totalCost`                                                                      | The total OpenRouter charge in USD, including applicable fees and plugin charges.                                                                       |
+| Observation field | Meaning |
+| - | - |
+| `promptTokens`, `completionTokens`, `totalTokens` | Accounted input, output, and total tokens. These can contain fallback estimates when provider usage is missing. |
+| `promptTokensDetails.cachedTokens` | Tokens read from the provider's prompt cache. |
+| `promptTokensDetails.cacheWriteTokens` | Tokens written to the provider's prompt cache. Uses the provider-reported aggregate when available; otherwise the pricing layer's cache-write quantity. |
+| `promptTokensDetails.cacheCreation.ephemeral_5m_input_tokens` | Cache-write tokens with a five-minute TTL, when the provider reports a complete breakdown. |
+| `promptTokensDetails.cacheCreation.ephemeral_1h_input_tokens` | Cache-write tokens with a one-hour TTL, when the provider reports a complete breakdown. |
+| `promptTokensDetails.audioTokens`, `promptTokensDetails.videoTokens` | Available multimodal input-token breakdowns. |
+| `completionTokensDetails.reasoningTokens`, `completionTokensDetails.imageTokens` | Available reasoning and image output-token breakdowns. |
+| `inputCost`, `outputCost` | Prompt and completion portions of the inference cost in USD. |
+| `totalCost` | The total OpenRouter charge in USD, including applicable fees and plugin charges. |
 
 Enable **Cost** under **Additional generation metadata** on each destination to include the following fields in `metadata.openrouter_generation`. They remain available in Privacy Mode.
 
-| Metadata field           | Meaning                                                                                                                                                                        |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `cache_write_tokens`     | The same cache-write total as `promptTokensDetails.cacheWriteTokens`.                                                                                                          |
-| `cache_creation`         | The same TTL breakdown as `promptTokensDetails.cacheCreation`.                                                                                                                 |
-| `native_server_tool_use` | Available per-tool counts for provider-native server tools; see below.                                                                                                         |
-| `usage_is_estimated`     | `true` when accounting used a fallback prompt or completion quantity, or fallback pricing after a usage-calculation failure. `false` means those fallback paths were not used. |
-| `usage`                  | The OpenRouter charge, matching the generation's total cost.                                                                                                                   |
-| `is_byok`                | Whether the generation used your provider key.                                                                                                                                 |
-| `byok_usage_inference`   | Reference inference cost for BYOK, not an additional OpenRouter charge or your provider's invoice amount.                                                                      |
+| Metadata field | Meaning |
+| - | - |
+| `cache_write_tokens` | The same cache-write total as `promptTokensDetails.cacheWriteTokens`. |
+| `cache_creation` | The same TTL breakdown as `promptTokensDetails.cacheCreation`. |
+| `native_server_tool_use` | Available per-tool counts for provider-native server tools; see below. |
+| `usage_is_estimated` | `true` when accounting used a fallback prompt or completion quantity, or fallback pricing after a usage-calculation failure. `false` means those fallback paths were not used. |
+| `usage` | The OpenRouter charge, matching the generation's total cost. |
+| `is_byok` | Whether the generation used your provider key. |
+| `byok_usage_inference` | Reference inference cost for BYOK, not an additional OpenRouter charge or your provider's invoice amount. |
 
 The existing `openrouter_generation.tokens_prompt` and `tokens_completion` fields are OpenRouter's own token estimates, not the provider's token counters. The new `usage_is_estimated` flag describes the accounting path; it does not turn these two estimate fields into provider-reported measurements or certify every detailed token count and cost as provider-reported.
 
@@ -103,13 +103,13 @@ A null or omitted quantity is unavailable, not zero. An omitted `usage_is_estima
 
 `native_server_tool_use` can contain:
 
-| Counter                     | Source                                                                                                                                                                    |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `web_search_requests`       | The existing provider-native web-search count, including Anthropic's reported usage and OpenAI Responses completed search calls.                                          |
-| `web_fetch_requests`        | Anthropic's reported native web-fetch count.                                                                                                                              |
-| `code_execution_requests`   | Distinct Anthropic code-execution invocations, or completed OpenAI Responses code-interpreter calls. Anthropic bash and text-editor code-execution variants are included. |
-| `file_search_requests`      | Completed OpenAI Responses file-search calls.                                                                                                                             |
-| `image_generation_requests` | Completed OpenAI Responses image-generation calls.                                                                                                                        |
+| Counter | Source |
+| - | - |
+| `web_search_requests` | The existing provider-native web-search count, including Anthropic's reported usage and OpenAI Responses completed search calls. |
+| `web_fetch_requests` | Anthropic's reported native web-fetch count. |
+| `code_execution_requests` | Distinct Anthropic code-execution invocations, or completed OpenAI Responses code-interpreter calls. Anthropic bash and text-editor code-execution variants are included. |
+| `file_search_requests` | Completed OpenAI Responses file-search calls. |
+| `image_generation_requests` | Completed OpenAI Responses image-generation calls. |
 
 These counters exclude client function calls and OpenRouter-orchestrated tool-call totals. They are not universally invoice units: a provider may bill code execution by container, session, or duration rather than invocation, and may charge for failed work. Apply your provider's billing rules rather than multiplying every tool count by a per-call price.
 
@@ -123,21 +123,21 @@ For BYOK reconciliation, use available cache and native-tool quantities with you
 
 With the **Cost** metadata opt-in enabled, `upstream_raw_response_usage` carries the provider's own usage values as they arrived, before OpenRouter normalizes them. Unknown provider fields are preserved, so this object can change whenever a provider changes its API. Without the Cost opt-in, the field is absent from the export entirely, along with the rest of `openrouter_generation`.
 
-| Container        | Meaning                                                                                                                                                                                  |
-| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Object           | One usage report, such as a final non-streaming or Responses usage object.                                                                                                               |
+| Container | Meaning |
+| - | - |
+| Object | One usage report, such as a final non-streaming or Responses usage object. |
 | Array of objects | Several usage reports for one generation, in the order the provider sent them, such as Anthropic stream frames. Do not add their values together; a provider may send cumulative totals. |
-| `null`           | No provider usage was captured or the value was suppressed.                                                                                                                              |
+| `null` | No provider usage was captured or the value was suppressed. |
 
 This field is provider evidence, not an invoice calculation, and not every provider reports usage. Its values are not OpenRouter's accounting inputs: read `promptTokens`, `completionTokens`, costs, and the fields above for accounting, and treat differences between the two as expected rather than as a billing discrepancy.
 
 OpenRouter replaces the object with `null` and records `upstream_raw_response_usage_suppression_reason` when:
 
-| Reason            | Condition                                                                                                         |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------- |
-| `privacy_mode`    | The destination has Privacy Mode enabled.                                                                         |
+| Reason | Condition |
+| - | - |
+| `privacy_mode` | The destination has Privacy Mode enabled. |
 | `usage_estimated` | Accounting used fallback quantities or pricing, so the partial provider report would misrepresent the generation. |
-| `size_limit`      | The provider's usage JSON exceeded 64 KiB. The object is never truncated.                                         |
+| `size_limit` | The provider's usage JSON exceeded 64 KiB. The object is never truncated. |
 
 An absent reason with a `null` value means provider usage was simply unavailable. An absent field means the export predates this feature. A reported `0` remains a provider-reported zero.
 
@@ -228,13 +228,13 @@ For advanced observability workflows, you can pass arbitrary metadata to your tr
 
 These metadata keys are commonly used across observability platforms:
 
-| Key               | Description                                                                                                             |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `trace_id`        | Group multiple API requests into a single trace. Use the same ID across requests to track multi-step workflows.         |
-| `trace_name`      | Custom name for the root trace in your observability platform. Defaults to the model name if not set.                   |
-| `span_name`       | Create a parent span that groups LLM operations. Creates hierarchical structure where the span contains the generation. |
-| `generation_name` | Custom name for the specific LLM generation/call. Defaults to the model name if not set.                                |
-| `parent_span_id`  | Link your OpenRouter trace to an existing span from your own tracing system (e.g., OpenTelemetry).                      |
+| Key | Description |
+| - | - |
+| `trace_id` | Group multiple API requests into a single trace. Use the same ID across requests to track multi-step workflows. |
+| `trace_name` | Custom name for the root trace in your observability platform. Defaults to the model name if not set. |
+| `span_name` | Create a parent span that groups LLM operations. Creates hierarchical structure where the span contains the generation. |
+| `generation_name` | Custom name for the specific LLM generation/call. Defaults to the model name if not set. |
+| `parent_span_id` | Link your OpenRouter trace to an existing span from your own tracing system (e.g., OpenTelemetry). |
 
 When using these fields, your traces will appear with a hierarchical structure in platforms like Langfuse:
 
@@ -316,99 +316,99 @@ Some field names appear at both the top level of the trace and inside each `obse
 <div className="support-matrix">
   <AccordionGroup>
     <Accordion title="Trace identity">
-      | Destination             | `id`                                  | `userId`                              | `sessionId`                           | `apiKeyName`                          | `name`                                |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Braintrust              | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `id` | `userId` | `sessionId` | `apiKeyName` | `name` |
+      | - | - | - | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Braintrust | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | — | — | — | <Icon icon="check" color="#16a34a" /> |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Raindrop (beta)         | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Raindrop (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Account identity">
-      | Destination             | `entityId`                            | `organizationId`                      | `creatorUserId`                       |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Comet Opik              | —                                     | —                                     | —                                     |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `entityId` | `organizationId` | `creatorUserId` |
+      | - | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Comet Opik | — | — | — |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Raindrop (beta)         | —                                     | —                                     | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | —                                     | —                                     | —                                     |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Raindrop (beta) | — | — | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | — | — | — |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Span identity">
-      | Destination             | `id`                                  | `parentObservationId`                 | `name`                                |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Raindrop (beta)         | —                                     | —                                     | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | W\&B Weave              | —                                     | —                                     | —                                     |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `id` | `parentObservationId` | `name` |
+      | - | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Raindrop (beta) | — | — | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | W\&B Weave | — | — | — |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Timing and latency">
-      | Destination             | `timestamp`                           | `startTime`                           | `endTime`                             | `routerLatencyMs`                     | `timeline`<br />(raw object)          |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | —                                     | —                                     | —                                     | —                                     | —                                     |
-      | Braintrust              | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | ClickHouse              | —                                     | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Datadog                 | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Google BigQuery (beta)  | —                                     | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Grafana Cloud           | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Langfuse                | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | LangSmith               | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | New Relic               | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | OpenTelemetry Collector | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | PostHog                 | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Raindrop (beta)         | —                                     | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Ramp                    | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Webhook                 | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
+      | Destination | `timestamp` | `startTime` | `endTime` | `routerLatencyMs` | `timeline`<br />(raw object) |
+      | - | - | - | - | - | - |
+      | Arize AX | — | — | — | — | — |
+      | Braintrust | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | ClickHouse | — | — | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Datadog | — | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Google BigQuery (beta) | — | — | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Grafana Cloud | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Langfuse | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | LangSmith | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | New Relic | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | OpenTelemetry Collector | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | PostHog | — | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Raindrop (beta) | — | — | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Ramp | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Webhook | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
     </Accordion>
 
     <Accordion title="Derived latency metrics">
@@ -427,269 +427,269 @@ Some field names appear at both the top level of the trace and inside each `obse
       Inter-token latency is the mean gap between output tokens, matching vLLM's
       `request_time_per_output_token`: `(providerBodyEndMs - firstTokenMs) / (output_tokens - 1)`.
 
-      | Destination             | `provider_time_to_first_token_ms`     | `inter_token_latency_ms`              |
-      | ----------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `provider_time_to_first_token_ms` | `inter_token_latency_ms` |
+      | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Raindrop (beta)         | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Raindrop (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
 
       Every documented destination receives both.
     </Accordion>
 
     <Accordion title="Prompt and completion content">
-      | Destination             | `input`<br />(trace)                      | `output`<br />(trace)                     | `input`<br />(span)                       | `output`<br />(span)                      |
-      | ----------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
-      | Arize AX                | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Braintrust              | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | ClickHouse              | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Comet Opik              | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Datadog                 | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Google BigQuery (beta)  | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Grafana Cloud           | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Langfuse                | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | LangSmith               | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | New Relic               | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Destination | `input`<br />(trace) | `output`<br />(trace) | `input`<br />(span) | `output`<br />(span) |
+      | - | - | - | - | - |
+      | Arize AX | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Braintrust | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | ClickHouse | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Comet Opik | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Datadog | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Google BigQuery (beta) | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Grafana Cloud | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Langfuse | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | LangSmith | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | New Relic | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
       | OpenTelemetry Collector | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | PostHog                 | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Raindrop (beta)         | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Ramp                    | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | S3 / S3-Compatible      | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Sentry                  | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Snowflake               | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | W\&B Weave              | —                                         | —                                         | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
-      | Webhook                 | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | PostHog | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Raindrop (beta) | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Ramp | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | S3 / S3-Compatible | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Sentry | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Snowflake | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | W\&B Weave | — | — | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
+      | Webhook | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> | <Icon icon="eye-slash" color="#ca8a04" /> |
     </Accordion>
 
     <Accordion title="Model and provider">
-      | Destination             | `model`                               | `modelParameters`                     | `providerName`                        | `providerSlug`                        |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `model` | `modelParameters` | `providerName` | `providerSlug` |
+      | - | - | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Raindrop (beta)         | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Raindrop (beta) | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Token counts">
-      | Destination             | `promptTokens`                        | `completionTokens`                    | `totalTokens`                         |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | —                                     | —                                     | —                                     |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `promptTokens` | `completionTokens` | `totalTokens` |
+      | - | - | - | - |
+      | Arize AX | — | — | — |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Raindrop (beta)         | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Raindrop (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Prompt token breakdown">
-      | Destination             | `cachedTokens`                        | `audioTokens`                         | `videoTokens`                         |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | —                                     | —                                     | —                                     |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `cachedTokens` | `audioTokens` | `videoTokens` |
+      | - | - | - | - |
+      | Arize AX | — | — | — |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Raindrop (beta)         | —                                     | —                                     | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Raindrop (beta) | — | — | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | — | — |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Completion token breakdown">
-      | Destination             | `reasoningTokens`                     | `imageTokens`                         |
-      | ----------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | —                                     | —                                     |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `reasoningTokens` | `imageTokens` |
+      | - | - | - |
+      | Arize AX | — | — |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | — |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | — |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Raindrop (beta)         | —                                     | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Raindrop (beta) | — | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | — |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Cost">
-      | Destination             | `inputCost`                           | `outputCost`                          | `totalCost`                           |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | —                                     | —                                     | —                                     |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `inputCost` | `outputCost` | `totalCost` |
+      | - | - | - | - |
+      | Arize AX | — | — | — |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Raindrop (beta)         | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Raindrop (beta) | — | — | <Icon icon="check" color="#16a34a" /> |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Unit prices">
-      | Destination             | `inputUnitPrice`                      | `outputUnitPrice`                     |
-      | ----------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | —                                     | —                                     |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Comet Opik              | —                                     | —                                     |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `inputUnitPrice` | `outputUnitPrice` |
+      | - | - | - |
+      | Arize AX | — | — |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Comet Opik | — | — |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | —                                     | —                                     |
-      | Raindrop (beta)         | —                                     | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | —                                     | —                                     |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | — | — |
+      | Raindrop (beta) | — | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | — | — |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Status">
-      | Destination             | `level`                               | `statusCode`                          | `statusMessage`                       |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Comet Opik              | —                                     | —                                     | —                                     |
-      | Datadog                 | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Raindrop (beta)         | —                                     | —                                     | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | W\&B Weave              | —                                     | —                                     | —                                     |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | —                                     | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `level` | `statusCode` | `statusMessage` |
+      | - | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Comet Opik | — | — | — |
+      | Datadog | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | — | — | <Icon icon="check" color="#16a34a" /> |
+      | Raindrop (beta) | — | — | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | — | — | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | <Icon icon="check" color="#16a34a" /> | — | — |
+      | W\&B Weave | — | — | — |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | — | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Finish reason">
-      | Destination             | `finishReason`                        | `normalizedFinishReason`              |
-      | ----------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Braintrust              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | ClickHouse              | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Datadog                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Google BigQuery (beta)  | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Destination | `finishReason` | `normalizedFinishReason` |
+      | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Braintrust | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | ClickHouse | — | <Icon icon="check" color="#16a34a" /> |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | — |
+      | Datadog | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Google BigQuery (beta) | — | <Icon icon="check" color="#16a34a" /> |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
       | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | PostHog                 | —                                     | —                                     |
-      | Raindrop (beta)         | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | Snowflake               | —                                     | <Icon icon="check" color="#16a34a" /> |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | PostHog | — | — |
+      | Raindrop (beta) | <Icon icon="check" color="#16a34a" /> | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | — | <Icon icon="check" color="#16a34a" /> |
+      | Snowflake | — | <Icon icon="check" color="#16a34a" /> |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
     </Accordion>
 
     <Accordion title="Metadata and tags">
-      | Destination             | `metadata`<br />(trace)               | `tags`                                | `metadata`<br />(span)                | `type`                                | `version`                             |
-      | ----------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-      | Arize AX                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Braintrust              | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | ClickHouse              | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Comet Opik              | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Datadog                 | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | Google BigQuery (beta)  | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Grafana Cloud           | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Langfuse                | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | LangSmith               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     |
-      | New Relic               | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | PostHog                 | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Raindrop (beta)         | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | Ramp                    | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | S3 / S3-Compatible      | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
-      | Sentry                  | —                                     | —                                     | —                                     | —                                     | —                                     |
-      | Snowflake               | —                                     | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
-      | W\&B Weave              | <Icon icon="check" color="#16a34a" /> | —                                     | —                                     | —                                     | —                                     |
-      | Webhook                 | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | —                                     |
+      | Destination | `metadata`<br />(trace) | `tags` | `metadata`<br />(span) | `type` | `version` |
+      | - | - | - | - | - | - |
+      | Arize AX | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Braintrust | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | ClickHouse | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Comet Opik | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Datadog | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | Google BigQuery (beta) | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Grafana Cloud | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | Langfuse | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | LangSmith | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — | — |
+      | New Relic | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | OpenTelemetry Collector | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | PostHog | <Icon icon="check" color="#16a34a" /> | — | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Raindrop (beta) | <Icon icon="check" color="#16a34a" /> | — | — | <Icon icon="check" color="#16a34a" /> | — |
+      | Ramp | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | S3 / S3-Compatible | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> |
+      | Sentry | — | — | — | — | — |
+      | Snowflake | — | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
+      | W\&B Weave | <Icon icon="check" color="#16a34a" /> | — | — | — | — |
+      | Webhook | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | <Icon icon="check" color="#16a34a" /> | — |
     </Accordion>
   </AccordionGroup>
 </div>

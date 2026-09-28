@@ -20,11 +20,11 @@ There are three metrics we use to rate limit accounts:
 
 Adaptive rate limit ceilings depend on the model's total parameter count. Smaller models get higher ceilings:
 
-| Tier       | Total parameters | Total Prompt TPM | Uncached Prompt TPM | Generated TPM |
-| ---------- | ---------------- | ---------------- | ------------------- | ------------- |
-| **Small**  | \< 400B          | 64.8M            | 16.2M               | 648k          |
-| **Medium** | 400B – \< 1.6T   | 43.2M            | 10.8M               | 432k          |
-| **Large**  | ≥ 1.6T           | 21.6M            | 5.4M                | 216k          |
+| Tier | Total parameters | Total Prompt TPM | Uncached Prompt TPM | Generated TPM |
+| - | - | - | - | - |
+| **Small** | \< 400B | 64.8M | 16.2M | 648k |
+| **Medium** | 400B – \< 1.6T | 43.2M | 10.8M | 432k |
+| **Large** | ≥ 1.6T | 21.6M | 5.4M | 216k |
 
 Fast, Priority, and US-only variants of a model share the same tier and ceilings as the base model. Models without a known parameter count use **Large** ceilings.
 

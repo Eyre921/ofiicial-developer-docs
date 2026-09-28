@@ -63,13 +63,13 @@ console.log(chatMessage.content); // Response text
 
 ### Supported Message Types
 
-| Chat Role   | Description            |
-| ----------- | ---------------------- |
-| `system`    | System instructions    |
-| `user`      | User messages          |
-| `assistant` | Assistant responses    |
+| Chat Role | Description |
+| - | - |
+| `system` | System instructions |
+| `user` | User messages |
+| `assistant` | Assistant responses |
 | `developer` | Developer instructions |
-| `tool`      | Tool response messages |
+| `tool` | Tool response messages |
 
 ### Tool Messages
 

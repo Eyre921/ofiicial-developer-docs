@@ -58,13 +58,13 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                                                                                                                                                                                                           | Example                    |
-| ------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                                                   |                            |
-| `containerID` | `string`                                                   | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123               |
-| `limit`       | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of files to return (1-1000). Defaults to 100 when absent.                                                                                                                                                                                              | 100                        |
-| `after`       | `*string`                                                  | :heavy\_minus\_sign: | Forward cursor: the previous page’s `last_id` (or any container file id); listing resumes strictly after that path.                                                                                                                                                   | cfile\_b3V0L3JlcG9ydC5jc3Y |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                                         |                            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `containerID` | `string` | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of files to return (1-1000). Defaults to 100 when absent. | 100 |
+| `after` | `*string` | :heavy\_minus\_sign: | Forward cursor: the previous page’s `last_id` (or any container file id); listing resumes strictly after that path. | cfile\_b3V0L3JlcG9ydC5jc3Y |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -72,15 +72,15 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetContainerFile
 
@@ -117,12 +117,12 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                                                                                                                                                                                                           | Example                    |
-| ------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                                                   |                            |
-| `containerID` | `string`                                                   | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123               |
-| `fileID`      | `string`                                                   | :heavy\_check\_mark: | Container file id (`cfile_` + base64url of the file path).                                                                                                                                                                                                            | cfile\_b3V0L3JlcG9ydC5jc3Y |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                                         |                            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `containerID` | `string` | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123 |
+| `fileID` | `string` | :heavy\_check\_mark: | Container file id (`cfile_` + base64url of the file path). | cfile\_b3V0L3JlcG9ydC5jc3Y |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -130,16 +130,16 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## DownloadContainerFileContent
 
@@ -176,12 +176,12 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                                                                                                                                                                                                           | Example                    |
-| ------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                                                   |                            |
-| `containerID` | `string`                                                   | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123               |
-| `fileID`      | `string`                                                   | :heavy\_check\_mark: | Container file id (`cfile_` + base64url of the file path).                                                                                                                                                                                                            | cfile\_b3V0L3JlcG9ydC5jc3Y |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                                         |                            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `containerID` | `string` | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123 |
+| `fileID` | `string` | :heavy\_check\_mark: | Container file id (`cfile_` + base64url of the file path). | cfile\_b3V0L3JlcG9ydC5jc3Y |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -189,16 +189,16 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## PromoteContainerFile
 
@@ -246,12 +246,12 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                                                                                                                                                                                                           | Example                    |
-| ------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------- |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                                                   |                            |
-| `containerID` | `string`                                                   | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123               |
-| `fileID`      | `string`                                                   | :heavy\_check\_mark: | Container file id (`cfile_` + base64url of the file path).                                                                                                                                                                                                            | cfile\_b3V0L3JlcG9ydC5jc3Y |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                                         |                            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `containerID` | `string` | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123 |
+| `fileID` | `string` | :heavy\_check\_mark: | Container file id (`cfile_` + base64url of the file path). | cfile\_b3V0L3JlcG9ydC5jc3Y |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -259,15 +259,15 @@ func main() {
 
 ### Errors
 
-| Error Type                                | Status Code | Content Type     |
-| ----------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError         | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError       | 401         | application/json |
-| sdkerrors.ForbiddenResponseError          | 403         | application/json |
-| sdkerrors.NotFoundResponseError           | 404         | application/json |
-| sdkerrors.PayloadTooLargeResponseError    | 413         | application/json |
-| sdkerrors.TooManyRequestsResponseError    | 429         | application/json |
-| sdkerrors.InternalServerResponseError     | 500         | application/json |
-| sdkerrors.ServiceUnavailableResponseError | 503         | application/json |
-| sdkerrors.APIError                        | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
+| sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

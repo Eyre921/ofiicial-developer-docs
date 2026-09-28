@@ -51,21 +51,21 @@ You can customize how your requests are routed using the `provider` object in th
 
 The `provider` object can contain the following fields:
 
-| Field                      | Type              | Default | Description                                                                                                                                                      |
-| -------------------------- | ----------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `order`                    | string\[]         | -       | List of provider slugs to try in order (e.g. `["anthropic", "openai"]`). [Learn more](#ordering-specific-providers)                                              |
-| `allow_fallbacks`          | boolean           | `true`  | Whether to allow backup providers when the primary is unavailable. [Learn more](#disabling-fallbacks)                                                            |
-| `require_parameters`       | boolean           | `false` | Only use providers that support all parameters in your request. [Learn more](#requiring-providers-to-support-all-parameters)                                     |
-| `data_collection`          | "allow" \| "deny" | "allow" | Control whether to use providers that may store data. [Learn more](#requiring-providers-to-comply-with-data-policies)                                            |
-| `zdr`                      | boolean           | -       | Restrict routing to only ZDR (Zero Data Retention) endpoints. [Learn more](#zero-data-retention-enforcement)                                                     |
-| `enforce_distillable_text` | boolean           | -       | Restrict routing to only models that allow text distillation. [Learn more](#distillable-text-enforcement)                                                        |
-| `only`                     | string\[]         | -       | List of provider slugs to allow for this request. [Learn more](#allowing-only-specific-providers)                                                                |
-| `ignore`                   | string\[]         | -       | List of provider slugs to skip for this request. [Learn more](#ignoring-providers)                                                                               |
-| `quantizations`            | string\[]         | -       | List of quantization levels to filter by (e.g. `["int4", "int8"]`). [Learn more](#quantization)                                                                  |
-| `sort`                     | string \| object  | -       | Sort providers by price, throughput, or latency. Can be a string (e.g. `"price"`) or an object with `by` and `partition` fields. [Learn more](#provider-sorting) |
-| `preferred_min_throughput` | number \| object  | -       | Preferred minimum throughput (tokens/sec). Can be a number or an object with percentile cutoffs (p50, p75, p90, p99). [Learn more](#performance-thresholds)      |
-| `preferred_max_latency`    | number \| object  | -       | Preferred maximum latency (seconds). Can be a number or an object with percentile cutoffs (p50, p75, p90, p99). [Learn more](#performance-thresholds)            |
-| `max_price`                | object            | -       | The maximum pricing you want to pay for this request. [Learn more](#max-price)                                                                                   |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `order` | string\[] | - | List of provider slugs to try in order (e.g. `["anthropic", "openai"]`). [Learn more](#ordering-specific-providers) |
+| `allow_fallbacks` | boolean | `true` | Whether to allow backup providers when the primary is unavailable. [Learn more](#disabling-fallbacks) |
+| `require_parameters` | boolean | `false` | Only use providers that support all parameters in your request. [Learn more](#requiring-providers-to-support-all-parameters) |
+| `data_collection` | "allow" \| "deny" | "allow" | Control whether to use providers that may store data. [Learn more](#requiring-providers-to-comply-with-data-policies) |
+| `zdr` | boolean | - | Restrict routing to only ZDR (Zero Data Retention) endpoints. [Learn more](#zero-data-retention-enforcement) |
+| `enforce_distillable_text` | boolean | - | Restrict routing to only models that allow text distillation. [Learn more](#distillable-text-enforcement) |
+| `only` | string\[] | - | List of provider slugs to allow for this request. [Learn more](#allowing-only-specific-providers) |
+| `ignore` | string\[] | - | List of provider slugs to skip for this request. [Learn more](#ignoring-providers) |
+| `quantizations` | string\[] | - | List of quantization levels to filter by (e.g. `["int4", "int8"]`). [Learn more](#quantization) |
+| `sort` | string \| object | - | Sort providers by price, throughput, or latency. Can be a string (e.g. `"price"`) or an object with `by` and `partition` fields. [Learn more](#provider-sorting) |
+| `preferred_min_throughput` | number \| object | - | Preferred minimum throughput (tokens/sec). Can be a number or an object with percentile cutoffs (p50, p75, p90, p99). [Learn more](#performance-thresholds) |
+| `preferred_max_latency` | number \| object | - | Preferred maximum latency (seconds). Can be a number or an object with percentile cutoffs (p50, p75, p90, p99). [Learn more](#performance-thresholds) |
+| `max_price` | object | - | The maximum pricing you want to pay for this request. [Learn more](#max-price) |
 
 <Note>
   **Regional data residency (Enterprise)**
@@ -291,9 +291,9 @@ You can append `:floor` to any model slug as a shortcut to sort by price. In add
 
 When using [model fallbacks](/docs/guides/routing/routers/auto-router), the `sort` field can be specified as an object with additional options to control how endpoints are sorted across multiple models.
 
-| Field            | Type   | Default   | Description                                                          |
-| ---------------- | ------ | --------- | -------------------------------------------------------------------- |
-| `sort.by`        | string | -         | The sorting strategy: `"price"`, `"throughput"`, or `"latency"`.     |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `sort.by` | string | - | The sorting strategy: `"price"`, `"throughput"`, or `"latency"`. |
 | `sort.partition` | string | `"model"` | How to group endpoints for sorting: `"model"` (default) or `"none"`. |
 
 By default, when you specify multiple models (fallbacks), OpenRouter groups endpoints by model before sorting. This means the primary model's endpoints are always tried first, regardless of their performance characteristics. Setting `partition` to `"none"` removes this grouping, allowing endpoints to be sorted globally across all models.
@@ -410,10 +410,10 @@ In this example, OpenRouter will route to whichever endpoint across all three mo
 
 You can set minimum throughput or maximum latency thresholds to filter endpoints. Endpoints that don't meet these thresholds are deprioritized (moved to the end of the list) rather than excluded entirely.
 
-| Field                      | Type             | Default | Description                                                                                                               |
-| -------------------------- | ---------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `preferred_min_throughput` | number \| object | -       | Preferred minimum throughput in tokens per second. Can be a number (applies to p50) or an object with percentile cutoffs. |
-| `preferred_max_latency`    | number \| object | -       | Preferred maximum latency in seconds. Can be a number (applies to p50) or an object with percentile cutoffs.              |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `preferred_min_throughput` | number \| object | - | Preferred minimum throughput in tokens per second. Can be a number (applies to p50) or an object with percentile cutoffs. |
+| `preferred_max_latency` | number \| object | - | Preferred maximum latency in seconds. Can be a number (applies to p50) or an object with percentile cutoffs. |
 
 ### How Percentiles Work
 
@@ -871,9 +871,9 @@ In this example, if you have a BYOK key configured for OpenAI but not for Anthro
 
 You can set the providers that OpenRouter will prioritize for your request using the `order` field.
 
-| Field   | Type      | Default | Description                                                              |
-| ------- | --------- | ------- | ------------------------------------------------------------------------ |
-| `order` | string\[] | -       | List of provider slugs to try in order (e.g. `["anthropic", "openai"]`). |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `order` | string\[] | - | List of provider slugs to try in order (e.g. `["anthropic", "openai"]`). |
 
 The router will prioritize providers in this list, and in this order, for the model you're using. If you don't set this field, the router will [load balance](#price-based-load-balancing-default-strategy) across the top providers to maximize uptime.
 
@@ -1023,12 +1023,12 @@ When you use a base provider slug (e.g. `"google-vertex"`) in any provider routi
 
 To target a **specific** variant or region, use the full slug including the suffix (e.g. `"google-vertex/us-east5"` or `"deepinfra/turbo"`).
 
-| Slug in request            | What it matches                            |
-| -------------------------- | ------------------------------------------ |
-| `"google-vertex"`          | All Google Vertex endpoints (every region) |
-| `"google-vertex/us-east5"` | Only the `us-east5` region endpoint        |
-| `"deepinfra"`              | All DeepInfra endpoints (default + turbo)  |
-| `"deepinfra/turbo"`        | Only the DeepInfra turbo endpoint          |
+| Slug in request | What it matches |
+| - | - |
+| `"google-vertex"` | All Google Vertex endpoints (every region) |
+| `"google-vertex/us-east5"` | Only the `us-east5` region endpoint |
+| `"deepinfra"` | All DeepInfra endpoints (default + turbo) |
+| `"deepinfra/turbo"` | Only the DeepInfra turbo endpoint |
 
 ### Example: Targeting a specific endpoint variant
 
@@ -1111,8 +1111,8 @@ This approach is especially useful when you want to consistently use a specific 
 
 You can restrict requests only to providers that support all parameters in your request using the `require_parameters` field.
 
-| Field                | Type    | Default | Description                                                     |
-| -------------------- | ------- | ------- | --------------------------------------------------------------- |
+| Field | Type | Default | Description |
+| - | - | - | - |
 | `require_parameters` | boolean | `false` | Only use providers that support all parameters in your request. |
 
 With the default routing strategy, providers that don't support all the [LLM parameters](/docs/api_reference/parameters) specified in your request can still receive the request, but will ignore unknown parameters. When you set `require_parameters` to `true`, the request won't even be routed to that provider.
@@ -1188,8 +1188,8 @@ For example, to only use providers that support JSON formatting:
 
 You can restrict requests only to providers that comply with your data policies using the `data_collection` field.
 
-| Field             | Type              | Default | Description                                           |
-| ----------------- | ----------------- | ------- | ----------------------------------------------------- |
+| Field | Type | Default | Description |
+| - | - | - | - |
 | `data_collection` | "allow" \| "deny" | "allow" | Control whether to use providers that may store data. |
 
 * `allow`: (default) allow providers which store user data non-transiently and may train on it
@@ -1269,9 +1269,9 @@ To exclude providers that don't comply with your data policies, set `data_collec
 
 You can enforce Zero Data Retention (ZDR) on a per-request basis using the `zdr` parameter, ensuring your request only routes to endpoints that do not retain prompts.
 
-| Field | Type    | Default | Description                                                   |
-| ----- | ------- | ------- | ------------------------------------------------------------- |
-| `zdr` | boolean | -       | Restrict routing to only ZDR (Zero Data Retention) endpoints. |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `zdr` | boolean | - | Restrict routing to only ZDR (Zero Data Retention) endpoints. |
 
 When `zdr` is set to `true`, the request will only be routed to endpoints that have a Zero Data Retention policy. When `zdr` is `false` or not provided, it has no effect on routing.
 
@@ -1351,9 +1351,9 @@ This is useful for customers who don't want to globally enforce ZDR but need to 
 
 You can enforce distillable text filtering on a per-request basis using the `enforce_distillable_text` parameter, ensuring your request only routes to models where the author has allowed text distillation.
 
-| Field                      | Type    | Default | Description                                                   |
-| -------------------------- | ------- | ------- | ------------------------------------------------------------- |
-| `enforce_distillable_text` | boolean | -       | Restrict routing to only models that allow text distillation. |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `enforce_distillable_text` | boolean | - | Restrict routing to only models that allow text distillation. |
 
 When `enforce_distillable_text` is set to `true`, the request will only be routed to models where the author has explicitly enabled text distillation. When `enforce_distillable_text` is `false` or not provided, it has no effect on routing.
 
@@ -1488,9 +1488,9 @@ This is combined with the `order` field from [Ordering Specific Providers](#orde
 
 You can allow only specific providers for a request by setting the `only` field in the `provider` object.
 
-| Field  | Type      | Default | Description                                       |
-| ------ | --------- | ------- | ------------------------------------------------- |
-| `only` | string\[] | -       | List of provider slugs to allow for this request. |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `only` | string\[] | - | List of provider slugs to allow for this request. |
 
 <Warning>
   Only allowing some providers may significantly reduce fallback options and
@@ -1572,9 +1572,9 @@ Here's an example that will only use Azure for a request calling GPT-4 Omni:
 
 You can ignore providers for a request by setting the `ignore` field in the `provider` object.
 
-| Field    | Type      | Default | Description                                      |
-| -------- | --------- | ------- | ------------------------------------------------ |
-| `ignore` | string\[] | -       | List of provider slugs to skip for this request. |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `ignore` | string\[] | - | List of provider slugs to skip for this request. |
 
 <Warning>
   Ignoring multiple providers may significantly reduce fallback options and
@@ -1656,9 +1656,9 @@ Here's an example that will ignore DeepInfra for a request calling Llama 3.3 70b
 
 Quantization reduces model size and computational requirements while aiming to preserve performance. Most LLMs today use FP16 or BF16 for training and inference, cutting memory requirements in half compared to FP32. Some optimizations use FP8 or quantization to reduce size further (e.g., INT8, INT4).
 
-| Field           | Type      | Default | Description                                                                                     |
-| --------------- | --------- | ------- | ----------------------------------------------------------------------------------------------- |
-| `quantizations` | string\[] | -       | List of quantization levels to filter by (e.g. `["int4", "int8"]`). [Learn more](#quantization) |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `quantizations` | string\[] | - | List of quantization levels to filter by (e.g. `["int4", "int8"]`). [Learn more](#quantization) |
 
 <Warning>
   Quantized models may exhibit degraded performance for certain prompts,
@@ -1767,10 +1767,10 @@ When using Anthropic models (Claude), you can request specific beta features by 
 
 #### Supported Beta Features
 
-| Feature              | Header Value                      | Description                                                                                                                                         |
-| -------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Interleaved Thinking | `interleaved-thinking-2025-05-14` | Allows Claude's thinking/reasoning to be interleaved with regular output, rather than appearing as a single block                                   |
-| Structured Outputs   | `structured-outputs-2025-11-13`   | Enables the strict tool use feature for supported Claude models, validating tool parameters against your schema to ensure correctly-typed arguments |
+| Feature | Header Value | Description |
+| - | - | - |
+| Interleaved Thinking | `interleaved-thinking-2025-05-14` | Allows Claude's thinking/reasoning to be interleaved with regular output, rather than appearing as a single block |
+| Structured Outputs | `structured-outputs-2025-11-13` | Enables the strict tool use feature for supported Claude models, validating tool parameters against your schema to ensure correctly-typed arguments |
 
 <Note>
   OpenRouter manages some Anthropic features automatically:

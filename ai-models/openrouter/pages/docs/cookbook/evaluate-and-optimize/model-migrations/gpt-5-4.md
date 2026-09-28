@@ -35,11 +35,11 @@ OpenRouter supports `phase` in the
 `phase` appears on assistant output messages and has three
 possible values:
 
-| Value            | Meaning                        |
-| ---------------- | ------------------------------ |
-| `null`           | No phase specified (default)   |
-| `"commentary"`   | Intermediate assistant message |
-| `"final_answer"` | The final closeout message     |
+| Value | Meaning |
+| - | - |
+| `null` | No phase specified (default) |
+| `"commentary"` | Intermediate assistant message |
+| `"final_answer"` | The final closeout message |
 
 <Note>
   `phase` is only valid on **assistant** messages.
@@ -203,15 +203,15 @@ on assistant messages:
 
 ## Supported Models
 
-| Model                  | `phase` Support                 |
-| ---------------------- | ------------------------------- |
-| `openai/gpt-5.5`       | Supported                       |
-| `openai/gpt-5.5-pro`   | Supported                       |
-| `openai/gpt-5.4`       | Supported                       |
-| `openai/gpt-5.4-pro`   | Supported                       |
-| `openai/gpt-5.3-codex` | Supported                       |
-| Other OpenAI models    | Silently ignored (safe to pass) |
-| Non-OpenAI models      | Not applicable                  |
+| Model | `phase` Support |
+| - | - |
+| `openai/gpt-5.5` | Supported |
+| `openai/gpt-5.5-pro` | Supported |
+| `openai/gpt-5.4` | Supported |
+| `openai/gpt-5.4-pro` | Supported |
+| `openai/gpt-5.3-codex` | Supported |
+| Other OpenAI models | Silently ignored (safe to pass) |
+| Non-OpenAI models | Not applicable |
 
 <Note>
   Passing `phase` to OpenAI models that don't support it

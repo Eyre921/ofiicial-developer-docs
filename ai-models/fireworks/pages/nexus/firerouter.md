@@ -20,11 +20,11 @@ FireRouter works with the Chat Completions, Messages, and Responses APIs. Family
 
 ## Choose a router
 
-| Router ID                       | What it can use                                                                                                                                                          |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `firerouter`                    | Claude Opus or GPT Sol, [chosen from your credentials and client](#how-bare-firerouter-picks-its-closed-model), plus the [Fireworks open-model mix](#use-a-single-model) |
-| `firerouter/opus`               | The Claude Opus family, plus the Fireworks open-model mix                                                                                                                |
-| `firerouter/astra/opus/glm-5p3` | Only the models you list                                                                                                                                                 |
+| Router ID | What it can use |
+| - | - |
+| `firerouter` | Claude Opus or GPT Sol, [chosen from your credentials and client](#how-bare-firerouter-picks-its-closed-model), plus the [Fireworks open-model mix](#use-a-single-model) |
+| `firerouter/opus` | The Claude Opus family, plus the Fireworks open-model mix |
+| `firerouter/astra/opus/glm-5p3` | Only the models you list |
 
 To pick your own models, [build a router ID](#build-a-router-id). For pinned models and more examples, see [Example router IDs](#example-router-ids) and [Use a single model](#use-a-single-model). For routing across open models only, use `auto` or `auto-instant`. See [Open Models](/nexus/open-models).
 
@@ -34,14 +34,14 @@ These are the model families you can use in a `firerouter` ID. Use a **family al
 
 ### Closed models
 
-| Family        | Family alias | Current model ID   | Provider credential                                                   |
-| ------------- | ------------ | ------------------ | --------------------------------------------------------------------- |
-| Claude Opus   | `opus`       | `claude-opus-5-5`  | Anthropic                                                             |
-| Claude Fable  | `fable`      | `claude-fable-5-1` | Anthropic, with data retention enabled on your Anthropic organization |
-| Claude Sonnet | None         | `claude-sonnet-5`  | Anthropic                                                             |
-| GPT Sol       | `sol`        | `gpt-6-sol`        | OpenAI                                                                |
-| GPT Astra     | `astra`      | `gpt-6-astra`      | OpenAI                                                                |
-| GPT Luna      | `luna`       | `gpt-6-luna`       | OpenAI                                                                |
+| Family | Family alias | Current model ID | Provider credential |
+| - | - | - | - |
+| Claude Opus | `opus` | `claude-opus-5-5` | Anthropic |
+| Claude Fable | `fable` | `claude-fable-5-1` | Anthropic, with data retention enabled on your Anthropic organization |
+| Claude Sonnet | None | `claude-sonnet-5` | Anthropic |
+| GPT Sol | `sol` | `gpt-6-sol` | OpenAI |
+| GPT Astra | `astra` | `gpt-6-astra` | OpenAI |
+| GPT Luna | `luna` | `gpt-6-luna` | OpenAI |
 
 To stay on an earlier version, use its model ID: `claude-opus-5` for Claude Opus 5, or `gpt-5.6-sol` for GPT 5.6 Sol. `firerouter/opus` and `firerouter/sol` follow the newest model in each family. Claude Sonnet has no family alias, so use its model ID.
 
@@ -49,11 +49,11 @@ Anthropic serves Claude Fable only to organizations with data retention enabled.
 
 ### Fireworks open models
 
-| Family   | Family alias   | Model IDs                                  |
-| -------- | -------------- | ------------------------------------------ |
-| Kimi     | `kimi` or `k3` | `kimi-k3`, `kimi-k3-fast`                  |
-| GLM      | `glm`          | `glm-5p3`, `glm-5p3-fast`, `glm-5p3-flash` |
-| DeepSeek | None           | `deepseek-v4p1-flash`                      |
+| Family | Family alias | Model IDs |
+| - | - | - |
+| Kimi | `kimi` or `k3` | `kimi-k3`, `kimi-k3-fast` |
+| GLM | `glm` | `glm-5p3`, `glm-5p3-fast`, `glm-5p3-flash` |
+| DeepSeek | None | `deepseek-v4p1-flash` |
 
 Open models use your Fireworks API key. No other credential is needed.
 
@@ -104,11 +104,11 @@ firerouter/opus/glm-5p3
   <Step title="Check credentials" icon="key">
     Every request needs your Fireworks API key. Each closed provider in the route also needs a credential:
 
-    | If the route includes                        | You also need           |
-    | -------------------------------------------- | ----------------------- |
-    | `opus`, `fable`, or a `claude-...` model     | An Anthropic credential |
-    | `sol`, `astra`, `luna`, or a `gpt-...` model | An OpenAI credential    |
-    | Only Fireworks open models                   | Nothing else            |
+    | If the route includes | You also need |
+    | - | - |
+    | `opus`, `fable`, or a `claude-...` model | An Anthropic credential |
+    | `sol`, `astra`, `luna`, or a `gpt-...` model | An OpenAI credential |
+    | Only Fireworks open models | Nothing else |
 
     Connect [Provider Keys](/nexus/provider-keys) once, or send `x-anthropic-api-key` or `x-openai-api-key` with each request. See [Provide Anthropic and OpenAI credentials](#provide-anthropic-and-openai-credentials).
   </Step>
@@ -136,27 +136,27 @@ firerouter/opus/glm-5p3
 
 ### Example router IDs
 
-| Goal                                       | Router ID                                        | Credentials          |
-| ------------------------------------------ | ------------------------------------------------ | -------------------- |
-| Claude quality, open-model savings         | `firerouter/opus/glm-5p3`                        | Anthropic            |
-| GPT first, with Claude and Kimi available  | `firerouter/astra/opus/kimi-k3`                  | OpenAI and Anthropic |
-| Claude first, with GPT and two open models | `firerouter/opus/astra/glm-5p3/kimi-k3`          | Anthropic and OpenAI |
-| Fast, low-cost GPT mix                     | `firerouter/sol/glm-5p3-flash`                   | OpenAI               |
-| Claude Sonnet with GLM                     | `firerouter/claude-sonnet-5/glm-5p3`             | Anthropic            |
-| GPT Luna with Kimi                         | `firerouter/luna/kimi-k3`                        | OpenAI               |
-| Stay on GPT 5.6 Sol                        | `firerouter/gpt-5.6-sol/glm-5p3`                 | OpenAI               |
-| Open models, chosen by Fireworks           | `auto`                                           | None                 |
-| Fastest open models, chosen by Fireworks   | `auto-instant`                                   | None                 |
-| Open models you choose                     | `firerouter/kimi-k3/glm-5p3/deepseek-v4p1-flash` | None                 |
+| Goal | Router ID | Credentials |
+| - | - | - |
+| Claude quality, open-model savings | `firerouter/opus/glm-5p3` | Anthropic |
+| GPT first, with Claude and Kimi available | `firerouter/astra/opus/kimi-k3` | OpenAI and Anthropic |
+| Claude first, with GPT and two open models | `firerouter/opus/astra/glm-5p3/kimi-k3` | Anthropic and OpenAI |
+| Fast, low-cost GPT mix | `firerouter/sol/glm-5p3-flash` | OpenAI |
+| Claude Sonnet with GLM | `firerouter/claude-sonnet-5/glm-5p3` | Anthropic |
+| GPT Luna with Kimi | `firerouter/luna/kimi-k3` | OpenAI |
+| Stay on GPT 5.6 Sol | `firerouter/gpt-5.6-sol/glm-5p3` | OpenAI |
+| Open models, chosen by Fireworks | `auto` | None |
+| Fastest open models, chosen by Fireworks | `auto-instant` | None |
+| Open models you choose | `firerouter/kimi-k3/glm-5p3/deepseek-v4p1-flash` | None |
 
 ### Route across open models with `auto`
 
 `auto` and `auto-instant` route each turn across Fireworks open models only, so they need no closed-model credential. Fireworks picks the models behind them and updates them as new open models are released and evaluated.
 
-| Router ID      | Best for                          | Models it uses today                                              |
-| -------------- | --------------------------------- | ----------------------------------------------------------------- |
-| `auto`         | The best open model for each turn | GLM 5.3, GLM 5.3 Flash, and Kimi K3                               |
-| `auto-instant` | The lowest latency                | GLM 5.3 Flash, with other open models taking over when it is slow |
+| Router ID | Best for | Models it uses today |
+| - | - | - |
+| `auto` | The best open model for each turn | GLM 5.3, GLM 5.3 Flash, and Kimi K3 |
+| `auto-instant` | The lowest latency | GLM 5.3 Flash, with other open models taking over when it is slow |
 
 `auto` is the default model when you connect a harness with FireConnect, except in Claude Code, which defaults to `firerouter`. `firerouter/auto` and `firerouter/auto-instant` also work and behave the same way. To choose the open models yourself, list them, as in `firerouter/kimi-k3/glm-5p3`. See [Open Models](/nexus/open-models) for fast-model governance and other open-model IDs.
 
@@ -201,12 +201,12 @@ A router ID with one model behaves differently depending on whether that model i
 
 Bare `firerouter` works like one closed model. It picks that model from the credentials available to the request, then routes between it and the open-model mix:
 
-| Credentials available | Closed model                                                                                                                          |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| Anthropic only        | Claude Opus                                                                                                                           |
-| OpenAI only           | GPT Sol                                                                                                                               |
-| Anthropic and OpenAI  | GPT Sol for Responses API requests and Codex. Claude Opus for Messages API requests, Claude Code, and other Chat Completions clients. |
-| Neither               | None. Kimi K3 and the open-model mix serve every turn.                                                                                |
+| Credentials available | Closed model |
+| - | - |
+| Anthropic only | Claude Opus |
+| OpenAI only | GPT Sol |
+| Anthropic and OpenAI | GPT Sol for Responses API requests and Codex. Claude Opus for Messages API requests, Claude Code, and other Chat Completions clients. |
+| Neither | None. Kimi K3 and the open-model mix serve every turn. |
 
 If you connected [Amazon Bedrock](/nexus/provider-keys/bedrock) and mapped the model, FireRouter uses your Bedrock copy of it. To choose the closed model yourself, name it, as in `firerouter/opus` or `firerouter/sol`.
 
@@ -214,11 +214,11 @@ If you connected [Amazon Bedrock](/nexus/provider-keys/bedrock) and mapped the m
 
 The router ID is the same everywhere. Only the setup changes.
 
-| You are using                                           | Setup guide                                                    | Closed-model credential                                                           |
-| ------------------------------------------------------- | -------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| You are using | Setup guide | Closed-model credential |
+| - | - | - |
 | Claude Code, Codex, OpenCode, or another coding harness | [Set up with FireConnect](/nexus/firerouter/setup#fireconnect) | Your Claude login in Claude Code, a local key in some harnesses, or Provider Keys |
-| LiteLLM, Portkey, or another LLM gateway                | [Connect an LLM gateway](/nexus/firerouter/setup#llm-gateway)  | Provider Keys, or keys stored in the gateway config                               |
-| Your own app, agent, or script                          | [Use the API or SDK](/nexus/firerouter/setup#api-and-sdk)      | Provider Keys, or a request header                                                |
+| LiteLLM, Portkey, or another LLM gateway | [Connect an LLM gateway](/nexus/firerouter/setup#llm-gateway) | Provider Keys, or keys stored in the gateway config |
+| Your own app, agent, or script | [Use the API or SDK](/nexus/firerouter/setup#api-and-sdk) | Provider Keys, or a request header |
 
 You do not need FireConnect to use FireRouter from an application or gateway. You need a Fireworks API key, plus a credential for each closed provider in your route.
 
@@ -226,13 +226,13 @@ You do not need FireConnect to use FireRouter from an application or gateway. Yo
 
 FireRouter calls closed models through your own Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) account. Your Fireworks API key is always required. Each closed provider in the route also needs a credential. For Anthropic and OpenAI, there are two ways to provide one. Bedrock uses Provider Keys only, with each model mapped to a Bedrock model ID and region.
 
-|                         | Provider Keys                                     | Request headers                                                        |
-| ----------------------- | ------------------------------------------------- | ---------------------------------------------------------------------- |
+| | Provider Keys | Request headers |
+| - | - | - |
 | **Where the key lives** | Stored once in your Fireworks account by an admin | Sent with every request as `x-anthropic-api-key` or `x-openai-api-key` |
-| **Who holds the key**   | Only the account admin who connects it            | Every client, or the gateway that adds the header                      |
-| **Exposure**            | Never returned in full after you save it          | Can appear in client configs and gateway request logs                  |
-| **Best for**            | Production, shared gateways, and teams            | Testing, or choosing a key per request                                 |
-| **Availability**        | Not enabled on every account                      | Every account                                                          |
+| **Who holds the key** | Only the account admin who connects it | Every client, or the gateway that adds the header |
+| **Exposure** | Never returned in full after you save it | Can appear in client configs and gateway request logs |
+| **Best for** | Production, shared gateways, and teams | Testing, or choosing a key per request |
+| **Availability** | Not enabled on every account | Every account |
 
 If a request carries a provider header, that header takes precedence over the stored Provider Key for that provider.
 

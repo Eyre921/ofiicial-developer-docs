@@ -45,11 +45,11 @@ type ParameterFunction<T> = (context: TurnContext) => T | Promise<T>;
 
 ### TurnContext
 
-| Property        | Type                                         | Description                                                   |
-| --------------- | -------------------------------------------- | ------------------------------------------------------------- |
-| `numberOfTurns` | `number`                                     | Current turn number (1-indexed)                               |
-| `turnRequest`   | `OpenResponsesRequest \| undefined`          | Current request object containing messages and model settings |
-| `toolCall`      | `OpenResponsesFunctionToolCall \| undefined` | The specific tool call being executed                         |
+| Property | Type | Description |
+| - | - | - |
+| `numberOfTurns` | `number` | Current turn number (1-indexed) |
+| `turnRequest` | `OpenResponsesRequest \| undefined` | Current request object containing messages and model settings |
+| `toolCall` | `OpenResponsesFunctionToolCall \| undefined` | The specific tool call being executed |
 
 ## Async Functions
 

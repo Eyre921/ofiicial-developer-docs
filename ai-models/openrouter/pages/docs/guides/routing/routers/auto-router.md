@@ -323,13 +323,13 @@ Use wildcard patterns to filter models. For example, `anthropic/*` matches all A
 
 ### Pattern Syntax
 
-| Pattern          | Matches                                |
-| ---------------- | -------------------------------------- |
-| `anthropic/*`    | All Anthropic models                   |
-| `openai/gpt-5*`  | All GPT-5 variants                     |
-| `google/*`       | All Google models                      |
-| `openai/gpt-5.1` | Exact match only                       |
-| `*/claude-*`     | Any provider with claude in model name |
+| Pattern | Matches |
+| - | - |
+| `anthropic/*` | All Anthropic models |
+| `openai/gpt-5*` | All GPT-5 variants |
+| `google/*` | All Google models |
+| `openai/gpt-5.1` | Exact match only |
+| `*/claude-*` | Any provider with claude in model name |
 
 When no patterns are configured, the Auto Router considers every ranked candidate for your prompt's task type.
 

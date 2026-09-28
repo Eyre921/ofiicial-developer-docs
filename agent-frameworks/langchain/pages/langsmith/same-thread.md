@@ -13,8 +13,8 @@ You'll see that the second assistant will respond using information from the [ch
 ## Setup
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from langgraph_sdk import get_client
 
     client = get_client(url=<DEPLOYMENT_URL>)
@@ -27,9 +27,10 @@ You'll see that the second assistant will respond using information from the [ch
     assistants = await client.assistants.search()
     default_assistant = [a for a in assistants if not a["config"]][0]
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { Client } from "@langchain/langgraph-sdk";
 
     const client = new Client({ apiUrl: <DEPLOYMENT_URL> });
@@ -41,9 +42,10 @@ You'll see that the second assistant will respond using information from the [ch
     const assistants = await client.assistants.search();
     const defaultAssistant = assistants.find(a => !a.config);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/assistants \
         --header 'Content-Type: application/json' \
@@ -59,28 +61,30 @@ You'll see that the second assistant will respond using information from the [ch
             "offset": 0
         }' | jq -c 'map(select(.config == null or .config == {})) | .[0]'
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 We can see that these assistants are different:
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     print(openai_assistant)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     console.log(openAIAssistant);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/assistants/<OPENAI_ASSISTANT_ID>
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -101,22 +105,24 @@ Output:
 ```
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     print(default_assistant)
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     console.log(defaultAssistant);
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request GET \
         --url <DEPLOYMENT_URL>/assistants/<DEFAULT_ASSISTANT_ID>
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -141,8 +147,8 @@ Output:
 We can now run the OpenAI assistant on the thread first.
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     thread = await client.threads.create()
     input = {"messages": [{"role": "user", "content": "who made you?"}]}
     async for event in client.runs.stream(
@@ -155,9 +161,10 @@ We can now run the OpenAI assistant on the thread first.
         print(event.data)
         print("\n\n")
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const thread = await client.threads.create();
     let input =  {"messages": [{"role": "user", "content": "who made you?"}]}
 
@@ -175,9 +182,10 @@ We can now run the OpenAI assistant on the thread first.
       console.log("\n\n");
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     thread_id=$(curl --request POST \
         --url <DEPLOYMENT_URL>/threads \
         --header 'Content-Type: application/json' \
@@ -220,7 +228,7 @@ We can now run the OpenAI assistant on the thread first.
         }
     '
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -238,8 +246,8 @@ Receiving event of type: updates
 Now, we can run it on the default assistant and see that this second assistant is aware of the initial question, and can answer the question, "and you?":
 
 <Tabs>
-    <Tab title="Python">
-    ```python
+  <Tab title="Python">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     input = {"messages": [{"role": "user", "content": "and you?"}]}
     async for event in client.runs.stream(
         thread["thread_id"],
@@ -251,9 +259,10 @@ Now, we can run it on the default assistant and see that this second assistant i
         print(event.data)
         print("\n\n")
     ```
-    </Tab>
-    <Tab title="Javascript">
-    ```js
+  </Tab>
+
+  <Tab title="Javascript">
+    ```js theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     let input =  {"messages": [{"role": "user", "content": "and you?"}]}
 
     const streamResponse = client.runs.stream(
@@ -270,9 +279,10 @@ Now, we can run it on the default assistant and see that this second assistant i
       console.log("\n\n");
     }
     ```
-    </Tab>
-    <Tab title="cURL">
-    ```bash
+  </Tab>
+
+  <Tab title="cURL">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     curl --request POST \
         --url <DEPLOYMENT_URL>/threads/<THREAD_ID>/runs/stream \
         --header 'Content-Type: application/json' \
@@ -311,7 +321,7 @@ Now, we can run it on the default assistant and see that this second assistant i
         }
     '
     ```
-    </Tab>
+  </Tab>
 </Tabs>
 
 Output:
@@ -324,13 +334,14 @@ Receiving event of type: updates
 {'agent': {'messages': [{'content': [{'text': 'I am an artificial intelligence created by Anthropic, not by OpenAI. I should not have stated that OpenAI created me, as that is incorrect. Anthropic is the company that developed and trained me using advanced language models and AI technology. I will be more careful about providing accurate information regarding my origins in the future.', 'type': 'text', 'index': 0}], 'additional_kwargs': {}, 'response_metadata': {'stop_reason': 'end_turn', 'stop_sequence': None}, 'type': 'ai', 'name': None, 'id': 'run-ebaacf62-9dd9-4165-9535-db432e4793ec', 'example': False, 'tool_calls': [], 'invalid_tool_calls': [], 'usage_metadata': {'input_tokens': 302, 'output_tokens': 72, 'total_tokens': 374}}]}}
 ```
 
----
+***
 
-<div className="source-links">
-<Callout icon="terminal-2">
+<div>
+  <Callout icon="terminal-2">
     [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
-</Callout>
-<Callout icon="edit">
+  </Callout>
+
+  <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/same-thread.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-</Callout>
+  </Callout>
 </div>

@@ -20,13 +20,13 @@ Use the path that matches your current training stage:
 * **You have a promoted model ID:** use a preemptible deployment. This works regardless of whether the LoRA was trained with serverless, dedicated, or managed training, or imported.
 * **Your dedicated training run is still active:** use its inference deployment and refresh it from sampler snapshots. See [Dedicated training and sampling](/fine-tuning/training-api/dedicated#training-and-sampling).
 
-|                    | **In-session sampling**                                   | **Preemptible deployment**                                            |
-| ------------------ | --------------------------------------------------------- | --------------------------------------------------------------------- |
-| **Best for**       | Quick checks during an active serverless training session | Evaluating a promoted model without reserving dedicated GPUs          |
-| **Training path**  | Serverless Training API only                              | Any training path                                                     |
-| **Artifact**       | Sampler checkpoint from `save_weights_for_sampler`        | Promoted model (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`) |
-| **API**            | Training SDK `sampler.sample()`                           | Chat Completions or Fireworks SDK                                     |
-| **Session bound?** | Yes                                                       | No                                                                    |
+| | **In-session sampling** | **Preemptible deployment** |
+| - | - | - |
+| **Best for** | Quick checks during an active serverless training session | Evaluating a promoted model without reserving dedicated GPUs |
+| **Training path** | Serverless Training API only | Any training path |
+| **Artifact** | Sampler checkpoint from `save_weights_for_sampler` | Promoted model (`accounts/<ACCOUNT_ID>/models/<FINE_TUNED_MODEL_ID>`) |
+| **API** | Training SDK `sampler.sample()` | Chat Completions or Fireworks SDK |
+| **Session bound?** | Yes | No |
 
 ## In-session sampling (serverless training)
 

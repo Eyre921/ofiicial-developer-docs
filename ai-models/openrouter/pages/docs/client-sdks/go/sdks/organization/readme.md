@@ -68,12 +68,12 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                   | Example |
-| --------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------- | ------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.           |         |
-| `offset`  | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | Number of records to skip for pagination      | 0       |
-| `limit`   | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50      |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                 |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -81,10 +81,10 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

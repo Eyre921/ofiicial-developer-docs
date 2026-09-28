@@ -167,16 +167,16 @@ nextTurnParams: {
 
 The current request context, including:
 
-| Property          | Type                    | Description                 |
-| ----------------- | ----------------------- | --------------------------- |
-| `input`           | `OpenResponsesInput`    | Current message history     |
-| `model`           | `string \| undefined`   | Current model selection     |
-| `models`          | `string[] \| undefined` | Model fallback array        |
-| `instructions`    | `string \| undefined`   | Current system instructions |
-| `temperature`     | `number \| undefined`   | Current temperature         |
-| `maxOutputTokens` | `number \| undefined`   | Current max tokens          |
-| `topP`            | `number \| undefined`   | Current top-p sampling      |
-| `topK`            | `number \| undefined`   | Current top-k sampling      |
+| Property | Type | Description |
+| - | - | - |
+| `input` | `OpenResponsesInput` | Current message history |
+| `model` | `string \| undefined` | Current model selection |
+| `models` | `string[] \| undefined` | Model fallback array |
+| `instructions` | `string \| undefined` | Current system instructions |
+| `temperature` | `number \| undefined` | Current temperature |
+| `maxOutputTokens` | `number \| undefined` | Current max tokens |
+| `topP` | `number \| undefined` | Current top-p sampling |
+| `topK` | `number \| undefined` | Current top-k sampling |
 
 ## Modifiable Parameters
 

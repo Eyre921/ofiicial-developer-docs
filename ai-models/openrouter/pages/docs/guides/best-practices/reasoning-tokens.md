@@ -807,12 +807,12 @@ For each supported model, there are two equivalent ways to request pro mode on O
 
 Requests sent through the [Anthropic Messages API](/docs/api/api-reference/anthropic-messages/create-a-message) control reasoning with Anthropic's native `thinking` and `output_config.effort` fields. OpenRouter normalizes both into the unified `reasoning` parameter, so they work on every reasoning model, not only Claude.
 
-| Messages API request                           | Unified `reasoning` equivalent             |
-| ---------------------------------------------- | ------------------------------------------ |
-| `output_config: { effort }`                    | `reasoning: { effort }`                    |
+| Messages API request | Unified `reasoning` equivalent |
+| - | - |
+| `output_config: { effort }` | `reasoning: { effort }` |
 | `thinking: { type: "enabled", budget_tokens }` | `reasoning: { max_tokens: budget_tokens }` |
-| `thinking: { type: "adaptive" }`               | `reasoning: { enabled: true }`             |
-| `thinking: { type: "disabled" }`               | `reasoning: { enabled: false }`            |
+| `thinking: { type: "adaptive" }` | `reasoning: { enabled: true }` |
+| `thinking: { type: "disabled" }` | `reasoning: { enabled: false }` |
 
 `output_config.effort` takes precedence over `thinking.type: "adaptive"`. Sending `thinking: { type: "adaptive" }` together with `output_config: { effort: "high" }` means high effort on every model. Claude receives both fields unchanged, while a model such as GPT-5 or MiniMax receives `reasoning_effort: "high"` in its own vocabulary, translated the same way as request-level `reasoning.effort`.
 
@@ -1169,12 +1169,12 @@ Gemini 3 models (such as [google/gemini-3.1-pro-preview](https://openrouter.ai/g
 OpenRouter maps the `reasoning.effort` parameter directly to Google's `thinkingLevel` values:
 
 | OpenRouter `reasoning.effort` | Google `thinkingLevel` |
-| ----------------------------- | ---------------------- |
-| `"minimal"`                   | `"minimal"`            |
-| `"low"`                       | `"low"`                |
-| `"medium"`                    | `"medium"`             |
-| `"high"`                      | `"high"`               |
-| `"xhigh"`                     | `"high"` (mapped down) |
+| - | - |
+| `"minimal"` | `"minimal"` |
+| `"low"` | `"low"` |
+| `"medium"` | `"medium"` |
+| `"high"` | `"high"` |
+| `"xhigh"` | `"high"` (mapped down) |
 
 <Note>
   **Token Consumption is Determined by Google**

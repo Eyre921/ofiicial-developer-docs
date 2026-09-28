@@ -8,20 +8,20 @@ Set up FireRouter in a coding harness with FireConnect, in an LLM gateway such a
 
 Use the same model ID, such as `auto` or `firerouter/opus`, from a coding harness, an LLM gateway, or your own code. Every path needs a Fireworks API key. Each closed provider in the route also needs a credential. See [Provide Anthropic and OpenAI credentials](/nexus/firerouter#provide-anthropic-and-openai-credentials).
 
-| You are using                                                       | Setup                       |
-| ------------------------------------------------------------------- | --------------------------- |
+| You are using | Setup |
+| - | - |
 | Claude Code, Codex, OpenCode, Cursor IDE, or another coding harness | [FireConnect](#fireconnect) |
-| LiteLLM, Portkey, or another LLM gateway                            | [LLM gateway](#llm-gateway) |
-| Your own app, agent, or script                                      | [API and SDK](#api-and-sdk) |
+| LiteLLM, Portkey, or another LLM gateway | [LLM gateway](#llm-gateway) |
+| Your own app, agent, or script | [API and SDK](#api-and-sdk) |
 
 ## Choose a model ID
 
-| Model ID                                                | What it routes across                                                                                                                                    | Credentials                                                      |
-| ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| `auto`                                                  | Fireworks open models only                                                                                                                               | Fireworks API key                                                |
-| `firerouter`                                            | Claude Opus or GPT Sol, [picked from your credentials and client](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model), plus the open-model mix | Fireworks key, plus an Anthropic or OpenAI credential            |
-| `firerouter/opus`, `firerouter/sol`, `firerouter/astra` | The named closed family, plus the open-model mix                                                                                                         | Fireworks key, plus the matching provider credential             |
-| `firerouter/opus/glm-5p3`                               | Only the models you list                                                                                                                                 | Fireworks key, plus a credential for each closed provider listed |
+| Model ID | What it routes across | Credentials |
+| - | - | - |
+| `auto` | Fireworks open models only | Fireworks API key |
+| `firerouter` | Claude Opus or GPT Sol, [picked from your credentials and client](/nexus/firerouter#how-bare-firerouter-picks-its-closed-model), plus the open-model mix | Fireworks key, plus an Anthropic or OpenAI credential |
+| `firerouter/opus`, `firerouter/sol`, `firerouter/astra` | The named closed family, plus the open-model mix | Fireworks key, plus the matching provider credential |
+| `firerouter/opus/glm-5p3` | Only the models you list | Fireworks key, plus a credential for each closed provider listed |
 
 Start with `auto` if you only have a Fireworks key. Without a closed-model credential, any `firerouter` ID serves every turn with open models. See [Build a router ID](/nexus/firerouter#build-a-router-id) and [Supported models](/nexus/firerouter#supported-models).
 
@@ -66,12 +66,12 @@ Pick your harness, a model or router ID, and a setup method. Start with `auto` t
 
 ### Which harnesses can send provider keys
 
-| Harness                                                      | FireConnect with Claude routes                      | FireConnect with GPT routes | Manual setup                                             |
-| ------------------------------------------------------------ | --------------------------------------------------- | --------------------------- | -------------------------------------------------------- |
-| Claude Code                                                  | Your Claude login, or `--anthropic-api-key`         | OpenAI Provider Key         | Sends `x-anthropic-api-key` and `x-openai-api-key`       |
-| Codex CLI, Codex app, ChatGPT desktop, OpenCode, Pi, VS Code | `--anthropic-api-key`, or an Anthropic Provider Key | OpenAI Provider Key         | Sends `x-anthropic-api-key` and `x-openai-api-key`       |
-| Copilot CLI, DeepSeek Harness                                | Not supported yet                                   | OpenAI Provider Key         | Sends `x-anthropic-api-key` and `x-openai-api-key`       |
-| Cursor IDE, Copilot App                                      | Not supported                                       | OpenAI Provider Key         | Provider Keys only; these apps cannot send extra headers |
+| Harness | FireConnect with Claude routes | FireConnect with GPT routes | Manual setup |
+| - | - | - | - |
+| Claude Code | Your Claude login, or `--anthropic-api-key` | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Codex CLI, Codex app, ChatGPT desktop, OpenCode, Pi, VS Code | `--anthropic-api-key`, or an Anthropic Provider Key | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Copilot CLI, DeepSeek Harness | Not supported yet | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Cursor IDE, Copilot App | Not supported | OpenAI Provider Key | Provider Keys only; these apps cannot send extra headers |
 
 FireConnect has no local OpenAI key option yet, so GPT routes such as `firerouter/astra` and `firerouter/sol` need an OpenAI [Provider Key](/nexus/provider-keys) when you connect with FireConnect. To send your own OpenAI key, use manual setup. For every harness's files and restore behavior, see [Coding Harnesses](/nexus/harnesses) and [Harness Compatibility](/nexus/harness-compatibility).
 
@@ -91,18 +91,18 @@ Clients never need provider keys when the gateway stores them or when [Provider 
 
 FireRouter works on all three Fireworks inference APIs. Use the SDK you already have and point it at Fireworks.
 
-| API                                  | Endpoint                                                 | SDKs                         |
-| ------------------------------------ | -------------------------------------------------------- | ---------------------------- |
-| Chat Completions (OpenAI-compatible) | `https://api.fireworks.ai/inference/v1/chat/completions` | OpenAI SDK, Fireworks SDK    |
-| Responses (OpenAI-compatible)        | `https://api.fireworks.ai/inference/v1/responses`        | OpenAI SDK                   |
-| Messages (Anthropic-compatible)      | `https://api.fireworks.ai/inference/v1/messages`         | Anthropic SDK, Fireworks SDK |
+| API | Endpoint | SDKs |
+| - | - | - |
+| Chat Completions (OpenAI-compatible) | `https://api.fireworks.ai/inference/v1/chat/completions` | OpenAI SDK, Fireworks SDK |
+| Responses (OpenAI-compatible) | `https://api.fireworks.ai/inference/v1/responses` | OpenAI SDK |
+| Messages (Anthropic-compatible) | `https://api.fireworks.ai/inference/v1/messages` | Anthropic SDK, Fireworks SDK |
 
 In every SDK, the API key is your **Fireworks** API key. Send closed-provider keys as extra headers:
 
-| Header                | When                                                                         |
-| --------------------- | ---------------------------------------------------------------------------- |
+| Header | When |
+| - | - |
 | `x-anthropic-api-key` | The route includes a Claude model and no Anthropic Provider Key is connected |
-| `x-openai-api-key`    | The route includes a GPT model and no OpenAI Provider Key is connected       |
+| `x-openai-api-key` | The route includes a GPT model and no OpenAI Provider Key is connected |
 
 Leave out a header when the matching [Provider Key](/nexus/provider-keys) is connected. A header, when sent, takes precedence over the stored key for that request. [Amazon Bedrock](/nexus/provider-keys/bedrock) has no request header; it uses Provider Keys only.
 

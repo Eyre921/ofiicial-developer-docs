@@ -42,13 +42,41 @@ Full API reference for the Text to Speech endpoint.
 
 Generate speech from Claude or any MCP client with the hosted MCP server.
 
+#### [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4)
+
+What changed in Eleven v4, with voice cloning comparisons.
+
 ### Voice quality
 
 For real-time applications, Flash v2.5 provides ultra-low 75ms latency, while Multilingual v2 delivers the highest quality audio with more nuanced expression.
 
+#### [Eleven v4](/docs/overview/models#eleven-v4)
+
+Our most emotive, high quality speech synthesis model
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+10,000 character limit
+
+Support for natural multi-speaker dialogue
+
+#### [Eleven v4 Turbo](/docs/overview/models#eleven-v4-turbo)
+
+Our most emotive, real-time speech synthesis model
+
+Ultra-low latency (median inference latency of \~100ms†)
+
+Exceptional voice cloning capabilities
+
+90+ languages supported
+
+Audio tags for fine-grained control
+
 #### [Eleven v3](/docs/overview/models#eleven-v3)
 
-Our most emotionally rich, expressive speech synthesis model
+Our emotionally rich, expressive speech synthesis model
 
 Dramatic delivery and performance
 
@@ -60,7 +88,7 @@ Support for natural multi-speaker dialogue
 
 #### [Eleven v3 Conversational](/docs/overview/models#eleven-v3-conversational)
 
-Our most expressive, realtime speech synthesis model
+Our expressive, realtime speech synthesis model
 
 Low latency (\~280ms)
 

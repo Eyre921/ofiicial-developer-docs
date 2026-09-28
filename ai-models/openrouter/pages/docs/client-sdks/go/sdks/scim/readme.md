@@ -75,12 +75,12 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                                   | Example |
-| --------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------- | ------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.           |         |
-| `offset`  | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | Number of records to skip for pagination      | 0       |
-| `limit`   | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50      |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                 |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -88,12 +88,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Create
 
@@ -135,11 +135,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                                                                  | Required             | Description                                |
-| --------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                                                 | :heavy\_check\_mark: | The context to use for the request.        |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
 | `request` | [components.CreateScimGroupMappingRequest](../../models/components/createscimgroupmappingrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx)                                            | :heavy\_minus\_sign: | The options for this request.              |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -147,14 +147,14 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.ConflictResponseError       | 409         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.ConflictResponseError | 409 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Delete
 
@@ -194,12 +194,12 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                              | Required             | Description                                                                                                                                                                                                                                                                                                                                                                                                                      | Example |
-| ------------- | ----------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)             | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                                                                                                                                                                                                              |         |
-| `id`          | `string`                                                          | :heavy\_check\_mark: | N/A                                                                                                                                                                                                                                                                                                                                                                                                                              |         |
-| `keepMembers` | [operations.KeepMembers](../../models/operations/keepmembers.mdx) | :heavy\_check\_mark: | Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required. | false   |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx)        | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                                                                                                                                                                                                    |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `id` | `string` | :heavy\_check\_mark: | N/A | |
+| `keepMembers` | [operations.KeepMembers](../../models/operations/keepmembers.mdx) | :heavy\_check\_mark: | Required. Whether to keep workspace members after deleting the mapping. `false` **removes** the members this mapping granted access to; `true` deletes the mapping while leaving membership intact as manually-managed. There is deliberately no default — omitting it returns `400` so the destructive path cannot be reached by accident. Mirrors the dashboard, whose `DeleteMappingSchema.keepMembers` is likewise required. | false |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -207,13 +207,13 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Read
 
@@ -250,11 +250,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `id`      | `string`                                                   | :heavy\_check\_mark: | N/A                                 |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `id` | `string` | :heavy\_check\_mark: | N/A |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -262,12 +262,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Update
 
@@ -307,12 +307,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                       | Type                                                                                                  | Required             | Description                         |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`                           | [context.Context](https://pkg.go.dev/context#Context)                                                 | :heavy\_check\_mark: | The context to use for the request. |
-| `id`                            | `string`                                                                                              | :heavy\_check\_mark: | N/A                                 |
-| `updateScimGroupMappingRequest` | [components.UpdateScimGroupMappingRequest](../../models/components/updatescimgroupmappingrequest.mdx) | :heavy\_check\_mark: | N/A                                 |
-| `opts`                          | \[][operations.Option](../../models/operations/option.mdx)                                            | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `id` | `string` | :heavy\_check\_mark: | N/A |
+| `updateScimGroupMappingRequest` | [components.UpdateScimGroupMappingRequest](../../models/components/updatescimgroupmappingrequest.mdx) | :heavy\_check\_mark: | N/A |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -320,13 +320,13 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## ListGroups
 
@@ -376,14 +376,14 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                       | Required             | Description                                                                                                                                                                                                                                   | Example                              |
-| ------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                           |                                      |
-| `offset`      | optionalnullable.OptionalNullable\[`int64`]                | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                                                                                                      | 0                                    |
-| `limit`       | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                                                                                                                 | 50                                   |
-| `displayName` | `*string`                                                  | :heavy\_minus\_sign: | Exact match filter on display\_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external\_id is also present, both must match.                                                                        | Engineering                          |
-| `externalID`  | `*string`                                                  | :heavy\_minus\_sign: | Exact match filter on external\_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external\_id (subject to offset/limit). When display\_name is also present, both must match. | a1b2c3d4-e5f6-7890-abcd-ef1234567890 |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                 |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `displayName` | `*string` | :heavy\_minus\_sign: | Exact match filter on display\_name. Omitted or empty returns groups unfiltered by name (subject to offset/limit). When external\_id is also present, both must match. | Engineering |
+| `externalID` | `*string` | :heavy\_minus\_sign: | Exact match filter on external\_id, e.g. the identity provider (such as Entra ID) group object ID. Omitted or empty returns groups unfiltered by external\_id (subject to offset/limit). When display\_name is also present, both must match. | a1b2c3d4-e5f6-7890-abcd-ef1234567890 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -391,12 +391,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## CreateSyncJob
 
@@ -433,10 +433,10 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -444,12 +444,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetSyncJob
 
@@ -486,11 +486,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `id`      | `string`                                                   | :heavy\_check\_mark: | N/A                                 |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `id` | `string` | :heavy\_check\_mark: | N/A |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -498,10 +498,10 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

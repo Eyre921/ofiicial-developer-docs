@@ -133,20 +133,20 @@ There are two ways to control reasoning, and both resolve to Fireworks [`reasoni
 **`output_config.effort`** maps directly:
 
 | Anthropic effort | Fireworks `reasoning_effort` |
-| ---------------- | ---------------------------- |
-| `low`            | `low`                        |
-| `medium`         | `medium`                     |
-| `high`           | `high`                       |
-| `max`            | `max`                        |
-| `xhigh`          | `max`                        |
+| - | - |
+| `low` | `low` |
+| `medium` | `medium` |
+| `high` | `high` |
+| `max` | `max` |
+| `xhigh` | `max` |
 
 **`thinking.budget_tokens`** is converted to an effort band, because Fireworks models take an effort level rather than a token budget:
 
 | `budget_tokens` | Fireworks `reasoning_effort` |
-| --------------- | ---------------------------- |
-| `>= 10000`      | `high`                       |
-| `5000`–`9999`   | `medium`                     |
-| `1024`–`4999`   | `low`                        |
+| - | - |
+| `>= 10000` | `high` |
+| `5000`–`9999` | `medium` |
+| `1024`–`4999` | `low` |
 
 When both are present, `output_config.effort` wins. Setting `thinking.type: "disabled"` sends `reasoning_effort: "none"`.
 
@@ -173,12 +173,12 @@ Long agentic conversations accumulate `thinking` blocks that inflate the prompt.
 }
 ```
 
-| `keep`                                   | Behavior                                                |
-| ---------------------------------------- | ------------------------------------------------------- |
-| `"all"`                                  | Replay the full reasoning history                       |
-| `"none"`                                 | Drop reasoning history entirely                         |
-| `"interleaved"`                          | Keep reasoning interleaved with the turns it belongs to |
-| `{"type": "thinking_turns", "value": N}` | Keep reasoning for the last `N` thinking turns          |
+| `keep` | Behavior |
+| - | - |
+| `"all"` | Replay the full reasoning history |
+| `"none"` | Drop reasoning history entirely |
+| `"interleaved"` | Keep reasoning interleaved with the turns it belongs to |
+| `{"type": "thinking_turns", "value": N}` | Keep reasoning for the last `N` thinking turns |
 
 When an edit is applied, streaming responses report it on the final `message_delta` event as `context_management.applied_edits`.
 
@@ -297,14 +297,14 @@ The same settings work for the [Claude Agent SDK](https://github.com/anthropics/
 
 ### Troubleshooting
 
-| Symptom                                                         | Cause and fix                                                                                                                                                                                  |
-| --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `404` with "Model not found, inaccessible, and/or not deployed" | `ANTHROPIC_MODEL` is not a Fireworks model resource name, or the model is not deployed to your account. Use the full `accounts/<account>/models/<model>` form.                                 |
-| `404` "Path not found"                                          | The base URL includes `/v1`. Set `ANTHROPIC_BASE_URL` to `https://api.fireworks.ai/inference`; the client appends `/v1/messages`.                                                              |
-| "Not logged in"                                                 | The key is in `ANTHROPIC_API_KEY`. Move it to `ANTHROPIC_AUTH_TOKEN`.                                                                                                                          |
-| `400` "max\_tokens is required and must be > 0"                 | A client or proxy dropped `max_tokens`. It is required on every request.                                                                                                                       |
-| `400` naming `web_search_20250305`                              | Claude Code's WebSearch tool requested server-side execution in a region where it is unavailable. Disable WebSearch, or supply your own client-side `web_search` tool.                         |
-| Slow multi-turn responses                                       | Prompt-cache misses. Claude Code sends a session header that Fireworks uses to route follow-up turns to the same replica; avoid stripping `X-Claude-Code-Session-Id` in an intermediate proxy. |
+| Symptom | Cause and fix |
+| - | - |
+| `404` with "Model not found, inaccessible, and/or not deployed" | `ANTHROPIC_MODEL` is not a Fireworks model resource name, or the model is not deployed to your account. Use the full `accounts/<account>/models/<model>` form. |
+| `404` "Path not found" | The base URL includes `/v1`. Set `ANTHROPIC_BASE_URL` to `https://api.fireworks.ai/inference`; the client appends `/v1/messages`. |
+| "Not logged in" | The key is in `ANTHROPIC_API_KEY`. Move it to `ANTHROPIC_AUTH_TOKEN`. |
+| `400` "max\_tokens is required and must be > 0" | A client or proxy dropped `max_tokens`. It is required on every request. |
+| `400` naming `web_search_20250305` | Claude Code's WebSearch tool requested server-side execution in a region where it is unavailable. Disable WebSearch, or supply your own client-side `web_search` tool. |
+| Slow multi-turn responses | Prompt-cache misses. Claude Code sends a session header that Fireworks uses to route follow-up turns to the same replica; avoid stripping `X-Claude-Code-Session-Id` in an intermediate proxy. |
 
 <Note>
   Claude Code's built-in WebSearch tool is served by Fireworks only in regions where the search backend is enabled, and only for the single-turn search shape Claude Code emits. It is not a general-purpose server-side web search tool.

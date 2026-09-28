@@ -4,4 +4,5 @@ source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/create-in
 path: langsmith/smith-api/tracer-sessions/create-insights-job-beta
 ---
 
-
+/langsmith/langsmith-platform-openapi.json post /api/v1/sessions/{session_id}/insights
+Create an Insights job for a project.

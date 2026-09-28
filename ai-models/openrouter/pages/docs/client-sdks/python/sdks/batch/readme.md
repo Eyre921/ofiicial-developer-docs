@@ -52,17 +52,17 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                                 | Required             | Description                                                                                                                                                 | Example                                   |
-| -------------------------- | ------------------------------------------------------------------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| `http_referer`             | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                           |
-| `x_open_router_title`      | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                           |
-| `x_open_router_categories` | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                           |
-| `limit`                    | *Optional\[int]*                                                                     | :heavy\_minus\_sign: | Maximum number of batches to return, from 1 through 100.                                                                                                    | 20                                        |
-| `after`                    | *Optional\[str]*                                                                     | :heavy\_minus\_sign: | Batch id from the previous page's `last_id`.                                                                                                                | batch\_7a4b02                             |
-| `status`                   | List\[[components.BatchListStatus](../../components/batchliststatus.mdx)]            | :heavy\_minus\_sign: | Repeat this parameter to include more than one status.                                                                                                      | \[<br />"completed",<br />"failed"<br />] |
-| `created_after`            | [Optional\[components.BatchListTimestamp\]](../../components/batchlisttimestamp.mdx) | :heavy\_minus\_sign: | Only include batches created strictly after this timestamp.                                                                                                 | 2026-08-20T00:00:00Z                      |
-| `created_before`           | [Optional\[components.BatchListTimestamp\]](../../components/batchlisttimestamp.mdx) | :heavy\_minus\_sign: | Only include batches created strictly before this timestamp.                                                                                                | 2026-08-20T00:00:00Z                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                  | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                           |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of batches to return, from 1 through 100. | 20 |
+| `after` | *Optional\[str]* | :heavy\_minus\_sign: | Batch id from the previous page's `last_id`. | batch\_7a4b02 |
+| `status` | List\[[components.BatchListStatus](../../components/batchliststatus.mdx)] | :heavy\_minus\_sign: | Repeat this parameter to include more than one status. | \[<br />"completed",<br />"failed"<br />] |
+| `created_after` | [Optional\[components.BatchListTimestamp\]](../../components/batchlisttimestamp.mdx) | :heavy\_minus\_sign: | Only include batches created strictly after this timestamp. | 2026-08-20T00:00:00Z |
+| `created_before` | [Optional\[components.BatchListTimestamp\]](../../components/batchlisttimestamp.mdx) | :heavy\_minus\_sign: | Only include batches created strictly before this timestamp. | 2026-08-20T00:00:00Z |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -70,11 +70,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code   | Content Type     |
-| ----------------------------- | ------------- | ---------------- |
-| errors.BatchErrorResponse     | 400, 401, 429 | application/json |
-| errors.BatchErrorResponse     | 500, 502      | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX      | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BatchErrorResponse | 400, 401, 429 | application/json |
+| errors.BatchErrorResponse | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create\_batches
 
@@ -224,17 +224,17 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                                                           | Required             | Description                                                                                                                                                 | Example                                               |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------- |
-| `endpoint`                 | [components.Endpoint](../../components/endpoint.mdx)                                                           | :heavy\_check\_mark: | N/A                                                                                                                                                         |                                                       |
-| `model`                    | *str*                                                                                                          | :heavy\_check\_mark: | N/A                                                                                                                                                         |                                                       |
-| `requests`                 | List\[[components.Request](../../components/request.mdx)]                                                      | :heavy\_check\_mark: | N/A                                                                                                                                                         |                                                       |
-| `http_referer`             | *Optional\[str]*                                                                                               | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                       |
-| `x_open_router_title`      | *Optional\[str]*                                                                                               | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                       |
-| `x_open_router_categories` | *Optional\[str]*                                                                                               | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                       |
-| `completion_window`        | [Optional\[components.BatchSubmitBodyCompletionWindow\]](../../components/batchsubmitbodycompletionwindow.mdx) | :heavy\_minus\_sign: | N/A                                                                                                                                                         |                                                       |
-| `provider`                 | [OptionalNullable\[components.BatchProviderPreferences\]](../../components/batchproviderpreferences.mdx)       | :heavy\_minus\_sign: | Batch provider routing preferences. Only `provider.only` is supported.                                                                                      | \{<br />"only": \[<br />"google-vertex"<br />]<br />} |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                            | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                       |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `endpoint` | [components.Endpoint](../../components/endpoint.mdx) | :heavy\_check\_mark: | N/A | |
+| `model` | *str* | :heavy\_check\_mark: | N/A | |
+| `requests` | List\[[components.Request](../../components/request.mdx)] | :heavy\_check\_mark: | N/A | |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `completion_window` | [Optional\[components.BatchSubmitBodyCompletionWindow\]](../../components/batchsubmitbodycompletionwindow.mdx) | :heavy\_minus\_sign: | N/A | |
+| `provider` | [OptionalNullable\[components.BatchProviderPreferences\]](../../components/batchproviderpreferences.mdx) | :heavy\_minus\_sign: | Batch provider routing preferences. Only `provider.only` is supported. | \{<br />"only": \[<br />"google-vertex"<br />]<br />} |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -242,11 +242,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code                            | Content Type     |
-| ----------------------------- | -------------------------------------- | ---------------- |
-| errors.BatchErrorResponse     | 400, 401, 402, 403, 404, 413, 422, 429 | application/json |
-| errors.BatchErrorResponse     | 500, 502                               | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX                               | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BatchErrorResponse | 400, 401, 402, 403, 404, 413, 422, 429 | application/json |
+| errors.BatchErrorResponse | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete
 
@@ -275,13 +275,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example       |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The batch job id returned from submit.                                                                                                                      | batch\_abc123 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |               |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |               |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |               |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |               |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The batch job id returned from submit. | batch\_abc123 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -289,11 +289,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                    | Status Code        | Content Type     |
-| ----------------------------- | ------------------ | ---------------- |
-| errors.BatchErrorResponse     | 401, 404, 409, 429 | application/json |
-| errors.BatchErrorResponse     | 500, 502           | application/json |
-| errors.OpenRouterDefaultError | 4XX, 5XX           | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BatchErrorResponse | 401, 404, 409, 429 | application/json |
+| errors.BatchErrorResponse | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get\_batches
 
@@ -322,13 +322,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example       |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The batch job id returned from submit.                                                                                                                      | batch\_abc123 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |               |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |               |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |               |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |               |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The batch job id returned from submit. | batch\_abc123 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -336,10 +336,10 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                               | Status Code   | Content Type     |
-| ---------------------------------------- | ------------- | ---------------- |
-| errors.BatchPaymentRequiredResponseError | 402           | application/json |
-| errors.BatchErrorResponse                | 401, 404, 429 | application/json |
-| errors.BatchErrorResponse                | 500, 502      | application/json |
-| errors.OpenRouterDefaultError            | 4XX, 5XX      | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BatchPaymentRequiredResponseError | 402 | application/json |
+| errors.BatchErrorResponse | 401, 404, 429 | application/json |
+| errors.BatchErrorResponse | 500, 502 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

@@ -48,7 +48,7 @@ const elevenlabs = new ElevenLabsClient();
 async function main() {
   const audioStream = await elevenlabs.textToSpeech.stream("JBFqnCBsd6RMkjVDRZzb", {
     text: "This is a test",
-    modelId: "eleven_v3",
+    modelId: "eleven_v4",
   });
 
   // option 1: play the streamed audio locally

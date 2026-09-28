@@ -141,17 +141,17 @@ mixing their session IDs.
 
 ## Built-in hooks
 
-| Hook                 | When it fires                  | Effect              |
-| -------------------- | ------------------------------ | ------------------- |
-| `SessionStart`       | Before the initial request     | Observe             |
-| `UserPromptSubmit`   | Before the initial prompt      | Rewrite or reject   |
-| `PostModelCall`      | After each model response      | Observe             |
-| `PermissionRequest`  | Before tool approval           | Allow, deny, or ask |
-| `PreToolUse`         | Before client tool execution   | Rewrite or block    |
-| `PostToolUse`        | After tool success             | Observe             |
-| `PostToolUseFailure` | After tool failure             | Observe             |
-| `Stop`               | When `stopWhen` stops the loop | Append or resume    |
-| `SessionEnd`         | When the run exits             | Observe             |
+| Hook | When it fires | Effect |
+| - | - | - |
+| `SessionStart` | Before the initial request | Observe |
+| `UserPromptSubmit` | Before the initial prompt | Rewrite or reject |
+| `PostModelCall` | After each model response | Observe |
+| `PermissionRequest` | Before tool approval | Allow, deny, or ask |
+| `PreToolUse` | Before client tool execution | Rewrite or block |
+| `PostToolUse` | After tool success | Observe |
+| `PostToolUseFailure` | After tool failure | Observe |
+| `Stop` | When `stopWhen` stops the loop | Append or resume |
+| `SessionEnd` | When the run exits | Observe |
 
 ### SessionStart
 

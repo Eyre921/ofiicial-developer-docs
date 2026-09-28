@@ -60,14 +60,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |         |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |         |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |         |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0       |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -75,11 +75,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create
 
@@ -108,24 +108,24 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                             | Type                                                                                                                        | Required             | Description                                                                                                                                                            | Example                                                         |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `name`                                | *str*                                                                                                                       | :heavy\_check\_mark: | Name for the new workspace                                                                                                                                             | Production                                                      |
-| `slug`                                | *str*                                                                                                                       | :heavy\_check\_mark: | URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens)                                                           | production                                                      |
-| `http_referer`                        | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />            |                                                                 |
-| `x_open_router_title`                 | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                     |                                                                 |
-| `x_open_router_categories`            | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                            |                                                                 |
-| `default_image_model`                 | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | Default image model for this workspace                                                                                                                                 | openai/dall-e-3                                                 |
-| `default_provider_sort`               | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | Default provider sort preference (price, throughput, latency, exacto)                                                                                                  | price                                                           |
-| `default_text_model`                  | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | Default text model for this workspace                                                                                                                                  | openai/gpt-4o                                                   |
-| `description`                         | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | Description of the workspace                                                                                                                                           | Production environment workspace                                |
-| `disabled_server_tools`               | List\[[components.CreateWorkspaceRequestDisabledServerTool](../../components/createworkspacerequestdisabledservertool.mdx)] | :heavy\_minus\_sign: | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[<br />"openrouter:web\_search",<br />"openrouter:bash"<br />] |
-| `io_logging_api_key_ids`              | List\[*int*]                                                                                                                | :heavy\_minus\_sign: | Optional array of API key IDs to filter I/O logging                                                                                                                    | null                                                            |
-| `io_logging_sampling_rate`            | *Optional\[float]*                                                                                                          | :heavy\_minus\_sign: | Sampling rate for I/O logging (0.0001-1)                                                                                                                               | 1                                                               |
-| `is_data_discount_logging_enabled`    | *Optional\[bool]*                                                                                                           | :heavy\_minus\_sign: | Whether data discount logging is enabled                                                                                                                               | true                                                            |
-| `is_observability_broadcast_enabled`  | *Optional\[bool]*                                                                                                           | :heavy\_minus\_sign: | Whether broadcast is enabled                                                                                                                                           | false                                                           |
-| `is_observability_io_logging_enabled` | *Optional\[bool]*                                                                                                           | :heavy\_minus\_sign: | Whether private logging is enabled                                                                                                                                     | false                                                           |
-| `retries`                             | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                                         | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                    |                                                                 |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `name` | *str* | :heavy\_check\_mark: | Name for the new workspace | Production |
+| `slug` | *str* | :heavy\_check\_mark: | URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens) | production |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `default_image_model` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Default image model for this workspace | openai/dall-e-3 |
+| `default_provider_sort` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Default provider sort preference (price, throughput, latency, exacto) | price |
+| `default_text_model` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Default text model for this workspace | openai/gpt-4o |
+| `description` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Description of the workspace | Production environment workspace |
+| `disabled_server_tools` | List\[[components.CreateWorkspaceRequestDisabledServerTool](../../components/createworkspacerequestdisabledservertool.mdx)] | :heavy\_minus\_sign: | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[<br />"openrouter:web\_search",<br />"openrouter:bash"<br />] |
+| `io_logging_api_key_ids` | List\[*int*] | :heavy\_minus\_sign: | Optional array of API key IDs to filter I/O logging | null |
+| `io_logging_sampling_rate` | *Optional\[float]* | :heavy\_minus\_sign: | Sampling rate for I/O logging (0.0001-1) | 1 |
+| `is_data_discount_logging_enabled` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether data discount logging is enabled | true |
+| `is_observability_broadcast_enabled` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether broadcast is enabled | false |
+| `is_observability_io_logging_enabled` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether private logging is enabled | false |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -133,13 +133,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete
 
@@ -168,14 +168,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                            | Type                                                                | Required             | Description                                                                                                                                                                                                                                                                | Example    |
-| ------------------------------------ | ------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `id`                                 | *str*                                                               | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                                                                                                                                            | production |
-| `http_referer`                       | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                |            |
-| `x_open_router_title`                | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                         |            |
-| `x_open_router_categories`           | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                |            |
-| `confirm_default_workspace_deletion` | *Optional\[bool]*                                                   | :heavy\_minus\_sign: | Required to delete the default workspace. Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces. | false      |
-| `retries`                            | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                        |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `confirm_default_workspace_deletion` | *Optional\[bool]* | :heavy\_minus\_sign: | Required to delete the default workspace. Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces. | false |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -183,14 +183,14 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get
 
@@ -219,13 +219,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example    |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                             | production |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |            |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |            |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |            |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -233,12 +233,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## update
 
@@ -267,25 +267,25 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                             | Type                                                                                                                        | Required             | Description                                                                                                                                                            | Example                                                         |
-| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| `id`                                  | *str*                                                                                                                       | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                                        | production                                                      |
-| `http_referer`                        | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />            |                                                                 |
-| `x_open_router_title`                 | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                     |                                                                 |
-| `x_open_router_categories`            | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                            |                                                                 |
-| `default_image_model`                 | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | Default image model for this workspace                                                                                                                                 | openai/dall-e-3                                                 |
-| `default_provider_sort`               | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | Default provider sort preference (price, throughput, latency, exacto)                                                                                                  | price                                                           |
-| `default_text_model`                  | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | Default text model for this workspace                                                                                                                                  | openai/gpt-4o                                                   |
-| `description`                         | *OptionalNullable\[str]*                                                                                                    | :heavy\_minus\_sign: | New description for the workspace                                                                                                                                      | Updated description                                             |
-| `disabled_server_tools`               | List\[[components.UpdateWorkspaceRequestDisabledServerTool](../../components/updateworkspacerequestdisabledservertool.mdx)] | :heavy\_minus\_sign: | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[<br />"openrouter:web\_search",<br />"openrouter:bash"<br />] |
-| `io_logging_api_key_ids`              | List\[*int*]                                                                                                                | :heavy\_minus\_sign: | Optional array of API key IDs to filter I/O logging                                                                                                                    | null                                                            |
-| `io_logging_sampling_rate`            | *Optional\[float]*                                                                                                          | :heavy\_minus\_sign: | Sampling rate for I/O logging (0.0001-1)                                                                                                                               | 1                                                               |
-| `is_data_discount_logging_enabled`    | *Optional\[bool]*                                                                                                           | :heavy\_minus\_sign: | Whether data discount logging is enabled                                                                                                                               | true                                                            |
-| `is_observability_broadcast_enabled`  | *Optional\[bool]*                                                                                                           | :heavy\_minus\_sign: | Whether broadcast is enabled                                                                                                                                           | false                                                           |
-| `is_observability_io_logging_enabled` | *Optional\[bool]*                                                                                                           | :heavy\_minus\_sign: | Whether private logging is enabled                                                                                                                                     | false                                                           |
-| `name`                                | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | New name for the workspace                                                                                                                                             | Updated Workspace                                               |
-| `slug`                                | *Optional\[str]*                                                                                                            | :heavy\_minus\_sign: | New URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens)                                                       | updated-workspace                                               |
-| `retries`                             | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                                         | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                    |                                                                 |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `default_image_model` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Default image model for this workspace | openai/dall-e-3 |
+| `default_provider_sort` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Default provider sort preference (price, throughput, latency, exacto) | price |
+| `default_text_model` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Default text model for this workspace | openai/gpt-4o |
+| `description` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | New description for the workspace | Updated description |
+| `disabled_server_tools` | List\[[components.UpdateWorkspaceRequestDisabledServerTool](../../components/updateworkspacerequestdisabledservertool.mdx)] | :heavy\_minus\_sign: | OpenRouter server tools that requests in this workspace may not invoke. Requests naming a disabled tool are rejected with 403. An empty array or null clears the list. | \[<br />"openrouter:web\_search",<br />"openrouter:bash"<br />] |
+| `io_logging_api_key_ids` | List\[*int*] | :heavy\_minus\_sign: | Optional array of API key IDs to filter I/O logging | null |
+| `io_logging_sampling_rate` | *Optional\[float]* | :heavy\_minus\_sign: | Sampling rate for I/O logging (0.0001-1) | 1 |
+| `is_data_discount_logging_enabled` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether data discount logging is enabled | true |
+| `is_observability_broadcast_enabled` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether broadcast is enabled | false |
+| `is_observability_io_logging_enabled` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether private logging is enabled | false |
+| `name` | *Optional\[str]* | :heavy\_minus\_sign: | New name for the workspace | Updated Workspace |
+| `slug` | *Optional\[str]* | :heavy\_minus\_sign: | New URL-friendly slug (lowercase alphanumeric segments separated by single hyphens, no leading/trailing hyphens) | updated-workspace |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -293,14 +293,14 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_members
 
@@ -331,15 +331,15 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example    |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                             | production |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |            |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |            |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |            |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0          |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50         |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -347,13 +347,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulk\_add\_members
 
@@ -385,14 +385,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                                            |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                             | production                                         |
-| `user_ids`                 | List\[*str*]                                                        | :heavy\_check\_mark: | List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization.                                                 | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                    |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                    |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                    |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                    |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `user_ids` | List\[*str*] | :heavy\_check\_mark: | List of user IDs to add to the workspace. Members are assigned the same role they hold in the organization. | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -400,14 +400,14 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulk\_remove\_members
 
@@ -439,14 +439,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                                            |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                             | production                                         |
-| `user_ids`                 | List\[*str*]                                                        | :heavy\_check\_mark: | List of user IDs to remove from the workspace                                                                                                               | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                    |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                    |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                    |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                    |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `user_ids` | List\[*str*] | :heavy\_check\_mark: | List of user IDs to remove from the workspace | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -454,14 +454,14 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_budgets
 
@@ -490,13 +490,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example    |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `workspace_ref`            | *str*                                                               | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                             | production |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |            |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |            |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |            |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `workspace_ref` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -504,12 +504,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete\_budget
 
@@ -538,14 +538,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                               | Required             | Description                                                                                                                                                 | Example    |
-| -------------------------- | ---------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `workspace_ref`            | *str*                                                                              | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                             | production |
-| `interval`                 | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets.                                                                              | monthly    |
-| `http_referer`             | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |            |
-| `x_open_router_title`      | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |            |
-| `x_open_router_categories` | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |            |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `workspace_ref` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -553,13 +553,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get\_budget
 
@@ -588,14 +588,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                               | Required             | Description                                                                                                                                                 | Example    |
-| -------------------------- | ---------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `workspace_ref`            | *str*                                                                              | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                             | production |
-| `interval`                 | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets.                                                                              | monthly    |
-| `http_referer`             | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |            |
-| `x_open_router_title`      | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |            |
-| `x_open_router_categories` | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |            |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `workspace_ref` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -603,13 +603,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## set\_budget
 
@@ -638,16 +638,16 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                               | Required             | Description                                                                                                                                                                                                                                                                                                 | Example    |
-| -------------------------- | ---------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| `workspace_ref`            | *str*                                                                              | :heavy\_check\_mark: | The workspace ID (UUID) or slug                                                                                                                                                                                                                                                                             | production |
-| `interval`                 | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets.                                                                                                                                                                                                                              | monthly    |
-| `limit_usd`                | *float*                                                                            | :heavy\_check\_mark: | Spending limit in USD. Must be greater than 0.                                                                                                                                                                                                                                                              | 100        |
-| `http_referer`             | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                                                 |            |
-| `x_open_router_title`      | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                                                          |            |
-| `x_open_router_categories` | *Optional\[str]*                                                                   | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                                                 |            |
-| `include_byok_in_budgets`  | *Optional\[bool]*                                                                  | :heavy\_minus\_sign: | Whether to include BYOK (bring-your-own-key) spend when enforcing the workspace's budgets. This is a workspace-wide setting: it applies to every budget interval (daily, weekly, monthly, and lifetime), not just the interval being upserted in this request. Omit to leave the current setting unchanged. | true       |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                         |            |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `workspace_ref` | *str* | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `limit_usd` | *float* | :heavy\_check\_mark: | Spending limit in USD. Must be greater than 0. | 100 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `include_byok_in_budgets` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether to include BYOK (bring-your-own-key) spend when enforcing the workspace's budgets. This is a workspace-wide setting: it applies to every budget interval (daily, weekly, monthly, and lifetime), not just the interval being upserted in this request. Omit to leave the current setting unchanged. | true |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -655,11 +655,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

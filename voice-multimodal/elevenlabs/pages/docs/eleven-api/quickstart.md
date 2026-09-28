@@ -119,7 +119,7 @@ elevenlabs = ElevenLabs(
 audio = elevenlabs.text_to_speech.convert(
     text="The first move is what sets everything in motion.",
     voice_id="JBFqnCBsd6RMkjVDRZzb",  # "George" - browse voices at elevenlabs.io/app/voice-library
-    model_id="eleven_v3",
+    model_id="eleven_v4",
     output_format="mp3_44100_128",
 )
 
@@ -136,7 +136,7 @@ const audio = await elevenlabs.textToSpeech.convert(
 	"JBFqnCBsd6RMkjVDRZzb", // "George" - browse voices at elevenlabs.io/app/voice-library
 	{
 		text: "The first move is what sets everything in motion.",
-		modelId: "eleven_v3",
+		modelId: "eleven_v4",
 		outputFormat: "mp3_44100_128",
 	},
 );
@@ -164,7 +164,7 @@ Generate speech and save it to an MP3 file:
 ```bash
 elevenlabs text-to-speech convert \
   --voice-id JBFqnCBsd6RMkjVDRZzb \
-  --model-id eleven_v3 \
+  --model-id eleven_v4 \
   --text "The first move is what sets everything in motion." \
   --output-format mp3_44100_128 \
   --output audio.mp3

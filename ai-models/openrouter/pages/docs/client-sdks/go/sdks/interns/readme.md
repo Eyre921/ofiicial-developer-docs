@@ -23,7 +23,8 @@ Create, inspect, update, provision, suspend and delete OpenRouter interns throug
 * [DeleteIntern](#deleteintern) - Delete an intern
 * [GetIntern](#getintern) - Get an intern
 * [UpdateIntern](#updateintern) - Update an intern
-* [GetInternDaemonAccess](#getinterndaemonaccess) - Get an intern's daemon access
+* [GetInternDaemon](#getinterndaemon) - Get an intern's daemon access
+* [~~GetInternDaemonAccess~~](#getinterndaemonaccess) - Get an intern's daemon access (deprecated alias) :warning: **Deprecated**
 * [ProvisionIntern](#provisionintern) - Provision an intern
 * [SuspendIntern](#suspendintern) - Suspend an intern
 * [Chat](#chat) - Stream a chat completion with an intern
@@ -64,14 +65,14 @@ func main() {
 
 ### Parameters
 
-| Parameter       | Type                                                       | Required             | Description                                                                                                                                   | Example                                                                                |
-| --------------- | ---------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `ctx`           | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                                                                                                           |                                                                                        |
-| `limit`         | `*int64`                                                   | :heavy\_minus\_sign: | Maximum number of interns to return, from 1 through 500.                                                                                      | 50                                                                                     |
-| `status`        | \[][operations.Status](../../models/operations/status.mdx) | :heavy\_minus\_sign: | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed.                                                              | \[<br />"queued",<br />"running"<br />]                                                |
-| `startingAfter` | `*string`                                                  | :heavy\_minus\_sign: | The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400. | MjAyNi0wOS0xNlQwODozMDowMC4wMDAwMDBafDdjOWU2Njc5LTc0MjUtNDBkZS05NDRiLWUwN2ZjMWY5MGFlNw |
-| `workspaceID`   | `*string`                                                  | :heavy\_minus\_sign: | Only return interns in this workspace. It must match the API key workspace.                                                                   | 89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb                                                   |
-| `opts`          | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                                                                                                                 |                                                                                        |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of interns to return, from 1 through 500. | 50 |
+| `status` | \[][operations.Status](../../models/operations/status.mdx) | :heavy\_minus\_sign: | Comma-separated lifecycle statuses to include, at most 8. Repeats are collapsed. | \[<br />"queued",<br />"running"<br />] |
+| `startingAfter` | `*string` | :heavy\_minus\_sign: | The opaque `next_cursor` of the previous page. Returns the interns that come after it in the newest-first order. A malformed cursor is a 400. | MjAyNi0wOS0xNlQwODozMDowMC4wMDAwMDBafDdjOWU2Njc5LTc0MjUtNDBkZS05NDRiLWUwN2ZjMWY5MGFlNw |
+| `workspaceID` | `*string` | :heavy\_minus\_sign: | Only return interns in this workspace. It must match the API key workspace. | 89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -79,11 +80,11 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code             | Content Type     |
-| ------------------------------ | ----------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 400, 401, 403, 404, 408 | application/json |
-| sdkerrors.InternLifecycleError | 500                     | application/json |
-| sdkerrors.APIError             | 4XX, 5XX                | \*/\*            |
+| sdkerrors.InternLifecycleError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## CreateIntern
 
@@ -125,12 +126,12 @@ func main() {
 
 ### Parameters
 
-| Parameter             | Type                                                                              | Required             | Description                                                                                                                                                                                                    | Example                                                                                                                           |
-| --------------------- | --------------------------------------------------------------------------------- | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `ctx`                 | [context.Context](https://pkg.go.dev/context#Context)                             | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                            |                                                                                                                                   |
-| `createInternRequest` | [components.CreateInternRequest](../../models/components/createinternrequest.mdx) | :heavy\_check\_mark: | N/A                                                                                                                                                                                                            | \{<br />"name": "research-assistant",<br />"provision": true,<br />"workspace\_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"<br />} |
-| `idempotencyKey`      | `*string`                                                                         | :heavy\_minus\_sign: | Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body. | create-research-assistant-2026-09-16                                                                                              |
-| `opts`                | \[][operations.Option](../../models/operations/option.mdx)                        | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                  |                                                                                                                                   |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `createInternRequest` | [components.CreateInternRequest](../../models/components/createinternrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"name": "research-assistant",<br />"provision": true,<br />"workspace\_id": "89f9f5b2-3f89-4eaf-83ca-5ceae149e8bb"<br />} |
+| `idempotencyKey` | `*string` | :heavy\_minus\_sign: | Key that makes retries resume the same create operation, from 1 through 255 characters. An empty or longer key is refused with 400. Without the header, the server derives a stable key from the request body. | create-research-assistant-2026-09-16 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -138,11 +139,11 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code                            | Content Type     |
-| ------------------------------ | -------------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| sdkerrors.InternLifecycleError | 500, 502                               | application/json |
-| sdkerrors.APIError             | 4XX, 5XX                               | \*/\*            |
+| sdkerrors.InternLifecycleError | 500, 502 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## DeleteIntern
 
@@ -182,12 +183,12 @@ func main() {
 
 ### Parameters
 
-| Parameter             | Type                                                                              | Required             | Description                                           | Example                                             |
-| --------------------- | --------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------- | --------------------------------------------------- |
-| `ctx`                 | [context.Context](https://pkg.go.dev/context#Context)                             | :heavy\_check\_mark: | The context to use for the request.                   |                                                     |
-| `internID`            | `string`                                                                          | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7                |
-| `deleteInternRequest` | [components.DeleteInternRequest](../../models/components/deleteinternrequest.mdx) | :heavy\_check\_mark: | N/A                                                   | \{<br />"acknowledge\_workspace\_loss": true<br />} |
-| `opts`                | \[][operations.Option](../../models/operations/option.mdx)                        | :heavy\_minus\_sign: | The options for this request.                         |                                                     |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `deleteInternRequest` | [components.DeleteInternRequest](../../models/components/deleteinternrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"acknowledge\_workspace\_loss": true<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -195,11 +196,11 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code                            | Content Type     |
-| ------------------------------ | -------------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| sdkerrors.InternLifecycleError | 500, 502                               | application/json |
-| sdkerrors.APIError             | 4XX, 5XX                               | \*/\*            |
+| sdkerrors.InternLifecycleError | 500, 502 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetIntern
 
@@ -236,11 +237,11 @@ func main() {
 
 ### Parameters
 
-| Parameter  | Type                                                       | Required             | Description                                           | Example                              |
-| ---------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------- | ------------------------------------ |
-| `ctx`      | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                   |                                      |
-| `internID` | `string`                                                   | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `opts`     | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -248,11 +249,11 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code        | Content Type     |
-| ------------------------------ | ------------------ | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 401, 403, 404, 408 | application/json |
-| sdkerrors.InternLifecycleError | 500                | application/json |
-| sdkerrors.APIError             | 4XX, 5XX           | \*/\*            |
+| sdkerrors.InternLifecycleError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## UpdateIntern
 
@@ -294,12 +295,12 @@ func main() {
 
 ### Parameters
 
-| Parameter             | Type                                                                              | Required             | Description                                           | Example                                                                                       |
-| --------------------- | --------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `ctx`                 | [context.Context](https://pkg.go.dev/context#Context)                             | :heavy\_check\_mark: | The context to use for the request.                   |                                                                                               |
-| `internID`            | `string`                                                                          | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7                                                          |
-| `updateInternRequest` | [components.UpdateInternRequest](../../models/components/updateinternrequest.mdx) | :heavy\_check\_mark: | N/A                                                   | \{<br />"description": "Researches customer questions",<br />"model": "openai/gpt-5.4"<br />} |
-| `opts`                | \[][operations.Option](../../models/operations/option.mdx)                        | :heavy\_minus\_sign: | The options for this request.                         |                                                                                               |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `updateInternRequest` | [components.UpdateInternRequest](../../models/components/updateinternrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"description": "Researches customer questions",<br />"model": "openai/gpt-5.4"<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -307,15 +308,70 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code                            | Content Type     |
-| ------------------------------ | -------------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| sdkerrors.InternLifecycleError | 500                                    | application/json |
-| sdkerrors.APIError             | 4XX, 5XX                               | \*/\*            |
+| sdkerrors.InternLifecycleError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
-## GetInternDaemonAccess
+## GetInternDaemon
 
 Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/go/docs/api-reference/authentication) required.
+
+### Example Usage
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	"os"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New(
+        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
+    )
+
+    res, err := s.Interns.GetInternDaemon(ctx, "7c9e6679-7425-40de-944b-e07fc1f90ae7")
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+
+### Response
+
+**[\*components.InternDaemonAccess](../../models/components/interndaemonaccess.mdx), error**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.InternLifecycleError | 401, 403, 404, 408, 409 | application/json |
+| sdkerrors.InternLifecycleError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
+
+## ~~GetInternDaemonAccess~~
+
+Deprecated alias of `GET /interns/{internId}/daemon` with the same request, response, and errors. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/client-sdks/go/docs/api-reference/authentication) required.
+
+> :warning: **DEPRECATED**: This will be removed in a future release, please migrate away from it as soon as possible.
 
 ### Example Usage
 
@@ -348,11 +404,11 @@ func main() {
 
 ### Parameters
 
-| Parameter  | Type                                                       | Required             | Description                                           | Example                              |
-| ---------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------- | ------------------------------------ |
-| `ctx`      | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                   |                                      |
-| `internID` | `string`                                                   | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `opts`     | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -360,11 +416,11 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code             | Content Type     |
-| ------------------------------ | ----------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 401, 403, 404, 408, 409 | application/json |
-| sdkerrors.InternLifecycleError | 500                     | application/json |
-| sdkerrors.APIError             | 4XX, 5XX                | \*/\*            |
+| sdkerrors.InternLifecycleError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## ProvisionIntern
 
@@ -401,11 +457,11 @@ func main() {
 
 ### Parameters
 
-| Parameter  | Type                                                       | Required             | Description                                           | Example                              |
-| ---------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------- | ------------------------------------ |
-| `ctx`      | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                   |                                      |
-| `internID` | `string`                                                   | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `opts`     | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -413,11 +469,11 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code                            | Content Type     |
-| ------------------------------ | -------------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| sdkerrors.InternLifecycleError | 500, 502                               | application/json |
-| sdkerrors.APIError             | 4XX, 5XX                               | \*/\*            |
+| sdkerrors.InternLifecycleError | 500, 502 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## SuspendIntern
 
@@ -454,11 +510,11 @@ func main() {
 
 ### Parameters
 
-| Parameter  | Type                                                       | Required             | Description                                           | Example                              |
-| ---------- | ---------------------------------------------------------- | -------------------- | ----------------------------------------------------- | ------------------------------------ |
-| `ctx`      | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request.                   |                                      |
-| `internID` | `string`                                                   | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
-| `opts`     | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | ID of an intern visible to the authenticated API key. | 7c9e6679-7425-40de-944b-e07fc1f90ae7 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -466,11 +522,11 @@ func main() {
 
 ### Errors
 
-| Error Type                     | Status Code                            | Content Type     |
-| ------------------------------ | -------------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternLifecycleError | 400, 401, 403, 404, 408, 409, 413, 415 | application/json |
-| sdkerrors.InternLifecycleError | 500, 502                               | application/json |
-| sdkerrors.APIError             | 4XX, 5XX                               | \*/\*            |
+| sdkerrors.InternLifecycleError | 500, 502 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Chat
 
@@ -538,12 +594,12 @@ func main() {
 
 ### Parameters
 
-| Parameter                     | Type                                                                                              | Required             | Description                         | Example                                                                                                                                                                            |
-| ----------------------------- | ------------------------------------------------------------------------------------------------- | -------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ctx`                         | [context.Context](https://pkg.go.dev/context#Context)                                             | :heavy\_check\_mark: | The context to use for the request. |                                                                                                                                                                                    |
-| `internID`                    | `string`                                                                                          | :heavy\_check\_mark: | The intern to talk to.              | a11e0000-0000-4000-8000-000000000005                                                                                                                                               |
-| `internChatCompletionRequest` | [components.InternChatCompletionRequest](../../models/components/internchatcompletionrequest.mdx) | :heavy\_check\_mark: | N/A                                 | \{<br />"approval\_mode": "manual",<br />"messages": \[<br />\{<br />"content": "Summarize the open pull requests.",<br />"role": "user"<br />}<br />],<br />"stream": true<br />} |
-| `opts`                        | \[][operations.Option](../../models/operations/option.mdx)                                        | :heavy\_minus\_sign: | The options for this request.       |                                                                                                                                                                                    |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | The intern to talk to. | a11e0000-0000-4000-8000-000000000005 |
+| `internChatCompletionRequest` | [components.InternChatCompletionRequest](../../models/components/internchatcompletionrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"approval\_mode": "manual",<br />"messages": \[<br />\{<br />"content": "Summarize the open pull requests.",<br />"role": "user"<br />}<br />],<br />"stream": true<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -551,13 +607,13 @@ func main() {
 
 ### Errors
 
-| Error Type                        | Status Code                       | Content Type     |
-| --------------------------------- | --------------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternChatErrorResponse | 400, 401, 403, 404, 408, 410, 413 | application/json |
-| sdkerrors.InternChatErrorResponse | 409, 429                          | application/json |
-| sdkerrors.InternChatErrorResponse | 503                               | application/json |
-| sdkerrors.InternChatErrorResponse | 502, 504                          | application/json |
-| sdkerrors.APIError                | 4XX, 5XX                          | \*/\*            |
+| sdkerrors.InternChatErrorResponse | 409, 429 | application/json |
+| sdkerrors.InternChatErrorResponse | 503 | application/json |
+| sdkerrors.InternChatErrorResponse | 502, 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## Invoke
 
@@ -603,12 +659,12 @@ func main() {
 
 ### Parameters
 
-| Parameter             | Type                                                                              | Required             | Description                         | Example                                                                                          |
-| --------------------- | --------------------------------------------------------------------------------- | -------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------ |
-| `ctx`                 | [context.Context](https://pkg.go.dev/context#Context)                             | :heavy\_check\_mark: | The context to use for the request. |                                                                                                  |
-| `internID`            | `string`                                                                          | :heavy\_check\_mark: | The intern to run.                  | a11e0000-0000-4000-8000-000000000005                                                             |
-| `internInvokeRequest` | [components.InternInvokeRequest](../../models/components/interninvokerequest.mdx) | :heavy\_check\_mark: | N/A                                 | \{<br />"input": "New support ticket 48213. Case token: ct\_9f2c. Investigate and reply."<br />} |
-| `opts`                | \[][operations.Option](../../models/operations/option.mdx)                        | :heavy\_minus\_sign: | The options for this request.       |                                                                                                  |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `internID` | `string` | :heavy\_check\_mark: | The intern to run. | a11e0000-0000-4000-8000-000000000005 |
+| `internInvokeRequest` | [components.InternInvokeRequest](../../models/components/interninvokerequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"input": "New support ticket 48213. Case token: ct\_9f2c. Investigate and reply."<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -616,11 +672,11 @@ func main() {
 
 ### Errors
 
-| Error Type                        | Status Code                  | Content Type     |
-| --------------------------------- | ---------------------------- | ---------------- |
+| Error Type | Status Code | Content Type |
+| - | - | - |
 | sdkerrors.InternChatErrorResponse | 400, 401, 403, 404, 408, 413 | application/json |
-| sdkerrors.InternChatErrorResponse | 409, 429                     | application/json |
-| sdkerrors.InternChatErrorResponse | 503                          | application/json |
-| sdkerrors.InternChatErrorResponse | 500, 502, 504                | application/json |
-| sdkerrors.APIError                | 4XX, 5XX                     | \*/\*            |
+| sdkerrors.InternChatErrorResponse | 409, 429 | application/json |
+| sdkerrors.InternChatErrorResponse | 503 | application/json |
+| sdkerrors.InternChatErrorResponse | 500, 502, 504 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

@@ -54,18 +54,18 @@ The endpoint accepts only `GET` requests. There is no request body; pass the dat
 
 ### Headers
 
-| Header          | Required | Value                                                                                                   |
-| --------------- | -------- | ------------------------------------------------------------------------------------------------------- |
-| `Authorization` | Yes      | `Bearer <YOUR_OPENROUTER_API_KEY>`. The same key you use to call `/api/v1/chat/completions` works here. |
+| Header | Required | Value |
+| - | - | - |
+| `Authorization` | Yes | `Bearer <YOUR_OPENROUTER_API_KEY>`. The same key you use to call `/api/v1/chat/completions` works here. |
 
 Requests without a valid key receive `401 Unauthorized`.
 
 ### Query parameters
 
-| Parameter    | Type               | Required | Default                           | Example      |
-| ------------ | ------------------ | -------- | --------------------------------- | ------------ |
-| `start_date` | `YYYY-MM-DD` (UTC) | No       | 30 days before `end_date`         | `2026-04-12` |
-| `end_date`   | `YYYY-MM-DD` (UTC) | No       | The most recent completed UTC day | `2026-05-11` |
+| Parameter | Type | Required | Default | Example |
+| - | - | - | - | - |
+| `start_date` | `YYYY-MM-DD` (UTC) | No | 30 days before `end_date` | `2026-04-12` |
+| `end_date` | `YYYY-MM-DD` (UTC) | No | The most recent completed UTC day | `2026-05-11` |
 
 Rules:
 
@@ -79,10 +79,10 @@ Omitting both parameters returns the most recent 30-day window. See the [Example
 
 ### Rate limits
 
-| Bucket      | Limit                |
-| ----------- | -------------------- |
+| Bucket | Limit |
+| - | - |
 | Per API key | 30 requests / minute |
-| Per account | 500 requests / day   |
+| Per account | 500 requests / day |
 
 The dataset updates live as traffic flows through OpenRouter (there is no daily refresh window), so a poll once per minute is more than enough to keep your view fresh. Exceeding either bucket returns `429 Too Many Requests`.
 
@@ -202,15 +202,15 @@ Authorization: Bearer <YOUR_OPENROUTER_API_KEY>
 
 ### Query parameters
 
-| Parameter     | Type                  | Required | Default                       | Example      |
-| ------------- | --------------------- | -------- | ----------------------------- | ------------ |
-| `sort`        | `popular \| trending` | No       | `popular`                     | `trending`   |
-| `category`    | string                | No       | (all categories)              | `coding`     |
-| `subcategory` | string                | No       | (all subcategories)           | `cli-agent`  |
-| `start_date`  | `YYYY-MM-DD` (UTC)    | No       | 30 days before `end_date`     | `2026-04-12` |
-| `end_date`    | `YYYY-MM-DD` (UTC)    | No       | Most recent completed UTC day | `2026-05-11` |
-| `limit`       | integer (1-100)       | No       | `50`                          | `10`         |
-| `offset`      | integer (0-100)       | No       | `0`                           | `50`         |
+| Parameter | Type | Required | Default | Example |
+| - | - | - | - | - |
+| `sort` | `popular \| trending` | No | `popular` | `trending` |
+| `category` | string | No | (all categories) | `coding` |
+| `subcategory` | string | No | (all subcategories) | `cli-agent` |
+| `start_date` | `YYYY-MM-DD` (UTC) | No | 30 days before `end_date` | `2026-04-12` |
+| `end_date` | `YYYY-MM-DD` (UTC) | No | Most recent completed UTC day | `2026-05-11` |
+| `limit` | integer (1-100) | No | `50` | `10` |
+| `offset` | integer (0-100) | No | `0` | `50` |
 
 Sort modes:
 
@@ -323,17 +323,17 @@ Authorization: Bearer <YOUR_OPENROUTER_API_KEY>
 
 ### Query parameters
 
-| Parameter            | Type                                                                                                                | Required | Default          | Example               |
-| -------------------- | ------------------------------------------------------------------------------------------------------------------- | -------- | ---------------- | --------------------- |
-| `source`             | `artificial-analysis \| design-arena \| openrouter`                                                                 | No       | (all sources)    | `artificial-analysis` |
-| `task_type`          | `coding \| intelligence \| agentic \| search`                                                                       | No       | (all tasks)      | `coding`              |
-| `arena`              | `models \| builders \| agents`                                                                                      | No       | `models`         | `models`              |
-| `category`           | string                                                                                                              | No       | (all categories) | `codecategories`      |
-| `benchmark_type`     | `gpqa_diamond \| tau_bench_verified_airline \| search_browsecomp \| search_hle \| search_dsqa \| search_widesearch` | No       | (all benchmarks) | `search_widesearch`   |
-| `search_engine`      | string                                                                                                              | No       | (all engines)    | `exa`                 |
-| `search_surface`     | `server-tool \| plugin`                                                                                             | No       | (all surfaces)   | `server-tool`         |
-| `include_run_config` | boolean                                                                                                             | No       | `false`          | `true`                |
-| `max_results`        | integer (1–100)                                                                                                     | No       | `50`             | `20`                  |
+| Parameter | Type | Required | Default | Example |
+| - | - | - | - | - |
+| `source` | `artificial-analysis \| design-arena \| openrouter` | No | (all sources) | `artificial-analysis` |
+| `task_type` | `coding \| intelligence \| agentic \| search` | No | (all tasks) | `coding` |
+| `arena` | `models \| builders \| agents` | No | `models` | `models` |
+| `category` | string | No | (all categories) | `codecategories` |
+| `benchmark_type` | `gpqa_diamond \| tau_bench_verified_airline \| search_browsecomp \| search_hle \| search_dsqa \| search_widesearch` | No | (all benchmarks) | `search_widesearch` |
+| `search_engine` | string | No | (all engines) | `exa` |
+| `search_surface` | `server-tool \| plugin` | No | (all surfaces) | `server-tool` |
+| `include_run_config` | boolean | No | `false` | `true` |
+| `max_results` | integer (1–100) | No | `50` | `20` |
 
 Notes:
 
@@ -536,8 +536,8 @@ Authorization: Bearer <YOUR_OPENROUTER_API_KEY>
 ### Query parameters
 
 | Parameter | Type | Required | Default | Example |
-| --------- | ---- | -------- | ------- | ------- |
-| `window`  | `7d` | No       | `7d`    | `7d`    |
+| - | - | - | - | - |
+| `window` | `7d` | No | `7d` | `7d` |
 
 Only `7d` (trailing 7 days) is supported for now. Future windows (e.g. `1d`, `30d`) may be added.
 

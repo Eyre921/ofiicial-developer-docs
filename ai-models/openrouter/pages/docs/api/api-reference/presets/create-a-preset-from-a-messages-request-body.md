@@ -94,6 +94,8 @@ tags:
     name: Organization
   - description: Presets endpoints
     name: Presets
+  - description: Private Endpoints endpoints
+    name: Private Endpoints
   - description: Provider information endpoints
     name: Providers
   - description: Rerank endpoints
@@ -529,6 +531,15 @@ components:
                 type:
                   enum:
                     - adaptive
+                  type: string
+              required:
+                - type
+              type: object
+            - additionalProperties: false
+              properties:
+                type:
+                  enum:
+                    - between_tools
                   type: string
               required:
                 - type
@@ -1175,6 +1186,7 @@ components:
                                   - max_uses_exceeded
                                   - too_many_requests
                                   - query_too_long
+                                  - request_too_large
                                 type: string
                               type:
                                 enum:

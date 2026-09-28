@@ -61,15 +61,15 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0                                    |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50                                   |
-| `workspace_id`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned.                                                            | 0df9e665-d932-5740-b2c7-b52af166bc11 |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Filter guardrails by workspace ID. By default, guardrails in the default workspace are returned. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -77,12 +77,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## create
 
@@ -117,34 +117,34 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                       | Type                                                                                                    | Required             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Example                                                                                                                     |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `name`                          | *str*                                                                                                   | :heavy\_check\_mark: | Name for the new guardrail                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | My New Guardrail                                                                                                            |
-| `http_referer`                  | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                                                             |
-| `x_open_router_title`           | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                                                                                                                             |
-| `x_open_router_categories`      | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                                                             |
-| `allowed_data_regions`          | List\[[components.GuardrailDataRegion](../../components/guardraildataregion.mdx)]                       | :heavy\_minus\_sign: | Data regions through which requests governed by this guardrail must arrive. `global` is [https://openrouter.ai](https://openrouter.ai), `europe` is [https://eu.openrouter.ai](https://eu.openrouter.ai), and `us` is [https://us.openrouter.ai](https://us.openrouter.ai). Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected. | \[<br />"europe"<br />]                                                                                                     |
-| `allowed_models`                | List\[*str*]                                                                                            | :heavy\_minus\_sign: | Array of model identifiers (slug or canonical\_slug accepted)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | \[<br />"openai/gpt-5.2",<br />"anthropic/claude-4.5-opus-20251124",<br />"deepseek/deepseek-r1-0528:free"<br />]           |
-| `allowed_providers`             | List\[*str*]                                                                                            | :heavy\_minus\_sign: | List of allowed provider IDs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | \[<br />"openai",<br />"anthropic",<br />"deepseek"<br />]                                                                  |
-| `content_filter_builtins`       | List\[[components.ContentFilterBuiltinEntryInput](../../components/contentfilterbuiltinentryinput.mdx)] | :heavy\_minus\_sign: | Builtin content filters to apply. Every builtin slug supports "block", "redact", and the detect-only "flag" action.                                                                                                                                                                                                                                                                                                                                                                                                                                     | \[<br />\{<br />"action": "block",<br />"slug": "regex-prompt-injection"<br />}<br />]                                      |
-| `content_filters`               | List\[[components.ContentFilterEntry](../../components/contentfilterentry.mdx)]                         | :heavy\_minus\_sign: | Custom regex content filters to apply to request messages                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | \[<br />\{<br />"action": "redact",<br />"label": "\[API\_KEY]",<br />"pattern": "\b(sk-\[a-zA-Z0-9]\{48})\b"<br />}<br />] |
-| `description`                   | *OptionalNullable\[str]*                                                                                | :heavy\_minus\_sign: | Description of the guardrail                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | A guardrail for limiting API usage                                                                                          |
-| `enable_free_model_publication` | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that publish prompts.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | false                                                                                                                       |
-| `enable_free_model_training`    | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that train on request data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | true                                                                                                                        |
-| `enable_paid_model_training`    | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether this guardrail allows paid endpoints that train on request data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | true                                                                                                                        |
-| `enforce_zdr`                   | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | : warning: \*\* DEPRECATED \*\*: This will be removed in a future release, please migrate away from it as soon as possible.<br /><br />Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.                                                                                                                                              | false                                                                                                                       |
-| `enforce_zdr_anthropic`         | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for Anthropic models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                              | false                                                                                                                       |
-| `enforce_zdr_google`            | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for Google models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                 | false                                                                                                                       |
-| `enforce_zdr_openai`            | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for OpenAI models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                 | false                                                                                                                       |
-| `enforce_zdr_other`             | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                    | false                                                                                                                       |
-| `enforce_zdr_xai`               | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for xAI models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                    | false                                                                                                                       |
-| `ignored_models`                | List\[*str*]                                                                                            | :heavy\_minus\_sign: | Array of model identifiers to exclude from routing (slug or canonical\_slug accepted)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | \[<br />"openai/gpt-4o-mini"<br />]                                                                                         |
-| `ignored_providers`             | List\[*str*]                                                                                            | :heavy\_minus\_sign: | List of provider IDs to exclude from routing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | \[<br />"azure"<br />]                                                                                                      |
-| `include_byok_in_budgets`       | *Optional\[bool]*                                                                                       | :heavy\_minus\_sign: | Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail's limit\_usd, in addition to OpenRouter credit spend. Defaults to false.                                                                                                                                                                                                                                                                                                                                                                                                 | false                                                                                                                       |
-| `limit_usd`                     | *OptionalNullable\[float]*                                                                              | :heavy\_minus\_sign: | Spending limit in USD. Must be provided together with `reset_interval`: a request that sets only one of the two is rejected with a 400.                                                                                                                                                                                                                                                                                                                                                                                                                 | 50                                                                                                                          |
-| `reset_interval`                | [OptionalNullable\[components.GuardrailInterval\]](../../components/guardrailinterval.mdx)              | :heavy\_minus\_sign: | Interval at which the limit resets (daily, weekly, monthly)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | monthly                                                                                                                     |
-| `workspace_id`                  | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. This only places the guardrail in the workspace; the created guardrail enforces nothing for that workspace's traffic until it is assigned to API keys or members. To restrict all traffic in a workspace, update the workspace's default guardrail instead.                                                                         | 0df9e665-d932-5740-b2c7-b52af166bc11                                                                                        |
-| `retries`                       | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                     | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                                                                             |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `name` | *str* | :heavy\_check\_mark: | Name for the new guardrail | My New Guardrail |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `allowed_data_regions` | List\[[components.GuardrailDataRegion](../../components/guardraildataregion.mdx)] | :heavy\_minus\_sign: | Data regions through which requests governed by this guardrail must arrive. `global` is [https://openrouter.ai](https://openrouter.ai), `europe` is [https://eu.openrouter.ai](https://eu.openrouter.ai), and `us` is [https://us.openrouter.ai](https://us.openrouter.ai). Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected. | \[<br />"europe"<br />] |
+| `allowed_models` | List\[*str*] | :heavy\_minus\_sign: | Array of model identifiers (slug or canonical\_slug accepted) | \[<br />"openai/gpt-5.2",<br />"anthropic/claude-4.5-opus-20251124",<br />"deepseek/deepseek-r1-0528:free"<br />] |
+| `allowed_providers` | List\[*str*] | :heavy\_minus\_sign: | List of allowed provider IDs | \[<br />"openai",<br />"anthropic",<br />"deepseek"<br />] |
+| `content_filter_builtins` | List\[[components.ContentFilterBuiltinEntryInput](../../components/contentfilterbuiltinentryinput.mdx)] | :heavy\_minus\_sign: | Builtin content filters to apply. Every builtin slug supports "block", "redact", and the detect-only "flag" action. | \[<br />\{<br />"action": "block",<br />"slug": "regex-prompt-injection"<br />}<br />] |
+| `content_filters` | List\[[components.ContentFilterEntry](../../components/contentfilterentry.mdx)] | :heavy\_minus\_sign: | Custom regex content filters to apply to request messages | \[<br />\{<br />"action": "redact",<br />"label": "\[API\_KEY]",<br />"pattern": "\b(sk-\[a-zA-Z0-9]\{48})\b"<br />}<br />] |
+| `description` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | Description of the guardrail | A guardrail for limiting API usage |
+| `enable_free_model_publication` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that publish prompts. | false |
+| `enable_free_model_training` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that train on request data. | true |
+| `enable_paid_model_training` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether this guardrail allows paid endpoints that train on request data. | true |
+| `enforce_zdr` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | : warning: \*\* DEPRECATED \*\*: This will be removed in a future release, please migrate away from it as soon as possible.<br /><br />Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request. | false |
+| `enforce_zdr_anthropic` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for Anthropic models. Falls back to enforce\_zdr when not provided. | false |
+| `enforce_zdr_google` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for Google models. Falls back to enforce\_zdr when not provided. | false |
+| `enforce_zdr_openai` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for OpenAI models. Falls back to enforce\_zdr when not provided. | false |
+| `enforce_zdr_other` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce\_zdr when not provided. | false |
+| `enforce_zdr_xai` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for xAI models. Falls back to enforce\_zdr when not provided. | false |
+| `ignored_models` | List\[*str*] | :heavy\_minus\_sign: | Array of model identifiers to exclude from routing (slug or canonical\_slug accepted) | \[<br />"openai/gpt-4o-mini"<br />] |
+| `ignored_providers` | List\[*str*] | :heavy\_minus\_sign: | List of provider IDs to exclude from routing | \[<br />"azure"<br />] |
+| `include_byok_in_budgets` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail's limit\_usd, in addition to OpenRouter credit spend. Defaults to false. | false |
+| `limit_usd` | *OptionalNullable\[float]* | :heavy\_minus\_sign: | Spending limit in USD. Must be provided together with `reset_interval`: a request that sets only one of the two is rejected with a 400. | 50 |
+| `reset_interval` | [OptionalNullable\[components.GuardrailInterval\]](../../components/guardrailinterval.mdx) | :heavy\_minus\_sign: | Interval at which the limit resets (daily, weekly, monthly) | monthly |
+| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | The workspace to create the guardrail in. When omitted, the guardrail is created in the default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. This only places the guardrail in the workspace; the created guardrail enforces nothing for that workspace's traffic until it is assigned to API keys or members. To restrict all traffic in a workspace, update the workspace's default guardrail instead. | 0df9e665-d932-5740-b2c7-b52af166bc11 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -152,13 +152,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## delete
 
@@ -187,13 +187,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail to delete                                                                                                            | 550e8400-e29b-41d4-a716-446655440000 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail to delete | 550e8400-e29b-41d4-a716-446655440000 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -201,12 +201,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## get
 
@@ -235,13 +235,13 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail to retrieve                                                                                                          | 550e8400-e29b-41d4-a716-446655440000 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail to retrieve | 550e8400-e29b-41d4-a716-446655440000 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -249,12 +249,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## update
 
@@ -283,34 +283,34 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                       | Type                                                                                                    | Required             | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Example                                                                                |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `id`                            | *str*                                                                                                   | :heavy\_check\_mark: | The unique identifier of the guardrail to update                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | 550e8400-e29b-41d4-a716-446655440000                                                   |
-| `http_referer`                  | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br />                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                        |
-| `x_open_router_title`           | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                                                                                                                                                                                                                                                                                                                                                                                                                      |                                                                                        |
-| `x_open_router_categories`      | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                        |
-| `allowed_data_regions`          | List\[[components.GuardrailDataRegion](../../components/guardraildataregion.mdx)]                       | :heavy\_minus\_sign: | Data regions through which requests governed by this guardrail must arrive. `global` is [https://openrouter.ai](https://openrouter.ai), `europe` is [https://eu.openrouter.ai](https://eu.openrouter.ai), and `us` is [https://us.openrouter.ai](https://us.openrouter.ai). Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected. | \[<br />"europe"<br />]                                                                |
-| `allowed_models`                | List\[*str*]                                                                                            | :heavy\_minus\_sign: | Array of model identifiers (slug or canonical\_slug accepted)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | \[<br />"openai/gpt-5.2"<br />]                                                        |
-| `allowed_providers`             | List\[*str*]                                                                                            | :heavy\_minus\_sign: | New list of allowed provider IDs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | \[<br />"openai",<br />"anthropic",<br />"deepseek"<br />]                             |
-| `content_filter_builtins`       | List\[[components.ContentFilterBuiltinEntryInput](../../components/contentfilterbuiltinentryinput.mdx)] | :heavy\_minus\_sign: | Builtin content filters to apply. Set to null to remove. Every builtin slug supports "block", "redact", and the detect-only "flag" action.                                                                                                                                                                                                                                                                                                                                                                                                              | \[<br />\{<br />"action": "block",<br />"slug": "regex-prompt-injection"<br />}<br />] |
-| `content_filters`               | List\[[components.ContentFilterEntry](../../components/contentfilterentry.mdx)]                         | :heavy\_minus\_sign: | Custom regex content filters to apply. Set to null to remove.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | null                                                                                   |
-| `description`                   | *OptionalNullable\[str]*                                                                                | :heavy\_minus\_sign: | New description for the guardrail                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Updated description                                                                    |
-| `enable_free_model_publication` | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that publish prompts.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | false                                                                                  |
-| `enable_free_model_training`    | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that train on request data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | true                                                                                   |
-| `enable_paid_model_training`    | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether this guardrail allows paid endpoints that train on request data.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | true                                                                                   |
-| `enforce_zdr`                   | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | : warning: \*\* DEPRECATED \*\*: This will be removed in a future release, please migrate away from it as soon as possible.<br /><br />Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request.                                                                                                                                              | true                                                                                   |
-| `enforce_zdr_anthropic`         | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for Anthropic models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                              | true                                                                                   |
-| `enforce_zdr_google`            | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for Google models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                 | true                                                                                   |
-| `enforce_zdr_openai`            | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for OpenAI models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                 | true                                                                                   |
-| `enforce_zdr_other`             | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                    | true                                                                                   |
-| `enforce_zdr_xai`               | *OptionalNullable\[bool]*                                                                               | :heavy\_minus\_sign: | Whether to enforce zero data retention for xAI models. Falls back to enforce\_zdr when not provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                    | true                                                                                   |
-| `ignored_models`                | List\[*str*]                                                                                            | :heavy\_minus\_sign: | Array of model identifiers to exclude from routing (slug or canonical\_slug accepted)                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | \[<br />"openai/gpt-4o-mini"<br />]                                                    |
-| `ignored_providers`             | List\[*str*]                                                                                            | :heavy\_minus\_sign: | List of provider IDs to exclude from routing                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | \[<br />"azure"<br />]                                                                 |
-| `include_byok_in_budgets`       | *Optional\[bool]*                                                                                       | :heavy\_minus\_sign: | Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail's limit\_usd, in addition to OpenRouter credit spend. Omit to leave unchanged.                                                                                                                                                                                                                                                                                                                                                                                           | true                                                                                   |
-| `limit_usd`                     | *OptionalNullable\[float]*                                                                              | :heavy\_minus\_sign: | New spending limit in USD                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | 75                                                                                     |
-| `name`                          | *Optional\[str]*                                                                                        | :heavy\_minus\_sign: | New name for the guardrail                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              | Updated Guardrail Name                                                                 |
-| `reset_interval`                | [OptionalNullable\[components.GuardrailInterval\]](../../components/guardrailinterval.mdx)              | :heavy\_minus\_sign: | Interval at which the limit resets (daily, weekly, monthly)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | monthly                                                                                |
-| `retries`                       | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx)                                     | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |                                                                                        |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail to update | 550e8400-e29b-41d4-a716-446655440000 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `allowed_data_regions` | List\[[components.GuardrailDataRegion](../../components/guardraildataregion.mdx)] | :heavy\_minus\_sign: | Data regions through which requests governed by this guardrail must arrive. `global` is [https://openrouter.ai](https://openrouter.ai), `europe` is [https://eu.openrouter.ai](https://eu.openrouter.ai), and `us` is [https://us.openrouter.ai](https://us.openrouter.ai). Requests arriving through any other region are rejected. `null` leaves the ingress region unrestricted. When several guardrails apply (workspace default, member, API key), the effective regions are the intersection of every non-null value. An empty array is rejected. | \[<br />"europe"<br />] |
+| `allowed_models` | List\[*str*] | :heavy\_minus\_sign: | Array of model identifiers (slug or canonical\_slug accepted) | \[<br />"openai/gpt-5.2"<br />] |
+| `allowed_providers` | List\[*str*] | :heavy\_minus\_sign: | New list of allowed provider IDs | \[<br />"openai",<br />"anthropic",<br />"deepseek"<br />] |
+| `content_filter_builtins` | List\[[components.ContentFilterBuiltinEntryInput](../../components/contentfilterbuiltinentryinput.mdx)] | :heavy\_minus\_sign: | Builtin content filters to apply. Set to null to remove. Every builtin slug supports "block", "redact", and the detect-only "flag" action. | \[<br />\{<br />"action": "block",<br />"slug": "regex-prompt-injection"<br />}<br />] |
+| `content_filters` | List\[[components.ContentFilterEntry](../../components/contentfilterentry.mdx)] | :heavy\_minus\_sign: | Custom regex content filters to apply. Set to null to remove. | null |
+| `description` | *OptionalNullable\[str]* | :heavy\_minus\_sign: | New description for the guardrail | Updated description |
+| `enable_free_model_publication` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that publish prompts. | false |
+| `enable_free_model_training` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether this guardrail allows free endpoints that train on request data. | true |
+| `enable_paid_model_training` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether this guardrail allows paid endpoints that train on request data. | true |
+| `enforce_zdr` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | : warning: \*\* DEPRECATED \*\*: This will be removed in a future release, please migrate away from it as soon as possible.<br /><br />Deprecated. Use enforce\_zdr\_anthropic, enforce\_zdr\_openai, enforce\_zdr\_google, enforce\_zdr\_xai, and enforce\_zdr\_other instead. When provided, its value is copied into any of those per-provider fields that are not explicitly specified on the request. | true |
+| `enforce_zdr_anthropic` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for Anthropic models. Falls back to enforce\_zdr when not provided. | true |
+| `enforce_zdr_google` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for Google models. Falls back to enforce\_zdr when not provided. | true |
+| `enforce_zdr_openai` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for OpenAI models. Falls back to enforce\_zdr when not provided. | true |
+| `enforce_zdr_other` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for models that are not from Anthropic, OpenAI, Google, or xAI. Falls back to enforce\_zdr when not provided. | true |
+| `enforce_zdr_xai` | *OptionalNullable\[bool]* | :heavy\_minus\_sign: | Whether to enforce zero data retention for xAI models. Falls back to enforce\_zdr when not provided. | true |
+| `ignored_models` | List\[*str*] | :heavy\_minus\_sign: | Array of model identifiers to exclude from routing (slug or canonical\_slug accepted) | \[<br />"openai/gpt-4o-mini"<br />] |
+| `ignored_providers` | List\[*str*] | :heavy\_minus\_sign: | List of provider IDs to exclude from routing | \[<br />"azure"<br />] |
+| `include_byok_in_budgets` | *Optional\[bool]* | :heavy\_minus\_sign: | Whether BYOK (bring-your-own-key) inference spend counts toward this guardrail's limit\_usd, in addition to OpenRouter credit spend. Omit to leave unchanged. | true |
+| `limit_usd` | *OptionalNullable\[float]* | :heavy\_minus\_sign: | New spending limit in USD | 75 |
+| `name` | *Optional\[str]* | :heavy\_minus\_sign: | New name for the guardrail | Updated Guardrail Name |
+| `reset_interval` | [OptionalNullable\[components.GuardrailInterval\]](../../components/guardrailinterval.mdx) | :heavy\_minus\_sign: | Interval at which the limit resets (daily, weekly, monthly) | monthly |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -318,15 +318,15 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.ConflictResponseError       | 409         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.ConflictResponseError | 409 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_guardrail\_key\_assignments
 
@@ -357,15 +357,15 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail                                                                                                                      | 550e8400-e29b-41d4-a716-446655440000 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0                                    |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50                                   |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -373,12 +373,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulk\_assign\_keys
 
@@ -409,14 +409,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                                                                           |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail                                                                                                                      | 550e8400-e29b-41d4-a716-446655440000                                              |
-| `key_hashes`               | List\[*str*]                                                        | :heavy\_check\_mark: | Array of API key hashes to assign to the guardrail                                                                                                          | \[<br />"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br />] |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                                                   |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                                                   |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                                                   |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                                                   |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `key_hashes` | List\[*str*] | :heavy\_check\_mark: | Array of API key hashes to assign to the guardrail | \[<br />"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br />] |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -424,14 +424,14 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.ForbiddenResponseError      | 403         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.ForbiddenResponseError | 403 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulk\_unassign\_keys
 
@@ -462,14 +462,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                                                                           |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail                                                                                                                      | 550e8400-e29b-41d4-a716-446655440000                                              |
-| `key_hashes`               | List\[*str*]                                                        | :heavy\_check\_mark: | Array of API key hashes to unassign from the guardrail                                                                                                      | \[<br />"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br />] |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                                                   |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                                                   |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                                                   |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                                                   |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `key_hashes` | List\[*str*] | :heavy\_check\_mark: | Array of API key hashes to unassign from the guardrail | \[<br />"c56454edb818d6b14bc0d61c46025f1450b0f4012d12304ab40aacb519fcbc93"<br />] |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -477,13 +477,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_guardrail\_member\_assignments
 
@@ -514,15 +514,15 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                              |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail                                                                                                                      | 550e8400-e29b-41d4-a716-446655440000 |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                      |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                      |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                      |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0                                    |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50                                   |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -530,12 +530,12 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulk\_assign\_members
 
@@ -567,14 +567,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                                            |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail                                                                                                                      | 550e8400-e29b-41d4-a716-446655440000               |
-| `member_user_ids`          | List\[*str*]                                                        | :heavy\_check\_mark: | Array of member user IDs to assign to the guardrail                                                                                                         | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                    |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                    |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                    |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                    |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `member_user_ids` | List\[*str*] | :heavy\_check\_mark: | Array of member user IDs to assign to the guardrail | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -582,13 +582,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## bulk\_unassign\_members
 
@@ -620,14 +620,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example                                            |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `id`                       | *str*                                                               | :heavy\_check\_mark: | The unique identifier of the guardrail                                                                                                                      | 550e8400-e29b-41d4-a716-446655440000               |
-| `member_user_ids`          | List\[*str*]                                                        | :heavy\_check\_mark: | Array of member user IDs to unassign from the guardrail                                                                                                     | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |                                                    |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |                                                    |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |                                                    |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |                                                    |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `id` | *str* | :heavy\_check\_mark: | The unique identifier of the guardrail | 550e8400-e29b-41d4-a716-446655440000 |
+| `member_user_ids` | List\[*str*] | :heavy\_check\_mark: | Array of member user IDs to unassign from the guardrail | \[<br />"user\_abc123",<br />"user\_def456"<br />] |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -635,13 +635,13 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.BadRequestResponseError     | 400         | application/json |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.NotFoundResponseError       | 404         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.BadRequestResponseError | 400 | application/json |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.NotFoundResponseError | 404 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_key\_assignments
 
@@ -672,14 +672,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |         |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |         |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |         |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0       |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -687,11 +687,11 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 
 ## list\_member\_assignments
 
@@ -722,14 +722,14 @@ with OpenRouter(
 
 ### Parameters
 
-| Parameter                  | Type                                                                | Required             | Description                                                                                                                                                 | Example |
-| -------------------------- | ------------------------------------------------------------------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| `http_referer`             | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |         |
-| `x_open_router_title`      | *Optional\[str]*                                                    | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br />                                                          |         |
-| `x_open_router_categories` | *Optional\[str]*                                                    | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br />                                                 |         |
-| `offset`                   | *OptionalNullable\[int]*                                            | :heavy\_minus\_sign: | Number of records to skip for pagination                                                                                                                    | 0       |
-| `limit`                    | *Optional\[int]*                                                    | :heavy\_minus\_sign: | Maximum number of records to return (max 100)                                                                                                               | 50      |
-| `retries`                  | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client.                                                                                         |         |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
+| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -737,9 +737,9 @@ with OpenRouter(
 
 ### Errors
 
-| Error Type                         | Status Code | Content Type     |
-| ---------------------------------- | ----------- | ---------------- |
-| errors.UnauthorizedResponseError   | 401         | application/json |
-| errors.InternalServerResponseError | 500         | application/json |
-| errors.OpenRouterDefaultError      | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| errors.UnauthorizedResponseError | 401 | application/json |
+| errors.InternalServerResponseError | 500 | application/json |
+| errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |
 

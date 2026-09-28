@@ -112,6 +112,8 @@ tags:
     name: Organization
   - description: Presets endpoints
     name: Presets
+  - description: Private Endpoints endpoints
+    name: Private Endpoints
   - description: Provider information endpoints
     name: Providers
   - description: Rerank endpoints

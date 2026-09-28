@@ -175,11 +175,11 @@ Define tools using the OpenAI function calling format:
 
 Control when and how tools are called:
 
-| Tool Choice                             | Description                         |
-| --------------------------------------- | ----------------------------------- |
-| `auto`                                  | Model decides whether to call tools |
-| `none`                                  | Model will not call any tools       |
-| `{type: 'function', name: 'tool_name'}` | Force specific tool call            |
+| Tool Choice | Description |
+| - | - |
+| `auto` | Model decides whether to call tools |
+| `none` | Model will not call any tools |
+| `{type: 'function', name: 'tool_name'}` | Force specific tool call |
 
 ### Force Specific Tool
 

@@ -14,10 +14,10 @@ The canonical cookbook reference for save, resume, and promote is [Checkpoints a
 
 Controls how often full training state (weights **and** optimizer) is checkpointed using DCP (Distributed Checkpoint) format.
 
-| Property                                      | Value                                                                                                                                                                                                  |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Type**                                      | `integer`                                                                                                                                                                                              |
-| **Default**                                   | `0` (disabled)                                                                                                                                                                                         |
+| Property | Value |
+| - | - |
+| **Type** | `integer` |
+| **Default** | `0` (disabled) |
 | **Typical config — SFT / RL / DPO cookbooks** | `WeightSyncConfig(dcp_save_interval=N)` on the recipe `Config` (see [Cookbook: RL](/fine-tuning/training-api/cookbook/rl) and [Checkpoints](/fine-tuning/training-api/cookbook/reference#checkpoints)) |
 
 When set to `0` (the default), no periodic DCP checkpoints are written for resume. Only sampler and HuggingFace-format weight snapshots may be produced — these preserve model weights but **not optimizer state**.
@@ -60,10 +60,10 @@ For transient control-plane or worker interruptions, the trainer job manager exp
 
 GRPO training logs two KL divergence metrics that measure different things:
 
-| Metric    | What it measures                                                                                                        | Expected behavior                                                                     |
-| --------- | ----------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| `ppo_kl`  | KL between the **current policy** and the **previous policy** (importance-sampling ratio inside the PPO clip objective) | Stays near `0` with one minibatch per rollout — this is correct, not a bug            |
-| `ref_kld` | KL between the **current policy** and the **reference (base) model**                                                    | Starts near `0`, increases gradually as the policy diverges from base during training |
+| Metric | What it measures | Expected behavior |
+| - | - | - |
+| `ppo_kl` | KL between the **current policy** and the **previous policy** (importance-sampling ratio inside the PPO clip objective) | Stays near `0` with one minibatch per rollout — this is correct, not a bug |
+| `ref_kld` | KL between the **current policy** and the **reference (base) model** | Starts near `0`, increases gradually as the policy diverges from base during training |
 
 **Which one to monitor:** `ref_kld` is the metric to watch for policy drift. A sudden large jump in `ref_kld` may indicate reward hacking or that the KL penalty coefficient needs tuning.
 

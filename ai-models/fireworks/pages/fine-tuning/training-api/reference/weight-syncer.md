@@ -38,19 +38,19 @@ tracker = WeightSyncer(
 )
 ```
 
-| Field                   | Type                        | Default    | Description                                                                                                                                                                                                                 |
-| ----------------------- | --------------------------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `policy_client`         | `FiretitanTrainingClient`   | —          | Training client for save operations                                                                                                                                                                                         |
-| `deploy_mgr`            | `DeploymentManager \| None` | `None`     | Deployment manager for weight sync (`None` = no weight sync)                                                                                                                                                                |
-| `deployment_id`         | `str \| None`               | `None`     | Target deployment for weight sync                                                                                                                                                                                           |
-| `base_model`            | `str`                       | `""`       | Model name for weight sync API calls                                                                                                                                                                                        |
-| `hotload_timeout`       | `int`                       | `600`      | Timeout in seconds for `hotload_and_wait`                                                                                                                                                                                   |
-| `first_checkpoint_type` | `str`                       | `"base"`   | Type for the first checkpoint (`"base"` or `"delta"`)                                                                                                                                                                       |
-| `compression_format`    | `str`                       | `"arc_v2"` | Delta compression format                                                                                                                                                                                                    |
-| `warmup_after_hotload`  | `bool`                      | `True`     | Send a warmup request after each successful weight sync                                                                                                                                                                     |
-| `warmup_max_retries`    | `int`                       | `10`       | Max retries for post-weight-sync warmup                                                                                                                                                                                     |
-| `reset_prompt_cache`    | `bool`                      | `True`     | Reset the deployment's prompt cache after each weight sync. See [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts) for active stream, session ID, and reset-option semantics. |
-| `lora_rank`             | `int`                       | `0`        | When > 0, forces all checkpoints to `base` type (no delta chain). LoRA adapter exports are standalone PEFT artifacts that cannot use incremental delta compression.                                                         |
+| Field | Type | Default | Description |
+| - | - | - | - |
+| `policy_client` | `FiretitanTrainingClient` | — | Training client for save operations |
+| `deploy_mgr` | `DeploymentManager \| None` | `None` | Deployment manager for weight sync (`None` = no weight sync) |
+| `deployment_id` | `str \| None` | `None` | Target deployment for weight sync |
+| `base_model` | `str` | `""` | Model name for weight sync API calls |
+| `hotload_timeout` | `int` | `600` | Timeout in seconds for `hotload_and_wait` |
+| `first_checkpoint_type` | `str` | `"base"` | Type for the first checkpoint (`"base"` or `"delta"`) |
+| `compression_format` | `str` | `"arc_v2"` | Delta compression format |
+| `warmup_after_hotload` | `bool` | `True` | Send a warmup request after each successful weight sync |
+| `warmup_max_retries` | `int` | `10` | Max retries for post-weight-sync warmup |
+| `reset_prompt_cache` | `bool` | `True` | Reset the deployment's prompt cache after each weight sync. See [KV cache behavior for RL rollouts](/guides/rollout-inference#kv-cache-behavior-for-rl-rollouts) for active stream, session ID, and reset-option semantics. |
+| `lora_rank` | `int` | `0` | When > 0, forces all checkpoints to `base` type (no delta chain). LoRA adapter exports are standalone PEFT artifacts that cannot use incremental delta compression. |
 
 ## Methods
 

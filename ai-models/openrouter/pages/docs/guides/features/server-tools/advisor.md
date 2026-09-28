@@ -129,25 +129,25 @@ Pass an optional `parameters` object on the tool entry:
 }
 ```
 
-| Field                   | Default                | Description                                                                                                                                                                                                                                                                        |
-| ----------------------- | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`                  | None (default advisor) | Optional name for this advisor. The model sees one tool per named advisor (plus one default for an entry with no `name`). Names must be unique across entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars. See [Multiple advisors](#multiple-advisors). |
-| `model`                 | Outer request model    | The advisor model to consult (any OpenRouter model). See [Choosing the advisor model](#choosing-the-advisor-model).                                                                                                                                                                |
-| `instructions`          | None                   | System instructions for the advisor sub-agent.                                                                                                                                                                                                                                     |
-| `forward_transcript`    | `false`                | When `true`, the full parent conversation is forwarded to the advisor (and the tool-call `prompt`, if given, is appended as a final user turn). When `false`, the advisor sees only the `prompt`.                                                                                  |
-| `stream`                | `false`                | When `true`, the advice streams incrementally as it is produced (Responses API only). See [Streaming advice](#streaming-advice).                                                                                                                                                   |
-| `max_completion_tokens` | Provider default       | Max output tokens (including reasoning) for the advisor call.                                                                                                                                                                                                                      |
-| `reasoning`             | Provider default       | Reasoning config forwarded to the advisor call, an object with optional `effort` and `max_tokens`.                                                                                                                                                                                 |
-| `temperature`           | Provider default       | Sampling temperature (`0`–`2`) forwarded to the advisor call.                                                                                                                                                                                                                      |
+| Field | Default | Description |
+| - | - | - |
+| `name` | None (default advisor) | Optional name for this advisor. The model sees one tool per named advisor (plus one default for an entry with no `name`). Names must be unique across entries. Letters, digits, spaces, underscores, and dashes; trimmed; 1–64 chars. See [Multiple advisors](#multiple-advisors). |
+| `model` | Outer request model | The advisor model to consult (any OpenRouter model). See [Choosing the advisor model](#choosing-the-advisor-model). |
+| `instructions` | None | System instructions for the advisor sub-agent. |
+| `forward_transcript` | `false` | When `true`, the full parent conversation is forwarded to the advisor (and the tool-call `prompt`, if given, is appended as a final user turn). When `false`, the advisor sees only the `prompt`. |
+| `stream` | `false` | When `true`, the advice streams incrementally as it is produced (Responses API only). See [Streaming advice](#streaming-advice). |
+| `max_completion_tokens` | Provider default | Max output tokens (including reasoning) for the advisor call. |
+| `reasoning` | Provider default | Reasoning config forwarded to the advisor call, an object with optional `effort` and `max_tokens`. |
+| `temperature` | Provider default | Sampling temperature (`0`–`2`) forwarded to the advisor call. |
 
 ### Tool-call arguments
 
 When invoking the tool, the model passes:
 
-| Argument | Description                                                                             |
-| -------- | --------------------------------------------------------------------------------------- |
-| `prompt` | What the model wants advice on. Required unless `forward_transcript` is `true`.         |
-| `model`  | The advisor model to use. Only honored when the tool definition does not fix a `model`. |
+| Argument | Description |
+| - | - |
+| `prompt` | What the model wants advice on. Required unless `forward_transcript` is `true`. |
+| `model` | The advisor model to use. Only honored when the tool definition does not fix a `model`. |
 
 ## Multiple advisors
 

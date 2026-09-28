@@ -182,12 +182,12 @@ cheapest path at scale.
 The calculator currently includes the four models for which Tinker publishes
 per-token rates:
 
-| Model                    | Tinker prefill / sample (per 1M) |
-| ------------------------ | -------------------------------- |
-| Kimi K2.6 (128K)         | $5.15 / $12.81                   |
-| Kimi K2.5 (128K)         | $5.15 / $12.81                   |
-| Qwen3.5-397B-A17B (256K) | $4.00 / $10.00                   |
-| GPT-OSS-120B (128K)      | $0.63 / $1.54                    |
+| Model | Tinker prefill / sample (per 1M) |
+| - | - |
+| Kimi K2.6 (128K) | $5.15 / $12.81 |
+| Kimi K2.5 (128K) | $5.15 / $12.81 |
+| Qwen3.5-397B-A17B (256K) | $4.00 / $10.00 |
+| GPT-OSS-120B (128K) | $0.63 / $1.54 |
 
 All Fireworks-side rates are taken from the public pages linked below and the
 constants live in `snippets/multi-turn-cost-calculator.jsx` — update there if

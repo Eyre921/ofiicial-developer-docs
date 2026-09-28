@@ -24,13 +24,13 @@ ElevenLabs supports both [IPA](https://en.wikipedia.org/wiki/International_Phone
 
 > **Info**
 >
-> Pronunciation dictionary phoneme tags only work with eleven\_flash\_v2  and eleven\_v3 models.
+> Pronunciation dictionary phoneme tags only work with eleven\_v4, eleven\_flash\_v2 and eleven\_v3 models.
 >
 > Other models skip dictionary phoneme tags and use the default pronunciation. For other models, use
 > alias tags instead to substitute spellings or phrases that produce the pronunciation you need.
 >
 > If you want to use IPA and CMU pronunciations in languages other than English, you will have to
-> switch to the eleven\_v3 model.
+> switch to the eleven\_v4 model.
 
 ## Quickstart
 

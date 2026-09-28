@@ -12,11 +12,11 @@ Call Fireworks from custom agents, background jobs, or services with curl, the O
 
 Choose the endpoint your SDK or client already uses:
 
-| API format                          | Endpoint                    | Typical clients               |
-| ----------------------------------- | --------------------------- | ----------------------------- |
+| API format | Endpoint | Typical clients |
+| - | - | - |
 | **Chat completions** (OpenAI-style) | `POST /v1/chat/completions` | OpenAI SDK, most LLM gateways |
-| **Messages** (Anthropic-style)      | `POST /v1/messages`         | Anthropic SDK                 |
-| **Responses** (OpenAI-style)        | `POST /v1/responses`        | OpenAI Responses API clients  |
+| **Messages** (Anthropic-style) | `POST /v1/messages` | Anthropic SDK |
+| **Responses** (OpenAI-style) | `POST /v1/responses` | OpenAI Responses API clients |
 
 For client setup, see [OpenAI compatibility](/tools-sdks/openai-compatibility), [Anthropic compatibility](/tools-sdks/anthropic-compatibility), or the [Responses API](/guides/response-api).
 
@@ -47,12 +47,12 @@ For a router request, the response `model` field names the model that served the
 
 ## Credentials
 
-| Credential                   | How to provide it                                                                                                                                                                                                                  | When                                                                              |
-| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Fireworks API key (`fw_...`) | `Authorization` bearer token or `X-Fireworks-Api-Key` header                                                                                                                                                                       | Every request; bills open-model traffic to your Fireworks account                 |
-| Anthropic                    | Connect an Anthropic [Provider Key](/nexus/provider-keys) if enabled, or send `x-anthropic-api-key` Any route containing a Claude family alias or Anthropic model ID. Bare `firerouter` needs an Anthropic or an OpenAI credential |                                                                                   |
-| OpenAI                       | Connect an OpenAI [Provider Key](/nexus/provider-keys) if enabled, or send `x-openai-api-key`                                                                                                                                      | Any route containing Astra or another OpenAI model                                |
-| Amazon Bedrock               | [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key                                                                                                                                                                        | A route that includes one of your mapped models. Usage bills to your AWS account. |
+| Credential | How to provide it | When |
+| - | - | - |
+| Fireworks API key (`fw_...`) | `Authorization` bearer token or `X-Fireworks-Api-Key` header | Every request; bills open-model traffic to your Fireworks account |
+| Anthropic | Connect an Anthropic [Provider Key](/nexus/provider-keys) if enabled, or send `x-anthropic-api-key` Any route containing a Claude family alias or Anthropic model ID. Bare `firerouter` needs an Anthropic or an OpenAI credential | |
+| OpenAI | Connect an OpenAI [Provider Key](/nexus/provider-keys) if enabled, or send `x-openai-api-key` | Any route containing Astra or another OpenAI model |
+| Amazon Bedrock | [Amazon Bedrock](/nexus/provider-keys/bedrock) Provider Key | A route that includes one of your mapped models. Usage bills to your AWS account. |
 
 An Anthropic or OpenAI key in a request header applies only to that request. A key connected through Provider Keys is available at the account level, so clients and gateways do not need to send it with every call.
 
@@ -70,13 +70,13 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 
 ## Errors
 
-| Response                                 | Cause                                             | Fix                                                                                                                               |
-| ---------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `401`                                    | Fireworks key is missing or invalid               | Send a valid `fw_...` key with `Authorization: Bearer` or `X-Fireworks-Api-Key`                                                   |
-| Request rejected for data residency      | The requested route is not residency-compatible   | Pin a residency-compatible serverless model                                                                                       |
-| `404` `Model id not found`               | Unknown id, or the account cannot use this router | Check the model id and account access                                                                                             |
-| `400` `no_credential`                    | The closed model you named has no provider key    | Connect [Provider Keys](/nexus/provider-keys) where available. For Anthropic or OpenAI, you can instead send the provider header. |
-| Upstream provider authentication failure | The provider key is wrong or revoked              | Check the Anthropic, OpenAI, or Amazon Bedrock key; exact status and message come from that provider                              |
+| Response | Cause | Fix |
+| - | - | - |
+| `401` | Fireworks key is missing or invalid | Send a valid `fw_...` key with `Authorization: Bearer` or `X-Fireworks-Api-Key` |
+| Request rejected for data residency | The requested route is not residency-compatible | Pin a residency-compatible serverless model |
+| `404` `Model id not found` | Unknown id, or the account cannot use this router | Check the model id and account access |
+| `400` `no_credential` | The closed model you named has no provider key | Connect [Provider Keys](/nexus/provider-keys) where available. For Anthropic or OpenAI, you can instead send the provider header. |
+| Upstream provider authentication failure | The provider key is wrong or revoked | Check the Anthropic, OpenAI, or Amazon Bedrock key; exact status and message come from that provider |
 
 ## Model routers and deployment routers
 

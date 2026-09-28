@@ -102,15 +102,15 @@ updated content. Replace items by ID rather than accumulating deltas.
 
 This stream yields all item types:
 
-| Type                    | Description                        |
-| ----------------------- | ---------------------------------- |
-| `message`               | Assistant text responses           |
-| `function_call`         | Tool invocations with arguments    |
-| `reasoning`             | Model thinking (extended thinking) |
-| `web_search_call`       | Web search operations              |
-| `file_search_call`      | File search operations             |
-| `image_generation_call` | Image generation operations        |
-| `function_call_output`  | Results from executed tools        |
+| Type | Description |
+| - | - |
+| `message` | Assistant text responses |
+| `function_call` | Tool invocations with arguments |
+| `reasoning` | Model thinking (extended thinking) |
+| `web_search_call` | Web search operations |
+| `file_search_call` | File search operations |
+| `image_generation_call` | Image generation operations |
+| `function_call_output` | Results from executed tools |
 
 ## Message Streaming (Deprecated)
 
@@ -191,19 +191,19 @@ for await (const event of result.getFullResponsesStream()) {
 
 The full stream includes these event types:
 
-| Event Type                               | Description                                         |
-| ---------------------------------------- | --------------------------------------------------- |
-| `response.created`                       | Response object created                             |
-| `response.in_progress`                   | Generation started                                  |
-| `response.output_text.delta`             | Text content chunk                                  |
-| `response.output_text.done`              | Text content complete                               |
-| `response.reasoning.delta`               | Reasoning content chunk                             |
-| `response.reasoning.done`                | Reasoning complete                                  |
-| `response.function_call_arguments.delta` | Tool call argument chunk                            |
-| `response.function_call_arguments.done`  | Tool call arguments complete                        |
-| `response.completed`                     | Full response complete                              |
-| `tool.preliminary_result`                | Progress from generator tools (intermediate yields) |
-| `tool.result`                            | Final result from tool execution                    |
+| Event Type | Description |
+| - | - |
+| `response.created` | Response object created |
+| `response.in_progress` | Generation started |
+| `response.output_text.delta` | Text content chunk |
+| `response.output_text.done` | Text content complete |
+| `response.reasoning.delta` | Reasoning content chunk |
+| `response.reasoning.done` | Reasoning complete |
+| `response.function_call_arguments.delta` | Tool call argument chunk |
+| `response.function_call_arguments.done` | Tool call arguments complete |
+| `response.completed` | Full response complete |
+| `tool.preliminary_result` | Progress from generator tools (intermediate yields) |
+| `tool.result` | Final result from tool execution |
 
 ## Tool Call Streaming
 

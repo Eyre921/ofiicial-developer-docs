@@ -25,12 +25,12 @@ A variant is a suffix appended to a model ID with a colon, such as `openai/gpt-5
 
 A catalog variant is a distinct entry in the models API. Its `id` carries the suffix, and its `pricing`, `context_length`, `supported_parameters`, and endpoints describe that entry and can differ from the base model. For example, a `:free` entry can have a shorter context window than its base model, and its pricing is zero.
 
-| Suffix      | Status     | Meaning                                                                                                                                                                                                                                            |
-| ----------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `:free`     | Active     | A free-tier version of the model with its own rate limits and endpoints. See [Free](/docs/guides/routing/model-variants/free).                                                                                                                          |
-| `:batch`    | Active     | The batch-priced version of the model, served by the [Batch API](/docs/batch-quickstart). The Batch API takes the base model slug and resolves the `:batch` entry itself. The entry describes the pricing and endpoints that apply to batched requests. |
-| `:thinking` | Deprecated | Reasoning enabled by default on models that shipped a dedicated reasoning endpoint. Use the `reasoning` parameter instead. See [Thinking](/docs/guides/routing/model-variants/thinking).                                                                |
-| `:extended` | Deprecated | Larger context window on models that offered one. No model currently offers it. See [Extended](/docs/guides/routing/model-variants/extended).                                                                                                           |
+| Suffix | Status | Meaning |
+| - | - | - |
+| `:free` | Active | A free-tier version of the model with its own rate limits and endpoints. See [Free](/docs/guides/routing/model-variants/free). |
+| `:batch` | Active | The batch-priced version of the model, served by the [Batch API](/docs/batch-quickstart). The Batch API takes the base model slug and resolves the `:batch` entry itself. The entry describes the pricing and endpoints that apply to batched requests. |
+| `:thinking` | Deprecated | Reasoning enabled by default on models that shipped a dedicated reasoning endpoint. Use the `reasoning` parameter instead. See [Thinking](/docs/guides/routing/model-variants/thinking). |
+| `:extended` | Deprecated | Larger context window on models that offered one. No model currently offers it. See [Extended](/docs/guides/routing/model-variants/extended). |
 
 Sending a catalog suffix on a model that has no such entry does not fall back to the base model. The single-model lookup returns `404`, the endpoint lookup returns `200` with an empty `endpoints` array, and inference requests fail because there is no endpoint to route to.
 
@@ -38,12 +38,12 @@ Sending a catalog suffix on a model that has no such entry does not fall back to
 
 A routing variant is accepted on every model ID and is never an entry in the models API. It changes provider ordering or eligibility for the request, and nothing else about the model. Context length, capabilities, supported parameters, and the base per-token price all come from the base model's entry.
 
-| Suffix    | Status     | Effect on routing                                                                                                                                                                                                                                  |
-| --------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `:nitro`  | Active     | Sorts providers by throughput and admits [priority service tier](/docs/guides/features/service-tiers) endpoints. A request served by a priority endpoint is billed at that endpoint's priority rate. See [Nitro](/docs/guides/routing/model-variants/nitro). |
-| `:floor`  | Active     | Sorts providers by price and admits [flex service tier](/docs/guides/features/service-tiers) endpoints. A request served by a flex endpoint is billed at that endpoint's flex rate. See [Floor](/docs/guides/routing/model-variants/floor).                  |
-| `:exacto` | Active     | Sorts providers by quality signals tuned for tool-calling reliability. See [Exacto](/docs/guides/routing/model-variants/exacto).                                                                                                                        |
-| `:online` | Deprecated | Attaches web search results to the prompt. Use the [`openrouter:web_search` server tool](/docs/guides/features/server-tools/web-search) instead. See [Online](/docs/guides/routing/model-variants/online).                                                   |
+| Suffix | Status | Effect on routing |
+| - | - | - |
+| `:nitro` | Active | Sorts providers by throughput and admits [priority service tier](/docs/guides/features/service-tiers) endpoints. A request served by a priority endpoint is billed at that endpoint's priority rate. See [Nitro](/docs/guides/routing/model-variants/nitro). |
+| `:floor` | Active | Sorts providers by price and admits [flex service tier](/docs/guides/features/service-tiers) endpoints. A request served by a flex endpoint is billed at that endpoint's flex rate. See [Floor](/docs/guides/routing/model-variants/floor). |
+| `:exacto` | Active | Sorts providers by quality signals tuned for tool-calling reliability. See [Exacto](/docs/guides/routing/model-variants/exacto). |
+| `:online` | Deprecated | Attaches web search results to the prompt. Use the [`openrouter:web_search` server tool](/docs/guides/features/server-tools/web-search) instead. See [Online](/docs/guides/routing/model-variants/online). |
 
 Because `:nitro` and `:floor` can select a service tier endpoint, the price actually charged for a request can differ from the base entry's `pricing`. The response reports the tier that served the request, as described in [Service Tiers](/docs/guides/features/service-tiers).
 

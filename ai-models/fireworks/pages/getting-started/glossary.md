@@ -35,16 +35,16 @@ An enterprise option to run inference entirely within your own cloud account. Yo
 ## Fireworks Platform
 
 **Serverless inference**\
-Pay-per-token inference with no deployment management. Requests are routed globally by default; [US-only Serverless](/serverless/us-only-serverless) serves supported models from the US. Dedicated deployments support explicit placement with the **`--region`** flag on `firectl deployment create` (for example `GLOBAL`, `US`, `EUROPE`, `APAC`).
+Pay-per-token inference with no deployment management. Requests are routed globally by default; [US-only Serverless](/serverless/us-only-serverless) serves supported models from the US. Dedicated deployments support explicit placement with the **`--region`** flag on `firectl deployment create` (for example `GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`).
 
 **Dedicated deployment**\
 A deployment you provision and manage, with reserved GPU capacity. Gives you control over model, hardware, placement, autoscaling, and addon support. Created with `firectl deployment create`.
 
 **Multi-region deployment**\
-A dedicated deployment configured to run replicas across multiple datacenters. Enabled with `--region GLOBAL` (or a specific mega-region: `US`, `EUROPE`, `APAC`) on `firectl deployment create`. Increases availability and throughput. New accounts receive quota for **GLOBAL** only; other placements require quota granted by Fireworks.
+A dedicated deployment configured to run replicas across multiple datacenters. Enabled with `--region GLOBAL` (or a specific multi-region: `US`, `CANADA`, `EUROPE`, `APAC`) on `firectl deployment create`. Increases availability and throughput. New accounts receive quota for **GLOBAL** only; other placements require quota granted by Fireworks.
 
 **Placement**\
-Controls which regions a dedicated deployment is allowed to schedule replicas in. On the CLI, set at creation time with **`--region`** (`GLOBAL`, `US`, `EUROPE`, `APAC`, or a specific region id). Cannot be changed after deployment creation — recreate the deployment to change placement. If not specified, the deployment pins to a single datacenter at creation time. Only **GLOBAL** has default quota; non-GLOBAL placements require quota granted by Fireworks.
+Controls which regions a dedicated deployment is allowed to schedule replicas in. On the CLI, set at creation time with **`--region`** (`GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`, or a specific region id). Cannot be changed after deployment creation — recreate the deployment to change placement. If not specified, the deployment pins to a single datacenter at creation time. Only **GLOBAL** has default quota; non-GLOBAL placements require quota granted by Fireworks.
 
 **Deployment shape**\
 The hardware and precision configuration used when creating a dedicated deployment. Shapes encode GPU type, count, precision (BF16, FP8, FP4), and other settings. Specified with `--deployment-shape`. Some shapes do not support LoRA addons.

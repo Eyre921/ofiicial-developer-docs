@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-design
 
 # Voice Design
 
-![Voice design](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T110159Z&X-Amz-Expires=604800&X-Amz-Signature=b359d5d9f9f16b0c622a4b72981cd7bd4df899b854b3d4fd5d724d26efeba35b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice design](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1125280670aac11f82425cb9e04ccba451fb85ac046cff42203b867a82340f43/assets/images/product-guides/voices/voices-voice-design.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T192705Z&X-Amz-Expires=604800&X-Amz-Signature=c90c36fe0c7a5aefe9b7b37b3be3bd6d42203e86c1f4f2b7f94a5c70d26e0189&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -243,13 +243,14 @@ Dictates how closely the Prompt is adhered to. Higher values will stick to the p
 
       To get started, just type a prompt describing the voice you want. You can include details like accent, gender, pacing, tone, and speaking style. The more specific your prompt, the more closely the voice will match your intent. But if you're unsure, a simple prompt like "a calm male narrator" also works.
 
-      Voices created with Voice Design v3 are fully compatible with our latest model, Eleven v3, and support audio tags for our most expressive speech. They’re also backward compatible, meaning you can use them across all our other models.
+      Voices created with Voice Design work with [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4), our latest model, and with earlier models including Eleven v3. They support audio tags. On Eleven v4 they may be less performative than on earlier models.
 
       For more tips on writing effective prompts, see our [Voice Design guide.](/docs/creative-platform/voices/voice-design)
 
       **Note:** Voice Design is still experimental. Professional Voice Clones offer the
       highest quality and consistency. If you find a PVC that fits your needs, we recommend using it.
-      However, the v3 model does not currently support Professional Voice Clones.
+      Professional Voice Clones are fully supported on [Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4). They are not fully optimized for Eleven
+      v3.
     </td>
   </tr>
 

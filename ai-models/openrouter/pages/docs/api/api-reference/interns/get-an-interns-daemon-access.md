@@ -16,7 +16,7 @@ path: docs/api/api-reference/interns/get-an-interns-daemon-access
 
 ## OpenAPI
 
-````yaml /openapi/openapi.yaml get /interns/{internId}/daemon-access
+````yaml /openapi/openapi.yaml get /interns/{internId}/daemon
 openapi: 3.1.0
 info:
   contact:
@@ -94,6 +94,8 @@ tags:
     name: Organization
   - description: Presets endpoints
     name: Presets
+  - description: Private Endpoints endpoints
+    name: Private Endpoints
   - description: Provider information endpoints
     name: Providers
   - description: Rerank endpoints
@@ -134,7 +136,7 @@ externalDocs:
   description: OpenRouter Documentation
   url: https://openrouter.ai/docs
 paths:
-  /interns/{internId}/daemon-access:
+  /interns/{internId}/daemon:
     get:
       tags:
         - Interns
@@ -147,7 +149,7 @@ paths:
         There is no default workspace fallback. Requests on regional hostnames
         such as `eu.openrouter.ai` are refused. [API
         key](/docs/api-reference/authentication) required.
-      operationId: getInternDaemonAccess
+      operationId: getInternDaemon
       parameters:
         - description: ID of an intern visible to the authenticated API key.
           in: path

@@ -26,11 +26,11 @@ Async tools let the model keep working while the tool finishes:
 
 Every tool is written the same way: a `run` handler (an async function or async generator) plus a `lifecycle` that controls how it executes.
 
-| Lifecycle          | Behavior                                                                             |
-| ------------------ | ------------------------------------------------------------------------------------ |
-| `'sync'` (default) | The round waits for it, exactly like `execute`                                       |
-| `'background'`     | Runs in the same process without blocking; the result arrives when it finishes       |
-| `'deferred'`       | Hands the call to an external system; the run pauses until some process completes it |
+| Lifecycle | Behavior |
+| - | - |
+| `'sync'` (default) | The round waits for it, exactly like `execute` |
+| `'background'` | Runs in the same process without blocking; the result arrives when it finishes |
+| `'deferred'` | Hands the call to an external system; the run pauses until some process completes it |
 
 ```typescript expandable lines theme={null}
 import { OpenRouter, tool } from '@openrouter/agent';
@@ -327,16 +327,16 @@ const result = openrouter.callModel({
 
 Per-tool configuration on `tool()` / `tool.agent()`:
 
-| Field            | Applies to                  | Description                                                                   |
-| ---------------- | --------------------------- | ----------------------------------------------------------------------------- |
-| `lifecycle`      | all                         | `'sync'` (default) \| `'background'` \| `'deferred'`                          |
-| `ack`            | background, deferred        | Model-facing note in the placeholder: string, object, or `(input) => ...`     |
-| `graceMs`        | background, agent           | Settles this fast → plain sync output, no placeholder (default 250)           |
-| `pollAfterMs`    | deferred                    | Poll-interval hint surfaced in the placeholder and status views               |
-| `timeoutMs`      | all                         | Whole-task deadline; `ctx.signal` aborts on breach                            |
-| `maxConcurrency` | all                         | Max simultaneous executions of this tool                                      |
-| `logLimits`      | background, agent           | Ring-buffer caps: `maxEntries` (200), `maxBytes` (256k), `maxEntryBytes` (4k) |
-| `check`          | background, deferred, agent | `{ schema?, execute? }` for custom task-tool handling                         |
+| Field | Applies to | Description |
+| - | - | - |
+| `lifecycle` | all | `'sync'` (default) \| `'background'` \| `'deferred'` |
+| `ack` | background, deferred | Model-facing note in the placeholder: string, object, or `(input) => ...` |
+| `graceMs` | background, agent | Settles this fast → plain sync output, no placeholder (default 250) |
+| `pollAfterMs` | deferred | Poll-interval hint surfaced in the placeholder and status views |
+| `timeoutMs` | all | Whole-task deadline; `ctx.signal` aborts on breach |
+| `maxConcurrency` | all | Max simultaneous executions of this tool |
+| `logLimits` | background, agent | Ring-buffer caps: `maxEntries` (200), `maxBytes` (256k), `maxEntryBytes` (4k) |
+| `check` | background, deferred, agent | `{ schema?, execute? }` for custom task-tool handling |
 
 ## Next Steps
 

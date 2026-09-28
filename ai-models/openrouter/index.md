@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 484 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -91,6 +91,7 @@
 - `docs/api/api-reference/interns/delete-an-intern` — [Delete an intern](pages/docs/api/api-reference/interns/delete-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/delete-an-intern.md)
 - `docs/api/api-reference/interns/get-an-intern` — [Get an intern](pages/docs/api/api-reference/interns/get-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-intern.md)
 - `docs/api/api-reference/interns/get-an-interns-daemon-access` — [Get an intern's daemon access](pages/docs/api/api-reference/interns/get-an-interns-daemon-access.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-interns-daemon-access.md)
+- `docs/api/api-reference/interns/get-an-interns-daemon-access-deprecated-alias` — [Get an intern's daemon access (deprecated alias)](pages/docs/api/api-reference/interns/get-an-interns-daemon-access-deprecated-alias.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-interns-daemon-access-deprecated-alias.md)
 - `docs/api/api-reference/interns/list-interns` — [List interns](pages/docs/api/api-reference/interns/list-interns.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/list-interns.md)
 - `docs/api/api-reference/interns/provision-an-intern` — [Provision an intern](pages/docs/api/api-reference/interns/provision-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/provision-an-intern.md)
 - `docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it` — [Start an intern run without waiting for it](pages/docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/start-an-intern-run-without-waiting-for-it.md)
@@ -118,6 +119,16 @@
 - `docs/api/api-reference/presets/get-a-specific-version-of-a-preset` — [Get a specific version of a preset](pages/docs/api/api-reference/presets/get-a-specific-version-of-a-preset.md) · [原文](https://openrouter.ai/docs/api/api-reference/presets/get-a-specific-version-of-a-preset.md)
 - `docs/api/api-reference/presets/list-presets` — [List presets](pages/docs/api/api-reference/presets/list-presets.md) · [原文](https://openrouter.ai/docs/api/api-reference/presets/list-presets.md)
 - `docs/api/api-reference/presets/list-versions-of-a-preset` — [List versions of a preset](pages/docs/api/api-reference/presets/list-versions-of-a-preset.md) · [原文](https://openrouter.ai/docs/api/api-reference/presets/list-versions-of-a-preset.md)
+- `docs/api/api-reference/private-endpoints/activate-a-validated-private-endpoint` — [Activate a validated private endpoint](pages/docs/api/api-reference/private-endpoints/activate-a-validated-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/activate-a-validated-private-endpoint.md)
+- `docs/api/api-reference/private-endpoints/create-a-private-endpoint` — [Create a private endpoint](pages/docs/api/api-reference/private-endpoints/create-a-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/create-a-private-endpoint.md)
+- `docs/api/api-reference/private-endpoints/delete-a-private-endpoint` — [Delete a private endpoint](pages/docs/api/api-reference/private-endpoints/delete-a-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/delete-a-private-endpoint.md)
+- `docs/api/api-reference/private-endpoints/disable-a-private-endpoint` — [Disable a private endpoint](pages/docs/api/api-reference/private-endpoints/disable-a-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/disable-a-private-endpoint.md)
+- `docs/api/api-reference/private-endpoints/enable-a-private-endpoint` — [Enable a private endpoint](pages/docs/api/api-reference/private-endpoints/enable-a-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/enable-a-private-endpoint.md)
+- `docs/api/api-reference/private-endpoints/get-a-private-endpoint` — [Get a private endpoint](pages/docs/api/api-reference/private-endpoints/get-a-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/get-a-private-endpoint.md)
+- `docs/api/api-reference/private-endpoints/list-private-endpoints` — [List private endpoints](pages/docs/api/api-reference/private-endpoints/list-private-endpoints.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/list-private-endpoints.md)
+- `docs/api/api-reference/private-endpoints/set-private-endpoint-pricing` — [Set private endpoint pricing](pages/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/set-private-endpoint-pricing.md)
+- `docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint` — [Update a draft private endpoint](pages/docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/update-a-draft-private-endpoint.md)
+- `docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint` — [Validate a draft private endpoint](pages/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint.md) · [原文](https://openrouter.ai/docs/api/api-reference/private-endpoints/validate-a-draft-private-endpoint.md)
 - `docs/api/api-reference/providers/list-all-providers` — [List all providers](pages/docs/api/api-reference/providers/list-all-providers.md) · [原文](https://openrouter.ai/docs/api/api-reference/providers/list-all-providers.md)
 - `docs/api/api-reference/rerank/submit-a-rerank-request` — [Submit a rerank request](pages/docs/api/api-reference/rerank/submit-a-rerank-request.md) · [原文](https://openrouter.ai/docs/api/api-reference/rerank/submit-a-rerank-request.md)
 - `docs/api/api-reference/responses/create-a-response` — [Create a response](pages/docs/api/api-reference/responses/create-a-response.md) · [原文](https://openrouter.ai/docs/api/api-reference/responses/create-a-response.md)
@@ -178,6 +189,7 @@
 - `docs/client-sdks/go/overview` — [OpenRouter Go SDK](pages/docs/client-sdks/go/overview.md) · [原文](https://openrouter.ai/docs/client-sdks/go/overview.md)
 - `docs/client-sdks/go/sdks/analytics/readme` — [Analytics](pages/docs/client-sdks/go/sdks/analytics/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/analytics/README.md)
 - `docs/client-sdks/go/sdks/apikeys/readme` — [APIKeys](pages/docs/client-sdks/go/sdks/apikeys/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/apikeys/README.md)
+- `docs/client-sdks/go/sdks/batch/readme` — [Batch](pages/docs/client-sdks/go/sdks/batch/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/batch/README.md)
 - `docs/client-sdks/go/sdks/benchmarks/readme` — [Benchmarks](pages/docs/client-sdks/go/sdks/benchmarks/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/benchmarks/README.md)
 - `docs/client-sdks/go/sdks/betaresponses/readme` — [Beta.Responses](pages/docs/client-sdks/go/sdks/betaresponses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/betaresponses/README.md)
 - `docs/client-sdks/go/sdks/byok/readme` — [BYOK](pages/docs/client-sdks/go/sdks/byok/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/byok/README.md)
@@ -235,6 +247,7 @@
 - `docs/client-sdks/python/sdks/observability/readme` — [Observability](pages/docs/client-sdks/python/sdks/observability/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/observability/README.md)
 - `docs/client-sdks/python/sdks/organization/readme` — [Organization](pages/docs/client-sdks/python/sdks/organization/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/organization/README.md)
 - `docs/client-sdks/python/sdks/presets/readme` — [Presets](pages/docs/client-sdks/python/sdks/presets/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/presets/README.md)
+- `docs/client-sdks/python/sdks/privateendpoints/readme` — [PrivateEndpoints](pages/docs/client-sdks/python/sdks/privateendpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/privateendpoints/README.md)
 - `docs/client-sdks/python/sdks/providers/readme` — [Providers](pages/docs/client-sdks/python/sdks/providers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/providers/README.md)
 - `docs/client-sdks/python/sdks/rerank/readme` — [Rerank](pages/docs/client-sdks/python/sdks/rerank/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/rerank/README.md)
 - `docs/client-sdks/python/sdks/responses/readme` — [Responses](pages/docs/client-sdks/python/sdks/responses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/responses/README.md)
@@ -270,6 +283,7 @@
 - `docs/client-sdks/typescript/sdks/observability/readme` — [Observability](pages/docs/client-sdks/typescript/sdks/observability/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/observability/README.md)
 - `docs/client-sdks/typescript/sdks/organization/readme` — [Organization](pages/docs/client-sdks/typescript/sdks/organization/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/organization/README.md)
 - `docs/client-sdks/typescript/sdks/presets/readme` — [Presets](pages/docs/client-sdks/typescript/sdks/presets/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/presets/README.md)
+- `docs/client-sdks/typescript/sdks/privateendpoints/readme` — [PrivateEndpoints](pages/docs/client-sdks/typescript/sdks/privateendpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/privateendpoints/README.md)
 - `docs/client-sdks/typescript/sdks/providers/readme` — [Providers](pages/docs/client-sdks/typescript/sdks/providers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/providers/README.md)
 - `docs/client-sdks/typescript/sdks/rerank/readme` — [Rerank](pages/docs/client-sdks/typescript/sdks/rerank/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/rerank/README.md)
 - `docs/client-sdks/typescript/sdks/responses/readme` — [Responses](pages/docs/client-sdks/typescript/sdks/responses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/responses/README.md)

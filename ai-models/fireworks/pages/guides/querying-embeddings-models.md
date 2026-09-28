@@ -16,23 +16,23 @@ Embeddings models take text as input and output a vector of floating point numbe
 
 Every option below uses the same endpoint, `POST https://api.fireworks.ai/inference/v1/embeddings`. What changes is the value you pass as `model`.
 
-| Path                                    | `model` value                                     | In the Model Library? | Best for                                                          |
-| --------------------------------------- | ------------------------------------------------- | --------------------- | ----------------------------------------------------------------- |
-| **Qwen3 Embedding**                     | `fireworks/qwen3-embedding-8b` and similar        | Yes                   | Default choice for serverless semantic search                     |
-| **Voyage AI**                           | Your deployment path                              | Yes                   | Retrieval quality with asymmetric query and document embeddings   |
-| **Legacy BERT / sentence-transformers** | Hugging Face id, such as `BAAI/bge-small-en-v1.5` | **No**                | Small, cheap vectors and existing sentence-transformers pipelines |
-| **Generative LLM**                      | `fireworks/gpt-oss-20b` and similar               | Yes, as chat models   | Hidden-state vectors when you are already using the model         |
-| **Your own upload**                     | `accounts/<your-account>/models/<model-id>`       | In your account       | Custom or trained embedders                                       |
+| Path | `model` value | In the Model Library? | Best for |
+| - | - | - | - |
+| **Qwen3 Embedding** | `fireworks/qwen3-embedding-8b` and similar | Yes | Default choice for serverless semantic search |
+| **Voyage AI** | Your deployment path | Yes | Retrieval quality with asymmetric query and document embeddings |
+| **Legacy BERT / sentence-transformers** | Hugging Face id, such as `BAAI/bge-small-en-v1.5` | **No** | Small, cheap vectors and existing sentence-transformers pipelines |
+| **Generative LLM** | `fireworks/gpt-oss-20b` and similar | Yes, as chat models | Hidden-state vectors when you are already using the model |
+| **Your own upload** | `accounts/<your-account>/models/<model-id>` | In your account | Custom or trained embedders |
 
 <Tabs>
   <Tab title="Qwen3">
     The Qwen3 Embedding family is hosted by Fireworks, with the 8B model available on serverless.
 
-    | Model                                                                                  | Model ID                                                                                           | Context | Resizable | Availability             |
-    | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------- | --------- | ------------------------ |
-    | [Qwen3 Embedding 8B](https://app.fireworks.ai/models/fireworks/qwen3-embedding-8b)     | [`fireworks/qwen3-embedding-8b`](https://app.fireworks.ai/models/fireworks/qwen3-embedding-8b)     | 40k     | Yes       | Serverless and dedicated |
-    | [Qwen3 Embedding 4B](https://app.fireworks.ai/models/fireworks/qwen3-embedding-4b)     | [`fireworks/qwen3-embedding-4b`](https://app.fireworks.ai/models/fireworks/qwen3-embedding-4b)     | 40k     | Yes       | Dedicated                |
-    | [Qwen3 Embedding 0.6B](https://app.fireworks.ai/models/fireworks/qwen3-embedding-0p6b) | [`fireworks/qwen3-embedding-0p6b`](https://app.fireworks.ai/models/fireworks/qwen3-embedding-0p6b) | 32k     | Yes       | Dedicated                |
+    | Model | Model ID | Context | Resizable | Availability |
+    | - | - | - | - | - |
+    | [Qwen3 Embedding 8B](https://app.fireworks.ai/models/fireworks/qwen3-embedding-8b) | [`fireworks/qwen3-embedding-8b`](https://app.fireworks.ai/models/fireworks/qwen3-embedding-8b) | 40k | Yes | Serverless and dedicated |
+    | [Qwen3 Embedding 4B](https://app.fireworks.ai/models/fireworks/qwen3-embedding-4b) | [`fireworks/qwen3-embedding-4b`](https://app.fireworks.ai/models/fireworks/qwen3-embedding-4b) | 40k | Yes | Dedicated |
+    | [Qwen3 Embedding 0.6B](https://app.fireworks.ai/models/fireworks/qwen3-embedding-0p6b) | [`fireworks/qwen3-embedding-0p6b`](https://app.fireworks.ai/models/fireworks/qwen3-embedding-0p6b) | 32k | Yes | Dedicated |
 
     Resizable models accept the `dimensions` parameter to return shorter vectors.
 
@@ -42,14 +42,14 @@ Every option below uses the same endpoint, `POST https://api.fireworks.ai/infere
   <Tab title="Voyage AI">
     Fireworks also hosts the Voyage AI by MongoDB family of embedding models and rerankers.
 
-    | Model                                                                                    | Model ID                                                                                             | Context | Type       |
-    | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------- | ---------- |
-    | [Voyage 4 Large](https://app.fireworks.ai/models/fireworks/voyage-4-large)               | [`fireworks/voyage-4-large`](https://app.fireworks.ai/models/fireworks/voyage-4-large)               | 40k     | Embeddings |
-    | [Voyage 4](https://app.fireworks.ai/models/fireworks/voyage-4)                           | [`fireworks/voyage-4`](https://app.fireworks.ai/models/fireworks/voyage-4)                           | 40k     | Embeddings |
-    | [Voyage 4 Lite](https://app.fireworks.ai/models/fireworks/voyage-4-lite)                 | [`fireworks/voyage-4-lite`](https://app.fireworks.ai/models/fireworks/voyage-4-lite)                 | 40k     | Embeddings |
-    | [Voyage 4 Nano](https://app.fireworks.ai/models/fireworks/voyage-4-nano)                 | [`fireworks/voyage-4-nano`](https://app.fireworks.ai/models/fireworks/voyage-4-nano)                 | 40k     | Embeddings |
-    | [Voyage Multimodal 3.5](https://app.fireworks.ai/models/fireworks/voyage-multimodal-3-5) | [`fireworks/voyage-multimodal-3-5`](https://app.fireworks.ai/models/fireworks/voyage-multimodal-3-5) | 32k     | Embeddings |
-    | [Voyage ReRank 2.5](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5)         | [`fireworks/voyage-rerank-2-5`](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5)         | 32k     | Reranking  |
+    | Model | Model ID | Context | Type |
+    | - | - | - | - |
+    | [Voyage 4 Large](https://app.fireworks.ai/models/fireworks/voyage-4-large) | [`fireworks/voyage-4-large`](https://app.fireworks.ai/models/fireworks/voyage-4-large) | 40k | Embeddings |
+    | [Voyage 4](https://app.fireworks.ai/models/fireworks/voyage-4) | [`fireworks/voyage-4`](https://app.fireworks.ai/models/fireworks/voyage-4) | 40k | Embeddings |
+    | [Voyage 4 Lite](https://app.fireworks.ai/models/fireworks/voyage-4-lite) | [`fireworks/voyage-4-lite`](https://app.fireworks.ai/models/fireworks/voyage-4-lite) | 40k | Embeddings |
+    | [Voyage 4 Nano](https://app.fireworks.ai/models/fireworks/voyage-4-nano) | [`fireworks/voyage-4-nano`](https://app.fireworks.ai/models/fireworks/voyage-4-nano) | 40k | Embeddings |
+    | [Voyage Multimodal 3.5](https://app.fireworks.ai/models/fireworks/voyage-multimodal-3-5) | [`fireworks/voyage-multimodal-3-5`](https://app.fireworks.ai/models/fireworks/voyage-multimodal-3-5) | 32k | Embeddings |
+    | [Voyage ReRank 2.5](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5) | [`fireworks/voyage-rerank-2-5`](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5) | 32k | Reranking |
 
     Voyage models are not available on serverless, so they always run on a [dedicated deployment](/guides/ondemand-deployments). They are also trained for asymmetric retrieval, so pass `input_type="document"` when you embed a corpus and `input_type="query"` when you embed a search query. The model prepends task-specific instructions internally, which improves retrieval quality over embedding both sides the same way.
   </Tab>
@@ -191,16 +191,16 @@ The API usage for embedding models is identical for BERT-based and LLM-based emb
 
     These models are serverless only; you cannot create a dedicated deployment for them.
 
-    | Model id                             | Dimensions | Parameters | Resizable | Normalized |
-    | ------------------------------------ | ---------- | ---------- | --------- | ---------- |
-    | `BAAI/bge-small-en-v1.5`             | 384        | 33M        | No        | Yes        |
-    | `thenlper/gte-base`                  | 768        | 109M       | No        | Yes        |
-    | `BAAI/bge-base-en-v1.5`              | 768        | 109M       | No        | Yes        |
-    | `nomic-ai/nomic-embed-text-v1.5`     | 768        | 137M       | Yes       | Yes        |
-    | `nomic-ai/nomic-embed-text-v1`       | 768        | 137M       | No        | Yes        |
-    | `thenlper/gte-large`                 | 1024       | 335M       | No        | Yes        |
-    | `WhereIsAI/UAE-Large-V1`             | 1024       | 335M       | No        | No         |
-    | `mixedbread-ai/mxbai-embed-large-v1` | 1024       | 335M       | No        | No         |
+    | Model id | Dimensions | Parameters | Resizable | Normalized |
+    | - | - | - | - | - |
+    | `BAAI/bge-small-en-v1.5` | 384 | 33M | No | Yes |
+    | `thenlper/gte-base` | 768 | 109M | No | Yes |
+    | `BAAI/bge-base-en-v1.5` | 768 | 109M | No | Yes |
+    | `nomic-ai/nomic-embed-text-v1.5` | 768 | 137M | Yes | Yes |
+    | `nomic-ai/nomic-embed-text-v1` | 768 | 137M | No | Yes |
+    | `thenlper/gte-large` | 1024 | 335M | No | Yes |
+    | `WhereIsAI/UAE-Large-V1` | 1024 | 335M | No | No |
+    | `mixedbread-ai/mxbai-embed-large-v1` | 1024 | 335M | No | No |
 
     **Resizable** means the model accepts the `dimensions` parameter. Non-resizable models reject it with `model: <id> is not resizable`. **Normalized** means the returned vectors are unit length, so a dot product is already the cosine similarity; for the two that are not, normalize the output yourself before comparing.
 
@@ -259,19 +259,19 @@ Reranking models are used to rerank a list of documents based on a query. The `/
 
 <Tabs>
   <Tab title="Qwen3">
-    | Model                                                                                | Model ID                                                                                         | Context | Availability             |
-    | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ | ------- | ------------------------ |
-    | [Qwen3 Reranker 8B](https://app.fireworks.ai/models/fireworks/qwen3-reranker-8b)     | [`fireworks/qwen3-reranker-8b`](https://app.fireworks.ai/models/fireworks/qwen3-reranker-8b)     | 40k     | Serverless and dedicated |
-    | [Qwen3 Reranker 4B](https://app.fireworks.ai/models/fireworks/qwen3-reranker-4b)     | [`fireworks/qwen3-reranker-4b`](https://app.fireworks.ai/models/fireworks/qwen3-reranker-4b)     | 40k     | Dedicated                |
-    | [Qwen3 Reranker 0.6B](https://app.fireworks.ai/models/fireworks/qwen3-reranker-0p6b) | [`fireworks/qwen3-reranker-0p6b`](https://app.fireworks.ai/models/fireworks/qwen3-reranker-0p6b) | 40k     | Dedicated                |
+    | Model | Model ID | Context | Availability |
+    | - | - | - | - |
+    | [Qwen3 Reranker 8B](https://app.fireworks.ai/models/fireworks/qwen3-reranker-8b) | [`fireworks/qwen3-reranker-8b`](https://app.fireworks.ai/models/fireworks/qwen3-reranker-8b) | 40k | Serverless and dedicated |
+    | [Qwen3 Reranker 4B](https://app.fireworks.ai/models/fireworks/qwen3-reranker-4b) | [`fireworks/qwen3-reranker-4b`](https://app.fireworks.ai/models/fireworks/qwen3-reranker-4b) | 40k | Dedicated |
+    | [Qwen3 Reranker 0.6B](https://app.fireworks.ai/models/fireworks/qwen3-reranker-0p6b) | [`fireworks/qwen3-reranker-0p6b`](https://app.fireworks.ai/models/fireworks/qwen3-reranker-0p6b) | 40k | Dedicated |
 
     Serverless usage of `qwen3-reranker-8b` is billed at \$0.20 per million tokens. The 4B and 0.6B models require a dedicated deployment.
   </Tab>
 
   <Tab title="Voyage AI">
-    | Model                                                                            | Model ID                                                                                     | Context | Availability |
-    | -------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------- | ------------ |
-    | [Voyage ReRank 2.5](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5) | [`fireworks/voyage-rerank-2-5`](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5) | 32k     | Dedicated    |
+    | Model | Model ID | Context | Availability |
+    | - | - | - | - |
+    | [Voyage ReRank 2.5](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5) | [`fireworks/voyage-rerank-2-5`](https://app.fireworks.ai/models/fireworks/voyage-rerank-2-5) | 32k | Dedicated |
 
     Voyage ReRank 2.5 goes through the same `/rerank` endpoint once you deploy it.
   </Tab>

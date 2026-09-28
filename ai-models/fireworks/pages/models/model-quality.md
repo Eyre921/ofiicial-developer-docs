@@ -20,10 +20,10 @@ Serverless models are served using a proprietary mixed-precision configuration (
 
 We combine divergence testing with a suite of standard benchmarks.
 
-| Metric               | What it measures                                                                                                      | Tolerance     |
-| -------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------- |
-| KL divergence (KLD)  | Change in output token distribution against the unquantized reference, measured separately for prefill and generation | Below \~0.007 |
-| Token rejection rate | How often the top-p probability token changes against the reference precision                                         | Below \~3%    |
+| Metric | What it measures | Tolerance |
+| - | - | - |
+| KL divergence (KLD) | Change in output token distribution against the unquantized reference, measured separately for prefill and generation | Below \~0.007 |
+| Token rejection rate | How often the top-p probability token changes against the reference precision | Below \~3% |
 
 Divergence testing is supplemented with a suite of evolving benchmarks, checked against each model provider's own published or reproduced numbers, including side-by-side runs against the official API. These include AIME, GPQA, SWE-bench, Terminal-Bench, and DeepSWE, plus MMMU Pro and OCRBench for multimodal models.
 

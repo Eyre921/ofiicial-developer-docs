@@ -67,13 +67,13 @@ Each entry in the `data` array includes:
 }
 ```
 
-| Field                  | Description                                                                                                                                   |
-| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                   | Model slug to use in generation requests                                                                                                      |
-| `architecture`         | Input and output modalities the model accepts                                                                                                 |
+| Field | Description |
+| - | - |
+| `id` | Model slug to use in generation requests |
+| `architecture` | Input and output modalities the model accepts |
 | `supported_parameters` | Union of capabilities across all endpoints. Each key is a request field name; the value is a [capability descriptor](#capability-descriptors) |
-| `supports_streaming`   | Whether any endpoint supports native SSE streaming (`stream: true`)                                                                           |
-| `endpoints`            | URL to the full per-endpoint records for this model                                                                                           |
+| `supports_streaming` | Whether any endpoint supports native SSE streaming (`stream: true`) |
+| `endpoints` | URL to the full per-endpoint records for this model |
 
 ### Per-Endpoint Records
 
@@ -105,24 +105,24 @@ curl "https://openrouter.ai/api/v1/images/models/bytedance-seed/seedream-4.5/end
 }
 ```
 
-| Field                            | Description                                                                                                                                                                                                                                                        |
-| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `provider_slug`                  | Use in `provider.options[slug]` to pass provider-specific parameters                                                                                                                                                                                               |
-| `provider_tag`                   | Use to pin requests to a specific provider. `null` when provider-level routing is unavailable                                                                                                                                                                      |
-| `supported_parameters`           | The definitive set of parameters *this* endpoint accepts (a subset of the model-level union)                                                                                                                                                                       |
-| `allowed_passthrough_parameters` | Provider-specific keys accepted under `provider.options[provider_slug]`                                                                                                                                                                                            |
-| `supports_streaming`             | Whether *this* endpoint supports native SSE streaming                                                                                                                                                                                                              |
-| `pricing`                        | Billable pricing lines for this endpoint. Each entry has `billable` (e.g. `output_image`, `input_image`, `input_reference`), `unit` (`image`, `megapixel`, or `token`), `cost_usd`, and an optional `variant` tier (e.g. `2k`, `4k` for resolution-tiered pricing) |
+| Field | Description |
+| - | - |
+| `provider_slug` | Use in `provider.options[slug]` to pass provider-specific parameters |
+| `provider_tag` | Use to pin requests to a specific provider. `null` when provider-level routing is unavailable |
+| `supported_parameters` | The definitive set of parameters *this* endpoint accepts (a subset of the model-level union) |
+| `allowed_passthrough_parameters` | Provider-specific keys accepted under `provider.options[provider_slug]` |
+| `supports_streaming` | Whether *this* endpoint supports native SSE streaming |
+| `pricing` | Billable pricing lines for this endpoint. Each entry has `billable` (e.g. `output_image`, `input_image`, `input_reference`), `unit` (`image`, `megapixel`, or `token`), `cost_usd`, and an optional `variant` tier (e.g. `2k`, `4k` for resolution-tiered pricing) |
 
 ### Capability Descriptors
 
 The `supported_parameters` map uses typed descriptors to describe what each request field accepts:
 
-| Type      | Shape                                          | Meaning                                      |
-| --------- | ---------------------------------------------- | -------------------------------------------- |
-| `enum`    | `{ type: "enum", values: ["1K", "2K", "4K"] }` | Discrete allowlist of accepted string values |
-| `range`   | `{ type: "range", min: 0, max: 100 }`          | Any integer in `[min, max]` is valid         |
-| `boolean` | `{ type: "boolean" }`                          | Supported (present) or unsupported (absent)  |
+| Type | Shape | Meaning |
+| - | - | - |
+| `enum` | `{ type: "enum", values: ["1K", "2K", "4K"] }` | Discrete allowlist of accepted string values |
+| `range` | `{ type: "range", min: 0, max: 100 }` | Any integer in `[min, max]` is valid |
+| `boolean` | `{ type: "boolean" }` | Supported (present) or unsupported (absent) |
 
 An absent key means the parameter is unsupported by that endpoint.
 
@@ -497,28 +497,28 @@ For streaming requests, any partial preview images delivered before the stream e
 
 ## Request Parameters
 
-| Parameter                  | Type             | Required | Description                                                                                                                                                  |
-| -------------------------- | ---------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `model`                    | string           | Yes      | Model slug (e.g. `bytedance-seed/seedream-4.5`)                                                                                                              |
-| `prompt`                   | string           | Yes      | Text description of the desired image                                                                                                                        |
-| `n`                        | integer          | No       | Upper bound on images to generate (1-10); providers may return fewer, and single-image providers reject `n > 1`                                              |
-| `resolution`               | string           | No       | Resolution tier (`512`, `1K`, `2K`, `4K`)                                                                                                                    |
-| `aspect_ratio`             | string           | No       | Aspect ratio (`1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `1:4`, `4:1`, etc.)                                                                                       |
-| `size`                     | string           | No       | Convenience shorthand — a tier or explicit pixels (`"2048x2048"`)                                                                                            |
-| `quality`                  | string           | No       | `auto`, `low`, `medium`, or `high`                                                                                                                           |
-| `output_format`            | string           | No       | `png`, `jpeg`, `webp`, or `svg`. When omitted, the provider default applies.                                                                                 |
-| `background`               | string           | No       | `auto`, `transparent`, or `opaque`                                                                                                                           |
-| `output_compression`       | integer          | No       | Compression level (0-100) for webp/jpeg                                                                                                                      |
-| `seed`                     | integer          | No       | Seed for deterministic generation (where supported)                                                                                                          |
-| `stream`                   | boolean          | No       | Stream partial images via SSE                                                                                                                                |
-| `input_references`         | array            | No       | Reference images for image-to-image generation                                                                                                               |
-| `user`                     | string           | No       | Stable identifier for your end-user; folded into a hashed upstream identity and never sent raw (see [User Tracking](/docs/cookbook/administration/user-tracking)) |
-| `provider.only`            | string\[]        | No       | Allow only these provider slugs                                                                                                                              |
-| `provider.order`           | string\[]        | No       | Try provider slugs in this order                                                                                                                             |
-| `provider.ignore`          | string\[]        | No       | Exclude these provider slugs                                                                                                                                 |
-| `provider.sort`            | string or object | No       | Sort eligible endpoints by price, throughput, or latency                                                                                                     |
-| `provider.allow_fallbacks` | boolean          | No       | Allow another eligible provider when the primary fails                                                                                                       |
-| `provider.options`         | object           | No       | Provider-specific parameters keyed by provider slug                                                                                                          |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `model` | string | Yes | Model slug (e.g. `bytedance-seed/seedream-4.5`) |
+| `prompt` | string | Yes | Text description of the desired image |
+| `n` | integer | No | Upper bound on images to generate (1-10); providers may return fewer, and single-image providers reject `n > 1` |
+| `resolution` | string | No | Resolution tier (`512`, `1K`, `2K`, `4K`) |
+| `aspect_ratio` | string | No | Aspect ratio (`1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `1:4`, `4:1`, etc.) |
+| `size` | string | No | Convenience shorthand — a tier or explicit pixels (`"2048x2048"`) |
+| `quality` | string | No | `auto`, `low`, `medium`, or `high` |
+| `output_format` | string | No | `png`, `jpeg`, `webp`, or `svg`. When omitted, the provider default applies. |
+| `background` | string | No | `auto`, `transparent`, or `opaque` |
+| `output_compression` | integer | No | Compression level (0-100) for webp/jpeg |
+| `seed` | integer | No | Seed for deterministic generation (where supported) |
+| `stream` | boolean | No | Stream partial images via SSE |
+| `input_references` | array | No | Reference images for image-to-image generation |
+| `user` | string | No | Stable identifier for your end-user; folded into a hashed upstream identity and never sent raw (see [User Tracking](/docs/cookbook/administration/user-tracking)) |
+| `provider.only` | string\[] | No | Allow only these provider slugs |
+| `provider.order` | string\[] | No | Try provider slugs in this order |
+| `provider.ignore` | string\[] | No | Exclude these provider slugs |
+| `provider.sort` | string or object | No | Sort eligible endpoints by price, throughput, or latency |
+| `provider.allow_fallbacks` | boolean | No | Allow another eligible provider when the primary fails |
+| `provider.options` | object | No | Provider-specific parameters keyed by provider slug |
 
 Use the [Image Models API](#via-the-image-models-api) to check which parameters each model and endpoint supports.
 

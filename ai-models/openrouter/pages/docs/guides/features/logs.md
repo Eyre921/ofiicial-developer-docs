@@ -22,13 +22,13 @@ The [Logs](https://openrouter.ai/logs) page is the request-level view of OpenRou
 
 The Logs page is split into tabs by the kind of record you want to inspect.
 
-| Tab                   | What it lists                                                                                                                                         |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Generations**       | One row per completed generation, with date, model, final provider, generation ID, status, attempts, API key, and latency. This is the default tab.   |
+| Tab | What it lists |
+| - | - |
+| **Generations** | One row per completed generation, with date, model, final provider, generation ID, status, attempts, API key, and latency. This is the default tab. |
 | **Upstream Requests** | Individual routing attempts to upstream providers, including retries and fallbacks. Requests that failed before being sent upstream are not included. |
-| **Sessions**          | Generations grouped by session, showing the primary and supporting models, the primary provider, request count, and total cost.                       |
-| **Videos**            | Asynchronous video generation jobs and their status.                                                                                                  |
-| **Batches**           | [Batch API](/docs/batch-quickstart) jobs and their status.                                                                                                 |
+| **Sessions** | Generations grouped by session, showing the primary and supporting models, the primary provider, request count, and total cost. |
+| **Videos** | Asynchronous video generation jobs and their status. |
+| **Batches** | [Batch API](/docs/batch-quickstart) jobs and their status. |
 
 Organization accounts also see an **Org Member** column so you can attribute generations to the member whose API key made the request.
 
@@ -64,9 +64,9 @@ By default OpenRouter stores only metadata about each generation. To keep the pr
 
 The same data is available programmatically. Both endpoints take the generation ID returned in the `id` field of a completion response.
 
-| Endpoint                                                                                                                             | Returns                                                                                                                                                                       |
-| ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`GET /api/v1/generation`](/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation)                             | The request and usage metadata shown in the detail sheet: model, provider, tokens, cost, latency, and finish reason.                                                          |
+| Endpoint | Returns |
+| - | - |
+| [`GET /api/v1/generation`](/docs/api/api-reference/generations/get-request-&-usage-metadata-for-a-generation) | The request and usage metadata shown in the detail sheet: model, provider, tokens, cost, latency, and finish reason. |
 | [`GET /api/v1/generation/content`](/docs/api/api-reference/generations/get-stored-prompt,-completion,-and-error-content-for-a-generation) | The stored prompt, completion, and error content. Requires [Input & Output Logging](/docs/guides/features/input-output-logging) to have been enabled when the generation was made. |
 
 ## Related

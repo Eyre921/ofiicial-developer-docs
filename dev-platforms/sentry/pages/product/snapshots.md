@@ -30,7 +30,7 @@ Snapshots helps you catch unintended visual changes before they reach users. Sen
 
 * **Auth token** — A Sentry auth token with `project:write` scope (personal token) or `org:ci` scope (org-level token).
 * **sentry-cli >= 3.5.0** — The `snapshots upload` command requires version 3.5.0 or later.
-* **GitHub integration** — Snapshots can be used with any VCS provider, but only Github is supported for status check integration and PR comments. Install the [Sentry GitHub App](https://docs.sentry.io/organization/integrations/source-code-mgmt/github.md) and grant it access to your repository for PR integration.
+* **GitHub integration** — Snapshots can be used with any VCS provider, but only Github is supported for status check integration and PR comments. Install the [Sentry GitHub App](https://docs.sentry.io/integrations/source-code-mgmt/github.md) and grant it access to your repository for PR integration.
 
 ## [Recommended Platform Workflows](https://docs.sentry.io/product/snapshots.md#recommended-platform-workflows)
 
@@ -38,7 +38,7 @@ Snapshots works for any platform with a frontend and most platforms have a numbe
 
 * [iOS](https://docs.sentry.io/platforms/apple/guides/ios/snapshots.md)
 * [Android](https://docs.sentry.io/platforms/android/snapshots.md)
-* [Flutter](https://docs.sentry.io/platforms/flutter/snapshots.md)
+* [Flutter](https://docs.sentry.io/platforms/dart/guides/flutter/snapshots.md)
 
 - #### [Uploading Snapshots](https://docs.sentry.io/product/snapshots/uploading-snapshots.md)
 

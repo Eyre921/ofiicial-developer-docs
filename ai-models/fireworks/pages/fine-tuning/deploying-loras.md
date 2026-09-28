@@ -22,14 +22,14 @@ To run training evals before production serving, see [Evaluating Trained Models]
 
 Fireworks offers two ways to deploy LoRA trained models. The right choice depends on how many trained variants you need to serve and your performance requirements.
 
-|                           | **Live merge**                                                                                 | **Multi-LoRA**                                                                                  |
-| ------------------------- | ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| **How it works**          | LoRA weights are merged into the base model at deployment time, creating a single merged model | Base model is deployed with addon support; LoRA adapters are loaded dynamically at request time |
-| **Number of LoRAs**       | One per deployment                                                                             | Multiple per deployment                                                                         |
-| **Inference performance** | Matches the base model (no overhead)                                                           | Some overhead per request due to dynamic adapter application                                    |
-| **Throughput**            | Same as base model                                                                             | Lower maximum throughput under high concurrency                                                 |
-| **Cost efficiency**       | One deployment per adapter                                                                     | Share a single deployment across many adapters                                                  |
-| **Best for**              | Production workloads requiring maximum performance                                             | Experimentation, A/B testing, or serving many variants of the same base model                   |
+| | **Live merge** | **Multi-LoRA** |
+| - | - | - |
+| **How it works** | LoRA weights are merged into the base model at deployment time, creating a single merged model | Base model is deployed with addon support; LoRA adapters are loaded dynamically at request time |
+| **Number of LoRAs** | One per deployment | Multiple per deployment |
+| **Inference performance** | Matches the base model (no overhead) | Some overhead per request due to dynamic adapter application |
+| **Throughput** | Same as base model | Lower maximum throughput under high concurrency |
+| **Cost efficiency** | One deployment per adapter | Share a single deployment across many adapters |
+| **Best for** | Production workloads requiring maximum performance | Experimentation, A/B testing, or serving many variants of the same base model |
 
 <Tip>
   If you only need to serve a single trained model, **live merge is the recommended approach**. It delivers the best performance with the simplest setup.
@@ -134,10 +134,10 @@ Because adapters are applied dynamically rather than merged, there is some perfo
 Not all deployment shapes support LoRA addons. **FP8 and FP4 quantized shapes do not support `--enable-addons`.**
 
 | Precision | `--enable-addons` supported? |
-| --------- | ---------------------------- |
-| BF16      | ✅ Yes                        |
-| FP8       | ❌ No                         |
-| FP4       | ❌ No                         |
+| - | - |
+| BF16 | ✅ Yes |
+| FP8 | ❌ No |
+| FP4 | ❌ No |
 
 Many base models default to FP8 or FP4 shapes. If you need LoRA addon inference on one of these models, you have two options:
 
@@ -365,11 +365,11 @@ Three factors explain most latency gaps:
 
 ### Live merge vs multi-LoRA (performance)
 
-|                         | **Live merge**                  | **Multi-LoRA**                                      |
-| ----------------------- | ------------------------------- | --------------------------------------------------- |
-| Latency / throughput    | Matches base model              | TTFT often +10–30%; lower max throughput under load |
-| Adapter count at deploy | One adapter per deployment      | Many adapters on one base deployment                |
-| Best for                | Production single-model serving | A/B tests, many variants, shared GPU                |
+| | **Live merge** | **Multi-LoRA** |
+| - | - | - |
+| Latency / throughput | Matches base model | TTFT often +10–30%; lower max throughput under load |
+| Adapter count at deploy | One adapter per deployment | Many adapters on one base deployment |
+| Best for | Production single-model serving | A/B tests, many variants, shared GPU |
 
 The number of adapters registered on a deployment has **little effect** on per-request performance; concurrency and merge mode matter more.
 

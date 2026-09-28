@@ -57,15 +57,15 @@ func main() {
 
 ### Parameters
 
-| Parameter     | Type                                                        | Required             | Description                                                                                                                                                                                                                                                                        | Example                              |
-| ------------- | ----------------------------------------------------------- | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
-| `ctx`         | [context.Context](https://pkg.go.dev/context#Context)       | :heavy\_check\_mark: | The context to use for the request.                                                                                                                                                                                                                                                |                                      |
-| `date`        | `*string`                                                   | :heavy\_minus\_sign: | Filter by a single UTC date in the last 30 days (YYYY-MM-DD format).                                                                                                                                                                                                               | 2025-08-24                           |
-| `apiKeyHash`  | `*string`                                                   | :heavy\_minus\_sign: | Filter by API key hash (SHA-256 hex string, as returned by the keys API).                                                                                                                                                                                                          | abc123def456...                      |
-| `userID`      | `*string`                                                   | :heavy\_minus\_sign: | Filter by org member user ID. Only applicable for organization accounts.                                                                                                                                                                                                           | user\_abc123                         |
-| `groupBy`     | [\*operations.GroupBy](../../models/operations/groupby.mdx) | :heavy\_minus\_sign: | Set to 'workspace' to split each row per workspace and include `workspace_id` on every item. Omitted by default, in which case rows are aggregated across workspaces (by date, model, and endpoint) and `workspace_id` is not returned — preserving the historical response shape. | workspace                            |
-| `workspaceID` | `*string`                                                   | :heavy\_minus\_sign: | Filter by workspace ID (UUID). Returns only activity attributed to that workspace. The workspace must belong to the authenticated account.                                                                                                                                         | 550e8400-e29b-41d4-a716-446655440000 |
-| `opts`        | \[][operations.Option](../../models/operations/option.mdx)  | :heavy\_minus\_sign: | The options for this request.                                                                                                                                                                                                                                                      |                                      |
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `date` | `*string` | :heavy\_minus\_sign: | Filter by a single UTC date in the last 30 days (YYYY-MM-DD format). | 2025-08-24 |
+| `apiKeyHash` | `*string` | :heavy\_minus\_sign: | Filter by API key hash (SHA-256 hex string, as returned by the keys API). | abc123def456... |
+| `userID` | `*string` | :heavy\_minus\_sign: | Filter by org member user ID. Only applicable for organization accounts. | user\_abc123 |
+| `groupBy` | [\*operations.GroupBy](../../models/operations/groupby.mdx) | :heavy\_minus\_sign: | Set to 'workspace' to split each row per workspace and include `workspace_id` on every item. Omitted by default, in which case rows are aggregated across workspaces (by date, model, and endpoint) and `workspace_id` is not returned — preserving the historical response shape. | workspace |
+| `workspaceID` | `*string` | :heavy\_minus\_sign: | Filter by workspace ID (UUID). Returns only activity attributed to that workspace. The workspace must belong to the authenticated account. | 550e8400-e29b-41d4-a716-446655440000 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response
 
@@ -73,14 +73,14 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.NotFoundResponseError       | 404         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetAnalyticsMeta
 
@@ -117,10 +117,10 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                       | Required             | Description                         |
-| --------- | ---------------------------------------------------------- | -------------------- | ----------------------------------- |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)      | :heavy\_check\_mark: | The context to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request.       |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -128,12 +128,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## QueryAnalytics
 
@@ -185,11 +185,11 @@ func main() {
 
 ### Parameters
 
-| Parameter | Type                                                                                  | Required             | Description                                |
-| --------- | ------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
-| `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                                 | :heavy\_check\_mark: | The context to use for the request.        |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
 | `request` | [operations.QueryAnalyticsRequest](../../models/operations/queryanalyticsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts`    | \[][operations.Option](../../models/operations/option.mdx)                            | :heavy\_minus\_sign: | The options for this request.              |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
 
 ### Response
 
@@ -197,12 +197,12 @@ func main() {
 
 ### Errors
 
-| Error Type                            | Status Code | Content Type     |
-| ------------------------------------- | ----------- | ---------------- |
-| sdkerrors.BadRequestResponseError     | 400         | application/json |
-| sdkerrors.UnauthorizedResponseError   | 401         | application/json |
-| sdkerrors.ForbiddenResponseError      | 403         | application/json |
-| sdkerrors.RequestTimeoutResponseError | 408         | application/json |
-| sdkerrors.InternalServerResponseError | 500         | application/json |
-| sdkerrors.APIError                    | 4XX, 5XX    | \*/\*            |
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.BadRequestResponseError | 400 | application/json |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.RequestTimeoutResponseError | 408 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
 

@@ -156,21 +156,21 @@ The search models tool accepts an optional `max_results` parameter:
 }
 ```
 
-| Parameter     | Type    | Default | Description                                                   |
-| ------------- | ------- | ------- | ------------------------------------------------------------- |
-| `max_results` | integer | `5`     | Maximum number of models to return per call. Between 1 and 20 |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `max_results` | integer | `5` | Maximum number of models to return per call. Between 1 and 20 |
 
 ### Call Arguments
 
 The model generates the search arguments. All fields are optional; an empty call browses the full catalog:
 
-| Field                | Type      | Description                                                                                                                               |
-| -------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `query`              | string    | Free-text search matched against model names, slugs, and descriptions                                                                     |
-| `input_modalities`   | string\[] | Filter by supported input modalities (`text`, `image`, `file`, `audio`, `video`). Returns models that support ALL specified modalities    |
-| `output_modalities`  | string\[] | Filter by supported output modalities (e.g. `text`, `image`, `embeddings`, `audio`). Returns models that support ALL specified modalities |
-| `min_context_length` | integer   | Minimum context length in tokens                                                                                                          |
-| `series`             | string    | Filter by model series/family group (e.g. `Claude`, `GPT`, `Gemini`)                                                                      |
+| Field | Type | Description |
+| - | - | - |
+| `query` | string | Free-text search matched against model names, slugs, and descriptions |
+| `input_modalities` | string\[] | Filter by supported input modalities (`text`, `image`, `file`, `audio`, `video`). Returns models that support ALL specified modalities |
+| `output_modalities` | string\[] | Filter by supported output modalities (e.g. `text`, `image`, `embeddings`, `audio`). Returns models that support ALL specified modalities |
+| `min_context_length` | integer | Minimum context length in tokens |
+| `series` | string | Filter by model series/family group (e.g. `Claude`, `GPT`, `Gemini`) |
 
 ## Response
 

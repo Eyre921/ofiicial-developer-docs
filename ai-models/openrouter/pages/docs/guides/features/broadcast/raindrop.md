@@ -57,10 +57,10 @@ Raindrop receives events with custom metadata included as event properties. Use 
 
 ### Supported Metadata Keys
 
-| Key          | Raindrop Property | Description                                         |
-| ------------ | ----------------- | --------------------------------------------------- |
-| `trace_id`   | `trace_id`        | Custom trace identifier for grouping related events |
-| `trace_name` | `trace_name`      | Name displayed as the event's trace name            |
+| Key | Raindrop Property | Description |
+| - | - | - |
+| `trace_id` | `trace_id` | Custom trace identifier for grouping related events |
+| `trace_name` | `trace_name` | Name displayed as the event's trace name |
 
 ### Example
 

@@ -169,16 +169,16 @@ The image generation tool accepts optional `parameters` to customize the output:
 }
 ```
 
-| Parameter            | Type   | Default              | Description                                                                                                              |
-| -------------------- | ------ | -------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `model`              | string | `openai/gpt-5-image` | Which image generation model to use. See [available image models](https://openrouter.ai/models?output_modalities=image). |
-| `quality`            | string | N/A                  | Image quality level (model-dependent, e.g. `"low"`, `"medium"`, `"high"`)                                                |
-| `size`               | string | N/A                  | Image dimensions (e.g. `"1024x1024"`, `"512x512"`)                                                                       |
-| `aspect_ratio`       | string | N/A                  | Aspect ratio (e.g. `"16:9"`, `"1:1"`, `"4:3"`)                                                                           |
-| `background`         | string | N/A                  | Background style (e.g. `"transparent"`, `"opaque"`)                                                                      |
-| `output_format`      | string | N/A                  | Output format (e.g. `"png"`, `"jpeg"`, `"webp"`)                                                                         |
-| `output_compression` | number | N/A                  | Compression level (0-100) for lossy formats                                                                              |
-| `moderation`         | string | N/A                  | Content moderation level (e.g. `"auto"`, `"low"`)                                                                        |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `model` | string | `openai/gpt-5-image` | Which image generation model to use. See [available image models](https://openrouter.ai/models?output_modalities=image). |
+| `quality` | string | N/A | Image quality level (model-dependent, e.g. `"low"`, `"medium"`, `"high"`) |
+| `size` | string | N/A | Image dimensions (e.g. `"1024x1024"`, `"512x512"`) |
+| `aspect_ratio` | string | N/A | Aspect ratio (e.g. `"16:9"`, `"1:1"`, `"4:3"`) |
+| `background` | string | N/A | Background style (e.g. `"transparent"`, `"opaque"`) |
+| `output_format` | string | N/A | Output format (e.g. `"png"`, `"jpeg"`, `"webp"`) |
+| `output_compression` | number | N/A | Compression level (0-100) for lossy formats |
+| `moderation` | string | N/A | Content moderation level (e.g. `"auto"`, `"low"`) |
 
 All parameters except `model` are passed directly to the underlying image generation API. Available options depend on the specific model being used.
 

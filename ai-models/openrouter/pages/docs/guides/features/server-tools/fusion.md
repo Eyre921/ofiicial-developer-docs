@@ -157,14 +157,14 @@ Pass an optional `parameters` object on the tool entry to override defaults:
 }
 ```
 
-| Field                   | Default                                                                                                 | Description                                                                                                                                                               |
-| ----------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `analysis_models`       | Quality preset (`~anthropic/claude-opus-latest`, `~openai/gpt-sol-latest`, `~google/gemini-pro-latest`) | Models that form the panel. Each runs in parallel with `openrouter:web_search` and `openrouter:web_fetch` enabled. 1–8 models allowed.                                    |
-| `model`                 | Your outer model                                                                                        | The analyst that produces the structured analysis JSON. Defaults to the same model handling your request.                                                                 |
-| `max_tool_calls`        | `4`                                                                                                     | Max tool-calling steps each panel model and the analyst may take in their `openrouter:web_search` / `openrouter:web_fetch` loop before they must return text. Range 1–16. |
-| `max_completion_tokens` | `16000`                                                                                                 | Max output tokens (including reasoning) per inner panel/analyst call. Keeps reasoning-heavy models from exhausting their budget before producing visible text.            |
-| `reasoning`             | Provider default                                                                                        | Reasoning config forwarded to the panel and analyst calls: an object with optional `effort` and `max_tokens`.                                                             |
-| `temperature`           | Provider default                                                                                        | Temperature (`0`–`2`) forwarded to the panel calls. The analyst always runs at temperature 0.                                                                             |
+| Field | Default | Description |
+| - | - | - |
+| `analysis_models` | Quality preset (`~anthropic/claude-opus-latest`, `~openai/gpt-sol-latest`, `~google/gemini-pro-latest`) | Models that form the panel. Each runs in parallel with `openrouter:web_search` and `openrouter:web_fetch` enabled. 1–8 models allowed. |
+| `model` | Your outer model | The analyst that produces the structured analysis JSON. Defaults to the same model handling your request. |
+| `max_tool_calls` | `4` | Max tool-calling steps each panel model and the analyst may take in their `openrouter:web_search` / `openrouter:web_fetch` loop before they must return text. Range 1–16. |
+| `max_completion_tokens` | `16000` | Max output tokens (including reasoning) per inner panel/analyst call. Keeps reasoning-heavy models from exhausting their budget before producing visible text. |
+| `reasoning` | Provider default | Reasoning config forwarded to the panel and analyst calls: an object with optional `effort` and `max_tokens`. |
+| `temperature` | Provider default | Temperature (`0`–`2`) forwarded to the panel calls. The analyst always runs at temperature 0. |
 
 ## What the tool returns
 
@@ -221,13 +221,13 @@ The tool only returns `status: "error"` when it can't produce any useful output.
 }
 ```
 
-| Reason                     | Meaning                                                                         |
-| -------------------------- | ------------------------------------------------------------------------------- |
-| `all_panels_failed`        | Every panel model returned an error.                                            |
-| `insufficient_credits`     | Every panel model failed and at least one was due to insufficient credits.      |
-| `rate_limited`             | Every panel model failed and at least one was rate-limited.                     |
+| Reason | Meaning |
+| - | - |
+| `all_panels_failed` | Every panel model returned an error. |
+| `insufficient_credits` | Every panel model failed and at least one was due to insufficient credits. |
+| `rate_limited` | Every panel model failed and at least one was rate-limited. |
 | `fusion_invocation_capped` | Fusion was already invoked earlier in the same turn; a second call is rejected. |
-| `unexpected_error`         | An unexpected error interrupted the fusion run.                                 |
+| `unexpected_error` | An unexpected error interrupted the fusion run. |
 
 The calling model can fall back to answering without the analysis whenever fusion fails or degrades.
 

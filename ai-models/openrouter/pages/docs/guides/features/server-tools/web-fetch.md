@@ -175,13 +175,13 @@ The web fetch tool accepts optional `parameters` to customize behavior:
 }
 ```
 
-| Parameter            | Type      | Default | Description                                                                            |
-| -------------------- | --------- | ------- | -------------------------------------------------------------------------------------- |
-| `engine`             | string    | `auto`  | Fetch engine to use: `auto`, `native`, `exa`, `openrouter`, `firecrawl`, or `parallel` |
-| `max_uses`           | integer   | N/A     | Maximum fetches per request. Once exceeded, the tool returns an error                  |
-| `max_content_tokens` | integer   | N/A     | Maximum content length in approximate tokens. Content exceeding this is truncated      |
-| `allowed_domains`    | string\[] | N/A     | Only fetch from these domains                                                          |
-| `blocked_domains`    | string\[] | N/A     | Never fetch from these domains                                                         |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `engine` | string | `auto` | Fetch engine to use: `auto`, `native`, `exa`, `openrouter`, `firecrawl`, or `parallel` |
+| `max_uses` | integer | N/A | Maximum fetches per request. Once exceeded, the tool returns an error |
+| `max_content_tokens` | integer | N/A | Maximum content length in approximate tokens. Content exceeding this is truncated |
+| `allowed_domains` | string\[] | N/A | Only fetch from these domains |
+| `blocked_domains` | string\[] | N/A | Never fetch from these domains |
 
 ## Engine Selection
 
@@ -203,14 +203,18 @@ The web fetch server tool supports multiple fetch engines:
 * **`parallel`**: Uses [Parallel](https://parallel.ai)'s extract API for
   high-quality content extraction
 
+To check whether an endpoint runs web fetch natively, read `native_tools` on
+the endpoint object. See
+[Native Execution](/docs/guides/features/server-tools#native-execution).
+
 ### Engine Capabilities
 
-| Feature              | Exa                 | Parallel    | Firecrawl       | OpenRouter  | Native           |
-| -------------------- | ------------------- | ----------- | --------------- | ----------- | ---------------- |
-| **Domain filtering** | Yes                 | Yes         | Yes             | Yes         | Varies           |
-| **Token truncation** | Yes                 | Yes         | Yes             | Yes         | No               |
-| **API key**          | Server-side or BYOK | Server-side | BYOK (your key) | Server-side | Provider-handled |
-| **Hard limit**       | None                | None        | None            | 50/request  | 50/request       |
+| Feature | Exa | Parallel | Firecrawl | OpenRouter | Native |
+| - | - | - | - | - | - |
+| **Domain filtering** | Yes | Yes | Yes | Yes | Varies |
+| **Token truncation** | Yes | Yes | Yes | Yes | No |
+| **API key** | Server-side or BYOK | Server-side | BYOK (your key) | Server-side | Provider-handled |
+| **Hard limit** | None | None | None | 50/request | 50/request |
 
 ### Firecrawl (BYOK)
 
@@ -353,13 +357,13 @@ In both modes a request with no `engine` (or `engine: "auto"`) runs the workspac
 
 ## Pricing
 
-| Engine         | Pricing                                                     |
-| -------------- | ----------------------------------------------------------- |
-| **Exa**        | \$1 per 1,000 fetches                                       |
-| **Parallel**   | \$1 per 1,000 fetches                                       |
-| **Firecrawl**  | Uses your Firecrawl credits directly (no OpenRouter charge) |
-| **OpenRouter** | Free                                                        |
-| **Native**     | Passed through from the provider                            |
+| Engine | Pricing |
+| - | - |
+| **Exa** | \$1 per 1,000 fetches |
+| **Parallel** | \$1 per 1,000 fetches |
+| **Firecrawl** | Uses your Firecrawl credits directly (no OpenRouter charge) |
+| **OpenRouter** | Free |
+| **Native** | Passed through from the provider |
 
 All pricing is in addition to standard LLM token costs for processing the
 fetched content.

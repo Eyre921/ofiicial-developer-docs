@@ -42,11 +42,11 @@ Jev is a [System One](https://docs.typesafe.ai/concepts/system-one) model. Syste
 
 Jev answers three kinds of question, called primitives:
 
-| Primitive                                            | Question it answers                       | What comes back                                                                       |
-| ---------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------- |
-| [Choice](https://docs.typesafe.ai/primitives/choice) | Which one of these options?               | The selected option, a probability for each option, and a confidence value            |
-| [Noul](https://docs.typesafe.ai/primitives/noul)     | Does this condition hold?                 | The probability of yes                                                                |
-| [Score](https://docs.typesafe.ai/primitives/score)   | Where does this fall on an ordered scale? | A probability-weighted position, a probability for each level, and a confidence value |
+| Primitive | Question it answers | What comes back |
+| - | - | - |
+| [Choice](https://docs.typesafe.ai/primitives/choice) | Which one of these options? | The selected option, a probability for each option, and a confidence value |
+| [Noul](https://docs.typesafe.ai/primitives/noul) | Does this condition hold? | The probability of yes |
+| [Score](https://docs.typesafe.ai/primitives/score) | Where does this fall on an ordered scale? | A probability-weighted position, a probability for each level, and a confidence value |
 
 Because the output is typed, code branches on it directly. Jev does not produce reasoning traces, explanations, or free-form text. It is not a drop-in replacement for a chat model. It replaces the prompt-and-parse step where you were asking an LLM a narrow question and extracting a label from its answer.
 
@@ -65,10 +65,10 @@ There's no waitlist or separate TypeSafe account. Just create an [OpenRouter API
 
 Jev is exposed via two OpenRouter API surfaces, the Decisions API and the System One API. Both surfaces require the same OpenRouter API key and are billed to the same OpenRouter account.
 
-| Surface        | Endpoint                                         | Use it when                                                                                                                                                                                                                                           |
-| -------------- | ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Decisions API  | `POST https://openrouter.ai/api/alpha/decisions` | You are calling Jev from any language with plain HTTP, or through the OpenRouter [TypeScript](/docs/client-sdks/typescript/sdks/decisions/README), [Python](/docs/client-sdks/python/sdks/decisions/README), or [Go](/docs/client-sdks/go/sdks/decisions/README) SDK |
-| System One API | `POST https://openrouter.ai/api/v1/systemone`    | You already use the TypeSafe JavaScript or Python SDK and want to switch it to OpenRouter by changing the base URL                                                                                                                                    |
+| Surface | Endpoint | Use it when |
+| - | - | - |
+| Decisions API | `POST https://openrouter.ai/api/alpha/decisions` | You are calling Jev from any language with plain HTTP, or through the OpenRouter [TypeScript](/docs/client-sdks/typescript/sdks/decisions/README), [Python](/docs/client-sdks/python/sdks/decisions/README), or [Go](/docs/client-sdks/go/sdks/decisions/README) SDK |
+| System One API | `POST https://openrouter.ai/api/v1/systemone` | You already use the TypeSafe JavaScript or Python SDK and want to switch it to OpenRouter by changing the base URL |
 
 The [Jev SDK guide](/docs/guides/community/typesafe-sdk) documents the System One path. The [Decisions API reference](/docs/api/api-reference/alphadecisions/submit-a-decisions-questions-and-answers-request) covers the Decisions path.
 

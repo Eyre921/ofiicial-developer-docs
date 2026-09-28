@@ -17,6 +17,6 @@ Tips for producing emotions:
 * Add emphasis by putting the relevant words or phrases in quotation marks.
 * For speech generated using a cloned voice, the speaking style in the samples you upload for cloning is replicated in the output. If the speech in the uploaded sample is monotone, the model will struggle to produce expressive output.
 
-With Eleven v3, you can also use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-alpha) to control emotion and delivery more directly, for example `[happy]`, `[sad]`, `[angry]`, `[whispers]`, and `[laughs]`. See the [Eleven v3 prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v3) for more detail.
+With Eleven v4 and Eleven v3, you can also use [audio tags](/docs/help-center/product/core-capabilities/text-to-speech/how-do-audio-tags-work-with-eleven-v3-and-v4) to control emotion and delivery more directly, for example `[happy]`, `[sad]`, `[angry]`, `[whispers]`, and `[laughs]`. See the [prompting guide](/docs/overview/capabilities/text-to-speech/best-practices#prompting-eleven-v4) for more detail.
 
 These tips help guide emotional delivery but do not guarantee a specific result.

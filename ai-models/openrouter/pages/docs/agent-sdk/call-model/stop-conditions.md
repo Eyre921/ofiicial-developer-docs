@@ -233,9 +233,9 @@ const result = openrouter.callModel({
 
 Custom functions receive:
 
-| Property | Type           | Description                                     |
-| -------- | -------------- | ----------------------------------------------- |
-| `steps`  | `StepResult[]` | All completed steps including results and usage |
+| Property | Type | Description |
+| - | - | - |
+| `steps` | `StepResult[]` | All completed steps including results and usage |
 
 ### StepResult
 

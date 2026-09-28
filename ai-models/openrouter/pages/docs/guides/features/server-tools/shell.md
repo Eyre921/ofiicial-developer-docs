@@ -165,20 +165,20 @@ The shell tool accepts optional `parameters` to choose its execution engine and 
 }
 ```
 
-| Parameter     | Type   | Default          | Description                                                                                                                                                                                                                                                                                  |
-| ------------- | ------ | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `engine`      | string | `auto`           | Which shell engine to use: `openrouter` runs commands server-side in the OpenRouter sandbox; `auto` keeps the provider's native hosted shell when available (OpenAI) and routes to the OpenRouter sandbox on other providers                                                                 |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `engine` | string | `auto` | Which shell engine to use: `openrouter` runs commands server-side in the OpenRouter sandbox; `auto` keeps the provider's native hosted shell when available (OpenAI) and routes to the OpenRouter sandbox on other providers |
 | `environment` | object | `container_auto` | Execution environment. Use `{ "type": "container_auto" }` for an OpenRouter-managed ephemeral container, or `{ "type": "container_reference", "container_id": "..." }` to reuse an existing container. `local` environments are not supported. See [Containers](/docs/guides/features/containers) |
 
 Containers sleep after 5 minutes idle; each command renews the timer. This is not configurable — a legacy `sleep_after_seconds` parameter is accepted and ignored. See [Container lifetime](/docs/guides/features/containers#container-lifetime).
 
 Defaults and caps are server-enforced and may change while the tool is in beta:
 
-| Limit                                       | Default             | Maximum             |
-| ------------------------------------------- | ------------------- | ------------------- |
-| `timeout_ms` per command                    | 120,000 (2 minutes) | 300,000 (5 minutes) |
-| `max_output_length` per stream, per command | 16,384 characters   | 65,536 characters   |
-| `commands` per call                         | —                   | 100                 |
+| Limit | Default | Maximum |
+| - | - | - |
+| `timeout_ms` per command | 120,000 (2 minutes) | 300,000 (5 minutes) |
+| `max_output_length` per stream, per command | 16,384 characters | 65,536 characters |
+| `commands` per call | — | 100 |
 
 A `timeout_ms` or `max_output_length` above the maximum is clamped to it. A call with more than 100 commands is rejected.
 
@@ -202,11 +202,11 @@ Containers have **no outbound internet access by default**. The container config
 }
 ```
 
-| Policy                                              | Behavior                                                                                                   |
-| --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `{ "type": "disabled" }`                            | No outbound internet access                                                                                |
-| `{ "type": "allowlist", "allowed_domains": [...] }` | Outbound access restricted to hosts matching the listed hostnames or glob patterns (max 50)                |
-| omitted                                             | Defaults to `disabled` — no outbound internet access. For unrestricted egress, use an allowlist of `["*"]` |
+| Policy | Behavior |
+| - | - |
+| `{ "type": "disabled" }` | No outbound internet access |
+| `{ "type": "allowlist", "allowed_domains": [...] }` | Outbound access restricted to hosts matching the listed hostnames or glob patterns (max 50) |
+| omitted | Defaults to `disabled` — no outbound internet access. For unrestricted egress, use an allowlist of `["*"]` |
 
 The policy is **fixed when a container starts**: sending a different `network_policy` to a warm container fails the request with a `409`. Do not try to change a running container's policy — send the same policy for the container's lifetime.
 
@@ -223,11 +223,11 @@ Requests to hosts outside the policy fail inside the container with a connection
 
 The model generates the call arguments, mirroring OpenAI's hosted shell `shell_call.action`:
 
-| Field               | Type      | Description                                                                                              |
-| ------------------- | --------- | -------------------------------------------------------------------------------------------------------- |
-| `commands`          | string\[] | Shell commands to run, each in its own invocation, in order                                              |
-| `timeout_ms`        | integer   | Maximum execution time in milliseconds applied to each command                                           |
-| `max_output_length` | integer   | Maximum characters returned per stream. `stdout` and `stderr` are each capped to this value, per command |
+| Field | Type | Description |
+| - | - | - |
+| `commands` | string\[] | Shell commands to run, each in its own invocation, in order |
+| `timeout_ms` | integer | Maximum execution time in milliseconds applied to each command |
+| `max_output_length` | integer | Maximum characters returned per stream. `stdout` and `stderr` are each capped to this value, per command |
 
 ## OpenAI native shell tool
 
