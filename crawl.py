@@ -17,6 +17,7 @@ AI 官方文档镜像爬虫 —— Anthropic / OpenAI / Google Gemini。
     INCLUDE_ALL_SDK_LANGUAGES=1 python crawl.py   # Anthropic API 保留全部 8 种语言 SDK 参考（默认只留 Python，省体积）
 """
 import concurrent.futures
+import time
 import json
 import os
 import re
@@ -233,8 +234,13 @@ def fetch_index_links(index_url):
         return {"title": title, "url": u, "body": body}
 
     pages = []
+    # CNB 任务连续 10 分钟没有输出会被强杀（2026-09 约四分之一的构建因此失败）：大索引源定期打一行进度
+    last = time.monotonic()
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as ex:
-        for fut in concurrent.futures.as_completed([ex.submit(one, it) for it in items]):
+        for i, fut in enumerate(concurrent.futures.as_completed([ex.submit(one, it) for it in items]), 1):
+            if i % 100 == 0 or time.monotonic() - last > 60:
+                print(f"    [..] {index_url}: {i}/{len(items)}", flush=True)
+                last = time.monotonic()
             try:
                 p = fut.result()
                 if p["body"].lstrip()[:1] != "<":  # 跳过仍是 HTML 的
