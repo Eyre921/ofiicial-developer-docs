@@ -485,15 +485,15 @@ These limits apply to the Vectors API. For an index with a document schema, see 
 
 ### Delete by ID limits
 
-| Metric              | Limit                                          |
-| :------------------ | :--------------------------------------------- |
-| Max IDs per request | 1000 IDs                                       |
-| Max request rate    | 5000 records per second per index or namespace |
+| Metric | Limit |
+| :- | :- |
+| Max IDs per request | 1000 IDs |
+| Max request rate | 5000 records per second per index or namespace |
 
 ### Delete by metadata limits
 
-| Metric           | Limit                                                                      |
-| :--------------- | :------------------------------------------------------------------------- |
+| Metric | Limit |
+| :- | :- |
 | Max request rate | 5 requests per second per namespace<br />500 requests per second per index |
 
 ## Data freshness

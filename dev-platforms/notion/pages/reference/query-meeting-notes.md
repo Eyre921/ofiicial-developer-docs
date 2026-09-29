@@ -24,11 +24,11 @@ This endpoint does **not** use cursor-based pagination. There is no `start_curso
 
 The body is a JSON object; every field is optional.
 
-| Field    | Description                                                                                                                      |
-| -------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `filter` | A single **property** filter, or a **combinator** (`"and"` / `"or"`) with a `filters` array. See **Filtering**.                  |
-| `sort`   | Ordered list of sorts. Each entry has `property` and `direction` (`ascending` or `descending`). Earlier entries take precedence. |
-| `limit`  | Maximum number of meeting notes to return. **Integer** from **1** to **50**. If omitted, the server uses **50**.                 |
+| Field | Description |
+| - | - |
+| `filter` | A single **property** filter, or a **combinator** (`"and"` / `"or"`) with a `filters` array. See **Filtering**. |
+| `sort` | Ordered list of sorts. Each entry has `property` and `direction` (`ascending` or `descending`). Earlier entries take precedence. |
+| `limit` | Maximum number of meeting notes to return. **Integer** from **1** to **50**. If omitted, the server uses **50**. |
 
 <CodeGroup>
   ```json Default (implicit limit 50) theme={null}

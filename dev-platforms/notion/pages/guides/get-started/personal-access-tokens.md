@@ -31,10 +31,10 @@ Create PATs in the <a href={developerPortalUrl}>Developer portal</a>. For each P
 
 You can give a PAT either or both of these capabilities:
 
-| Capability     | What it allows                                                                                                                     |
-| :------------- | :--------------------------------------------------------------------------------------------------------------------------------- |
+| Capability | What it allows |
+| :- | :- |
 | **Notion API** | Read, create, update, and search content; read and create comments; and read supported user information through Notion's REST API. |
-| **Workers**    | Deploy and manage [Notion Workers](/workers/get-started/overview) with the Notion CLI.                                             |
+| **Workers** | Deploy and manage [Notion Workers](/workers/get-started/overview) with the Notion CLI. |
 
 The workspace's PAT creation policy controls who can use the Notion API capability. Workspace members can receive the Workers capability when Notion Workers is available to the workspace.
 
@@ -92,11 +92,11 @@ Organization owners can also use [List personal access tokens](/reference/admin/
 
 [Guests and restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot create PATs or log in with the Notion CLI (`ntn login`). Only full workspace members can create tokens, subject to the workspace's PAT creation policy below. Workspace owners can always create PATs with Notion API access.
 
-| Plan       | Default PAT creation policy           | Admin controls                                                                                                       |
-| :--------- | :------------------------------------ | :------------------------------------------------------------------------------------------------------------------- |
-| Free       | Workspace owners only.                | Not configurable.                                                                                                    |
-| Plus       | All workspace members.                | Not configurable.                                                                                                    |
-| Business   | Workspace owners only.                | Admins can choose **Workspace owners only** or **All workspace members**.                                            |
+| Plan | Default PAT creation policy | Admin controls |
+| :- | :- | :- |
+| Free | Workspace owners only. | Not configurable. |
+| Plus | All workspace members. | Not configurable. |
+| Business | Workspace owners only. | Admins can choose **Workspace owners only** or **All workspace members**. |
 | Enterprise | Workspace owners and selected groups. | Admins can choose **Workspace owners only**, **Workspace owners and selected groups**, or **All workspace members**. |
 
 On Enterprise, admins manage selected groups in the PAT creator settings. If no groups are selected, only workspace owners can create PATs with Notion API access.

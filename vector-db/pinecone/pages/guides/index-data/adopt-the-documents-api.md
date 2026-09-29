@@ -23,11 +23,11 @@ At the API level, `POST /indexes` on `2026-07` is schema-only: the top-level `di
 
 `2026-07` gives you two kinds of index. A vector index is the classic index you already use: dense and sparse vectors, read and written through the Vectors API. A document index is new — its schema can hold dense-vector, sparse-vector, and full-text fields in one index, read and written through the Documents API.
 
-|                     | Vector index                                                              | Document index (new)                                                  |
-| ------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| Create with         | `pc.create_index(dimension=..., metric=..., vector_type=...)` (unchanged) | `pc.indexes.create(schema=...)`                                       |
-| Read and write with | `index.upsert`, `index.query`, `index.fetch`                              | `index.documents.*` (`upsert`, `search`, `fetch`, `update`, `delete`) |
-| Full-text search    | Not available                                                             | Declare full-text fields in the schema                                |
+| | Vector index | Document index (new) |
+| - | - | - |
+| Create with | `pc.create_index(dimension=..., metric=..., vector_type=...)` (unchanged) | `pc.indexes.create(schema=...)` |
+| Read and write with | `index.upsert`, `index.query`, `index.fetch` | `index.documents.*` (`upsert`, `search`, `fetch`, `update`, `delete`) |
+| Full-text search | Not available | Declare full-text fields in the schema |
 
 In the SDK, your existing `pc.create_index(dimension=..., metric=..., vector_type=...)` code is unchanged and still creates a vector index; the SDK maps it to a schema for you. To create a document index, call `pc.indexes.create` with a `schema`. A request uses one or the other, not both.
 

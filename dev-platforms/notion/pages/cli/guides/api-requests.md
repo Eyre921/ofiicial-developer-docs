@@ -41,12 +41,12 @@ ntn api "v1/pages/$PAGE_ID" -X PATCH archived:=true
 
 Inline inputs after the path can set body fields, query parameters, and request headers.
 
-| Form           | Meaning                        | Example                   |
-| :------------- | :----------------------------- | :------------------------ |
-| `path=value`   | Body field with a string value | `parent[page_id]=abc123`  |
-| `path:=json`   | Body field parsed as JSON      | `archived:=true`          |
-| `name==value`  | Query parameter                | `page_size==100`          |
-| `Header:Value` | Request header                 | `Accept:application/json` |
+| Form | Meaning | Example |
+| :- | :- | :- |
+| `path=value` | Body field with a string value | `parent[page_id]=abc123` |
+| `path:=json` | Body field parsed as JSON | `archived:=true` |
+| `name==value` | Query parameter | `page_size==100` |
+| `Header:Value` | Request header | `Accept:application/json` |
 
 Use `=` when the value should be a string:
 
@@ -235,14 +235,14 @@ Verbose output includes the final method, URL, request headers, JSON request bod
 
 ## Troubleshooting
 
-| Problem                                           | What to check                                                                                      |
-| :------------------------------------------------ | :------------------------------------------------------------------------------------------------- |
-| The request used `POST` unexpectedly              | Body input, `--data`, or stdin JSON makes `POST` the default. Use `-X` to override it.             |
-| An inline value has the wrong type                | Use `:=` for JSON values like `true`, `10`, `null`, arrays, and objects. Use `=` only for strings. |
-| A nested body path is hard to read                | Prefer bracket notation, especially for property names with spaces or punctuation.                 |
-| `--spec` or `--docs` says the method is ambiguous | Add `-X GET`, `-X POST`, `-X PATCH`, or the method you want to inspect.                            |
-| The body source conflicts                         | Use only one of stdin JSON, `--data`, or inline body fields.                                       |
-| You need to inspect a failing request             | Add `--verbose` and check the final method, URL, status, and `x-request-id`.                       |
+| Problem | What to check |
+| :- | :- |
+| The request used `POST` unexpectedly | Body input, `--data`, or stdin JSON makes `POST` the default. Use `-X` to override it. |
+| An inline value has the wrong type | Use `:=` for JSON values like `true`, `10`, `null`, arrays, and objects. Use `=` only for strings. |
+| A nested body path is hard to read | Prefer bracket notation, especially for property names with spaces or punctuation. |
+| `--spec` or `--docs` says the method is ambiguous | Add `-X GET`, `-X POST`, `-X PATCH`, or the method you want to inspect. |
+| The body source conflicts | Use only one of stdin JSON, `--data`, or inline body fields. |
+| You need to inspect a failing request | Add `--verbose` and check the final method, URL, status, and `x-request-id`. |
 
 ## Next steps
 

@@ -798,16 +798,16 @@ To index only the metadata fields you filter on, rather than all of them, see [C
 
 When creating an index, you must choose the cloud and region where you want the index to be hosted. The following table lists the available public clouds and regions and the plans that support them:
 
-| Cloud   | Region                       | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
-| ------- | ---------------------------- | --------------------------------------------------- | --------------------------------------------------------- |
-| `aws`   | `us-east-1` (Virginia)       | Starter, Builder, Standard, Enterprise              | General availability                                      |
-| `aws`   | `us-west-2` (Oregon)         | Builder, Standard, Enterprise                       | General availability                                      |
-| `aws`   | `eu-west-1` (Ireland)        | Builder, Standard, Enterprise                       | General availability                                      |
-| `aws`   | `eu-central-1` (Frankfurt)   | Builder, Standard, Enterprise                       | General availability                                      |
-| `aws`   | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise                       | General availability                                      |
-| `gcp`   | `us-central1` (Iowa)         | Builder, Standard, Enterprise                       | General availability                                      |
-| `gcp`   | `europe-west4` (Netherlands) | Builder, Standard, Enterprise                       | General availability                                      |
-| `azure` | `eastus2` (Virginia)         | Builder, Standard, Enterprise                       | General availability                                      |
+| Cloud | Region | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
+| - | - | - | - |
+| `aws` | `us-east-1` (Virginia) | Starter, Builder, Standard, Enterprise | General availability |
+| `aws` | `us-west-2` (Oregon) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-west-1` (Ireland) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-central-1` (Frankfurt) | Builder, Standard, Enterprise | General availability |
+| `aws` | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `us-central1` (Iowa) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `europe-west4` (Netherlands) | Builder, Standard, Enterprise | General availability |
+| `azure` | `eastus2` (Virginia) | Builder, Standard, Enterprise | General availability |
 
 The cloud and region can't be changed after a serverless index is created.
 
@@ -870,10 +870,10 @@ For rate limits, see [Embedding tokens per minute](/reference/api/database-limit
 
 The `multilingual-e5-large` model supports the following parameters:
 
-| Parameter    | Type   | Required/Optional | Description                                                                                                                                                                                                                                    | Default |
-| :----------- | :----- | :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ |
-| `input_type` | string | Required          | The type of input data. Accepted values: `query` or `passage`.                                                                                                                                                                                 |         |
-| `truncate`   | string | Optional          | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END`   |
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
 
 #### llama-text-embed-v2
 
@@ -894,11 +894,11 @@ For rate limits, see [Embedding tokens per minute](/reference/api/database-limit
 
 The `llama-text-embed-v2` model supports the following parameters:
 
-| Parameter    | Type    | Required/Optional | Description                                                                                                                                                                                                                                    | Default |
-| :----------- | :------ | :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ |
-| `input_type` | string  | Required          | The type of input data. Accepted values: `query` or `passage`.                                                                                                                                                                                 |         |
-| `truncate`   | string  | Optional          | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END`   |
-| `dimension`  | integer | Optional          | Dimension of the vector to return.                                                                                                                                                                                                             | 1024    |
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+| `dimension` | integer | Optional | Dimension of the vector to return. | 1024 |
 
 #### pinecone-sparse-english-v0
 
@@ -918,9 +918,9 @@ For rate limits, see [Embedding tokens per minute](/reference/api/database-limit
 
 The `pinecone-sparse-english-v0` model supports the following parameters:
 
-| Parameter                 | Type    | Required/Optional | Description                                                                                                                                                                                                                                                                    | Default |
-| :------------------------ | :------ | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------ |
-| `input_type`              | string  | Required          | The type of input data. Accepted values: `query` or `passage`.                                                                                                                                                                                                                 |         |
-| `max_tokens_per_sequence` | integer | Optional          | Maximum number of tokens to embed. Accepted values: `512` or `2048`.                                                                                                                                                                                                           | `512`   |
-| `truncate`                | string  | Optional          | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the the `max_tokens_per_sequence` limit. `NONE` returns an error when the input exceeds the `max_tokens_per_sequence` limit. | `END`   |
-| `return_tokens`           | boolean | Optional          | Whether to return the string tokens.                                                                                                                                                                                                                                           | `false` |
+| Parameter | Type | Required/Optional | Description | Default |
+| :- | :- | :- | :- | :- |
+| `input_type` | string | Required | The type of input data. Accepted values: `query` or `passage`. | |
+| `max_tokens_per_sequence` | integer | Optional | Maximum number of tokens to embed. Accepted values: `512` or `2048`. | `512` |
+| `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the the `max_tokens_per_sequence` limit. `NONE` returns an error when the input exceeds the `max_tokens_per_sequence` limit. | `END` |
+| `return_tokens` | boolean | Optional | Whether to return the string tokens. | `false` |

@@ -11,7 +11,7 @@ path: docs/api-reference/agents/simulate-conversation-stream
 POST https://api.elevenlabs.io/v1/convai/agents/{agent_id}/simulate-conversation/stream
 Content-Type: application/json
 
-Deprecated. Use the `/v1/convai/agent-testing/create` and `/v1/convai/agents/:agent_id/run-tests` endpoints to create and run simulations. Run a conversation between the agent and a simulated user and stream back the response. Response is streamed back as partial lists of messages that should be concatenated and once the conversation has complete a single final message with the conversation analysis will be sent.
+Deprecated. This endpoint will be removed on 31 Oct 2026. Use the `/v1/convai/agent-testing/create` and `/v1/convai/agents/:agent_id/run-tests` endpoints to create and run simulations. Run a conversation between the agent and a simulated user and stream back the response. Response is streamed back as partial lists of messages that should be concatenated and once the conversation has complete a single final message with the conversation analysis will be sent.
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation-stream
 

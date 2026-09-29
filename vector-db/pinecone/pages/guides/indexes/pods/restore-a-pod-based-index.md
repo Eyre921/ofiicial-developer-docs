@@ -7,7 +7,7 @@ path: guides/indexes/pods/restore-a-pod-based-index
 Legacy guide for restoring Pinecone pod-based indexes from collections. Pod indexes are no longer available to new customers as of August 2025.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
 You can restore a pod-based index by creating a new index from a [collection](/guides/indexes/pods/understanding-collections).

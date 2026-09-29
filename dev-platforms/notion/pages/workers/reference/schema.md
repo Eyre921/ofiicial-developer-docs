@@ -14,11 +14,11 @@ import * as Schema from "@notionhq/workers/schema";
 import * as Builder from "@notionhq/workers/builder";
 ```
 
-| Import    | Used by                        | Description                                            |
-| --------- | ------------------------------ | ------------------------------------------------------ |
-| `j`       | [Tools](/workers/guides/tools) | JSON Schema builder for tool input and output schemas. |
-| `Schema`  | [Syncs](/workers/guides/syncs) | Database property schema helpers for sync databases.   |
-| `Builder` | [Syncs](/workers/guides/syncs) | Database property value helpers for sync changes.      |
+| Import | Used by | Description |
+| - | - | - |
+| `j` | [Tools](/workers/guides/tools) | JSON Schema builder for tool input and output schemas. |
+| `Schema` | [Syncs](/workers/guides/syncs) | Database property schema helpers for sync databases. |
+| `Builder` | [Syncs](/workers/guides/syncs) | Database property value helpers for sync changes. |
 
 ## Schema builder
 

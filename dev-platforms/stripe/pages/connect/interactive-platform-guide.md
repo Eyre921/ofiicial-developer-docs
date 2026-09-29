@@ -45,6 +45,13 @@ A direct charge is a customer payment made directly to a connected account. Cust
 
 This charge type is best suited for platforms providing software as a service. For example, Shopify provides tools for building online storefronts, and Thinkific enables educators to sell online courses.
 
+If you want to use [Managed Risk](https://docs.stripe.com/connect/risk-management/managed-risk.md), you must use direct charges to receive protection against losses from negative balances on your connected accounts. Destination charges and separate charges and transfers don’t provide the same protection.
+
+Choose how to pay Stripe fees and monetize payments:
+
+- **Stripe bills the connected account**: Optionally collect application fees on direct charges, charge subscription fees, or use both methods.
+- **Stripe bills your platform**: Use [platform pricing tools](https://docs.stripe.com/connect/platform-pricing-tools.md) to set application fees that cover Stripe processing fees and generate revenue. You can also charge subscription fees.
+
 #### Item 2
 
 Create destination charges on your platform to immediately transfer funds to connected accounts. Customers transact with your platform for products or services provided by your connected accounts.

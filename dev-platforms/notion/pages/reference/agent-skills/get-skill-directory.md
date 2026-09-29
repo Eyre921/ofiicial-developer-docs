@@ -15,8 +15,8 @@ For an overview of how to use the Agent Skills API, see the [guide overview](/gu
 
 ## Errors
 
-| Status | Code                  | Cause                                                                            |
-| :----- | :-------------------- | :------------------------------------------------------------------------------- |
-| 400    | `validation_error`    | The supplied skill ID is malformed.                                              |
-| 404    | `directory_not_found` | No skill with that ID is shared with the connection, or the ID no longer exists. |
-| 403    | `restricted_resource` | The token lacks the **Read content** capability.                                 |
+| Status | Code | Cause |
+| :- | :- | :- |
+| 400 | `validation_error` | The supplied skill ID is malformed. |
+| 404 | `directory_not_found` | No skill with that ID is shared with the connection, or the ID no longer exists. |
+| 403 | `restricted_resource` | The token lacks the **Read content** capability. |

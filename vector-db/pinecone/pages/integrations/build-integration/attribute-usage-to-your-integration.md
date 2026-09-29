@@ -23,12 +23,12 @@ For example, for an integration called "New Framework", `"new_framework"` is val
 
 ### Specify a source tag
 
-| Pinecone SDK                              | Required version |
-| ----------------------------------------- | ---------------- |
-| [Python](/reference/sdks/python/overview) | v3.2.1+          |
-| [Node.js](/reference/sdks/node/overview)  | v2.2.0+          |
-| [Java](/reference/sdks/java/overview)     | v1.0.0+          |
-| [Go](/reference/sdks/go/overview)         | v0.4.1+          |
+| Pinecone SDK | Required version |
+| - | - |
+| [Python](/reference/sdks/python/overview) | v3.2.1+ |
+| [Node.js](/reference/sdks/node/overview) | v2.2.0+ |
+| [Java](/reference/sdks/java/overview) | v1.0.0+ |
+| [Go](/reference/sdks/go/overview) | v0.4.1+ |
 
 <CodeGroup>
   ```python Python theme={null}

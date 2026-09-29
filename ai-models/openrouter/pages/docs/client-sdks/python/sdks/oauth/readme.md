@@ -212,7 +212,7 @@ with OpenRouter(
 | `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
 | `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
 | `requested_token_type` | [Optional\[components.RequestedTokenType\]](../../components/requestedtokentype.mdx) | :heavy\_minus\_sign: | Optional; when present must be `urn:ietf:params:oauth:token-type:access_token`. | urn:ietf:params:oauth:token-type:access\_token |
-| `scope` | [Optional\[components.Scope\]](../../components/scope.mdx) | :heavy\_minus\_sign: | Optional; only `inference` is available. | inference |
+| `scope` | [Optional\[components.TokenExchangeRequestScope\]](../../components/tokenexchangerequestscope.mdx) | :heavy\_minus\_sign: | Optional; only `inference` is available. | inference |
 | `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
 
 ### Response

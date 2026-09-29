@@ -20,16 +20,16 @@ A user must have an organization role to belong to the organization, and gains a
 
 The following table maps common scenarios to the roles to assign:
 
-| Scenario                                                           | Organization role | Project role(s)                                                                       |
-| :----------------------------------------------------------------- | :---------------- | :------------------------------------------------------------------------------------ |
-| Administer the organization and every project                      | `OrgOwner`        | None (inherits owner access to all projects)                                          |
-| Create and manage projects, but not billing or members             | `OrgManager`      | Assign per project as needed                                                          |
-| Manage billing, subscriptions, and usage                           | `OrgBillingAdmin` | None                                                                                  |
-| Lead a single project, including its members and API keys          | `OrgMember`       | `ProjectOwner`                                                                        |
-| Build and query in a project, without managing members or API keys | `OrgMember`       | `ProjectManager`                                                                      |
-| Read and write index data only                                     | `OrgMember`       | `ProjectMember` and `DataPlaneEditor`                                                 |
-| Read-only access to a project's resources and data                 | `OrgMember`       | `ProjectMember`, `ControlPlaneViewer`, and `DataPlaneViewer`                          |
-| Work across two projects at different access levels                | `OrgMember`       | `ProjectManager` on one project and `ProjectMember` with `DataPlaneViewer` on another |
+| Scenario | Organization role | Project role(s) |
+| :- | :- | :- |
+| Administer the organization and every project | `OrgOwner` | None (inherits owner access to all projects) |
+| Create and manage projects, but not billing or members | `OrgManager` | Assign per project as needed |
+| Manage billing, subscriptions, and usage | `OrgBillingAdmin` | None |
+| Lead a single project, including its members and API keys | `OrgMember` | `ProjectOwner` |
+| Build and query in a project, without managing members or API keys | `OrgMember` | `ProjectManager` |
+| Read and write index data only | `OrgMember` | `ProjectMember` and `DataPlaneEditor` |
+| Read-only access to a project's resources and data | `OrgMember` | `ProjectMember`, `ControlPlaneViewer`, and `DataPlaneViewer` |
+| Work across two projects at different access levels | `OrgMember` | `ProjectManager` on one project and `ProjectMember` with `DataPlaneViewer` on another |
 
 <Note>
   Assigning an organization role adds the user to the organization; assigning a project role grants access to that specific project. To assign these roles in the console, see [Manage organization members](/guides/organizations/manage-organization-members) and [Manage project members](/guides/projects/manage-project-members).

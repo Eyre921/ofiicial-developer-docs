@@ -26,16 +26,16 @@ SDK versions are pinned to specific [API versions](/reference/api/versioning). W
 
 The mappings between API versions and Python SDK versions are as follows:
 
-| API version | SDK version   |
-| :---------- | :------------ |
-| `2026-07`   | v10.x         |
-| `2026-04`   | v9.x          |
-| `2025-10`   | v8.x          |
-| `2025-04`   | v7.x          |
-| `2025-01`   | v6.x          |
-| `2024-10`   | v5.3.x        |
-| `2024-07`   | v5.0.x-v5.2.x |
-| `2024-04`   | v4.x          |
+| API version | SDK version |
+| :- | :- |
+| `2026-07` | v10.x |
+| `2026-04` | v9.x |
+| `2025-10` | v8.x |
+| `2025-04` | v7.x |
+| `2025-01` | v6.x |
+| `2024-10` | v5.3.x |
+| `2024-07` | v5.0.x-v5.2.x |
+| `2024-04` | v4.x |
 
 When a new stable API version is released, you should upgrade your SDK to the latest version to ensure compatibility with the latest API changes.
 

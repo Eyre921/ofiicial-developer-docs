@@ -14,9 +14,9 @@ Pinecone never has direct access to your cloud account. Your vectors, metadata, 
 
 ## Architecture
 
-<img alt="BYOC architecture diagram" />
+<img alt="BYOC architecture in which the Pinecone data plane, Kubernetes cluster, FoundationDB, object storage, and DNS run in a VPC in your AWS, GCP, or Azure account. The cluster pulls operations from the Pinecone-managed control plane, and only metrics and traces leave the cluster." />
 
-<img alt="BYOC architecture diagram" />
+<img alt="BYOC architecture in which the Pinecone data plane, Kubernetes cluster, FoundationDB, object storage, and DNS run in a VPC in your AWS, GCP, or Azure account. The cluster pulls operations from the Pinecone-managed control plane, and only metrics and traces leave the cluster." />
 
 BYOC uses a split architecture:
 
@@ -37,12 +37,12 @@ In BYOC, that console CMEK flow doesn't apply. Your vectors and index data are s
 
 Before deploying BYOC, ensure you have the following tools installed on your local machine:
 
-| Tool         | Purpose                | Install                                                                      |
-| ------------ | ---------------------- | ---------------------------------------------------------------------------- |
-| Python 3.12+ | Runtime                | [python.org](https://www.python.org/downloads/)                              |
-| uv           | Package manager        | [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/) |
-| Pulumi       | Infrastructure-as-code | [pulumi.com/docs/install](https://www.pulumi.com/docs/install/)              |
-| kubectl      | Cluster access         | [kubernetes.io](https://kubernetes.io/docs/tasks/tools/)                     |
+| Tool | Purpose | Install |
+| - | - | - |
+| Python 3.12+ | Runtime | [python.org](https://www.python.org/downloads/) |
+| uv | Package manager | [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/) |
+| Pulumi | Infrastructure-as-code | [pulumi.com/docs/install](https://www.pulumi.com/docs/install/) |
+| kubectl | Cluster access | [kubernetes.io](https://kubernetes.io/docs/tasks/tools/) |
 
 You also need:
 
@@ -92,23 +92,23 @@ To deploy BYOC, follow these steps:
     <Accordion title="Setup wizard prompts">
       The wizard prompts you for the following:
 
-      | Prompt                    | Description                                                                                                                                    | Default                                                    |
-      | ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-      | **Cloud provider**        | Select AWS, GCP, or Azure (skipped if pre-selected via `--cloud`).                                                                             | -                                                          |
-      | **Pinecone API key**      | Your API key from the Pinecone console (or uses `PINECONE_API_KEY` env var).                                                                   | -                                                          |
-      | **Cloud credentials**     | Validates credentials and displays your account/project/subscription ID.                                                                       | -                                                          |
-      | **GCP project ID**        | *(GCP only)* Your GCP project ID.                                                                                                              | Detected from `gcloud`                                     |
-      | **Azure subscription ID** | *(Azure only)* Your Azure subscription ID.                                                                                                     | Detected from `az account show`                            |
-      | **Region**                | Region for deployment.                                                                                                                         | `us-east-1` (AWS) / `us-central1` (GCP) / `eastus` (Azure) |
-      | **Availability zones**    | Zones for high availability. Wizard fetches available options.                                                                                 | First two zones                                            |
-      | **Custom AMI**            | *(AWS only)* Custom AMI ID for EKS nodes. Leave blank for the default AWS AMI.                                                                 | None                                                       |
-      | **VPC CIDR block**        | IP range for your VPC/VNet. Choose a range that doesn't conflict with existing networks.                                                       | `10.0.0.0/16` (AWS/Azure) / `10.112.0.0/12` (GCP)          |
-      | **Deletion protection**   | Protect object storage from accidental deletion.                                                                                               | Enabled                                                    |
-      | **Network access**        | Public access (connect from anywhere) or private only (requires PrivateLink on AWS, Private Service Connect on GCP, or Private Link on Azure). | Public enabled                                             |
-      | **Resource tags/labels**  | Custom tags (AWS/Azure) or labels (GCP) for cost tracking (e.g., `team=platform,env=prod`).                                                    | None                                                       |
-      | **Preflight checks**      | Validates cloud quotas. If checks fail, request quota increases before proceeding.                                                             | -                                                          |
-      | **Project name**          | Name for your deployment.                                                                                                                      | `pinecone-byoc`                                            |
-      | **Pulumi backend**        | Where to store state: local (`~/.pulumi` with passphrase) or Pulumi Cloud.                                                                     | Local                                                      |
+      | Prompt | Description | Default |
+      | - | - | - |
+      | **Cloud provider** | Select AWS, GCP, or Azure (skipped if pre-selected via `--cloud`). | - |
+      | **Pinecone API key** | Your API key from the Pinecone console (or uses `PINECONE_API_KEY` env var). | - |
+      | **Cloud credentials** | Validates credentials and displays your account/project/subscription ID. | - |
+      | **GCP project ID** | *(GCP only)* Your GCP project ID. | Detected from `gcloud` |
+      | **Azure subscription ID** | *(Azure only)* Your Azure subscription ID. | Detected from `az account show` |
+      | **Region** | Region for deployment. | `us-east-1` (AWS) / `us-central1` (GCP) / `eastus` (Azure) |
+      | **Availability zones** | Zones for high availability. Wizard fetches available options. | First two zones |
+      | **Custom AMI** | *(AWS only)* Custom AMI ID for EKS nodes. Leave blank for the default AWS AMI. | None |
+      | **VPC CIDR block** | IP range for your VPC/VNet. Choose a range that doesn't conflict with existing networks. | `10.0.0.0/16` (AWS/Azure) / `10.112.0.0/12` (GCP) |
+      | **Deletion protection** | Protect object storage from accidental deletion. | Enabled |
+      | **Network access** | Public access (connect from anywhere) or private only (requires PrivateLink on AWS, Private Service Connect on GCP, or Private Link on Azure). | Public enabled |
+      | **Resource tags/labels** | Custom tags (AWS/Azure) or labels (GCP) for cost tracking (e.g., `team=platform,env=prod`). | None |
+      | **Preflight checks** | Validates cloud quotas. If checks fail, request quota increases before proceeding. | - |
+      | **Project name** | Name for your deployment. | `pinecone-byoc` |
+      | **Pulumi backend** | Where to store state: local (`~/.pulumi` with passphrase) or Pulumi Cloud. | Local |
     </Accordion>
 
     After completing the wizard, a Pulumi project is generated in your project directory.
@@ -118,42 +118,42 @@ To deploy BYOC, follow these steps:
 
       <Tabs>
         <Tab title="AWS">
-          | Option                  | Description                                         | Default                        |
-          | ----------------------- | --------------------------------------------------- | ------------------------------ |
-          | `pinecone-version`      | Pinecone release version                            | -                              |
-          | `region`                | AWS region                                          | `us-east-1`                    |
-          | `availability-zones`    | Availability zones for high availability            | `["us-east-1a", "us-east-1b"]` |
-          | `vpc-cidr`              | VPC IP range                                        | `10.0.0.0/16`                  |
-          | `deletion-protection`   | Protect S3 buckets from accidental deletion         | `true`                         |
-          | `public-access-enabled` | Enable public endpoint (`false` = PrivateLink only) | `true`                         |
-          | `custom-ami-id`         | Custom AMI ID for EKS nodes                         | Default AWS AMI                |
-          | `tags`                  | Custom tags for all AWS resources                   | `{}`                           |
+          | Option | Description | Default |
+          | - | - | - |
+          | `pinecone-version` | Pinecone release version | - |
+          | `region` | AWS region | `us-east-1` |
+          | `availability-zones` | Availability zones for high availability | `["us-east-1a", "us-east-1b"]` |
+          | `vpc-cidr` | VPC IP range | `10.0.0.0/16` |
+          | `deletion-protection` | Protect S3 buckets from accidental deletion | `true` |
+          | `public-access-enabled` | Enable public endpoint (`false` = PrivateLink only) | `true` |
+          | `custom-ami-id` | Custom AMI ID for EKS nodes | Default AWS AMI |
+          | `tags` | Custom tags for all AWS resources | `{}` |
         </Tab>
 
         <Tab title="GCP">
-          | Option                  | Description                                                     | Default                              |
-          | ----------------------- | --------------------------------------------------------------- | ------------------------------------ |
-          | `gcp:project`           | GCP project ID                                                  | -                                    |
-          | `pinecone-version`      | Pinecone release version                                        | -                                    |
-          | `region`                | GCP region                                                      | `us-central1`                        |
-          | `availability-zones`    | Zones for high availability                                     | `["us-central1-a", "us-central1-b"]` |
-          | `vpc-cidr`              | VPC IP range                                                    | `10.112.0.0/12`                      |
-          | `deletion-protection`   | Protect GCS buckets from accidental deletion                    | `true`                               |
-          | `public-access-enabled` | Enable public endpoint (`false` = Private Service Connect only) | `true`                               |
-          | `labels`                | Custom labels for all GCP resources                             | `{}`                                 |
+          | Option | Description | Default |
+          | - | - | - |
+          | `gcp:project` | GCP project ID | - |
+          | `pinecone-version` | Pinecone release version | - |
+          | `region` | GCP region | `us-central1` |
+          | `availability-zones` | Zones for high availability | `["us-central1-a", "us-central1-b"]` |
+          | `vpc-cidr` | VPC IP range | `10.112.0.0/12` |
+          | `deletion-protection` | Protect GCS buckets from accidental deletion | `true` |
+          | `public-access-enabled` | Enable public endpoint (`false` = Private Service Connect only) | `true` |
+          | `labels` | Custom labels for all GCP resources | `{}` |
         </Tab>
 
         <Tab title="Azure">
-          | Option                  | Description                                          | Default       |
-          | ----------------------- | ---------------------------------------------------- | ------------- |
-          | `subscription-id`       | Azure subscription ID                                | -             |
-          | `pinecone-version`      | Pinecone release version                             | -             |
-          | `region`                | Azure region                                         | `eastus`      |
-          | `availability-zones`    | Zones for high availability                          | `["1", "2"]`  |
-          | `vpc-cidr`              | VNet IP range                                        | `10.0.0.0/16` |
-          | `deletion-protection`   | Protect storage accounts from accidental deletion    | `true`        |
-          | `public-access-enabled` | Enable public endpoint (`false` = Private Link only) | `true`        |
-          | `tags`                  | Custom tags for all Azure resources                  | `{}`          |
+          | Option | Description | Default |
+          | - | - | - |
+          | `subscription-id` | Azure subscription ID | - |
+          | `pinecone-version` | Pinecone release version | - |
+          | `region` | Azure region | `eastus` |
+          | `availability-zones` | Zones for high availability | `["1", "2"]` |
+          | `vpc-cidr` | VNet IP range | `10.0.0.0/16` |
+          | `deletion-protection` | Protect storage accounts from accidental deletion | `true` |
+          | `public-access-enabled` | Enable public endpoint (`false` = Private Link only) | `true` |
+          | `tags` | Custom tags for all Azure resources | `{}` |
         </Tab>
       </Tabs>
 
@@ -209,17 +209,17 @@ To deploy BYOC, follow these steps:
     <Accordion title="Infrastructure provisioned">
       The deployment creates the following resources in your cloud account:
 
-      | Component            | AWS                                                             | GCP                                                 | Azure                                            |
-      | -------------------- | --------------------------------------------------------------- | --------------------------------------------------- | ------------------------------------------------ |
-      | **VPC / Networking** | VPC, public and private subnets, NAT gateways, internet gateway | VPC network, subnets, Cloud NAT, Cloud Router       | VNet, subnets, NAT gateway                       |
-      | **Kubernetes**       | EKS cluster with managed node groups                            | GKE cluster with node pools                         | AKS cluster with agent pools                     |
-      | **Object storage**   | S3 buckets (data, WAL, backups)                                 | GCS buckets (data, WAL, backups)                    | Blob Storage containers (data, WAL, backups)     |
-      | **Block storage**    | EBS volumes                                                     | Persistent Disk                                     | Managed Disks                                    |
-      | **Metadata store**   | FoundationDB (in-cluster)                                       | FoundationDB (in-cluster)                           | FoundationDB (in-cluster)                        |
-      | **Load balancing**   | Network Load Balancer                                           | Internal load balancer with Private Service Connect | Internal load balancer with Private Link Service |
-      | **DNS**              | Route 53 hosted zone                                            | Cloud DNS managed zone                              | Azure DNS zone                                   |
-      | **TLS certificates** | AWS Certificate Manager                                         | cert-manager                                        | cert-manager                                     |
-      | **IAM**              | IAM roles and policies                                          | Service accounts and Workload Identity              | Managed identities and Workload Identity         |
+      | Component | AWS | GCP | Azure |
+      | - | - | - | - |
+      | **VPC / Networking** | VPC, public and private subnets, NAT gateways, internet gateway | VPC network, subnets, Cloud NAT, Cloud Router | VNet, subnets, NAT gateway |
+      | **Kubernetes** | EKS cluster with managed node groups | GKE cluster with node pools | AKS cluster with agent pools |
+      | **Object storage** | S3 buckets (data, WAL, backups) | GCS buckets (data, WAL, backups) | Blob Storage containers (data, WAL, backups) |
+      | **Block storage** | EBS volumes | Persistent Disk | Managed Disks |
+      | **Metadata store** | FoundationDB (in-cluster) | FoundationDB (in-cluster) | FoundationDB (in-cluster) |
+      | **Load balancing** | Network Load Balancer | Internal load balancer with Private Service Connect | Internal load balancer with Private Link Service |
+      | **DNS** | Route 53 hosted zone | Cloud DNS managed zone | Azure DNS zone |
+      | **TLS certificates** | AWS Certificate Manager | cert-manager | cert-manager |
+      | **IAM** | IAM roles and policies | Service accounts and Workload Identity | Managed identities and Workload Identity |
 
       The initial deployment provisions 3 Kubernetes nodes. After setup, the cluster autoscales based on the services Pinecone deploys and your workload.
     </Accordion>
@@ -531,16 +531,16 @@ Common issues and how to resolve them:
   <Accordion title="Preflight check failures">
     The setup wizard validates cloud quotas before deployment. If checks fail:
 
-    | Check                                | Resolution                                                                                                                                                                                             |
-    | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | VPC / network quota                  | Request a limit increase via your cloud provider's quota console                                                                                                                                       |
-    | Kubernetes cluster quota             | Request an EKS, GKE, or AKS cluster limit increase                                                                                                                                                     |
-    | IP address quota                     | Release unused IPs or request a limit increase                                                                                                                                                         |
-    | Instance / machine type availability | Verify the required type is available in your region                                                                                                                                                   |
-    | vCPU quota (Azure)                   | Request a "Total Regional vCPUs" increase via the Azure Portal (minimum 8 required)                                                                                                                    |
-    | VM SKU availability (Azure)          | Verify `Standard_D4s_v5` and L-series SKUs are available in your region                                                                                                                                |
-    | Resource providers (Azure)           | Register required providers: `Microsoft.Compute`, `Microsoft.ContainerService`, `Microsoft.Storage`, `Microsoft.Network`, `Microsoft.KeyVault`, `Microsoft.ManagedIdentity`, `Microsoft.Authorization` |
-    | Required APIs (GCP only)             | Enable Compute Engine, GKE, Cloud Storage, and Cloud DNS                                                                                                                                               |
+    | Check | Resolution |
+    | - | - |
+    | VPC / network quota | Request a limit increase via your cloud provider's quota console |
+    | Kubernetes cluster quota | Request an EKS, GKE, or AKS cluster limit increase |
+    | IP address quota | Release unused IPs or request a limit increase |
+    | Instance / machine type availability | Verify the required type is available in your region |
+    | vCPU quota (Azure) | Request a "Total Regional vCPUs" increase via the Azure Portal (minimum 8 required) |
+    | VM SKU availability (Azure) | Verify `Standard_D4s_v5` and L-series SKUs are available in your region |
+    | Resource providers (Azure) | Register required providers: `Microsoft.Compute`, `Microsoft.ContainerService`, `Microsoft.Storage`, `Microsoft.Network`, `Microsoft.KeyVault`, `Microsoft.ManagedIdentity`, `Microsoft.Authorization` |
+    | Required APIs (GCP only) | Enable Compute Engine, GKE, Cloud Storage, and Cloud DNS |
   </Accordion>
 
   <Accordion title="Deployment failures">
@@ -661,11 +661,11 @@ Your Pinecone bill for a BYOC environment has two parts: a flat platform fee and
 Pinecone bill = platform fee + (node rate × number of nodes)
 ```
 
-| Term                | Description                                                                                                                                                                                                                                                                 |
-| :------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Platform fee**    | Flat monthly fee for each BYOC environment. Covers the always-on Pinecone components that serve writes and control operations, plus support.                                                                                                                                |
-| **Node rate**       | Monthly rate for each [dedicated read node](/guides/index-data/dedicated-read-nodes/concepts#node-types) running in your cluster, metered in node hours. The rate varies by node type (`b1` or `t1`). Unlike the standard service, it's the same in every cloud and region. |
-| **Number of nodes** | Sum of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) × [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) across every index in the environment, counted separately for each node type.                                              |
+| Term | Description |
+| :- | :- |
+| **Platform fee** | Flat monthly fee for each BYOC environment. Covers the always-on Pinecone components that serve writes and control operations, plus support. |
+| **Node rate** | Monthly rate for each [dedicated read node](/guides/index-data/dedicated-read-nodes/concepts#node-types) running in your cluster, metered in node hours. The rate varies by node type (`b1` or `t1`). Unlike the standard service, it's the same in every cloud and region. |
+| **Number of nodes** | Sum of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) × [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) across every index in the environment, counted separately for each node type. |
 
 If an environment runs both `b1` and `t1` nodes, calculate the node cost for each type and add the results.
 

@@ -36,12 +36,12 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
   <Step title="Migrate the index">
     Call [Configure an index](/reference/api/2025-10/control-plane/configure_index). In the request body, in the `spec.serverless.read_capacity` object, set the following fields:
 
-    | Field                       | Value                                                                                                 | Notes                                                                                              |
-    | :-------------------------- | :---------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-    | `mode`                      | `Dedicated`                                                                                           |                                                                                                    |
-    | `dedicated.node_type`       | `b1` or `t1`                                                                                          | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types)                      |
-    | `dedicated.scaling`         | `Manual`                                                                                              | The only supported value                                                                           |
-    | `dedicated.manual.shards`   | Number of [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) needed     | Minimum 1 shard; each shard provides 250 GB of storage                                             |
+    | Field | Value | Notes |
+    | :- | :- | :- |
+    | `mode` | `Dedicated` | |
+    | `dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
+    | `dedicated.scaling` | `Manual` | The only supported value |
+    | `dedicated.manual.shards` | Number of [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) needed | Minimum 1 shard; each shard provides 250 GB of storage |
     | `dedicated.manual.replicas` | Number of [replicas](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-replicas) needed | Minimum 0 (this [pauses](/guides/index-data/dedicated-read-nodes/manage#pause-an-index) the index) |
 
     This example migrates an index to dedicated read nodes using `b1` nodes, one shard, and one replica:
@@ -137,10 +137,10 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
 
     The response includes two status fields:
 
-    | Field                                            | Description                                                                |
-    | :----------------------------------------------- | :------------------------------------------------------------------------- |
-    | **`status.state`**                               | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-    | **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`)            |
+    | Field | Description |
+    | :- | :- |
+    | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
+    | **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
     <Warning>
       If `status.state` is set to `Error`, the allocated number of shards was insufficient for the size of the index. Try again, adding more shards as needed.

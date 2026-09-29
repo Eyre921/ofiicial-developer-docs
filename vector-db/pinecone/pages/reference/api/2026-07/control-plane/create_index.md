@@ -27,16 +27,16 @@ Creates a new schema-defined index. The schema declares each field and its type 
 
 For managed (serverless) indexes, the `cloud` and `region` fields in `deployment` accept the following values:
 
-| Cloud   | Region                       | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
-| ------- | ---------------------------- | --------------------------------------------------- | --------------------------------------------------------- |
-| `aws`   | `us-east-1` (Virginia)       | Starter, Builder, Standard, Enterprise              | General availability                                      |
-| `aws`   | `us-west-2` (Oregon)         | Builder, Standard, Enterprise                       | General availability                                      |
-| `aws`   | `eu-west-1` (Ireland)        | Builder, Standard, Enterprise                       | General availability                                      |
-| `aws`   | `eu-central-1` (Frankfurt)   | Builder, Standard, Enterprise                       | General availability                                      |
-| `aws`   | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise                       | General availability                                      |
-| `gcp`   | `us-central1` (Iowa)         | Builder, Standard, Enterprise                       | General availability                                      |
-| `gcp`   | `europe-west4` (Netherlands) | Builder, Standard, Enterprise                       | General availability                                      |
-| `azure` | `eastus2` (Virginia)         | Builder, Standard, Enterprise                       | General availability                                      |
+| Cloud | Region | [Supported plans](https://www.pinecone.io/pricing/) | [Availability phase](/release-notes/feature-availability) |
+| - | - | - | - |
+| `aws` | `us-east-1` (Virginia) | Starter, Builder, Standard, Enterprise | General availability |
+| `aws` | `us-west-2` (Oregon) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-west-1` (Ireland) | Builder, Standard, Enterprise | General availability |
+| `aws` | `eu-central-1` (Frankfurt) | Builder, Standard, Enterprise | General availability |
+| `aws` | `ap-southeast-1` (Singapore) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `us-central1` (Iowa) | Builder, Standard, Enterprise | General availability |
+| `gcp` | `europe-west4` (Netherlands) | Builder, Standard, Enterprise | General availability |
+| `azure` | `eastus2` (Virginia) | Builder, Standard, Enterprise | General availability |
 
 The cloud and region can't be changed after a serverless index is created.
 

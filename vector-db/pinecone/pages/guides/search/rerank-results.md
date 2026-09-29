@@ -1224,10 +1224,10 @@ The following reranking models are hosted by Pinecone.
 
     The `cohere-rerank-4-fast` model supports the following parameters:
 
-    | Parameter            | Type             | Required/Optional | Description                                                                        | Default    |
-    | :------------------- | :--------------- | :---------------- | :--------------------------------------------------------------------------------- | :--------- |
-    | `max_tokens_per_doc` | integer          | Optional          | Documents longer than this are truncated. Max `4096`.                              | `1024`     |
-    | `rank_fields`        | array of strings | Optional          | The fields to use for reranking, in priority order (e.g., `["field1", "field2"]`). | `["text"]` |
+    | Parameter | Type | Required/Optional | Description | Default |
+    | :- | :- | :- | :- | :- |
+    | `max_tokens_per_doc` | integer | Optional | Documents longer than this are truncated. Max `4096`. | `1024` |
+    | `rank_fields` | array of strings | Optional | The fields to use for reranking, in priority order (e.g., `["field1", "field2"]`). | `["text"]` |
   </Accordion>
 
   <Accordion title="cohere-rerank-3.5">
@@ -1251,10 +1251,10 @@ The following reranking models are hosted by Pinecone.
 
     The `cohere-rerank-3.5` model supports the following parameters:
 
-    | Parameter            | Type             | Required/Optional | Description                                                                                                                             |            |
-    | :------------------- | :--------------- | :---------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-    | `max_chunks_per_doc` | integer          | Optional          | Long documents will be automatically truncated to the specified number of chunks. Accepted range: `1 - 3072`.                           |            |
-    | `rank_fields`        | array of strings | Optional          | The fields to use for reranking. The model reranks based on the order of the fields specified (e.g., `["field1", "field2", "field3"]`). | `["text"]` |
+    | Parameter | Type | Required/Optional | Description | |
+    | :- | :- | :- | :- | - |
+    | `max_chunks_per_doc` | integer | Optional | Long documents will be automatically truncated to the specified number of chunks. Accepted range: `1 - 3072`. | |
+    | `rank_fields` | array of strings | Optional | The fields to use for reranking. The model reranks based on the order of the fields specified (e.g., `["field1", "field2", "field3"]`). | `["text"]` |
   </Accordion>
 
   <Accordion title="bge-reranker-v2-m3">
@@ -1272,10 +1272,10 @@ The following reranking models are hosted by Pinecone.
 
     The `bge-reranker-v2-m3` model supports the following parameters:
 
-    | Parameter     | Type             | Required/Optional | Description                                                                                                                                                                                                                                    | Default    |
-    | :------------ | :--------------- | :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
-    | `truncate`    | string           | Optional          | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `NONE`     |
-    | `rank_fields` | array of strings | Optional          | The field to use for reranking. The model supports only a single rerank field.                                                                                                                                                                 | `["text"]` |
+    | Parameter | Type | Required/Optional | Description | Default |
+    | :- | :- | :- | :- | :- |
+    | `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `NONE` |
+    | `rank_fields` | array of strings | Optional | The field to use for reranking. The model supports only a single rerank field. | `["text"]` |
   </Accordion>
 
   <Accordion title="pinecone-rerank-v0">
@@ -1295,9 +1295,9 @@ The following reranking models are hosted by Pinecone.
 
     The `pinecone-rerank-v0` model supports the following parameters:
 
-    | Parameter     | Type             | Required/Optional | Description                                                                                                                                                                                                                                    | Default    |
-    | :------------ | :--------------- | :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
-    | `truncate`    | string           | Optional          | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END`      |
-    | `rank_fields` | array of strings | Optional          | The field to use for reranking. The model supports only a single rerank field.                                                                                                                                                                 | `["text"]` |
+    | Parameter | Type | Required/Optional | Description | Default |
+    | :- | :- | :- | :- | :- |
+    | `truncate` | string | Optional | How to handle inputs longer than those supported by the model. Accepted values: `END` or `NONE`.<br /><br />`END` truncates the input sequence at the input token limit. `NONE` returns an error when the input exceeds the input token limit. | `END` |
+    | `rank_fields` | array of strings | Optional | The field to use for reranking. The model supports only a single rerank field. | `["text"]` |
   </Accordion>
 </AccordionGroup>

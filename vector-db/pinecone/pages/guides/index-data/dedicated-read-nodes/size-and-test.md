@@ -42,12 +42,12 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       These examples assume 8-byte IDs:
 
-      | Records    | Dense vector dimensions | Avg metadata size | Index size |
-      | :--------- | :---------------------- | :---------------- | :--------- |
-      | 500,000    | 768                     | 500 bytes         | 1.79 GB    |
-      | 1,000,000  | 1536                    | 1,000 bytes       | 7.15 GB    |
-      | 5,000,000  | 1024                    | 15,000 bytes      | 95.5 GB    |
-      | 10,000,000 | 1536                    | 1,000 bytes       | 71.5 GB    |
+      | Records | Dense vector dimensions | Avg metadata size | Index size |
+      | :- | :- | :- | :- |
+      | 500,000 | 768 | 500 bytes | 1.79 GB |
+      | 1,000,000 | 1536 | 1,000 bytes | 7.15 GB |
+      | 5,000,000 | 1024 | 15,000 bytes | 95.5 GB |
+      | 10,000,000 | 1536 | 1,000 bytes | 71.5 GB |
 
       <Note>
         Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + 500 bytes of metadata) = 1.79 GB
@@ -76,12 +76,12 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       These examples assume 8-byte IDs:
 
-      | Records    | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :--------- | :----------------------------------- | :---------------- | :--------- |
-      | 500,000    | 10                                   | 500 bytes         | 0.29 GB    |
-      | 1,000,000  | 50                                   | 1,000 bytes       | 1.41 GB    |
-      | 5,000,000  | 100                                  | 15,000 bytes      | 79.0 GB    |
-      | 10,000,000 | 50                                   | 1,000 bytes       | 14.1 GB    |
+      | Records | Avg number of non-zero sparse values | Avg metadata size | Index size |
+      | :- | :- | :- | :- |
+      | 500,000 | 10 | 500 bytes | 0.29 GB |
+      | 1,000,000 | 50 | 1,000 bytes | 1.41 GB |
+      | 5,000,000 | 100 | 15,000 bytes | 79.0 GB |
+      | 10,000,000 | 50 | 1,000 bytes | 14.1 GB |
 
       <Note>
         Example: 500,000 records × (8-byte ID + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 0.29 GB
@@ -112,12 +112,12 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       These examples assume 8-byte IDs:
 
-      | Records    | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :--------- | :---------------------- | :----------------------------------- | :---------------- | :--------- |
-      | 500,000    | 768                     | 10                                   | 500 bytes         | 1.83 GB    |
-      | 1,000,000  | 1536                    | 50                                   | 1,000 bytes       | 7.54 GB    |
-      | 5,000,000  | 1024                    | 100                                  | 15,000 bytes      | 99.5 GB    |
-      | 10,000,000 | 1536                    | 50                                   | 1,000 bytes       | 75.4 GB    |
+      | Records | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+      | :- | :- | :- | :- | :- |
+      | 500,000 | 768 | 10 | 500 bytes | 1.83 GB |
+      | 1,000,000 | 1536 | 50 | 1,000 bytes | 7.54 GB |
+      | 5,000,000 | 1024 | 100 | 15,000 bytes | 99.5 GB |
+      | 10,000,000 | 1536 | 50 | 1,000 bytes | 75.4 GB |
 
       <Note>
         Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 1.83 GB
@@ -138,11 +138,11 @@ To maintain optimal performance, provision additional shards to keep your index 
 
 #### Example shard calculations
 
-| Index size | Minimum shards       | Recommended shards   |
-| :--------- | :------------------- | :------------------- |
-| \~71 GB    | 1 (250 GB; 28% full) | 1 (250 GB; 28% full) |
-| \~300 GB   | 2 (500 GB; 60% full) | 2 (500 GB; 60% full) |
-| \~400 GB   | 2 (500 GB; 80% full) | 3 (750 GB; 53% full) |
+| Index size | Minimum shards | Recommended shards |
+| :- | :- | :- |
+| \~71 GB | 1 (250 GB; 28% full) | 1 (250 GB; 28% full) |
+| \~300 GB | 2 (500 GB; 60% full) | 2 (500 GB; 60% full) |
+| \~400 GB | 2 (500 GB; 80% full) | 3 (750 GB; 53% full) |
 
 #### Other considerations
 

@@ -102,11 +102,11 @@ By default, [adding pages to a data source](/guides/data-apis/working-with-datab
 
 In the [Create a page](/reference/post-page) API, this corresponds to the `template[type] = "none"` parameter. The two other options for `type` allow you to start taking advantage of the power of templates at page creation time:
 
-| `template[type]`    | `template[template_id]` | `template[timezone]` | Behavior                                                                                                                                                                                                                                                                                                            |
-| :------------------ | :---------------------- | :------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `none` (or omitted) | N/A                     | N/A                  | No template. Provided children and properties are immediately applied.                                                                                                                                                                                                                                              |
-| `default`           | N/A                     | *(optional)*         | Applies the data source's default template to the newly created page. `children` cannot be specified in the create page request.                                                                                                                                                                                    |
-| `template_id`       | *(ID of a template)*    | *(optional)*         | Use an ID from the response of [List data source templates](/reference/list-data-source-templates), or copied from a URL, as the `template_id`. Indicates which exact template to apply to the newly created page. ID can be with or without dashes (-). `children` cannot be specified in the create page request. |
+| `template[type]` | `template[template_id]` | `template[timezone]` | Behavior |
+| :- | :- | :- | :- |
+| `none` (or omitted) | N/A | N/A | No template. Provided children and properties are immediately applied. |
+| `default` | N/A | *(optional)* | Applies the data source's default template to the newly created page. `children` cannot be specified in the create page request. |
+| `template_id` | *(ID of a template)* | *(optional)* | Use an ID from the response of [List data source templates](/reference/list-data-source-templates), or copied from a URL, as the `template_id`. Indicates which exact template to apply to the newly created page. ID can be with or without dashes (-). `children` cannot be specified in the create page request. |
 
 When using a template — either the `default` template or a specific `template_id` — the Create Page API request returns immediately with a [Page](/reference/page) object representing a blank page, aside from any initial `properties` (for example, the `title`) set on it. Store the ID of this page in your backend systems if you need it for Step 3 below.
 

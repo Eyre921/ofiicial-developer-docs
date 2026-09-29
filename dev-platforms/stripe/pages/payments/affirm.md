@@ -359,7 +359,9 @@ Checkout UIs:
   ✓ Full page (Recommended)
   ✓ Payment Links
   ✓ Embedded form
+  ✓ Payment Element
   ✗ Express Checkout Element
+  ✓ Payment Method Messaging Element
   ✗ In-app payments
 
 Products:
@@ -377,6 +379,7 @@ APIs:
   ✓ Payment Intents
   ✗ Payment Intents with setup_future_usage
   ✗ Setup Intents
+  ✗ Off-session payments
 ### Affirm branding 
 
 Use the [Payment Method Messaging Element](https://docs.stripe.com/elements/payment-method-messaging.md) on your site to let customers know that you offer Affirm ahead of checkout. You must comply with Affirm’s [marketing compliance guides](https://docs.affirm.com/developers/docs/compliance_and_guidelines) and use the Affirm [guide](https://businesshub.affirm.com/hc/en-us/articles/10653174159636-Affirm-Marketing-Compliance-Guides) that relates to the Affirm payment options you offer your customers.

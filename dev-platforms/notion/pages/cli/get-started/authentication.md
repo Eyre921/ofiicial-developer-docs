@@ -98,13 +98,13 @@ To make it permanent, set `"keyring": false` in `config.json`. The env var alway
 
 ## Environment variables
 
-| Variable              | Purpose                                                                                              |
-| :-------------------- | :--------------------------------------------------------------------------------------------------- |
-| `NOTION_API_TOKEN`    | When this is set, it'll take precedence over `ntn login`'s keychain entry. Handy for scripts and CI. |
-| `NOTION_WORKSPACE_ID` | Override the default workspace for a single command.                                                 |
-| `NOTION_KEYRING`      | Set to `0` to use file-based storage instead of the OS keychain.                                     |
-| `NOTION_HOME`         | Override the config directory.                                                                       |
-| `NOTION_ENV`          | Same as `--env`. Rarely needed.                                                                      |
+| Variable | Purpose |
+| :- | :- |
+| `NOTION_API_TOKEN` | When this is set, it'll take precedence over `ntn login`'s keychain entry. Handy for scripts and CI. |
+| `NOTION_WORKSPACE_ID` | Override the default workspace for a single command. |
+| `NOTION_KEYRING` | Set to `0` to use file-based storage instead of the OS keychain. |
+| `NOTION_HOME` | Override the config directory. |
+| `NOTION_ENV` | Same as `--env`. Rarely needed. |
 
 Run `ntn login --help` for the full list.
 

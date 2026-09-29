@@ -11,11 +11,11 @@ Returns a [comment object](/reference/comment-object) for the created comment.
 
 Choose exactly one target for the new comment:
 
-| Target                     | Body parameter    | Use when                                                                                      |
-| -------------------------- | ----------------- | --------------------------------------------------------------------------------------------- |
-| Page                       | `parent.page_id`  | Creating a comment on a page.                                                                 |
-| Block                      | `parent.block_id` | Creating a comment attached to a specific block, such as a paragraph, heading, or to-do item. |
-| Existing discussion thread | `discussion_id`   | Replying to an existing page, block, or selected-text discussion.                             |
+| Target | Body parameter | Use when |
+| - | - | - |
+| Page | `parent.page_id` | Creating a comment on a page. |
+| Block | `parent.block_id` | Creating a comment attached to a specific block, such as a paragraph, heading, or to-do item. |
+| Existing discussion thread | `discussion_id` | Replying to an existing page, block, or selected-text discussion. |
 
 The request body will differ slightly depending on which target is being used.
 

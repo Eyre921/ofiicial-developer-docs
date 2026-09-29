@@ -21,7 +21,7 @@ A plugin directory includes at most 100 skills; when a plugin has more, the most
 
 ## Errors
 
-| Status | Code                  | Cause                                                                             |
-| :----- | :-------------------- | :-------------------------------------------------------------------------------- |
-| 404    | `directory_not_found` | No plugin with that ID is shared with the connection, or the ID no longer exists. |
-| 403    | `restricted_resource` | The token lacks the **Read content** capability.                                  |
+| Status | Code | Cause |
+| :- | :- | :- |
+| 404 | `directory_not_found` | No plugin with that ID is shared with the connection, or the ID no longer exists. |
+| 403 | `restricted_resource` | The token lacks the **Read content** capability. |

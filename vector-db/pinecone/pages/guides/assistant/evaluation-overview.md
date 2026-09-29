@@ -24,11 +24,11 @@ You can [evaluate responses](/reference/api/latest/assistant/metrics_alignment) 
 
 The request body requires the following fields:
 
-| Field                 | Description                                           |
-| --------------------- | ----------------------------------------------------- |
-| `question`            | The question asked to the RAG system.                 |
-| `answer`              | The answer provided by the assistant being evaluated. |
-| `ground_truth_answer` | The expected answer.                                  |
+| Field | Description |
+| - | - |
+| `question` | The question asked to the RAG system. |
+| `answer` | The answer provided by the assistant being evaluated. |
+| `ground_truth_answer` | The expected answer. |
 
 For example:
 
@@ -46,11 +46,11 @@ For example:
 
 Calculated scores between `0` to `1` are returned for the following metrics:
 
-| Metric         | Description                                                                  |
-| -------------- | ---------------------------------------------------------------------------- |
-| `correctness`  | Correctness of the RAG system's answer compared to the ground truth answer.  |
+| Metric | Description |
+| - | - |
+| `correctness` | Correctness of the RAG system's answer compared to the ground truth answer. |
 | `completeness` | Completeness of the RAG system's answer compared to the ground truth answer. |
-| `alignment`    | A combined score of the correctness and completeness scores.                 |
+| `alignment` | A combined score of the correctness and completeness scores. |
 
 ```json theme={null}
 {
@@ -68,11 +68,11 @@ Calculated scores between `0` to `1` are returned for the following metrics:
 
 The response includes explanations for the reasoning behind each metric's score. This includes a list of evaluated facts with their entailment status:
 
-| Status         | Description                                                                |
-| -------------- | -------------------------------------------------------------------------- |
-| `entailed`     | The fact is supported by the ground truth answer.                          |
-| `contradicted` | The fact contradicts the ground truth answer.                              |
-| `neutral`      | The fact is neither supported nor contradicted by the ground truth answer. |
+| Status | Description |
+| - | - |
+| `entailed` | The fact is supported by the ground truth answer. |
+| `contradicted` | The fact contradicts the ground truth answer. |
+| `neutral` | The fact is neither supported nor contradicted by the ground truth answer. |
 
 ```json theme={null}
 ...

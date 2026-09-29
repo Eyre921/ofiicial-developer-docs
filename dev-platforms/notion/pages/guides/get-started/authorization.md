@@ -178,13 +178,13 @@ The following example shows an authorization URL made available through a hyperl
 
 The URL begins with `https://api.notion.com/v1/oauth/authorize` and has the following parameters:
 
-| Parameter       | Description                                                                                                                                                                         | Required |
-| :-------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `client_id`     | An identifier for your connection, found in the connection settings.                                                                                                                | ✅        |
-| `redirect_uri`  | The URL where the user should return after granting access.                                                                                                                         | ✅        |
-| `response_type` | Always use `code`.                                                                                                                                                                  | ✅        |
-| `owner`         | Always use `user`.                                                                                                                                                                  | ✅        |
-| `state`         | If the user was in the middle of an interaction or operation, then this parameter can be used to restore state after the user returns. It can also be used to prevent CSRF attacks. |          |
+| Parameter | Description | Required |
+| :- | :- | :- |
+| `client_id` | An identifier for your connection, found in the connection settings. | ✅ |
+| `redirect_uri` | The URL where the user should return after granting access. | ✅ |
+| `response_type` | Always use `code`. | ✅ |
+| `owner` | Always use `user`. | ✅ |
+| `state` | If the user was in the middle of an interaction or operation, then this parameter can be used to restore state after the user returns. It can also be used to prevent CSRF attacks. | |
 
 Once the authorization URL is visited, the user will be shown a prompt that varies depending on whether or not the connection comes with a Notion template option.
 
@@ -270,10 +270,10 @@ In some cases, Notion redirects the user to the `redirect_uri` that you set up w
 
 When you first created the public connection, you specified a redirect URI. If the user follows the prompt to `Allow access` for the connection, then Notion generates a temporary `code` and sends a request to the redirect URI with the following information in the query string:
 
-| Parameter | Description                                                                                                                                      | Required |
-| :-------- | :----------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `code`    | A temporary authorization code.                                                                                                                  | ✅        |
-| `state`   | The value provided by the connection when the user was [prompted for access](#prompt-for-a-standard-connection-with-no-template-option-default). |          |
+| Parameter | Description | Required |
+| :- | :- | :- |
+| `code` | A temporary authorization code. | ✅ |
+| `state` | The value provided by the connection when the user was [prompted for access](#prompt-for-a-standard-connection-with-no-template-option-default). | |
 
 To complete the next step, retrieve the `code` query parameter provided in the redirect. The retrieval method varies depending on your app’s tech stack.
 
@@ -311,11 +311,11 @@ Note that in [HTTP Basic Authentication](https://developer.mozilla.org/en-US/doc
 
 The body of the request contains the following JSON-encoded fields:
 
-| Field            | Type     | Description                                                                                | Required                                                                                                                                                                                                                                                                                                                           |
-| :--------------- | :------- | :----------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `"grant_type"`   | `string` | Always use `"authorization_code"`.                                                         | ✅                                                                                                                                                                                                                                                                                                                                  |
-| `"code"`         | `string` | The temporary authorization code received in the incoming request to the `"redirect_uri"`. | ✅                                                                                                                                                                                                                                                                                                                                  |
-| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step.                          | ✅/❌\* <br /><br /> \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
+| Field | Type | Description | Required |
+| :- | :- | :- | :- |
+| `"grant_type"` | `string` | Always use `"authorization_code"`. | ✅ |
+| `"code"` | `string` | The temporary authorization code received in the incoming request to the `"redirect_uri"`. | ✅ |
+| `"redirect_uri"` | `string` | The `"redirect_uri"` that was provided in the Authorization step. | ✅/❌\* <br /><br /> \* If the redirect URI was supplied as a query param in the Authorization URL, this field is required. If there are more than one redirect URIs included in your connection settings, this field is required. Otherwise, it is not allowed. Learn more in the [Create a token page](/reference/create-a-token). |
 
 The following is an example request to exchange the authorization code for an access token:
 
@@ -364,16 +364,16 @@ Notion responds to the request with an `access_token`, `refresh_token`, and addi
 
 The response contains the following JSON-encoded fields:
 
-| Field                      | Type     | Description                                                                                                                                                                                                                                   | Not null |
-| :------------------------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- |
-| `"access_token"`           | `string` | An access token used to authorize requests to the Notion API.                                                                                                                                                                                 | ✅        |
-| `"refresh_token"`          | `string` | A refresh token used to generate a new access token                                                                                                                                                                                           | ✅        |
-| `"bot_id"`                 | `string` | An identifier for this authorization.                                                                                                                                                                                                         | ✅        |
-| `"duplicated_template_id"` | `string` | The ID of the new page created in the user’s workspace. The new page is a duplicate of the template that the developer provided with the connection. If the developer didn’t provide a template for the connection, then the value is `null`. |          |
-| `"owner"`                  | `object` | An object containing information about who can view and share this connection. A [user object](/reference/user) is returned, representing the user who authorized the connection.                                                             | ✅        |
-| `"workspace_icon"`         | `string` | A URL to an image that can be used to display this authorization in the UI.                                                                                                                                                                   |          |
-| `"workspace_id"`           | `string` | The ID of the workspace where this authorization took place.                                                                                                                                                                                  | ✅        |
-| `"workspace_name"`         | `string` | A human-readable name that can be used to display this authorization in the UI.                                                                                                                                                               |          |
+| Field | Type | Description | Not null |
+| :- | :- | :- | :- |
+| `"access_token"` | `string` | An access token used to authorize requests to the Notion API. | ✅ |
+| `"refresh_token"` | `string` | A refresh token used to generate a new access token | ✅ |
+| `"bot_id"` | `string` | An identifier for this authorization. | ✅ |
+| `"duplicated_template_id"` | `string` | The ID of the new page created in the user’s workspace. The new page is a duplicate of the template that the developer provided with the connection. If the developer didn’t provide a template for the connection, then the value is `null`. | |
+| `"owner"` | `object` | An object containing information about who can view and share this connection. A [user object](/reference/user) is returned, representing the user who authorized the connection. | ✅ |
+| `"workspace_icon"` | `string` | A URL to an image that can be used to display this authorization in the UI. | |
+| `"workspace_id"` | `string` | The ID of the workspace where this authorization took place. | ✅ |
+| `"workspace_name"` | `string` | A human-readable name that can be used to display this authorization in the UI. | |
 
 **Token request failures**
 
@@ -409,10 +409,10 @@ Note that in [HTTP Basic Authentication](https://developer.mozilla.org/en-US/doc
 
 The body of the request contains the following JSON-encoded fields:
 
-| Field             | Type     | Description                                               | Required |
-| :---------------- | :------- | :-------------------------------------------------------- | :------- |
-| `"grant_type"`    | `string` | Always use `"refresh_token"`.                             | ✅        |
-| `"refresh_token"` | `string` | The `"refresh_token"` returned in the Authorization step. | ✅        |
+| Field | Type | Description | Required |
+| :- | :- | :- | :- |
+| `"grant_type"` | `string` | Always use `"refresh_token"`. | ✅ |
+| `"refresh_token"` | `string` | The `"refresh_token"` returned in the Authorization step. | ✅ |
 
 The following is an example request to exchange the `refresh_token` for a new access token and new refresh token
 

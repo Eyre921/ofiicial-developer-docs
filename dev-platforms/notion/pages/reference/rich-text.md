@@ -38,26 +38,26 @@ When blocks are retrieved from a page using the [Retrieve a block](/reference/re
 
 Each rich text object contains the following fields.
 
-| Field                             | Type                | Description                                                                                                                                           | Example value                                                         |
-| :-------------------------------- | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
-| `type`                            | `string` (enum)     | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`.                                                     | `"text"`                                                              |
-| `text` \| `mention` \| `equation` | `object`            | An object containing type-specific configuration.  <br /><br />Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples.       |
-| `annotations`                     | `object`            | The information used to style the rich text object. Refer to the annotation object section below for details.                                         | Refer to the annotation object section below for examples.            |
-| `plain_text`                      | `string`            | The plain text without annotations.                                                                                                                   | `"Some words "`                                                       |
-| `href`                            | `string` (optional) | The URL of any link or Notion mention in this text, if any.                                                                                           | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `type` | `string` (enum) | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`. | `"text"` |
+| `text` \| `mention` \| `equation` | `object` | An object containing type-specific configuration.  <br /><br />Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples. |
+| `annotations` | `object` | The information used to style the rich text object. Refer to the annotation object section below for details. | Refer to the annotation object section below for examples. |
+| `plain_text` | `string` | The plain text without annotations. | `"Some words "` |
+| `href` | `string` (optional) | The URL of any link or Notion mention in this text, if any. | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
 
 ## The annotation object
 
 All rich text objects contain an `annotations` object that sets the styling for the rich text. `annotations` includes the following fields:
 
-| Property        | Type            | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Example value |
-| :-------------- | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------ |
-| `bold`          | `boolean`       | Whether the text is **bolded**.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `true`        |
-| `italic`        | `boolean`       | Whether the text is *italicized*.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`        |
-| `strikethrough` | `boolean`       | Whether the text is struck through.                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | `false`       |
-| `underline`     | `boolean`       | Whether the text is underlined.                                                                                                                                                                                                                                                                                                                                                                                                                                                                         | `false`       |
-| `code`          | `boolean`       | Whether the text is `code style`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | `true`        |
-| `color`         | `string` (enum) | Color of the text. Possible values include: <br /><br />- `"blue"` <br />- `"blue_background"` <br />- `"brown"` <br />- `"brown_background"` <br />- `"default"` <br />- `"gray"` <br />- `"gray_background"` <br />- `"green"` <br />- `"green_background"` <br />- `"orange"` <br />-`"orange_background"` <br />- `"pink"` <br />- `"pink_background"` <br />- `"purple"` <br />- `"purple_background"` <br />- `"red"` <br />- `"red_background”` <br />- `"yellow"` <br />- `"yellow_background"` | `"green"`     |
+| Property | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `bold` | `boolean` | Whether the text is **bolded**. | `true` |
+| `italic` | `boolean` | Whether the text is *italicized*. | `true` |
+| `strikethrough` | `boolean` | Whether the text is struck through. | `false` |
+| `underline` | `boolean` | Whether the text is underlined. | `false` |
+| `code` | `boolean` | Whether the text is `code style`. | `true` |
+| `color` | `string` (enum) | Color of the text. Possible values include: <br /><br />- `"blue"` <br />- `"blue_background"` <br />- `"brown"` <br />- `"brown_background"` <br />- `"default"` <br />- `"gray"` <br />- `"gray_background"` <br />- `"green"` <br />- `"green_background"` <br />- `"orange"` <br />-`"orange_background"` <br />- `"pink"` <br />- `"pink_background"` <br />- `"purple"` <br />- `"purple_background"` <br />- `"red"` <br />- `"red_background”` <br />- `"yellow"` <br />- `"yellow_background"` | `"green"` |
 
 ## Rich text type objects
 
@@ -65,8 +65,8 @@ All rich text objects contain an `annotations` object that sets the styling for 
 
 Notion supports inline LaTeX equations as rich text object’s with a type value of `"equation"`. The corresponding equation type object contains the following:
 
-| Field        | Type     | Description                                        | Example value                                  |
-| ------------ | -------- | -------------------------------------------------- | ---------------------------------------------- |
+| Field | Type | Description | Example value |
+| - | - | - | - |
 | `expression` | `string` | The LaTeX string representing the inline equation. | `"\frac{{ - b \pm \sqrt {b^2 - 4ac} }}{{2a}}"` |
 
 #### Example rich text `equation` object
@@ -98,10 +98,10 @@ Mention objects represent an inline mention of a database, date, link preview me
 
 If a rich text object’s `type` value is `"mention"`, then the corresponding `mention` object contains the following:
 
-| Field                                                                            | Type            | Description                                                                                                                                                                                  | Example value                                                       |
-| :------------------------------------------------------------------------------- | :-------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------ |
-| `type`                                                                           | `string` (enum) | The type of the inline mention. Possible values include: <br /><br />- `"database"` <br />- `"date"` <br />- `"link_preview"` <br />- `"page"` <br />- `"template_mention"` <br />- `"user"` | `"user"`                                                            |
-| `database` \| `date` \| `link_preview` \| `page` \| `template_mention` \| `user` | `object`        | An object containing type-specific configuration. Refer to the mention type object sections below for details.                                                                               | Refer to the mention type object sections below for example values. |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `type` | `string` (enum) | The type of the inline mention. Possible values include: <br /><br />- `"database"` <br />- `"date"` <br />- `"link_preview"` <br />- `"page"` <br />- `"template_mention"` <br />- `"user"` | `"user"` |
+| `database` \| `date` \| `link_preview` \| `page` \| `template_mention` \| `user` | `object` | An object containing type-specific configuration. Refer to the mention type object sections below for details. | Refer to the mention type object sections below for example values. |
 
 #### Database mention type object
 
@@ -236,9 +236,9 @@ Template mention rich text objects contain a `template_mention` object with a ne
 
 If the `type` key is `"template_mention_date"`, then the rich text object contains the following `template_mention_date` field:
 
-| Field                   | Type            | Description                                                                   | Example value |
-| :---------------------- | :-------------- | :---------------------------------------------------------------------------- | :------------ |
-| `template_mention_date` | `string` (enum) | The type of the date mention. Possible values include: `"today"` and `"now"`. | `"today"`     |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `template_mention_date` | `string` (enum) | The type of the date mention. Possible values include: `"today"` and `"now"`. | `"today"` |
 
 *Example rich text `mention` object for a `template_mention_date` mention*
 
@@ -269,9 +269,9 @@ If the `type` key is `"template_mention_date"`, then the rich text object contai
 
 If the type key is `"template_mention_user"`, then the rich text object contains the following `template_mention_user` field:
 
-| Field                   | Type            | Description                                                      | Example value |
-| :---------------------- | :-------------- | :--------------------------------------------------------------- | :------------ |
-| `template_mention_user` | `string` (enum) | The type of the user mention. The only possible value is `"me"`. | `"me"`        |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `template_mention_user` | `string` (enum) | The type of the user mention. The only possible value is `"me"`. | `"me"` |
 
 *Example rich text `mention` object for a `template_mention_user` mention*
 
@@ -339,10 +339,10 @@ If a rich text object’s `type` value is `"user"`, then the corresponding user 
 
 If a rich text object’s `type` value is `"text"`, then the corresponding `text` field contains an object including the following:
 
-| Field     | Type                | Description                                                                                                                                                                                                                                                                               | Example value                                 |
-| :-------- | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------- |
-| `content` | `string`            | The actual text content of the text.                                                                                                                                                                                                                                                      | `"Some words "`                               |
-| `link`    | `object` (optional) | An object with information about any inline link in this text, if included. <br /><br />If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address. <br /><br />If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `content` | `string` | The actual text content of the text. | `"Some words "` |
+| `link` | `object` (optional) | An object with information about any inline link in this text, if included. <br /><br />If the text contains an inline link, then the object key is `url` and the value is the URL’s string web address. <br /><br />If the text doesn’t have any inline links, then the value is `null`. | `{ "url": "https://developers.notion.com/" }` |
 
 #### Example rich text `text` object without link
 

@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 28, 2026">
+  ### Higher Notion MCP search and query limits
+
+  Notion MCP now allows 20 search calls and 20 data source query calls per connection every 10 seconds. Rate-limit tool errors also include their structured JSON in the text response for clients that read only text. See [Supported tools](/guides/mcp/mcp-supported-tools#rate-limits).
+</Update>
+
 <Update label="September 25, 2026">
   ### Custom emoji icons are validated
 

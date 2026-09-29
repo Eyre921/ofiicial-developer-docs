@@ -168,13 +168,13 @@ worker.oauth("githubAuth", {
 
 ## Command summary
 
-| Command                         | What it does                                            |
-| :------------------------------ | :------------------------------------------------------ |
-| `ntn workers env set KEY=value` | Stores or replaces one or more secrets                  |
-| `ntn workers env list`          | Lists secret keys without revealing values              |
-| `ntn workers env unset KEY`     | Removes a secret                                        |
-| `ntn workers env pull`          | Writes remote secrets to a local `.env` file            |
-| `ntn workers env push`          | Adds or updates remote secrets from a local `.env` file |
+| Command | What it does |
+| :- | :- |
+| `ntn workers env set KEY=value` | Stores or replaces one or more secrets |
+| `ntn workers env list` | Lists secret keys without revealing values |
+| `ntn workers env unset KEY` | Removes a secret |
+| `ntn workers env pull` | Writes remote secrets to a local `.env` file |
+| `ntn workers env push` | Adds or updates remote secrets from a local `.env` file |
 
 See the [CLI command reference](/cli/reference/commands) for all `ntn workers env` flags and options.
 

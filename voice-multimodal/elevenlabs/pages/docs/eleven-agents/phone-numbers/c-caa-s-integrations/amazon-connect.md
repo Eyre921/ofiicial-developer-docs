@@ -191,7 +191,7 @@ aws secretsmanager put-resource-policy --secret-id "$SECRET_ARN" \
 ```
 
 ![Secrets Manager secret encrypted with the customer-managed key and its resource policy for
-connect.amazonaws.com](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fc91a773575a547f3ac6d3a24d14cffac4535227057e4e8e4eb3ccfc71f27a0/assets/images/agents/amazon-connect-secret.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=5f81843952056a4647730417c3ad097b1cfc8f6ef4669b58e9f735c69f5c7ff7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+connect.amazonaws.com](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fc91a773575a547f3ac6d3a24d14cffac4535227057e4e8e4eb3ccfc71f27a0/assets/images/agents/amazon-connect-secret.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=8480d71fe53c7b9599fa7d9c6854abf216a923afde807dad5e9fdceab32c775a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Create the third-party application
 
@@ -260,7 +260,7 @@ The admin website shows the profile and its permissions but not the allowed AI a
 only visible through the API.
 
 ![Dedicated security profile in the Amazon Connect admin website with AI agent view
-permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2d9c7dd52c77bfeefd3c4f5beb99681d578014c407cf37dbc7d2e2f457c40ee8/assets/images/agents/amazon-connect-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=842dc6f57261b9297f71e0ef14b6f082aee2ef2379c29e651d5c7fed96af28fb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2d9c7dd52c77bfeefd3c4f5beb99681d578014c407cf37dbc7d2e2f457c40ee8/assets/images/agents/amazon-connect-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=f5ff102f4d83fd2d4b8f5cc53b028d981bdb0fcd2f59821b812a8f14c3b5f1c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Create and publish the orchestration AI agent
 
@@ -316,7 +316,7 @@ done
 ```
 
 ![Orchestration AI agent in the AI agent designer with the dedicated security profile
-attached](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3ade9397b18d3af79fc4f3ae63fef06cec9e17d59109e5c226d403339c32f052/assets/images/agents/amazon-connect-ai-agent-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=29b97304a7a0769b6d37b3e3c01dc671ebeacabcf347369a22359b85a8431225&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+attached](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3ade9397b18d3af79fc4f3ae63fef06cec9e17d59109e5c226d403339c32f052/assets/images/agents/amazon-connect-ai-agent-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=74ae0a78c423f7052b0123171c7c52a4a8919b6dffc0f6c135299fc68996a663&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Build the contact flow
 
@@ -357,7 +357,7 @@ aws connect associate-bot --instance-id $INSTANCE_ID \
 ```
 
 ![Lex V2 bot intents list with the Q in Connect hand-off intent and the built-in fallback
-intent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6d857b4a57a6289c26249b80bad8181b68af5b7654db9ae0adbf0ea830091ca4/assets/images/agents/amazon-connect-lex-intents.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=133506a2f3da4f7605b0cb6a406534b489273d8869cc59388a0868901af1b220&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+intent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6d857b4a57a6289c26249b80bad8181b68af5b7654db9ae0adbf0ea830091ca4/assets/images/agents/amazon-connect-lex-intents.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=e16233be7431871c97c0955ce1395a323fe7dcbaf3a054b86ff91f9f9eb3e030&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add the assistant and the Lex block
 
@@ -375,7 +375,7 @@ In the flow designer, add these blocks in order:
 | `x-amz-lex:qic-audio-passthrough`     | `true`                                           |
 
 ![Session attributes of the Get customer input block: the versioned AI agent ARN and the audio
-passthrough flag](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/812e85e379bcf3eb422497d27fe7740da8e3482222ca858089ad1b4de2f92e4b/assets/images/agents/amazon-connect-lex-session-attributes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=895d0de0d4330b90821e6ec7d70f5ae40cdf101d9daea67ad92efba59fb595d4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+passthrough flag](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/812e85e379bcf3eb422497d27fe7740da8e3482222ca858089ad1b4de2f92e4b/assets/images/agents/amazon-connect-lex-session-attributes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=58acd16d7459f8e2420f92ddcf88b29fd01bb5cbb21f0e9c5231ca0653c37451&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >
@@ -396,7 +396,7 @@ attribute. Add a **Check contact attributes** block after the Lex block, set **N
 | `Escalate` | The agent asked for a human (see [Transferring to a human](#transferring-to-a-human)). | Set working queue → Transfer to queue |
 
 ![Check contact attributes block configured on the Lex session attribute Tool with Equals
-conditions for each outcome](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa004d8a78522f66f256e879abcf1888a01e2e1bc22b8e712d197a9c4bd8b566/assets/images/agents/amazon-connect-check-attributes-block.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=5670661d4d28e2e84894088cfd9d2c7f54285f4840125bc6e5c989f7599047f2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+conditions for each outcome](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa004d8a78522f66f256e879abcf1888a01e2e1bc22b8e712d197a9c4bd8b566/assets/images/agents/amazon-connect-check-attributes-block.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=1e496af2ae9eda5bec7523972dab8b34f8ec9f10b7a0447876b7592b3f17a6c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Warning**
 >
@@ -407,7 +407,7 @@ conditions for each outcome](https://fdr-prod-docs-files-public.s3.us-east-1.ama
 
 ![Contact flow with the Get customer input block leading to a Check contact attributes block that
 routes Escalate to a queue and Complete to a
-disconnect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70dd68ee4561c165f12cfa4c62512d153f9a922f2d99f2479c92c09abc0e83c4/assets/images/agents/amazon-connect-contact-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=1adc61b27faec83cd34d15fe6d92380650439b13a53b2e92717213213a7228eb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+disconnect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70dd68ee4561c165f12cfa4c62512d153f9a922f2d99f2479c92c09abc0e83c4/assets/images/agents/amazon-connect-contact-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=9b40f23b124b34496f8bd5522e886f00b41ffb98977e73e2d9d0c27834330352&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The flow above compares against both spellings of each outcome so it keeps working if the casing
 changes.
@@ -445,7 +445,7 @@ Open the conversation in **Conversations**. Its source is Amazon Connect and the
 tab lists the `amazon_connect_*` dynamic variables the session received.
 
 ![Client data tab of an Amazon Connect conversation listing the Amazon Connect dynamic
-variables](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ced3be27e366822341940e3fa5f96c2cd7376b1e63e86ace2dac31d778039417/assets/images/agents/amazon-connect-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260928%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260928T233146Z&X-Amz-Expires=604800&X-Amz-Signature=fb05d97ae9d195e44b3ef277c9076c3d1b16df2ca3fcb19b5226e814c5ea8528&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+variables](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ced3be27e366822341940e3fa5f96c2cd7376b1e63e86ace2dac31d778039417/assets/images/agents/amazon-connect-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=5ef7c96e0f9c1416b97d336fd9d27134a26f4c724e088e7a30ac2da99c902f53&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Check the flow log in AWS
 

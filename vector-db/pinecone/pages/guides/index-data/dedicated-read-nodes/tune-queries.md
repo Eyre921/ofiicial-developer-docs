@@ -19,9 +19,9 @@ Dense vector search on dedicated read nodes uses a two-stage pipeline:
 
 The two parameters affect different stages and their effects are additive, so you can set both to optimize each stage independently.
 
-| Parameter        | Type    | Range                                | Default                                                         | Description                                                                                                                                |
-| :--------------- | :------ | :----------------------------------- | :-------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
-| `scan_factor`    | Float   | 0.5–4.0                              | 4.0                                                             | Controls how much of the IVF index is scanned to find vector candidates. Lower values scan fewer partitions and return results faster.     |
+| Parameter | Type | Range | Default | Description |
+| :- | :- | :- | :- | :- |
+| `scan_factor` | Float | 0.5–4.0 | 4.0 | Controls how much of the IVF index is scanned to find vector candidates. Lower values scan fewer partitions and return results faster. |
 | `max_candidates` | Integer | Your query's `top_k` value – 100,000 | 2500 (see [default behavior](#default-max_candidates-behavior)) | Maximum number of candidate vectors to rerank with exact distance computation. Higher values improve recall; lower values improve latency. |
 
 You can set one or both per query. Omitting both preserves the current default behavior, so existing applications are unaffected.
@@ -46,12 +46,12 @@ Lower `scan_factor` or `max_candidates` values reduce the work done per query, w
 
 Starting from the default (4.0), lowering `scan_factor` reduces the fraction of IVF partitions scanned:
 
-| scan\_factor  | Approximate recall (p50) | Relative throughput |
-| :------------ | :----------------------- | :------------------ |
-| 4.0 (default) | \~96%                    | 1x (baseline)       |
-| 2.0           | \~94%                    | \~1.5x              |
-| 1.0           | \~91%                    | \~2x                |
-| 0.5           | \~84%                    | \~4x                |
+| scan\_factor | Approximate recall (p50) | Relative throughput |
+| :- | :- | :- |
+| 4.0 (default) | \~96% | 1x (baseline) |
+| 2.0 | \~94% | \~1.5x |
+| 1.0 | \~91% | \~2x |
+| 0.5 | \~84% | \~4x |
 
 Testing shows that lower `scan_factor` values can reduce p50 and p99 latency by 30–50% or more.
 
@@ -74,12 +74,12 @@ Start with the defaults and adjust based on your workload requirements:
 
 ## Behavior by vector type
 
-| Index / query type                           | Behavior                                                                                                                                                                                                      |
-| :------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Dense vectors, dense query                   | `scan_factor` and `max_candidates` apply normally.                                                                                                                                                            |
-| Dense vectors, hybrid query (dense + sparse) | Both parameters apply to the dense component only; the sparse component is unaffected.                                                                                                                        |
-| Sparse vectors only                          | Specifying `scan_factor` or `max_candidates` returns an error.                                                                                                                                                |
-| On-demand index                              | Both parameters are accepted but have no effect on search behavior. You can use the same query code against on-demand (e.g., for development) and dedicated read nodes (for production) without modification. |
+| Index / query type | Behavior |
+| :- | :- |
+| Dense vectors, dense query | `scan_factor` and `max_candidates` apply normally. |
+| Dense vectors, hybrid query (dense + sparse) | Both parameters apply to the dense component only; the sparse component is unaffected. |
+| Sparse vectors only | Specifying `scan_factor` or `max_candidates` returns an error. |
+| On-demand index | Both parameters are accepted but have no effect on search behavior. You can use the same query code against on-demand (e.g., for development) and dedicated read nodes (for production) without modification. |
 
 ## API and SDK examples
 
@@ -151,12 +151,12 @@ Both parameters are optional fields on the `POST /query` request.
 
 ### Validation errors
 
-| Condition                                                                               | Error message                                                                                         |
-| :-------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------- |
-| API version earlier than `2025-10`                                                      | `scan_factor and max_candidates parameters require API version 2025-10 or later`                      |
-| `scan_factor` outside 0.5–4.0                                                           | `scan_factor must be between 0.5 and 4.0, got &lcub;value&rcub;`                                      |
-| `max_candidates` below your query's `top_k` or above 100,000                            | `max_candidates must be between &lcub;top_k&rcub; (top_k) and &lcub;max&rcub;, got &lcub;value&rcub;` |
-| Used on an index that stores only sparse vectors (API error text says "sparse indexes") | `scan_factor and max_candidates parameters are not supported for sparse indexes`                      |
+| Condition | Error message |
+| :- | :- |
+| API version earlier than `2025-10` | `scan_factor and max_candidates parameters require API version 2025-10 or later` |
+| `scan_factor` outside 0.5–4.0 | `scan_factor must be between 0.5 and 4.0, got &lcub;value&rcub;` |
+| `max_candidates` below your query's `top_k` or above 100,000 | `max_candidates must be between &lcub;top_k&rcub; (top_k) and &lcub;max&rcub;, got &lcub;value&rcub;` |
+| Used on an index that stores only sparse vectors (API error text says "sparse indexes") | `scan_factor and max_candidates parameters are not supported for sparse indexes` |
 
 <Note>
   `scan_factor` and `max_candidates` don't affect billing. Read costs for dedicated read nodes are based on provisioned capacity (node type, shards, and replicas), not per-query effort. By tuning these parameters to achieve higher throughput, you may be able to serve the same query rate with fewer provisioned replicas, reducing your overall cost.

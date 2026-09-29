@@ -12,12 +12,12 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
   <Step title="Create the index">
     Call [Create an index](/reference/api/2025-10/control-plane/create_index). In the request body, in the `spec.serverless.read_capacity` object, set the following fields:
 
-    | Field                       | Value                                                                                                 | Notes                                                                                              |
-    | :-------------------------- | :---------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-    | `mode`                      | `Dedicated`                                                                                           |                                                                                                    |
-    | `dedicated.node_type`       | `b1` or `t1`                                                                                          | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types)                      |
-    | `dedicated.scaling`         | `Manual`                                                                                              | The only supported value                                                                           |
-    | `dedicated.manual.shards`   | Number of [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) needed     | Minimum 1 shard; each shard provides 250 GB of storage                                             |
+    | Field | Value | Notes |
+    | :- | :- | :- |
+    | `mode` | `Dedicated` | |
+    | `dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
+    | `dedicated.scaling` | `Manual` | The only supported value |
+    | `dedicated.manual.shards` | Number of [shards](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-shards) needed | Minimum 1 shard; each shard provides 250 GB of storage |
     | `dedicated.manual.replicas` | Number of [replicas](/guides/index-data/dedicated-read-nodes/size-and-test#number-of-replicas) needed | Minimum 0 (this [pauses](/guides/index-data/dedicated-read-nodes/manage#pause-an-index) the index) |
 
     <Note>
@@ -109,10 +109,10 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
 
     The response includes two status fields:
 
-    | Field                                            | Description                                                                |
-    | :----------------------------------------------- | :------------------------------------------------------------------------- |
-    | **`status.state`**                               | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-    | **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`)            |
+    | Field | Description |
+    | :- | :- |
+    | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
+    | **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
     <Note>
       When creating a dedicated read nodes index, `status.state` transitions to `Ready` as soon as the index is ready for reads and writes.

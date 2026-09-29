@@ -21,13 +21,13 @@ The following steps assume you have:
 
       * To [configure the routing](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-vpc-interface-endpoint.html) yourself, use one of Pinecone's DNS entry for the corresponding region:
 
-      | Index region                 | Pinecone DNS entry                     |
-      | ---------------------------- | -------------------------------------- |
-      | `us-east-1` (N. Virginia)    | `*.private.aped-4627-b74a.pinecone.io` |
-      | `us-west-2` (Oregon)         | `*.private.apw5-4e34-81fa.pinecone.io` |
-      | `eu-west-1` (Ireland)        | `*.private.apu-57e2-42f6.pinecone.io`  |
-      | `eu-central-1` (Frankfurt)   | `*.private.apec-a2ee-38c6.pinecone.io` |
-      | `ap-southeast-1` (Singapore) | `*.private.aps-d9bb-582b.pinecone.io`  |
+      | Index region | Pinecone DNS entry |
+      | - | - |
+      | `us-east-1` (N. Virginia) | `*.private.aped-4627-b74a.pinecone.io` |
+      | `us-west-2` (Oregon) | `*.private.apw5-4e34-81fa.pinecone.io` |
+      | `eu-west-1` (Ireland) | `*.private.apu-57e2-42f6.pinecone.io` |
+      | `eu-central-1` (Frankfurt) | `*.private.apec-a2ee-38c6.pinecone.io` |
+      | `ap-southeast-1` (Singapore) | `*.private.aps-d9bb-582b.pinecone.io` |
   </Tab>
 
   <Tab title="Azure">
@@ -37,8 +37,8 @@ The following steps assume you have:
 
       * DNS resolution for private endpoints requires a manual setup step after creating the endpoint (unlike AWS, where DNS can be auto-configured). See the [DNS setup note below](#1-create-a-private-endpoint-in-your-cloud-provider).
 
-      | Index region         | Pinecone DNS entry                              |
-      | -------------------- | ----------------------------------------------- |
+      | Index region | Pinecone DNS entry |
+      | - | - |
       | `eastus2` (Virginia) | `*.private.eastus2-5e25.prod-azure.pinecone.io` |
   </Tab>
 </Tabs>
@@ -65,12 +65,12 @@ The following steps assume you have:
     4. For **Service category**, select **Other endpoint services**.
 
     5. In **Service settings**, enter the **Service name**, based on the region your Pinecone index is in:
-       | Index region                 | Service name                                                   |
-       | ---------------------------- | -------------------------------------------------------------- |
-       | `us-east-1` (N. Virginia)    | `com.amazonaws.vpce.us-east-1.vpce-svc-05ef6f1f0b9130b54`      |
-       | `us-west-2` (Oregon)         | `com.amazonaws.vpce.us-west-2.vpce-svc-04ecb9a0e0d5aab01`      |
-       | `eu-west-1` (Ireland)        | `com.amazonaws.vpce.eu-west-1.vpce-svc-03c6b7e17ff02a70f`      |
-       | `eu-central-1` (Frankfurt)   | `com.amazonaws.vpce.eu-central-1.vpce-svc-037997ff6b3d25e34`   |
+       | Index region | Service name |
+       | - | - |
+       | `us-east-1` (N. Virginia) | `com.amazonaws.vpce.us-east-1.vpce-svc-05ef6f1f0b9130b54` |
+       | `us-west-2` (Oregon) | `com.amazonaws.vpce.us-west-2.vpce-svc-04ecb9a0e0d5aab01` |
+       | `eu-west-1` (Ireland) | `com.amazonaws.vpce.eu-west-1.vpce-svc-03c6b7e17ff02a70f` |
+       | `eu-central-1` (Frankfurt) | `com.amazonaws.vpce.eu-central-1.vpce-svc-037997ff6b3d25e34` |
        | `ap-southeast-1` (Singapore) | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-0c12f00812e786068` |
 
     6. Click **Verify service**.
@@ -109,8 +109,8 @@ The following steps assume you have:
 
     8. Enter the **Resource ID or alias** for Pinecone's Private Link Service, based on the region your Pinecone index is in:
 
-       | Index region         | Private Link Service alias                                                       |
-       | -------------------- | -------------------------------------------------------------------------------- |
+       | Index region | Private Link Service alias |
+       | - | - |
        | `eastus2` (Virginia) | `pinecone.bdbc7759-0243-46c1-af51-794c4602745b.eastus2.azure.privatelinkservice` |
 
     9. Click **Next: Virtual Network**.

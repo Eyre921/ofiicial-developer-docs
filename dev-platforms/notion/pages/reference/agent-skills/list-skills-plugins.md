@@ -25,7 +25,7 @@ This endpoint uses [standard cursor pagination](/reference/intro#pagination). Fo
 
 ## Errors
 
-| Status | Code                  | Cause                                                                               |
-| :----- | :-------------------- | :---------------------------------------------------------------------------------- |
-| 400    | `validation_error`    | `start_cursor` is malformed, out of range, or was issued for a different workspace. |
-| 403    | `restricted_resource` | The token lacks the **Read content** capability.                                    |
+| Status | Code | Cause |
+| :- | :- | :- |
+| 400 | `validation_error` | `start_cursor` is malformed, out of range, or was issued for a different workspace. |
+| 403 | `restricted_resource` | The token lacks the **Read content** capability. |

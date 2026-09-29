@@ -18,13 +18,13 @@ The public beta renames the alpha's threads-and-messages routes to sessions and 
 
 ## What's changing
 
-| Route description          | Alpha route                            | Public beta route                                                                                   |
-| :------------------------- | :------------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| Get agents                 | `GET /v1/agents`                       | [`POST /v1/agents/query`](/reference/notion-agent-apis/query-agents)                                |
-| Get sessions               | `GET /v1/agents/:agent_id/threads`     | [`POST /v1/sessions/query`](/reference/notion-agent-apis/query-sessions)                            |
-| Get session events         | `GET /v1/threads/:thread_id/messages`  | [`POST /v1/sessions/:session_id/events/query`](/reference/notion-agent-apis/query-session-events)   |
-| Create or update a session | `POST /v1/agents/:agent_id/chat`       | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session)                                  |
-| Stream a session turn      | `POST /v1/agents/:agent_id/chatStream` | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session) with `Accept: text/event-stream` |
+| Route description | Alpha route | Public beta route |
+| :- | :- | :- |
+| Get agents | `GET /v1/agents` | [`POST /v1/agents/query`](/reference/notion-agent-apis/query-agents) |
+| Get sessions | `GET /v1/agents/:agent_id/threads` | [`POST /v1/sessions/query`](/reference/notion-agent-apis/query-sessions) |
+| Get session events | `GET /v1/threads/:thread_id/messages` | [`POST /v1/sessions/:session_id/events/query`](/reference/notion-agent-apis/query-session-events) |
+| Create or update a session | `POST /v1/agents/:agent_id/chat` | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session) |
+| Stream a session turn | `POST /v1/agents/:agent_id/chatStream` | [`POST /v1/sessions`](/reference/notion-agent-apis/update-session) with `Accept: text/event-stream` |
 
 You only need to migrate the routes listed above. The public beta also adds optional endpoints to retrieve or cancel sessions, view Custom Agent metadata and insights, set credit limits, enable, disable, or delete Custom Agents, and make those changes in bulk. See the [Overview](/guides/notion-agent-apis/overview) for the full set.
 
@@ -118,13 +118,13 @@ A thread is now a session. [Query sessions](/reference/notion-agent-apis/query-s
 
 The objects changed shape along with the name:
 
-| Thread (alpha)                                                            | Session (Public beta)                                                                                 |
-| :------------------------------------------------------------------------ | :---------------------------------------------------------------------------------------------------- |
-| `object: "thread"`                                                        | `object: "session"`                                                                                   |
-| `created_time`, `last_edited_time`                                        | `created_at`, `updated_at`                                                                            |
+| Thread (alpha) | Session (Public beta) |
+| :- | :- |
+| `object: "thread"` | `object: "session"` |
+| `created_time`, `last_edited_time` | `created_at`, `updated_at` |
 | `status`: `pending`, `requires_action`, `completed`, `canceled`, `failed` | `status`: `queued`, `in_progress`, `requires_action`, `completed`, `failed`, `canceled`, `terminated` |
-| `error` string on failure                                                 | `error` object with `code`, `message`, and `retryable`                                                |
-| `sort_by` and `sort_direction` query parameters                           | `sorts` array over `created_at` and `updated_at`                                                      |
+| `error` string on failure | `error` object with `code`, `message`, and `retryable` |
+| `sort_by` and `sort_direction` query parameters | `sorts` array over `created_at` and `updated_at` |
 
 Handle `queued` and `in_progress` as separate session statuses in place of the alpha's `pending` status. Both APIs use `canceled` for a stopped turn. If your client treated stopped turns as `completed`, update that check. Handle `terminated` separately from `failed`, and treat unknown statuses as non-terminal.
 
@@ -151,15 +151,15 @@ Message history is now an event stream. [Query session events](/reference/notion
   ```
 </CodeGroup>
 
-| Thread message (alpha)                                   | Session event (Public beta)                                                                                           |
-| :------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
-| `object: "thread_message"`                               | `object: "session_event"`                                                                                             |
-| `role`: `user` or `agent`                                | `type`: `user.message`, `agent.message`, `agent.thinking`, `agent.tool_use`, `agent.tool_result`, or `session.status` |
-| `content` string                                         | `content` array of parts, each `text` or `file`                                                                       |
-| `parent` object pointing at the thread                   | `session_id`                                                                                                          |
-| `created_time`                                           | `created_at`, plus `sequence`                                                                                         |
-| `verbose` query parameter for thinking and tool activity | Filter on `type` for the event kinds you want                                                                         |
-| `attachments` array                                      | `file` parts inside `content`                                                                                         |
+| Thread message (alpha) | Session event (Public beta) |
+| :- | :- |
+| `object: "thread_message"` | `object: "session_event"` |
+| `role`: `user` or `agent` | `type`: `user.message`, `agent.message`, `agent.thinking`, `agent.tool_use`, `agent.tool_result`, or `session.status` |
+| `content` string | `content` array of parts, each `text` or `file` |
+| `parent` object pointing at the thread | `session_id` |
+| `created_time` | `created_at`, plus `sequence` |
+| `verbose` query parameter for thinking and tool activity | Filter on `type` for the event kinds you want |
+| `attachments` array | `file` parts inside `content` |
 
 Two consequences worth handling explicitly:
 
@@ -195,12 +195,12 @@ Send `session_id` to continue an existing session, and send `session_id` with `a
 
 The response is a session object rather than a `chat.invocation`:
 
-| Chat invocation (alpha)     | Session (Public beta)                     |
-| :-------------------------- | :---------------------------------------- |
-| `object: "chat.invocation"` | `object: "session"`                       |
-| `thread_id`                 | `id`                                      |
-| `invocation_id`             | No equivalent — track the session by `id` |
-| `status`: always `pending`  | `status`: the full session status set     |
+| Chat invocation (alpha) | Session (Public beta) |
+| :- | :- |
+| `object: "chat.invocation"` | `object: "session"` |
+| `thread_id` | `id` |
+| `invocation_id` | No equivalent — track the session by `id` |
+| `status`: always `pending` | `status`: the full session status set |
 
 Poll [Retrieve a session](/reference/notion-agent-apis/retrieve-session) for the result, which the alpha had no route for — you no longer have to re-list threads to find the one you just created.
 
@@ -222,13 +222,13 @@ curl -X POST https://api.notion.com/v1/sessions \
 
 Switch on each envelope's `type` rather than decoding `data` as a session event directly:
 
-| `type`              | Payload                 | What to do with it                                                                                                                                                                      |
-| :------------------ | :---------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `session.snapshot`  | `session`               | The session's state at the start of the stream.                                                                                                                                         |
-| `event.provisional` | `event`                 | Output the agent is still producing. Expect it to be superseded; don't persist it.                                                                                                      |
-| `event.committed`   | `event`                 | A durable session event, the same shape [Query session events](/reference/notion-agent-apis/query-session-events) returns. Unwrap `event.committed.event`.                              |
-| `stream.timeout`    | `session_id`, `message` | The stream ended early while the turn is still running. Reconnect.                                                                                                                      |
-| `stream.end`        | `session_id`, `status`  | The current turn is over. A `status` of `requires_action` means the session is waiting on you — submit the action to the same `session_id` to continue. Any other `status` is terminal. |
-| `stream.error`      | `error`, `session_id`   | The turn failed. `error` carries `code`, `message`, and `retryable`.                                                                                                                    |
+| `type` | Payload | What to do with it |
+| :- | :- | :- |
+| `session.snapshot` | `session` | The session's state at the start of the stream. |
+| `event.provisional` | `event` | Output the agent is still producing. Expect it to be superseded; don't persist it. |
+| `event.committed` | `event` | A durable session event, the same shape [Query session events](/reference/notion-agent-apis/query-session-events) returns. Unwrap `event.committed.event`. |
+| `stream.timeout` | `session_id`, `message` | The stream ended early while the turn is still running. Reconnect. |
+| `stream.end` | `session_id`, `status` | The current turn is over. A `status` of `requires_action` means the session is waiting on you — submit the action to the same `session_id` to continue. Any other `status` is terminal. |
+| `stream.error` | `error`, `session_id` | The turn failed. `error` carries `code`, `message`, and `retryable`. |
 
 A dropped connection no longer costs you the turn. Persist the `id` of the last `event.committed.event` you received, then reconnect with that exact ID as `continue_from` — along with the `session_id` — and the stream replays from there. `continue_from` takes a committed event's ID, not its `sequence` and not a provisional or stream-control record, so anything else fails to resolve. See [Create or update a session](/reference/notion-agent-apis/update-session).

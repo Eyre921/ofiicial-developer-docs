@@ -452,7 +452,7 @@ Settings for agent testing configuration.
 
 ### AgentQueueingConfig
 
-- `enabled` (boolean, optional, default: false) — Hold callers in a wait queue when the agent is at its concurrency limit, instead of rejecting them immediately
+- `enabled` (boolean, optional, default: false) — Hold callers in a wait queue when the agent is at its concurrency limit, instead of rejecting them immediately. New agents are created with queueing enabled unless this field is set explicitly.
 - `wait_timeout_seconds` (integer, optional, default: 180) — Maximum time a caller can wait in the queue before being rejected
 - `hold_audio` (AgentHoldAudioConfig, optional) — Custom hold audio played to queued callers; when unset, callers hear the default hold tone. Read-only: set it by uploading a file through the agent hold-audio endpoint.
 

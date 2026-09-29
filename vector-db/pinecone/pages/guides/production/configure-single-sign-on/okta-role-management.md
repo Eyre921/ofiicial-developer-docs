@@ -44,26 +44,26 @@ A user can hold multiple roles by sending multiple values in the `roles` attribu
 
 For details on what each [organization role](/guides/organizations/understanding-organizations#organization-roles) grants, see [Understanding organizations](/guides/organizations/understanding-organizations#organization-roles).
 
-| Organization role    | Attribute value            |
-| :------------------- | :------------------------- |
-| Organization owner   | `pinecone:OrgOwner`        |
-| Organization manager | `pinecone:OrgManager`      |
-| Organization member  | `pinecone:OrgMember`       |
-| Billing admin        | `pinecone:OrgBillingAdmin` |
+| Organization role | Attribute value |
+| :- | :- |
+| Organization owner | `pinecone:OrgOwner` |
+| Organization manager | `pinecone:OrgManager` |
+| Organization member | `pinecone:OrgMember` |
+| Billing admin | `pinecone:OrgBillingAdmin` |
 
 ### Project roles
 
 For details on what each [project role](/guides/projects/understanding-projects#project-roles) grants, see [Understanding projects](/guides/projects/understanding-projects#project-roles).
 
-| Project role         | Attribute value                                   |
-| :------------------- | :------------------------------------------------ |
-| Project owner        | `pinecone:project:<projectID>:ProjectOwner`       |
-| Project manager      | `pinecone:project:<projectID>:ProjectManager`     |
-| Project member       | `pinecone:project:<projectID>:ProjectMember`      |
+| Project role | Attribute value |
+| :- | :- |
+| Project owner | `pinecone:project:<projectID>:ProjectOwner` |
+| Project manager | `pinecone:project:<projectID>:ProjectManager` |
+| Project member | `pinecone:project:<projectID>:ProjectMember` |
 | Control plane editor | `pinecone:project:<projectID>:ControlPlaneEditor` |
 | Control plane viewer | `pinecone:project:<projectID>:ControlPlaneViewer` |
-| Data plane editor    | `pinecone:project:<projectID>:DataPlaneEditor`    |
-| Data plane viewer    | `pinecone:project:<projectID>:DataPlaneViewer`    |
+| Data plane editor | `pinecone:project:<projectID>:DataPlaneEditor` |
+| Data plane viewer | `pinecone:project:<projectID>:DataPlaneViewer` |
 
 For example, to make a user an organization manager who is also a project owner on one project, send these two values in the `roles` attribute:
 

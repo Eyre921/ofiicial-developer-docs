@@ -26,14 +26,14 @@ import { Worker } from "@notionhq/workers";
 `Worker` is the entry point for every worker project. The class exposes methods
 that add databases, pacers, and capabilities to the worker manifest.
 
-| Method                                  | Adds       | Description                                                      |
-| --------------------------------------- | ---------- | ---------------------------------------------------------------- |
-| [`worker.database()`](#worker-database) | Database   | Declares a managed Notion database for sync output.              |
-| [`worker.pacer()`](#worker-pacer)       | Pacer      | Declares a rate limit budget for calls to an external API.       |
-| [`worker.sync()`](#worker-sync)         | Capability | Syncs upstream records into a managed Notion database.           |
-| [`worker.tool()`](#worker-tool)         | Capability | Defines a callable tool with JSON Schema input and output.       |
-| [`worker.webhook()`](#worker-webhook)   | Capability | Defines an HTTP webhook handler.                                 |
-| [`worker.oauth()`](#worker-oauth)       | Capability | Defines OAuth configuration for external service authentication. |
+| Method | Adds | Description |
+| - | - | - |
+| [`worker.database()`](#worker-database) | Database | Declares a managed Notion database for sync output. |
+| [`worker.pacer()`](#worker-pacer) | Pacer | Declares a rate limit budget for calls to an external API. |
+| [`worker.sync()`](#worker-sync) | Capability | Syncs upstream records into a managed Notion database. |
+| [`worker.tool()`](#worker-tool) | Capability | Defines a callable tool with JSON Schema input and output. |
+| [`worker.webhook()`](#worker-webhook) | Capability | Defines an HTTP webhook handler. |
+| [`worker.oauth()`](#worker-oauth) | Capability | Defines OAuth configuration for external service authentication. |
 
 ## worker.database()
 
@@ -54,12 +54,12 @@ const tasks = worker.database("tasks", {
 });
 ```
 
-| Property             | Description                                                                                                  |
-| -------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `type`               | Database declaration type. Currently only `"managed"` is supported.                                          |
-| `initialTitle`       | Title used when Notion first creates the database. Changing this later does not rename an existing database. |
-| `primaryKeyProperty` | Property used to match sync changes to Notion pages. Must be present in `schema.properties`.                 |
-| `schema`             | Database property schema. See [Schema and builders](/workers/reference/schema).                              |
+| Property | Description |
+| - | - |
+| `type` | Database declaration type. Currently only `"managed"` is supported. |
+| `initialTitle` | Title used when Notion first creates the database. Changing this later does not rename an existing database. |
+| `primaryKeyProperty` | Property used to match sync changes to Notion pages. Must be present in `schema.properties`. |
+| `schema` | Database property schema. See [Schema and builders](/workers/reference/schema). |
 
 ### Managed database lifecycle
 
@@ -94,11 +94,11 @@ const issueTrackerApi = worker.pacer("issueTrackerApi", {
 });
 ```
 
-| Property          | Description                                              |
-| ----------------- | -------------------------------------------------------- |
-| `allowedRequests` | Maximum requests allowed per interval.                   |
-| `intervalMs`      | Interval length in milliseconds.                         |
-| `wait()`          | Promise that resolves when the next request can proceed. |
+| Property | Description |
+| - | - |
+| `allowedRequests` | Maximum requests allowed per interval. |
+| `intervalMs` | Interval length in milliseconds. |
+| `wait()` | Promise that resolves when the next request can proceed. |
 
 Call `await issueTrackerApi.wait()` before each external API request in a sync.
 
@@ -143,12 +143,12 @@ worker.sync("tasksSync", {
 });
 ```
 
-| Property   | Description                                                                                                      |
-| ---------- | ---------------------------------------------------------------------------------------------------------------- |
-| `database` | Database handle returned from `worker.database()`.                                                               |
-| `mode`     | Sync lifecycle mode. Defaults to `"replace"`.                                                                    |
-| `schedule` | Run cadence. Defaults to `"30m"`.                                                                                |
-| `execute`  | Function that fetches upstream data and returns sync changes. Receives the previous state as its first argument. |
+| Property | Description |
+| - | - |
+| `database` | Database handle returned from `worker.database()`. |
+| `mode` | Sync lifecycle mode. Defaults to `"replace"`. |
+| `schedule` | Run cadence. Defaults to `"30m"`. |
+| `execute` | Function that fetches upstream data and returns sync changes. Receives the previous state as its first argument. |
 
 ### Execution cycle
 
@@ -201,9 +201,9 @@ return {
 
 ### Modes
 
-| Mode            | Description                                                                                                                                        |
-| --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `"replace"`     | Each completed sync cycle represents the full upstream dataset. After `hasMore: false`, records not seen in the cycle are deleted.                 |
+| Mode | Description |
+| - | - |
+| `"replace"` | Each completed sync cycle represents the full upstream dataset. After `hasMore: false`, records not seen in the cycle are deleted. |
 | `"incremental"` | Each completed sync cycle represents only changed records. Existing records not mentioned are left unchanged; deletes must be returned explicitly. |
 
 Use `mode: "replace"` for small sources or full backfills. Use
@@ -226,11 +226,11 @@ worker.sync("hourlySync", {
 Use `"continuous"`, `"manual"`, or an interval string ending in `m`, `h`, or
 `d`. Interval schedules must be at least `1m` and at most `7d`.
 
-| Schedule                | Description                              |
-| ----------------------- | ---------------------------------------- |
-| `"continuous"`          | Runs as frequently as the system allows. |
-| `"manual"`              | Runs only when explicitly triggered.     |
-| `"15m"`, `"1h"`, `"1d"` | Runs at the specified interval.          |
+| Schedule | Description |
+| - | - |
+| `"continuous"` | Runs as frequently as the system allows. |
+| `"manual"` | Runs only when explicitly triggered. |
+| `"15m"`, `"1h"`, `"1d"` | Runs at the specified interval. |
 
 If `schedule` is omitted, the sync runs every 30 minutes.
 
@@ -253,11 +253,11 @@ const result = {
 };
 ```
 
-| Property    | Description                                                                                                            |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------- |
-| `changes`   | Batch of upsert and delete changes to apply.                                                                           |
-| `hasMore`   | `true` when the runtime should call `execute` again with `nextState`; `false` when the current sync cycle is complete. |
-| `nextState` | Optional serialisable cursor or pagination state for the next execution. Required when `hasMore` is `true`.            |
+| Property | Description |
+| - | - |
+| `changes` | Batch of upsert and delete changes to apply. |
+| `hasMore` | `true` when the runtime should call `execute` again with `nextState`; `false` when the current sync cycle is complete. |
+| `nextState` | Optional serialisable cursor or pagination state for the next execution. Required when `hasMore` is `true`. |
 
 Return batches sized for the upstream API and sync runtime. A batch of about 100
 changes is a typical starting point.
@@ -289,16 +289,16 @@ const deleteChange = {
 };
 ```
 
-| Property              | Description                                                                                                             |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `type`                | `"upsert"` creates or updates a record. `"delete"` removes a record.                                                    |
-| `key`                 | Upstream record identifier. This should match the value stored in the database primary key property.                    |
-| `targetDatabaseKey`   | Optional database key override. Defaults to the database associated with the sync.                                      |
-| `properties`          | Upsert-only property values. Keys must match the database schema. See [Schema and builders](/workers/reference/schema). |
-| `upstreamUpdatedAt`   | Optional ISO 8601 timestamp used for conflict resolution when multiple syncs write to the same database.                |
-| `icon`                | Optional page icon. Use `Builder.emojiIcon()`, `Builder.notionIcon()`, or `Builder.imageIcon()`.                        |
-| `cover`               | Optional page cover. Use `Builder.imageCover()` with an external image URL and optional vertical position.              |
-| `pageContentMarkdown` | Optional markdown page body content.                                                                                    |
+| Property | Description |
+| - | - |
+| `type` | `"upsert"` creates or updates a record. `"delete"` removes a record. |
+| `key` | Upstream record identifier. This should match the value stored in the database primary key property. |
+| `targetDatabaseKey` | Optional database key override. Defaults to the database associated with the sync. |
+| `properties` | Upsert-only property values. Keys must match the database schema. See [Schema and builders](/workers/reference/schema). |
+| `upstreamUpdatedAt` | Optional ISO 8601 timestamp used for conflict resolution when multiple syncs write to the same database. |
+| `icon` | Optional page icon. Use `Builder.emojiIcon()`, `Builder.notionIcon()`, or `Builder.imageIcon()`. |
+| `cover` | Optional page cover. Use `Builder.imageCover()` with an external image URL and optional vertical position. |
+| `pageContentMarkdown` | Optional markdown page body content. |
 
 Delete changes are only applicable in `mode: "incremental"`. In
 `mode: "replace"`, the runtime deletes records that were not seen by the end of
@@ -378,14 +378,14 @@ worker.tool("searchTasks", {
 });
 ```
 
-| Property       | Description                                                                                                                |
-| -------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `title`        | Human-readable tool name shown in Notion.                                                                                  |
-| `description`  | Description of what the tool does and when it should be used.                                                              |
-| `schema`       | Input schema built with `j` from `@notionhq/workers/schema-builder`. See [Schema and builders](/workers/reference/schema). |
-| `outputSchema` | Optional output schema built with `j`. When present, tool output is validated before it is returned.                       |
-| `hints`        | Optional advisory metadata for Notion Custom Agents.                                                                       |
-| `execute`      | Function called with validated input and a capability context. The return value must be JSON-serialisable.                 |
+| Property | Description |
+| - | - |
+| `title` | Human-readable tool name shown in Notion. |
+| `description` | Description of what the tool does and when it should be used. |
+| `schema` | Input schema built with `j` from `@notionhq/workers/schema-builder`. See [Schema and builders](/workers/reference/schema). |
+| `outputSchema` | Optional output schema built with `j`. When present, tool output is validated before it is returned. |
+| `hints` | Optional advisory metadata for Notion Custom Agents. |
+| `execute` | Function called with validated input and a capability context. The return value must be JSON-serialisable. |
 
 ### Tool hints
 
@@ -417,16 +417,16 @@ worker.webhook("onGithubPush", {
 });
 ```
 
-| Property      | Description                                                           |
-| ------------- | --------------------------------------------------------------------- |
-| `title`       | Human-readable webhook name shown in Notion.                          |
-| `description` | Description of what the webhook handles.                              |
-| `execute`     | Function called when the webhook receives events.                     |
-| `deliveryId`  | Unique ID for this webhook delivery, stable across retries.           |
-| `body`        | Parsed JSON body, or an empty object when the body is not valid JSON. |
-| `rawBody`     | Raw request body. Use this for signature verification.                |
-| `headers`     | HTTP headers from the incoming request.                               |
-| `method`      | HTTP method, such as `"POST"`.                                        |
+| Property | Description |
+| - | - |
+| `title` | Human-readable webhook name shown in Notion. |
+| `description` | Description of what the webhook handles. |
+| `execute` | Function called when the webhook receives events. |
+| `deliveryId` | Unique ID for this webhook delivery, stable across retries. |
+| `body` | Parsed JSON body, or an empty object when the body is not valid JSON. |
+| `rawBody` | Raw request body. Use this for signature verification. |
+| `headers` | HTTP headers from the incoming request. |
+| `method` | HTTP method, such as `"POST"`. |
 
 Throw `WebhookVerificationError` from `execute` to signal signature verification failure. After five consecutive verification failures, the platform rejects incoming requests for the webhook without executing the handler.
 
@@ -449,17 +449,17 @@ const githubAuth = worker.oauth("githubAuth", {
 });
 ```
 
-| Property                | Description                                                                                                |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `name`                  | OAuth provider instance name. Used to identify the connected token.                                        |
-| `clientId`              | OAuth app client ID.                                                                                       |
-| `clientSecret`          | OAuth app client secret.                                                                                   |
-| `authorizationEndpoint` | OAuth 2.0 authorisation endpoint.                                                                          |
-| `tokenEndpoint`         | OAuth 2.0 token endpoint.                                                                                  |
-| `scope`                 | OAuth scopes requested during authorisation.                                                               |
-| `authorizationParams`   | Optional extra query parameters for the authorisation request.                                             |
-| `callbackUrl`           | Optional OAuth redirect URL override.                                                                      |
-| `accessTokenExpireMs`   | Optional default access token expiry in milliseconds when the provider does not return expiry information. |
+| Property | Description |
+| - | - |
+| `name` | OAuth provider instance name. Used to identify the connected token. |
+| `clientId` | OAuth app client ID. |
+| `clientSecret` | OAuth app client secret. |
+| `authorizationEndpoint` | OAuth 2.0 authorisation endpoint. |
+| `tokenEndpoint` | OAuth 2.0 token endpoint. |
+| `scope` | OAuth scopes requested during authorisation. |
+| `authorizationParams` | Optional extra query parameters for the authorisation request. |
+| `callbackUrl` | Optional OAuth redirect URL override. |
+| `accessTokenExpireMs` | Optional default access token expiry in milliseconds when the provider does not return expiry information. |
 
 ### OAuth setup
 

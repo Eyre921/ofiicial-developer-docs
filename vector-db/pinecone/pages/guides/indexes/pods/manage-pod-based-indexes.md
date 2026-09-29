@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/guides/indexes/pods/manage-pod-based-indexes
 path: guides/indexes/pods/manage-pod-based-indexes
 ---
 
-Manage Pinecone pod-based indexes. Legacy guide: pod indexes are unavailable to new customers as of August 2025; serverless is recommended for new projects.
+Manage Pinecone pod-based indexes. Pod indexes are legacy and unavailable to new customers, and serverless is recommended for new projects.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
 This page shows you how to manage pod-based indexes.
@@ -1066,23 +1066,23 @@ For more configuration details, see the [Prometheus docs](https://prometheus.io/
 
 The following metrics are available when you integrate Pinecone with Prometheus:
 
-| Name                                 | Type      | Description                                                                       |
-| :----------------------------------- | :-------- | :-------------------------------------------------------------------------------- |
-| `pinecone_vector_count`              | gauge     | The number of records per pod in the index.                                       |
-| `pinecone_request_count_total`       | counter   | The number of data plane calls made by clients.                                   |
-| `pinecone_request_error_count_total` | counter   | The number of data plane calls made by clients that resulted in errors.           |
-| `pinecone_request_latency_seconds`   | histogram | The distribution of server-side processing latency for pinecone data plane calls. |
-| `pinecone_index_fullness`            | gauge     | The fullness of the index on a scale of 0 to 1.                                   |
+| Name | Type | Description |
+| :- | :- | :- |
+| `pinecone_vector_count` | gauge | The number of records per pod in the index. |
+| `pinecone_request_count_total` | counter | The number of data plane calls made by clients. |
+| `pinecone_request_error_count_total` | counter | The number of data plane calls made by clients that resulted in errors. |
+| `pinecone_request_latency_seconds` | histogram | The distribution of server-side processing latency for pinecone data plane calls. |
+| `pinecone_index_fullness` | gauge | The fullness of the index on a scale of 0 to 1. |
 
 #### Metric labels
 
 Each metric contains the following labels:
 
-| Label          | Description                                                                                                                                    |
-| :------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- |
-| `pid`          | Process identifier.                                                                                                                            |
-| `index_name`   | Name of the index to which the metric applies.                                                                                                 |
-| `project_name` | Name of the project containing the index.                                                                                                      |
+| Label | Description |
+| :- | :- |
+| `pid` | Process identifier. |
+| `index_name` | Name of the index to which the metric applies. |
+| `project_name` | Name of the project containing the index. |
 | `request_type` | Type of request: `upsert`, `delete`, `fetch`, `query`, or `describe_index_stats`. This label is included only in `pinecone_request_*` metrics. |
 
 #### Example queries

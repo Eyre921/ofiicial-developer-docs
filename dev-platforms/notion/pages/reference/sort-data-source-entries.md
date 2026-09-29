@@ -79,10 +79,10 @@ This sort orders the data source query by a particular property.
 
 The sort object must contain the following properties:
 
-| Property    | Type            | Description                                                                      | Example value   |
-| :---------- | :-------------- | :------------------------------------------------------------------------------- | :-------------- |
-| `property`  | `string`        | The name of the property to sort against.                                        | `"Ingredients"` |
-| `direction` | `string` (enum) | The direction to sort. Possible values include `"ascending"` and `"descending"`. | `"descending"`  |
+| Property | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `property` | `string` | The name of the property to sort against. | `"Ingredients"` |
+| `direction` | `string` (enum) | The direction to sort. Possible values include `"ascending"` and `"descending"`. | `"descending"` |
 
 ### Entry timestamp sort
 
@@ -90,7 +90,7 @@ This sort orders the data source query by the timestamp associated with a data s
 
 The sort object must contain the following properties:
 
-| Property    | Type            | Description                                                                                                   | Example value        |
-| :---------- | :-------------- | :------------------------------------------------------------------------------------------------------------ | :------------------- |
+| Property | Type | Description | Example value |
+| :- | :- | :- | :- |
 | `timestamp` | `string` (enum) | The name of the timestamp to sort against. Possible values include `"created_time"` and `"last_edited_time"`. | `"last_edited_time"` |
-| `direction` | `string` (enum) | The direction to sort. Possible values include `"ascending"` and `"descending"`.                              | `"descending"`       |
+| `direction` | `string` (enum) | The direction to sort. Possible values include `"ascending"` and `"descending"`. | `"descending"` |

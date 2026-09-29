@@ -35,10 +35,10 @@ For a full comparison, see the [comparison table](/guides/get-started/overview#c
 
 Every public connection has an **installation scope** that controls which workspaces can install it. You pick the scope when you create the connection.
 
-| Scope                    | Who can install                                  | Marketplace eligible |
-| :----------------------- | :----------------------------------------------- | :------------------- |
-| Any workspace            | Any Notion user, in any workspace.               | Yes                  |
-| Selected workspaces only | Only the workspaces you select at creation time. | No                   |
+| Scope | Who can install | Marketplace eligible |
+| :- | :- | :- |
+| Any workspace | Any Notion user, in any workspace. | Yes |
+| Selected workspaces only | Only the workspaces you select at creation time. | No |
 
 <Warning>
   Installation scope is set once, at creation time, and can't be changed afterward. If you pick **Selected workspaces only** and later want to list on the Marketplace, create a new connection.

@@ -96,6 +96,7 @@ Validation Error
 - `time_committed_secs` (integer, required)
 - `parents` (AgentVersionParents, required)
 - `access_info` (ResourceAccessInfo, optional, nullable)
+- `merged_authors` (list of ResourceAccessInfo, optional, nullable) — For a merge into the main branch, the people who published the merged changes on the source branch (access_info is whoever ran the merge). Null when not recorded.
 
 ### ValidationError
 
@@ -168,7 +169,17 @@ Validation Error
         "creator_email": "john.doe@example.com",
         "role": "admin",
         "access_source": "creator"
-      }
+      },
+      "merged_authors": [
+        {
+          "is_creator": true,
+          "creator_name": "string",
+          "creator_email": "string",
+          "role": "admin",
+          "anonymous_access_level_override": "admin",
+          "access_source": "creator"
+        }
+      ]
     }
   ]
 }

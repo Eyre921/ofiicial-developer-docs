@@ -20,19 +20,19 @@ For example, let’s say a user updates the title of a page. You’ll receive a 
 
 **All webhook event types share the following shape of properties:**
 
-| **Field**         | **Type** | **Description**                                                                                                                                                                                                                                                                                                                                              |
-| :---------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`              | UUID     | The unique ID of the webhook event                                                                                                                                                                                                                                                                                                                           |
-| `timestamp`       | String   | ISO 8601 formatted time at which the event occurred. This field can be used to order events on your side                                                                                                                                                                                                                                                     |
-| `workspace_id`    | UUID     | The workspace ID where the event originated from                                                                                                                                                                                                                                                                                                             |
-| `subscription_id` | UUID     | The ID of the webhook subscription                                                                                                                                                                                                                                                                                                                           |
-| `integration_id`  | UUID     | Associated connection ID the subscription is set up with                                                                                                                                                                                                                                                                                                     |
-| `type`            | String   | Type of the event, e.g. `page.created`                                                                                                                                                                                                                                                                                                                       |
-| `authors`         | Array    | Array of objects with the ID (`id`) and type (`type`) of the author who performed the action. `type` can be `"person"`, `"bot"`, or `"agent"`. Typically an array of length 1; can be more for aggregated events. See [bot](/reference/user#bots) or [person](/reference/user#people) for details retrievable by ID in the [Users API](/reference/get-user). |
-| `accessible_by`   | Array    | Array of objects with the ID (`id`) and type (`type`) of each accessible bot and user who owns the bot connection to the `integration_id` and has access to the webhook's `entity`. Only for public connections. `type` can be `"person"` or `"bot"`.                                                                                                        |
-| `attempt_number`  | number   | Attempt number (1-8) of the current event delivery                                                                                                                                                                                                                                                                                                           |
-| `entity`          | Object   | ID (`id`) and type (`type`) of the object that triggered the event. `type` can be `"page"`, `"block"`, or `"database"`.                                                                                                                                                                                                                                      |
-| `data`            | Object   | Additional, event-specific data.                                                                                                                                                                                                                                                                                                                             |
+| **Field** | **Type** | **Description** |
+| :- | :- | :- |
+| `id` | UUID | The unique ID of the webhook event |
+| `timestamp` | String | ISO 8601 formatted time at which the event occurred. This field can be used to order events on your side |
+| `workspace_id` | UUID | The workspace ID where the event originated from |
+| `subscription_id` | UUID | The ID of the webhook subscription |
+| `integration_id` | UUID | Associated connection ID the subscription is set up with |
+| `type` | String | Type of the event, e.g. `page.created` |
+| `authors` | Array | Array of objects with the ID (`id`) and type (`type`) of the author who performed the action. `type` can be `"person"`, `"bot"`, or `"agent"`. Typically an array of length 1; can be more for aggregated events. See [bot](/reference/user#bots) or [person](/reference/user#people) for details retrievable by ID in the [Users API](/reference/get-user). |
+| `accessible_by` | Array | Array of objects with the ID (`id`) and type (`type`) of each accessible bot and user who owns the bot connection to the `integration_id` and has access to the webhook's `entity`. Only for public connections. `type` can be `"person"` or `"bot"`. |
+| `attempt_number` | number | Attempt number (1-8) of the current event delivery |
+| `entity` | Object | ID (`id`) and type (`type`) of the object that triggered the event. `type` can be `"page"`, `"block"`, or `"database"`. |
+| `data` | Object | Additional, event-specific data. |
 
 ### Supported webhook event types
 
@@ -48,31 +48,31 @@ Notion currently supports the following webhook event types. Each event represen
 
 Below, you’ll find the list of available type values, a short description of what each event represents, and whether the event is aggregated. Aggregated events group multiple changes into a single notification to reduce noise and improve efficiency.
 
-| Type                          | Description                                                                                                                                                 | Is aggregated? |
-| :---------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------- |
-| `page.content_updated`        | Triggered when the content of a page changes — for example adding or removing a block on the page.                                                          | Yes            |
-| `page.created`                | Triggered when a new page is created.                                                                                                                       | Yes            |
-| `page.deleted`                | Triggered when a page is moved to the trash.                                                                                                                | Yes            |
-| `page.locked`                 | Triggered when a page is locked from editing.                                                                                                               | No             |
-| `page.moved`                  | Triggered when a page is moved to another location.                                                                                                         | Yes            |
-| `page.properties_updated`     | Triggered when a page's property is updated.                                                                                                                | Yes            |
-| `page.undeleted`              | Triggered when a page is restored from the trash.                                                                                                           | Yes            |
-| `page.unlocked`               | Triggered when a page is unlocked                                                                                                                           | No             |
-| `database.content_updated`    | Triggered when a database's content is updated— for example, adding or removing a child page. <br /> <br />**Deprecated** in 2025-09-03 API version.        | Yes            |
-| `database.created`            | Triggered when a new database is created.                                                                                                                   | Yes            |
-| `database.deleted`            | Triggered when a database is moved to the trash.                                                                                                            | Yes            |
-| `database.moved`              | Triggered when a database is moved to another location.                                                                                                     | Yes            |
-| `database.schema_updated`     | Triggered when a database's schema is updated — for example, adding or removing a database property. <br /> <br />**Deprecated** in 2025-09-03 API version. | Yes            |
-| `database.undeleted`          | Triggered when a database is restored from the trash.                                                                                                       | Yes            |
-| `data_source.content_updated` | Triggered when a data source's content is updated— for example, adding or removing a child page. <br /> <br />**New** in 2025-09-03 API version.            | Yes            |
-| `data_source.created`         | Triggered when a new data source is created within an existing database. <br /> <br />**New** in 2025-09-03 API version.                                    | Yes            |
-| `data_source.deleted`         | Triggered when a data source is moved to the trash. <br /> <br />**New** in 2025-09-03 API version.                                                         | Yes            |
-| `data_source.moved`           | Triggered when a data source is moved to another database. <br /> <br />**New** in 2025-09-03 API version.                                                  | Yes            |
-| `data_source.schema_updated`  | Triggered when a data source's schema is updated — for example, adding or removing a database property. <br /> <br />**New** in 2025-09-03 API version.     | Yes            |
-| `data_source.undeleted`       | Triggered when a data source is restored from the trash. <br /> <br />**New** in 2025-09-03 API version.                                                    | Yes            |
-| `comment.created`             | Triggered when a new comment or suggested edit is added to a page or block                                                                                  | No             |
-| `comment.deleted`             | Triggered when a comment is deleted.                                                                                                                        | No             |
-| `comment.updated`             | Triggered when a comment is edited, or when a file attached to the comment in the Notion app finishes uploading.                                            | No             |
+| Type | Description | Is aggregated? |
+| :- | :- | :- |
+| `page.content_updated` | Triggered when the content of a page changes — for example adding or removing a block on the page. | Yes |
+| `page.created` | Triggered when a new page is created. | Yes |
+| `page.deleted` | Triggered when a page is moved to the trash. | Yes |
+| `page.locked` | Triggered when a page is locked from editing. | No |
+| `page.moved` | Triggered when a page is moved to another location. | Yes |
+| `page.properties_updated` | Triggered when a page's property is updated. | Yes |
+| `page.undeleted` | Triggered when a page is restored from the trash. | Yes |
+| `page.unlocked` | Triggered when a page is unlocked | No |
+| `database.content_updated` | Triggered when a database's content is updated— for example, adding or removing a child page. <br /> <br />**Deprecated** in 2025-09-03 API version. | Yes |
+| `database.created` | Triggered when a new database is created. | Yes |
+| `database.deleted` | Triggered when a database is moved to the trash. | Yes |
+| `database.moved` | Triggered when a database is moved to another location. | Yes |
+| `database.schema_updated` | Triggered when a database's schema is updated — for example, adding or removing a database property. <br /> <br />**Deprecated** in 2025-09-03 API version. | Yes |
+| `database.undeleted` | Triggered when a database is restored from the trash. | Yes |
+| `data_source.content_updated` | Triggered when a data source's content is updated— for example, adding or removing a child page. <br /> <br />**New** in 2025-09-03 API version. | Yes |
+| `data_source.created` | Triggered when a new data source is created within an existing database. <br /> <br />**New** in 2025-09-03 API version. | Yes |
+| `data_source.deleted` | Triggered when a data source is moved to the trash. <br /> <br />**New** in 2025-09-03 API version. | Yes |
+| `data_source.moved` | Triggered when a data source is moved to another database. <br /> <br />**New** in 2025-09-03 API version. | Yes |
+| `data_source.schema_updated` | Triggered when a data source's schema is updated — for example, adding or removing a database property. <br /> <br />**New** in 2025-09-03 API version. | Yes |
+| `data_source.undeleted` | Triggered when a data source is restored from the trash. <br /> <br />**New** in 2025-09-03 API version. | Yes |
+| `comment.created` | Triggered when a new comment or suggested edit is added to a page or block | No |
+| `comment.deleted` | Triggered when a comment is deleted. | No |
+| `comment.updated` | Triggered when a comment is edited, or when a file attached to the comment in the Notion app finishes uploading. | No |
 
 <Info>
   **What does “aggregated” mean?**

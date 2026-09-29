@@ -254,6 +254,13 @@ Some endpoints require more than one permission. Other endpoints work with any o
 |----------|--------|--------|------------------------|
 | `GET /users/{username}/events/orgs/{org}` | read | PAT | ✗ |
 
+## Organization permissions for "External custom properties for repositories"
+
+| Endpoint | Access | Tokens | Additional Permissions |
+|----------|--------|--------|------------------------|
+| `GET /orgs/{org}/properties/installations` | admin | PAT | ✗ |
+| `POST /orgs/{org}/properties/installations` | admin | PAT | ✗ |
+
 ## Organization permissions for "GitHub Copilot Business"
 
 | Endpoint | Access | Tokens | Additional Permissions |
@@ -564,6 +571,7 @@ Some endpoints require more than one permission. Other endpoints work with any o
 | `GET /repos/{owner}/{repo}/actions/concurrency_groups/{concurrency_group_name}` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/actions/jobs/{job_id}` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/actions/jobs/{job_id}/logs` | read | PAT | ✗ |
+| `GET /repos/{owner}/{repo}/actions/jobs/{job_id}/steps/{step_number}/logs` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/actions/oidc/customization/sub` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/actions/runs` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/actions/runs/{run_id}` | read | PAT | ✗ |

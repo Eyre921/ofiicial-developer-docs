@@ -137,7 +137,7 @@ The BBPOS WisePOS E software consists of four components: the reader application
 | GBIEFI | `2.45.7.0` | `5.01.05.00` | `szzz_prod_eu_off_v11` | `1.8.7` |
 | ATBEDKFRITDENLESSECZLUPTCHNO | `2.45.7.0` | `5.01.05.00` | `szzz_prod_eu_on_v7` | `1.8.7` |
 
-### Reader software changelog
+### Changelog 
 
 #### 2026-09-08 (version 2.45.7.0)
 

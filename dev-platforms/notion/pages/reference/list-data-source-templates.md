@@ -9,11 +9,11 @@ Use this API to retrieve details of all page templates available for a data sour
 
 The response contains a `templates` array with up to 100 results per page. Each template has the following fields:
 
-| Field        | Type              | Description                                        |
-| :----------- | :---------------- | :------------------------------------------------- |
-| `id`         | `string` (UUIDv4) | The template ID.                                   |
-| `name`       | `string`          | The template's display name.                       |
-| `is_default` | `boolean`         | Whether the template is the data source's default. |
+| Field | Type | Description |
+| :- | :- | :- |
+| `id` | `string` (UUIDv4) | The template ID. |
+| `name` | `string` | The template's display name. |
+| `is_default` | `boolean` | Whether the template is the data source's default. |
 
 ### Pagination
 

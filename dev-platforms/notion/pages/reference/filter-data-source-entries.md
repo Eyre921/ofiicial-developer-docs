@@ -83,9 +83,9 @@ If no filter is provided, non-archived pages in the data source will be returned
 
 Each `filter` object contains the following fields:
 
-| Field                                                                                                                                                                                                                              | Type     | Description                                                                                                                                                                                                                                   | Example value                    |
-| :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------- |
-| `property`                                                                                                                                                                                                                         | `string` | The name of the property as it appears in the data source, or the property ID.                                                                                                                                                                | `"Task completed"`               |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `property` | `string` | The name of the property as it appears in the data source, or the property ID. | `"Task completed"` |
 | `checkbox`<br />`date`<br />`files`<br />`formula`<br />`multi_select`<br />`number`<br />`people`<br />`phone_number`<br />`relation`<br />`rich_text`<br />`select`<br />`status`<br />`timestamp`<br />`verification`<br />`ID` | `object` | The type-specific filter condition for the query. Only types listed in the Field column of this table are supported. Refer to [type-specific filter conditions](#type-specific-filter-conditions) for details on corresponding object values. | `"checkbox": { "equals": true }` |
 
 <CodeGroup>
@@ -109,10 +109,10 @@ Each `filter` object contains the following fields:
 
 ### Checkbox
 
-| Field            | Type      | Description                                                                                                                                                | Example value |
-| :--------------- | :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `equals`         | `boolean` | Whether a `checkbox` property value matches the provided value exactly.<br /><br /> Returns or excludes all data source entries with an exact value match. | `false`       |
-| `does_not_equal` | `boolean` | Whether a `checkbox` property value differs from the provided value.<br /><br /> Returns or excludes all data source entries with a difference in values.  | `true`        |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `equals` | `boolean` | Whether a `checkbox` property value matches the provided value exactly.<br /><br /> Returns or excludes all data source entries with an exact value match. | `false` |
+| `does_not_equal` | `boolean` | Whether a `checkbox` property value differs from the provided value.<br /><br /> Returns or excludes all data source entries with a difference in values. | `true` |
 
 <CodeGroup>
   ```json Example checkbox filter condition theme={null}
@@ -139,36 +139,36 @@ A date filter condition can be used to limit `date` property value types and the
 
 The condition contains the below fields:
 
-| Field          | Type                                                                                                         | Description                                                                                                                                                     | Example value                |
-| :------------- | :----------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
-| `after`        | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is after the provided date.         | `"2021-05-10"` `"yesterday"` |
-| `before`       | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is before the provided date.        | `"2021-05-10"` `"tomorrow"`  |
-| `equals`       | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is the provided date.               | `"2021-05-10"` `"today"`     |
-| `is_empty`     | `true`                                                                                                       | The value to compare the date property value against. <br /><br /> Returns data source entries where the date property value contains no data.                  | `true`                       |
-| `is_not_empty` | `true`                                                                                                       | The value to compare the date property value against. <br /><br /> Returns data source entries where the date property value is not empty.                      | `true`                       |
-| `next_month`   | `object` (empty)                                                                                             | A filter that limits the results to data source entries where the date property value is within the next month.                                                 | `{}`                         |
-| `next_week`    | `object` (empty)                                                                                             | A filter that limits the results to data source entries where the date property value is within the next week.                                                  | `{}`                         |
-| `next_year`    | `object` (empty)                                                                                             | A filter that limits the results to data source entries where the date property value is within the next year.                                                  | `{}`                         |
-| `on_or_after`  | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is on or after the provided date.   | `"2021-05-10"` `"today"`     |
-| `on_or_before` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against. <br /><br /> Returns data source entries where the date property value is on or before the provided date. | `"2021-05-10"` `"today"`     |
-| `past_month`   | `object` (empty)                                                                                             | A filter that limits the results to data source entries where the `date` property value is within the past month.                                               | `{}`                         |
-| `past_week`    | `object` (empty)                                                                                             | A filter that limits the results to data source entries where the `date` property value is within the past week.                                                | `{}`                         |
-| `past_year`    | `object` (empty)                                                                                             | A filter that limits the results to data source entries where the `date` property value is within the past year.                                                | `{}`                         |
-| `this_week`    | `object` (empty)                                                                                             | A filter that limits the results to data source entries where the `date` property value is this week.                                                           | `{}`                         |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `after` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is after the provided date. | `"2021-05-10"` `"yesterday"` |
+| `before` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is before the provided date. | `"2021-05-10"` `"tomorrow"` |
+| `equals` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is the provided date. | `"2021-05-10"` `"today"` |
+| `is_empty` | `true` | The value to compare the date property value against. <br /><br /> Returns data source entries where the date property value contains no data. | `true` |
+| `is_not_empty` | `true` | The value to compare the date property value against. <br /><br /> Returns data source entries where the date property value is not empty. | `true` |
+| `next_month` | `object` (empty) | A filter that limits the results to data source entries where the date property value is within the next month. | `{}` |
+| `next_week` | `object` (empty) | A filter that limits the results to data source entries where the date property value is within the next week. | `{}` |
+| `next_year` | `object` (empty) | A filter that limits the results to data source entries where the date property value is within the next year. | `{}` |
+| `on_or_after` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against.<br /><br /> Returns data source entries where the date property value is on or after the provided date. | `"2021-05-10"` `"today"` |
+| `on_or_before` | `string` ([ISO 8601 date](https://en.wikipedia.org/wiki/ISO_8601) or [relative date](#relative-date-values)) | The value to compare the date property value against. <br /><br /> Returns data source entries where the date property value is on or before the provided date. | `"2021-05-10"` `"today"` |
+| `past_month` | `object` (empty) | A filter that limits the results to data source entries where the `date` property value is within the past month. | `{}` |
+| `past_week` | `object` (empty) | A filter that limits the results to data source entries where the `date` property value is within the past week. | `{}` |
+| `past_year` | `object` (empty) | A filter that limits the results to data source entries where the `date` property value is within the past year. | `{}` |
+| `this_week` | `object` (empty) | A filter that limits the results to data source entries where the `date` property value is this week. | `{}` |
 
 #### Relative date values
 
 The `after`, `before`, `equals`, `on_or_after`, and `on_or_before` fields accept the following relative date strings in addition to ISO 8601 dates. These are resolved at query time:
 
-| Value                  | Description                         |
-| :--------------------- | :---------------------------------- |
-| `"today"`              | The current date.                   |
-| `"tomorrow"`           | The day after the current date.     |
-| `"yesterday"`          | The day before the current date.    |
-| `"one_week_ago"`       | Seven days before the current date. |
-| `"one_week_from_now"`  | Seven days after the current date.  |
-| `"one_month_ago"`      | One month before the current date.  |
-| `"one_month_from_now"` | One month after the current date.   |
+| Value | Description |
+| :- | :- |
+| `"today"` | The current date. |
+| `"tomorrow"` | The day after the current date. |
+| `"yesterday"` | The day before the current date. |
+| `"one_week_ago"` | Seven days before the current date. |
+| `"one_week_from_now"` | Seven days after the current date. |
+| `"one_month_ago"` | One month before the current date. |
+| `"one_month_from_now"` | One month after the current date. |
 
 <CodeGroup>
   ```json Example date filter condition theme={null}
@@ -196,10 +196,10 @@ The `after`, `before`, `equals`, `on_or_after`, and `on_or_before` fields accept
 
 ### Files
 
-| Field          | Type   | Description                                                                                                                                     | Example value |
-| :------------- | :----- | :---------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `is_empty`     | `true` | Whether the files property value does not contain any data. <br /> <br /> Returns all data source entries with an empty `files` property value. | `true`        |
-| `is_not_empty` | `true` | Whether the `files` property value contains data. <br /> <br /> Returns all entries with a populated `files` property value.                    | `true`        |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `is_empty` | `true` | Whether the files property value does not contain any data. <br /> <br /> Returns all data source entries with an empty `files` property value. | `true` |
+| `is_not_empty` | `true` | Whether the `files` property value contains data. <br /> <br /> Returns all entries with a populated `files` property value. | `true` |
 
 <CodeGroup>
   ```json Example files filter condition theme={null}
@@ -218,12 +218,12 @@ The `after`, `before`, `equals`, `on_or_after`, and `on_or_before` fields accept
 
 The primary field of the `formula` filter condition object matches the type of the formula’s result. For example, to filter a formula property that computes a `checkbox`, use a `formula` filter condition object with a `checkbox` field containing a checkbox filter condition as its value.
 
-| Field      | Type     | Description                                                                                                                                                                         | Example value                                          |
-| :--------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------- |
-| `checkbox` | `object` | A [checkbox](#checkbox) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition.   | Refer to the [checkbox](#checkbox) filter condition.   |
-| `date`     | `object` | A [date](#date) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition.           | Refer to the [date](#date) filter condition.           |
-| `number`   | `object` | A [number](#number) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition.       | Refer to the [number](#number) filter condition.       |
-| `string`   | `object` | A [rich text](#rich-text) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition. | Refer to the [rich text](#rich-text) filter condition. |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `checkbox` | `object` | A [checkbox](#checkbox) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition. | Refer to the [checkbox](#checkbox) filter condition. |
+| `date` | `object` | A [date](#date) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition. | Refer to the [date](#date) filter condition. |
+| `number` | `object` | A [number](#number) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition. | Refer to the [number](#number) filter condition. |
+| `string` | `object` | A [rich text](#rich-text) filter condition to compare the formula result against. <br /><br /> Returns data source entries where the formula result matches the provided condition. | Refer to the [rich text](#rich-text) filter condition. |
 
 <CodeGroup>
   ```json Example formula filter condition theme={null}
@@ -242,12 +242,12 @@ The primary field of the `formula` filter condition object matches the type of t
 
 ### Multi-select
 
-| Field              | Type                   | Description                                                                                                                                                                       | Example value                              |
-| :----------------- | :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------- |
-| `contains`         | `string` or `string[]` | The value(s) to compare the multi-select property value against. <br /><br /> Returns data source entries where the multi-select value matches any of the provided values.        | `"Marketing"` or `["Marketing", "Sales"]`  |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `contains` | `string` or `string[]` | The value(s) to compare the multi-select property value against. <br /><br /> Returns data source entries where the multi-select value matches any of the provided values. | `"Marketing"` or `["Marketing", "Sales"]` |
 | `does_not_contain` | `string` or `string[]` | The value(s) to compare the multi-select property value against. <br /><br /> Returns data source entries where the multi-select value does not match any of the provided values. | `"Engineering"` or `["Engineering", "QA"]` |
-| `is_empty`         | `true`                 | Whether the multi-select property value is empty. <br /><br /> Returns data source entries where the multi-select value does not contain any data.                                | `true`                                     |
-| `is_not_empty`     | `true`                 | Whether the multi-select property value is not empty. <br /><br /> Returns data source entries where the multi-select value does contains data.                                   | `true`                                     |
+| `is_empty` | `true` | Whether the multi-select property value is empty. <br /><br /> Returns data source entries where the multi-select value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the multi-select property value is not empty. <br /><br /> Returns data source entries where the multi-select value does contains data. | `true` |
 
 <CodeGroup>
   ```json Example multi-select filter condition theme={null}
@@ -264,16 +264,16 @@ The primary field of the `formula` filter condition object matches the type of t
 
 ### Number
 
-| Field                      | Type     | Description                                                                                                                                                                            | Example value |
-| :------------------------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `does_not_equal`           | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value differs from the provided `number`.                | `42`          |
-| `equals`                   | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is the same as the provided number.                | `42`          |
-| `greater_than`             | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value exceeds the provided `number`.                     | `42`          |
-| `greater_than_or_equal_to` | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is equal to or exceeds the provided `number`.      | `42`          |
-| `is_empty`                 | `true`   | Whether the `number` property value is empty. <br /><br /> Returns data source entries where the number property value does not contain any data.                                      | `true`        |
-| `is_not_empty`             | `true`   | Whether the number property value is not empty. <br /><br /> Returns data source entries where the number property value contains data.                                                | `true`        |
-| `less_than`                | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is less than the provided `number`.                | `42`          |
-| `less_than_or_equal_to`    | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is equal to or is less than the provided `number`. | `42`          |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `does_not_equal` | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value differs from the provided `number`. | `42` |
+| `equals` | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is the same as the provided number. | `42` |
+| `greater_than` | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value exceeds the provided `number`. | `42` |
+| `greater_than_or_equal_to` | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is equal to or exceeds the provided `number`. | `42` |
+| `is_empty` | `true` | Whether the `number` property value is empty. <br /><br /> Returns data source entries where the number property value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the number property value is not empty. <br /><br /> Returns data source entries where the number property value contains data. | `true` |
+| `less_than` | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is less than the provided `number`. | `42` |
+| `less_than_or_equal_to` | `number` | The `number` to compare the number property value against. <br /><br /> Returns data source entries where the number property value is equal to or is less than the provided `number`. | `42` |
 
 <CodeGroup>
   ```json Example number filter condition theme={null}
@@ -294,12 +294,12 @@ You can apply a people filter condition to `people`, `created_by`, and `last_edi
 
 The people filter condition contains the following fields:
 
-| Field              | Type                        | Description                                                                                                                                                                                                                                 | Example value                            |
-| :----------------- | :-------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------- |
-| `contains`         | `string` (UUIDv4) or `"me"` | The value to compare the people property value against. <br /><br /> Returns data source entries where the people property value contains the provided user. Pass a user UUID or `"me"` to match the current user (see note below).         | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `contains` | `string` (UUIDv4) or `"me"` | The value to compare the people property value against. <br /><br /> Returns data source entries where the people property value contains the provided user. Pass a user UUID or `"me"` to match the current user (see note below). | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
 | `does_not_contain` | `string` (UUIDv4) or `"me"` | The value to compare the people property value against. <br /><br /> Returns data source entries where the people property value does not contain the provided user. Pass a user UUID or `"me"` to match the current user (see note below). | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
-| `is_empty`         | `true`                      | Whether the people property value does not contain any data. <br /><br /> Returns data source entries where the people property value does not contain any data.                                                                            | `true`                                   |
-| `is_not_empty`     | `true`                      | Whether the people property value contains data. <br /><br /> Returns data source entries where the people property value is not empty.                                                                                                     | `true`                                   |
+| `is_empty` | `true` | Whether the people property value does not contain any data. <br /><br /> Returns data source entries where the people property value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the people property value contains data. <br /><br /> Returns data source entries where the people property value is not empty. | `true` |
 
 <CodeGroup>
   ```json Example people filter condition theme={null}
@@ -331,12 +331,12 @@ The people filter condition contains the following fields:
 
 ### Relation
 
-| Field              | Type              | Description                                                                                                                                                          | Example value                            |
-| :----------------- | :---------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `contains`         | `string` (UUIDv4) | The value to compare the relation property value against. <br /><br /> Returns data source entries where the relation property value contains the provided `string`. | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
-| `does_not_contain` | `string` (UUIDv4) | The value to compare the relation property value against. <br /><br /> Returns entries where the relation property value does not contain the provided `string`.     | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
-| `is_empty`         | `true`            | Whether the relation property value does not contain data. <br /><br /> Returns data source entries where the relation property value does not contain any data.     | `true`                                   |
-| `is_not_empty`     | `true`            | Whether the relation property value contains data. <br /><br /> Returns data source entries where the property value is not empty.                                   | `true`                                   |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `contains` | `string` (UUIDv4) | The value to compare the relation property value against. <br /><br /> Returns data source entries where the relation property value contains the provided `string`. | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
+| `does_not_contain` | `string` (UUIDv4) | The value to compare the relation property value against. <br /><br /> Returns entries where the relation property value does not contain the provided `string`. | `"6c574cee-ca68-41c8-86e0-1b9e992689fb"` |
+| `is_empty` | `true` | Whether the relation property value does not contain data. <br /><br /> Returns data source entries where the relation property value does not contain any data. | `true` |
+| `is_not_empty` | `true` | Whether the relation property value contains data. <br /><br /> Returns data source entries where the property value is not empty. | `true` |
 
 <CodeGroup>
   ```json Example relation filter condition theme={null}
@@ -353,16 +353,16 @@ The people filter condition contains the following fields:
 
 ### Rich text
 
-| Field              | Type     | Description                                                                                                                                                               | Example value   |
-| :----------------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :-------------- |
-| `contains`         | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that includes the provided `string`.         | `"Moved to Q2"` |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `contains` | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that includes the provided `string`. | `"Moved to Q2"` |
 | `does_not_contain` | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that does not include the provided `string`. | `"Moved to Q2"` |
-| `does_not_equal`   | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that does not match the provided `string`.   | `"Moved to Q2"` |
-| `ends_with`        | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that ends with the provided `string`.        | `"Q2"`          |
-| `equals`           | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that matches the provided `string`.          | `"Moved to Q2"` |
-| `is_empty`         | `true`   | Whether the text property value does not contain any data. <br /><br /> Returns data source entries with a text property value that is empty.                             | `true`          |
-| `is_not_empty`     | `true`   | Whether the text property value contains any data. <br /><br /> Returns data source entries with a text property value that contains data.                                | `true`          |
-| `starts_with`      | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that starts with the provided `string`.      | "Moved"         |
+| `does_not_equal` | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that does not match the provided `string`. | `"Moved to Q2"` |
+| `ends_with` | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that ends with the provided `string`. | `"Q2"` |
+| `equals` | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that matches the provided `string`. | `"Moved to Q2"` |
+| `is_empty` | `true` | Whether the text property value does not contain any data. <br /><br /> Returns data source entries with a text property value that is empty. | `true` |
+| `is_not_empty` | `true` | Whether the text property value contains any data. <br /><br /> Returns data source entries with a text property value that contains data. | `true` |
+| `starts_with` | `string` | The `string` to compare the text property value against. <br /><br /> Returns data source entries with a text property value that starts with the provided `string`. | "Moved" |
 
 <CodeGroup>
   ```json Example rich text filter condition theme={null}
@@ -383,11 +383,11 @@ A rollup data source property can evaluate to an array, date, or number value. T
 
 #### Filter conditions for `array` rollup values
 
-| Field   | Type     | Description                                                                                                                                                                                                                                          | Example value                                       |
-| :------ | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------- |
-| `any`   | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type. <br /><br /> Returns data source entries where the rollup property value matches the provided criteria.   | `"rich_text": { "contains": "Take Fig on a walk" }` |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `any` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type. <br /><br /> Returns data source entries where the rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
 | `every` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type. <br /><br /> Returns data source entries where every rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
-| `none`  | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type. <br /><br /> Returns data source entries where no rollup property value matches the provided criteria.    | `"rich_text": { "contains": "Take Fig on a walk" }` |
+| `none` | `object` | The value to compare each rollup property value against. Can be a [filter condition](#type-specific-filter-conditions) for any other type. <br /><br /> Returns data source entries where no rollup property value matches the provided criteria. | `"rich_text": { "contains": "Take Fig on a walk" }` |
 
 <CodeGroup>
   ```json Example array rollup filter condition theme={null}
@@ -410,8 +410,8 @@ A rollup data source property can evaluate to an array, date, or number value. T
 
 A rollup value is stored as a `date` only if the "Earliest date", "Latest date", or "Date range" computation is selected for the property in the Notion UI.
 
-| Field  | Type     | Description                                                                                                                                                           | Example value                                |
-| :----- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------- |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
 | `date` | `object` | A [date](#date) filter condition to compare the rollup value against. <br /><br /> Returns data source entries where the rollup value matches the provided condition. | Refer to the [date](#date) filter condition. |
 
 <CodeGroup>
@@ -431,8 +431,8 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 #### Filter conditions for `number` rollup values
 
-| Field    | Type     | Description                                                                                                                                                               | Example value                                    |
-| :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------- |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
 | `number` | `object` | A [number](#number) filter condition to compare the rollup value against. <br /><br /> Returns data source entries where the rollup value matches the provided condition. | Refer to the [number](#number) filter condition. |
 
 <CodeGroup>
@@ -452,12 +452,12 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 ### Select
 
-| Field            | Type                   | Description                                                                                                                                                                    | Example value                        |
-| :--------------- | :--------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------- |
-| `equals`         | `string` or `string[]` | The value(s) to compare the select property value against. <br /><br /> Returns data source entries where the select property value matches any of the provided values.        | `"This week"` or `["Low", "Medium"]` |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `equals` | `string` or `string[]` | The value(s) to compare the select property value against. <br /><br /> Returns data source entries where the select property value matches any of the provided values. | `"This week"` or `["Low", "Medium"]` |
 | `does_not_equal` | `string` or `string[]` | The value(s) to compare the select property value against. <br /><br /> Returns data source entries where the select property value does not match any of the provided values. | `"Backlog"` or `["Done", "Archive"]` |
-| `is_empty`       | `true`                 | Whether the select property value does not contain data. <br /><br /> Returns data source entries where the select property value is empty.                                    | `true`                               |
-| `is_not_empty`   | `true`                 | Whether the select property value contains data. <br /><br /> Returns data source entries where the select property value is not empty.                                        | `true`                               |
+| `is_empty` | `true` | Whether the select property value does not contain data. <br /><br /> Returns data source entries where the select property value is empty. | `true` |
+| `is_not_empty` | `true` | Whether the select property value contains data. <br /><br /> Returns data source entries where the select property value is not empty. | `true` |
 
 <CodeGroup>
   ```json Example select filter condition theme={null}
@@ -485,12 +485,12 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 ### Status
 
-| Field            | Type                | Description                                                                                                                                                                                                                                             | Example value                            |
-| :--------------- | :------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :--------------------------------------- |
-| equals           | string or string\[] | The value(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value matches any of the provided values. Status group names (e.g. "To-do", "In progress", "Complete") are also accepted. | "This week" or \["To-do", "In progress"] |
-| does\_not\_equal | string or string\[] | The value(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value does not match any of the provided values.                                                                          | "Backlog" or \["Done", "Archive"]        |
-| is\_empty        | true                | Whether the status property value does not contain data. <br /><br /> Returns data source entries where the status property value is empty.                                                                                                             | true                                     |
-| is\_not\_empty   | true                | Whether the status property value contains data. <br /><br /> Returns data source entries where the status property value is not empty.                                                                                                                 | true                                     |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| equals | string or string\[] | The value(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value matches any of the provided values. Status group names (e.g. "To-do", "In progress", "Complete") are also accepted. | "This week" or \["To-do", "In progress"] |
+| does\_not\_equal | string or string\[] | The value(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value does not match any of the provided values. | "Backlog" or \["Done", "Archive"] |
+| is\_empty | true | Whether the status property value does not contain data. <br /><br /> Returns data source entries where the status property value is empty. | true |
+| is\_not\_empty | true | Whether the status property value contains data. <br /><br /> Returns data source entries where the status property value is not empty. | true |
 
 <CodeGroup>
   ```json Example status filter condition theme={null}
@@ -509,10 +509,10 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 
 Use a timestamp filter condition to filter results based on `created_time` or `last_edited_time` values.
 
-| Field                            | Type                             | Description                                                              | Example value                                |
-| :------------------------------- | :------------------------------- | :----------------------------------------------------------------------- | :------------------------------------------- |
-| timestamp                        | created\_time last\_edited\_time | A constant string representing the type of timestamp to use as a filter. | "created\_time"                              |
-| created\_time last\_edited\_time | object                           | A date filter condition used to filter the specified timestamp.          | Refer to the [date](#date) filter condition. |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| timestamp | created\_time last\_edited\_time | A constant string representing the type of timestamp to use as a filter. | "created\_time" |
+| created\_time last\_edited\_time | object | A date filter condition used to filter the specified timestamp. | Refer to the [date](#date) filter condition. |
 
 <CodeGroup>
   ```json Example timestamp filter condition for created_time theme={null}
@@ -533,10 +533,10 @@ Use a timestamp filter condition to filter results based on `created_time` or `l
 
 ### Verification
 
-| Field            | Type   | Description                                                         | Example value |
-| :--------------- | :----- | :------------------------------------------------------------------ | :------------ |
-| `status`         | string | Returns entries whose verification status matches the value.        | `"verified"`  |
-| `does_not_equal` | string | Returns entries whose verification status does not match the value. | `"expired"`   |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `status` | string | Returns entries whose verification status matches the value. | `"verified"` |
+| `does_not_equal` | string | Returns entries whose verification status does not match the value. | `"expired"` |
 
 Both fields accept `verified`, `expired`, or `none`.
 
@@ -557,14 +557,14 @@ Both fields accept `verified`, `expired`, or `none`.
 
 Use a timestamp filter condition to filter results based on the `unique_id` value.
 
-| Field                      | Type     | Description                                                                                                                                                                              | Example value |
-| :------------------------- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `does_not_equal`           | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value differs from the provided value.                | `42`          |
-| `equals`                   | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is the same as the provided value.              | `42`          |
-| `greater_than`             | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value exceeds the provided value.                     | `42`          |
-| `greater_than_or_equal_to` | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is equal to or exceeds the provided value.      | `42`          |
-| `less_than`                | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is less than the provided value.                | `42`          |
-| `less_than_or_equal_to`    | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is equal to or is less than the provided value. | `42`          |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `does_not_equal` | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value differs from the provided value. | `42` |
+| `equals` | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is the same as the provided value. | `42` |
+| `greater_than` | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value exceeds the provided value. | `42` |
+| `greater_than_or_equal_to` | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is equal to or exceeds the provided value. | `42` |
+| `less_than` | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is less than the provided value. | `42` |
+| `less_than_or_equal_to` | `number` | The value to compare the unique\_id property value against. <br /><br /> Returns data source entries where the unique\_id property value is equal to or is less than the provided value. | `42` |
 
 <CodeGroup>
   ```json Example ID filter condition theme={null}
@@ -628,10 +628,10 @@ The above filters in the Notion UI are equivalent to the following compound filt
 
 A compound filter condition contains an `and` or `or` key with a value that is an array of filter objects or nested compound filter objects. Nesting is supported up to two levels deep.
 
-| Field | Type    | Description                                                                                                                                                                                  | Example value                |
-| :---- | :------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------- |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
 | `and` | `array` | An array of [filter](#type-specific-filter-conditions) objects or compound filter conditions. <br /><br /> Returns data source entries that match **all** of the provided filter conditions. | Refer to the examples below. |
-| or    | array   | An array of [filter](#type-specific-filter-conditions) objects or compound filter conditions. <br /><br /> Returns data source entries that match **any** of the provided filter conditions  | Refer to the examples below. |
+| or | array | An array of [filter](#type-specific-filter-conditions) objects or compound filter conditions. <br /><br /> Returns data source entries that match **any** of the provided filter conditions | Refer to the examples below. |
 
 ### Example compound filter conditions
 

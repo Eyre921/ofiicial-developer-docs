@@ -469,7 +469,8 @@ components:
       properties:
         message_type:
           type: string
-          default: warning
+          enum:
+            - warning
         warning:
           type: string
       required:

@@ -34,9 +34,9 @@ General parenting rules:
 
 Database parents most commonly show up for [Data source](/reference/data-source) objects.
 
-| Property      | Type              | Description                                                              | Example values                           |
-| :------------ | :---------------- | :----------------------------------------------------------------------- | :--------------------------------------- |
-| `type`        | `string`          | Always `"database_id"`.                                                  | `"database_id"`                          |
+| Property | Type | Description | Example values |
+| :- | :- | :- | :- |
+| `type` | `string` | Always `"database_id"`. | `"database_id"` |
 | `database_id` | `string` (UUIDv4) | The ID of the [database](/reference/database) that this page belongs to. | `"b8595b75-abd1-4cad-8dfe-f935a8ef57cb"` |
 
 <CodeGroup>
@@ -52,11 +52,11 @@ Database parents most commonly show up for [Data source](/reference/data-source)
 
 Data source parents most commonly show up for [Page](/reference/page) objects.
 
-| Property         | Type              | Description                                                                                                                  | Example values                           |
-| :--------------- | :---------------- | :--------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| `type`           | `string`          | Always `"data_source_id"`.                                                                                                   | `"data_source_id"`                       |
-| `data_source_id` | `string` (UUIDv4) | The ID of the [data source](/reference/data-source) that this page belongs to.                                               | `"1a44be12-0953-4631-b498-9e5817518db8"` |
-| `database_id`    | `string` (UUIDv4) | The ID of the [database](/reference/database) that the data source belongs to, provided in the API response for convenience. | `"b8595b75-abd1-4cad-8dfe-f935a8ef57cb"` |
+| Property | Type | Description | Example values |
+| :- | :- | :- | :- |
+| `type` | `string` | Always `"data_source_id"`. | `"data_source_id"` |
+| `data_source_id` | `string` (UUIDv4) | The ID of the [data source](/reference/data-source) that this page belongs to. | `"1a44be12-0953-4631-b498-9e5817518db8"` |
+| `database_id` | `string` (UUIDv4) | The ID of the [database](/reference/database) that the data source belongs to, provided in the API response for convenience. | `"b8595b75-abd1-4cad-8dfe-f935a8ef57cb"` |
 
 <CodeGroup>
   ```json Data source parent example theme={null}
@@ -70,9 +70,9 @@ Data source parents most commonly show up for [Page](/reference/page) objects.
 
 ### Page parent
 
-| Property  | Type              | Description                                                      | Example values                           |
-| :-------- | :---------------- | :--------------------------------------------------------------- | :--------------------------------------- |
-| `type`    | `string`          | Always `"page_id"`.                                              | `"page_id"`                              |
+| Property | Type | Description | Example values |
+| :- | :- | :- | :- |
+| `type` | `string` | Always `"page_id"`. | `"page_id"` |
 | `page_id` | `string` (UUIDv4) | The ID of the [page](/reference/page) that this page belongs to. | `"59833787-2cf9-4fdf-8782-e53db20768a5"` |
 
 <CodeGroup>
@@ -90,10 +90,10 @@ A page or database with a workspace parent is a top-level page within a Notion w
 
 The workspace `parent` object contains the following keys:
 
-| Property    | Type      | Description           | Example values |
-| :---------- | :-------- | :-------------------- | :------------- |
-| `type`      | `type`    | Always `"workspace"`. | `"workspace"`  |
-| `workspace` | `boolean` | Always `true`.        | `true`         |
+| Property | Type | Description | Example values |
+| :- | :- | :- | :- |
+| `type` | `type` | Always `"workspace"`. | `"workspace"` |
+| `workspace` | `boolean` | Always `true`. | `true` |
 
 <CodeGroup>
   ```json Workspace parent example theme={null}
@@ -108,9 +108,9 @@ The workspace `parent` object contains the following keys:
 
 A page may have a block parent if it is created inline in a chunk of text, or is located beneath another block like a toggle or bullet block. The `parent` property is an object containing the following keys:
 
-| Property   | Type              | Description                                                      | Example values                           |
-| :--------- | :---------------- | :--------------------------------------------------------------- | :--------------------------------------- |
-| `type`     | `type`            | Always `"block_id"`.                                             | `"block_id"`                             |
+| Property | Type | Description | Example values |
+| :- | :- | :- | :- |
+| `type` | `type` | Always `"block_id"`. | `"block_id"` |
 | `block_id` | `string` (UUIDv4) | The ID of the [page](/reference/page) that this page belongs to. | `"ea29285f-7282-4b00-b80c-32bdbab50261"` |
 
 <CodeGroup>
@@ -126,9 +126,9 @@ A page may have a block parent if it is created inline in a chunk of text, or is
 
 Agent parents show up on agent instruction pages and the blocks that make them up, where the parent is the agent the instructions belong to. Most pages and blocks do not have agent parents.
 
-| Property   | Type              | Description                                                   | Example values                           |
-| :--------- | :---------------- | :------------------------------------------------------------ | :--------------------------------------- |
-| `type`     | `type`            | Always `"agent_id"`.                                          | `"agent_id"`                             |
+| Property | Type | Description | Example values |
+| :- | :- | :- | :- |
+| `type` | `type` | Always `"agent_id"`. | `"agent_id"` |
 | `agent_id` | `string` (UUIDv4) | The ID of the agent that owns this instruction page or block. | `"7d50a184-5bbe-4d90-8f29-6bec57ed817b"` |
 
 <CodeGroup>

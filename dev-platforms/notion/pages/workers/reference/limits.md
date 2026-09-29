@@ -12,11 +12,11 @@ Notion enforces rate limits on worker execution to keep the platform stable for 
 
 Worker runs use separate limits by capability type. Every worker in a workspace shares the applicable workspace budget.
 
-| Action                                  | Default limit                       | Scope                                                             |
-| --------------------------------------- | ----------------------------------- | ----------------------------------------------------------------- |
-| Tool runs and queued webhook executions | 600 per hour; 60 per minute burst   | Per workspace, shared between tools and queued webhook executions |
-| Sync runs                               | 600 per hour; 60 per minute burst   | Per workspace                                                     |
-| Builds (`ntn workers deploy`)           | 100 per day; 10 per 5 minutes burst | Per workspace                                                     |
+| Action | Default limit | Scope |
+| - | - | - |
+| Tool runs and queued webhook executions | 600 per hour; 60 per minute burst | Per workspace, shared between tools and queued webhook executions |
+| Sync runs | 600 per hour; 60 per minute burst | Per workspace |
+| Builds (`ntn workers deploy`) | 100 per day; 10 per 5 minutes burst | Per workspace |
 
 When a tool run, sync run, or queued webhook execution reaches its limit, its recorded worker run has a `rate_limit_error` result. The result includes `retryAfterSeconds` when available. The way a direct invocation surfaces that error depends on its transport.
 
@@ -26,9 +26,9 @@ Before Notion accepts a webhook event, it applies a separate workspace-level adm
 
 Incoming webhook HTTP requests are also throttled before worker code runs:
 
-| Scope                                        | Default limit             |
-| -------------------------------------------- | ------------------------- |
-| Per worker                                   | 600 requests per minute   |
+| Scope | Default limit |
+| - | - |
+| Per worker | 600 requests per minute |
 | Per workspace (all webhook workers combined) | 1,200 requests per minute |
 
 If a webhook request exceeds an ingress or admission limit, Notion responds synchronously with HTTP `429` and `{ "error": "Rate limit exceeded" }`. A request that receives `202 Accepted` was queued, but its later asynchronous execution can still reach the shared tool and webhook execution limit. Notion retries rate-limited webhook executions.
@@ -37,8 +37,8 @@ If a webhook request exceeds an ingress or admission limit, Notion responds sync
 
 Sync upserts and deletes (the `changes` your `execute` function returns) are limited separately from sync runs, since a single sync run can write many rows:
 
-| Scope         | Default limit                          | Burst limit       |
-| ------------- | -------------------------------------- | ----------------- |
+| Scope | Default limit | Burst limit |
+| - | - | - |
 | Per workspace | 1,000,000 database operations per hour | 25,000 per minute |
 
 ## Next steps

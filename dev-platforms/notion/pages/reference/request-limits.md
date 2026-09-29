@@ -16,10 +16,10 @@ The Notion API enforces two rate limits: a per-connection limit and a per-worksp
 
 Each connection has a fixed budget of requests per 60-second window, based on the workspace's plan:
 
-| Workspace plan          | Limit                                                 |
-| :---------------------- | :---------------------------------------------------- |
+| Workspace plan | Limit |
+| :- | :- |
 | Business and Enterprise | 600 requests per minute (an average of 10 per second) |
-| All other plans         | 180 requests per minute (an average of 3 per second)  |
+| All other plans | 180 requests per minute (an average of 3 per second) |
 
 The budget can be spent at any pace within the window — spread out evenly or in a single burst. When a request exceeds this limit, the `Retry-After` value is the time until the window resets, so it is at most 60 seconds.
 
@@ -31,12 +31,14 @@ A separate limit is shared across all of the workspace's connections and scaled 
 
 Requests that exceed a limit return a `"rate_limited"` error code and an HTTP 429 response. `additional_data.rate_limit_reason` says which limit was exceeded:
 
-| `rate_limit_reason`                   | What to do                                                                                     |
-| :------------------------------------ | :--------------------------------------------------------------------------------------------- |
-| `public_api_request_rate_limit`       | This connection is sending requests too fast. Wait for `Retry-After`.                          |
-| `public_api_space_request_rate_limit` | The workspace's shared budget is used up. Wait for `Retry-After`.                              |
-| `public_api_endpoint_rate_limit`      | This endpoint has its own limit. Wait for `Retry-After`.                                       |
-| `public_api_request_blocked`          | This connection's API access has been restricted. Retrying won't help. Contact Notion support. |
+| `rate_limit_reason` | What to do |
+| :- | :- |
+| `public_api_request_rate_limit` | This connection is sending requests too fast. Wait for `Retry-After`. |
+| `public_api_space_request_rate_limit` | The workspace's shared budget is used up. Wait for `Retry-After`. |
+| `public_api_endpoint_rate_limit` | This endpoint has its own limit. Wait for `Retry-After`. |
+| `mcp_tool_rate_limit` | An MCP tool reached its own limit. Wait for `Retry-After`, which is usually under 10 seconds. |
+| `collection_router_upstream_429` | A data source query was throttled upstream. Wait for `Retry-After`. |
+| `public_api_request_blocked` | This connection's API access has been restricted. Retrying won't help. Contact Notion support. |
 
 Other `rate_limit_reason` values can appear. Handle them like any other 429 and wait for `Retry-After`.
 
@@ -241,18 +243,18 @@ Note that in addition to the property limits below, payloads have a maximum size
 
 ### Limits for property values
 
-| Property value type                                                                                   | Inner property        | Size limit        |
-| :---------------------------------------------------------------------------------------------------- | :-------------------- | :---------------- |
-| [Rich text object](/reference/rich-text)                                                              | `text.content`        | 2000 characters   |
-| [Rich text object](/reference/rich-text)                                                              | `text.link.url`       | 2000 characters   |
-| [Rich text object](/reference/rich-text)                                                              | `equation.expression` | 1000 characters   |
-| Any array of all [block](/reference/block) types, including [rich text objects](/reference/rich-text) |                       | 100 elements      |
-| Any URL                                                                                               |                       | 2000 characters   |
-| Any email                                                                                             |                       | 200 characters    |
-| Any phone number                                                                                      |                       | 200 characters    |
-| Any multi-select                                                                                      |                       | 100 options       |
-| Any relation                                                                                          |                       | 100 related pages |
-| Any people                                                                                            |                       | 100 users         |
+| Property value type | Inner property | Size limit |
+| :- | :- | :- |
+| [Rich text object](/reference/rich-text) | `text.content` | 2000 characters |
+| [Rich text object](/reference/rich-text) | `text.link.url` | 2000 characters |
+| [Rich text object](/reference/rich-text) | `equation.expression` | 1000 characters |
+| Any array of all [block](/reference/block) types, including [rich text objects](/reference/rich-text) | | 100 elements |
+| Any URL | | 2000 characters |
+| Any email | | 200 characters |
+| Any phone number | | 200 characters |
+| Any multi-select | | 100 options |
+| Any relation | | 100 related pages |
+| Any people | | 100 users |
 
 <Note>
   **Request size limits**

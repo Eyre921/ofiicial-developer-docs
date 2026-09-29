@@ -55,15 +55,15 @@ The official Pinecone extension for [Gemini CLI](https://github.com/google-gemin
 
 ## Available skills
 
-| Skill             | Description                                                                         |
-| ----------------- | ----------------------------------------------------------------------------------- |
-| **quickstart**    | Step-by-step onboarding — create an index, upload data, and run your first search.  |
-| **query**         | Search integrated indexes using natural language text via the Pinecone MCP.         |
-| **assistant**     | Create, manage, and chat with Pinecone Assistants for document Q\&A with citations. |
-| **cli**           | Guide for using the Pinecone CLI from the terminal.                                 |
-| **mcp**           | Reference for all available Pinecone MCP server tools and their parameters.         |
-| **pinecone-docs** | Curated links to official Pinecone documentation, organized by topic.               |
-| **help**          | Overview of all skills and what you need to get started.                            |
+| Skill | Description |
+| - | - |
+| **quickstart** | Step-by-step onboarding — create an index, upload data, and run your first search. |
+| **query** | Search integrated indexes using natural language text via the Pinecone MCP. |
+| **assistant** | Create, manage, and chat with Pinecone Assistants for document Q\&A with citations. |
+| **cli** | Guide for using the Pinecone CLI from the terminal. |
+| **mcp** | Reference for all available Pinecone MCP server tools and their parameters. |
+| **pinecone-docs** | Curated links to official Pinecone documentation, organized by topic. |
+| **help** | Overview of all skills and what you need to get started. |
 
 Skills are activated automatically based on your conversation. If the agent doesn't pick up a specific skill, explicitly ask for it: *"Use the quickstart skill to help me get started."*
 

@@ -14,13 +14,13 @@ A node is the basic unit of compute and cache storage capacity for a dedicated r
 
 There are two node types: `b1` and `t1`. Both are suitable for large-scale and demanding workloads, but they differ in processing power and memory capacity, and they cache different data.
 
-|                  | b1 (Balanced)                                                                   | t1 (Performance)                                                                                                |
-| ---------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| Memory caching   | Vector index stored in memory                                                   | Vector index + vector projections cached in memory                                                              |
-| Use case         | Predictable performance for sustained query rates with balanced cost efficiency | Highest performance for the most demanding workloads with extreme query volumes and strict latency requirements |
-| Storage          | 250 GB per shard                                                                | 250 GB per shard                                                                                                |
-| Compute & memory | Base-level compute and memory resources                                         | \~4x more compute and memory than `b1`                                                                          |
-| Cost             | Lower-cost option                                                               | \~3x the cost of `b1`                                                                                           |
+| | b1 (Balanced) | t1 (Performance) |
+| - | - | - |
+| Memory caching | Vector index stored in memory | Vector index + vector projections cached in memory |
+| Use case | Predictable performance for sustained query rates with balanced cost efficiency | Highest performance for the most demanding workloads with extreme query volumes and strict latency requirements |
+| Storage | 250 GB per shard | 250 GB per shard |
+| Compute & memory | Base-level compute and memory resources | \~4x more compute and memory than `b1` |
+| Cost | Lower-cost option | \~3x the cost of `b1` |
 
 Consider using `t1` nodes if your performance requirements aren't met by `b1` nodes, or if `t1` nodes are more cost-effective than `b1` nodes for your workload.
 

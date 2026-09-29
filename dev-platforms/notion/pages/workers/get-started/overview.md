@@ -56,14 +56,14 @@ Once deployed, Notion takes over:
 
 Your code runs in a sandboxed Node.js environment. You can make HTTP requests to external APIs, [use secrets](/workers/guides/secrets) stored via the CLI, and authenticate with third-party services through [OAuth](/workers/guides/oauth).
 
-| Concept        | What it does                                                                                            |
-| :------------- | :------------------------------------------------------------------------------------------------------ |
-| **Worker**     | The container for your code. One worker per project.                                                    |
+| Concept | What it does |
+| :- | :- |
+| **Worker** | The container for your code. One worker per project. |
 | **Capability** | Something the worker can do, i.e. a sync, tool, or webhook. A worker can have one or more capabilities. |
-| **Database**   | A Notion database managed by a sync. You define its schema in code.                                     |
-| **Pacer**      | Rate-limits outbound API calls so you don't hit third-party quotas.                                     |
-| **OAuth**      | Handles authorization flows for services like GitHub and Google.                                        |
-| **Secrets**    | Environment variables stored securely and injected at runtime.                                          |
+| **Database** | A Notion database managed by a sync. You define its schema in code. |
+| **Pacer** | Rate-limits outbound API calls so you don't hit third-party quotas. |
+| **OAuth** | Handles authorization flows for services like GitHub and Google. |
+| **Secrets** | Environment variables stored securely and injected at runtime. |
 
 ## Typical workflow
 

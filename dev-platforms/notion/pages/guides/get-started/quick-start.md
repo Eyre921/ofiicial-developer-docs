@@ -198,9 +198,9 @@ Open the page and you should see your heading, paragraph, and bullet list inside
   }
   ```
 
-  | Error              | Fix                                                                                 |
-  | :----------------- | :---------------------------------------------------------------------------------- |
-  | `unauthorized`     | Double-check that your token is correct and hasn't expired.                         |
+  | Error | Fix |
+  | :- | :- |
+  | `unauthorized` | Double-check that your token is correct and hasn't expired. |
   | `validation_error` | Check the request body against the [Create a page](/reference/post-page) reference. |
 
   For the full list of error codes, see [Status codes](/reference/status-codes).

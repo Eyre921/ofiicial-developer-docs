@@ -26,11 +26,11 @@ Your uploaded data must be in the file format required for your index type: Parq
 
 Be sure to create your index on a cloud that supports importing from the object storage you want to use:
 
-|                                       | …to an **AWS** index | …to a **GCP** index | …to an **Azure** index |
-| ------------------------------------- | :------------------: | :-----------------: | :--------------------: |
-| Import from **AWS S3**…               |           ✅          |          ❌          |            ❌           |
-| Import from **Google Cloud Storage**… |           ✅          |          ✅          |            ✅           |
-| Import from **Azure Blob Storage**…   |           ✅          |          ✅          |            ✅           |
+| | …to an **AWS** index | …to a **GCP** index | …to an **Azure** index |
+| - | :-: | :-: | :-: |
+| Import from **AWS S3**… | ✅ | ❌ | ❌ |
+| Import from **Google Cloud Storage**… | ✅ | ✅ | ✅ |
+| Import from **Azure Blob Storage**… | ✅ | ✅ | ✅ |
 
 ## 2. Add a storage integration
 
@@ -67,11 +67,11 @@ To import records from a public data source, a storage integration isn't require
       <Tab title="Document schema">
         To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to [`documents.upsert`](/reference/api/latest/data-plane/upsert_documents):
 
-        | Field             | JSON type                                      | Description                                                                                                                                                                                                                                                                                                                                                      |
-        | ----------------- | ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `_id`             | `string`                                       | Required. Unique identifier for each document within the namespace.                                                                                                                                                                                                                                                                                              |
-        | Each schema field | Depends on the field's type                    | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A document doesn't need to populate every declared field, but it must include `_id` and at least one schema field. |
-        | Any other field   | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/core-concepts/key-terms#metadata). Field names can't start with `_` or `$`.                                                                                                                                                                                                                   |
+        | Field | JSON type | Description |
+        | - | - | - |
+        | `_id` | `string` | Required. Unique identifier for each document within the namespace. |
+        | Each schema field | Depends on the field's type | Encode each schema-declared field by its type: a full-text `string` field as a JSON string; a `dense_vector` field as an array of floats matching the schema's `dimension`; a `sparse_vector` field as `{"indices": [...], "values": [...]}`. A document doesn't need to populate every declared field, but it must include `_id` and at least one schema field. |
+        | Any other field | `string`, number, boolean, or array of strings | Optional. Stored and auto-indexed as filterable [metadata](/guides/core-concepts/key-terms#metadata). Field names can't start with `_` or `$`. |
 
         <Note>
           Unlike Parquet imports, fields not declared in the schema aren't ignored: they're stored and auto-indexed as filterable metadata.
@@ -90,11 +90,11 @@ To import records from a public data source, a storage integration isn't require
       <Tab title="Dense vectors">
         To import into a namespace in an [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors), the Parquet file must contain the following columns:
 
-        | Column name | Parquet type  | Description                                                                                                                        |
-        | ----------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-        | `id`        | `STRING`      | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id).                                      |
-        | `values`    | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector). |
-        | `metadata`  | `STRING`      | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
+        | Column name | Parquet type | Description |
+        | - | - | - |
+        | `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
+        | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector). |
+        | `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
 
         <Note>
           Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, and `metadata` are processed.
@@ -113,11 +113,11 @@ To import records from a public data source, a storage integration isn't require
       <Tab title="Sparse vectors">
         To import into a namespace in an [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors), the Parquet file must contain the following columns:
 
-        | Column name     | Parquet type                                          | Description                                                                                                                                                                                        |
-        | --------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `id`            | `STRING`                                              | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id).                                                                                                      |
+        | Column name | Parquet type | Description |
+        | - | - | - |
+        | `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
         | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Required. A list of floating-point values (sparse values) and a list of integer values (sparse indices) that make up the [sparse vector embedding](/guides/core-concepts/key-terms#sparse-vector). |
-        | `metadata`      | `STRING`                                              | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`.                                                                 |
+        | `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
 
         <Note>
           Additional columns in the Parquet file are silently ignored during import; only `id`, `sparse_values`, and `metadata` are processed.
@@ -136,12 +136,12 @@ To import records from a public data source, a storage integration isn't require
       <Tab title="Dense + sparse">
         To import into a namespace in an [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index), the Parquet file must contain the following columns:
 
-        | Column name     | Parquet type                                          | Description                                                                                                                                                                  |
-        | --------------- | ----------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-        | `id`            | `STRING`                                              | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id).                                                                                |
-        | `values`        | `LIST<FLOAT>`                                         | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector).                                           |
+        | Column name | Parquet type | Description |
+        | - | - | - |
+        | `id` | `STRING` | Required. The unique [identifier for each record](/guides/core-concepts/key-terms#record-id). |
+        | `values` | `LIST<FLOAT>` | Required. A list of floating-point values that make up the [dense vector embedding](/guides/core-concepts/key-terms#dense-vector). |
         | `sparse_values` | `STRUCT<indices: LIST<UINT_32>, values: LIST<FLOAT>>` | Optional. A list of floating-point values that make up the [sparse vector embedding](/guides/core-concepts/key-terms#sparse-vector). To omit from specific rows, use `NULL`. |
-        | `metadata`      | `STRING`                                              | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`.                                           |
+        | `metadata` | `STRING` | Optional. Additional [metadata](/guides/core-concepts/key-terms#metadata) for each record. To omit from specific rows, use `NULL`. |
 
         <Note>
           Additional columns in the Parquet file are silently ignored during import; only `id`, `values`, `sparse_values`, and `metadata` are processed.
@@ -881,13 +881,13 @@ The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation 
   If your import exceeds these limits, you'll get an error specifying the limit exceeded. See [Troubleshooting](/guides/index-data/import-data#troubleshooting) for details.
 </Note>
 
-| Metric                                        | Limit     |
-| :-------------------------------------------- | :-------- |
-| Max namespaces per import                     | 10,000    |
-| Max total input data size (on-demand indexes) | 1 TB      |
-| Max total input data size (DRN indexes)       | Unlimited |
-| Max files per import                          | 100,000   |
-| Max size per file                             | 10 GB     |
+| Metric | Limit |
+| :- | :- |
+| Max namespaces per import | 10,000 |
+| Max total input data size (on-demand indexes) | 1 TB |
+| Max total input data size (DRN indexes) | Unlimited |
+| Max files per import | 100,000 |
+| Max size per file | 10 GB |
 
 The total input data size limit doesn't apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 

@@ -343,20 +343,20 @@ The following code searches for the 3 records that are most semantically similar
 
 Pinecone's filtering language supports the following operators:
 
-| Operator  | Function                                                                                                                  | Supported types         |
-| :-------- | :------------------------------------------------------------------------------------------------------------------------ | :---------------------- |
-| `$eq`     | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}`           | Number, string, boolean |
-| `$ne`     | Matches  with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}`              | Number, string, boolean |
-| `$gt`     | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}`                 | Number                  |
-| `$gte`    | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}`     | Number                  |
-| `$lt`     | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}`                    | Number                  |
-| `$lte`    | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}`       | Number                  |
-| `$in`     | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}`     | String, number          |
-| `$nin`    | Matches  with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number          |
-| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}`                                       | Number, string, boolean |
-| `$and`    | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`    | -                       |
-| `$or`     | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}`      | -                       |
-| `$not`    | Matches  that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}`                            | -                       |
+| Operator | Function | Supported types |
+| :- | :- | :- |
+| `$eq` | Matches  with metadata values that are equal to a specified value. Example: `{"genre": {"$eq": "documentary"}}` | Number, string, boolean |
+| `$ne` | Matches  with metadata values that aren't equal to a specified value. Example: `{"genre": {"$ne": "drama"}}` | Number, string, boolean |
+| `$gt` | Matches  with metadata values that are greater than a specified value. Example: `{"year": {"$gt": 2019}}` | Number |
+| `$gte` | Matches  with metadata values that are greater than or equal to a specified value. Example:`{"year": {"$gte": 2020}}` | Number |
+| `$lt` | Matches  with metadata values that are less than a specified value. Example: `{"year": {"$lt": 2020}}` | Number |
+| `$lte` | Matches  with metadata values that are less than or equal to a specified value. Example: `{"year": {"$lte": 2020}}` | Number |
+| `$in` | Matches  with metadata values that are in a specified array. Example: `{"genre": {"$in": ["comedy", "documentary"]}}` | String, number |
+| `$nin` | Matches  with metadata values that aren't in a specified array. Example: `{"genre": {"$nin": ["comedy", "documentary"]}}` | String, number |
+| `$exists` | Matches  with the specified metadata field. Example: `{"genre": {"$exists": true}}` | Number, string, boolean |
+| `$and` | Joins query clauses with a logical `AND`. Example: `{"$and": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
+| `$or` | Joins query clauses with a logical `OR`. Example: `{"$or": [{"genre": {"$eq": "drama"}}, {"year": {"$gte": 2020}}]}` | - |
+| `$not` | Matches  that don't match the wrapped clause. Example: `{"genre": {"$not": {"$eq": "drama"}}}` | - |
 
 <Note>
   At the top level, list one or more fields (combined with implicit AND) or combine clauses with the logical operators `$and` and `$or`. Use `$not` to negate a clause, as shown in the table. A bare comparison operator (like `$gt`) can't appear at the top level; nest it under a field.
@@ -404,11 +404,11 @@ Additionally, requests with the following filters will **not** match because the
 
 On [indexes with a document schema](/guides/index-data/data-modeling#documents), three additional operators match text on `string` fields that have `full_text_search` enabled. They narrow the candidate set before scoring, the same way metadata operators do.
 
-| Operator        | Example                                           | Description                                                        |
-| --------------- | ------------------------------------------------- | ------------------------------------------------------------------ |
+| Operator | Example | Description |
+| - | - | - |
 | `$match_phrase` | `{"body": {"$match_phrase": "machine learning"}}` | Exact phrase match (contiguous tokens) on a text-searchable field. |
-| `$match_all`    | `{"body": {"$match_all": "machine learning"}}`    | All tokens present, in any order.                                  |
-| `$match_any`    | `{"body": {"$match_any": "AI robotics"}}`         | At least one token present.                                        |
+| `$match_all` | `{"body": {"$match_all": "machine learning"}}` | All tokens present, in any order. |
+| `$match_any` | `{"body": {"$match_any": "AI robotics"}}` | At least one token present. |
 
 These operators share a few rules:
 

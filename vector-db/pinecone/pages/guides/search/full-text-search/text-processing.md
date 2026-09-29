@@ -80,26 +80,26 @@ The default language is `"en"` (English). You can specify a language using eithe
 
 ### Supported languages
 
-| Code | Full name    | Stop words |
-| ---- | ------------ | ---------- |
-| `ar` | `arabic`     | No         |
-| `da` | `danish`     | Yes        |
-| `de` | `german`     | Yes        |
-| `el` | `greek`      | No         |
-| `en` | `english`    | Yes        |
-| `es` | `spanish`    | Yes        |
-| `fi` | `finnish`    | Yes        |
-| `fr` | `french`     | Yes        |
-| `hu` | `hungarian`  | Yes        |
-| `it` | `italian`    | Yes        |
-| `nl` | `dutch`      | Yes        |
-| `no` | `norwegian`  | Yes        |
-| `pt` | `portuguese` | Yes        |
-| `ro` | `romanian`   | No         |
-| `ru` | `russian`    | Yes        |
-| `sv` | `swedish`    | Yes        |
-| `ta` | `tamil`      | No         |
-| `tr` | `turkish`    | No         |
+| Code | Full name | Stop words |
+| - | - | - |
+| `ar` | `arabic` | No |
+| `da` | `danish` | Yes |
+| `de` | `german` | Yes |
+| `el` | `greek` | No |
+| `en` | `english` | Yes |
+| `es` | `spanish` | Yes |
+| `fi` | `finnish` | Yes |
+| `fr` | `french` | Yes |
+| `hu` | `hungarian` | Yes |
+| `it` | `italian` | Yes |
+| `nl` | `dutch` | Yes |
+| `no` | `norwegian` | Yes |
+| `pt` | `portuguese` | Yes |
+| `ro` | `romanian` | No |
+| `ru` | `russian` | Yes |
+| `sv` | `swedish` | Yes |
+| `ta` | `tamil` | No |
+| `tr` | `turkish` | No |
 
 ## Substring search with n-grams
 
@@ -130,10 +130,10 @@ To enable it, set an `ngram` object on a text field's `full_text_search` config 
 
 `ngram` parameters:
 
-| Parameter     | Type    | Required             | Description                                                                                                                                                                                                         |
-| ------------- | ------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `min_gram`    | integer | Yes                  | Shortest n-gram to generate. Must be at least `1`.                                                                                                                                                                  |
-| `max_gram`    | integer | Yes                  | Longest n-gram to generate. Must be at least `min_gram` and at most `10`.                                                                                                                                           |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `min_gram` | integer | Yes | Shortest n-gram to generate. Must be at least `1`. |
+| `max_gram` | integer | Yes | Longest n-gram to generate. Must be at least `min_gram` and at most `10`. |
 | `prefix_only` | boolean | No (default `false`) | When `true`, generate only n-grams anchored to the start of each token (edge n-grams). Use this for prefix and autocomplete matching. When `false`, generate n-grams at every position for full substring matching. |
 
 For example, with `min_gram: 3`, `max_gram: 4`, and `prefix_only: false`, the token `search` is indexed as `sea`, `ear`, `arc`, `rch`, `sear`, `earc`, `arch`. A shorter or longer window changes the tradeoff: smaller n-grams match more loosely and grow the index more; larger n-grams are more precise but require longer matching substrings.

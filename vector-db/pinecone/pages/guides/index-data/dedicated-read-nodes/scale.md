@@ -10,10 +10,10 @@ Scale a Pinecone dedicated read nodes index by adding replicas for query through
 
 Dedicated read nodes don't yet scale automatically. You decide when to scale, guided by two signals:
 
-| Scenario    | What to check  | What to do                              |
-| :---------- | :------------- | :-------------------------------------- |
-| Query load  | CPU usage      | [Add replicas](#add-or-remove-replicas) |
-| Data volume | Index fullness | [Add shards](#add-or-remove-shards)     |
+| Scenario | What to check | What to do |
+| :- | :- | :- |
+| Query load | CPU usage | [Add replicas](#add-or-remove-replicas) |
+| Data volume | Index fullness | [Add shards](#add-or-remove-shards) |
 
 Diagnose which one you're facing before you scale. Adding shards won't relieve query latency that's driven by CPU saturation, and adding replicas won't create room on a shard that's running out of space.
 
@@ -39,10 +39,10 @@ Throughput scales approximately linearly with replicas. For high availability, a
 
 To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas), call [Configure an index](/reference/api/2025-10/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
 
-| Field                                                     | Value                                                                                   | Notes                                     |
-| :-------------------------------------------------------- | :-------------------------------------------------------------------------------------- | :---------------------------------------- |
-| `spec.serverless.read_capacity.mode`                      | `Dedicated`                                                                             |                                           |
-| `spec.serverless.read_capacity.dedicated.scaling`         | `Manual`                                                                                |                                           |
+| Field | Value | Notes |
+| :- | :- | :- |
+| `spec.serverless.read_capacity.mode` | `Dedicated` | |
+| `spec.serverless.read_capacity.dedicated.scaling` | `Manual` | |
 | `spec.serverless.read_capacity.dedicated.manual.replicas` | Desired number of [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) | Add replicas to increase query throughput |
 
 ### Example
@@ -155,10 +155,10 @@ To check the current value, see [Monitor index fullness](/guides/index-data/dedi
 
 To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shards), call [Configure an index](/reference/api/2025-10/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
 
-| Field                                                   | Value                                                                               | Notes                                 |
-| :------------------------------------------------------ | :---------------------------------------------------------------------------------- | :------------------------------------ |
-| `spec.serverless.read_capacity.mode`                    | `Dedicated`                                                                         |                                       |
-| `spec.serverless.read_capacity.dedicated.scaling`       | `Manual`                                                                            |                                       |
+| Field | Value | Notes |
+| :- | :- | :- |
+| `spec.serverless.read_capacity.mode` | `Dedicated` | |
+| `spec.serverless.read_capacity.dedicated.scaling` | `Manual` | |
 | `spec.serverless.read_capacity.dedicated.manual.shards` | Desired number of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) | Each shard provides 250 GB of storage |
 
 ### Example

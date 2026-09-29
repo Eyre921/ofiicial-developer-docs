@@ -14,11 +14,11 @@ Reference for reading, writing, and clearing each type of page property value.
 
 A page’s `properties` object holds its property values. In a data source, each page is a row and each property is a column in table view. The data source defines the property names and types.
 
-| Object                                                 | What it describes                                              | Endpoint                                                             |
-| :----------------------------------------------------- | :------------------------------------------------------------- | :------------------------------------------------------------------- |
-| [Data source property](/reference/property-object)     | A property’s name, type, and settings, also called its schema. | [Retrieve a data source](/reference/retrieve-a-data-source)          |
-| [Page property value](/reference/page-property-values) | The value of that property on one page.                        | [Retrieve a page](/reference/retrieve-a-page)                        |
-| [Page property item](/reference/property-item-object)  | A single value, or one item in a paginated value.              | [Retrieve a page property item](/reference/retrieve-a-page-property) |
+| Object | What it describes | Endpoint |
+| :- | :- | :- |
+| [Data source property](/reference/property-object) | A property’s name, type, and settings, also called its schema. | [Retrieve a data source](/reference/retrieve-a-data-source) |
+| [Page property value](/reference/page-property-values) | The value of that property on one page. | [Retrieve a page](/reference/retrieve-a-page) |
+| [Page property item](/reference/property-item-object) | A single value, or one item in a paginated value. | [Retrieve a page property item](/reference/retrieve-a-page-property) |
 
 The tabs compare the same property across API objects. Schema and Page value examples each show one entry in a response’s `properties` object. Page write shows an Update page request body; Create page also needs a parent. Read-only types have no Page write tab.
 
@@ -26,10 +26,10 @@ For `title`, `rich_text`, `people`, and `relation`, the Property item tab shows 
 
 ## Attributes
 
-| Field               | Type   | Meaning                                                                   |
-| :------------------ | :----- | :------------------------------------------------------------------------ |
-| `id`                | String | The property’s ID.                                                        |
-| `type`              | String | The API property type, such as `status` or `rich_text`.                   |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `id` | String | The property’s ID. |
+| `type` | String | The API property type, such as `status` or `rich_text`. |
 | Key matching `type` | Varies | The value. It can be a string, number, boolean, object, array, or `null`. |
 
 A property’s `id` stays the same when its name changes. IDs can be short strings or UUIDs. The Name property always has the ID `title`.
@@ -46,13 +46,13 @@ The `object: "property_item"` field appears only in [property-item responses](/r
 
 On update, omitted properties keep their values. An array replaces the entire value of that property; it does not append items. Keep any existing people, files, tags, or related pages you still need in the submitted array.
 
-| To clear                                                            | Send                                                              |
-| :------------------------------------------------------------------ | :---------------------------------------------------------------- |
+| To clear | Send |
+| :- | :- |
 | `title`, `rich_text`, `people`, `relation`, `multi_select`, `files` | An empty array: `[]`. An empty Name displays as an untitled page. |
-| `number`, `url`, `email`, `phone_number`, `select`, `date`, `place` | `null` as the type’s value.                                       |
-| `status`                                                            | `null` resets the value to the default option, if one is set.     |
-| `checkbox`                                                          | `false`.                                                          |
-| `verification`                                                      | `{ "state": "unverified" }`.                                      |
+| `number`, `url`, `email`, `phone_number`, `select`, `date`, `place` | `null` as the type’s value. |
+| `status` | `null` resets the value to the default option, if one is set. |
+| `checkbox` | `false`. |
+| `verification` | `{ "state": "unverified" }`. |
 
 For example, `{"properties":{"Due date":{"date":null}}}` clears a page’s date. Setting a whole schema entry to `null` instead [removes the property from the data source](/reference/update-data-source-properties#remove-a-property).
 
@@ -276,11 +276,11 @@ A Button property returns `button: {}`. The API does not expose its actions or l
 
 `date` is a date object or `null`. It can hold a date, a time, or a range.
 
-| Field       | Type             | Meaning                                                 |
-| :---------- | :--------------- | :------------------------------------------------------ |
-| `start`     | String           | Required. An ISO 8601 date or date and time.            |
-| `end`       | String or `null` | The end of a range. `null` means a single date or time. |
-| `time_zone` | String or `null` | An IANA time zone, such as `America/Los_Angeles`.       |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `start` | String | Required. An ISO 8601 date or date and time. |
+| `end` | String or `null` | The end of a range. `null` means a single date or time. |
+| `time_zone` | String or `null` | An IANA time zone, such as `America/Los_Angeles`. |
 
 When you provide `time_zone`, include a time in `start` and `end`, without a UTC offset. Otherwise, use an offset in a timestamp or a date such as `2026-09-15`. Omitted `end` and `time_zone` fields return as `null`.
 
@@ -1005,12 +1005,12 @@ The Phone property uses the API key `phone_number`. Its value is a string or `nu
 
 `place` is a location object or `null`. It supports reading and writing coordinates, with optional place details. It is the property used by [map views](https://www.notion.com/help/maps).
 
-| Field                             | Type             | Meaning                                                    |
-| :-------------------------------- | :--------------- | :--------------------------------------------------------- |
-| `lat`, `lon`                      | Number           | Required latitude (−90 to 90) and longitude (−180 to 180). |
-| `name`                            | String or `null` | The place’s name.                                          |
-| `address`                         | String or `null` | The address.                                               |
-| `aws_place_id`, `google_place_id` | String or `null` | Optional place IDs from the named provider.                |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `lat`, `lon` | Number | Required latitude (−90 to 90) and longitude (−180 to 180). |
+| `name` | String or `null` | The place’s name. |
+| `address` | String or `null` | The address. |
+| `aws_place_id`, `google_place_id` | String or `null` | Optional place IDs from the named provider. |
 
 The API does not look up coordinates from a name or address. Provide `lat` and `lon` when writing a value.
 
@@ -1284,12 +1284,12 @@ Writes use the input fields for each rich text type. Responses also include `ann
 
 `rollup` holds the result of a calculation over a relation. Its value is read-only. The [schema](/reference/property-object#rollup) defines the relation, target property, and `function`.
 
-| Result `type` | Value field                                                       |
-| :------------ | :---------------------------------------------------------------- |
-| `number`      | `number`: a number or `null`.                                     |
-| `date`        | `date`: a date object or `null`.                                  |
-| `array`       | `array`: an array of typed property values, without property IDs. |
-| `unsupported` | `unsupported`: an empty object. No usable result is available.    |
+| Result `type` | Value field |
+| :- | :- |
+| `number` | `number`: a number or `null`. |
+| `date` | `date`: a date object or `null`. |
+| `array` | `array`: an array of typed property values, without property IDs. |
+| `unsupported` | `unsupported`: an empty object. No usable result is available. |
 
 A page response puts array values in `rollup.array`. The property-item endpoint puts individual values in `results` and rollup metadata in `property_item.rollup`. It can also return `type: "incomplete"` while [pagination is in progress](/reference/property-item-object#rollup).
 
@@ -1804,11 +1804,11 @@ The [schema’s prefix](/reference/property-object#unique-id) controls labels su
 
 `verification` is available on pages in a [wiki database](/guides/data-apis/working-with-databases#wiki-databases). It is an object or `null`.
 
-| Field         | Type                  | Meaning                                                                                        |
-| :------------ | :-------------------- | :--------------------------------------------------------------------------------------------- |
-| `state`       | String                | `verified`, `unverified`, or `expired`. Writes accept only `verified` and `unverified`.        |
-| `date`        | Date object or `null` | The verification period. `start` and any `end` must include a time. `end` sets the expiration. |
-| `verified_by` | User object or `null` | Who verified the page. Notion sets this field.                                                 |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `state` | String | `verified`, `unverified`, or `expired`. Writes accept only `verified` and `unverified`. |
+| `date` | Date object or `null` | The verification period. `start` and any `end` must include a time. `end` sets the expiration. |
+| `verified_by` | User object or `null` | Who verified the page. Notion sets this field. |
 
 Verification dates require timestamps, such as `2026-09-15T09:00:00Z`. Date-only values such as `2026-09-15` return a validation error. Omit `date` or set it to `null` to verify without an expiration.
 
@@ -1909,12 +1909,12 @@ A page’s `icon` and `cover` are top-level fields on the [page object](/referen
 
 A page response can omit values when a property refers to many pages or people:
 
-| Property             | Page response limit                                                                                  |
-| :------------------- | :--------------------------------------------------------------------------------------------------- |
-| `relation`           | Up to 25 page references. `has_more: true` means more references exist.                              |
-| `people`             | More than 25 people may be omitted.                                                                  |
+| Property | Page response limit |
+| :- | :- |
+| `relation` | Up to 25 page references. `has_more: true` means more references exist. |
+| `people` | More than 25 people may be omitted. |
 | `title`, `rich_text` | Up to 25 populated inline page or person mentions. This is a mention limit, not a text-length limit. |
-| `formula`, `rollup`  | Results can depend on references that the page response does not fully load.                         |
+| `formula`, `rollup` | Results can depend on references that the page response does not fully load. |
 
 Use [Retrieve a page property item](/reference/retrieve-a-page-property) when you need the full value. Read every [page of property items](/reference/property-item-object#paginated-values). Formula and rollup [calculation limits](/reference/page-property-values#unsupported-formula) still apply.
 

@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/guides/indexes/pods/create-a-pod-based-index
 path: guides/indexes/pods/create-a-pod-based-index
 ---
 
-Create a Pinecone pod-based index. Legacy guide: new customers can't create pod indexes as of August 2025; use serverless index creation instead.
+Create a Pinecone pod-based index. Pod indexes are legacy and unavailable to new customers, and serverless is the current option for new indexes.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
 This page shows you how to create a pod-based index. For guidance on serverless indexes, see [Create a serverless index](/guides/index-data/create-an-index).

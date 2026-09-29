@@ -8,23 +8,23 @@ Reference for property types, settings, and examples in a data source schema.
 
 A data source’s `properties` object defines the names, types, and settings of its properties. This is its **schema**. In Notion’s table view, these properties appear as columns.
 
-| Object                                                 | What it describes                                              | Endpoint                                                             |
-| :----------------------------------------------------- | :------------------------------------------------------------- | :------------------------------------------------------------------- |
-| [Data source property](/reference/property-object)     | A property’s name, type, and settings, also called its schema. | [Retrieve a data source](/reference/retrieve-a-data-source)          |
-| [Page property value](/reference/page-property-values) | The value of that property on one page.                        | [Retrieve a page](/reference/retrieve-a-page)                        |
-| [Page property item](/reference/property-item-object)  | A single value, or one item in a paginated value.              | [Retrieve a page property item](/reference/retrieve-a-page-property) |
+| Object | What it describes | Endpoint |
+| :- | :- | :- |
+| [Data source property](/reference/property-object) | A property’s name, type, and settings, also called its schema. | [Retrieve a data source](/reference/retrieve-a-data-source) |
+| [Page property value](/reference/page-property-values) | The value of that property on one page. | [Retrieve a page](/reference/retrieve-a-page) |
+| [Page property item](/reference/property-item-object) | A single value, or one item in a paginated value. | [Retrieve a page property item](/reference/retrieve-a-page-property) |
 
 <span />
 
 ## Common fields
 
-| Field               | Type             | Meaning                                                 |
-| :------------------ | :--------------- | :------------------------------------------------------ |
-| `id`                | String           | The property’s stable ID.                               |
-| `name`              | String           | The property’s name in Notion.                          |
-| `description`       | String or `null` | The property’s description.                             |
-| `type`              | String           | The property type, such as `number` or `status`.        |
-| Key matching `type` | Object           | Settings for that type. Many types use an empty object. |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `id` | String | The property’s stable ID. |
+| `name` | String | The property’s name in Notion. |
+| `description` | String or `null` | The property’s description. |
+| `type` | String | The property type, such as `number` or `status`. |
+| Key matching `type` | Object | Settings for that type. Many types use an empty object. |
 
 A property’s `id` stays the same when its name changes. IDs can be short strings or UUIDs. The Name property always has the ID `title`.
 
@@ -455,12 +455,12 @@ The `formula` object contains an `expression` string. The expression uses [Notio
 
 Example expressions with fixed inputs:
 
-| Expression                                        | Example input                               | Result type | Result     |
-| :------------------------------------------------ | :------------------------------------------ | :---------- | :--------- |
-| `prop("Price") * 1.1`                             | Price is `10`.                              | Number      | `11`       |
-| `if(prop("In stock"), "yes", "no")`               | In stock is checked.                        | String      | `"yes"`    |
-| `format(prop("ID"))`                              | ID is `TASK-1`.                             | String      | `"TASK-1"` |
-| `dateBetween(prop("Due"), prop("Start"), "days")` | Due is `2026-09-15`; Start is `2026-09-09`. | Number      | `6`        |
+| Expression | Example input | Result type | Result |
+| :- | :- | :- | :- |
+| `prop("Price") * 1.1` | Price is `10`. | Number | `11` |
+| `if(prop("In stock"), "yes", "no")` | In stock is checked. | String | `"yes"` |
+| `format(prop("ID"))` | ID is `TASK-1`. | String | `"TASK-1"` |
+| `dateBetween(prop("Due"), prop("Start"), "days")` | Due is `2026-09-15`; Start is `2026-09-09`. | Number | `6` |
 
 `prop("Name")` looks up a property by its current name. The saved formula refers to its ID, so a later rename does not break that reference.
 
@@ -969,13 +969,13 @@ The Place property uses `place: {}`. Page values contain coordinates and optiona
 
 A relation links pages to pages in a target data source.
 
-| Field             | Meaning                                                        |
-| :---------------- | :------------------------------------------------------------- |
-| `data_source_id`  | The target data source’s ID. Use this in current API requests. |
-| `database_id`     | The target’s parent database ID, included in responses.        |
-| `type`            | `single_property` or `dual_property`.                          |
-| `single_property` | An empty object for a one-way relation.                        |
-| `dual_property`   | Settings for the matching relation on the target data source.  |
+| Field | Meaning |
+| :- | :- |
+| `data_source_id` | The target data source’s ID. Use this in current API requests. |
+| `database_id` | The target’s parent database ID, included in responses. |
+| `type` | `single_property` or `dual_property`. |
+| `single_property` | An empty object for a one-way relation. |
+| `dual_property` | Settings for the matching relation on the target data source. |
 
 A one-way relation uses `type: "single_property"` and `single_property: {}`.
 
@@ -1154,11 +1154,11 @@ The Text property uses `rich_text: {}`. Its page values are rich text arrays.
 
 A rollup reads a property through a relation and applies a `function`.
 
-| Field                                            | Meaning                                                                                       |
-| :----------------------------------------------- | :-------------------------------------------------------------------------------------------- |
-| `relation_property_name`, `relation_property_id` | The relation in this data source. Supply its name or ID in a request.                         |
-| `rollup_property_name`, `rollup_property_id`     | The property in the target data source to calculate over. Supply its name or ID in a request. |
-| `function`                                       | The calculation to perform. Required in a request.                                            |
+| Field | Meaning |
+| :- | :- |
+| `relation_property_name`, `relation_property_id` | The relation in this data source. Supply its name or ID in a request. |
+| `rollup_property_name`, `rollup_property_id` | The property in the target data source to calculate over. Supply its name or ID in a request. |
+| `function` | The calculation to perform. Required in a request. |
 
 Responses include both names and IDs. The target property belongs to the related data source; the relation property belongs to the source where you define the rollup.
 
@@ -1247,12 +1247,12 @@ The `select` object contains an `options` array. Each page can select one option
 
 Each select, multi-select, or status option has these fields in a schema response:
 
-| Field         | Type             | Meaning                                                                                      |
-| :------------ | :--------------- | :------------------------------------------------------------------------------------------- |
-| `id`          | String           | The option’s ID. It stays the same when its name changes in Notion.                          |
-| `name`        | String           | The option’s label. Names must be unique without regard to case. Commas are not allowed.     |
-| `color`       | String           | `default`, `gray`, `brown`, `orange`, `yellow`, `green`, `blue`, `purple`, `pink`, or `red`. |
-| `description` | String or `null` | The option’s description. This field appears in the schema, not in page values.              |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `id` | String | The option’s ID. It stays the same when its name changes in Notion. |
+| `name` | String | The option’s label. Names must be unique without regard to case. Commas are not allowed. |
+| `color` | String | `default`, `gray`, `brown`, `orange`, `yellow`, `green`, `blue`, `purple`, `pink`, or `red`. |
+| `description` | String or `null` | The option’s description. This field appears in the schema, not in page values. |
 
 Page values include `id`, `name`, and `color`. Page writes select an option by `id` or `name`. To change the available options, see [Update data source properties](/reference/update-data-source-properties#select-configuration-updates).
 

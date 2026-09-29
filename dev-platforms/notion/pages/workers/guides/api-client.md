@@ -22,10 +22,10 @@ worker.tool("example", {
 
 How the client is authenticated depends on how the capability runs:
 
-| Context                                                | How it works                                                                                                                  |
-| :----------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------- |
-| **Tool called by a Custom Agent**                      | The platform sets `NOTION_API_TOKEN` automatically. The client has the same permissions as the Custom Agent. No setup needed. |
-| **Syncs, webhooks, local testing, `ntn workers exec`** | You must provide a token yourself.                                                                                            |
+| Context | How it works |
+| :- | :- |
+| **Tool called by a Custom Agent** | The platform sets `NOTION_API_TOKEN` automatically. The client has the same permissions as the Custom Agent. No setup needed. |
+| **Syncs, webhooks, local testing, `ntn workers exec`** | You must provide a token yourself. |
 
 To set a token for syncs, webhooks, or local development, you have two options:
 

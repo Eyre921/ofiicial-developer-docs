@@ -16,16 +16,16 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 
 ## Scope resources
 
-| Scope resource          | Controls access to                                      |
-| :---------------------- | :------------------------------------------------------ |
-| `legal-hold`            | Legal hold data and members                             |
-| `managed-user-session`  | Managed users' active sessions                          |
-| `mcp-client-connection` | Members' MCP client connections                         |
-| `permission-group`      | Workspace permission groups and direct memberships      |
+| Scope resource | Controls access to |
+| :- | :- |
+| `legal-hold` | Legal hold data and members |
+| `managed-user-session` | Managed users' active sessions |
+| `mcp-client-connection` | Members' MCP client connections |
+| `permission-group` | Workspace permission groups and direct memberships |
 | `personal-access-token` | Personal access tokens in the organization's workspaces |
-| `user`                  | Workspace people and bots                               |
-| `workflows`             | Custom-agent inventory and governance                   |
-| `workspace`             | Workspace data and settings                             |
+| `user` | Workspace people and bots |
+| `workflows` | Custom-agent inventory and governance |
+| `workspace` | Workspace data and settings |
 
 <Warning>
   This table may not include every scope. Each endpoint's reference lists the exact scope it requires.
@@ -33,12 +33,12 @@ Each scope combines a resource and a capability, such as `legal-hold:read`.
 
 ## Scope capabilities
 
-| Scope capability    | Allows the token to                                            |
-| :------------------ | :------------------------------------------------------------- |
-| `read`              | View a resource                                                |
-| `write`             | Modify a resource                                              |
+| Scope capability | Allows the token to |
+| :- | :- |
+| `read` | View a resource |
+| `write` | Modify a resource |
 | `write-high-impact` | Make sensitive changes, such as revoking credentials or access |
-| `export`            | Export a resource                                              |
+| `export` | Export a resource |
 
 <Note>
   Scope capabilities are independent. For example, `permission-group:write` does not grant `permission-group:read`. Assign both scopes when a connection must inspect groups or memberships before changing them.

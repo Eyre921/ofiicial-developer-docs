@@ -104,7 +104,7 @@ Key fields:
 * **`type`** — The layout type. One of: `table`, `board`, `list`, `calendar`, `timeline`, `gallery`, `form`, `chart`, `map`, or `dashboard`.
 * **`data_source_id`** — Which data source this view is "over". A database can have multiple data sources, and each view targets exactly one. For dashboard views this is `null` since dashboards contain multiple widget views, each with their own data source.
 * **`filter`** and **`sorts`** — Use the same shapes as the [filter](/reference/filter-data-source-entries) and [sort](/reference/sort-data-source-entries) parameters in data source queries.
-* **`quick_filters`** — A map of property-level filters that appear in the view's filter bar. Keys are property names or IDs, values are filter conditions (same shape as property filters, without the `property` field). See [Quick filters](#quick-filters).
+* **`quick_filters`** — A map of property-level filters that appear in the view's filter bar. Keys are property names or IDs, values are filter conditions (same shape as property filters, without the `property` field), or an empty object for a quick filter without criteria. See [Quick filters](#quick-filters).
 * **`configuration`** — Type-specific presentation settings that vary by view type. This is a discriminated union keyed on `type` — see [View configuration](#view-configuration) for the full schema per view type. This field is `null` when no custom configuration has been set.
 * **`parent`** — Always a database. Views are retrieved and managed through their parent database.
 * **`dashboard_view_id`** — Only present on widget views that belong to a dashboard. References the parent dashboard view's ID.
@@ -355,25 +355,25 @@ The response is the newly created [view object](#structure) with all fields popu
 
 ### Required parameters
 
-| Parameter        | Description                                                                                                           |
-| ---------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `data_source_id` | The ID of the data source this view is over. Retrieve this from the database object's `data_sources` array.           |
-| `name`           | A display name for the view.                                                                                          |
-| `type`           | The view layout: `table`, `board`, `list`, `calendar`, `timeline`, `gallery`, `form`, `chart`, `map`, or `dashboard`. |
+| Parameter | Description |
+| - | - |
+| `data_source_id` | The ID of the data source this view is over. Retrieve this from the database object's `data_sources` array. |
+| `name` | A display name for the view. |
+| `type` | The view layout: `table`, `board`, `list`, `calendar`, `timeline`, `gallery`, `form`, `chart`, `map`, or `dashboard`. |
 
 ### Optional parameters
 
-| Parameter         | Description                                                                                                                                                                                                 |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `database_id`     | The ID of the database to create the view in. Mutually exclusive with `view_id` and `create_database`.                                                                                                      |
-| `view_id`         | The ID of a dashboard view to add this view to as a widget. Mutually exclusive with `database_id` and `create_database`.                                                                                    |
+| Parameter | Description |
+| - | - |
+| `database_id` | The ID of the database to create the view in. Mutually exclusive with `view_id` and `create_database`. |
+| `view_id` | The ID of a dashboard view to add this view to as a widget. Mutually exclusive with `database_id` and `create_database`. |
 | `create_database` | Creates a linked database view on a page referencing an existing data source. See [Creating a linked database view](#creating-a-linked-database-view). Mutually exclusive with `database_id` and `view_id`. |
-| `filter`          | A [filter object](/reference/filter-data-source-entries) to apply. Uses the same shape as data source queries.                                                                                              |
-| `sorts`           | An array of [sort objects](/reference/sort-data-source-entries). Uses the same shape as data source queries.                                                                                                |
-| `quick_filters`   | A map of [quick filters](#quick-filters) for the view's filter bar. Keys are property names or IDs, values are filter conditions.                                                                           |
-| `configuration`   | A [view configuration](#view-configuration) object. The `type` field inside must match the view `type`.                                                                                                     |
-| `position`        | Where to place the new view in the database's view tab bar. Only applicable when `database_id` is provided. See [View positioning](#view-positioning). Defaults to appending at the end.                    |
-| `placement`       | Where to place the new widget in a dashboard layout. Only applicable when `view_id` is provided. See [Widget placement](#widget-placement). Defaults to creating a new row at the end.                      |
+| `filter` | A [filter object](/reference/filter-data-source-entries) to apply. Uses the same shape as data source queries. |
+| `sorts` | An array of [sort objects](/reference/sort-data-source-entries). Uses the same shape as data source queries. |
+| `quick_filters` | A map of [quick filters](#quick-filters) for the view's filter bar. Keys are property names or IDs, values are filter conditions or an empty object for no criteria. |
+| `configuration` | A [view configuration](#view-configuration) object. The `type` field inside must match the view `type`. |
+| `position` | Where to place the new view in the database's view tab bar. Only applicable when `database_id` is provided. See [View positioning](#view-positioning). Defaults to appending at the end. |
+| `placement` | Where to place the new widget in a dashboard layout. Only applicable when `view_id` is provided. See [Widget placement](#widget-placement). Defaults to creating a new row at the end. |
 
 <Note>
   You must provide exactly one of `database_id`, `view_id`, or `create_database`. Use `database_id` to create a top-level view on a database. Use `view_id` to add a widget view to an existing dashboard — see [Dashboard views](#dashboard-views) for details. Use `create_database` to create a linked database view on a page — see [Creating a linked database view](#creating-a-linked-database-view).
@@ -445,10 +445,10 @@ Here's an example of creating a Board view with grouping, cover images, and prop
 
 When creating a top-level database view (using `database_id`), you can control where it appears in the view tab bar with the `position` parameter. This is a discriminated union on the `type` field:
 
-| Variant      | Fields            | Description                                               |
-| ------------ | ----------------- | --------------------------------------------------------- |
-| `start`      | `type`            | Places the new view as the first tab.                     |
-| `end`        | `type`            | Places the new view as the last tab (default).            |
+| Variant | Fields | Description |
+| - | - | - |
+| `start` | `type` | Places the new view as the first tab. |
+| `end` | `type` | Places the new view as the last tab (default). |
 | `after_view` | `type`, `view_id` | Places the new view immediately after the specified view. |
 
 <CodeGroup>
@@ -514,10 +514,10 @@ This differs from `POST /v1/databases`, which creates a full standalone database
 
 The `create_database` object accepts the following fields:
 
-| Field      | Required | Description                                                                                                                                                                                                                                                    |
-| ---------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `parent`   | Yes      | The parent page for the linked database. Must be `{ "type": "page_id", "page_id": "..." }`.                                                                                                                                                                    |
-| `position` | No       | Controls where the new database block appears within the parent page. Use `{ "type": "after_block", "block_id": "..." }` to place it after a specific block. The referenced block must be a direct child of the parent page. Defaults to appending at the end. |
+| Field | Required | Description |
+| - | - | - |
+| `parent` | Yes | The parent page for the linked database. Must be `{ "type": "page_id", "page_id": "..." }`. |
+| `position` | No | Controls where the new database block appears within the parent page. Use `{ "type": "after_block", "block_id": "..." }` to place it after a specific block. The referenced block must be a direct child of the parent page. Defaults to appending at the end. |
 
 All view types are supported with `create_database`, including `form` views with full form configuration and `dashboard` views. Dashboard views are created with an empty layout — add widgets to them via separate `POST /v1/views` calls with `view_id`.
 
@@ -643,31 +643,31 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 
 ### Feature support by view type
 
-| Feature                              | Table    | Board        | Calendar     | Timeline     | Gallery  | List | Map      | Form     | Chart        | Dashboard       |
-| ------------------------------------ | -------- | ------------ | ------------ | ------------ | -------- | ---- | -------- | -------- | ------------ | --------------- |
-| `properties`                         | Yes      | Yes          | Yes          | Yes          | Yes      | Yes  | Optional | -        | -            | -               |
-| `group_by`                           | Optional | **Required** | -            | -            | -        | -    | -        | -        | -            | -               |
-| `sub_group_by`                       | -        | Optional     | -            | -            | -        | -    | -        | -        | -            | -               |
-| `subtasks`                           | Optional | -            | -            | -            | -        | -    | -        | -        | -            | -               |
-| `cover`                              | -        | Optional     | -            | -            | Optional | -    | -        | -        | -            | -               |
-| `cover_size` / `cover_aspect`        | -        | Optional     | -            | -            | Optional | -    | -        | -        | -            | -               |
-| `card_layout`                        | -        | Optional     | -            | -            | Optional | -    | -        | -        | -            | -               |
-| `date_property_id`                   | -        | -            | **Required** | **Required** | -        | -    | -        | -        | -            | -               |
-| `end_date_property_id`               | -        | -            | -            | Optional     | -        | -    | -        | -        | -            | -               |
-| `view_range` / `show_weekends`       | -        | -            | Optional     | -            | -        | -    | -        | -        | -            | -               |
-| `preference` / `arrows_by`           | -        | -            | -            | Optional     | -        | -    | -        | -        | -            | -               |
-| `show_table` / `table_properties`    | -        | -            | -            | Optional     | -        | -    | -        | -        | -            | -               |
-| `wrap_cells` / `frozen_column_index` | Optional | -            | -            | -            | -        | -    | -        | -        | -            | -               |
-| `show_vertical_lines`                | Optional | -            | -            | -            | -        | -    | -        | -        | -            | -               |
-| `height`                             | -        | -            | -            | -            | -        | -    | Optional | -        | Optional     | -               |
-| `map_by`                             | -        | -            | -            | -            | -        | -    | Optional | -        | -            | -               |
-| `is_form_closed`                     | -        | -            | -            | -            | -        | -    | -        | Optional | -            | -               |
-| `anonymous_submissions`              | -        | -            | -            | -            | -        | -    | -        | Optional | -            | -               |
-| `submission_permissions`             | -        | -            | -            | -            | -        | -    | -        | Optional | -            | -               |
-| `chart_type`                         | -        | -            | -            | -            | -        | -    | -        | -        | **Required** | -               |
-| `x_axis` / `y_axis`                  | -        | -            | -            | -            | -        | -    | -        | -        | Optional     | -               |
-| `value`                              | -        | -            | -            | -            | -        | -    | -        | -        | Optional     | -               |
-| `rows`                               | -        | -            | -            | -            | -        | -    | -        | -        | -            | Yes (read-only) |
+| Feature | Table | Board | Calendar | Timeline | Gallery | List | Map | Form | Chart | Dashboard |
+| - | - | - | - | - | - | - | - | - | - | - |
+| `properties` | Yes | Yes | Yes | Yes | Yes | Yes | Optional | - | - | - |
+| `group_by` | Optional | **Required** | - | - | - | - | - | - | - | - |
+| `sub_group_by` | - | Optional | - | - | - | - | - | - | - | - |
+| `subtasks` | Optional | - | - | - | - | - | - | - | - | - |
+| `cover` | - | Optional | - | - | Optional | - | - | - | - | - |
+| `cover_size` / `cover_aspect` | - | Optional | - | - | Optional | - | - | - | - | - |
+| `card_layout` | - | Optional | - | - | Optional | - | - | - | - | - |
+| `date_property_id` | - | - | **Required** | **Required** | - | - | - | - | - | - |
+| `end_date_property_id` | - | - | - | Optional | - | - | - | - | - | - |
+| `view_range` / `show_weekends` | - | - | Optional | - | - | - | - | - | - | - |
+| `preference` / `arrows_by` | - | - | - | Optional | - | - | - | - | - | - |
+| `show_table` / `table_properties` | - | - | - | Optional | - | - | - | - | - | - |
+| `wrap_cells` / `frozen_column_index` | Optional | - | - | - | - | - | - | - | - | - |
+| `show_vertical_lines` | Optional | - | - | - | - | - | - | - | - | - |
+| `height` | - | - | - | - | - | - | Optional | - | Optional | - |
+| `map_by` | - | - | - | - | - | - | Optional | - | - | - |
+| `is_form_closed` | - | - | - | - | - | - | - | Optional | - | - |
+| `anonymous_submissions` | - | - | - | - | - | - | - | Optional | - | - |
+| `submission_permissions` | - | - | - | - | - | - | - | Optional | - | - |
+| `chart_type` | - | - | - | - | - | - | - | - | **Required** | - |
+| `x_axis` / `y_axis` | - | - | - | - | - | - | - | - | Optional | - |
+| `value` | - | - | - | - | - | - | - | - | Optional | - |
+| `rows` | - | - | - | - | - | - | - | - | - | Yes (read-only) |
 
 ### Table configuration
 
@@ -683,15 +683,15 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 }
 ```
 
-| Field                 | Type           | Description                                                                                                                                                                   |
-| --------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`                | `"table"`      | **Required.** Must be `"table"`.                                                                                                                                              |
-| `properties`          | array \| null  | Property visibility and display settings. See [Property configuration](#property-configuration).                                                                              |
-| `group_by`            | object \| null | Group rows by a property. See [Group-by configuration](#group-by-configuration). Pass `null` to remove.                                                                       |
-| `subtasks`            | object \| null | Sub-item display settings. See [Subtask configuration](#subtask-configuration). Pass `null` to reset to defaults. Use `{ "display_mode": "disabled" }` to explicitly disable. |
-| `wrap_cells`          | boolean        | Whether to wrap cell content.                                                                                                                                                 |
-| `frozen_column_index` | integer (>= 0) | Number of columns frozen from the left.                                                                                                                                       |
-| `show_vertical_lines` | boolean        | Whether to show vertical grid lines between columns.                                                                                                                          |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"table"` | **Required.** Must be `"table"`. |
+| `properties` | array \| null | Property visibility and display settings. See [Property configuration](#property-configuration). |
+| `group_by` | object \| null | Group rows by a property. See [Group-by configuration](#group-by-configuration). Pass `null` to remove. |
+| `subtasks` | object \| null | Sub-item display settings. See [Subtask configuration](#subtask-configuration). Pass `null` to reset to defaults. Use `{ "display_mode": "disabled" }` to explicitly disable. |
+| `wrap_cells` | boolean | Whether to wrap cell content. |
+| `frozen_column_index` | integer (>= 0) | Number of columns frozen from the left. |
+| `show_vertical_lines` | boolean | Whether to show vertical grid lines between columns. |
 
 ### Board configuration
 
@@ -708,16 +708,16 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 }
 ```
 
-| Field          | Type                                         | Description                                                                                                    |
-| -------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `type`         | `"board"`                                    | **Required.** Must be `"board"`.                                                                               |
-| `group_by`     | object                                       | **Required.** Group-by configuration for board columns. See [Group-by configuration](#group-by-configuration). |
-| `sub_group_by` | object \| null                               | Secondary group-by for sub-grouping within columns. Pass `null` to remove.                                     |
-| `properties`   | array \| null                                | Property visibility on cards. See [Property configuration](#property-configuration).                           |
-| `cover`        | object \| null                               | Cover image source. See [Cover configuration](#cover-configuration).                                           |
-| `cover_size`   | `"small"` \| `"medium"` \| `"large"` \| null | Size of the cover image on cards.                                                                              |
-| `cover_aspect` | `"contain"` \| `"cover"` \| null             | `"contain"` fits the image; `"cover"` fills the area.                                                          |
-| `card_layout`  | `"list"` \| `"compact"` \| null              | `"list"` shows full cards; `"compact"` shows condensed cards.                                                  |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"board"` | **Required.** Must be `"board"`. |
+| `group_by` | object | **Required.** Group-by configuration for board columns. See [Group-by configuration](#group-by-configuration). |
+| `sub_group_by` | object \| null | Secondary group-by for sub-grouping within columns. Pass `null` to remove. |
+| `properties` | array \| null | Property visibility on cards. See [Property configuration](#property-configuration). |
+| `cover` | object \| null | Cover image source. See [Cover configuration](#cover-configuration). |
+| `cover_size` | `"small"` \| `"medium"` \| `"large"` \| null | Size of the cover image on cards. |
+| `cover_aspect` | `"contain"` \| `"cover"` \| null | `"contain"` fits the image; `"cover"` fills the area. |
+| `card_layout` | `"list"` \| `"compact"` \| null | `"list"` shows full cards; `"compact"` shows condensed cards. |
 
 ### Calendar configuration
 
@@ -731,13 +731,13 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 }
 ```
 
-| Field              | Type                          | Description                                                                                   |
-| ------------------ | ----------------------------- | --------------------------------------------------------------------------------------------- |
-| `type`             | `"calendar"`                  | **Required.** Must be `"calendar"`.                                                           |
-| `date_property_id` | string                        | **Required.** Property ID of the date property used to position items on the calendar.        |
-| `properties`       | array \| null                 | Property visibility on calendar cards. See [Property configuration](#property-configuration). |
-| `view_range`       | `"week"` \| `"month"` \| null | Default calendar range.                                                                       |
-| `show_weekends`    | boolean \| null               | Whether to show weekend days.                                                                 |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"calendar"` | **Required.** Must be `"calendar"`. |
+| `date_property_id` | string | **Required.** Property ID of the date property used to position items on the calendar. |
+| `properties` | array \| null | Property visibility on calendar cards. See [Property configuration](#property-configuration). |
+| `view_range` | `"week"` \| `"month"` \| null | Default calendar range. |
+| `show_weekends` | boolean \| null | Whether to show weekend days. |
 
 ### Timeline configuration
 
@@ -760,29 +760,29 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 }
 ```
 
-| Field                  | Type            | Description                                                                                   |
-| ---------------------- | --------------- | --------------------------------------------------------------------------------------------- |
-| `type`                 | `"timeline"`    | **Required.** Must be `"timeline"`.                                                           |
-| `date_property_id`     | string          | **Required.** Property ID for the start date of timeline items.                               |
-| `end_date_property_id` | string \| null  | Property ID for the end date. Pass `null` to clear.                                           |
-| `properties`           | array \| null   | Property visibility on timeline items. See [Property configuration](#property-configuration). |
-| `show_table`           | boolean \| null | Whether to show the table panel alongside the timeline.                                       |
-| `table_properties`     | array \| null   | Property configuration for the table panel (when `show_table` is true).                       |
-| `preference`           | object \| null  | Timeline display preferences. See below.                                                      |
-| `arrows_by`            | object \| null  | Dependency arrow configuration. See below.                                                    |
-| `color_by`             | boolean \| null | Whether to color timeline items by a property.                                                |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"timeline"` | **Required.** Must be `"timeline"`. |
+| `date_property_id` | string | **Required.** Property ID for the start date of timeline items. |
+| `end_date_property_id` | string \| null | Property ID for the end date. Pass `null` to clear. |
+| `properties` | array \| null | Property visibility on timeline items. See [Property configuration](#property-configuration). |
+| `show_table` | boolean \| null | Whether to show the table panel alongside the timeline. |
+| `table_properties` | array \| null | Property configuration for the table panel (when `show_table` is true). |
+| `preference` | object \| null | Timeline display preferences. See below. |
+| `arrows_by` | object \| null | Dependency arrow configuration. See below. |
+| `color_by` | boolean \| null | Whether to color timeline items by a property. |
 
 **Timeline preference object:**
 
-| Field              | Type    | Description                                                                                                     |
-| ------------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
-| `zoom_level`       | enum    | **Required.** One of: `"hours"`, `"day"`, `"week"`, `"bi_week"`, `"month"`, `"quarter"`, `"year"`, `"5_years"`. |
-| `center_timestamp` | integer | Timestamp in milliseconds to center the timeline on.                                                            |
+| Field | Type | Description |
+| - | - | - |
+| `zoom_level` | enum | **Required.** One of: `"hours"`, `"day"`, `"week"`, `"bi_week"`, `"month"`, `"quarter"`, `"year"`, `"5_years"`. |
+| `center_timestamp` | integer | Timestamp in milliseconds to center the timeline on. |
 
 **Timeline arrows\_by object:**
 
-| Field         | Type           | Description                                                              |
-| ------------- | -------------- | ------------------------------------------------------------------------ |
+| Field | Type | Description |
+| - | - | - |
 | `property_id` | string \| null | Relation property ID for dependency arrows, or `null` to disable arrows. |
 
 ### Gallery configuration
@@ -798,14 +798,14 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 }
 ```
 
-| Field          | Type                                         | Description                                                                                  |
-| -------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------- |
-| `type`         | `"gallery"`                                  | **Required.** Must be `"gallery"`.                                                           |
-| `properties`   | array \| null                                | Property visibility on gallery cards. See [Property configuration](#property-configuration). |
-| `cover`        | object \| null                               | Cover image source. See [Cover configuration](#cover-configuration).                         |
-| `cover_size`   | `"small"` \| `"medium"` \| `"large"` \| null | Size of the cover image on cards.                                                            |
-| `cover_aspect` | `"contain"` \| `"cover"` \| null             | `"contain"` fits the image; `"cover"` fills the area.                                        |
-| `card_layout`  | `"list"` \| `"compact"` \| null              | `"list"` shows full cards; `"compact"` shows condensed cards.                                |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"gallery"` | **Required.** Must be `"gallery"`. |
+| `properties` | array \| null | Property visibility on gallery cards. See [Property configuration](#property-configuration). |
+| `cover` | object \| null | Cover image source. See [Cover configuration](#cover-configuration). |
+| `cover_size` | `"small"` \| `"medium"` \| `"large"` \| null | Size of the cover image on cards. |
+| `cover_aspect` | `"contain"` \| `"cover"` \| null | `"contain"` fits the image; `"cover"` fills the area. |
+| `card_layout` | `"list"` \| `"compact"` \| null | `"list"` shows full cards; `"compact"` shows condensed cards. |
 
 ### List configuration
 
@@ -816,9 +816,9 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 }
 ```
 
-| Field        | Type          | Description                                                                                      |
-| ------------ | ------------- | ------------------------------------------------------------------------------------------------ |
-| `type`       | `"list"`      | **Required.** Must be `"list"`.                                                                  |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"list"` | **Required.** Must be `"list"`. |
 | `properties` | array \| null | Property visibility and display settings. See [Property configuration](#property-configuration). |
 
 ### Map configuration
@@ -832,12 +832,12 @@ You can pass `configuration` when [creating](#creating-a-view) or [updating](#up
 }
 ```
 
-| Field        | Type                                                            | Description                                                                                   |
-| ------------ | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `type`       | `"map"`                                                         | **Required.** Must be `"map"`.                                                                |
-| `height`     | `"small"` \| `"medium"` \| `"large"` \| `"extra_large"` \| null | Map display height. Pass `null` to clear.                                                     |
-| `map_by`     | string \| null                                                  | Property ID of the location property used to position items on the map. Pass `null` to clear. |
-| `properties` | array \| null                                                   | Property visibility on map pin cards. See [Property configuration](#property-configuration).  |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"map"` | **Required.** Must be `"map"`. |
+| `height` | `"small"` \| `"medium"` \| `"large"` \| `"extra_large"` \| null | Map display height. Pass `null` to clear. |
+| `map_by` | string \| null | Property ID of the location property used to position items on the map. Pass `null` to clear. |
+| `properties` | array \| null | Property visibility on map pin cards. See [Property configuration](#property-configuration). |
 
 In responses, an additional read-only field `map_by_property_name` may be present, containing the display name of the `map_by` property.
 
@@ -852,11 +852,11 @@ In responses, an additional read-only field `map_by_property_name` may be presen
 }
 ```
 
-| Field                    | Type                                                                                   | Description                                                                                                |
-| ------------------------ | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `type`                   | `"form"`                                                                               | **Required.** Must be `"form"`.                                                                            |
-| `is_form_closed`         | boolean \| null                                                                        | Whether the form is closed for submissions. Pass `null` to clear.                                          |
-| `anonymous_submissions`  | boolean \| null                                                                        | Whether anonymous (non-logged-in) submissions are allowed. Pass `null` to clear.                           |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"form"` | **Required.** Must be `"form"`. |
+| `is_form_closed` | boolean \| null | Whether the form is closed for submissions. Pass `null` to clear. |
+| `anonymous_submissions` | boolean \| null | Whether anonymous (non-logged-in) submissions are allowed. Pass `null` to clear. |
 | `submission_permissions` | `"none"` \| `"comment_only"` \| `"reader"` \| `"read_and_write"` \| `"editor"` \| null | Permission level granted to the submitter on the created page after form submission. Pass `null` to clear. |
 
 ### Chart configuration
@@ -887,66 +887,66 @@ When `color_by_value` is enabled on a bar or column chart, each bar is shaded al
 
 **Required fields:**
 
-| Field        | Type                                                         | Description                                                                                                                                     |
-| ------------ | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`       | `"chart"`                                                    | **Required.** Must be `"chart"`.                                                                                                                |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"chart"` | **Required.** Must be `"chart"`. |
 | `chart_type` | `"column"` \| `"bar"` \| `"line"` \| `"donut"` \| `"number"` | **Required.** The chart type: `"column"` (vertical bars), `"bar"` (horizontal bars), `"line"`, `"donut"`, or `"number"` (single value display). |
 
 **Data configuration fields:**
 
 Charts support two data modes: **grouped data** (aggregate values by grouping on a property) and **results** (use raw property values directly).
 
-| Field                | Type           | Description                                                                                                                                                                                                   |
-| -------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `x_axis`             | object \| null | X-axis grouping configuration for column/bar/line/donut charts using grouped data. Uses the same [group-by configuration](#group-by-configuration) shape. Null when using results mode. Pass `null` to clear. |
-| `y_axis`             | object \| null | Y-axis [aggregation](#chart-aggregation) for column/bar/line/donut charts using grouped data. Null when using results mode. Pass `null` to clear.                                                             |
-| `x_axis_property_id` | string \| null | Property ID for x-axis name values when using results (raw property values) mode. Pass `null` to clear.                                                                                                       |
-| `y_axis_property_id` | string \| null | Property ID for y-axis numeric values when using results mode. Pass `null` to clear.                                                                                                                          |
-| `value`              | object \| null | [Aggregation](#chart-aggregation) configuration for number charts (single value display). Pass `null` to clear.                                                                                               |
-| `stack_by`           | object \| null | Stack-by grouping configuration for stacked/grouped charts (column/bar/line only). Uses the same [group-by configuration](#group-by-configuration) shape. Pass `null` to clear.                               |
+| Field | Type | Description |
+| - | - | - |
+| `x_axis` | object \| null | X-axis grouping configuration for column/bar/line/donut charts using grouped data. Uses the same [group-by configuration](#group-by-configuration) shape. Null when using results mode. Pass `null` to clear. |
+| `y_axis` | object \| null | Y-axis [aggregation](#chart-aggregation) for column/bar/line/donut charts using grouped data. Null when using results mode. Pass `null` to clear. |
+| `x_axis_property_id` | string \| null | Property ID for x-axis name values when using results (raw property values) mode. Pass `null` to clear. |
+| `y_axis_property_id` | string \| null | Property ID for y-axis numeric values when using results mode. Pass `null` to clear. |
+| `value` | object \| null | [Aggregation](#chart-aggregation) configuration for number charts (single value display). Pass `null` to clear. |
+| `stack_by` | object \| null | Stack-by grouping configuration for stacked/grouped charts (column/bar/line only). Uses the same [group-by configuration](#group-by-configuration) shape. Pass `null` to clear. |
 
 **Format fields (all optional, all nullable):**
 
-| Field               | Type                                                                                                                                       | Description                                                                                                                                                    |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sort`              | `"manual"` \| `"x_ascending"` \| `"x_descending"` \| `"y_ascending"` \| `"y_descending"`                                                   | Sort order for chart data.                                                                                                                                     |
-| `color_theme`       | `"gray"` \| `"blue"` \| `"yellow"` \| `"green"` \| `"purple"` \| `"teal"` \| `"orange"` \| `"pink"` \| `"red"` \| `"auto"` \| `"colorful"` | Color theme.                                                                                                                                                   |
-| `height`            | `"small"` \| `"medium"` \| `"large"` \| `"extra_large"`                                                                                    | Chart height.                                                                                                                                                  |
-| `hide_empty_groups` | boolean                                                                                                                                    | Whether to hide groups with no data on the x-axis.                                                                                                             |
-| `legend_position`   | `"off"` \| `"bottom"` \| `"side"`                                                                                                          | Legend display position. `"off"` hides the legend.                                                                                                             |
-| `show_data_labels`  | boolean                                                                                                                                    | Whether to show data value labels on chart elements.                                                                                                           |
-| `color_by_value`    | boolean                                                                                                                                    | Whether to apply gradient coloring to chart elements based on their numeric value. Higher values appear in a darker shade and lower values in a lighter shade. |
-| `axis_labels`       | `"none"` \| `"x_axis"` \| `"y_axis"` \| `"both"`                                                                                           | Which axis labels to display.                                                                                                                                  |
-| `grid_lines`        | `"none"` \| `"horizontal"` \| `"vertical"` \| `"both"`                                                                                     | Which grid lines to display.                                                                                                                                   |
-| `y_axis_min`        | number \| null                                                                                                                             | Custom minimum value for the y-axis.                                                                                                                           |
-| `y_axis_max`        | number \| null                                                                                                                             | Custom maximum value for the y-axis.                                                                                                                           |
-| `reference_lines`   | array \| null                                                                                                                              | [Reference lines](#chart-reference-lines) drawn on the chart.                                                                                                  |
-| `caption`           | string \| null                                                                                                                             | Text caption displayed below the chart.                                                                                                                        |
+| Field | Type | Description |
+| - | - | - |
+| `sort` | `"manual"` \| `"x_ascending"` \| `"x_descending"` \| `"y_ascending"` \| `"y_descending"` | Sort order for chart data. |
+| `color_theme` | `"gray"` \| `"blue"` \| `"yellow"` \| `"green"` \| `"purple"` \| `"teal"` \| `"orange"` \| `"pink"` \| `"red"` \| `"auto"` \| `"colorful"` | Color theme. |
+| `height` | `"small"` \| `"medium"` \| `"large"` \| `"extra_large"` | Chart height. |
+| `hide_empty_groups` | boolean | Whether to hide groups with no data on the x-axis. |
+| `legend_position` | `"off"` \| `"bottom"` \| `"side"` | Legend display position. `"off"` hides the legend. |
+| `show_data_labels` | boolean | Whether to show data value labels on chart elements. |
+| `color_by_value` | boolean | Whether to apply gradient coloring to chart elements based on their numeric value. Higher values appear in a darker shade and lower values in a lighter shade. |
+| `axis_labels` | `"none"` \| `"x_axis"` \| `"y_axis"` \| `"both"` | Which axis labels to display. |
+| `grid_lines` | `"none"` \| `"horizontal"` \| `"vertical"` \| `"both"` | Which grid lines to display. |
+| `y_axis_min` | number \| null | Custom minimum value for the y-axis. |
+| `y_axis_max` | number \| null | Custom maximum value for the y-axis. |
+| `reference_lines` | array \| null | [Reference lines](#chart-reference-lines) drawn on the chart. |
+| `caption` | string \| null | Text caption displayed below the chart. |
 
 **Line-specific fields:**
 
-| Field                 | Type    | Description                                     |
-| --------------------- | ------- | ----------------------------------------------- |
-| `cumulative`          | boolean | Whether to show cumulative values.              |
-| `smooth_line`         | boolean | Whether to use smooth curves.                   |
+| Field | Type | Description |
+| - | - | - |
+| `cumulative` | boolean | Whether to show cumulative values. |
+| `smooth_line` | boolean | Whether to use smooth curves. |
 | `hide_line_fill_area` | boolean | Whether to hide the shaded area under the line. |
 
 **Bar/column-specific fields:**
 
-| Field         | Type                                          | Description                                                                                                                                        |
-| ------------- | --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Field | Type | Description |
+| - | - | - |
 | `group_style` | `"normal"` \| `"percent"` \| `"side_by_side"` | How grouped/stacked bars are displayed. `"normal"` stacks values, `"percent"` normalizes to 100%, `"side_by_side"` places bars next to each other. |
 
 **Donut-specific fields:**
 
-| Field          | Type                                                    | Description                            |
-| -------------- | ------------------------------------------------------- | -------------------------------------- |
+| Field | Type | Description |
+| - | - | - |
 | `donut_labels` | `"none"` \| `"value"` \| `"name"` \| `"name_and_value"` | What to display on donut chart slices. |
 
 **Number-specific fields:**
 
-| Field        | Type    | Description                      |
-| ------------ | ------- | -------------------------------- |
+| Field | Type | Description |
+| - | - | - |
 | `hide_title` | boolean | Whether to hide the title label. |
 
 #### Chart aggregation
@@ -960,10 +960,10 @@ The `y_axis` and `value` fields use an aggregation object:
 }
 ```
 
-| Field         | Type   | Description                                                                                                                                          |
-| ------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `aggregator`  | enum   | **Required.** The aggregation operator. `"count"` counts all rows and does not require a `property_id`. All other operators require a `property_id`. |
-| `property_id` | string | The property to aggregate on. Required for all operators except `"count"`.                                                                           |
+| Field | Type | Description |
+| - | - | - |
+| `aggregator` | enum | **Required.** The aggregation operator. `"count"` counts all rows and does not require a `property_id`. All other operators require a `property_id`. |
+| `property_id` | string | The property to aggregate on. Required for all operators except `"count"`. |
 
 **Supported aggregation operators:** `count`, `count_values`, `sum`, `average`, `median`, `min`, `max`, `range`, `unique`, `empty`, `not_empty`, `percent_empty`, `percent_not_empty`, `checked`, `unchecked`, `percent_checked`, `percent_unchecked`, `earliest_date`, `latest_date`, `date_range`.
 
@@ -981,13 +981,13 @@ Reference lines are horizontal lines drawn at specific y-axis values for visual 
 }
 ```
 
-| Field        | Type                  | Description                                                                                                                                                        |
-| ------------ | --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `id`         | string                | Unique identifier for the reference line. Auto-generated if omitted when creating.                                                                                 |
-| `value`      | number                | **Required.** The y-axis value where the reference line is drawn.                                                                                                  |
-| `label`      | string                | **Required.** Label displayed alongside the reference line.                                                                                                        |
-| `color`      | enum                  | **Required.** Color of the reference line. One of: `"gray"`, `"lightgray"`, `"brown"`, `"yellow"`, `"orange"`, `"green"`, `"blue"`, `"purple"`, `"pink"`, `"red"`. |
-| `dash_style` | `"solid"` \| `"dash"` | **Required.** Line style: `"solid"` for a continuous line, `"dash"` for a dashed line.                                                                             |
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | Unique identifier for the reference line. Auto-generated if omitted when creating. |
+| `value` | number | **Required.** The y-axis value where the reference line is drawn. |
+| `label` | string | **Required.** Label displayed alongside the reference line. |
+| `color` | enum | **Required.** Color of the reference line. One of: `"gray"`, `"lightgray"`, `"brown"`, `"yellow"`, `"orange"`, `"green"`, `"blue"`, `"purple"`, `"pink"`, `"red"`. |
+| `dash_style` | `"solid"` \| `"dash"` | **Required.** Line style: `"solid"` for a continuous line, `"dash"` for a dashed line. |
 
 ### Dashboard configuration
 
@@ -1007,26 +1007,26 @@ Reference lines are horizontal lines drawn at specific y-axis values for visual 
 }
 ```
 
-| Field  | Type          | Description                                                                                             |
-| ------ | ------------- | ------------------------------------------------------------------------------------------------------- |
-| `type` | `"dashboard"` | **Required.** Must be `"dashboard"`.                                                                    |
-| `rows` | array         | **Required.** The rows that make up the dashboard layout. Each row contains one or more widget modules. |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"dashboard"` | **Required.** Must be `"dashboard"`. |
+| `rows` | array | **Required.** The rows that make up the dashboard layout. Each row contains one or more widget modules. |
 
 **Dashboard row object:**
 
-| Field     | Type    | Description                         |
-| --------- | ------- | ----------------------------------- |
-| `id`      | string  | The ID of this row module.          |
-| `widgets` | array   | The widget modules within this row. |
-| `height`  | integer | Fixed height of the row in pixels.  |
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The ID of this row module. |
+| `widgets` | array | The widget modules within this row. |
+| `height` | integer | Fixed height of the row in pixels. |
 
 **Dashboard widget object:**
 
-| Field       | Type    | Description                                                                                              |
-| ----------- | ------- | -------------------------------------------------------------------------------------------------------- |
-| `id`        | string  | The ID of this widget module.                                                                            |
-| `view_id`   | string  | The ID of the collection view rendered by this widget.                                                   |
-| `width`     | integer | Width of the widget in a 12-column grid (1–12). `12` means full width.                                   |
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The ID of this widget module. |
+| `view_id` | string | The ID of the collection view rendered by this widget. |
+| `width` | integer | Width of the widget in a 12-column grid (1–12). `12` means full width. |
 | `row_index` | integer | The 0-based index of the row this widget belongs to. Widgets in the same row share the same `row_index`. |
 
 <Info>
@@ -1048,16 +1048,16 @@ The `properties` array controls which database properties are visible in the vie
 }
 ```
 
-| Field                      | Type                        | Description                                                                                                                                                                                                                           |
-| -------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `property_id`              | string                      | **Required.** The property ID or property name. When a name is provided, the API resolves it to the corresponding property ID. If the string matches both a property ID and a different property's name, the ID match takes priority. |
-| `visible`                  | boolean                     | Whether the property is visible in this view.                                                                                                                                                                                         |
-| `width`                    | integer (>= 0)              | Column width in pixels (table views only).                                                                                                                                                                                            |
-| `wrap`                     | boolean                     | Whether to wrap content in this property cell or card.                                                                                                                                                                                |
-| `status_show_as`           | `"select"` \| `"checkbox"`  | How to display status properties.                                                                                                                                                                                                     |
-| `card_property_width_mode` | `"full_line"` \| `"inline"` | Property width mode in compact card layouts (board/gallery).                                                                                                                                                                          |
-| `date_format`              | enum                        | Display format for date properties. One of: `"full"`, `"short"`, `"month_day_year"`, `"day_month_year"`, `"year_month_day"`, `"relative"`.                                                                                            |
-| `time_format`              | enum                        | Time display format for date properties. One of: `"12_hour"`, `"24_hour"`, `"hidden"`.                                                                                                                                                |
+| Field | Type | Description |
+| - | - | - |
+| `property_id` | string | **Required.** The property ID or property name. When a name is provided, the API resolves it to the corresponding property ID. If the string matches both a property ID and a different property's name, the ID match takes priority. |
+| `visible` | boolean | Whether the property is visible in this view. |
+| `width` | integer (>= 0) | Column width in pixels (table views only). |
+| `wrap` | boolean | Whether to wrap content in this property cell or card. |
+| `status_show_as` | `"select"` \| `"checkbox"` | How to display status properties. |
+| `card_property_width_mode` | `"full_line"` \| `"inline"` | Property width mode in compact card layouts (board/gallery). |
+| `date_format` | enum | Display format for date properties. One of: `"full"`, `"short"`, `"month_day_year"`, `"day_month_year"`, `"year_month_day"`, `"relative"`. |
+| `time_format` | enum | Time display format for date properties. One of: `"12_hour"`, `"24_hour"`, `"hidden"`. |
 
 ### Group-by configuration
 
@@ -1065,35 +1065,35 @@ Group-by lets you organize rows or cards into sections based on a property's val
 
 All group-by variants share these fields:
 
-| Field               | Type    | Description                                                                                                   |
-| ------------------- | ------- | ------------------------------------------------------------------------------------------------------------- |
-| `type`              | string  | **Required.** The property type being grouped. Determines which additional fields are available.              |
-| `property_id`       | string  | **Required.** The property ID to group by.                                                                    |
-| `sort`              | object  | **Required.** Sort order for the groups. An object with `type`: `"manual"`, `"ascending"`, or `"descending"`. |
-| `hide_empty_groups` | boolean | Whether to hide groups with no items.                                                                         |
+| Field | Type | Description |
+| - | - | - |
+| `type` | string | **Required.** The property type being grouped. Determines which additional fields are available. |
+| `property_id` | string | **Required.** The property ID to group by. |
+| `sort` | object | **Required.** Sort order for the groups. An object with `type`: `"manual"`, `"ascending"`, or `"descending"`. |
+| `hide_empty_groups` | boolean | Whether to hide groups with no items. |
 
 The following table shows which `type` values are supported and what extra fields each variant accepts:
 
-| `type` value(s)                                 | Extra required fields                                                                                | Extra optional fields                                               |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| `select`, `multi_select`                        | —                                                                                                    | —                                                                   |
-| `status`                                        | `group_by`: `"group"` (by status group: To Do/In Progress/Done) or `"option"` (by individual option) | —                                                                   |
-| `person`, `created_by`, `last_edited_by`        | —                                                                                                    | —                                                                   |
-| `relation`                                      | —                                                                                                    | —                                                                   |
-| `date`, `created_time`, `last_edited_time`      | `group_by`: `"relative"` \| `"day"` \| `"week"` \| `"month"` \| `"year"`                             | `start_day_of_week`: `0` (Sunday) or `1` (Monday)                   |
-| `text`, `title`, `url`, `email`, `phone_number` | `group_by`: `"exact"` or `"alphabet_prefix"` (first letter)                                          | —                                                                   |
-| `number`                                        | —                                                                                                    | `range_start`, `range_end`, `range_size` (>= 1) for bucket grouping |
-| `checkbox`                                      | —                                                                                                    | —                                                                   |
-| `formula`                                       | `group_by`: a nested sub-group-by object (see below)                                                 | —                                                                   |
+| `type` value(s) | Extra required fields | Extra optional fields |
+| - | - | - |
+| `select`, `multi_select` | — | — |
+| `status` | `group_by`: `"group"` (by status group: To Do/In Progress/Done) or `"option"` (by individual option) | — |
+| `person`, `created_by`, `last_edited_by` | — | — |
+| `relation` | — | — |
+| `date`, `created_time`, `last_edited_time` | `group_by`: `"relative"` \| `"day"` \| `"week"` \| `"month"` \| `"year"` | `start_day_of_week`: `0` (Sunday) or `1` (Monday) |
+| `text`, `title`, `url`, `email`, `phone_number` | `group_by`: `"exact"` or `"alphabet_prefix"` (first letter) | — |
+| `number` | — | `range_start`, `range_end`, `range_size` (>= 1) for bucket grouping |
+| `checkbox` | — | — |
+| `formula` | `group_by`: a nested sub-group-by object (see below) | — |
 
 **Formula group-by** uses a nested `group_by` object that describes how to group the formula's result type. The nested object does not include `property_id` (it inherits from the parent). Supported formula result types:
 
-| Result type | Nested `group_by` fields                                                                                                  |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `date`      | `type`, `group_by` (`"relative"` \| `"day"` \| `"week"` \| `"month"` \| `"year"`), `sort`, optionally `start_day_of_week` |
-| `text`      | `type`, `group_by` (`"exact"` \| `"alphabet_prefix"`), `sort`                                                             |
-| `number`    | `type`, `sort`, optionally `range_start`, `range_end`, `range_size`                                                       |
-| `checkbox`  | `type`, `sort`                                                                                                            |
+| Result type | Nested `group_by` fields |
+| - | - |
+| `date` | `type`, `group_by` (`"relative"` \| `"day"` \| `"week"` \| `"month"` \| `"year"`), `sort`, optionally `start_day_of_week` |
+| `text` | `type`, `group_by` (`"exact"` \| `"alphabet_prefix"`), `sort` |
+| `number` | `type`, `sort`, optionally `range_start`, `range_end`, `range_size` |
+| `checkbox` | `type`, `sort` |
 
 <CodeGroup>
   ```json Group by select example theme={null}
@@ -1152,12 +1152,12 @@ Subtask (sub-item) configuration controls how parent-child relationships are dis
 }
 ```
 
-| Field              | Type   | Description                                                                                                                                                                                            |
-| ------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `property_id`      | string | Relation property ID used for parent-child nesting.                                                                                                                                                    |
-| `display_mode`     | enum   | How sub-items are displayed. One of: `"show"` (hierarchical with toggles), `"hidden"` (parents with a count), `"flattened"` (sub-items with a parent indicator), `"disabled"` (no sub-item rendering). |
-| `filter_scope`     | enum   | Which items are included when filtering. One of: `"parents"` (parent items only), `"parents_and_subitems"` (both), `"subitems"` (sub-items only).                                                      |
-| `toggle_column_id` | string | Property ID of the column showing the expand/collapse toggle.                                                                                                                                          |
+| Field | Type | Description |
+| - | - | - |
+| `property_id` | string | Relation property ID used for parent-child nesting. |
+| `display_mode` | enum | How sub-items are displayed. One of: `"show"` (hierarchical with toggles), `"hidden"` (parents with a count), `"flattened"` (sub-items with a parent indicator), `"disabled"` (no sub-item rendering). |
+| `filter_scope` | enum | Which items are included when filtering. One of: `"parents"` (parent items only), `"parents_and_subitems"` (both), `"subitems"` (sub-items only). |
+| `toggle_column_id` | string | Property ID of the column showing the expand/collapse toggle. |
 
 ### Cover configuration
 
@@ -1169,10 +1169,10 @@ Cover configuration controls the image displayed at the top of each card in boar
 }
 ```
 
-| Field         | Type   | Description                                                                                                                                                                             |
-| ------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`        | enum   | **Required.** Source of the cover image. One of: `"page_cover"` (the page's cover image), `"page_content"` (first image in page content), `"property"` (an image from a file property). |
-| `property_id` | string | Property ID to use as the cover image source. Only used when `type` is `"property"`.                                                                                                    |
+| Field | Type | Description |
+| - | - | - |
+| `type` | enum | **Required.** Source of the cover image. One of: `"page_cover"` (the page's cover image), `"page_content"` (first image in page content), `"property"` (an image from a file property). |
+| `property_id` | string | Property ID to use as the cover image source. Only used when `type` is `"property"`. |
 
 ### Clearing configuration with null
 
@@ -1297,6 +1297,24 @@ To add a new quick filter or update an existing one, include the property key wi
   ```
 </CodeGroup>
 
+### Adding a quick filter without criteria
+
+Pass an empty object to add a property to the filter bar without choosing a value. People who open the view pick the value themselves. This matches picking a property from **+ Filter** in Notion. If the property already has a quick filter, an empty object leaves it as it is. When you retrieve the view, any quick filter without a value comes back as an empty object.
+
+A quick filter without criteria doesn't change which pages the view shows. Files and place properties can't have an empty quick filter, so pass a condition for those. Some rollups that show original values need one too, such as a rollup whose related data source your integration can't read. Otherwise the request returns a `validation_error`.
+
+<CodeGroup>
+  ```javascript JavaScript expandable theme={null}
+  const view = await notion.views.update({
+    view_id: "VIEW_ID",
+    quick_filters: {
+      "Status": {},
+      "Assignee": {},
+    },
+  });
+  ```
+</CodeGroup>
+
 ### Removing a quick filter
 
 Set a specific quick filter to `null` to remove it from the filter bar. Other quick filters are preserved.
@@ -1412,10 +1430,10 @@ To add a widget to a dashboard, create a view with `view_id` set to the dashboar
 
 When adding a widget to a dashboard, you can control where it appears in the layout using the `placement` parameter. This is a discriminated union on the `type` field:
 
-| Variant        | Fields                         | Description                                                                                                                                                            |
-| -------------- | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `new_row`      | `type`, optional `row_index`   | Creates a new row containing the widget. If `row_index` is omitted, the new row is appended at the end. If provided, the new row is inserted at that 0-based position. |
-| `existing_row` | `type`, `row_index` (required) | Adds the widget side-by-side to an existing row at the specified 0-based index. Column widths are automatically redistributed.                                         |
+| Variant | Fields | Description |
+| - | - | - |
+| `new_row` | `type`, optional `row_index` | Creates a new row containing the widget. If `row_index` is omitted, the new row is appended at the end. If provided, the new row is inserted at that 0-based position. |
+| `existing_row` | `type`, `row_index` (required) | Adds the widget side-by-side to an existing row at the specified 0-based index. Column widths are automatically redistributed. |
 
 <CodeGroup>
   ```json Append a new row (default) theme={null}
@@ -1592,14 +1610,14 @@ This endpoint is idempotent — calling it on an already-deleted or expired quer
 
 View endpoints reuse existing database [connection capabilities](/reference/capabilities):
 
-| Operation                               | Required capability                                                         |
-| --------------------------------------- | --------------------------------------------------------------------------- |
-| List views                              | `read_content` or `read_property`                                           |
-| Retrieve a view                         | `read_content` or `read_property`                                           |
-| Create a view                           | `insert_content`, `insert_property`, `update_content`, or `update_property` |
-| Update a view                           | `update_content` or `update_property`                                       |
-| Delete a view                           | `update_content` or `update_property`                                       |
-| Query a view (create, paginate, delete) | `read_content` or `read_property`                                           |
+| Operation | Required capability |
+| - | - |
+| List views | `read_content` or `read_property` |
+| Retrieve a view | `read_content` or `read_property` |
+| Create a view | `insert_content`, `insert_property`, `update_content`, or `update_property` |
+| Update a view | `update_content` or `update_property` |
+| Delete a view | `update_content` or `update_property` |
+| Query a view (create, paginate, delete) | `read_content` or `read_property` |
 
 The connection must also have access to the parent database. If it doesn't, the API returns a `404` rather than a `403`.
 

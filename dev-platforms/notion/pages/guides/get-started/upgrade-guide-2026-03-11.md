@@ -20,11 +20,11 @@ Notion API version `2026-03-11` introduces three breaking changes that affect bl
 
 ## What's changing
 
-| Change                | Before (`2025-09-03`)                                        | After (`2026-03-11`)                              |
-| :-------------------- | :----------------------------------------------------------- | :------------------------------------------------ |
-| **Block positioning** | `after` string parameter                                     | `position` object (`after_block`, `start`, `end`) |
-| **Trash status**      | `archived` field                                             | `in_trash` field                                  |
-| **Block type rename** | [`transcription`](/reference/block#transcription) block type | `meeting_notes` block type                        |
+| Change | Before (`2025-09-03`) | After (`2026-03-11`) |
+| :- | :- | :- |
+| **Block positioning** | `after` string parameter | `position` object (`after_block`, `start`, `end`) |
+| **Trash status** | `archived` field | `in_trash` field |
+| **Block type rename** | [`transcription`](/reference/block#transcription) block type | `meeting_notes` block type |
 
 ## Upgrade checklist
 

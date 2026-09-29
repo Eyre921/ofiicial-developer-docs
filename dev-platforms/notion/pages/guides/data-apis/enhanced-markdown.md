@@ -205,17 +205,17 @@ Must be on its own line. Plain empty lines are stripped out.
 
 ## Rich text formatting
 
-| Format        | Syntax                               |
-| ------------- | ------------------------------------ |
-| Bold          | `**text**`                           |
-| Italic        | `*text*`                             |
-| Strikethrough | `~~text~~`                           |
-| Underline     | `<span underline="true">text</span>` |
-| Inline code   | `` `code` ``                         |
-| Link          | `[text](URL)`                        |
-| Inline math   | `$equation$`                         |
-| Line break    | `<br>`                               |
-| Color         | `<span color="Color">text</span>`    |
+| Format | Syntax |
+| - | - |
+| Bold | `**text**` |
+| Italic | `*text*` |
+| Strikethrough | `~~text~~` |
+| Underline | `<span underline="true">text</span>` |
+| Inline code | `` `code` `` |
+| Link | `[text](URL)` |
+| Inline math | `$equation$` |
+| Line break | `<br>` |
+| Color | `<span color="Color">text</span>` |
 
 ### Mentions
 

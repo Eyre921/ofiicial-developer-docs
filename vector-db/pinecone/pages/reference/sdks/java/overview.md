@@ -21,12 +21,12 @@ SDK versions are pinned to specific [API versions](/reference/api/versioning). W
 The mappings between API versions and Java SDK versions are as follows:
 
 | API version | SDK version |
-| :---------- | :---------- |
-| `2025-04`   | v5.x        |
-| `2025-01`   | v4.x        |
-| `2024-10`   | v3.x        |
-| `2024-07`   | v2.x        |
-| `2024-04`   | v1.x        |
+| :- | :- |
+| `2025-04` | v5.x |
+| `2025-01` | v4.x |
+| `2024-10` | v3.x |
+| `2024-07` | v2.x |
+| `2024-04` | v1.x |
 
 When a new stable API version is released, you should upgrade your SDK to the latest version to ensure compatibility with the latest API changes.
 

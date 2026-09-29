@@ -36,15 +36,15 @@ Corpus-scoped artifacts plus typed edges form a cross-document knowledge graph. 
 
 ## Artifact kinds
 
-| Kind       | Scope                  | Description                                                                    |
-| ---------- | ---------------------- | ------------------------------------------------------------------------------ |
-| `summary`  | `corpus` or `document` | A condensed overview of the whole corpus or a single document.                 |
-| `topic`    | `corpus`               | A theme or subject distilled across the sources.                               |
-| `entity`   | `corpus`               | A named thing (account, person, product) with its relationships.               |
-| `event`    | `corpus`               | Something that happened, often time-stamped, good for timelines and counts.    |
-| `doc`      | `document`             | A per-document artifact, scoped to one source file.                            |
-| `page`     | `document`             | A single source page, the finest grain, for exact quotes and figures.          |
-| `glossary` | `corpus`               | A term-and-definition pair, collected across the corpus into a shared lexicon. |
+| Kind | Scope | Description |
+| - | - | - |
+| `summary` | `corpus` or `document` | A condensed overview of the whole corpus or a single document. |
+| `topic` | `corpus` | A theme or subject distilled across the sources. |
+| `entity` | `corpus` | A named thing (account, person, product) with its relationships. |
+| `event` | `corpus` | Something that happened, often time-stamped, good for timelines and counts. |
+| `doc` | `document` | A per-document artifact, scoped to one source file. |
+| `page` | `document` | A single source page, the finest grain, for exact quotes and figures. |
+| `glossary` | `corpus` | A term-and-definition pair, collected across the corpus into a shared lexicon. |
 
 ## Artifact formats
 

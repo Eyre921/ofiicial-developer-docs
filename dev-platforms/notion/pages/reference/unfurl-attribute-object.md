@@ -170,25 +170,25 @@ First, let's let at the properties in each individual unfurl attribute object.
 
 Each unfurl attribute object contains the following values:
 
-| Field                 | Type                  | Description                                                                                                                                                    | Example value                                                                    |
-| :-------------------- | :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------- |
-| `id`                  | `string`              | A unique identifier for the attribute. If more than one attribute with the same `id` is provided, then the latter attribute overrides the value of the first.  | `"title"`                                                                        |
-| `name`                | `string`              | A human readable name describing the attribute.                                                                                                                | `"Title"`                                                                        |
-| `type`                | `inline` \|\| `embed` | The type of attribute. Most attributes are `inline`. Use `embed` for rich media sub-types like `image`, `video`, or `audio`.                                   | `"inline"`                                                                       |
-| `inline` \|\| `embed` | `object`              | An object whose key is a sub-type. The child sub-type object includes the `value` to display and the `section` of the Link Preview where the data is rendered. | `{ "title": { "value": "Feature Request: Link Previews", "section": "title" } }` |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `id` | `string` | A unique identifier for the attribute. If more than one attribute with the same `id` is provided, then the latter attribute overrides the value of the first. | `"title"` |
+| `name` | `string` | A human readable name describing the attribute. | `"Title"` |
+| `type` | `inline` \|\| `embed` | The type of attribute. Most attributes are `inline`. Use `embed` for rich media sub-types like `image`, `video`, or `audio`. | `"inline"` |
+| `inline` \|\| `embed` | `object` | An object whose key is a sub-type. The child sub-type object includes the `value` to display and the `section` of the Link Preview where the data is rendered. | `{ "title": { "value": "Feature Request: Link Previews", "section": "title" } }` |
 
 ### Inline sub-type objects
 
 The key of inline sub-type objects represents the kind of sub-type. The values of the key are the `value` to display and the `section` of the Link Preview where the value is rendered.
 
-| Sub-type     | Description                                                                                                                             | Example value                                                                                                             |
-| :----------- | :-------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
-| `color`      | A color with r, b, g values.                                                                                                            | `{ "value": { "r": 247, "g": 247, "b": 42 }, "section": "entity" }`                                                       |
-| `date`       | A date.                                                                                                                                 | `{ "value": "2022-01-11", "section": "secondary" }`                                                                       |
-| `datetime`   | A datetime.                                                                                                                             | `{ "value": "2022-01-11T19:53:18.829Z", "section": "secondary" }`                                                         |
-| `enum`       | A string value and optional color object.                                                                                               | `{ "value": "🔨 Ready to Build", "color": { "r": 100, "g": 100, "b": 100 }, "section": "primary" }`                       |
-| `plain_text` | Any plain text content.                                                                                                                 | `{ "value": "Would love to be able to preview some Acme resources in Notion!\n Maybe an open item?", "section": "body" }` |
-| `title`\*    | The title of the Link Preview. \*An unfurl attribute object of this type must be included in every payload that renders a Link Preview. | `{ "value": "Feature Request: Link Previews", "section": "title" }`                                                       |
+| Sub-type | Description | Example value |
+| :- | :- | :- |
+| `color` | A color with r, b, g values. | `{ "value": { "r": 247, "g": 247, "b": 42 }, "section": "entity" }` |
+| `date` | A date. | `{ "value": "2022-01-11", "section": "secondary" }` |
+| `datetime` | A datetime. | `{ "value": "2022-01-11T19:53:18.829Z", "section": "secondary" }` |
+| `enum` | A string value and optional color object. | `{ "value": "🔨 Ready to Build", "color": { "r": 100, "g": 100, "b": 100 }, "section": "primary" }` |
+| `plain_text` | Any plain text content. | `{ "value": "Would love to be able to preview some Acme resources in Notion!\n Maybe an open item?", "section": "body" }` |
+| `title`\* | The title of the Link Preview. \*An unfurl attribute object of this type must be included in every payload that renders a Link Preview. | `{ "value": "Feature Request: Link Previews", "section": "title" }` |
 
 #### The `dev` attribute
 
@@ -220,12 +220,12 @@ The `embed` sub-type object adds rich content like JPGs, GIFs, or iFrames to a L
 
 All embed sub-type objects contain: a `src_url` field that is a link to the embed, and an object whose key is the sub-type of the embed and whose value is an object indicating the `section` of the Link Preview where the value is rendered.
 
-| Sub-type | Description                                           | Example value                                                                                     |
-| -------- | ----------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `audio`  | Audio from a source URL.                              | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.mp4", "audio": { "section": "embed" } }`  |
-| `html`   | HTML from a source URL that is rendered in an iFrame. | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.html", "html": { "section": "embed" } }`  |
-| `image`  | Image from a source URL.                              | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.png", "image": { "section": "avatar" } }` |
-| `video`  | Video from a source URL.                              | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.mp4", "video": { "section": "embed" } }`  |
+| Sub-type | Description | Example value |
+| - | - | - |
+| `audio` | Audio from a source URL. | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.mp4", "audio": { "section": "embed" } }` |
+| `html` | HTML from a source URL that is rendered in an iFrame. | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.html", "html": { "section": "embed" } }` |
+| `image` | Image from a source URL. | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.png", "image": { "section": "avatar" } }` |
+| `video` | Video from a source URL. | `{ "src_url": "https://s3.us-east-3.amazonaws.com/12345.mp4", "video": { "section": "embed" } }` |
 
 <Note>
   There’s no need to ask a user to log in to the source service in an iFrame embed. If they’re using a Link Preview, then they’ve already authenticated.
@@ -247,14 +247,14 @@ The `section` value of an unfurl attribute object defines where an attribute is 
 
 A `section` is specified in the sub-type object for the attribute. Refer to the table below for details about each `section` and its valid parent sub-types.
 
-| Section    | Description                                                                                    | Valid parent sub-types                   |
-| :--------- | :--------------------------------------------------------------------------------------------- | :--------------------------------------- |
-| avatar     | The picture found on the bottom left of a Link Preview.                                        | `image`, `plain_text`                    |
-| background | A background color for the Link Preview.                                                       | `color`                                  |
-| body       | The main string content of a Link Preview.                                                     | `plain_text`                             |
-| embed      | The large space where the content of an `embed` attribute type is displayed in a Link Preview. | `audio`, `html`, `image`, `pdf`, `video` |
-| entity     | The small picture found in the subheading of a Link Preview and in a Mention.                  | `color`, `image`                         |
-| identifier | The subheading found on the bottom of a Link Preview and on the left side of a Mention.        | `image`, `plain_text`                    |
-| primary    | The first subheading section.                                                                  | `enum`, `date`, `datetime`, `plain_text` |
-| secondary  | The second subheading section.                                                                 | `date`, `datetime`, `plain_text`         |
-| title\*    | The main heading in a Link Preview or Mention. \*Required.                                     | `title`                                  |
+| Section | Description | Valid parent sub-types |
+| :- | :- | :- |
+| avatar | The picture found on the bottom left of a Link Preview. | `image`, `plain_text` |
+| background | A background color for the Link Preview. | `color` |
+| body | The main string content of a Link Preview. | `plain_text` |
+| embed | The large space where the content of an `embed` attribute type is displayed in a Link Preview. | `audio`, `html`, `image`, `pdf`, `video` |
+| entity | The small picture found in the subheading of a Link Preview and in a Mention. | `color`, `image` |
+| identifier | The subheading found on the bottom of a Link Preview and on the left side of a Mention. | `image`, `plain_text` |
+| primary | The first subheading section. | `enum`, `date`, `datetime`, `plain_text` |
+| secondary | The second subheading section. | `date`, `datetime`, `plain_text` |
+| title\* | The main heading in a Link Preview or Mention. \*Required. | `title` |

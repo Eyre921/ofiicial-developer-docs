@@ -20,20 +20,20 @@ Request-per-second limits are enforced per namespace or per index, as noted in t
 
 [Read units](/guides/manage-cost/understanding-cost#read-units) and [write units](/guides/manage-cost/understanding-cost#write-units) measure resource consumption. To check your current usage, see [Monitor usage and costs](/guides/manage-cost/monitor-usage-and-costs).
 
-| Metric                               | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :----------------------------------- | :----------- | :----------- | :------------ | :-------------- |
-| Read units per month per org         | 1,000,000    | 2,000,000    | Unlimited     | Unlimited       |
-| Write units per month per org        | 2,000,000    | 5,000,000    | Unlimited     | Unlimited       |
-| Embedding tokens per month per model | 5,000,000    | 10,000,000   | Unlimited     | Unlimited       |
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Read units per month per org | 1,000,000 | 2,000,000 | Unlimited | Unlimited |
+| Write units per month per org | 2,000,000 | 5,000,000 | Unlimited | Unlimited |
+| Embedding tokens per month per model | 5,000,000 | 10,000,000 | Unlimited | Unlimited |
 
 Monthly rerank request limits vary by model:
 
-| Reranking model        | Starter plan  | Builder plan  | Standard plan | Enterprise plan |
-| :--------------------- | :------------ | :------------ | :------------ | :-------------- |
-| `cohere-rerank-4-fast` | Not available | Not available | Unlimited     | Unlimited       |
-| `cohere-rerank-3.5`    | Not available | Not available | Unlimited     | Unlimited       |
-| `bge-reranker-v2-m3`   | 500           | 1,000         | Unlimited     | Unlimited       |
-| `pinecone-rerank-v0`   | 500           | Not available | Unlimited     | Unlimited       |
+| Reranking model | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| `cohere-rerank-4-fast` | Not available | Not available | Unlimited | Unlimited |
+| `cohere-rerank-3.5` | Not available | Not available | Unlimited | Unlimited |
+| `bge-reranker-v2-m3` | 500 | 1,000 | Unlimited | Unlimited |
+| `pinecone-rerank-v0` | 500 | Not available | Unlimited | Unlimited |
 
 Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/guides/organizations/manage-billing/upgrade-billing-plan) to continue.
 
@@ -46,24 +46,24 @@ Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade you
 
 ## Data operation throughput limits
 
-| Metric                                               | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :--------------------------------------------------- | :----------- | :----------- | :------------ | :-------------- |
-| Upsert size per second per namespace                 | 50 MB        | 50 MB        | 50 MB         | 50 MB           |
-| Query read units per second per index                | 2,000        | 2,000        | 2,000         | 2,000           |
-| Query requests per second per namespace              | 100          | 100          | 100           | 100             |
-| Update records per second per namespace              | 100          | 100          | 100           | 100             |
-| Update requests per second per namespace             | 100          | 100          | 100           | 100             |
-| Update by metadata requests per second per namespace | 5            | 5            | 5             | 5               |
-| Update by metadata requests per second per index     | 500          | 500          | 500           | 500             |
-| Upsert requests per second per namespace             | 100          | 100          | 100           | 100             |
-| Fetch requests per second per index                  | 100          | 100          | 100           | 100             |
-| List requests per second per index                   | 200          | 200          | 200           | 200             |
-| Describe index stats requests per second per index   | 100          | 100          | 100           | 100             |
-| Delete requests per second per namespace             | 100          | 100          | 100           | 100             |
-| Delete records per second per namespace              | 5,000        | 5,000        | 5,000         | 5,000           |
-| Delete records per second per index                  | 5,000        | 5,000        | 5,000         | 5,000           |
-| Delete by metadata requests per second per namespace | 5            | 5            | 5             | 5               |
-| Delete by metadata requests per second per index     | 500          | 500          | 500           | 500             |
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Upsert size per second per namespace | 50 MB | 50 MB | 50 MB | 50 MB |
+| Query read units per second per index | 2,000 | 2,000 | 2,000 | 2,000 |
+| Query requests per second per namespace | 100 | 100 | 100 | 100 |
+| Update records per second per namespace | 100 | 100 | 100 | 100 |
+| Update requests per second per namespace | 100 | 100 | 100 | 100 |
+| Update by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Update by metadata requests per second per index | 500 | 500 | 500 | 500 |
+| Upsert requests per second per namespace | 100 | 100 | 100 | 100 |
+| Fetch requests per second per index | 100 | 100 | 100 | 100 |
+| List requests per second per index | 200 | 200 | 200 | 200 |
+| Describe index stats requests per second per index | 100 | 100 | 100 | 100 |
+| Delete requests per second per namespace | 100 | 100 | 100 | 100 |
+| Delete records per second per namespace | 5,000 | 5,000 | 5,000 | 5,000 |
+| Delete records per second per index | 5,000 | 5,000 | 5,000 | 5,000 |
+| Delete by metadata requests per second per namespace | 5 | 5 | 5 | 5 |
+| Delete by metadata requests per second per index | 500 | 500 | 500 | 500 |
 
 Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic), pace your requests, consider [Dedicated Read Nodes](/guides/index-data/dedicated-read-nodes/overview) (which aren't subject to per-second read limits) for high-throughput reads, or [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to raise a limit.
 
@@ -77,23 +77,23 @@ Exceeding a per-second throughput limit returns a `429 - TOO_MANY_REQUESTS`. [Im
 
 Per-minute token limits for embedding models:
 
-| Embedding model              | Input type | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :--------------------------- | :--------- | :----------- | :----------- | :------------ | :-------------- |
-| `llama-text-embed-v2`        | Passage    | 250,000      | 250,000      | 1,000,000     | 1,000,000       |
-|                              | Query      | 50,000       | 50,000       | 250,000       | 250,000         |
-| `multilingual-e5-large`      | Passage    | 250,000      | 250,000      | 1,000,000     | 1,000,000       |
-|                              | Query      | 50,000       | 50,000       | 250,000       | 250,000         |
-| `pinecone-sparse-english-v0` | Passage    | 250,000      | 250,000      | 3,000,000     | 3,000,000       |
-|                              | Query      | 250,000      | 250,000      | 3,000,000     | 3,000,000       |
+| Embedding model | Input type | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- | :- |
+| `llama-text-embed-v2` | Passage | 250,000 | 250,000 | 1,000,000 | 1,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `multilingual-e5-large` | Passage | 250,000 | 250,000 | 1,000,000 | 1,000,000 |
+| | Query | 50,000 | 50,000 | 250,000 | 250,000 |
+| `pinecone-sparse-english-v0` | Passage | 250,000 | 250,000 | 3,000,000 | 3,000,000 |
+| | Query | 250,000 | 250,000 | 3,000,000 | 3,000,000 |
 
 Per-minute request limits for reranking models:
 
-| Reranking model        | Starter plan  | Builder plan  | Standard plan | Enterprise plan |
-| :--------------------- | :------------ | :------------ | :------------ | :-------------- |
-| `cohere-rerank-4-fast` | Not available | Not available | 300           | 300             |
-| `cohere-rerank-3.5`    | Not available | Not available | 300           | 300             |
-| `bge-reranker-v2-m3`   | 60            | 60            | 60            | 60              |
-| `pinecone-rerank-v0`   | 60            | Not available | 60            | 60              |
+| Reranking model | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| `cohere-rerank-4-fast` | Not available | Not available | 300 | 300 |
+| `cohere-rerank-3.5` | Not available | Not available | 300 | 300 |
+| `bge-reranker-v2-m3` | 60 | 60 | 60 | 60 |
+| `pinecone-rerank-v0` | 60 | Not available | 60 | 60 |
 
 Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/guides/organizations/manage-billing/upgrade-billing-plan) to increase it, or [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
 
@@ -106,10 +106,10 @@ Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade 
 
 ## Inference request limits
 
-| Metric                                    | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :---------------------------------------- | :----------- | :----------- | :------------ | :-------------- |
-| Inference requests per second per project | 100          | 100          | 100           | 100             |
-| Inference requests per minute per project | 2,000        | 2,000        | 2,000         | 2,000           |
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Inference requests per second per project | 100 | 100 | 100 | 100 |
+| Inference requests per minute per project | 2,000 | 2,000 | 2,000 | 2,000 |
 
 Exceeding the per-second or per-minute limit returns a `429 - TOO_MANY_REQUESTS`. [Implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic) to handle it.
 

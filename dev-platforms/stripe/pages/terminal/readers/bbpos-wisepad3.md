@@ -40,7 +40,9 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 | IEGBFI | `4.01.07.00_Prod_EU_W1_off_v23_510001` |
 | CA | `4.01.07.00_Prod_NA_off_v30_480001` |
 
-### Firmware versions 
+### Changelog
+
+#### Firmware versions 
 
 > In PCI listings, the firmware identifier is in the format `WPC3x.<batch>-xxxxx`, where `xxxxx` is a placeholder for all firmware versions. All firmware versions are PCI compliant.
 > 
@@ -110,7 +112,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 | `4.01.00.07.beta5` | 2020-08-31 | Improves reliability of reader events. |
 | `4.01.00.06.beta10` | 2020-06-30 | The initial firmware version available for this device. |
 
-### Configurations 
+#### Configurations 
 
 | Region (PIN type) | Name | Release Date | Description |
 | --- | --- | --- | --- |
@@ -155,7 +157,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 | `Prod_NA_off_v6` | 2021-04-21 | Updated config for North American countries. |
 | `Prod_NA_off_v5` | 2021-02-22 | Initial North American config. |
 
-### Key identifiers 
+#### Key identifiers 
 
 | Identifier | Countries | Description |
 | --- | --- | --- |

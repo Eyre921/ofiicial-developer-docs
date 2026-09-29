@@ -19,43 +19,43 @@ The roles you assign depend on the principal type:
 
 The following project roles are available:
 
-| Role                                        | Permissions                                                                                                                     |
-| :------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------ |
-| Project owner (`ProjectOwner`)              | Full access to the project, including members, API keys, and all resources and data.                                            |
-| Project manager (`ProjectManager`)          | Read and write access to all resources and data. Read-only access to project settings, members, and API keys.                   |
-| Project member (`ProjectMember`)            | Read-only access to project settings, members, and API keys. No resource or data access unless granted additional access roles. |
-| Project editor (`ProjectEditor`)            | Read and write access to all resources and data. No access to project settings, members, or API keys.                           |
-| Project viewer (`ProjectViewer`)            | Read-only access to all resources and data. No access to project settings, members, or API keys.                                |
-| Control plane editor (`ControlPlaneEditor`) | Read and write access to control plane resources, such as indexes, assistants, backups, and collections.                        |
-| Control plane viewer (`ControlPlaneViewer`) | Read-only access to control plane resources.                                                                                    |
-| Data plane editor (`DataPlaneEditor`)       | Read and write access to data plane data, such as records, namespaces, and assistant files.                                     |
-| Data plane viewer (`DataPlaneViewer`)       | Read-only access to data plane data.                                                                                            |
+| Role | Permissions |
+| :- | :- |
+| Project owner (`ProjectOwner`) | Full access to the project, including members, API keys, and all resources and data. |
+| Project manager (`ProjectManager`) | Read and write access to all resources and data. Read-only access to project settings, members, and API keys. |
+| Project member (`ProjectMember`) | Read-only access to project settings, members, and API keys. No resource or data access unless granted additional access roles. |
+| Project editor (`ProjectEditor`) | Read and write access to all resources and data. No access to project settings, members, or API keys. |
+| Project viewer (`ProjectViewer`) | Read-only access to all resources and data. No access to project settings, members, or API keys. |
+| Control plane editor (`ControlPlaneEditor`) | Read and write access to control plane resources, such as indexes, assistants, backups, and collections. |
+| Control plane viewer (`ControlPlaneViewer`) | Read-only access to control plane resources. |
+| Data plane editor (`DataPlaneEditor`) | Read and write access to data plane data, such as records, namespaces, and assistant files. |
+| Data plane viewer (`DataPlaneViewer`) | Read-only access to data plane data. |
 
 The following table details the project settings, resource, and data permissions for the owner, manager, and member roles:
 
-| Permission                                                                  | Owner | Manager | Member |
-| :-------------------------------------------------------------------------- | :---: | :-----: | :----: |
-| View project settings, members, and API keys                                |   ✓   |    ✓    |    ✓   |
-| Update project settings and configuration                                   |   ✓   |         |        |
-| Delete the project                                                          |   ✓   |         |        |
-| Manage project members and their roles                                      |   ✓   |         |        |
-| Create and delete API keys                                                  |   ✓   |         |        |
-| View indexes, assistants, backups, and collections                          |   ✓   |    ✓    |        |
-| Create, configure, and delete indexes, assistants, backups, and collections |   ✓   |    ✓    |        |
-| Read index data (query, fetch, list, and view stats)                        |   ✓   |    ✓    |        |
-| Write index data (upsert, update, delete, and import)                       |   ✓   |    ✓    |        |
+| Permission | Owner | Manager | Member |
+| :- | :-: | :-: | :-: |
+| View project settings, members, and API keys | ✓ | ✓ | ✓ |
+| Update project settings and configuration | ✓ | | |
+| Delete the project | ✓ | | |
+| Manage project members and their roles | ✓ | | |
+| Create and delete API keys | ✓ | | |
+| View indexes, assistants, backups, and collections | ✓ | ✓ | |
+| Create, configure, and delete indexes, assistants, backups, and collections | ✓ | ✓ | |
+| Read index data (query, fetch, list, and view stats) | ✓ | ✓ | |
+| Write index data (upsert, update, delete, and import) | ✓ | ✓ | |
 
 Specific to pod-based indexes:
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
-| Permission                | Owner | Manager | Member |
-| :------------------------ | :---: | :-----: | :----: |
-| View project pod limits   |   ✓   |    ✓    |    ✓   |
-| Update project pod limits |   ✓   |         |        |
-| Update index size         |   ✓   |    ✓    |        |
+| Permission | Owner | Manager | Member |
+| :- | :-: | :-: | :-: |
+| View project pod limits | ✓ | ✓ | ✓ |
+| Update project pod limits | ✓ | | |
+| Update index size | ✓ | ✓ | |
 
 <Note>
   Pod-based indexes don't support role-based access control and will always grant data plane read and write access to project members.
@@ -67,26 +67,26 @@ The following tables detail the operations covered by the general, control plane
 
 #### General permissions
 
-| Role            | Permissions                                     |
-| :-------------- | :---------------------------------------------- |
+| Role | Permissions |
+| :- | :- |
 | `ProjectEditor` | Permissions to read and write all project data. |
-| `ProjectViewer` | Permissions to read all project data.           |
+| `ProjectViewer` | Permissions to read all project data. |
 
 #### Control plane permissions
 
-| Role                 | Permissions                                                                                                 |
-| :------------------- | :---------------------------------------------------------------------------------------------------------- |
+| Role | Permissions |
+| :- | :- |
 | `ControlPlaneEditor` | Permissions to list, describe, create, delete, and configure indexes, backups, collections, and assistants. |
-| `ControlPlaneViewer` | Permissions to list and describe indexes, backups, collections, and assistants.                             |
-| None                 | No control plane permissions.                                                                               |
+| `ControlPlaneViewer` | Permissions to list and describe indexes, backups, collections, and assistants. |
+| None | No control plane permissions. |
 
 #### Data plane permissions
 
-| Role              | Permissions                                                                                                                                                                                                                                                                                                            |
-| :---------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Role | Permissions |
+| :- | :- |
 | `DataPlaneEditor` | <ul><li>Indexes: Permissions to query, import, fetch, add, update, and delete index data.</li><li>Pinecone Assistant: Permissions to add, list, view, and delete files; chat with an assistant, and evaluate responses.</li><li>Pinecone Inference: Permissions to generate embeddings and rerank documents.</li></ul> |
-| `DataPlaneViewer` | <ul><li>Indexes: Permissions to query, fetch, list ID, and view stats.</li><li>Pinecone Assistant: Permissions to list and view files, chat with an assistant, and evaluate responses.</li><li>Pinecone Inference: Permissions to generate embeddings and rerank documents.</li></ul>                                  |
-| None              | No data plane permissions.                                                                                                                                                                                                                                                                                             |
+| `DataPlaneViewer` | <ul><li>Indexes: Permissions to query, fetch, list ID, and view stats.</li><li>Pinecone Assistant: Permissions to list and view files, chat with an assistant, and evaluate responses.</li><li>Pinecone Inference: Permissions to generate embeddings and rerank documents.</li></ul> |
+| None | No data plane permissions. |
 
 ## API keys
 

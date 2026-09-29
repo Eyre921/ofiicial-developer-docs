@@ -90,11 +90,11 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -134,11 +134,11 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -165,23 +165,23 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag           | Short flag | Description                    |
-    | :------------------ | :--------- | :----------------------------- |
-    | `--clear`           |            | Clear target context           |
-    | `--json`            | `-j`       | Output in JSON format          |
-    | `--org`             | `-o`       | Organization name              |
-    | `--organization-id` |            | Organization ID                |
-    | `--project`         | `-p`       | Project name                   |
-    | `--project-id`      |            | Project ID                     |
-    | `--show`            | `-s`       | Display current target context |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--clear` | | Clear target context |
+    | `--json` | `-j` | Output in JSON format |
+    | `--org` | `-o` | Organization name |
+    | `--organization-id` | | Organization ID |
+    | `--project` | `-p` | Project name |
+    | `--project-id` | | Project ID |
+    | `--show` | `-s` | Display current target context |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -218,11 +218,11 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -249,11 +249,11 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -283,18 +283,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag           | Short flag | Description                                         |
-    | :------------------ | :--------- | :-------------------------------------------------- |
-    | `--api-key`         |            | Clear only the default (manually specified) API key |
-    | `--service-account` |            | Clear only service account credentials              |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--api-key` | | Clear only the default (manually specified) API key |
+    | `--service-account` | | Clear only service account credentials |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -328,23 +328,23 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag               | Short flag | Description                                          |
-    | :---------------------- | :--------- | :--------------------------------------------------- |
-    | `--api-key`             |            | Default API key to use for authentication            |
-    | `--client-id`           |            | Service account client ID                            |
-    | `--client-secret`       |            | Service account client secret                        |
-    | `--client-secret-stdin` |            | Read client secret from stdin                        |
-    | `--json`                | `-j`       | Output in JSON format                                |
-    | `--project-id`          | `-p`       | Target project ID (optional, interactive if omitted) |
-    | `--prompt-if-missing`   |            | Prompt for missing credentials                       |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--api-key` | | Default API key to use for authentication |
+    | `--client-id` | | Service account client ID |
+    | `--client-secret` | | Service account client secret |
+    | `--client-secret-stdin` | | Read client secret from stdin |
+    | `--json` | `-j` | Output in JSON format |
+    | `--project-id` | `-p` | Target project ID (optional, interactive if omitted) |
+    | `--prompt-if-missing` | | Prompt for missing credentials |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -380,18 +380,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag  | Short flag | Description                                |
-    | :--------- | :--------- | :----------------------------------------- |
-    | `--json`   | `-j`       | Output in JSON format                      |
-    | `--reveal` |            | Show the actual API key values (sensitive) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format |
+    | `--reveal` | | Show the actual API key values (sensitive) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -421,21 +421,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                                                 |
-    | :-------------------- | :--------- | :---------------------------------------------------------- |
-    | `--dry-run`           |            | Preview deletions without applying                          |
-    | `--id`                |            | Prune keys for specific project ID only                     |
-    | `--json`              | `-j`       | Output in JSON format                                       |
-    | `--origin`            | `-o`       | Filter by origin - `cli`, `user`, or `all` (default: `all`) |
-    | `--skip-confirmation` |            | Skip confirmation prompt                                    |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--dry-run` | | Preview deletions without applying |
+    | `--id` | | Prune keys for specific project ID only |
+    | `--json` | `-j` | Output in JSON format |
+    | `--origin` | `-o` | Filter by origin - `cli`, `user`, or `all` (default: `all`) |
+    | `--skip-confirmation` | | Skip confirmation prompt |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -478,11 +478,11 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -521,11 +521,11 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -552,17 +552,17 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -593,11 +593,11 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -627,33 +627,33 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag                | Short flag | Description                                                     |
-    | :----------------------- | :--------- | :-------------------------------------------------------------- |
-    | `--index-name`           | `-i`       | Name of index to configure (required)                           |
-    | `--deletion-protection`  |            | Enable or disable deletion protection - `enabled` or `disabled` |
-    | `--tags`                 |            | Custom user tags (key=value pairs)                              |
-    | `--json`                 | `-j`       | Output in JSON format                                           |
-    | **Dedicated read nodes** |            |                                                                 |
-    | `--read-mode`            |            | Read capacity mode - `ondemand` or `dedicated`                  |
-    | `--read-node-type`       |            | Node type for dedicated read - `b1` or `t1`                     |
-    | `--read-shards`          |            | Number of shards for dedicated read capacity                    |
-    | `--read-replicas`        |            | Number of replicas for dedicated read capacity                  |
-    | **Integrated embedding** |            |                                                                 |
-    | `--model`                |            | Embedding model name                                            |
-    | `--field-map`            |            | Field mapping for embedding (key=value pairs)                   |
-    | `--read-parameters`      |            | Read parameters for embedding model (key=value pairs)           |
-    | `--write-parameters`     |            | Write parameters for embedding model (key=value pairs)          |
-    | **Pods**                 |            |                                                                 |
-    | `--pod-type`             | `-t`       | Type of pod to use; can only upgrade when configuring           |
-    | `--replicas`             | `-r`       | Number of replicas of the index to configure                    |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of index to configure (required) |
+    | `--deletion-protection` | | Enable or disable deletion protection - `enabled` or `disabled` |
+    | `--tags` | | Custom user tags (key=value pairs) |
+    | `--json` | `-j` | Output in JSON format |
+    | **Dedicated read nodes** | | |
+    | `--read-mode` | | Read capacity mode - `ondemand` or `dedicated` |
+    | `--read-node-type` | | Node type for dedicated read - `b1` or `t1` |
+    | `--read-shards` | | Number of shards for dedicated read capacity |
+    | `--read-replicas` | | Number of replicas for dedicated read capacity |
+    | **Integrated embedding** | | |
+    | `--model` | | Embedding model name |
+    | `--field-map` | | Field mapping for embedding (key=value pairs) |
+    | `--read-parameters` | | Read parameters for embedding model (key=value pairs) |
+    | `--write-parameters` | | Write parameters for embedding model (key=value pairs) |
+    | **Pods** | | |
+    | `--pod-type` | `-t` | Type of pod to use; can only upgrade when configuring |
+    | `--replicas` | `-r` | Number of replicas of the index to configure |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -693,45 +693,45 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag                | Short flag | Description                                                                    |
-    | :----------------------- | :--------- | :----------------------------------------------------------------------------- |
-    | `--name`                 | `-n`       | Index name (required)                                                          |
-    | `--dimension`            | `-d`       | Vector dimension (required for standard indexes, optional for integrated)      |
-    | `--metric`               | `-m`       | Similarity metric - `cosine`, `euclidean`, or `dotproduct` (default: `cosine`) |
-    | `--cloud`                | `-c`       | Cloud provider - `aws`, `gcp`, or `azure`                                      |
-    | `--region`               | `-r`       | Cloud region                                                                   |
-    | `--vector-type`          | `-v`       | Vector type - `dense` or `sparse` (serverless only)                            |
-    | `--source-collection`    |            | Name of the source collection from which to create the index                   |
-    | `--schema`               |            | Metadata schema to control which fields are indexed (comma-separated)          |
-    | `--deletion-protection`  |            | Deletion protection - `enabled` or `disabled`                                  |
-    | `--tags`                 |            | Custom user tags (key=value pairs)                                             |
-    | `--json`                 | `-j`       | Output in JSON format                                                          |
-    | **Integrated indexes**   |            |                                                                                |
-    | `--model`                |            | Integrated embedding model name                                                |
-    | `--field-map`            |            | Field mapping for integrated embedding (key=value pairs)                       |
-    | `--read-parameters`      |            | Read parameters for embedding model (key=value pairs)                          |
-    | `--write-parameters`     |            | Write parameters for embedding model (key=value pairs)                         |
-    | **BYOC indexes**         |            |                                                                                |
-    | `--byoc-environment`     |            | BYOC environment to use for the index                                          |
-    | **Dedicated read nodes** |            |                                                                                |
-    | `--read-mode`            |            | Read capacity mode - `ondemand` or `dedicated` (default: `ondemand`)           |
-    | `--read-node-type`       |            | Node type for dedicated read - `b1` or `t1`                                    |
-    | `--read-shards`          |            | Number of shards (each shard provides 250 GB storage)                          |
-    | `--read-replicas`        |            | Number of replicas for higher throughput                                       |
-    | **Pod-based indexes**    |            |                                                                                |
-    | `--environment`          |            | Environment of the index to create (for example, `us-east-1-aws`)              |
-    | `--pod-type`             |            | Type of pod to use (for example, `p1.x1`, `s1.x2`)                             |
-    | `--shards`               |            | Number of shards (default: `1`)                                                |
-    | `--replicas`             |            | Number of replicas (default: `1`)                                              |
-    | `--metadata-config`      |            | Comma-separated list of metadata fields to index for search                    |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--name` | `-n` | Index name (required) |
+    | `--dimension` | `-d` | Vector dimension (required for standard indexes, optional for integrated) |
+    | `--metric` | `-m` | Similarity metric - `cosine`, `euclidean`, or `dotproduct` (default: `cosine`) |
+    | `--cloud` | `-c` | Cloud provider - `aws`, `gcp`, or `azure` |
+    | `--region` | `-r` | Cloud region |
+    | `--vector-type` | `-v` | Vector type - `dense` or `sparse` (serverless only) |
+    | `--source-collection` | | Name of the source collection from which to create the index |
+    | `--schema` | | Metadata schema to control which fields are indexed (comma-separated) |
+    | `--deletion-protection` | | Deletion protection - `enabled` or `disabled` |
+    | `--tags` | | Custom user tags (key=value pairs) |
+    | `--json` | `-j` | Output in JSON format |
+    | **Integrated indexes** | | |
+    | `--model` | | Integrated embedding model name |
+    | `--field-map` | | Field mapping for integrated embedding (key=value pairs) |
+    | `--read-parameters` | | Read parameters for embedding model (key=value pairs) |
+    | `--write-parameters` | | Write parameters for embedding model (key=value pairs) |
+    | **BYOC indexes** | | |
+    | `--byoc-environment` | | BYOC environment to use for the index |
+    | **Dedicated read nodes** | | |
+    | `--read-mode` | | Read capacity mode - `ondemand` or `dedicated` (default: `ondemand`) |
+    | `--read-node-type` | | Node type for dedicated read - `b1` or `t1` |
+    | `--read-shards` | | Number of shards (each shard provides 250 GB storage) |
+    | `--read-replicas` | | Number of replicas for higher throughput |
+    | **Pod-based indexes** | | |
+    | `--environment` | | Environment of the index to create (for example, `us-east-1-aws`) |
+    | `--pod-type` | | Type of pod to use (for example, `p1.x1`, `s1.x2`) |
+    | `--shards` | | Number of shards (default: `1`) |
+    | `--replicas` | | Number of replicas (default: `1`) |
+    | `--metadata-config` | | Comma-separated list of metadata fields to index for search |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -810,19 +810,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                                                |
-    | :-------------------- | :--------- | :--------------------------------------------------------- |
-    | `--index-name`        | `-i`       | Name of index to delete (required)                         |
-    | `--skip-confirmation` |            | Skip the deletion confirmation prompt                      |
-    | `--json`              | `-j`       | Output in JSON format (also skips the confirmation prompt) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of index to delete (required) |
+    | `--skip-confirmation` | | Skip the deletion confirmation prompt |
+    | `--json` | `-j` | Output in JSON format (also skips the confirmation prompt) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -857,20 +857,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description           |
-    | :------------- | :--------- | :-------------------- |
-    | `--index-name` | `-i`       | Index name (required) |
-    | `--json`       | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     The `--name`/`-n` flag is a deprecated alias for `--index-name`/`-i`.
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -900,19 +900,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description                                                    |
-    | :------------- | :--------- | :------------------------------------------------------------- |
-    | `--index-name` | `-i`       | Index name (required)                                          |
-    | `--filter`     | `-f`       | Metadata filter (inline JSON, `./path.json`, or `-` for stdin) |
-    | `--json`       | `-j`       | Output in JSON format                                          |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--filter` | `-f` | Metadata filter (inline JSON, `./path.json`, or `-` for stdin) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -944,18 +944,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                                         |
-    | :-------- | :--------- | :-------------------------------------------------- |
-    | `--json`  | `-j`       | Output in JSON format (includes full index details) |
-    | `--wide`  | `-w`       | Show additional columns (host, embed, tags)         |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format (includes full index details) |
+    | `--wide` | `-w` | Show additional columns (host, embed, tags) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -992,20 +992,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description                                         |
-    | :------------- | :--------- | :-------------------------------------------------- |
-    | `--index-name` | `-i`       | Index name (required)                               |
-    | `--name`       |            | Namespace name (required)                           |
-    | `--schema`     |            | Metadata schema for the namespace (comma-separated) |
-    | `--json`       | `-j`       | Output in JSON format                               |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--name` | | Namespace name (required) |
+    | `--schema` | | Metadata schema for the namespace (comma-separated) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1034,20 +1034,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                                                            |
-    | :-------------------- | :--------- | :--------------------------------------------------------------------- |
-    | `--index-name`        | `-i`       | Index name (required)                                                  |
-    | `--name`              |            | Namespace name (required); use `__default__` for the default namespace |
-    | `--skip-confirmation` |            | Skip the deletion confirmation prompt                                  |
-    | `--json`              | `-j`       | Output in JSON format (also skips the confirmation prompt)             |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--name` | | Namespace name (required); use `__default__` for the default namespace |
+    | `--skip-confirmation` | | Skip the deletion confirmation prompt |
+    | `--json` | `-j` | Output in JSON format (also skips the confirmation prompt) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1080,19 +1080,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description                                                            |
-    | :------------- | :--------- | :--------------------------------------------------------------------- |
-    | `--index-name` | `-i`       | Index name (required)                                                  |
-    | `--name`       |            | Namespace name (required); use `__default__` for the default namespace |
-    | `--json`       | `-j`       | Output in JSON format                                                  |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--name` | | Namespace name (required); use `__default__` for the default namespace |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1121,21 +1121,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                    |
-    | :------------------- | :--------- | :----------------------------- |
-    | `--index-name`       | `-i`       | Index name (required)          |
-    | `--limit`            | `-l`       | Maximum number of results      |
-    | `--pagination-token` | `-p`       | Pagination token for next page |
-    | `--prefix`           |            | Filter namespaces by prefix    |
-    | `--json`             | `-j`       | Output in JSON format          |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--limit` | `-l` | Maximum number of results |
+    | `--pagination-token` | `-p` | Pagination token for next page |
+    | `--prefix` | | Filter namespaces by prefix |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1171,23 +1171,23 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                                                               |
-    | :-------------------- | :--------- | :------------------------------------------------------------------------ |
-    | `--index-name`        | `-i`       | Index name (required)                                                     |
-    | `--namespace`         |            | Namespace to delete from (default: `__default__`)                         |
-    | `--ids`               |            | Vector IDs to delete (inline JSON array, `./path.json`, or `-` for stdin) |
-    | `--filter`            |            | Metadata filter (inline JSON, `./path.json`, or `-` for stdin)            |
-    | `--all-vectors`       |            | Delete all vectors in the namespace                                       |
-    | `--skip-confirmation` |            | Skip the confirmation prompt shown for `--all-vectors`                    |
-    | `--json`              | `-j`       | Output in JSON format (also skips the confirmation prompt)                |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--namespace` | | Namespace to delete from (default: `__default__`) |
+    | `--ids` | | Vector IDs to delete (inline JSON array, `./path.json`, or `-` for stdin) |
+    | `--filter` | | Metadata filter (inline JSON, `./path.json`, or `-` for stdin) |
+    | `--all-vectors` | | Delete all vectors in the namespace |
+    | `--skip-confirmation` | | Skip the confirmation prompt shown for `--all-vectors` |
+    | `--json` | `-j` | Output in JSON format (also skips the confirmation prompt) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1230,24 +1230,24 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                                                              |
-    | :------------------- | :--------- | :----------------------------------------------------------------------- |
-    | `--index-name`       | `-i`       | Index name (required)                                                    |
-    | `--namespace`        |            | Namespace to fetch from (default: `__default__`)                         |
-    | `--ids`              |            | Vector IDs to fetch (inline JSON array, `./path.json`, or `-` for stdin) |
-    | `--filter`           | `-f`       | Metadata filter (inline JSON, `./path.json`, or `-` for stdin)           |
-    | `--limit`            | `-l`       | Maximum number of vectors to fetch                                       |
-    | `--pagination-token` | `-p`       | Pagination token for next page                                           |
-    | `--body`             |            | Request body JSON (inline, `./path.json`, or `-` for stdin)              |
-    | `--json`             | `-j`       | Output in JSON format                                                    |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--namespace` | | Namespace to fetch from (default: `__default__`) |
+    | `--ids` | | Vector IDs to fetch (inline JSON array, `./path.json`, or `-` for stdin) |
+    | `--filter` | `-f` | Metadata filter (inline JSON, `./path.json`, or `-` for stdin) |
+    | `--limit` | `-l` | Maximum number of vectors to fetch |
+    | `--pagination-token` | `-p` | Pagination token for next page |
+    | `--body` | | Request body JSON (inline, `./path.json`, or `-` for stdin) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1286,21 +1286,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                                     |
-    | :------------------- | :--------- | :---------------------------------------------- |
-    | `--index-name`       | `-i`       | Index name (required)                           |
-    | `--namespace`        |            | Namespace to list from (default: `__default__`) |
-    | `--limit`            | `-l`       | Maximum number of IDs to return                 |
-    | `--pagination-token` | `-p`       | Pagination token for next page                  |
-    | `--json`             | `-j`       | Output in JSON format                           |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--namespace` | | Namespace to list from (default: `__default__`) |
+    | `--limit` | `-l` | Maximum number of IDs to return |
+    | `--pagination-token` | `-p` | Pagination token for next page |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1329,28 +1329,28 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                                                                       |
-    | :------------------- | :--------- | :-------------------------------------------------------------------------------- |
-    | `--index-name`       | `-i`       | Index name (required)                                                             |
-    | `--namespace`        |            | Namespace to query (default: `__default__`)                                       |
-    | `--id`               |            | Query by vector ID                                                                |
-    | `--vector`           | `-v`       | Query vector values (inline JSON array, `./path.json`, or `-` for stdin)          |
-    | `--sparse-indices`   |            | Sparse vector indices (inline JSON uint32 array, `./path.json`, or `-` for stdin) |
-    | `--sparse-values`    |            | Sparse vector values (inline JSON array, `./path.json`, or `-` for stdin)         |
-    | `--top-k`            | `-k`       | Number of results to return (default: 10)                                         |
-    | `--filter`           | `-f`       | Metadata filter (inline JSON, `./path.json`, or `-` for stdin)                    |
-    | `--include-values`   |            | Include vector values in results                                                  |
-    | `--include-metadata` |            | Include metadata in results                                                       |
-    | `--body`             |            | Request body JSON (inline, `./path.json`, or `-` for stdin)                       |
-    | `--json`             | `-j`       | Output in JSON format                                                             |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--namespace` | | Namespace to query (default: `__default__`) |
+    | `--id` | | Query by vector ID |
+    | `--vector` | `-v` | Query vector values (inline JSON array, `./path.json`, or `-` for stdin) |
+    | `--sparse-indices` | | Sparse vector indices (inline JSON uint32 array, `./path.json`, or `-` for stdin) |
+    | `--sparse-values` | | Sparse vector values (inline JSON array, `./path.json`, or `-` for stdin) |
+    | `--top-k` | `-k` | Number of results to return (default: 10) |
+    | `--filter` | `-f` | Metadata filter (inline JSON, `./path.json`, or `-` for stdin) |
+    | `--include-values` | | Include vector values in results |
+    | `--include-metadata` | | Include metadata in results |
+    | `--body` | | Request body JSON (inline, `./path.json`, or `-` for stdin) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1407,27 +1407,27 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag          | Short flag | Description                                                                    |
-    | :----------------- | :--------- | :----------------------------------------------------------------------------- |
-    | `--index-name`     | `-i`       | Index name (required)                                                          |
-    | `--namespace`      |            | Namespace containing the vector (default: `__default__`)                       |
-    | `--id`             |            | Vector ID to update                                                            |
-    | `--values`         |            | New vector values (inline JSON array, `./path.json`, or `-` for stdin)         |
-    | `--sparse-indices` |            | New sparse indices (inline JSON uint32 array, `./path.json`, or `-` for stdin) |
-    | `--sparse-values`  |            | New sparse values (inline JSON array, `./path.json`, or `-` for stdin)         |
-    | `--metadata`       |            | New or updated metadata (inline JSON, `./path.json`, or `-` for stdin)         |
-    | `--filter`         |            | Metadata filter for bulk update (inline JSON, `./path.json`, or `-` for stdin) |
-    | `--dry-run`        |            | Preview how many records would be updated without applying changes             |
-    | `--body`           |            | Request body JSON (inline, `./path.json`, or `-` for stdin)                    |
-    | `--json`           | `-j`       | Output in JSON format                                                          |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--namespace` | | Namespace containing the vector (default: `__default__`) |
+    | `--id` | | Vector ID to update |
+    | `--values` | | New vector values (inline JSON array, `./path.json`, or `-` for stdin) |
+    | `--sparse-indices` | | New sparse indices (inline JSON uint32 array, `./path.json`, or `-` for stdin) |
+    | `--sparse-values` | | New sparse values (inline JSON array, `./path.json`, or `-` for stdin) |
+    | `--metadata` | | New or updated metadata (inline JSON, `./path.json`, or `-` for stdin) |
+    | `--filter` | | Metadata filter for bulk update (inline JSON, `./path.json`, or `-` for stdin) |
+    | `--dry-run` | | Preview how many records would be updated without applying changes |
+    | `--body` | | Request body JSON (inline, `./path.json`, or `-` for stdin) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1475,21 +1475,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description                                                                        |
-    | :------------- | :--------- | :--------------------------------------------------------------------------------- |
-    | `--index-name` | `-i`       | Index name (required)                                                              |
-    | `--namespace`  |            | Namespace to upsert into (default: `__default__`)                                  |
-    | `--body`       |            | Request body JSON or JSONL (inline, `./path.json[l]`, or `-` for stdin) (required) |
-    | `--batch-size` | `-b`       | Size of batches to upsert (default: 500)                                           |
-    | `--json`       | `-j`       | Output in JSON format                                                              |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Index name (required) |
+    | `--namespace` | | Namespace to upsert into (default: `__default__`) |
+    | `--body` | | Request body JSON or JSONL (inline, `./path.json[l]`, or `-` for stdin) (required) |
+    | `--batch-size` | `-b` | Size of batches to upsert (default: 500) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1548,30 +1548,30 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag          | Short flag | Description                                                                                                                                                     |
-    | :----------------- | :--------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `--index-name`     | `-i`       | Name of the index to search (required)                                                                                                                          |
-    | `--inputs`         |            | Query inputs for text search (inline JSON, `./path.json`, or `-` for stdin); requires integrated embedding. Mutually exclusive with `--id` and `--vector`.      |
-    | `--id`             |            | Use an existing record's vector by ID for the query. Mutually exclusive with `--inputs` and `--vector`.                                                         |
-    | `--vector`         | `-v`       | Dense vector values to search against (inline JSON float32 array, `./path.json`, or `-` for stdin). Mutually exclusive with `--inputs` and `--id`.              |
-    | `--sparse-indices` |            | Sparse vector indices (inline JSON int32 array, `./path.json`, or `-` for stdin). Must be used together with `--sparse-values`.                                 |
-    | `--sparse-values`  |            | Sparse vector values (inline JSON float32 array, `./path.json`, or `-` for stdin). Must be used together with `--sparse-indices`.                               |
-    | `--top-k`          | `-k`       | Number of results to return (required)                                                                                                                          |
-    | `--namespace`      |            | Namespace to search                                                                                                                                             |
-    | `--filter`         |            | Metadata filter (inline JSON, `./path.json`, or `-` for stdin)                                                                                                  |
-    | `--rerank`         |            | Re-score results using an inference model (inline JSON, `./path.json`, or `-` for stdin). Required fields: `model` (string), `rank_fields` (string array).      |
-    | `--match-terms`    |            | Keyword terms filter for sparse integrated indexes (inline JSON, `./path.json`, or `-` for stdin). Required field: `terms` (string array). Requires `--inputs`. |
-    | `--fields`         |            | Fields to return in results (inline JSON string array, `./path.json`, or `-` for stdin)                                                                         |
-    | `--body`           |            | Full request body JSON (inline, `./path.json`, or `-` for stdin). Flags take precedence when both specify the same field.                                       |
-    | `--json`           | `-j`       | Output in JSON format                                                                                                                                           |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of the index to search (required) |
+    | `--inputs` | | Query inputs for text search (inline JSON, `./path.json`, or `-` for stdin); requires integrated embedding. Mutually exclusive with `--id` and `--vector`. |
+    | `--id` | | Use an existing record's vector by ID for the query. Mutually exclusive with `--inputs` and `--vector`. |
+    | `--vector` | `-v` | Dense vector values to search against (inline JSON float32 array, `./path.json`, or `-` for stdin). Mutually exclusive with `--inputs` and `--id`. |
+    | `--sparse-indices` | | Sparse vector indices (inline JSON int32 array, `./path.json`, or `-` for stdin). Must be used together with `--sparse-values`. |
+    | `--sparse-values` | | Sparse vector values (inline JSON float32 array, `./path.json`, or `-` for stdin). Must be used together with `--sparse-indices`. |
+    | `--top-k` | `-k` | Number of results to return (required) |
+    | `--namespace` | | Namespace to search |
+    | `--filter` | | Metadata filter (inline JSON, `./path.json`, or `-` for stdin) |
+    | `--rerank` | | Re-score results using an inference model (inline JSON, `./path.json`, or `-` for stdin). Required fields: `model` (string), `rank_fields` (string array). |
+    | `--match-terms` | | Keyword terms filter for sparse integrated indexes (inline JSON, `./path.json`, or `-` for stdin). Required field: `terms` (string array). Requires `--inputs`. |
+    | `--fields` | | Fields to return in results (inline JSON string array, `./path.json`, or `-` for stdin) |
+    | `--body` | | Full request body JSON (inline, `./path.json`, or `-` for stdin). Flags take precedence when both specify the same field. |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Examples**
 
@@ -1621,21 +1621,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description                                                                             |
-    | :------------- | :--------- | :-------------------------------------------------------------------------------------- |
-    | `--index-name` | `-i`       | Name of the index to upsert into (required)                                             |
-    | `--body`       |            | Request body JSON or JSONL (inline JSON, `./path.json[l]`, or `-` for stdin) (required) |
-    | `--namespace`  |            | Namespace to upsert into                                                                |
-    | `--batch-size` | `-b`       | Number of records per batch (default: `96`, max: `96`)                                  |
-    | `--json`       | `-j`       | Output in JSON format                                                                   |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of the index to upsert into (required) |
+    | `--body` | | Request body JSON or JSONL (inline JSON, `./path.json[l]`, or `-` for stdin) (required) |
+    | `--namespace` | | Namespace to upsert into |
+    | `--batch-size` | `-b` | Number of records per batch (default: `96`, max: `96`) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Examples**
 
@@ -1668,19 +1668,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag  | Short flag | Description                                                 |
-    | :--------- | :--------- | :---------------------------------------------------------- |
-    | `--name`   | `-n`       | Name to give the collection (required)                      |
-    | `--source` | `-s`       | Name of the pod-based index to use as the source (required) |
-    | `--json`   | `-j`       | Output in JSON format                                       |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--name` | `-n` | Name to give the collection (required) |
+    | `--source` | `-s` | Name of the pod-based index to use as the source (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1713,19 +1713,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                                                |
-    | :-------------------- | :--------- | :--------------------------------------------------------- |
-    | `--name`              | `-n`       | Name of the collection to delete (required)                |
-    | `--skip-confirmation` |            | Skip the deletion confirmation prompt                      |
-    | `--json`              | `-j`       | Output in JSON format (also skips the confirmation prompt) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--name` | `-n` | Name of the collection to delete (required) |
+    | `--skip-confirmation` | | Skip the deletion confirmation prompt |
+    | `--json` | `-j` | Output in JSON format (also skips the confirmation prompt) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1755,18 +1755,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                                   |
-    | :-------- | :--------- | :-------------------------------------------- |
-    | `--name`  | `-n`       | Name of the collection to describe (required) |
-    | `--json`  | `-j`       | Output in JSON format                         |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--name` | `-n` | Name of the collection to describe (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1799,17 +1799,17 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1841,20 +1841,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag       | Short flag | Description                                                          |
-    | :-------------- | :--------- | :------------------------------------------------------------------- |
-    | `--index-name`  | `-i`       | Name of the index to back up (required)                              |
-    | `--name`        |            | Human-readable label for the backup (the backup ID is always a UUID) |
-    | `--description` | `-d`       | Description for the backup                                           |
-    | `--json`        | `-j`       | Output in JSON format                                                |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of the index to back up (required) |
+    | `--name` | | Human-readable label for the backup (the backup ID is always a UUID) |
+    | `--description` | `-d` | Description for the backup |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1883,19 +1883,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                                                |
-    | :-------------------- | :--------- | :--------------------------------------------------------- |
-    | `--id`                | `-i`       | Backup ID to delete (required)                             |
-    | `--skip-confirmation` |            | Skip the deletion confirmation prompt                      |
-    | `--json`              | `-j`       | Output in JSON format (also skips the confirmation prompt) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Backup ID to delete (required) |
+    | `--skip-confirmation` | | Skip the deletion confirmation prompt |
+    | `--json` | `-j` | Output in JSON format (also skips the confirmation prompt) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1929,18 +1929,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                      |
-    | :-------- | :--------- | :------------------------------- |
-    | `--id`    | `-i`       | Backup ID to describe (required) |
-    | `--json`  | `-j`       | Output in JSON format            |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Backup ID to describe (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -1966,20 +1966,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                    |
-    | :------------------- | :--------- | :----------------------------- |
-    | `--index-name`       | `-i`       | Filter backups by index name   |
-    | `--limit`            | `-l`       | Maximum number of results      |
-    | `--pagination-token` | `-p`       | Pagination token for next page |
-    | `--json`             | `-j`       | Output in JSON format          |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Filter backups by index name |
+    | `--limit` | `-l` | Maximum number of results |
+    | `--pagination-token` | `-p` | Pagination token for next page |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2011,21 +2011,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag               | Short flag | Description                                          |
-    | :---------------------- | :--------- | :--------------------------------------------------- |
-    | `--id`                  | `-i`       | Backup ID (UUID) to restore from (required)          |
-    | `--name`                | `-n`       | Name for the new index (required)                    |
-    | `--deletion-protection` |            | Enable deletion protection - `enabled` or `disabled` |
-    | `--tags`                | `-t`       | Tags to apply to the new index (key=value pairs)     |
-    | `--json`                | `-j`       | Output in JSON format                                |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Backup ID (UUID) to restore from (required) |
+    | `--name` | `-n` | Name for the new index (required) |
+    | `--deletion-protection` | | Enable deletion protection - `enabled` or `disabled` |
+    | `--tags` | `-t` | Tags to apply to the new index (key=value pairs) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2056,18 +2056,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                           |
-    | :-------- | :--------- | :------------------------------------ |
-    | `--id`    | `-i`       | Restore job ID to describe (required) |
-    | `--json`  | `-j`       | Output in JSON format                 |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Restore job ID to describe (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2093,19 +2093,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                    |
-    | :------------------- | :--------- | :----------------------------- |
-    | `--limit`            | `-l`       | Maximum number of results      |
-    | `--pagination-token` | `-p`       | Pagination token for next page |
-    | `--json`             | `-j`       | Output in JSON format          |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--limit` | `-l` | Maximum number of results |
+    | `--pagination-token` | `-p` | Pagination token for next page |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2142,21 +2142,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag          | Short flag | Description                                                           |
-    | :----------------- | :--------- | :-------------------------------------------------------------------- |
-    | `--index-name`     | `-i`       | Name of the index to import into (required)                           |
-    | `--uri`            | `-u`       | URI of the data to import, for example `s3://bucket/path/` (required) |
-    | `--integration-id` |            | Storage integration ID for private buckets                            |
-    | `--error-mode`     |            | How to handle record errors: `continue` (default) or `abort`          |
-    | `--json`           | `-j`       | Output in JSON format                                                 |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of the index to import into (required) |
+    | `--uri` | `-u` | URI of the data to import, for example `s3://bucket/path/` (required) |
+    | `--integration-id` | | Storage integration ID for private buckets |
+    | `--error-mode` | | How to handle record errors: `continue` (default) or `abort` |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Examples**
 
@@ -2195,19 +2195,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description                                        |
-    | :------------- | :--------- | :------------------------------------------------- |
-    | `--index-name` | `-i`       | Name of the index the import belongs to (required) |
-    | `--id`         |            | ID of the import to describe (required)            |
-    | `--json`       | `-j`       | Output in JSON format                              |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of the index the import belongs to (required) |
+    | `--id` | | ID of the import to describe (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2245,20 +2245,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                                               |
-    | :------------------- | :--------- | :-------------------------------------------------------- |
-    | `--index-name`       | `-i`       | Name of the index to list imports for (required)          |
-    | `--limit`            | `-l`       | Maximum number of imports to return                       |
-    | `--pagination-token` | `-p`       | Pagination token to continue a previous listing operation |
-    | `--json`             | `-j`       | Output in JSON format                                     |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of the index to list imports for (required) |
+    | `--limit` | `-l` | Maximum number of imports to return |
+    | `--pagination-token` | `-p` | Pagination token to continue a previous listing operation |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Examples**
 
@@ -2297,19 +2297,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag      | Short flag | Description                                        |
-    | :------------- | :--------- | :------------------------------------------------- |
-    | `--index-name` | `-i`       | Name of the index the import belongs to (required) |
-    | `--id`         |            | ID of the import to cancel (required)              |
-    | `--json`       | `-j`       | Output in JSON format                              |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--index-name` | `-i` | Name of the index the import belongs to (required) |
+    | `--id` | | ID of the import to cancel (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2343,20 +2343,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                                                    |
-    | :------------------- | :--------- | :------------------------------------------------------------- |
-    | `--force-encryption` |            | Enable encryption with CMEK                                    |
-    | `--json`             | `-j`       | Output in JSON format                                          |
-    | `--name`             | `-n`       | Project name (required)                                        |
-    | `--target`           |            | Automatically target the project in the CLI after it's created |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--force-encryption` | | Enable encryption with CMEK |
+    | `--json` | `-j` | Output in JSON format |
+    | `--name` | `-n` | Project name (required) |
+    | `--target` | | Automatically target the project in the CLI after it's created |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2379,19 +2379,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                                                 |
-    | :-------------------- | :--------- | :---------------------------------------------------------- |
-    | `--id`                | `-i`       | Project ID (optional, uses target project if not specified) |
-    | `--json`              | `-j`       | Output in JSON format                                       |
-    | `--skip-confirmation` |            | Skip confirmation prompt                                    |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Project ID (optional, uses target project if not specified) |
+    | `--json` | `-j` | Output in JSON format |
+    | `--skip-confirmation` | | Skip confirmation prompt |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2424,18 +2424,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--id`    | `-i`       | Project ID (required) |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Project ID (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2465,17 +2465,17 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2506,20 +2506,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag            | Short flag | Description                         |
-    | :------------------- | :--------- | :---------------------------------- |
-    | `--force-encryption` | `-f`       | Enable/disable encryption with CMEK |
-    | `--id`               | `-i`       | Project ID (required)               |
-    | `--json`             | `-j`       | Output in JSON format               |
-    | `--name`             | `-n`       | New project name                    |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--force-encryption` | `-f` | Enable/disable encryption with CMEK |
+    | `--id` | `-i` | Project ID (required) |
+    | `--json` | `-j` | Output in JSON format |
+    | `--name` | `-n` | New project name |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2546,19 +2546,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description                |
-    | :-------------------- | :--------- | :------------------------- |
-    | `--id`                | `-i`       | Organization ID (required) |
-    | `--json`              | `-j`       | Output in JSON format      |
-    | `--skip-confirmation` |            | Skip confirmation prompt   |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Organization ID (required) |
+    | `--json` | `-j` | Output in JSON format |
+    | `--skip-confirmation` | | Skip confirmation prompt |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2588,18 +2588,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                |
-    | :-------- | :--------- | :------------------------- |
-    | `--id`    | `-i`       | Organization ID (required) |
-    | `--json`  | `-j`       | Output in JSON format      |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Organization ID (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2629,17 +2629,17 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2669,19 +2669,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                |
-    | :-------- | :--------- | :------------------------- |
-    | `--id`    | `-i`       | Organization ID (required) |
-    | `--json`  | `-j`       | Output in JSON format      |
-    | `--name`  | `-n`       | New organization name      |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Organization ID (required) |
+    | `--json` | `-j` | Output in JSON format |
+    | `--name` | `-n` | New organization name |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2712,21 +2712,21 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                                                                             |
-    | :-------- | :--------- | :-------------------------------------------------------------------------------------- |
-    | `--id`    | `-i`       | Project ID (optional, uses target project if not specified)                             |
-    | `--json`  | `-j`       | Output in JSON format                                                                   |
-    | `--name`  | `-n`       | Key name (required)                                                                     |
-    | `--roles` |            | Roles to assign (default: `ProjectEditor`)                                              |
-    | `--store` |            | Store the key locally for CLI use (automatically replaces any existing CLI-managed key) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Project ID (optional, uses target project if not specified) |
+    | `--json` | `-j` | Output in JSON format |
+    | `--name` | `-n` | Key name (required) |
+    | `--roles` | | Roles to assign (default: `ProjectEditor`) |
+    | `--store` | | Store the key locally for CLI use (automatically replaces any existing CLI-managed key) |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2762,18 +2762,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag             | Short flag | Description              |
-    | :-------------------- | :--------- | :----------------------- |
-    | `--id`                | `-i`       | API key ID (required)    |
-    | `--skip-confirmation` |            | Skip confirmation prompt |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | API key ID (required) |
+    | `--skip-confirmation` | | Skip confirmation prompt |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2807,18 +2807,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--id`    | `-i`       | API key ID (required) |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | API key ID (required) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2852,18 +2852,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description                                                 |
-    | :-------- | :--------- | :---------------------------------------------------------- |
-    | `--id`    | `-i`       | Project ID (optional, uses target project if not specified) |
-    | `--json`  | `-j`       | Output in JSON format                                       |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | Project ID (optional, uses target project if not specified) |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2896,20 +2896,20 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--id`    | `-i`       | API key ID (required) |
-    | `--json`  | `-j`       | Output in JSON format |
-    | `--name`  | `-n`       | New key name          |
-    | `--roles` | `-r`       | Roles to assign       |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--id` | `-i` | API key ID (required) |
+    | `--json` | `-j` | Output in JSON format |
+    | `--name` | `-n` | New key name |
+    | `--roles` | `-r` | Roles to assign |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2947,19 +2947,19 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag  | Short flag | Description                                               |
-    | :--------- | :--------- | :-------------------------------------------------------- |
-    | `--reveal` |            | Reveal the full value for sensitive settings like api-key |
-    | `--json`   | `-j`       | Output in JSON format                                     |
-    | `--all`    |            | Include hidden settings such as environment               |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--reveal` | | Reveal the full value for sensitive settings like api-key |
+    | `--json` | `-j` | Output in JSON format |
+    | `--all` | | Include hidden settings such as environment |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -2990,18 +2990,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag  | Short flag | Description                                               |
-    | :--------- | :--------- | :-------------------------------------------------------- |
-    | `--reveal` |            | Reveal the full value for sensitive settings like api-key |
-    | `--json`   | `-j`       | Output in JSON format                                     |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--reveal` | | Reveal the full value for sensitive settings like api-key |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -3026,18 +3026,18 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag  | Short flag | Description                                               |
-    | :--------- | :--------- | :-------------------------------------------------------- |
-    | `--reveal` |            | Reveal the full value for sensitive settings like api-key |
-    | `--json`   | `-j`       | Output in JSON format                                     |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--reveal` | | Reveal the full value for sensitive settings like api-key |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -3070,17 +3070,17 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 
@@ -3104,17 +3104,17 @@ This section describes all commands offered by the Pinecone CLI.
 
     **Flags**
 
-    | Long flag | Short flag | Description           |
-    | :-------- | :--------- | :-------------------- |
-    | `--json`  | `-j`       | Output in JSON format |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--json` | `-j` | Output in JSON format |
 
     **Global Flags**
 
-    | Long flag   | Short flag | Description                         |
-    | :---------- | :--------- | :---------------------------------- |
-    | `--help`    | `-h`       | Show help information               |
-    | `--quiet`   | `-q`       | Suppress output                     |
-    | `--timeout` |            | Timeout (default 60s, 0 to disable) |
+    | Long flag | Short flag | Description |
+    | :- | :- | :- |
+    | `--help` | `-h` | Show help information |
+    | `--quiet` | `-q` | Suppress output |
+    | `--timeout` | | Timeout (default 60s, 0 to disable) |
 
     **Example**
 

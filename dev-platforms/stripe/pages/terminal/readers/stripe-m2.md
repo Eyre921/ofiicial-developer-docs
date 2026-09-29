@@ -63,6 +63,8 @@ The software on the Stripe Reader M2 consists of a firmware version, configurati
 | --- |
 | `2.01.04.00-SZZZ_Prod_US_v12-481001` |
 
+### Changelog
+
 #### Firmware versions 
 
 > In PCI listings, the firmware identifier is in the format `CHB3x.<batch>-xxxxx`, where `xxxxx` is a placeholder for all firmware versions. All firmware versions are PCI compliant.

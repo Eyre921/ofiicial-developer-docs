@@ -10,15 +10,15 @@ The CLI's **target context** determines which organization and project your comm
 
 ## Flags
 
-| Flag                | Short | Default | Description                                                                       |
-| ------------------- | ----- | ------- | --------------------------------------------------------------------------------- |
-| `--org`             | `-o`  | —       | Target organization by name. Mutually exclusive with `--organization-id`.         |
-| `--organization-id` | —     | —       | Target organization by ID. Mutually exclusive with `--org`.                       |
-| `--project`         | `-p`  | —       | Target project by name. Mutually exclusive with `--project-id`.                   |
-| `--project-id`      | —     | —       | Target project by ID. Mutually exclusive with `--project`.                        |
-| `--show`            | `-s`  | `false` | Show the current target context.                                                  |
-| `--clear`           | —     | `false` | Clear the stored target context.                                                  |
-| `--json`            | `-j`  | `false` | Output as JSON. In non-TTY environments (CI/CD, pipes), JSON output is automatic. |
+| Flag | Short | Default | Description |
+| - | - | - | - |
+| `--org` | `-o` | — | Target organization by name. Mutually exclusive with `--organization-id`. |
+| `--organization-id` | — | — | Target organization by ID. Mutually exclusive with `--org`. |
+| `--project` | `-p` | — | Target project by name. Mutually exclusive with `--project-id`. |
+| `--project-id` | — | — | Target project by ID. Mutually exclusive with `--project`. |
+| `--show` | `-s` | `false` | Show the current target context. |
+| `--clear` | — | `false` | Clear the stored target context. |
+| `--json` | `-j` | `false` | Output as JSON. In non-TTY environments (CI/CD, pipes), JSON output is automatic. |
 
 <Note>
   `--org` and `--organization-id` are mutually exclusive — use one or the other. The same applies to `--project` and `--project-id`.
@@ -26,13 +26,13 @@ The CLI's **target context** determines which organization and project your comm
 
 ## How operations use target context
 
-| Operation type                   | Scope                                    |
-| -------------------------------- | ---------------------------------------- |
-| Control plane (indexes, backups) | Target project                           |
-| Data plane (vectors, namespaces) | Target project + specified index         |
-| Admin API (organizations)        | No target context needed                 |
-| Admin API (projects)             | Target organization                      |
-| Admin API (API keys)             | Target project (unless `--id` specified) |
+| Operation type | Scope |
+| - | - |
+| Control plane (indexes, backups) | Target project |
+| Data plane (vectors, namespaces) | Target project + specified index |
+| Admin API (organizations) | No target context needed |
+| Admin API (projects) | Target organization |
+| Admin API (API keys) | Target project (unless `--id` specified) |
 
 ## Target context by auth method
 

@@ -2453,14 +2453,14 @@ View an archive of Notion Developers updates prior to September 2023
 
   See the table for the differences between these two methods:
 
-  |                                                                   | Workspace-level tokens (old)                                                                                                                                                                                                                                       | User-level tokens (new)                                                                                                                                                                                                            |
-  | :---------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | Who can go through OAuth and grant access                         | Admins only                                                                                                                                                                                                                                                        | Admins and members                                                                                                                                                                                                                 |
-  | Number of access tokens per workspace                             | 1                                                                                                                                                                                                                                                                  | Up to N, where N is the number of admins and members                                                                                                                                                                               |
-  | Who can go through OAuth and reauthorize access for a given token | Only the original user who went through OAuth to grant the token                                                                                                                                                                                                   | Only the original user who went through OAuth to grant the token                                                                                                                                                                   |
-  | OAuth token response                                              | Contains an `owner` field with the value `{ workspace: true }`                                                                                                                                                                                                     | Contains an `owner` field with the value `{ user: <API user object> }`                                                                                                                                                             |
-  | What resources an integration has access to                       | Pages/databases the installing user chooses via the page picker during OAuth; pages/databases the installing user and other users in the workspace share with the integration via the Page menu; children of pages/databases that were shared with the integration | Pages/databases the installing user chooses via the page picker during OAuth; pages/databases the installing user shares with the integration via the Page menu; children of pages/databases that were shared with the integration |
-  | What an integration can do with resources it has access to        | Read and write                                                                                                                                                                                                                                                     | Read and write                                                                                                                                                                                                                     |
+  | | Workspace-level tokens (old) | User-level tokens (new) |
+  | :- | :- | :- |
+  | Who can go through OAuth and grant access | Admins only | Admins and members |
+  | Number of access tokens per workspace | 1 | Up to N, where N is the number of admins and members |
+  | Who can go through OAuth and reauthorize access for a given token | Only the original user who went through OAuth to grant the token | Only the original user who went through OAuth to grant the token |
+  | OAuth token response | Contains an `owner` field with the value `{ workspace: true }` | Contains an `owner` field with the value `{ user: <API user object> }` |
+  | What resources an integration has access to | Pages/databases the installing user chooses via the page picker during OAuth; pages/databases the installing user and other users in the workspace share with the integration via the Page menu; children of pages/databases that were shared with the integration | Pages/databases the installing user chooses via the page picker during OAuth; pages/databases the installing user shares with the integration via the Page menu; children of pages/databases that were shared with the integration |
+  | What an integration can do with resources it has access to | Read and write | Read and write |
 
   #### How to prepare for this change:
 
@@ -2966,11 +2966,11 @@ View an archive of Notion Developers updates prior to September 2023
 
   Starting with the Notion-Version header `2021-08-16`, we are introducing a change to the response for rollup properties on a page which are arrays. Number and date rollups are unaffected. Specifically, the `type` of elements within an array rollup has been made consistent with property types across other API endpoints:
 
-  | Before           | After               |
-  | ---------------- | ------------------- |
-  | `type: "file"`   | `type: "files"`     |
-  | `type: "text"`   | `type: "rich_text"` |
-  | `type: "person"` | `type: "people"`    |
+  | Before | After |
+  | - | - |
+  | `type: "file"` | `type: "files"` |
+  | `type: "text"` | `type: "rich_text"` |
+  | `type: "person"` | `type: "people"` |
 
   An example rollup property value for an array of rich text values, using Notion-Version `2021-08-16`:
 
@@ -3139,11 +3139,11 @@ View an archive of Notion Developers updates prior to September 2023
 
   This ensures all property IDs can be referenced in the URL of any new endpoints moving forward.
 
-  | Before  | After    |
-  | ------- | -------- |
-  | `DoS\`  | `DoS%5C` |
-  | `title` | `title`  |
-  | `vEKn`  | `vEKn`   |
+  | Before | After |
+  | - | - |
+  | `DoS\` | `DoS%5C` |
+  | `title` | `title` |
+  | `vEKn` | `vEKn` |
 
   #### Empty database properties are now returned as `null`
 
@@ -3345,14 +3345,14 @@ View an archive of Notion Developers updates prior to September 2023
 
   To summarize, the OAuth token response now looks like this:
 
-  | Field              | Type     | Description                                                                                                             | Not null |
-  | ------------------ | -------- | ----------------------------------------------------------------------------------------------------------------------- | -------- |
-  | `"access_token"`   | `string` | An access token used to authorize requests to the Notion API.                                                           | ✅        |
-  | `"workspace_id"`   | `string` | The ID of the workspace where this authorization took place.                                                            | ✅        |
-  | `"workspace_name"` | `string` | A human-readable name which can be used to display this authorization in UI.                                            |          |
-  | `"workspace_icon"` | `string` | A URL to an image which can be used to display this authorization in UI.                                                |          |
-  | `"bot_id"`         | `string` | An identifier for this authorization.                                                                                   | ✅        |
-  | `"owner"`          | `object` | An object containing information about who can view and share this integration. Always `{ "workspace": true }` for now. | ✅        |
+  | Field | Type | Description | Not null |
+  | - | - | - | - |
+  | `"access_token"` | `string` | An access token used to authorize requests to the Notion API. | ✅ |
+  | `"workspace_id"` | `string` | The ID of the workspace where this authorization took place. | ✅ |
+  | `"workspace_name"` | `string` | A human-readable name which can be used to display this authorization in UI. | |
+  | `"workspace_icon"` | `string` | A URL to an image which can be used to display this authorization in UI. | |
+  | `"bot_id"` | `string` | An identifier for this authorization. | ✅ |
+  | `"owner"` | `object` | An object containing information about who can view and share this integration. Always `{ "workspace": true }` for now. | ✅ |
 
   ## August 11, 2021
 

@@ -126,6 +126,8 @@ await bucket.put("uploads/../secrets/key.pem", body)
 
 A path is any non-empty string, with `/` as structure. It is percent-encoded for you, so spaces and unicode are fine. `.` and `..` segments are rejected, not normalized, by every method that takes a path.
 
+Avoid empty segments (`dir/`, `/a`, `a//b`). `put` stores them, but no [signed URL](/docs/blob/reference/signing#path-encoding) can name one, so a private object at such a path can only be read with `get`, and an upload handler refuses the path at `begin`.
+
 ### uniquePath
 
 ```ts
@@ -296,7 +298,7 @@ A body over the [multipart threshold](/docs/blob/uploads/large-files#the-multipa
 const upload = await bucket.signedUploadUrl("u/7/report.pdf", {
   contentType: "application/pdf",
   size: pdf.size,
-  expiresIn: "15m",
+  expiresIn: "10m",
 })
 
 await fetch(upload.url, { method: "PUT", headers: upload.headers, body: pdf })
@@ -308,7 +310,7 @@ Every option is optional.
 
 | Option | Type | Default | What it does |
 | --- | --- | --- | --- |
-| `expiresIn` | `Duration` | `'1h'` | How long the link should live. |
+| `expiresIn` | `Duration` | `'10m'` | How long the link should live, at most 10 minutes. |
 | `contentType` | `string` | `application/octet-stream` | The `Content-Type` the upload must send, and what the object is stored as. |
 | `cache` | `CacheOption` | the bucket default | The `Cache-Control` the object is stored with. |
 | `metadata` | `Record<string, string>` | none | Written as `x-amz-meta-*`, under the same rules as `put`. |

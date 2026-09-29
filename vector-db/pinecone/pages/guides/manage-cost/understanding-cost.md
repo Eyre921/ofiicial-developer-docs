@@ -21,12 +21,12 @@ Pinecone serverless is usage-based, so you pay only for the data you store and t
 
 The Builder, Standard, and Enterprise [pricing plans](https://www.pinecone.io/pricing/) include a monthly minimum usage commitment:
 
-| Plan       | Minimum usage     |
-| ---------- | ----------------- |
-| Starter    | \$0/month         |
-| Builder    | \$20/month (flat) |
-| Standard   | \$50/month        |
-| Enterprise | \$500/month       |
+| Plan | Minimum usage |
+| - | - |
+| Starter | \$0/month |
+| Builder | \$20/month (flat) |
+| Standard | \$50/month |
+| Enterprise | \$500/month |
 
 On the Builder plan, the monthly minimum is a flat fee that covers included usage; additional usage beyond [Builder limits](/reference/api/database-limits/rate-limits#monthly-usage-limits) is blocked rather than billed. On the Standard and Enterprise plans, customers are charged for what they use each month beyond the monthly minimum.
 
@@ -96,12 +96,12 @@ A **read unit (RU)** is the unit Pinecone uses to measure and price the cost of 
 The cost of a query scales linearly with the size of the targeted namespace. Specifically, a query uses 1 RU for every 1 GB of namespace size, with a minimum of 0.25 RUs per query.
 
 | Namespace size | Read units per query |
-| :------------- | :------------------- |
-| \< 0.25 GB     | 0.25 RUs (minimum)   |
-| 1 GB           | 1 RU                 |
-| 10 GB          | 10 RUs               |
-| 50 GB          | 50 RUs               |
-| 100 GB         | 100 RUs              |
+| :- | :- |
+| \< 0.25 GB | 0.25 RUs (minimum) |
+| 1 GB | 1 RU |
+| 10 GB | 10 RUs |
+| 50 GB | 50 RUs |
+| 100 GB | 100 RUs |
 
 To learn how to calculate your namespace size, see [Storage](#storage).
 
@@ -114,10 +114,10 @@ To learn how to calculate your namespace size, see [Storage](#storage).
 A fetch request uses 1 RU for every 10 records fetched, for example:
 
 | Fetched records | RUs |
-| --------------- | --- |
-| 10              | 1   |
-| 50              | 5   |
-| 107             | 11  |
+| - | - |
+| 10 | 1 |
+| 50 | 5 |
+| 107 | 11 |
 
 Specifying a non-existent ID or adding the same ID more than once doesn't increase the number of RUs used. However, a fetch request will always use at least 1 RU.
 
@@ -153,13 +153,13 @@ An upsert request uses 1 WU for each 1 KB of the request, with a minimum of 5 WU
 
 For example, the following table shows the WUs used by upsert requests at different batch sizes and record sizes, assuming all records are new:
 
-| Records per batch | Dimension | Avg. metadata size | Avg. record size | WUs  |
-| :---------------- | :-------- | :----------------- | :--------------- | :--- |
-| 1                 | 768       | 100 bytes          | 3.2 KB           | 5    |
-| 2                 | 768       | 100 bytes          | 3.2 KB           | 7    |
-| 10                | 1024      | 15,000 bytes       | 19.10 KB         | 191  |
-| 100               | 768       | 500 bytes          | 3.57 KB          | 357  |
-| 1000              | 1536      | 1000 bytes         | 7.14 KB          | 7140 |
+| Records per batch | Dimension | Avg. metadata size | Avg. record size | WUs |
+| :- | :- | :- | :- | :- |
+| 1 | 768 | 100 bytes | 3.2 KB | 5 |
+| 2 | 768 | 100 bytes | 3.2 KB | 7 |
+| 10 | 1024 | 15,000 bytes | 19.10 KB | 191 |
+| 100 | 768 | 500 bytes | 3.57 KB | 357 |
+| 1000 | 1536 | 1000 bytes | 7.14 KB | 7140 |
 
 #### Update
 
@@ -168,12 +168,12 @@ An update request uses 1 WU for each 1 KB of the new and existing record, with a
 For example, the following table shows the WUs used by an update at different record sizes:
 
 | New record size | Previous record size | WUs |
-| :-------------- | :------------------- | :-- |
-| 6.24 KB         | 6.50 KB              | 13  |
-| 19.10 KB        | 15 KB                | 25  |
-| 3.57 KB         | 5 KB                 | 9   |
-| 7.14 KB         | 10 KB                | 18  |
-| 3.17 KB         | 3.17 KB              | 7   |
+| :- | :- | :- |
+| 6.24 KB | 6.50 KB | 13 |
+| 19.10 KB | 15 KB | 25 |
+| 3.57 KB | 5 KB | 9 |
+| 7.14 KB | 10 KB | 18 |
+| 3.17 KB | 3.17 KB | 7 |
 
 <Note>
   [Updating records by metadata](/guides/manage-data/update-data#update-by-metadata) uses the same cost model as updating by ID: 1 WU for each 1 KB of the new and existing record.
@@ -185,13 +185,13 @@ A delete request uses 1 WU for each 1 KB of records deleted, with a minimum of 5
 
 For example, the following table shows the WUs used by delete requests at different batch sizes and record sizes:
 
-| Records per batch | Dimension | Avg. metadata size | Avg. record size | WUs  |
-| :---------------- | :-------- | :----------------- | :--------------- | :--- |
-| 1                 | 768       | 100 bytes          | 3.2 KB           | 5    |
-| 2                 | 768       | 100 bytes          | 3.2 KB           | 7    |
-| 10                | 1024      | 15,000 bytes       | 19.10 KB         | 191  |
-| 100               | 768       | 500 bytes          | 3.57 KB          | 357  |
-| 1000              | 1536      | 1000 bytes         | 7.14 KB          | 7140 |
+| Records per batch | Dimension | Avg. metadata size | Avg. record size | WUs |
+| :- | :- | :- | :- | :- |
+| 1 | 768 | 100 bytes | 3.2 KB | 5 |
+| 2 | 768 | 100 bytes | 3.2 KB | 7 |
+| 10 | 1024 | 15,000 bytes | 19.10 KB | 191 |
+| 100 | 768 | 500 bytes | 3.57 KB | 357 |
+| 1000 | 1536 | 1000 bytes | 7.14 KB | 7140 |
 
 Specifying a non-existent ID or adding the same ID more than once doesn't increase WU use.
 
@@ -235,12 +235,12 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       These examples assume 8-byte IDs:
 
-      | Records    | Dense vector dimensions | Avg metadata size | Index size |
-      | :--------- | :---------------------- | :---------------- | :--------- |
-      | 500,000    | 768                     | 500 bytes         | 1.79 GB    |
-      | 1,000,000  | 1536                    | 1,000 bytes       | 7.15 GB    |
-      | 5,000,000  | 1024                    | 15,000 bytes      | 95.5 GB    |
-      | 10,000,000 | 1536                    | 1,000 bytes       | 71.5 GB    |
+      | Records | Dense vector dimensions | Avg metadata size | Index size |
+      | :- | :- | :- | :- |
+      | 500,000 | 768 | 500 bytes | 1.79 GB |
+      | 1,000,000 | 1536 | 1,000 bytes | 7.15 GB |
+      | 5,000,000 | 1024 | 15,000 bytes | 95.5 GB |
+      | 10,000,000 | 1536 | 1,000 bytes | 71.5 GB |
 
       <Note>
         Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + 500 bytes of metadata) = 1.79 GB
@@ -269,12 +269,12 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       These examples assume 8-byte IDs:
 
-      | Records    | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :--------- | :----------------------------------- | :---------------- | :--------- |
-      | 500,000    | 10                                   | 500 bytes         | 0.29 GB    |
-      | 1,000,000  | 50                                   | 1,000 bytes       | 1.41 GB    |
-      | 5,000,000  | 100                                  | 15,000 bytes      | 79.0 GB    |
-      | 10,000,000 | 50                                   | 1,000 bytes       | 14.1 GB    |
+      | Records | Avg number of non-zero sparse values | Avg metadata size | Index size |
+      | :- | :- | :- | :- |
+      | 500,000 | 10 | 500 bytes | 0.29 GB |
+      | 1,000,000 | 50 | 1,000 bytes | 1.41 GB |
+      | 5,000,000 | 100 | 15,000 bytes | 79.0 GB |
+      | 10,000,000 | 50 | 1,000 bytes | 14.1 GB |
 
       <Note>
         Example: 500,000 records × (8-byte ID + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 0.29 GB
@@ -305,12 +305,12 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       These examples assume 8-byte IDs:
 
-      | Records    | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
-      | :--------- | :---------------------- | :----------------------------------- | :---------------- | :--------- |
-      | 500,000    | 768                     | 10                                   | 500 bytes         | 1.83 GB    |
-      | 1,000,000  | 1536                    | 50                                   | 1,000 bytes       | 7.54 GB    |
-      | 5,000,000  | 1024                    | 100                                  | 15,000 bytes      | 99.5 GB    |
-      | 10,000,000 | 1536                    | 50                                   | 1,000 bytes       | 75.4 GB    |
+      | Records | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+      | :- | :- | :- | :- | :- |
+      | 500,000 | 768 | 10 | 500 bytes | 1.83 GB |
+      | 1,000,000 | 1536 | 50 | 1,000 bytes | 7.54 GB |
+      | 5,000,000 | 1024 | 100 | 15,000 bytes | 99.5 GB |
+      | 10,000,000 | 1536 | 50 | 1,000 bytes | 75.4 GB |
 
       <Note>
         Example: 500,000 records × (8-byte ID + (768 dense vector dimensions × 4 bytes) + (10 non-zero sparse values × 8 bytes) + 500 bytes of metadata) = 1.83 GB
@@ -343,12 +343,12 @@ Egress applies to indexes that use [dedicated read nodes](/guides/index-data/ded
 
 Each plan includes a monthly egress allowance, which resets at the start of each billing period:
 
-| Plan       | Monthly egress allowance |
-| :--------- | :----------------------- |
-| Starter    | 1 GB                     |
-| Builder    | 10 GB                    |
-| Standard   | 100 GB                   |
-| Enterprise | 100 GB                   |
+| Plan | Monthly egress allowance |
+| :- | :- |
+| Starter | 1 GB |
+| Builder | 10 GB |
+| Standard | 100 GB |
+| Enterprise | 100 GB |
 
 What happens past the allowance depends on your plan:
 

@@ -18,12 +18,12 @@ For a page in a data source, the property values follow that [data source’s sc
 
 A page response can omit values when a property refers to many pages or people:
 
-| Property             | Page response limit                                                                                  |
-| :------------------- | :--------------------------------------------------------------------------------------------------- |
-| `relation`           | Up to 25 page references. `has_more: true` means more references exist.                              |
-| `people`             | More than 25 people may be omitted.                                                                  |
+| Property | Page response limit |
+| :- | :- |
+| `relation` | Up to 25 page references. `has_more: true` means more references exist. |
+| `people` | More than 25 people may be omitted. |
 | `title`, `rich_text` | Up to 25 populated inline page or person mentions. This is a mention limit, not a text-length limit. |
-| `formula`, `rollup`  | Results can depend on references that the page response does not fully load.                         |
+| `formula`, `rollup` | Results can depend on references that the page response does not fully load. |
 
 Use [Retrieve a page property item](/reference/retrieve-a-page-property) when you need the full value. Read every [page of property items](/reference/property-item-object#paginated-values). Formula and rollup [calculation limits](/reference/page-property-values#unsupported-formula) still apply.
 

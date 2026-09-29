@@ -40,32 +40,32 @@ Endpoints that return lists of objects support cursor-based pagination requests.
 
 ### Supported endpoints
 
-| HTTP method | Endpoint                                                             |
-| :---------- | :------------------------------------------------------------------- |
-| GET         | [List all users](/reference/get-users)                               |
-| GET         | [List block children](/reference/get-block-children)                 |
-| GET         | [List comments](/reference/list-comments)                            |
-| GET         | [Retrieve a page property item](/reference/retrieve-a-page-property) |
-| GET         | [List file uploads](/reference/list-file-uploads)                    |
-| GET         | [List data source templates](/reference/list-data-source-templates)  |
-| GET         | [List views](/reference/list-views)                                  |
-| GET         | [Get view query results](/reference/get-view-query-results)          |
-| POST        | [Query a data source](/reference/query-a-data-source)                |
-| POST        | [Create a view query](/reference/create-view-query)                  |
-| POST        | [Search](/reference/post-search)                                     |
+| HTTP method | Endpoint |
+| :- | :- |
+| GET | [List all users](/reference/get-users) |
+| GET | [List block children](/reference/get-block-children) |
+| GET | [List comments](/reference/list-comments) |
+| GET | [Retrieve a page property item](/reference/retrieve-a-page-property) |
+| GET | [List file uploads](/reference/list-file-uploads) |
+| GET | [List data source templates](/reference/list-data-source-templates) |
+| GET | [List views](/reference/list-views) |
+| GET | [Get view query results](/reference/get-view-query-results) |
+| POST | [Query a data source](/reference/query-a-data-source) |
+| POST | [Create a view query](/reference/create-view-query) |
+| POST | [Search](/reference/post-search) |
 
 ### Responses
 
 If an endpoint supports pagination, then the response object contains the below fields.
 
-| Field         | Type                                                                                                                                                                                                                                    | Description                                                                                                                                                                                                                                                 |
-| :------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `has_more`    | `boolean`                                                                                                                                                                                                                               | Whether the response includes the end of the list. `false` if there are no more results. Otherwise, `true`.                                                                                                                                                 |
-| `next_cursor` | `string`                                                                                                                                                                                                                                | A string that can be used to retrieve the next page of results by passing the value as the `start_cursor` [parameter](#parameters-for-paginated-requests) to the same endpoint.<br /><br /> Only available when `has_more` is true.                         |
-| `object`      | `"list"`                                                                                                                                                                                                                                | The constant string `"list"`.                                                                                                                                                                                                                               |
-| `results`     | `array of objects`                                                                                                                                                                                                                      | The list, or partial list, of endpoint-specific results. Refer to a [supported endpoint](#supported-endpoints)'s individual documentation for details.                                                                                                      |
-| `type`        | `"block"`<br /><br />`"comment"`<br /><br />`"data_source"`<br /><br />`"file_upload"`<br /><br />`"page"`<br /><br />`"page_or_database"`<br /><br />`"property_item"`<br /><br />`"template"`<br /><br />`"user"`<br /><br />`"view"` | A constant string that represents the type of the objects in `results`.                                                                                                                                                                                     |
-| `{type}`      | [`paginated list object`](/reference/page-property-values#paginated-page-properties)                                                                                                                                                    | An object containing type-specific pagination information. For `property_item`s, the value corresponds to the [paginated page property type](/reference/page-property-values#paginated-page-properties). For all other types, the value is an empty object. |
+| Field | Type | Description |
+| :- | :- | :- |
+| `has_more` | `boolean` | Whether the response includes the end of the list. `false` if there are no more results. Otherwise, `true`. |
+| `next_cursor` | `string` | A string that can be used to retrieve the next page of results by passing the value as the `start_cursor` [parameter](#parameters-for-paginated-requests) to the same endpoint.<br /><br /> Only available when `has_more` is true. |
+| `object` | `"list"` | The constant string `"list"`. |
+| `results` | `array of objects` | The list, or partial list, of endpoint-specific results. Refer to a [supported endpoint](#supported-endpoints)'s individual documentation for details. |
+| `type` | `"block"`<br /><br />`"comment"`<br /><br />`"data_source"`<br /><br />`"file_upload"`<br /><br />`"page"`<br /><br />`"page_or_database"`<br /><br />`"property_item"`<br /><br />`"template"`<br /><br />`"user"`<br /><br />`"view"` | A constant string that represents the type of the objects in `results`. |
+| `{type}` | [`paginated list object`](/reference/page-property-values#paginated-page-properties) | An object containing type-specific pagination information. For `property_item`s, the value corresponds to the [paginated page property type](/reference/page-property-values#paginated-page-properties). For all other types, the value is an empty object. |
 
 ### Parameters for paginated requests
 
@@ -77,10 +77,10 @@ If an endpoint supports pagination, then the response object contains the below 
   `POST` requests receive parameters in the request body.
 </Warning>
 
-| Parameter      | Type     | Description                                                                                                                                                                                                |
-| :------------- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `page_size`    | `number` | The number of items from the full list to include in the response. <br /><br /> **Default**: `100`<br />**Maximum**: `100` <br /><br /> The response may contain fewer than the default number of results. |
-| `start_cursor` | `string` | A `next_cursor` value returned in a previous [response](#responses). Treat this as an opaque value. <br /><br /> Defaults to `undefined`, which returns results from the beginning of the list.            |
+| Parameter | Type | Description |
+| :- | :- | :- |
+| `page_size` | `number` | The number of items from the full list to include in the response. <br /><br /> **Default**: `100`<br />**Maximum**: `100` <br /><br /> The response may contain fewer than the default number of results. |
+| `start_cursor` | `string` | A `next_cursor` value returned in a previous [response](#responses). Treat this as an opaque value. <br /><br /> Defaults to `undefined`, which returns results from the beginning of the list. |
 
 ### How to send a paginated request
 

@@ -369,11 +369,11 @@ Instead of passing thousands of user IDs, this filter uses only 2 group identifi
 
 The following table provides general guidelines for choosing a multitenancy approach. Evaluate your specific use case, access patterns, and requirements to determine the best fit for your application.
 
-| Data pattern                              | Recommended approach                                                  | Query cost                             | Performance |
-| :---------------------------------------- | :-------------------------------------------------------------------- | :------------------------------------- | :---------- |
-| Each tenant's data is completely separate | One index, one namespace per tenant                                   | Lowest (scans only tenant namespace)   | Fastest     |
-| Large tenants with many sub-groups        | One index per large tenant, namespaces for sub-groups                 | Low (scans only sub-group namespace)   | Fast        |
-| Data shared across tenants                | One index, shared namespace, filter by group IDs (org, project, role) | Higher (scans entire shared namespace) | Slower      |
+| Data pattern | Recommended approach | Query cost | Performance |
+| :- | :- | :- | :- |
+| Each tenant's data is completely separate | One index, one namespace per tenant | Lowest (scans only tenant namespace) | Fastest |
+| Large tenants with many sub-groups | One index per large tenant, namespaces for sub-groups | Low (scans only sub-group namespace) | Fast |
+| Data shared across tenants | One index, shared namespace, filter by group IDs (org, project, role) | Higher (scans entire shared namespace) | Slower |
 
 <Warning>
   Avoid filtering by large lists of individual user IDs. For the limits, the performance and cost impact, and the alternatives, see [Avoid filtering by high-cardinality IDs](#avoid-filtering-by-high-cardinality-ids).

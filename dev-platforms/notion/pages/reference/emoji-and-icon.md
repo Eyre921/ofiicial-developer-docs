@@ -8,14 +8,14 @@ Learn how to use emoji and icon objects in the Notion API.
 
 Emoji and icon objects represent icons on pages, databases, and callout blocks. The `icon` field is a discriminated union on the `type` key:
 
-| `type`           | Read | Write | Description                                                                                                               |
-| :--------------- | :--- | :---- | :------------------------------------------------------------------------------------------------------------------------ |
-| `"emoji"`        | Yes  | Yes   | A standard emoji character. See [Emoji](/reference/emoji-and-icon#emoji).                                                 |
-| `"custom_emoji"` | Yes  | Yes   | A workspace custom emoji, referenced by `id`. See [Custom emoji](/reference/emoji-and-icon#custom-emoji).                 |
-| `"icon"`         | Yes  | Yes   | A native Notion icon with `name` and `color`. See [Icon](/reference/emoji-and-icon#icon).                                 |
-| `"external"`     | Yes  | Yes   | An externally hosted image URL. See [File object](/reference/file-object).                                                |
-| `"file"`         | Yes  | No    | A Notion-hosted file (uploaded via the UI). Returned in responses only. See [File object](/reference/file-object).        |
-| `"file_upload"`  | No   | Yes   | A file uploaded via the [File Upload API](/reference/file-upload). Write-only. See [File object](/reference/file-object). |
+| `type` | Read | Write | Description |
+| :- | :- | :- | :- |
+| `"emoji"` | Yes | Yes | A standard emoji character. See [Emoji](/reference/emoji-and-icon#emoji). |
+| `"custom_emoji"` | Yes | Yes | A workspace custom emoji, referenced by `id`. See [Custom emoji](/reference/emoji-and-icon#custom-emoji). |
+| `"icon"` | Yes | Yes | A native Notion icon with `name` and `color`. See [Icon](/reference/emoji-and-icon#icon). |
+| `"external"` | Yes | Yes | An externally hosted image URL. See [File object](/reference/file-object). |
+| `"file"` | Yes | No | A Notion-hosted file (uploaded via the UI). Returned in responses only. See [File object](/reference/file-object). |
+| `"file_upload"` | No | Yes | A file uploaded via the [File Upload API](/reference/file-upload). Write-only. See [File object](/reference/file-object). |
 
 <Note>
   The read/write columns above apply to **page** and **database** icons. Callout block icons support all types except `file_upload` on write — use `emoji`, `external`, `custom_emoji`, or `icon` instead.
@@ -34,10 +34,10 @@ Emoji and icon objects represent icons on pages, databases, and callout blocks. 
   ```
 </CodeGroup>
 
-| Field   | Type      | Description                                                    | Example value |
-| :------ | :-------- | :------------------------------------------------------------- | :------------ |
-| `type`  | `"emoji"` | The constant string `"emoji"` that represents the object type. | `"emoji"`     |
-| `emoji` | `string`  | The emoji character.                                           | `"😻"`        |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `type` | `"emoji"` | The constant string `"emoji"` that represents the object type. | `"emoji"` |
+| `emoji` | `string` | The emoji character. | `"😻"` |
 
 ### Example: set a page icon via the [Create a page](/reference/post-page) endpoint
 
@@ -94,10 +94,10 @@ Emoji and icon objects represent icons on pages, databases, and callout blocks. 
 
 Custom emojis are icons uploaded and managed in your workspace. Use the [List custom emojis](/reference/list-custom-emojis) endpoint to retrieve them.
 
-| Field          | Type             | Description                                                           | Example value    |
-| :------------- | :--------------- | :-------------------------------------------------------------------- | :--------------- |
-| `type`         | `"custom_emoji"` | The constant string `"custom_emoji"` that represents the object type. | `"custom_emoji"` |
-| `custom_emoji` | `object`         | Object containing `id`, `name`, and `url`.                            |                  |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `type` | `"custom_emoji"` | The constant string `"custom_emoji"` that represents the object type. | `"custom_emoji"` |
+| `custom_emoji` | `object` | Object containing `id`, `name`, and `url`. | |
 
 ### Example: custom emoji in a page icon response
 
@@ -226,10 +226,10 @@ Native Notion icons are built-in icons with a name and color. They appear in the
   ```
 </CodeGroup>
 
-| Field  | Type     | Description                                                                                                | Example value |
-| :----- | :------- | :--------------------------------------------------------------------------------------------------------- | :------------ |
-| `type` | `"icon"` | The constant string `"icon"` that represents the object type.                                              | `"icon"`      |
-| `icon` | `object` | An object with `name` (required) and `color` (optional, defaults to `"gray"`). See below for valid values. |               |
+| Field | Type | Description | Example value |
+| :- | :- | :- | :- |
+| `type` | `"icon"` | The constant string `"icon"` that represents the object type. | `"icon"` |
+| `icon` | `object` | An object with `name` (required) and `color` (optional, defaults to `"gray"`). See below for valid values. | |
 
 ### Icon `name`
 

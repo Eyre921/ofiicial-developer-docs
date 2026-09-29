@@ -21,10 +21,10 @@ Set `NOTION_API_KEY` and `NOTION_DATA_SOURCE_ID` in your server’s environment.
 [Retrieve the data source](/reference/retrieve-a-data-source). Check its `properties` map for these names and types, or adjust the request to match your source:
 
 | Property name | API type | Value in this example |
-| :------------ | :------- | :-------------------- |
-| Grocery item  | `title`  | Tomatoes              |
-| Price         | `number` | `1.49`                |
-| Last ordered  | `date`   | `2026-09-01`          |
+| :- | :- | :- |
+| Grocery item | `title` | Tomatoes |
+| Price | `number` | `1.49` |
+| Last ordered | `date` | `2026-09-01` |
 
 Use [Update data source properties](/reference/update-data-source-properties) if you need to add or rename a property. Each data source must have one Name property (`title`).
 

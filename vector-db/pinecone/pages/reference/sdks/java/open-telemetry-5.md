@@ -42,30 +42,30 @@ The SDK itself has no OpenTelemetry dependency. You bring your own observability
 
 The following data plane operations are instrumented, for both synchronous (`Index`) and asynchronous (`AsyncIndex`) usage:
 
-| Operation | Description                |
-| --------- | -------------------------- |
-| `upsert`  | Insert or update vectors   |
-| `query`   | Search for similar vectors |
-| `fetch`   | Retrieve vectors by ID     |
-| `update`  | Update vector metadata     |
-| `delete`  | Delete vectors             |
+| Operation | Description |
+| - | - |
+| `upsert` | Insert or update vectors |
+| `query` | Search for similar vectors |
+| `fetch` | Retrieve vectors by ID |
+| `update` | Update vector metadata |
+| `delete` | Delete vectors |
 
 ### Available metadata
 
 Each `ResponseMetadata` object provides the following fields:
 
-| Method                   | Description                                        | OTel attribute            |
-| ------------------------ | -------------------------------------------------- | ------------------------- |
-| `getOperationName()`     | Operation type (e.g., `upsert`, `query`)           | `db.operation.name`       |
-| `getIndexName()`         | Pinecone index name                                | `pinecone.index_name`     |
-| `getNamespace()`         | Namespace (empty string if default)                | `db.namespace`            |
-| `getServerAddress()`     | Pinecone server host                               | `server.address`          |
-| `getClientDurationMs()`  | Total round-trip time in ms (always available)     | --                        |
-| `getServerDurationMs()`  | Server processing time in ms (may be `null`)       | --                        |
-| `getNetworkOverheadMs()` | Client minus server duration in ms (may be `null`) | --                        |
-| `getStatus()`            | `"success"` or `"error"`                           | `status`                  |
-| `getGrpcStatusCode()`    | Raw gRPC status code (e.g., `OK`, `UNAVAILABLE`)   | `db.response.status_code` |
-| `getErrorType()`         | Error category, or `null` if successful            | `error.type`              |
+| Method | Description | OTel attribute |
+| - | - | - |
+| `getOperationName()` | Operation type (e.g., `upsert`, `query`) | `db.operation.name` |
+| `getIndexName()` | Pinecone index name | `pinecone.index_name` |
+| `getNamespace()` | Namespace (empty string if default) | `db.namespace` |
+| `getServerAddress()` | Pinecone server host | `server.address` |
+| `getClientDurationMs()` | Total round-trip time in ms (always available) | -- |
+| `getServerDurationMs()` | Server processing time in ms (may be `null`) | -- |
+| `getNetworkOverheadMs()` | Client minus server duration in ms (may be `null`) | -- |
+| `getStatus()` | `"success"` or `"error"` | `status` |
+| `getGrpcStatusCode()` | Raw gRPC status code (e.g., `OK`, `UNAVAILABLE`) | `db.response.status_code` |
+| `getErrorType()` | Error category, or `null` if successful | `error.type` |
 
 Possible `errorType` values: `validation`, `connection`, `server`, `rate_limit`, `timeout`, `auth`, `not_found`, `unknown`.
 
@@ -73,11 +73,11 @@ Possible `errorType` values: `validation`, `connection`, `server`, `rate_limit`,
 
 If you're recording OTel metrics, the SDK example project uses these metric names, which follow [OTel semantic conventions for database clients](https://opentelemetry.io/docs/specs/semconv/database/database-spans/):
 
-| Metric                                | Type      | Unit | Description                     |
-| ------------------------------------- | --------- | ---- | ------------------------------- |
-| `db.client.operation.duration`        | Histogram | ms   | Client-measured round-trip time |
-| `pinecone.server.processing.duration` | Histogram | ms   | Server processing time          |
-| `db.client.operation.count`           | Counter   | --   | Total number of operations      |
+| Metric | Type | Unit | Description |
+| - | - | - | - |
+| `db.client.operation.duration` | Histogram | ms | Client-measured round-trip time |
+| `pinecone.server.processing.duration` | Histogram | ms | Server processing time |
+| `db.client.operation.count` | Counter | -- | Total number of operations |
 
 ## Quick start: Simple logging
 
@@ -326,11 +326,11 @@ sum by (db_operation_name) (db_client_operation_count_total)
 
 The `ResponseMetadata` object provides three timing values that help you pinpoint the source of latency issues:
 
-| Component        | Method                   | What it measures                                                                                                                             |
-| ---------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| Client duration  | `getClientDurationMs()`  | Total round-trip time from request start to response completion. Always available.                                                           |
-| Server duration  | `getServerDurationMs()`  | Time the Pinecone backend spent processing the request. Extracted from the `x-pinecone-response-duration-ms` response header. May be `null`. |
-| Network overhead | `getNetworkOverheadMs()` | The difference: client duration minus server duration. Includes network latency, serialization, and deserialization. May be `null`.          |
+| Component | Method | What it measures |
+| - | - | - |
+| Client duration | `getClientDurationMs()` | Total round-trip time from request start to response completion. Always available. |
+| Server duration | `getServerDurationMs()` | Time the Pinecone backend spent processing the request. Extracted from the `x-pinecone-response-duration-ms` response header. May be `null`. |
+| Network overhead | `getNetworkOverheadMs()` | The difference: client duration minus server duration. Includes network latency, serialization, and deserialization. May be `null`. |
 
 Use these values to diagnose performance issues:
 

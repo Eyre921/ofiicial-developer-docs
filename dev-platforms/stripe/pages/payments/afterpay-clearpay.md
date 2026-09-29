@@ -247,6 +247,7 @@ Checkout UIs:
   ✓ Full page (Recommended)
   ✓ Payment Links
   ✓ Embedded form
+  ✓ Payment Element
   ✗ Express Checkout Element
   ✓ In-app payments
 

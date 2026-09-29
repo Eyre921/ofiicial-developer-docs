@@ -16,13 +16,13 @@ For architecture, see the [Nexus BYOC overview](/guides/nexus/byoc/overview). Fo
 
 Before deploying Nexus BYOC, ensure you have the following tools installed on the machine that runs the install:
 
-| Tool         | Purpose                         | Install                                                                      |
-| ------------ | ------------------------------- | ---------------------------------------------------------------------------- |
-| Git          | Clone the deployment repository | [git-scm.com](https://git-scm.com/downloads)                                 |
-| Python 3.12+ | Runtime                         | [python.org](https://www.python.org/downloads/)                              |
-| uv           | Package manager                 | [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/) |
-| Pulumi       | Infrastructure-as-code          | [pulumi.com/docs/install](https://www.pulumi.com/docs/install/)              |
-| kubectl      | Cluster access                  | [kubernetes.io](https://kubernetes.io/docs/tasks/tools/)                     |
+| Tool | Purpose | Install |
+| - | - | - |
+| Git | Clone the deployment repository | [git-scm.com](https://git-scm.com/downloads) |
+| Python 3.12+ | Runtime | [python.org](https://www.python.org/downloads/) |
+| uv | Package manager | [docs.astral.sh/uv](https://docs.astral.sh/uv/getting-started/installation/) |
+| Pulumi | Infrastructure-as-code | [pulumi.com/docs/install](https://www.pulumi.com/docs/install/) |
+| kubectl | Cluster access | [kubernetes.io](https://kubernetes.io/docs/tasks/tools/) |
 
 You also need:
 
@@ -103,20 +103,20 @@ To deploy Nexus BYOC, follow these steps.
     <Accordion title="Setup wizard prompts">
       The wizard prompts you for the following:
 
-      | Prompt                         | Description                                                                                                                                             |
-      | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-      | **Cloud provider**             | AWS, GCP, or Azure (skipped if pre-selected via `--cloud`).                                                                                             |
-      | **Project directory and name** | Where to generate the Pulumi project. Defaults to `pinecone-nexus-byoc`.                                                                                |
-      | **Pinecone API key**           | Your API key from the Pinecone console (or uses `PINECONE_API_KEY`).                                                                                    |
-      | **Cloud credentials**          | Validates credentials and displays your account/project/subscription ID.                                                                                |
-      | **Region**                     | Region for deployment.                                                                                                                                  |
-      | **Availability zones**         | Three zones for high availability.                                                                                                                      |
-      | **VPC/VNet CIDR block**        | Private IP range for the deployment. Choose a `/16` to `/20` that doesn't overlap existing networks.                                                    |
-      | **Generation-LLM key**         | The default catalog's Gemini API key (BYOM).                                                                                                            |
-      | **Network access**             | Public access. Private-only access is not supported for Nexus. See [Limitations](/guides/nexus/byoc/reference#limitations).                             |
-      | **Deletion protection**        | Whether to protect storage and database resources from accidental deletion. Enable to guard against teardown mistakes. Disable before `pulumi destroy`. |
-      | **Preflight checks**           | Validates cloud quotas. If checks fail, request quota increases before proceeding.                                                                      |
-      | **Pulumi backend**             | Local (`~/.pulumi` with passphrase) or Pulumi Cloud.                                                                                                    |
+      | Prompt | Description |
+      | - | - |
+      | **Cloud provider** | AWS, GCP, or Azure (skipped if pre-selected via `--cloud`). |
+      | **Project directory and name** | Where to generate the Pulumi project. Defaults to `pinecone-nexus-byoc`. |
+      | **Pinecone API key** | Your API key from the Pinecone console (or uses `PINECONE_API_KEY`). |
+      | **Cloud credentials** | Validates credentials and displays your account/project/subscription ID. |
+      | **Region** | Region for deployment. |
+      | **Availability zones** | Three zones for high availability. |
+      | **VPC/VNet CIDR block** | Private IP range for the deployment. Choose a `/16` to `/20` that doesn't overlap existing networks. |
+      | **Generation-LLM key** | The default catalog's Gemini API key (BYOM). |
+      | **Network access** | Public access. Private-only access is not supported for Nexus. See [Limitations](/guides/nexus/byoc/reference#limitations). |
+      | **Deletion protection** | Whether to protect storage and database resources from accidental deletion. Enable to guard against teardown mistakes. Disable before `pulumi destroy`. |
+      | **Preflight checks** | Validates cloud quotas. If checks fail, request quota increases before proceeding. |
+      | **Pulumi backend** | Local (`~/.pulumi` with passphrase) or Pulumi Cloud. |
     </Accordion>
 
     After completing the wizard, a Pulumi project is generated in your project directory. To change configuration later, edit `Pulumi.<stack>.yaml` and run `pulumi up`.
@@ -133,10 +133,10 @@ To deploy Nexus BYOC, follow these steps.
     Pulumi shows a preview of all resources to be created. Confirm to proceed. Provisioning time depends on the cloud:
 
     | Cloud | Typical provisioning time |
-    | ----- | ------------------------- |
-    | GCP   | 25 to 30 minutes          |
-    | AWS   | 25 to 40 minutes          |
-    | Azure | about 35 minutes          |
+    | - | - |
+    | GCP | 25 to 30 minutes |
+    | AWS | 25 to 40 minutes |
+    | Azure | about 35 minutes |
 
     When complete, the output displays:
 
@@ -153,16 +153,16 @@ To deploy Nexus BYOC, follow these steps.
     <Accordion title="Infrastructure provisioned">
       The deployment creates the following in your cloud account:
 
-      | Component            | AWS                                                             | GCP                                           | Azure                                    |
-      | -------------------- | --------------------------------------------------------------- | --------------------------------------------- | ---------------------------------------- |
-      | **VPC / Networking** | VPC, public and private subnets, NAT gateways, internet gateway | VPC network, subnets, Cloud NAT, Cloud Router | VNet, subnets, NAT gateway               |
-      | **Kubernetes**       | EKS cluster with managed node groups                            | GKE cluster with node pools                   | AKS cluster with agent pools             |
-      | **Object storage**   | S3 buckets (corpus, knowledge artifacts, data, WAL, backups)    | GCS buckets                                   | Blob Storage containers                  |
-      | **Metadata store**   | FoundationDB (Nexus metadata)                                   | FoundationDB                                  | FoundationDB                             |
-      | **Load balancing**   | Network Load Balancer                                           | Internal load balancer                        | Internal load balancer                   |
-      | **DNS**              | Route 53 hosted zone                                            | Cloud DNS managed zone                        | Azure DNS zone                           |
-      | **TLS certificates** | AWS Certificate Manager                                         | cert-manager                                  | cert-manager                             |
-      | **IAM**              | IAM roles and policies                                          | Service accounts and Workload Identity        | Managed identities and Workload Identity |
+      | Component | AWS | GCP | Azure |
+      | - | - | - | - |
+      | **VPC / Networking** | VPC, public and private subnets, NAT gateways, internet gateway | VPC network, subnets, Cloud NAT, Cloud Router | VNet, subnets, NAT gateway |
+      | **Kubernetes** | EKS cluster with managed node groups | GKE cluster with node pools | AKS cluster with agent pools |
+      | **Object storage** | S3 buckets (corpus, knowledge artifacts, data, WAL, backups) | GCS buckets | Blob Storage containers |
+      | **Metadata store** | FoundationDB (Nexus metadata) | FoundationDB | FoundationDB |
+      | **Load balancing** | Network Load Balancer | Internal load balancer | Internal load balancer |
+      | **DNS** | Route 53 hosted zone | Cloud DNS managed zone | Azure DNS zone |
+      | **TLS certificates** | AWS Certificate Manager | cert-manager | cert-manager |
+      | **IAM** | IAM roles and policies | Service accounts and Workload Identity | Managed identities and Workload Identity |
 
       The cluster comes up small and then autoscales across several node pools spread over the three AZs. See [Cluster footprint](/guides/nexus/byoc/reference#cluster-footprint) for the node pools.
     </Accordion>
@@ -292,14 +292,14 @@ If `deletion-protection` is enabled (the default), you must either disable it in
   <Accordion title="Preflight check failures">
     The setup wizard validates cloud quotas before deployment. If checks fail:
 
-    | Check                                | Resolution                                                                                    |
-    | ------------------------------------ | --------------------------------------------------------------------------------------------- |
-    | VPC / network quota                  | Request a limit increase via your cloud provider's quota console                              |
-    | Kubernetes cluster quota             | Request an EKS, GKE, or AKS cluster limit increase                                            |
-    | IP address quota                     | Release unused IPs or request a limit increase                                                |
-    | Instance / machine type availability | Verify the required type is available in your region                                          |
-    | vCPU quota                           | Request a regional vCPU increase                                                              |
-    | Required APIs / providers            | Enable the cloud APIs (GCP) or register the resource providers (Azure) the installer requires |
+    | Check | Resolution |
+    | - | - |
+    | VPC / network quota | Request a limit increase via your cloud provider's quota console |
+    | Kubernetes cluster quota | Request an EKS, GKE, or AKS cluster limit increase |
+    | IP address quota | Release unused IPs or request a limit increase |
+    | Instance / machine type availability | Verify the required type is available in your region |
+    | vCPU quota | Request a regional vCPU increase |
+    | Required APIs / providers | Enable the cloud APIs (GCP) or register the resource providers (Azure) the installer requires |
   </Accordion>
 
   <Accordion title="Deployment failures">

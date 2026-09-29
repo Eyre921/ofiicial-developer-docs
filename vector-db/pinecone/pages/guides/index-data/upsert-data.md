@@ -1237,10 +1237,10 @@ Send upserts in batches to help increase throughput.
   To understand the number of records you can fit into one batch based on the vector dimensions and metadata size, see the following table:
 
   | Dimension | Metadata (bytes) | Max batch size |
-  | :-------- | :--------------- | :------------- |
-  | 386       | 0                | 1,000          |
-  | 768       | 500              | 559            |
-  | 1536      | 2000             | 245            |
+  | :- | :- | :- |
+  | 386 | 0 | 1,000 |
+  | 768 | 500 | 559 |
+  | 1536 | 2000 | 245 |
 
 * When upserting records with text, a batch can contain up to 96 records. This limit comes from the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) used during integrated embedding rather than the batch size limit for upserting raw vectors.
 
@@ -1777,22 +1777,22 @@ async_results = [
 
 ## Upsert limits
 
-| Metric                                                                                      | Limit                           |
-| :------------------------------------------------------------------------------------------ | :------------------------------ |
+| Metric | Limit |
+| :- | :- |
 | Max [batch size](/guides/index-data/upsert-data#upsert-in-batches) for records with vectors | 1,000 records, up to 2 MB total |
-| Max batch size for records with text                                                        | 96 records                      |
-| Max documents per upsert request                                                            | 1,000                           |
-| Max document upsert request size                                                            | 2 MB                            |
-| Max document size                                                                           | 2 MB                            |
-| Max `full_text_search` string fields per schema                                             | 100                             |
-| Max size per `full_text_search` string field                                                | 100 KB                          |
-| Max tokens per `full_text_search` string field                                              | 10,000                          |
-| Max bytes per token                                                                         | 256 bytes                       |
-| Max filterable metadata size per document                                                   | 40 KB                           |
-| Max length for a record ID                                                                  | 512 characters                  |
-| Max dimensionality for dense vectors                                                        | 20,000                          |
-| Max non-zero values for sparse vectors                                                      | 2048                            |
-| Max dimensionality for sparse vectors                                                       | 4.2 billion                     |
+| Max batch size for records with text | 96 records |
+| Max documents per upsert request | 1,000 |
+| Max document upsert request size | 2 MB |
+| Max document size | 2 MB |
+| Max `full_text_search` string fields per schema | 100 |
+| Max size per `full_text_search` string field | 100 KB |
+| Max tokens per `full_text_search` string field | 10,000 |
+| Max bytes per token | 256 bytes |
+| Max filterable metadata size per document | 40 KB |
+| Max length for a record ID | 512 characters |
+| Max dimensionality for dense vectors | 20,000 |
+| Max non-zero values for sparse vectors | 2048 |
+| Max dimensionality for sparse vectors | 4.2 billion |
 
 The limit for text is lower because Pinecone converts that text to vectors at upsert time with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), and 96 is the max batch size of the [hosted embedding models](/guides/index-data/create-an-index#embedding-models) doing the conversion.
 

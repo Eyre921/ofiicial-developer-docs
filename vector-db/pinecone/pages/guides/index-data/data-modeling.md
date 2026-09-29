@@ -59,15 +59,15 @@ For the full schema reference (language and analyzer options, multi-field schema
 
 Each document in an [upsert](/reference/api/latest/data-plane/upsert_documents) request's `documents` array is validated against the schema. If any document fails validation, **the entire upsert fails** and nothing is written.
 
-| Scenario                                                             | Result                                                                       |
-| -------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Field value doesn't match declared type (for schema-declared fields) | **Error**, request fails                                                     |
-| Document or request exceeds a size or count limit                    | **Error**, request fails                                                     |
-| Field not in schema                                                  | Stored on the document and auto-indexed for filtering as metadata            |
-| Field name starts with `_` or `$`                                    | **Error**, request fails                                                     |
-| Schema field missing from a document                                 | OK, schema fields are optional, as long as the document carries at least one |
-| Document with only `_id` and metadata (no schema fields)             | **Error**, request fails                                                     |
-| Document missing `_id`                                               | **Error**, request fails                                                     |
+| Scenario | Result |
+| - | - |
+| Field value doesn't match declared type (for schema-declared fields) | **Error**, request fails |
+| Document or request exceeds a size or count limit | **Error**, request fails |
+| Field not in schema | Stored on the document and auto-indexed for filtering as metadata |
+| Field name starts with `_` or `$` | **Error**, request fails |
+| Schema field missing from a document | OK, schema fields are optional, as long as the document carries at least one |
+| Document with only `_id` and metadata (no schema fields) | **Error**, request fails |
+| Document missing `_id` | **Error**, request fails |
 
 ### Schema patterns
 

@@ -101,47 +101,47 @@ The following events are captured in the audit logs:
 
 #### Organization events
 
-| Action            | Query parameters                                                                                               |
-| ----------------- | -------------------------------------------------------------------------------------------------------------- |
-| Rename org        | `event.action: update`, `event.resource_type: organization`, `event.resource_id: NEW_ORG_NAME`                 |
-| Delete org        | `event.action: delete`, `event.resource_type: organization`, `event.resource_id: DELETED_ORG_NAME`             |
-| Create org member | `event.action: create`, `event.resource_type: user`, `event.resource_id: [ARRAY_OF_USER_EMAILS]`               |
+| Action | Query parameters |
+| - | - |
+| Rename org | `event.action: update`, `event.resource_type: organization`, `event.resource_id: NEW_ORG_NAME` |
+| Delete org | `event.action: delete`, `event.resource_type: organization`, `event.resource_id: DELETED_ORG_NAME` |
+| Create org member | `event.action: create`, `event.resource_type: user`, `event.resource_id: [ARRAY_OF_USER_EMAILS]` |
 | Update org member | `event.action: update`, `event.resource_type: user`, `event.resource_id: { user: USER_EMAIL, role: NEW_ROLE }` |
-| Delete org member | `event.action: delete`, `event.resource_type: user`, `event.resource_id: USER_EMAIL`                           |
+| Delete org member | `event.action: delete`, `event.resource_type: user`, `event.resource_id: USER_EMAIL` |
 
 #### Project events
 
-| Action                     | Query parameters                                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| Create project             | `event.action: create`, `event.resource_type: project`, `event.resouce_id: PROJ_NAME`                              |
-| Update project             | `event.action: update`, `event.resource_type: project`, `event.resource_id: PROJECT_NAME`                          |
-| Delete project             | `event.action: delete`, `event.resource_type: project`, `event.resource_id: PROJECT_NAME`                          |
-| Invite project member      | `event.action: create`, `event.resource_type: user`, `event.resource_id: [ARRAY_OF_USER_EMAILS]`                   |
-| Update project member role | `event.action: update`, `event.resource_type: user`, `event.resource_id: { user: USER_EMAIL, role: NEW_ROLE }`     |
-| Delete project member      | `event.action: delete`, `event.resource_type: user`, `event.resource_id: { user: USER_EMAIL, project: PROJ_NAME }` |
+| Action | Query parameters |
+| - | - |
+| Create project | `event.action: create`, `event.resource_type: project`, `event.resouce_id: PROJ_NAME` |
+| Update project | `event.action: update`, `event.resource_type: project`, `event.resource_id: PROJECT_NAME` |
+| Delete project | `event.action: delete`, `event.resource_type: project`, `event.resource_id: PROJECT_NAME` |
+| Invite project member | `event.action: create`, `event.resource_type: user`, `event.resource_id: [ARRAY_OF_USER_EMAILS]` |
+| Update project member role | `event.action: update`, `event.resource_type: user`, `event.resource_id: { user: USER_EMAIL, role: NEW_ROLE }` |
+| Delete project member | `event.action: delete`, `event.resource_type: user`, `event.resource_id: { user: USER_EMAIL, project: PROJ_NAME }` |
 
 #### Index events
 
-| Action        | Query parameters                                                                        |
-| ------------- | --------------------------------------------------------------------------------------- |
-| Create index  | `event.action: create`, `event.resource_type: index`, `event.resouce_id: INDEX_NAME`    |
-| Update index  | `event.action: update`, `event.resource_type: index`, `event.resource_id: INDEX_NAME`   |
-| Delete index  | `event.action: delete`, `event.resource_type: index`, `event.resource_id: INDEX_NAME`   |
+| Action | Query parameters |
+| - | - |
+| Create index | `event.action: create`, `event.resource_type: index`, `event.resouce_id: INDEX_NAME` |
+| Update index | `event.action: update`, `event.resource_type: index`, `event.resource_id: INDEX_NAME` |
+| Delete index | `event.action: delete`, `event.resource_type: index`, `event.resource_id: INDEX_NAME` |
 | Create backup | `event.action: create`, `event.resource_type: backup`, `event.resource_id: BACKUP_NAME` |
 | Delete backup | `event.action: delete`, `event.resource_type: backup`, `event.resource_id: BACKUP_NAME` |
 
 #### User and API key events
 
-| Action         | Query parameters                                                                        |
-| -------------- | --------------------------------------------------------------------------------------- |
-| User login     | `event.action: login`, `event.resource_type: user`, `event.resouce_id: USERNAME`        |
+| Action | Query parameters |
+| - | - |
+| User login | `event.action: login`, `event.resource_type: user`, `event.resouce_id: USERNAME` |
 | Create API key | `event.action: create`, `event.resource_type: api-key`, `event.resource_id: API_KEY_ID` |
 | Delete API key | `event.action: delete`, `event.resource_type: api-key`, `event.resource_id: API_KEY_ID` |
 
 #### Security and governance events
 
-| Action                  | Query parameters                                                                                           |
-| ----------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Action | Query parameters |
+| - | - |
 | Create Private Endpoint | `event.action: create`, `event.resource_type: private-endpoints`, `event.resource_id: PRIVATE_ENDPOINT_ID` |
 | Delete Private Endpoint | `event.action: delete`, `event.resource_type: private-endpoints`, `event.resource_id: PRIVATE_ENDPOINT_ID` |
 

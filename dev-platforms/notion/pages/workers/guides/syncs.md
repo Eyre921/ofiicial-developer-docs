@@ -203,10 +203,10 @@ worker.sync("frequentSync", {
 });
 ```
 
-| Value                           | Behavior                            |
-| :------------------------------ | :---------------------------------- |
-| `"5m"`, `"15m"`, `"1h"`, `"1d"` | Run at the given interval           |
-| `"manual"`                      | Only run when triggered via the CLI |
+| Value | Behavior |
+| :- | :- |
+| `"5m"`, `"15m"`, `"1h"`, `"1d"` | Run at the given interval |
+| `"manual"` | Only run when triggered via the CLI |
 
 <Info>
   Minimum schedule is `"5m"`, maximum is `"7d"`.
@@ -221,13 +221,13 @@ A single replace sync works for small datasets, but most real integrations need 
 
 Since both syncs share a database and key space, upserts from both operate on the same rows. The delta keeps the database current and the backfill re-syncs the full dataset when you need to:
 
-|                  | Delta sync                                                | Backfill sync                          |
-| :--------------- | :-------------------------------------------------------- | :------------------------------------- |
-| **Mode**         | `incremental`                                             | `replace`                              |
-| **Schedule**     | `"5m"` or `"30m"`                                         | `"manual"`                             |
-| **What it does** | Grabs recent changes via `updated_since` or a change feed | Paginates the entire upstream dataset  |
-| **Deletes**      | Emits `type: "delete"` if the API supports it             | Mark-and-sweep catches everything else |
-| **When it runs** | Continuously on schedule                                  | On demand                              |
+| | Delta sync | Backfill sync |
+| :- | :- | :- |
+| **Mode** | `incremental` | `replace` |
+| **Schedule** | `"5m"` or `"30m"` | `"manual"` |
+| **What it does** | Grabs recent changes via `updated_since` or a change feed | Paginates the entire upstream dataset |
+| **Deletes** | Emits `type: "delete"` if the API supports it | Mark-and-sweep catches everything else |
+| **When it runs** | Continuously on schedule | On demand |
 
 ```typescript theme={null}
 // Delta: near-real-time updates

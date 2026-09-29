@@ -12,31 +12,31 @@ Full-text search offers two text-based query types: `type: "text"` for BM25 toke
 
 The two types differ in the capabilities they support:
 
-| Feature                          | `type: "text"`                                                                       | `type: "query_string"`                                                               |
-| -------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| **Purpose**                      | Token search on one or more fields                                                   | Lucene query syntax                                                                  |
-| **Field targeting**              | Required `fields`, one or more text fields (scores against all)                      | No `field`/`fields` param; use Lucene field qualifiers (`title:(...)`) in the query  |
-| **Multi-word behavior**          | Token match, OR across terms (BM25)                                                  | OR by default; use `AND`, quotes, etc. for other logic                               |
-| **Boolean operators**            | Not supported (treated as words)                                                     | `AND`, `OR`, `NOT`, `+`, `-`                                                         |
-| **Phrase prefix**                | Not supported                                                                        | `"phrase pre"*` (last term as prefix)                                                |
-| **Single-term prefix** (`auto*`) | Not supported                                                                        | Not supported. Use [phrase prefix](#phrase-prefix)                                   |
-| **Phrase matching**              | Not supported in `score_by` (use `query_string` or `$match_phrase` filter)           | Wrap in quotes: `"exact phrase"`                                                     |
-| **Phrase slop**                  | Not supported                                                                        | `"phrase"~N`                                                                         |
-| **Boosting**                     | Not supported                                                                        | `term^N`                                                                             |
-| **Regex**                        | Not supported                                                                        | `field:/pattern.*/`                                                                  |
-| **Fuzzy matching**               | Not supported                                                                        | `term~`, `term~N` (typo tolerance)                                                   |
-| **Stemming**                     | Supported ([when enabled](/guides/search/full-text-search/text-processing#stemming)) | Supported ([when enabled](/guides/search/full-text-search/text-processing#stemming)) |
-| **Case sensitivity**             | Case-insensitive                                                                     | Case-insensitive                                                                     |
+| Feature | `type: "text"` | `type: "query_string"` |
+| - | - | - |
+| **Purpose** | Token search on one or more fields | Lucene query syntax |
+| **Field targeting** | Required `fields`, one or more text fields (scores against all) | No `field`/`fields` param; use Lucene field qualifiers (`title:(...)`) in the query |
+| **Multi-word behavior** | Token match, OR across terms (BM25) | OR by default; use `AND`, quotes, etc. for other logic |
+| **Boolean operators** | Not supported (treated as words) | `AND`, `OR`, `NOT`, `+`, `-` |
+| **Phrase prefix** | Not supported | `"phrase pre"*` (last term as prefix) |
+| **Single-term prefix** (`auto*`) | Not supported | Not supported. Use [phrase prefix](#phrase-prefix) |
+| **Phrase matching** | Not supported in `score_by` (use `query_string` or `$match_phrase` filter) | Wrap in quotes: `"exact phrase"` |
+| **Phrase slop** | Not supported | `"phrase"~N` |
+| **Boosting** | Not supported | `term^N` |
+| **Regex** | Not supported | `field:/pattern.*/` |
+| **Fuzzy matching** | Not supported | `term~`, `term~N` (typo tolerance) |
+| **Stemming** | Supported ([when enabled](/guides/search/full-text-search/text-processing#stemming)) | Supported ([when enabled](/guides/search/full-text-search/text-processing#stemming)) |
+| **Case sensitivity** | Case-insensitive | Case-insensitive |
 
 ## Token matching (`type: "text"`)
 
 With `type: "text"`, the query string is run through the field's analyzer pipeline (see [Tokens and analyzers](/guides/search/full-text-search/text-processing#tokens-and-analyzers)) and each resulting term contributes to the BM25 score. Multiple terms use **OR** semantics: documents can match if they contain **any** of the terms; documents that match more terms or stronger term statistics typically rank higher. Matching is case-insensitive. Exact **phrase** constraints (adjacent words in order) belong in `type: "query_string"` using quotes, or in a `$match_phrase` filter.
 
-| Query              | Matches                                                               | Doesn't match                          |
-| ------------------ | --------------------------------------------------------------------- | -------------------------------------- |
-| `machine learning` | "**Machine** learning is great" (has "machine")                       | "Vector databases only" (neither term) |
+| Query | Matches | Doesn't match |
+| - | - | - |
+| `machine learning` | "**Machine** learning is great" (has "machine") | "Vector databases only" (neither term) |
 | `machine learning` | "We use **learning** and **machine**" (both terms present, any order) | "Vector databases only" (neither term) |
-| `machine`          | "**Machine** learning is great"                                       | "Vector databases only" (no "machine") |
+| `machine` | "**Machine** learning is great" | "Vector databases only" (no "machine") |
 
 ### Key behaviors
 
@@ -48,23 +48,23 @@ With `type: "text"`, the query string is run through the field's analyzer pipeli
 
 With `type: "query_string"`, you write Lucene query syntax, with operator support. Field names are embedded in the query itself (e.g., `content:(term)`) and can combine multiple fields with boolean operators.
 
-| Operator       | Syntax                     | Example                             | Description                                                                   |
-| -------------- | -------------------------- | ----------------------------------- | ----------------------------------------------------------------------------- |
-| Term           | `field:(word)`             | `body:(computers)`                  | Match documents containing term                                               |
-| Multiple terms | `field:(a b)`              | `body:(machine learning)`           | OR by default, matches either term                                            |
-| Phrase         | `field:("words")`          | `body:("machine learning")`         | Exact phrase match (adjacent, in order)                                       |
-| AND            | `AND`                      | `body:(a AND b)`                    | Both terms required                                                           |
-| OR             | `OR`                       | `body:(a OR b)`                     | Either term matches (same as default)                                         |
-| NOT            | `NOT`                      | `body:(a NOT b)`                    | Exclude second term                                                           |
-| Required       | `+term`                    | `body:(+database search)`           | Term must be present                                                          |
-| Excluded       | `-term`                    | `body:(database -deprecated)`       | Term must not be present                                                      |
-| Grouping       | `(expr)`                   | `body:((a OR b) AND c)`             | Control precedence                                                            |
-| Phrase slop    | `"phrase"~N`               | `body:("fast search"~2)`            | Allow up to N words between phrase terms                                      |
-| Boost          | `term^N`                   | `body:(machine^3 learning)`         | Multiply the clause's relevance score by N (`0` or greater, decimals allowed) |
-| Phrase prefix  | `"phrase pre"*`            | `body:("james w"*)`                 | Last term in phrase matched as prefix                                         |
-| Regex          | `field:/pattern.*/`        | `body:/comput.*/`                   | Match documents by regular expression on a field                              |
-| Fuzzy          | `term~` or `term~N`        | `body:(compxter~1)`                 | Match terms within edit distance N (0–2) for typo tolerance                   |
-| Cross-field    | `fieldA:(…) OR fieldB:(…)` | `title:(quantum) OR body:(machine)` | Combine clauses across text-searchable fields                                 |
+| Operator | Syntax | Example | Description |
+| - | - | - | - |
+| Term | `field:(word)` | `body:(computers)` | Match documents containing term |
+| Multiple terms | `field:(a b)` | `body:(machine learning)` | OR by default, matches either term |
+| Phrase | `field:("words")` | `body:("machine learning")` | Exact phrase match (adjacent, in order) |
+| AND | `AND` | `body:(a AND b)` | Both terms required |
+| OR | `OR` | `body:(a OR b)` | Either term matches (same as default) |
+| NOT | `NOT` | `body:(a NOT b)` | Exclude second term |
+| Required | `+term` | `body:(+database search)` | Term must be present |
+| Excluded | `-term` | `body:(database -deprecated)` | Term must not be present |
+| Grouping | `(expr)` | `body:((a OR b) AND c)` | Control precedence |
+| Phrase slop | `"phrase"~N` | `body:("fast search"~2)` | Allow up to N words between phrase terms |
+| Boost | `term^N` | `body:(machine^3 learning)` | Multiply the clause's relevance score by N (`0` or greater, decimals allowed) |
+| Phrase prefix | `"phrase pre"*` | `body:("james w"*)` | Last term in phrase matched as prefix |
+| Regex | `field:/pattern.*/` | `body:/comput.*/` | Match documents by regular expression on a field |
+| Fuzzy | `term~` or `term~N` | `body:(compxter~1)` | Match terms within edit distance N (0–2) for typo tolerance |
+| Cross-field | `fieldA:(…) OR fieldB:(…)` | `title:(quantum) OR body:(machine)` | Combine clauses across text-searchable fields |
 
 ### Terms and default OR behavior
 

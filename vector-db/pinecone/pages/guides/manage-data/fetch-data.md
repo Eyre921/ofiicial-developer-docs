@@ -323,12 +323,12 @@ The response looks like this:
 
 To fetch records from a namespace based on their metadata values, use the `fetch_by_metadata` operation with the following parameters:
 
-| Parameter         | Required | Description                                                                                                                                                                                                                                                                                                                                         |
-| :---------------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `filter`          | Yes      | A [metadata filter expression](/guides/index-data/indexing-overview#metadata-filter-expressions) describing the records to fetch. Must be present and non-empty.                                                                                                                                                                                    |
-| `limit`           | No       | The maximum number of matching records to return in a single response. Defaults to 100; maximum 10,000. To retrieve more than 10,000 matching records, paginate using `paginationToken`.                                                                                                                                                            |
-| `namespace`       | No       | The [namespace](/guides/index-data/indexing-overview#namespaces) containing the records to fetch. If omitted or set to an empty string, defaults to the default namespace. To explicitly use the default namespace, set this to `"__default__"`.                                                                                                    |
-| `paginationToken` | No       | The `next` token value from the `pagination` object found in a previous response. Include this value to fetch the next page of results, or omit it to start from the beginning. Must be used with the same `namespace` and `filter` parameters that generated it — using an existing token with different parameters will return incorrect results. |
+| Parameter | Required | Description |
+| :- | :- | :- |
+| `filter` | Yes | A [metadata filter expression](/guides/index-data/indexing-overview#metadata-filter-expressions) describing the records to fetch. Must be present and non-empty. |
+| `limit` | No | The maximum number of matching records to return in a single response. Defaults to 100; maximum 10,000. To retrieve more than 10,000 matching records, paginate using `paginationToken`. |
+| `namespace` | No | The [namespace](/guides/index-data/indexing-overview#namespaces) containing the records to fetch. If omitted or set to an empty string, defaults to the default namespace. To explicitly use the default namespace, set this to `"__default__"`. |
+| `paginationToken` | No | The `next` token value from the `pagination` object found in a previous response. Include this value to fetch the next page of results, or omit it to start from the beginning. Must be used with the same `namespace` and `filter` parameters that generated it — using an existing token with different parameters will return incorrect results. |
 
 For example, the following code fetches 2 records with a `genre` field set to `Action/Adventure` from the default namespace:
 
@@ -581,19 +581,19 @@ These limits apply to the Vectors API. For an index with a document schema, see 
 
 ### Fetch by ID limits
 
-| Metric              | Limit                             |
-| :------------------ | :-------------------------------- |
-| Max IDs per request | 1000 IDs                          |
-| Max request size    | N/A                               |
-| Max request rate    | 100 requests per second per index |
+| Metric | Limit |
+| :- | :- |
+| Max IDs per request | 1000 IDs |
+| Max request size | N/A |
+| Max request rate | 100 requests per second per index |
 
 ### Fetch by metadata limits
 
-| Metric                   | Limit                               |
-| :----------------------- | :---------------------------------- |
-| Max records per response | 10,000 records                      |
-| Max response size        | 4 MB                                |
-| Max request rate         | 5 requests per second per namespace |
+| Metric | Limit |
+| :- | :- |
+| Max records per response | 10,000 records |
+| Max response size | 4 MB |
+| Max request rate | 5 requests per second per namespace |
 
 To retrieve more than 10,000 matching records, paginate through results using the `paginationToken` parameter. See [Fetch records by metadata](#fetch-records-by-metadata).
 

@@ -43,14 +43,14 @@ Pinecone reads the following SCIM user attributes and ignores all others, includ
 
 A member needs both required attributes to get access. Okta can't provision a member without `userName`, and a member whose `roles` has no organization role has no access to the organization.
 
-| SCIM attribute    | Required | How Pinecone uses it                                                                                                                                         |
-| :---------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `userName`        | Yes      | The member's email address, which must match the one they use to sign in through SAML SSO. See [Step 3](#3-connect-okta-to-the-scim-endpoint).               |
-| `roles`           | Yes      | The member's organization and project roles. See [Role attribute values](#role-attribute-values).                                                            |
-| `active`          | No       | Whether the member is active. Setting it to `false` removes the member from the organization. If Okta doesn't send it, Pinecone treats the member as active. |
-| `displayName`     | No       | The member's name, shown in the Pinecone console.                                                                                                            |
-| `name.givenName`  | No       | The member's first name. Stored on the member's profile, but not shown in the console.                                                                       |
-| `name.familyName` | No       | The member's last name. Stored on the member's profile, but not shown in the console.                                                                        |
+| SCIM attribute | Required | How Pinecone uses it |
+| :- | :- | :- |
+| `userName` | Yes | The member's email address, which must match the one they use to sign in through SAML SSO. See [Step 3](#3-connect-okta-to-the-scim-endpoint). |
+| `roles` | Yes | The member's organization and project roles. See [Role attribute values](#role-attribute-values). |
+| `active` | No | Whether the member is active. Setting it to `false` removes the member from the organization. If Okta doesn't send it, Pinecone treats the member as active. |
+| `displayName` | No | The member's name, shown in the Pinecone console. |
+| `name.givenName` | No | The member's first name. Stored on the member's profile, but not shown in the console. |
+| `name.familyName` | No | The member's last name. Stored on the member's profile, but not shown in the console. |
 
 The console shows a member's `displayName`, or their email address if Okta doesn't send one. To show members' names in the console, keep the `displayName` mapping.
 
@@ -69,26 +69,26 @@ A user can hold multiple roles by sending multiple values in the `roles` attribu
 
 For details on what each [organization role](/guides/organizations/understanding-organizations#organization-roles) grants, see [Understanding organizations](/guides/organizations/understanding-organizations#organization-roles).
 
-| Organization role    | Attribute value            |
-| :------------------- | :------------------------- |
-| Organization owner   | `pinecone:OrgOwner`        |
-| Organization manager | `pinecone:OrgManager`      |
-| Organization member  | `pinecone:OrgMember`       |
-| Billing admin        | `pinecone:OrgBillingAdmin` |
+| Organization role | Attribute value |
+| :- | :- |
+| Organization owner | `pinecone:OrgOwner` |
+| Organization manager | `pinecone:OrgManager` |
+| Organization member | `pinecone:OrgMember` |
+| Billing admin | `pinecone:OrgBillingAdmin` |
 
 ### Project roles
 
 For details on what each [project role](/guides/projects/understanding-projects#project-roles) grants, see [Understanding projects](/guides/projects/understanding-projects#project-roles).
 
-| Project role         | Attribute value                                   |
-| :------------------- | :------------------------------------------------ |
-| Project owner        | `pinecone:project:<projectID>:ProjectOwner`       |
-| Project manager      | `pinecone:project:<projectID>:ProjectManager`     |
-| Project member       | `pinecone:project:<projectID>:ProjectMember`      |
+| Project role | Attribute value |
+| :- | :- |
+| Project owner | `pinecone:project:<projectID>:ProjectOwner` |
+| Project manager | `pinecone:project:<projectID>:ProjectManager` |
+| Project member | `pinecone:project:<projectID>:ProjectMember` |
 | Control plane editor | `pinecone:project:<projectID>:ControlPlaneEditor` |
 | Control plane viewer | `pinecone:project:<projectID>:ControlPlaneViewer` |
-| Data plane editor    | `pinecone:project:<projectID>:DataPlaneEditor`    |
-| Data plane viewer    | `pinecone:project:<projectID>:DataPlaneViewer`    |
+| Data plane editor | `pinecone:project:<projectID>:DataPlaneEditor` |
+| Data plane viewer | `pinecone:project:<projectID>:DataPlaneViewer` |
 
 For example, to make a user an organization manager who is also a project owner on one project, send these two values in the `roles` attribute:
 

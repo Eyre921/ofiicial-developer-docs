@@ -12,11 +12,11 @@ The Notion API supports reading, writing, and updating page content using **enha
 
 Three API surfaces are available:
 
-| Operation | Endpoint                            | Description                                                     |
-| --------- | ----------------------------------- | --------------------------------------------------------------- |
-| Create    | `POST /v1/pages`                    | Create a page with markdown content (via `markdown` body param) |
-| Read      | `GET /v1/pages/:page_id/markdown`   | Retrieve a page's full content as markdown                      |
-| Update    | `PATCH /v1/pages/:page_id/markdown` | Insert or replace content using markdown                        |
+| Operation | Endpoint | Description |
+| - | - | - |
+| Create | `POST /v1/pages` | Create a page with markdown content (via `markdown` body param) |
+| Read | `GET /v1/pages/:page_id/markdown` | Retrieve a page's full content as markdown |
+| Update | `PATCH /v1/pages/:page_id/markdown` | Insert or replace content using markdown |
 
 <Tip>
   All three endpoints use the same **enhanced markdown** format. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
@@ -28,31 +28,31 @@ The markdown API supports most Notion block types. The table below shows how eac
 
 ### Supported block types
 
-| Block type                                                      | Markdown format                                                        |
-| --------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [Paragraph](/reference/block#paragraph)                         | Plain text                                                             |
-| [Heading 1 / 2 / 3 / 4](/reference/block#headings)              | `#` / `##` / `###` / `####`                                            |
-| [Bulleted list item](/reference/block#bulleted-list-item)       | `- item`                                                               |
-| [Numbered list item](/reference/block#numbered-list-item)       | `1. item`                                                              |
-| [To do](/reference/block#to-do)                                 | `- [ ]` / `- [x]`                                                      |
-| [Toggle](/reference/block#toggle-blocks)                        | `<details>` / `<summary>`                                              |
-| [Quote](/reference/block#quote)                                 | `> quote`                                                              |
-| [Callout](/reference/block#callout)                             | `<callout>`                                                            |
-| [Divider](/reference/block#divider)                             | `---`                                                                  |
-| [Code](/reference/block#code)                                   | Fenced code block with language                                        |
-| [Equation](/reference/block#equation)                           | `$$ equation $$`                                                       |
-| [Table](/reference/block#table)                                 | `<table>` with `<tr>` and `<td>`                                       |
-| [Image](/reference/block#image)                                 | `![caption](url)`                                                      |
-| [File](/reference/block#file)                                   | `<file src="url">caption</file>`                                       |
-| [Video](/reference/block#video)                                 | `<video src="url">caption</video>`                                     |
-| [Audio](/reference/block#audio)                                 | `<audio src="url">caption</audio>`                                     |
-| [PDF](/reference/block#pdf)                                     | `<pdf src="url">caption</pdf>`                                         |
-| [Child page](/reference/block#child-page)                       | `<page url="...">title</page>`                                         |
-| [Child database](/reference/block#child-database)               | `<database url="...">title</database>`                                 |
-| [Synced block](/reference/block#synced-block)                   | `<synced_block>` with content                                          |
-| [Column list / Column](/reference/block#column-list-and-column) | `<columns>` / `<column>`                                               |
-| [Table of contents](/reference/block#table-of-contents)         | `<table_of_contents/>`                                                 |
-| [Transcription](/reference/block#transcription)                 | `<meeting-notes>` (transcript included when `include_transcript=true`) |
+| Block type | Markdown format |
+| - | - |
+| [Paragraph](/reference/block#paragraph) | Plain text |
+| [Heading 1 / 2 / 3 / 4](/reference/block#headings) | `#` / `##` / `###` / `####` |
+| [Bulleted list item](/reference/block#bulleted-list-item) | `- item` |
+| [Numbered list item](/reference/block#numbered-list-item) | `1. item` |
+| [To do](/reference/block#to-do) | `- [ ]` / `- [x]` |
+| [Toggle](/reference/block#toggle-blocks) | `<details>` / `<summary>` |
+| [Quote](/reference/block#quote) | `> quote` |
+| [Callout](/reference/block#callout) | `<callout>` |
+| [Divider](/reference/block#divider) | `---` |
+| [Code](/reference/block#code) | Fenced code block with language |
+| [Equation](/reference/block#equation) | `$$ equation $$` |
+| [Table](/reference/block#table) | `<table>` with `<tr>` and `<td>` |
+| [Image](/reference/block#image) | `![caption](url)` |
+| [File](/reference/block#file) | `<file src="url">caption</file>` |
+| [Video](/reference/block#video) | `<video src="url">caption</video>` |
+| [Audio](/reference/block#audio) | `<audio src="url">caption</audio>` |
+| [PDF](/reference/block#pdf) | `<pdf src="url">caption</pdf>` |
+| [Child page](/reference/block#child-page) | `<page url="...">title</page>` |
+| [Child database](/reference/block#child-database) | `<database url="...">title</database>` |
+| [Synced block](/reference/block#synced-block) | `<synced_block>` with content |
+| [Column list / Column](/reference/block#column-list-and-column) | `<columns>` / `<column>` |
+| [Table of contents](/reference/block#table-of-contents) | `<table_of_contents/>` |
+| [Transcription](/reference/block#transcription) | `<meeting-notes>` (transcript included when `include_transcript=true`) |
 
 For file-based blocks (image, file, video, audio, PDF), the URLs in the markdown output are pre-signed and ready to download. They expire after a short period, consistent with the [block-based API](/reference/block#file).
 
@@ -60,13 +60,13 @@ For file-based blocks (image, file, video, audio, PDF), the URLs in the markdown
 
 The following block types are not yet rendered in the markdown output. When encountered, they appear as `<unknown url="..." alt="block_type"/>` tags. The `url` links to the block in Notion, and `alt` indicates the original block type.
 
-| Block type                                    | Notes                           |
-| --------------------------------------------- | ------------------------------- |
-| [Bookmark](/reference/block#bookmark)         | Web bookmarks with URL previews |
-| [Embed](/reference/block#embed)               | Embedded third-party content    |
-| [Link preview](/reference/block#link-preview) | Unfurled URL previews           |
-| [Breadcrumb](/reference/block#breadcrumb)     | Navigation breadcrumbs          |
-| [Template](/reference/block#template)         | Template buttons (deprecated)   |
+| Block type | Notes |
+| - | - |
+| [Bookmark](/reference/block#bookmark) | Web bookmarks with URL previews |
+| [Embed](/reference/block#embed) | Embedded third-party content |
+| [Link preview](/reference/block#link-preview) | Unfurled URL previews |
+| [Breadcrumb](/reference/block#breadcrumb) | Navigation breadcrumbs |
+| [Template](/reference/block#template) | Template buttons (deprecated) |
 
 Block types that are not recognized by the block API (returned as `"unsupported"`) will also appear as `<unknown>` in the markdown output.
 
@@ -111,7 +111,7 @@ Use `POST /v1/pages` with the `markdown` parameter instead of `children` to crea
 * If `properties.title` is omitted, the first `# h1` heading is extracted as the page title.
 * Available to all connection types (public, internal, and personal access tokens).
 * Requires `insert_content` and `insert_property` capabilities.
-* Markdown that is too large or too heavily formatted to parse in one request returns a `validation_error`. With `allow_async: true`, the request still returns an `async_task`, and the task ends as `failed` with that `validation_error` when you poll it. Retrying the same body fails the same way. Create the page with part of the content and add the rest with further requests, or split the content into child pages.
+* Markdown that is too large or too heavily formatted to parse in one request returns a `validation_error`. So does markdown that would create more than 5,000 blocks, counting nested blocks. With `allow_async: true`, the request still returns an `async_task`, and the task ends as `failed` with that `validation_error` when you poll it. Retrying the same body fails the same way. Create the page with part of the content and add the rest with further requests, or split the content into child pages.
 
 The response is a standard [page object](/reference/page).
 
@@ -151,8 +151,8 @@ Retrieved markdown uses a single newline (`\n`) between adjacent top-level block
 
 ### Query parameters
 
-| Parameter            | Type    | Description                                          |
-| -------------------- | ------- | ---------------------------------------------------- |
+| Parameter | Type | Description |
+| - | - | - |
 | `include_transcript` | boolean | Include meeting note transcripts (default: `false`). |
 
 <CodeGroup>
@@ -517,18 +517,18 @@ All variants return the full page content as markdown after the update:
 
 ### Error responses
 
-| Error code            | Condition                                                                                                                                                                                                                                                 |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `validation_error`    | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found.                                                                                                                        |
-| `validation_error`    | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target.                                                                                                                                                    |
-| `validation_error`    | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`.                                                                                                                                                      |
-| `validation_error`    | An `old_str` in `update_content` is an empty string.                                                                                                                                                                                                      |
-| `validation_error`    | The operation would delete child pages or databases and `allow_deleting_content` is not `true`. The error message lists the affected items.                                                                                                               |
-| `validation_error`    | The provided ID is a database or non-page block (use the appropriate API for those record types).                                                                                                                                                         |
-| `validation_error`    | The target page is a synced page (`external_object_instance_page`). Synced pages cannot be updated.                                                                                                                                                       |
-| `validation_error`    | The page content after the edit is too large or too heavily formatted to process in one call. The limit counts the whole page, not the edit, so retrying the same request fails the same way. Move some content into child pages or reduce the page size. |
-| `object_not_found`    | The page does not exist or the connection does not have access to it.                                                                                                                                                                                     |
-| `restricted_resource` | The connection lacks `update_content` capability.                                                                                                                                                                                                         |
+| Error code | Condition |
+| - | - |
+| `validation_error` | The `content_range` or `after` selection does not match any content in the page, or an `old_str` in `update_content` is not found. |
+| `validation_error` | Both `insert_content.after` and `insert_content.position` are provided. Use only one insertion target. |
+| `validation_error` | An `old_str` in `update_content` matches multiple locations and `replace_all_matches` is not `true`. |
+| `validation_error` | An `old_str` in `update_content` is an empty string. |
+| `validation_error` | The operation would delete child pages or databases and `allow_deleting_content` is not `true`. The error message lists the affected items. |
+| `validation_error` | The provided ID is a database or non-page block (use the appropriate API for those record types). |
+| `validation_error` | The target page is a synced page (`external_object_instance_page`). Synced pages cannot be updated. |
+| `validation_error` | The page content after the edit is too large or too heavily formatted to process in one call. The limit counts the whole page, not the edit, so retrying the same request fails the same way. Move some content into child pages or reduce the page size. |
+| `object_not_found` | The page does not exist or the connection does not have access to it. |
+| `restricted_resource` | The connection lacks `update_content` capability. |
 
 ### Meeting note transcripts
 
@@ -540,12 +540,12 @@ Create and update requests with large markdown bodies can take longer than typic
 
 Async support is available for:
 
-| Surface | Operation                                                                |
-| ------- | ------------------------------------------------------------------------ |
-| REST    | `POST /v1/pages` when the request includes the `markdown` body parameter |
-| REST    | `PATCH /v1/pages/:page_id/markdown`                                      |
-| MCP     | `create_pages`                                                           |
-| MCP     | `update_page`                                                            |
+| Surface | Operation |
+| - | - |
+| REST | `POST /v1/pages` when the request includes the `markdown` body parameter |
+| REST | `PATCH /v1/pages/:page_id/markdown` |
+| MCP | `create_pages` |
+| MCP | `update_page` |
 
 Requests that omit `allow_async`, or set it to `false`, keep the existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or the operation being performed. Notion does not automatically convert a synchronous request into an async response.
 
@@ -737,8 +737,8 @@ The MCP status values are the same as REST: `queued`, `running`, `retrying`, `su
 
 ## Access control summary
 
-| Endpoint                      | Public connections | Internal connections | Personal access tokens | Required capability |
-| ----------------------------- | ------------------ | -------------------- | ---------------------- | ------------------- |
-| Create (`POST /v1/pages`)     | Yes                | Yes                  | Yes                    | `insert_content`    |
-| Read (`GET .../markdown`)     | Yes                | Yes                  | Yes                    | `read_content`      |
-| Update (`PATCH .../markdown`) | Yes                | Yes                  | Yes                    | `update_content`    |
+| Endpoint | Public connections | Internal connections | Personal access tokens | Required capability |
+| - | - | - | - | - |
+| Create (`POST /v1/pages`) | Yes | Yes | Yes | `insert_content` |
+| Read (`GET .../markdown`) | Yes | Yes | Yes | `read_content` |
+| Update (`PATCH .../markdown`) | Yes | Yes | Yes | `update_content` |

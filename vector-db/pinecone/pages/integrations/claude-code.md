@@ -57,17 +57,17 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides 
 
 ## Available skills
 
-| Skill                | Command                      | Description                                                                                                                                                     |
-| -------------------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Help**             | `/pinecone:help`             | Overview of all skills and setup requirements.                                                                                                                  |
-| **Quickstart**       | `/pinecone:quickstart`       | Interactive onboarding — create an index, upsert data, and query.                                                                                               |
-| **Query**            | `/pinecone:query`            | Search integrated indexes using natural language.                                                                                                               |
-| **Assistant**        | `/pinecone:assistant`        | Create, upload, sync, and chat with Pinecone Assistants.                                                                                                        |
-| **CLI**              | `/pinecone:cli`              | Guide for using the Pinecone CLI from the terminal.                                                                                                             |
-| **Full-text search** | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index.                                                                                         |
-| **n8n**              | `/pinecone:n8n`              | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
-| **MCP**              | `/pinecone:mcp`              | Reference for all Pinecone MCP server tools.                                                                                                                    |
-| **Docs**             | `/pinecone:docs`             | Curated links to official Pinecone documentation.                                                                                                               |
+| Skill | Command | Description |
+| - | - | - |
+| **Help** | `/pinecone:help` | Overview of all skills and setup requirements. |
+| **Quickstart** | `/pinecone:quickstart` | Interactive onboarding — create an index, upsert data, and query. |
+| **Query** | `/pinecone:query` | Search integrated indexes using natural language. |
+| **Assistant** | `/pinecone:assistant` | Create, upload, sync, and chat with Pinecone Assistants. |
+| **CLI** | `/pinecone:cli` | Guide for using the Pinecone CLI from the terminal. |
+| **Full-text search** | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. |
+| **n8n** | `/pinecone:n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
+| **MCP** | `/pinecone:mcp` | Reference for all Pinecone MCP server tools. |
+| **Docs** | `/pinecone:docs` | Curated links to official Pinecone documentation. |
 
 ## MCP tools
 

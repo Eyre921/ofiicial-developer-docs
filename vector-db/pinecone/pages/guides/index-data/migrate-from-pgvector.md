@@ -79,10 +79,10 @@ WHERE tablename = 'TABLE_NAME';
 Map the pgvector operator class to the Pinecone metric:
 
 | pgvector operator class | pgvector operator | Pinecone metric |
-| ----------------------- | ----------------- | --------------- |
-| `vector_cosine_ops`     | `<=>`             | `cosine`        |
-| `vector_ip_ops`         | `<#>`             | `dotproduct`    |
-| `vector_l2_ops`         | `<->`             | `euclidean`     |
+| - | - | - |
+| `vector_cosine_ops` | `<=>` | `cosine` |
+| `vector_ip_ops` | `<#>` | `dotproduct` |
+| `vector_l2_ops` | `<->` | `euclidean` |
 
 If the table doesn't have a pgvector index, inspect the distance operator used by your application queries. The Pinecone index dimension and metric must match the source data.
 
@@ -111,12 +111,12 @@ If a policy depends on joins, functions, or data outside the vector row, enforce
 
 By default, `sync.py` uses one Pinecone index and maps each PostgreSQL table to a namespace with the same name. The steps below use this layout. Tables can share an index only when their vectors have the same dimension and use the same distance metric.
 
-| Source data                                         | Pinecone layout                                                                   |
-| --------------------------------------------------- | --------------------------------------------------------------------------------- |
-| One table, or several tables searched independently | One namespace per table in a shared index                                         |
-| Several tables searched together                    | One shared namespace with a `source_table` metadata field                         |
-| Tables with different dimensions or metrics         | One index per dimension and metric combination                                    |
-| Tenant-isolated data                                | One namespace per tenant, with optional metadata filters for finer access control |
+| Source data | Pinecone layout |
+| - | - |
+| One table, or several tables searched independently | One namespace per table in a shared index |
+| Several tables searched together | One shared namespace with a `source_table` metadata field |
+| Tables with different dimensions or metrics | One index per dimension and metric combination |
+| Tenant-isolated data | One namespace per tenant, with optional metadata filters for finer access control |
 
 To use a shared namespace, tenant-based namespaces, or multiple indexes, update the namespace and index routing in `sync.py` before you run the migration.
 
@@ -373,10 +373,10 @@ Compare the returned record IDs and ordering. Small ordering differences for nea
 
 After the initial copy, synchronize inserts, updates, and deletes until cutover. The repository's `sync.py` supports two strategies:
 
-| Strategy   | Use when                                                                 | Behavior                                                                                            |
-| ---------- | ------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| Change-log | Updates and deletes must be captured reliably.                           | Creates an outbox table and per-table triggers, then applies the latest operation for each record.  |
-| Watermark  | The workload is mostly inserts and has a maintained `updated_at` column. | Tracks migrated IDs and the last synchronization timestamp. Deletes are detected with an anti-join. |
+| Strategy | Use when | Behavior |
+| - | - | - |
+| Change-log | Updates and deletes must be captured reliably. | Creates an outbox table and per-table triggers, then applies the latest operation for each record. |
+| Watermark | The workload is mostly inserts and has a maintained `updated_at` column. | Tracks migrated IDs and the last synchronization timestamp. Deletes are detected with an anti-join. |
 
 The change-log strategy is the default. Run the synchronization command on a schedule until cutover:
 

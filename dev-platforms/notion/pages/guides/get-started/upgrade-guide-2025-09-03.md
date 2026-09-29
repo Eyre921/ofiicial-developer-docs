@@ -674,18 +674,18 @@ New `data_source` specific events have been added, and the corresponding existin
 
 Here's a breakdown of how [event types](/reference/webhooks-events-delivery) change names or behavior when upgraded to `2025-09-03`:
 
-| Old Name                   | New Name                      | Description                                                                       |
-| :------------------------- | :---------------------------- | :-------------------------------------------------------------------------------- |
-| `database.content_updated` | `data_source.content_updated` | Data source's content updates                                                     |
-| `database.schema_updated`  | `data_source.schema_updated`  | Data source's schema updates                                                      |
-| N/A (new event)            | `data_source.created`         | New data source is added to an existing database `entity.type` is `"data_source"` |
-| N/A (new event)            | `data_source.moved`           | Data source is moved to a different database `entity.type` is `"data_source"`     |
-| N/A (new event)            | `data_source.deleted`         | Data source is deleted from a database `entity.type` is `"data_source"`           |
-| N/A (new event)            | `data_source.undeleted`       | Data source is undeleted `entity.type` is `"data_source"`                         |
-| `database.created`         | (unchanged)                   | New database is created with a default data source                                |
-| `database.moved`           | (unchanged)                   | Database is moved to different parent (i.e. page)                                 |
-| `database.deleted`         | (unchanged)                   | Database is deleted from its parent                                               |
-| `database.undeleted`       | (unchanged)                   | Database is undeleted                                                             |
+| Old Name | New Name | Description |
+| :- | :- | :- |
+| `database.content_updated` | `data_source.content_updated` | Data source's content updates |
+| `database.schema_updated` | `data_source.schema_updated` | Data source's schema updates |
+| N/A (new event) | `data_source.created` | New data source is added to an existing database `entity.type` is `"data_source"` |
+| N/A (new event) | `data_source.moved` | Data source is moved to a different database `entity.type` is `"data_source"` |
+| N/A (new event) | `data_source.deleted` | Data source is deleted from a database `entity.type` is `"data_source"` |
+| N/A (new event) | `data_source.undeleted` | Data source is undeleted `entity.type` is `"data_source"` |
+| `database.created` | (unchanged) | New database is created with a default data source |
+| `database.moved` | (unchanged) | Database is moved to different parent (i.e. page) |
+| `database.deleted` | (unchanged) | Database is deleted from its parent |
+| `database.undeleted` | (unchanged) | Database is undeleted |
 
 #### Updates to parent data
 

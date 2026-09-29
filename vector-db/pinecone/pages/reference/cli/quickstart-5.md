@@ -21,11 +21,11 @@ The Pinecone CLI (`pc`) lets you manage Pinecone resources directly from your te
   <Tab title="Other platforms">
     Pre-built binaries for macOS, Linux, and Windows are available on the [GitHub Releases page](https://github.com/pinecone-io/cli/releases).
 
-    | Platform | Architectures                          |
-    | :------- | :------------------------------------- |
-    | macOS    | Intel (x86\_64), Apple Silicon (ARM64) |
-    | Linux    | x86\_64, ARM64, i386                   |
-    | Windows  | x86\_64, i386                          |
+    | Platform | Architectures |
+    | :- | :- |
+    | macOS | Intel (x86\_64), Apple Silicon (ARM64) |
+    | Linux | x86\_64, ARM64, i386 |
+    | Windows | x86\_64, i386 |
   </Tab>
 </Tabs>
 

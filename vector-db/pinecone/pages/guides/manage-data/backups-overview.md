@@ -72,9 +72,9 @@ Backup and restore times depend upon the size of the index and number of namespa
 
 ## Quotas
 
-| Metric              | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :------------------ | :----------- | :----------- | :------------ | :-------------- |
-| Backups per project | N/A          | N/A          | 500           | 1000            |
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Backups per project | N/A | N/A | 500 | 1000 |
 
 <Note>
   Backups aren't available on the Starter or Builder plans. To create backups, [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).

@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/guides/indexes/pods/understanding-pod-based-ind
 path: guides/indexes/pods/understanding-pod-based-indexes
 ---
 
-Understand Pinecone pod-based indexes, including pod types and sizing. Legacy: pod indexes are unavailable to new customers; use serverless for new projects.
+Understand Pinecone pod-based indexes, including pod types and sizing. Pod indexes are legacy and unavailable to new customers, and serverless is recommended.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
 With pod-based indexes, you choose one or more pre-configured units of hardware (pods). Depending on the pod type, pod size, and number of pods used, you get different amounts of storage and higher or lower latency and throughput. Be sure to [choose an appropriate pod type and size](/guides/indexes/pods/choose-a-pod-type-and-size) for your dataset and workload.
@@ -52,20 +52,20 @@ To learn about changing the pod size of an index, see [Configure an index](/guid
 
 When creating a pod-based index, you must choose the cloud environment where you want the index to be hosted. The project environment can affect your [pricing](https://pinecone.io/pricing). The following table lists the available cloud regions and the corresponding values of the `environment` parameter for the [`create_index`](/guides/index-data/create-an-index#create-a-pod-based-index) endpoint:
 
-| Cloud | Region                       | Environment                   |
-| ----- | ---------------------------- | ----------------------------- |
-| GCP   | us-west-1 (N. California)    | `us-west1-gcp`                |
-| GCP   | us-central-1 (Iowa)          | `us-central1-gcp`             |
-| GCP   | us-west-4 (Las Vegas)        | `us-west4-gcp`                |
-| GCP   | us-east-4 (Virginia)         | `us-east4-gcp`                |
-| GCP   | northamerica-northeast-1     | `northamerica-northeast1-gcp` |
-| GCP   | asia-northeast-1 (Japan)     | `asia-northeast1-gcp`         |
-| GCP   | asia-southeast-1 (Singapore) | `asia-southeast1-gcp`         |
-| GCP   | us-east-1 (South Carolina)   | `us-east1-gcp`                |
-| GCP   | eu-west-1 (Belgium)          | `eu-west1-gcp`                |
-| GCP   | eu-west-4 (Netherlands)      | `eu-west4-gcp`                |
-| AWS   | us-east-1 (Virginia)         | `us-east-1-aws`               |
-| Azure | eastus (Virginia)            | `eastus-azure`                |
+| Cloud | Region | Environment |
+| - | - | - |
+| GCP | us-west-1 (N. California) | `us-west1-gcp` |
+| GCP | us-central-1 (Iowa) | `us-central1-gcp` |
+| GCP | us-west-4 (Las Vegas) | `us-west4-gcp` |
+| GCP | us-east-4 (Virginia) | `us-east4-gcp` |
+| GCP | northamerica-northeast-1 | `northamerica-northeast1-gcp` |
+| GCP | asia-northeast-1 (Japan) | `asia-northeast1-gcp` |
+| GCP | asia-southeast-1 (Singapore) | `asia-southeast1-gcp` |
+| GCP | us-east-1 (South Carolina) | `us-east1-gcp` |
+| GCP | eu-west-1 (Belgium) | `eu-west1-gcp` |
+| GCP | eu-west-4 (Netherlands) | `eu-west4-gcp` |
+| AWS | us-east-1 (Virginia) | `us-east-1-aws` |
+| Azure | eastus (Virginia) | `eastus-azure` |
 
 [Contact us](http://www.pinecone.io/contact/) if you need a dedicated deployment in other regions.
 
@@ -108,30 +108,30 @@ To see a calculation of your current usage and costs, go to [**Settings > Usage*
 
   **Table 1: Example billing components**
 
-  | Billing component             | Value        |
-  | ----------------------------- | ------------ |
-  | Number of pods                | 1            |
-  | Number of replicas            | 3            |
-  | Pod size                      | x2           |
-  | Total pod count               | 6            |
-  | Minutes in January            | 44,640       |
-  | Pod-minutes (pods \* minutes) | 267,840      |
-  | Pod price per minute          | \$0.0012     |
-  | Collection storage            | 1 GB         |
-  | Collection storage minutes    | 44,640       |
-  | Price per storage minute      | \$0.00000056 |
+  | Billing component | Value |
+  | - | - |
+  | Number of pods | 1 |
+  | Number of replicas | 3 |
+  | Pod size | x2 |
+  | Total pod count | 6 |
+  | Minutes in January | 44,640 |
+  | Pod-minutes (pods \* minutes) | 267,840 |
+  | Pod price per minute | \$0.0012 |
+  | Collection storage | 1 GB |
+  | Collection storage minutes | 44,640 |
+  | Price per storage minute | \$0.00000056 |
 
   The invoice for this example is given in Table 2 below:
 
   **Table 2: Example invoice**
 
-  | Product       | Quantity | Price per unit | Charge   |
-  | ------------- | -------- | -------------- | -------- |
-  | Collections   | 44,640   | \$0.00000056   | \$0.025  |
-  | P2 Pods (AWS) | 0        |                | \$0.00   |
-  | P2 Pods (GCP) | 0        |                | \$0.00   |
-  | S1 Pods       | 0        |                | \$0.00   |
-  | P1 Pods       | 267,840  | \$0.0012       | \$514.29 |
+  | Product | Quantity | Price per unit | Charge |
+  | - | - | - | - |
+  | Collections | 44,640 | \$0.00000056 | \$0.025 |
+  | P2 Pods (AWS) | 0 | | \$0.00 |
+  | P2 Pods (GCP) | 0 | | \$0.00 |
+  | S1 Pods | 0 | | \$0.00 |
+  | P1 Pods | 267,840 | \$0.0012 | \$514.29 |
 
   Amount due \$514.54
 </Accordion>

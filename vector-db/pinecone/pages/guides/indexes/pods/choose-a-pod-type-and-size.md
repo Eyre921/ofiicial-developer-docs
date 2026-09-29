@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/guides/indexes/pods/choose-a-pod-type-and-size
 path: guides/indexes/pods/choose-a-pod-type-and-size
 ---
 
-Choose a Pinecone pod type and size (s1, p1, p2). Legacy guide: pods are unavailable to new customers as of August 2025; serverless needs no planning.
+Choose a Pinecone pod type and size (s1, p1, p2). Pod indexes are legacy and unavailable to new customers, and serverless needs no capacity planning.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
 When planning your Pinecone deployment, it's important to understand the approximate storage requirements of your vectors to choose the appropriate pod type and number. This page will give guidance on sizing to help you plan accordingly.
@@ -45,19 +45,19 @@ Each dimension on a single vector consumes 4 bytes of memory and storage per dim
 **Table 1: Estimated number of pods per 1M vectors by dimensionality**
 
 | Pod type | Dimensions | Estimated max vectors per pod |
-| -------- | ---------: | ----------------------------: |
-| **p1**   |        512 |                     1,250,000 |
-|          |        768 |                     1,000,000 |
-|          |       1024 |                       675,000 |
-|          |       1536 |                       500,000 |
-| **p2**   |        512 |                     1,250,000 |
-|          |        768 |                     1,100,000 |
-|          |       1024 |                     1,000,000 |
-|          |       1536 |                       550,000 |
-| **s1**   |        512 |                     8,000,000 |
-|          |        768 |                     5,000,000 |
-|          |       1024 |                     4,000,000 |
-|          |       1536 |                     2,500,000 |
+| - | -: | -: |
+| **p1** | 512 | 1,250,000 |
+| | 768 | 1,000,000 |
+| | 1024 | 675,000 |
+| | 1536 | 500,000 |
+| **p2** | 512 | 1,250,000 |
+| | 768 | 1,100,000 |
+| | 1024 | 1,000,000 |
+| | 1536 | 550,000 |
+| **s1** | 512 | 8,000,000 |
+| | 768 | 5,000,000 |
+| | 1024 | 4,000,000 |
+| | 1536 | 2,500,000 |
 
 Pinecone doesn't support fractional pod deployments, so always round up to the next nearest whole number when choosing your pods.
 
@@ -74,14 +74,14 @@ As a rule, a single p1 pod with 1M vectors of 768 dimensions each and no replica
 **Table 2: QPS by pod type and `top_k` value**\*
 
 | Pod type | top\_k 10 | top\_k 250 | top\_k 1000 |
-| -------- | --------- | ---------- | ----------- |
-| p1       | 30        | 25         | 20          |
-| p2       | 150       | 50         | 20          |
-| s1       | 10        | 10         | 10          |
+| - | - | - | - |
+| p1 | 30 | 25 | 20 |
+| p2 | 150 | 50 | 20 |
+| s1 | 10 | 10 | 10 |
 
 \*The QPS values in Table 2 represent baseline QPS with 1M vectors and 768 dimensions.
 
-[Adding replicas](/guides/indexes/pods/scale-pod-based-indexes#add-replicas) is the simplest way to increase your QPS. Each replica increases the throughput potential by roughly the same QPS, so aiming for 150 QPS using p1 pods means using the primary pod and 5 replicas. Using threading or multiprocessing in your application is also important, as issuing single queries sequentially still subjects you to delays from any underlying latency. The [Pinecone gRPC SDK](/guides/index-data/upsert-data#grpc-python-sdk) can also be used to increase throughput of upserts.
+[Adding replicas](/guides/indexes/pods/scale-pod-based-indexes#add-replicas) is the simplest way to increase your QPS. Each replica increases the throughput potential by roughly the same QPS, so aiming for 150 QPS using p1 pods means using the primary pod and 5 replicas. Using threading or multiprocessing in your application is also important, as issuing single queries sequentially still subjects you to delays from any underlying latency. The [Pinecone gRPC SDK](/guides/index-data/upsert-data#python-sdk-with-grpc) can also be used to increase throughput of upserts.
 
 ### Metadata cardinality and size
 

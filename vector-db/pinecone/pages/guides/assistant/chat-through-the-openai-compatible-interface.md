@@ -320,12 +320,12 @@ Pinecone Assistant supports the following models:
 <Note>
   Assistant automatically routes chat requests that specify a model deprecated by [Anthropic](https://platform.claude.com/docs/en/about-claude/model-deprecations), [Google](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-versions#retired-models), or [OpenAI](https://platform.openai.com/docs/deprecations) to its replacement at the same price. No code changes are required.
 
-  | Deprecated model    | Replacement         |
-  | :------------------ | :------------------ |
+  | Deprecated model | Replacement |
+  | :- | :- |
   | `claude-3-5-sonnet` | `claude-sonnet-4-5` |
   | `claude-3-7-sonnet` | `claude-sonnet-4-5` |
-  | `gemini-2.5-pro`    | `gemini-3.5-flash`  |
-  | `o4-mini`           | `gpt-5`             |
+  | `gemini-2.5-pro` | `gemini-3.5-flash` |
+  | `o4-mini` | `gpt-5` |
 </Note>
 
 <Tip>

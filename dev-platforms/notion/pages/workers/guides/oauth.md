@@ -38,16 +38,16 @@ const githubAuth = worker.oauth("githubAuth", {
 
 ### Configuration options
 
-| Property                | Required | Description                                                                         |
-| :---------------------- | :------- | :---------------------------------------------------------------------------------- |
-| `name`                  | Yes      | Unique identifier for this OAuth connection                                         |
-| `authorizationEndpoint` | Yes      | The provider's OAuth 2.0 authorization URL                                          |
-| `tokenEndpoint`         | Yes      | The provider's OAuth 2.0 token exchange URL                                         |
-| `clientId`              | Yes      | Your OAuth app's client ID                                                          |
-| `clientSecret`          | Yes      | Your OAuth app's client secret                                                      |
-| `scope`                 | Yes      | Space-separated list of OAuth scopes to request                                     |
-| `authorizationParams`   | No       | Additional parameters to include in the authorization request                       |
-| `accessTokenExpireMs`   | No       | Default token expiry in milliseconds (for providers that don't return `expires_in`) |
+| Property | Required | Description |
+| :- | :- | :- |
+| `name` | Yes | Unique identifier for this OAuth connection |
+| `authorizationEndpoint` | Yes | The provider's OAuth 2.0 authorization URL |
+| `tokenEndpoint` | Yes | The provider's OAuth 2.0 token exchange URL |
+| `clientId` | Yes | Your OAuth app's client ID |
+| `clientSecret` | Yes | Your OAuth app's client secret |
+| `scope` | Yes | Space-separated list of OAuth scopes to request |
+| `authorizationParams` | No | Additional parameters to include in the authorization request |
+| `accessTokenExpireMs` | No | Default token expiry in milliseconds (for providers that don't return `expires_in`) |
 
 ## Deploy and authorize
 

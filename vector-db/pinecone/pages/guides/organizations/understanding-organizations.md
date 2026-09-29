@@ -36,19 +36,19 @@ Organization owners can manage access to their organizations and projects by ass
 
 The following table summarizes the permissions for each organization role:
 
-| Permission                             | Owner | Manager | Member | Billing admin |
-| -------------------------------------- | :---: | :-----: | :----: | :-----------: |
-| View account details                   |   ✓   |    ✓    |    ✓   |       ✓       |
-| Create projects                        |   ✓   |    ✓    |        |               |
-| View billing and usage details         |   ✓   |         |        |       ✓       |
-| Manage billing details                 |   ✓   |         |        |       ✓       |
-| Invite and remove organization members |   ✓   |         |        |               |
-| Update organization member roles       |   ✓   |         |        |               |
-| Manage service accounts                |   ✓   |         |        |               |
-| Configure single sign-on (SSO)         |   ✓   |         |        |               |
-| Configure audit logs                   |   ✓   |         |        |               |
-| Update organization name               |   ✓   |         |        |               |
-| Delete the organization                |   ✓   |         |        |               |
+| Permission | Owner | Manager | Member | Billing admin |
+| - | :-: | :-: | :-: | :-: |
+| View account details | ✓ | ✓ | ✓ | ✓ |
+| Create projects | ✓ | ✓ | | |
+| View billing and usage details | ✓ | | | ✓ |
+| Manage billing details | ✓ | | | ✓ |
+| Invite and remove organization members | ✓ | | | |
+| Update organization member roles | ✓ | | | |
+| Manage service accounts | ✓ | | | |
+| Configure single sign-on (SSO) | ✓ | | | |
+| Configure audit logs | ✓ | | | |
+| Update organization name | ✓ | | | |
+| Delete the organization | ✓ | | | |
 
 ## Organization single sign-on (SSO)
 

@@ -51,11 +51,11 @@ Create a recurring backup schedule for a serverless or BYOC index. Backups are c
 
 ### Error responses
 
-| Status | Description                                                                    |
-| :----- | :----------------------------------------------------------------------------- |
-| 403    | Scheduled backups are not available for your plan.                             |
-| 404    | Index not found.                                                               |
-| 409    | This index already has an enabled backup schedule. Disable or delete it first. |
+| Status | Description |
+| :- | :- |
+| 403 | Scheduled backups are not available for your plan. |
+| 404 | Index not found. |
+| 409 | This index already has an enabled backup schedule. Disable or delete it first. |
 
 <RequestExample>
   ```bash curl theme={null}

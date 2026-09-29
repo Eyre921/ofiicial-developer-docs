@@ -11,10 +11,10 @@ Use this endpoint to poll an `async_task` returned by an operation that was acce
 
 The first async-capable REST endpoints are:
 
-| Operation                           | Async support                                                           |
-| ----------------------------------- | ----------------------------------------------------------------------- |
-| `POST /v1/pages`                    | Supported only when the request includes the `markdown` body parameter. |
-| `PATCH /v1/pages/:page_id/markdown` | Supported for markdown update requests.                                 |
+| Operation | Async support |
+| - | - |
+| `POST /v1/pages` | Supported only when the request includes the `markdown` body parameter. |
+| `PATCH /v1/pages/:page_id/markdown` | Supported for markdown update requests. |
 
 Set `allow_async: true` on a supported operation to opt into an `async_task` response. When `allow_async` is omitted or `false`, the endpoint keeps its existing synchronous response shape. `allow_async` changes response behavior only; it does not change validation, permissions, or the operation being performed.
 
@@ -45,13 +45,13 @@ Use `status_url`, or call this endpoint with the returned `id`, to check complet
 
 ### Status values
 
-| Status      | Meaning                                                                                                        |
-| ----------- | -------------------------------------------------------------------------------------------------------------- |
-| `queued`    | The task has been accepted and persisted, but processing has not started.                                      |
-| `running`   | A worker is processing the task.                                                                               |
-| `retrying`  | The task hit a retryable infrastructure or downstream-service failure and is scheduled to retry.               |
-| `succeeded` | The task completed successfully. The response includes a `result` object.                                      |
-| `failed`    | The task failed terminally. The response includes an `error` object using the standard Public API error shape. |
+| Status | Meaning |
+| - | - |
+| `queued` | The task has been accepted and persisted, but processing has not started. |
+| `running` | A worker is processing the task. |
+| `retrying` | The task hit a retryable infrastructure or downstream-service failure and is scheduled to retry. |
+| `succeeded` | The task completed successfully. The response includes a `result` object. |
+| `failed` | The task failed terminally. The response includes an `error` object using the standard Public API error shape. |
 
 For non-terminal statuses (`queued`, `running`, and `retrying`), wait at least `poll_after_seconds` before polling again.
 

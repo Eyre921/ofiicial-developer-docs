@@ -10,11 +10,11 @@ This document describes how to authenticate the Pinecone CLI to manage your Pine
 
 ## Authentication methods
 
-| Method                              | Admin API | Control/data plane | Best for                         |
-| ----------------------------------- | --------- | ------------------ | -------------------------------- |
-| [User login](#user-login)           | ✅         | ✅                  | Interactive use                  |
-| [Service account](#service-account) | ✅         | ✅                  | Automation with Admin API access |
-| [API key](#api-key)                 | ❌         | ✅                  | Simple automation, CI/CD         |
+| Method | Admin API | Control/data plane | Best for |
+| - | - | - | - |
+| [User login](#user-login) | ✅ | ✅ | Interactive use |
+| [Service account](#service-account) | ✅ | ✅ | Automation with Admin API access |
+| [API key](#api-key) | ❌ | ✅ | Simple automation, CI/CD |
 
 ### User login
 
@@ -124,11 +124,11 @@ Clears all local auth data: tokens, credentials, API keys, managed keys, and [ta
 
 Auth data is stored in `~/.config/pinecone/` with 0600 permissions:
 
-| File           | Contents                                                         |
-| -------------- | ---------------------------------------------------------------- |
+| File | Contents |
+| - | - |
 | `secrets.yaml` | OAuth token, service account credentials, API keys, managed keys |
-| `state.yaml`   | Target org/project                                               |
-| `config.yaml`  | CLI settings (color, environment)                                |
+| `state.yaml` | Target org/project |
+| `config.yaml` | CLI settings (color, environment) |
 
 ## Check status
 

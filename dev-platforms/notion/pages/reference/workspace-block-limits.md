@@ -32,19 +32,19 @@ There is no template-failure webhook or public job-status endpoint. Set a timeou
 
 A request fails if it would create blocks. Requests that do not create blocks remain available.
 
-| Endpoint                                                       | Behavior after grace expires                                                                                         |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| [Create a page](/reference/post-page)                          | Fails. The page itself is a block.                                                                                   |
-| [Create a meeting note](/reference/create-meeting-note)        | Fails. Creates a meeting notes block and its child blocks.                                                           |
-| [Create a database](/reference/create-database)                | Fails. The database is a block.                                                                                      |
-| [Create a database (deprecated)](/reference/create-a-database) | Fails. API versions before `2025-09-03` create a database block with its data source.                                |
-| [Create a data source](/reference/create-a-data-source)        | Still works. API versions `2025-09-03` and later add a data source to an existing database without creating a block. |
-| [Append block children](/reference/patch-block-children)       | Fails. Every appended child is a block.                                                                              |
-| [Update page markdown](/reference/update-page-markdown)        | Fails when the markdown adds blocks.                                                                                 |
-| [Update a page](/reference/patch-page)                         | Fails when the update adds blocks, such as applying a template. Title and property edits still work.                 |
-| [Update a block](/reference/update-a-block)                    | Fails when the update adds blocks.                                                                                   |
-| [Create a view](/reference/create-view)                        | Fails when `create_database` adds a linked database block. A new view tab on an existing database still works.       |
-| [Create a comment](/reference/create-a-comment)                | Fails when an attachment adds a block. A comment without attachments still works.                                    |
+| Endpoint | Behavior after grace expires |
+| - | - |
+| [Create a page](/reference/post-page) | Fails. The page itself is a block. |
+| [Create a meeting note](/reference/create-meeting-note) | Fails. Creates a meeting notes block and its child blocks. |
+| [Create a database](/reference/create-database) | Fails. The database is a block. |
+| [Create a database (deprecated)](/reference/create-a-database) | Fails. API versions before `2025-09-03` create a database block with its data source. |
+| [Create a data source](/reference/create-a-data-source) | Still works. API versions `2025-09-03` and later add a data source to an existing database without creating a block. |
+| [Append block children](/reference/patch-block-children) | Fails. Every appended child is a block. |
+| [Update page markdown](/reference/update-page-markdown) | Fails when the markdown adds blocks. |
+| [Update a page](/reference/patch-page) | Fails when the update adds blocks, such as applying a template. Title and property edits still work. |
+| [Update a block](/reference/update-a-block) | Fails when the update adds blocks. |
+| [Create a view](/reference/create-view) | Fails when `create_database` adds a linked database block. A new view tab on an existing database still works. |
+| [Create a comment](/reference/create-a-comment) | Fails when an attachment adds a block. A comment without attachments still works. |
 
 ## Error response
 

@@ -375,12 +375,12 @@ You can check the costs for the import, queries, and storage in the Pinecone con
 
 <Note>For the latest pricing details, see [Pricing](https://www.pinecone.io/pricing).</Note>
 
-| Cost type | Amount          | Pricing                | Estimated cost |
-| :-------- | :-------------- | :--------------------- | :------------- |
-| Import    | 48.8 GB         | \$0.25/GB              | \$12.20        |
-| Queries   | 100,000 queries | \$16 per 1M read units | \$78.08        |
-| Storage   | 4 hours         | \$0.33/GB/month        | \$0.09         |
-| **Total** |                 |                        | **\$90.37**    |
+| Cost type | Amount | Pricing | Estimated cost |
+| :- | :- | :- | :- |
+| Import | 48.8 GB | \$0.25/GB | \$12.20 |
+| Queries | 100,000 queries | \$16 per 1M read units | \$78.08 |
+| Storage | 4 hours | \$0.33/GB/month | \$0.09 |
+| **Total** | | | **\$90.37** |
 
 <Steps>
   <Step title="Import costs">

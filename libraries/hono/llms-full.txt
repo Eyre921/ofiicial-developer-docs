@@ -838,7 +838,7 @@ Here's an example of complex access control rules using Combine Middleware.
 ```ts
 import { Hono } from 'hono'
 import { bearerAuth } from 'hono/bearer-auth'
-import { getConnInfo } from 'hono/cloudflare-workers'
+import { getConnInfo } from '@hono/cloudflare-workers'
 import { every, some } from 'hono/combine'
 import { ipRestriction } from 'hono/ip-restriction'
 import { rateLimit } from '@/my-rate-limit'
@@ -1374,7 +1374,7 @@ For your application running on Bun, if you want to allow access only from local
 
 ```ts
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/bun'
+import { getConnInfo } from '@hono/bun'
 import { ipRestriction } from 'hono/ip-restriction'
 
 const app = new Hono()
@@ -1393,7 +1393,7 @@ app.get('/', (c) => c.text('Hello Hono!'))
 Pass the `getConninfo` from the [ConnInfo helper](/docs/helpers/conninfo) appropriate for your environment as the first argument of `ipRestriction`. For example, for Deno, it would look like this:
 
 ```ts
-import { getConnInfo } from 'hono/deno'
+import { getConnInfo } from '@hono/deno'
 import { ipRestriction } from 'hono/ip-restriction'
 
 //...
@@ -3360,41 +3360,43 @@ The ConnInfo Helper helps you to get the connection information. For example, yo
 
 ## Import
 
+The adapter for each runtime is a separate package (`@hono/cloudflare-workers`, `@hono/deno`, `@hono/bun`, ...). Install the one for your runtime.
+
 ::: code-group
 
 ```ts [Cloudflare Workers]
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/cloudflare-workers'
+import { getConnInfo } from '@hono/cloudflare-workers'
 ```
 
 ```ts [Deno]
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/deno'
+import { getConnInfo } from '@hono/deno'
 ```
 
 ```ts [Bun]
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/bun'
+import { getConnInfo } from '@hono/bun'
 ```
 
 ```ts [Vercel]
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/vercel'
+import { getConnInfo } from '@hono/vercel'
 ```
 
 ```ts [AWS Lambda]
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/aws-lambda'
+import { getConnInfo } from '@hono/aws-lambda'
 ```
 
 ```ts [Netlify]
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/netlify'
+import { getConnInfo } from '@hono/netlify'
 ```
 
 ```ts [Lambda@Edge]
 import { Hono } from 'hono'
-import { getConnInfo } from 'hono/lambda-edge'
+import { getConnInfo } from '@hono/lambda-edge'
 ```
 
 ```ts [Node.js]
@@ -4900,12 +4902,12 @@ export interface FileSystemModule {
 
 ### Using adapters for Deno and Bun
 
-If you want to use SSG on Deno or Bun, a `toSSG` function is provided for each file system.
+If you want to use SSG on Deno or Bun, a `toSSG` function is provided by the `@hono/deno` and `@hono/bun` packages.
 
 For Deno:
 
 ```ts
-import { toSSG } from 'hono/deno'
+import { toSSG } from '@hono/deno'
 
 toSSG(app) // The second argument is an option typed `ToSSGOptions`.
 ```
@@ -4913,7 +4915,7 @@ toSSG(app) // The second argument is an option typed `ToSSGOptions`.
 For Bun:
 
 ```ts
-import { toSSG } from 'hono/bun'
+import { toSSG } from '@hono/bun'
 
 toSSG(app) // The second argument is an option typed `ToSSGOptions`.
 ```
@@ -5443,21 +5445,23 @@ Currently Cloudflare Workers / Pages, Deno, Bun, and Node.js adapters are availa
 
 ## Import
 
+The adapter for each runtime is a separate package (`@hono/cloudflare-workers`, `@hono/deno`, `@hono/bun`, ...). Install the one for your runtime.
+
 ::: code-group
 
 ```ts [Cloudflare Workers]
 import { Hono } from 'hono'
-import { upgradeWebSocket } from 'hono/cloudflare-workers'
+import { upgradeWebSocket } from '@hono/cloudflare-workers'
 ```
 
 ```ts [Deno]
 import { Hono } from 'hono'
-import { upgradeWebSocket } from 'hono/deno'
+import { upgradeWebSocket } from '@hono/deno'
 ```
 
 ```ts [Bun]
 import { Hono } from 'hono'
-import { upgradeWebSocket, websocket } from 'hono/bun'
+import { upgradeWebSocket, websocket } from '@hono/bun'
 
 // ...
 
@@ -5546,7 +5550,7 @@ See the examples using WebSocket Helper.
 ```ts
 // server.ts
 import { Hono } from 'hono'
-import { upgradeWebSocket } from 'hono/cloudflare-workers'
+import { upgradeWebSocket } from '@hono/cloudflare-workers'
 
 const app = new Hono().get(
   '/ws',
@@ -5581,7 +5585,7 @@ ws.addEventListener('open', () => {
 
 ```tsx
 import { Hono } from 'hono'
-import { upgradeWebSocket, websocket } from 'hono/bun'
+import { upgradeWebSocket, websocket } from '@hono/bun'
 import { html } from 'hono/html'
 
 const app = new Hono()
@@ -8685,7 +8689,7 @@ Initialize your project with the `cdk` CLI.
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-npm i hono
+npm i hono @hono/aws-lambda
 npm i -D esbuild
 mkdir lambda
 touch lambda/index.ts
@@ -8695,7 +8699,7 @@ touch lambda/index.ts
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-yarn add hono
+yarn add hono @hono/aws-lambda
 yarn add -D esbuild
 mkdir lambda
 touch lambda/index.ts
@@ -8705,7 +8709,7 @@ touch lambda/index.ts
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-pnpm add hono
+pnpm add hono @hono/aws-lambda
 pnpm add -D esbuild
 mkdir lambda
 touch lambda/index.ts
@@ -8715,7 +8719,7 @@ touch lambda/index.ts
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-bun add hono
+bun add hono @hono/aws-lambda
 bun add -D esbuild
 mkdir lambda
 touch lambda/index.ts
@@ -8729,7 +8733,7 @@ Edit `lambda/index.ts`.
 
 ```ts
 import { Hono } from 'hono'
-import { handle } from 'hono/aws-lambda'
+import { handle } from '@hono/aws-lambda'
 
 const app = new Hono()
 
@@ -8794,8 +8798,8 @@ In Hono, you can access the AWS Lambda Events and Context by binding the `Lambda
 
 ```ts
 import { Hono } from 'hono'
-import type { LambdaEvent, LambdaContext } from 'hono/aws-lambda'
-import { handle } from 'hono/aws-lambda'
+import type { LambdaEvent, LambdaContext } from '@hono/aws-lambda'
+import { handle } from '@hono/aws-lambda'
 
 type Bindings = {
   event: LambdaEvent
@@ -8820,8 +8824,8 @@ In Hono, you can access the AWS Lambda request context by binding the `LambdaEve
 
 ```ts
 import { Hono } from 'hono'
-import type { LambdaEvent } from 'hono/aws-lambda'
-import { handle } from 'hono/aws-lambda'
+import type { LambdaEvent } from '@hono/aws-lambda'
+import { handle } from '@hono/aws-lambda'
 
 type Bindings = {
   event: LambdaEvent
@@ -8843,8 +8847,8 @@ you can access the AWS Lambda request context by binding the `ApiGatewayRequestC
 
 ```ts
 import { Hono } from 'hono'
-import type { ApiGatewayRequestContext } from 'hono/aws-lambda'
-import { handle } from 'hono/aws-lambda'
+import type { ApiGatewayRequestContext } from '@hono/aws-lambda'
+import { handle } from '@hono/aws-lambda'
 
 type Bindings = {
   requestContext: ApiGatewayRequestContext
@@ -8875,7 +8879,7 @@ Typically, the implementation requires writing chunks to NodeJS.WritableStream u
 
 ```ts
 import { Hono } from 'hono'
-import { streamHandle } from 'hono/aws-lambda'
+import { streamHandle } from '@hono/aws-lambda'
 import { streamText } from 'hono/streaming'
 
 const app = new Hono()
@@ -9289,10 +9293,10 @@ And, you can make your own middleware.
 ## Adapter
 
 There are Adapters for platform-dependent functions, e.g., handling static files or WebSocket.
-For example, to handle WebSocket in Cloudflare Workers, import `hono/cloudflare-workers`.
+They are published as separate packages. For example, to handle WebSocket in Cloudflare Workers, install and import `@hono/cloudflare-workers`.
 
 ```ts
-import { upgradeWebSocket } from 'hono/cloudflare-workers'
+import { upgradeWebSocket } from '@hono/cloudflare-workers'
 
 app.get(
   '/ws',
@@ -9401,10 +9405,14 @@ export default { // [!code ++]
 
 ## Serve static files
 
-To serve static files, use `serveStatic` which is imported from `hono/bun`.
+To serve static files, use `serveStatic` from the `@hono/bun` package.
+
+```sh
+bun add @hono/bun
+```
 
 ```ts
-import { serveStatic } from 'hono/bun'
+import { serveStatic } from '@hono/bun'
 
 const app = new Hono()
 
@@ -9620,7 +9628,7 @@ For console zip upload, see the [Node.js HTTP function quick start](https://docs
 # Cloudflare Pages
 
 ::: warning
-For new projects, Cloudflare now recommends using [Cloudflare Workers](/docs/getting-started/cloudflare-workers) instead of Cloudflare Pages. Workers supports static assets and offers a broader set of features. If you are starting a new full-stack application, see [Cloudflare Workers + Vite](/docs/getting-started/cloudflare-workers-vite), which is the successor to this Pages setup.
+For new projects, Cloudflare now recommends using [Cloudflare Workers](/docs/getting-started/cloudflare-workers) instead of Cloudflare Pages. Workers supports static assets and offers a broader set of features. If you are starting a new full-stack application, see [Cloudflare Workers + Vite](/docs/getting-started/cloudflare-workers-vite), which is the successor to this Pages setup. The `hono/cloudflare-pages` adapter is deprecated and will be removed in Hono v5.
 :::
 
 [Cloudflare Pages](https://pages.cloudflare.com) is an edge platform for full-stack web applications.
@@ -10710,11 +10718,15 @@ Deno.serve({ port: 8787 }, app.fetch) // [!code ++]
 
 ## Serve static files
 
-To serve static files, use `serveStatic` imported from `hono/deno`.
+To serve static files, use `serveStatic` from the `@hono/deno` package.
+
+```sh
+deno add jsr:@hono/deno
+```
 
 ```ts
 import { Hono } from 'hono'
-import { serveStatic } from 'hono/deno'
+import { serveStatic } from '@hono/deno'
 
 const app = new Hono()
 
@@ -11213,7 +11225,7 @@ Initialize your project with the `cdk` CLI.
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-npm i hono
+npm i hono @hono/lambda-edge
 mkdir lambda
 ```
 
@@ -11221,7 +11233,7 @@ mkdir lambda
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-yarn add hono
+yarn add hono @hono/lambda-edge
 mkdir lambda
 ```
 
@@ -11229,7 +11241,7 @@ mkdir lambda
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-pnpm add hono
+pnpm add hono @hono/lambda-edge
 mkdir lambda
 ```
 
@@ -11237,7 +11249,7 @@ mkdir lambda
 mkdir my-app
 cd my-app
 cdk init app -l typescript
-bun add hono
+bun add hono @hono/lambda-edge
 mkdir lambda
 ```
 
@@ -11249,7 +11261,7 @@ Edit `lambda/index_edge.ts`.
 
 ```ts
 import { Hono } from 'hono'
-import { handle } from 'hono/lambda-edge'
+import { handle } from '@hono/lambda-edge'
 
 const app = new Hono()
 
@@ -11330,8 +11342,8 @@ If you want to add Basic Auth and continue with request processing after verific
 ```ts
 import { Hono } from 'hono'
 import { basicAuth } from 'hono/basic-auth'
-import type { Callback, CloudFrontRequest } from 'hono/lambda-edge'
-import { handle } from 'hono/lambda-edge'
+import type { Callback, CloudFrontRequest } from '@hono/lambda-edge'
+import { handle } from '@hono/lambda-edge'
 
 type Bindings = {
   callback: Callback
@@ -11401,7 +11413,7 @@ Edit `netlify/edge-functions/index.ts`:
 
 ```ts
 import { Hono } from 'jsr:@hono/hono'
-import { handle } from 'jsr:@hono/hono/netlify'
+import { handle } from 'jsr:@hono/netlify'
 
 const app = new Hono()
 
@@ -11434,7 +11446,7 @@ You can access the Netlify's `Context` through `c.env`:
 
 ```ts
 import { Hono } from 'jsr:@hono/hono'
-import { handle } from 'jsr:@hono/hono/netlify'
+import { handle } from 'jsr:@hono/netlify'
 
 // Import the type definition
 import type { Context } from 'https://edge.netlify.com/'
@@ -11526,7 +11538,7 @@ If you use the App Router, Edit `app/api/[[...route]]/route.ts`. Refer to the [S
 
 ```ts
 import { Hono } from 'hono'
-import { handle } from 'hono/vercel'
+import { handle } from '@hono/vercel'
 
 const app = new Hono().basePath('/api')
 
@@ -11537,6 +11549,8 @@ app.get('/hello', (c) => {
 })
 
 export const GET = handle(app)
+
+`handle` comes from the `@hono/vercel` package, which the starter installs. On an existing project, add it with `npm i @hono/vercel`.
 export const POST = handle(app)
 ```
 
@@ -12023,22 +12037,22 @@ Next, install the necessary modules.
 ::: code-group
 
 ```sh [npm]
-npm i hono
+npm i hono @hono/service-worker
 npm i -D vite
 ```
 
 ```sh [yarn]
-yarn add hono
+yarn add hono @hono/service-worker
 yarn add -D vite
 ```
 
 ```sh [pnpm]
-pnpm add hono
+pnpm add hono @hono/service-worker
 pnpm add -D vite
 ```
 
 ```sh [bun]
-bun add hono
+bun add hono @hono/service-worker
 bun add -D vite
 ```
 
@@ -12095,7 +12109,7 @@ In `sw.ts`, create an application using Hono and register it to the `fetch` even
 declare const self: ServiceWorkerGlobalScope
 
 import { Hono } from 'hono'
-import { handle } from 'hono/service-worker'
+import { handle } from '@hono/service-worker'
 
 const app = new Hono().basePath('/sw')
 app.get('/', (c) => c.text('Hello World'))
@@ -12109,7 +12123,7 @@ The `fire()` function automatically calls `addEventListener('fetch', handle(app)
 
 ```ts
 import { Hono } from 'hono'
-import { fire } from 'hono/service-worker'
+import { fire } from '@hono/service-worker'
 
 const app = new Hono().basePath('/sw')
 app.get('/', (c) => c.text('Hello World'))
@@ -13989,7 +14003,7 @@ If both a parent app and its routes have `onError` handlers, the route-level han
 ## fire()
 
 ::: warning
-**`app.fire()` is deprecated**. Use `fire()` from `hono/service-worker` instead. See the [Service Worker documentation](/docs/getting-started/service-worker) for details.
+**`app.fire()` is deprecated**. Use `fire()` from `@hono/service-worker` instead. See the [Service Worker documentation](/docs/getting-started/service-worker) for details.
 :::
 
 `app.fire()` automatically adds a global `fetch` event listener.

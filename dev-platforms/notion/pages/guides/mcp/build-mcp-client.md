@@ -18,10 +18,10 @@ Notion provides a hosted
 server that lets MCP clients work with Notion workspaces. The server is
 available at:
 
-| Transport                         | URL                          | Notes                                          |
-| --------------------------------- | ---------------------------- | ---------------------------------------------- |
-| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Recommended for new clients                    |
-| **Server-Sent Events (SSE)**      | `https://mcp.notion.com/sse` | For clients that don't support Streamable HTTP |
+| Transport | URL | Notes |
+| - | - | - |
+| **Streamable HTTP** (recommended) | `https://mcp.notion.com/mcp` | Recommended for new clients |
+| **Server-Sent Events (SSE)** | `https://mcp.notion.com/sse` | For clients that don't support Streamable HTTP |
 
 Both endpoints support the same MCP protocol and OAuth authentication. Your
 client should try Streamable HTTP first and fall back to SSE if needed.
@@ -1055,12 +1055,12 @@ The file contains:
 
 ### Schema
 
-| Field         | Type           | Description                                   |
-| :------------ | :------------- | :-------------------------------------------- |
-| `name`        | `string`       | Human-readable name of the MCP server         |
-| `description` | `string`       | Brief description of what the server provides |
-| `icon`        | `string` (URL) | URL to the server's icon                      |
-| `endpoint`    | `string` (URL) | The MCP server endpoint URL                   |
+| Field | Type | Description |
+| :- | :- | :- |
+| `name` | `string` | Human-readable name of the MCP server |
+| `description` | `string` | Brief description of what the server provides |
+| `icon` | `string` (URL) | URL to the server's icon |
+| `endpoint` | `string` (URL) | The MCP server endpoint URL |
 
 ### How to use this in your client
 

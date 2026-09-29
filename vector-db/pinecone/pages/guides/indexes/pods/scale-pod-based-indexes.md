@@ -4,21 +4,19 @@ source: https://docs.pinecone.io/guides/indexes/pods/scale-pod-based-indexes
 path: guides/indexes/pods/scale-pod-based-indexes
 ---
 
-Scale Pinecone pod-based indexes by adding pods or replicas. Legacy guide: pod indexes are unavailable to new customers; serverless scales automatically.
+Scale Pinecone pod-based indexes by adding pods or replicas. Pod indexes are legacy and unavailable to new customers, and serverless scales automatically.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
-While your index can still serve queries, new upserts may fail as the capacity becomes exhausted. If you need to scale your environment to accommodate more vectors, you can modify your existing index and scale it vertically or create a new index and scale horizontally.
+While your index can still serve queries, new upserts may fail as the capacity becomes exhausted. If you need to scale your environment to accommodate more vectors, you can scale vertically by increasing the size of your existing pods, or horizontally by adding pods or replicas.
 
 This page explains how you can scale your [pod-based indexes](/guides/index-data/indexing-overview#pod-based-indexes) horizontally and vertically.
 
 ## Vertical vs. horizontal scaling
 
-If you need to scale your environment to accommodate more vectors, you can either scale your existing index vertically or create additional indexes to scale horizontally.
-Horizontal scaling can also improve resilience and is an important part of a highly available (HA) setup.
-This article explains both approaches and how to choose the right scaling strategy for your index.
+Vertical scaling increases the size of your existing pods, while horizontal scaling adds pods or replicas. Adding replicas also improves resilience and is an important part of a highly available (HA) setup. The following sections explain both approaches so you can choose the right strategy for your index.
 
 ## Vertical scaling
 
@@ -46,10 +44,9 @@ You can increase the pod size in the Pinecone console or using the API.
     2. Select the project containing the index you want to configure.
     3. Go to **Database > Indexes**.
     4. Select the index.
-    5. Click the **...** button.
-    6. Select **Configure**.
-    7. In the dropdown, choose the pod size to use.
-    8. Click **Confirm**.
+    5. Click **ellipsis (...) menu > Configure**.
+    6. In the dropdown, choose the pod size to use.
+    7. Click **Confirm**.
   </Tab>
 
   <Tab title="API">
@@ -260,15 +257,16 @@ Throughput in terms of queries per second (QPS) scales linearly with the number 
 
 #### When to add replicas
 
+Add replicas for two reasons:
+
+* **Data redundancy and availability**: When you add a replica to your index, the Pinecone controller chooses a zone in the same region that doesn't currently have a replica, up to a maximum of three zones. Your fourth and subsequent replicas are hosted in zones that already have a replica. If your application requires multizone redundancy, we recommend this approach.
+* **Increased QPS**: Each new replica adds another pod for reading from your index and generally increases QPS by the same amount as a single pod. For example, if you consistently get 25 QPS for a single pod, each replica adds 25 more QPS.
+
 <Warning>
   Running a single replica does not provide a highly available setup and is therefore not covered by the uptime guarantees included in Enterprise SLAs.
 </Warning>
 
-**Provide data redundancy and availability**: When you add a replica to your index, the Pinecone controller will choose a zone in the same region that doesn't currently have a replica, up to a maximum of three zones (your fourth and subsequent replicas will be hosted in zones with existing replicas). If your application requires multizone redundancy, this is our recommended approach to achieve that.
-
-**Increase QPS**: The primary reason to add replicas is to increase your index's queries per second (QPS). Each new replica adds another pod for reading from your index and, generally speaking, will increase your QPS by an equal amount as a single pod. For example, if you consistently get 25 QPS for a single pod, each replica will result in 25 more QPS.
-
-If you don't see an increase in QPS after adding replicas, add multiprocessing to your application to ensure you are running parallel operations. You can use the [Pinecone gRPC SDK](/guides/index-data/upsert-data#grpc-python-sdk), or your multiprocessing library of choice.
+If you don't see an increase in QPS after adding replicas, add multiprocessing to your application to ensure you're running parallel operations. You can use the [Pinecone gRPC SDK](/guides/index-data/upsert-data#python-sdk-with-grpc) or your multiprocessing library of choice.
 
 #### How to add replicas
 

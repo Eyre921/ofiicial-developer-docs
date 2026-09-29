@@ -38,13 +38,13 @@ Notion supports three authentication models:
 
 ### Comparison
 
-| Feature            | Internal connections                                               | Public connections                                                                                         | Personal access tokens                                                            |
-| :----------------- | :----------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------- |
-| Best for           | Team-owned automations in one workspace.                           | Apps or services used by many Notion users or workspaces.                                                  | User-owned scripts, CLI workflows, Workers, and trusted tools.                    |
-| Installation scope | Single workspace.                                                  | Any workspace, or a specific set of workspaces chosen at creation time. Scope can't change after creation. | One user in one workspace.                                                        |
-| User access        | Only members of the workspace where it's installed.                | Any user in a workspace where the connection is allowed to install.                                        | The member who created the token.                                                 |
-| Content access     | Granted directly to the connection, not tied to any specific user. | Users choose which pages to share during the OAuth flow or via the Add connections menu.                   | Uses the creator's Notion permissions; pages do not need to be shared with a bot. |
-| Authentication     | Static API token.                                                  | OAuth 2.0.                                                                                                 | Static bearer token.                                                              |
+| Feature | Internal connections | Public connections | Personal access tokens |
+| :- | :- | :- | :- |
+| Best for | Team-owned automations in one workspace. | Apps or services used by many Notion users or workspaces. | User-owned scripts, CLI workflows, Workers, and trusted tools. |
+| Installation scope | Single workspace. | Any workspace, or a specific set of workspaces chosen at creation time. Scope can't change after creation. | One user in one workspace. |
+| User access | Only members of the workspace where it's installed. | Any user in a workspace where the connection is allowed to install. | The member who created the token. |
+| Content access | Granted directly to the connection, not tied to any specific user. | Users choose which pages to share during the OAuth flow or via the Add connections menu. | Uses the creator's Notion permissions; pages do not need to be shared with a bot. |
+| Authentication | Static API token. | OAuth 2.0. | Static bearer token. |
 
 <Info>
   **Looking for SCIM or SAML SSO?**

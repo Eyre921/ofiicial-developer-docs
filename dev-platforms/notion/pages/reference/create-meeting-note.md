@@ -11,10 +11,10 @@ Creates a [meeting notes block](/reference/block#meeting-notes) and begins proce
 
 Source types allow you to directly attach a file upload, or create a meeting note block from an existing audio or video file block:
 
-| Source                | Body parameters                                                                                                                                               | Behavior                                                  |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| Completed file upload | Set `source.type` to `file_upload`, provide `source.file_upload_id`, set `parent.type` to `page_id`, and provide `parent.page_id`.                            | Creates the meeting notes block in the parent page.       |
-| Existing block        | Set `source.type` to `block` and provide `source.block_id` for an audio, video, or file block backed by a Notion-hosted audio or video upload. Omit `parent`. | Creates the meeting notes block next to the source block. |
+| Source | Body parameters | Behavior |
+| - | - | - |
+| Completed file upload | Set `source.type` to `file_upload`, provide `source.file_upload_id`, set `parent.type` to `page_id`, and provide `parent.page_id`. | Creates the meeting notes block in the parent page. |
+| Existing block | Set `source.type` to `block` and provide `source.block_id` for an audio, video, or file block backed by a Notion-hosted audio or video upload. Omit `parent`. | Creates the meeting notes block next to the source block. |
 
 For a file upload source, upload the media and wait until the [file upload](/reference/file-upload) has a status of `uploaded` before calling this endpoint. See [Uploading small files](/guides/data-apis/uploading-small-files) for the complete upload flow.
 

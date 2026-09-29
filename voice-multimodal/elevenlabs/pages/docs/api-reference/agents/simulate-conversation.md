@@ -11,7 +11,7 @@ path: docs/api-reference/agents/simulate-conversation
 POST https://api.elevenlabs.io/v1/convai/agents/{agent_id}/simulate-conversation
 Content-Type: application/json
 
-Deprecated. Use the `/v1/convai/agent-testing/create` and `/v1/convai/agents/:agent_id/run-tests` endpoints to create and run simulations. Run a conversation between the agent and a simulated user.
+Deprecated. This endpoint will be removed on 31 Oct 2026. Use the `/v1/convai/agent-testing/create` and `/v1/convai/agents/:agent_id/run-tests` endpoints to create and run simulations. Run a conversation between the agent and a simulated user.
 
 Reference: https://elevenlabs.io/docs/api-reference/agents/simulate-conversation
 

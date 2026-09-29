@@ -166,7 +166,7 @@ resource "pinecone_index" "example_index_byoc" {
 #### Pod-based indexes
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
 To create a [pod-based index](/guides/indexes/pods/understanding-pod-based-indexes), set `spec.pod`:
@@ -313,7 +313,7 @@ Collections also accept a `timeouts` block, with the same 5-minute defaults as i
 The `pinecone_project` resource lets you create, update, and delete [projects](/guides/projects/understanding-projects). Once `force_encryption_with_cmek` is enabled, it can't be disabled. `max_pods` defaults to `0`, which allows serverless indexes only.
 
 <Warning>
-  Customers who sign up for a Standard or Enterprise plan on or after August 18, 2025 cannot create pod-based indexes. Instead, create [serverless indexes](/guides/index-data/create-an-index), and consider using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for large workloads (millions of records or more, and moderate or high query rates).
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
 Customers on those plans also can't set `max_pods` for a project.
@@ -506,22 +506,22 @@ The `id` attribute is immutable. To manage a different user, run `terraform stat
 
 Data sources let you read resources that Terraform doesn't manage. Most resource types have a singular data source that fetches one object and a plural data source that lists many.
 
-| Data source                 | Required        | Optional filters                                                         | Credential      |
-| :-------------------------- | :-------------- | :----------------------------------------------------------------------- | :-------------- |
-| `pinecone_index`            | `name`          | —                                                                        | API key         |
-| `pinecone_indexes`          | —               | —                                                                        | API key         |
-| `pinecone_collection`       | `name`          | —                                                                        | API key         |
-| `pinecone_collections`      | —               | —                                                                        | API key         |
-| `pinecone_project`          | `id`            | —                                                                        | Service account |
-| `pinecone_projects`         | —               | —                                                                        | Service account |
-| `pinecone_service_account`  | `id`            | —                                                                        | Service account |
-| `pinecone_service_accounts` | —               | —                                                                        | Service account |
-| `pinecone_role_binding`     | `id`            | —                                                                        | Service account |
-| `pinecone_role_bindings`    | —               | `principal_type`, `principal_id`, `resource_type`, `resource_id`, `role` | Service account |
-| `pinecone_invite`           | `id`            | —                                                                        | Service account |
-| `pinecone_invites`          | —               | —                                                                        | Service account |
-| `pinecone_user`             | `id` or `email` | —                                                                        | Service account |
-| `pinecone_users`            | —               | `email`                                                                  | Service account |
+| Data source | Required | Optional filters | Credential |
+| :- | :- | :- | :- |
+| `pinecone_index` | `name` | — | API key |
+| `pinecone_indexes` | — | — | API key |
+| `pinecone_collection` | `name` | — | API key |
+| `pinecone_collections` | — | — | API key |
+| `pinecone_project` | `id` | — | Service account |
+| `pinecone_projects` | — | — | Service account |
+| `pinecone_service_account` | `id` | — | Service account |
+| `pinecone_service_accounts` | — | — | Service account |
+| `pinecone_role_binding` | `id` | — | Service account |
+| `pinecone_role_bindings` | — | `principal_type`, `principal_id`, `resource_type`, `resource_id`, `role` | Service account |
+| `pinecone_invite` | `id` | — | Service account |
+| `pinecone_invites` | — | — | Service account |
+| `pinecone_user` | `id` or `email` | — | Service account |
+| `pinecone_users` | — | `email` | Service account |
 
 ```terraform theme={null}
 # Read one index by name
@@ -563,16 +563,16 @@ Note the following behaviors:
 
 All resources support the [`terraform import` command](https://developer.hashicorp.com/terraform/cli/commands/import):
 
-| Resource                   | Import ID               |
-| :------------------------- | :---------------------- |
-| `pinecone_index`           | Index name              |
-| `pinecone_collection`      | Collection name         |
-| `pinecone_project`         | Project ID              |
-| `pinecone_api_key`         | `PROJECT_ID:API_KEY_ID` |
-| `pinecone_service_account` | Service account ID      |
-| `pinecone_role_binding`    | Role binding ID         |
-| `pinecone_invite`          | Invite ID               |
-| `pinecone_user`            | User ID                 |
+| Resource | Import ID |
+| :- | :- |
+| `pinecone_index` | Index name |
+| `pinecone_collection` | Collection name |
+| `pinecone_project` | Project ID |
+| `pinecone_api_key` | `PROJECT_ID:API_KEY_ID` |
+| `pinecone_service_account` | Service account ID |
+| `pinecone_role_binding` | Role binding ID |
+| `pinecone_invite` | Invite ID |
+| `pinecone_user` | User ID |
 
 For example:
 

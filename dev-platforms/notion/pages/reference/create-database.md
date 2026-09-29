@@ -19,11 +19,11 @@ Pass `database_type` to build the database from one of Notion's canonical schema
 
 Each type creates a fixed set of properties:
 
-| `database_type` | Properties                                                                                                         |
-| --------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `tasks`         | Task name (`title`), Assignee (`people`), Status (`status`), Due (`date`)                                          |
-| `projects`      | Project name (`title`), Owner (`people`), Dates (`date`), Status (`status`)                                        |
-| `skills`        | Skill name (`title`), Description (`rich_text`), Files (`files`), Tags (`multi_select`), Created by (`created_by`) |
+| `database_type` | Properties |
+| - | - |
+| `tasks` | Task name (`title`), Assignee (`people`), Status (`status`), Due (`date`) |
+| `projects` | Project name (`title`), Owner (`people`), Dates (`date`), Status (`status`) |
+| `skills` | Skill name (`title`), Description (`rich_text`), Files (`files`), Tags (`multi_select`), Created by (`created_by`) |
 
 Property names follow the language preference of the user who owns the integration token. Internal integrations have no owner, so they get English names. Call [Retrieve a data source](/reference/retrieve-a-data-source) on the data source returned in the create response to read the exact names, along with the `status` option names and IDs, before writing pages. To add properties of your own on top of a typed schema, use [Update a data source](/reference/update-a-data-source).
 

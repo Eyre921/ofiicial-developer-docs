@@ -50,29 +50,29 @@ The Composable Retriever pre-binds these primitives into the REPL. Read artifact
 
 ### Read artifacts
 
-| Primitive             | What it does                                       |
-| --------------------- | -------------------------------------------------- |
-| `outline_knowledge()` | a map of every artifact in the context             |
+| Primitive | What it does |
+| - | - |
+| `outline_knowledge()` | a map of every artifact in the context |
 | `read_artifact(name)` | a condensed artifact: its body, edges, and sources |
-| `read_rosters()`      | "all X" rosters for list-everything questions      |
-| `describe_type(name)` | the full manifest spec for an artifact type        |
+| `read_rosters()` | "all X" rosters for list-everything questions |
+| `describe_type(name)` | the full manifest spec for an artifact type |
 
 ### Search
 
-| Primitive                           | What it does                                               |
-| ----------------------------------- | ---------------------------------------------------------- |
-| `search_knowledge(query)`           | semantic search over artifacts (optionally by kind)        |
-| `search_source(query)`              | semantic search over raw source chunks                     |
-| `search_source_by_keyword(query)`   | lexical/BM25 for exact IDs, codes, and phrases             |
+| Primitive | What it does |
+| - | - |
+| `search_knowledge(query)` | semantic search over artifacts (optionally by kind) |
+| `search_source(query)` | semantic search over raw source chunks |
+| `search_source_by_keyword(query)` | lexical/BM25 for exact IDs, codes, and phrases |
 | `search_in_sources(sources, query)` | semantic search within a specific artifact's source chunks |
-| `cite_from_artifact(name)`          | drill an artifact's sources for a verbatim span            |
+| `cite_from_artifact(name)` | drill an artifact's sources for a verbatim span |
 
 ### Structured tables
 
-| Primitive          | What it does                                                                             |
-| ------------------ | ---------------------------------------------------------------------------------------- |
-| `query_db(sql)`    | read-only SQL over typed artifact tables, the first resort for how-many / counts / per-X |
-| `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges                              |
+| Primitive | What it does |
+| - | - |
+| `query_db(sql)` | read-only SQL over typed artifact tables, the first resort for how-many / counts / per-X |
+| `walk_graph(name)` | an N-hop subgraph around an artifact, following typed edges |
 
 ## Synthesis
 

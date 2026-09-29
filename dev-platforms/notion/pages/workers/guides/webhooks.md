@@ -42,13 +42,13 @@ ntn workers webhooks list
 
 The `execute` function receives an array of `WebhookEvent` objects. The array currently contains one event, but may contain multiple events in the future.
 
-| Property     | Type                      | Description                                                                                   |
-| :----------- | :------------------------ | :-------------------------------------------------------------------------------------------- |
-| `deliveryId` | `string`                  | Unique ID for this Notion delivery. It is stable across retries for the same inbound request. |
-| `body`       | `Record<string, unknown>` | Parsed JSON body. If the request body is not a JSON object, this is `{}`.                     |
-| `rawBody`    | `string`                  | Original request body as a string. Use this for signature verification.                       |
-| `headers`    | `Record<string, string>`  | Request headers. Header names are lowercased.                                                 |
-| `method`     | `string`                  | HTTP method used by the sender. Webhook URLs accept `POST` requests.                          |
+| Property | Type | Description |
+| :- | :- | :- |
+| `deliveryId` | `string` | Unique ID for this Notion delivery. It is stable across retries for the same inbound request. |
+| `body` | `Record<string, unknown>` | Parsed JSON body. If the request body is not a JSON object, this is `{}`. |
+| `rawBody` | `string` | Original request body as a string. Use this for signature verification. |
+| `headers` | `Record<string, string>` | Request headers. Header names are lowercased. |
+| `method` | `string` | HTTP method used by the sender. Webhook URLs accept `POST` requests. |
 
 <Tip>
   Use the external provider's own event ID for idempotency when the payload includes one.
@@ -211,24 +211,24 @@ worker.webhook("onProviderEvent", {
 
 `verify` receives the inbound HTTP request, not the array of `WebhookEvent` objects that `execute` receives.
 
-| Property  | Type                        | Description                                                                          |
-| :-------- | :-------------------------- | :----------------------------------------------------------------------------------- |
-| `method`  | `"GET" \| "HEAD" \| "POST"` | Uppercase HTTP method. Deliveries are `POST`; `GET` and `HEAD` are handshake probes. |
-| `url`     | `string`                    | The full webhook URL as received, including the query string.                        |
-| `query`   | `Record<string, string>`    | Query string parameters. A repeated parameter keeps its last value.                  |
-| `headers` | `Record<string, string>`    | Request headers. Header names are lowercased.                                        |
-| `rawBody` | `string`                    | Original request body as a string. Empty for `GET` and `HEAD`.                       |
+| Property | Type | Description |
+| :- | :- | :- |
+| `method` | `"GET" \| "HEAD" \| "POST"` | Uppercase HTTP method. Deliveries are `POST`; `GET` and `HEAD` are handshake probes. |
+| `url` | `string` | The full webhook URL as received, including the query string. |
+| `query` | `Record<string, string>` | Query string parameters. A repeated parameter keeps its last value. |
+| `headers` | `Record<string, string>` | Request headers. Header names are lowercased. |
+| `rawBody` | `string` | Original request body as a string. Empty for `GET` and `HEAD`. |
 
 Like `execute`, `verify` receives the capability context as its second argument.
 
 ### The response object
 
-| Property      | Type                                 | Description                                                                                                                                   |
-| :------------ | :----------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| `status`      | `number`                             | Response status code. Only 2xx and 4xx are allowed.                                                                                           |
-| `body`        | `string`                             | Optional response body, at most 8KB.                                                                                                          |
-| `contentType` | `"application/json" \| "text/plain"` | Optional response content type. Defaults to `"text/plain"`.                                                                                   |
-| `deliver`     | `boolean`                            | Optional delivery decision. `true` queues the request for `execute`; `false` skips `execute`. When omitted, delivery follows the status code. |
+| Property | Type | Description |
+| :- | :- | :- |
+| `status` | `number` | Response status code. Only 2xx and 4xx are allowed. |
+| `body` | `string` | Optional response body, at most 8KB. |
+| `contentType` | `"application/json" \| "text/plain"` | Optional response content type. Defaults to `"text/plain"`. |
+| `deliver` | `boolean` | Optional delivery decision. `true` queues the request for `execute`; `false` skips `execute`. When omitted, delivery follows the status code. |
 
 The returned status dictates whether or not the Webhook actually executes:
 
@@ -264,12 +264,12 @@ in the Workers UI.
 
 `verify` answers the provider inline, so the run has a wall-clock budget of about 5 seconds that includes starting your worker's sandbox. Keep it to local computation. Avoid network calls, including `context.notion` requests, which usually will not fit the budget.
 
-| Outcome                                                             | Provider sees            | Queued for `execute` |
-| :------------------------------------------------------------------ | :----------------------- | :------------------- |
-| Returns 2xx                                                         | Your status and body     | Yes                  |
-| Returns 4xx                                                         | Your status and body     | No                   |
-| Throws, or returns a status outside 2xx and 4xx, or a body over 8KB | `400`                    | No                   |
-| Exceeds the time budget                                             | `503` with `Retry-After` | No                   |
+| Outcome | Provider sees | Queued for `execute` |
+| :- | :- | :- |
+| Returns 2xx | Your status and body | Yes |
+| Returns 4xx | Your status and body | No |
+| Throws, or returns a status outside 2xx and 4xx, or a body over 8KB | `400` | No |
+| Exceeds the time budget | `503` with `Retry-After` | No |
 
 <Warning>
   A handler that throws or returns an invalid response counts toward the same

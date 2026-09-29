@@ -14,12 +14,12 @@ The [page property values reference](/reference/page-property-values) defines ea
 
 ## Common fields
 
-| Field               | Type   | Meaning                                                                            |
-| :------------------ | :----- | :--------------------------------------------------------------------------------- |
-| `object`            | String | Always `property_item` for an individual item.                                     |
-| `id`                | String | The property ID, shared by all items in that property. It is not a unique item ID. |
-| `type`              | String | The property type.                                                                 |
-| Key matching `type` | Varies | A single value of that type.                                                       |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `object` | String | Always `property_item` for an individual item. |
+| `id` | String | The property ID, shared by all items in that property. It is not a unique item ID. |
+| `type` | String | The property type. |
+| Key matching `type` | Varies | A single value of that type. |
 
 A property’s `id` stays the same when its name changes. IDs can be short strings or UUIDs. The Name property always has the ID `title`.
 
@@ -29,32 +29,32 @@ Responses use URL-encoded property IDs, such as `f%5C%5C%3Ap`. Pass the returned
 
 Single-item responses use the same value shape as page responses. Follow a type link for its fields, write rules, and JSON examples.
 
-| Type                                                                           | Response                                                   |
-| :----------------------------------------------------------------------------- | :--------------------------------------------------------- |
-| <span />[`button`](/reference/page-property-values#button)                     | One property item.                                         |
-| <span />[`checkbox`](/reference/page-property-values#checkbox)                 | One property item.                                         |
-| <span />[`created_by`](/reference/page-property-values#created-by)             | One property item.                                         |
-| <span />[`created_time`](/reference/page-property-values#created-time)         | One property item.                                         |
-| <span />[`date`](/reference/page-property-values#date)                         | One property item.                                         |
-| <span />[`email`](/reference/page-property-values#email)                       | One property item.                                         |
-| <span />[`files`](/reference/page-property-values#files)                       | One property item.                                         |
-| [`formula`](/reference/page-property-values#formula)                           | One property item.                                         |
-| <span />[`last_edited_by`](/reference/page-property-values#last-edited-by)     | One property item.                                         |
-| <span />[`last_edited_time`](/reference/page-property-values#last-edited-time) | One property item.                                         |
-| <span />[`multi_select`](/reference/page-property-values#multi-select)         | One property item.                                         |
-| <span />[`number`](/reference/page-property-values#number)                     | One property item.                                         |
-| <span />[`people`](/reference/page-property-values#people)                     | A paginated list; each item contains one user object.      |
-| <span />[`phone_number`](/reference/page-property-values#phone-number)         | One property item.                                         |
-| <span />[`place`](/reference/page-property-values#place)                       | One property item.                                         |
-| <span />[`relation`](/reference/page-property-values#relation)                 | A paginated list; each item contains one page reference.   |
-| <span />[`rich_text`](/reference/page-property-values#rich-text)               | A paginated list; each item contains one rich text object. |
-| [`rollup`](/reference/page-property-values#rollup)                             | A paginated list with metadata in `property_item.rollup`.  |
-| <span />[`select`](/reference/page-property-values#select)                     | One property item.                                         |
-| [`status`](/reference/page-property-values#status)                             | One property item.                                         |
-| <span />[`title`](/reference/page-property-values#title)                       | A paginated list; each item contains one rich text object. |
-| <span />[`unique_id`](/reference/page-property-values#unique-id)               | One property item.                                         |
-| <span />[`url`](/reference/page-property-values#url)                           | One property item.                                         |
-| <span />[`verification`](/reference/page-property-values#verification)         | One property item.                                         |
+| Type | Response |
+| :- | :- |
+| <span />[`button`](/reference/page-property-values#button) | One property item. |
+| <span />[`checkbox`](/reference/page-property-values#checkbox) | One property item. |
+| <span />[`created_by`](/reference/page-property-values#created-by) | One property item. |
+| <span />[`created_time`](/reference/page-property-values#created-time) | One property item. |
+| <span />[`date`](/reference/page-property-values#date) | One property item. |
+| <span />[`email`](/reference/page-property-values#email) | One property item. |
+| <span />[`files`](/reference/page-property-values#files) | One property item. |
+| [`formula`](/reference/page-property-values#formula) | One property item. |
+| <span />[`last_edited_by`](/reference/page-property-values#last-edited-by) | One property item. |
+| <span />[`last_edited_time`](/reference/page-property-values#last-edited-time) | One property item. |
+| <span />[`multi_select`](/reference/page-property-values#multi-select) | One property item. |
+| <span />[`number`](/reference/page-property-values#number) | One property item. |
+| <span />[`people`](/reference/page-property-values#people) | A paginated list; each item contains one user object. |
+| <span />[`phone_number`](/reference/page-property-values#phone-number) | One property item. |
+| <span />[`place`](/reference/page-property-values#place) | One property item. |
+| <span />[`relation`](/reference/page-property-values#relation) | A paginated list; each item contains one page reference. |
+| <span />[`rich_text`](/reference/page-property-values#rich-text) | A paginated list; each item contains one rich text object. |
+| [`rollup`](/reference/page-property-values#rollup) | A paginated list with metadata in `property_item.rollup`. |
+| <span />[`select`](/reference/page-property-values#select) | One property item. |
+| [`status`](/reference/page-property-values#status) | One property item. |
+| <span />[`title`](/reference/page-property-values#title) | A paginated list; each item contains one rich text object. |
+| <span />[`unique_id`](/reference/page-property-values#unique-id) | One property item. |
+| <span />[`url`](/reference/page-property-values#url) | One property item. |
+| <span />[`verification`](/reference/page-property-values#verification) | One property item. |
 
 ## Status
 
@@ -156,18 +156,18 @@ Status is a single property item. The response is not wrapped in a property name
 
 `title`, `rich_text`, `people`, and `relation` always return a list, even if there is only one item. Empty values return `results: []`. Multi-select and files return a single property item whose value is an array.
 
-| Field                    | Type             | Meaning                                                                             |
-| :----------------------- | :--------------- | :---------------------------------------------------------------------------------- |
-| `object`                 | String           | `list`.                                                                             |
-| `type`                   | String           | `property_item`.                                                                    |
-| `results`                | Array            | The property items in this response.                                                |
-| `has_more`               | Boolean          | Whether another page of results exists.                                             |
-| `next_cursor`            | String or `null` | Pass this as `start_cursor` in the next request.                                    |
-| `property_item`          | Object           | Metadata for the property being retrieved.                                          |
-| `property_item.id`       | String           | The requested property ID.                                                          |
-| `property_item.type`     | String           | The requested property type.                                                        |
-| `property_item.next_url` | String or `null` | The URL for the next request. This field is nested, not top-level.                  |
-| `property_item.{type}`   | Object           | Empty for the four list types above. Rollups include a result or calculation state. |
+| Field | Type | Meaning |
+| :- | :- | :- |
+| `object` | String | `list`. |
+| `type` | String | `property_item`. |
+| `results` | Array | The property items in this response. |
+| `has_more` | Boolean | Whether another page of results exists. |
+| `next_cursor` | String or `null` | Pass this as `start_cursor` in the next request. |
+| `property_item` | Object | Metadata for the property being retrieved. |
+| `property_item.id` | String | The requested property ID. |
+| `property_item.type` | String | The requested property type. |
+| `property_item.next_url` | String or `null` | The URL for the next request. This field is nested, not top-level. |
+| `property_item.{type}` | Object | Empty for the four list types above. Rollups include a result or calculation state. |
 
 The metadata under `property_item` is not an individual result and has no `object` field. For a relation item, the nested `relation.id` identifies the related page; the item’s own `id` identifies the property.
 
@@ -234,12 +234,12 @@ For a supported calculation such as `sum`, `results` contains relation items. Th
 
 <span />
 
-| Rollup `type` | Meaning                                                     |
-| :------------ | :---------------------------------------------------------- |
-| `number`      | A completed number result in `number`, which can be `null`. |
-| `date`        | A completed date result in `date`, which can be `null`.     |
-| `array`       | Individual values are in the response’s `results` array.    |
-| `incomplete`  | Read the next page to continue the calculation.             |
+| Rollup `type` | Meaning |
+| :- | :- |
+| `number` | A completed number result in `number`, which can be `null`. |
+| `date` | A completed date result in `date`, which can be `null`. |
+| `array` | Individual values are in the response’s `results` array. |
+| `incomplete` | Read the next page to continue the calculation. |
 | `unsupported` | This endpoint has no computed result. See the limits below. |
 
 ### Incomplete rollup

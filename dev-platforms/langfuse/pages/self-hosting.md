@@ -31,32 +31,18 @@ Unless marked as community-supported, these deployment options are maintained an
 
 Langfuse only depends on open source components and can be deployed locally, on cloud infrastructure, or on-premises.
 
-```mermaid
-flowchart TB
-    User["UI, API, SDKs"]
-    subgraph vpc["VPC"]
-        Web["Web Server<br/>(langfuse/langfuse)"]
-        Worker["Async Worker<br/>(langfuse/worker)"]
-        Postgres@{ img: "/images/logos/postgres_icon.svg", label: "Postgres - OLTP\n(Transactional Data)", pos: "b", w: 60, h: 60, constraint: "on" }
-        Cache@{ img: "/images/logos/redis_icon.png", label: "Redis\n(Cache, Queue)", pos: "b", w: 60, h: 60, constraint: "on" }
-        Clickhouse@{ img: "/images/logos/clickhouse_icon.svg", label: "Clickhouse - OLAP\n(Observability Data)", pos: "b", w: 60, h: 60, constraint: "on" }
-        S3@{ img: "/images/logos/s3_icon.svg", label: "S3 / Blob Storage\n(Raw events, multi-modal attachments)", pos: "b", w: 60, h: 60, constraint: "on" }
-    end
-    LLM["LLM API/Gateway<br/>(optional; BYO; can be same VPC or VPC-peered)"]
+**Deployment architecture — your infrastructure (VPC / on-premises)**
 
-    User --> Web
-    Web --> S3
-    Web --> Postgres
-    Web --> Cache
-    Web --> Clickhouse
-    Web -..->|"optional for playground"| LLM
+UI, API, and SDK clients send requests to [Langfuse Web](/self-hosting/deployment/infrastructure/containers) (`langfuse/langfuse`), which serves the UI and APIs. [Langfuse Worker](/self-hosting/deployment/infrastructure/containers) (`langfuse/worker`) processes events asynchronously.
 
-    Cache --> Worker
-    Worker --> Clickhouse
-    Worker --> Postgres
-    Worker --> S3
-    Worker -..->|"optional for evals"| LLM
-```
+| Storage service | Purpose | Connections |
+| --- | --- | --- |
+| [PostgreSQL](/self-hosting/deployment/infrastructure/postgres) | Transactional data | Web → PostgreSQL; Worker → PostgreSQL |
+| [Redis / Valkey](/self-hosting/deployment/infrastructure/cache) | Cache and job queue | Web → Redis / Valkey; Redis / Valkey → Worker |
+| [ClickHouse](/self-hosting/deployment/infrastructure/clickhouse) | Observability data | Web → ClickHouse; Worker → ClickHouse |
+| [S3 / Blob storage](/self-hosting/deployment/infrastructure/blobstorage) | Raw events and multi-modal attachments | Web → S3 / Blob storage; Worker → S3 / Blob storage |
+
+Both containers can optionally connect to an [LLM API / Gateway](/self-hosting/deployment/infrastructure/llm-api): Web for the playground, Worker for evaluations. Bring your own LLM API; it can also run in the same VPC or a peered VPC.
 
 <details>
 <summary>View architecture components</summary>

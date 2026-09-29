@@ -19,11 +19,11 @@ There is a limit of **100 block children** that can be appended by a single API 
 
 By default, blocks are appended to the end of the parent block's children. Use the `position` parameter to insert blocks at a specific location:
 
-| Position type                                                      | Description                                                   |
-| ------------------------------------------------------------------ | ------------------------------------------------------------- |
-| `{ "type": "end" }`                                                | Insert at the end of the parent's children (default behavior) |
-| `{ "type": "start" }`                                              | Insert at the beginning of the parent's children              |
-| `{ "type": "after_block", "after_block": { "id": "<block_id>" } }` | Insert after the specified block                              |
+| Position type | Description |
+| - | - |
+| `{ "type": "end" }` | Insert at the end of the parent's children (default behavior) |
+| `{ "type": "start" }` | Insert at the beginning of the parent's children |
+| `{ "type": "after_block", "after_block": { "id": "<block_id>" } }` | Insert after the specified block |
 
 <CodeGroup>
   ```json Insert at start theme={null}

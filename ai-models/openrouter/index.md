@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 484 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 485 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -211,6 +211,7 @@
 - `docs/client-sdks/go/sdks/observability/readme` — [Observability](pages/docs/client-sdks/go/sdks/observability/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/observability/README.md)
 - `docs/client-sdks/go/sdks/organization/readme` — [Organization](pages/docs/client-sdks/go/sdks/organization/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/organization/README.md)
 - `docs/client-sdks/go/sdks/presets/readme` — [Presets](pages/docs/client-sdks/go/sdks/presets/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/presets/README.md)
+- `docs/client-sdks/go/sdks/privateendpoints/readme` — [PrivateEndpoints](pages/docs/client-sdks/go/sdks/privateendpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/privateendpoints/README.md)
 - `docs/client-sdks/go/sdks/providers/readme` — [Providers](pages/docs/client-sdks/go/sdks/providers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/providers/README.md)
 - `docs/client-sdks/go/sdks/rerank/readme` — [Rerank](pages/docs/client-sdks/go/sdks/rerank/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/rerank/README.md)
 - `docs/client-sdks/go/sdks/responses/readme` — [Responses](pages/docs/client-sdks/go/sdks/responses/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/responses/README.md)

@@ -66,6 +66,8 @@ After you have your user’s authenticated accounts, you can initiate data refre
 
 The authentication flow is the client-side UI that allows your user to consent to data sharing and link their financial accounts to you and Stripe.
 
+If Stripe has approved your business to collect Stripe-issued consent, see [Collect Financial Connections consent in your own flow](https://docs.stripe.com/financial-connections/pre-collected-consent.md).
+
 Embed the UI in your client-side user flow. It works across all major browsers and platforms, including web, iOS, Android, and mobile web views.
 ![Authentication flow](https://docs.stripecdn.com/56bf3180f82d9867256f66e31a94b1ed537c7700fc034d899309f8ca3d2c73ec.png)
 

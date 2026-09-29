@@ -167,9 +167,9 @@ You can change node types in either direction (`b1` → `t1` or `t1` → `b1`). 
 
 To change node types, call [Configure an index](/reference/api/2025-10/control-plane/configure_index). In the request body, set the following fields:
 
-| Field                                               | Value        | Notes                                                                         |
-| :-------------------------------------------------- | :----------- | :---------------------------------------------------------------------------- |
-| `spec.serverless.read_capacity.mode`                | `Dedicated`  |                                                                               |
+| Field | Value | Notes |
+| :- | :- | :- |
+| `spec.serverless.read_capacity.mode` | `Dedicated` | |
 | `spec.serverless.read_capacity.dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
 
 ### Example
@@ -338,19 +338,19 @@ After making a configuration change to a dedicated read nodes index (changing sh
 
 The response includes two status fields:
 
-| Field                                            | Description                                                                |
-| :----------------------------------------------- | :------------------------------------------------------------------------- |
-| **`status.state`**                               | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-| **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`)            |
+| Field | Description |
+| :- | :- |
+| **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
+| **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
 When changing node types, shards, or replicas, monitor the read capacity status (`spec.serverless.read_capacity.status.state`). Possible values:
 
-| State       | Description                                                                                                                                                                                   |
-| :---------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Ready`     | The change is complete and the index is ready to serve queries at full capacity.                                                                                                              |
-| `Scaling`   | A change to the number of shards or replicas is in progress.                                                                                                                                  |
-| `Migrating` | A change to the node type or read capacity <Tooltip>mode</Tooltip> is in progress.                                                                                                            |
-| `Error`     | The operation failed. For migrations to dedicated, this typically means you didn't allocate enough shards for your index size. Check `error_message` for details, and retry with more shards. |
+| State | Description |
+| :- | :- |
+| `Ready` | The change is complete and the index is ready to serve queries at full capacity. |
+| `Scaling` | A change to the number of shards or replicas is in progress. |
+| `Migrating` | A change to the node type or read capacity <Tooltip>mode</Tooltip> is in progress. |
+| `Error` | The operation failed. For migrations to dedicated, this typically means you didn't allocate enough shards for your index size. Check `error_message` for details, and retry with more shards. |
 
 <Note>
   During changes to shards, replicas, and node type, the index-level status (`status.state`) remains `Ready`. This is because the index can handle reads and writes while its dedicated read capacity scales.

@@ -24,13 +24,13 @@ Reach for full-text search when exact words, phrases, names, codes, or identifie
 
 What full-text search does and doesn't match:
 
-| Capability                      | Status                                                                                                                                                                                                                     |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Fuzzy matching (typo tolerance) | Supported in `query_string` queries only ([query syntax](/guides/search/full-text-search/query-syntax))                                                                                                                    |
-| Stemming                        | Supported, opt-in per field at index creation ([stemming](/guides/search/full-text-search/text-processing#stemming))                                                                                                       |
-| Stop-word removal               | Supported, opt-in per field at index creation ([tokens & analyzers](/guides/search/full-text-search/text-processing#tokens-and-analyzers))                                                                                 |
-| Substring / n-gram matching     | Supported, opt-in per field at index creation. Can't be combined with stemming or stop words on the same field ([n-grams](/guides/search/full-text-search/text-processing#substring-search-with-n-grams))                  |
-| Synonym expansion               | Not supported. A search for `car` won't match a document containing only `automobile`. Use [semantic search](/guides/search/semantic-search) or [hybrid search](/guides/search/hybrid-search) for synonyms or paraphrases. |
+| Capability | Status |
+| - | - |
+| Fuzzy matching (typo tolerance) | Supported in `query_string` queries only ([query syntax](/guides/search/full-text-search/query-syntax)) |
+| Stemming | Supported, opt-in per field at index creation ([stemming](/guides/search/full-text-search/text-processing#stemming)) |
+| Stop-word removal | Supported, opt-in per field at index creation ([tokens & analyzers](/guides/search/full-text-search/text-processing#tokens-and-analyzers)) |
+| Substring / n-gram matching | Supported, opt-in per field at index creation. Can't be combined with stemming or stop words on the same field ([n-grams](/guides/search/full-text-search/text-processing#substring-search-with-n-grams)) |
+| Synonym expansion | Not supported. A search for `car` won't match a document containing only `automobile`. Use [semantic search](/guides/search/semantic-search) or [hybrid search](/guides/search/hybrid-search) for synonyms or paraphrases. |
 
 ## How it works
 
@@ -180,10 +180,10 @@ A schema can declare up to 100 `string` fields with `full_text_search` enabled, 
 
 ### Schema field types
 
-| Type            | Purpose                                                                                                             | Key options                                                                            |
-| --------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `dense_vector`  | ANN similarity search                                                                                               | `dimension` (required), `metric` (`cosine`, `dotproduct`, `euclidean`)                 |
-| `sparse_vector` | Sparse-vector similarity search with values from a custom sparse encoder                                            | None                                                                                   |
+| Type | Purpose | Key options |
+| - | - | - |
+| `dense_vector` | ANN similarity search | `dimension` (required), `metric` (`cosine`, `dotproduct`, `euclidean`) |
+| `sparse_vector` | Sparse-vector similarity search with values from a custom sparse encoder | None |
 | `string` (text) | Full-text search. Set `full_text_search` to enable BM25, for example, `{ "language": "en" }`, or `{}` for defaults. | `language`, `stemming`, `stop_words`, `ngram` (all optional, under `full_text_search`) |
 
 <Note>

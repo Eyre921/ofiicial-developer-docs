@@ -43,6 +43,7 @@ Successful Response
 - `time_committed_secs` (integer, required)
 - `parents` (AgentVersionParents, required)
 - `access_info` (ResourceAccessInfo, optional)
+- `merged_authors` (list of ResourceAccessInfo, optional) — For a merge into the main branch, the people who published the merged changes on the source branch (access_info is whoever ran the merge). Null when not recorded.
 
 ## Errors
 
@@ -110,7 +111,17 @@ Validation Error
     "role": "admin",
     "anonymous_access_level_override": "admin",
     "access_source": "creator"
-  }
+  },
+  "merged_authors": [
+    {
+      "is_creator": true,
+      "creator_name": "John Doe",
+      "creator_email": "john.doe@example.com",
+      "role": "admin",
+      "anonymous_access_level_override": "admin",
+      "access_source": "creator"
+    }
+  ]
 }
 ```
 

@@ -338,13 +338,13 @@ If your connection pre-configures [database templates](https://www.notion.com/he
 
 ## Programmatic setup vs. template duplication
 
-|                        | Template URL (OAuth)                               | Programmatic setup                                      |
-| :--------------------- | :------------------------------------------------- | :------------------------------------------------------ |
-| **Customization**      | Static — every user gets the same template         | Dynamic — tailor content to each user                   |
-| **Schema control**     | Snapshot; changes require updating the source page | Full control over properties and views at creation time |
-| **Multiple databases** | One template page per connection                   | Create as many databases and pages as needed            |
-| **View configuration** | Views duplicated as-is                             | Create views with specific filters, sorts, and types    |
-| **User interaction**   | User must choose "Duplicate template" during OAuth | No extra steps — setup happens after authorization      |
+| | Template URL (OAuth) | Programmatic setup |
+| :- | :- | :- |
+| **Customization** | Static — every user gets the same template | Dynamic — tailor content to each user |
+| **Schema control** | Snapshot; changes require updating the source page | Full control over properties and views at creation time |
+| **Multiple databases** | One template page per connection | Create as many databases and pages as needed |
+| **View configuration** | Views duplicated as-is | Create views with specific filters, sorts, and types |
+| **User interaction** | User must choose "Duplicate template" during OAuth | No extra steps — setup happens after authorization |
 
 <Tip>
   Template duplication still works well for simple connections where a single static page is enough. Use programmatic setup when you need multiple resources, per-user customization, or want to keep the workspace in sync with an external system.

@@ -85,17 +85,17 @@ Commonly asked questions about migrating to 2025-09-03.
     * Ones that are affected are marked in **bold** in the first column, and the `2025-09-03` changes are outlined in the second column.
     * Ones that aren't affected are listed as "None" (some of which have explanatory comments as to why they aren't affected.)
 
-    | Endpoints        | Changes                                                                                                                                                                                                                                                                                                           |
-    | :--------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | Authentication   | None                                                                                                                                                                                                                                                                                                              |
-    | Blocks           | None                                                                                                                                                                                                                                                                                                              |
-    | **Pages**        | `parent` is a `data_source_id` instead of a `database_id`                                                                                                                                                                                                                                                         |
-    | **Databases**    | Modified to act on the entire database (container) instead of its data sources via Create, Retrieve, or Update; see migration guide details above <br /> <br />Creating a database and its initial data source works the same way, but `properties` must be nested under `initial_data_source` as of `2025-09-03` |
-    | **Data Sources** | New set of APIs for operating on individual data sources under a database via Create, Update, Query, or Retrieve                                                                                                                                                                                                  |
-    | Comments         | None (comments can only have blocks or pages as parents, not databases or data sources, so they aren't affected)                                                                                                                                                                                                  |
-    | File Uploads     | None                                                                                                                                                                                                                                                                                                              |
-    | **Search**       | Filter value parameter refers to `"data_source"` instead of `"database"`; response results include each `"data_source"` object instead of `"database"` objects                                                                                                                                                    |
-    | Users            | None                                                                                                                                                                                                                                                                                                              |
+    | Endpoints | Changes |
+    | :- | :- |
+    | Authentication | None |
+    | Blocks | None |
+    | **Pages** | `parent` is a `data_source_id` instead of a `database_id` |
+    | **Databases** | Modified to act on the entire database (container) instead of its data sources via Create, Retrieve, or Update; see migration guide details above <br /> <br />Creating a database and its initial data source works the same way, but `properties` must be nested under `initial_data_source` as of `2025-09-03` |
+    | **Data Sources** | New set of APIs for operating on individual data sources under a database via Create, Update, Query, or Retrieve |
+    | Comments | None (comments can only have blocks or pages as parents, not databases or data sources, so they aren't affected) |
+    | File Uploads | None |
+    | **Search** | Filter value parameter refers to `"data_source"` instead of `"database"`; response results include each `"data_source"` object instead of `"database"` objects |
+    | Users | None |
   </Accordion>
 
   <Accordion title="When can I start using the `2025-09-03` version?">

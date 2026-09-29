@@ -118,7 +118,7 @@ The Stripe Reader S700/S710 software consists of four components: the reader app
 | ATBEDKFRITDENLESSECZLUPTCHNO | `2.45.7.0` | `1.00.07.00` | `szzz_prod_eu_on_v5` | `2.2.24` |
 | BGHRCYEEHULVLILTMTROSKSI | `2.45.7.0` | `1.00.07.00` | `szzz_prod_roeu_on_v2` | `2.2.24` |
 
-### Reader software changelog
+### Changelog 
 
 #### 2026-09-08 (version 2.45.7.0)
 
