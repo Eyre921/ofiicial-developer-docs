@@ -1,6 +1,6 @@
 # dev-platforms/github 文档索引
 
-> 共 103 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 105 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api
@@ -47,6 +47,7 @@
 - `en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials` — [Recover an account with 2FA](pages/en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials.md) · [原文](https://docs.github.com/en/authentication/securing-your-account-with-two-factor-authentication-2fa/recovering-your-account-if-you-lose-your-2fa-credentials.md)
 - `en/billing/concepts/product-billing/github-actions` — [GitHub Actions](pages/en/billing/concepts/product-billing/github-actions.md) · [原文](https://docs.github.com/en/billing/concepts/product-billing/github-actions.md)
 - `en/billing/how-tos/set-up-payment/manage-payment-info` — [Manage payment info](pages/en/billing/how-tos/set-up-payment/manage-payment-info.md) · [原文](https://docs.github.com/en/billing/how-tos/set-up-payment/manage-payment-info.md)
+- `en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries` — [Actions queries](pages/en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries.md) · [原文](https://docs.github.com/en/code-security/reference/code-scanning/codeql/codeql-queries/actions-built-in-queries.md)
 - `en/codespaces` — [Codespaces](pages/en/codespaces.md) · [原文](https://docs.github.com/en/codespaces.md)
 - `en/copilot` — [GitHub Copilot](pages/en/copilot.md) · [原文](https://docs.github.com/en/copilot.md)
 - `en/copilot/concepts/agents/cloud-agent/about-cloud-agent` — [About cloud agent](pages/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md) · [原文](https://docs.github.com/en/copilot/concepts/agents/cloud-agent/about-cloud-agent.md)
@@ -54,6 +55,7 @@
 - `en/copilot/get-started/best-practices` — [Best practices](pages/en/copilot/get-started/best-practices.md) · [原文](https://docs.github.com/en/copilot/get-started/best-practices.md)
 - `en/copilot/get-started/plans` — [Plans](pages/en/copilot/get-started/plans.md) · [原文](https://docs.github.com/en/copilot/get-started/plans.md)
 - `en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli` — [Install Copilot CLI](pages/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md)
+- `en/copilot/how-tos/copilot-cli/use-copilot-cli/overview` — [Overview](pages/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md)
 - `en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions` — [Get IDE code suggestions](pages/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md) · [原文](https://docs.github.com/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions.md)
 - `en/copilot/how-tos/manage-your-account/manage-policies` — [Manage policies](pages/en/copilot/how-tos/manage-your-account/manage-policies.md) · [原文](https://docs.github.com/en/copilot/how-tos/manage-your-account/manage-policies.md)
 - `en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp` — [Extend Copilot Chat with MCP](pages/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md) · [原文](https://docs.github.com/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp.md)

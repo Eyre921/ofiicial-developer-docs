@@ -34,6 +34,20 @@ Connected accounts can view their [Payments](https://docs.stripe.com/connect/exp
 
 Connected accounts can view their balance, money on the way to the bank, money available soon, and the expected arrival date of the next payout. They can change their bank account. They can also update their payout schedule (manual vs. automatic) and manually pay themselves out, if these features are [enabled](https://docs.stripe.com/connect/customize-express-dashboard.md#customize-features). If you enable the future refunds and disputes balance, they can also proactively add money to this balance to avoid a negative balance and prevent business disruptions.
 
+The ability to receive, settle, and convert currencies in the Balances section with [multi-currency settlement](https://docs.stripe.com/connect/multi-currency-settlement.md) and [instant currency conversion](https://docs.stripe.com/treasury/convert-funds.md) is in private preview.
+
+### Get access to embedded currency management
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/connect/express-dashboard" \
+  -d '{"email": "EMAIL", "preview": "connect_currency_management_preview"}'
+```
+
 ### Reports
 
 The Reports section lets connected accounts view and download financial reports directly in the Express Dashboard. The **Balance summary** tab shows an overview of account balance activity for a selected date range. The **Payout reconciliation** tab shows a breakdown of automatic payouts and the transactions they contain. Connected accounts on a manual payout schedule can only view the **Balance summary** tab.

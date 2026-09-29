@@ -18,10 +18,6 @@ export const PDFParserEngine = {
   Native: 'native'
 };
 
-export const MISTRAL_OCR_US_COST = 2.2;
-
-export const MISTRAL_OCR_COST = 2;
-
 export const DEFAULT_PDF_ENGINE = 'mistral-ocr';
 
 export const API_KEY_REF = '<OPENROUTER_API_KEY>';

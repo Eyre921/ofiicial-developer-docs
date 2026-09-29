@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Rust SDK for error monitoring and per
 url: https://docs.sentry.io/platforms/rust/
 ---
 
-# Rust | Sentry for Rust
+# Sentry for Rust
 
 On this page, we get you up and running with Sentry's Rust SDK.
 

@@ -10,7 +10,7 @@ path: docs/api/api-reference/stt/create-transcription
 
 # Create transcription
 
-> Transcribes audio into text. Accepts base64-encoded audio input as JSON or an OpenAI-style multipart/form-data file upload, and returns the transcribed text.
+> Transcribes audio into text. Accepts base64-encoded audio input as JSON, an OpenAI-style multipart/form-data file upload, or a URL the provider downloads directly, and returns the transcribed text.
 
 
 
@@ -122,6 +122,12 @@ tags:
     name: TTS
     x-displayName: Speech
   - description: >-
+      The catalog of server tools OpenRouter runs on behalf of a model: accepted
+      `tools[].type` spellings per API format, engines and pricing, and which
+      endpoints run each tool natively. See
+      https://openrouter.ai/docs/guides/features/server-tools.
+    name: Tools
+  - description: >-
       Store host-bound secrets for a workspace or for one intern. Scope is
       selected by the API key. Responses return metadata only, never secret
       values. See https://openrouter.ai/docs/guides/ori/vault.
@@ -142,9 +148,9 @@ paths:
         - STT
       summary: Create transcription
       description: >-
-        Transcribes audio into text. Accepts base64-encoded audio input as JSON
-        or an OpenAI-style multipart/form-data file upload, and returns the
-        transcribed text.
+        Transcribes audio into text. Accepts base64-encoded audio input as JSON,
+        an OpenAI-style multipart/form-data file upload, or a URL the provider
+        downloads directly, and returns the transcribed text.
       operationId: createAudioTranscriptions
       requestBody:
         content:
@@ -164,18 +170,45 @@ paths:
               model: openai/whisper-large-v3
             schema:
               properties:
+                diarize:
+                  description: >-
+                    Label each word with the speaker who said it
+                    (words[].speaker, words[].speaker_label). Requires
+                    response_format "verbose_json" (400 otherwise); word
+                    timestamps are included even when timestamp_granularities[]
+                    omits "word". Only supported by some providers; 400 when the
+                    selected model cannot diarize.
+                  type: boolean
                 file:
                   description: >-
                     The audio file to transcribe. The format is derived from the
                     filename extension or the file part content type. Max 25 MB;
-                    send larger files as base64 JSON via input_audio.
+                    send larger files as base64 JSON via input_audio, or by URL
+                    via source_url. Exactly one of file or source_url is
+                    required.
                   format: binary
                   type: string
+                keyterms[]:
+                  description: >-
+                    Domain terms, names, or phrases to bias recognition toward;
+                    repeat the part once per term (keyterms=... is also
+                    accepted). Only supported by some providers; 400 when the
+                    selected model cannot use keyterms.
+                  items:
+                    type: string
+                  type: array
                 language:
                   description: The language of the input audio (ISO-639-1).
                   type: string
                 model:
                   description: The model to use for transcription.
+                  type: string
+                provider:
+                  description: >-
+                    JSON-encoded provider preferences object, the same shape as
+                    the JSON body field: { "options": { "<provider-slug>": { ...
+                    } } }. Only options for the matched provider are forwarded.
+                    Must decode to a JSON object.
                   type: string
                 response_format:
                   description: >-
@@ -195,6 +228,15 @@ paths:
                     provider. If provided in both the request body and the
                     x-session-id header, the body value takes precedence.
                   maxLength: 256
+                  type: string
+                source_url:
+                  description: >-
+                    Publicly reachable http(s) URL of the audio file, downloaded
+                    by the provider directly (no size limit on our side). The
+                    format is derived from the URL path extension. Only
+                    supported by some providers; exactly one of file or
+                    source_url is required.
+                  format: uri
                   type: string
                 temperature:
                   description: The sampling temperature.
@@ -225,7 +267,6 @@ paths:
                   maxLength: 256
                   type: string
               required:
-                - file
                 - model
               type: object
         required: true
@@ -383,7 +424,7 @@ components:
     STTRequest:
       description: >-
         Speech-to-text request input. Accepts a JSON body with input_audio
-        containing base64-encoded audio.
+        containing base64-encoded audio or a URL the provider downloads.
       example:
         input_audio:
           data: UklGRiQA...
@@ -391,8 +432,34 @@ components:
         language: en
         model: openai/whisper-large-v3
       properties:
+        diarize:
+          description: >-
+            Label each word with the speaker who said it. Speaker labels are
+            returned on the words array (speaker, speaker_label), so
+            response_format must be "verbose_json" (a "json" request is rejected
+            with a 400) and word timestamps are included even when
+            timestamp_granularities omits "word". Only supported by some
+            providers; the request is rejected with a 400 when the selected
+            model cannot diarize. Providers may charge extra.
+          example: true
+          type: boolean
         input_audio:
           $ref: '#/components/schemas/STTInputAudio'
+        keyterms:
+          description: >-
+            Domain terms, names, or phrases to bias recognition toward. Only
+            supported by some providers; the request is rejected with a 400 when
+            the selected model cannot use keyterms. Providers may cap the number
+            of terms or characters per term and may charge extra.
+          example:
+            - OpenRouter
+            - Scribe
+          items:
+            maxLength: 100
+            minLength: 1
+            type: string
+          maxItems: 1000
+          type: array
         language:
           description: >-
             ISO-639-1 language code (e.g., "en", "ja"). Auto-detected if
@@ -486,12 +553,27 @@ components:
           example: 9.2
           format: double
           type: number
+        entities:
+          description: >-
+            Detected entities with character offsets into text, present when the
+            provider runs entity detection
+          items:
+            $ref: '#/components/schemas/STTEntity'
+          type: array
         language:
           description: >-
             Detected or forced language, present when response_format is
             verbose_json
           example: english
           type: string
+        language_confidence:
+          description: >-
+            Provider confidence in the detected language from 0 to 1, present
+            when response_format is verbose_json and the provider scores
+            language detection
+          example: 0.98
+          format: double
+          type: number
         segments:
           description: >-
             Timestamped transcript segments, present when response_format is
@@ -795,24 +877,12 @@ components:
         - error
       type: object
     STTInputAudio:
-      description: Base64-encoded audio to transcribe
-      example:
-        data: UklGRiQA...
-        format: wav
-      properties:
-        data:
-          description: Base64-encoded audio data (raw bytes, not a data URI)
-          type: string
-        format:
-          description: >-
-            Audio format (e.g., wav, mp3, flac, m4a, ogg, webm, aac). Supported
-            formats vary by provider.
-          pattern: ^[a-zA-Z0-9][a-zA-Z0-9+._-]{0,15}$
-          type: string
-      required:
-        - data
-        - format
-      type: object
+      anyOf:
+        - $ref: '#/components/schemas/STTInlineInputAudio'
+        - $ref: '#/components/schemas/STTUrlInputAudio'
+      description: >-
+        Audio to transcribe: inline base64 bytes, or a URL the provider
+        downloads directly.
     ProviderOptions:
       description: >-
         Provider-specific options keyed by provider slug. Only options for the
@@ -949,6 +1019,9 @@ components:
           additionalProperties: {}
           type: object
         digitalocean:
+          additionalProperties: {}
+          type: object
+        elevenlabs:
           additionalProperties: {}
           type: object
         enfer:
@@ -1287,6 +1360,39 @@ components:
         trace_name:
           type: string
       type: object
+    STTEntity:
+      description: A detected entity, returned when the provider runs entity detection
+      example:
+        end_char: 25
+        start_char: 15
+        text: John Smith
+        type: name
+      properties:
+        end_char:
+          description: >-
+            Zero-based exclusive character offset of the entity end within the
+            response-level text (not seconds)
+          example: 25
+          type: integer
+        start_char:
+          description: >-
+            Zero-based character offset of the entity start within the
+            response-level text (not seconds)
+          example: 15
+          type: integer
+        text:
+          description: Entity text as it appears in the transcript
+          type: string
+        type:
+          description: Provider entity type label
+          example: name
+          type: string
+      required:
+        - text
+        - type
+        - start_char
+        - end_char
+      type: object
     STTSegment:
       description: >-
         A timestamped transcript segment, returned when response_format is
@@ -1311,6 +1417,12 @@ components:
           description: Average log probability of the segment
           format: double
           type: number
+        channel:
+          description: >-
+            Zero-based audio channel index for the segment, present when the
+            provider transcribes channels separately
+          example: 0
+          type: integer
         compression_ratio:
           description: Compression ratio of the segment
           format: double
@@ -1338,6 +1450,12 @@ components:
             diarization data
           example: 0
           type: integer
+        speaker_label:
+          description: >-
+            Provider speaker label for the segment, present when the provider
+            labels speakers with a string
+          example: speaker_0
+          type: string
         start:
           description: Segment start time in seconds
           example: 0
@@ -1405,6 +1523,12 @@ components:
         start: 0
         word: Hello
       properties:
+        channel:
+          description: >-
+            Zero-based audio channel index for the word, present when the
+            provider transcribes channels separately
+          example: 0
+          type: integer
         confidence:
           description: >-
             Provider confidence for the word from 0 to 1, present when the
@@ -1423,13 +1547,30 @@ components:
             diarization data
           example: 0
           type: integer
+        speaker_label:
+          description: >-
+            Provider speaker label for the word, present when the provider
+            labels speakers with a string
+          example: speaker_0
+          type: string
         start:
           description: Word start time in seconds
           example: 0
           format: double
           type: number
+        type:
+          description: >-
+            Kind of entry; omitted or "word" for spoken words, "audio_event" for
+            non-speech sounds the provider tags with timestamps
+          enum:
+            - word
+            - audio_event
+          example: word
+          type: string
         word:
-          description: The transcribed word
+          description: >-
+            The transcribed word, or the event tag such as "(laughter)" when
+            type is audio_event
           example: Hello
           type: string
       required:
@@ -1683,6 +1824,51 @@ components:
       required:
         - code
         - message
+      type: object
+    STTInlineInputAudio:
+      additionalProperties: false
+      description: Inline base64 audio input for speech-to-text
+      example:
+        data: UklGRiQA...
+        format: wav
+      properties:
+        data:
+          description: Base64-encoded audio data (raw bytes, not a data URI)
+          type: string
+        format:
+          description: >-
+            Audio format (e.g., wav, mp3, flac, m4a, ogg, webm, aac). Supported
+            formats vary by provider. "pcm" means headerless signed 16-bit
+            little-endian mono audio at 16 kHz.
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9+._-]{0,15}$
+          type: string
+      required:
+        - data
+        - format
+      type: object
+    STTUrlInputAudio:
+      additionalProperties: false
+      description: Audio input fetched by the provider from a URL
+      example:
+        format: mp3
+        url: https://example.com/meeting.mp3
+      properties:
+        format:
+          description: >-
+            Audio format of the file at the URL. Defaults to the extension of
+            the URL path; required when the path has no extension.
+          pattern: ^[a-zA-Z0-9][a-zA-Z0-9+._-]{0,15}$
+          type: string
+        url:
+          description: >-
+            Publicly reachable http(s) URL of the audio file. The provider
+            downloads it directly, so the inline upload size limit does not
+            apply. Only supported by some providers.
+          format: uri
+          maxLength: 8000
+          type: string
+      required:
+        - url
       type: object
   securitySchemes:
     apiKey:

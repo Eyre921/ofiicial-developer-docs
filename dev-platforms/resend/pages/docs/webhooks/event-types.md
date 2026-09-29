@@ -236,6 +236,18 @@ List of supported event types and their payload.
       Occurs whenever a **contact was successfully deleted**.
     </div>
   </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`contact.topics.updated`](/docs/webhooks/contacts/topics-updated)
+    </div>
+
+    <div>
+      Occurs whenever a **contact's topic subscriptions change**.
+    </div>
+  </div>
 </div>
 
 ## Suppression Events
@@ -265,6 +277,46 @@ List of supported event types and their payload.
     <div>
       Occurs whenever an **email address is removed from your suppression
       list**.
+    </div>
+  </div>
+</div>
+
+## Topic Events
+
+<div>
+  <div>
+    <div>
+      <span />
+
+      [`topic.created`](/docs/webhooks/topics/created)
+    </div>
+
+    <div>
+      Occurs whenever a **topic is created**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`topic.updated`](/docs/webhooks/topics/updated)
+    </div>
+
+    <div>
+      Occurs whenever a **topic is updated**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`topic.deleted`](/docs/webhooks/topics/deleted)
+    </div>
+
+    <div>
+      Occurs whenever a **topic is deleted**.
     </div>
   </div>
 </div>

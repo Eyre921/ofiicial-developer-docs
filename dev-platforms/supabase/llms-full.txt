@@ -3046,7 +3046,7 @@ We can combine Hugging Face with [Supabase Storage](https://supabase.com/storage
   - Create a `caption` column of type `text`.
 - Regenerate TypeScript types to include new `image_caption` table.
 - Deploy the function to Supabase: `supabase functions deploy huggingface-image-captioning`.
-- Create the Database Webhook in the [Supabase Dashboard](https://supabase.com/dashboard/project/_/database/hooks) to trigger the `huggingface-image-captioning` function anytime a record is added to the `storage.objects` table.
+- Create the Database Webhook in the [Supabase Dashboard](https://supabase.com/dashboard/project/_/integrations/webhooks/overview) to trigger the `huggingface-image-captioning` function anytime a record is added to the `storage.objects` table.
 
 ## Generate TypeScript types
 
@@ -8021,7 +8021,7 @@ Database calls (`select`, `insert`, `update`, `upsert`, `delete`, `rpc`) return 
 | `details` | When `hint` and `message` aren't enough. Often contains the offending value, key, or row.                          |
 | `message` | As the human summary. Useful in UI strings, less useful for debugging.                                             |
 
-A full list of PostgREST error codes is in the [Error Codes reference](https://supabase.com/guides/api/rest/postgrest-error-codes).
+A full list of PostgREST error codes is in the [Error Codes reference](https://supabase.com/docs/guides/api/rest/postgrest-error-codes).
 
 ## Branch on `error.code`, not `error.message`
 
@@ -8100,9 +8100,9 @@ supabase.channel('room1').subscribe((status, err) => {
 
 ## Related
 
-- [PostgREST Error Codes](https://supabase.com/guides/api/rest/postgrest-error-codes)
-- [Automatic retries with `supabase-js`](https://supabase.com/guides/api/automatic-retries-in-supabase-js)
-- [Securing your API](https://supabase.com/guides/api/securing-your-api)
+- [PostgREST Error Codes](https://supabase.com/docs/guides/api/rest/postgrest-error-codes)
+- [Automatic retries with `supabase-js`](https://supabase.com/docs/guides/api/automatic-retries-in-supabase-js)
+- [Securing your API](https://supabase.com/docs/guides/api/securing-your-api)
 
 
 ---
@@ -15995,7 +15995,7 @@ const supabase = createServerClient(
 )
 ```
 
-See the [server-side rendering guide](https://supabase.com/guides/auth/server-side) for framework-specific setup.
+See the [server-side rendering guide](https://supabase.com/docs/guides/auth/server-side) for framework-specific setup.
 
 ## `@supabase/server`
 
@@ -16025,7 +16025,7 @@ In a cookie-based framework you can compose the two — let `@supabase/ssr` own 
 
 ## Next steps
 
-- [Server-side rendering](https://supabase.com/guides/auth/server-side) — set up `@supabase/ssr` for your framework.
+- [Server-side rendering](https://supabase.com/docs/guides/auth/server-side) — set up `@supabase/ssr` for your framework.
 - [`@supabase/server` reference](https://supabase.com/docs/reference/server/introduction) — API for header-based server auth.
 - [`supabase-js` reference](https://supabase.com/docs/reference/javascript/introduction) — the base JavaScript client.
 
@@ -38702,7 +38702,7 @@ Note that `pg_graphql` supports schema introspection, so you can connect any Gra
 comment on schema public is e'@graphql({"introspection": true})';
 ```
 
-See the [upgrade notes](https://supabase.com/guides/platform/upgrading#upgrading-to-pg_graphql-160) for details.
+See the [upgrade notes](https://supabase.com/docs/guides/platform/upgrading#upgrading-to-pg_graphql-160) for details.
 
 ## API
 
@@ -71866,7 +71866,7 @@ How the Authorization and apikey headers and the verify_jwt platform check work
 
 How the Authorization and apikey request headers and the verify_jwt platform check work for Edge Functions.
 
-Every request to an Edge Function passes through two layers of auth. First, a platform-level check (`verify_jwt`) runs before your code executes. Then, once the request reaches your handler, you decide what to do with the credentials the caller sent. This page is the reference for both layers. For the practical patterns built on top of them, see [Securing Edge Functions](https://supabase.com/guides/functions/auth).
+Every request to an Edge Function passes through two layers of auth. First, a platform-level check (`verify_jwt`) runs before your code executes. Then, once the request reaches your handler, you decide what to do with the credentials the caller sent. This page is the reference for both layers. For the practical patterns built on top of them, see [Securing Edge Functions](https://supabase.com/docs/guides/functions/auth).
 
 ## Understanding authorization headers
 
@@ -71894,7 +71894,7 @@ Caution: For migration compatibility, `verify_jwt` accepts publishable and secre
 Use the `verify_jwt` flag to match how the function is called:
 
 - **Leave `verify_jwt` on** for functions that are only called with a user JWT, such as functions invoked from the client through `supabase.functions.invoke`. The platform rejects unauthenticated requests before they reach your code, and your handler can trust that a valid JWT is present.
-- **Turn `verify_jwt` off** for functions that are called without an `Authorization` header, such as webhooks from external providers, or service-to-service calls that authenticate with an API key. These patterns are covered in [Securing Edge Functions](https://supabase.com/guides/functions/auth).
+- **Turn `verify_jwt` off** for functions that are called without an `Authorization` header, such as webhooks from external providers, or service-to-service calls that authenticate with an API key. These patterns are covered in [Securing Edge Functions](https://supabase.com/docs/guides/functions/auth).
 
 Set the flag per function in `supabase/config.toml`:
 
@@ -73525,7 +73525,7 @@ export default {
 ## Authentication Errors
 
 These errors occur when the request contains a missing, malformed, or unsupported JWT token. Fixing them requires ensuring your requests include a valid authorization header, or disabling JWT verification for public endpoints.
-For further information, see [Authorization headers](https://supabase.com/docs/guides/functions/auth-headers) and [Securing Edge Functions](https://supabase.com/guides/functions/auth).
+For further information, see [Authorization headers](https://supabase.com/docs/guides/functions/auth-headers) and [Securing Edge Functions](https://supabase.com/docs/guides/functions/auth).
 
 ### UNAUTHORIZED\_NO\_AUTH\_HEADER
 
@@ -75371,7 +75371,7 @@ When deploying MCP servers:
 - **Limit tool scope**: Only expose tools that are necessary for your use case
 - **Monitor usage**: Track tool calls and monitor for unusual activity
 
-For more security guidance, see the [MCP security guide](https://supabase.com/guides/getting-started/mcp#security-risks).
+For more security guidance, see the [MCP security guide](https://supabase.com/docs/guides/getting-started/mcp#security-risks).
 
 ## What's next
 
@@ -75388,7 +75388,7 @@ With your MCP server running on Supabase Edge Functions, you can:
 
 - [mcp-lite on GitHub](https://github.com/fiberplane/mcp-lite)
 - [Model Context Protocol Spec](https://modelcontextprotocol.io/)
-- [Supabase Edge Functions Docs](https://supabase.com/guides/functions)
+- [Supabase Edge Functions Docs](https://supabase.com/docs/guides/functions)
 - [Deno Runtime Documentation](https://deno.land/)
 - [Fiberplane tutorial](https://blog.fiberplane.com/blog/mcp-lite-supabase-edge-functions/)
 
@@ -75712,7 +75712,7 @@ supabase functions deploy push --no-verify-jwt
 
 ## Create the database webhook
 
-Navigate to the [Database Webhooks settings](https://supabase.com/dashboard/project/_/database/hooks) in your Supabase Dashboard.
+Navigate to the [Database Webhooks settings](https://supabase.com/dashboard/project/_/integrations/webhooks/overview) in your Supabase Dashboard.
 
 1. Enable and create a new hook.
 2. Conditions to fire webhook: Select the `public.notifications` table and tick the `Insert` event.
@@ -107614,7 +107614,7 @@ Caution: As mentioned in the Postgres [documentation](https://postgresqlco.nf/do
 
 ### Constraints
 
-- You can modify disk attributes up to **four times** within a rolling 24-hour window. A new modification can be initiated as soon as the previous one completes. If you reach this limit, you will encounter throttling and must wait for the rolling 24-hour window to permit further adjustments.
+- After **any** disk attribute change, there is a cooldown period of approximately four hours before you can make further adjustments. During this time, no changes are allowed. If you encounter throttling, you’ll need to wait until the cooldown period concludes before making additional modifications.
 - You can increase disk size but cannot decrease it.
 
 
@@ -108049,9 +108049,7 @@ Supabase uses network-attached storage to balance performance with scalability. 
 
 Projects on the Pro Plan and higher have auto-scaling disks.
 
-Disk size expands automatically when the database reaches 90% of the allocated disk size. The disk is expanded to be 50% larger (for example, 8 GB -> 12 GB).
-
-Auto-scaling is limited to four modifications within a rolling 24-hour window. While a new modification can be initiated immediately after the previous one completes, reaching the quota of four resizes within the current rolling 24-hour window will prevent further scaling until the window allows it. If you reach 95% disk utilization and have exhausted your modification quota, your project will enter read-only mode.
+Disk size expands automatically when the database reaches 90% of the allocated disk size. The disk is expanded to be 50% larger (for example, 8 GB -> 12 GB). Auto-scaling is limited to four modifications within a rolling 24-hour window. If you reach 95% disk utilization and have exhausted your modification quota, your project will enter read-only mode.
 
 Note: The automatic resize operation will add an additional 50% capped to a maximum of 200 GB. If 50% of your current usage is more than 200 GB then only 200 GB will be added to your disk (for example a size of 1500 GB will resize to 1700 GB).
 
@@ -108059,7 +108057,7 @@ Disk size can also be manually expanded on the [Database Settings page](https://
 
 Note: You may want to import a lot of data into your database which requires multiple disk expansions. for example, uploading more than 1.5x the current size of your database storage will put your database into [read-only mode](#read-only-mode). If so, it is highly recommended you increase the disk size manually on the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings).
 
-Due to restrictions on the underlying cloud provider, disk modifications are limited to four operations within a rolling 24-hour window. While a new modification can be initiated as soon as the previous one completes, you will be unable to make further adjustments if you reach this rolling 24-hour limit until the rolling 24-hour window permits it.
+Due to restrictions on the underlying cloud provider, disk expansions can occur only once every four hours. During the four hour cool down window, the disk cannot be resized again.
 
 ### Free Plan behavior
 
@@ -109795,34 +109793,34 @@ Every service in your Supabase project generates logs automatically. Log volume 
 
 Reduce the volume of a log type rather than turning it off completely. Raise a threshold rather than disabling logging outright as this prevents you from having information if something goes wrong later. For example a security incident or a slow query may be completely missed.
 
-You change all of the Postgres settings below through [Custom Postgres Configuration](https://supabase.com/guides/database/custom-postgres-config), either from the SQL Editor or the Supabase CLI. Some changes take effect immediately; others require a database restart. The CLI has a `--no-restart` option if you want to batch several changes together before restarting. See [Postgres log configuration](https://supabase.com/guides/database/postgres/postgres-log-config) for the full list of configurable log settings and what each one does.
+You change all of the Postgres settings below through [Custom Postgres Configuration](https://supabase.com/docs/guides/database/custom-postgres-config), either from the SQL Editor or the Supabase CLI. Some changes take effect immediately; others require a database restart. The CLI has a `--no-restart` option if you want to batch several changes together before restarting. See [Postgres log configuration](https://supabase.com/docs/guides/database/postgres/postgres-log-config) for the full list of configurable log settings and what each one does.
 
 ### Start with the two biggest levers
 
 Consider these options first. They are responsible for most log volume on most projects.
 
-- **[`log_statement`](https://supabase.com/guides/database/postgres/postgres-log-config#logstatement)** — set to `none` if you don't manually read through raw query logs to debug your application, for example if your team relies on an AI coding assistant, an APM tool, or the Query Performance dashboard instead. Keep `all` on if you routinely read query text in the Logs Explorer to debug issues, or you have a compliance requirement to retain a full statement audit trail; `mod` is a lighter-volume option if you only need a record of data changes.
-- **[`log_min_duration_statement`](https://supabase.com/guides/database/postgres/postgres-log-config#logmindurationstatement)** — raise the threshold (for example, from a few milliseconds to 1-2 seconds) if you only care about queries that are slow enough to notice. Keep it low only while you're actively in a performance-tuning phase, and raise it back up once that investigation is done.
-- **[pgAudit](https://supabase.com/guides/database/extensions/pgaudit)**, if enabled — this extension can be very verbose independently of `log_statement`. Turn off a broad `pgaudit.log` or `pgaudit.role` configuration if you don't need a dedicated audit trail beyond what `log_statement` already gives you.
+- **[`log_statement`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logstatement)** — set to `none` if you don't manually read through raw query logs to debug your application, for example if your team relies on an AI coding assistant, an APM tool, or the Query Performance dashboard instead. Keep `all` on if you routinely read query text in the Logs Explorer to debug issues, or you have a compliance requirement to retain a full statement audit trail; `mod` is a lighter-volume option if you only need a record of data changes.
+- **[`log_min_duration_statement`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logmindurationstatement)** — raise the threshold (for example, from a few milliseconds to 1-2 seconds) if you only care about queries that are slow enough to notice. Keep it low only while you're actively in a performance-tuning phase, and raise it back up once that investigation is done.
+- **[pgAudit](https://supabase.com/docs/guides/database/extensions/pgaudit)**, if enabled — this extension can be very verbose independently of `log_statement`. Turn off a broad `pgaudit.log` or `pgaudit.role` configuration if you don't need a dedicated audit trail beyond what `log_statement` already gives you.
 
 Danger: Enabling `log_statement=all`, or setting `log_min_duration_statement` to a low or `0` threshold, logs the full text of statements — including plaintext values such as passwords passed as query parameters. Before enabling either, check whether your queries carry sensitive data, and confirm who can access these logs and how long they're retained.
 
 ### Check these often-overlooked settings
 
-- **[`log_connections` and `log_disconnections`](https://supabase.com/guides/database/postgres/postgres-log-config#logconnections)** — turn off if you don't need a record of exactly when every connection opened and closed. Keep on if you're troubleshooting connection exhaustion or spikes, or have a security requirement to log all connection activity. If this setting is generating a lot of volume, your app may not be using a connection pooler such as Supavisor, which Supabase provides by default — connecting through the pooler reduces both log volume and the risk of running out of connections.
-- **[`log_autovacuum_min_duration`](https://supabase.com/guides/database/postgres/postgres-log-config#logautovacuumminduration)** — raise the threshold, or turn it off, if you're not actively diagnosing a table-maintenance problem. Keep it on with a reasonable threshold if you've had autovacuum-related performance issues before.
-- **[`log_temp_files`](https://supabase.com/guides/database/postgres/postgres-log-config#logtempfiles)** — turn off if you're not actively tuning query performance around memory usage. Keep it on if you're investigating slow queries related to sorting or joining large amounts of data.
-- **[`log_lock_waits`](https://supabase.com/guides/database/postgres/postgres-log-config#loglockwaits)** — turn off if you're not seeing symptoms of queries hanging. Keep it on if multiple processes write to the same data concurrently and you've seen unexplained slowdowns before.
+- **[`log_connections` and `log_disconnections`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logconnections)** — turn off if you don't need a record of exactly when every connection opened and closed. Keep on if you're troubleshooting connection exhaustion or spikes, or have a security requirement to log all connection activity. If this setting is generating a lot of volume, your app may not be using a connection pooler such as Supavisor, which Supabase provides by default — connecting through the pooler reduces both log volume and the risk of running out of connections.
+- **[`log_autovacuum_min_duration`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logautovacuumminduration)** — raise the threshold, or turn it off, if you're not actively diagnosing a table-maintenance problem. Keep it on with a reasonable threshold if you've had autovacuum-related performance issues before.
+- **[`log_temp_files`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logtempfiles)** — turn off if you're not actively tuning query performance around memory usage. Keep it on if you're investigating slow queries related to sorting or joining large amounts of data.
+- **[`log_lock_waits`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#loglockwaits)** — turn off if you're not seeing symptoms of queries hanging. Keep it on if multiple processes write to the same data concurrently and you've seen unexplained slowdowns before.
 
 ### Check this if your logs seem unusually large for no clear reason
 
-**[`log_min_messages`](https://supabase.com/guides/database/postgres/postgres-log-config#logminmessages)** controls the verbosity of Postgres's own internal logging, separate from query activity. The default is `warning`. If this was turned up to a debug level while troubleshooting a specific issue and never turned back down, it can produce a large, ongoing volume of internal messages that aren't useful for day-to-day monitoring — check the current value and reset it if you don't recognize turning it up yourself.
+**[`log_min_messages`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logminmessages)** controls the verbosity of Postgres's own internal logging, separate from query activity. The default is `warning`. If this was turned up to a debug level while troubleshooting a specific issue and never turned back down, it can produce a large, ongoing volume of internal messages that aren't useful for day-to-day monitoring — check the current value and reset it if you don't recognize turning it up yourself.
 
 Custom RPC functions and stored procedures are also worth reviewing. A PL/pgSQL function that calls `RAISE NOTICE` or `RAISE LOG` produces log output every time it runs, independent of any of the settings above — if a frequently-called function logs on every invocation, it can account for a large, otherwise-unexplained share of your volume.
 
 ### Settings you can generally leave alone
 
-[`log_checkpoints`](https://supabase.com/guides/database/postgres/postgres-log-config#logcheckpoints), [`log_recovery_conflict_waits`](https://supabase.com/guides/database/postgres/postgres-log-config#logrecoveryconflictwaits), `log_replication_commands`, and [`log_startup_progress_interval`](https://supabase.com/guides/database/postgres/postgres-log-config#logstartupprogressinterval) are either low-volume by nature or only relevant if you use specific features such as replication. Unless you know you're using the related feature, these rarely contribute meaningfully to your total ingest.
+[`log_checkpoints`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logcheckpoints), [`log_recovery_conflict_waits`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logrecoveryconflictwaits), `log_replication_commands`, and [`log_startup_progress_interval`](https://supabase.com/docs/guides/database/postgres/postgres-log-config#logstartupprogressinterval) are either low-volume by nature or only relevant if you use specific features such as replication. Unless you know you're using the related feature, these rarely contribute meaningfully to your total ingest.
 
 ## Checking your new usage baseline
 
@@ -113004,7 +113002,7 @@ Create a [new project](https://database.new)
 
 In the new project:
 
-- If Webhooks were used in the old database, enable [Database Webhooks](https://supabase.com/dashboard/project/_/database/hooks).
+- If Webhooks were used in the old database, enable [Database Webhooks](https://supabase.com/dashboard/project/_/integrations/webhooks/overview).
 - If any non-default extensions were used in the old database, enable the [Extensions](https://supabase.com/dashboard/project/_/database/extensions).
 
 3. **Get the new database connection string**
@@ -113728,7 +113726,7 @@ Create a new [Supabase project](https://database.new)
 
 In your new project:
 
-- If you were using Webhooks, enable [Database Webhooks](https://supabase.com/dashboard/project/_/database/hooks).
+- If you were using Webhooks, enable [Database Webhooks](https://supabase.com/dashboard/project/_/integrations/webhooks/overview).
 - If you were using any extensions, enable the [Extensions](https://supabase.com/dashboard/project/_/database/extensions).
 - If you were using Replication for Realtime, enable [Publication](https://supabase.com/dashboard/project/_/database/publications) where needed.
 
@@ -115740,7 +115738,7 @@ Before members can use enterprise-managed authentication:
 
 1. **SSO must be configured** for your organization. See [Enable SSO for your organization](https://supabase.com/docs/guides/platform/sso) if you haven't set this up yet.
 2. **Your identity provider must support issuing ID-JAGs** for MCP's Enterprise-Managed Authorization extension. Check with your IdP whether this is available and how to enable it.
-3. **The MCP client must be authorized for your organization.** An organization owner does this from [Authorized Apps](https://supabase.com/dashboard/org/_/apps) in your organization settings, the same place you manage other third-party integrations.
+3. **The MCP client must be authorized for your organization.** An organization owner or admin does this once by connecting the MCP client to Supabase through the standard sign-in flow and approving it for your organization on the consent screen. The approved client then appears under [Authorized Apps](https://supabase.com/dashboard/org/_/apps) in your organization settings, where you can review or revoke it.
 
 ## Who's involved
 
@@ -115756,7 +115754,7 @@ Before members can use enterprise-managed authentication:
 2. **MCP client exchanges that identity token for an ID-JAG, at the IdP.** This is a separate request the client makes to the IdP (an [RFC 8693](https://datatracker.ietf.org/doc/html/rfc8693) token exchange), asking for a token scoped specifically to Supabase. The IdP checks its own policy before issuing one.
 3. **IdP returns the ID-JAG to the MCP client.**
 4. **MCP client presents the ID-JAG to Supabase's OAuth server**, using it as a [JWT authorization grant](https://datatracker.ietf.org/doc/html/rfc7523), with no interactive consent screen.
-5. **Supabase validates the ID-JAG**, checking it against your IdP's public keys, confirming the member belongs to your organization with a matching SSO identity, and confirming an organization owner has authorized this MCP client. If everything checks out, Supabase issues a short-lived access token.
+5. **Supabase validates the ID-JAG**, checking it against your IdP's public keys, confirming the member belongs to your organization with a matching SSO identity, and confirming an organization owner or admin has authorized this MCP client. If everything checks out, Supabase issues a short-lived access token.
 6. **MCP client calls the Supabase MCP Server** using that access token, same as any other authenticated request.
 
 The access token from step 5 can't be refreshed. The MCP client repeats steps 2 through 5 whenever it needs a new one, and its access is always limited to what your organization's existing permissions already allow.
@@ -115769,7 +115767,7 @@ Without it, every member has to manually connect and authorize the MCP client ag
 - **No central control**: admins can't see or revoke the MCP client's access at the organization level; it's spread across individual user approvals.
 - **Inconsistent access**: a member's access through the MCP client isn't guaranteed to stay in sync with the role your IdP already assigns them.
 
-With enterprise-managed authentication, an organization owner authorizes the MCP client once for the whole organization. From then on, access follows your existing SSO sign-in, with no separate approval and no manual reconnection when a token expires.
+With enterprise-managed authentication, an organization owner or admin authorizes the MCP client once for the whole organization. From then on, access follows your existing SSO sign-in, with no separate approval and no manual reconnection when a token expires.
 
 ## Configuring your ID-JAG issuer
 
@@ -115786,7 +115784,7 @@ Once saved, Supabase uses this URL to fetch your IdP's public keys and verify ID
 ## Security considerations
 
 - **Access is always scoped to user.** An ID-JAG can never grant access beyond what the authenticated member already has permission to see.
-- **The MCP client must be explicitly authorized.** Adding an ID-JAG issuer alone doesn't grant it access; an organization owner still has to authorize it from [Authorized Apps](https://supabase.com/dashboard/org/_/apps).
+- **The MCP client must be explicitly authorized.** Adding an ID-JAG issuer alone doesn't grant it access; an organization owner or admin still has to approve it once through the standard sign-in flow. Approved clients are listed under [Authorized Apps](https://supabase.com/dashboard/org/_/apps).
 - **Access tokens are short-lived and non-renewable.** There's no refresh token.
 - **Revoke access at the source.** To cut off the MCP client for your whole organization, remove its authorization from [Authorized Apps](https://supabase.com/dashboard/org/_/apps). To cut off a single member, remove them in Supabase dashboard.
 
@@ -139323,7 +139321,7 @@ results = index.query(
 - [How do you troubleshoot Next.js - Supabase Auth issues?](https://supabase.com/docs/guides/troubleshooting/how-do-you-troubleshoot-nextjs---supabase-auth-issues-riMCZV)
 - [How long does it take to restore a database from a Point-in-Time backup (PITR)?](https://supabase.com/docs/guides/troubleshooting/how-long-does-it-take-to-restore-a-database-from-a-point-in-time-backup-pitr-qO8gOG)
 - [How Postgres chooses which index to use](https://supabase.com/docs/guides/troubleshooting/how-postgres-chooses-which-index-to-use-_JHrf4)
-- [How to bypass modification limits](https://supabase.com/docs/guides/troubleshooting/how-to-bypass-cooldown-period)
+- [How to bypass cooldown period](https://supabase.com/docs/guides/troubleshooting/how-to-bypass-cooldown-period)
 - [How to change max database connections](https://supabase.com/docs/guides/troubleshooting/how-to-change-max-database-connections-_BQ8P5)
 - [How to check if my queries are being blocked by other queries?](https://supabase.com/docs/guides/troubleshooting/how-to-check-if-my-queries-are-being-blocked-by-other-queries-NSKtR1)
 - [How to delete a role in Postgres](https://supabase.com/docs/guides/troubleshooting/how-to-delete-a-role-in-postgres-8-AvxY)
@@ -143792,7 +143790,7 @@ Since the wraparound prevention autovacuum cannot be stopped, the best approach 
 2. **Increase Disk Throughput/IOPS:**
    - **Action:** If disk I/O utilization is also consistently high (e.g., near 100%), consider temporarily increasing your disk's provisioned IOPS and throughput.
    - **Why it helps:** Autovacuum is an I/O-intensive operation, involving a lot of reading and writing. Higher disk performance can significantly speed up the process.
-   - **Considerations:** Cloud providers may limit the number of disk modifications (e.g., up to four in a rolling 24-hour window). You can start a new modification immediately after the previous one finishes, provided you have not exceeded this rolling 24-hour quota.
+   - **Considerations:** Cloud providers often have limitations, such as a cooldown period (e.g., 4 hours) between disk modification operations.
 
 ## Monitoring progress and future prevention
 
@@ -144268,21 +144266,19 @@ create index index_name on person ((data ->> 'name'));
 
 ---
 
-# How to bypass modification limits
+# How to bypass cooldown period
 
-This limit is not a Supabase limitation. It is rooted in how Amazon EBS (the underlying storage for our databases) manages volume modifications. AWS allows up to four modifications per volume within a rolling 24-hour window. While you can start a new modification immediately after a previous one completes, AWS enforces a quota that prevents a fifth modification within that 24-hour period to ensure data integrity and volume stability.
+This cooldown isn't an arbitrary Supabase restriction — it's rooted in how Amazon EBS (the underlying storage for our databases) limits volume modifications to up to four times within a rolling 24-hour window. To keep this predictable, Supabase enforces a 4-hour cooldown after each manual disk modification (e.g. increasing size, changing type, or IOPS) before allowing another one on the same volume. This helps ensure data integrity and stability of the volume under load.
 
-From the [**AWS docs**](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyVolume.html):
+See the [**AWS docs**](https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyVolume.html) for more on how Amazon EBS itself throttles volume modifications.
 
-> After you initiate a volume modification, you must wait for that modification to reach the completed state before you can initiate another modification for the same volume. You can modify a volume up to four times within a rolling 24-hour period, as long as the volume is in the in-use or available state, and all previous modifications for that volume are completed. If you exceed this limit, you get an error message that indicates when you can perform your next modification.
+There are a few options to work around the cooldown, depending on the state of your database:
 
-There are a few options to work around this limit if you have already used your four modifications and need to make further adjustments:
-
-1. **Restore to a new project**: This spins up a new instance with a new disk, bypassing the 24-hour quota entirely. It’s a great option if you're okay with a new project and project refactoring. [**Docs: restoring to a new project**](https://supabase.com/docs/guides/platform/backups#restore-to-a-new-project).
-2. **pg\_upgrade**: Our [**pg\_upgrade**](https://supabase.com/docs/guides/platform/upgrading) implementation migrates your data to a new disk, which resets the modification count. The main requirement here is that the database must be operational - pg\_upgrade can't run if your database is in a degraded or inaccessible state.
+1. **Restore to a new project**: This spins up a new instance with a new disk, bypassing the cooldown entirely. It’s a great option if you're okay with a new project and project refactoring. [**Docs: restoring to a new project**](https://supabase.com/docs/guides/platform/backups#restore-to-a-new-project).
+2. **pg\_upgrade**: Our [**pg\_upgrade**](https://supabase.com/docs/guides/platform/upgrading) implementation migrates your data to a new disk, which skips the cooldown. The main requirement here is that the database must be operational - pg\_upgrade can't run if your database is in a degraded or inaccessible state.
 3. **Pause and Restore**: This also migrates to a new disk but is only available for projects on the Free plan. If you're not on the Free plan, you'd need to [**transfer your project to an organization on the Free plan**](https://supabase.com/docs/guides/platform/project-transfer) first.
 
-If the database is down or locked in a bad state (e.g., corrupted or stuck during resize), and you have hit the modification limit, the only path forward is to wait until the rolling 24-hour window allows for another modification.
+If the database is down or locked in a bad state (e.g., corrupted or stuck during resize), the only path forward is to wait until the cooldown expires and the disk resize job completes in the queue.
 
 More on this in our doc here: [**https://supabase.com/docs/guides/platform/database-size#disk-size**](https://supabase.com/docs/guides/platform/database-size#disk-size).
 
@@ -149332,7 +149328,7 @@ psql -d [CONNECTION_STRING] -f /path/to/backup_file.backup
 
 Some errors like `object already exists` are expected and can be safely ignored — they occur because the new project already has the default Supabase schemas applied.
 
-See the [Restore Dashboard backup guide](https://supabase.com/guides/platform/migrating-within-supabase/dashboard-restore) for detailed instructions and troubleshooting.
+See the [Restore Dashboard backup guide](https://supabase.com/docs/guides/platform/migrating-within-supabase/dashboard-restore) for detailed instructions and troubleshooting.
 
 ## Step 4: Restore Storage objects
 
@@ -149553,9 +149549,9 @@ The script saves both source and target configs to a local `config_sync_<timesta
 
 ## Related guides
 
-- [Migrating within Supabase](https://supabase.com/guides/platform/migrating-within-supabase)
-- [Restore Dashboard backup](https://supabase.com/guides/platform/migrating-within-supabase/dashboard-restore)
-- [Backup and Restore using the CLI](https://supabase.com/guides/platform/migrating-within-supabase/backup-restore)
+- [Migrating within Supabase](https://supabase.com/docs/guides/platform/migrating-within-supabase)
+- [Restore Dashboard backup](https://supabase.com/docs/guides/platform/migrating-within-supabase/dashboard-restore)
+- [Backup and Restore using the CLI](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore)
 
 
 ---
@@ -152194,7 +152190,7 @@ Go to your [Table Editor](https://supabase.com/dashboard/project/_/editor/) and 
 
 The `_http_response` table saves all the response messages from the past 6 hours. If every column contains NULL values, except for the `id`, `error_msg`, and `created` columns, then you are experiencing [a timeout bug](https://github.com/supabase/pg_net/issues/86).
 
-By default, webhooks will execute the next 200 available queued requests. If the requests are too intense, it may result in a mass timeout. In the [Webhook Dashboard](https://supabase.com/dashboard/project/_/database/hooks), you should increase your webhook's timeout to minimize this issue.
+By default, webhooks will execute the next 200 available queued requests. If the requests are too intense, it may result in a mass timeout. In the [Webhook Dashboard](https://supabase.com/dashboard/project/_/integrations/webhooks/overview), you should increase your webhook's timeout to minimize this issue.
 
 **4. Inspect endpoints**
 The below code makes a request to the Postman Echo API through PG\_NET
@@ -175333,6 +175329,530 @@ export default {
     return Response.json(data)
   },
 }
+```
+
+## Frameworks
+
+`@supabase/server` middleware runs inside Hono, H3, Elysia, NestJS, and TanStack Start through a bridge: one file you copy into your project. The bridge runs a `@supabase/middleware` entry array in the framework's own middleware slot. Your route handlers then read `supabase`, `jwtClaims`, and any other key the entries contribute from the place your framework keeps per-request state.
+
+The framework adapters (`@supabase/server/adapters/*`) predate the middleware engine. We are moving off them, and they will be deprecated soon. The bridges on this page replace them. If you use an adapter today, read "Moving off the adapters" below before you change anything. One step in that migration can open an endpoint up without an error.
+
+The bridges need `@supabase/server` 1.6.0 or later and Node 22 or later. `withRequiredClaims` shipped in 1.5.1 and the entry form of `withSupabase` in 1.6.0. Releases before 1.5.1 have no `/middleware/*` exports.
+
+### What a bridge gives you
+
+An entry does three jobs. How many of them survive depends on the framework.
+
+- Context. The entries contribute typed keys such as `supabase` and `jwtClaims`, and your handler reads them.
+- Short-circuit. An entry can return a `Response`, and your route never runs. That is how `withRequiredClaims` rejects a request.
+- Response phase. An entry written as `async function*` can `yield`, see the response on the way out, and rewrite it. `withCors` needs this to stamp headers.
+
+| Framework      | Context | Short-circuit | Response phase | Pattern           |
+| -------------- | ------- | ------------- | -------------- | ----------------- |
+| Hono           | Yes     | Yes           | Yes            | middleware slot   |
+| H3 / Nuxt      | Yes     | Yes           | Yes            | middleware slot   |
+| Elysia         | Yes     | Yes           | Yes            | wrap `app.handle` |
+| NestJS         | Yes     | Yes           | No             | guard             |
+| TanStack Start | Yes     | Yes           | Yes            | middleware slot   |
+
+If you only read `supabase` inside a handler, every row works for you. Ignore the response-phase column.
+
+Each bridge folds the entry array once, when you call it, so entries keep their state across requests. Each bridge also checks the array at compile time. Two entries that contribute the same key, or an entry whose prerequisite is missing, fail to compile at the call site.
+
+A gated group of routes takes `withRequiredClaims()` and a public group takes `withClaims()`. The two cannot share an array, because both contribute `jwtClaims`. Each framework scopes an array to a group of routes in its own way.
+
+| Framework      | One array per route group                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------------------------- |
+| Hono           | One sub-app per array, mounted with `app.route()`. A second `app.use()` statement is not enough.              |
+| H3 / Nuxt      | `app.use('/path', toH3(entries))` before the routes under that path                                           |
+| Elysia         | One Elysia instance per array, each wrapped with `wrapElysia`, behind a fetch handler that dispatches by path |
+| NestJS         | `@UseGuards()` on the controller or the handler                                                               |
+| TanStack Start | `.middleware([...])` on each server function or server route                                                  |
+
+The bridge files live in the server repository under [`examples/frameworks`](https://github.com/supabase/server/tree/main/examples/frameworks), next to a minimal app for each. Copy the file for your framework as is, comments included. Some lines look redundant and are not. The comments say why.
+
+### Hono
+
+Copy [`hono/supabase-middleware.ts`](https://github.com/supabase/server/blob/main/examples/frameworks/hono/supabase-middleware.ts) into your project. `toHono` returns Hono middleware. Register it with `.use()` in a chain, and the contributed keys type through to `c.var` with no `Env` declaration of your own. Register it before the routes it gates. Hono applies middleware only to routes added after it, so a route added first runs with no gate and no error. `withSupabaseClient()` threads the generic through, so `c.var.supabase` is a `SupabaseClient`.
+
+Hono carries the contributed keys through the return value of a chained call. `app.use(...)` on one line and `app.get(...)` on the next typecheck the middleware but leave `c.var` untyped. The gate still runs, so a failing typecheck is the only signal. A second array for other routes goes in its own sub-app, mounted with `app.route()`. Each sub-app chains its own `.use()` into its routes.
+
+One line in the bridge looks redundant: `c.res` is cleared before it is assigned. When a response-phase entry returns a new `Response`, Hono's `res` setter copies the previous response's headers onto it, which reverts any header the entry rewrote. Clearing first makes the assignment final. Keep the line and its comment.
+
+On Cloudflare Workers the bridge seeds the pipeline with `c.env`, so `getEnv` inside the entries reads your bindings.
+
+```ts
+import { Hono } from 'hono'
+import { withRequiredClaims } from '@supabase/server/middleware/required-claims'
+import { withSupabaseClient } from '@supabase/server/middleware/client'
+
+import { toHono } from './lib/supabase-middleware.js'
+
+const app = new Hono()
+  .use('*', toHono([withRequiredClaims(), withSupabaseClient()]))
+  .get('/todos', async (c) => {
+    const { data, error } = await c.var.supabase.from('todos').select()
+    if (error) return c.json({ error: error.message }, 500)
+    return c.json(data)
+  })
+  .get('/me', (c) => c.json({ id: c.var.jwtClaims.sub }))
+
+export default { fetch: app.fetch }
+```
+
+```ts
+import { withClaims } from '@supabase/server/middleware/claims'
+
+const me = new Hono()
+  .use('*', toHono([withRequiredClaims(), withSupabaseClient()]))
+  .get('/', (c) => c.json({ id: c.var.jwtClaims.sub }))
+
+const feed = new Hono()
+  .use('*', toHono([withClaims(), withSupabaseClient()]))
+  .get('/', (c) => c.json({ anonymous: c.var.jwtClaims === null }))
+
+const app = new Hono().route('/me', me).route('/feed', feed)
+```
+
+### H3 / Nuxt
+
+Copy [`h3/supabase-middleware.ts`](https://github.com/supabase/server/blob/main/examples/frameworks/h3/supabase-middleware.ts) into your project. `toH3` returns H3 middleware. H3 middleware return the response directly, so no workaround is needed.
+
+`event.context` is not generic. Hoist the entry array to a `const` and read the keys through `Contributions<typeof entries>` from `@supabase/middleware`, or wrap that in a small typed accessor of your own.
+
+```ts
+import { H3 } from 'h3'
+import type { Contributions } from '@supabase/middleware'
+import { withRequiredClaims } from '@supabase/server/middleware/required-claims'
+import { withSupabaseClient } from '@supabase/server/middleware/client'
+
+import { toH3 } from './lib/supabase-middleware.js'
+
+const entries = [withRequiredClaims(), withSupabaseClient()] as const
+
+const app = new H3()
+app.use(toH3(entries))
+
+app.get('/todos', async (event) => {
+  const { supabase } = event.context as Contributions<typeof entries>
+  const { data, error } = await supabase.from('todos').select()
+  if (error) throw error
+  return data
+})
+
+export default { fetch: app.fetch }
+```
+
+### Elysia
+
+Copy [`elysia/supabase-middleware.ts`](https://github.com/supabase/server/blob/main/examples/frameworks/elysia/supabase-middleware.ts) into your project. Elysia's lifecycle hooks run in the request phase only. A `.resolve()` hook has no `next()` and never sees the outgoing response. So `wrapElysia` composes the entries around `app.handle`, and `supabaseCtx()` is a plugin that hands the context back to your routes per request.
+
+`supabaseCtx<typeof entries>()` types the route context. Pass the same tuple type that `wrapElysia` receives. Because the entries wrap the whole app, they apply app-wide. A second array for other routes needs its own Elysia instance, wrapped separately, with a fetch handler in front that dispatches by path to the wrapped apps.
+
+The two functions work only as a pair. If you serve the app without `wrapElysia`, with `app.listen()` or `export default app`, the entries never run and `supabaseCtx()` throws on every route.
+
+```ts
+import { Elysia } from 'elysia'
+import { withRequiredClaims } from '@supabase/server/middleware/required-claims'
+import { withSupabaseClient } from '@supabase/server/middleware/client'
+
+import { supabaseCtx, wrapElysia } from './lib/supabase-middleware.js'
+
+const entries = [withRequiredClaims(), withSupabaseClient()] as const
+
+const app = new Elysia()
+  .use(supabaseCtx<typeof entries>())
+  .get('/todos', async (c) => {
+    const { data, error } = await c.supabase.from('todos').select()
+    if (error) throw error
+    return data
+  })
+
+export default {
+  fetch: wrapElysia(entries, (req) => app.handle(req)),
+}
+```
+
+### NestJS
+
+Copy [`nestjs/supabase.guard.ts`](https://github.com/supabase/server/blob/main/examples/frameworks/nestjs/supabase.guard.ts) into your project. `toNestGuard` returns a guard class. A guard covers context and short-circuit. The response phase is not available: Nest's interceptors receive the controller's return value, not a `Response`, so an entry's `yield` has nothing to act on. `withCors` in the array stamps a short-circuit only: the 401 carries the headers and a successful response does not. A preflight never reaches a guard either. Guards run after routing, and no `OPTIONS` route exists, so the preflight 404s. CORS on Nest is `app.enableCors()`. Leave `withCors` out of the guard's array.
+
+Call `toNestGuard` once and reuse the class on every route, so the pipeline folds once. On a short-circuit the guard copies the entry's headers onto the response, then throws an `HttpException` with the entry's status and its `{ message, code }` body. The bridge builds a Web `Request` from Nest's request with the headers and method. The body is not forwarded. An entry that reads it sees an empty body and runs as if that were the payload, so a signature check or a body audit in the array passes with nothing checked. Put those in Nest middleware. A contribution whose key matches a property Nest's request already has, such as `body` or `query`, throws instead of overwriting it. `Injectable()` is applied as a call, so the file works without a decorator transform. The controller does not. Nest is built on decorators, so running the example needs swc, ts-node, or a build step. Node's built-in type stripping rejects the `@Controller()` line. Nest also answers a `POST` with 201 by default, where the other frameworks answer 200.
+
+```ts
+import { Controller, Get, Req, UseGuards } from '@nestjs/common'
+import type { Contributions } from '@supabase/middleware'
+import { withRequiredClaims } from '@supabase/server/middleware/required-claims'
+import { withSupabaseClient } from '@supabase/server/middleware/client'
+
+import { toNestGuard } from './lib/supabase.guard.js'
+
+const entries = [withRequiredClaims(), withSupabaseClient()] as const
+const SupabaseGuard = toNestGuard(entries)
+
+@Controller('todos')
+export class TodosController {
+  @Get()
+  @UseGuards(SupabaseGuard)
+  async list(@Req() req: Contributions<typeof entries>) {
+    const { data, error } = await req.supabase.from('todos').select()
+    if (error) throw error
+    return data
+  }
+}
+```
+
+### TanStack Start
+
+TanStack Start never had an adapter, so this section is integration guidance. The migration steps below do not apply to it. Copy [`tanstack-start/supabase-middleware.ts`](https://github.com/supabase/server/blob/main/examples/frameworks/tanstack-start/supabase-middleware.ts) into your project. `toTanStackStart` returns a request middleware.
+
+`request` is already a Web `Request`, and `next()` resolves to an object carrying the downstream `Response`, so the fit is close. Two details in the bridge carry the typing. `.server<Contributions>` is what types `context` downstream; the generic has no constraint, so leaving it off types the context as `undefined`. And `<const Entries>` keeps the tuple, so every `context.*` read stays typed.
+
+The engine buffers a request body only when it seeds the context itself. The bridge seeds, so it buffers too, and it does so in place. `next()` accepts `context` only, so the bridge cannot hand a different `Request` downstream, and Start gives the route handler the same object the middleware saw. The bridge installs cached readers on that object, and an entry and the handler read the same body.
+
+`createMiddleware({ type: 'request' })` is the right kind here. Its server function may return a `Response`, which is what lets an entry short-circuit, and `createServerFn().middleware([...])` accepts request middleware.
+
+On a server function, Start's fetcher returns any `application/json` body as the call's value without checking the status. It checks `response.ok` only when the body is not JSON. A 401 from `withRequiredClaims()` would resolve the caller's promise with `{ message, code }` where it expects its own result type: the same silent-200 class of failure as the auth trap, one layer further out. So when an entry short-circuits on a server function, the bridge rethrows it as an error carrying `status` and `code`. Server routes get the `Response` back unchanged.
+
+The file that calls `.middleware([...])` ships to the client, so the entry modules it references are client-reachable. Read configuration through `getEnv` per request and keep secrets out of module scope.
+
+Vite's dev server answers CORS on its own. A route with no `withCors` entry works in development and fails once the app is built and served. Compose `withCors` on every route a browser calls, and check the preflight against a production build.
+
+```ts
+import { createServerFn } from '@tanstack/react-start'
+import { withRequiredClaims } from '@supabase/server/middleware/required-claims'
+import { withSupabaseClient } from '@supabase/server/middleware/client'
+
+import { toTanStackStart } from './lib/supabase-middleware.js'
+
+const supabase = toTanStackStart([withRequiredClaims(), withSupabaseClient()])
+
+export const getTodos = createServerFn()
+  .middleware([supabase])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase.from('todos').select()
+    if (error) throw error
+    return data
+  })
+
+export const whoAmI = createServerFn()
+  .middleware([supabase])
+  .handler(async ({ context }) => ({ id: context.jwtClaims.sub }))
+```
+
+### Moving off the adapters
+
+Each adapter solved the same problem in a framework-specific way: build a `SupabaseContext` and stash it where the handler can reach it. That meant a published entry point, a peer dependency range, and a release cycle per framework, all to wrap one call. The engine replaced the model. A middleware is now an entry, a `(handler) => handler` wrapper over the Web `Request` and `Response` pair, and `withSupabaseClient()`, `withSupabaseAdminClient()`, `withRequiredClaims()`, and the rest are ordinary entries you compose. What remains is the bridge, and it belongs in your project, not in a package that has to track your framework's major versions.
+
+The adapters still work in v1 and will be deprecated soon. They will be removed in a future major. `withSupabase(config, handler)` from `@supabase/server` is not part of this change.
+
+Three changes come with the migration. The first can open an endpoint up.
+
+### The auth trap
+
+The adapters rejected unauthenticated requests. `withClaims()` does not. Migrating an `auth: 'user'` endpoint onto it instead of `withRequiredClaims()` turns a 401 into a silent 200.
+
+`withSupabase({ auth: 'user' })` verified the caller's token before your handler ran and returned a 401 when it was missing. The entry that looks like its replacement does not.
+
+```ts
+// Before: an anonymous request gets 401 and the handler never runs.
+app.use('*', withSupabase({ auth: 'user' }))
+
+// After, wrong: an anonymous request gets 200. The handler runs with
+// jwtClaims === null and an unauthenticated Supabase client.
+app.use('*', toHono([withClaims(), withSupabaseClient()]))
+
+// After, right: the same gate the adapter applied.
+app.use('*', toHono([withRequiredClaims(), withSupabaseClient()]))
+```
+
+`withClaims()` rejects a token that is present and invalid. A request with no credentials at all is not an error to it. It contributes `jwtClaims: null` and falls through, by design, because many pipelines want an anonymous path. Nothing throws and nothing logs. The endpoint returns 200 with whatever Row Level Security lets the anonymous role see, often an empty array. That reads like a data bug, and it can sit in production for a long time before anyone reads it as an auth bug.
+
+`withRequiredClaims()` from `@supabase/server/middleware/required-claims` is the required-caller counterpart. It verifies against the same project JWKS, rejects before your handler runs, and contributes non-null `jwtClaims`, so gated handlers read `jwtClaims.sub` with no `?.` fallback. The two are mutually exclusive. Both declare the `jwtClaims` key, so composing them is a compile-time conflict, not a fallback.
+
+Which endpoints are affected is written in the adapter config, not in the handler. That is what makes it easy to miss in review.
+
+| Adapter config               | Rejected before           | Replacement                       |
+| ---------------------------- | ------------------------- | --------------------------------- |
+| `auth: 'user'`, or no config | missing or invalid JWT    | `withRequiredClaims()`            |
+| `auth: 'none'`               | nothing                   | nothing; the client entries alone |
+| `auth: 'publishable'`        | missing or wrong `apikey` | none. Keep `withSupabase`         |
+| `auth: 'secret'`             | missing or wrong `apikey` | none. Keep `withSupabase`         |
+
+A bare `withSupabase()` with no config was `auth: 'user'` and did reject.
+
+No composable gate exists for `publishable` or `secret`. Those endpoints stay on `withSupabase({ auth: 'publishable' })` or `withSupabase({ auth: 'secret' })`, which needs no changes. Hand-rolling a key check is how endpoints get opened up. Two details catch people who try. Those modes read the `apikey` header and never `Authorization`, so a caller sending `Authorization: Bearer <key>` gets a bare 401. And `auth: 'secret:<name>'` also points `supabaseAdmin` at `secretKeys['<name>']`, so that entry has to hold a real Supabase secret key.
+
+`withRequiredClaims` answers with the standard error payload, with the same codes `withSupabase({ auth: 'user' })` returns for the same request.
+
+| Request                                               | Status | `code`                |
+| ----------------------------------------------------- | ------ | --------------------- |
+| No `Authorization` header                             | 401    | `MISSING_CREDENTIALS` |
+| An `sb_*` API key in the `Authorization` slot         | 401    | `UNUSABLE_CREDENTIAL` |
+| A token that fails verification                       | 401    | `INVALID_JWT`         |
+| A token, but the JWKS could not be fetched            | 500    | `JWKS_FETCH_FAILED`   |
+| A token, but no JWKS source and no usable project URL | 500    | `JWKS_NOT_CONFIGURED` |
+
+The adapters emitted none of these. Each rejected in its own framework-native shape. Hono threw an `HTTPException`, which renders as `text/plain` with no `code`. H3 threw an `HTTPError`. Elysia surfaced a `SupabaseError` through your `onError` handler. Only the NestJS adapter threw `HttpException({ message, code }, status)`. A client that branches on the 401 status is fine. A client that parses the body needs rechecking.
+
+Neither entry answers a CORS preflight, and the short-circuits carry no CORS headers. For browser callers, compose `withCors` from `@supabase/middleware/cors` ahead of the gate. CORS is an entry like any other, so a route that composes no entries has no CORS. A public route a browser calls, such as a health check, needs its own array with `withCors` in it. Under `curl` the response is an ordinary 200; only a browser refuses it.
+
+### Keep `withSupabase` where it fits
+
+`withSupabase(config, handler)` still does the verify-then-reject work for you, and it is not deprecated. It wraps a fetch handler rather than composing into a framework chain, so it does not slot into a bridge. If an endpoint is already a plain fetch handler, staying on `withSupabase()` is a legitimate end state. It is also the only way to get the full `SupabaseContext`, `userClaims` and `authMode` included, behind an auth gate.
+
+To compose other entries around it, `withSupabase({ auth: 'user' })` with no handler is a `pipeline` entry placed by position. Entries before it run ahead of the auth gate. Entries after it receive the full `SupabaseContext`. Nesting, as in `withSupabase(config, entry(handler))`, still works. The entry form is alpha and needs 1.6.0 or later.
+
+```ts
+import { pipeline } from '@supabase/middleware'
+import { withCors } from '@supabase/middleware/cors'
+import { withSupabase } from '@supabase/server'
+
+export default {
+  fetch: pipeline(
+    [
+      withCors({ origin: ['https://app.example.com'] }),
+      withSupabase({ auth: 'user', cors: 'disabled' }),
+    ],
+    async (_req, ctx) => Response.json({ user: ctx.userClaims?.id })
+  ),
+}
+```
+
+`withSupabaseClient()` and `withSupabaseAdminClient()` throw an `EnvError` when configuration is missing, and the bridges do not catch it. The adapters turned it into a clean 500. The two fail at different moments. `withSupabaseClient()` throws from the entry chain, before your handler runs. `withSupabaseAdminClient()` builds lazily and throws on the first `supabaseAdmin` property access, inside your handler. Map both in your framework's error boundary.
+
+### The shape change
+
+Adapters exposed one nested object. The entries contribute flat keys, one per middleware.
+
+```ts
+// Before
+const { supabase, userClaims } = c.var.supabaseContext
+
+// After
+const supabase = c.var.supabase
+const jwtClaims = c.var.jwtClaims
+```
+
+For `supabase` and `supabaseAdmin` the rewrite is mechanical. For claims it is not. No entry contributes `userClaims`. `withClaims()` and `withRequiredClaims()` both contribute `jwtClaims`, the raw JWT payload, and the field names differ.
+
+| `userClaims` (adapters) | `jwtClaims` (middleware) |
+| ----------------------- | ------------------------ |
+| `.id`                   | `.sub`                   |
+| `.role`                 | `.role`                  |
+| `.email`                | `.email`                 |
+| `.appMetadata`          | `.app_metadata`          |
+| `.userMetadata`         | `.user_metadata`         |
+
+A blanket rename of `userClaims` to `jwtClaims` fails to compile in TypeScript. In plain JavaScript, or behind an `as`, `jwtClaims.id` is `undefined` with no error, and `.id` is usually the value rows get written with. Rewrite each read against the table.
+
+### Step by step
+
+Do the steps in order. The auth inventory comes before any code change, because the step that follows it is the one that can open an endpoint up. Follow the steps yourself, or hand them to a coding agent with the prompt at the end of this page.
+
+### 1. Check your versions
+
+The bridges need `@supabase/server` 1.6.0 or later and Node 22 or later.
+
+Then decide whether you need the response phase: an entry that sees the outgoing response and can rewrite it, which is what CORS and header-stamping middleware do. The table at the top of this page says what survives per framework. If you only read `supabase` inside a handler, you do not need it.
+
+```bash
+npm ls @supabase/server   # 1.6.0 or later
+node --version            # 22 or later
+```
+
+### 2. Inventory every adapter registration
+
+Do this before editing anything. What you need is in the adapter config, not in the handlers, and it stops being visible the moment you start swapping imports.
+
+For each hit, find the `withSupabase(...)` call it feeds and write down its `auth` value. A bare `withSupabase()` with no config counts as `auth: 'user'`. Keep that list. Step 7 checks against it.
+
+```bash
+grep -rn "@supabase/server/adapters" src/
+```
+
+### 3. Decide what replaces each auth value
+
+Use the table in "The auth trap" above. `auth: 'user'` and a bare `withSupabase()` become `withRequiredClaims()`. `auth: 'none'` needs no gate. `auth: 'publishable'` and `auth: 'secret'` have no composable gate: those endpoints stay on `withSupabase`, and leaving them unmigrated is the better outcome.
+
+Do not reach for `withClaims()` here. It lets anonymous requests through by design.
+
+```ts
+// auth: 'user', or no config
+toHono([withRequiredClaims(), withSupabaseClient()])
+
+// auth: 'none'
+toHono([withSupabaseClient()])
+
+// auth: 'publishable' or auth: 'secret'
+// Stop. Keep withSupabase for this endpoint.
+```
+
+### 4. Copy the bridge for your framework
+
+One file, yours to own from here on: `src/lib/supabase-middleware.ts`, or `src/lib/supabase.guard.ts` for NestJS. Copy it as is. Some lines look redundant and are not. The Hono `c.res` clear-then-assign is the clearest example, and it carries the comment explaining why. Keep the comments.
+
+```bash
+mkdir -p src/lib
+curl --fail -o src/lib/supabase-middleware.ts \
+  https://raw.githubusercontent.com/supabase/server/main/examples/frameworks/hono/supabase-middleware.ts
+```
+
+### 5. Swap the registrations
+
+One at a time, using the decision from step 3. Add `withSupabaseAdminClient()` from `@supabase/server/middleware/admin-client` only where the old code read `supabaseAdmin`. It needs the secret key.
+
+```ts
+// Before
+import { withSupabase } from '@supabase/server/adapters/hono'
+app.use('*', withSupabase({ auth: 'user' }))
+
+// After
+import { withRequiredClaims } from '@supabase/server/middleware/required-claims'
+import { withSupabaseClient } from '@supabase/server/middleware/client'
+import { toHono } from './lib/supabase-middleware.js'
+app.use('*', toHono([withRequiredClaims(), withSupabaseClient()]))
+```
+
+### 6. Rewrite the call sites
+
+The adapters exposed one nested object. The entries contribute flat keys. The same shape applies to `event.context` (H3), the route context (Elysia), and `req` (NestJS).
+
+`userClaims` is not on that list. No entry contributes it. Rewrite each claims read against the field table in "The shape change" above.
+
+```text
+c.var.supabaseContext.supabase       ->  c.var.supabase
+c.var.supabaseContext.supabaseAdmin  ->  c.var.supabaseAdmin
+c.var.supabaseContext.userClaims.id  ->  c.var.jwtClaims.sub
+```
+
+```bash
+grep -rn "supabaseContext" src/    # expect no results
+```
+
+### 7. Verify
+
+Three checks, in this order. The second is what this procedure exists for.
+
+Types: run the typecheck.
+
+Auth: for every endpoint step 2 recorded as rejecting, prove it still rejects. A clean typecheck says nothing about it. A `200` on the first call is the failure this page is arranged around. It means the gate is missing, not that the endpoint is healthy.
+
+Behavior: run your test suite, then exercise one migrated endpoint end to end. If it was behind `auth: 'user'`, sign in and confirm the handler sees the caller: `jwtClaims.sub` is the user id.
+
+The rejection body changed even when the status did not. See the code table in "The auth trap" above.
+
+```bash
+npx tsc --noEmit
+
+BASE=http://localhost:3000
+
+# no credentials -> expect 401
+curl -s -o /dev/null -w "%{http_code}\n" $BASE/your-endpoint
+
+# a valid user token -> expect 200
+curl -s -o /dev/null -w "%{http_code}\n" \
+  -H "Authorization: Bearer $TOKEN" $BASE/your-endpoint
+```
+
+### 8. Clean up
+
+Anything left is either an endpoint you kept on purpose (the `publishable` and `secret` cases from step 3) or one you missed. Uninstall the framework peer dependency only if nothing else uses it.
+
+```bash
+grep -rn "@supabase/server/adapters" src/
+```
+
+### Call-site cheat sheet
+
+| Before                                                          | After                                                                |
+| --------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `import { withSupabase } from '@supabase/server/adapters/hono'` | `import { toHono } from './lib/supabase-middleware.js'`              |
+| `app.use('*', withSupabase({ auth: 'user' }))`                  | `app.use('*', toHono([withRequiredClaims(), withSupabaseClient()]))` |
+| `app.use('*', withSupabase({ auth: 'none' }))`                  | `app.use('*', toHono([withSupabaseClient()]))`                       |
+| `c.var.supabaseContext.supabase`                                | `c.var.supabase`                                                     |
+| `c.var.supabaseContext.supabaseAdmin`                           | `c.var.supabaseAdmin`                                                |
+| `c.var.supabaseContext.userClaims.id`                           | `c.var.jwtClaims.sub` (the field names change too; see the table)    |
+| `event.context.supabaseContext.supabase` (H3)                   | `event.context.supabase`                                             |
+| `req.supabaseContext.supabase` (NestJS)                         | `req.supabase`                                                       |
+
+The adapters took `auth: 'user' | 'publishable' | 'secret' | 'none'` and did two jobs with it: verified the credentials, and rejected the request when they were missing or wrong. Of the composable entries, only `withRequiredClaims()` does both, and only for user mode. If you want the adapter's exact verify-then-build behavior with no rewrite, keep the top-level `withSupabase()`. It is not deprecated, and as an entry it composes with `pipeline`.
+
+### Hand it to an agent
+
+Paste this, and replace `hono` in the URL with `h3`, `elysia`, or `nestjs` (`supabase.guard.ts` for NestJS).
+
+```text
+Migrate this project off @supabase/server's framework adapters
+(@supabase/server/adapters/*) onto @supabase/middleware entries. Work in the
+order below. Do not start at step 3.
+
+STEP 1: INVENTORY. Do this before editing anything.
+Grep for `@supabase/server/adapters` and list every withSupabase(...)
+registration it feeds, with that call's `auth` value. A bare withSupabase()
+with no config means auth: 'user'. Show me this list before you edit.
+
+STEP 2: DECIDE THE AUTH REPLACEMENT for each one. This is the step that can
+open an endpoint up, so do it deliberately:
+  auth: 'user' (or no config) -> withRequiredClaims() from
+      '@supabase/server/middleware/required-claims'
+  auth: 'none'                -> no gate needed
+  auth: 'publishable'/'secret' -> STOP. There is no composable gate. Leave the
+      endpoint on withSupabase and tell me about it. Do not hand-roll a key
+      check.
+The adapters REJECTED unauthenticated requests. withClaims() does NOT: it
+contributes jwtClaims: null and falls through, turning a 401 endpoint into a
+200 endpoint silently. Never use withClaims() as the replacement for
+auth: 'user'. Never compose withClaims() and withRequiredClaims() together;
+they share the jwtClaims key and that is a compile-time conflict.
+
+STEP 3: FETCH THE BRIDGE. Download
+https://raw.githubusercontent.com/supabase/server/main/examples/frameworks/hono/supabase-middleware.ts
+and save it as src/lib/supabase-middleware.ts, verbatim. Do not "improve",
+condense, or drop comments from it.
+
+STEP 4: SWAP each registration to the bridge called on an entry array, e.g.
+  toHono([withRequiredClaims(), withSupabaseClient()])
+For NestJS, call toNestGuard(entries) once, assign it to a const, and pass
+that const to every @UseGuards().
+Import the client entries from '@supabase/server/middleware/client' and
+'@supabase/server/middleware/admin-client'. Only include
+withSupabaseAdminClient() where the old code actually read supabaseAdmin.
+
+STEP 5: REWRITE call sites from the nested shape to flat keys:
+  c.var.supabaseContext.supabase       -> c.var.supabase
+  c.var.supabaseContext.supabaseAdmin  -> c.var.supabaseAdmin
+Apply the equivalent for event.context / the Elysia context / req.
+userClaims is NOT one of these. No middleware contributes that key;
+c.var.userClaims does not exist. The entries contribute jwtClaims, the RAW JWT
+payload, with different field names:
+  userClaims.id            -> jwtClaims.sub
+  userClaims.role          -> jwtClaims.role
+  userClaims.email         -> jwtClaims.email
+  userClaims.appMetadata   -> jwtClaims.app_metadata
+  userClaims.userMetadata  -> jwtClaims.user_metadata
+Rewrite each read individually. Do NOT do a blanket rename; in plain
+JavaScript that leaves .id undefined with no error.
+When finished there must be no remaining reference to `supabaseContext`.
+
+STEP 6: VERIFY. Run the typecheck. Then, for every endpoint you listed in
+step 1 as rejecting, confirm an unauthenticated request still returns 401 and
+an authenticated one still returns 200. A passing typecheck does not prove
+this; check it separately.
+
+CONSTRAINTS
+- Do NOT remove the `c.res = undefined` line in the Hono bridge or its comment.
+  It looks redundant and is not: when a response-phase entry returns a new
+  Response, Hono merges the previous response's headers over it, reverting
+  anything the entry rewrote.
+- On Hono, put a second entry array in its own sub-app mounted with
+  app.route(). A second app.use() statement leaves c.var untyped.
+- On NestJS, do not put withCors in the guard's array. CORS is
+  app.enableCors().
+
+REPORT, as a table: every adapter registration you found, its old `auth` value,
+and whether the migrated version still rejects anonymous requests. Then list
+every file you changed and anything you could not migrate.
 ```
 
 ## Middleware

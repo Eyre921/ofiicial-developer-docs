@@ -10,7 +10,7 @@ path: docs/api/api-reference/interns/get-an-interns-daemon-access
 
 # Get an intern's daemon access
 
-> Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+> Returns the origin and daemon token that attach `ori tui --host` to one visible, running intern. The token is a credential: the response is sent with `Cache-Control: no-store`, and each reveal is logged by caller and intern. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
 
 
 
@@ -122,6 +122,12 @@ tags:
     name: TTS
     x-displayName: Speech
   - description: >-
+      The catalog of server tools OpenRouter runs on behalf of a model: accepted
+      `tools[].type` spellings per API format, engines and pricing, and which
+      endpoints run each tool natively. See
+      https://openrouter.ai/docs/guides/features/server-tools.
+    name: Tools
+  - description: >-
       Store host-bound secrets for a workspace or for one intern. Scope is
       selected by the API key. Responses return metadata only, never secret
       values. See https://openrouter.ai/docs/guides/ori/vault.
@@ -146,9 +152,10 @@ paths:
         visible, running intern. The token is a credential: the response is sent
         with `Cache-Control: no-store`, and each reveal is logged by caller and
         intern. The API key selects the caller, workspace and visible interns.
-        There is no default workspace fallback. Requests on regional hostnames
-        such as `eu.openrouter.ai` are refused. [API
-        key](/docs/api-reference/authentication) required.
+        An intern's own API key sees only that intern: the collection and every
+        other intern answer 404 to it. There is no default workspace fallback.
+        Requests on regional hostnames such as `eu.openrouter.ai` are refused.
+        [API key](/docs/api-reference/authentication) required.
       operationId: getInternDaemon
       parameters:
         - description: ID of an intern visible to the authenticated API key.

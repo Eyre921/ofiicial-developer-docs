@@ -6450,6 +6450,272 @@ Send something early even when the real payload is not ready, and keep data flow
 - [`Deploy on push`](https://www.prisma.io/docs/compute/deploy-on-push): Graduate a Composer app from manual deploys to a Git workflow, with production deploys on push and an isolated preview environment per branch.
 - [`Deployments`](https://www.prisma.io/docs/compute/deployments): How deploys create service versions on Prisma Compute, and how to inspect, promote, roll back, start, and stop them.
 
+# Concepts (/docs/console/concepts)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+Location: Console > Concepts
+
+The Console workflows are based on five main concepts:
+
+* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
+* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
+* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
+* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
+* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
+
+Here is a visual illustration of how these concepts relate to each other:
+
+![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
+
+## User account [#user-account]
+
+A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
+
+If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+
+## Workspace [#workspace]
+
+You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
+
+In each workspace, you can:
+
+* view and manage all projects (and their resources) in that workspace.
+* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
+* view the usage of your enabled Prisma products across all projects in that workspace.
+* invite other users to collaborate in the workspace.
+* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
+
+## Project [#project]
+
+In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
+
+In each project, you can:
+
+* view and manage all resources (like databases) in that project.
+
+The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
+
+## Branch [#branch]
+
+For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
+
+```text
+workspace → project → branch → { apps, databases }
+```
+
+A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
+
+* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
+* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
+* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
+
+Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
+
+## Resources [#resources]
+
+Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
+
+* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
+* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
+* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
+
+In each project, you can:
+
+* Create and manage multiple resources (databases or environments)
+* Generate connection strings specific to each resource
+* Configure product-specific settings:
+  * **For Prisma Postgres databases**:
+    * View database metrics and performance
+    * Configure connection settings
+    * Manage database users and permissions
+  * **For Accelerate resources**:
+    * Set your database connection string
+    * Configure the region for connection pooling
+    * Adjust connection pool size and performance settings
+    * Set query duration and response size limits
+    * Enable static IP for secure connections
+
+The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
+
+## Related pages
+
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+
+# Getting Started (/docs/console/getting-started)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Quick start guide for setting up and using the Prisma Console
+
+Location: Console > Getting Started
+
+This guide walks you through setting up your Console account and creating your first project.
+
+## Prerequisites [#prerequisites]
+
+* A GitHub account (for authentication)
+* A Prisma project (optional, but recommended)
+
+## Step 1: Create your account [#step-1-create-your-account]
+
+1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
+2. Click **Sign in with GitHub**
+3. Authorize Prisma Console to access your GitHub account
+
+You now have a Console account with a default workspace.
+
+## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
+
+When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
+
+### Create a workspace (optional) [#create-a-workspace-optional]
+
+To create an additional workspace:
+
+1. Click the workspace dropdown in the top navigation
+2. Click **Create Workspace**
+3. Enter a name for your workspace
+4. Click **Create**
+
+## Step 3: Create a project [#step-3-create-a-project]
+
+Projects organize your databases and environments within a workspace.
+
+### Using the Console web interface [#using-the-console-web-interface]
+
+1. Navigate to your workspace
+2. Click **Create Project**
+3. Enter a project name
+4. Click **Create**
+
+## Step 4: Create a resource [#step-4-create-a-resource]
+
+Resources are the actual databases or environments within your project.
+
+### For Prisma Postgres [#for-prisma-postgres]
+
+1. Navigate to your project
+2. Click **Create Database**
+3. Enter a database name
+4. Select a region
+5. Click **Create**
+
+### For Accelerate [#for-accelerate]
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
+> 
+> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+
+1. Navigate to your project
+2. Click **Create Environment**
+3. Enter an environment name (e.g., "production")
+4. Click **Create**
+
+## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
+
+Connection strings authenticate your application's requests to Prisma products.
+
+### Using the Console web interface [#using-the-console-web-interface-1]
+
+1. Navigate to your resource (database or environment)
+2. Click **Connection Strings** tab
+3. Click **Create Connection String**
+4. Enter a name for the connection string
+5. Copy the connection string and store it securely
+6. Click **Done**
+
+## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
+
+Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
+
+```bash
+# Application traffic over pooled TCP
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
+
+# Prisma CLI commands and administrative tooling
+DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
+```
+
+In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
+> 
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+
+## Next steps [#next-steps]
+
+* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
+* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
+* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+# Console (/docs/console)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use the Console to manage and integrate Prisma products into your application.
+
+Location: Console
+
+## Overview [#overview]
+
+The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
+
+* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
+* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
+* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
+
+## Getting started [#getting-started]
+
+To start using Prisma products, you'll need to:
+
+1. Create a Console account
+2. Set up a workspace for your team
+3. Create a project for your application
+4. Generate connection strings for your resources
+
+Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
+
+## Core concepts [#core-concepts]
+
+The Console is organized around four main concepts:
+
+* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
+* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
+* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
+* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
+
+Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
+
+## Console CLI [#console-cli]
+
+In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
+
+Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+
 # auth (/docs/cli/auth)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -11045,272 +11311,6 @@ npx prisma telemetry status
 - [`Configuration`](https://www.prisma.io/docs/cli/configuration): Configure Prisma ORM CLI commands with prisma.config.ts and global flags.
 - [`contract emit`](https://www.prisma.io/docs/cli/contract-emit): Emit Prisma ORM contract artifacts.
 
-# Concepts (/docs/console/concepts)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-Location: Console > Concepts
-
-The Console workflows are based on five main concepts:
-
-* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
-* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
-* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
-* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
-* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
-
-Here is a visual illustration of how these concepts relate to each other:
-
-![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
-
-## User account [#user-account]
-
-A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
-
-If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-
-## Workspace [#workspace]
-
-You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
-
-In each workspace, you can:
-
-* view and manage all projects (and their resources) in that workspace.
-* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
-* view the usage of your enabled Prisma products across all projects in that workspace.
-* invite other users to collaborate in the workspace.
-* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
-
-## Project [#project]
-
-In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
-
-In each project, you can:
-
-* view and manage all resources (like databases) in that project.
-
-The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
-
-## Branch [#branch]
-
-For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
-
-```text
-workspace → project → branch → { apps, databases }
-```
-
-A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
-
-* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
-* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
-* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
-
-Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
-
-## Resources [#resources]
-
-Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
-
-* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
-* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
-* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
-
-In each project, you can:
-
-* Create and manage multiple resources (databases or environments)
-* Generate connection strings specific to each resource
-* Configure product-specific settings:
-  * **For Prisma Postgres databases**:
-    * View database metrics and performance
-    * Configure connection settings
-    * Manage database users and permissions
-  * **For Accelerate resources**:
-    * Set your database connection string
-    * Configure the region for connection pooling
-    * Adjust connection pool size and performance settings
-    * Set query duration and response size limits
-    * Enable static IP for secure connections
-
-The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
-
-## Related pages
-
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
-
-# Getting Started (/docs/console/getting-started)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Quick start guide for setting up and using the Prisma Console
-
-Location: Console > Getting Started
-
-This guide walks you through setting up your Console account and creating your first project.
-
-## Prerequisites [#prerequisites]
-
-* A GitHub account (for authentication)
-* A Prisma project (optional, but recommended)
-
-## Step 1: Create your account [#step-1-create-your-account]
-
-1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
-2. Click **Sign in with GitHub**
-3. Authorize Prisma Console to access your GitHub account
-
-You now have a Console account with a default workspace.
-
-## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
-
-When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
-
-### Create a workspace (optional) [#create-a-workspace-optional]
-
-To create an additional workspace:
-
-1. Click the workspace dropdown in the top navigation
-2. Click **Create Workspace**
-3. Enter a name for your workspace
-4. Click **Create**
-
-## Step 3: Create a project [#step-3-create-a-project]
-
-Projects organize your databases and environments within a workspace.
-
-### Using the Console web interface [#using-the-console-web-interface]
-
-1. Navigate to your workspace
-2. Click **Create Project**
-3. Enter a project name
-4. Click **Create**
-
-## Step 4: Create a resource [#step-4-create-a-resource]
-
-Resources are the actual databases or environments within your project.
-
-### For Prisma Postgres [#for-prisma-postgres]
-
-1. Navigate to your project
-2. Click **Create Database**
-3. Enter a database name
-4. Select a region
-5. Click **Create**
-
-### For Accelerate [#for-accelerate]
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
-> 
-> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-
-1. Navigate to your project
-2. Click **Create Environment**
-3. Enter an environment name (e.g., "production")
-4. Click **Create**
-
-## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
-
-Connection strings authenticate your application's requests to Prisma products.
-
-### Using the Console web interface [#using-the-console-web-interface-1]
-
-1. Navigate to your resource (database or environment)
-2. Click **Connection Strings** tab
-3. Click **Create Connection String**
-4. Enter a name for the connection string
-5. Copy the connection string and store it securely
-6. Click **Done**
-
-## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
-
-Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
-
-```bash
-# Application traffic over pooled TCP
-DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
-
-# Prisma CLI commands and administrative tooling
-DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
-```
-
-In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
-> 
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-
-## Next steps [#next-steps]
-
-* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
-* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
-* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-# Console (/docs/console)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use the Console to manage and integrate Prisma products into your application.
-
-Location: Console
-
-## Overview [#overview]
-
-The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
-
-* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
-* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
-* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
-
-## Getting started [#getting-started]
-
-To start using Prisma products, you'll need to:
-
-1. Create a Console account
-2. Set up a workspace for your team
-3. Create a project for your application
-4. Generate connection strings for your resources
-
-Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
-
-## Core concepts [#core-concepts]
-
-The Console is organized around four main concepts:
-
-* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
-* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
-* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
-* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
-
-Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
-
-## Console CLI [#console-cli]
-
-In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
-
-Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
-
 # Overview (/docs/guides)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -15408,6 +15408,102 @@ The same pattern applies to other issues. Query Insights helps you identify the 
 - [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
 - [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
 
+# Storage (/docs/storage)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+S3-compatible object-store buckets that live inside your Prisma project.
+
+Location: Storage
+
+Object Store buckets are S3-compatible file storage that lives inside a Prisma project, next to its Prisma Postgres databases and Compute apps. You manage buckets from the [Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=storage), the [CLI](https://www.prisma.io/docs/cli/bucket), or the [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets); your app reads and writes objects with any S3 client or SDK.
+
+A bucket belongs to a project. At creation you can associate it with a branch (by branch ID or git branch name); omit both and it attaches to the project's default branch. Projects start with no buckets.
+
+## Names [#names]
+
+A bucket has two names:
+
+1. A display name you choose (1-100 characters, auto-generated when omitted). It appears in the Console, CLI, and API.
+2. A provider-assigned S3 bucket name, returned as `providerName` by the API and as `bucketName` with new access keys. This is the value S3 clients use. It is opaque and never derived from the display name.
+
+There is no rename: the API has no update endpoint for buckets.
+
+## Access keys [#access-keys]
+
+Access is through bucket-scoped access keys. A key has a role, `read` or `read_write`; a write with a `read` key fails with `AccessDenied`. Keys are scoped to their bucket only: a leaked key cannot reach any other bucket.
+
+Creating a key returns everything an S3 client needs: `accessKeyId`, `secretAccessKey`, `endpoint`, and `bucketName`. The `secretAccessKey` is returned exactly once and never stored; copy it immediately. If you lose it, revoke the key and create a new one. Deleting a key revokes it immediately.
+
+Use the `endpoint` value returned with the key rather than hardcoding a host.
+
+## Using a bucket from your app [#using-a-bucket-from-your-app]
+
+Any S3 client or SDK works. On [Prisma Compute](https://www.prisma.io/docs/compute), Bun's built-in S3 client reads `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, and `S3_SECRET_ACCESS_KEY` from the environment, so uploads and presigned GET URLs work with no explicit client configuration. See [Object storage on Compute](https://www.prisma.io/docs/compute/object-storage) for a worked example, and [Object storage in Composer](https://www.prisma.io/docs/composer/object-storage) for the declarative `bucket()` resource with local stand-in buckets in `dev`. For using buckets during development, see [Local storage](https://www.prisma.io/docs/local-development/storage).
+
+## Managing buckets [#managing-buckets]
+
+From the CLI (see the [`bucket` reference](https://www.prisma.io/docs/cli/bucket) for details):
+
+  
+
+#### bun
+
+```bash
+bunx prisma bucket create --name my-bucket
+bunx prisma bucket key create <bucket-id>
+```
+
+#### pnpm
+
+```bash
+pnpm prisma bucket create --name my-bucket
+pnpm prisma bucket key create <bucket-id>
+```
+
+#### yarn
+
+```bash
+yarn prisma bucket create --name my-bucket
+yarn prisma bucket key create <bucket-id>
+```
+
+#### npm
+
+```bash
+npx prisma bucket create --name my-bucket
+npx prisma bucket key create <bucket-id>
+```
+
+| Command                                  | Purpose                                                 |
+| ---------------------------------------- | ------------------------------------------------------- |
+| `bucket list`                            | List object-store buckets                               |
+| `bucket create`                          | Create a bucket (`--name` sets the display name)        |
+| `bucket delete <bucket-id>`              | Delete a bucket and all its access keys                 |
+| `bucket key list <bucket-id>`            | List access keys for a bucket                           |
+| `bucket key create <bucket-id>`          | Create an access key and print its one-time credentials |
+| `bucket key delete <bucket-id> <key-id>` | Revoke and delete an access key                         |
+
+The [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets) exposes the same operations: list, create, get, and delete buckets, and list, create, and delete access keys. Bucket creation is synchronous; the response comes back with `"status": "ready"`. The Prisma MCP server also carries bucket tools (`list_object_store_buckets`, `create_object_store_bucket`, `delete_object_store_bucket`, `create_object_store_bucket_key`, `delete_object_store_bucket_key`) for AI agents.
+
+In the Console, each bucket has a file browser with upload, download, and per-object delete, a keys page with a reveal-once credentials dialog, and a settings page for deletion with type-the-name confirmation.
+
+## Deleting a bucket [#deleting-a-bucket]
+
+Deleting a bucket permanently removes the bucket, all objects stored in it, and all its access keys in one call. It succeeds on a non-empty bucket and cannot be undone.
+
+## Pricing [#pricing]
+
+Bucket pricing and plan limits are not published yet.
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+
 # Using API Clients (/docs/rest-api/api-clients)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -16730,102 +16826,6 @@ type Project = components["schemas"]["Project"];
 - [`Getting Started`](https://www.prisma.io/docs/rest-api/getting-started): Get started with the Prisma REST API by creating your first project and database
 - [`Partner Integration`](https://www.prisma.io/docs/rest-api/partner-integration): Build partner integrations that provision and transfer Prisma Postgres databases to users
 - [`Using API Clients`](https://www.prisma.io/docs/rest-api/api-clients): Use the REST API with popular API clients like Postman, Insomnia, and Yaak
-
-# Storage (/docs/storage)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-S3-compatible object-store buckets that live inside your Prisma project.
-
-Location: Storage
-
-Object Store buckets are S3-compatible file storage that lives inside a Prisma project, next to its Prisma Postgres databases and Compute apps. You manage buckets from the [Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=storage), the [CLI](https://www.prisma.io/docs/cli/bucket), or the [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets); your app reads and writes objects with any S3 client or SDK.
-
-A bucket belongs to a project. At creation you can associate it with a branch (by branch ID or git branch name); omit both and it attaches to the project's default branch. Projects start with no buckets.
-
-## Names [#names]
-
-A bucket has two names:
-
-1. A display name you choose (1-100 characters, auto-generated when omitted). It appears in the Console, CLI, and API.
-2. A provider-assigned S3 bucket name, returned as `providerName` by the API and as `bucketName` with new access keys. This is the value S3 clients use. It is opaque and never derived from the display name.
-
-There is no rename: the API has no update endpoint for buckets.
-
-## Access keys [#access-keys]
-
-Access is through bucket-scoped access keys. A key has a role, `read` or `read_write`; a write with a `read` key fails with `AccessDenied`. Keys are scoped to their bucket only: a leaked key cannot reach any other bucket.
-
-Creating a key returns everything an S3 client needs: `accessKeyId`, `secretAccessKey`, `endpoint`, and `bucketName`. The `secretAccessKey` is returned exactly once and never stored; copy it immediately. If you lose it, revoke the key and create a new one. Deleting a key revokes it immediately.
-
-Use the `endpoint` value returned with the key rather than hardcoding a host.
-
-## Using a bucket from your app [#using-a-bucket-from-your-app]
-
-Any S3 client or SDK works. On [Prisma Compute](https://www.prisma.io/docs/compute), Bun's built-in S3 client reads `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, and `S3_SECRET_ACCESS_KEY` from the environment, so uploads and presigned GET URLs work with no explicit client configuration. See [Object storage on Compute](https://www.prisma.io/docs/compute/object-storage) for a worked example, and [Object storage in Composer](https://www.prisma.io/docs/composer/object-storage) for the declarative `bucket()` resource with local stand-in buckets in `dev`. For using buckets during development, see [Local storage](https://www.prisma.io/docs/local-development/storage).
-
-## Managing buckets [#managing-buckets]
-
-From the CLI (see the [`bucket` reference](https://www.prisma.io/docs/cli/bucket) for details):
-
-  
-
-#### bun
-
-```bash
-bunx prisma bucket create --name my-bucket
-bunx prisma bucket key create <bucket-id>
-```
-
-#### pnpm
-
-```bash
-pnpm prisma bucket create --name my-bucket
-pnpm prisma bucket key create <bucket-id>
-```
-
-#### yarn
-
-```bash
-yarn prisma bucket create --name my-bucket
-yarn prisma bucket key create <bucket-id>
-```
-
-#### npm
-
-```bash
-npx prisma bucket create --name my-bucket
-npx prisma bucket key create <bucket-id>
-```
-
-| Command                                  | Purpose                                                 |
-| ---------------------------------------- | ------------------------------------------------------- |
-| `bucket list`                            | List object-store buckets                               |
-| `bucket create`                          | Create a bucket (`--name` sets the display name)        |
-| `bucket delete <bucket-id>`              | Delete a bucket and all its access keys                 |
-| `bucket key list <bucket-id>`            | List access keys for a bucket                           |
-| `bucket key create <bucket-id>`          | Create an access key and print its one-time credentials |
-| `bucket key delete <bucket-id> <key-id>` | Revoke and delete an access key                         |
-
-The [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets) exposes the same operations: list, create, get, and delete buckets, and list, create, and delete access keys. Bucket creation is synchronous; the response comes back with `"status": "ready"`. The Prisma MCP server also carries bucket tools (`list_object_store_buckets`, `create_object_store_bucket`, `delete_object_store_bucket`, `create_object_store_bucket_key`, `delete_object_store_bucket_key`) for AI agents.
-
-In the Console, each bucket has a file browser with upload, download, and per-object delete, a keys page with a reveal-once credentials dialog, and a settings page for deletion with type-the-name confirmation.
-
-## Deleting a bucket [#deleting-a-bucket]
-
-Deleting a bucket permanently removes the bucket, all objects stored in it, and all its access keys in one call. It succeeds on a non-empty bucket and cannot be undone.
-
-## Pricing [#pricing]
-
-Bucket pricing and plan limits are not published yet.
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
 
 # Getting Started (/docs/studio/getting-started)
 
@@ -26536,6 +26536,128 @@ Here are some ideas to extend your app:
 
 - [`Linktree Clone SaaS`](https://www.prisma.io/docs/ai/tutorials/linktree-clone): A vibe coding tutorial: build a Linktree clone SaaS application from scratch using Next.js, Prisma ORM, Prisma Postgres, and Clerk authentication with AI assistance
 
+# Database Metrics (/docs/console/features/metrics)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Monitor your database performance with Console metrics
+
+Location: Console > Features > Database Metrics
+
+You can have a single workspace that hosts several databases. Within each database, you can view detailed reports on how your database is performing, with various metrics like:
+
+* Average response size
+* Average query duration
+* Total egress
+* Total operations
+* Cache utilization
+
+## Databases [#databases]
+
+For Prisma Postgres projects, the **Database** tab in the project view lets you configure and manage your databases. This interface provides tools to monitor and maintain your database resources. The **Connections** section displays a table with the following columns:
+
+| Column Name   | Description                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| **Hint**      | Provides the URL structure for the database in use.                              |
+| **Static IP** | Indicates whether static IP is enabled for the database and associated products. |
+| **Products**  | Lists the products that are enabled using the database URL.                      |
+| **Action**    | Allows you to disable all active products and remove the connection.             |
+
+# Feature Maturity (/docs/console/more/feature-maturity)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand Early Access, Preview, and Public Beta feature stages in the Console
+
+Location: Console > More > Feature Maturity
+
+Prisma releases updates to Console multiple times per week, as opposed to the Prisma ORM that we release on a set schedule every few weeks. This is why we consider the lifecycle and process for maturing features in Console differently.
+
+You can [check out the releases and maturity process for the Prisma ORM](https://www.prisma.io/docs/orm/v7/more/releases) for further details.
+
+You can find information about releases across *all* Prisma tools and products in the [changelog](https://www.prisma.io/changelog).
+
+## Early Access [#early-access]
+
+If a feature on the Console is labeled as **Early Access**:
+
+* It is ready to try out and represents the cutting edge of what we are building.
+* It can still evolve based on feedback from our users, and its API surface won't change drastically as it matures.
+* We reserve ourselves the right to throttle or remove access to a feature in Early Access to preserve the stability of the platform, or enforce its use to stay within the scope defined in our [Terms of Service](https://pris.ly/terms).
+
+Your feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text) shapes the design of the features. This will help us ensure that they can solve your problems in the best way possible.
+
+## Preview [#preview]
+
+If a feature on the Console is labeled as **Preview**:
+
+* We have refined the software based on the valuable feedback we obtained during the Early Access phase.
+* We developed the feature further, bringing it closer to the final version, and it is close to being ready for production usage.
+* We have lifted the invite gate, so users no longer need an invitation to access the feature. Users just need to sign up to gain access.
+* We have increased the stability of the software compared to the Early Access phase. While there might still be some issues, they should be less frequent and less critical.
+* We use the Preview phase as a final stress test to ensure the product is ready for heavy production workloads.
+
+We recommend testing the product in a staging environment and welcome any feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text). This will assist us in improving the product for its final release.
+
+## Public Beta [#public-beta]
+
+If a product or feature is labeled as **Public Beta**:
+
+* It is open for anyone to try. No invite or waitlist is required.
+* The core model is stable, and the documented happy paths work end to end. It is a good fit for evaluation, dogfooding, staging environments, internal tools, and low-risk apps.
+* Behavior should stay stable unless the documentation or release notes call out an exception.
+* Details can still change before general availability: exact limits, pricing, retention policies, runtime guardrails, supported frameworks and build behavior, some CLI and API details, Console UX, naming, and advanced workflows.
+* We don't recommend it yet for mission-critical or heavy production workloads.
+
+Public Beta is the final stress-test phase before general availability. Expect some rough edges, and tell us about them in [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text); your feedback directly shapes the release.
+
+## Related pages
+
+- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
+
+# Support (/docs/console/more/support)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Find the right support for any Console question
+
+Location: Console > More > Support
+
+Share your experiences with us on [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=intro_text).
+
+## Support [#support]
+
+Your support options are based on your workspace's active plan. For more details, take a look at our [pricing page](https://www.prisma.io/pricing).
+
+### Community support [#community-support]
+
+Reach out to us in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text).
+
+### Standard support [#standard-support]
+
+* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
+* 2 business days, Mon-Fri, 9am-5pm CET
+
+### Premium support [#premium-support]
+
+* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
+* 1 business hour, Mon-Fri, 9am-5pm CET
+
+### Dedicated support [#dedicated-support]
+
+Dedicated contact person.
+
+## Deleting your PDP account [#deleting-your-pdp-account]
+
+If you want to delete your PDP account, &#x2A;*email us at [support@prisma.io](mailto\:support@prisma.io)** specifying the email id or GitHub handle with which you signed up.
+
+To ensure that you're not accidentally disabling any infrastructure powering one of your applications, we require that you **disable Accelerate in *all* environments of *all* your projects** that live in the account to be deleted.
+Additionally there should be no active subscriptions in the account to be deleted. Please cancel any active subscriptions before requesting account deletion.
+
+## Related pages
+
+- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
+
 # debug (Prisma CLI v7) (/docs/cli/v7/debug)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -28038,128 +28160,6 @@ Output:
 - [`dev`](https://www.prisma.io/docs/cli/v7/dev): Start a local Prisma Postgres server for development
 - [`format`](https://www.prisma.io/docs/cli/v7/format): Format and validate your Prisma schema file with consistent structure
 - [`generate`](https://www.prisma.io/docs/cli/v7/generate): Generate artifacts like Prisma Client based on your Prisma schema
-
-# Database Metrics (/docs/console/features/metrics)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Monitor your database performance with Console metrics
-
-Location: Console > Features > Database Metrics
-
-You can have a single workspace that hosts several databases. Within each database, you can view detailed reports on how your database is performing, with various metrics like:
-
-* Average response size
-* Average query duration
-* Total egress
-* Total operations
-* Cache utilization
-
-## Databases [#databases]
-
-For Prisma Postgres projects, the **Database** tab in the project view lets you configure and manage your databases. This interface provides tools to monitor and maintain your database resources. The **Connections** section displays a table with the following columns:
-
-| Column Name   | Description                                                                      |
-| ------------- | -------------------------------------------------------------------------------- |
-| **Hint**      | Provides the URL structure for the database in use.                              |
-| **Static IP** | Indicates whether static IP is enabled for the database and associated products. |
-| **Products**  | Lists the products that are enabled using the database URL.                      |
-| **Action**    | Allows you to disable all active products and remove the connection.             |
-
-# Feature Maturity (/docs/console/more/feature-maturity)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand Early Access, Preview, and Public Beta feature stages in the Console
-
-Location: Console > More > Feature Maturity
-
-Prisma releases updates to Console multiple times per week, as opposed to the Prisma ORM that we release on a set schedule every few weeks. This is why we consider the lifecycle and process for maturing features in Console differently.
-
-You can [check out the releases and maturity process for the Prisma ORM](https://www.prisma.io/docs/orm/v7/more/releases) for further details.
-
-You can find information about releases across *all* Prisma tools and products in the [changelog](https://www.prisma.io/changelog).
-
-## Early Access [#early-access]
-
-If a feature on the Console is labeled as **Early Access**:
-
-* It is ready to try out and represents the cutting edge of what we are building.
-* It can still evolve based on feedback from our users, and its API surface won't change drastically as it matures.
-* We reserve ourselves the right to throttle or remove access to a feature in Early Access to preserve the stability of the platform, or enforce its use to stay within the scope defined in our [Terms of Service](https://pris.ly/terms).
-
-Your feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text) shapes the design of the features. This will help us ensure that they can solve your problems in the best way possible.
-
-## Preview [#preview]
-
-If a feature on the Console is labeled as **Preview**:
-
-* We have refined the software based on the valuable feedback we obtained during the Early Access phase.
-* We developed the feature further, bringing it closer to the final version, and it is close to being ready for production usage.
-* We have lifted the invite gate, so users no longer need an invitation to access the feature. Users just need to sign up to gain access.
-* We have increased the stability of the software compared to the Early Access phase. While there might still be some issues, they should be less frequent and less critical.
-* We use the Preview phase as a final stress test to ensure the product is ready for heavy production workloads.
-
-We recommend testing the product in a staging environment and welcome any feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text). This will assist us in improving the product for its final release.
-
-## Public Beta [#public-beta]
-
-If a product or feature is labeled as **Public Beta**:
-
-* It is open for anyone to try. No invite or waitlist is required.
-* The core model is stable, and the documented happy paths work end to end. It is a good fit for evaluation, dogfooding, staging environments, internal tools, and low-risk apps.
-* Behavior should stay stable unless the documentation or release notes call out an exception.
-* Details can still change before general availability: exact limits, pricing, retention policies, runtime guardrails, supported frameworks and build behavior, some CLI and API details, Console UX, naming, and advanced workflows.
-* We don't recommend it yet for mission-critical or heavy production workloads.
-
-Public Beta is the final stress-test phase before general availability. Expect some rough edges, and tell us about them in [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text); your feedback directly shapes the release.
-
-## Related pages
-
-- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
-
-# Support (/docs/console/more/support)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Find the right support for any Console question
-
-Location: Console > More > Support
-
-Share your experiences with us on [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=intro_text).
-
-## Support [#support]
-
-Your support options are based on your workspace's active plan. For more details, take a look at our [pricing page](https://www.prisma.io/pricing).
-
-### Community support [#community-support]
-
-Reach out to us in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text).
-
-### Standard support [#standard-support]
-
-* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
-* 2 business days, Mon-Fri, 9am-5pm CET
-
-### Premium support [#premium-support]
-
-* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
-* 1 business hour, Mon-Fri, 9am-5pm CET
-
-### Dedicated support [#dedicated-support]
-
-Dedicated contact person.
-
-## Deleting your PDP account [#deleting-your-pdp-account]
-
-If you want to delete your PDP account, &#x2A;*email us at [support@prisma.io](mailto\:support@prisma.io)** specifying the email id or GitHub handle with which you signed up.
-
-To ensure that you're not accidentally disabling any infrastructure powering one of your applications, we require that you **disable Accelerate in *all* environments of *all* your projects** that live in the account to be deleted.
-Additionally there should be no active subscriptions in the account to be deleted. Please cancel any active subscriptions before requesting account deletion.
-
-## Related pages
-
-- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
 
 # Expand-and-contract migrations (/docs/guides/database/data-migration)
 
@@ -112924,91 +112924,6 @@ Location: REST API > Endpoints > Agents > Poll an approval
 
 
 
-# Delete connection (/docs/rest-api/endpoints/connections/delete-connections-by-id)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Deletes the connection with the given ID.
-
-Location: REST API > Endpoints > Connections > Delete connection
-
-
-
-## Related pages
-
-- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
-- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
-- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
-- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
-
-# Get connection (/docs/rest-api/endpoints/connections/get-connections-by-id)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Returns the connection with the given ID.
-
-Location: REST API > Endpoints > Connections > Get connection
-
-
-
-## Related pages
-
-- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
-- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
-- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
-- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
-
-# List connections (/docs/rest-api/endpoints/connections/get-connections)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Returns all connections the actor has access to, with optional database filter.
-
-Location: REST API > Endpoints > Connections > List connections
-
-
-
-## Related pages
-
-- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
-- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
-- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
-- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
-
-# Rotate connection credentials (/docs/rest-api/endpoints/connections/post-connections-by-id-rotate)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
-
-Location: REST API > Endpoints > Connections > Rotate connection credentials
-
-
-
-## Related pages
-
-- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
-- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
-- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
-- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
-
-# Create connection (/docs/rest-api/endpoints/connections/post-connections)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Creates a new connection for the specified database.
-
-Location: REST API > Endpoints > Connections > Create connection
-
-
-
-## Related pages
-
-- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
-- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
-- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
-- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
-
 # Delete bucket key (/docs/rest-api/endpoints/buckets/delete-buckets-by-bucket-id-keys-by-key-id)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -113152,6 +113067,91 @@ Location: REST API > Endpoints > Buckets > Create bucket
 - [`Delete bucket key`](https://www.prisma.io/docs/rest-api/endpoints/buckets/delete-buckets-by-bucket-id-keys-by-key-id): Revokes and deletes the bucket key with the given ID.
 - [`Get bucket`](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets-by-bucket-id): Returns the bucket with the given ID.
 - [`List bucket keys`](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets-by-bucket-id-keys): Returns all access keys for the given bucket.
+
+# Delete connection (/docs/rest-api/endpoints/connections/delete-connections-by-id)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Deletes the connection with the given ID.
+
+Location: REST API > Endpoints > Connections > Delete connection
+
+
+
+## Related pages
+
+- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
+- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
+- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
+- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
+
+# Get connection (/docs/rest-api/endpoints/connections/get-connections-by-id)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Returns the connection with the given ID.
+
+Location: REST API > Endpoints > Connections > Get connection
+
+
+
+## Related pages
+
+- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
+- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
+- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
+- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
+
+# List connections (/docs/rest-api/endpoints/connections/get-connections)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Returns all connections the actor has access to, with optional database filter.
+
+Location: REST API > Endpoints > Connections > List connections
+
+
+
+## Related pages
+
+- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
+- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
+- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
+- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
+
+# Rotate connection credentials (/docs/rest-api/endpoints/connections/post-connections-by-id-rotate)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
+
+Location: REST API > Endpoints > Connections > Rotate connection credentials
+
+
+
+## Related pages
+
+- [`Create connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections): Creates a new connection for the specified database.
+- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
+- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
+- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
+
+# Create connection (/docs/rest-api/endpoints/connections/post-connections)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Creates a new connection for the specified database.
+
+Location: REST API > Endpoints > Connections > Create connection
+
+
+
+## Related pages
+
+- [`Delete connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/delete-connections-by-id): Deletes the connection with the given ID.
+- [`Get connection`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections-by-id): Returns the connection with the given ID.
+- [`List connections`](https://www.prisma.io/docs/rest-api/endpoints/connections/get-connections): Returns all connections the actor has access to, with optional database filter.
+- [`Rotate connection credentials`](https://www.prisma.io/docs/rest-api/endpoints/connections/post-connections-by-id-rotate): Generates new credentials for the connection with the given ID. Revocation of the previous credentials is best-effort.
 
 # Get list of backups (/docs/rest-api/endpoints/database-backups/get-databases-by-database-id-backups)
 

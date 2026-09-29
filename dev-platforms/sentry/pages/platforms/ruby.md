@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry in your Ruby app, capture your first er
 url: https://docs.sentry.io/platforms/ruby/
 ---
 
-# Ruby | Sentry for Ruby
+# Sentry for Ruby
 
 ##### Using a framework?
 

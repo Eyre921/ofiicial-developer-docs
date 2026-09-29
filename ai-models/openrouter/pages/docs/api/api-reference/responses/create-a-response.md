@@ -122,6 +122,12 @@ tags:
     name: TTS
     x-displayName: Speech
   - description: >-
+      The catalog of server tools OpenRouter runs on behalf of a model: accepted
+      `tools[].type` spellings per API format, engines and pricing, and which
+      endpoints run each tool natively. See
+      https://openrouter.ai/docs/guides/features/server-tools.
+    name: Tools
+  - description: >-
       Store host-bound secrets for a workspace or for one intern. Scope is
       selected by the API key. Responses return metadata only, never secret
       values. See https://openrouter.ai/docs/guides/ori/vault.
@@ -521,6 +527,8 @@ components:
                   $ref: '#/components/schemas/FileParserPlugin'
                 fusion:
                   $ref: '#/components/schemas/FusionPlugin'
+                jev-router:
+                  $ref: '#/components/schemas/JevRouterPlugin'
                 moderation:
                   $ref: '#/components/schemas/ModerationPlugin'
                 pareto-router:
@@ -546,6 +554,7 @@ components:
               - $ref: '#/components/schemas/ParetoRouterPlugin'
               - $ref: '#/components/schemas/FusionPlugin'
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
+              - $ref: '#/components/schemas/JevRouterPlugin'
           type: array
         presence_penalty:
           format: double
@@ -587,7 +596,8 @@ components:
           default: auto
           description: >-
             The service tier to use for processing this request. `fast` is
-            accepted as an alias for `priority`.
+            accepted as an alias for `priority`. `ultrafast` prefers ultrafast
+            endpoints and falls back to `priority`, then default endpoints.
           enum:
             - auto
             - default
@@ -595,6 +605,7 @@ components:
             - flex
             - priority
             - scale
+            - ultrafast
             - null
           type:
             - string
@@ -1630,6 +1641,70 @@ components:
               - type
             type: object
           maxItems: 8
+          type: array
+      required:
+        - id
+      type: object
+    JevRouterPlugin:
+      additionalProperties: false
+      example:
+        excluded_models:
+          - openai/gpt-6-astra
+        id: jev-router
+        models:
+          - anthropic/*
+          - openai/gpt-5.6-sol
+      properties:
+        allowed_models:
+          description: >-
+            Alias of `models`, matching the auto-router field name. Entries from
+            both fields are combined.
+          example:
+            - anthropic/*
+          items:
+            maxLength: 1024
+            type: string
+          maxItems: 1024
+          type: array
+        excluded_models:
+          description: >-
+            Remove these models from the router. Each entry is a model slug or a
+            wildcard pattern (e.g. "xiaomi/*"). A `~author/family-latest` alias
+            matches every revision of that family. Up to 1024 patterns, each at
+            most 1024 characters, with 65536 total characters across all
+            patterns. Applied after `models`, so an excluded pattern always wins
+            over an included one; when the lists leave no model the request can
+            use, it fails with 404 rather than routing outside them.
+          example:
+            - openai/gpt-6-astra
+            - xiaomi/*
+          items:
+            maxLength: 1024
+            type: string
+          maxItems: 1024
+          type: array
+        id:
+          enum:
+            - jev-router
+          type: string
+        models:
+          description: >-
+            Restrict the router to these models. Each entry is a model slug or a
+            wildcard pattern (e.g. "anthropic/*"), matched against the current
+            pool; models outside the pool are ignored. A `~author/family-latest`
+            alias matches every revision of that family. Up to 1024 patterns,
+            each at most 1024 characters, with 65536 total characters across all
+            patterns. When omitted or empty, every model in the pool is a
+            candidate; when no pool model matches, the list is ignored and the
+            whole pool is used (`excluded_models` still apply). `allowed_models`
+            is an alias; entries from both fields are combined.
+          example:
+            - anthropic/*
+            - openai/gpt-5.6-sol
+          items:
+            maxLength: 1024
+            type: string
+          maxItems: 1024
           type: array
       required:
         - id
@@ -5082,8 +5157,10 @@ components:
           description: >-
             Models that were requested as part of the analysis panel but did not
             produce a response. Present when at least one requested analysis
-            model failed. The fusion result is still usable but was produced
-            from a degraded panel.
+            model failed. On a completed item the fusion result is still usable
+            but was produced from a degraded panel; on a failed item it lists
+            the panels that failed before the run stopped, so the caller can see
+            which models were attempted even though no analysis was produced.
           items:
             properties:
               error:
@@ -6388,6 +6465,7 @@ components:
         - DeepSeek
         - DekaLLM
         - DigitalOcean
+        - ElevenLabs
         - Featherless
         - Fireworks
         - Fish Audio
@@ -6602,6 +6680,9 @@ components:
           additionalProperties: {}
           type: object
         digitalocean:
+          additionalProperties: {}
+          type: object
+        elevenlabs:
           additionalProperties: {}
           type: object
         enfer:
@@ -8278,6 +8359,7 @@ components:
         - flex
         - priority
         - scale
+        - ultrafast
         - null
       example: default
       type:

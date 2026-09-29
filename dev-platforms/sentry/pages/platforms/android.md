@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Android SDK for error monitoring and 
 url: https://docs.sentry.io/platforms/android/
 ---
 
-# Android | Sentry for Android
+# Sentry for Android
 
 On this page, we get you up and running with Sentry's Android SDK, automatically reporting errors and exceptions in your application.
 

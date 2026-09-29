@@ -9,7 +9,7 @@ title: "Java"
 url: https://docs.sentry.io/platforms/java/
 ---
 
-# Java | Sentry for Java
+# Sentry for Java
 
 Sentry's Java SDK enables capturing sessions for Release health as well as reporting messages and errors.
 

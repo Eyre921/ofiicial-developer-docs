@@ -226,6 +226,7 @@ After you confirm eligibility, choose an integration option. See [Compare integr
 
 | **Option** | **Best for** | **What you build** |
 | --- | --- | --- |
+| [Stripe-branded offers](https://docs.stripe.com/capital/how-capital-for-platforms-works.md#capital-with-dashboard-access) | Connected accounts with access to the full Stripe Dashboard, or US connected accounts with access to the Express Dashboard | Nothing. Stripe automatically presents offers and provides the Capital interface through the Dashboard. |
 | [No-code integration](https://docs.stripe.com/capital/no-code-integration.md) | Fastest to launch | Enable from the Dashboard. Stripe sends co-branded offer emails on your behalf. |
 | [Embedded components](https://docs.stripe.com/capital/embedded-component-integration.md) | Most platforms | Prebuilt Capital UI added to your product, styleable to match your brand |
 | [API integration](https://docs.stripe.com/capital/api-integration.md) | Custom experiences | Your own notifications and flows; Stripe hosts offer acceptance |
@@ -234,6 +235,19 @@ Regardless of integration type, connected accounts must accept their offer on a 
 ![Stripe-hosted Capital offer acceptance page](https://b.stripecdn.com/docs-statics-srv/assets/offer-anatomy.25435a5c27bd4804965991bf4ba77e00.png)
 
 Connected accounts use this Stripe-hosted Capital page, or an embedded component, to accept a financing offer.
+
+### Stripe-branded offers 
+
+If your connected accounts have access to a full Dashboard, or if your US connected accounts have access to an Express Dashboard, you don’t need to integrate Capital to enable offers.
+
+Stripe presents Stripe-branded offers directly to eligible connected accounts through the **Capital** tab in the full Dashboard or the **Financing** tab in the Express Dashboard, where they can view offers, apply, and manage payments.
+
+- **Full Dashboard**: You can’t disable these Capital offers.
+- **Express Dashboard**: Stripe-branded offers are available only to US connected accounts. You can manage future offers from your [Connect Capital settings](https://dashboard.stripe.com/connect/capital/settings) in the Dashboard. *Previously sent offers remain active until they expire.*
+
+Stripe handles communications, credit decisions, servicing, and collections. Your platform isn’t liable for credit losses associated with Capital offers. Learn more about [how Capital affects your Connect integration](https://docs.stripe.com/capital/connect-integration.md).
+
+To add Capital to your own product, to co-brand communications, or to explore revenue sharing, choose a Capital for platforms integration.
 
 ## Connected account experience 
 

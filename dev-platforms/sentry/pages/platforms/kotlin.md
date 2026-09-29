@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Kotlin SDK for error monitoring and p
 url: https://docs.sentry.io/platforms/kotlin/
 ---
 
-# Kotlin | Sentry for Kotlin
+# Sentry for Kotlin
 
 Sentry supports JVM related use of Kotlin with the [Java](https://docs.sentry.io/platforms/java.md) SDK. For native Android applications, use the [Android](https://docs.sentry.io/platforms/android.md) SDK. If you use KMP, the [Kotlin Multiplatform](https://docs.sentry.io/platforms/kotlin/guides/kotlin-multiplatform.md) SDK provides the best integration.
 

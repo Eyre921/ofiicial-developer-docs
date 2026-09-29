@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's React Native SDK."
 url: https://docs.sentry.io/platforms/react-native/
 ---
 
-# React Native | Sentry for React Native
+# Sentry for React Native
 
 Read on to find out how to set up Sentry's React Native SDK which will automatically report errors and exceptions in your application. If you prefer to follow video instructions, see [How to Install the Sentry React Native SDK in 60 Seconds](https://vimeo.com/899369012).
 

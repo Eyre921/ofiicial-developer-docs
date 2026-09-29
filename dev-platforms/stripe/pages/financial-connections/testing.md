@@ -52,9 +52,9 @@ Stripe provides a set of test institutions exercising different success and fail
 
 You can test different [tokenized account number](https://docs.stripe.com/financial-connections/tokenized-account-numbers.md) behavior by searching for the “Tokenized Account Number” institution in the search bar. Each account has different asynchronous behavior:
 
-- **Expired Tokenized Account Number**: The TAN returned by the session has a `deactivated` status.
-- **Eventually Expiring Tokenized Account Number**: The TAN will expire in 30 days and trigger the `financial_connections.account.upcoming_account_number_expiry` webhook event.
-- **Immediately Expiring Tokenized Account Number**: The TAN will immediately expire after the session and trigger the `financial_connections.account.account_numbers_updated` webhook event.
+- **Expired Tokenized Account Number**: The session returns a TAN with a `deactivated` status.
+- **Eventually Expiring Tokenized Account Number**: The TAN expires after 30 days and triggers the `financial_connections.account.upcoming_account_number_expiry` webhook event.
+- **Immediately Expiring Tokenized Account Number**: The TAN expires immediately after the session and triggers the `financial_connections.account.account_numbers_updated` webhook event.
 
 #### Simulating account deactivation
 

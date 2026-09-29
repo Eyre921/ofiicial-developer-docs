@@ -10,7 +10,7 @@ description: "Sentry's Elixir SDK enables automatic reporting of errors, excepti
 url: https://docs.sentry.io/platforms/elixir/
 ---
 
-# Elixir | Sentry for Elixir
+# Sentry for Elixir
 
 On this page, we get you up and running with Sentry's SDK.
 

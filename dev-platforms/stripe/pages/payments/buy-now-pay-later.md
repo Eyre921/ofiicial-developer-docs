@@ -50,7 +50,7 @@ In the buy now, pay later checkout process, the customer:
 | [Kriya](https://docs.stripe.com/payments/kriya.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Mondu](https://docs.stripe.com/payments/mondu.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Scalapay](https://docs.stripe.com/payments/scalapay.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
-| [SeQura](https://docs.stripe.com/payments/sequra.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
+| [SeQura](https://docs.stripe.com/payments/sequra.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported 4 | - Unsupported | - Unsupported |
 | [Sunbit](https://docs.stripe.com/payments/sunbit.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 | [Zip](https://docs.stripe.com/payments/zip.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | - Unsupported |
 
@@ -67,7 +67,7 @@ In the buy now, pay later checkout process, the customer:
 | [Klarna](https://docs.stripe.com/payments/klarna.md) | `klarna` | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | Yes |
 | [Kriya](https://docs.stripe.com/payments/kriya.md) | `kriya` | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | Yes |
 | [Mondu](https://docs.stripe.com/payments/mondu.md) | `mondu` | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | Yes |
-| [SeQura](https://docs.stripe.com/payments/sequra.md) | `sequra` | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | Yes |
+| [SeQura](https://docs.stripe.com/payments/sequra.md) | `sequra` | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | Yes |
 | [Sunbit](https://docs.stripe.com/payments/sunbit.md) | `sunbit` | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported | Yes |
 | [Zip](https://docs.stripe.com/payments/zip.md) | `zip` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 

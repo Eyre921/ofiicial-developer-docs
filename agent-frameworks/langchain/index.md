@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1656 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1660 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -548,6 +548,14 @@
 - `langsmith/self-host-organization-charts` — [View trace counts across your organization](pages/langsmith/self-host-organization-charts.md) · [原文](https://docs.langchain.com/langsmith/self-host-organization-charts)
 - `langsmith/self-host-playground-environment-settings` — [Use environment variables for model providers](pages/langsmith/self-host-playground-environment-settings.md) · [原文](https://docs.langchain.com/langsmith/self-host-playground-environment-settings)
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
+- `langsmith/self-host-smithdb` — [Enable SmithDB on self-hosted LangSmith](pages/langsmith/self-host-smithdb.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb)
+- `langsmith/self-host-smithdb-infrastructure` — [Prepare SmithDB supporting infrastructure](pages/langsmith/self-host-smithdb-infrastructure.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-infrastructure)
+- `langsmith/self-host-smithdb-install` — [Install LangSmith with SmithDB](pages/langsmith/self-host-smithdb-install.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-install)
+- `langsmith/self-host-smithdb-metrics` — [SmithDB metrics reference](pages/langsmith/self-host-smithdb-metrics.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-metrics)
+- `langsmith/self-host-smithdb-migrate` — [Migrate ClickHouse history to SmithDB](pages/langsmith/self-host-smithdb-migrate.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-migrate)
+- `langsmith/self-host-smithdb-observability` — [Configure SmithDB observability](pages/langsmith/self-host-smithdb-observability.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-observability)
+- `langsmith/self-host-smithdb-scale` — [Configure SmithDB for scale](pages/langsmith/self-host-smithdb-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-scale)
+- `langsmith/self-host-smithdb-troubleshooting` — [Troubleshoot SmithDB](pages/langsmith/self-host-smithdb-troubleshooting.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-troubleshooting)
 - `langsmith/self-host-sso` — [Set up SSO with OAuth2.0 and OIDC](pages/langsmith/self-host-sso.md) · [原文](https://docs.langchain.com/langsmith/self-host-sso)
 - `langsmith/self-host-terraform` — [Deploy LangSmith with Terraform](pages/langsmith/self-host-terraform.md) · [原文](https://docs.langchain.com/langsmith/self-host-terraform)
 - `langsmith/self-host-terraform-aws-architecture` — [AWS Terraform architecture](pages/langsmith/self-host-terraform-aws-architecture.md) · [原文](https://docs.langchain.com/langsmith/self-host-terraform-aws-architecture)
@@ -1322,8 +1330,6 @@
 - `oss/javascript/integrations/llm_caching/index` — [Cache integrations](pages/oss/javascript/integrations/llm_caching/index.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/llm_caching/index)
 - `oss/javascript/integrations/llms/index` — [LLM integrations](pages/oss/javascript/integrations/llms/index.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/llms/index)
 - `oss/javascript/integrations/long-term-memory/index` — [Store integrations](pages/oss/javascript/integrations/long-term-memory/index.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/long-term-memory/index)
-- `oss/javascript/integrations/memory/mongodb-long-term-memory` — [Long-term memory with MongoDB Atlas](pages/oss/javascript/integrations/memory/mongodb-long-term-memory.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/memory/mongodb-long-term-memory)
-- `oss/javascript/integrations/memory/mongodb-short-term-memory` — [Short-term memory with MongoDB Atlas](pages/oss/javascript/integrations/memory/mongodb-short-term-memory.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/memory/mongodb-short-term-memory)
 - `oss/javascript/integrations/middleware/index` — [Middleware integrations](pages/oss/javascript/integrations/middleware/index.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/middleware/index)
 - `oss/javascript/integrations/providers/all_providers` — [All LangChain JavaScript integration providers](pages/oss/javascript/integrations/providers/all_providers.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/providers/all_providers)
 - `oss/javascript/integrations/providers/anthropic` — [Anthropic integrations](pages/oss/javascript/integrations/providers/anthropic.md) · [原文](https://docs.langchain.com/oss/javascript/integrations/providers/anthropic)
@@ -1527,8 +1533,6 @@
 - `oss/python/integrations/document_loaders/index` — [Document loader integrations](pages/oss/python/integrations/document_loaders/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/document_loaders/index)
 - `oss/python/integrations/embeddings/index` — [Embedding model integrations](pages/oss/python/integrations/embeddings/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/embeddings/index)
 - `oss/python/integrations/long-term-memory/index` — [Store integrations](pages/oss/python/integrations/long-term-memory/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/long-term-memory/index)
-- `oss/python/integrations/memory/mongodb-long-term-memory` — [Long-term memory with MongoDB Atlas](pages/oss/python/integrations/memory/mongodb-long-term-memory.md) · [原文](https://docs.langchain.com/oss/python/integrations/memory/mongodb-long-term-memory)
-- `oss/python/integrations/memory/mongodb-short-term-memory` — [Short-term memory with MongoDB Atlas](pages/oss/python/integrations/memory/mongodb-short-term-memory.md) · [原文](https://docs.langchain.com/oss/python/integrations/memory/mongodb-short-term-memory)
 - `oss/python/integrations/middleware/index` — [Middleware integrations](pages/oss/python/integrations/middleware/index.md) · [原文](https://docs.langchain.com/oss/python/integrations/middleware/index)
 - `oss/python/integrations/providers/all_providers` — [All LangChain Python integration providers](pages/oss/python/integrations/providers/all_providers.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/all_providers)
 - `oss/python/integrations/providers/anthropic` — [Anthropic (Claude) integrations](pages/oss/python/integrations/providers/anthropic.md) · [原文](https://docs.langchain.com/oss/python/integrations/providers/anthropic)

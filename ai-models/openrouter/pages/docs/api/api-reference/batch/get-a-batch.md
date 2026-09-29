@@ -122,6 +122,12 @@ tags:
     name: TTS
     x-displayName: Speech
   - description: >-
+      The catalog of server tools OpenRouter runs on behalf of a model: accepted
+      `tools[].type` spellings per API format, engines and pricing, and which
+      endpoints run each tool natively. See
+      https://openrouter.ai/docs/guides/features/server-tools.
+    name: Tools
+  - description: >-
       Store host-bound secrets for a workspace or for one intern. Scope is
       selected by the API key. Responses return metadata only, never secret
       values. See https://openrouter.ai/docs/guides/ori/vault.
@@ -193,6 +199,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/BatchErrorResponse'
           description: No batch exists for the given id.
+        '410':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 410
+                  message: >-
+                    Batch results have expired. OpenRouter deletes batch results
+                    30 days after the batch is created.
+              schema:
+                $ref: '#/components/schemas/BatchErrorResponse'
+          description: The batch results were deleted after the 30-day retention window.
         '429':
           content:
             application/json:
@@ -3752,6 +3770,7 @@ components:
         - flex
         - priority
         - scale
+        - ultrafast
         - null
       example: default
       type:
@@ -5106,8 +5125,10 @@ components:
           description: >-
             Models that were requested as part of the analysis panel but did not
             produce a response. Present when at least one requested analysis
-            model failed. The fusion result is still usable but was produced
-            from a degraded panel.
+            model failed. On a completed item the fusion result is still usable
+            but was produced from a degraded panel; on a failed item it lists
+            the panels that failed before the run stopped, so the caller can see
+            which models were attempted even though no analysis was produced.
           items:
             properties:
               error:

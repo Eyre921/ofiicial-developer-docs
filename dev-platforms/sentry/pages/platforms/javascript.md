@@ -10,7 +10,7 @@ description: "Learn how to manually set up Sentry in your JavaScript app and cap
 url: https://docs.sentry.io/platforms/javascript/
 ---
 
-# Browser JavaScript | Sentry for JavaScript
+# Sentry for Browser JavaScript
 
 ##### Using a framework?
 

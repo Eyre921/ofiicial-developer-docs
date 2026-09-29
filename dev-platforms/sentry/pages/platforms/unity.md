@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Unity SDK for error monitoring and pe
 url: https://docs.sentry.io/platforms/unity/
 ---
 
-# Unity | Sentry for Unity
+# Sentry for Unity
 
 Our Unity SDK builds on top of the [.NET SDK](https://docs.sentry.io/platforms/dotnet.md) and extends it with Unity-specific features. It gives you helpful hints for where and why an error or performance issue might have occurred.
 

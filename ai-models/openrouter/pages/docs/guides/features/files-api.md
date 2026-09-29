@@ -69,7 +69,7 @@ use it in many requests. A sandbox container can load workspace files with the
 
   The Files API works on the global endpoint (`openrouter.ai`) only. Requests
   through the
-  [in-region endpoints](/docs/guides/privacy/provider-logging#enterprise-in-region-routing)
+  [in-region endpoints](/docs/guides/features/in-region-routing)
   (`eu.openrouter.ai`, `us.openrouter.ai`) return a `403` error.
 </Note>
 

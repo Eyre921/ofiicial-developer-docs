@@ -1,0 +1,140 @@
+---
+title: "Tools"
+source: https://openrouter.ai/docs/client-sdks/go/sdks/tools/README.md
+path: docs/client-sdks/go/sdks/tools/readme
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Tools
+
+> The catalog of server tools OpenRouter runs on behalf of a model: accepted `tools[].type` spellings per API format, engines and pricing, and which endpoints run each tool natively. See https://openrouter.ai/docs/guides/features/server-tools.
+
+## Overview
+
+The catalog of server tools OpenRouter runs on behalf of a model: accepted `tools[].type` spellings per API format, engines and pricing, and which endpoints run each tool natively. See [https://openrouter.ai/docs/guides/features/server-tools](https://openrouter.ai/docs/guides/features/server-tools).
+
+### Available Operations
+
+* [ListTools](#listtools) - List server tools
+* [GetTool](#gettool) - Get a server tool
+
+## ListTools
+
+Lists every server tool OpenRouter can run on behalf of a model: accepted `tools[].type` spellings per API format, the engines behind it with their pricing, and how many endpoints run it natively.
+
+### Example Usage
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"os"
+	"github.com/OpenRouterTeam/go-sdk/models/operations"
+	"github.com/OpenRouterTeam/go-sdk/optionalnullable"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New()
+
+    res, err := s.Tools.ListTools(ctx, operations.ListToolsSecurity{
+        Bearer: os.Getenv("OPENROUTER_BEARER"),
+    }, optionalnullable.From(openrouter.Pointer[int64](0)), openrouter.Pointer[int64](50), nil)
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `security` | [operations.ListToolsSecurity](../../models/operations/listtoolssecurity.mdx) | :heavy\_check\_mark: | The security requirements to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
+| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned | 50 |
+| `apiFormat` | [\*operations.APIFormat](../../models/operations/apiformat.mdx) | :heavy\_minus\_sign: | Only tools usable on this API format | responses |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+
+### Response
+
+**[\*components.ListToolsResponse](../../models/components/listtoolsresponse.mdx), error**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
+
+## GetTool
+
+One server tool by canonical name or any accepted alias, with the models that run it natively.
+
+### Example Usage
+
+```go theme={null}
+package main
+
+import(
+	"context"
+	openrouter "github.com/OpenRouterTeam/go-sdk"
+	"os"
+	"github.com/OpenRouterTeam/go-sdk/models/operations"
+	"log"
+)
+
+func main() {
+    ctx := context.Background()
+
+    s := openrouter.New()
+
+    res, err := s.Tools.GetTool(ctx, operations.GetToolSecurity{
+        Bearer: os.Getenv("OPENROUTER_BEARER"),
+    }, "openrouter:web_search")
+    if err != nil {
+        log.Fatal(err)
+    }
+    if res != nil {
+        // handle response
+    }
+}
+```
+
+### Parameters
+
+| Parameter | Type | Required | Description | Example |
+| - | - | - | - | - |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
+| `security` | [operations.GetToolSecurity](../../models/operations/gettoolsecurity.mdx) | :heavy\_check\_mark: | The security requirements to use for the request. | |
+| `name` | `string` | :heavy\_check\_mark: | Canonical `openrouter:*` name or any accepted `tools[].type` alias | openrouter:web\_search |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+
+### Response
+
+**[\*operations.GetToolResponse](../../models/operations/gettoolresponse.mdx), error**
+
+### Errors
+
+| Error Type | Status Code | Content Type |
+| - | - | - |
+| sdkerrors.UnauthorizedResponseError | 401 | application/json |
+| sdkerrors.ForbiddenResponseError | 403 | application/json |
+| sdkerrors.NotFoundResponseError | 404 | application/json |
+| sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.APIError | 4XX, 5XX | \*/\* |
+

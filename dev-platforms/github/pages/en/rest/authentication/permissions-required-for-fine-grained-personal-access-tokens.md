@@ -1028,6 +1028,13 @@ Some endpoints require more than one permission. Other endpoints work with any o
 | `GET /repos/{owner}/{repo}/environments/{environment_name}/variables` | read | PAT | ✗ |
 | `GET /repos/{owner}/{repo}/environments/{environment_name}/variables/{name}` | read | PAT | ✗ |
 
+## Repository permissions for "GitHub App installation repository access"
+
+| Endpoint | Access | Tokens | Additional Permissions |
+|----------|--------|--------|------------------------|
+| `PUT /user/installations/{installation_id}/repositories/{repository_id}` | write | PAT | ✗ |
+| `DELETE /user/installations/{installation_id}/repositories/{repository_id}` | write | PAT | ✗ |
+
 ## Repository permissions for "Issues"
 
 | Endpoint | Access | Tokens | Additional Permissions |

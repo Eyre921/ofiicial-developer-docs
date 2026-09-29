@@ -1,33 +1,46 @@
 ---
-title: "Contact Properties"
-source: https://resend.com/docs/dashboard/audiences/properties
-path: docs/dashboard/audiences/properties
+title: "Contact properties"
+source: https://resend.com/docs/dashboard/contacts/properties
+path: docs/dashboard/contacts/properties
 ---
 
-Learn how to work with Contact Properties with Resend.
+Learn how to work with Contact properties with Resend.
 
-Contact Properties can be used to store additional information about your Contacts and then personalize your Broadcasts.
+## Contact properties
 
-Resend includes a few default properties:
+Contact properties can be used to store additional information about your Contacts and then [personalize your Broadcasts](#use-contact-properties-in-broadcasts) with dynamic content.
 
-* `first_name`: The first name of the contact.
-* `last_name`: The last name of the contact.
-* `unsubscribed`: Whether the contact is unsubscribed from all Broadcasts.
-* `email`: The email address of the contact.
+## Included properties
 
-## Add Custom Contact Properties
+Each Contact includes the following attributes:
 
-You can create additional custom Contact Properties for your Contacts to store additional information. These properties can be used to personalize your Broadcasts across all Segments.
+* `email`: The email address of the Contact. (required)
+* `first_name`: The first name of the Contact.
+* `last_name`: The last name of the Contact.
+* `segments`: A list of [Segments](/docs/dashboard/contacts/introduction#segments) the Contact belongs to.
+* `topics`: A list of [Topics](/docs/dashboard/contacts/introduction#topics) the Contact subscribes to.
+* `unsubscribed`: Whether the Contact is unsubscribed from all Broadcasts.
+* `properties`: An object of custom-defined properties, where each value includes the property's `value` and `type`.
+
+## Manage Contact properties
+
+You can view, add, and manage your Contact properties in the [**Properties** Dashboard view](https://resend.com/audience/properties) or programmatically with the [Contact properties API](/docs/api-reference/contact-properties/create-contact-property), [Resend CLI commands](/docs/cli#contact-properties), and [MCP](/docs/mcp-server).
+
+You can also create [Automations](/docs/dashboard/automations/introduction) to update Contact properties.
+
+## Add Custom Contact properties
+
+You can create additional custom Contact properties for your Contacts to store additional information. These properties can be used to personalize your Broadcasts across all Segments.
 
 Each Contact Property has a key, a value, and optional fallback value.
 
-* `key`: The key of the property (must be alphanumeric and underscore only, max `50` characters).
+* `key`: The key of the property (must be alphanumeric and underscore only, max 50 characters). This is case sensitive.
 * `value`: The value of the property (may be a `string` or `number`).
 * `fallback_value`: The fallback value of the property (must match the type of the property).
 
 <video />
 
-You can also create Contact Properties [via the API or SDKs](/docs/api-reference/contact-properties/create-contact-property).
+You can also create Contact properties [via the API or SDKs](/docs/api-reference/contact-properties/create-contact-property).
 
 <CodeGroup>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -172,20 +185,27 @@ You can also create Contact Properties [via the API or SDKs](/docs/api-reference
   ```
 </CodeGroup>
 
-## Add Properties to a Contact
+## Add properties to a Contact
 
-When you create a Contact Property you can provide a fallback value. This value will be used whenever you don't provide a custom value for a Contact.
+When you create a Contact property with a fallback value, that default is used for Contacts that do not have a custom value for the property. If no fallback is provided, the Contact will not have a value for that property.
 
-To provide a custom value for a Contact, you can use the dashboard:
+To update this value for a Contact in the [Dashboard](https://resend.com/audience):
 
-1. Go to the [Contacts](https://resend.com/audience) page.
-2. Click the **more options** <Icon icon="ellipsis" /> button and then **Edit Contact**.
-3. Add the property key and value.
-4. Click on the **Save** button.
+<Steps>
+  <Step title="Go to the **Contacts** Dashboard view." />
+
+  <Step title="Click the **More options** button and then **Edit Contact**." />
+
+  <Step title="Add the property key and value." />
+
+  <Step title="Click the **Save** button." />
+</Steps>
 
 <video />
 
-You can also add properties to a Contact when you [create a Contact](/docs/api-reference/contacts/create-contact).
+## Add or update property values programmatically
+
+You can add custom property values to a Contact when you [create a Contact with the API](/docs/api-reference/contacts/create-contact) or [from the terminal with a CLI command](/docs/cli#contacts).
 
 <CodeGroup>
   ```ts Node.js {10-12} theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -356,7 +376,7 @@ You can also add properties to a Contact when you [create a Contact](/docs/api-r
   ```
 </CodeGroup>
 
-Or you can update a Contact to add or change a property value [using the update contact endpoint](/docs/api-reference/contacts/update-contact).
+You can also update a Contact to add or change a property value [using the update Contact endpoint](/docs/api-reference/contacts/update-contact) or [CLI command](/docs/cli#contacts).
 
 <CodeGroup>
   ```ts Node.js {8-10} theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -581,30 +601,20 @@ Or you can update a Contact to add or change a property value [using the update 
   ```
 </CodeGroup>
 
-When you create or update a Contact with properties, the properties are added to the Contact, but only if the property key already exists and the value type is valid. You can [list all Contact Properties](/docs/api-reference/contact-properties/list-contact-properties) to see all available properties.
+When you create or update a Contact with properties, the properties are added to the Contact only if the property key already exists and the value type is valid.
 
-<AccordionGroup>
-  <Accordion title="What happens if the properties don't exist?">
-    If the properties don't exist, they are not added to the Contact and the
-    call fails. An error is returned.
-  </Accordion>
+If the properties don't exist, or the values are of the wrong type, they are not added to the Contact and the call fails. An error is returned.
 
-  <Accordion title="Property keys are case sensitive, right?">
-    Yes, property keys are case sensitive. If you create a property with a key
-    of "company\_name", you cannot use "CompanyName" or "company\_Name" in your
-    Contacts.
-  </Accordion>
+You can [list all Contact properties with the API](/docs/api-reference/contact-properties/list-contact-properties) to see and verify all available properties.
 
-  <Accordion title="What happens if the value isn't the right type?">
-    If the value isn't the right type, the property value is not added to the
-    Contact and the call fails. An error is returned.
-  </Accordion>
-</AccordionGroup>
+## Use Contact properties in Broadcasts
 
-## Use Contact Properties in Broadcasts
-
-You can use Contact Properties in your Broadcasts to personalize your emails.
+You can use Contact properties in your Broadcasts to [personalize your emails](/docs/dashboard/broadcasts/editor#personalize-your-content).
 
 <video />
 
-You can also use Contact Properties in your Broadcast HTML and Text content when you [create a Broadcast using the API or SDKs](/docs/api-reference/broadcasts/create-broadcast).
+You can also use Contact properties in your Broadcast HTML and Text content when you [create a Broadcast using the API or SDKs](/docs/api-reference/broadcasts/create-broadcast).
+
+## API Reference
+
+For complete API documentation, see the [Contact properties API reference](/docs/api-reference/contact-properties/create-contact-property).

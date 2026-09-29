@@ -86,7 +86,7 @@ For inbound telephony and messaging, ElevenAgents can fetch this initiation data
 
 Configure the webhook URL and header secrets in [Agents settings](https://elevenlabs.io/app/agents/settings). On the agent **Security** tab, enable **Fetch initiation client data from a webhook** and any override fields your response may include.
 
-The webhook runs for a new inbound conversation on Twilio voice, Exotel, SIP trunk, WhatsApp, or Twilio SMS when initiation client data is not already present.
+The webhook runs for a new inbound conversation on Twilio voice, Exotel, SIP trunk, WhatsApp, or Twilio SMS when initiation client data is not already present. It also runs for [Amazon Connect](/docs/eleven-agents/phone-numbers/c-caa-s-integrations/amazon-connect#dynamic-variables) sessions, where your response is merged with the contact context Amazon Connect provides.
 
 Outbound Twilio voice, Exotel, SIP, and WhatsApp calls trigger it only if the outbound request did not include `conversation_initiation_client_data`. Outbound WhatsApp messages never trigger it — pass dynamic variables on the outbound request instead.
 
@@ -110,7 +110,7 @@ ElevenAgents sends caller context in the request body:
 }
 ```
 
-`caller_id` and `called_number` are phone numbers on Twilio, Exotel, SIP, and SMS. On inbound WhatsApp they are the WhatsApp user ID and your WhatsApp phone number ID. On outbound calls, `caller_id` is your number and `called_number` is the person being dialed. `call_sid` is the provider call SID on telephony and an empty string on WhatsApp and SMS. SIP calls may also include `call_id` and `sip_headers`.
+`caller_id` and `called_number` are phone numbers on Twilio, Exotel, SIP, and SMS. On inbound WhatsApp they are the WhatsApp user ID and your WhatsApp phone number ID. On outbound calls, `caller_id` is your number and `called_number` is the person being dialed. `call_sid` is the provider call SID on telephony and an empty string on WhatsApp, SMS, and Amazon Connect. SIP calls may also include `call_id` and `sip_headers`. Amazon Connect sessions include `call_id` set to the contact ID.
 
 Your response must use the `conversation_initiation_client_data` shape above. Include every custom dynamic variable the agent defines. Overrides are optional and must be enabled in **Security**. The HTTP response body must be 256 KB or smaller (262,144 bytes).
 

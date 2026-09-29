@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's PowerShell SDK for error monitoring a
 url: https://docs.sentry.io/platforms/powershell/
 ---
 
-# PowerShell | Sentry for PowerShell
+# Sentry for PowerShell
 
 On this page, we get you up and running with Sentry's PowerShell SDK. The PowerShell Sentry SDK is tested to work with:
 

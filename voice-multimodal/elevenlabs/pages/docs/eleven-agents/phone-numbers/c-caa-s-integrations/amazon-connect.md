@@ -39,9 +39,8 @@ outcome it received.
 4. Amazon Connect signals that the caller's channel is live, then Amazon Connect and ElevenLabs
    exchange 16-bit linear PCM audio as A2A messages. Amazon Connect proposes the sample rate and
    ElevenLabs adopts it, so no audio format changes are needed on the agent.
-5. When the agent ends the call, ElevenLabs finishes the session with a `Complete` outcome and the
-   flow continues from the Lex block. An `Escalate` outcome, which routes the caller to a human
-   queue, is supported on the wire and will be exposed through the transfer tool; see
+5. When the agent ends the call or hands the caller to a human, ElevenLabs finishes the session with
+   a `Complete` or `Escalate` outcome and the flow continues from the Lex block; see
    [Transferring to a human](#transferring-to-a-human).
 
 ## Requirements
@@ -78,6 +77,48 @@ In **Agent → Tools → System tools**, enable **End call** so the agent can fi
 the caller's request is resolved. Amazon Connect then continues your flow with the `Complete`
 outcome.
 
+#### Add an Amazon Connect transfer rule (optional)
+
+To let the agent hand the caller to a human, give it the **Transfer to number** system tool with a
+transfer rule whose provider configuration is `amazon_connect`. The rule has no destination: the
+session ends with the `Escalate` outcome and your contact flow chooses the queue. Transfer rules are
+configured through the API. Add the tool with a `PATCH` on the agent:
+
+```bash
+curl -X PATCH "https://api.elevenlabs.io/v1/convai/agents/agent_7101k5zvyjhmfg983brhmhkd98n6" \
+  -H "xi-api-key: $ELEVENLABS_API_KEY" -H "Content-Type: application/json" \
+  -d '{
+    "conversation_config": {"agent": {"prompt": {"built_in_tools": {
+      "end_call": {"type": "system", "name": "end_call", "description": "",
+                   "params": {"system_tool_type": "end_call"}},
+      "transfer_to_number": {
+        "type": "system", "name": "transfer_to_number", "description": "",
+        "params": {
+          "system_tool_type": "transfer_to_number",
+          "transfers": [],
+          "transfer_rules": [{
+            "condition": "the caller asks to speak with a human",
+            "provider_configs": [
+              {"type": "amazon_connect", "config": {"type": "amazon_connect_escalate"}}
+            ]
+          }]
+        }
+      }
+    }}}}
+  }'
+```
+
+Send the agent's full `built_in_tools` object, including tools it already has such as `end_call`.
+The agent picks the rule by its `condition`; the option it echoes back is the fixed token
+`amazon_connect`, so one Amazon Connect rule per tool is enough. Phone numbers and SIP URIs
+configured for other providers are not offered on Amazon Connect calls.
+
+> **Note**
+>
+> Transfer rules are an API-managed setting. Configure and update the **Transfer to number** tool of
+> an agent that uses them through the API, as above; the dashboard's tool editor works with the
+> per-number transfer list.
+
 #### Create a dedicated API key
 
 Create an API key in the same workspace as the agent and scope it to ElevenAgents. You will store
@@ -87,10 +128,10 @@ it in AWS Secrets Manager in the next section; do not paste it anywhere else.
 
 Amazon Connect connects to a URL that contains your agent ID:
 
-| Environment    | AccessUrl                                                                                     |
-| -------------- | --------------------------------------------------------------------------------------------- |
-| Default        | `wss://api.elevenlabs.io/v1/convai/conversation/amazon-connect/<agent_id>`                    |
-| Data residency | `wss://api.<region>.residency.elevenlabs.io/v1/convai/conversation/amazon-connect/<agent_id>` |
+| Environment    | AccessUrl                                                                                                             |
+| -------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Default        | `wss://api.elevenlabs.io/v1/convai/conversation/amazon-connect/agent_7101k5zvyjhmfg983brhmhkd98n6`                    |
+| Data residency | `wss://api.<region>.residency.elevenlabs.io/v1/convai/conversation/amazon-connect/agent_7101k5zvyjhmfg983brhmhkd98n6` |
 
 > **Info**
 >
@@ -191,7 +232,7 @@ aws secretsmanager put-resource-policy --secret-id "$SECRET_ARN" \
 ```
 
 ![Secrets Manager secret encrypted with the customer-managed key and its resource policy for
-connect.amazonaws.com](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fc91a773575a547f3ac6d3a24d14cffac4535227057e4e8e4eb3ccfc71f27a0/assets/images/agents/amazon-connect-secret.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=8480d71fe53c7b9599fa7d9c6854abf216a923afde807dad5e9fdceab32c775a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+connect.amazonaws.com](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fc91a773575a547f3ac6d3a24d14cffac4535227057e4e8e4eb3ccfc71f27a0/assets/images/agents/amazon-connect-secret.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=374948f30688c51587df1ce4547646ddbc9841abce7fcb43022836a404b2f80d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Create the third-party application
 
@@ -260,14 +301,17 @@ The admin website shows the profile and its permissions but not the allowed AI a
 only visible through the API.
 
 ![Dedicated security profile in the Amazon Connect admin website with AI agent view
-permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2d9c7dd52c77bfeefd3c4f5beb99681d578014c407cf37dbc7d2e2f457c40ee8/assets/images/agents/amazon-connect-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=f5ff102f4d83fd2d4b8f5cc53b028d981bdb0fcd2f59821b812a8f14c3b5f1c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2d9c7dd52c77bfeefd3c4f5beb99681d578014c407cf37dbc7d2e2f457c40ee8/assets/images/agents/amazon-connect-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=1430e54e78f8a148159a66ad82b6c5c4a695046f6a0db1ed3d0d91d918b91978&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Create and publish the orchestration AI agent
 
 The orchestration agent hands every voice conversation to the application immediately, with audio
 streaming enabled. Voice sessions require immediate hand-off; text streaming
 (`audioStreamingEnabled` set to false) and `delegateAgentConfiguration` are not supported by
-ElevenLabs.
+ElevenLabs. An audio immediate hand-off orchestrator must also declare the reserved `Complete`
+tool of type `RETURN_TO_CONTROL` in `toolConfigurations`; without it the create request fails with
+`An audio frontline orchestrator (with an audio immediate handoff) must configure the reserved
+'Complete' RETURN_TO_CONTROL tool`.
 
 **`create-ai-agent.json`**
 
@@ -290,6 +334,24 @@ ElevenLabs.
             "audioStreamingEnabled": true,
             "immediateHandoff": true
           }
+        }
+      ],
+      "toolConfigurations": [
+        {
+          "toolName": "Complete",
+          "toolType": "RETURN_TO_CONTROL",
+          "description": "Close the conversation when the customer has no more questions.",
+          "instruction": {
+            "instruction": "Mark the conversation as complete when the customer has no additional questions or needs."
+          },
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "reason": { "type": "string", "description": "Reason for completion" }
+            },
+            "required": ["reason"]
+          },
+          "userInteractionConfiguration": { "isUserConfirmationRequired": false }
         }
       ]
     }
@@ -316,7 +378,7 @@ done
 ```
 
 ![Orchestration AI agent in the AI agent designer with the dedicated security profile
-attached](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3ade9397b18d3af79fc4f3ae63fef06cec9e17d59109e5c226d403339c32f052/assets/images/agents/amazon-connect-ai-agent-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=74ae0a78c423f7052b0123171c7c52a4a8919b6dffc0f6c135299fc68996a663&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+attached](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3ade9397b18d3af79fc4f3ae63fef06cec9e17d59109e5c226d403339c32f052/assets/images/agents/amazon-connect-ai-agent-security-profile.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=1755dc86c6db33e7057829d703708e19722a3443f9ad1881c30bf285ca0f7f3c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Build the contact flow
 
@@ -357,7 +419,7 @@ aws connect associate-bot --instance-id $INSTANCE_ID \
 ```
 
 ![Lex V2 bot intents list with the Q in Connect hand-off intent and the built-in fallback
-intent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6d857b4a57a6289c26249b80bad8181b68af5b7654db9ae0adbf0ea830091ca4/assets/images/agents/amazon-connect-lex-intents.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=e16233be7431871c97c0955ce1395a323fe7dcbaf3a054b86ff91f9f9eb3e030&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+intent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6d857b4a57a6289c26249b80bad8181b68af5b7654db9ae0adbf0ea830091ca4/assets/images/agents/amazon-connect-lex-intents.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=e90422772e537a99851753ccb866a084d1a8ffa95755ce403df936fcf6dad0c2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add the assistant and the Lex block
 
@@ -375,7 +437,7 @@ In the flow designer, add these blocks in order:
 | `x-amz-lex:qic-audio-passthrough`     | `true`                                           |
 
 ![Session attributes of the Get customer input block: the versioned AI agent ARN and the audio
-passthrough flag](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/812e85e379bcf3eb422497d27fe7740da8e3482222ca858089ad1b4de2f92e4b/assets/images/agents/amazon-connect-lex-session-attributes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=58acd16d7459f8e2420f92ddcf88b29fd01bb5cbb21f0e9c5231ca0653c37451&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+passthrough flag](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/812e85e379bcf3eb422497d27fe7740da8e3482222ca858089ad1b4de2f92e4b/assets/images/agents/amazon-connect-lex-session-attributes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=8c9259e85ea266acf7bff23273ba2069c55928471062f1846eb6c34198447080&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >
@@ -387,30 +449,30 @@ passthrough flag](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/
 
 Amazon Connect surfaces the ElevenLabs outcome to the flow as the `$.Lex.SessionAttributes.Tool`
 attribute. Add a **Check contact attributes** block after the Lex block, set **Namespace** to
-**Lex**, **Key** to **Session attributes**, and **Session Attribute Key** to `Tool`, then add an
-**Equals** condition per outcome:
+**Lex**, **Key** to **Session attributes**, and **Session Attribute Key** to `Tool`, then add one
+**Equals** condition per outcome and route **No Match** to an error prompt:
 
-| Value      | Meaning                                                                                | Suggested route                       |
+| Branch     | Meaning                                                                                | Suggested route                       |
 | ---------- | -------------------------------------------------------------------------------------- | ------------------------------------- |
 | `Complete` | The agent ended the call, for example with the **End call** tool.                      | Disconnect                            |
 | `Escalate` | The agent asked for a human (see [Transferring to a human](#transferring-to-a-human)). | Set working queue → Transfer to queue |
+| No Match   | Any other value.                                                                       | Play prompt → Disconnect              |
 
 ![Check contact attributes block configured on the Lex session attribute Tool with Equals
-conditions for each outcome](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa004d8a78522f66f256e879abcf1888a01e2e1bc22b8e712d197a9c4bd8b566/assets/images/agents/amazon-connect-check-attributes-block.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=1e496af2ae9eda5bec7523972dab8b34f8ec9f10b7a0447876b7592b3f17a6c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+conditions for each outcome](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e73068b736d4023417602a17c480112a3d7f5617694390fc8a88f03c4b7855e1/assets/images/agents/amazon-connect-check-attributes-block.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=ce3d187e272a8571bc7fd4d3d73e2ff8a598e383b9a85d51d32061ca5012f995&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Warning**
 >
-> Amazon Connect writes these values in title case (`Escalate`, `Complete`), not as the upper-case
-> outcome type the agent sends. In an exported flow, the Lex block's **Default** output is its
-> `NoMatchingCondition` transition; make sure it leads to the comparison block rather than an error
-> message.
+> Amazon Connect writes the outcome in title case (`Escalate`, `Complete`), not as the upper-case
+> finish type sent on the wire, so these two conditions are all the block needs. A session that
+> fails after the hand-off finishes with the `COMPLETE_WITH_ERROR` type; the Lex block then takes
+> its **Error** output or the comparison falls through to **No Match**, so route both to the error
+> prompt. In an exported flow, the Lex block's **Default** output is its `NoMatchingCondition`
+> transition; make sure it leads to the comparison block rather than an error message.
 
 ![Contact flow with the Get customer input block leading to a Check contact attributes block that
-routes Escalate to a queue and Complete to a
-disconnect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/70dd68ee4561c165f12cfa4c62512d153f9a922f2d99f2479c92c09abc0e83c4/assets/images/agents/amazon-connect-contact-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=9b40f23b124b34496f8bd5522e886f00b41ffb98977e73e2d9d0c27834330352&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
-
-The flow above compares against both spellings of each outcome so it keeps working if the casing
-changes.
+routes Escalate to a queue, Complete to a disconnect, and No Match to an error
+prompt](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/71e5a3ec507c431ff692545db58376e07db0605efb8bb42f4e17e709a1a0dedf/assets/images/agents/amazon-connect-contact-flow.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=c1319c0007b9bfc1f526887188d57a0836363479e49cb314595bee79d5c04a66&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Publish and assign
 
@@ -437,7 +499,9 @@ aws connect start-outbound-voice-contact --instance-id $INSTANCE_ID \
 Call the number. The agent's first message plays a few seconds after the flow reaches the Lex
 block; the hand-off inside AWS takes about three seconds before ElevenLabs is contacted. Have a
 short conversation and say goodbye: the agent calls **End call**, the ElevenLabs session ends with
-`Complete`, and your flow continues from the Lex block.
+`Complete`, and your flow continues from the Lex block. If you added a transfer rule, ask for a
+human instead: the agent calls **Transfer to number**, the session ends with `Escalate`, and the
+flow takes that branch.
 
 #### Check the conversation in ElevenLabs
 
@@ -445,7 +509,7 @@ Open the conversation in **Conversations**. Its source is Amazon Connect and the
 tab lists the `amazon_connect_*` dynamic variables the session received.
 
 ![Client data tab of an Amazon Connect conversation listing the Amazon Connect dynamic
-variables](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ced3be27e366822341940e3fa5f96c2cd7376b1e63e86ace2dac31d778039417/assets/images/agents/amazon-connect-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T113235Z&X-Amz-Expires=604800&X-Amz-Signature=5ef7c96e0f9c1416b97d336fd9d27134a26f4c724e088e7a30ac2da99c902f53&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+variables](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ced3be27e366822341940e3fa5f96c2cd7376b1e63e86ace2dac31d778039417/assets/images/agents/amazon-connect-conversation-history.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260929%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260929T233154Z&X-Amz-Expires=604800&X-Amz-Signature=b2cc466d34c43b38ad345aea9e63fd5e2ce912cb928c6ee81caad0ceb576e0d9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Check the flow log in AWS
 
@@ -458,7 +522,8 @@ aws logs filter-log-events --log-group-name /aws/connect/<INSTANCE_ALIAS> \
   --query 'events[].message' --output text | tr '\t' '\n' | grep -o '"Results": *"[A-Za-z_]*"'
 ```
 
-Expect `"Results": "Complete"` for the Lex block, followed by the blocks on your `Complete` branch.
+Expect `"Results": "Complete"`, or `"Results": "Escalate"` after a transfer, for the Lex block,
+followed by the blocks on that branch.
 
 ## Dynamic variables
 
@@ -491,7 +556,7 @@ attributes; if AWS starts including them, they will appear automatically under t
 cannot choose which contact data Amazon Connect shares; AWS passes a fixed set of context.
 
 To pass additional context, use the
-[conversation initiation webhook](/docs/eleven-agents/customization/personalization/twilio-personalization).
+[conversation initiation webhook](/docs/eleven-agents/customization/personalization#conversation-initiation-webhooks).
 For Amazon Connect sessions the webhook is called before the agent speaks with `caller_id` set to
 the customer's number, `called_number` set to the Amazon Connect number, and `call_id` set to the
 Amazon Connect contact ID, so a Lambda in your flow can store contact attributes keyed by contact ID
@@ -499,28 +564,62 @@ and the webhook can return them as dynamic variables and configuration overrides
 
 ## Transferring to a human
 
-Amazon Connect routes a contact to a human queue when the ElevenLabs session ends with an
-`Escalate` outcome, which your flow's `Escalate` branch handles with **Set working queue** and
-**Transfer to queue**. Any queue treatment, whisper flow, or agent selection is handled by Amazon
-Connect.
-
-> **Note**
->
-> The agent-side trigger for `Escalate` is being added to the **Transfer to number** tool as an
-> Amazon Connect transfer type, so that one tool covers human handoff on every provider. Until it
-> ships, ElevenLabs agents on Amazon Connect can end the call (`Complete`) but cannot escalate to a
-> human. Keep the `Escalate` branch in your flow; it starts working without further flow changes.
+Give the agent the **Transfer to number** system tool with an `amazon_connect` transfer rule, as
+shown in [Configure ElevenLabs](#configure-elevenlabs). When the rule's condition is met, the agent
+calls the tool and ElevenLabs finishes the session with the `Escalate` outcome and the reason the
+agent gave. Your flow's `Escalate` branch then handles the contact with **Set working queue** and
+**Transfer to queue**. The rule carries no destination, so the queue is chosen in the flow, not by
+the agent; queue treatment, whisper flows, and agent selection stay in Amazon Connect.
 
 The **End call** tool produces a `Complete` outcome. Post-call analysis and the post-call webhook
 run as usual after either outcome.
 
-Only the outcome type and a reason string travel back to Amazon Connect. To hand routing data to
-the flow, give the agent a [webhook tool](/docs/eleven-agents/customization/tools/server-tools)
-that calls Amazon Connect's `UpdateContactAttributes` API with `amazon_connect_contact_id` and the
-values to store, and instruct the agent to call it before ending the call. The flow can then read
-those attributes with a **Check contact attributes** block after the Lex block. The post-call
-webhook fires after the flow has already continued, so it suits CRM updates rather than routing
-decisions.
+### Giving the human agent a summary
+
+Amazon Connect exposes only the outcome to your flow: `$.Lex.SessionAttributes.Tool` (and the Lex
+intent name) carry `Escalate`, and nothing else from the ElevenLabs session, not the transfer
+reason, reaches the flow. To brief the human who takes the call, store the summary on the contact
+yourself and let an agent whisper flow read it out:
+
+1. Expose an endpoint that calls Amazon Connect's `UpdateContactAttributes` API. A minimal Lambda
+   behind an HTTP API is enough; the caller must be allowed `connect:UpdateContactAttributes` on the
+   instance's contacts:
+
+   ```python
+   import json, os, boto3
+
+   connect = boto3.client("connect")
+
+   def handler(event, _context):
+       if (event.get("headers") or {}).get("x-shared-secret") != os.environ["SHARED_SECRET"]:
+           return {"statusCode": 401, "body": ""}
+       body = json.loads(event.get("body") or "{}")
+       connect.update_contact_attributes(
+           InstanceId=os.environ["INSTANCE_ID"],
+           InitialContactId=body["contact_id"],
+           Attributes={"handoff_summary": body["summary"][:1000]},
+       )
+       return {"statusCode": 200, "body": json.dumps({"ok": True})}
+   ```
+
+2. Give the agent a [webhook tool](/docs/eleven-agents/customization/tools/webhook-tools) that
+   `POST`s to that endpoint with `contact_id` filled from the `amazon_connect_contact_id` dynamic
+   variable and a `summary` the model writes. Keep the shared secret in a workspace secret and send
+   it as a request header. In the system prompt, tell the agent to call this tool first and to call
+   **Transfer to number** only after it has returned; a model that emits both calls in one turn
+   races the transfer against the summary. With that instruction, the attribute was on the contact
+   about a second after the agent's request in our tests, three seconds before Amazon Connect
+   resumed the flow.
+
+3. In the contact flow's `Escalate` branch, add a **Set whisper flow** block before **Transfer to
+   queue** that points at an agent whisper flow whose **Play prompt** reads
+   `$.Attributes.handoff_summary`. Amazon Connect speaks it to the human agent while the caller
+   hears the queue treatment, then bridges the two. Do not set `handoff_summary` again in a later
+   block of the flow: an empty value there replaces what the endpoint wrote.
+
+The same attribute is available to a **Check contact attributes** block for routing decisions.
+The post-call webhook fires after the flow has already continued, so it suits CRM updates rather
+than routing decisions.
 
 ## Traces
 
@@ -551,8 +650,9 @@ re-prompt a quiet caller.
 ## Limitations and unsupported features
 
 * Client tools and the **Play keypad touch tone** system tool are not supported. **Transfer to
-  number** does not yet support Amazon Connect; human handoff arrives as an Amazon Connect
-  transfer type in that tool.
+  number** works only through an Amazon Connect transfer rule: the agent cannot dial a phone number
+  or SIP URI from an Amazon Connect call, and the flow decides which queue receives an escalated
+  caller.
 * Data collection results are not returned to the flow, and Amazon Connect decides which contact
   data it shares. Use the conversation initiation webhook keyed by `amazon_connect_contact_id` for
   additional context, a webhook tool that calls `UpdateContactAttributes` for routing data, and the
@@ -560,7 +660,7 @@ re-prompt a quiet caller.
 * Configuration overrides such as `system__override_first_message` cannot be passed from the flow.
   Return them from the conversation initiation webhook instead.
 * Voice sessions require immediate hand-off. The Amazon Connect chat channel, text streaming, and
-  behind-the-scenes (`delegateAgentConfiguration`) collaboration are not supported yet.
+  behind-the-scenes (`delegateAgentConfiguration`) collaboration are not supported.
 * Traces sent to Amazon Connect cover the caller's transcript, the agent's responses, tool calls
   with their results, and timing. Tool call parameters are not included.
 * Amazon Connect's third-party agent support is only available where AWS has enabled it and may

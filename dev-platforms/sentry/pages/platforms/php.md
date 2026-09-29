@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry in your PHP application."
 url: https://docs.sentry.io/platforms/php/
 ---
 
-# PHP | Sentry for PHP
+# Sentry for PHP
 
 ## [Prerequisites](https://docs.sentry.io/platforms/php.md#prerequisites)
 

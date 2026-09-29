@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Nintendo Switch SDK for error monitor
 url: https://docs.sentry.io/platforms/nintendo-switch/
 ---
 
-# Nintendo Switch | Sentry for Nintendo Switch
+# Sentry for Nintendo Switch
 
 You can get started using Sentry on Nintendo Switch without any changes to your game, on devkits as well as retail devices.
 

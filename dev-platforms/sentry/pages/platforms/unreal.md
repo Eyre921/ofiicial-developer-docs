@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Unreal Engine SDK for error monitorin
 url: https://docs.sentry.io/platforms/unreal/
 ---
 
-# Unreal Engine | Sentry for Unreal Engine
+# Sentry for Unreal Engine
 
 Unreal Engine SDK builds on top of other Sentry SDKs and extends them with Unreal Engine specific features. It gives developers helpful hints for where and why an error or performance issue might have occurred.
 

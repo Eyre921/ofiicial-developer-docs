@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry in your Dart app, capture your first er
 url: https://docs.sentry.io/platforms/dart/
 ---
 
-# Dart | Sentry for Dart
+# Sentry for Dart
 
 ##### Using Flutter?
 

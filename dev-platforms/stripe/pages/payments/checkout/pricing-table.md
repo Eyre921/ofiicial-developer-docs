@@ -14,6 +14,9 @@ You can use the Stripe Dashboard to create an embeddable pricing table to:
 - Support common subscription business models like [flat-rate](https://docs.stripe.com/products-prices/pricing-models.md#flat-rate), [per-seat](https://docs.stripe.com/products-prices/pricing-models.md#per-seat), [tiered pricing](https://docs.stripe.com/products-prices/pricing-models.md#tiered-pricing), and free trials.
 - Configure, customize, and update product and pricing information directly in the Dashboard, without needing to write any code.
 - Embed into your website with a `<script>` tag and web component. Stripe automatically generates the tag. You copy and paste it into your website’s code.
+![An embedded pricing table showing three subscription options that take customers to Stripe Checkout.](https://b.stripecdn.com/docs-statics-srv/assets/pricing-table-embed.b27a06fcd84b57a8866a8b4b62323fdc.png)
+
+An embedded pricing table lets customers compare subscription options and continue to Checkout.
 
 The diagram below summarizes how the customer goes from viewing a pricing table to completing checkout.
 

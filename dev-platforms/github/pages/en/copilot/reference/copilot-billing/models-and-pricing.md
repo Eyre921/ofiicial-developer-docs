@@ -31,7 +31,7 @@ All prices are **per 1 million tokens**.
 
 > \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
 
-GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-6 Astra, GPT-6 Luna, and GPT-6 Sol include a cache write cost in addition to cached input. Earlier OpenAI models have no cache write cost.
+GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-6 Astra, GPT-6 Luna, GPT-6 Sol, and GPT-6.1 Sol include a cache write cost in addition to cached input. Earlier OpenAI models have no cache write cost.
 
 | Model         | Release status | Category    | Tier         | Threshold (input tokens) |  Input | Cached input |    Cache write | Output |
 | ------------- | -------------- | ----------- | ------------ | ------------------------ | -----: | -----------: | -------------: | -----: |
@@ -75,6 +75,10 @@ GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-6 Astra, GPT-6 Luna, and GPT-6 Sol
 | GPT-6 Sol     | GA             | Powerful    | Default      | ≤ 272K                   |  $2.00 |        $0.20 |          $2.50 | $10.00 |
 |               |                |             |              |                          |        |              |                |        |
 | GPT-6 Sol     | GA             | Powerful    | Long context | > 272K                   |  $4.00 |        $0.40 |          $5.00 | $15.00 |
+|               |                |             |              |                          |        |              |                |        |
+| GPT-6.1 Sol   | GA             | Powerful    | Default      | ≤ 272K                   |  $2.00 |        $0.10 |          $2.50 | $10.00 |
+|               |                |             |              |                          |        |              |                |        |
+| GPT-6.1 Sol   | GA             | Powerful    | Long context | > 272K                   |  $4.00 |        $0.20 |          $5.00 | $15.00 |
 |               |                |             |              |                          |        |              |                |        |
 
 ### Anthropic

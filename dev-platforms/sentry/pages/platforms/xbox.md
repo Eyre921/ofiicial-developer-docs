@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Xbox SDK for error monitoring and per
 url: https://docs.sentry.io/platforms/xbox/
 ---
 
-# Xbox | Sentry for Xbox
+# Sentry for Xbox
 
 ##### Availability of Xbox support
 

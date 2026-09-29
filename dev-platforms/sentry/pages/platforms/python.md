@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry in your Python app, capture your first 
 url: https://docs.sentry.io/platforms/python/
 ---
 
-# Python | Sentry for Python
+# Sentry for Python
 
 ##### Using a framework?
 

@@ -12,13 +12,19 @@ url: https://docs.sentry.io/product/agents/
 
 # Agents | Sentry Docs
 
-Sentry helps you understand what's going on with your agent workflows. Using [agent tracing](https://docs.sentry.io/concepts/key-terms/agent-tracing.md) automatically collects information about agent runs, tool calls, model interactions, and errors across your entire AI pipeline—from user interaction to final response. You can also replay past conversations. If you are looking for MCP monitoring, see [MCP Servers](https://docs.sentry.io/product/mcp-servers.md).
+Sentry helps you understand what's happening in your agent workflows. [Agent tracing](https://docs.sentry.io/concepts/key-terms/agent-tracing.md) automatically collects information about agent runs, tool calls, model interactions, and errors across your entire AI pipeline, from user interaction to final response. You can also replay past conversations. If you're looking for MCP monitoring, see [MCP Servers](https://docs.sentry.io/product/mcp-servers.md).
+
+Open [**Explore → Agents**](https://sentry.io/orgredirect/organizations/:orgslug/explore/agents/) in Sentry to investigate this data. Choose the tab that matches what you need to debug:
+
+* **Conversations** groups messages and tool calls by conversation ID. Use it to replay a user's multi-turn interaction, inspect its transcript and timeline, and find where a response or tool call went wrong.
+* **Traces** shows end-to-end agent runs and the application work around them. Use it to follow execution across model calls, tools, and services or to investigate latency and errors in context.
+* **LLM Calls** shows individual model requests. Use it to compare models, prompts, token usage, cost, and response performance without reviewing an entire conversation or trace.
 
 ## [Get Started](https://docs.sentry.io/product/agents.md#get-started)
 
-To start debugging agents, you must have an existing Sentry account and project set up. If you don't have one, [create an account here](https://sentry.io/signup/).
+To start debugging agents, you need a Sentry account and project. If you don't have an account, [create one](https://sentry.io/signup/).
 
-Use agent tracing by [setting up Sentry for Agents](https://docs.sentry.io/product/agents/getting-started.md) and [name your agents](https://docs.sentry.io/product/agents/naming.md) so they're identifiable in the dashboard. Then choose a [sampling strategy](https://docs.sentry.io/product/agents/sampling.md) that keeps complete agent runs without sampling all application traffic.
+[Set up Sentry for Agents](https://docs.sentry.io/product/agents/getting-started.md) and [name your agents](https://docs.sentry.io/product/agents/naming.md) so you can identify them in Explore. Then choose a [sampling strategy](https://docs.sentry.io/product/agents/sampling.md) that keeps complete agent runs without sampling all application traffic.
 
 ## [Example Use Cases](https://docs.sentry.io/product/agents.md#example-use-cases)
 

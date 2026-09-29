@@ -30,7 +30,7 @@ https://api.stripe.com
 - [Go](https://github.com/stripe/stripe-go)
 - [.NET](https://github.com/stripe/stripe-dotnet)
 
-The Stripe API is organized around [REST](http://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable resource-oriented URLs, accepts [form-encoded](https://en.wikipedia.org/wiki/POST_\(HTTP\)#Use_for_submitting_web_forms) request bodies, returns [JSON-encoded](http://www.json.org/) responses, and uses standard HTTP response codes, authentication, and verbs.
+The Stripe API is organized around [REST](https://en.wikipedia.org/wiki/Representational_State_Transfer). Our API has predictable resource-oriented URLs, accepts [form-encoded](https://en.wikipedia.org/wiki/POST_\(HTTP\)#Use_for_submitting_web_forms) request bodies, returns [JSON-encoded](https://www.json.org/) responses, and uses standard HTTP response codes, authentication, and verbs.
 
 You can use the Stripe API in [sandboxes](https://docs.stripe.com/sandboxes.md) without affecting your live data or interacting with banking networks. The API key that you use to [authenticate](https://docs.stripe.com/api/authentication.md) the request determines whether the request runs in live mode or in a sandbox. Sandboxes support all v2 APIs. Test mode sandboxes support some [v2 APIs](https://docs.stripe.com/testing-use-cases.md#compare).
 

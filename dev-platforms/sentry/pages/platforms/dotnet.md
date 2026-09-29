@@ -10,7 +10,7 @@ description: "Learn how to set up and run Sentry's .NET SDK, which will automati
 url: https://docs.sentry.io/platforms/dotnet/
 ---
 
-# .NET | Sentry for .NET
+# Sentry for .NET
 
 If you don't already have an account and Sentry project established, head over to [sentry.io](https://sentry.io/signup/), then return to this page.
 

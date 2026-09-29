@@ -10,7 +10,7 @@ description: "Sentry's Go SDK supports all recent versions of the language, and 
 url: https://docs.sentry.io/platforms/go/
 ---
 
-# Go | Sentry for Go
+# Sentry for Go
 
 On this page, we get you up and running with Sentry's SDK. If you are using our previous Go SDK, you can access the [legacy SDK](https://docs.sentry.io/platforms/go/legacy-sdk.md) documentation, until further notice.
 

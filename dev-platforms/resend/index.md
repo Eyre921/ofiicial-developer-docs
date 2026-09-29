@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -161,10 +161,6 @@
 - `docs/cli-quickstart` — [Send emails with Resend CLI](pages/docs/cli-quickstart.md) · [原文](https://resend.com/docs/cli-quickstart)
 - `docs/create-an-api-key` — [Create an API key](pages/docs/create-an-api-key.md) · [原文](https://resend.com/docs/create-an-api-key)
 - `docs/dashboard/api-keys/introduction` — [Manage API keys](pages/docs/dashboard/api-keys/introduction.md) · [原文](https://resend.com/docs/dashboard/api-keys/introduction)
-- `docs/dashboard/audiences/contacts` — [Managing Contacts](pages/docs/dashboard/audiences/contacts.md) · [原文](https://resend.com/docs/dashboard/audiences/contacts)
-- `docs/dashboard/audiences/introduction` — [Your Resend Audience](pages/docs/dashboard/audiences/introduction.md) · [原文](https://resend.com/docs/dashboard/audiences/introduction)
-- `docs/dashboard/audiences/managing-unsubscribe-list` — [Managing Unsubscribed Contacts](pages/docs/dashboard/audiences/managing-unsubscribe-list.md) · [原文](https://resend.com/docs/dashboard/audiences/managing-unsubscribe-list)
-- `docs/dashboard/audiences/properties` — [Contact Properties](pages/docs/dashboard/audiences/properties.md) · [原文](https://resend.com/docs/dashboard/audiences/properties)
 - `docs/dashboard/automations/add-to-segment` — [Add to Segment](pages/docs/dashboard/automations/add-to-segment.md) · [原文](https://resend.com/docs/dashboard/automations/add-to-segment)
 - `docs/dashboard/automations/condition` — [Condition](pages/docs/dashboard/automations/condition.md) · [原文](https://resend.com/docs/dashboard/automations/condition)
 - `docs/dashboard/automations/connections` — [Connections](pages/docs/dashboard/automations/connections.md) · [原文](https://resend.com/docs/dashboard/automations/connections)
@@ -184,6 +180,14 @@
 - `docs/dashboard/broadcasts/manage-broadcasts` — [Manage Broadcasts](pages/docs/dashboard/broadcasts/manage-broadcasts.md) · [原文](https://resend.com/docs/dashboard/broadcasts/manage-broadcasts)
 - `docs/dashboard/broadcasts/performance-tracking` — [Performance Tracking](pages/docs/dashboard/broadcasts/performance-tracking.md) · [原文](https://resend.com/docs/dashboard/broadcasts/performance-tracking)
 - `docs/dashboard/broadcasts/send-broadcast-with-api` — [Compose and send Broadcasts with the API](pages/docs/dashboard/broadcasts/send-broadcast-with-api.md) · [原文](https://resend.com/docs/dashboard/broadcasts/send-broadcast-with-api)
+- `docs/dashboard/contacts/add-contacts` — [Add Contacts](pages/docs/dashboard/contacts/add-contacts.md) · [原文](https://resend.com/docs/dashboard/contacts/add-contacts)
+- `docs/dashboard/contacts/introduction` — [Contacts](pages/docs/dashboard/contacts/introduction.md) · [原文](https://resend.com/docs/dashboard/contacts/introduction)
+- `docs/dashboard/contacts/manage-contacts` — [Managing Contacts](pages/docs/dashboard/contacts/manage-contacts.md) · [原文](https://resend.com/docs/dashboard/contacts/manage-contacts)
+- `docs/dashboard/contacts/manage-segments` — [Managing Segments](pages/docs/dashboard/contacts/manage-segments.md) · [原文](https://resend.com/docs/dashboard/contacts/manage-segments)
+- `docs/dashboard/contacts/manage-topics` — [Topics](pages/docs/dashboard/contacts/manage-topics.md) · [原文](https://resend.com/docs/dashboard/contacts/manage-topics)
+- `docs/dashboard/contacts/managing-unsubscribe-list` — [Managing unsubscribed Contacts](pages/docs/dashboard/contacts/managing-unsubscribe-list.md) · [原文](https://resend.com/docs/dashboard/contacts/managing-unsubscribe-list)
+- `docs/dashboard/contacts/migrating-from-audiences-to-segments` — [Migrating from Audiences to Segments](pages/docs/dashboard/contacts/migrating-from-audiences-to-segments.md) · [原文](https://resend.com/docs/dashboard/contacts/migrating-from-audiences-to-segments)
+- `docs/dashboard/contacts/properties` — [Contact properties](pages/docs/dashboard/contacts/properties.md) · [原文](https://resend.com/docs/dashboard/contacts/properties)
 - `docs/dashboard/domains/bimi` — [Implementing BIMI](pages/docs/dashboard/domains/bimi.md) · [原文](https://resend.com/docs/dashboard/domains/bimi)
 - `docs/dashboard/domains/claim` — [Claiming a domain](pages/docs/dashboard/domains/claim.md) · [原文](https://resend.com/docs/dashboard/domains/claim)
 - `docs/dashboard/domains/custom-return-path` — [Configure a custom Return Path](pages/docs/dashboard/domains/custom-return-path.md) · [原文](https://resend.com/docs/dashboard/domains/custom-return-path)
@@ -216,8 +220,6 @@
 - `docs/dashboard/receiving/introduction` — [Receiving Emails](pages/docs/dashboard/receiving/introduction.md) · [原文](https://resend.com/docs/dashboard/receiving/introduction)
 - `docs/dashboard/receiving/manage-emails` — [Managing Emails](pages/docs/dashboard/receiving/manage-emails.md) · [原文](https://resend.com/docs/dashboard/receiving/manage-emails)
 - `docs/dashboard/receiving/reply-to-emails` — [Reply to Receiving Emails](pages/docs/dashboard/receiving/reply-to-emails.md) · [原文](https://resend.com/docs/dashboard/receiving/reply-to-emails)
-- `docs/dashboard/segments/introduction` — [Managing Segments](pages/docs/dashboard/segments/introduction.md) · [原文](https://resend.com/docs/dashboard/segments/introduction)
-- `docs/dashboard/segments/migrating-from-audiences-to-segments` — [Migrating from Audiences to Segments](pages/docs/dashboard/segments/migrating-from-audiences-to-segments.md) · [原文](https://resend.com/docs/dashboard/segments/migrating-from-audiences-to-segments)
 - `docs/dashboard/settings/billing` — [Managing Billing](pages/docs/dashboard/settings/billing.md) · [原文](https://resend.com/docs/dashboard/settings/billing)
 - `docs/dashboard/settings/sso` — [Single Sign-On](pages/docs/dashboard/settings/sso.md) · [原文](https://resend.com/docs/dashboard/settings/sso)
 - `docs/dashboard/settings/team` — [Managing Teams](pages/docs/dashboard/settings/team.md) · [原文](https://resend.com/docs/dashboard/settings/team)
@@ -227,7 +229,6 @@
 - `docs/dashboard/templates/template-editor` — [Compose with the Template editor](pages/docs/dashboard/templates/template-editor.md) · [原文](https://resend.com/docs/dashboard/templates/template-editor)
 - `docs/dashboard/templates/template-variables` — [Working with Variables](pages/docs/dashboard/templates/template-variables.md) · [原文](https://resend.com/docs/dashboard/templates/template-variables)
 - `docs/dashboard/templates/version-history` — [Version History](pages/docs/dashboard/templates/version-history.md) · [原文](https://resend.com/docs/dashboard/templates/version-history)
-- `docs/dashboard/topics/introduction` — [Topics](pages/docs/dashboard/topics/introduction.md) · [原文](https://resend.com/docs/dashboard/topics/introduction)
 - `docs/dmarc-analyzer` — [DMARC Analyzer](pages/docs/dmarc-analyzer.md) · [原文](https://resend.com/docs/dmarc-analyzer)
 - `docs/email-best-practices-skill` — [Email Best Practices Skill](pages/docs/email-best-practices-skill.md) · [原文](https://resend.com/docs/email-best-practices-skill)
 - `docs/email-types` — [Sending emails with Resend](pages/docs/email-types.md) · [原文](https://resend.com/docs/email-types)
@@ -370,6 +371,7 @@
 - `docs/v0-integration` — [Send emails with v0 and Resend](pages/docs/v0-integration.md) · [原文](https://resend.com/docs/v0-integration)
 - `docs/webhooks/contacts/created` — [contact.created](pages/docs/webhooks/contacts/created.md) · [原文](https://resend.com/docs/webhooks/contacts/created)
 - `docs/webhooks/contacts/deleted` — [contact.deleted](pages/docs/webhooks/contacts/deleted.md) · [原文](https://resend.com/docs/webhooks/contacts/deleted)
+- `docs/webhooks/contacts/topics-updated` — [contact.topics.updated](pages/docs/webhooks/contacts/topics-updated.md) · [原文](https://resend.com/docs/webhooks/contacts/topics-updated)
 - `docs/webhooks/contacts/updated` — [contact.updated](pages/docs/webhooks/contacts/updated.md) · [原文](https://resend.com/docs/webhooks/contacts/updated)
 - `docs/webhooks/create-webhook` — [Create a Webhook](pages/docs/webhooks/create-webhook.md) · [原文](https://resend.com/docs/webhooks/create-webhook)
 - `docs/webhooks/domains/created` — [domain.created](pages/docs/webhooks/domains/created.md) · [原文](https://resend.com/docs/webhooks/domains/created)
@@ -393,4 +395,7 @@
 - `docs/webhooks/retries-and-replays` — [Retries and Replays](pages/docs/webhooks/retries-and-replays.md) · [原文](https://resend.com/docs/webhooks/retries-and-replays)
 - `docs/webhooks/suppressions/added` — [suppression.added](pages/docs/webhooks/suppressions/added.md) · [原文](https://resend.com/docs/webhooks/suppressions/added)
 - `docs/webhooks/suppressions/removed` — [suppression.removed](pages/docs/webhooks/suppressions/removed.md) · [原文](https://resend.com/docs/webhooks/suppressions/removed)
+- `docs/webhooks/topics/created` — [topic.created](pages/docs/webhooks/topics/created.md) · [原文](https://resend.com/docs/webhooks/topics/created)
+- `docs/webhooks/topics/deleted` — [topic.deleted](pages/docs/webhooks/topics/deleted.md) · [原文](https://resend.com/docs/webhooks/topics/deleted)
+- `docs/webhooks/topics/updated` — [topic.updated](pages/docs/webhooks/topics/updated.md) · [原文](https://resend.com/docs/webhooks/topics/updated)
 - `docs/webhooks/verify-webhooks-requests` — [Verify Webhooks Requests](pages/docs/webhooks/verify-webhooks-requests.md) · [原文](https://resend.com/docs/webhooks/verify-webhooks-requests)

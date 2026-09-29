@@ -18,7 +18,7 @@ Reference: https://developers.deepgram.com/reference/manage/requests/get
 
 ## Authentication
 
-- `Authorization` header (required) (prefixed with `Token `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
+- `Authorization` header (required) (prefixed with ` Token  `) — Use `Authorization: Token <API_KEY>` Example: `Authorization: Token 12345abcdef`
 
 ## Request
 

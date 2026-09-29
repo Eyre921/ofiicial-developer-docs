@@ -9,7 +9,7 @@ title: "Native"
 url: https://docs.sentry.io/platforms/native/
 ---
 
-# Native | Sentry for Native
+# Sentry for Native
 
 The Sentry Native SDK is intended for C and C++. However, since it builds as a dynamic library and exposes C-bindings, it can be used by any language that supports interoperability with C, such as the Foreign Function Interface (FFI).
 

@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 485 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 492 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -86,8 +86,7 @@
 - `docs/api/api-reference/images/generate-an-image` — [Generate an image](pages/docs/api/api-reference/images/generate-an-image.md) · [原文](https://openrouter.ai/docs/api/api-reference/images/generate-an-image.md)
 - `docs/api/api-reference/images/list-endpoints-for-an-image-model` — [List endpoints for an image model](pages/docs/api/api-reference/images/list-endpoints-for-an-image-model.md) · [原文](https://openrouter.ai/docs/api/api-reference/images/list-endpoints-for-an-image-model.md)
 - `docs/api/api-reference/images/list-image-generation-models` — [List image generation models](pages/docs/api/api-reference/images/list-image-generation-models.md) · [原文](https://openrouter.ai/docs/api/api-reference/images/list-image-generation-models.md)
-- `docs/api/api-reference/interns/create-an-intern` — [API key…
-- [Create an intern](pages/docs/api/api-reference/interns/create-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/create-an-intern.md)
+- `docs/api/api-reference/interns/create-an-intern` — [Create an intern](pages/docs/api/api-reference/interns/create-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/create-an-intern.md)
 - `docs/api/api-reference/interns/delete-an-intern` — [Delete an intern](pages/docs/api/api-reference/interns/delete-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/delete-an-intern.md)
 - `docs/api/api-reference/interns/get-an-intern` — [Get an intern](pages/docs/api/api-reference/interns/get-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-intern.md)
 - `docs/api/api-reference/interns/get-an-interns-daemon-access` — [Get an intern's daemon access](pages/docs/api/api-reference/interns/get-an-interns-daemon-access.md) · [原文](https://openrouter.ai/docs/api/api-reference/interns/get-an-interns-daemon-access.md)
@@ -142,11 +141,14 @@
 - `docs/api/api-reference/scim/update-a-scim-group-mapping` — [Update a SCIM group mapping](pages/docs/api/api-reference/scim/update-a-scim-group-mapping.md) · [原文](https://openrouter.ai/docs/api/api-reference/scim/update-a-scim-group-mapping.md)
 - `docs/api/api-reference/stt/create-transcription` — [Create transcription](pages/docs/api/api-reference/stt/create-transcription.md) · [原文](https://openrouter.ai/docs/api/api-reference/stt/create-transcription.md)
 - `docs/api/api-reference/systemone/submit-a-system-one-request` — [Submit a System One request](pages/docs/api/api-reference/systemone/submit-a-system-one-request.md) · [原文](https://openrouter.ai/docs/api/api-reference/systemone/submit-a-system-one-request.md)
+- `docs/api/api-reference/tools/get-a-server-tool` — [Get a server tool](pages/docs/api/api-reference/tools/get-a-server-tool.md) · [原文](https://openrouter.ai/docs/api/api-reference/tools/get-a-server-tool.md)
+- `docs/api/api-reference/tools/list-server-tools` — [List server tools](pages/docs/api/api-reference/tools/list-server-tools.md) · [原文](https://openrouter.ai/docs/api/api-reference/tools/list-server-tools.md)
 - `docs/api/api-reference/tts/create-speech` — [Create speech](pages/docs/api/api-reference/tts/create-speech.md) · [原文](https://openrouter.ai/docs/api/api-reference/tts/create-speech.md)
 - `docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern` — [Copy workspace secrets to an intern](pages/docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/copy-workspace-secrets-to-an-intern.md)
 - `docs/api/api-reference/vault/delete-a-workspace-secret` — [Delete a workspace secret](pages/docs/api/api-reference/vault/delete-a-workspace-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/delete-a-workspace-secret.md)
 - `docs/api/api-reference/vault/delete-an-intern-secret` — [Delete an intern secret](pages/docs/api/api-reference/vault/delete-an-intern-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/delete-an-intern-secret.md)
 - `docs/api/api-reference/vault/list-intern-secrets` — [List intern secrets](pages/docs/api/api-reference/vault/list-intern-secrets.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/list-intern-secrets.md)
+- `docs/api/api-reference/vault/list-the-secrets-an-intern-receives` — [List the secrets an intern receives](pages/docs/api/api-reference/vault/list-the-secrets-an-intern-receives.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/list-the-secrets-an-intern-receives.md)
 - `docs/api/api-reference/vault/list-workspace-secrets` — [List workspace secrets](pages/docs/api/api-reference/vault/list-workspace-secrets.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/list-workspace-secrets.md)
 - `docs/api/api-reference/vault/store-a-workspace-secret` — [Store a workspace secret](pages/docs/api/api-reference/vault/store-a-workspace-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/store-a-workspace-secret.md)
 - `docs/api/api-reference/vault/store-an-intern-secret` — [Store an intern secret](pages/docs/api/api-reference/vault/store-an-intern-secret.md) · [原文](https://openrouter.ai/docs/api/api-reference/vault/store-an-intern-secret.md)
@@ -218,6 +220,7 @@
 - `docs/client-sdks/go/sdks/scim/readme` — [Scim](pages/docs/client-sdks/go/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/scim/README.md)
 - `docs/client-sdks/go/sdks/stt/readme` — [STT](pages/docs/client-sdks/go/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/stt/README.md)
 - `docs/client-sdks/go/sdks/systemone/readme` — [SystemOne](pages/docs/client-sdks/go/sdks/systemone/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/systemone/README.md)
+- `docs/client-sdks/go/sdks/tools/readme` — [Tools](pages/docs/client-sdks/go/sdks/tools/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/tools/README.md)
 - `docs/client-sdks/go/sdks/tts/readme` — [TTS](pages/docs/client-sdks/go/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/tts/README.md)
 - `docs/client-sdks/go/sdks/vault/readme` — [Vault](pages/docs/client-sdks/go/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/vault/README.md)
 - `docs/client-sdks/go/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/go/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/videogeneration/README.md)
@@ -255,6 +258,7 @@
 - `docs/client-sdks/python/sdks/scim/readme` — [Scim](pages/docs/client-sdks/python/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/scim/README.md)
 - `docs/client-sdks/python/sdks/stt/readme` — [STT](pages/docs/client-sdks/python/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/stt/README.md)
 - `docs/client-sdks/python/sdks/systemone/readme` — [SystemOne](pages/docs/client-sdks/python/sdks/systemone/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/systemone/README.md)
+- `docs/client-sdks/python/sdks/tools/readme` — [Tools](pages/docs/client-sdks/python/sdks/tools/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/tools/README.md)
 - `docs/client-sdks/python/sdks/tts/readme` — [TTS](pages/docs/client-sdks/python/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/tts/README.md)
 - `docs/client-sdks/python/sdks/vault/readme` — [Vault](pages/docs/client-sdks/python/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/vault/README.md)
 - `docs/client-sdks/python/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/python/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/videogeneration/README.md)
@@ -291,6 +295,7 @@
 - `docs/client-sdks/typescript/sdks/scim/readme` — [Scim](pages/docs/client-sdks/typescript/sdks/scim/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/scim/README.md)
 - `docs/client-sdks/typescript/sdks/stt/readme` — [STT](pages/docs/client-sdks/typescript/sdks/stt/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/stt/README.md)
 - `docs/client-sdks/typescript/sdks/systemone/readme` — [SystemOne](pages/docs/client-sdks/typescript/sdks/systemone/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/systemone/README.md)
+- `docs/client-sdks/typescript/sdks/tools/readme` — [Tools](pages/docs/client-sdks/typescript/sdks/tools/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/tools/README.md)
 - `docs/client-sdks/typescript/sdks/tts/readme` — [TTS](pages/docs/client-sdks/typescript/sdks/tts/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/tts/README.md)
 - `docs/client-sdks/typescript/sdks/vault/readme` — [Vault](pages/docs/client-sdks/typescript/sdks/vault/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/vault/README.md)
 - `docs/client-sdks/typescript/sdks/videogeneration/readme` — [VideoGeneration](pages/docs/client-sdks/typescript/sdks/videogeneration/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/videogeneration/README.md)
@@ -488,6 +493,7 @@
 - `docs/guides/routing/routers/body-builder` — [Body Builder](pages/docs/guides/routing/routers/body-builder.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/body-builder.md)
 - `docs/guides/routing/routers/free-router` — [Free Models Router](pages/docs/guides/routing/routers/free-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/free-router.md)
 - `docs/guides/routing/routers/fusion-router` — [Fusion Router](pages/docs/guides/routing/routers/fusion-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/fusion-router.md)
+- `docs/guides/routing/routers/jev-router` — [Jev Router](pages/docs/guides/routing/routers/jev-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/jev-router.md)
 - `docs/guides/routing/routers/latest-resolution` — [Latest Model Resolution](pages/docs/guides/routing/routers/latest-resolution.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/latest-resolution.md)
 - `docs/guides/routing/routers/pareto-router` — [Pareto Router](pages/docs/guides/routing/routers/pareto-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/pareto-router.md)
 - `docs/quickstart` — [Quickstart](pages/docs/quickstart.md) · [原文](https://openrouter.ai/docs/quickstart.md)

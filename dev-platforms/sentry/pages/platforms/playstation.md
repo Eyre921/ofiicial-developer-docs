@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's PlayStation SDK for error monitoring 
 url: https://docs.sentry.io/platforms/playstation/
 ---
 
-# PlayStation | Sentry for PlayStation
+# Sentry for PlayStation
 
 ##### Availability of PlayStation support
 

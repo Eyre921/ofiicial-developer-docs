@@ -686,6 +686,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/organizations/managing-organization-settings/creating-rulesets-for-repositories-in-your-organization
 /en/organizations/managing-organization-settings/managing-rulesets-for-repositories-in-your-organization
 /en/organizations/managing-organization-settings/managing-custom-properties-for-repositories-in-your-organization
+/en/organizations/managing-organization-settings/sync-external-custom-properties
 /en/organizations/keeping-your-organization-secure
 /en/organizations/keeping-your-organization-secure/managing-two-factor-authentication-for-your-organization
 /en/organizations/keeping-your-organization-secure/managing-two-factor-authentication-for-your-organization/viewing-whether-users-in-your-organization-have-2fa-enabled

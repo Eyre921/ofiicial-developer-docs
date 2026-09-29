@@ -10,7 +10,7 @@ path: docs/api/api-reference/vault/delete-an-intern-secret
 
 # Delete an intern secret
 
-> Deletes a secret stored for one intern. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key's active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+> Deletes a secret stored for one intern. Returns 204 with no body on success and 404 when the secret does not exist in the selected scope. Writes return 503 while vault writes are disabled for the caller. The scope is selected by the API key: workspace routes act on the key's active workspace and intern routes act on one intern inside that workspace. There is no default workspace and no fallback to another scope. Every vault route, including reads, requires access to the Intern API programme and returns 404 outside it. An intern's own API key is confined to that intern: it can always read the intern's secrets and effective secrets, writes to them follow the rules above, and every other intern and every workspace route answers 404. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
 
 
 
@@ -122,6 +122,12 @@ tags:
     name: TTS
     x-displayName: Speech
   - description: >-
+      The catalog of server tools OpenRouter runs on behalf of a model: accepted
+      `tools[].type` spellings per API format, engines and pricing, and which
+      endpoints run each tool natively. See
+      https://openrouter.ai/docs/guides/features/server-tools.
+    name: Tools
+  - description: >-
       Store host-bound secrets for a workspace or for one intern. Scope is
       selected by the API key. Responses return metadata only, never secret
       values. See https://openrouter.ai/docs/guides/ori/vault.
@@ -149,8 +155,11 @@ paths:
         active workspace and intern routes act on one intern inside that
         workspace. There is no default workspace and no fallback to another
         scope. Every vault route, including reads, requires access to the Intern
-        API programme and returns 404 outside it. Requests on regional hostnames
-        such as `eu.openrouter.ai` are refused. [API
+        API programme and returns 404 outside it. An intern's own API key is
+        confined to that intern: it can always read the intern's secrets and
+        effective secrets, writes to them follow the rules above, and every
+        other intern and every workspace route answers 404. Requests on regional
+        hostnames such as `eu.openrouter.ai` are refused. [API
         key](/docs/api-reference/authentication) required.
       operationId: deleteInternVaultSecret
       parameters:
@@ -249,9 +258,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: >-
-            Not Found - The intern is not in the selected workspace, the secret
-            does not exist in the selected scope, or the caller is outside the
-            intern programme.
+            Not Found - The intern is not in the selected workspace or is not
+            visible to the key (a member key without an admin role sees only
+            interns its member created or interns in workspaces they
+            administer), the secret does not exist in the selected scope, or the
+            caller is outside the intern programme.
         '408':
           content:
             application/json:

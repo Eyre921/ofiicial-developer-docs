@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Apple SDK for error monitoring and pe
 url: https://docs.sentry.io/platforms/apple/
 ---
 
-# Apple | Sentry for Apple
+# Sentry for Apple
 
 Sentry supports Apple platforms via the [`sentry-cocoa`](https://github.com/getsentry/sentry-cocoa) SDK. Select your platform to get started:
 

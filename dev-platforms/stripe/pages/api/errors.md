@@ -37,19 +37,19 @@ Stripe uses conventional HTTP response codes to indicate the success or failure 
 ## Attributes
 
 - `advice_code` (string, nullable)
-  For card errors resulting from a card issuer decline, a short string indicating [how to proceed with an error](https://docs.stripe.com/docs/declines.md#retrying-issuer-declines) if they provide one.
+  For card errors resulting from a card issuer decline, a short string indicating [how to proceed with an error](https://docs.stripe.com/declines/card.md#retrying-issuer-declines) if they provide one.
 
 - `charge` (string, nullable)
   For card errors, the ID of the failed charge.
 
 - `code` (string, nullable)
-  For some errors that could be handled programmatically, a short string indicating the [error code](https://docs.stripe.com/docs/error-codes.md) reported.
+  For some errors that could be handled programmatically, a short string indicating the [error code](https://docs.stripe.com/error-codes.md) reported.
 
 - `decline_code` (string, nullable)
-  For card errors resulting from a card issuer decline, a short string indicating the [card issuer’s reason for the decline](https://docs.stripe.com/docs/declines.md#issuer-declines) if they provide one.
+  For card errors resulting from a card issuer decline, a short string indicating the [card issuer’s reason for the decline](https://docs.stripe.com/declines.md#issuer-declines) if they provide one.
 
 - `doc_url` (string, nullable)
-  A URL to more information about the [error code](https://docs.stripe.com/docs/error-codes.md) reported.
+  A URL to more information about the [error code](https://docs.stripe.com/error-codes.md) reported.
 
 - `message` (string, nullable)
   A human-readable message providing more details about the error. For card errors, these messages can be shown to your users.
@@ -64,10 +64,10 @@ Stripe uses conventional HTTP response codes to indicate the success or failure 
   If the error is parameter-specific, the parameter related to the error. For example, you can use this to display a message near the correct form field.
 
 - `payment_intent` (object, nullable)
-  The [PaymentIntent object](https://docs.stripe.com/docs/api/payment_intents/object.md) for errors returned on a request involving a PaymentIntent.
+  The [PaymentIntent object](https://docs.stripe.com/api/payment_intents/object.md) for errors returned on a request involving a PaymentIntent.
 
 - `payment_method` (object, nullable)
-  The [PaymentMethod object](https://docs.stripe.com/docs/api/payment_methods/object.md) for errors returned on a request involving a PaymentMethod.
+  The [PaymentMethod object](https://docs.stripe.com/api/payment_methods/object.md) for errors returned on a request involving a PaymentMethod.
 
 - `payment_method_type` (string, nullable)
   If the error is specific to the type of payment method, the payment method type that had a problem. This field is only populated for invoice-related errors.
@@ -76,10 +76,10 @@ Stripe uses conventional HTTP response codes to indicate the success or failure 
   A URL to the request log entry in your dashboard.
 
 - `setup_intent` (object, nullable)
-  The [SetupIntent object](https://docs.stripe.com/docs/api/setup_intents/object.md) for errors returned on a request involving a SetupIntent.
+  The [SetupIntent object](https://docs.stripe.com/api/setup_intents/object.md) for errors returned on a request involving a SetupIntent.
 
 - `source` (object, nullable)
-  The [source object](https://docs.stripe.com/docs/api/sources/object.md) for errors returned on a request involving a source.
+  The [source object](https://docs.stripe.com/api/sources/object.md) for errors returned on a request involving a source.
 
 - `type` (enum)
   The type of error returned. One of `api_error`, `card_error`, `idempotency_error`, or `invalid_request_error`

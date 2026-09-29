@@ -105,9 +105,9 @@ To get started, you'll need to:
 
 ## Configuration options
 
-| Parameter       | Type     | Required | Description                                                           |
-| --------------- | -------- | -------- | --------------------------------------------------------------------- |
-| `fromAddress`   | `string` | Yes      | Sender email address                                                  |
-| `fromName`      | `string` | No       | Display name for the From header                                      |
-| `apiKey`        | `string` | No       | Resend API key. Falls back to `RESEND_API_KEY` env var                |
-| `webhookSecret` | `string` | No       | Webhook signing secret. Falls back to `RESEND_WEBHOOK_SECRET` env var |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `fromAddress` | `string` | Yes | Sender email address |
+| `fromName` | `string` | No | Display name for the From header |
+| `apiKey` | `string` | No | Resend API key. Falls back to `RESEND_API_KEY` env var |
+| `webhookSecret` | `string` | No | Webhook signing secret. Falls back to `RESEND_WEBHOOK_SECRET` env var |

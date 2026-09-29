@@ -1034,7 +1034,7 @@ curl -X POST "https://console.neon.tech/api/v2/projects/{project_id}/branches/{b
 
 **Using neon.ts?:**
 
-If your project has a `neon.ts` file, declare `aiGateway: true` and run `neon deploy`. Credentials are provisioned and pulled into your local `.env` automatically, with no manual creation step. See [Authentication](https://neon.com/docs/ai-gateway/authentication) for details.
+If your project has a `neon.ts` file, run [`neon config add ai-gateway`](https://neon.com/docs/cli/config#add) (or declare `aiGateway: true` yourself) and then `neon deploy`. Credentials are provisioned and pulled into your local `.env` automatically, with no manual creation step. See [Authentication](https://neon.com/docs/ai-gateway/authentication) for details.
 
 Store the credential as an environment variable:
 
@@ -17683,7 +17683,7 @@ As Managed Better Auth evolves, more Better Auth integrations and features will 
 
 ## Basic usage
 
-Enable Auth in the Neon Console, from the terminal with [`neon neon-auth enable`](https://neon.com/docs/cli/neon-auth#enable), or [with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor), then add authentication to your app.
+Enable Auth in the Neon Console, from the terminal with [`neon neon-auth enable`](https://neon.com/docs/cli/neon-auth#enable) or declaratively with [`neon config add auth`](https://neon.com/docs/cli/config#add), or [with your AI editor](https://neon.com/docs/auth/overview#set-up-with-your-ai-editor), then add authentication to your app.
 
 **For Next.js (server-side):**
 
@@ -20248,12 +20248,17 @@ Create and claim temporary Neon projects.
 
 Manage a branch with a neon.ts policy.
 
-| Subcommand           | Description                                                    |
-| -------------------- | -------------------------------------------------------------- |
-| `neon config apply`  | Apply a neon.ts policy to the branch                           |
-| `neon config init`   | Scaffold a neon.ts policy and install the Neon config packages |
-| `neon config plan`   | Show what `config apply` would change (dry run)                |
-| `neon config status` | Show the branch's live Neon state                              |
+| Subcommand                        | Description                                                                            |
+| --------------------------------- | -------------------------------------------------------------------------------------- |
+| `neon config add ai-gateway`      | Enable the AI Gateway (aiGateway: true)                                                |
+| `neon config add auth`            | Enable Neon Auth (auth: true)                                                          |
+| `neon config add bucket <name>`   | Declare an Object Storage bucket                                                       |
+| `neon config add data-api`        | Enable the Data API (dataApi: true) and Neon Auth, which the default provider requires |
+| `neon config add function <slug>` | Declare a Neon Function and create its handler file                                    |
+| `neon config apply`               | Apply a neon.ts policy to the branch                                                   |
+| `neon config init`                | Scaffold a neon.ts policy and install the Neon config packages                         |
+| `neon config plan`                | Show what `config apply` would change (dry run)                                        |
+| `neon config status`              | Show the branch's live Neon state                                                      |
 
 ### connection-string (alias: `cs`)
 
@@ -20537,14 +20542,14 @@ Manage snapshots.
 | Subcommand                         | Description                                                         |
 | ---------------------------------- | ------------------------------------------------------------------- |
 | `neon snapshots create`            | Create a snapshot from a branch                                     |
-| `neon snapshots delete <id>`       | Delete a snapshot by id, unique name, or slug                       |
+| `neon snapshots delete <id>`       | Delete a snapshot by id or name                                     |
 | `neon snapshots finalize <branch>` | Finalize a previewed snapshot restore (swap the restored branch in) |
-| `neon snapshots get <id>`          | Get a snapshot by id, unique name, or slug                          |
+| `neon snapshots get <id>`          | Get a snapshot by id or name                                        |
 | `neon snapshots list`              | List snapshots in the project                                       |
-| `neon snapshots restore <id>`      | Restore a snapshot (id, unique name, or slug) into a branch         |
+| `neon snapshots restore <id>`      | Restore a snapshot into a branch                                    |
 | `neon snapshots schedule get`      | Get a branch's automatic snapshot schedule                          |
 | `neon snapshots schedule set`      | Set a branch's automatic snapshot schedule                          |
-| `neon snapshots update <id>`       | Update a snapshot's name or expiration by id, unique name, or slug  |
+| `neon snapshots update <id>`       | Update a snapshot's name or expiration                              |
 
 ### status
 
@@ -22141,15 +22146,15 @@ source ~/.zshrc
 
 --- [Document source](https://neon.com/docs/cli/config.md) ---
 
-> Summary: The Neon CLI `neon config` command manages a branch declaratively with a neon.ts policy file. Use `neon config init` to scaffold a starter neon.ts and install the config packages, `neon config status` to show the branch's live Neon state (`neon status --current-branch` prints the pinned branch offline for shell prompts), `neon config plan` for a dry run of what an apply would change, and `neon config apply` (or its top-level alias `neon deploy`) to apply the policy to the branch. Supports --config to point at a neon.ts file, --env to load environment variables before evaluating it, and --allow-protected and --update-existing confirmation flags for non-interactive use.
+> Summary: The Neon CLI `neon config` command manages a branch declaratively with a neon.ts policy file. Use `neon config init` to scaffold a starter neon.ts and install the config packages, `neon config add` to declare a service, function, or bucket in an existing neon.ts, `neon config status` to show the branch's live Neon state (`neon status --current-branch` prints the pinned branch offline for shell prompts), `neon config plan` for a dry run of what an apply would change, and `neon config apply` (or its top-level alias `neon deploy`) to apply the policy to the branch. Supports --config to point at a neon.ts file, --env to load environment variables before evaluating it, and --allow-protected and --update-existing confirmation flags for non-interactive use.
 
 # Neon CLI command: config
 
-Manage a branch with a neon.ts policy: init, status, plan, and apply
+Manage a branch with a neon.ts policy: init, add, status, plan, and apply
 
 The `config` command manages a branch declaratively with a `neon.ts` policy file: scaffold a starter config, inspect the branch's live state, preview what an apply would change, and apply the policy. For the `neon.ts` file format, see the [neon.ts reference](https://neon.com/docs/reference/neon-ts).
 
-Subcommands: [apply](https://neon.com/docs/cli/config#apply), [init](https://neon.com/docs/cli/config#init), [plan](https://neon.com/docs/cli/config#plan), [status](https://neon.com/docs/cli/config#status)
+Subcommands: [add](https://neon.com/docs/cli/config#add), [apply](https://neon.com/docs/cli/config#apply), [init](https://neon.com/docs/cli/config#init), [plan](https://neon.com/docs/cli/config#plan), [status](https://neon.com/docs/cli/config#status)
 
 The top-level [`neon deploy`](https://neon.com/docs/cli/deploy) command is an alias for `config apply`, and [`neon status`](https://neon.com/docs/cli/status) is an alias for `config status`.
 
@@ -22200,6 +22205,8 @@ neon config init [options]
 neon config init
 ```
 
+Pass `--services` to declare services in the file it scaffolds, for example `neon config init --services auth,functions`. This applies only when creating a new `neon.ts`; to add services to a file that already exists, use [`config add`](https://neon.com/docs/cli/config#add).
+
 For non-interactive setup, run it with package installation disabled, then install the printed dependencies yourself (or add them to your lockfile in a separate step):
 
 ```bash
@@ -22210,6 +22217,125 @@ npm install @neon/config @neon/env
 Use `config init` when you want a trusted starter artifact and package list. Hand-write `neon.ts` instead when you need a different filename/module format or want to avoid modifying files in the current directory.
 
 **Tip:** After running an interactive [`neon link`](https://neon.com/docs/cli/link), the CLI prompts you to run `config init` as its final step, unless the project already has a `neon.ts` file.
+
+## neon config add
+
+Declares a service, function, or bucket in your `neon.ts`, creating the file if there isn't one. Where [`config init`](https://neon.com/docs/cli/config#init) scaffolds a starter policy and leaves an existing file alone, `config add` edits an existing policy for you, including creating and registering a handler for a function. To declare services while first scaffolding the file, use [`config init --services`](https://neon.com/docs/cli/config#init) instead.
+
+```bash
+neon config add <sub-command> [options]
+```
+
+Subcommands: [ai-gateway](https://neon.com/docs/cli/config#add-ai-gateway), [auth](https://neon.com/docs/cli/config#add-auth), [bucket](https://neon.com/docs/cli/config#add-bucket), [data-api](https://neon.com/docs/cli/config#add-data-api), [function](https://neon.com/docs/cli/config#add-function)
+
+`config add` runs entirely locally: it edits files, and never authenticates or resolves a project. Provisioning stays a separate [`neon config apply`](https://neon.com/docs/cli/config#apply) step.
+
+It finds your config by walking up from the current directory, stopping at a `.git` directory or your home directory. When it finds none, it creates `neon.ts` in the current directory and installs the `@neon/config` and `@neon/env` packages; pass `--no-install` to print the install command instead. Editing an existing file never installs packages. Pass `--config <path>` to target a specific file; a path that doesn't exist is an error.
+
+It edits the file in place, keeping your comments and formatting. It refuses edits it can't make safely, such as a service declared under the deprecated `preview` block, and prints the lines to add by hand instead. Re-adding an already-enabled service exits `0` with "nothing to change"; a duplicate function slug or bucket name exits `1`; a bare `neon config add` exits `1` and lists what you can add.
+
+### neon config add auth
+
+Enables Neon Auth by setting `auth: true`.
+
+```bash
+neon config add auth [options]
+```
+
+| Option         | Description                                                                                                          | Type    | Default | Required |
+| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`     | Path to the neon.ts to edit (defaults to walking up from cwd; created in cwd when there is none)                     | string  | —       |    No    |
+| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command. | boolean | `true`  |    No    |
+| `--branch`     | Branch ID or name                                                                                                    | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                           | string  | —       |    No    |
+
+```bash
+neon config add auth
+```
+
+### neon config add data-api
+
+Enables the Data API by setting `dataApi: true`, and enables Neon Auth, which the default provider requires (it flips `auth: false` to `true`). An existing external auth provider is left unchanged.
+
+```bash
+neon config add data-api [options]
+```
+
+| Option         | Description                                                                                                          | Type    | Default | Required |
+| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`     | Path to the neon.ts to edit (defaults to walking up from cwd; created in cwd when there is none)                     | string  | —       |    No    |
+| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command. | boolean | `true`  |    No    |
+| `--branch`     | Branch ID or name                                                                                                    | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                           | string  | —       |    No    |
+
+```bash
+neon config add data-api
+```
+
+### neon config add ai-gateway
+
+Enables the AI Gateway by setting `aiGateway: true`.
+
+```bash
+neon config add ai-gateway [options]
+```
+
+| Option         | Description                                                                                                          | Type    | Default | Required |
+| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`     | Path to the neon.ts to edit (defaults to walking up from cwd; created in cwd when there is none)                     | string  | —       |    No    |
+| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command. | boolean | `true`  |    No    |
+| `--branch`     | Branch ID or name                                                                                                    | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                           | string  | —       |    No    |
+
+```bash
+neon config add ai-gateway
+```
+
+### neon config add function
+
+Declares a [Neon Function](https://neon.com/docs/cli/functions) and creates its handler file. The handler defaults to `functions/<slug>.ts` (`.js` for a JavaScript config). A slug is 1 to 20 lowercase letters and digits, with no hyphens. Pass `--name` to set a display name (it defaults to the slug), or `--source` to register an existing handler relative to `neon.ts` without overwriting it.
+
+```bash
+neon config add function <slug> [options]
+```
+
+| Option         | Description                                                                                                          | Type   | Default | Required |
+| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--name`       | Display name. Defaults to the slug                                                                                   | string | —       |    No    |
+| `--source`     | Handler file, relative to neon.ts. Defaults to functions/\<slug>.ts. Created when missing, left alone when it exists | string | —       |    No    |
+| `--branch`     | Branch ID or name                                                                                                    | string | —       |    No    |
+| `--project-id` | Project ID                                                                                                           | string | —       |    No    |
+
+Adding a function to a directory with no `neon.ts` creates both the config and the handler:
+
+```bash
+neon config add function sendemail
+```
+
+```text
+INFO: Created functions/sendemail.ts.
+INFO: Created neon.ts: added functions.sendemail.
+INFO: Install the Neon config packages to use neon.ts: npm install @neon/config @neon/env
+INFO: Next: `neon dev` to run it locally, `neon config apply` to deploy.
+```
+
+### neon config add bucket
+
+Declares a [Neon Object Storage](https://neon.com/docs/cli/buckets) bucket. Pass `--access public_read` to allow anonymous reads; the default is `private`.
+
+```bash
+neon config add bucket <name> [options]
+```
+
+| Option         | Description                                                                                                                   | Type   | Default   | Required |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------ | --------- | :------: |
+| `--access`     | Anonymous access: private requires credentials, public\_read allows anonymous reads Possible values: `private`, `public_read` | string | `private` |    No    |
+| `--branch`     | Branch ID or name                                                                                                             | string | —         |    No    |
+| `--project-id` | Project ID                                                                                                                    | string | —         |    No    |
+
+```bash
+neon config add bucket assets --access public_read
+```
 
 ## neon config status
 
@@ -26705,15 +26831,14 @@ Creates a snapshot from a branch. By default, it snapshots the head of the branc
 neon snapshots create [options]
 ```
 
-| Option           | Description                                                                                                                                                                                                                                | Type   | Default | Required |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ | ------- | :------: |
-| `--branch`, `-b` | Branch id or name to snapshot. Defaults to the branch in your context, or the project's default branch.                                                                                                                                    | string | —       |    No    |
-| `--expires-at`   | When the snapshot is automatically deleted (RFC 3339, e.g. 2025-12-31T23:59:59Z). Omit to keep it indefinitely.                                                                                                                            | string | —       |    No    |
-| `--lsn`          | Take the snapshot at this LSN (e.g. 0/1F3C8A0). Must fall within the branch's restore window. Mutually exclusive with --timestamp.                                                                                                         | string | —       |    No    |
-| `--name`         | A name for the snapshot                                                                                                                                                                                                                    | string | —       |    No    |
-| `--slug`         | User-defined resource ID, unique in the project (1-63 characters: start with a lowercase letter, then lowercase letters, digits, or hyphens, ending with a letter or digit). Omit to let the API generate one. It cannot be changed later. | string | —       |    No    |
-| `--timestamp`    | Take the snapshot at this point in time (RFC 3339, e.g. 2025-01-01T00:00:00Z). Must fall within the branch's restore window. Mutually exclusive with --lsn.                                                                                | string | —       |    No    |
-| `--project-id`   | Project ID                                                                                                                                                                                                                                 | string | —       |    No    |
+| Option           | Description                                                                                                                                                 | Type   | Default | Required |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--branch`, `-b` | Branch id or name to snapshot. Defaults to the branch in your context, or the project's default branch.                                                     | string | —       |    No    |
+| `--expires-at`   | When the snapshot is automatically deleted (RFC 3339, e.g. 2025-12-31T23:59:59Z). Omit to keep it indefinitely.                                             | string | —       |    No    |
+| `--lsn`          | Take the snapshot at this LSN (e.g. 0/1F3C8A0). Must fall within the branch's restore window. Mutually exclusive with --timestamp.                          | string | —       |    No    |
+| `--name`         | A name for the snapshot                                                                                                                                     | string | —       |    No    |
+| `--timestamp`    | Take the snapshot at this point in time (RFC 3339, e.g. 2025-01-01T00:00:00Z). Must fall within the branch's restore window. Mutually exclusive with --lsn. | string | —       |    No    |
+| `--project-id`   | Project ID                                                                                                                                                  | string | —       |    No    |
 
 Snapshot the head of a branch with a name:
 
@@ -26733,27 +26858,7 @@ Snapshot a branch at a point in time:
 neon snapshots create --branch main --timestamp 2025-01-01T00:00:00Z
 ```
 
-Set a slug to give the snapshot a stable ID you choose, which you can then pass to `get`, `delete`, `update`, and `restore` in place of the generated ID:
-
-```bash
-neon snapshots create --branch main --name "Before migration" --slug before-migration
-```
-
-```text filename="Output"
-Id                snap-crimson-pond-12345678
-Name              Before migration
-Slug              before-migration
-Source Branch Id  br-sweet-dew-12345678
-Created At        2026-09-26T01:40:01Z
-```
-
-You can then reference the snapshot by that slug:
-
-```bash
-neon snapshots get before-migration
-```
-
-Timestamps and expiration times use RFC 3339 format. `--timestamp` must be in the past and `--expires-at` in the future. Omit `--expires-at` to keep the snapshot until you delete it; a manual snapshot's expiration has no maximum, unlike the 35-day cap on [scheduled snapshots](https://neon.com/docs/cli/snapshots#schedule-set). Snapshot names must be unique within a project. A `--slug` is also unique within a project: it must be 1-63 characters, start with a lowercase letter, contain only lowercase letters, digits, or hyphens, end with a letter or digit, and can't be changed after creation. Omit it to let the API generate one.
+Timestamps and expiration times use RFC 3339 format. `--timestamp` must be in the past and `--expires-at` in the future. Omit `--expires-at` to keep the snapshot until you delete it; a manual snapshot's expiration has no maximum, unlike the 35-day cap on [scheduled snapshots](https://neon.com/docs/cli/snapshots#schedule-set). Snapshot names must be unique within a project.
 
 ## neon snapshots list
 
@@ -26773,7 +26878,7 @@ neon snapshots list
 
 ## neon snapshots get
 
-Retrieves a snapshot by ID, name, or slug.
+Retrieves a snapshot by ID or name. An ID match wins over a name.
 
 ```bash
 neon snapshots get <id> [options]
@@ -26816,7 +26921,7 @@ neon snapshots update snap-1234 --clear-expiration
 
 ## neon snapshots delete
 
-Deletes a snapshot by ID, name, or slug.
+Deletes a snapshot by ID or name.
 
 ```bash
 neon snapshots delete <id> [options]
@@ -32025,6 +32130,8 @@ export default defineConfig({
 ```
 
 The slug is permanent: it can't be renamed after the first deploy. See the [neon.ts reference](https://neon.com/docs/reference/neon-ts) for all options.
+
+As a shortcut, `neon config add function hello` creates this `neon.ts` and a starter `functions/hello.ts` handler for you. See [`neon config add`](https://neon.com/docs/cli/config#add).
 
 Install dependencies:
 
@@ -38717,7 +38824,7 @@ This guide walks you through enabling the Data API, creating a table with RLS, a
 
 **Tip: Enable programmatically**
 
-You can also enable the Data API from the terminal with [`neon data-api create`](https://neon.com/docs/cli/data-api#create), using the [Neon API](https://neon.com/docs/data-api/manage#manage-via-the-neon-api), or with the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server#available-tools) (`provision_neon_data_api` tool).
+You can also enable the Data API from the terminal with [`neon data-api create`](https://neon.com/docs/cli/data-api#create), declaratively in `neon.ts` with [`neon config add data-api`](https://neon.com/docs/cli/config#add), using the [Neon API](https://neon.com/docs/data-api/manage#manage-via-the-neon-api), or with the [Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server#available-tools) (`provision_neon_data_api` tool).
 
 ### 1. Navigate to the Data API page
 
@@ -130287,6 +130394,8 @@ export default defineConfig({
 
 Declare services as top-level keys in `defineConfig`; declare only the ones you use. Every branch always has Postgres, so `DATABASE_URL` is injected without being declared here. After `neon deploy`, `neon env pull` writes any injected URLs and credentials to your local `.env` file automatically.
 
+To add any of these to an existing `neon.ts` without editing the file by hand, use [`neon config add`](https://neon.com/docs/cli/config#add); for a function it also creates the handler file.
+
 | Field       | Values / type                                                                       | Default | What it enables                                                                                                                                                                                                                                                                |
 | ----------- | ----------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `auth`      | `true`, `false`, `{ enabled: bool }`                                                | `false` | [Managed Better Auth](https://neon.com/docs/auth/overview). Injects `NEON_AUTH_BASE_URL`, `NEON_AUTH_JWKS_URL`                                                                                                                                                                 |
@@ -133956,6 +134065,8 @@ export default defineConfig({
   },
 });
 ```
+
+To declare a bucket without editing `neon.ts` by hand, run `neon config add bucket my-bucket` (add `--access public_read` for anonymous reads). See [`neon config add`](https://neon.com/docs/cli/config#add).
 
 ```bash
 neon deploy          # provisions buckets and writes AWS_* vars to .env.local

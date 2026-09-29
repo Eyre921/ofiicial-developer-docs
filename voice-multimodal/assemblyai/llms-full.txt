@@ -237,7 +237,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Profanity Filtering](#profanity-filtering-docs-guardrails-filter-profanity-from-transcripts-mdx)
 - [Speech Threshold](#speech-threshold-docs-guardrails-set-minimum-speech-threshold-mdx)
 - [Quickstart](#quickstart-docs-llm-gateway-quickstart-mdx)
-- [Models](#models-docs-llm-gateway-available-models-mdx)
+- [Model Catalog](#model-catalog-docs-nav-links-llm-gateway-models-mdx)
 - [Providers](#providers-docs-llm-gateway-providers-mdx)
 - [Model Fallbacks](#model-fallbacks-docs-llm-gateway-fallback-mdx)
 - [Prompt Caching](#prompt-caching-docs-llm-gateway-prompt-caching-mdx)
@@ -6650,6 +6650,144 @@ while (true) {
 }
 ```
 
+### Constrain the language set
+
+By default, Universal-3.5 Pro auto-detects and code-switches across all [18 supported languages](#support-for-99-languages). When you already know which languages a file contains, pass the `language_codes` parameter to constrain the model to that set.
+
+On Universal-3.5 Pro, `language_codes` accepts any number of languages, and English is **not** required:
+
+- **Multiple languages** — for example `["en", "es", "pt"]` or `["es", "fr"]`. The model code-switches only among the languages you list.
+- **A single language** — a one-element list such as `["es"]` pins transcription to that language, exactly like [`language_code`](/pre-recorded-audio/set-language-manually).
+- The `language_code` returned in the response also honors your list, since the language set is passed to language identification.
+- If your list includes a language Universal-3.5 Pro doesn't support, the request runs automatic language detection. If the detected language falls outside Universal-3.5 Pro's [supported set](#support-for-99-languages), the job falls through to the next model in `speech_models` (typically `universal-2`); otherwise Universal-3.5 Pro transcribes it with code switching.
+
+  `language_codes` is mutually exclusive with `language_code` and `language_detection`. Set only one of the three on a request.
+
+```python title="Python SDK" {8}  expandable
+from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
+
+# audio_file = "./local-file.mp3"
+audio_file = "https://assembly.ai/wildfires.mp3"
+
+config = TranscriptionConfig(
+    speech_models=["universal-3-5-pro"],
+    language_codes=["en", "es", "pt"],  # Constrain to English, Spanish, Portuguese
+)
+
+transcript = Transcriber(api_key="<YOUR_API_KEY>", config=config).transcribe(audio_file)
+
+if transcript.status == "error":
+  raise RuntimeError(f"Transcription failed: {transcript.error}")
+
+print(transcript.text)
+```
+
+```python title="Python" {11}  expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+headers = {"authorization": "<YOUR_API_KEY>"}
+
+data = {
+    "audio_url": "https://assembly.ai/wildfires.mp3",
+    "speech_models": ["universal-3-5-pro"],
+    "language_codes": ["en", "es", "pt"],  # Constrain to English, Spanish, Portuguese
+}
+
+response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
+
+if response.status_code != 200:
+    print(f"Error: {response.status_code}, Response: {response.text}")
+    response.raise_for_status()
+
+transcript_id = response.json()["id"]
+polling_endpoint = f"{base_url}/v2/transcript/{transcript_id}"
+
+while True:
+    transcript = requests.get(polling_endpoint, headers=headers).json()
+    if transcript["status"] == "completed":
+        print(transcript["text"])
+        break
+    elif transcript["status"] == "error":
+        raise RuntimeError(f"Transcription failed: {transcript['error']}")
+    else:
+        time.sleep(3)
+```
+
+```javascript title="JavaScript SDK" {15}  expandable
+import { AssemblyAI } from "assemblyai";
+
+const client = new AssemblyAI({
+  apiKey: "<YOUR_API_KEY>",
+});
+
+// You can use a local filepath:
+// const audioFile = "./local-file.mp3";
+
+// Or use a publicly-accessible URL:
+const audioFile = "https://assembly.ai/wildfires.mp3";
+
+const params = {
+  audio: audioFile,
+  speech_models: ["universal-3-5-pro"],
+  language_codes: ["en", "es", "pt"], // Constrain to English, Spanish, Portuguese
+};
+
+const run = async () => {
+  const transcript = await client.transcripts.transcribe(params);
+
+  if (transcript.status === "error") {
+    console.error(`Transcription failed: ${transcript.error}`);
+    process.exit(1);
+  }
+
+  console.log(`\nFull Transcript:\n\n${transcript.text}\n`);
+};
+
+run();
+```
+
+```javascript title="JavaScript" {11}  expandable
+const baseUrl = "https://api.assemblyai.com";
+const headers = {
+  authorization: "<YOUR_API_KEY>",
+};
+
+const data = {
+  audio_url: "https://assembly.ai/wildfires.mp3",
+  speech_models: ["universal-3-5-pro"],
+  language_codes: ["en", "es", "pt"], // Constrain to English, Spanish, Portuguese
+};
+
+const url = `${baseUrl}/v2/transcript`;
+let res = await fetch(url, {
+  method: "POST",
+  headers: { ...headers, "Content-Type": "application/json" },
+  body: JSON.stringify(data),
+});
+if (!res.ok) throw new Error(`Error: ${res.status}`);
+const response = await res.json();
+
+const transcriptId = response.id;
+const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
+
+while (true) {
+  res = await fetch(pollingEndpoint, { headers });
+  if (!res.ok) throw new Error(`Error: ${res.status}`);
+  const transcriptionResult = await res.json();
+
+  if (transcriptionResult.status === "completed") {
+    console.log(transcriptionResult.text);
+    break;
+  } else if (transcriptionResult.status === "error") {
+    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+}
+```
+
 ## Universal-2
 
 While Universal-2 supports code switching, we recommend upgrading to Universal-3.5 Pro for best results.
@@ -6836,7 +6974,9 @@ When enabling code switching with automatic language detection, the two detected
 
 ### Manually Setting Language Codes
 
-To manually set the [language codes](/pre-recorded-audio/code-switching), you can use the `language_codes` parameter. A max of two language codes can be set and one code must be `"en"`. For example, if your file contains both English and Spanish, it would be `"language_codes": ["en", "es"]`.
+On Universal-2, you can use the `language_codes` parameter to set the languages manually. A maximum of two language codes can be set, and one of them must be `"en"`. For example, if your file contains both English and Spanish, it would be `"language_codes": ["en", "es"]`.
+
+  These two-code, English-required limits apply to Universal-2 only. On Universal-3.5 Pro, `language_codes` accepts any number of languages and English is not required — see [Constrain the language set](#constrain-the-language-set) above.
 
 ```python title="Python SDK" {8} 
 from assemblyai.prerecorded.v2 import Transcriber, TranscriptionConfig
@@ -8405,6 +8545,20 @@ while (true) {
   }
 }
 ```
+
+## Set multiple languages
+
+If your audio spans a known set of languages rather than a single dominant one, Universal-3.5 Pro accepts the `language_codes` parameter (plural). Transcription is constrained to the languages you list while still code-switching among them:
+
+```json
+{
+  "audio_url": "https://assembly.ai/wildfires.mp3",
+  "speech_models": ["universal-3-5-pro"],
+  "language_codes": ["en", "es", "pt"]
+}
+```
+
+A one-element list such as `["es"]` behaves exactly like setting `language_code` to `"es"`. `language_codes` is mutually exclusive with `language_code` and `language_detection`, so set only one of the three. For the full behavior, supported languages, and fallback rules, see [Code switching](/pre-recorded-audio/code-switching#constrain-the-language-set).
 
 See the [Supported languages](/pre-recorded-audio/supported-languages) page for all supported languages and their codes.
 
@@ -60569,135 +60723,14 @@ For details on debugging specific status codes (400/401/403/429/5xx) and what in
 
 ---
 
-<a id="models-docs-llm-gateway-available-models-mdx"></a>
+<a id="model-catalog-docs-nav-links-llm-gateway-models-mdx"></a>
 
-# Models
+# Model Catalog
 
-URL: https://www.assemblyai.com/docs/llm-gateway/available-models
-Source: docs/llm-gateway/available-models.mdx
+URL: https://www.assemblyai.com/docs/nav-links/llm-gateway-models
+Source: docs/nav-links/llm-gateway-models.mdx
 Navigation: LLM Gateway > Getting started
-Description: Available models on LLM Gateway
-
-## Available models
-
-| Model | ID | Supported parameters | Providers | Default Provider | Max Context | Retirement Date |
-| --- | --- | --- | --- | --- | --- | --- |
-| **Haiku 4.5** | `claude-haiku-4-5-20251001` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Opus 4.5** | `claude-opus-4-5-20251101` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Opus 4.6** | `claude-opus-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Opus 4.7** | `claude-opus-4-7` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `1000000` |  |
-| **Opus 4.8** | `claude-opus-4-8` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `1000000` |  |
-| **Opus 5** | `claude-opus-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Opus 5.5** | `claude-opus-5-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `1000000` |  |
-| **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Sonnet 4.6** | `claude-sonnet-4-6` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Sonnet 5** | `claude-sonnet-5` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **DeepSeek V4.1 Flash** | `deepseek-v4.1-flash` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `reasoning_effort`, `stream` | `Digital Ocean`, `Fireworks` | `Digital Ocean` | `1048576` |  |
-| **Gemini 2.5 Flash** | `gemini-2.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048576` |  |
-| **Gemini 2.5 Flash Lite** | `gemini-2.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048576` |  |
-| **Gemini 2.5 Pro** | `gemini-2.5-pro` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `200000` |  |
-| **Gemini 3.1 Flash Lite** | `gemini-3.1-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` | 2027-05-07 |
-| **Gemini 3.5 Flash** | `gemini-3.5-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
-| **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
-| **Gemini 3.6 Flash** | `gemini-3.6-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
-| **Gemini 3.7 Flash** | `gemini-3.7-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
-| **Gemini 3.8 Flash** | `gemini-3.8-flash` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Vertex` | `Vertex` | `1048575` |  |
-| **gemma-4-31b** | `gemma-4-31b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `256000` |  |
-| **Minimax M3** | `minimax-m3` | `max_tokens`, `tools`, `tool_choice`, `response_format`, `stream`, `reasoning_effort` | `Fireworks` | `Fireworks` | `512000` |  |
-| **Kimi K3** | `kimi-k3` | `max_tokens`, `tools`, `tool_choice`, `response_format`, `stream`, `reasoning_effort` | `Fireworks` | `Fireworks` | `1040000` |  |
-| **Nemotron 3 Nano 30B A3B** | `nemotron-3-nano-30b-a3b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `256000` |  |
-| **Nemotron 3 Super 120B A12B** | `nemotron-3-super-120b-a12b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `256000` |  |
-| **Nemotron Lightning 3.5 30B A3B** | `nemotron-lightning-3p5-30b-a3b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `reasoning_effort`, `stream` | `Fireworks` | `Fireworks` | `262000` |  |
-| **Nemotron Nano 9B v2** | `nemotron-nano-9b-v2` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `128000` |  |
-| **GPT OSS 120B** | `gpt-oss-120b` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice` | `AWS Bedrock` | `AWS Bedrock` | `131072` |  |
-| **GPT OSS 20B** | `gpt-oss-20b` | `max_tokens`, `temperature`, `tools`, `tool_choice` | `AWS Bedrock` | `AWS Bedrock` | `131072` |  |
-| **GPT-4.1** | `gpt-4.1` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `1047576` |  |
-| **GPT-5** | `gpt-5` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `stream`, `response_format` | `Open AI` | `Open AI` | `400000` |  |
-| **GPT-5 Nano** | `gpt-5-nano` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `400000` |  |
-| **GPT-5 mini** | `gpt-5-mini` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `400000` |  |
-| **GPT-5.1** | `gpt-5.1` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `400000` |  |
-| **GPT-5.2** | `gpt-5.2` | `max_tokens`, `response_format`, `temperature`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `400000` |  |
-| **GPT-5.5** | `gpt-5.5` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `272000` |  |
-| **GPT-5.6 Luna** | `gpt-5.6-luna` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
-| **GPT-5.6 Sol** | `gpt-5.6-sol` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
-| **GPT-5.6 Terra** | `gpt-5.6-terra` | `max_tokens`, `response_format`, `tools`, `tool_choice`, `stream` | `Open AI` | `Open AI` | `270000` |  |
-| **GPT-6 Astra** | `gpt-6-astra` | `max_tokens`, `tools`, `tool_choice`, `stream` | `Open AI`, `AWS Bedrock` | `Open AI` | `270000` |  |
-| **GPT-6 Luna** | `gpt-6-luna` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock`, `Open AI` | `AWS Bedrock` | `922000` |  |
-| **GPT-6 Sol** | `gpt-6-sol` | `max_tokens`, `tools`, `tool_choice`, `stream` | `AWS Bedrock`, `Open AI` | `AWS Bedrock` | `922000` |  |
-| **Qwen3 32B** | `qwen3-32B` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `stream` | `AWS Bedrock` | `AWS Bedrock` | `200000` |  |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | `max_tokens`, `temperature`, `stream` | `AssemblyAI` | `AssemblyAI` | `32768` |  |
-| **GLM-5.3** | `glm-5.3` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `reasoning_effort`, `stream` | `Digital Ocean`, `Fireworks` | `Digital Ocean` | `1040000` |  |
-| **GLM-5.3 Flash** | `glm-5.3-flash` | `max_tokens`, `temperature`, `tools`, `tool_choice`, `response_format`, `reasoning_effort`, `stream` | `Digital Ocean`, `Fireworks` | `Digital Ocean` | `1040000` |  |
-
-### Pricing details
-
-| Model | Parameter | Prompt (per 1M) | Completion (per 1M) | Cache read (per 1M) | Cache write (per 1M) | Cache write 1h (per 1M) | Regional surcharge |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| **Haiku 4.5** | `claude-haiku-4-5-20251001` | $1 | $5 | $0.1 | $1.25 | $2 | +10% |
-| **Opus 4.5** | `claude-opus-4-5-20251101` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
-| **Opus 4.6** | `claude-opus-4-6` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
-| **Opus 4.7** | `claude-opus-4-7` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
-| **Opus 4.8** | `claude-opus-4-8` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
-| **Opus 5** | `claude-opus-5` | $5 | $25 | $0.5 | $6.25 | $10 | +10% |
-| **Opus 5.5** | `claude-opus-5-5` | $4 | $20 | $0.2 | $5 | $8 | +10% |
-| **Sonnet 4.5** | `claude-sonnet-4-5-20250929` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
-| **Sonnet 4.6** | `claude-sonnet-4-6` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
-| **Sonnet 5** | `claude-sonnet-5` | $3 | $15 | $0.3 | $3.75 | $6 | +10% |
-| **DeepSeek V4.1 Flash** | `deepseek-v4.1-flash` | $0.3 | $1.2 | $0.006 |  |  |  |
-| **Gemini 2.5 Flash** | `gemini-2.5-flash` | $0.3 | $2.5 | $0.03 |  |  | +10% |
-| **Gemini 2.5 Flash Lite** | `gemini-2.5-flash-lite` | $0.1 | $0.4 | $0.01 |  |  | +10% |
-| **Gemini 2.5 Pro** | `gemini-2.5-pro` | $1.25 | $10 | $0.125 |  |  | +10% |
-| **Gemini 3.1 Flash Lite** | `gemini-3.1-flash-lite` | $0.25 | $1.5 | $0.025 |  |  | +10% |
-| **Gemini 3.5 Flash** | `gemini-3.5-flash` | $1.25 | $9 | $0.125 |  |  | +10% |
-| **Gemini 3.5 Flash Lite** | `gemini-3.5-flash-lite` | $0.3 | $2.5 | $0.03 |  |  | +10% |
-| **Gemini 3.6 Flash** | `gemini-3.6-flash` | $1.5 | $7.5 | $0.15 |  |  | +10% |
-| **Gemini 3.7 Flash** | `gemini-3.7-flash` | $0.75 | $3.75 | $0.075 |  |  | +10% |
-| **Gemini 3.8 Flash** | `gemini-3.8-flash` | $0.75 | $3.75 | $0.075 |  |  | +10% |
-| **gemma-4-31b** | `gemma-4-31b` | $0.14 | $0.4 |  |  |  |  |
-| **Minimax M3** | `minimax-m3` | $0.3 | $1.2 | $0.06 |  |  |  |
-| **Kimi K3** | `kimi-k3` | $3 | $15 | $0.3 |  |  |  |
-| **Nemotron 3 Nano 30B A3B** | `nemotron-3-nano-30b-a3b` | $0.06 | $0.24 |  |  |  |  |
-| **Nemotron 3 Super 120B A12B** | `nemotron-3-super-120b-a12b` | $0.15 | $0.65 |  |  |  |  |
-| **Nemotron Lightning 3.5 30B A3B** | `nemotron-lightning-3p5-30b-a3b` | $0.05 | $0.2 | $0.01 |  |  |  |
-| **Nemotron Nano 9B v2** | `nemotron-nano-9b-v2` | $0.06 | $0.23 |  |  |  |  |
-| **GPT OSS 120B** | `gpt-oss-120b` | $0.15 | $0.6 |  |  |  |  |
-| **GPT OSS 20B** | `gpt-oss-20b` | $0.07 | $0.3 |  |  |  |  |
-| **GPT-4.1** | `gpt-4.1` | $2 | $8 | $0.5 |  |  | +10% |
-| **GPT-5** | `gpt-5` | $1.25 | $10 | $0.125 |  |  | +10% |
-| **GPT-5 Nano** | `gpt-5-nano` | $0.05 | $0.4 | $0.005 |  |  | +10% |
-| **GPT-5 mini** | `gpt-5-mini` | $0.25 | $2 | $0.025 |  |  | +10% |
-| **GPT-5.1** | `gpt-5.1` | $1.25 | $10 | $0.125 |  |  | +10% |
-| **GPT-5.2** | `gpt-5.2` | $1.75 | $14 | $0.175 |  |  | +10% |
-| **GPT-5.5** | `gpt-5.5` | $5 | $30 | $0.5 |  |  | +10% |
-| **GPT-5.6 Luna** | `gpt-5.6-luna` | $0.2 | $1.2 | $0.02 | $0.25 |  | +10% |
-| **GPT-5.6 Sol** | `gpt-5.6-sol` | $4 | $20 | $0.4 | $5 |  | +10% |
-| **GPT-5.6 Terra** | `gpt-5.6-terra` | $2 | $12 | $0.2 | $2.5 |  | +10% |
-| **GPT-6 Astra** | `gpt-6-astra` | $10 | $50 | $1 | $12.5 |  | +10% |
-| **GPT-6 Luna** | `gpt-6-luna` | $0.1 | $0.5 | $0.01 | $0.125 |  | +10% |
-| **GPT-6 Sol** | `gpt-6-sol` | $2 | $10 | $0.2 | $2.5 |  | +10% |
-| **Qwen3 32B** | `qwen3-32B` | $0.15 | $0.6 |  |  |  |  |
-| **Qwen3 Next 80B A3B** | `qwen3-next-80b-a3b` | $0.15 | $1.2 |  |  |  |  |
-| **Qwen3.5 4B Fast** | `qwen3.5-4b-32k-fast` | $0.1 | $0.5 |  |  |  |  |
-| **GLM-5.3** | `glm-5.3` | $0.95 | $3.4 | $0.2 |  |  |  |
-| **GLM-5.3 Flash** | `glm-5.3-flash` | $0.15 | $0.5 | $0.03 |  |  |  |
-
-### Regional pricing overrides
-
-| Model | Parameter | Region | Prompt (per 1M) | Completion (per 1M) | Cache read (per 1M) |
-| --- | --- | --- | --- | --- | --- |
-| **Nemotron 3 Nano 30B A3B** | `nemotron-3-nano-30b-a3b` | US | $0.06 | $0.24 |  |
-| **Nemotron 3 Nano 30B A3B** | `nemotron-3-nano-30b-a3b` | EU | $0.07 | $0.28 |  |
-| **Nemotron 3 Super 120B A12B** | `nemotron-3-super-120b-a12b` | US | $0.15 | $0.65 |  |
-| **Nemotron 3 Super 120B A12B** | `nemotron-3-super-120b-a12b` | EU | $0.18 | $0.78 |  |
-| **Nemotron Nano 9B v2** | `nemotron-nano-9b-v2` | US | $0.06 | $0.23 |  |
-| **Nemotron Nano 9B v2** | `nemotron-nano-9b-v2` | EU | $0.07 | $0.27 |  |
-
-  For information on data retention and model training policies for each
-  provider, see [Data Retention and Model Training](/data-retention-and-model-training#llm-gateway-production-environment).
-
-  Head to [our Playground](https://www.assemblyai.com/dashboard/home) to
-  test out LLM Gateway without having to write any code!
+Description: Open the LLM Gateway model catalog.
 
 ---
 

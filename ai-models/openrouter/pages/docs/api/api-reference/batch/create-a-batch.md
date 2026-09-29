@@ -122,6 +122,12 @@ tags:
     name: TTS
     x-displayName: Speech
   - description: >-
+      The catalog of server tools OpenRouter runs on behalf of a model: accepted
+      `tools[].type` spellings per API format, engines and pricing, and which
+      endpoints run each tool natively. See
+      https://openrouter.ai/docs/guides/features/server-tools.
+    name: Tools
+  - description: >-
       Store host-bound secrets for a workspace or for one intern. Scope is
       selected by the API key. Responses return metadata only, never secret
       values. See https://openrouter.ai/docs/guides/ori/vault.
@@ -1965,6 +1971,7 @@ components:
         - DeepSeek
         - DekaLLM
         - DigitalOcean
+        - ElevenLabs
         - Featherless
         - Fireworks
         - Fish Audio
@@ -3828,6 +3835,7 @@ components:
         - flex
         - priority
         - scale
+        - ultrafast
         - null
       example: default
       type:
@@ -5182,8 +5190,10 @@ components:
           description: >-
             Models that were requested as part of the analysis panel but did not
             produce a response. Present when at least one requested analysis
-            model failed. The fusion result is still usable but was produced
-            from a degraded panel.
+            model failed. On a completed item the fusion result is still usable
+            but was produced from a degraded panel; on a failed item it lists
+            the panels that failed before the run stopped, so the caller can see
+            which models were attempted even though no analysis was produced.
           items:
             properties:
               error:

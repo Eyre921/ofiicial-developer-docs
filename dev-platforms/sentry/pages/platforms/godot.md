@@ -10,7 +10,7 @@ description: "Learn how to set up Sentry's Godot Engine SDK for error monitoring
 url: https://docs.sentry.io/platforms/godot/
 ---
 
-# Godot Engine | Sentry for Godot Engine
+# Sentry for Godot Engine
 
 Our SDK for Godot Engine builds on top of existing Sentry SDKs, extending them with Godot-specific features. It gives developers helpful hints for where and why an error or performance issue might have occurred.
 
@@ -58,7 +58,7 @@ Don't already have an account and Sentry project established? Head over to [sent
 
 Sentry captures data through our addon for Godot Engine which you can install in your project.
 
-Download the latest stable version `2.2.0` from [GitHub Releases](https://github.com/getsentry/sentry-godot/releases/). Extract the `addons/sentry` folder from the archive into your project.
+Download the latest stable version `2.3.0` from [GitHub Releases](https://github.com/getsentry/sentry-godot/releases/). Extract the `addons/sentry` folder from the archive into your project.
 
 Ensure that the addon is placed in the `addons/sentry` folder, preserving the exact casing.
 

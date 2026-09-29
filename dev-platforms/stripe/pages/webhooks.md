@@ -117,7 +117,7 @@ The output contains a `webhook_endpoint.signing_secret` value that starts with `
 
 ### Test locally without a registered URL 
 
-If you don’t have a registered publicly accessible HTTPS URL, you can test webhooks locally by using the Stripe CLI to [forward events to your local endpoint](https://docs.stripe.com/cli/use-cli#forward-events-to-your-local-webhook-endpoint):
+If you don’t have a registered publicly accessible HTTPS URL, you can test webhooks locally by using the Stripe CLI to [forward events to your local endpoint](https://docs.stripe.com/cli/listen):
 
 1. If you haven’t already, [install the Stripe CLI](https://docs.stripe.com/cli/install) on your machine.
 

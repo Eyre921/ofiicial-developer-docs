@@ -49,7 +49,7 @@ Make an API request through OpenRouter and view the trace in Sentry's
 Performance or Traces view.
 
 <Frame>
-  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/guides/features/broadcast/sentry/broadcast-sentry-trace.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=46b63b4737564eea81184e73899ea3b2" alt="Sentry Trace View" width="3372" height="2058" data-path="assets/guides/features/broadcast/sentry/broadcast-sentry-trace.png" />
+  <img src="https://mintcdn.com/openrouter-d02e98a0/m_oPr-TUQwWwWLn0/assets/guides/features/broadcast/sentry/broadcast-sentry-trace.png?fit=max&auto=format&n=m_oPr-TUQwWwWLn0&q=85&s=3d1d844f2800f7a766a1d774e04caad9" alt="Sentry Trace View" width="2940" height="1984" data-path="assets/guides/features/broadcast/sentry/broadcast-sentry-trace.png" />
 </Frame>
 
 <Tip>

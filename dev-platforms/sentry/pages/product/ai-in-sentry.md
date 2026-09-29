@@ -23,7 +23,7 @@ Sentry leverages artificial intelligence (AI) and machine learning (ML) to enhan
 Use Seer to:
 
 * **[Fix Issues](https://docs.sentry.io/product/ai-in-sentry/seer/autofix.md)**: Use Autofix to find root causes and generate suggested code fixes for errors and performance issues, or hand off to a [coding agent](https://docs.sentry.io/product/ai-in-sentry/seer/autofix.md#handoff-to-coding-agents).
-* **[Investigate Problems](https://docs.sentry.io/product/ai-in-sentry/seer.md#seer-agent)**: Ask Seer Agent questions about your application and Seer Agent will do the digging. Walk through complex production problems with Seer Agent reasoning through evidence in real time.
+* **[Investigate Problems and Take Action](https://docs.sentry.io/product/ai-in-sentry/seer.md#seer-agent)**: Ask Seer Agent to investigate application problems, archive issues, and create dashboards, monitors, and alerts from a conversation in Sentry or Slack.
 * **[Review Code Changes](https://docs.sentry.io/product/ai-in-sentry/seer/code-review.md)**: Have Seer review your code changes in GitHub or GitLab, catching bugs before merging.
 
 ### [Issue Summary](https://docs.sentry.io/product/ai-in-sentry.md#issue-summary)

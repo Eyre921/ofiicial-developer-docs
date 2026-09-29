@@ -10,7 +10,7 @@ path: docs/api/api-reference/interns/provision-an-intern
 
 # Provision an intern
 
-> Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
+> Starts the first boot, or resumes an intern after suspension. This operation takes no request body. A body carrying any field is refused with 400 rather than ignored. The API key selects the caller, workspace and visible interns. An intern's own API key sees only that intern: the collection and every other intern answer 404 to it. There is no default workspace fallback. Requests on regional hostnames such as `eu.openrouter.ai` are refused. [API key](/docs/api-reference/authentication) required.
 
 
 
@@ -122,6 +122,12 @@ tags:
     name: TTS
     x-displayName: Speech
   - description: >-
+      The catalog of server tools OpenRouter runs on behalf of a model: accepted
+      `tools[].type` spellings per API format, engines and pricing, and which
+      endpoints run each tool natively. See
+      https://openrouter.ai/docs/guides/features/server-tools.
+    name: Tools
+  - description: >-
       Store host-bound secrets for a workspace or for one intern. Scope is
       selected by the API key. Responses return metadata only, never secret
       values. See https://openrouter.ai/docs/guides/ori/vault.
@@ -145,8 +151,10 @@ paths:
         Starts the first boot, or resumes an intern after suspension. This
         operation takes no request body. A body carrying any field is refused
         with 400 rather than ignored. The API key selects the caller, workspace
-        and visible interns. There is no default workspace fallback. Requests on
-        regional hostnames such as `eu.openrouter.ai` are refused. [API
+        and visible interns. An intern's own API key sees only that intern: the
+        collection and every other intern answer 404 to it. There is no default
+        workspace fallback. Requests on regional hostnames such as
+        `eu.openrouter.ai` are refused. [API
         key](/docs/api-reference/authentication) required.
       operationId: provisionIntern
       parameters:
