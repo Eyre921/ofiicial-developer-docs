@@ -8,49 +8,49 @@ path: docs/reception-ai/overview
 
 # Reception.ai
 
-[Reception.ai](https://reception.ai) is an intelligent phone receptionist for small and medium businesses. It answers inbound calls in over 70 languages, books appointments, takes messages, and helps manage day-to-day operations from a single dashboard.
+[Reception.ai](https://reception.ai) is an AI phone receptionist for small and medium businesses. It answers inbound calls in over 70 languages, books appointments, takes orders and messages, and gives you a single dashboard to run day-to-day operations.
 
 ## What Reception.ai does
 
 #### Answers calls
 
-Your AI receptionist picks up every call, greets callers, and handles inquiries using natural
-conversation.
+Your receptionist picks up every call, answers questions from your knowledge base, and transfers
+callers to your team when needed.
 
-#### Books appointments
+#### Books and sells
 
-Customers can schedule, reschedule, or cancel appointments directly over the phone or via your
-booking page.
+Callers can book, reschedule, or cancel appointments, place orders, and request quotes.
+Customers can do the same on your booking page.
 
-#### Manages your business
+#### Runs your front desk
 
-Track clients, review conversations, monitor revenue, and fill knowledge gaps from one
-dashboard.
+Track clients, review conversations, send reminders by email and SMS, and monitor results from
+one dashboard.
 
 ## How it works
 
 ### Sign up and scan your website
 
-Reception.ai reads your website to learn about your business — services, hours, team, and location.
+Reception.ai reads your website to learn about your business: services, hours, team, and location.
 
 ### Customize your receptionist
 
-Choose a voice, set behavior rules, configure languages, and define how calls should be handled.
+Choose a voice, set its tone, and teach it rules and procedures for how calls should be handled.
 
 ### Go live
 
-Get a dedicated phone number. Your AI receptionist starts answering calls immediately.
+Get a phone number, bring your own, or forward your existing line. Your receptionist starts answering calls immediately.
 
 ## Key features
 
-* **24/7 availability** — Never miss a call, even outside business hours
-* **70+ languages** — Automatic language detection and multilingual responses
-* **Appointment scheduling** — Full calendar with services, staff, and resource management
-* **Public booking page** — Let customers self-schedule online
-* **Client management** — Automatic CRM with interaction history
-* **Knowledge base** — Teach your receptionist from your website or uploaded files
-* **Analytics** — Track revenue, bookings, calls, and client growth
-* **Integrations** — Google Calendar, Zapier, webhooks, and more
+* **24/7 availability**: never miss a call, including after hours.
+* **70+ languages**: the receptionist detects the caller's language and switches automatically.
+* **Scheduling**: services, staff, locations, assets, and a shared calendar.
+* **Booking page and web widget**: let customers book online or talk to your receptionist from your website.
+* **Orders and quotes**: take product orders and collect quote requests for jobs without a fixed price.
+* **Clients and notifications**: a built-in client list with email and SMS confirmations and reminders.
+* **Knowledge base**: teach your receptionist from your website, uploaded files, and FAQ answers.
+* **Integrations**: Google Calendar, Calendly, Cal.com, HubSpot, Zapier, webhooks, and MCP servers.
 
 ## Get started
 
@@ -60,12 +60,12 @@ Set up your AI receptionist in under 5 minutes.
 
 #### [Configure your receptionist](/docs/reception-ai/receptionist/overview)
 
-Customize voice, rules, and call behavior.
+Customize voice, rules, procedures, and call handling.
 
 #### [Set up scheduling](/docs/reception-ai/scheduling/overview)
 
-Configure services, staff, and availability.
+Configure services, staff, locations, and availability.
 
 #### [View analytics](/docs/reception-ai/features/analytics)
 
-Monitor business performance and call metrics.
+Monitor business performance and call outcomes.

@@ -11006,6 +11006,25 @@ Use the `graphs` key in the [configuration file](#configuration-file-concepts) t
 
 You can specify one or more graphs in the configuration file. Each graph is identified by a unique name and a path to either (1) a compiled graph or (2) a function that defines a graph.
 
+### Define multiple graphs in one deployment
+
+A single `langgraph.json` can define several graphs, so one deployment can serve several agents. Add one entry to `graphs` for each agent:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+    "dependencies": ["."],
+    "graphs": {
+        "support_agent": "./my_agent/support.py:agent",
+        "research_agent": "./my_agent/research.py:agent"
+    },
+    "env": "./.env"
+}
+```
+
+Each key is a graph ID. All graphs in the file share the deployment's `dependencies`, `env`, and image. [Agent Server](/langsmith/agent-server) creates a default assistant for each graph, so clients choose a graph by passing its graph ID as the `assistant_id`. For more information, see [How assistants work with deployments](/langsmith/assistants#how-assistants-work-with-deployments).
+
+Running several agents on one deployment also reduces cost. See [Run multiple agents on one deployment](/langsmith/cloud-platform-features#run-multiple-agents-on-one-deployment).
+
 ### Use any framework with LangSmith Deployment
 
 While LangSmith Deployment requires applications to be structured as a LangGraph graph, individual nodes within that graph can contain arbitrary code. This means you can use any framework or library within your nodes while still benefiting from LangSmith's deployment infrastructure.
@@ -21026,6 +21045,12 @@ Both Serverless and Dedicated are available in three sizes: Small, Medium, and L
 </Note>
 
 For the price of each size, see the [pricing page](https://www.langchain.com/pricing), which includes a deployment cost calculator. For how Serverless and Dedicated deployments are billed, see [Manage billing](/langsmith/billing#langsmith-deployment-billing).
+
+#### Run multiple agents on one deployment
+
+Deployments are [billed on the resources they consume](/langsmith/billing#langsmith-deployment-billing), not on the number of agents they serve. To run several agents on the resources of one deployment, [define multiple graphs](/langsmith/application-structure#define-multiple-graphs-in-one-deployment) in one `langgraph.json`. This works well for Dedicated: one always-on instance with its own database can host several production agents.
+
+All graphs in a deployment share its compute, database, autoscaling, and deployment type. They also ship together as one revision. Give an agent its own deployment when it needs a different size, latency profile, or isolation from the other agents.
 
 ## Database provisioning
 
@@ -66956,6 +66981,7 @@ Append a provider path to your regional gateway base URL:
 | Google Gemini | `/gemini` | `GOOGLE_API_KEY` |
 | Gemini Enterprise Agent Platform | `/vertex` | `VERTEX_SERVICE_ACCOUNT_JSON` |
 | OpenAI | `/openai` | `OPENAI_API_KEY` |
+| xAI | `/xai` | `XAI_API_KEY` |
 
 [Gateway Credits models](/langsmith/llm-gateway-credits) use the standard endpoint rather than a provider-specific path. These hosted models require no provider secret of your own.
 
@@ -124076,7 +124102,7 @@ Open a WebSocket connection for streaming command execution inside a sandbox.
 Source: https://docs.langchain.com/langsmith/smith-api/sandboxes/generate-a-sandbox-file-download-link
 
 /langsmith/langsmith-platform-openapi.json post /api/v2/sandboxes/boxes/{name}/download-url
-Generate a tokenized link that downloads a single file from a sandbox with no further authentication. This mints a token rather than creating an addressable resource, so it returns 200 with no Location header. The token pins the sandbox, the file path, the response content type and disposition, and the sandbox flags, so a link cannot be repointed at another file or served under a weaker policy. The file is always served with a Content-Security-Policy: a sandbox directive, plus a default-src holding every fetch to the sandbox's own download host and a set of pre-approved third-party origins. csp_sandbox_flags may loosen the sandbox with allow-downloads, allow-forms, allow-modals, allow-orientation-lock, allow-pointer-lock, allow-popups, allow-presentation, allow-scripts, or allow-top-navigation-by-user-activation. allow-same-origin is not accepted, so a served file never shares an origin with anything. csp_source_bundles selects the third-party origins: cdnjs, google-fonts, jsdelivr, and unpkg are all allowed when the field is omitted, and 'none' holds the file to the sandbox alone. Because every file of one sandbox is served from the same host, a page can load sibling files it has links for, but only by their own link URLs. Links never expire unless expires_in_seconds is set. The link is served from the sandbox service domain, not the API host.
+Generate a tokenized link that downloads a single file from a sandbox with no further authentication. This mints a token rather than creating an addressable resource, so it returns 200 with no Location header. The token pins the sandbox, the file path, the response content type and disposition, and the sandbox flags, so a link cannot be repointed at another file or served under a weaker policy. The file is always served with a Content-Security-Policy: a sandbox directive, plus a default-src holding every fetch to the file's own download host and a set of pre-approved third-party origins. csp_sandbox_flags may loosen the sandbox with allow-downloads, allow-forms, allow-modals, allow-orientation-lock, allow-pointer-lock, allow-popups, allow-presentation, allow-same-origin, allow-scripts, or allow-top-navigation-by-user-activation. Every file is served from its own host, derived from the sandbox and the path, so allow-same-origin gives a page localStorage and IndexedDB that no other file can read, and re-minting a link for the same file keeps them. csp_sandbox set to false drops the sandbox directive altogether, and csp_sandbox_flags must then be omitted. csp_source_bundles selects the third-party origins: cdnjs, google-fonts, jsdelivr, and unpkg are all allowed when the field is omitted, 'none' holds the file to its own host, and 'any' sends no default-src at all. Links never expire unless expires_in_seconds is set. The link is served from the sandbox service domain, not the API host.
 
 
 
@@ -124685,6 +124711,13 @@ Source: https://docs.langchain.com/langsmith/smith-api/tracer-sessions/delete-tr
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}
 Delete a specific project.
+
+Returns 202 when deletion is accepted. Cleanup runs asynchronously.
+Location identifies the affected project, not a cleanup-status endpoint.
+For a caller with read access, GET at that URL returns 200 with the project
+while it is still available, or 404 after the project is removed. A 404 does
+not confirm that background trace cleanup has finished. Polling for cleanup
+completion is not supported.
 
 
 
@@ -195762,10 +195795,6 @@ Routers and proxies give you access to models from multiple providers through a 
 
 Certain model providers offer endpoints that are compatible with OpenAI's (legacy) [Chat Completions API](https://platform.openai.com/docs/guides/completions). In such case, you can use [`ChatOpenAI`](/oss/javascript/integrations/chat/openai) with a custom `base_url` to connect to these endpoints. Note that features built on top of the Chat Completions API may not be fully supported by `ChatOpenAI`; in such cases, consider using a provider-specific class if available.
 
-[Auxen](https://auxen.ai) hosts dedicated per-customer LLM endpoints with an OpenAI-compatible Chat Completions API. Use `ChatOpenAI` with a custom base URL and per-instance API key.
-
-[Tuning Engines](https://www.tuningengines.com/) provides a governed OpenAI-compatible Chat Completions API. Use `ChatOpenAI` with `baseURL` `https://api.tuningengines.com/v1` and a Tuning Engines inference key.
-
 ## All chat models
 
 <div>
@@ -244914,11 +244943,70 @@ await graph.invoke(new Command({ resume: true }), config);
 * You must use the **same thread ID** when resuming that was used when the interrupt occurred
 * The value passed to `new Command({ resume: ... })` becomes the return value of the [`interrupt`](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt) call
 * The node restarts from the beginning of the node where the [`interrupt`](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt) was called when resumed, so any code before the [`interrupt`](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt) runs again
-* You can pass any JSON-serializable value as the resume value
+* You can pass any JSON-serializable value as the resume value, subject to validation when you specify a Zod `responseSchema`
 
 <Warning>
   `new Command({ resume: ... })` is the **only** `Command` pattern intended as input to `invoke()`/`stream()`/`stream_events()`. The other `Command` parameters (`update`, `goto`, `graph`) are designed for [returning from node functions](/oss/javascript/langgraph/graph-api#command). Do not pass `new Command({ update: ... })` as input to continue multi-turn conversations—pass a plain input object instead.
 </Warning>
+
+## Define an interrupt response schema
+
+The `responseSchema` option to [`interrupt`](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt) describes the input expected when you resume the graph. Clients can use the schema to render typed input forms.
+
+<Note>
+  Interrupt response schemas require `@langchain/langgraph` version 1.4.16 or later.
+</Note>
+
+Pass a Zod schema to validate resume values. LangGraph converts it to JSON Schema and includes it in `Interrupt.response_schema`, separately from the interrupt's `value` payload. The schema is available on interrupts returned to the caller and in checkpoint task interrupts.
+
+This example uses the approval schema from LangGraph's interrupt tests:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  Annotation,
+  Command,
+  MemorySaver,
+  START,
+  StateGraph,
+  interrupt,
+} from "@langchain/langgraph";
+import { z } from "zod/v4";
+
+const Decision = z.object({
+  approved: z.boolean(),
+  note: z.string().default(""),
+});
+
+const State = Annotation.Root({
+  answer: Annotation<unknown>(),
+});
+
+const graph = new StateGraph(State)
+  .addNode("node", () => ({
+    answer: interrupt({ question: "approve?" }, { responseSchema: Decision }),
+  }))
+  .addEdge(START, "node")
+  .compile({ checkpointer: new MemorySaver() });
+
+const config = { configurable: { thread_id: "1" } };
+
+const result = await graph.invoke({ answer: null }, config);
+console.log(result.__interrupt__?.[0].response_schema);
+
+const resumed = await graph.invoke(
+  new Command({ resume: { approved: true } }),
+  config
+);
+console.log(resumed.answer);
+```
+
+With a Zod schema, `interrupt()` returns the parsed value. In this example, the result is `{ approved: true, note: "" }`, including the default `note`. Invalid input raises `ZodError`; you can retry with a corrected `new Command({ resume: ... })` using the same thread ID.
+
+You can also pass a JSON Schema object as `responseSchema`. LangGraph exposes that object unchanged but does **not** validate resume values against it. When you omit `responseSchema`, interrupts have no `response_schema` field, and resume values pass through without schema validation.
+
+Studio renders interrupt response schemas as typed input fields instead of a JSON editor. This preview of the Studio component uses example data with approval, note, and numeric amount fields.
+
+<img alt="Studio interrupt form with an approval toggle, a note field, and a numeric amount set to 125.50" />
 
 ## Common patterns
 
@@ -244941,7 +245029,7 @@ Use the typed projections returned by `graph.stream_events(..., version="v3")` i
 * Detect interrupts via `stream.interrupted` and read their payloads from `stream.interrupts`
 * Resume execution by calling `stream_events` again with `Command(resume=...)` and repeat until `stream.interrupted` is false
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { Command } from "@langchain/langgraph";
 
 let streamInput: Record<string, unknown> | Command = initialInput;
@@ -245368,7 +245456,7 @@ The correct pattern:
 3. If the answer is invalid, return the updated `pendingQuestion` so the next invocation re-prompts.
 4. Use `addConditionalEdges` to route back to the node until a valid value is collected.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { interrupt } from "@langchain/langgraph";
 
 const getAgeNode: typeof State.Node = (state) => {
@@ -291726,16 +291814,16 @@ Integrate with chat models using LangChain Python.
   | [`ChatAnthropic`](/oss/python/integrations/chat/anthropic) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-anthropic/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatGoogleGenerativeAI`](/oss/python/integrations/chat/google_generative_ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-google-genai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOllama`](/oss/python/integrations/chat/ollama) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-ollama/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatDatabricks`](/oss/python/integrations/chat/databricks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatGroq`](/oss/python/integrations/chat/groq) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-groq/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | <span>❌</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-huggingface/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatLiteLLM`](/oss/python/integrations/chat/litellm) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-litellm/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-mistralai/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | <span>❌</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-huggingface/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-openrouter/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatCohere`](/oss/python/integrations/chat/cohere) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-mistralai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatXAI`](/oss/python/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-xai/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-deepseek/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatDatabricks`](/oss/python/integrations/chat/databricks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatCohere`](/oss/python/integrations/chat/cohere) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatTogether`](/oss/python/integrations/chat/together) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-together/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span /> | <span><a href="https://pypi.org/project/langchain-amazon-nova/">  <img alt="Downloads per month" /></a></span> |
 </div>
@@ -291776,74 +291864,76 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
   | [`ChatGoogleGenerativeAI`](/oss/python/integrations/chat/google_generative_ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-google-genai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatBedrock`](/oss/python/integrations/chat/bedrock) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-aws/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOllama`](/oss/python/integrations/chat/ollama) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-ollama/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatDatabricks`](/oss/python/integrations/chat/databricks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatGroq`](/oss/python/integrations/chat/groq) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-groq/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | <span>❌</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-huggingface/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatLiteLLM`](/oss/python/integrations/chat/litellm) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-litellm/">  <img alt="Downloads per month" /></a></span> |
-  | [`AzureAIChatCompletionsModel`](/oss/python/integrations/chat/azure_ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatFireworks`](/oss/python/integrations/chat/fireworks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-fireworks/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-mistralai/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatHuggingFace`](/oss/python/integrations/chat/huggingface) | <span>❌</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-huggingface/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOpenRouter`](/oss/python/integrations/chat/openrouter) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-openrouter/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatCohere`](/oss/python/integrations/chat/cohere) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatMistralAI`](/oss/python/integrations/chat/mistralai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-mistralai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatXAI`](/oss/python/integrations/chat/xai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-xai/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatDeepSeek`](/oss/python/integrations/chat/deepseek) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-deepseek/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatDatabricks`](/oss/python/integrations/chat/databricks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/databricks-langchain/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatFireworks`](/oss/python/integrations/chat/fireworks) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-fireworks/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatCohere`](/oss/python/integrations/chat/cohere) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-cohere/">  <img alt="Downloads per month" /></a></span> |
+  | [`AzureAIChatCompletionsModel`](/oss/python/integrations/chat/azure_ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-azure-ai/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatNVIDIA`](/oss/python/integrations/chat/nvidia_ai_endpoints) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-nvidia-ai-endpoints/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatWatsonx`](/oss/python/integrations/chat/ibm_watsonx) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-ibm/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatPerplexity`](/oss/python/integrations/chat/perplexity) | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-perplexity/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatCerebras`](/oss/python/integrations/chat/cerebras) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-cerebras/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatBaseten`](/oss/python/integrations/chat/baseten) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-baseten/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatMoonshot`](https://github.com/ArcadiaLin/langchain-moonshot) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-moonshot/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOCIGenerativeAI`](/oss/python/integrations/chat/oci_generative_ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-oci/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOCIModelDeployment`](/oss/python/integrations/chat/oci_data_science) | <span>✅</span> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-oci/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatTogether`](/oss/python/integrations/chat/together) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-together/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatSambaNova`](/oss/python/integrations/chat/sambanova) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-sambanova/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatQwen`](/oss/python/integrations/chat/qwen) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-qwq/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatQwQ`](/oss/python/integrations/chat/qwq) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-qwq/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatTogether`](/oss/python/integrations/chat/together) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-together/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatSambaNova`](/oss/python/integrations/chat/sambanova) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-sambanova/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatUpstage`](/oss/python/integrations/chat/upstage) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-upstage/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatMoonshot`](https://github.com/ArcadiaLin/langchain-moonshot) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-moonshot/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatClovaX`](https://guide.ncloud-docs.com/docs/clovastudio-dev-langchain) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-naver/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatAI21`](https://docs.ai21.com/home) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-ai21/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatParallel`](/oss/python/integrations/chat/parallel) | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatCloudflareWorkersAI`](https://github.com/cloudflare/langchain-cloudflare) | <span>❌</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-cloudflare/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatNebius`](https://github.com/nebius/langchain-nebius) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-nebius/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span /> | <span><a href="https://pypi.org/project/langchain-amazon-nova/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatParallel`](/oss/python/integrations/chat/parallel) | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-parallel/">  <img alt="Downloads per month" /></a></span> |
+  | [`Inferrail`](https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/inferrail/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatGradient`](https://docs.digitalocean.com/products/ai-platform/) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-gradient/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatAimlapi`](https://docs.aimlapi.com/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-aimlapi/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatAmazonNova`](/oss/python/integrations/chat/amazon_nova) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span /> | <span><a href="https://pypi.org/project/langchain-amazon-nova/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatWriter`](https://dev.writer.com/home/introduction) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-writer/">  <img alt="Downloads per month" /></a></span> |
-  | [`Apertis`](https://docs.apertis.ai/api/sdks/langchain/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-apertis/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatHubris`](https://hubris.pw/docs/integrations/langchain) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-hubris/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatInterfaze`](https://interfaze.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/interfaze-langchain/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatContextual`](https://docs.contextual.ai/) | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-contextual/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatAimlapi`](https://docs.aimlapi.com/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-aimlapi/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatCrusoe`](/oss/python/integrations/chat/crusoe) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-crusoe/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatAI21`](https://docs.ai21.com/home) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-ai21/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatDoubleword`](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-doubleword/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatDiffbot`](https://github.com/diffbot/langchain-diffbot) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-diffbot/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOpenZoo`](https://github.com/staccDOTsol/langchain-openzoo) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-openzoo/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatPredictionGuard`](https://github.com/predictionguard/langchain-predictionguard) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-predictionguard/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatContextual`](https://docs.contextual.ai/) | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-contextual/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatKinetica`](https://github.com/kineticadb/langchain-kinetica) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatBrainiall`](https://app.brainiall.com/docs) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-brainiall/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatXinference`](https://github.com/TheSongg/langchain-xinference) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-xinference/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatKinetica`](https://github.com/kineticadb/langchain-kinetica) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatRunPod`](https://docs.runpod.io/overview) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-runpod/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatSarvam`](https://docs.sarvam.ai/api/integration/langchain) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-sarvamcloud/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatAppleFoundationModels`](https://github.com/rajanshxrma/langchain-apple-foundation-models) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-apple-foundation-models/">  <img alt="Downloads per month" /></a></span> |
+  | [`Apertis`](https://docs.apertis.ai/api/sdks/langchain/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-apertis/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatKServe`](https://gitlab.com/bitkaio/langchain/kserve-provider) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-kserve/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatSarvam`](https://docs.sarvam.ai/api/integration/langchain) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-sarvamcloud/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatYutoriNavigator`](https://docs.yutori.com) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-yutori/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatFeatherlessAI`](https://github.com/featherless-ai-integrations/langchain-featherless-ai) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-featherless-ai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatAbso`](https://github.com/lunary-ai/langchain-abso) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-abso/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatDiffbot`](https://github.com/diffbot/langchain-diffbot) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-diffbot/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatYutoriNavigator`](https://docs.yutori.com) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-yutori/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatDoubleword`](https://docs.doubleword.ai/inference-api/intro-to-doubleword-inference) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-doubleword/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatInterfaze`](https://interfaze.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/interfaze-langchain/">  <img alt="Downloads per month" /></a></span> |
   | [`ModelScopeChatEndpoint`](https://github.com/modelscope/langchain-modelscope) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-modelscope-integration/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatAppleFoundationModels`](https://github.com/rajanshxrma/langchain-apple-foundation-models) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-apple-foundation-models/">  <img alt="Downloads per month" /></a></span> |
-  | [`SpendGuardChatModel`](https://agenticspendguard.dev) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/spendguard-sdk/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatAlephantAI`](https://alephant.io/) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-alephantai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatPipeshift`](https://github.com/pipeshift-org/langchain-pipeshift) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-pipeshift/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatDuel`](https://duelagents.com) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-duel/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatNetmind`](https://github.com/protagolabs/langchain-netmind) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-netmind/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatNeuralwatt`](https://neuralwatt.com) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-neuralwatt/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-seekrflow/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatThalam`](https://thalam.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-thalam/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatGreenNode`](https://github.com/greennode-ai/langchain-greennode) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatRunPod`](https://docs.runpod.io/overview) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-runpod/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatAlephantAI`](https://alephant.io/) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-alephantai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatEmpirioLabs`](https://docs.empiriolabs.ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-empiriolabs/">  <img alt="Downloads per month" /></a></span> |
-  | [`ChatKalibr`](https://kalibr.systems/docs) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-kalibr/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatDuel`](https://duelagents.com) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-duel/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatNeuralwatt`](https://neuralwatt.com) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-neuralwatt/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatThalam`](https://thalam.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-thalam/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatSeekrFlow`](https://github.com/benfaircloth/langchain-seekrflow) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-seekrflow/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatTelnyx`](https://developers.telnyx.com/docs/inference/models) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-telnyx/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatKalibr`](https://kalibr.systems/docs) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-kalibr/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatNetmind`](https://github.com/protagolabs/langchain-netmind) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-netmind/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatGreenNode`](https://github.com/greennode-ai/langchain-greennode) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-greennode/">  <img alt="Downloads per month" /></a></span> |
+  | [`SpendGuardChatModel`](https://agenticspendguard.dev) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/spendguard-sdk/">  <img alt="Downloads per month" /></a></span> |
   | [`1Claw`](https://docs.1claw.xyz) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |
   | [`Auxen`](https://auxen.ai) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |
   | [`Cheaper Inference`](https://cheaperinference.com/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |
+  | [`API-Route`](https://www.api-route.com/docs/overview) | <span /> | <span /> | <span /> | <span /> | <span>N/A</span> |
   | [`DaoXE`](https://daoxe.com) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |
   | [`FuturMix`](https://futurmix.ai/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>N/A</span> |
   | [`Snowflake Cortex REST API`](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-rest-api) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>N/A</span> |
@@ -292383,6 +292473,7 @@ In production, you would typically use a more robust persistent store, such as a
   | [`Cloudflare workers AI`](https://developers.cloudflare.com/ai/models/#text-embeddings) | <span><a href="https://pypi.org/project/langchain-cloudflare/">  <img alt="Downloads per month" /></a></span> |
   | [`Nebius`](https://docs.tokenfactory.nebius.com/quickstart) | <span><a href="https://pypi.org/project/langchain-nebius/">  <img alt="Downloads per month" /></a></span> |
   | [`AimlapiEmbeddings`](https://docs.aimlapi.com/) | <span><a href="https://pypi.org/project/langchain-aimlapi/">  <img alt="Downloads per month" /></a></span> |
+  | [`SingleStoreEmbeddings`](https://docs.singlestore.com/cloud/ai/ai-ml-functions/ai-functions/#embed-text) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
   | [`PolarDBPGEmbeddings`](https://github.com/polardb/langchain-polardb-pg) | <span><a href="https://pypi.org/project/langchain-polardb-pg/">  <img alt="Downloads per month" /></a></span> |
   | [`Localai`](https://localai.io/features/embeddings/index.html) | <span><a href="https://pypi.org/project/langchain-localai/">  <img alt="Downloads per month" /></a></span> |
   | [`PredictionGuardEmbeddings`](https://docs.predictionguard.com/api-reference/api-reference/embeddings) | <span><a href="https://pypi.org/project/langchain-predictionguard/">  <img alt="Downloads per month" /></a></span> |
@@ -292592,6 +292683,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     AI gateway for cost control, BYOK routing, and multi-provider model access.
   </Card>
 
+  <Card title="AlexEvidenceVerifier" href="https://pypi.org/project/langchain-alex/" icon="link">
+    Verify signed ALEX Evidence Packages inside LangChain and LangGraph workflows against an external trust anchor. The integration exposes a structured LangChain tool and a LangGraph node that fail closed on unsupported schemas, signature failures, incomplete evidence, or inconsistent outcomes.
+  </Card>
+
   <Card title="Algenta" href="https://github.com/thyn-ai/algenta-integrations/tree/main/python/langchain-algenta#readme" icon="link">
     Governed tool execution for LangChain agents: `create_algenta_tools` exposes a self-hosted Algenta decision engine's MCP tool surface as `BaseTool`s with profile-based filtering (`observe`/`govern`/`execute`/`full`), typed execution receipts, and synchronous policy-gate denials on real-world execution.
   </Card>
@@ -292738,6 +292833,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Apertis" href="https://docs.apertis.ai" icon="link">
     OpenAI-compatible API providing access to multiple LLMs.
+  </Card>
+
+  <Card title="API-Route" href="https://www.api-route.com/docs/overview" icon="link">
+    OpenAI-compatible API gateway for models from multiple providers.
   </Card>
 
   <Card title="Apify" href="https://docs.apify.com/integrations/langchain" icon="https://mintcdn.com/langchain-5e9cc07a/73YwmKRoBU5I7vFN/images/providers/apify-icon.svg?fit=max&auto=format&n=73YwmKRoBU5I7vFN&q=85&s=0612593ec7e58dbef3d23a040d374dd0">
@@ -293144,6 +293243,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Financial market data and analytics API.
   </Card>
 
+  <Card title="Foliant" href="https://github.com/gazoy/langchain-foliant#readme" icon="link">
+    Payment tool and budget middleware for agents that pay x402 endpoints through Foliant payment channels and pools, with one on-chain settlement per session and a delegated spending budget per agent and per crew.
+  </Card>
+
   <Card title="Football Charts" href="https://www.football-charts.com/developers" icon="link">
     Football statistics, model probabilities, and Monte Carlo season projections for 90+ leagues.
   </Card>
@@ -293314,6 +293417,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="iGPT" href="https://docs.igpt.ai" icon="link">
     Personal data retrieval tools and retriever for emails, messages, and files.
+  </Card>
+
+  <Card title="Inferrail" href="https://github.com/domondi1/inferrail/blob/main/docs/recipes/agent-run-budget.md?ref=langchain-docs#langchain" icon="link">
+    Self-hosted OpenAI-compatible gateway that enforces a dollar budget per agent run via request headers on `ChatOpenAI`, refusing over-budget calls with HTTP 402 before the provider.
   </Card>
 
   <Card title="Infino" href="https://infino.ai/docs" icon="https://mintcdn.com/langchain-5e9cc07a/aup58lONW4AWxpkl/images/providers/infino-icon.png?fit=max&auto=format&n=aup58lONW4AWxpkl&q=85&s=f06e566173e074c78ef54d43e30b606b">
@@ -293490,6 +293597,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="MaskFlow" href="https://github.com/maskflow/maskflow/tree/main/packages/maskflow-langchain" icon="link">
     Reversible PII anonymizer / deanonymizer for LangChain, a drop-in for the Presidio anonymizer. Indian identifiers included.
+  </Card>
+
+  <Card title="MartToolkit" href="https://github.com/Mart-API/langchain-mart#readme" icon="link">
+    Mart provides public LinkedIn profile and company enrichment, contact refresh snapshots, posts and optional work-email lookup through a JSON API.
   </Card>
 
   <Card title="Memgraph" href="/oss/python/integrations/providers/memgraph" icon="link">
@@ -294310,6 +294421,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Unstructured" href="/oss/python/integrations/providers/unstructured" icon="link">
     Document processing and data extraction.
+  </Card>
+
+  <Card title="UploadPostToolkit" href="https://docs.upload-post.com/guides/langchain" icon="link">
+    Tools to publish, schedule and track social media posts on TikTok, Instagram, YouTube, LinkedIn, X, Facebook and other platforms through the Upload-Post API.
   </Card>
 
   <Card title="Upstage" href="/oss/python/integrations/providers/upstage" icon="link">
@@ -297214,7 +297329,7 @@ The below retrievers will search over an external index (e.g., constructed from 
   | [`Nimble Extract`](https://docs.nimbleway.com/integrations/connectors/langchain) | <span /> | <span /> | [`langchain-nimble`](https://pypi.org/project/langchain-nimble/) | <span><a href="https://pypi.org/project/langchain-nimble/">  <img alt="Downloads per month" /></a></span> |
   | [`Nimble Search`](https://docs.nimbleway.com/integrations/connectors/langchain) | <span /> | <span /> | [`langchain-nimble`](https://pypi.org/project/langchain-nimble/) | <span><a href="https://pypi.org/project/langchain-nimble/">  <img alt="Downloads per month" /></a></span> |
   | [`YouRetriever`](https://you.com/docs/integrations/langchain) | <span>❌</span> | <span>✅</span> | [`langchain-youdotcom`](https://pypi.org/project/langchain-youdotcom/) | <span><a href="https://pypi.org/project/langchain-youdotcom/">  <img alt="Downloads per month" /></a></span> |
-  | [`SingleStoreSQLDatabaseRetriever`](https://github.com/singlestore-labs/langchain-singlestore/) | <span /> | <span /> | [`langchain-singlestore`](https://pypi.org/project/langchain-singlestore/) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
+  | [`SingleStoreSQLDatabaseRetriever`](https://github.com/singlestore-labs/langchain-singlestore/) | <span>✅</span> | <span>✅</span> | [`langchain-singlestore`](https://pypi.org/project/langchain-singlestore/) | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
   | [`YouTubeCommentsRetriever`](https://github.com/urraf/langchain-youtube#readme) | <span /> | <span /> | [`langchain-youtube`](https://pypi.org/project/langchain-youtube/) | <span><a href="https://pypi.org/project/langchain-youtube/">  <img alt="Downloads per month" /></a></span> |
   | [`YouTubePlaylistRetriever`](https://github.com/urraf/langchain-youtube#readme) | <span /> | <span /> | [`langchain-youtube`](https://pypi.org/project/langchain-youtube/) | <span><a href="https://pypi.org/project/langchain-youtube/">  <img alt="Downloads per month" /></a></span> |
   | [`YouTubeSearchRetriever`](https://github.com/urraf/langchain-youtube#readme) | <span /> | <span /> | [`langchain-youtube`](https://pypi.org/project/langchain-youtube/) | <span><a href="https://pypi.org/project/langchain-youtube/">  <img alt="Downloads per month" /></a></span> |
@@ -297708,6 +297823,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`AgentRAMTools`](https://agentram.dev/langchain-agent-memory-tutorial.html) | <span><a href="https://pypi.org/project/langgraph-agentram/">  <img alt="Downloads per month" /></a></span> |
   | [`Salesforce`](https://github.com/colesmcintosh/langchain-salesforce) | <span><a href="https://pypi.org/project/langchain-salesforce/">  <img alt="Downloads per month" /></a></span> |
   | [`Robocorp toolkit`](https://github.com/robocorp/robocorp) | <span><a href="https://pypi.org/project/langchain-robocorp/">  <img alt="Downloads per month" /></a></span> |
+  | [`FoliantPaymentTool`](https://github.com/gazoy/langchain-foliant#readme) | <span><a href="https://pypi.org/project/langchain-foliant/">  <img alt="Downloads per month" /></a></span> |
   | [`HindsightTools`](https://docs.hindsight.vectorize.io/sdks/integrations/langgraph) | <span><a href="https://pypi.org/project/hindsight-langgraph/">  <img alt="Downloads per month" /></a></span> |
   | [`WebzNewsSearch`](https://docs.webz.io/docs/webz/news-search-api-mcp) | <span><a href="https://pypi.org/project/langchain-webz/">  <img alt="Downloads per month" /></a></span> |
   | [`ERC8004Toolkit`](https://github.com/Conrad-sudo/langchain-erc8004) | <span><a href="https://pypi.org/project/langchain-erc8004/">  <img alt="Downloads per month" /></a></span> |
@@ -297813,6 +297929,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`SpiceDB Permission Tools`](https://github.com/authzed/langchain-spicedb) | <span><a href="https://pypi.org/project/langchain-spicedb/">  <img alt="Downloads per month" /></a></span> |
   | [`Valthera`](https://github.com/valthera/langchain-valthera) | <span><a href="https://pypi.org/project/langchain-valthera/">  <img alt="Downloads per month" /></a></span> |
   | [`ProxyHatFetchTool`](https://docs.proxyhat.com) | <span><a href="https://pypi.org/project/langchain-proxyhat/">  <img alt="Downloads per month" /></a></span> |
+  | [`AlexEvidenceVerifier`](https://pypi.org/project/langchain-alex/) | <span><a href="https://pypi.org/project/langchain-alex/">  <img alt="Downloads per month" /></a></span> |
   | [`AxioraToolkit`](https://axiora.dev/docs) | <span><a href="https://pypi.org/project/langchain-axiora/">  <img alt="Downloads per month" /></a></span> |
   | [`Vectara`](https://github.com/vectara/langchain-vectara) | <span><a href="https://pypi.org/project/langchain-vectara/">  <img alt="Downloads per month" /></a></span> |
   | [`X402PaymentTool`](https://www.agentrails.io/docs) | <span><a href="https://pypi.org/project/langchain-x402/">  <img alt="Downloads per month" /></a></span> |
@@ -297898,6 +298015,8 @@ The following table shows tools that generate video, image, or audio assets:
   | [`SnapRender`](https://snap-render.com) | <span><a href="https://pypi.org/project/langchain-snaprender/">  <img alt="Downloads per month" /></a></span> |
   | [`TempGuru`](https://tempguru.co/ai-agents) | <span><a href="https://pypi.org/project/tempguru/">  <img alt="Downloads per month" /></a></span> |
   | [`GreenCalculusToolkit`](https://greencalculus.com/guides/emission-factors-langchain/) | <span><a href="https://pypi.org/project/langchain-greencalculus/">  <img alt="Downloads per month" /></a></span> |
+  | [`UploadPostToolkit`](https://docs.upload-post.com/guides/langchain) | <span><a href="https://pypi.org/project/langchain-upload-post/">  <img alt="Downloads per month" /></a></span> |
+  | [`MartToolkit`](https://github.com/Mart-API/langchain-mart#readme) | <span><a href="https://pypi.org/project/langchain-mart/">  <img alt="Downloads per month" /></a></span> |
   | [`AgentLair`](https://agentlair.dev/docs) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |
@@ -298902,7 +299021,7 @@ vector_store.similarity_search(
   | [`InfinoVectorStore`](https://infino.ai/docs) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-infino/">  <img alt="Downloads per month" /></a></span> |
   | [`ChronoVecVectorStore`](https://mchl-labs.github.io/chronovec/integrations/langchain) | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/chronovec/">  <img alt="Downloads per month" /></a></span> |
   | [`IBM db2 vector store and vector search`](https://github.com/langchain-ai/langchain-ibm/tree/main/libs/langchain-db2) | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-db2/">  <img alt="Downloads per month" /></a></span> |
-  | [`SingleStoreVectorStore`](https://docs.singlestore.com/cloud/developer-resources/functional-extensions/working-with-vector-data/) | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
+  | [`SingleStoreVectorStore`](https://docs.singlestore.com/cloud/developer-resources/functional-extensions/working-with-vector-data/) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span>❌</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-singlestore/">  <img alt="Downloads per month" /></a></span> |
   | [`TeradataVectorStore`](https://github.com/Teradata/langchain-teradata) | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-teradata/">  <img alt="Downloads per month" /></a></span> |
   | [`AsyncCockroachDBVectorStore`](https://github.com/cockroachdb/langchain-cockroachdb/) | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-cockroachdb/">  <img alt="Downloads per month" /></a></span> |
   | [`YDB`](https://ydb.tech/) | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-ydb/">  <img alt="Downloads per month" /></a></span> |
@@ -342448,7 +342567,7 @@ After an interrupt pauses execution, you resume the graph by invoking it again w
 
 The recommended way to drive a graph that may interrupt is [event streaming](/oss/python/langgraph/event-streaming) — it surfaces interrupts via `stream.interrupts` and `stream.interrupted`, and exposes the final state through `stream.output`.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
 
 # Initial run - hits the interrupt and pauses
@@ -342484,11 +342603,72 @@ final = resumed.output
 * You must use the **same thread ID** when resuming that was used when the interrupt occurred
 * The value passed to `Command(resume=...)` becomes the return value of the [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt) call
 * The node restarts from the beginning of the node where the [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt) was called when resumed, so any code before the [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt) runs again
-* You can pass any JSON-serializable value as the resume value
+* You can pass any JSON-serializable value as the resume value, subject to validation when you specify a typed `response_schema`
 
 <Warning>
   `Command(resume=...)` is the **only** `Command` pattern intended as input to `invoke()`/`stream()`/`stream_events()`. The other `Command` parameters (`update`, `goto`, `graph`) are designed for [returning from node functions](/oss/python/langgraph/graph-api#command). Do not pass `Command(update=...)` as input to continue multi-turn conversations—pass a plain input dict instead.
 </Warning>
+
+## Define an interrupt response schema
+
+The `response_schema` argument to [`interrupt`](https://reference.langchain.com/python/langgraph/types/interrupt) describes the input expected when you resume the graph. Clients can use the schema to render typed input forms.
+
+<Note>
+  Interrupt response schemas require `langgraph>=1.2.12`.
+</Note>
+
+Pass a Pydantic model class, a `TypedDict` from `typing_extensions`, or a dataclass to validate resume values. LangGraph converts the type to JSON Schema and includes it in `Interrupt.response_schema`, separately from the interrupt's `value` payload. The schema is available on interrupts returned to the caller and in checkpoint task interrupts.
+
+This example uses the approval schema from LangGraph's interrupt tests:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import Any
+
+from pydantic import BaseModel
+from typing_extensions import TypedDict
+
+from langgraph.checkpoint.memory import InMemorySaver
+from langgraph.graph import START, StateGraph
+from langgraph.types import Command, interrupt
+
+
+class Decision(BaseModel):
+    approved: bool
+    note: str | None = None
+
+
+class State(TypedDict):
+    answer: Any
+
+
+def node(state: State) -> State:
+    answer = interrupt({"question": "approve?"}, response_schema=Decision)
+    return {"answer": answer}
+
+
+graph = (
+    StateGraph(State)
+    .add_node("node", node)
+    .add_edge(START, "node")
+    .compile(checkpointer=InMemorySaver())
+)
+config = {"configurable": {"thread_id": "1"}}
+
+result = graph.invoke({"answer": None}, config)
+pending = result["__interrupt__"][0]
+assert pending.response_schema == Decision.model_json_schema()
+
+result = graph.invoke(Command(resume={"approved": True}), config)
+assert result["answer"] == Decision(approved=True)
+```
+
+With a typed schema, `interrupt()` returns the validated object: a Pydantic model instance, a dictionary for a `TypedDict`, or a dataclass instance. Pydantic's validation and coercion rules apply. Invalid input raises `pydantic.ValidationError`; you can retry with a corrected `Command(resume=...)` using the same thread ID.
+
+You can also pass a JSON Schema dictionary as `response_schema`. LangGraph exposes that dictionary unchanged but does **not** validate resume values against it. When you omit `response_schema`, its value is `None`, and resume values pass through without schema validation.
+
+Studio renders interrupt response schemas as typed input fields instead of a JSON editor. This preview of the Studio component uses example data with approval, note, and numeric amount fields.
+
+<img alt="Studio interrupt form with an approval toggle, a note field, and a numeric amount set to 125.50" />
 
 ## Common patterns
 
@@ -342511,7 +342691,7 @@ Use the typed projections returned by `graph.stream_events(..., version="v3")` i
 * Detect interrupts via `stream.interrupted` and read their payloads from `stream.interrupts`
 * Resume execution by calling `stream_events` again with `Command(resume=...)` and repeat until `stream.interrupted` is false
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langgraph.types import Command
 
 stream_input: dict | Command = initial_input
@@ -342549,7 +342729,7 @@ When parallel branches interrupt simultaneously (for example, fan-out to multipl
 When resuming multiple interrupts with a single invocation, map each interrupt ID to its resume value.
 This ensures each response is paired with the correct interrupt at runtime.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import Annotated, TypedDict
 import operator
 
@@ -342639,7 +342819,7 @@ graph.stream_events(Command(resume=False), config=config, version="v3").output
 ```
 
 <Accordion title="Full example">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from typing import Literal, Optional, TypedDict
 
   from langgraph.checkpoint.memory import InMemorySaver
@@ -342733,7 +342913,7 @@ graph.stream_events(
 ```
 
 <Accordion title="Full example">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from typing import TypedDict
 
   from langgraph.checkpoint.memory import MemorySaver
@@ -342939,7 +343119,7 @@ The correct pattern:
 3. If the answer is invalid, return the updated `pending_question` so the next invocation re-prompts.
 4. Use `add_conditional_edges` to route back to the node until a valid value is collected.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing import TypedDict
 
 from langgraph.graph import END, START, StateGraph
@@ -342972,7 +343152,7 @@ builder.add_conditional_edges("collect_age", route)
 Each resume invokes `get_age_node` exactly once, runs the `interrupt()` call once, and exits. When the answer is invalid, the conditional edge loops back and the next interrupt re-prompts with the updated question. No code runs more than once per resume.
 
 <Accordion title="Full example">
-  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from typing import TypedDict
 
   from langgraph.checkpoint.memory import InMemorySaver

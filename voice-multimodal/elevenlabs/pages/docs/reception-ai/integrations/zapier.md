@@ -8,54 +8,44 @@ path: docs/reception-ai/integrations/zapier
 
 # Zapier
 
-The Zapier integration connects your receptionist to over 5,000 apps through Zapier's MCP (Model Context Protocol) server. Supported categories include CRMs, email marketing, project management, and more.
+The Zapier integration connects your receptionist to over 7,000 apps through Zapier's MCP (Model Context Protocol) server, including CRMs, email marketing, and project management tools.
 
 ## How it works
 
-Unlike traditional Zapier integrations with triggers and actions, Reception.ai connects to Zapier via MCP. The receptionist and assistant can **call Zapier actions directly** during conversations in real time, based on conversation context.
+Unlike traditional Zapier automations with triggers and actions, Reception.ai connects to Zapier through MCP. Your receptionist and business assistant **call Zapier actions directly** during conversations, based on what the caller asks for.
 
 ## Setting up Zapier
 
-### Enable the integration
+### Create a Zapier MCP server
 
-Go to **Integrations** → click **Zapier** → Enable.
+Go to [mcp.zapier.com](https://mcp.zapier.com), select **+ New MCP Server**, and choose **Other** as the client.
 
-### Connect your Zapier account
+### Add actions
 
-Follow the setup steps (7-step tutorial) to link your Zapier account via `mcp.zapier.com`.
+Add the Zapier actions you want your receptionist to use, such as creating a CRM contact or sending a Slack message.
 
-### Configure actions in Zapier
+### Generate a token
 
-In your Zapier account, set up the actions you want your receptionist to have access to.
+Open the **Connect** tab and select **Generate token**. Copy the token.
 
-### Refresh tools
+### Add the integration
 
-Back in Reception.ai, click **Refresh tools** to pull available actions from Zapier.
+In Reception.ai, go to **Integrations**, select **Add integration**, and choose **Zapier**. Paste the token into **Secret Token** and select **Enable**. Leave **MCP URL** empty to use the default Zapier endpoint.
 
 ### Assign tools
 
-Choose which Zapier actions are available to your customer-facing receptionist, business assistant, or both.
+Open the **Tools** tab. Reception.ai lists the available actions. Assign each to the **Client** (receptionist), the **Assistant**, or both, or select **Enable all**. Select **Refresh tools** after adding actions in Zapier.
 
 ## What you can do
 
-Example automations your receptionist can trigger mid-call:
+Example automations your receptionist can trigger during a call:
 
-| During a call...                         | Zapier action                                    |
-| ---------------------------------------- | ------------------------------------------------ |
-| Caller wants to be added to mailing list | Add contact to Mailchimp                         |
-| New appointment booked                   | Create event in Google Calendar, notify in Slack |
-| Caller reports an issue                  | Create ticket in Zendesk or Jira                 |
-| New client identified                    | Create contact in HubSpot or Salesforce          |
-| Caller requests a callback               | Create task in Asana or Notion                   |
+| During a call...                      | Zapier action                      |
+| ------------------------------------- | ---------------------------------- |
+| Caller wants to join the mailing list | Add contact to Mailchimp           |
+| New appointment booked                | Post a message in Slack            |
+| Caller reports an issue               | Create a ticket in Zendesk or Jira |
+| New client identified                 | Create a contact in Salesforce     |
+| Caller requests a callback            | Create a task in Asana or Notion   |
 
-## Tool assignments
-
-Each Zapier action can be assigned to:
-
-* **Customer-facing receptionist** — Used during phone calls
-* **Business assistant** — Used in dashboard chat
-* **Both** — Available everywhere
-
-> **Note**
->
-> Zapier integration requires the **Plus** plan or higher.
+Each workspace can connect one Zapier account. Zapier is available on every plan.

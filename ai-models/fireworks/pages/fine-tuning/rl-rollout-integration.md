@@ -37,7 +37,7 @@ Fireworks offers three paths for reinforcement learning, along a spectrum that t
 | - | - | - | - |
 | **This guide (BYOT rollouts)** | Trainer, rewards, environment, checkpoint upload cadence | Hot-load deployment, distributed weight swap, inference, KV cache across rollouts | Yes |
 | [Training API](/fine-tuning/training-api/introduction) | Training logic (recipes or SDK) | GPUs, trainer lifecycle, often `FW_HOSTED` bucket | Only if you need rollout behavior beyond what the SDK exposes |
-| [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) | Dataset and evaluator | End-to-end hosted RL | No |
+| [Cookbook RL](/fine-tuning/training-api/cookbook/rl) | Dataset rows and a rollout function | Scheduling, training, weight publication | No |
 
 **Why BYOT rollout inference?**
 

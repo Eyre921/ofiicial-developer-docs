@@ -1,4 +1,4 @@
-> This is part 1 of 14 of the full documentation (pages 1–100 of 1360).
+> This is part 1 of 14 of the full documentation (pages 1–100 of 1363).
 > The content is paginated: fetch every part to see all of it.
 > Next part: https://docs.n8n.io/llms-full.txt/1
 > Page index: https://docs.n8n.io/llms.txt
@@ -558,6 +558,7 @@ Manage your n8n Cloud trial, plan, and instance.
 * [Update your version](/deploy/use-n8n-cloud/update-your-version): update your n8n version on Cloud.
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud): set your timezone, find your IP addresses, and manage your data.
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits): use AI models and third-party services without provider accounts or API keys.
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits): understand the monthly n8n Assistant allowance in your plan and buy extra credits.
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency): how n8n Cloud handles concurrent executions.
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows): download workflows from n8n Cloud with the admin dashboard.
 
@@ -645,6 +646,7 @@ Select the **Contact** button on the [n8n website](https://n8n.io/pricing/).
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
@@ -671,6 +673,7 @@ If your instance is down, you can still access the admin dashboard. When you log
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
@@ -727,6 +730,7 @@ The maintenance window sets when n8n can apply upgrades, so you can reduce disru
 * [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
@@ -749,6 +753,7 @@ Configure timezone, IP addresses, data management, and ownership settings for yo
 * [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
@@ -1000,6 +1005,7 @@ Concurrency in queue mode is a separate mechanism from concurrency in regular mo
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 
 [^1]: In n8n, evaluation allows you to tag and organize execution history and compare it against new executions. You can use this to understand how your workflow performs over time as you make changes. In particular, this is useful while developing AI-centered workflows.
@@ -1010,6 +1016,8 @@ Concurrency in queue mode is a separate mechanism from concurrency in regular mo
 Use Gateway credits to run AI models and third-party services in your n8n workflows without provider accounts or API keys.
 
 Gateway credits let you use supported AI models and third-party services in your workflows without creating provider accounts or managing API keys. Instead of setting up a credential, you select Gateway credits on a supported node, and n8n bills the usage from a prepaid credit balance.
+
+Gateway credits only pay for nodes in your workflows. They don't pay for n8n Assistant, which uses separate [Assistant credits](/deploy/use-n8n-cloud/assistant-credits), starting with a monthly allowance included in your plan. Topping up Gateway credits doesn't give n8n Assistant more credits.
 
 ## In this section
 
@@ -1023,7 +1031,7 @@ Gateway credits are available on:
 
 * **n8n Cloud:** Starter, Pro
 
-They aren't available on n8n Cloud Enterprise or self-hosted n8n. Gateway credits are available from n8n 2.36.0.
+They aren't available on n8n Cloud Enterprise or self-hosted n8n. Gateway credits are available from n8n 2.36.0. Free trials include Gateway credits, but you can't top up until you upgrade to a paid plan.
 {% endhint %}
 
 ## How Gateway credits work
@@ -1065,13 +1073,13 @@ When your balance reaches zero, nodes using Gateway credits stop working until y
 
 n8n has more than one kind of credit. They have separate balances and pay for different things:
 
-| Credit type             | What it pays for                                                                                       | Where you see it                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
-| Gateway credits         | AI models and tool services used by nodes in your workflows                                            | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard |
-| n8n Assistant credits   | Your usage of [n8n Assistant](/build/ways-of-building-workflows/n8n-assistant) and AI Workflow Builder | In the n8n Assistant panel in the editor                                            |
-| Free OpenAI API credits | A legacy one-time OpenAI allowance for new Cloud users                                                 | Only on instances without Gateway credits                                           |
+| Credit type                                                  | What it pays for                                                                                                               | Where you see it                                                                                            |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Gateway credits                                              | AI models and tool services used by nodes in your workflows                                                                    | On supported nodes, and on the **Gateway credits** tab in the Cloud admin dashboard                         |
+| [Assistant credits](/deploy/use-n8n-cloud/assistant-credits) | Your usage of [n8n Assistant](/build/ways-of-building-workflows/n8n-assistant), from a monthly allowance included in your plan | In the n8n Assistant panel in the editor, and on the **Assistant credits** tab in the Cloud admin dashboard |
+| Free OpenAI API credits                                      | A legacy one-time OpenAI allowance for new Cloud users                                                                         | Only on instances without Gateway credits                                                                   |
 
-Topping up Gateway credits doesn't add n8n Assistant credits, and using the n8n Assistant doesn't spend your Gateway credit balance.
+Topping up Gateway credits doesn't add Assistant credits, and using n8n Assistant doesn't spend your Gateway credit balance.
 
 ## Data handling
 
@@ -1084,6 +1092,7 @@ When a node runs on Gateway credits, n8n sends the request through its gateway t
 * [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
 * [Download workflows](/deploy/use-n8n-cloud/download-workflows)
 * [Use Gateway credits](/build/understand-workflows/use-gateway-credits): select Gateway credits on a node and find supported nodes.
@@ -1097,6 +1106,12 @@ Add credit to your Gateway credits balance manually or with auto top-up in the n
 When your [Gateway credits](/deploy/use-n8n-cloud/gateway-credits) balance runs low, top it up from the Cloud admin dashboard. You can add credit manually whenever you need it, or turn on auto top-up so n8n refills your balance for you.
 
 Only the instance owner can top up, and topping up requires an active paid subscription. Free trials include Gateway credits, but not top-ups: if you use up your free credit during a trial, upgrade to a paid plan to add more.
+
+{% hint style="warning" %}
+**Gateway credits don't pay for n8n Assistant**
+
+Gateway credits only pay for AI models and services that nodes use in your workflows. To get more credits for n8n Assistant, [top up Assistant credits](/deploy/use-n8n-cloud/assistant-credits/top-up-assistant-credits) instead. Top-ups are final, so check which balance you're topping up before you pay.
+{% endhint %}
 
 ## Top up manually
 
@@ -1192,6 +1207,250 @@ When your balance reaches zero, nodes using Gateway credits fail until you add c
 * [Service pricing page](https://app.n8n.cloud/service-pricing): current rates for all supported services and models.
 
 
+# Assistant credits
+
+Understand Assistant credits: the monthly allowance included in your n8n Cloud plan, extra credits, and how n8n bills your n8n Assistant usage.
+
+Assistant credits pay for your usage of [n8n Assistant](/build/ways-of-building-workflows/n8n-assistant). Your n8n Cloud plan includes a monthly allowance of Assistant credits that resets on the first day of every month, so you can use n8n Assistant without buying anything. If you use up your allowance before it resets, you can buy extra credits to keep going until the next reset.
+
+Assistant credits only pay for n8n Assistant. They don't pay for AI model calls that your workflows or agents make when they run, such as the model behind an AI Agent node. Those calls use [Gateway credits](/deploy/use-n8n-cloud/gateway-credits) or your own provider credentials.
+
+## In this section
+
+* [Top up Assistant credits](/deploy/use-n8n-cloud/assistant-credits/top-up-assistant-credits): buy extra credits manually or automatically.
+* [Track Assistant credit spend](/deploy/use-n8n-cloud/assistant-credits/track-assistant-credit-spend): monitor your balance, spend, and top-up history.
+
+{% hint style="info" %}
+**Feature availability**
+
+Assistant credits are available on:
+
+* **n8n Cloud:** Starter, Pro
+
+They aren't available on n8n Cloud Enterprise or self-hosted n8n. Free trials include a one-time allowance of Assistant credits.
+{% endhint %}
+
+## How Assistant credits work
+
+n8n Assistant uses credits based on the tokens that the underlying AI model processes for each message. Longer conversations, larger workflows, and debugging sessions use more credits than short, focused requests. A message you stop partway through, or one that ends in an error, still uses credits for the work n8n Assistant did before it stopped.
+
+Your Assistant credit balance has two parts:
+
+* **Included credits**: the monthly allowance that comes with your plan. It resets on the first day of every month.
+* **Extra credits**: credits you buy on top of your allowance. They carry over from month to month.
+
+n8n Assistant always uses your included credits first. When they run out, it draws from your extra credits at the same rate, so n8n Assistant works the same way whichever credits it's using. If you haven't bought any extra credits, n8n Assistant pauses until your included credits reset.
+
+This is the main difference from [Gateway credits](/deploy/use-n8n-cloud/gateway-credits), which are a single prepaid balance: with Gateway credits, you only have what you've bought. With Assistant credits, your plan tops you up every month, and extra credits are optional.
+
+Running a workflow doesn't use Assistant credits, even if n8n Assistant built it. Only your conversations with n8n Assistant do.
+
+## Included monthly allowance
+
+The size of your monthly allowance depends on your plan. For the current allowance on each plan, refer to [n8n plans and pricing](https://n8n.io/pricing/).
+
+How the allowance works:
+
+* Included credits reset on the first day of every calendar month, at midnight UTC. The reset doesn't follow your billing date.
+* Unused included credits don't roll over. Each reset replaces any credits left over with a fresh allowance.
+* If you start a paid plan partway through a month, you get the full monthly allowance for that month, not a reduced one.
+* If you upgrade, your included credits for the current month change to the new plan's full allowance straight away.
+* If you downgrade, you keep the higher allowance until the next reset. The lower allowance applies from then on.
+* If you cancel your subscription, your included credits stop when the cancellation takes effect.
+
+### Assistant credits during a free trial
+
+Free trials include a one-time allowance of Assistant credits instead of a monthly one. The trial allowance doesn't reset. Topping up isn't available during a free trial, so if you use up your trial credits, upgrade to a paid plan to keep using n8n Assistant. Refer to [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial) for details.
+
+## Extra credits
+
+Extra credits let you keep using n8n Assistant after you've used up your included credits for the month. They're optional: if you never buy any, n8n Assistant pauses when your included credits run out and resumes at the next reset.
+
+* n8n Assistant only draws from extra credits after your included credits run out.
+* Extra credits cost the same number of credits per message as included credits. Nothing changes in how n8n Assistant works.
+* Extra credits carry over from month to month until they expire, 12 months after purchase.
+* Only the instance owner can buy extra credits, and buying them requires an active paid subscription.
+
+You can buy extra credits manually or set up auto top-up so n8n buys them for you. Refer to [Top up Assistant credits](/deploy/use-n8n-cloud/assistant-credits/top-up-assistant-credits) for details.
+
+## Your Assistant credit balance
+
+Each Cloud instance has one Assistant credit balance, shared by everyone who uses n8n Assistant on that instance. Included and extra credits both come from this shared balance.
+
+You can see the balance in the editor, in the credits menu of the n8n Assistant panel, and on the **Assistant credits** tab in the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard). The dashboard also shows your spend over time and which users use the most credits. Refer to [Track Assistant credit spend](/deploy/use-n8n-cloud/assistant-credits/track-assistant-credit-spend) for details.
+
+## When your Assistant credits run out
+
+When your included credits and your extra credits are both used up, n8n Assistant pauses for everyone on the instance:
+
+* In the editor, n8n Assistant shows **You've run out of AI credits**, and you can't send new messages.
+* On the **Assistant credits** tab in the Cloud admin dashboard, a banner shows **The Assistant is paused for your workspace**.
+
+If your credits run out in the middle of a message, n8n lets that message finish rather than stopping it partway through. Your usage can go slightly past your balance as a result.
+
+To start using n8n Assistant again:
+
+* On a paid plan, the instance owner can [buy extra credits](/deploy/use-n8n-cloud/assistant-credits/top-up-assistant-credits), or you can wait for your included credits to reset on the first day of the next month.
+* On a free trial, upgrade to a paid plan.
+
+Your workflows aren't affected. Workflows keep running when your Assistant credits run out, because running a workflow doesn't use Assistant credits.
+
+## Credit expiry and forfeiture
+
+Assistant credits follow the same expiry and forfeiture rules as Gateway credits:
+
+* n8n uses included credits before extra credits. Among extra credits, n8n uses the credits that expire soonest first.
+* Included credits expire when your allowance resets on the first day of the next month.
+* Extra credits expire 12 months after purchase.
+* Credits aren't cash and you can't transfer them to another account.
+* Top-ups are final. n8n doesn't refund unused credits except where required by law.
+* If you close your n8n account, you forfeit any remaining credits. Canceling your subscription doesn't forfeit extra credits while your account still exists.
+
+## Assistant credits and Gateway credits
+
+Assistant credits and Gateway credits are separate balances that pay for different things:
+
+|                         | Assistant credits                                                                           | Gateway credits                                             |
+| ----------------------- | ------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| What they pay for       | Your conversations with n8n Assistant, including when it builds a workflow or agent for you | AI models and tool services used by nodes in your workflows |
+| What they don't pay for | AI model calls that your workflows or agents make when they run                             | n8n Assistant                                               |
+| What your plan includes | A monthly allowance that resets on the first day of every month                             | A small one-time amount of free credit at sign-up           |
+| Buying more             | Extra credits, used only after your included credits run out                                | Top-ups that add to your balance                            |
+| Where you manage them   | The **Assistant credits** tab in the Cloud admin dashboard                                  | The **Gateway credits** tab in the Cloud admin dashboard    |
+
+Topping up one doesn't add to the other. If n8n Assistant builds a workflow with a node that uses Gateway credits, running that node spends Gateway credits, not Assistant credits.
+
+## n8n Assistant on self-hosted n8n
+
+Self-hosted n8n doesn't use Assistant credits. On a self-hosted instance, n8n Assistant runs on AI models from your own provider account, which bills you directly. Refer to [Set up n8n Assistant](/deploy/host-n8n/configure-n8n/set-up-n8n-assistant) for details.
+
+## Related resources
+
+* [Use n8n Cloud](/deploy/use-n8n-cloud)
+* [Try free then choose a plan](/deploy/use-n8n-cloud/start-your-free-trial)
+* [Use the admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard)
+* [Update your version](/deploy/use-n8n-cloud/update-your-version)
+* [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
+* [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
+* [Download workflows](/deploy/use-n8n-cloud/download-workflows)
+* [Use n8n Assistant](/build/ways-of-building-workflows/n8n-assistant)
+* [n8n plans and pricing](https://n8n.io/pricing/)
+
+
+# Top up Assistant credits
+
+Buy extra Assistant credits manually or with auto top-up in the n8n Cloud admin dashboard, so you can keep using n8n Assistant after your monthly allowance runs out.
+
+Your n8n Cloud plan includes a monthly allowance of [Assistant credits](/deploy/use-n8n-cloud/assistant-credits) that resets on the first day of every month. If you use up your included credits before the reset, top up with extra credits so you can keep using n8n Assistant. n8n Assistant only draws from extra credits after your included credits run out, and uses them at the same rate.
+
+You can buy extra credits manually whenever you need them, or turn on auto top-up so n8n buys them for you.
+
+Only the instance owner can top up, and topping up requires an active paid subscription. Free trials include a one-time allowance of Assistant credits, but not top-ups: if you use up your trial credits, upgrade to a paid plan to get more.
+
+{% hint style="warning" %}
+**Assistant credits only pay for n8n Assistant**
+
+Extra Assistant credits only pay for your conversations with n8n Assistant. They don't pay for AI model calls that your workflows or agents make when they run. For those, [top up Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits) instead, or use your own provider credentials. Top-ups are final, so check which balance you're topping up before you pay.
+{% endhint %}
+
+## Top up manually
+
+1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Assistant credits** tab.
+2. Select **Top up**.
+3. Choose a credit package.
+4. Read the credit terms and select the checkbox to accept them.
+5. Select **Continue to checkout** and complete the payment. Taxes may apply depending on your billing country.
+
+Your new extra credits appear on the page once the payment completes. They expire 12 months after purchase.
+
+## Set up auto top-up
+
+Auto top-up buys extra credits whenever your extra credit balance drops below a threshold you set. Use it if you rely on n8n Assistant every day and don't want it to pause when your included credits run out. Auto top-up always charges the payment method saved on your subscription.
+
+1. Open the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Assistant credits** tab.
+2. In the **Auto top-up extra credits** card, turn on auto top-up.
+3. Set **When extra credits drop to** (the extra credit balance that triggers a top-up) and **Top up extra credits to** (the extra credit balance to refill to). The dashboard shows the minimum values you can set.
+4. Optionally, set a **Monthly auto top-up limit** to cap how much auto top-up can charge per month. The limit is on by default.
+5. Select **Save changes**, then confirm.
+
+{% hint style="info" %}
+Auto top-up only looks at your extra credits. Your included credits don't count toward the threshold, so auto top-up keeps a reserve of extra credits ready for when your included credits run out.
+{% endhint %}
+
+How auto top-up behaves:
+
+* If you set a monthly limit, auto top-up pauses once it has charged that amount in the current calendar month (UTC), and resumes the next month.
+* Auto top-up settings for Assistant credits are separate from auto top-up for [Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits). Turning one on doesn't turn on the other.
+
+## Refunds
+
+Top-ups are final. n8n doesn't refund unused credits except where required by law. If you think a charge is wrong, [contact n8n support](https://www.n8n.io/contact). For expiry and forfeiture rules, refer to [Credit expiry and forfeiture](/deploy/use-n8n-cloud/assistant-credits#credit-expiry-and-forfeiture).
+
+## Related resources
+
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
+* [Track Assistant credit spend](/deploy/use-n8n-cloud/assistant-credits/track-assistant-credit-spend)
+* [Top up Gateway credits](/deploy/use-n8n-cloud/gateway-credits/top-up-gateway-credits)
+
+
+# Track Assistant credit spend
+
+Monitor your Assistant credit balance, spend, top users, and top-up history in the n8n Cloud admin dashboard and the n8n Assistant panel.
+
+The **Assistant credits** tab in the Cloud admin dashboard shows your [Assistant credit](/deploy/use-n8n-cloud/assistant-credits) balance, spend over time, top users, and top-up history. To open it, go to the [Cloud admin dashboard](/deploy/use-n8n-cloud/use-the-admin-dashboard) and select the **Assistant credits** tab.
+
+You can also check your balance in the editor, from the n8n Assistant panel.
+
+## Balance
+
+The balance card shows how many credits you have available, split into two parts:
+
+* **Included**: how many of this month's included credits remain, and the date they reset.
+* **Extra credits**: how many purchased extra credits remain. Extra credits carry over from month to month until they expire.
+
+During a free trial, the card shows how much of your trial allowance remains.
+
+A status label shows which credits n8n Assistant is using right now:
+
+* **Within included**: n8n Assistant is using your included credits.
+* **Using extra credits**: your included credits have run out, and n8n Assistant is using extra credits.
+* **Paused — no extra credits**: you've used up both, and n8n Assistant stays paused until you top up or your included credits reset.
+
+If you're the instance owner on a paid plan, you can top up from here. Refer to [Top up Assistant credits](/deploy/use-n8n-cloud/assistant-credits/top-up-assistant-credits) for details.
+
+## Spend
+
+The spend chart shows how many credits your instance used over the last 24 hours, 7 days, or 30 days. It splits usage into included credits and extra credits, so you can see how often you go past your monthly allowance.
+
+If you use extra credits every month, compare the cost of topping up with the allowance on a higher plan. Refer to [n8n plans and pricing](https://n8n.io/pricing/).
+
+## Top users
+
+Everyone on your instance shares one Assistant credit balance. The top users card shows which users use the most credits, as a percentage of total usage, and groups everyone else under **Other users**.
+
+## Top-up history
+
+The top-up history lists the extra credits added to your balance, from both manual top-ups and auto top-ups. Each entry shows the amount, the date, and when those credits expire.
+
+## Check your balance in the editor
+
+In the editor, open the credits menu in the n8n Assistant panel to see:
+
+* How many credits your instance has left. This number includes both included and extra credits.
+* How many credits the current conversation has used so far.
+
+When your balance drops to 10% or less, a banner above the chat input warns you that you're running low. You can dismiss the banner. It appears again the next time your balance crosses the threshold.
+
+When your balance runs out, n8n Assistant shows **You've run out of AI credits**, and you can't send new messages. Refer to [When your Assistant credits run out](/deploy/use-n8n-cloud/assistant-credits#when-your-assistant-credits-run-out) for how to get more.
+
+## Related resources
+
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
+* [Top up Assistant credits](/deploy/use-n8n-cloud/assistant-credits/top-up-assistant-credits)
+* [Track Gateway credit spend](/deploy/use-n8n-cloud/gateway-credits/track-gateway-credit-spend)
+
+
 # Download workflows
 
 How to download workflows from n8n Cloud with the admin dashboard.
@@ -1219,6 +1478,7 @@ You have **90 days** to download your workflows after your free trial ends. Afte
 * [Update your version](/deploy/use-n8n-cloud/update-your-version)
 * [Configure Cloud](/deploy/use-n8n-cloud/configure-cloud)
 * [Gateway credits](/deploy/use-n8n-cloud/gateway-credits)
+* [Assistant credits](/deploy/use-n8n-cloud/assistant-credits)
 * [Understand concurrency](/deploy/use-n8n-cloud/understand-concurrency)
 
 
@@ -3123,7 +3383,7 @@ resources:
 …    
 ```
 
-This defines a minimum of 250mb per container, a maximum of 500mb, and lets Kubernetes handle CPU. You can change these values to match your own needs. As a guide, here are the resources values for the n8n cloud offerings:
+This defines a minimum of 250mb per container, a maximum of 500mb, and lets Kubernetes handle CPU. You can change these values to match your own needs. As a guide, here are the resources values for the n8n Cloud offerings:
 
 | Tier                 | RAM    | CPU                    |
 | -------------------- | ------ | ---------------------- |
@@ -6001,16 +6261,16 @@ You can add `_FILE` to individual variables to provide their configuration in a 
 
 To enable certain licensed features, you must first activate your license. You can do this either through the UI or by setting environment variables. For more information, see [license key](/deploy/host-n8n/configure-n8n/manage-your-license).
 
-| Variable                                  | Type    | Default                        | Description                                                                                                                                                                                                                                                                                                                                                                           |
-| ----------------------------------------- | ------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_HIDE_USAGE_PAGE`                     | boolean | `false`                        | Hide the usage and plans page in the app.                                                                                                                                                                                                                                                                                                                                             |
-| `N8N_LICENSE_ACTIVATION_KEY`              | String  | `''`                           | Activation key to initialize license. Not applicable if the n8n instance was already activated.                                                                                                                                                                                                                                                                                       |
-| `N8N_LICENSE_AUTO_RENEW_ENABLED`          | Boolean | `true`                         | <p>Enables (true) or disables (false) autorenewal for licenses.<br>If disabled, you need to manually renew the license every 10 days by navigating to <strong>Settings</strong> > <strong>Usage and plan</strong>, and pressing <code>F5</code>. Failure to renew the license will disable all licensed features.</p>                                                                 |
-| `N8N_LICENSE_CERT`                        | String  | `''`                           | Base64-encoded license certificate provided by n8n. Used instead of `N8N_LICENSE_ACTIVATION_KEY` for special use cases, e.g. air-gapped environments.                                                                                                                                                                                                                                 |
-| `N8N_LICENSE_DETACH_FLOATING_ON_SHUTDOWN` | Boolean | `true`                         | <p>Controls whether the instance releases <a href="/key-concept-glossary#entitlement-n8n">floating entitlements</a> back to the pool upon shutdown. Set to <code>true</code> to allow other instances to reuse the entitlements, or <code>false</code> to retain them.<br>For production instances that must always keep their licensed features, set this to <code>false</code>.</p> |
-| `N8N_LICENSE_SERVER_URL`                  | String  | `https://license.n8n.io/v1`    | Server URL to retrieve license.                                                                                                                                                                                                                                                                                                                                                       |
-| `N8N_LICENSE_TENANT_ID`                   | Number  | `1`                            | Tenant ID associated with the license. Only set this variable if explicitly instructed by n8n.                                                                                                                                                                                                                                                                                        |
-| `https_proxy_license_server`              | String  | `https://user:pass@proxy:port` | Proxy server URL for HTTPS requests to retrieve license. This variable name needs to be lowercase.                                                                                                                                                                                                                                                                                    |
+| Variable                                  | Type    | Default                        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ----------------------------------------- | ------- | ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_HIDE_USAGE_PAGE`                     | boolean | `false`                        | Hide the usage and plans page in the app.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `N8N_LICENSE_ACTIVATION_KEY`              | String  | `''`                           | Activation key to initialize license. Not applicable if the n8n instance was already activated.                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `N8N_LICENSE_AUTO_RENEW_ENABLED`          | Boolean | `true`                         | <p>Enables (true) or disables (false) autorenewal for licenses.<br>If disabled, you need to manually renew the license every 10 days by navigating to <strong>Settings</strong> > <strong>Usage and plan</strong>, and pressing <code>F5</code>. Failure to renew the license will disable all licensed features.</p>                                                                                                                                                                                                         |
+| `N8N_LICENSE_CERT`                        | String  | `''`                           | Base64-encoded license certificate provided by n8n. Used instead of `N8N_LICENSE_ACTIVATION_KEY` for special use cases, e.g. air-gapped environments.                                                                                                                                                                                                                                                                                                                                                                         |
+| `N8N_LICENSE_DETACH_FLOATING_ON_SHUTDOWN` | Boolean | `true`                         | <p>Controls whether the instance releases <a href="/key-concept-glossary#entitlement-n8n">floating entitlements</a> back to the pool upon shutdown. Set to <code>true</code> to allow other instances to reuse the entitlements, or <code>false</code> to retain them.<br>For production instances that must always keep their licensed features, set this to <code>false</code>.<br>Ignored when multi-main mode is enabled: all main instances share one seat, and a main instance that shuts down does not release it.</p> |
+| `N8N_LICENSE_SERVER_URL`                  | String  | `https://license.n8n.io/v1`    | Server URL to retrieve license.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `N8N_LICENSE_TENANT_ID`                   | Number  | `1`                            | Tenant ID associated with the license. Only set this variable if explicitly instructed by n8n.                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| `https_proxy_license_server`              | String  | `https://user:pass@proxy:port` | Proxy server URL for HTTPS requests to retrieve license. This variable name needs to be lowercase.                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 ## Related resources
 
@@ -10650,124 +10910,6 @@ This report shows:
 ## Related resources
 
 * [Security](/deploy/host-n8n/configure-n8n/security)
-
-
-# Disable the public API
-
-Disable the n8n public REST API to prevent others from using it.
-
-The [n8n public REST API](/connect/n8n-api) allows you to programmatically perform many of the same tasks as you can in the n8n GUI.
-
-If you don't plan on using this API, n8n recommends disabling it to improve the security of your n8n installation.
-
-To disable the [public REST API](/connect/n8n-api), set the `N8N_PUBLIC_API_DISABLED` environment variable to `true`, for example:
-
-```bash
-export N8N_PUBLIC_API_DISABLED=true
-```
-
-## Disable the API playground <a href="#disable-the-api-playground" id="disable-the-api-playground"></a>
-
-To disable the [API playground](/connect/n8n-api/use-an-api-playground), set the `N8N_PUBLIC_API_SWAGGERUI_DISABLED` environment variable to `true`, for example:
-
-```bash
-export N8N_PUBLIC_API_SWAGGERUI_DISABLED=true
-```
-
-## Related resources <a href="#related-resources" id="related-resources"></a>
-
-* [Security](/deploy/host-n8n/configure-n8n/security): audit, harden, and restrict a self-hosted instance.
-* [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment): more information on these environment variables.
-* [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration): how to set environment variables.
-
-
-# Control telemetry
-
-Opt out of data telemetry collection on your n8n instance.
-
-n8n collects anonymous telemetry data from self-hosted n8n installations. You can opt out of data telemetry collection.
-
-## Collected data <a href="#collected-data" id="collected-data"></a>
-
-Refer to [Privacy | Data collection in self-hosted n8n](/privacy-and-security#data-collection-in-self-hosted-n8n) for details on the data n8n collects.
-
-## How collection works <a href="#how-collection-works" id="how-collection-works"></a>
-
-n8n sends most data when events occur. Workflow execution counts and an instance pulse are sent periodically (every 6 hours).
-
-## Opting out of data collection <a href="#opting-out-of-data-collection" id="opting-out-of-data-collection"></a>
-
-n8n enables telemetry collection by default. To disable it, configure the following environment variables.
-
-### Opt out of telemetry events <a href="#opt-out-of-telemetry-events" id="opt-out-of-telemetry-events"></a>
-
-To opt out of diagnostic telemetry, set the `N8N_DIAGNOSTICS_ENABLED` environment variable to false:
-
-```bash
-export N8N_DIAGNOSTICS_ENABLED=false
-```
-
-### Opt out of checking for new versions of n8n <a href="#opt-out-of-checking-for-new-versions-of-n8n" id="opt-out-of-checking-for-new-versions-of-n8n"></a>
-
-To opt out of version notifications, set the `N8N_VERSION_NOTIFICATIONS_ENABLED` environment variable to false:
-
-```bash
-export N8N_VERSION_NOTIFICATIONS_ENABLED=false
-```
-
-## Disable all connection to n8n servers <a href="#disable-all-connection-to-n8n-servers" id="disable-all-connection-to-n8n-servers"></a>
-
-To prevent all communication with n8n's servers, refer to [Isolate n8n](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/isolate-n8n).
-
-## Related resources <a href="#related-resources" id="related-resources"></a>
-
-* [Security](/deploy/host-n8n/configure-n8n/security): audit, harden, and restrict a self-hosted instance.
-* [Deployment environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/deployment): More information on these environment variables.
-* [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration): How to set environment variables.
-
-
-# Block specific nodes
-
-Prevent your n8n users from accessing specific nodes.
-
-For security reasons, you may want to block your users from accessing or working with specific n8n nodes. This is helpful if your users might be untrustworthy.
-
-Use the `NODES_EXCLUDE` environment variable to prevent your users from accessing specific nodes.
-
-## Exclude nodes <a href="#exclude-nodes" id="exclude-nodes"></a>
-
-Update your `NODES_EXCLUDE` environment variable to include an array of strings containing any nodes you want to block your users from using.
-
-For example, setting the variable this way:
-
-```
-NODES_EXCLUDE: "[\"n8n-nodes-base.executeCommand\", \"n8n-nodes-base.readWriteFile\"]"
-```
-
-Blocks the [Execute Command](/integrations/builtin/core-nodes/n8n-nodes-base.executecommand) and [Read/Write Files from Disk](/integrations/builtin/core-nodes/n8n-nodes-base.readwritefile) nodes.
-
-Your n8n users won't be able to search for or use these nodes.
-
-## Suggested nodes to block <a href="#suggested-nodes-to-block" id="suggested-nodes-to-block"></a>
-
-The nodes that can pose security risks vary based on your use case and user profile. Here are some nodes you might want to start with:
-
-* [Execute Command](/integrations/builtin/core-nodes/n8n-nodes-base.executecommand)
-* [Read/Write Files from Disk](/integrations/builtin/core-nodes/n8n-nodes-base.readwritefile)
-
-## Enable nodes that are blocked by default <a href="#enable-nodes-that-are-blocked-by-default" id="enable-nodes-that-are-blocked-by-default"></a>
-
-Some nodes, like Execute Command, are blocked by default. Remove them from the exclude list to enable them:
-
-```
-NODES_EXCLUDE: "[]"
-```
-
-## Related resources <a href="#related-resources" id="related-resources"></a>
-
-* [Security](/deploy/host-n8n/configure-n8n/security): audit, harden, and restrict a self-hosted instance.
-* [Nodes environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/nodes): more information on this environment variable.
-* [Configuration](/deploy/host-n8n/configure-n8n/basic-configuration): how to set environment variables.
 
 
 

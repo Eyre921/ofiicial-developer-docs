@@ -98,7 +98,7 @@ To test your embedded payment form integration:
 
 1. Create an embedded Checkout Session and mount the payment form on your page.
 2. Fill out the payment details with a method from the table below.
-   - Enter any future date for card expiry.
+   - Enter any future date for card expiration.
    - Enter any 3-digit number for CVC.
    - Enter any billing postal code.
 3. Click **Pay**. You’re redirected to your `return_url`.

@@ -474,33 +474,101 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Copilot pull requests deserve the same thorough review as any contribution.
 
-* [Setting up GitHub Copilot for yourself](/en/copilot/how-tos/set-up/set-up-for-self)
-
-  Follow these steps to start using Copilot.
-
-* [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension)
+* [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/copilot-in-your-ide/set-up-copilot/install-copilot-extension)
 
   To use Copilot in your preferred coding environment, follow the steps for your chosen IDE.
 
-* [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions)
+* [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/copilot-in-your-ide/set-up-copilot/configure-in-ide)
 
-  Use GitHub Copilot to get code suggestions in your editor.
+  You can enable, configure, or disable GitHub Copilot in a supported IDE.
 
-* [Finding public code that matches GitHub Copilot suggestions](/en/copilot/how-tos/get-code-suggestions/find-matching-code)
+* [Configuring network settings for GitHub Copilot](/en/copilot/how-tos/copilot-in-your-ide/set-up-copilot/configure-network-settings)
 
-  Learn how to view code references when GitHub Copilot makes suggestions that matches publicly available code.
+  You can connect to GitHub Copilot through an HTTP proxy and use custom certificates.
 
-* [Getting started with prompts for GitHub Copilot Chat in your IDE](/en/copilot/how-tos/chat-with-copilot/get-started-with-chat-in-your-ide)
+* [Using GitHub Copilot with an account on GHE.com](/en/copilot/how-tos/copilot-in-your-ide/set-up-copilot/authenticate-to-ghecom)
+
+  Update your development environment to access a Copilot plan for an account on GHE.com.
+
+* [Adding repository custom instructions for GitHub Copilot in your IDE](/en/copilot/how-tos/copilot-in-your-ide/customize-copilot/configure-custom-instructions/add-repository-instructions-in-your-ide)
+
+  Create repository custom instructions files that give Copilot additional context on how to understand your project and how to build, test and validate its changes.
+
+* [Extending GitHub Copilot Chat with Model Context Protocol (MCP) servers](/en/copilot/how-tos/copilot-in-your-ide/customize-copilot/extend-copilot-with-tools-and-context/extend-copilot-chat-with-mcp)
+
+  Connect MCP servers to Copilot Chat to share context from other applications.
+
+* [Setting up the GitHub MCP Server](/en/copilot/how-tos/copilot-in-your-ide/customize-copilot/extend-copilot-with-tools-and-context/set-up-the-github-mcp-server)
+
+  Learn how to configure the GitHub Model Context Protocol (MCP) server.
+
+* [Configuring the GitHub MCP Server for GitHub Enterprise](/en/copilot/how-tos/copilot-in-your-ide/customize-copilot/extend-copilot-with-tools-and-context/enterprise-configuration)
+
+  Learn how to configure the GitHub Model Context Protocol (MCP) server to work with GitHub Enterprise Server or GitHub Enterprise Cloud with data residency.
+
+* [Configuring toolsets for the GitHub MCP Server](/en/copilot/how-tos/copilot-in-your-ide/customize-copilot/extend-copilot-with-tools-and-context/configure-toolsets)
+
+  Learn how to configure toolsets and tools for the GitHub MCP server for fine-grained control and optimized performance.
+
+* [Changing your MCP registry in your IDE](/en/copilot/how-tos/copilot-in-your-ide/customize-copilot/extend-copilot-with-tools-and-context/change-mcp-registry)
+
+  Customize the MCP registry you can use with Copilot Chat.
+
+* [Using GitHub Copilot Spaces in your IDE](/en/copilot/how-tos/copilot-in-your-ide/customize-copilot/extend-copilot-with-tools-and-context/use-copilot-spaces)
+
+  Use spaces to ground Copilot's responses in the right context for a specific task.
+
+* [Getting started with prompts for GitHub Copilot Chat in your IDE](/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/get-started-with-chat-in-your-ide)
 
   Get an overview of ways to use Copilot Chat in your IDE.
 
-* [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide)
+* [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-ide)
 
   Use Copilot Chat in your editor to give you code suggestions, explain code, generate unit tests, and suggest code fixes.
 
-* [Asking GitHub Copilot questions in Windows Terminal](/en/copilot/how-tos/chat-with-copilot/chat-in-windows-terminal)
+* [Changing the AI model for GitHub Copilot Chat](/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/change-the-chat-model)
+
+  Learn how to switch between models for Copilot Chat.
+
+* [Asking GitHub Copilot questions in Windows Terminal](/en/copilot/how-tos/copilot-in-your-ide/chat-with-copilot/chat-in-windows-terminal)
 
   You can use Copilot in Windows Terminal to get suggestions and explanations for the command line.
+
+* [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/get-ide-code-suggestions)
+
+  Use GitHub Copilot to get code suggestions in your editor.
+
+* [Finding public code that matches GitHub Copilot suggestions](/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/find-matching-code)
+
+  Learn how to view code references when GitHub Copilot makes suggestions that matches publicly available code.
+
+* [Changing the AI model for GitHub Copilot inline suggestions](/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/change-the-completion-model)
+
+  Learn how to change the default LLM for Copilot inline suggestions to a different model.
+
+* [Using the GitHub MCP Server in your IDE](/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/use-the-github-mcp-server)
+
+  Learn how to use the GitHub Model Context Protocol (MCP) server to interact with repositories, issues, pull requests, and other GitHub features, directly from Copilot Chat in your IDE.
+
+* [Using agent mode in your IDE](/en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-agent-mode)
+
+  Give Copilot a task and let it work autonomously in your editor, editing files across your project and running commands until the task is complete.
+
+* [Using plan mode in your IDE](/en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-plan-mode)
+
+  Have Copilot research a task and draft an implementation plan for your review before any code is changed.
+
+* [Using subagents in your IDE](/en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-subagents)
+
+  Delegate a self-contained subtask to a separate agent that works in its own context and reports back to your main chat session.
+
+* [Using custom agents in your IDE](/en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-custom-agents)
+
+  You can create specialized agents with tailored expertise for specific development tasks, and invoke them from chat in your IDE.
+
+* [Using Copilot cloud agent in your IDE](/en/copilot/how-tos/copilot-in-your-ide/use-copilot-agents/use-cloud-agent-in-your-ide)
+
+  Start and track Copilot cloud agent sessions from Visual Studio Code, JetBrains IDEs, Eclipse, and Visual Studio.
 
 * [Best practices for GitHub Copilot CLI](/en/copilot/how-tos/copilot-cli/cli-best-practices)
 
@@ -858,10 +926,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Learn how to configure settings for Copilot cloud agent
 
-* [Creating custom agents for Copilot cloud agent in your IDE](/en/copilot/how-tos/use-copilot-agents/cloud-agent/create-custom-agents-in-your-ide)
-
-  You can create specialized agents with tailored expertise for specific development tasks.
-
 * [Using Copilot cloud agent on GitHub](/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-on-github)
 
   Start Copilot cloud agent sessions directly on GitHub, then iterate on the results without leaving your browser.
@@ -873,10 +937,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Using agent apps](/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-agent-apps)
 
   Start a partner-built agent from an issue, a pull request comment, or the Agents UI on GitHub.
-
-* [Using Copilot cloud agent in your IDE](/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-in-your-ide)
-
-  Start and track Copilot cloud agent sessions from Visual Studio Code, JetBrains IDEs, Eclipse, and Visual Studio.
 
 * [Using Copilot cloud agent via the API](/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-via-the-api)
 
@@ -930,46 +990,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Use the Copilot integration in Azure Boards to send work items directly to Copilot cloud agent and generate pull requests, all from within your Azure DevOps workspace.
 
-* [Changing the AI model for GitHub Copilot Chat](/en/copilot/how-tos/use-ai-models/change-the-chat-model)
-
-  Learn how to switch between models for Copilot Chat.
-
-* [Changing the AI model for GitHub Copilot inline suggestions](/en/copilot/how-tos/use-ai-models/change-the-completion-model)
-
-  Learn how to change the default LLM for Copilot inline suggestions to a different model.
-
-* [Using GitHub Copilot Spaces](/en/copilot/how-tos/provide-context/use-copilot-spaces/use-copilot-spaces)
-
-  Use spaces to ground Copilot's responses in the right context for a specific task.
-
-* [Extending GitHub Copilot Chat with Model Context Protocol (MCP) servers](/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/extend-copilot-chat-with-mcp)
-
-  Connect MCP servers to Copilot Chat to share context from other applications.
-
-* [Setting up the GitHub MCP Server](/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/set-up-the-github-mcp-server)
-
-  Learn how to configure the GitHub Model Context Protocol (MCP) server.
-
-* [Configuring the GitHub MCP Server for GitHub Enterprise](/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/enterprise-configuration)
-
-  Learn how to configure the GitHub Model Context Protocol (MCP) server to work with GitHub Enterprise Server or GitHub Enterprise Cloud with data residency.
-
-* [Configuring toolsets for the GitHub MCP Server](/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/configure-toolsets)
-
-  Learn how to configure toolsets and tools for the GitHub MCP server for fine-grained control and optimized performance.
-
-* [Using the GitHub MCP Server in your IDE](/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/use-the-github-mcp-server)
-
-  Learn how to use the GitHub Model Context Protocol (MCP) server to interact with repositories, issues, pull requests, and other GitHub features, directly from Copilot Chat in your IDE.
-
-* [Changing your MCP registry in your IDE](/en/copilot/how-tos/provide-context/use-mcp-in-your-ide/change-mcp-registry)
-
-  Customize the MCP registry you can use with Copilot Chat.
-
-* [Adding repository custom instructions for GitHub Copilot in your IDE](/en/copilot/how-tos/configure-custom-instructions-in-your-ide/add-repository-instructions-in-your-ide)
-
-  Create repository custom instructions files that give Copilot additional context on how to understand your project and how to build, test and validate its changes.
-
 * [Excluding content from GitHub Copilot](/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot)
 
   Learn how to prevent Copilot from accessing certain content.
@@ -977,22 +997,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Reviewing changes to content exclusions for GitHub Copilot](/en/copilot/how-tos/configure-content-exclusion/review-changes)
 
   You can monitor changes to content exclusions in your repositories and organizations.
-
-* [Using the GitHub CLI Copilot extension](/en/copilot/how-tos/use-copilot-for-common-tasks/use-copilot-in-the-cli)
-
-  This article provides details about the replacement for the Copilot extension for GitHub CLI.
-
-* [Configuring network settings for GitHub Copilot](/en/copilot/how-tos/configure-personal-settings/configure-network-settings)
-
-  You can connect to GitHub Copilot through an HTTP proxy and use custom certificates.
-
-* [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide)
-
-  You can enable, configure, or disable GitHub Copilot in a supported IDE.
-
-* [Using GitHub Copilot with an account on GHE.com](/en/copilot/how-tos/configure-personal-settings/authenticate-to-ghecom)
-
-  Update your development environment to access a Copilot plan for an account on GHE.com.
 
 * [Monitoring your GitHub AI Credits usage](/en/copilot/how-tos/manage-and-track-spending/monitor-ai-usage)
 

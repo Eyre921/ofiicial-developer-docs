@@ -259,6 +259,39 @@ API responses return JSON objects containing key information:
 
 When creating a new key, the response will include the key string itself. Read more in the [API reference](/docs/api/api-reference/api-keys/create-a-new-api-key).
 
+## Organization Settings
+
+A management key created in an organization can also read and update that organization's settings at `/api/v1/organization/settings`. The organization is the one the key belongs to; it cannot be chosen per request.
+
+Currently exposed setting:
+
+* `is_filtered_model_catalog_enabled` (default `false`): the same switch as **Settings → Privacy → "Filter the model catalog for API keys"**. When enabled, `GET /api/v1/models` called with one of the organization's API keys returns only the models that key can use (the `/api/v1/models/user` catalog), and the signed-in dashboard shows the same list. Requests without a key still receive the public catalog. Which models remain visible is decided by the active workspace's guardrails and provider preferences; enabling the switch does not change those.
+
+```bash title="cURL" expandable lines theme={null}
+# Read the current settings
+curl https://openrouter.ai/api/v1/organization/settings \
+  -H "Authorization: Bearer $MANAGEMENT_API_KEY"
+
+# Enable the filtered model catalog
+curl -X PATCH https://openrouter.ai/api/v1/organization/settings \
+  -H "Authorization: Bearer $MANAGEMENT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"is_filtered_model_catalog_enabled": true}'
+```
+
+Both calls return the persisted settings:
+
+```json theme={null}
+{
+  "data": {
+    "id": "org_2dHFtVWx2n56w6HkM0000000000",
+    "is_filtered_model_catalog_enabled": true
+  }
+}
+```
+
+Management keys created in a personal account receive `404 Not Found` from these routes.
+
 ## Routes That Require a Management Key
 
 The following documented routes reject regular API keys and must be called with a Management API key.
@@ -296,6 +329,16 @@ The following documented routes reject regular API keys and must be called with 
 | Method | Route | Reference |
 | - | - | - |
 | `GET` | `/api/v1/credits` | [Get remaining credits](/docs/api/api-reference/credits/get-remaining-credits) |
+
+### End Users
+
+| Method | Route | Reference |
+| - | - | - |
+| `GET` | `/api/v1/end-users` | [List registered end users](/docs/api/api-reference/end-users/list-registered-end-users) |
+| `POST` | `/api/v1/end-users` | [Register an end user](/docs/api/api-reference/end-users/register-an-end-user) |
+| `GET` | `/api/v1/end-users/{user}` | [Get a registered end user](/docs/api/api-reference/end-users/get-a-registered-end-user) |
+| `DELETE` | `/api/v1/end-users/{user}` | [Deactivate a registered end user](/docs/api/api-reference/end-users/deactivate-a-registered-end-user) |
+| `PATCH` | `/api/v1/end-users/{user}` | [Update a registered end user](/docs/api/api-reference/end-users/update-a-registered-end-user) |
 
 ### Generations
 
@@ -336,6 +379,8 @@ The following documented routes reject regular API keys and must be called with 
 | Method | Route | Reference |
 | - | - | - |
 | `GET` | `/api/v1/organization/members` | [List organization members](/docs/api/api-reference/organization/list-organization-members) |
+| `GET` | `/api/v1/organization/settings` | [Get organization settings](/docs/api/api-reference/organization/get-organization-settings) |
+| `PATCH` | `/api/v1/organization/settings` | [Update organization settings](/docs/api/api-reference/organization/update-organization-settings) |
 
 ### Private Endpoints
 

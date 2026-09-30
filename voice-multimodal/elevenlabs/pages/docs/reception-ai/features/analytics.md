@@ -8,60 +8,69 @@ path: docs/reception-ai/features/analytics
 
 # Analytics
 
-The analytics dashboard shows business performance metrics and receptionist contribution over time.
+The **Analytics** page has two views. **Simple** shows what your receptionist did for you. **Advanced** breaks down revenue, calls, services, clients, and staff. Mobile devices show the Simple view.
 
-## Dashboard metrics
+## Simple view
 
-### Key performance indicators
+Choose a time range of **Today**, **7 days** (default), **30 days**, or **90 days**. Each figure is compared with the previous period of the same length.
 
-The top of the dashboard shows three headline numbers with week-over-week trends:
+### Headline figures
 
-| Metric          | What it measures                          |
-| --------------- | ----------------------------------------- |
-| **Revenue**     | Total revenue from bookings in the period |
-| **Bookings**    | Number of appointments booked             |
-| **New clients** | First-time customers added                |
+| Metric                               | What it measures                                                                           |
+| ------------------------------------ | ------------------------------------------------------------------------------------------ |
+| **Booked through your receptionist** | Total price of services booked by the receptionist. Services without a price are excluded. |
+| **Time saved**                       | Time the receptionist spent handling conversations for you                                 |
+| **Booking rate**                     | Share of conversations with at least one booking                                           |
+| **AI handled**                       | Share of conversations handled without a transfer to a person                              |
 
-Each metric shows a trend arrow and percentage change compared to the previous period.
+### Outcomes
 
-### Detailed charts
+A breakdown of what conversations resulted in: bookings, orders, new clients, messages left, transfers, unanswered questions, and no further action. One conversation can count toward several outcomes.
 
-Below the KPIs, the dashboard displays:
+### Trends and patterns
 
-| Chart                    | What it shows                                |
-| ------------------------ | -------------------------------------------- |
-| **Call count**           | Number of inbound calls over time            |
-| **Call-to-booking rate** | What percentage of calls result in a booking |
-| **Bookings by channel**  | Breakdown: Agent vs Website vs Manual        |
-| **Average call length**  | How long calls typically last                |
+* **Outcomes per day or week**
+* **Top topics**: the most common caller intents
+* **Sentiment**: happy, neutral, or unhappy callers
+* **Peak hours**: a heatmap of when conversations happen
 
-## Time range
+> **Note**
+>
+> The Simple view counts up to the 500 most recent conversations in the selected period. If the
+> period has more, figures show a "+" and the earliest days in the trend chart are incomplete.
 
-Select different time periods to analyze:
+## Advanced view
 
-* Last 7 days (default)
-* Last 30 days
-* Custom date range
+The Advanced view has tabs, each with its own filters for channel, service, staff, and location:
+
+| Tab                   | What it shows                                                                           |
+| --------------------- | --------------------------------------------------------------------------------------- |
+| **Overview**          | Revenue, bookings, new clients, and cancellations, with revenue and bookings by channel |
+| **Calls**             | Total calls, average duration, call-to-booking rate, and calls by type                  |
+| **Services**          | Top services by bookings and revenue                                                    |
+| **Clients**           | Active and new clients, repeat rate, top clients, and acquisition channel               |
+| **Conversion**        | Booking, reschedule, and cancellation rates                                             |
+| **Staff & Locations** | Revenue and bookings per staff member and location                                      |
+
+Channels are **Agent** (your receptionist), **Website**, and **Manual** (created in the dashboard).
+
+Each tab has its own URL, and you can pin tabs to the sidebar.
 
 ## Reading your analytics
 
-### High call-to-booking rate
+### Booking rate
 
-A high conversion rate (calls to bookings) indicates the receptionist is converting inquiries into appointments. If the rate is low, consider:
+A high booking rate means the receptionist is turning inquiries into appointments. If it is low, consider:
 
-* Updating your knowledge base so the receptionist answers questions confidently
-* Adding more services or availability
-* Reviewing call transcripts to spot issues
+* Adding knowledge so the receptionist answers questions confidently
+* Adding availability or services
+* Reviewing transcripts and top topics to spot issues
 
-### Growing new clients
-
-An upward trend in new clients indicates the receptionist is handling first-time callers and capturing their information.
-
-### Revenue tracking
+### Revenue
 
 Revenue is calculated from booked services and their prices. It reflects scheduled value, not collected payments.
 
 > **Tip**
 >
-> Check analytics weekly to spot trends early. A drop in call-to-booking rate might mean your
-> availability is too limited or your services need updating.
+> Check analytics weekly. A drop in booking rate can mean your availability is too limited or your
+> services need updating.

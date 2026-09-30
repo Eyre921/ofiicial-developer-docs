@@ -267,7 +267,9 @@ components:
         outside that range is rejected with `SPEED_OUT_OF_RANGE`; a value inside
         it but off the `0.05` increment with `SPEED_INCREMENT_INVALID`. Models
         and languages without runtime speed control reject any value with
-        `SPEED_NOT_SUPPORTED`.
+        `SPEED_NOT_SUPPORTED`. A speed other than `1.0` cannot be combined with
+        inline pronunciation controls; see [Speed, Pause,
+        Pronunciation](/docs/tts-voice-controls).
       title: SpeakV2Speed
     SpeakV2Expressivity:
       type: string
@@ -357,26 +359,28 @@ components:
           type: integer
           description: >-
             Pronunciation overrides successfully applied. Mirrors the Aura-2
-            `dg-pronunciations-applied` REST header. Currently always `0`.
+            `dg-pronunciations-applied` REST header.
         breaks_applied:
           type: integer
           description: >-
             Pause (break) controls successfully applied. Mirrors the Aura-2
-            `dg-breaks-applied` REST header. Currently always `0`.
+            `dg-breaks-applied` REST header. Always `0` on the WebSocket, where
+            inline pause controls are not supported.
         pronunciation_warnings:
           type: integer
           description: >-
             Pronunciation entries that triggered a warning (invalid IPA, word
-            too long). Mirrors the Aura-2 `dg-pronunciation-warnings` REST
-            header. Currently always `0`.
+            too long). On batch requests the corresponding `PRON-NNN` codes are
+            returned in the `dg-warnings` response header.
       required:
         - pronunciations_applied
         - breaks_applied
         - pronunciation_warnings
       description: >-
-        Counts of the inline controls the server acted on during the turn.
-        Inline pause and pronunciation controls are not applied at launch —
-        support is coming soon — so every count is currently `0`.
+        Counts of the inline controls the server acted on during the turn. A
+        pronunciation override that triggers an IPA warning is still applied
+        best-effort and counted in `pronunciations_applied`; the warning is
+        reported separately through a `Warning` and `pronunciation_warnings`.
       title: ChannelsSpeakV2MessagesSpeakV2SpeechMetadataControlsApplied
     SpeakV2_SpeakV2SpeechMetadata:
       type: object
@@ -405,9 +409,11 @@ components:
           $ref: >-
             #/components/schemas/ChannelsSpeakV2MessagesSpeakV2SpeechMetadataControlsApplied
           description: >-
-            Counts of the inline controls the server acted on during the turn.
-            Inline pause and pronunciation controls are not applied at launch —
-            support is coming soon — so every count is currently `0`.
+            Counts of the inline controls the server acted on during the turn. A
+            pronunciation override that triggers an IPA warning is still applied
+            best-effort and counted in `pronunciations_applied`; the warning is
+            reported separately through a `Warning` and
+            `pronunciation_warnings`.
       required:
         - type
         - speech_id
@@ -423,26 +429,28 @@ components:
           type: integer
           description: >-
             Pronunciation overrides successfully applied. Mirrors the Aura-2
-            `dg-pronunciations-applied` REST header. Currently always `0`.
+            `dg-pronunciations-applied` REST header.
         breaks_applied:
           type: integer
           description: >-
             Pause (break) controls successfully applied. Mirrors the Aura-2
-            `dg-breaks-applied` REST header. Currently always `0`.
+            `dg-breaks-applied` REST header. Always `0` on the WebSocket, where
+            inline pause controls are not supported.
         pronunciation_warnings:
           type: integer
           description: >-
             Pronunciation entries that triggered a warning (invalid IPA, word
-            too long). Mirrors the Aura-2 `dg-pronunciation-warnings` REST
-            header. Currently always `0`.
+            too long). On batch requests the corresponding `PRON-NNN` codes are
+            returned in the `dg-warnings` response header.
       required:
         - pronunciations_applied
         - breaks_applied
         - pronunciation_warnings
       description: >-
-        Counts of the inline controls the server acted on during the turn.
-        Inline pause and pronunciation controls are not applied at launch —
-        support is coming soon — so every count is currently `0`.
+        Counts of the inline controls the server acted on during the turn. A
+        pronunciation override that triggers an IPA warning is still applied
+        best-effort and counted in `pronunciations_applied`; the warning is
+        reported separately through a `Warning` and `pronunciation_warnings`.
       title: ChannelsSpeakV2MessagesSpeakV2SpeechInterruptedMetadataControlsApplied
     ChannelsSpeakV2MessagesSpeakV2SpeechInterruptedMetadata:
       type: object
@@ -466,9 +474,11 @@ components:
           $ref: >-
             #/components/schemas/ChannelsSpeakV2MessagesSpeakV2SpeechInterruptedMetadataControlsApplied
           description: >-
-            Counts of the inline controls the server acted on during the turn.
-            Inline pause and pronunciation controls are not applied at launch —
-            support is coming soon — so every count is currently `0`.
+            Counts of the inline controls the server acted on during the turn. A
+            pronunciation override that triggers an IPA warning is still applied
+            best-effort and counted in `pronunciations_applied`; the warning is
+            reported separately through a `Warning` and
+            `pronunciation_warnings`.
       required:
         - speech_id
         - audio_duration_ms
@@ -567,7 +577,9 @@ components:
         outside that range is rejected with `SPEED_OUT_OF_RANGE`; a value inside
         it but off the `0.05` increment with `SPEED_INCREMENT_INVALID`. Models
         and languages without runtime speed control reject any value with
-        `SPEED_NOT_SUPPORTED`.
+        `SPEED_NOT_SUPPORTED`. A speed other than `1.0` cannot be combined with
+        inline pronunciation controls; see [Speed, Pause,
+        Pronunciation](/docs/tts-voice-controls).
       title: SpeakV2SpeedValue
     ChannelsSpeakV2MessagesSpeakV2ConfigureSuccessApplied:
       type: object
@@ -603,15 +615,20 @@ components:
         - SPEED_OUT_OF_RANGE
         - SPEED_INCREMENT_INVALID
         - SPEED_NOT_SUPPORTED
+        - CONTROL_COMBINATION_INVALID
         - INTERNAL_ERROR
       description: >-
         Failure code, in `SCREAMING_SNAKE_CASE`. `SPEED_OUT_OF_RANGE`: outside
         the range the model publishes. `SPEED_INCREMENT_INVALID`: inside the
         published range but off the `0.05` increment. `SPEED_NOT_SUPPORTED`:
         this model or language has no runtime speed control at all.
-        `INTERNAL_ERROR`: the configuration was acceptable but the server could
-        not apply it — unlike the others, a server-side failure rather than a
-        statement about the request.
+        `CONTROL_COMBINATION_INVALID`: `speed` was set while a turn buffered
+        behind the active one still carries a pronunciation control;
+        pronunciation and speed cannot be combined, so flush that turn before
+        setting speed (pronunciations in the active turn do not block the
+        change). `INTERNAL_ERROR`: the configuration was acceptable but the
+        server could not apply it — unlike the others, a server-side failure
+        rather than a statement about the request.
       title: ChannelsSpeakV2MessagesSpeakV2ConfigureFailureCode
     ChannelsSpeakV2MessagesSpeakV2ConfigureFailureField:
       type: string
@@ -637,9 +654,13 @@ components:
             outside the range the model publishes. `SPEED_INCREMENT_INVALID`:
             inside the published range but off the `0.05` increment.
             `SPEED_NOT_SUPPORTED`: this model or language has no runtime speed
-            control at all. `INTERNAL_ERROR`: the configuration was acceptable
-            but the server could not apply it — unlike the others, a server-side
-            failure rather than a statement about the request.
+            control at all. `CONTROL_COMBINATION_INVALID`: `speed` was set while
+            a turn buffered behind the active one still carries a pronunciation
+            control; pronunciation and speed cannot be combined, so flush that
+            turn before setting speed (pronunciations in the active turn do not
+            block the change). `INTERNAL_ERROR`: the configuration was
+            acceptable but the server could not apply it — unlike the others, a
+            server-side failure rather than a statement about the request.
         field:
           $ref: >-
             #/components/schemas/ChannelsSpeakV2MessagesSpeakV2ConfigureFailureField
@@ -683,17 +704,18 @@ components:
             retried).
 
 
-            Inline-control codes are reserved and not currently emitted, because
-            inline pause and pronunciation controls are not yet applied:
-            `BREAKS_LIMIT_EXCEEDED` (too many pause controls, or two pauses with
-            no intervening text), `BREAK_TOKENS_OUT_OF_RANGE` (pause durations
-            outside the range the model supports),
-            `BREAK_TOKENS_WITH_INVALID_INCREMENTS` (pause durations off the
-            model's supported increment), `PRONUNCIATION_WARNINGS` (a
-            pronunciation override contained invalid IPA),
-            `PRONUNCIATION_TOO_LONG` (an IPA string exceeded the length limit),
+            Pronunciation codes: `PRONUNCIATION_WARNINGS` (a pronunciation
+            override contained invalid IPA; it is still applied best-effort and
+            counted in `pronunciations_applied`), `PRONUNCIATION_TOO_LONG` (an
+            IPA string exceeded the length limit),
             `PRONUNCIATIONS_LIMIT_EXCEEDED` (too many pronunciation controls in
             one turn).
+
+
+            Pause codes (`BREAKS_LIMIT_EXCEEDED`, `BREAK_TOKENS_OUT_OF_RANGE`,
+            `BREAK_TOKENS_WITH_INVALID_INCREMENTS`) are reserved and not
+            emitted: inline pause controls are batch-only, and a pause marker on
+            the WebSocket fails the connection instead.
 
 
             Interrupt-scoped codes, each meaning the `Interrupt` was ignored:
@@ -722,7 +744,12 @@ components:
         - NET-0002
         - NET-0003
         - NET-0004
-      description: A code identifying the error, e.g. `MESSAGE-0000` or `NET-0000`.
+      description: >-
+        A code identifying the error, e.g. `MESSAGE-0000` or `NET-0000`.
+        `DATA-0002` covers invalid inline controls and speed, including an
+        inline pause marker (pause is batch-only) and a pronunciation control
+        combined with a `speed` other than `1.0`; `description` names the
+        specific rule.
       title: ChannelsSpeakV2MessagesSpeakV2ErrorCode
     SpeakV2_SpeakV2Error:
       type: object
@@ -734,7 +761,12 @@ components:
           description: Message type identifier
         code:
           $ref: '#/components/schemas/ChannelsSpeakV2MessagesSpeakV2ErrorCode'
-          description: A code identifying the error, e.g. `MESSAGE-0000` or `NET-0000`.
+          description: >-
+            A code identifying the error, e.g. `MESSAGE-0000` or `NET-0000`.
+            `DATA-0002` covers invalid inline controls and speed, including an
+            inline pause marker (pause is batch-only) and a pronunciation
+            control combined with a `speed` other than `1.0`; `description`
+            names the specific rule.
         description:
           type: string
           description: Prose description of the error
@@ -754,9 +786,15 @@ components:
         text:
           type: string
           description: >-
-            The input text to synthesize. Inline pause and pronunciation
-            controls are not yet applied; they are stripped from the text before
-            synthesis.
+            The input text to synthesize. May contain inline pronunciation
+            controls (`\{"word": "...", "pronounce": "<IPA>"\}`), which are in
+            Early Access. Inline pause controls are supported on the batch
+            (REST) transport only; a pause marker sent over the WebSocket fails
+            the connection with `DATA-0002`. Pronunciation cannot be combined
+            with a `speed` other than `1.0`: text carrying a pronunciation
+            control on a session opened with `speed`, or after a `Configure`
+            that set it, also fails the connection with `DATA-0002`. See [Speed,
+            Pause, Pronunciation](/docs/tts-voice-controls).
       required:
         - type
         - text

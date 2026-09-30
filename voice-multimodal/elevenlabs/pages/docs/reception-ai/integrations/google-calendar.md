@@ -8,57 +8,60 @@ path: docs/reception-ai/integrations/google-calendar
 
 # Google Calendar
 
-Google Calendar integration lets your receptionist check staff availability in real-time. When a staff member has a meeting or personal event on their Google Calendar, those times are automatically blocked for bookings.
+The Google Calendar integration lets your receptionist check staff availability in real time. When a staff member has an event on their Google Calendar, that time is blocked for bookings. Reception.ai bookings can also be added to their calendar.
 
 ## How it works
 
-1. Each staff member connects their Google Calendar
-2. Reception.ai reads their calendar events (free/busy status)
-3. When checking availability, blocked times on Google Calendar are excluded
-4. New bookings from Reception.ai can optionally sync back to Google Calendar
+1. Each staff member connects their Google Calendar.
+2. Reception.ai reads free and busy times from the calendars you choose.
+3. Busy times are excluded when offering appointment slots.
+4. New bookings can be added to one of the staff member's calendars.
 
 ## Connecting a staff member's calendar
 
-### Go to integrations
+### Enable the integration
 
-Navigate to **Integrations** → **Google Calendar**.
+Go to **Integrations**, select **Add integration**, and enable **Google Calendar**. The **Staff** feature must be on in **Settings** → **Features**.
 
-### Initiate connection
+### Open the staff member
 
-Click **Connect** next to the staff member you want to link.
+Go to **Staff**, select the staff member, and open **Calendars**. Select **Connect**.
 
 ### Authorize with Google
 
-The staff member signs in with their Google account and grants access to:
+The staff member signs in with their Google account. To let them connect from their own device, use the QR code, **Copy link**, or **Open in browser**.
 
-* Read calendar events (free/busy)
-* View calendar list
-* Manage owned events (for syncing bookings back)
+On the Google consent screen, leave every permission selected. Reception.ai needs to:
 
-### Configure sync settings
+* See free and busy times
+* View the calendar list
+* Manage events it creates
 
-Choose which calendars to monitor for availability and whether to create events for new bookings.
+If any permission is unchecked, the connection fails and must be retried.
+
+### Choose calendars
+
+Choose which calendars to check for availability and where to sync bookings.
 
 ## Sync settings
 
-For each connected staff member, configure:
+| Setting                     | Description                                                                                                                  |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| **Check availability from** | Calendars whose events block availability. You can select several.                                                           |
+| **Sync new bookings to**    | The calendar where new bookings are added, or **Do not sync bookings**. Only calendars the staff member can edit are listed. |
 
-| Setting                 | Description                                                   |
-| ----------------------- | ------------------------------------------------------------- |
-| **Monitored calendars** | Which Google calendars to check for conflicts                 |
-| **Create events**       | Whether to add Reception.ai bookings to their Google Calendar |
+When a booking is cancelled, its Google Calendar event stays with a "\[Cancelled]" prefix and is marked as free, so the time becomes available again.
 
 ## Troubleshooting
 
-If the sidebar shows a warning indicator next to a staff member:
-
-* **Token expired** — The staff member needs to re-authorize
-* **Connection lost** — Network or Google API issue; try reconnecting
-* **Calendar not found** — The monitored calendar was deleted or renamed
-
-To fix, go to **Integrations** → **Google Calendar** → click the affected staff member → **Reconnect**.
+If a connection expires or access is revoked, the staff member's calendar shows that it needs reconnecting. Go to **Staff**, select the staff member, open **Calendars**, and select **Reconnect**.
 
 > **Warning**
 >
-> If a staff member's Google Calendar connection is unhealthy, their availability won't include
-> Google Calendar data. This may lead to double-bookings until resolved.
+> While a connection needs reconnecting, availability won't include Google Calendar events. This may
+> lead to double-bookings until it is restored.
+
+> **Note**
+>
+> Google Calendar works with Reception.ai's own scheduling. It is not available while Calendly or
+> Cal.com is connected.

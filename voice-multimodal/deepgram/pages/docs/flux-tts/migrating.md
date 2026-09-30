@@ -61,7 +61,7 @@ The `/v2/speak` column mixes messages you send (`Speak`, `Flush`, `Close`) with 
 * The **`Speak`** message shape is unchanged from v1.
 * **1-hour max session duration** carries over from v1. New on v2: a **60s inactivity timeout** (`NET-0004`) — send a WebSocket Ping (or Pong) to keep long-idle sessions alive.
 
-Markup handling carries its own warning codes, and inline pause and pronunciation controls are coming soon — see [Markup handling](/docs/flux-tts/client-messages#markup-handling) and the [warning codes](/docs/flux-tts/server-messages#warning-codes).
+Markup handling carries its own warning codes. Inline pronunciation (Early Access) works on both transports and inline pause on batch only, with stricter combination rules than Aura-2 (see [Speed, Pause, Pronunciation](/docs/tts-voice-controls#combining-controls)) — see [Markup handling](/docs/flux-tts/client-messages#markup-handling) and the [warning codes](/docs/flux-tts/server-messages#warning-codes).
 
 ## Related resources
 

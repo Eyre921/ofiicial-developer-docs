@@ -45,7 +45,7 @@ The response body is the synthesized audio in the requested encoding. Per-reques
 
 > **Info**
 >
-> Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch. `model`, `speed`, `expressivity`, and the media-output settings behave the same as on the [streaming surface](/docs/flux-tts/quickstart), so the contract doesn't fragment across transports. Inline controls — pause and pronunciation — are coming soon on both transports.
+> Conversational constructs (`Flush`, `Interrupt`, `speech_id`, lifecycle events) do not apply to batch. `model`, `speed`, `expressivity`, and the media-output settings behave the same as on the [streaming surface](/docs/flux-tts/quickstart), so the contract doesn't fragment across transports. The one difference is inline pause: it is supported on batch only. See [Speed, Pause, Pronunciation](/docs/tts-voice-controls#combining-controls).
 
 ## When to use batch vs streaming
 

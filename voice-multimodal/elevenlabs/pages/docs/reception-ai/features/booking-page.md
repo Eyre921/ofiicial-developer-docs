@@ -8,71 +8,107 @@ path: docs/reception-ai/features/booking-page
 
 # Booking page
 
-Your public booking page is a hosted page where customers can browse services and book appointments online without calling.
+Your booking page is a hosted page where customers can browse services and book appointments without calling. The web widget adds your receptionist to your own website. Both are managed in **Your own website** in the sidebar.
 
-## How it works
+## Turning the booking page on
 
-When you enable your booking page, Reception.ai generates a URL like:
+The booking page is controlled by **Online booking page** in **Settings** → **Features**. When it is off, the page is unavailable and confirmation messages don't include a link to manage the booking.
+
+Your booking page URL looks like:
 
 ```
-https://app.reception.ai/book/your-business-slug
+https://app.reception.ai/smb-public/book/your-business-slug
 ```
 
-Customers visiting this page can:
-
-1. Browse your available services
-2. Select a preferred staff member (optional)
-3. Choose an available date and time
-4. Enter their contact details
-5. Confirm the booking
-
-They receive a confirmation email with a unique confirmation number and a management link.
-
-## Scheduling behavior
-
-The booking page respects the same availability rules as phone bookings:
-
-| Setting                      | What it controls                                  | Default |
-| ---------------------------- | ------------------------------------------------- | ------- |
-| **Slot interval**            | Time increments shown (10, 15, 20, 30, or 60 min) | 15 min  |
-| **Advance booking window**   | How far ahead customers can book (7–365 days)     | 14 days |
-| **Concurrent booking limit** | Max overlapping appointments per location         | Off     |
-
-## Self-service booking management
-
-After booking, customers receive a secure management link (unique per booking, no login required). They can:
-
-* **Reschedule** — Move to a different available time slot
-* **Cancel** — Cancel the appointment entirely
-* **View details** — See date, time, service, and staff
-
-The AI receptionist can also help callers manage existing bookings by looking up their phone number or confirmation number.
+Change the slug under **Booking page URL**, then select **Save**. Use **Copy** or **Open** to share or preview it.
 
 > **Warning**
 >
-> Changing your booking page URL slug breaks existing links. Update any published URLs if you change
-> it.
+> Changing your slug breaks existing links. Update any published URLs after changing it.
+
+## How customers book
+
+1. Optionally filter by location, staff, or resource.
+2. Choose a service and variant.
+3. Choose add-ons.
+4. Pick a date and time.
+5. Enter their details: full name and phone number are required, email and notes are optional. Home services also ask for an address, and services with [intake questions](/docs/reception-ai/scheduling/services#intake-questions) show them here.
+6. Review and confirm.
+
+Customers receive a confirmation by email and/or SMS, depending on your [notification settings](/docs/reception-ai/features/notifications), with a confirmation number and a link to manage the booking.
+
+Availability follows your [booking rules](/docs/reception-ai/scheduling/hours-and-booking-rules#booking-rules), the same as phone bookings.
+
+## Self-service booking management
+
+The management link is unique per booking and needs no login. Customers can:
+
+* **Reschedule** to another available time
+* **Cancel** the appointment
+* **View details** of the date, time, service, and staff
+
+Rescheduling and cancelling are limited by your **Reschedule or cancel notice** rule. If appointment reminders ask clients to confirm, the reminder includes links to confirm or decline.
+
+Your receptionist can also help callers manage existing bookings by phone number or confirmation number.
+
+## Customizing the booking page
+
+Open **Your own website** → **Booking page** to customize the page with a live preview on desktop and mobile. Start from a template or select **Start fresh**.
+
+| Area                    | What you can change                                                       |
+| ----------------------- | ------------------------------------------------------------------------- |
+| **Setup**               | Which steps and filters appear, including **Show staff member selection** |
+| **Page and typography** | Colors, fonts, and layout                                                 |
+| **Header and landing**  | Cover image, header, and introduction text                                |
+| **Steps**               | Text on the date and time, personal details, confirm, and success steps   |
+| **Receptionist**        | Show your receptionist on the booking page                                |
+
+The confirm step can show **Payment instructions** (up to 500 characters) and a **Cancellation policy** (up to 2,000 characters). The cancellation policy is also included in confirmation emails.
+
+### Receptionist on the booking page
+
+Turn on **Show receptionist on booking page** to let visitors talk to your receptionist while they book. Select **Receptionist only** to replace the booking flow with the receptionist.
+
+## Embedding the booking page
+
+To embed the booking page on your website, open the embed options and copy the code. Choose **Full page** or set a height in pixels.
+
+## Web widget
+
+The **Web widget** tab adds a button to your website that starts a conversation with your receptionist.
+
+| Setting         | Options                                  |
+| --------------- | ---------------------------------------- |
+| **Variant**     | Tiny, Compact, or Full                   |
+| **Placement**   | One of six positions on the page         |
+| **Colors**      | Two orb colors                           |
+| **Text**        | Prompt text and call button label        |
+| **Collapsible** | Whether visitors can minimize the widget |
+
+Copy the embed code and add it to your website. Widget conversations use web minutes. See [Usage and limits](/docs/reception-ai/billing/usage-and-limits).
+
+## Orders and quotes
+
+When [orders](/docs/reception-ai/features/orders) are enabled, the booking page lets customers choose between **Book an appointment** and **Order**. Quote-only services show **We'll quote you** and open a [quote request](/docs/reception-ai/features/quote-requests) form instead of a calendar.
 
 ## Group events
 
-Group events are sessions where multiple customers participate at the same time — yoga classes, cooking workshops, group training sessions, and similar activities.
+Group sessions let multiple customers attend the same session, such as a yoga class or workshop:
 
-Unlike regular appointments (one customer, one time slot), group events have:
+* **Fixed schedule**: the session happens at a set date and time.
+* **Capacity**: 2–200 participants.
+* **Seats per registration**: customers can book up to 50 seats, for example to bring friends.
+* **Add-ons**: optional extras per participant that add price, not duration.
 
-* **Fixed schedule** — The event happens at a set date and time
-* **Capacity** — Maximum number of participants (2–200)
-* **Per-person seats** — Customers can book multiple spots (e.g., bringing a friend)
-* **Add-ons** — Optional extras per participant (add price only, not duration)
+To set up group events, create a service with the type **Group session**, set the capacity and add-ons, then create sessions in the calendar.
 
-To set up a group event, create a service with type **Group**, set the capacity, define available add-ons, then create specific event sessions in the calendar.
-
-On your booking page, customers see upcoming group events with available spots, price per person, and optional add-ons. After registering, they receive a management link where they can cancel, change the number of seats, modify add-ons, or switch to a different session.
+Customers see upcoming sessions with available spots and the price per person. After registering, they receive a link to cancel, change seats, modify add-ons, or switch sessions. The same client cannot register twice for one session.
 
 ## Sharing your booking page
 
 Link to your booking page from:
 
-* Your website (add a "Book now" button)
+* Your website (a "Book now" button)
 * Google Business Profile
 * Social media bios
 * Email signatures

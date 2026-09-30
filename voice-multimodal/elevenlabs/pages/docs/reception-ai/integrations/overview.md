@@ -8,35 +8,46 @@ path: docs/reception-ai/integrations/overview
 
 # Integrations
 
-Integrations extend what your receptionist can do by connecting it to external services.
+Integrations connect your receptionist to your calendar, CRM, phone system, and custom tools.
 
 ## Available integrations
 
-| Integration         | Status    | What it does                                                      |
-| ------------------- | --------- | ----------------------------------------------------------------- |
-| **Google Calendar** | Available | Syncs staff calendars for real-time availability                  |
-| **Zapier**          | Available | Connects your receptionist to 5,000+ apps via Zapier's MCP server |
-| **Webhooks**        | Available | Custom HTTP tools your receptionist can call during conversations |
-| **MCP Server**      | Available | Connect custom tool servers for advanced integrations             |
+| Integration                                                                   | Category   | What it does                                                          |
+| ----------------------------------------------------------------------------- | ---------- | --------------------------------------------------------------------- |
+| [Google Calendar](/docs/reception-ai/integrations/google-calendar)            | Scheduling | Syncs staff calendars for real-time availability                      |
+| [Calendly](/docs/reception-ai/integrations/calendly)                          | Scheduling | Books appointments through your Calendly account                      |
+| [Cal.com](/docs/reception-ai/integrations/cal-com)                            | Scheduling | Books appointments through your Cal.com account                       |
+| [HubSpot](/docs/reception-ai/integrations/hubspot)                            | CRM        | Logs conversation summaries on HubSpot contacts                       |
+| [Twilio](/docs/reception-ai/phone-numbers/bring-your-own-number#twilio)       | Telephony  | Use numbers from your own Twilio account                              |
+| [SIP Trunk](/docs/reception-ai/phone-numbers/bring-your-own-number#sip-trunk) | Telephony  | Use numbers from your carrier or PBX                                  |
+| [Zapier](/docs/reception-ai/integrations/zapier)                              | Automation | Connects your receptionist to 7,000+ apps through Zapier's MCP server |
+| [Webhook Tool](/docs/reception-ai/integrations/webhooks)                      | Developer  | Custom HTTP tools your receptionist can call during conversations     |
+| [MCP Server](/docs/reception-ai/integrations/mcp-server)                      | Developer  | Connects custom tool servers                                          |
 
-## Integration scope
+All integrations are available on every plan, including the free trial.
 
-Each integration can be assigned to your customer-facing receptionist, your business assistant, or both. This lets you keep customer-facing tools separate from internal management tools.
+## Adding an integration
 
-## Tier requirements
+Go to **Integrations** and select **Add integration** to browse the catalog by category. Select an integration to open its settings, then select **Enable**. Most integrations have **Settings**, **Tools**, and **About** tabs.
 
-Some integrations are only available on higher-tier plans:
+Some integrations in the catalog are marked as coming soon. Select **I'm interested** to register interest, or **Request an integration** to suggest one that isn't listed.
 
-| Plan    | Access                                 |
-| ------- | -------------------------------------- |
-| Trial   | All integrations (during trial period) |
-| Basic   | Google Calendar only                   |
-| Plus    | All available integrations             |
-| Premium | All available integrations             |
+## Tool assignment
+
+Zapier, webhook, and MCP integrations provide tools. Each tool can be assigned to:
+
+* **Receptionist**: used during calls and website conversations with your customers.
+* **Assistant**: used by the [business assistant](/docs/reception-ai/features/assistant) in the dashboard.
+
+This keeps customer-facing tools separate from internal management tools.
 
 #### [Google Calendar](/docs/reception-ai/integrations/google-calendar)
 
-Sync staff availability in real-time.
+Sync staff availability in real time.
+
+#### [HubSpot](/docs/reception-ai/integrations/hubspot)
+
+Log conversations to your CRM.
 
 #### [Zapier](/docs/reception-ai/integrations/zapier)
 
@@ -45,7 +56,3 @@ Connect to thousands of apps.
 #### [Webhooks](/docs/reception-ai/integrations/webhooks)
 
 Custom HTTP tools for your receptionist.
-
-#### [MCP](/docs/reception-ai/integrations/mcp-server)
-
-Connect custom tool servers.

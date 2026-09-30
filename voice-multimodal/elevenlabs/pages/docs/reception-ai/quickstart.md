@@ -8,112 +8,110 @@ path: docs/reception-ai/quickstart
 
 # Quickstart
 
-This guide covers the onboarding process, from account creation to a live AI receptionist answering calls.
+This guide covers onboarding, from account creation to a live AI receptionist answering calls.
 
 ## Prerequisites
 
-* A business website (optional but recommended for automatic setup)
-* A preferred US area code for your phone number
+* A business website (optional, but recommended for automatic setup)
+* For an instant phone number: a US or Canadian area code. Businesses in other countries can [bring their own number](/docs/reception-ai/phone-numbers/bring-your-own-number) or [apply for a local number](/docs/reception-ai/phone-numbers/international-numbers).
 
 ## Setup
 
-#### Automatic setup (recommended)
+Go to [app.reception.ai](https://app.reception.ai) and create an account. After signing up, the onboarding wizard asks how you want to set up your business.
 
-Best for businesses with an existing website that describes their services.
+#### Scan my website (recommended)
 
-### Sign up
+Best for businesses with a website that describes their services.
 
-Go to [app.reception.ai](https://app.reception.ai) and choose **Scan my website**. New accounts start with a 14-day free trial that includes 30 phone minutes, a dedicated phone number, and full access to all features. No credit card required.
+### Enter your website
 
-### Choose scan depth
+Choose **Scan my website** and enter your website URL (HTTPS required). Accept the Terms of Service and Privacy Policy if prompted.
 
-Pick how thoroughly to scan your website:
+### Wait for the quick scan
 
-| Mode        | Speed       | What it scans                |
-| ----------- | ----------- | ---------------------------- |
-| Single page | Under 1 min | Only the URL you enter       |
-| Quick scan  | \~1 min     | Smart selection of key pages |
-| Deep scan   | 4–5 min     | Full sitemap crawl           |
+Reception.ai reads up to 15 key pages of your site and extracts services, pricing, durations, staff, hours, locations, and contact details. The scan usually takes under a minute, and a countdown shows the estimated time remaining.
 
-Enter your website URL (HTTPS required). Reception.ai extracts services, pricing, durations, staff members, business hours, location, and contact details automatically.
+Booking platforms and social profiles (for example Facebook, Yelp, Vagaro, Booksy, or Calendly links) are read as a single page.
 
-If the scan fails, you can retry or switch to manual setup.
-
-### Pick your phone number
-
-Choose a preferred 3-digit area code (e.g., 415, 212). Reception.ai assigns you a dedicated phone number from the available pool.
-
-This step is skipped if your website already contained a phone number with a valid area code.
-
-### Test your receptionist
-
-A live voice test runs in your browser. Customize the following:
-
-* Receptionist name and greeting
-* Voice (from the curated onboarding collection)
-* Timezone and currency
-
-Speak as if you were a customer — verify the greeting sounds natural, business information is correct, and booking works.
-
-### Go live
-
-Complete the wizard. Your receptionist starts answering calls immediately on your new number.
-
-#### Manual setup
-
-Best for businesses without a website or who prefer to configure everything by hand.
-
-### Sign up
-
-Go to [app.reception.ai](https://app.reception.ai) and choose **Enter information manually**. The same free trial terms apply.
-
-### Select your business type
-
-Choose what your business does (multi-select):
-
-| Type                | What it enables                                |
-| ------------------- | ---------------------------------------------- |
-| **Appointments**    | Services, staff, calendar, public booking page |
-| **Reservations**    | Tables, courts, assets, time-slot bookings     |
-| **Product catalog** | Products, Q\&A, pricing info                   |
-
-Then select your industry vertical (salon, medical, dental, fitness, home services, legal, etc.).
+If the scan fails, select **Change link** to try a different URL or **Continue and enter details manually**.
 
 > **Note**
 >
-> Medical and dental verticals show a compliance notice before proceeding.
+> Onboarding runs a quick scan only. After setup, you can read the rest of your site from the
+> dashboard. See [Website scraping](/docs/reception-ai/knowledge-base/website-scraping).
+
+### Fill in anything the scan missed
+
+If your country, language, or industry could not be detected, the wizard asks for them.
 
 ### Pick your phone number
 
-Choose a preferred 3-digit area code. A number is assigned from the available pool.
+US and Canadian businesses enter a preferred 3-digit area code (for example 415 or 604). Reception.ai assigns a local number from its pool. Toll-free numbers are not available.
 
-### Test your receptionist
+This step is skipped if your website already listed a phone number with a supported area code.
 
-The same live voice test from the automatic setup is available here. Customize the receptionist name, voice, greeting, timezone, and currency.
+### Meet your receptionist
 
-### Go live
+Customize the **Agent name**, **Choose a voice**, and **First message**, then talk to your receptionist in the browser. Speak as a customer would: check that the greeting sounds natural, business information is correct, and booking works.
 
-Complete the wizard. Your receptionist goes live immediately.
+Nothing here is final. You can change every setting later.
+
+### Start your trial
+
+Select **Start free trial** to finish. Reception.ai creates your workspace, receptionist, and booking page, and imports what it found on your website.
+
+#### Enter information manually
+
+Best for businesses without a website or who prefer to configure everything by hand.
+
+### Choose your country
+
+Choose **Enter information manually**, then select where your business is located.
+
+### Choose a language
+
+If your country has more than one common language, choose the language your receptionist speaks by default.
+
+### Choose your industry
+
+Select one industry: salon or barbershop, nail and beauty, spa, medical, dental, veterinary, fitness, home services, photography, consulting, restaurant, auto service, tutoring, legal, real estate, or other.
+
+> **Note**
+>
+> US medical and dental practices need additional setup. The wizard offers **Talk to sales**
+> instead of continuing.
+
+### Pick your phone number
+
+US and Canadian businesses enter a preferred area code. Other countries skip this step.
+
+### Meet your receptionist and start your trial
+
+Customize the name, voice, and first message, test the receptionist in your browser, then select **Start free trial**.
 
 ## What happens after setup
 
-When you complete the wizard:
+When you finish the wizard:
 
-1. Your workspace is created with all configured data
-2. A permanent phone number is assigned
-3. Your AI receptionist goes live immediately
-4. A booking page URL is reserved (if applicable)
+1. Your workspace, receptionist, and booking page are created.
+2. US and Canadian businesses get a permanent local phone number and the receptionist starts answering immediately.
+3. UK businesses get a held number that starts taking calls once the regulatory review is approved. See [International numbers](/docs/reception-ai/phone-numbers/international-numbers).
+4. Businesses in other countries connect a number from the dashboard before taking calls.
+
+New accounts start a free trial that includes 30 credits (30 phone minutes). No credit card is required. See [Plans and pricing](/docs/reception-ai/billing/plans-and-pricing).
 
 > **Info**
 >
-> Your onboarding session lasts up to 4 hours — after that you'll need to start fresh.
+> Onboarding progress is saved in your browser for 4 hours. The test receptionist expires 20 minutes
+> after it is created. If it expires, select **Start over**.
 
 ## Next steps
 
-After onboarding, review your dashboard and refine the following settings:
+The [Home](/docs/reception-ai/features/home) page shows a setup checklist based on what was imported. Review and refine:
 
-* Business hours and exceptions
+* Business hours, locations, and booking rules
 * Services, pricing, and durations
 * Staff members and their availability
-* Receptionist voice and behavior rules
+* Receptionist voice, rules, and procedures
+* The rest of your website, using **Read the rest of your site** on the Home page
 * Google Calendar sync for real-time availability

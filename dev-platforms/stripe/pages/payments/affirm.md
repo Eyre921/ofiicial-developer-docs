@@ -362,7 +362,7 @@ Checkout UIs:
   ✓ Payment Element
   ✗ Express Checkout Element
   ✓ Payment Method Messaging Element
-  ✗ In-app payments
+  ✓ In-app payments
 
 Products:
   ✗ Managed Payments

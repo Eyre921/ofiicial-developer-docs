@@ -1,12 +1,12 @@
 ---
-title: "RFT parameters reference"
+title: "RL parameters reference"
 source: https://docs.fireworks.ai/fine-tuning/rft-parameters-reference
 path: fine-tuning/rft-parameters-reference
 ---
 
-Checkpoint, resume, and GRPO metrics fields for reinforcement fine-tuning recipes.
+Checkpoint, resume, and GRPO metrics fields for reinforcement learning recipes.
 
-Use this page for training **checkpoint and resume** knobs and **GRPO metric interpretation** that are easy to miss when running reinforcement fine-tuning (RFT) and cookbook-driven training. For sampling and optimization hyperparameters (learning rate, epochs, temperature, KL targets, etc.), see [Parameter tuning](/fine-tuning/reinforcement-fine-tuning-models#parameter-tuning).
+Use this page for training **checkpoint and resume** knobs and **GRPO metric interpretation** that are easy to miss when running cookbook-driven reinforcement learning. For sampling and scheduling configuration (completions per prompt, staleness budget, concurrency, loss behavior), see [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl#scheduling-controls).
 
 The canonical cookbook reference for save, resume, and promote is [Checkpoints and Resume](/fine-tuning/training-api/cookbook/reference#checkpoints). Low-level SDK APIs are documented in [Saving and loading](/fine-tuning/training-api/dedicated#saving-and-loading).
 

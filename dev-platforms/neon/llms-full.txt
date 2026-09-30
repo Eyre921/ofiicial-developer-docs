@@ -1248,6 +1248,12 @@ Model availability may vary by region, and the catalog expands over time, so che
 
 The full catalog is served as JSON at [`neon.com/models.json`](https://neon.com/models.json), the machine-readable source of truth, and mirrored as the [`neon` provider on models.dev](https://models.dev/providers/neon).
 
+Every model in the catalog carries a `released` boolean. `false` marks a model listed ahead of its announcement: it stays in `neon.com/models.json` and `neon.com/models`, and an app that shows a model list should leave it out:
+
+```js
+const models = Object.values(catalog.neon.models).filter((model) => model.released);
+```
+
 ## Model access
 
 Neon AI Gateway gives you one credential for both open-weight and foundation models. The catalog grows continuously as new models roll out, so the [table below](https://neon.com/docs/ai-gateway/models#available-models) is always the source of truth for what you can call today.
@@ -37217,6 +37223,10 @@ Configure custom authentication providers with the Data API
 
 The Data API works with any authentication provider that issues [JSON Web Tokens (JWTs)](https://jwt.io/introduction). While [Managed Better Auth](https://neon.com/docs/auth/overview) provides the simplest setup, you can use existing authentication infrastructure with providers like Auth0, Clerk, AWS Cognito, and others.
 
+**Important: Secure your data before exposing it**
+
+The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial), and run the [Data API advisors](https://neon.com/docs/data-api/database-advisor) to catch misconfigurations.
+
 ## How it works
 
 When you bring your own authentication provider, the JWT validation flow works as follows:
@@ -37574,6 +37584,10 @@ Identify security and performance issues in your API-exposed database
 The Data API Advisors analyze your database schema and configuration to detect security and performance issues for tables and objects exposed by the [Data API](https://neon.com/docs/data-api/overview) feature. They run a set of checks against your database and report issues with severity levels and recommended fixes.
 
 Because the Data API exposes your database schema directly over HTTP, security misconfigurations that would normally be hidden behind an application server become directly exploitable. Missing RLS policies and overly permissive views are especially dangerous in this context. The advisors also check for common performance issues like unindexed foreign keys and table bloat, helping you catch issues before they reach production.
+
+**Important: Secure your data before exposing it**
+
+The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial).
 
 ## Prerequisites
 
@@ -38378,6 +38392,10 @@ Explore our demo note-taking app to learn about Data API queries with RLS
 
 This tutorial uses a note-taking app to show how Neon's Data API works with the `@neondatabase/neon-js` client library to write queries from your frontend code, with authentication and Row-Level Security (RLS) policies keeping your data secure. The Data API is compatible with PostgREST, so you can use any PostgREST client library.
 
+**Important: Secure your data before exposing it**
+
+The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial), and run the [Data API advisors](https://neon.com/docs/data-api/database-advisor) to catch misconfigurations.
+
 **Tip: Data API works with any auth provider**
 
 This tutorial uses [Managed Better Auth](https://neon.com/docs/auth/overview) for convenience, but the Data API works with any authentication provider that issues JWTs. The query patterns, RLS policies, and `auth.user_id()` function shown here apply regardless of your auth provider. See [Custom authentication providers](https://neon.com/docs/data-api/custom-authentication-providers) for setup details with Auth0, Clerk, Firebase, and others.
@@ -38930,6 +38948,10 @@ Learn how to enable and use the Neon Data API
 
 This guide walks you through enabling the Data API, creating a table with RLS, and running your first query.
 
+**Important: Secure your data before exposing it**
+
+The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial), and run the [Data API advisors](https://neon.com/docs/data-api/database-advisor) to catch misconfigurations.
+
 ## Before you begin
 
 - The Neon Data API is enabled at the **branch** level for a single database. Each branch has its own Data API configuration, so you must select the correct branch before enabling the API.
@@ -39414,6 +39436,10 @@ Configure schemas, manage authentication providers, and control API access.
 
 This page covers managing the Data API after it is enabled. To enable via the Console, see [Getting started with Data API](https://neon.com/docs/data-api/get-started). To enable programmatically, see [Enable via the Neon API](https://neon.com/docs/data-api/manage#enable) or [Enable via the CLI](https://neon.com/docs/data-api/manage#enable-via-the-cli). To disable from the Console, scroll to **Disable** at the bottom of the **Settings** tab.
 
+**Important: Secure your data before exposing it**
+
+The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial), and run the [Data API advisors](https://neon.com/docs/data-api/database-advisor) to catch misconfigurations.
+
 ## Manage authentication providers
 
 You can configure which authentication provider validates JWT tokens for your Data API requests. Only one provider can be configured at a time. If you enabled the Data API with [Managed Better Auth](https://neon.com/docs/auth/overview), it is already set as the default provider.
@@ -39710,6 +39736,10 @@ The Neon Data API is the HTTP query service in the Neon backend for apps and age
 - **Secure by default.** The API validates JWTs from any authentication provider and respects PostgreSQL [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so users only access data they're permitted to see. Use [Managed Better Auth](https://neon.com/docs/auth/overview), or bring your own provider like [Auth0, Clerk, or Firebase](https://neon.com/docs/data-api/custom-authentication-providers).
 - **CI/CD integration.** Test integrations in isolated branch environments with the [Neon Create Branch GitHub Action](https://github.com/marketplace/actions/neon-create-branch-github-action), which retrieves branch-specific Data API URLs for your workflows.
 
+**Important: Secure your data before exposing it**
+
+The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial), and run the [Data API advisors](https://neon.com/docs/data-api/database-advisor) to catch misconfigurations.
+
 ## PostgREST compatibility
 
 The Neon Data API is fully compatible with [PostgREST](https://postgrest.org/en/stable/). This compatibility allows you to query your database using any standard HTTP client (such as Postman or `cURL`) or integrate easily using client libraries, including [`@neondatabase/neon-js`](https://www.npmjs.com/package/@neondatabase/neon-js) and [`@neondatabase/postgrest-js`](https://www.npmjs.com/package/@neondatabase/postgrest-js).
@@ -39757,6 +39787,10 @@ Common issues and solutions when using the Neon Data API
 - [Getting started with Data API](https://neon.com/docs/data-api/get-started)
 - [Manage Data API](https://neon.com/docs/data-api/manage)
 - [Access control & security](https://neon.com/docs/data-api/access-control)
+
+**Important: Secure your data before exposing it**
+
+The Data API has no permission layer of its own. Every request is authorized entirely by your PostgreSQL `GRANT` statements and [Row-Level Security (RLS)](https://neon.com/docs/guides/row-level-security) policies, so a missing or misconfigured policy can expose a table to anyone with the endpoint URL. Before exposing data, follow [Access control & security](https://neon.com/docs/data-api/access-control) and [Secure your app with RLS](https://neon.com/docs/guides/rls-tutorial), and run the [Data API advisors](https://neon.com/docs/data-api/database-advisor) to catch misconfigurations.
 
 ## Permission denied to create extension "pg_session_jwt"
 
@@ -48978,7 +49012,7 @@ You can update an extension to the latest version using `ALTER EXTENSION <extens
 ALTER EXTENSION vector UPDATE TO '0.7.0';
 ```
 
-**Important:** When Neon releases a new extension or new extension version, a compute restart is required to make the new extension or extension version available for installation or update. A compute restart may occur on its own due to Neon's default [scale to zero](https://neon.com/docs/introduction/scale-to-zero) behavior. However, if your compute never restarts because you disabled scale to zero or because your compute is constantly active, you may need to force a restart. To force a restart, you can issue [Restart endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint) API call. Please be aware that restarting a compute temporarily interrupts any connections currently using the compute.
+**Important:** When Neon releases a new extension or new extension version, a compute restart is required to make the new extension or extension version available for installation or update. A compute restart may occur on its own due to Neon's default [scale to zero](https://neon.com/docs/introduction/scale-to-zero) behavior or when Neon applies a regular compute [update](https://neon.com/docs/manage/updates) for Postgres upgrades, security patches, and similar changes. However, if your compute never restarts because you disabled scale to zero or because your compute is constantly active, you may need to force a restart. To force a restart, you can issue [Restart endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint) API call. Please be aware that restarting a compute temporarily interrupts any connections currently using the compute.
 
 Extensions installations and updates are automatically applied to any read replica computes on the same branch as your primary compute the next time the read replica compute restarts.
 

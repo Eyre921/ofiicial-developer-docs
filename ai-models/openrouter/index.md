@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 492 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 502 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -60,6 +60,11 @@
 - `docs/api/api-reference/datasets/top-apps-by-token-usage` — [Top apps by token usage](pages/docs/api/api-reference/datasets/top-apps-by-token-usage.md) · [原文](https://openrouter.ai/docs/api/api-reference/datasets/top-apps-by-token-usage.md)
 - `docs/api/api-reference/embeddings/list-all-embeddings-models` — [List all embeddings models](pages/docs/api/api-reference/embeddings/list-all-embeddings-models.md) · [原文](https://openrouter.ai/docs/api/api-reference/embeddings/list-all-embeddings-models.md)
 - `docs/api/api-reference/embeddings/submit-an-embedding-request` — [Submit an embedding request](pages/docs/api/api-reference/embeddings/submit-an-embedding-request.md) · [原文](https://openrouter.ai/docs/api/api-reference/embeddings/submit-an-embedding-request.md)
+- `docs/api/api-reference/end-users/deactivate-a-registered-end-user` — [Deactivate a registered end user](pages/docs/api/api-reference/end-users/deactivate-a-registered-end-user.md) · [原文](https://openrouter.ai/docs/api/api-reference/end-users/deactivate-a-registered-end-user.md)
+- `docs/api/api-reference/end-users/get-a-registered-end-user` — [Get a registered end user](pages/docs/api/api-reference/end-users/get-a-registered-end-user.md) · [原文](https://openrouter.ai/docs/api/api-reference/end-users/get-a-registered-end-user.md)
+- `docs/api/api-reference/end-users/list-registered-end-users` — [List registered end users](pages/docs/api/api-reference/end-users/list-registered-end-users.md) · [原文](https://openrouter.ai/docs/api/api-reference/end-users/list-registered-end-users.md)
+- `docs/api/api-reference/end-users/register-an-end-user` — [Register an end user](pages/docs/api/api-reference/end-users/register-an-end-user.md) · [原文](https://openrouter.ai/docs/api/api-reference/end-users/register-an-end-user.md)
+- `docs/api/api-reference/end-users/update-a-registered-end-user` — [Update a registered end user](pages/docs/api/api-reference/end-users/update-a-registered-end-user.md) · [原文](https://openrouter.ai/docs/api/api-reference/end-users/update-a-registered-end-user.md)
 - `docs/api/api-reference/endpoints/list-all-endpoints-for-a-model` — [List all endpoints for a model](pages/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model.md) · [原文](https://openrouter.ai/docs/api/api-reference/endpoints/list-all-endpoints-for-a-model.md)
 - `docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints` — [Preview the impact of ZDR on the available endpoints](pages/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints.md) · [原文](https://openrouter.ai/docs/api/api-reference/endpoints/preview-the-impact-of-zdr-on-the-available-endpoints.md)
 - `docs/api/api-reference/files/delete-a-file` — [Delete a file](pages/docs/api/api-reference/files/delete-a-file.md) · [原文](https://openrouter.ai/docs/api/api-reference/files/delete-a-file.md)
@@ -110,7 +115,9 @@
 - `docs/api/api-reference/observability/get-an-observability-destination` — [Get an observability destination](pages/docs/api/api-reference/observability/get-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/get-an-observability-destination.md)
 - `docs/api/api-reference/observability/list-observability-destinations` — [List observability destinations](pages/docs/api/api-reference/observability/list-observability-destinations.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/list-observability-destinations.md)
 - `docs/api/api-reference/observability/update-an-observability-destination` — [Update an observability destination](pages/docs/api/api-reference/observability/update-an-observability-destination.md) · [原文](https://openrouter.ai/docs/api/api-reference/observability/update-an-observability-destination.md)
+- `docs/api/api-reference/organization/get-organization-settings` — [Get organization settings](pages/docs/api/api-reference/organization/get-organization-settings.md) · [原文](https://openrouter.ai/docs/api/api-reference/organization/get-organization-settings.md)
 - `docs/api/api-reference/organization/list-organization-members` — [List organization members](pages/docs/api/api-reference/organization/list-organization-members.md) · [原文](https://openrouter.ai/docs/api/api-reference/organization/list-organization-members.md)
+- `docs/api/api-reference/organization/update-organization-settings` — [Update organization settings](pages/docs/api/api-reference/organization/update-organization-settings.md) · [原文](https://openrouter.ai/docs/api/api-reference/organization/update-organization-settings.md)
 - `docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body` — [Create a preset from a chat-completions request body](pages/docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body.md) · [原文](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-chat-completions-request-body.md)
 - `docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body` — [Create a preset from a messages request body](pages/docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body.md) · [原文](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-messages-request-body.md)
 - `docs/api/api-reference/presets/create-a-preset-from-a-responses-request-body` — [Create a preset from a responses request body](pages/docs/api/api-reference/presets/create-a-preset-from-a-responses-request-body.md) · [原文](https://openrouter.ai/docs/api/api-reference/presets/create-a-preset-from-a-responses-request-body.md)
@@ -203,6 +210,7 @@
 - `docs/client-sdks/go/sdks/decisions/readme` — [Alpha.Decisions](pages/docs/client-sdks/go/sdks/decisions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/decisions/README.md)
 - `docs/client-sdks/go/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/go/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/embeddings/README.md)
 - `docs/client-sdks/go/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/go/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/endpoints/README.md)
+- `docs/client-sdks/go/sdks/endusers/readme` — [EndUsers](pages/docs/client-sdks/go/sdks/endusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/endusers/README.md)
 - `docs/client-sdks/go/sdks/files/readme` — [Files](pages/docs/client-sdks/go/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/files/README.md)
 - `docs/client-sdks/go/sdks/generations/readme` — [Generations](pages/docs/client-sdks/go/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/generations/README.md)
 - `docs/client-sdks/go/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/go/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/go/sdks/guardrails/README.md)
@@ -241,6 +249,7 @@
 - `docs/client-sdks/python/sdks/decisions/readme` — [Alpha.Decisions](pages/docs/client-sdks/python/sdks/decisions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/decisions/README.md)
 - `docs/client-sdks/python/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/python/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/embeddings/README.md)
 - `docs/client-sdks/python/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/python/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/endpoints/README.md)
+- `docs/client-sdks/python/sdks/endusers/readme` — [EndUsers](pages/docs/client-sdks/python/sdks/endusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/endusers/README.md)
 - `docs/client-sdks/python/sdks/files/readme` — [Files](pages/docs/client-sdks/python/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/files/README.md)
 - `docs/client-sdks/python/sdks/generations/readme` — [Generations](pages/docs/client-sdks/python/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/generations/README.md)
 - `docs/client-sdks/python/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/python/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/guardrails/README.md)
@@ -278,6 +287,7 @@
 - `docs/client-sdks/typescript/sdks/decisions/readme` — [Alpha.Decisions](pages/docs/client-sdks/typescript/sdks/decisions/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/decisions/README.md)
 - `docs/client-sdks/typescript/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/typescript/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/embeddings/README.md)
 - `docs/client-sdks/typescript/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/typescript/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/endpoints/README.md)
+- `docs/client-sdks/typescript/sdks/endusers/readme` — [EndUsers](pages/docs/client-sdks/typescript/sdks/endusers/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/endusers/README.md)
 - `docs/client-sdks/typescript/sdks/files/readme` — [Files](pages/docs/client-sdks/typescript/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/files/README.md)
 - `docs/client-sdks/typescript/sdks/generations/readme` — [Generations](pages/docs/client-sdks/typescript/sdks/generations/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/generations/README.md)
 - `docs/client-sdks/typescript/sdks/guardrails/readme` — [Guardrails](pages/docs/client-sdks/typescript/sdks/guardrails/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/typescript/sdks/guardrails/README.md)

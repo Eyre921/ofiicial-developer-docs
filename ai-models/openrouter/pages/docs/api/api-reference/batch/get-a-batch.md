@@ -66,6 +66,8 @@ tags:
     name: Datasets
   - description: Text embedding endpoints
     name: Embeddings
+  - description: End Users endpoints
+    name: End Users
   - description: Endpoint information
     name: Endpoints
   - description: Files endpoints
@@ -320,6 +322,8 @@ components:
                   body:
                     anyOf:
                       - properties:
+                          alignment:
+                            $ref: '#/components/schemas/Alignment'
                           choices:
                             items:
                               properties:
@@ -1470,6 +1474,30 @@ components:
         - unmapped
       example: rate_limit_exceeded
       type: string
+    Alignment:
+      additionalProperties: false
+      description: >-
+        Beta. The result of the alignment plugin for this request; the shape may
+        change.
+      example:
+        calls:
+          - call: 1
+            outcome: allowed
+            rules:
+              - broken: false
+                probability: 0.04
+      properties:
+        calls:
+          description: >-
+            One record per evaluated assistant message of the request, in the
+            order the messages were produced.
+          items:
+            $ref: '#/components/schemas/AlignmentCallRecord'
+          minItems: 1
+          type: array
+      required:
+        - calls
+      type: object
     FinishReason:
       enum:
         - stop
@@ -1664,6 +1692,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseResponsesResult'
         - properties:
+            alignment:
+              $ref: '#/components/schemas/Alignment'
+            error:
+              $ref: '#/components/schemas/OpenResponsesErrorField'
             error_type:
               $ref: '#/components/schemas/ApiErrorType'
             openrouter_metadata:
@@ -1985,6 +2017,20 @@ components:
       type:
         - object
         - 'null'
+    AlignmentCallRecord:
+      discriminator:
+        mapping:
+          allowed:
+            $ref: '#/components/schemas/AlignmentAllowedCallRecord'
+          blocked:
+            $ref: '#/components/schemas/AlignmentBlockedCallRecord'
+          unavailable:
+            $ref: '#/components/schemas/AlignmentUnavailableCallRecord'
+        propertyName: outcome
+      oneOf:
+        - $ref: '#/components/schemas/AlignmentAllowedCallRecord'
+        - $ref: '#/components/schemas/AlignmentBlockedCallRecord'
+        - $ref: '#/components/schemas/AlignmentUnavailableCallRecord'
     ReasoningFormat:
       enum:
         - unknown
@@ -2329,6 +2375,55 @@ components:
         - tool_choice
         - parallel_tool_calls
       type: object
+    OpenResponsesErrorField:
+      description: >-
+        Error of a failed response; `metadata` carries OpenRouter-specific
+        details.
+      example:
+        code: server_error
+        message: 'Alignment plugin: the reply could not be evaluated: evaluator_error'
+        metadata:
+          alignment:
+            calls:
+              - call: 1
+                outcome: unavailable
+                reason: evaluator_error
+      properties:
+        code:
+          enum:
+            - server_error
+            - rate_limit_exceeded
+            - invalid_prompt
+            - vector_store_timeout
+            - invalid_image
+            - invalid_image_format
+            - invalid_base64_image
+            - invalid_image_url
+            - image_too_large
+            - image_too_small
+            - image_parse_error
+            - image_content_policy_violation
+            - invalid_image_mode
+            - image_file_too_large
+            - unsupported_image_media_type
+            - empty_image_file
+            - failed_to_download_image
+            - image_file_not_found
+            - bio_policy
+            - cyber_policy
+            - misalignment_policy_violation
+            - data_residency_mismatch
+          type: string
+        message:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/OpenResponsesErrorMetadata'
+      required:
+        - code
+        - message
+      type:
+        - object
+        - 'null'
     OutputItems:
       description: An output item from the response
       discriminator:
@@ -3106,6 +3201,84 @@ components:
         input_tokens: 100
         output_tokens: 50
         type: unknown
+    AlignmentAllowedCallRecord:
+      additionalProperties: false
+      properties:
+        call:
+          description: >-
+            Number of the record, from 1. A record is one evaluated assistant
+            message; a model call of a server-tool loop that produces several
+            messages has one record per message, and a retry continues the
+            numbering.
+          type: integer
+        outcome:
+          enum:
+            - allowed
+          type: string
+        rules:
+          description: One record per rule, in the order of `rules` in the request.
+          items:
+            $ref: '#/components/schemas/AlignmentRuleRecord'
+          maxItems: 128
+          minItems: 1
+          type: array
+      required:
+        - call
+        - outcome
+        - rules
+      type: object
+    AlignmentBlockedCallRecord:
+      additionalProperties: false
+      properties:
+        call:
+          description: >-
+            Number of the record, from 1. A record is one evaluated assistant
+            message; a model call of a server-tool loop that produces several
+            messages has one record per message, and a retry continues the
+            numbering.
+          type: integer
+        outcome:
+          enum:
+            - blocked
+          type: string
+        rules:
+          description: One record per rule, in the order of `rules` in the request.
+          items:
+            $ref: '#/components/schemas/AlignmentRuleRecord'
+          maxItems: 128
+          minItems: 1
+          type: array
+      required:
+        - call
+        - outcome
+        - rules
+      type: object
+    AlignmentUnavailableCallRecord:
+      additionalProperties: false
+      properties:
+        call:
+          description: >-
+            Number of the record, from 1. A record is one evaluated assistant
+            message; a model call of a server-tool loop that produces several
+            messages has one record per message, and a retry continues the
+            numbering.
+          type: integer
+        outcome:
+          enum:
+            - unavailable
+          type: string
+        reason:
+          enum:
+            - cut
+            - evaluator_error
+            - malformed_answer
+            - time_limit
+          type: string
+      required:
+        - call
+        - outcome
+        - reason
+      type: object
     EndpointInfo:
       example:
         model: openai/gpt-4o
@@ -4519,6 +4692,36 @@ components:
         - output_tokens
         - output_tokens_details
         - total_tokens
+      type: object
+    OpenResponsesErrorMetadata:
+      description: >-
+        OpenRouter-specific details of a failed response, such as the alignment
+        object of an alignment error.
+      example:
+        alignment:
+          calls:
+            - call: 1
+              outcome: unavailable
+              reason: evaluator_error
+      properties:
+        alignment:
+          allOf:
+            - $ref: '#/components/schemas/Alignment'
+            - additionalProperties: false
+              properties:
+                rejected:
+                  $ref: '#/components/schemas/AlignmentRejected'
+              type: object
+          description: >-
+            Beta. The result of the alignment plugin for this request; the shape
+            may change.
+          example:
+            calls:
+              - call: 1
+                outcome: allowed
+                rules:
+                  - broken: false
+                    probability: 0.04
       type: object
     OutputApplyPatchCallItem:
       description: >-
@@ -6053,6 +6256,20 @@ components:
         output_tokens:
           type: integer
       type: object
+    AlignmentRuleRecord:
+      additionalProperties: false
+      properties:
+        broken:
+          description: Whether probability is at or above the threshold.
+          type: boolean
+        probability:
+          description: The evaluator's probability that the turn breaks the rule.
+          format: double
+          type: number
+      required:
+        - probability
+        - broken
+      type: object
     InputAudio:
       description: Audio input content item
       example:
@@ -7133,6 +7350,10 @@ components:
         - type
         - name
       type: object
+    AlignmentRejected:
+      anyOf:
+        - $ref: '#/components/schemas/AlignmentChatRejected'
+        - $ref: '#/components/schemas/AlignmentResponsesRejected'
     ApplyPatchCallOperation:
       description: >-
         The patch operation requested by an `apply_patch_call`. `create_file`
@@ -8046,6 +8267,93 @@ components:
         - name
         - schema
       type: object
+    AlignmentChatRejected:
+      additionalProperties: false
+      description: >-
+        The assistant message of the withheld turn, without reasoning. `audio`
+        holds the id and transcript of the audio, without `data` or
+        `expires_at`.
+      example:
+        content: Sure, I can take 20% off your order.
+        refusal: null
+        role: assistant
+      properties:
+        audio:
+          $ref: '#/components/schemas/AlignmentChatAudio'
+        content:
+          type:
+            - string
+            - 'null'
+        images:
+          items:
+            $ref: '#/components/schemas/AlignmentChatImage'
+          type: array
+        refusal:
+          type:
+            - string
+            - 'null'
+        role:
+          enum:
+            - assistant
+          type: string
+        tool_calls:
+          items:
+            $ref: '#/components/schemas/AlignmentChatToolCall'
+          type: array
+      required:
+        - role
+        - content
+        - refusal
+      type: object
+    AlignmentResponsesRejected:
+      description: >-
+        The output items of the withheld turn, without reasoning items. The
+        client did not receive these items; their `id` values are assigned by
+        the plugin (`msg_<turn id>`, `fc_<call_id>`, `ctc_<call_id>`, `ig_<turn
+        id>_<index>`, or the provider item id of a native tool call) and differ
+        from the ids the Responses API assigns to delivered items.
+      example:
+        - content:
+            - annotations: []
+              text: Sure, I can take 20% off your order.
+              type: output_text
+          id: msg_1
+          role: assistant
+          status: completed
+          type: message
+      items:
+        discriminator:
+          mapping:
+            apply_patch_call:
+              $ref: '#/components/schemas/OutputItemApplyPatchCall'
+            code_interpreter_call:
+              $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+            custom_tool_call:
+              $ref: '#/components/schemas/OutputItemCustomToolCall'
+            file_search_call:
+              $ref: '#/components/schemas/OutputItemFileSearchCall'
+            function_call:
+              $ref: '#/components/schemas/OutputItemFunctionCall'
+            image_generation_call:
+              $ref: '#/components/schemas/OutputItemImageGenerationCall'
+            message:
+              $ref: '#/components/schemas/OutputMessage'
+            reasoning:
+              $ref: '#/components/schemas/OutputItemReasoning'
+            web_search_call:
+              $ref: '#/components/schemas/OutputItemWebSearchCall'
+          propertyName: type
+        oneOf:
+          - $ref: '#/components/schemas/OutputMessage'
+          - $ref: '#/components/schemas/OutputItemReasoning'
+          - $ref: '#/components/schemas/OutputItemFunctionCall'
+          - $ref: '#/components/schemas/OutputItemCustomToolCall'
+          - $ref: '#/components/schemas/OutputItemWebSearchCall'
+          - $ref: '#/components/schemas/OutputItemFileSearchCall'
+          - $ref: '#/components/schemas/OutputItemImageGenerationCall'
+          - $ref: '#/components/schemas/OutputItemApplyPatchCall'
+          - $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
+      type: array
     AnthropicBashCodeExecutionOutput:
       example:
         file_id: file_01abc
@@ -8201,6 +8509,70 @@ components:
         - type
         - file_id
         - index
+      type: object
+    AlignmentChatAudio:
+      additionalProperties: false
+      description: >-
+        The audio of the withheld message: its `id` and `transcript`. The plugin
+        does not retain `data` or `expires_at`.
+      example:
+        id: audio_abc123
+        transcript: Sure, I can take 20% off your order.
+      properties:
+        id:
+          description: The provider id of the audio.
+          minLength: 1
+          type: string
+        transcript:
+          description: The transcript of the audio.
+          type: string
+      required:
+        - transcript
+      type: object
+    AlignmentChatImage:
+      additionalProperties: false
+      properties:
+        image_url:
+          additionalProperties: false
+          properties:
+            url:
+              minLength: 1
+              type: string
+          required:
+            - url
+          type: object
+        type:
+          enum:
+            - image_url
+          type: string
+      required:
+        - type
+        - image_url
+      type: object
+    AlignmentChatToolCall:
+      additionalProperties: false
+      properties:
+        function:
+          additionalProperties: false
+          properties:
+            arguments:
+              type: string
+            name:
+              type: string
+          required:
+            - name
+            - arguments
+          type: object
+        id:
+          type: string
+        type:
+          enum:
+            - function
+          type: string
+      required:
+        - id
+        - type
+        - function
       type: object
     AnthropicCitationsConfig:
       default: null

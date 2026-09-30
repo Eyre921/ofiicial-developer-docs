@@ -21,7 +21,7 @@ Create a draft on an inbox, either as a new conversation or as a reply.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.28.1-preview-inboxes.1
+    npm install resend@6.28.1-preview-inboxes.2
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -75,7 +75,8 @@ or `200` if that reply draft already exists.
 </ResendParamField>
 
 <ResendParamField type="string">
-  The Email ID to reply to, as returned in the thread's `messages[].id`. Must be
+  The Email ID to reply to, as returned by [List Thread
+  Emails](/docs/api-reference/inboxes/list-thread-emails) in `data[].id`. Must be
   sent with `thread_id`.
 </ResendParamField>
 

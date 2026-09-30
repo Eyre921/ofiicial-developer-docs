@@ -10,69 +10,59 @@ path: docs/reception-ai/billing/usage-and-limits
 
 ## Credit system
 
-Your plan includes a monthly pool of credits. Credits are consumed by different activities at different rates:
+Your plan includes a monthly pool of credits shared across all activity:
 
-| Activity                         | Credit cost     |
-| -------------------------------- | --------------- |
-| AI receptionist phone call       | 1.0 per minute  |
-| Web chat session                 | 0.5 per minute  |
-| Staff-first mode (human answers) | 1.0 per minute  |
-| Assistant chat message           | 0.1 per message |
-
-Monthly credit pools vary by plan:
-
-| Plan    | Included credits |
-| ------- | ---------------- |
-| Trial   | 30               |
-| Basic   | 75               |
-| Plus    | 275              |
-| Premium | 1,000            |
+| Activity                                | Credit cost     |
+| --------------------------------------- | --------------- |
+| Inbound phone call                      | 1.0 per minute  |
+| Web widget or booking page conversation | 0.5 per minute  |
+| Staff first call                        | 1.0 per minute  |
+| Text message                            | 0.1 per message |
 
 ### Checking usage
 
-Go to **Settings** → **Billing** to see:
-
-* Total credits in your pool
-* Credits used this billing period
-* Credits remaining
-* Breakdown by type (phone minutes, web minutes, chat messages)
-
-## Resource limits
-
-Each plan has hard limits on:
-
-| Resource               | Basic | Plus | Premium |
-| ---------------------- | ----- | ---- | ------- |
-| Phone numbers          | 1     | 3    | 5       |
-| Receptionists          | 1     | 1    | 3       |
-| Locations              | 1     | 1    | 20      |
-| Knowledge sources      | 5     | 10   | 20      |
-| Concurrent calls       | 1     | 3    | 10      |
-| Assistant messages/day | 150   | 300  | 500     |
+Go to **Settings** → **Billing** to see your plan, renewal date, and a usage table with rows for **Inbound calls**, **Web widget**, **Human-first calls**, **Text messages**, and **Total usage**. Each row shows usage, the overage rate, and any overage cost.
 
 ## Credit refresh
 
-Credits reset at the start of each billing period. Unused credits do not roll over.
+Credits reset at the start of each billing period, and unused credits do not roll over. On annual plans, credits refresh monthly.
+
+When you upgrade mid-cycle, your remaining credits carry over, up to the new plan's pool.
 
 ## Overage
 
-On paid plans, exceeding your credit pool triggers overage billing at a rate set by your plan:
+On paid plans, usage beyond your credit pool is billed at your plan's overage rate:
 
-| Plan    | Per credit | Phone call/min | Web chat/min | Assistant message |
-| ------- | ---------- | -------------- | ------------ | ----------------- |
-| Basic   | \$0.45     | \$0.45         | \$0.225      | \$0.045           |
-| Plus    | \$0.38     | \$0.38         | \$0.19       | \$0.038           |
-| Premium | \$0.30     | \$0.30         | \$0.15       | \$0.03            |
+| Item               | Basic   | Plus    | Premium |
+| ------------------ | ------- | ------- | ------- |
+| Per credit         | \$0.45  | \$0.38  | \$0.30  |
+| Extra phone minute | \$0.45  | \$0.38  | \$0.30  |
+| Extra web minute   | \$0.225 | \$0.19  | \$0.15  |
+| Extra text message | \$0.045 | \$0.038 | \$0.03  |
+
+The free trial has no overage. When trial credits run out, your receptionist stops answering until you upgrade.
+
+### Low-credit warnings
+
+During the trial, a warning appears when 25% or less of your credits remain, and again when they run out. Select **View plans** to upgrade.
+
+## Resource limits
+
+| Resource               | Trial | Basic | Plus | Premium |
+| ---------------------- | ----- | ----- | ---- | ------- |
+| Phone numbers          | 1     | 1     | 3    | 5       |
+| Concurrent calls       | 20    | 1     | 3    | 10      |
+| Locations              | 20    | 1     | 1    | 20      |
+| Knowledge sources      | 5     | 5     | 10   | 20      |
+| Assistant messages/day | 150   | 150   | 300  | 500     |
+
+Phone number limits don't include [numbers you bring](/docs/reception-ai/phone-numbers/bring-your-own-number).
+
+Other limits that apply on every plan:
+
+* 50 rules, 20 procedures, and 100 transfer rules per receptionist
+* 10 transfer rule changes per day during the free trial
 
 ## Assistant daily limit
 
-The business assistant has a separate daily message cap that resets at midnight UTC:
-
-| Plan    | Messages per day |
-| ------- | ---------------- |
-| Trial   | 150              |
-| Basic   | 150              |
-| Plus    | 300              |
-| Premium | 500              |
-
-When the limit is reached, a banner appears with an option to upgrade.
+The business assistant has a daily message limit that resets at midnight UTC. When you reach it, a banner appears with an option to upgrade.

@@ -21,7 +21,7 @@ Send a reply to a message in an inbox thread.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.28.1-preview-inboxes.1
+    npm install resend@6.28.1-preview-inboxes.2
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -46,8 +46,8 @@ At least one of `html` or `text` is required.
 </ResendParamField>
 
 <ResendParamField type="string">
-  The Email ID of the message to reply to, as returned in the thread's
-  `messages[].id`.
+  The Email ID of the message to reply to, as returned by [List Thread
+  Emails](/docs/api-reference/inboxes/list-thread-emails) in `data[].id`.
 </ResendParamField>
 
 ## Body Parameters
@@ -96,7 +96,7 @@ At least one of `html` or `text` is required.
 </ParamField>
 
 <ParamField type="string[]">
-  Always an empty array.
+  The Reply-To addresses.
 </ParamField>
 
 <ParamField type="string">
@@ -104,7 +104,7 @@ At least one of `html` or `text` is required.
 </ParamField>
 
 <ParamField type="string | null">
-  Always `null`.
+  The Message-ID header of the message.
 </ParamField>
 
 <ParamField type="string | null">
@@ -184,14 +184,20 @@ At least one of `html` or `text` is required.
     "direction": "outbound",
     "from": "support@example.com",
     "to": ["Ada Lovelace <ada@example.org>"],
-    "cc": [],
-    "bcc": [],
-    "reply_to": [],
+    "cc": ["billing@example.com"],
+    "bcc": ["records@example.com"],
+    "reply_to": ["support@example.com"],
     "subject": "Re: Refund for order 1041",
-    "message_id": null,
+    "message_id": "<6a0c8e58@example.com>",
     "html": "<p>Refund issued for order 1041.</p>",
     "text": "Refund issued for order 1041.",
-    "attachments": [],
+    "attachments": [
+      {
+        "id": "1c7e4a90-5b2d-4f8a-9c31-6d0e1f2a3b44",
+        "filename": "refund-receipt.pdf",
+        "size": 18420
+      }
+    ],
     "read": true,
     "received_at": "2026-08-05T14:12:04.110Z"
   }

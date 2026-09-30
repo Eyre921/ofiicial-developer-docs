@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 210,
@@ -26,7 +26,7 @@
     "status": "error: curl failed (22) for https://docs.together.ai/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/fireworks": {
-    "pages": 387,
+    "pages": 383,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -38,7 +38,7 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 377,
+    "pages": 239,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
@@ -97,11 +97,11 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 394,
+    "pages": 409,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -186,7 +186,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 99,
+    "pages": 102,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -194,7 +194,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 492,
+    "pages": 502,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -202,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1331,
+    "pages": 1353,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-30T11:30:36Z"
+  "_last_crawl": "2026-09-30T23:30:35Z"
 }

@@ -21,7 +21,7 @@ Retrieve a single inbox by its ID.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.28.1-preview-inboxes.1
+    npm install resend@6.28.1-preview-inboxes.2
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -103,7 +103,7 @@ Retrieve a single inbox by its ID.
     "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
     "name": "Customer Support",
     "email_address": "support@example.com",
-    "forwarding_address": null,
+    "receiving_address": null,
     "friendly_name": "Ada from Support",
     "unread": 3,
     "drafts": 2,

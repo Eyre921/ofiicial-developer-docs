@@ -19,7 +19,7 @@ Training is worth it when you want:
 
 ## Choose a method
 
-Pick a method based on the data or signal you have. All three run as standard jobs on [Managed Training](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction).
+Pick a method based on the data or signal you have. SFT and DPO run as standard jobs on [Managed Training](/fine-tuning/managed-finetuning-intro), or as custom loops you write yourself on the [Training API](/fine-tuning/training-api/introduction); RL runs on the Training API only.
 
 | | SFT | DPO | RL |
 | - | - | - | - |
@@ -27,7 +27,7 @@ Pick a method based on the data or signal you have. All three run as standard jo
 | **Data you supply** | Verified input/output pairs, or successful trajectories | Preference pairs, single-turn only: one prompt, a chosen and a rejected response | Prompts, plus an evaluator that can tell a good outcome from a bad one |
 | **Dataset size** | Hundreds of examples, or roughly 10M+ tokens | Hundreds to thousands of pairs | Dozens to thousands of prompts, sometimes more. Often fewer than 100 is enough |
 | **Consider alternatives if** | You have very few examples, or no high-quality verified outputs to learn from | Outputs can be judged objectively, or you already have high-quality verified pairs. Both point to SFT or RL | You have no way at all to judge an outcome, including an LLM judge. Simpler methods are untried, or you want a quick training experiment |
-| **Guides** | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo) | [Managed RFT](/fine-tuning/reinforcement-fine-tuning-models) · [Cookbook](/fine-tuning/training-api/cookbook/rl) |
+| **Guides** | [Text](/fine-tuning/fine-tuning-models) · [Vision](/fine-tuning/fine-tuning-models#vision-training) · [Cookbook](/fine-tuning/training-api/cookbook/sft) | [Managed DPO / ORPO](/fine-tuning/dpo-fine-tuning) · [Cookbook](/fine-tuning/training-api/cookbook/dpo) | [Cookbook](/fine-tuning/training-api/cookbook/rl) · [Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl) |
 
 <Tip>
   **Verifiable** means you can reliably judge whether a model output is good (rules, unit tests, programmatic checks). RL fits reasoning and agentic tasks where full ground-truth labels are hard to write.
@@ -148,9 +148,9 @@ Supported: GCS, AWS S3, and Azure Blob, with least-privilege IAM to Fireworks se
 
 CMEK encrypts datasets and checkpoints on Fireworks-managed storage with **your** cloud KMS key — revoke the key and Fireworks cannot decrypt. Supported on AWS KMS, Google Cloud KMS, and Azure Key Vault. It does not cover in-memory training compute or inference request/response. Setup, IAM, and rotation detail: [CMEK](/guides/security_compliance/secure_training/cmek) · [Data Security Overview](/guides/security_compliance/data_security).
 
-### Secure RFT and customer controls
+### Secure RL and customer controls
 
-For RFT under strict governance, combine a [BYOB](#dataset-storage-byob) dataset with evaluators and rollout servers kept in your own environment (see [Remote Environment Setup](/fine-tuning/connect-environments)). To delete checkpoints, traces, or rollout data, contact your Fireworks account team; datasets are deletable from the console or API after a job completes.
+For RL under strict governance, combine a [BYOB](#dataset-storage-byob) dataset with a [Training API](/fine-tuning/training-api/cookbook/rl) rollout function that keeps environments and scoring inside your own infrastructure. To delete checkpoints, traces, or rollout data, contact your Fireworks account team; datasets are deletable from the console or API after a job completes.
 
 ## Before launch
 

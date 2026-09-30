@@ -182,8 +182,8 @@ Explore other training methods to improve model output for different use cases.
     Train models on input-output examples to improve task-specific performance.
   </Card>
 
-  <Card title="Reinforcement Fine-Tuning" icon="brain" href="/fine-tuning/reinforcement-fine-tuning-models">
-    Optimize models using AI feedback for complex reasoning and decision-making.
+  <Card title="Reinforcement Learning" icon="brain" href="/fine-tuning/training-api/cookbook/rl">
+    Optimize models against a reward function on the Training API.
   </Card>
 
   <Card title="Supervised Fine-Tuning - Vision" icon="eye" href="/fine-tuning/fine-tuning-models#vision-training">

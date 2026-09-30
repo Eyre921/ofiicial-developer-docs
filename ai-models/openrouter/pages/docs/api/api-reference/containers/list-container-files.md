@@ -66,6 +66,8 @@ tags:
     name: Datasets
   - description: Text embedding endpoints
     name: Embeddings
+  - description: End Users endpoints
+    name: End Users
   - description: Endpoint information
     name: Endpoints
   - description: Files endpoints
@@ -192,14 +194,20 @@ paths:
             type: integer
         - description: >-
             Forward cursor: the previous page’s `last_id` (or any container file
-            id); listing resumes strictly after that path.
+            id); listing resumes strictly after that path. A `last_id` from a
+            page that stopped at the scan bound may name a directory-marker path
+            (trailing `/`) that was never listed as a file; such cursors are
+            accepted.
           in: query
           name: after
           required: false
           schema:
             description: >-
               Forward cursor: the previous page’s `last_id` (or any container
-              file id); listing resumes strictly after that path.
+              file id); listing resumes strictly after that path. A `last_id`
+              from a page that stopped at the scan bound may name a
+              directory-marker path (trailing `/`) that was never listed as a
+              file; such cursors are accepted.
             example: cfile_b3V0L3JlcG9ydC5jc3Y
             type: string
       responses:

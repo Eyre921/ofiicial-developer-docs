@@ -34,6 +34,10 @@ This is the index for every Jev resource on OpenRouter, and your entry point to 
   <Card title="Jev SDK for TypeScript and Python" icon="puzzle-piece" href="/docs/guides/community/typesafe-sdk">
     Point the official TypeSafe SDK at OpenRouter with a one-line base URL change.
   </Card>
+
+  <Card title="Jev Router" icon="route" href="/docs/guides/routing/routers/jev-router">
+    OpenRouter router that uses Jev to pick a model and reasoning effort for each request.
+  </Card>
 </CardGroup>
 
 ### What Jev is

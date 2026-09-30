@@ -8,65 +8,50 @@ path: docs/reception-ai/integrations/mcp-server
 
 # MCP server
 
-MCP (Model Context Protocol) lets you connect any compatible tool server to your receptionist. Your receptionist discovers available tools automatically and can call them during conversations.
+MCP (Model Context Protocol) lets you connect any compatible tool server to your receptionist. Reception.ai discovers the server's tools automatically, and your receptionist can call them during conversations.
 
 ## What is MCP?
 
-MCP is an open protocol for connecting AI to external tools and data sources. If you have a service that exposes an MCP interface, the receptionist can use its tools during calls without custom integration code.
+MCP is an open protocol for connecting AI to external tools and data sources. If your service exposes an MCP interface, the receptionist can use its tools without custom integration code.
 
 ## Setting up an MCP connection
 
-1. Go to **Integrations** → click **MCP Server**
-2. Configure:
+Go to **Integrations**, select **Add integration**, and choose **MCP Server**.
 
-| Field                     | Description                                            |
-| ------------------------- | ------------------------------------------------------ |
-| **Name**                  | Display name for this integration                      |
-| **Description**           | What this MCP server provides                          |
-| **Server URL**            | Your MCP server endpoint                               |
-| **Transport**             | SSE (Server-Sent Events) or Streamable HTTP            |
-| **Disable interruptions** | Prevent caller from interrupting during tool execution |
+| Field            | Description                                                                                     |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| **Name**         | Display name for this integration                                                               |
+| **Description**  | Optional. What this server provides.                                                            |
+| **Server type**  | SSE (default) or Streamable HTTP                                                                |
+| **Server URL**   | The HTTPS URL of your MCP server endpoint                                                       |
+| **Secret Token** | Optional. Sent to authenticate with your server. Can only be set when creating the integration. |
+| **HTTP Headers** | Optional headers sent with every request                                                        |
 
-3. Reception.ai connects and discovers available tools
-4. Assign tools to your agents
+Select **Enable**. Reception.ai connects and lists the available tools.
 
-## Transport types
+## Server types
 
-| Transport           | When to use                                            |
-| ------------------- | ------------------------------------------------------ |
-| **SSE**             | Long-lived connections, real-time streaming responses  |
-| **Streamable HTTP** | Standard request/response, stateless, easier to deploy |
+| Type                | When to use                                     |
+| ------------------- | ----------------------------------------------- |
+| **SSE**             | Long-lived connections and streaming responses  |
+| **Streamable HTTP** | Standard request and response, easier to deploy |
 
 ## Managing tools
 
-After connecting, Reception.ai fetches the list of available tools from your server.
+Open the **Tools** tab to see the tools your server provides. Assign each tool to the **Client** (receptionist), the **Assistant**, or both, or select **Enable all**. Unassigned tools are not used.
 
-* **Refresh tools** — Re-fetch the tool list when you add new tools to your server
-* **Assign tools** — Choose which tools are available to which agent
-
-## Tool assignments
-
-Each discovered tool can be assigned to:
-
-* **Customer-facing receptionist** — Available during phone calls
-* **Business assistant** — Available in the dashboard chat
-* **Both** — Available everywhere
-
-Unassigned tools are discovered but not used.
+Select **Refresh tools** after adding tools to your server.
 
 ## Use cases
 
-* **Custom booking logic** — Connect to your existing reservation system
-* **Inventory lookup** — Let the receptionist check stock in real-time
-* **CRM queries** — Pull customer data from your internal CRM during calls
-* **Custom workflows** — Trigger any backend process based on conversation context
-* **Multi-tool servers** — Expose multiple related capabilities from a single server
+* **Custom booking logic**: connect to your existing reservation system.
+* **Inventory lookup**: let the receptionist check stock in real time.
+* **CRM queries**: pull customer data from your internal systems during calls.
+* **Custom workflows**: trigger any backend process based on the conversation.
 
-## Multiple MCP servers
-
-You can connect multiple MCP servers, each providing different tools. All discovered tools appear in the same assignment interface.
+You can connect multiple MCP servers. All their tools appear in the same assignment interface.
 
 > **Note**
 >
-> MCP integration requires the **Basic** plan or higher. Your MCP server must be accessible from the
-> internet.
+> MCP servers are available on every plan. Your server must be reachable from the internet over
+> HTTPS.

@@ -19,6 +19,7 @@ To see see what connected accounts see, try the interactive demo.
 Capital for platforms is available in the following countries:
 
 - AU
+- CA
 - DE
 - FR
 - GB

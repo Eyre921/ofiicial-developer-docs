@@ -16,7 +16,7 @@ Sentry captures errors, logs, traces, replays, profiles, and metrics from your a
 
 **New to Sentry? → [Sign up here](https://sentry.io/signup/)** or [try the sandbox](https://sandbox.sentry.io/) to explore the product without installing anything.
 
-## [Step 1: Connect Your Source Code](https://docs.sentry.io/product/sentry-basics.md#step-1-connect-your-source-code)
+## [Step 1: Connect Your Source Code](https://docs.sentry.io/get-started.md#step-1-connect-your-source-code)
 
 Connecting your source code repository is the single most impactful setup step. It unlocks:
 
@@ -27,7 +27,7 @@ Connecting your source code repository is the single most impactful setup step. 
 
 Set up your [GitHub](https://docs.sentry.io/integrations/source-code-mgmt/github.md), [GitLab](https://docs.sentry.io/integrations/source-code-mgmt/gitlab.md), or [Bitbucket](https://docs.sentry.io/integrations/source-code-mgmt/bitbucket.md) integration in **[Settings > Integrations](https://sentry.io/orgredirect/organizations/:orgslug/settings/integrations/)**.
 
-## [Step 2: Set Up Alerts and Notifications](https://docs.sentry.io/product/sentry-basics.md#step-2-set-up-alerts-and-notifications)
+## [Step 2: Set Up Alerts and Notifications](https://docs.sentry.io/get-started.md#step-2-set-up-alerts-and-notifications)
 
 Alerts make sure the right people know when things go wrong. Sentry supports:
 
@@ -37,7 +37,7 @@ Alerts make sure the right people know when things go wrong. Sentry supports:
 
 Route alerts to [Slack](https://docs.sentry.io/integrations/notification-incidents/slack.md), [Discord](https://docs.sentry.io/integrations/notification-incidents/discord.md), [PagerDuty](https://docs.sentry.io/integrations/notification-incidents/pagerduty.md), or your [issue tracker](https://docs.sentry.io/integrations/issue-tracking.md) (Jira, Linear, GitHub Issues). See [alert best practices](https://docs.sentry.io/product/monitors-and-alerts/alerts.md#alerts-best-practices) for tips on avoiding noise.
 
-## [Step 3: Turn On More Features](https://docs.sentry.io/product/sentry-basics.md#step-3-turn-on-more-features)
+## [Step 3: Turn On More Features](https://docs.sentry.io/get-started.md#step-3-turn-on-more-features)
 
 After basic error monitoring, these features add the debugging context that will help you find and fix problems faster:
 
@@ -52,7 +52,7 @@ After basic error monitoring, these features add the debugging context that will
 
 Check out Sentry's [cookbooks](https://docs.sentry.io/get-started/cookbook.md) to learn more about how others use Sentry, and how to go deeper with each of Sentry's tools.
 
-## [Step 4: Explore Your Data](https://docs.sentry.io/product/sentry-basics.md#step-4-explore-your-data)
+## [Step 4: Explore Your Data](https://docs.sentry.io/get-started.md#step-4-explore-your-data)
 
 Once data is flowing, use these tools to understand your application's health:
 
@@ -60,9 +60,9 @@ Once data is flowing, use these tools to understand your application's health:
 * **[Trace Explorer](https://docs.sentry.io/product/trace-explorer.md)** — search, filter, and aggregate span data to find performance bottlenecks
 * **[Releases](https://docs.sentry.io/product/releases.md)** — track crash-free sessions, version adoption, and regressions by deploy
 
-## [Learn More](https://docs.sentry.io/product/sentry-basics.md#learn-more)
+## [Learn More](https://docs.sentry.io/get-started.md#learn-more)
 
-### [Practical Guides](https://docs.sentry.io/product/sentry-basics.md#practical-guides)
+### [Practical Guides](https://docs.sentry.io/get-started.md#practical-guides)
 
 Our **[Guides](https://docs.sentry.io/get-started/guides.md)** cover real-world patterns for each feature:
 
@@ -73,15 +73,15 @@ Our **[Guides](https://docs.sentry.io/get-started/guides.md)** cover real-world 
 * [Adding Custom Spans](https://docs.sentry.io/get-started/guides/custom-spans.md) — instrumenting your own code
 * [Using Session Replay](https://docs.sentry.io/get-started/guides/session-replay.md) — debugging workflows with replays
 
-### [Cookbook](https://docs.sentry.io/product/sentry-basics.md#cookbook)
+### [Cookbook](https://docs.sentry.io/get-started.md#cookbook)
 
 The **[Sentry Cookbook](https://docs.sentry.io/get-started/cookbook.md)** has step-by-step recipes for common workflows, including debugging with MCP + Cursor, setting up AI observability, creating dashboards with agents, and more. Full recipes live on [sentry.io/cookbook](https://sentry.io/cookbook/).
 
-### [Interactive Resources](https://docs.sentry.io/product/sentry-basics.md#interactive-resources)
+### [Interactive Resources](https://docs.sentry.io/get-started.md#interactive-resources)
 
 * **[Sandbox](https://sandbox.sentry.io/)** — explore Sentry with pre-populated sample data
 
-### [Tutorials](https://docs.sentry.io/product/sentry-basics.md#tutorials)
+### [Tutorials](https://docs.sentry.io/get-started.md#tutorials)
 
 Follow along with a sample app to set up error monitoring or distributed tracing end-to-end:
 

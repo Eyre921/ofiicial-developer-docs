@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 394 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 409 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -95,6 +95,7 @@
 - `docs/api-reference/inboxes/list-drafts` — [List Drafts](pages/docs/api-reference/inboxes/list-drafts.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-drafts)
 - `docs/api-reference/inboxes/list-inboxes` — [List Inboxes](pages/docs/api-reference/inboxes/list-inboxes.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-inboxes)
 - `docs/api-reference/inboxes/list-labels` — [List Labels](pages/docs/api-reference/inboxes/list-labels.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-labels)
+- `docs/api-reference/inboxes/list-thread-emails` — [List Thread Emails](pages/docs/api-reference/inboxes/list-thread-emails.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-thread-emails)
 - `docs/api-reference/inboxes/list-threads` — [List Threads](pages/docs/api-reference/inboxes/list-threads.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-threads)
 - `docs/api-reference/inboxes/reply-thread-email` — [Reply to Thread Email](pages/docs/api-reference/inboxes/reply-thread-email.md) · [原文](https://resend.com/docs/api-reference/inboxes/reply-thread-email)
 - `docs/api-reference/inboxes/send-draft` — [Send Draft](pages/docs/api-reference/inboxes/send-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/send-draft)
@@ -390,6 +391,20 @@
 - `docs/webhooks/emails/suppressed` — [email.suppressed](pages/docs/webhooks/emails/suppressed.md) · [原文](https://resend.com/docs/webhooks/emails/suppressed)
 - `docs/webhooks/event-types` — [Event Types](pages/docs/webhooks/event-types.md) · [原文](https://resend.com/docs/webhooks/event-types)
 - `docs/webhooks/how-to-store-webhooks-data` — [How to Store Webhooks Data](pages/docs/webhooks/how-to-store-webhooks-data.md) · [原文](https://resend.com/docs/webhooks/how-to-store-webhooks-data)
+- `docs/webhooks/inboxes/created` — [inbox.created](pages/docs/webhooks/inboxes/created.md) · [原文](https://resend.com/docs/webhooks/inboxes/created)
+- `docs/webhooks/inboxes/deleted` — [inbox.deleted](pages/docs/webhooks/inboxes/deleted.md) · [原文](https://resend.com/docs/webhooks/inboxes/deleted)
+- `docs/webhooks/inboxes/draft-created` — [inbox.draft.created](pages/docs/webhooks/inboxes/draft-created.md) · [原文](https://resend.com/docs/webhooks/inboxes/draft-created)
+- `docs/webhooks/inboxes/draft-deleted` — [inbox.draft.deleted](pages/docs/webhooks/inboxes/draft-deleted.md) · [原文](https://resend.com/docs/webhooks/inboxes/draft-deleted)
+- `docs/webhooks/inboxes/draft-sent` — [inbox.draft.sent](pages/docs/webhooks/inboxes/draft-sent.md) · [原文](https://resend.com/docs/webhooks/inboxes/draft-sent)
+- `docs/webhooks/inboxes/draft-updated` — [inbox.draft.updated](pages/docs/webhooks/inboxes/draft-updated.md) · [原文](https://resend.com/docs/webhooks/inboxes/draft-updated)
+- `docs/webhooks/inboxes/email-received` — [inbox.email.received](pages/docs/webhooks/inboxes/email-received.md) · [原文](https://resend.com/docs/webhooks/inboxes/email-received)
+- `docs/webhooks/inboxes/email-sent` — [inbox.email.sent](pages/docs/webhooks/inboxes/email-sent.md) · [原文](https://resend.com/docs/webhooks/inboxes/email-sent)
+- `docs/webhooks/inboxes/thread-assigned` — [inbox.thread.assigned](pages/docs/webhooks/inboxes/thread-assigned.md) · [原文](https://resend.com/docs/webhooks/inboxes/thread-assigned)
+- `docs/webhooks/inboxes/thread-created` — [inbox.thread.created](pages/docs/webhooks/inboxes/thread-created.md) · [原文](https://resend.com/docs/webhooks/inboxes/thread-created)
+- `docs/webhooks/inboxes/thread-folder-updated` — [inbox.thread.folder.updated](pages/docs/webhooks/inboxes/thread-folder-updated.md) · [原文](https://resend.com/docs/webhooks/inboxes/thread-folder-updated)
+- `docs/webhooks/inboxes/thread-labels-updated` — [inbox.thread.labels.updated](pages/docs/webhooks/inboxes/thread-labels-updated.md) · [原文](https://resend.com/docs/webhooks/inboxes/thread-labels-updated)
+- `docs/webhooks/inboxes/thread-unassigned` — [inbox.thread.unassigned](pages/docs/webhooks/inboxes/thread-unassigned.md) · [原文](https://resend.com/docs/webhooks/inboxes/thread-unassigned)
+- `docs/webhooks/inboxes/updated` — [inbox.updated](pages/docs/webhooks/inboxes/updated.md) · [原文](https://resend.com/docs/webhooks/inboxes/updated)
 - `docs/webhooks/ingester` — [Webhook Ingester](pages/docs/webhooks/ingester.md) · [原文](https://resend.com/docs/webhooks/ingester)
 - `docs/webhooks/introduction` — [Webhooks](pages/docs/webhooks/introduction.md) · [原文](https://resend.com/docs/webhooks/introduction)
 - `docs/webhooks/retries-and-replays` — [Retries and Replays](pages/docs/webhooks/retries-and-replays.md) · [原文](https://resend.com/docs/webhooks/retries-and-replays)

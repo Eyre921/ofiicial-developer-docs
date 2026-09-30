@@ -284,6 +284,9 @@ Possible enum values:
 
   If subscription `collection_method=send_invoice` it becomes `past_due` when its invoice is not paid by the due date, and `canceled` or `unpaid` if it is still not paid by an additional deadline after that. Note that when a subscription has a status of `unpaid`, no subsequent invoices will be attempted (invoices will be created, but then immediately automatically closed). After receiving updated payment information from a customer, you may choose to reopen and pay their closed invoices.
 
+- [`status_details`](https://docs.stripe.com/api/subscriptions/object.md?query=status_details) (object, nullable)
+  Describes when and why the subscription’s status changed over time.
+
 - `test_clock` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
   ID of the test clock this subscription belongs to.
 

@@ -20,7 +20,7 @@ Retrieve segment metrics.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.19.0-preview-headless-dashboard.7
+    npm install resend@6.31.1-preview-headless-dashboard.0
     ```
   </CodeGroup>
 </Warning>

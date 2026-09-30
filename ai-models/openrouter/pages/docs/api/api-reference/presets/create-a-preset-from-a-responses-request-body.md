@@ -66,6 +66,8 @@ tags:
     name: Datasets
   - description: Text embedding endpoints
     name: Embeddings
+  - description: End Users endpoints
+    name: End Users
   - description: Endpoint information
     name: Endpoints
   - description: Files endpoints
@@ -358,6 +360,8 @@ components:
           items:
             discriminator:
               mapping:
+                alignment:
+                  $ref: '#/components/schemas/AlignmentPlugin'
                 auto-beta-router:
                   $ref: '#/components/schemas/AutoBetaRouterPlugin'
                 auto-router:
@@ -396,6 +400,7 @@ components:
               - $ref: '#/components/schemas/FusionPlugin'
               - $ref: '#/components/schemas/SwitchyardRouterPlugin'
               - $ref: '#/components/schemas/JevRouterPlugin'
+              - $ref: '#/components/schemas/AlignmentPlugin'
           type: array
         presence_penalty:
           format: double
@@ -921,6 +926,64 @@ components:
         - image
       example: text
       type: string
+    AlignmentPlugin:
+      additionalProperties: false
+      description: >-
+        Beta. States the listed rules to the model and evaluates every turn
+        against them. Requests are evaluated only for entities admitted to the
+        beta; the configuration, metadata, and error shapes may change.
+      example:
+        id: alignment
+        mode: audit
+        rules:
+          - Never offer a discount.
+      properties:
+        id:
+          enum:
+            - alignment
+          type: string
+        instruct:
+          description: >-
+            Whether the rules are stated to the model in a system message on
+            every provider call. Default true.
+          type: boolean
+        max_retries:
+          description: >-
+            Provider calls made again after a blocked turn, in enforce mode.
+            Default 1.
+          type: integer
+        mode:
+          description: >-
+            `enforce`: a turn that breaks a rule is withheld, retried, and
+            finally returned as an error. `audit`: every turn is evaluated and
+            returned. Default `enforce`.
+          enum:
+            - enforce
+            - audit
+          type: string
+        rules:
+          description: >-
+            Texts that state what the reply must do or must not do. Each rule is
+            evaluated on its own.
+          example:
+            - Never offer a discount.
+            - End with exactly one question.
+          items:
+            maxLength: 200
+            minLength: 1
+            pattern: ^[^\n\r]*$
+            type: string
+          maxItems: 128
+          minItems: 1
+          type: array
+        threshold:
+          description: Probability at or above which a rule is broken. Default 0.7.
+          format: double
+          type: number
+      required:
+        - id
+        - rules
+      type: object
     AutoBetaRouterPlugin:
       example:
         allowed_models:

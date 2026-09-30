@@ -8,26 +8,32 @@ path: docs/reception-ai/knowledge-base/file-uploads
 
 # File uploads
 
-Upload files to give your receptionist access to information that isn't on your website — internal policies, detailed service guides, product catalogs, and more.
+Upload files to give your receptionist information that isn't on your website: internal policies, detailed service guides, product catalogs, and more.
 
-## Supported file types
+## Supported files
 
-* PDF files
-* Text documents
-* Word documents
+| Format   | Extension |
+| -------- | --------- |
+| PDF      | `.pdf`    |
+| Word     | `.docx`   |
+| Text     | `.txt`    |
+| HTML     | `.html`   |
+| Markdown | `.md`     |
+| EPUB     | `.epub`   |
 
-Once processed, the content is chunked, indexed, and searchable by your receptionist during calls.
+Files can be up to 20 MB. Upload one file at a time by dragging it onto the Knowledge Sources tab or selecting **Add new** → **Upload file**. Legacy `.doc` files are not supported.
+
+## How files are processed
+
+Once processed, the file's content is indexed and searchable by your receptionist during calls. Reception.ai also extracts business details, such as services, staff, or products, that you can [import](/docs/reception-ai/knowledge-base/overview#importing-business-details).
+
+To process a file again, select **Reprocess**. You don't need to upload it again.
 
 ## When to use file uploads
 
-File uploads work well for:
+* **Internal policies**: cancellation rules, refund terms, privacy policies.
+* **Service guides**: preparation instructions for clients.
+* **Product catalogs**: specifications and availability not on your website.
+* **Scripts**: talking points for common scenarios.
 
-* **Internal policies** — Cancellation rules, refund terms, privacy policies
-* **Detailed service guides** — Step-by-step preparation instructions for clients
-* **Product catalogs** — Specifications and availability not on your website
-* **Training materials** — Scripts and talking points for common scenarios
-
-> **Note**
->
-> Large files take longer to process. Your plan tier determines how many knowledge sources you can
-> add.
+Each uploaded file counts as one knowledge source toward your plan limit.

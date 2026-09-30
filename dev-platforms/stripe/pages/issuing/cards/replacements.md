@@ -12,9 +12,9 @@ You can replace cards that are expired, damaged, lost, or stolen. The process di
 
 - **Card expired**: The card has reached its expiration date and is no longer valid.
 - **Card damaged**: The cardholder requests a new card for a reason other than lost or stolen (for example, a physical card’s chip no longer reads properly).
-- **Card lost/stolen**: The card is reported lost or stolen and a new card number, expiry, security code are issued.
+- **Card lost/stolen**: The card is reported lost or stolen and a new card number, expiration, security code are issued.
 
-Depending on the scenario, the replacement card might have a different card number, expiry, or security code from the original:
+Depending on the scenario, the replacement card might have a different card number, expiration, or security code from the original:
 
 | Scenario | New card number | New security code | New expiry |
 | --- | --- | --- | --- |
@@ -62,5 +62,5 @@ Updating the payment details for a card that has been replaced due to expiration
 
 ### Card lost or stolen
 
-Stripe doesn’t update businesses with the new card number, expiry, and security code of a replacement card if the old card is marked as being lost or stolen.
+Stripe doesn’t update businesses with the new card number, expiration, and security code of a replacement card if the old card is marked as being lost or stolen.
 

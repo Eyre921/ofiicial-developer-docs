@@ -8,47 +8,66 @@ path: docs/reception-ai/receptionist/testing
 
 # Testing your receptionist
 
-Test your receptionist before going live to confirm it handles calls as expected. Reception.ai provides two testing methods: browser-based and live phone calls.
+Test your receptionist before going live and after every configuration change. Reception.ai supports testing in the browser, by voice or text, and with real phone calls.
 
-## Browser-based testing
+## Browser testing
 
-Test your receptionist directly from the dashboard without making an actual phone call. A voice dialog opens in your browser — speak naturally as if you were a customer calling in.
+Start a test from the receptionist button in the sidebar, which shows the receptionist's phone number or name. On mobile, select **Test call** on the Receptionists page.
+
+The test dialog lets you:
+
+* **Call**: talk to your receptionist through your microphone.
+* **Chat**: type messages to test responses quickly.
+
+If your browser blocks the microphone, allow microphone access for the site and try again.
 
 ## Phone call testing
 
-For a full end-to-end test, call your assigned phone number from any phone. This tests the complete experience including phone line quality, call pickup time, transfer rules, and staff-first routing.
+For a full end-to-end test, call your receptionist's phone number from any phone. The test dialog shows the number under **Or call**.
+
+Phone calls are the only way to test [transfers](/docs/reception-ai/receptionist/call-handling#transfer-to-a-human), [staff first answering](/docs/reception-ai/receptionist/call-handling#answering-order), and secure mode for known callers. These features do not work in browser conversations.
 
 ## What to test
 
-#### Basic greeting
+#### Greeting
 
-Call in and verify the first message sounds natural and includes your business name.
+Verify the first message sounds natural and includes your business name. If **Always finish the
+first message** is on, try interrupting and confirm the greeting continues.
 
 #### Appointment booking
 
-Ask to book an appointment. Verify the receptionist offers correct services, available times,
-and confirms the booking.
+Ask to book an appointment. Verify the receptionist offers the correct services and available
+times, and confirms the booking.
+
+#### Procedures
+
+Trigger each procedure with a realistic request and confirm the receptionist follows the steps
+in order.
 
 #### Business questions
 
-Ask about hours, location, pricing, or services. Verify answers match your actual business
-information.
+Ask about hours, location, pricing, or services. Verify answers match your business information.
 
 #### Language switching
 
-If you support multiple languages, try speaking in a different language and verify the
-receptionist switches correctly.
+Speak a full sentence in one of your additional languages and verify the receptionist switches.
+Short phrases do not trigger a switch.
+
+#### Caller verification
+
+With secure mode on, call from a number that is not on file and ask about an existing booking.
+Verify the receptionist asks for a verification code before sharing details.
 
 #### Edge cases
 
-Try asking something unusual or outside your business scope. Verify the receptionist handles it
-gracefully (takes a message, offers to connect you with someone, etc.).
+Ask something outside your business scope. Verify the receptionist handles it well, for example
+by taking a message or offering a transfer.
 
 #### Transfer rules
 
-Trigger a transfer rule and verify the call routes to the correct number.
+From a phone, trigger a transfer rule and verify the call reaches the correct number.
 
 > **Tip**
 >
-> After each test, check your **Conversations** page to review the full transcript and see how the
-> receptionist handled the call.
+> After each test, open **Conversations** to review the transcript and outcome. If the header shows
+> a configuration warning, open it to review findings about your instructions.

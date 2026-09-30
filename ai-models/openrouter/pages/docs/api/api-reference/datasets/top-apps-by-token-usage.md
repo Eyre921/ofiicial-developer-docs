@@ -90,6 +90,8 @@ tags:
     name: Datasets
   - description: Text embedding endpoints
     name: Embeddings
+  - description: End Users endpoints
+    name: End Users
   - description: Endpoint information
     name: Endpoints
   - description: Files endpoints

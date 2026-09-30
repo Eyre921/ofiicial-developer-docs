@@ -201,6 +201,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Audio format](#audio-format-docs-voice-agents-voice-agent-api-audio-format-mdx)
 - [Pre-connect requests](#pre-connect-requests-docs-voice-agents-voice-agent-api-pre-connect-requests-mdx)
 - [Test your agent with Bluejay simulations](#test-your-agent-with-bluejay-simulations-docs-voice-agents-voice-agent-api-test-with-bluejay-mdx)
+- [Test your agent with Cekura simulations](#test-your-agent-with-cekura-simulations-docs-voice-agents-voice-agent-api-test-with-cekura-mdx)
 - [Recordings & transcripts](#recordings-transcripts-docs-voice-agents-voice-agent-api-session-history-mdx)
 - [List sessions](#list-sessions-docs-voice-agents-voice-agent-api-api-spec-list-sessions-mdx)
 - [Retrieve a session](#retrieve-a-session-docs-voice-agents-voice-agent-api-api-spec-get-session-mdx)
@@ -6508,19 +6509,19 @@ Universal-3.5 Pro natively handles code switching across 18 languages. Set `lang
 
 See Universal-3.5 Pro code switching in action.
 
-### **English \<\> French**
+**English \<\> French**
 
 ```txt
 I said something like, j'ai dit à mes étudiants que it's time to really pay attention to what the idea of code-switching is.
 ```
 
-### **English \<\> Hindi**
+**English \<\> Hindi**
 
 ```txt
 मेरा रुकने का तो बहुत मन है, but I have an exam to give tomorrow.
 ```
 
-### **English \<\> Mandarin**
+**English \<\> Mandarin**
 
 ```txt
 But this sentence, 我父母不工作了, you can see the 了 at the end of the sentence indicates that the situation now, my parents don't work, is different from what it was before.
@@ -6788,7 +6789,7 @@ while (true) {
 }
 ```
 
-## Universal-2
+## Universal-2 (Legacy)
 
 While Universal-2 supports code switching, we recommend upgrading to Universal-3.5 Pro for best results.
 
@@ -6959,20 +6960,9 @@ while (true) {
 }
 ```
 
-### Example API Response
+### Configuration
 
-When enabling code switching with automatic language detection, the two detected language codes with the highest confidence and their confidence will be included in the transcript JSON.
-
-```json
-"language_detection_results": {
-      "code_switching_languages": [
-           {"language": "en", "confidence": 0.8},
-           {"language": "es", "confidence": 0.7}
-     ]
-}
-```
-
-### Manually Setting Language Codes
+**Manually Setting Language Codes**
 
 On Universal-2, you can use the `language_codes` parameter to set the languages manually. A maximum of two language codes can be set, and one of them must be `"en"`. For example, if your file contains both English and Spanish, it would be `"language_codes": ["en", "es"]`.
 
@@ -7127,7 +7117,7 @@ while (true) {
 }
 ```
 
-### Code Switching Confidence Threshold
+**Code Switching Confidence Threshold**
 
 The `code_switching_confidence_threshold` parameter controls how the model routes transcription when multiple languages are detected.
 When code switching is enabled, the model detects up to two languages per audio file and assigns each a confidence score.
@@ -47351,6 +47341,7 @@ Or jump straight to a topic:
 - [Browser integration](/voice-agents/voice-agent-api/browser-integration): mint tokens and build your own client
 - [Phone agents over SIP](/voice-agents/voice-agent-api/connect-to-twilio): the phone step above in full, including a Twilio CLI path
 - [Bluejay simulations](/voice-agents/voice-agent-api/test-with-bluejay): run simulated callers against your agent and score the results
+- [Cekura simulations](/voice-agents/voice-agent-api/test-with-cekura): call your phone agent with simulated callers and review AssemblyAI's transcript and tool calls
 - [Events reference](/voice-agents/voice-agent-api/events-reference): every WebSocket event with full payloads
 - [Build with AI coding tools](/voice-agents/voice-agent-api/build-with-ai-tools): point Claude Code, Cursor, or v0 at these docs
 - [Troubleshooting](/voice-agents/voice-agent-api/troubleshooting): symptom-to-fix table and support logging
@@ -51813,6 +51804,107 @@ Two details are worth knowing, because both are the difference between a simulat
 ## Cost
 
 Every simulated call is a Voice Agent session billed to the API key in your `.env`, and Bluejay bills its own side. Running a suite costs real money, so keep `CHIRP_USER` and `CHIRP_PASS` set on anything hosted: without them, anyone who finds the URL can start sessions on your key.
+
+---
+
+<a id="test-your-agent-with-cekura-simulations-docs-voice-agents-voice-agent-api-test-with-cekura-mdx"></a>
+
+# Test your agent with Cekura simulations
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/test-with-cekura
+Source: docs/voice-agents/voice-agent-api/test-with-cekura.mdx
+Navigation: Voice Agent API > Test
+Description: Have Cekura call your phone agent with simulated callers, then review each call with AssemblyAI's own transcript and tool calls.
+
+[Cekura](https://cekura.ai) tests voice agents by calling them. It plays scripted scenarios as a simulated caller, then scores the conversation against the metrics you define. AssemblyAI is a built-in provider in Cekura, so there's no bridge to run: Cekura dials the phone number bound to your agent, and after the call it pulls that session from your AssemblyAI account.
+
+```
+Cekura ──phone call──▶ your number ──SIP trunk──▶ AssemblyAI ──▶ your agent
+   ▲                                                                 │
+   └────────── Sessions API: transcript + tool calls ◀───────────────┘
+```
+
+Each Cekura result shows the transcript as AssemblyAI recorded it, not a re-transcription of the call audio. Every HTTP tool the agent called appears inline with the arguments it sent and the response it got back, so your metrics can check what the agent actually did.
+
+**You need:**
+
+- An [AssemblyAI API key](https://www.assemblyai.com/dashboard/api-keys)
+- An `agent_id`. Don't have one? [Create an agent](/voice-agents/voice-agent-api/create-agent) first.
+- A phone number bound to that agent. Don't have one? [Set up an inbound phone agent via SIP](/voice-agents/voice-agent-api/connect-to-twilio).
+- A Cekura account. Don't have one? Sign up at [cekura.ai](https://cekura.ai).
+
+Cekura connects to AssemblyAI agents **over the phone only**. It places every call, so the agent must answer inbound calls on a number you can dial by hand.
+
+## 1. Check the number reaches your agent
+
+Call the number yourself before you set anything up in Cekura. If you don't hear your agent's greeting, Cekura's test calls won't reach it either. See [If it does not work](/voice-agents/voice-agent-api/connect-to-twilio#if-it-does-not-work).
+
+Agent ids aren't shared between regional hosts. Phone numbers are registered on `agents.us.assemblyai.com`, so the agent bound to the number has to live there too. That's the **US** region in Cekura, which is its default. An agent created on `agents.assemblyai.com` can't answer the number.
+
+## 2. Connect the agent in Cekura
+
+In Cekura, go to **Agents**, create an agent, and select **AssemblyAI** as the provider. If it isn't in the grid, click **More options**.
+
+Under **Integration Settings**, fill in:
+
+| Field | Value |
+| --- | --- |
+| **AssemblyAI Agent ID** | The `agent_id` bound to your number. Cekura only considers sessions answered by this agent. |
+| **AssemblyAI API Key** | Cekura uses the key to list your agent's sessions and download each one after a test. It's stored encrypted and never shown again. |
+| **Region** | **US**, the default. Phone agents live in the US region, so leave it as is. |
+
+Under **Telephony Settings**, enter the phone number bound to the agent and leave **Inbound** on, so Cekura dials your number. Telephony is the only connection type for AssemblyAI, and it turns on by itself once the credentials are saved.
+
+Save the agent. The key field reads **API Key Configured** once it's stored. Use **Update** to rotate the key later.
+
+## 3. Run a test
+
+Open an evaluator in Cekura, click **Run**, and start the run with the **Telephony** connection. Cekura dials your number and plays the scenario as the caller.
+
+When the call ends, Cekura finds the matching AssemblyAI session:
+
+1. It lists your recent sessions and keeps the ones your agent answered, from the number Cekura dialed from, that started within a few seconds of the test call.
+2. It waits for the session's conversation record, which usually takes a few seconds after the call ends.
+3. It compares call duration and conversation content to confirm the match, so parallel test calls to the same agent each pair with the right session.
+4. It replaces its own transcript with AssemblyAI's and attaches the session id to the result.
+
+In the result, your agent's turns are labeled **Main Agent** and the simulated caller's turns are labeled **Testing Agent**. Each tool call shows up as a **Function Call** entry followed by a **Function Call Result** entry.
+
+The same call is also in your AssemblyAI account, with a stereo recording and per-turn timings. Look it up by the session id on the Cekura result. See [Recordings and transcripts](/voice-agents/voice-agent-api/session-history).
+
+## If it does not work
+
+| Symptom | Cause |
+| --- | --- |
+| Authentication fails when saving | The key doesn't have Voice Agent API access, or **Region** doesn't match the host the agent was created on. |
+| Calls never connect | The number doesn't reach the agent. Call it by hand, then recheck the [SIP trunk and the number's agent binding](/voice-agents/voice-agent-api/connect-to-twilio#if-it-does-not-work). |
+| The result has Cekura's transcript, not AssemblyAI's | Cekura couldn't match the call to a session. Check that **AssemblyAI Agent ID** is the agent bound to the number under **Telephony Settings**, and that the run used the **Telephony** connection. |
+| Some calls in a large run fail | Each test call is one Voice Agent session on your account. Past your concurrency limit, new sessions are refused with `concurrency_exceeded`. |
+
+## Configure through the API
+
+To create or update the Cekura agent through [Cekura's API](https://docs.cekura.ai/api-reference/test_framework/create-agent), set the provider to `assemblyai` and pass the credentials:
+
+```json
+{
+  "transcript_provider": "assemblyai",
+  "assistant_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+  "assemblyai_api_key": "<your-assemblyai-api-key>",
+  "assemblyai_data": {
+    "region": "us"
+  },
+  "contact_number": "+15551234567",
+  "inbound": true
+}
+```
+
+`assistant_id` is your AssemblyAI `agent_id`, and it's required whenever a key is set. `assemblyai_data.region` defaults to `us`, so you can leave it out. The response never returns the key. Check the read-only `assemblyai_api_key_configured` field to see whether one is stored.
+
+For the rest of Cekura's setup, see the [Cekura AssemblyAI integration guide](https://docs.cekura.ai/documentation/integrations/assemblyai).
+
+## Cost
+
+Every simulated call is a Voice Agent session billed to your AssemblyAI API key. Your telephony provider bills the inbound minutes, and Cekura bills its own side.
 
 ---
 

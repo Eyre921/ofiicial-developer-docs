@@ -61,7 +61,7 @@ For each `Speak` that contains detected markup, the server strips it, synthesize
 
 > **Info**
 >
-> **Billing and reporting use the cleaned text.** Markup stripping runs before normalization and billing, so `billable_character_count` and an interrupt's `text_spoken` reflect the cleaned text, never the original markup. `Configure` adjusts `speed` only; inline pause and pronunciation controls are coming soon.
+> **Billing and reporting use the cleaned text.** Markup stripping runs before normalization and billing, so `billable_character_count` and an interrupt's `text_spoken` reflect the cleaned text, never the original markup. `Configure` adjusts `speed` only. Inline pronunciation controls (Early Access) are supported in `Speak.text` but cannot be combined with a `speed` other than `1.0`; inline pause is batch-only. See [Speed, Pause, Pronunciation](/docs/tts-voice-controls#combining-controls).
 
 ## Flush
 

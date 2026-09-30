@@ -1780,3 +1780,4 @@ Keep the following limitations in mind when working with Netlify Blobs:
    netlify recipes blobs-migrate YOUR_STORE_NAME
    ```
    This makes the migrated store accessible with `@netlify/blobs` module version 7.0.0 and later.
+

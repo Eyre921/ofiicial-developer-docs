@@ -2359,6 +2359,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/migrations/using-github-enterprise-importer/migrating-between-github-products/migrating-repositories-from-github-enterprise-server-to-github-enterprise-cloud
 /en/migrations/using-github-enterprise-importer/migrating-between-github-products/migrating-repositories-from-githubcom-to-github-enterprise-cloud
 /en/migrations/using-github-enterprise-importer/migrating-between-github-products/migrating-organizations-from-githubcom-to-github-enterprise-cloud
+/en/migrations/using-github-enterprise-importer/migrating-between-github-products/migrating-repositories-between-two-data-resident-enterprises
 /en/migrations/using-github-enterprise-importer/migrate-from-gitlab
 /en/migrations/using-github-enterprise-importer/migrate-from-gitlab/understand-migrations
 /en/migrations/using-github-enterprise-importer/migrate-from-gitlab/plan-your-migration

@@ -8,70 +8,63 @@ path: docs/reception-ai/features/assistant
 
 # Business assistant
 
-The business assistant is a built-in AI chat interface for managing your business through natural language requests.
+The business assistant is a built-in AI chat for managing your business. Ask it to look things up or make changes, and it proposes the changes for your approval.
 
 ## What the assistant can do
 
-The assistant has access to all your business data and can perform actions across every area:
+| Category         | Example requests                                                                                |
+| ---------------- | ----------------------------------------------------------------------------------------------- |
+| **Scheduling**   | "Show me tomorrow's appointments", "Book John for a haircut at 3pm Friday"                      |
+| **Clients**      | "Find the client who called yesterday about pricing", "Create a new client for Sarah, 555-0123" |
+| **Services**     | "Add a new service called Deep Tissue Massage, 60 min, \$90"                                    |
+| **Staff**        | "Who's working this Saturday?", "Add a day off for Mark next Wednesday"                         |
+| **Locations**    | "Close the downtown location on December 26"                                                    |
+| **Receptionist** | "Add a rule to always mention free parking", "Add a transfer rule for billing questions"        |
+| **Booking page** | "Change the booking page slug to downtown-salon", "Make the header dark blue"                   |
+| **Analytics**    | "What's my revenue this week vs last week?", "How many bookings came from the website?"         |
+| **Products**     | "Add a product: Organic Shampoo, \$24.99"                                                       |
 
-| Category          | Example requests                                                                                |
-| ----------------- | ----------------------------------------------------------------------------------------------- |
-| **Scheduling**    | "Show me tomorrow's appointments", "Book John for a haircut at 3pm Friday"                      |
-| **Clients**       | "Find the client who called yesterday about pricing", "Create a new client for Sarah, 555-0123" |
-| **Services**      | "Add a new service called Deep Tissue Massage, 60 min, \$90"                                    |
-| **Staff**         | "Who's working this Saturday?", "Add a day off for Mark next Wednesday"                         |
-| **Analytics**     | "What's my revenue this week vs last week?", "How many bookings came from the website?"         |
-| **Configuration** | "Update our Friday hours to close at 6pm", "Change the booking page slug to 'downtown-salon'"   |
-| **Products**      | "Add a product: Organic Shampoo, \$24.99"                                                       |
-| **Calendar**      | "Cancel all appointments for next Monday — we're closed"                                        |
+The assistant can also manage procedures, group sessions, and holidays, and look up an appointment by confirmation number.
+
+It cannot manage messages, orders, quote requests, SMS, or FAQ answers. To answer unanswered questions, go to **Business** → **FAQ**.
 
 ## How to access it
 
-The assistant is accessible in two ways:
+* **Docked panel**: select **Assistant** in the header on any page.
+* **Full page**: open **Assistant** from the **More** menu in the sidebar. Pin it to keep it in the sidebar.
 
-* **Full page** — Click **Assistant** in the sidebar for a dedicated chat view.
-* **Docked panel** — Toggle the assistant panel from the header on any page.
+## Confirming changes
 
-## Confirmable changes
+When you ask the assistant to create, update, or delete anything, it shows exactly what it plans to do and waits for you to select **Proceed** or **Cancel**. For batch changes, such as cancelling several appointments, you can accept or reject each change individually.
 
-When you ask the assistant to modify data (create, update, or delete anything), it shows exactly what it plans to do and waits for your confirmation before executing.
+The assistant never changes data without your approval.
 
-For batch operations (like cancelling multiple appointments), it shows the full list of changes for you to approve or reject.
+## Attachments and suggestions
 
-The assistant never changes data without explicit approval.
+* **Attach a text file** to give the assistant more context, such as a price list. One file per message: `.txt`, `.md`, `.json`, `.yml`, or `.yaml`, up to 5 MB.
+* After most replies, the assistant suggests 3–5 follow-up actions you can select instead of typing.
 
 ## Rich responses
 
-The assistant's responses can include clickable mentions of:
-
-* **Staff** — Click to see staff details
-* **Services** — Click to see service configuration
-* **Assets** — Click to see asset info
-* **Clients** — Click to see client profile
-* **Products** — Click to see product details
+Responses include clickable mentions of staff, services, assets, clients, and products. Select one to open its details.
 
 ## Conversation history
 
-Your past conversations are saved in the sidebar. You can:
-
-* Browse previous chats
-* Continue an old conversation
-* Start a new conversation
-* Delete conversations you no longer need
+Select **Open history** to browse, continue, or delete past chats. Select **New chat** to start over.
 
 ## Daily message limit
 
-Each plan has a daily message cap that resets at midnight UTC:
+Each plan has a daily message limit that resets at midnight UTC:
 
 | Plan    | Messages per day |
 | ------- | ---------------- |
-| Trial   | 500              |
+| Trial   | 150              |
 | Basic   | 150              |
 | Plus    | 300              |
 | Premium | 500              |
 
-A banner appears when approaching or reaching the limit, with an option to upgrade.
+When you reach the limit, a banner appears with an option to upgrade.
 
 ## Setup
 
-The assistant is created automatically when you first access it. If it hasn't been set up yet, you'll see a **Create Assistant** button — click it and the assistant agent is provisioned for your workspace.
+The assistant is created automatically when you first open it. If it hasn't been set up yet, select **Create Assistant** to provision it for your workspace.

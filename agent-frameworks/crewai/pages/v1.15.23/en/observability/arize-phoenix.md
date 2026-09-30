@@ -44,115 +44,113 @@ OPENAI_API_KEY = getpass("🔑 Enter your OpenAI API key: ")
 SERPER_API_KEY = getpass("🔑 Enter your Serper API key: ")
 
 # Set environment variables
-os.environ["PHOENIX_CLIENT_H# CrewAI Documentation
-Source: https://docs.crewai.com/index
+os.environ["PHOENIX_CLIENT_HEADERS"] = f"api_key={PHOENIX_API_KEY}"
+os.environ["PHOENIX_COLLECTOR_ENDPOINT"] = "https://app.phoenix.arize.com" # Change this to your own endpoint if you are using a self-hosted instance
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+os.environ["SERPER_API_KEY"] = SERPER_API_KEY
+```
 
-Build collaborative AI agents, crews, and flows — production ready from day one.
+### Step 3: Initialize OpenTelemetry with Phoenix
 
-<div>
-  <img alt="CrewAI" />
+Initialize the OpenInference OpenTelemetry instrumentation SDK to start capturing traces and send them to Phoenix.
 
-  <div>
-    <h1>Ship multi‑agent systems with confidence</h1>
+```python theme={null}
+from phoenix.otel import register
 
-    <p>
-      Design agents, orchestrate crews, and automate flows with guardrails, memory, knowledge, and observability baked in.
-    </p>
-  </div>
+tracer_provider = register(
+    project_name="crewai-tracing-demo",
+    auto_instrument=True,
+)
+```
 
-  <div>
-    <a href="/en/quickstart">
-      Get started
-    </a>
+### Step 4: Create a CrewAI Application
 
-    <button type="button">
-      Copy agent setup prompt
-    </button>
+We'll create a CrewAI application where two agents collaborate to research and write a blog post about AI advancements.
 
-    <a href="/guides/coding-tools/build-with-ai">
-      Coding-agent guide
-    </a>
+```python theme={null}
+from crewai import Agent, Crew, Process, Task
+from crewai_tools import SerperDevTool
+from openinference.instrumentation.crewai import CrewAIInstrumentor
+from phoenix.otel import register
 
-    <a href="/en/api-reference/introduction">
-      API Reference
-    </a>
-  </div>
-</div>
+# setup monitoring for your crew
+tracer_provider = register(
+    endpoint="http://localhost:6006/v1/traces")
+CrewAIInstrumentor().instrument(skip_dep_check=True, tracer_provider=tracer_provider)
+search_tool = SerperDevTool()
 
-<div />
+# Define your agents with roles and goals
+researcher = Agent(
+    role="Senior Research Analyst",
+    goal="Uncover cutting-edge developments in AI and data science",
+    backstory="""You work at a leading tech think tank.
+    Your expertise lies in identifying emerging trends.
+    You have a knack for dissecting complex data and presenting actionable insights.""",
+    verbose=True,
+    allow_delegation=False,
+    # You can pass an optional llm attribute specifying what model you wanna use.
+    # llm=ChatOpenAI(model_name="gpt-3.5", temperature=0.7),
+    tools=[search_tool],
+)
+writer = Agent(
+    role="Tech Content Strategist",
+    goal="Craft compelling content on tech advancements",
+    backstory="""You are a renowned Content Strategist, known for your insightful and engaging articles.
+    You transform complex concepts into compelling narratives.""",
+    verbose=True,
+    allow_delegation=True,
+)
 
-## Get started
+# Create tasks for your agents
+task1 = Task(
+    description="""Conduct a comprehensive analysis of the latest advancements in AI in 2024.
+    Identify key trends, breakthrough technologies, and potential industry impacts.""",
+    expected_output="Full analysis report in bullet points",
+    agent=researcher,
+)
 
-<CardGroup>
-  <Card title="Introduction" href="/en/introduction" icon="sparkles">
-    Overview of CrewAI concepts, architecture, and what you can build with agents, crews, and flows.
-  </Card>
+task2 = Task(
+    description="""Using the insights provided, develop an engaging blog
+    post that highlights the most significant AI advancements.
+    Your post should be informative yet accessible, catering to a tech-savvy audience.
+    Make it sound cool, avoid complex words so it doesn't sound like AI.""",
+    expected_output="Full blog post of at least 4 paragraphs",
+    agent=writer,
+)
 
-  <Card title="Installation" href="/en/installation" icon="wrench">
-    Install via `uv`, configure API keys, and set up the CLI for local development.
-  </Card>
+# Instantiate your crew with a sequential process
+crew = Crew(
+    agents=[researcher, writer], tasks=[task1, task2], verbose=1, process=Process.sequential
+)
 
-  <Card title="Quickstart" href="/en/quickstart" icon="rocket">
-    Spin up your first crew in minutes. Learn the core runtime, project layout, and dev loop.
-  </Card>
-</CardGroup>
+# Get your crew to work!
+result = crew.kickoff()
 
-## Build the basics
+print("######################")
+print(result)
+```
 
-<CardGroup>
-  <Card title="Agents" href="/en/concepts/agents" icon="users">
-    Compose agents with tools, memory, knowledge, and structured outputs using Pydantic. Includes templates and best practices.
-  </Card>
+### Step 5: View Traces in Phoenix
 
-  <Card title="Flows" href="/en/concepts/flows" icon="arrow-progress">
-    Orchestrate start/listen/router steps, manage state, persist execution, and resume long-running workflows.
-  </Card>
+After running the agent, you can view the traces generated by your CrewAI application in Phoenix. You should see detailed steps of the agent interactions and LLM calls, which can help you debug and optimize your AI agents.
 
-  <Card title="Tasks & Processes" href="/en/concepts/tasks" icon="check">
-    Define sequential, hierarchical, or hybrid processes with guardrails, callbacks, and human-in-the-loop triggers.
-  </Card>
-</CardGroup>
+Open your Phoenix project and navigate to the project you specified in the `project_name` parameter. You'll see a timeline view of your trace with all the agent interactions, tool usages, and LLM calls.
 
-## Enterprise journey
+![Example trace in Phoenix showing agent interactions](https://storage.googleapis.com/arize-assets/fixtures/crewai_traces.png)
 
-<CardGroup>
-  <Card title="Deploy automations" href="https://docs-platform.crewai.com/platform/en/features/automations" icon="server">
-    Manage environments, redeploy safely, and monitor live runs directly from the Enterprise console.
-  </Card>
+### Version Compatibility Information
 
-  <Card title="Triggers & Flows" href="https://docs-platform.crewai.com/platform/en/guides/automation-triggers" icon="bolt">
-    Connect Gmail, Slack, Salesforce, and more. Pass trigger payloads into crews and flows automatically.
-  </Card>
+* Python 3.8+
+* CrewAI >= 0.86.0
+* Arize Phoenix >= 7.0.1
+* OpenTelemetry SDK >= 1.31.0
 
-  <Card title="Team management" href="https://docs-platform.crewai.com/platform/en/guides/team-management" icon="users-gear">
-    Invite teammates, configure RBAC, and control access to production automations.
-  </Card>
-</CardGroup>
+### References
 
-## What’s new
-
-<CardGroup>
-  <Card title="Triggers overview" href="https://docs-platform.crewai.com/platform/en/guides/automation-triggers" icon="sparkles">
-    Unified overview for Gmail, Drive, Outlook, Teams, OneDrive, HubSpot, and more — now with sample payloads and crews.
-  </Card>
-
-  <Card title="Integration tools" href="/en/tools/integration/overview" icon="plug">
-    Call existing CrewAI automations or Amazon Bedrock Agents directly from your crews using the updated integration toolkit.
-  </Card>
-</CardGroup>
-
-<Callout title="Explore real-world patterns" icon="github">
-  Browse the <a href="/en/examples/cookbooks">examples and cookbooks</a> for end-to-end reference implementations across agents, flows, and enterprise automations.
-</Callout>
-
-## Stay connected
-
-<CardGroup>
-  <Card title="Star us on GitHub" href="https://github.com/crewAIInc/crewAI" icon="star">
-    If CrewAI helps you ship faster, give us a star and share your builds with the community.
-  </Card>
-
-  <Card title="Join the community" href="https://community.crewai.com" icon="comments">
-    Ask questions, showcase workflows, and request features alongside other builders.
-  </Card>
-</CardGroup>
+* [Phoenix Documentation](https://docs.arize.com/phoenix/) - Overview of the Phoenix platform.
+* [Arize AX](https://arize.com/products/ax/) - Managed cloud and enterprise self-hosted observability and evaluation.
+* [Arize agent evaluation guide](https://arize.com/guides/ai-agent-handbook/agent-evaluation/) - Production workflow for evaluating agent behavior from traces.
+* [Arize LLM evaluation guide](https://arize.com/resources/llm-evaluation/) - Methods and metrics for evaluating LLM applications.
+* [CrewAI Documentation](https://docs.crewai.com/) - Overview of the CrewAI framework.
+* [OpenTelemetry Docs](https://opentelemetry.io/docs/) - OpenTelemetry guide
+* [OpenInference GitHub](https://github.com/openinference/openinference) - Source code for OpenInference SDK.

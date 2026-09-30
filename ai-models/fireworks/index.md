@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 383 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -198,7 +198,6 @@
 ## fine-tuning
 
 - `fine-tuning/agent/use-with-coding-agents` — [Agent Skills](pages/fine-tuning/agent/use-with-coding-agents.md) · [原文](https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents)
-- `fine-tuning/connect-environments` — [Remote Environment Setup](pages/fine-tuning/connect-environments.md) · [原文](https://docs.fireworks.ai/fine-tuning/connect-environments)
 - `fine-tuning/cost-estimator` — [Training cost estimator](pages/fine-tuning/cost-estimator.md) · [原文](https://docs.fireworks.ai/fine-tuning/cost-estimator)
 - `fine-tuning/deploying-loras` — [Deploying Trained Models](pages/fine-tuning/deploying-loras.md) · [原文](https://docs.fireworks.ai/fine-tuning/deploying-loras)
 - `fine-tuning/dpo-fine-tuning` — [Preference Optimization with DPO or ORPO](pages/fine-tuning/dpo-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/dpo-fine-tuning)
@@ -208,10 +207,7 @@
 - `fine-tuning/managed-finetuning-intro` — [Managed Training Overview](pages/fine-tuning/managed-finetuning-intro.md) · [原文](https://docs.fireworks.ai/fine-tuning/managed-finetuning-intro)
 - `fine-tuning/models` — [Models](pages/fine-tuning/models.md) · [原文](https://docs.fireworks.ai/fine-tuning/models)
 - `fine-tuning/multi-turn-cost-comparison` — [RL rollout cost comparison vs Tinker](pages/fine-tuning/multi-turn-cost-comparison.md) · [原文](https://docs.fireworks.ai/fine-tuning/multi-turn-cost-comparison)
-- `fine-tuning/quickstart-math` — [Single-Turn Training Quickstart](pages/fine-tuning/quickstart-math.md) · [原文](https://docs.fireworks.ai/fine-tuning/quickstart-math)
-- `fine-tuning/quickstart-svg-agent` — [Remote Agent Quickstart](pages/fine-tuning/quickstart-svg-agent.md) · [原文](https://docs.fireworks.ai/fine-tuning/quickstart-svg-agent)
-- `fine-tuning/reinforcement-fine-tuning-models` — [Reinforcement Fine-Tuning](pages/fine-tuning/reinforcement-fine-tuning-models.md) · [原文](https://docs.fireworks.ai/fine-tuning/reinforcement-fine-tuning-models)
-- `fine-tuning/rft-parameters-reference` — [RFT parameters reference](pages/fine-tuning/rft-parameters-reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/rft-parameters-reference)
+- `fine-tuning/rft-parameters-reference` — [RL parameters reference](pages/fine-tuning/rft-parameters-reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/rft-parameters-reference)
 - `fine-tuning/rl-rollout-integration` — [RL Rollouts with Your Own Trainer](pages/fine-tuning/rl-rollout-integration.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-integration)
 - `fine-tuning/thinking-history` — [Thinking history in training](pages/fine-tuning/thinking-history.md) · [原文](https://docs.fireworks.ai/fine-tuning/thinking-history)
 - `fine-tuning/training-api/cookbook/agentic-rl` — [Cookbook: Agentic Reinforcement Learning](pages/fine-tuning/training-api/cookbook/agentic-rl.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/agentic-rl)

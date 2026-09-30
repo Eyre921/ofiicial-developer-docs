@@ -8,51 +8,70 @@ path: docs/reception-ai/scheduling/staff
 
 # Staff
 
-Staff members represent the people who deliver your services. The scheduling system uses their availability, service assignments, and calendar data to determine which time slots to offer customers.
+Staff members represent the people who deliver your services. The scheduling system uses their hours, service assignments, and calendar data to decide which time slots to offer.
+
+> **Note**
+>
+> Staff members are the people you schedule. They do not get access to the Reception.ai dashboard.
 
 ## How staff affect availability
 
 When a customer wants to book a service, the system:
 
-1. Identifies which staff members can perform that service
-2. Checks who is working at the requested time
-3. Excludes anyone with a conflicting appointment or busy Google Calendar event
-4. Offers the remaining open slots
+1. Identifies which staff members can perform that service.
+2. Checks who is working at the requested time and location.
+3. Excludes anyone with a conflicting appointment, time off, or a busy Google Calendar event.
+4. Offers the remaining open slots.
 
-If no qualified staff member is available, the slot is not offered — even if the business is technically open.
+If no qualified staff member is available, the slot is not offered, even if the location is open.
 
-## Schedule options
+## Staff settings
 
-Each staff member's working hours can be configured independently:
+Open **Staff** in the sidebar and select a staff member. Settings are grouped into:
 
-* **Inherit company hours** — Follows the business-wide schedule automatically. Changes to business hours propagate to these staff members.
-* **Custom schedule** — Per-day time slots independent of business hours. Use for part-time employees or staggered shifts.
-* **Location-specific hours** — Different availability per location. A stylist might work Monday–Wednesday at one salon and Thursday–Saturday at another.
+| Section           | What it contains                                                                      |
+| ----------------- | ------------------------------------------------------------------------------------- |
+| **Basic info**    | Full name, display name (the name customers see), groups, email, phone, and location  |
+| **Working hours** | Location hours or a custom schedule                                                   |
+| **Services**      | Services this person is individually assigned to, and services available to all staff |
+| **Time off**      | Vacation, sick days, and other leave                                                  |
+| **Calendars**     | Google Calendar connection                                                            |
+
+Additional options:
+
+* **Active (available for bookings)**: turn off to stop booking this person without deleting them.
+* **Display on public booking page**: turn off to make this person bookable by phone only.
+* **Opted in to receive SMS booking notifications**: allows SMS notifications to this person. This is turned off automatically if they reply STOP.
+
+## Working hours
+
+Each staff member belongs to one location, or to all locations. Their working hours are either:
+
+* **Follow location hours**: the staff member works whenever their location is open. Changes to location hours apply automatically.
+* **Custom schedule**: per-day time blocks, for part-time employees or staggered shifts.
 
 ## Service assignments
 
-Assigning a staff member to a service is bidirectional — it updates both the staff profile and the service configuration. Only assigned staff appear as options when that service is booked.
+Services use **Any staff can do it** by default, so every active staff member can be booked for them. To restrict a service to certain people, turn this off on the service and assign staff individually. Assignments update both the staff profile and the service.
 
-For services with **random assignment** enabled, the system automatically picks whichever qualified staff member has the earliest available slot.
+## Booking notifications
+
+Staff can be notified by email or SMS when a booking assigned to them is created, updated, or cancelled. See [Notifications and SMS](/docs/reception-ai/features/notifications).
 
 ## Google Calendar sync
 
-Connecting a staff member's Google Calendar enables two-way awareness:
+Connect a staff member's Google Calendar from the **Calendars** section:
 
-* **Inbound** — Personal calendar events block Reception.ai availability in real-time. If Google shows "busy," that slot is not offered.
-* **Outbound** — Reception.ai bookings can sync back to their Google Calendar so staff see appointments alongside personal events.
+* **Check availability from**: calendars whose busy times block Reception.ai availability. You can select several.
+* **Sync new bookings to**: the calendar where Reception.ai adds new bookings, or **Do not sync bookings**.
 
-You choose which of their calendars to monitor for conflicts (work, personal, or both).
+See [Google Calendar](/docs/reception-ai/integrations/google-calendar) for setup.
 
 > **Info**
 >
-> If a staff member's Google Calendar connection expires or becomes unhealthy, their availability
-> won't reflect external events. This may lead to double-bookings until the connection is restored.
+> If a staff member's Google Calendar connection needs reconnecting, their availability won't
+> reflect external events. This may lead to double-bookings until the connection is restored.
 
 ## Staff on the booking page
 
-On your public booking page, you control whether customers can pick a specific person:
-
-* **Show all staff** (default) — Customers choose who they want
-* **Hide specific staff** — Some team members are only bookable by phone
-* **Disable selection** — The system auto-assigns based on availability; customers just pick a time
+On your booking page, customers can choose a specific person when **Show staff member selection** is on in the booking page setup. Staff with **Display on public booking page** turned off are hidden. Customers can also select **Any staff** to see all available times.

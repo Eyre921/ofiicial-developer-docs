@@ -176,7 +176,6 @@ To see which connected accounts have enabled Crypto, check whether their `crypto
 
 ## See also
 
-- [Stripe Crypto](https://docs.stripe.com/crypto.md)
 - [Accept stablecoin payments](https://docs.stripe.com/payments/accept-stablecoin-payments.md)
 - [Enable crypto purchases with a fiat-to-crypto onramp](https://docs.stripe.com/crypto/onramp.md)
 

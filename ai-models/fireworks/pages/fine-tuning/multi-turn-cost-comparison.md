@@ -91,9 +91,9 @@ Useful signals:
   [Reading Training API efficiency metrics](#reading-training-api-efficiency-metrics)
   below for how to access and interpret them.
 
-If the deployment is not saturated, increase rollout traffic first. For managed
-RFT and Training API jobs, the main throughput knob is concurrent rollouts; see
-[`max_concurrent_rollouts`](/fine-tuning/rft-parameters-reference)
+If the deployment is not saturated, increase rollout traffic first. The main
+throughput knob is concurrent rollouts; see
+[`max_concurrency_rollout_sample`](/fine-tuning/training-api/cookbook/rl#scheduling-controls)
 and the Training API [deployment replica guidance](/fine-tuning/training-api/reference/deployment-manager#deployment-shape-and-training-shapes).
 
 #### Reading Training API efficiency metrics
@@ -211,8 +211,8 @@ and effective context window between providers before drawing conclusions.
 
 * Tinker pricing: [thinkingmachines.ai/tinker](https://thinkingmachines.ai/tinker)
 * Fireworks GPU-hour pricing: [fireworks.ai/pricing](https://fireworks.ai/pricing)
-* Related: [RFT Cost Estimator](/fine-tuning/reinforcement-fine-tuning-models#rft-cost-planning) — same idea, but
-  for the training-side bill (Fireworks GPU-hour, no comparison column).
+* Related: [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl) — the recipe these
+  rollout and scheduling numbers describe.
 
 <Warning>
   This is an estimator, not a quote (updated). Real costs depend on your exact

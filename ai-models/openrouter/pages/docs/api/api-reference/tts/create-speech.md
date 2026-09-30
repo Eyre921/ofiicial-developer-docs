@@ -66,6 +66,8 @@ tags:
     name: Datasets
   - description: Text embedding endpoints
     name: Embeddings
+  - description: End Users endpoints
+    name: End Users
   - description: Endpoint information
     name: Endpoints
   - description: Files endpoints
@@ -363,8 +365,9 @@ components:
           type: string
         speed:
           description: >-
-            Playback speed multiplier. Only used by models that support it (e.g.
-            OpenAI TTS). Ignored by other providers.
+            Playback speed multiplier. Honored by models that support it (e.g.
+            OpenAI TTS). Other providers either ignore it or return a 400 for a
+            non-default value when the model has no speed control.
           example: 1
           format: double
           type: number

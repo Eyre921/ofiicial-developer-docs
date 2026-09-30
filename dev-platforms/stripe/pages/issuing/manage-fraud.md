@@ -167,7 +167,7 @@ The following are metrics we recommend monitoring to help identify and measure f
 
 Leading metrics are metrics that can help you identify potential fraud in its early stages.
 
-- Authorization declines due to incorrect verification data (CVC2, expiry date), over time.
+- Authorization declines because of incorrect verification data (CVC2, expiration date), over time.
 - Authorization rate, over time.
 - Authorizations outside of geographic footprint, over time.
 - Authorizations by acquiring business country, over time.

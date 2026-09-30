@@ -8,59 +8,50 @@ path: docs/reception-ai/integrations/webhooks
 
 # Webhooks
 
-Webhook integrations expose custom HTTP endpoints as tools that the receptionist or business assistant can call during conversations. Unlike passive notification systems, the AI actively invokes these endpoints when the conversation context requires it.
+The **Webhook Tool** integration exposes your HTTP endpoints as tools that your receptionist or business assistant can call during conversations. The AI decides when to call the endpoint based on the conversation.
 
 ## How webhook tools work
 
-When you create a webhook integration, you define:
+When you create a webhook tool, you define:
 
-1. An HTTP endpoint your receptionist can call
-2. A description of what it does (so the AI knows when to use it)
-3. Parameters the AI should collect from the conversation
+1. An HTTP endpoint to call.
+2. A description of what it does, so the AI knows when to use it.
+3. Parameters the AI should collect from the conversation.
 
-During a call, if the conversation matches the tool's purpose, your receptionist calls the endpoint, processes the response, and continues the conversation.
+During a call, when the conversation matches the tool's purpose, your receptionist collects the parameters, calls the endpoint, and uses the response to continue the conversation.
 
 ## Creating a webhook tool
 
-1. Go to **Integrations** → click **Webhook**
-2. Click **Add webhook**
-3. Configure:
+Go to **Integrations**, select **Add integration**, and choose **Webhook Tool**. Configure the fields below and select **Enable**. You can add multiple webhook tools.
 
-| Field                     | Description                                          |
-| ------------------------- | ---------------------------------------------------- |
-| **Name**                  | Tool name the AI sees internally                     |
-| **Description**           | When and why to use this tool (helps the AI decide)  |
-| **URL**                   | Your HTTP endpoint                                   |
-| **Method**                | GET, POST, PUT, PATCH, or DELETE                     |
-| **Body parameters**       | Parameters sent in the request body                  |
-| **Query parameters**      | Parameters sent as URL query strings                 |
-| **Response timeout**      | How long to wait for your server (seconds)           |
-| **Disable interruptions** | Prevent caller from interrupting while tool executes |
-| **Agent targets**         | Which agents can use this tool                       |
+| Field                          | Description                                                  |
+| ------------------------------ | ------------------------------------------------------------ |
+| **Name**                       | Tool name the AI sees, for example `check_order_status`      |
+| **Description**                | When and why to use this tool                                |
+| **Method**                     | GET, POST, PUT, PATCH, or DELETE                             |
+| **URL**                        | Your HTTP endpoint                                           |
+| **Response timeout (seconds)** | How long to wait for your server: 5–120 seconds, default 20  |
+| **Assign to agents**           | **Receptionist**, **Assistant agent**, or both               |
+| **Disable interruptions**      | Prevent the caller from interrupting while the tool runs     |
+| **Request Headers**            | Optional headers sent with every request, such as an API key |
+| **Body Parameters**            | Parameters sent in the request body                          |
+| **Query Parameters**           | Parameters sent as URL query strings                         |
 
 ### Parameters
 
 Each parameter has:
 
-* **Key** — The field name
-* **Type** — `string`, `number`, or `boolean`
-* **Description** — What value the AI should extract from the conversation
-* **Required** — Whether the AI must collect this before calling
-
-## Agent targets
-
-Assign each webhook tool to:
-
-* **Customer-facing receptionist** — Available during phone calls
-* **Business assistant** — Available in the dashboard chat
-* **Both** — Available everywhere
+* **Key**: the field name.
+* **Type**: `string`, `number`, or `boolean`.
+* **Description**: what value the AI should extract from the conversation.
+* **Required**: whether the AI must collect it before calling.
 
 ## Use cases
 
 | Scenario        | Description                                           | Method |
 | --------------- | ----------------------------------------------------- | ------ |
 | CRM lookup      | Look up customer info in your system                  | GET    |
-| Inventory check | Check product availability in real-time               | GET    |
+| Inventory check | Check product availability in real time               | GET    |
 | Lead capture    | Send caller details to your marketing system          | POST   |
 | Ticket creation | Create a support ticket during the call               | POST   |
 | Price quote     | Calculate a custom quote based on caller requirements | POST   |
@@ -69,14 +60,13 @@ Assign each webhook tool to:
 
 A plumbing business creates a webhook tool:
 
-* **Name:** "Check availability in area"
-* **Description:** "Check if we service the caller's zip code and what the next available slot is"
+* **Name:** `check_service_area`
+* **Description:** "Check if we service the caller's zip code and what the next available slot is."
 * **URL:** `https://api.mybusiness.com/check-area`
 * **Method:** POST
-* **Parameters:** `zip_code` (string, required), `service_type` (string, required)
+* **Request Headers:** `Authorization` set to the business's API key
+* **Body Parameters:** `zip_code` (string, required), `service_type` (string, required)
 
-During a call, when someone asks about availability in their area, the receptionist collects their zip code, calls the webhook, and tells them the result.
+When a caller asks about service in their area, the receptionist collects their zip code, calls the webhook, and tells them the result.
 
-> **Note**
->
-> Webhook integrations require the **Basic** plan or higher.
+Webhook tools are available on every plan.

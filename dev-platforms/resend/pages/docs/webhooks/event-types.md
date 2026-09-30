@@ -320,3 +320,181 @@ List of supported event types and their payload.
     </div>
   </div>
 </div>
+
+## Inbox Events
+
+Inboxes are in private beta. Every inbox event's `data` has `source` and `inbox_id`, plus the IDs and objects that apply to the event. Keys that don't apply are left out, not sent as `null`.
+
+The `thread`, `email`, `draft` and `inbox` objects are loaded when the webhook is sent, not when the change happened, so two quick changes can both show the second state. `email` and `draft` leave out `html` and `text`; fetch the body from the API. Retries keep the same `svix-id` header, so dedupe on it.
+
+<div>
+  <div>
+    <div>
+      <span />
+
+      [`inbox.created`](/docs/webhooks/inboxes/created)
+    </div>
+
+    <div>
+      Occurs whenever an **inbox is created**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.updated`](/docs/webhooks/inboxes/updated)
+    </div>
+
+    <div>
+      Occurs whenever an **inbox's settings change**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.deleted`](/docs/webhooks/inboxes/deleted)
+    </div>
+
+    <div>
+      Occurs whenever an **inbox is deleted**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.thread.created`](/docs/webhooks/inboxes/thread-created)
+    </div>
+
+    <div>
+      Occurs whenever the **first email of a thread** lands in the inbox,
+      inbound or outbound.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.thread.folder.updated`](/docs/webhooks/inboxes/thread-folder-updated)
+    </div>
+
+    <div>
+      Occurs whenever a **thread moves between folders**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.thread.assigned`](/docs/webhooks/inboxes/thread-assigned)
+    </div>
+
+    <div>
+      Occurs whenever a **thread is assigned or reassigned**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.thread.unassigned`](/docs/webhooks/inboxes/thread-unassigned)
+    </div>
+
+    <div>
+      Occurs whenever a **thread is unassigned**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.thread.labels.updated`](/docs/webhooks/inboxes/thread-labels-updated)
+    </div>
+
+    <div>
+      Occurs whenever a **label is applied to or removed from a thread**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.email.received`](/docs/webhooks/inboxes/email-received)
+    </div>
+
+    <div>
+      Occurs whenever an **inbound email is added to a thread**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.email.sent`](/docs/webhooks/inboxes/email-sent)
+    </div>
+
+    <div>
+      Occurs whenever an **outbound email is accepted for delivery** and added
+      to a thread.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.draft.created`](/docs/webhooks/inboxes/draft-created)
+    </div>
+
+    <div>
+      Occurs whenever a **draft is created**, standalone or reply.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.draft.updated`](/docs/webhooks/inboxes/draft-updated)
+    </div>
+
+    <div>
+      Occurs whenever a **draft is edited**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.draft.sent`](/docs/webhooks/inboxes/draft-sent)
+    </div>
+
+    <div>
+      Occurs whenever a **draft is sent**.
+    </div>
+  </div>
+
+  <div>
+    <div>
+      <span />
+
+      [`inbox.draft.deleted`](/docs/webhooks/inboxes/draft-deleted)
+    </div>
+
+    <div>
+      Occurs whenever a **draft is discarded**.
+    </div>
+  </div>
+</div>

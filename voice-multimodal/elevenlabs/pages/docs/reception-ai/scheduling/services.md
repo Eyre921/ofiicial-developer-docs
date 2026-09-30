@@ -8,7 +8,7 @@ path: docs/reception-ai/scheduling/services
 
 # Services
 
-Services define what your customers can book. Each service has a type that determines how it behaves — who performs it, where it happens, and what resources are needed.
+Services define what your customers can book. Manage them in **Business** → **Services**. Each service has a type that determines who performs it, where it happens, and what resources it needs.
 
 ## Service types
 
@@ -17,15 +17,15 @@ Choose a type when you create a service. The type is permanent and cannot be cha
 | Type              | How it works                                                      | Example                            |
 | ----------------- | ----------------------------------------------------------------- | ---------------------------------- |
 | **Appointment**   | One client books a time slot with a staff member at your location | Haircut, consultation, massage     |
-| **Home / mobile** | You travel to the client's location — includes travel time buffer | Plumber, cleaning, mobile grooming |
+| **Home / mobile** | You travel to the client's location, with travel time blocked     | Plumber, cleaning, mobile grooming |
 | **Group session** | Multiple clients register for a scheduled session                 | Yoga class, workshop, tour         |
 | **Rental**        | Clients book an asset for a time period                           | Court, kayak, studio, vehicle      |
 
-Each type changes what configuration options are available. Rentals use assets instead of staff. Home/mobile services include travel time padding. Group sessions allow multiple registrants per slot.
+Each type changes the available options. Rentals use assets instead of staff. Home and mobile services include travel time. Group sessions allow multiple registrants per slot.
 
 ## Variants
 
-Every service needs at least one variant — a duration and price combination. Use variants to offer the same service at different lengths:
+Every service needs at least one variant: a duration and price combination. Use variants to offer the same service at different lengths:
 
 | Variant  | Duration | Price |
 | -------- | -------- | ----- |
@@ -33,35 +33,57 @@ Every service needs at least one variant — a duration and price combination. U
 | Standard | 60 min   | \$90  |
 | Extended | 90 min   | \$125 |
 
-You can have up to 20 variants per service. Each must have a unique duration. Variants can be individually activated or deactivated without deleting them.
+You can have up to 20 variants per service, each with a unique duration. Variants can be activated or deactivated without deleting them.
 
-## Buffer time and scheduling logic
+Price is optional. Leave it empty if the price varies. The booking page then shows the service as "Price on request".
 
-Buffer time blocks minutes before and/or after each appointment for setup, cleanup, or transition. A 60-minute massage with 15 minutes of buffer effectively blocks 75 minutes in the calendar.
+When you change a price, Reception.ai asks whether to update the price of existing appointments or keep the old prices.
 
-**Advance booking** controls how far into the future customers can schedule — from same-day to up to one year ahead.
+## Quote-only services
 
-**Travel time** (home/mobile services only) adds padding before and/or after the appointment for transit between locations.
+Turn on **Price set later (requires a quote)** for jobs you can't price up front, such as a roof repair. Price fields are hidden, and instead of booking, the receptionist and booking page collect a [quote request](/docs/reception-ai/features/quote-requests) for you to review.
+
+Group sessions cannot be quote-only.
+
+## Intake questions
+
+Use the **Intake questions** tab to collect details when a customer books or requests a quote, for example "How many rooms need cleaning?".
+
+* **Types**: text, number, or choice (up to 20 options).
+* **Required**: enforced on the booking page. On calls, the receptionist is instructed to ask it.
+* **Limit**: up to 10 questions per service.
+
+Answers appear on the booking, order, or quote request.
+
+## Buffer and travel time
+
+**Buffer** blocks extra minutes after each appointment for cleanup or transition. A 60-minute massage with a 15-minute buffer blocks 75 minutes. For rentals this is labeled time between rentals; for group sessions, cleanup time after each session.
+
+**Travel time** (home and mobile services only) blocks time before and/or after the appointment for travel, up to 480 minutes.
 
 ## Staff and asset assignment
 
-Each service needs either staff or assets (or both) assigned to it:
+Each service needs staff, assets, or both:
 
-* **Staff** — Only assigned staff appear as available for this service. Choose specific people or enable random assignment to auto-assign whoever is free.
-* **Assets** — If the service requires a physical resource (room, chair, equipment), assign it. The service is only bookable when the asset is free.
+* **Staff**: **Any staff can do it** is on by default, so any staff member can be booked. Turn it off to choose specific people.
+* **Assets**: if the service needs a physical resource, assign it. The service is only bookable when the asset is free.
 
-Rental services skip staff assignment entirely — the asset itself is what gets booked.
+Rental services skip staff assignment. The asset itself is booked.
+
+## Locations
+
+Choose which [locations](/docs/reception-ai/scheduling/locations) offer the service. Leave it empty to offer the service everywhere.
 
 ## Add-ons
 
-Add-ons are optional extras customers can include when booking. Each add-on can extend the appointment duration, add cost, or both. Up to 10 per service.
+Add-ons are optional extras customers can include when booking. Each add-on can extend the duration, add cost, or both. Up to 10 per service.
 
-For group sessions, add-ons only affect price (not duration), since all participants share the same time slot.
+For group sessions, add-ons only affect price, since all participants share the same time slot.
 
 ## Promotions
 
-Time-limited discounts that apply to a service or a specific add-on. Each promotion targets specific days of the week and a date range. Your receptionist mentions active promotions when booking over the phone.
+Time-limited discounts on a service, a specific variant, or a specific add-on. Each promotion has a date range and optional active days of the week. Up to 10 per service. Your receptionist mentions active promotions when booking.
 
-## Display order
+## Groups and display order
 
-The order you arrange services determines how they appear on your booking page and the sequence your receptionist uses when listing options to callers.
+Organize services into groups, and order them within each group. This order determines how services appear on your booking page and how your receptionist lists them to callers. Turn off **Display on booking page** to offer a service by phone only.

@@ -5,7 +5,7 @@ path: docs/api-reference/inboxes/get-thread
 ---
 
 GET /inboxes/:inbox_id/threads/:thread_id
-Retrieve a thread with its full message history.
+Retrieve a thread summary.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -21,7 +21,7 @@ Retrieve a thread with its full message history.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.28.1-preview-inboxes.1
+    npm install resend@6.28.1-preview-inboxes.2
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -29,6 +29,9 @@ Retrieve a thread with its full message history.
     ```
   </CodeGroup>
 </Warning>
+
+The response is the thread summary. Messages are listed separately with [List
+Thread Emails](/docs/api-reference/inboxes/list-thread-emails).
 
 ## Path Parameters
 
@@ -65,83 +68,6 @@ Retrieve a thread with its full message history.
 
 <ParamField type="boolean">
   True only when every message in the thread is read.
-</ParamField>
-
-<ParamField type="array">
-  The thread's messages, oldest first. The full history is returned in one
-  response.
-
-  <Expandable title="properties">
-    <ParamField type="string">
-      The ID of the message.
-    </ParamField>
-
-    <ParamField type="string">
-      Whether the message was received by the inbox or sent from it.
-    </ParamField>
-
-    <ParamField type="string">
-      Sender email address.
-    </ParamField>
-
-    <ParamField type="string[]">
-      The recipients of the message.
-    </ParamField>
-
-    <ParamField type="string[]">
-      The CC recipients of the message.
-    </ParamField>
-
-    <ParamField type="string[]">
-      The BCC recipients of the message.
-    </ParamField>
-
-    <ParamField type="string[]">
-      The Reply-To addresses.
-    </ParamField>
-
-    <ParamField type="string | null">
-      The subject of the message.
-    </ParamField>
-
-    <ParamField type="string | null">
-      The Message-ID header of the message.
-    </ParamField>
-
-    <ParamField type="string | null">
-      The HTML body.
-    </ParamField>
-
-    <ParamField type="string | null">
-      The plain-text body.
-    </ParamField>
-
-    <ParamField type="array">
-      The attachments on the message.
-
-      <Expandable title="properties">
-        <ParamField type="string">
-          The ID of the attachment.
-        </ParamField>
-
-        <ParamField type="string | null">
-          The filename of the attachment.
-        </ParamField>
-
-        <ParamField type="number | null">
-          The size of the attachment in bytes.
-        </ParamField>
-      </Expandable>
-    </ParamField>
-
-    <ParamField type="boolean">
-      Whether the message has been read.
-    </ParamField>
-
-    <ParamField type="string">
-      ISO 8601 timestamp when the message arrived or was sent.
-    </ParamField>
-  </Expandable>
 </ParamField>
 
 <RequestExample>
@@ -182,31 +108,7 @@ Retrieve a thread with its full message history.
         "color": "crimson"
       }
     ],
-    "read": false,
-    "messages": [
-      {
-        "id": "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
-        "direction": "inbound",
-        "from": "Ada Lovelace <ada@example.org>",
-        "to": ["support@example.com"],
-        "cc": [],
-        "bcc": [],
-        "reply_to": ["replies@example.org"],
-        "subject": "Refund for order 1041",
-        "message_id": "<1041@example.org>",
-        "html": "<p>Could I get a refund for order 1041?</p>",
-        "text": "Could I get a refund for order 1041?",
-        "attachments": [
-          {
-            "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
-            "filename": "receipt.pdf",
-            "size": 20841
-          }
-        ],
-        "read": false,
-        "received_at": "2026-08-05T14:03:11.229Z"
-      }
-    ]
+    "read": false
   }
   ```
 </ResponseExample>

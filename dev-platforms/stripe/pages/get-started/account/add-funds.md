@@ -136,7 +136,7 @@ This table provides the expected timing for fund settlement based on the region 
 | Region and currency | Payment transfer method | Estimated speed |
 | --- | --- | --- |
 | USA (USD) | Wire transfer | 1-5 days |
-| USA (USD) | ACH Credit Transfer | 1-3 days |
+| USA (USD) | ACH Credit Transfer | 0–2 business days |
 | USA (USD) | ACH Debit Transfer | 5 days |
 | EU (EUR) | SEPA Credit Transfer | 1-2 days |
 | UK (GBP) | FPS | 1 hour |

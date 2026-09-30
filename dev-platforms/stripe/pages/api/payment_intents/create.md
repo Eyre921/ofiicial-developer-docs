@@ -597,6 +597,9 @@ Possible enum values:
   - `sepa_debit`
     [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md) is used to debit bank accounts within the Single Euro Payments Area (SEPA) region.
 
+  - `sequra`
+    SeQura is a payment method.
+
   - `sofort`
     [Sofort](https://docs.stripe.com/payments/sofort.md) is a bank redirect payment method used in Europe.
 

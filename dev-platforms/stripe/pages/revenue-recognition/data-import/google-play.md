@@ -20,6 +20,8 @@ Some benefits of using Stripe Revenue Recognition for Google Play include:
 
 To import data from Google Play, [set up Stripe’s Connector for Google Play](https://docs.stripe.com/data/import-external-data/connectors/google-play.md). It can take up to 24 hours for your reports to reflect imported data.
 
+The connector discovers apps from your Google Play reports and displays each app’s subscription catalog status in **App catalogs**. Give the service account access to each app whose catalog you want to import. Apps without report data don’t appear. A successfully fetched catalog doesn’t guarantee that every transaction includes subscription details or that revenue recognition is complete. Before reconciling, review your imported transactions and revenue recognition reports.
+
 ### Backfill historical data 
 
 When you onboard, the Connector backfills up to 1 year of historical data.

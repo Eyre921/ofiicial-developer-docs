@@ -35,16 +35,16 @@ Per-step loss and learning-rate artifacts are retained for 7 days after they are
     Train on preferred and non-preferred response pairs using DPO or ORPO
   </Card>
 
-  <Card title="Reinforcement Fine-Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
-    Train models using custom reward functions for complex reasoning tasks
+  <Card title="Reinforcement Learning" href="/fine-tuning/training-api/cookbook/rl" icon="brain">
+    Train against a reward function on the Training API. Managed RFT is deprecated.
   </Card>
 </CardGroup>
 
 ## Supported base models
 
-Fireworks supports training for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is decided per model and per method: a model can support SFT without supporting DPO or RFT.
+Fireworks supports training for major open source model families, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama. Eligibility is decided per model and per method: a model can support SFT without supporting DPO.
 
-[**Models**](/fine-tuning/models) is the live per-model matrix: the surfaces and methods each base model is enabled for, the training shapes behind it, and each shape's maximum context length. Check it before creating a job, and set the job context from a shape that supports the method you picked, using `firectl sftj create`, `firectl dpo-job create`, or the corresponding RFT command.
+[**Models**](/fine-tuning/models) is the live per-model matrix: the surfaces and methods each base model is enabled for, the training shapes behind it, and each shape's maximum context length. Check it before creating a job, and set the job context from a shape that supports the method you picked, using `firectl sftj create` or `firectl dpo-job create`.
 
 Custom models uploaded by users are not automatically tunable. To use managed training with an uploaded custom base model, the model must have a corresponding Hugging Face URL. Fireworks uses that URL to infer the training renderer and locate compatible training shapes. A custom model is supported only when Fireworks can resolve both a supported renderer and at least one compatible training shape. After the Hugging Face URL is set, tunability is refreshed by a background operation that runs about every 30 minutes, so the model may take up to 30 minutes to show as `Tunable: true`. We are working to make this refresh faster.
 

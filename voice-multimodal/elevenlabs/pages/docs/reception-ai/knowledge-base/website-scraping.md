@@ -8,30 +8,42 @@ path: docs/reception-ai/knowledge-base/website-scraping
 
 # Website scraping
 
-Website scraping lets your receptionist learn from your existing website content — FAQs, service descriptions, policies, and anything else published on your site.
+Website scraping lets your receptionist learn from your existing website: FAQs, service descriptions, policies, and anything else published on your site.
 
-## Scan types
+## Source types
 
-| Type            | What it does                                    | Best for                                 |
-| --------------- | ----------------------------------------------- | ---------------------------------------- |
-| **Single page** | Scans one specific URL                          | FAQ page, pricing page, specific policy  |
-| **Site crawl**  | Follows internal links and scans multiple pages | Entire website, blog with useful content |
+When adding a website source, choose:
 
-## Scan status
+| Type               | What it does                                                             | Best for                                |
+| ------------------ | ------------------------------------------------------------------------ | --------------------------------------- |
+| **Single page**    | Reads one specific URL                                                   | FAQ page, pricing page, specific policy |
+| **Entire website** | Finds and reads the pages on your site that contain business information | Your main website                       |
 
-After starting a scrape, you can track progress:
+URLs must use HTTPS.
 
-* **In progress** — Pages are being processed
-* **Completed** — All pages have been scanned and indexed
-* **Failed** — Something went wrong (check the URL and try again)
+## How an entire website is read
 
-Once complete, you can view a list of all scraped pages with extracted content summaries.
+Reception.ai reads your sitemap and homepage links, then selects the pages most likely to contain business information, such as services, pricing, team, locations, and help articles. Pages such as galleries, blog posts, and legal notices are skipped.
+
+| Scan           | When it runs                                                  | Pages read |
+| -------------- | ------------------------------------------------------------- | ---------- |
+| **Quick scan** | During onboarding                                             | Up to 15   |
+| **Deep scan**  | When you add an entire website, or read the rest of your site | Up to 80   |
+
+Booking platforms and social profiles, such as Facebook, Yelp, Vagaro, Booksy, or Calendly pages, are always read as a single page.
+
+### Reading the rest of your site
+
+Onboarding runs a quick scan only, so it's done in under a minute. To import the remaining pages, select **Read the rest of your site** on the [Home](/docs/reception-ai/features/home) page, or **Read more pages** on the website source. A deep scan can take several minutes.
+
+## Status
+
+While processing, a source shows its current step, such as crawling or extracting. When done, it shows **Ready** or **Error**.
+
+Select **Show scraped pages** on a source to see which pages were read.
+
+If a website can't be read, check the address. Some sites block automated access, for example with anti-bot protection. In that case, add individual pages or [upload the content as a file](/docs/reception-ai/knowledge-base/file-uploads).
 
 ## Keeping content current
 
-Websites change over time. Use **Reprocess** on a knowledge source to re-scan your website and update the receptionist's knowledge. Run this after making significant content changes to your site.
-
-> **Tip**
->
-> After updating pricing, services, or policies on your website, reprocess your knowledge source to
-> ensure your receptionist has the latest information.
+Websites change over time. For a single page, select **Reprocess** to read it again. For an entire website, select **Read more pages** to refresh everything. Do this after changing pricing, services, or policies on your site.

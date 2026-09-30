@@ -32,6 +32,10 @@ path: api/subscriptions
 
 - [POST /v1/subscriptions/:id/migrate](https://docs.stripe.com/api/subscriptions/migrate.md)
 
+### Pause a subscription
+
+- [POST /v1/subscriptions/:id/pause](https://docs.stripe.com/api/subscriptions/pause.md)
+
 ### Resume a subscription
 
 - [POST /v1/subscriptions/:id/resume](https://docs.stripe.com/api/subscriptions/resume.md)

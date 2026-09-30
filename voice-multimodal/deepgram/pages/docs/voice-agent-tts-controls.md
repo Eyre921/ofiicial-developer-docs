@@ -122,7 +122,7 @@ Put your pronunciation map and pacing rules in the system prompt and the Voice A
 
 ### Example system prompt snippet
 
-The inline pronunciation block below applies to Aura (`v1`) voices. With Flux TTS, keep the digit-grouping pacing rules and replace the inline block with plain-language pronunciation instructions: Flux TTS rejects text containing inline controls, ending the session with a `DATA-0002` error.
+The inline pronunciation block below works with Aura (`v1`) voices and with Flux TTS, where pronunciation control is in Early Access. Flux TTS does not support inline pause markers in the Voice Agent: text containing one is not spoken and no error is returned, so keep pacing to punctuation and digit grouping.
 
 ```text
 When saying the following terms, use these inline pronunciation controls so the
@@ -140,4 +140,4 @@ This keeps your pronunciation map and pacing rules in the LLM layer, not in a se
 
 > **Info**
 >
-> For Aura's override syntax, validation rules, and IPA sourcing tips, see [TTS Voice Controls](/docs/tts-voice-controls#pronunciation-control); check your provider's documentation when using a third-party voice. The curly braces must be escaped (`\{` and `\}`); unescaped braces are treated as plain text and read aloud. Flux TTS does not support inline pronunciation controls in the Voice Agent and rejects any request whose text contains them, ending the session with a `DATA-0002` error — prompt the LLM for the pronunciation you want instead. For pause and pacing techniques, see [Text to Speech Prompting](/docs/text-to-speech-prompting) and [Formatting Text for Aura-2](/docs/improving-aura-2-formatting).
+> For Aura's override syntax, validation rules, and IPA sourcing tips, see [TTS Voice Controls](/docs/tts-voice-controls#pronunciation-control); check your provider's documentation when using a third-party voice. The curly braces must be escaped (`\{` and `\}`); unescaped braces are treated as plain text and read aloud. Flux TTS passes inline pronunciation controls through in the Voice Agent (Early Access; validate each term by ear), but does not support inline pause markers: text containing one is not spoken and no error is returned. For pause and pacing techniques, see [Text to Speech Prompting](/docs/text-to-speech-prompting) and [Formatting Text for Aura-2](/docs/improving-aura-2-formatting).

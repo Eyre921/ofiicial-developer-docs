@@ -21,7 +21,7 @@ Create an inbox to send, receive and organize email.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.28.1-preview-inboxes.1
+    npm install resend@6.28.1-preview-inboxes.2
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -133,7 +133,7 @@ An inbox sends and receives email at an address on one of your domains, such as
     "name": "Customer Support",
     "email_address": "support@example.com",
     "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
-    "forwarding_address": null,
+    "receiving_address": null,
     "friendly_name": "Ada from Support",
     "unread": 0,
     "created_at": "2026-08-05T14:03:11.229Z"

@@ -12,16 +12,21 @@ path: docs/tts-voice-controls
 
 > **Info**
 >
-> **This page covers Aura-2 (`/v1/speak`) controls.** Flux TTS (`/v2/speak`) supports `speed` (`0.5`–`1.5` in `0.05` steps) and beta [Expressivity](/docs/tts-expressivity); pause and pronunciation are coming soon.
+> Pronunciation control on Flux TTS is in **Early Access**; see [Pronunciation control](#pronunciation-control). Some control combinations are invalid on Flux TTS: pronunciation cannot be combined with speed or pause. See [Combining controls](#combining-controls).
 
-Aura-2 Controls enable fine-grained adjustments to speech output, allowing you to modify speaking speed and override pronunciation for specific words. These controls are designed for enterprise use cases requiring precise voice quality for industry-specific terminology, brand names, and complex content.
+Flux TTS (`/v2/speak`) voice controls let you adjust speech output: change the speaking rate, insert silence, and override the pronunciation of specific words. They are designed for use cases that need precise delivery of industry terminology, brand names, and complex content.
+
+Aura-2 (`/v1/speak`) supports speed and pronunciation with the same syntax. Each section calls out where Aura-2 differs.
 
 ## Availability
 
-| Control               | [REST](/reference/text-to-speech/speak-request) | [WebSocket](/reference/text-to-speech/speak-streaming) | Languages                  |
-| --------------------- | ----------------------------------------------- | ------------------------------------------------------ | -------------------------- |
-| Speed control         | Yes                                             | Yes                                                    | English (en), Spanish (es) |
-| Pronunciation control | Yes                                             | Yes                                                    | English (en), Spanish (es) |
+| Control       | [Batch (REST)](/docs/flux-tts/batch) | [Streaming (WebSocket)](/docs/flux-tts/quickstart) | Aura-2        |
+| ------------- | ------------------------------------ | -------------------------------------------------- | ------------- |
+| Speed         | Yes                                  | Yes, including mid-stream `Configure`              | Yes           |
+| Pronunciation | Early Access                         | Early Access                                       | Yes           |
+| Pause         | Yes                                  | No                                                 | Not supported |
+
+Flux TTS controls are available in English. Aura-2 speed and pronunciation are available in English and Spanish.
 
 ## Speed control
 
@@ -29,13 +34,11 @@ Adjust the speaking rate of generated audio. Speed control modifies the pace of 
 
 ### Parameters
 
-| Parameter | Location | Type  | Default | Range         | Description              |
-| --------- | -------- | ----- | ------- | ------------- | ------------------------ |
-| `speed`   | query    | float | `1.0`   | `0.7` - `1.5` | Speaking rate multiplier |
+| Parameter | Location | Type  | Default | Range                               |
+| --------- | -------- | ----- | ------- | ----------------------------------- |
+| `speed`   | query    | float | `1.0`   | `0.5` - `1.5`, in `0.05` increments |
 
-> **Info**
->
-> For Spanish voices, the recommended speed range is `0.9` - `1.5`. Values below `0.9` may introduce disfluencies.
+On a streaming session, set `speed` as a connection parameter or change it mid-session with a [`Configure`](/docs/flux-tts/client-messages) message. The change applies at the next segment boundary.
 
 ### Example request
 
@@ -45,13 +48,14 @@ curl --request POST \
      --header "Authorization: Token DEEPGRAM_API_KEY" \
      --output your_output_file.mp3 \
      --data '{"text":"Hello, how can I help you today?"}' \
-     --url "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.9"
+     --url "https://api.deepgram.com/v2/speak?model=flux-haley-en&speed=0.9"
 ```
 
 ### Speed values
 
 | Value | Effect       | Use Case                                           |
 | ----- | ------------ | -------------------------------------------------- |
+| `0.5` | 50% slower   | Slowest supported rate                             |
 | `0.7` | 30% slower   | Language learning, accessibility, legal compliance |
 | `0.8` | 20% slower   | Complex instructions, elderly users                |
 | `0.9` | 10% slower   | Clear explanations, training content               |
@@ -60,13 +64,58 @@ curl --request POST \
 | `1.2` | 20% faster   | Quick alerts, time-sensitive content               |
 | `1.5` | 50% faster   | Rapid playback, content preview                    |
 
-> **Info**
+A value outside the range, or inside it but off the `0.05` increment, returns an error.
+
+> **Note**
 >
-> Speed values outside the 0.7x–1.5x range will return an error.
+> **Aura-2:** speed runs `0.7` - `1.5`, so `0.5` and `0.6` are not supported. For Aura-2 Spanish voices, the recommended range is `0.9` - `1.5`; values below `0.9` may introduce disfluencies.
+
+## Pause control
+
+Insert silence at a specific point in the text. Pause control is available on Flux TTS batch requests.
+
+> **Note**
+>
+> **Aura-2** does not support pause control. On Flux TTS streaming, a pause marker fails the connection with `DATA-0002`; use [batch](/docs/flux-tts/batch) for text with pauses.
+
+### Syntax
+
+Place an escaped pause marker where you want the silence:
+
+```text
+Your confirmation number is 4 7 2. \{pause:1s\} Is there anything else I can help with?
+```
+
+Write the duration in milliseconds (`\{pause:500\}` or `\{pause:500ms\}`) or seconds (`\{pause:1.5s\}`). A number with no unit is read as milliseconds. A structured form, `{pause:{duration_ms:500}}`, is also accepted and is easier for LLMs to generate. Write the structured form without backslashes; an escaped structured marker, or a simple marker without backslashes, is rejected with `BREAK_SYNTAX_INVALID`.
+
+### Example request
+
+```bash
+curl --request POST \
+     --header "Content-Type: application/json" \
+     --header "Authorization: Token DEEPGRAM_API_KEY" \
+     --output your_output_file.mp3 \
+     --data '{"text":"Your confirmation number is 4 7 2. \\{pause:1s\\} Is there anything else I can help with?"}' \
+     --url "https://api.deepgram.com/v2/speak?model=flux-haley-en"
+```
+
+### Validation rules
+
+| Rule                          | Limit                                                      |
+| ----------------------------- | ---------------------------------------------------------- |
+| Duration range                | 500 ms to 3000 ms                                          |
+| Increment                     | 100 ms. Off-grid values are rejected, never rounded.       |
+| Max pause markers per request | 8                                                          |
+| Adjacent pauses               | Two pauses need text between them                          |
+| Delivery tolerance            | Pauses land within about ±100 ms of the requested duration |
 
 ## Pronunciation control
 
 Override the default pronunciation of specific words using International Phonetic Alphabet (IPA) notation.
+
+> **Warning**
+>
+> Pronunciation control on Flux TTS is in Early Access. The same override can come out differently from one generation to the next; some generations may not follow the IPA. Generate each term several times, on each voice you use, before you rely on it in production.
 
 ### Syntax
 
@@ -82,14 +131,25 @@ Where:
 * `pronounce` is the IPA phonetic transcription
 * Curly braces must be escaped with backslashes (`\{` and `\}`)
 
+### Writing IPA for Flux TTS
+
+Flux TTS was trained on a specific IPA style. Overrides that follow it are applied more reliably:
+
+* **Use broad (phonemic) transcription**, for example `kˈɑpiɹˌaɪt` (copyright). Leave out narrow phonetic detail.
+* **Use American pronunciations.** The model was trained mostly on American English.
+* **Always mark primary stress** with `ˈ`. Nearly every word the model was trained on carries one. You can place it before the syllable (`ˈkɑpi`) or directly before the vowel (`kˈɑpi`).
+* **Secondary stress is optional.** Add `ˌ` when you want more control over a long word.
+* **Use `ɹ` for the English r sound**, not `r`.
+* **Add length markers where the model slips.** If a vowel comes out short or swapped, mark it long: `-miːn` rather than `-min`.
+
 ### Example request
 
 ```bash
-curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8" \
+curl -X POST "https://api.deepgram.com/v2/speak?model=flux-haley-en" \
      -H "Authorization: token DEEPGRAM_API_KEY" \
      -H "Content-Type: application/json" \
      --output your_output_file.mp3 \
-     -d '{"text": "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpriːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}."}'
+     -d '{"text": "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpɹiːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}."}'
 ```
 
 > **Info**
@@ -101,8 +161,8 @@ curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8
 | Category      | Word         | IPA             | Spoken As              |
 | ------------- | ------------ | --------------- | ---------------------- |
 | Medical       | dupilumab    | `duːˈpɪljuːmæb` | "doo-PIL-yoo-mab"      |
-| Medical       | azathioprine | `æzəˈθaɪəpriːn` | "az-uh-THIGH-oh-preen" |
-| Brand         | Hermès       | `ɛərˈmɛz`       | "air-MEZ"              |
+| Medical       | azathioprine | `æzəˈθaɪəpɹiːn` | "az-uh-THIGH-oh-preen" |
+| Brand         | Hermès       | `ɛəɹˈmɛz`       | "air-MEZ"              |
 | Personal name | Nguyen       | `ˈwɪn`          | "win"                  |
 | Technical     | SQL          | `ˈsiːkwəl`      | "sequel"               |
 
@@ -128,33 +188,62 @@ A few rules of thumb for producing IPA for your own vocabulary:
 | Max pronunciations per request | 500                                                       |
 | Max IPA string length          | 128 characters                                            |
 | IPA length ratio               | Cannot exceed 10x the source word length (min floor = 15) |
-| Max input text length          | 2000 characters                                           |
+
+> **Note**
+>
+> **Aura-2** pronunciation control is generally available, with the same syntax and limits and a maximum input text length of 2000 characters. On Aura-2, place the stress mark directly before the vowel (`duːpˈɪljuːmæb`); a stress mark before a consonant returns a pronunciation warning.
 
 ## Combining controls
 
-Speed and pronunciation controls can be used together in the same request.
+| Combination           | Flux TTS                                                                                                                      |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Speed + pause         | Allowed, with `speed` capped at `1.15` when any pause marker is present. Speed on its own keeps the full `0.5` - `1.5` range. |
+| Speed + pronunciation | Rejected with `CONTROL_COMBINATION_INVALID` (a `speed` of `1.0` is exempt)                                                    |
+| Pause + pronunciation | Rejected with `CONTROL_COMBINATION_INVALID`                                                                                   |
+| All three             | Rejected with `CONTROL_COMBINATION_INVALID`                                                                                   |
+
+A `speed` of exactly `1.0` does not count as a speed control, so it never triggers these rules. On a streaming session, a pronunciation control sent on a connection opened with a `speed` other than `1.0`, or after a `Configure` that set one, fails the connection with `DATA-0002`. A mid-stream `Configure` that sets `speed` while a queued turn still carries a pronunciation control is refused with a `ConfigureFailure` (`CONTROL_COMBINATION_INVALID`), and the previous speed stays in force. Pronunciations in the turn that is already playing do not block it. See [ConfigureFailure codes](/docs/flux-tts/server-messages#configurefailure-codes).
+
+> **Note**
+>
+> **Aura-2** allows speed and pronunciation in the same request. Aura-2 has no pause control, so no other combinations apply.
+>
+> ```bash
+> curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8" \
+>      -H "Authorization: token DEEPGRAM_API_KEY" \
+>      -H "Content-Type: application/json" \
+>      --output medical_instructions.mp3 \
+>      -d '{"text": "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpɹiːn\"\\} twice daily."}'
+> ```
 
 ### Healthcare example
+
+This example uses pronunciation control, which is in Early Access on Flux TTS.
+
+**`cURL`**
+
+```curl cURL
+curl -X POST "https://api.deepgram.com/v2/speak?model=flux-haley-en" \
+     -H "Authorization: token DEEPGRAM_API_KEY" \
+     -H "Content-Type: application/json" \
+     --output medical_instructions.mp3 \
+     -d '{"text": "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpɹiːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}."}'
+```
 
 **`Python`**
 
 ```python Python
 from deepgram import DeepgramClient
-from deepgram.core.request_options import RequestOptions
 
 client = DeepgramClient(api_key="YOUR_API_KEY")
 
-# Speed control via request_options
-request_opts = RequestOptions(additional_query_parameters={"speed": "0.8"})
-
 # Inline IPA replacements with escaped curly braces
-text = r'Take \{"word": "Azathioprine", "pronounce": "æzəˈθaɪəpriːn"\} twice daily with \{"word": "dupilumab", "pronounce": "duːˈpɪljuːmæb"\}.'
+text = r'Take \{"word": "Azathioprine", "pronounce": "æzəˈθaɪəpɹiːn"\} twice daily with \{"word": "dupilumab", "pronounce": "duːˈpɪljuːmæb"\}.'
 
-response = client.speak.v1.audio.generate(
+response = client.speak.v2.audio.generate(
     text=text,
-    model="aura-2-thalia-en",
+    model="flux-haley-en",
     encoding="mp3",
-    request_options=request_opts
 )
 
 audio_bytes = b"".join(response)
@@ -166,9 +255,8 @@ with open("medical_instructions.mp3", "wb") as f:
 
 ```java Java
 import com.deepgram.DeepgramClient;
-import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
-import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestEncoding;
-import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
+import com.deepgram.resources.speak.v2.audio.requests.SpeakV2Request;
+import com.deepgram.resources.speak.v2.audio.types.AudioGenerateRequestEncoding;
 
 import java.io.InputStream;
 import java.io.FileOutputStream;
@@ -176,14 +264,13 @@ import java.io.FileOutputStream;
 DeepgramClient client = DeepgramClient.builder().build();
 
 // Inline IPA replacements with escaped curly braces
-String text = "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpriːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}.";
+String text = "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpɹiːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}.";
 
-InputStream audioStream = client.speak().v1().audio().generate(
-    SpeakV1Request.builder()
+InputStream audioStream = client.speak().v2().audio().generate(
+    SpeakV2Request.builder()
+        .model("flux-haley-en")
         .text(text)
-        .model(AudioGenerateRequestModel.AURA2THALIA_EN)
         .encoding(AudioGenerateRequestEncoding.MP3)
-        .speed(0.8)
         .build()
 );
 
@@ -192,21 +279,23 @@ try (FileOutputStream fos = new FileOutputStream("medical_instructions.mp3")) {
 }
 ```
 
-**`cURL`**
-
-```curl cURL
-curl -X POST "https://api.deepgram.com/v1/speak?model=aura-2-thalia-en&speed=0.8" \
-     -H "Authorization: token DEEPGRAM_API_KEY" \
-     -H "Content-Type: application/json" \
-     --output medical_instructions.mp3 \
-     -d '{"text": "Take \\{\"word\": \"Azathioprine\", \"pronounce\": \"æzəˈθaɪəpriːn\"\\} twice daily with \\{\"word\": \"dupilumab\", \"pronounce\": \"duːˈpɪljuːmæb\"\\}."}'
-```
-
 > **Info**
 >
 > Use raw string (`r'...'`) with escaped braces `\{` and `\}` for pronunciation control in Python.
 
-### Brand consistency example
+### Appointment reminder example
+
+Speed and pause can be combined as long as `speed` stays at or below `1.15`.
+
+**`cURL`**
+
+```curl cURL
+curl -X POST "https://api.deepgram.com/v2/speak?model=flux-haley-en&speed=0.9" \
+     -H "Authorization: token DEEPGRAM_API_KEY" \
+     -H "Content-Type: application/json" \
+     --output appointment_reminder.mp3 \
+     -d '{"text": "Your appointment is on Tuesday at 3 PM. \\{pause:800ms\\} Reply YES to confirm."}'
+```
 
 **`Python`**
 
@@ -215,47 +304,18 @@ from deepgram import DeepgramClient
 
 client = DeepgramClient(api_key="YOUR_API_KEY")
 
-# Ensure consistent brand pronunciation with escaped braces
-text = 'Visit \\{"word": "Hermès", "pronounce": "ɛərˈmɛz"\\} for the latest collection.'
+text = r"Your appointment is on Tuesday at 3 PM. \{pause:800ms\} Reply YES to confirm."
 
-response = client.speak.v1.audio.generate(
+response = client.speak.v2.audio.generate(
     text=text,
-    model="aura-2-thalia-en",
-    encoding="mp3"
+    model="flux-haley-en",
+    encoding="mp3",
+    speed=0.9,
 )
 
 audio_bytes = b"".join(response)
-with open("brand_pronunciation.mp3", "wb") as f:
+with open("appointment_reminder.mp3", "wb") as f:
     f.write(audio_bytes)
-```
-
-**`Java`**
-
-```java Java
-import com.deepgram.DeepgramClient;
-import com.deepgram.resources.speak.v1.audio.requests.SpeakV1Request;
-import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestEncoding;
-import com.deepgram.resources.speak.v1.audio.types.AudioGenerateRequestModel;
-
-import java.io.InputStream;
-import java.io.FileOutputStream;
-
-DeepgramClient client = DeepgramClient.builder().build();
-
-// Ensure consistent brand pronunciation with escaped braces
-String text = "Visit \\{\"word\": \"Hermès\", \"pronounce\": \"ɛərˈmɛz\"\\} for the latest collection.";
-
-InputStream audioStream = client.speak().v1().audio().generate(
-    SpeakV1Request.builder()
-        .text(text)
-        .model(AudioGenerateRequestModel.AURA2THALIA_EN)
-        .encoding(AudioGenerateRequestEncoding.MP3)
-        .build()
-);
-
-try (FileOutputStream fos = new FileOutputStream("brand_pronunciation.mp3")) {
-    audioStream.transferTo(fos);
-}
 ```
 
 ## IPA reference
@@ -269,7 +329,7 @@ try (FileOutputStream fos = new FileOutputStream("brand_pronunciation.mp3")) {
 | `eɪ`   | /beɪt/   | bait   |
 | `ɛ`    | /bɛt/    | bet    |
 | `æ`    | /bæt/    | bat    |
-| `ɑː`   | /fɑːðər/ | father |
+| `ɑː`   | /fɑːðɚ/  | father |
 | `ɔː`   | /kɔːt/   | caught |
 | `oʊ`   | /boʊt/   | boat   |
 | `ʊ`    | /pʊt/    | put    |
@@ -302,63 +362,107 @@ try (FileOutputStream fos = new FileOutputStream("brand_pronunciation.mp3")) {
 | `n`    | /nɛt/    | net    |
 | `ŋ`    | /sɪŋ/    | sing   |
 | `l`    | /lɛt/    | let    |
-| `r`    | /rɛd/    | red    |
+| `ɹ`    | /ɹɛd/    | red    |
 | `w`    | /wɪn/    | win    |
 | `j`    | /jɛs/    | yes    |
 
 ### Stress markers
 
-| Symbol | Meaning          | Example                         |
-| ------ | ---------------- | ------------------------------- |
-| `ˈ`    | Primary stress   | /ˈæp.əl/ (apple)                |
-| `ˌ`    | Secondary stress | /ˌɪn.fərˈmeɪ.ʃən/ (information) |
+| Symbol | Meaning          | Example                      |
+| ------ | ---------------- | ---------------------------- |
+| `ˈ`    | Primary stress   | /ˈæp.əl/ (apple)             |
+| `ˌ`    | Secondary stress | /ˌɪnfɚˈmeɪʃən/ (information) |
 
 ## Billing
 
-| Control       | Billing behavior                                    |
-| ------------- | --------------------------------------------------- |
-| Speed         | Not billed - adjusting rate doesn't affect billing  |
-| Pronunciation | Billed by underlying word - IPA input is not billed |
+| Control       | Billing behavior                                      |
+| ------------- | ----------------------------------------------------- |
+| Speed         | Not billed - adjusting rate doesn't affect billing    |
+| Pause         | Not billed - pause markers are removed before billing |
+| Pronunciation | Billed by underlying word - IPA input is not billed   |
 
 **Example**: `Hello, \{"word": "Mr.", "pronounce": "ˈmɪstɚ"\} Bond.` is billed as `Hello, Mr. Bond.` (16 characters)
 
-## Response headers
+## Reporting applied controls
+
+### Batch response headers
+
+Batch requests report applied controls in the response headers. Flux TTS (`/v2/speak`) and Aura-2 (`/v1/speak`) return the same headers.
 
 ```text
 HTTP/1.1 200 OK
 content-type: audio/mpeg
-dg-request-id: req_xyz789
-dg-model-name: aura-2-thalia-en
+dg-request-id: 3f2a9c1e-8b4d-4e2a-9f1c-7d6e5b4a3c21
+dg-model-name: flux-haley-en
 dg-char-count: 47
 dg-pronunciations-applied: 2
-dg-speed-used: 0.8
+dg-breaks-applied: 0
 ```
 
-| Header                      | Description                               |
-| --------------------------- | ----------------------------------------- |
-| `dg-pronunciations-applied` | Number of pronunciation overrides applied |
-| `dg-speed-used`             | Effective speaking rate used              |
-| `dg-pronunciation-warnings` | Non-fatal warnings for invalid IPA        |
+| Header                      | Description                                                                                                                                                                                        |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `dg-pronunciations-applied` | Number of pronunciation overrides applied                                                                                                                                                          |
+| `dg-breaks-applied`         | Number of pause markers applied. Always `0` on Aura-2, which does not support pause.                                                                                                               |
+| `dg-warnings`               | Comma-separated `PRON-NNN` codes for pronunciation overrides that triggered an IPA warning. Present only when there are warnings. See [Pronunciation warning codes](#pronunciation-warning-codes). |
+
+The response does not echo the `speed` value; it is the value you sent in the request.
+
+### Streaming
+
+On a streaming session, each turn's [`SpeechMetadata`](/docs/flux-tts/server-messages) reports `controls_applied`: `pronunciations_applied`, `breaks_applied`, and `pronunciation_warnings`.
+
+A pronunciation override that triggers an IPA warning is still applied best-effort and counted in `pronunciations_applied`; the warning is reported separately. Listen to any term that produced a warning before you ship it.
+
+### Pronunciation warning codes
+
+Batch requests list these codes in `dg-warnings`. On a streaming session, the same conditions produce a `PRONUNCIATION_WARNINGS` [`Warning`](/docs/flux-tts/server-messages#warning-codes).
+
+| Code       | Condition                                                           |
+| ---------- | ------------------------------------------------------------------- |
+| `PRON-001` | Invalid IPA character                                               |
+| `PRON-002` | Modifier (such as `ː` or `ʰ`) follows an invalid character          |
+| `PRON-003` | IPA string starts with a modifier (such as `ː`)                     |
+| `PRON-004` | Tie bar (`͡`) follows a non-base character                          |
+| `PRON-005` | Tie bar precedes a non-base character                               |
+| `PRON-006` | IPA string ends with a tie bar                                      |
+| `PRON-007` | IPA string starts with a tie bar                                    |
+| `PRON-008` | Stress mark precedes a non-vowel (Aura-2 only; Flux TTS accepts it) |
+| `PRON-009` | IPA string ends with a stress mark                                  |
 
 ## Error handling
 
-### Speed out of range
+Batch requests return a `400` with one of these `err_code` values:
 
-```json
-{"err_code": "speed_out_of_range", "err_msg": "Speed must be between 0.7 and 1.5"}
-```
+| `err_code`                    | Trigger                                                                                               |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `CONTROL_COMBINATION_INVALID` | Pronunciation combined with speed, pause, or both                                                     |
+| `PAUSE_SPEED_CAP_EXCEEDED`    | A pause marker with `speed` above `1.15`                                                              |
+| `BREAK_OUT_OF_RANGE`          | A pause shorter than 500 ms or longer than 3000 ms                                                    |
+| `BREAK_INCREMENT_INVALID`     | A pause duration off the 100 ms grid                                                                  |
+| `BREAKS_LIMIT_EXCEEDED`       | More than 8 pause markers, or two pauses with no text between them                                    |
+| `BREAK_SYNTAX_INVALID`        | A malformed pause marker, such as `{pause:800ms}` without backslashes or an escaped structured marker |
 
-### Invalid pronunciation
+Invalid IPA and invalid `speed` values are also rejected. On a streaming session, see the [warning](/docs/flux-tts/server-messages#warning-codes), [ConfigureFailure](/docs/flux-tts/server-messages#configurefailure-codes), and [error](/docs/flux-tts/server-messages#error-codes) codes.
 
-```json
-{"err_code": "pronunciation_invalid", "err_msg": "Invalid IPA notation for 'azathioprine'"}
-```
+> **Note**
+>
+> **Aura-2** returns these errors for speed and pronunciation:
+>
+> ```json
+> {"err_code": "speed_out_of_range", "err_msg": "Speed must be between 0.7 and 1.5"}
+> ```
+>
+> ```json
+> {"err_code": "pronunciation_invalid", "err_msg": "Invalid IPA notation for 'azathioprine'"}
+> ```
 
 ## Limits
 
-| Limit                          | Value           |
-| ------------------------------ | --------------- |
-| Max input text length          | 2000 characters |
-| Speed range                    | 0.7 - 1.5       |
-| Max pronunciations per request | 500             |
-| Max IPA string length          | 128 characters  |
+| Limit                          | Flux TTS                                           | Aura-2          |
+| ------------------------------ | -------------------------------------------------- | --------------- |
+| Speed range                    | 0.5 - 1.5 (0.05 increments; max 1.15 with a pause) | 0.7 - 1.5       |
+| Max pause markers per request  | 8                                                  | Not supported   |
+| Pause duration                 | 500 - 3000 ms (100 ms increments)                  | Not supported   |
+| Max pronunciations per request | 500                                                | 500             |
+| Max IPA string length          | 128 characters                                     | 128 characters  |
+| Max input text length          | See [Flux TTS batch](/docs/flux-tts/batch)         | 2000 characters |

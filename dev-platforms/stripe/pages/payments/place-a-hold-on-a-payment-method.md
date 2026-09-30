@@ -175,7 +175,7 @@ curl https://api.stripe.com/v1/payment_intents \
   -d "payment_method_options[card][capture_method]=automatic_delayed"
 ```
 
-With this approach, Stripe captures your card payment before the authorization expires, triggering the capture about 6 hours before the expiry time. This serves as a backup process to ensure we capture authorized payments before expiration. You can still manually [capture](https://docs.stripe.com/api/payment_intents/capture.md) or [cancel](https://docs.stripe.com/refunds.md#cancel-payment) the PaymentIntent before it’s automatically captured.
+With this approach, Stripe captures your card payment before the authorization expires, triggering the capture about 6 hours before the expiration time. This serves as a backup process to make sure we capture authorized payments before expiration. You can still manually [capture](https://docs.stripe.com/api/payment_intents/capture.md) or [cancel](https://docs.stripe.com/refunds.md#cancel-payment) the PaymentIntent before it’s automatically captured.
 
 ### Control capture timing
 

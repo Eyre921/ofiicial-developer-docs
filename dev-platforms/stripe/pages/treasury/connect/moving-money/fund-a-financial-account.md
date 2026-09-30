@@ -14,7 +14,7 @@ You have the following options to fund a financial account:
 | --- | --- | --- |
 | [Send funds from a Stripe payments balance](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#payments-balance) | Instant | Stripe API |
 | [Send funds from your external bank account to a FinancialAddress](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#external-account) | 1 business day (7 days initially for the first 5000 GBP in funding) | From your bank |
-| [Use inbound transfers from a linked external bank account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#inbound-transfer) | 2-6 business days | Stripe API |
+| [Use inbound transfers from a linked external bank account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#inbound-transfer) | 3–5 business days | Stripe API |
 | [Submit a check using remote capture](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#remote-capture) | 2–6 business days | Stripe API |
 | [Send funds from an existing financial account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#existing-financial-account) | Instant | Stripe API |
 | [Simulate a received credit](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#testingrc) (Sandbox only) | Instant | Stripe API |
@@ -185,7 +185,7 @@ In the US, connected accounts can fund USD financial accounts by sending ACH, RT
 
 | Funding method | Funds available | Where to initiate |
 | --- | --- | --- |
-| ACH | 0–3 business days | From your bank |
+| ACH | 0–2 business days | From your bank |
 | RTP | Typically within minutes | From your bank |
 | Wire | Same day | From your bank |
 
