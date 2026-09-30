@@ -909,7 +909,7 @@ Available on every command.
 
 | Variable | Description |
 | :- | :- |
-| `NOTION_API_TOKEN` | API token for authentication (overrides keychain). |
+| `NOTION_API_TOKEN` | Token used for API authentication (overrides keychain). |
 | `NOTION_KEYRING` | Set to `0` to use file-based auth (`~/.config/notion/auth.json`) instead of the OS keychain. |
 | `NOTION_WORKERS_CONFIG_FILE` | Path to `workers.json` (same as `--workers-config-file`). |
 | `NOTION_WORKSPACE_ID` | Workspace ID to operate on; skips the workspace prompt. |
@@ -1238,7 +1238,7 @@ Events are split into the following categories:
 * **Integration permissions updated**: That an integration's capabilities (reading content, inserting a comment, etc.) have been changed.
 * **Integration removed from approved connections**: That an integration was removed from the workspace's list of approved connections.
 * **Integration removed from workspace**: That an integration has been deleted.
-* **Integration secret reset**: That an integration's installation access token has been refreshed.
+* **Integration secret reset**: That an integration's API token has been refreshed.
 * **Integration settings updated**: That an integration's basic settings, like its name or icon, have been changed.
 * **Integration webhook subscription failing**: That an integration's webhook was inactivated due to repeated delivery failures.
 * **Integration webhook subscription restored**: That an integration's webhook was reactivated after being inactive.
@@ -1607,7 +1607,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **integration.owner\_break\_glass\_added**: A workspace admin used break-glass access to add themselves as an owner of an internal integration.
 * **integration.owner\_removed**: A workspace member was removed as an explicit owner of an internal integration.
 * **integration.permission.updated**: An integration's capabilities (reading content, inserting a comment, etc.) were changed.
-* **integration.secret\_reset**: An internal integration's installation access token was reset (or "refreshed").
+* **integration.secret\_reset**: An internal integration's API token was reset (or "refreshed").
 * **integration.settings.updated**: An integration's basic settings, like its name or icon, were changed.
 * **workspace.agent.created**: A user created an AI agent chat.
 * **workspace.agent.deleted**: A user deleted an AI agent chat.
@@ -7288,7 +7288,7 @@ This guide describes the authorization flows for Notion connections and personal
 
 ## What is authorization?
 
-Authorization is the process of granting a connection or token access to Notion data. [Internal connections](/guides/get-started/internal-connections) use a static API token, [personal access tokens](/guides/get-started/personal-access-tokens) use a user-scoped static API token, and [public connections](/guides/get-started/public-connections) use the [OAuth 2.0](https://oauth.net/2/) protocol.
+Authorization is the process of granting a connection or token access to Notion data. [Internal connections](/guides/get-started/internal-connections) use a static credential called an internal connection API token, [personal access tokens](/guides/get-started/personal-access-tokens) use a user-scoped static token, and [public connections](/guides/get-started/public-connections) use the [OAuth 2.0](https://oauth.net/2/) protocol.
 
 ## Internal connection auth flow set-up
 
@@ -7300,9 +7300,9 @@ The internal connection will be associated with the workspace of your choice. Yo
   <img />
 </Frame>
 
-Once the connection is created, you can update its settings as needed under the `Configuration` tab and retrieve the installation access token in this tab.
+Once the connection is created, you can update its settings as needed under the `Configuration` tab and retrieve the API token in this tab.
 
-The installation access token will be used to authenticate REST API requests. The connection sends the same token in every API request.
+The API token will be used to authenticate REST API requests. The connection sends the same token in every API request.
 
 <Frame>
   <img />
@@ -7315,16 +7315,16 @@ Before a connection can interact with your Notion workspace page(s), the page mu
 Once the connection is shared, you can start making API requests. If the page is not shared, any API requests made will respond with an error.
 
 <Warning>
-  **Never share your installation access token**
+  **Never share your API token**
 
-  Your installation access token is a secret. To keep your connection secure, never store the token in your source code or commit it in version control. Instead, read the token from an environment variable. Use a secret manager or deployment system to set the token in the environment.
+  Your API token is a secret. To keep your connection secure, never store the token in your source code or commit it in version control. Instead, read the token from an environment variable. Use a secret manager or deployment system to set the token in the environment.
 
   [Learn more: Best Practices for Handling API Keys](/guides/get-started/handling-api-keys)
 </Warning>
 
 ### Making API requests with an internal connection
 
-Any time your connection interacts with your workspace, include the installation access token in the `Authorization` header with every API request. However, if you are using Notion’s [SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) to interact with the REST API, the token is set once when a client is initialized.
+Any time your connection interacts with your workspace, include the API token in the `Authorization` header with every API request. However, if you are using Notion’s [SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) to interact with the REST API, the token is set once when a client is initialized.
 
 <CodeGroup>
   ```http HTTP theme={null}
@@ -7368,7 +7368,7 @@ Personal access tokens (PATs) are created directly by a Notion user in the <a hr
 
 Use a PAT when a script, CLI workflow, Worker, or trusted tool should act as you. Use an internal connection for team-owned workspace automations, or a public connection when other Notion users need to install your app.
 
-PATs use the same `Authorization` header as other Notion API tokens:
+PATs use the same `Authorization` header as other credentials for the Notion API:
 
 <CodeGroup>
   ```http HTTP theme={null}
@@ -7384,7 +7384,7 @@ See [Personal access tokens](/guides/get-started/personal-access-tokens) for cre
 
 A public connection can be installed in any Notion workspace within its [installation scope](/guides/get-started/public-connections#installation-scope) — either any workspace, or a specific set chosen at creation time.
 
-Since a public connection is not tied to a single workspace with a single installation access token, public connections instead follow the [OAuth 2.0 protocol](https://oauth.net/2/) to authorize a connection to interact with a workspace.
+A public connection isn't tied to a single workspace through an internal connection API token. Instead, public connections follow the [OAuth 2.0 protocol](https://oauth.net/2/) to authorize a connection to interact with a workspace.
 
 ### How to make a public connection
 
@@ -7734,12 +7734,12 @@ The Node-equivalent of this example would look something like this:
 </CodeGroup>
 
 
-# Secure API tokens
+# Secure API credentials
 Source: https://developers.notion.com/guides/get-started/handling-api-keys
 
-Learn how to manage and secure your Notion API tokens.
+Learn how to manage and secure credentials for the Notion API.
 
-Notion API tokens authorize requests to the Notion API. This guidance applies to internal connection tokens, OAuth access tokens, and [personal access tokens](/guides/get-started/personal-access-tokens).
+Credentials authorize requests to the Notion API. This guidance applies to internal connection API tokens, OAuth access tokens, and [personal access tokens](/guides/get-started/personal-access-tokens).
 
 ## Protect your tokens
 
@@ -7843,7 +7843,7 @@ Learn how internal connections work, how permissions are managed, and how to cre
 
 An internal connection is scoped to a single Notion workspace. Only members of that workspace can use it. Internal connections are ideal for team-owned automations and workflows — things like syncing data from external tools, sending notifications when pages change, or powering internal dashboards.
 
-Internal connections use a static API token for authentication. There's no OAuth flow to implement — you get a token immediately when you create the connection, and you use that same token for every API request.
+Internal connections use a static credential called an internal connection API token. There's no OAuth flow to implement — you get a token immediately when you create the connection, and you use that same token for every API request.
 
 If you want a token that acts as your own Notion user for a script, CLI workflow, Worker, or trusted tool, use a [personal access token](/guides/get-started/personal-access-tokens) instead. PATs use the creator's page permissions instead of a separate bot's page permissions.
 
@@ -7851,7 +7851,7 @@ In this guide, you'll learn:
 
 * How internal connection permissions work (and how they differ from public connections)
 * How to create an internal connection and share pages with it
-* How to authenticate API requests using your installation access token
+* How to authenticate API requests using your API token
 
 ## How permissions work
 
@@ -7886,7 +7886,7 @@ You must be a [Workspace Owner](https://www.notion.com/help/add-members-admins-g
   </Step>
 
   <Step>
-    After creation, visit the **Configuration** tab to retrieve your **Installation access token**.
+    After creation, visit the **Configuration** tab to retrieve your **API token**.
 
     <Frame>
       <img alt="" />
@@ -8132,7 +8132,7 @@ Notion already has a [library](https://www.notion.com/integrations/all) of conne
 
 Notion supports three authentication models:
 
-* **Internal connections** are scoped to a single workspace and use a static API token. They're ideal for custom automations and workflows — things like syncing data, sending notifications, or building internal dashboards.
+* **Internal connections** are scoped to a single workspace and use a static credential called an internal connection API token. They're ideal for custom automations and workflows — things like syncing data, sending notifications, or building internal dashboards.
 * **Public connections** use OAuth 2.0 for authentication. At creation time, you choose their [installation scope](/guides/get-started/public-connections#installation-scope): **Any workspace** (any Notion user can install; Marketplace-eligible) or **Selected workspaces only** (restricted to workspaces you select; not Marketplace-eligible).
 * **Personal access tokens (PATs)** are user-scoped tokens for scripts, CLI workflows, Workers, and tools that should act as one Notion user. A PAT uses the creator's workspace membership and page permissions. See [Personal access tokens](/guides/get-started/personal-access-tokens).
 
@@ -8148,7 +8148,7 @@ Notion supports three authentication models:
 | Installation scope | Single workspace. | Any workspace, or a specific set of workspaces chosen at creation time. Scope can't change after creation. | One user in one workspace. |
 | User access | Only members of the workspace where it's installed. | Any user in a workspace where the connection is allowed to install. | The member who created the token. |
 | Content access | Granted directly to the connection, not tied to any specific user. | Users choose which pages to share during the OAuth flow or via the Add connections menu. | Uses the creator's Notion permissions; pages do not need to be shared with a bot. |
-| Authentication | Static API token. | OAuth 2.0. | Static bearer token. |
+| Authentication | Internal connection API token. | OAuth 2.0. | Static bearer token. |
 
 <Info>
   **Looking for SCIM or SAML SSO?**
@@ -8242,7 +8242,7 @@ Once you're ready to build further, choose the authentication model that fits yo
   </Step>
 
   <Step>
-    [**Handling API keys**](/guides/get-started/handling-api-keys) — Secure and manage your API tokens in production.
+    [**Secure API credentials**](/guides/get-started/handling-api-keys) — Secure and manage your API credentials in production.
   </Step>
 
   <Step>
@@ -8310,7 +8310,7 @@ You can give a PAT either or both of these capabilities:
 
 The workspace's PAT creation policy controls who can use the Notion API capability. Workspace members can receive the Workers capability when Notion Workers is available to the workspace.
 
-PATs authenticate requests the same way other Notion API tokens do:
+PATs authenticate requests the same way other credentials for the Notion API do:
 
 <CodeGroup>
   ```http HTTP theme={null}
@@ -11919,7 +11919,7 @@ If you need to run your own MCP server, the [`notion-mcp-server` package](https:
 * Require access to the original JSON-based v1 APIs
 * Prefer to manage infrastructure yourself
 
-Compared to Notion's remote MCP, running the open-source server requires more technical setup, including provisioning your own Notion connection, managing API tokens, and handling deployment.
+Compared to Notion's remote MCP, running the open-source server requires more technical setup, including provisioning your own Notion connection, managing its API token, and handling deployment.
 
 <Note>
   The remote Notion MCP server at `https://mcp.notion.com/mcp` requires no self-hosted infrastructure and receives current tools and updates.
@@ -12051,18 +12051,6 @@ An MCP client can call several tools in one task. For example, it can search for
 
     * "Can this connection use AI search, or should you use keyword search?"
     * "Which search filters aren't available on this workspace's plan?"
-  </Accordion>
-
-  <Accordion title="Search Notion Skills">
-    `notion-search-skills`
-
-    Finds active [Notion Skills](/guides/mcp/notion-skills) that the connected user can access. Pass a Skill name or a short description of the task, or omit the query to list up to 10 recent Skills. Results contain compact metadata; fetch the selected Skill's URL before following its instructions.
-
-    **Example prompts:**
-
-    * "Find my usual workflow for preparing a customer briefing"
-    * "What reusable workflows do I have for code review?"
-    * "Use my weekly project update Skill"
   </Accordion>
 
   <Accordion title="Download a Notion Skill">
@@ -12568,11 +12556,9 @@ If the MCP client cannot read resources, pass `notion://docs/skills` to `notion-
 
 To turn an existing page into a Skill without changing its content, call `notion-convert-page-to-skill` with the page's full Notion URL. The connected user must be able to edit the page.
 
-## Find and use a Skill
+## Use a Skill
 
-If the user provides an exact Skill URL, call `notion-fetch` directly. Otherwise, call `notion-search-skills` with the Skill name or a short description of the task. Omit the query to list up to 10 recent Skills.
-
-`notion-search-skills` returns each Skill's name, URL, and, when available, description. Search results don't include the Skill's instructions. Choose a clear match and fetch it before using it.
+Call `notion-fetch` with the Skill's exact URL before using it.
 
 Only follow the fetched page as instructions when the user's request calls for that Skill or workflow. If the user asks to inspect, summarize, edit, rename, or configure the Skill, treat the page as content instead.
 
@@ -12729,7 +12715,7 @@ To create a new Custom Agent, see [Build a Custom Agent](https://www.notion.com/
 
 **A token to authenticate requests**
 
-Each request needs a token. You can use a [personal access token](/guides/get-started/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection's installation access token, described below.
+Each request needs a token. You can use a [personal access token](/guides/get-started/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection API token, described below.
 
 <Steps>
   <Step>
@@ -12749,9 +12735,9 @@ Each request needs a token. You can use a [personal access token](/guides/get-st
   </Step>
 </Steps>
 
-**An internal connection token to authenticate requests**
+**An internal connection API token to authenticate requests**
 
-You can instead use an internal connection's installation access token. The connection can access only Custom Agents that are explicitly shared with it.
+You can instead use an internal connection API token. The connection can access only Custom Agents that are explicitly shared with it.
 
 <Steps>
   <Step>
@@ -12767,7 +12753,7 @@ You can instead use an internal connection's installation access token. The conn
   </Step>
 
   <Step>
-    Return to the **Configuration** tab, copy the **Installation access token**, and save it somewhere secure.
+    Return to the **Configuration** tab, copy the **API token**, and save it somewhere secure.
   </Step>
 </Steps>
 
@@ -17389,6 +17375,12 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="September 29, 2026">
+  ### Completing the query tool update in Notion MCP
+
+  `notion-query-database-view` is no longer available. Call `notion-query-data-sources` instead, and pass the same `view_url` as `{"data": {"mode": "view", "view_url": "..."}}`. Calls to the old tool name now return a tool error that names this replacement.
+</Update>
 
 <Update label="September 28, 2026">
   ### Higher Notion MCP search and query limits
@@ -22817,7 +22809,7 @@ Returns a 429 HTTP response if the request exceeds the [request limits](/referen
 Source: https://developers.notion.com/reference/get-self
 
 get /v1/users/me
-Retrieves the [User](/reference/user) associated with the API token provided in the authorization header.
+Retrieves the [User](/reference/user) associated with the token provided in the authorization header.
 
 For [personal access tokens](/guides/get-started/personal-access-tokens), this endpoint returns the user who created the token.
 
@@ -22936,7 +22928,7 @@ Learn the conventions, authentication, and pagination patterns used across the N
 Connections use the API to access Notion's pages, databases, and users. Connections can connect services to Notion and build interactive experiences for users within Notion. Use the navigation on the left to find details for objects and endpoints used in the API.
 
 <Note>
-  A bearer token is required to interact with the Notion API. Use an installation access token from an internal connection, an OAuth access token from a public connection, or a [personal access token](/guides/get-started/personal-access-tokens). If this is your first look at the Notion API, begin with the [Getting started guide](/guides/get-started/overview) to learn which connection type to use.
+  A bearer token is required to interact with the Notion API. Use an internal connection API token, an OAuth access token from a public connection, or a [personal access token](/guides/get-started/personal-access-tokens). If this is your first look at the Notion API, begin with the [Getting started guide](/guides/get-started/overview) to learn which connection type to use.
 
   To work on a specific internal connection without access to its token, confirm that you are an admin in the workspace where the connection was created. Check inside the Notion UI via `Settings & Members` in the left sidebar. If you're not an admin in any of your workspaces, create a personal workspace for free or use a PAT where workspace policy allows it.
 </Note>
@@ -29187,7 +29179,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 
 Do not retry every error. Retry 429 and 529 responses, except a 429 with `public_api_request_blocked`. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
-The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
+The JavaScript SDK retries 429 `rate_limited` and 529 `service_overload` responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It never retries 502 or 504. It waits for `Retry-After`, capped at 60 seconds by default, uses exponential backoff with jitter when the header is missing, and limits retries. If you call the REST API directly, use the same safeguards. These examples show the same policy in several common HTTP clients:
 
 <CodeGroup>
   ```js JavaScript theme={null}
@@ -33940,7 +33932,7 @@ How the client is authenticated depends on how the capability runs:
 To set a token for syncs, webhooks, or local development, you have two options:
 
 * **[Personal access token](/guides/get-started/personal-access-tokens):** acts as you and uses your page permissions. You don't need to connect it to each page.
-* **[Internal integration token](/guides/get-started/internal-connections):** acts as a bot, with access limited to pages explicitly connected via the Connections menu.
+* **[Internal connection API token](/guides/get-started/internal-connections):** acts as a bot, with access limited to pages explicitly connected via the Connections menu.
 
 <Steps>
   <Step title="Create a token">
@@ -34044,7 +34036,7 @@ What the client can access depends on the token type:
 
 * **Custom Agent tools:** the client has the same permissions as the Custom Agent.
 * **Personal access token:** the client uses your Notion permissions and the token's capabilities.
-* **Internal integration token:** the client can only access pages and databases that the integration has been explicitly connected to via the Connections menu.
+* **Internal connection API token:** the client can only access pages and databases explicitly shared with the connection.
 
 If a request returns a 403 or 404, check that your token has access to the relevant page.
 

@@ -149,6 +149,8 @@ The avatar of the widget
 - `speaking_status` (string, optional, nullable) — Status displayed when the agent is speaking.
 - `connecting_status` (string, optional, nullable) — Status displayed when the agent is connecting.
 - `chatting_status` (string, optional, nullable) — Status displayed when the agent is chatting (text only)
+- `queue_waiting_status` (string, optional, nullable) — Status displayed while waiting in the queue for an available agent.
+- `queue_waiting_status_short` (string, optional, nullable) — Short status displayed while waiting for an available agent.
 - `input_label` (string, optional, nullable) — ARIA label for the text message input.
 - `input_placeholder` (string, optional, nullable) — Placeholder text for the text message input.
 - `input_placeholder_text_only` (string, optional, nullable) — Placeholder text for the text message input (text only)
@@ -157,6 +159,7 @@ The avatar of the widget
 - `agent_ended_conversation` (string, optional, nullable) — Information message displayed when the agent ends the conversation.
 - `conversation_id` (string, optional, nullable) — Text label used next to the conversation ID.
 - `error_occurred` (string, optional, nullable) — Text label used when an error occurs.
+- `queue_timed_out` (string, optional, nullable) — Error message displayed when the queue wait times out.
 - `copy_id` (string, optional, nullable) — Text and ARIA label used for the copy ID button.
 - `initiate_feedback` (string, optional, nullable) — Text displayed to prompt the user for feedback.
 - `request_follow_up_feedback` (string, optional, nullable) — Text displayed to request additional feedback details.
@@ -183,6 +186,7 @@ The avatar of the widget
 - `file_too_large` (string, optional, nullable) — Error message displayed when a file exceeds the maximum size limit.
 - `file_limit_reached` (string, optional, nullable) — Error message displayed when the maximum number of files for a conversation is reached.
 - `typing_indicator` (string, optional, nullable) — Status text displayed while the agent is typing.
+- `rich_content_unavailable` (string, optional, nullable) — Fallback message displayed when rich content cannot be rendered.
 
 ### WidgetStyles
 

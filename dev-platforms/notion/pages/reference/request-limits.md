@@ -55,7 +55,7 @@ Put outgoing requests through a queue so a burst from one job does not consume t
 
 Do not retry every error. Retry 429 and 529 responses, except a 429 with `public_api_request_blocked`. Retry 500, 502, 503, and 504 responses only when the request is idempotent, such as GET or DELETE, unless your application has its own idempotency protection. A write that returns 503 needs an extra check first; see [Retry a write that returns 503](#retry-a-write-that-returns-503). Fix the request before retrying most 400 responses. A 401 means authentication failed. A 403 can mean a permission failure or a [workspace block limit](/reference/workspace-block-limits); check the error message before retrying.
 
-The JavaScript SDK retries 429 responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It respects `Retry-After`, uses exponential backoff with jitter, and limits retries. If you call the REST API directly, use the same safeguards and add explicit handling for 529 responses. These examples show the same policy in several common HTTP clients:
+The JavaScript SDK retries 429 `rate_limited` and 529 `service_overload` responses for every method. It also retries 500 and 503 responses for GET and DELETE requests. It never retries 502 or 504. It waits for `Retry-After`, capped at 60 seconds by default, uses exponential backoff with jitter when the header is missing, and limits retries. If you call the REST API directly, use the same safeguards. These examples show the same policy in several common HTTP clients:
 
 <CodeGroup>
   ```js JavaScript theme={null}

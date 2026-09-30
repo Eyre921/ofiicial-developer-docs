@@ -1,5 +1,5 @@
 ---
-title: "Architecture"
+title: "Pinecone architecture"
 source: https://docs.pinecone.io/guides/core-concepts/architecture
 path: guides/core-concepts/architecture
 ---

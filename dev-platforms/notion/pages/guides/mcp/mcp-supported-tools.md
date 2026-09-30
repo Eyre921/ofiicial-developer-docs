@@ -89,18 +89,6 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Which search filters aren't available on this workspace's plan?"
   </Accordion>
 
-  <Accordion title="Search Notion Skills">
-    `notion-search-skills`
-
-    Finds active [Notion Skills](/guides/mcp/notion-skills) that the connected user can access. Pass a Skill name or a short description of the task, or omit the query to list up to 10 recent Skills. Results contain compact metadata; fetch the selected Skill's URL before following its instructions.
-
-    **Example prompts:**
-
-    * "Find my usual workflow for preparing a customer briefing"
-    * "What reusable workflows do I have for code review?"
-    * "Use my weekly project update Skill"
-  </Accordion>
-
   <Accordion title="Download a Notion Skill">
     `notion-download-skill`
 

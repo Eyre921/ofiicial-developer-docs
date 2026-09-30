@@ -10,7 +10,7 @@ Learn how internal connections work, how permissions are managed, and how to cre
 
 An internal connection is scoped to a single Notion workspace. Only members of that workspace can use it. Internal connections are ideal for team-owned automations and workflows — things like syncing data from external tools, sending notifications when pages change, or powering internal dashboards.
 
-Internal connections use a static API token for authentication. There's no OAuth flow to implement — you get a token immediately when you create the connection, and you use that same token for every API request.
+Internal connections use a static credential called an internal connection API token. There's no OAuth flow to implement — you get a token immediately when you create the connection, and you use that same token for every API request.
 
 If you want a token that acts as your own Notion user for a script, CLI workflow, Worker, or trusted tool, use a [personal access token](/guides/get-started/personal-access-tokens) instead. PATs use the creator's page permissions instead of a separate bot's page permissions.
 
@@ -18,7 +18,7 @@ In this guide, you'll learn:
 
 * How internal connection permissions work (and how they differ from public connections)
 * How to create an internal connection and share pages with it
-* How to authenticate API requests using your installation access token
+* How to authenticate API requests using your API token
 
 ## How permissions work
 
@@ -53,7 +53,7 @@ You must be a [Workspace Owner](https://www.notion.com/help/add-members-admins-g
   </Step>
 
   <Step>
-    After creation, visit the **Configuration** tab to retrieve your **Installation access token**.
+    After creation, visit the **Configuration** tab to retrieve your **API token**.
 
     <Frame>
       <img alt="" />

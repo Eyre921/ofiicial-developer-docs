@@ -1,12 +1,12 @@
 ---
-title: "Secure API tokens"
+title: "Secure API credentials"
 source: https://developers.notion.com/guides/get-started/handling-api-keys
 path: guides/get-started/handling-api-keys
 ---
 
-Learn how to manage and secure your Notion API tokens.
+Learn how to manage and secure credentials for the Notion API.
 
-Notion API tokens authorize requests to the Notion API. This guidance applies to internal connection tokens, OAuth access tokens, and [personal access tokens](/guides/get-started/personal-access-tokens).
+Credentials authorize requests to the Notion API. This guidance applies to internal connection API tokens, OAuth access tokens, and [personal access tokens](/guides/get-started/personal-access-tokens).
 
 ## Protect your tokens
 

@@ -17,7 +17,7 @@ If you need to run your own MCP server, the [`notion-mcp-server` package](https:
 * Require access to the original JSON-based v1 APIs
 * Prefer to manage infrastructure yourself
 
-Compared to Notion's remote MCP, running the open-source server requires more technical setup, including provisioning your own Notion connection, managing API tokens, and handling deployment.
+Compared to Notion's remote MCP, running the open-source server requires more technical setup, including provisioning your own Notion connection, managing its API token, and handling deployment.
 
 <Note>
   The remote Notion MCP server at `https://mcp.notion.com/mcp` requires no self-hosted infrastructure and receives current tools and updates.

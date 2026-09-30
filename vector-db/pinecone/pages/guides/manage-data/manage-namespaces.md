@@ -586,6 +586,8 @@ Use the [`delete_namespace`](/reference/api/latest/data-plane/deletenamespace) o
   Deleting a namespace is irreversible. All data in the namespace is permanently deleted.
 </Warning>
 
+If a [namespace alias](/guides/manage-data/namespace-aliases/overview) targets the namespace, the delete is rejected. Repoint or delete the alias first.
+
 <CodeGroup>
   ```python Python theme={null}
   # Not supported with pinecone["grpc"] extras installed

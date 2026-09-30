@@ -5,7 +5,7 @@ path: reference/get-self
 ---
 
 get /v1/users/me
-Retrieves the [User](/reference/user) associated with the API token provided in the authorization header.
+Retrieves the [User](/reference/user) associated with the token provided in the authorization header.
 
 For [personal access tokens](/guides/get-started/personal-access-tokens), this endpoint returns the user who created the token.
 

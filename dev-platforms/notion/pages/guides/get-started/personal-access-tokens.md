@@ -38,7 +38,7 @@ You can give a PAT either or both of these capabilities:
 
 The workspace's PAT creation policy controls who can use the Notion API capability. Workspace members can receive the Workers capability when Notion Workers is available to the workspace.
 
-PATs authenticate requests the same way other Notion API tokens do:
+PATs authenticate requests the same way other credentials for the Notion API do:
 
 <CodeGroup>
   ```http HTTP theme={null}

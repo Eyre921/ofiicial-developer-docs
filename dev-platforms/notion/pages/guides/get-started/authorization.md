@@ -8,7 +8,7 @@ This guide describes the authorization flows for Notion connections and personal
 
 ## What is authorization?
 
-Authorization is the process of granting a connection or token access to Notion data. [Internal connections](/guides/get-started/internal-connections) use a static API token, [personal access tokens](/guides/get-started/personal-access-tokens) use a user-scoped static API token, and [public connections](/guides/get-started/public-connections) use the [OAuth 2.0](https://oauth.net/2/) protocol.
+Authorization is the process of granting a connection or token access to Notion data. [Internal connections](/guides/get-started/internal-connections) use a static credential called an internal connection API token, [personal access tokens](/guides/get-started/personal-access-tokens) use a user-scoped static token, and [public connections](/guides/get-started/public-connections) use the [OAuth 2.0](https://oauth.net/2/) protocol.
 
 ## Internal connection auth flow set-up
 
@@ -20,9 +20,9 @@ The internal connection will be associated with the workspace of your choice. Yo
   <img />
 </Frame>
 
-Once the connection is created, you can update its settings as needed under the `Configuration` tab and retrieve the installation access token in this tab.
+Once the connection is created, you can update its settings as needed under the `Configuration` tab and retrieve the API token in this tab.
 
-The installation access token will be used to authenticate REST API requests. The connection sends the same token in every API request.
+The API token will be used to authenticate REST API requests. The connection sends the same token in every API request.
 
 <Frame>
   <img />
@@ -35,16 +35,16 @@ Before a connection can interact with your Notion workspace page(s), the page mu
 Once the connection is shared, you can start making API requests. If the page is not shared, any API requests made will respond with an error.
 
 <Warning>
-  **Never share your installation access token**
+  **Never share your API token**
 
-  Your installation access token is a secret. To keep your connection secure, never store the token in your source code or commit it in version control. Instead, read the token from an environment variable. Use a secret manager or deployment system to set the token in the environment.
+  Your API token is a secret. To keep your connection secure, never store the token in your source code or commit it in version control. Instead, read the token from an environment variable. Use a secret manager or deployment system to set the token in the environment.
 
   [Learn more: Best Practices for Handling API Keys](/guides/get-started/handling-api-keys)
 </Warning>
 
 ### Making API requests with an internal connection
 
-Any time your connection interacts with your workspace, include the installation access token in the `Authorization` header with every API request. However, if you are using Notion’s [SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) to interact with the REST API, the token is set once when a client is initialized.
+Any time your connection interacts with your workspace, include the API token in the `Authorization` header with every API request. However, if you are using Notion’s [SDK for JavaScript](https://github.com/makenotion/notion-sdk-js) to interact with the REST API, the token is set once when a client is initialized.
 
 <CodeGroup>
   ```http HTTP theme={null}
@@ -88,7 +88,7 @@ Personal access tokens (PATs) are created directly by a Notion user in the <a hr
 
 Use a PAT when a script, CLI workflow, Worker, or trusted tool should act as you. Use an internal connection for team-owned workspace automations, or a public connection when other Notion users need to install your app.
 
-PATs use the same `Authorization` header as other Notion API tokens:
+PATs use the same `Authorization` header as other credentials for the Notion API:
 
 <CodeGroup>
   ```http HTTP theme={null}
@@ -104,7 +104,7 @@ See [Personal access tokens](/guides/get-started/personal-access-tokens) for cre
 
 A public connection can be installed in any Notion workspace within its [installation scope](/guides/get-started/public-connections#installation-scope) — either any workspace, or a specific set chosen at creation time.
 
-Since a public connection is not tied to a single workspace with a single installation access token, public connections instead follow the [OAuth 2.0 protocol](https://oauth.net/2/) to authorize a connection to interact with a workspace.
+A public connection isn't tied to a single workspace through an internal connection API token. Instead, public connections follow the [OAuth 2.0 protocol](https://oauth.net/2/) to authorize a connection to interact with a workspace.
 
 ### How to make a public connection
 

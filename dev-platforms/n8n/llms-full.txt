@@ -1938,7 +1938,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ### Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -2196,7 +2196,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -2568,7 +2568,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -2670,7 +2670,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -3034,7 +3034,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -3125,9 +3125,11 @@ resources:
 
 This defines a minimum of 250mb per container, a maximum of 500mb, and lets Kubernetes handle CPU. You can change these values to match your own needs. As a guide, here are the resources values for the n8n cloud offerings:
 
-* **Start**: 320mb RAM, 10 millicore CPU burstable
-* **Pro (10k executions)**: 640mb RAM, 20 millicore CPU burstable
-* **Pro (50k executions)**: 1280mb RAM, 80 millicore CPU burstable
+| Tier                 | RAM    | CPU                    |
+| -------------------- | ------ | ---------------------- |
+| Starter              | 320mb  | 10 millicore burstable |
+| Pro (10k executions) | 640mb  | 20 millicore burstable |
+| Pro (50k executions) | 1280mb | 80 millicore burstable |
 
 ### Optional: Environment variables <a href="#optional-environment-variables" id="optional-environment-variables"></a>
 
@@ -3247,7 +3249,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -3346,9 +3348,11 @@ resources:
 
 This defines a minimum of 250mb per container, a maximum of 500mb, and lets Kubernetes handle CPU. You can change these values to match your own needs. As a guide, here are the resources values for the n8n cloud offerings:
 
-* **Start**: 320mb RAM, 10 millicore CPU burstable
-* **Pro (10k executions)**: 640mb RAM, 20 millicore CPU burstable
-* **Pro (50k executions)**: 1280mb RAM, 80 millicore CPU burstable
+| Tier                 | RAM    | CPU                    |
+| -------------------- | ------ | ---------------------- |
+| Starter              | 320mb  | 10 millicore burstable |
+| Pro (10k executions) | 640mb  | 20 millicore burstable |
+| Pro (50k executions) | 1280mb | 80 millicore burstable |
 
 ### Optional: Environment variables <a href="#optional-environment-variables" id="optional-environment-variables"></a>
 
@@ -3461,7 +3465,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -3742,7 +3746,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -3841,9 +3845,11 @@ resources:
 
 This defines a minimum of 250mb per container, a maximum of 500mb, and lets Kubernetes handle CPU. You can change these values to match your own needs. As a guide, here are the resources values for the n8n cloud offerings:
 
-* **Start**: 320mb RAM, 10 millicore CPU burstable
-* **Pro (10k executions)**: 640mb RAM, 20 millicore CPU burstable
-* **Pro (50k executions)**: 1280mb RAM, 80 millicore CPU burstable
+| Tier                 | RAM    | CPU                    |
+| -------------------- | ------ | ---------------------- |
+| Starter              | 320mb  | 10 millicore burstable |
+| Pro (10k executions) | 640mb  | 20 millicore burstable |
+| Pro (50k executions) | 1280mb | 80 millicore burstable |
 
 ### Optional: Environment variables <a href="#optional-environment-variables" id="optional-environment-variables"></a>
 
@@ -5034,7 +5040,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.41.3 Current `beta`: 2.42.0
+Current `stable`: 2.41.4 Current `beta`: 2.42.1
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>

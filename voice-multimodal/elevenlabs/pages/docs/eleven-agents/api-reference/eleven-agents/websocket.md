@@ -1269,6 +1269,8 @@ components:
         - eleven_flash_v2_5
         - eleven_multilingual_v2
         - eleven_v3_conversational
+        - eleven_v4
+        - eleven_v4_turbo
       description: The model to use for TTS
       title: ConversationInitiationClientDataConversationConfigOverrideTtsModelId
     ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsModelFamily:
@@ -1278,6 +1280,8 @@ components:
         - flash
         - multilingual
         - v3_conversational
+        - v4
+        - v4_turbo
       title: >-
         ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsModelFamily
     ConversationInitiationClientDataConversationConfigOverrideTtsSupportedVoicesItemsOptimizeStreamingLatency:
@@ -1450,6 +1454,7 @@ components:
         - claude-opus-5-5
         - claude-sonnet-4-6
         - claude-sonnet-5
+        - claude-sonnet-5-5
         - claude-sonnet-4
         - claude-haiku-4-5
         - claude-3-7-sonnet

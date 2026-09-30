@@ -121,6 +121,10 @@ channels:
             filter_background_audio:
               type: boolean
               default: false
+            keepalive_interval_ms:
+              type: integer
+              minimum: 500
+              maximum: 10000
             enable_logging:
               type: boolean
               default: true

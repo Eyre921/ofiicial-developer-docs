@@ -134,7 +134,7 @@ When available, applicable events include a top-level `team_ids` array containin
 * **integration.owner\_break\_glass\_added**: A workspace admin used break-glass access to add themselves as an owner of an internal integration.
 * **integration.owner\_removed**: A workspace member was removed as an explicit owner of an internal integration.
 * **integration.permission.updated**: An integration's capabilities (reading content, inserting a comment, etc.) were changed.
-* **integration.secret\_reset**: An internal integration's installation access token was reset (or "refreshed").
+* **integration.secret\_reset**: An internal integration's API token was reset (or "refreshed").
 * **integration.settings.updated**: An integration's basic settings, like its name or icon, were changed.
 * **workspace.agent.created**: A user created an AI agent chat.
 * **workspace.agent.deleted**: A user deleted an AI agent chat.

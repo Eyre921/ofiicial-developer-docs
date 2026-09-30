@@ -30,7 +30,7 @@ How the client is authenticated depends on how the capability runs:
 To set a token for syncs, webhooks, or local development, you have two options:
 
 * **[Personal access token](/guides/get-started/personal-access-tokens):** acts as you and uses your page permissions. You don't need to connect it to each page.
-* **[Internal integration token](/guides/get-started/internal-connections):** acts as a bot, with access limited to pages explicitly connected via the Connections menu.
+* **[Internal connection API token](/guides/get-started/internal-connections):** acts as a bot, with access limited to pages explicitly connected via the Connections menu.
 
 <Steps>
   <Step title="Create a token">
@@ -134,7 +134,7 @@ What the client can access depends on the token type:
 
 * **Custom Agent tools:** the client has the same permissions as the Custom Agent.
 * **Personal access token:** the client uses your Notion permissions and the token's capabilities.
-* **Internal integration token:** the client can only access pages and databases that the integration has been explicitly connected to via the Connections menu.
+* **Internal connection API token:** the client can only access pages and databases explicitly shared with the connection.
 
 If a request returns a 403 or 404, check that your token has access to the relevant page.
 

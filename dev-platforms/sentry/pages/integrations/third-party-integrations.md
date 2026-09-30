@@ -39,6 +39,7 @@ To build and publish your own, see the [Integration Platform docs](https://docs.
 * [LogBrew](https://docs.logbrew.co)
 * [Mendral](https://mendral.com/)
 * [Modem](https://modem.dev/integrations/sentry)
+* [Motir](https://motir.co/docs/sentry)
 * [NotiLens](https://www.notilens.com/docs/sentry)
 * [Offloop](https://offloop.org/)
 * [Oneleet](https://docs.oneleet.com)

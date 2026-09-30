@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15003 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 210,
@@ -38,7 +38,7 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 239,
+    "pages": 377,
     "status": "ok"
   },
   "ai-models/anthropic-api": {
@@ -58,7 +58,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 568,
+    "pages": 572,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -101,7 +101,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -186,7 +186,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 105,
+    "pages": 99,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -202,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1324,
+    "pages": 1331,
     "status": "ok"
   },
-  "_last_crawl": "2026-09-29T23:30:26Z"
+  "_last_crawl": "2026-09-30T11:30:36Z"
 }

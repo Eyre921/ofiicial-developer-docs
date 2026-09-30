@@ -53,11 +53,11 @@ Searches can optionally be scoped to a content category, which focuses results o
 
 ### Content retrieval
 
-Each search result can include one or more content types, which control what information is extracted from the page:
+Each search result returns highlights by default. The agent can optionally request additional content types, which control what else is extracted from the page:
 
-* **Highlights** (recommended) — returns the most relevant text snippets from the page. Token-efficient and suitable for most use cases.
-* **Text** — returns the full page text. Use when you need complete content rather than just the relevant parts.
-* **Summary** — returns an LLM-generated summary of the page. Higher latency than other options.
+* **Highlights** (default) — the most relevant text snippets from the page, sized by Exa. Token-efficient and suitable for most use cases.
+* **Text** — the full page text. Request when you need complete content rather than just the relevant parts.
+* **Summary** — an LLM-generated summary of the page. Higher latency than the other options.
 
 ### Filtering
 

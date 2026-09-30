@@ -353,6 +353,16 @@ If you have a Credit-based pricing plan, you can use any of the following Netlif
 
 If you have a Legacy pricing plan, you can only use Ask Netlify AI and the **Why did it fail?** AI-assisted troubleshooting feature. Agent Runners and AI Gateway require a Credit-based pricing plan. You can use both of these features on the free Credit-based plans. Just be aware that you cannot buy extra credits on the free Credit-based plans. Once you reach your credits monthly limit, you must wait till the start of the next billing cycle or upgrade to a higher plan to [resume your projects](/manage/accounts-and-billing/billing/resume-paused-projects) after they run out of credits.
 
+### Does fixing a failed deploy with AI use credits?
+
+It depends on which capability you use:
+- The **Why did it fail?** diagnosis and suggested solution don't consume any credits, and they don't generate [AI inference](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-ai-inference) usage.
+- Selecting **Fix with agent** starts an [agent run](/build/build-with-ai/agent-runners/overview), which consumes credits for AI inference and compute, along with related web requests and bandwidth.
+
+Publishing a fix to production applies the [credit cost for a production deploy](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-production-deploys).
+
+Learn more about [credit usage for fixing a failed deploy](/resources/troubleshooting/fix-a-failed-deploy#credit-usage-for-fixing-a-failed-deploy).
+
 ### What can I do if I've been charged the wrong amount?
 
 If you find a problem with your billing, please contact our [support team](https://www.netlify.com/support/) and we'll do our best to make it right!

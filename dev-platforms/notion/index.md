@@ -38,7 +38,7 @@
 - `guides/data-apis/working-with-page-content` — [Working with page content](pages/guides/data-apis/working-with-page-content.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-page-content)
 - `guides/data-apis/working-with-views` — [Working with views](pages/guides/data-apis/working-with-views.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-views)
 - `guides/get-started/authorization` — [Authorization](pages/guides/get-started/authorization.md) · [原文](https://developers.notion.com/guides/get-started/authorization)
-- `guides/get-started/handling-api-keys` — [Secure API tokens](pages/guides/get-started/handling-api-keys.md) · [原文](https://developers.notion.com/guides/get-started/handling-api-keys)
+- `guides/get-started/handling-api-keys` — [Secure API credentials](pages/guides/get-started/handling-api-keys.md) · [原文](https://developers.notion.com/guides/get-started/handling-api-keys)
 - `guides/get-started/internal-connections` — [Internal connections](pages/guides/get-started/internal-connections.md) · [原文](https://developers.notion.com/guides/get-started/internal-connections)
 - `guides/get-started/marketplace-listing` — [List on the Marketplace](pages/guides/get-started/marketplace-listing.md) · [原文](https://developers.notion.com/guides/get-started/marketplace-listing)
 - `guides/get-started/overview` — [Overview](pages/guides/get-started/overview.md) · [原文](https://developers.notion.com/guides/get-started/overview)

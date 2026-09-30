@@ -21,7 +21,7 @@ Available on every command.
 
 | Variable | Description |
 | :- | :- |
-| `NOTION_API_TOKEN` | API token for authentication (overrides keychain). |
+| `NOTION_API_TOKEN` | Token used for API authentication (overrides keychain). |
 | `NOTION_KEYRING` | Set to `0` to use file-based auth (`~/.config/notion/auth.json`) instead of the OS keychain. |
 | `NOTION_WORKERS_CONFIG_FILE` | Path to `workers.json` (same as `--workers-config-file`). |
 | `NOTION_WORKSPACE_ID` | Workspace ID to operate on; skips the workspace prompt. |

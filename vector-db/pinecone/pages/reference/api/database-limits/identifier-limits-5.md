@@ -14,4 +14,5 @@ An identifier is a string of characters used to identify "named" [objects in Pin
 | [Project](/guides/core-concepts/key-terms#project) | `name` | 512 | <ul><li>UTF-8 except `\0`</li><li>Cannot be empty</li></ul> |
 | [Index](/guides/core-concepts/key-terms#index) | `name` | 45 | <ul><li>`a-z`, `0-9`, and `-`</li><li>Must be lowercase</li><li>Cannot start or end with `-`</li><li>Cannot be empty</li></ul> |
 | [Namespace](/guides/core-concepts/key-terms#namespace) | `namespace` | 512 | <ul><li>ASCII except `\0`</li><li>For the default namespace, use `""` (or `"__default__"`, in API versions `2025-04` and later)</li></ul> |
+| [Namespace alias](/guides/manage-data/namespace-aliases/overview) | `name` | 512 | <ul><li>ASCII graphic characters</li><li>No spaces or `/ ? # % & = \ ; +`</li><li>`.`, `..`, and `__default__` are reserved</li><li>Must be unique in the index and can't match a namespace name</li></ul> |
 | [Record](/guides/core-concepts/key-terms#record) | `id` | 512 | <ul><li>ASCII except `\0`</li><li>Cannot be empty</li></ul> |

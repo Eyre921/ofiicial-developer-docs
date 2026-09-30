@@ -126,7 +126,7 @@ Learn more about [enabling or disabling Netlify AI features](/build/build-with-a
 Agent runs use two usage meters: [AI inference](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-ai-inference) and [compute](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-compute). AI inference costs depend on the AI agent, model, and effort you use for a run. The agent run detail view shows how many credits a run consumed.
 
 There are also related actions to Agent Runners that consume credits, for example:
-* If you start an agent run to fix a failed deploy, your usage of [web requests](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-web-requests), [bandwidth](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-bandwidth), and [compute](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-compute) will consume your available credits.
+* If you start an agent run to fix a failed deploy, your usage of [web requests](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-web-requests), [bandwidth](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-bandwidth), and [compute](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-compute) consumes your available credits, in addition to the AI inference the run uses. Getting the **Why did it fail?** diagnosis before you start the run doesn't consume any credits. Learn more about [credit usage for fixing a failed deploy](/resources/troubleshooting/fix-a-failed-deploy#credit-usage-for-fixing-a-failed-deploy).
 * When your agent runner is done, you may wish to publish the changes it made to production. When you publish a production deploy the [credit costs for deploying to production](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work/#credit-usage-for-production-deploys) will apply. If this deploy fails it does not consume any credits.
 
 To learn more about how pricing works for Agent Runners, check out [Pricing for AI features](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/pricing-for-ai-features).
@@ -200,6 +200,10 @@ Agent Runners are not compatible with [Split Testing](/manage/monitoring/split-t
 When a deploy fails, you can use Agent Runners to start fixing the issue directly from your failed deploy details page.
 
 ![Fix with Agent Runners](/images/fix-with-agent.png)
+
+Getting a diagnosis and suggested solution with **Why did it fail?** doesn't consume any credits. Selecting **Fix with agent** starts an [agent run](/build/build-with-ai/agent-runners/overview), which does consume credits from your team's balance. Learn more about [credit usage for fixing a failed deploy](/resources/troubleshooting/fix-a-failed-deploy#credit-usage-for-fixing-a-failed-deploy).
+
+For the full workflow, check out [Fix a failed deploy](/resources/troubleshooting/fix-a-failed-deploy).
 
 ### Prompt examples 
 

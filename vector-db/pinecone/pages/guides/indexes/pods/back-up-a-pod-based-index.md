@@ -10,6 +10,10 @@ Legacy guide for backing up Pinecone pod-based indexes using collections. Collec
   Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
+<Note>
+  SDKs that target API version `2026-07` don't support creating pod-based indexes, and they reject creating an index from a collection. You can still list, describe, and delete existing collections. To create or restore a pod-based index, use an [SDK version](/reference/pinecone-sdks#sdk-versions) that targets an earlier API version, or send an earlier `X-Pinecone-Api-Version` with the REST API. To move a pod-based index to serverless, see [Migrate a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless).
+</Note>
+
 This page describes how to create a static copy of a pod-based index, also known as a [collection](/guides/indexes/pods/understanding-collections).
 
 ## Create a collection

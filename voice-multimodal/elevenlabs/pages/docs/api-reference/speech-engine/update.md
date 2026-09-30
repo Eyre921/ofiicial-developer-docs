@@ -98,7 +98,7 @@ Validation Error
 ### TTSConversationalConfig-Input
 
 - `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
-  - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
+  - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`, `eleven_v4`, `eleven_v4_turbo`
 - `voice_id` (string, optional, default: cjVigY5qzO86Huf0OWal) — The voice ID to use for TTS
 - `supported_voices` (list of SupportedVoice, optional) — Additional supported voices for the agent
 - `expressive_mode` (boolean, optional, default: true) — When enabled, applies expressive audio tags prompt. Automatically disabled for non-v3 models.
@@ -173,7 +173,7 @@ Validation Error
 ### TTSConversationalConfig-Output
 
 - `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
-  - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`
+  - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`, `eleven_v4`, `eleven_v4_turbo`
 - `voice_id` (string, optional, default: cjVigY5qzO86Huf0OWal) — The voice ID to use for TTS
 - `supported_voices` (list of SupportedVoice, optional) — Additional supported voices for the agent
 - `expressive_mode` (boolean, optional, default: true) — When enabled, applies expressive audio tags prompt. Automatically disabled for non-v3 models.
@@ -251,7 +251,7 @@ Validation Error
 - `description` (string, optional, nullable)
 - `language` (string, optional, nullable)
 - `model_family` (enum, optional, nullable)
-  - Allowed values: `turbo`, `flash`, `multilingual`, `v3_conversational`
+  - Allowed values: `turbo`, `flash`, `multilingual`, `v3_conversational`, `v4`, `v4_turbo`
 - `optimize_streaming_latency` (enum, optional, nullable)
   - Allowed values: `0`, `1`, `2`, `3`, `4`
 - `stability` (double, optional, nullable)

@@ -37048,7 +37048,7 @@ The difference depends on three factors:
 
 **Device speed** — The biggest variable. On a mid-range mobile phone, JS parse + execute (steps 3–6 in the waterfall) takes 100–300ms. On desktop, 30–80ms. SSR skips this entirely.
 
-**Server-to-Convex distance** — If your framework server is co-located with Convex (same cloud region), the server→Convex hop is \~1–5ms. This is essentially free. Convex currently offers **US East (N. Virginia)** and **EU West (Ireland)** regions.
+**Server-to-Convex distance** — If your framework server is co-located with Convex (same cloud region), the server→Convex hop is \~1–5ms. This is essentially free. See [Regions](/production/regions.md) for the regions Convex offers.
 
 **Client-to-server distance** — Both approaches need at least one round trip to the framework server. SSR bundles data into that response; client-side adds a second round trip to Convex after JS execution.
 
@@ -41093,7 +41093,7 @@ info
 
 The Audit Log is only available on Convex Professional, Business, and Enterprise plans.
 
-The [audit log page](https://dashboard.convex.dev/team/settings/audit-log) shows all the actions taken by members within the team. This includes creating and managing projects and deployments, inviting and removing team members, and more.
+The [audit log page](https://dashboard.convex.dev/team/settings/audit-log) shows all the actions taken by members within the team. This includes creating and managing projects and deployments, inviting and removing team members, and more. If your team has [Single Sign-On](/team-management/sso.md#sign-in-audit-logs) enabled, the audit log also includes SSO sign-ins to the dashboard and CLI.
 
 ![Team audit log page](/screenshots/storybook/pages_team_audit_log_light.webp)
 
@@ -54322,12 +54322,26 @@ These IP addresses are shared across all Convex deployments in a region, not jus
 | IPv4     | `216.235.222.0/24`                                    |
 | IPv6     | `2600:1f18:77e:2300::/56`, `2600:1f10:4a09:7c00::/56` |
 
-### EU West (Ireland)[​](#eu-west-ireland "Direct link to EU West (Ireland)")
+### Europe (Ireland)[​](#europe-ireland "Direct link to Europe (Ireland)")
 
 | Protocol | Addresses                                                                                           |
 | -------- | --------------------------------------------------------------------------------------------------- |
 | IPv4     | `3.248.173.188`, `34.242.144.108`, `54.170.181.63`, `54.195.47.143`, `54.73.189.39`, `63.33.186.66` |
 | IPv6     | `2a05:d018:6f:e900::/56`, `2a05:d018:3aa:3c00::/56`                                                 |
+
+### Asia Pacific (Sydney)[​](#asia-pacific-sydney "Direct link to Asia Pacific (Sydney)")
+
+| Protocol | Addresses                                                                                        |
+| -------- | ------------------------------------------------------------------------------------------------ |
+| IPv4     | `13.238.177.157`, `16.178.19.224`, `52.62.9.39`, `52.62.114.123`, `52.65.179.161`, `54.66.89.81` |
+| IPv6     | `2406:da1c:11ea:f700::/56`, `2406:da1c:4f4:fd00::/56`                                            |
+
+### Canada (Central)[​](#canada-central "Direct link to Canada (Central)")
+
+| Protocol | Addresses                                                                                      |
+| -------- | ---------------------------------------------------------------------------------------------- |
+| IPv4     | `3.97.235.161`, `3.98.180.27`, `3.98.212.39`, `15.222.189.58`, `16.54.252.217`, `52.60.206.62` |
+| IPv6     | `2600:1f11:8:ea00::/56`, `2600:1f11:56e:300::/56`                                              |
 
 
 ---
@@ -54454,7 +54468,14 @@ All infrastructure powering your deployment will be hosted in the selected regio
 
 ## Available regions[​](#available-regions "Direct link to Available regions")
 
-The current available regions are in US East (N. Virginia) and EU West (Ireland). More regions will be added in the future.
+| Region               | Location              |
+| -------------------- | --------------------- |
+| `aws-us-east-1`      | US East (N. Virginia) |
+| `aws-eu-west-1`      | Europe (Ireland)      |
+| `aws-ap-southeast-2` | Asia Pacific (Sydney) |
+| `aws-ca-central-1`   | Canada (Central)      |
+
+More regions will be added in the future.
 
 ## Selecting a region[​](#selecting-a-region "Direct link to Selecting a region")
 
@@ -54462,7 +54483,13 @@ When creating a deployment on the Convex dashboard, you will be prompted to sele
 
 [Visit the team settings page](https://dashboard.convex.dev/team/settings) to change your team's default region.
 
-CLI support for selecting a region for new deployments is coming soon.
+You can also select a region from the CLI when creating a deployment:
+
+```
+npx convex deployment create my-deployment --type prod --region aws-ap-southeast-2
+```
+
+Omit `--region` to be prompted, or to use your team's default region if one is set. `us` and `eu` are accepted as shorthand for `aws-us-east-1` and `aws-eu-west-1`.
 
 ## Migrating between regions[​](#migrating-between-regions "Direct link to Migrating between regions")
 
@@ -58556,7 +58583,7 @@ Convex full-text search is designed to power as-you-type search experiences. In 
 * `"rabbit"`
 * `"send request"`
 
-Fuzzy search matches are deprecated. After January 15, 2025, search results will not include `"snake"` for a typo like `"stake"`.
+Every other search term matches only identical terms. Search has no typo tolerance: `search("body", "stake")` does not match `"snake"`.
 
 ### Relevance order[​](#relevance-order "Direct link to Relevance order")
 
@@ -60561,6 +60588,10 @@ By default, all Convex users that sign in with your verified SSO domain will be 
 To configure a custom domain policy, such as allowing users to login with other sign-on methods, contact Convex support.
 
 These settings will be available for self-serve configuration in the future.
+
+## Sign-in audit logs[​](#sign-in-audit-logs "Direct link to Sign-in audit logs")
+
+When SSO is enabled, the [team audit log](/dashboard/teams/teams.md#audit-log) also records each time a team member uses SSO to sign in to the dashboard or the CLI.
 
 ## Who can configure SSO[​](#who-can-configure-sso "Direct link to Who can configure SSO")
 

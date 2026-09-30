@@ -19,6 +19,8 @@ To help you fix failed deploys, Netlify offers AI capabilities that diagnose and
 
 Learn more about Netlify's AI capabilities to [give solutions for failed deploys](/resources/troubleshooting/fix-a-failed-deploy/).
 
+Getting a diagnosis and suggested solution with **Why did it fail?** doesn't consume any credits. Selecting **Fix with agent** starts an [agent run](/build/build-with-ai/agent-runners/overview), which does consume credits from your team's balance. Learn more about [credit usage for fixing a failed deploy](/resources/troubleshooting/fix-a-failed-deploy#credit-usage-for-fixing-a-failed-deploy).
+
 ## Best practices for troubleshooting your build
 
 In case your build fails on Netlify, **first make sure it builds locally in your own development environment.** This is a prerequisite to all of the below suggestions.

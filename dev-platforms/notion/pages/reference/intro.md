@@ -9,7 +9,7 @@ Learn the conventions, authentication, and pagination patterns used across the N
 Connections use the API to access Notion's pages, databases, and users. Connections can connect services to Notion and build interactive experiences for users within Notion. Use the navigation on the left to find details for objects and endpoints used in the API.
 
 <Note>
-  A bearer token is required to interact with the Notion API. Use an installation access token from an internal connection, an OAuth access token from a public connection, or a [personal access token](/guides/get-started/personal-access-tokens). If this is your first look at the Notion API, begin with the [Getting started guide](/guides/get-started/overview) to learn which connection type to use.
+  A bearer token is required to interact with the Notion API. Use an internal connection API token, an OAuth access token from a public connection, or a [personal access token](/guides/get-started/personal-access-tokens). If this is your first look at the Notion API, begin with the [Getting started guide](/guides/get-started/overview) to learn which connection type to use.
 
   To work on a specific internal connection without access to its token, confirm that you are an admin in the workspace where the connection was created. Check inside the Notion UI via `Settings & Members` in the left sidebar. If you're not an admin in any of your workspaces, create a personal workspace for free or use a PAT where workspace policy allows it.
 </Note>

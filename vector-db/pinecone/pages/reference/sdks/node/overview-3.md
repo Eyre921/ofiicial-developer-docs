@@ -22,6 +22,7 @@ The mappings between API versions and Node.js SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2026-07` | v9.x |
 | `2026-04` | v8.x |
 | `2025-10` | v7.x |
 | `2025-04` | v6.x |

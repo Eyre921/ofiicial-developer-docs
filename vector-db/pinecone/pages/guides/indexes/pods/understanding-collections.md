@@ -10,7 +10,11 @@ Legacy documentation for Pinecone collections, a pod-only feature for creating s
   Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
 </Warning>
 
-A collection is a static copy of a pod-based index that only consumes storage. It's a non-queryable representation of a set of records. You can [create a collection](/guides/indexes/pods/back-up-a-pod-based-index) of a pod-based index, and you can [create a new pod-based index from a collection](/guides/manage-data/restore-an-index). This allows you to restore the index with the same or different configurations.
+<Note>
+  SDKs that target API version `2026-07` don't support creating pod-based indexes, and they reject creating an index from a collection. You can still list, describe, and delete existing collections. To create or restore a pod-based index, use an [SDK version](/reference/pinecone-sdks#sdk-versions) that targets an earlier API version, or send an earlier `X-Pinecone-Api-Version` with the REST API. To move a pod-based index to serverless, see [Migrate a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless).
+</Note>
+
+A collection is a static copy of a pod-based index that only consumes storage. It's a non-queryable representation of a set of records. You can [create a collection](/guides/indexes/pods/back-up-a-pod-based-index) of a pod-based index, and you can [create a new pod-based index from a collection](/guides/indexes/pods/restore-a-pod-based-index). This allows you to restore the index with the same or different configurations.
 
 <Note>
   Once a collection is created, it can't be moved to a different project.

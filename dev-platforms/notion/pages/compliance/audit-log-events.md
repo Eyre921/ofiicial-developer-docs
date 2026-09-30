@@ -164,7 +164,7 @@ Events are split into the following categories:
 * **Integration permissions updated**: That an integration's capabilities (reading content, inserting a comment, etc.) have been changed.
 * **Integration removed from approved connections**: That an integration was removed from the workspace's list of approved connections.
 * **Integration removed from workspace**: That an integration has been deleted.
-* **Integration secret reset**: That an integration's installation access token has been refreshed.
+* **Integration secret reset**: That an integration's API token has been refreshed.
 * **Integration settings updated**: That an integration's basic settings, like its name or icon, have been changed.
 * **Integration webhook subscription failing**: That an integration's webhook was inactivated due to repeated delivery failures.
 * **Integration webhook subscription restored**: That an integration's webhook was reactivated after being inactive.

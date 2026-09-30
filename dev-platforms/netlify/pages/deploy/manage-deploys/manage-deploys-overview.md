@@ -239,5 +239,8 @@ To help you fix failed deploys, Netlify offers AI capabilities that diagnose and
 Learn more about Netlify's AI capabilities to [give solutions for failed deploys](/resources/troubleshooting/fix-a-failed-deploy/).
 
   ![A failed deploy with a "Why did it fail?" button and a diagnosis and suggested solution above the deploy log details](/images/site-deploys-ai-helps-fix-failed-deploys.png)
+
+Getting a diagnosis and suggested solution with **Why did it fail?** doesn't consume any credits. Selecting **Fix with agent** starts an [agent run](/build/build-with-ai/agent-runners/overview), which does consume credits from your team's balance. Learn more about [credit usage for fixing a failed deploy](/resources/troubleshooting/fix-a-failed-deploy#credit-usage-for-fixing-a-failed-deploy).
+
 For more help troubleshooting failed builds, check out our [Build troubleshooting tips](/build/configure-builds/troubleshooting-tips#app). If your deploy returns an error, you can also clear your cache and retry the deploy in the Netlify UI or trigger a new deploy.
 

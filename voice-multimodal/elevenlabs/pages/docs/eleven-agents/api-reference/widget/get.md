@@ -156,6 +156,8 @@ The avatar of the widget
 - `speaking_status` (string, optional) — Status displayed when the agent is speaking.
 - `connecting_status` (string, optional) — Status displayed when the agent is connecting.
 - `chatting_status` (string, optional) — Status displayed when the agent is chatting (text only)
+- `queue_waiting_status` (string, optional) — Status displayed while waiting in the queue for an available agent.
+- `queue_waiting_status_short` (string, optional) — Short status displayed while waiting for an available agent.
 - `input_label` (string, optional) — ARIA label for the text message input.
 - `input_placeholder` (string, optional) — Placeholder text for the text message input.
 - `input_placeholder_text_only` (string, optional) — Placeholder text for the text message input (text only)
@@ -164,6 +166,7 @@ The avatar of the widget
 - `agent_ended_conversation` (string, optional) — Information message displayed when the agent ends the conversation.
 - `conversation_id` (string, optional) — Text label used next to the conversation ID.
 - `error_occurred` (string, optional) — Text label used when an error occurs.
+- `queue_timed_out` (string, optional) — Error message displayed when the queue wait times out.
 - `copy_id` (string, optional) — Text and ARIA label used for the copy ID button.
 - `initiate_feedback` (string, optional) — Text displayed to prompt the user for feedback.
 - `request_follow_up_feedback` (string, optional) — Text displayed to request additional feedback details.
@@ -190,6 +193,7 @@ The avatar of the widget
 - `file_too_large` (string, optional) — Error message displayed when a file exceeds the maximum size limit.
 - `file_limit_reached` (string, optional) — Error message displayed when the maximum number of files for a conversation is reached.
 - `typing_indicator` (string, optional) — Status text displayed while the agent is typing.
+- `rich_content_unavailable` (string, optional) — Fallback message displayed when rich content cannot be rendered.
 
 ### WidgetStyles
 
@@ -308,6 +312,8 @@ The avatar of the widget
       "speaking_status": "speaking_status",
       "connecting_status": "connecting_status",
       "chatting_status": "chatting_status",
+      "queue_waiting_status": "queue_waiting_status",
+      "queue_waiting_status_short": "queue_waiting_status_short",
       "input_label": "input_label",
       "input_placeholder": "input_placeholder",
       "input_placeholder_text_only": "input_placeholder_text_only",
@@ -316,6 +322,7 @@ The avatar of the widget
       "agent_ended_conversation": "agent_ended_conversation",
       "conversation_id": "conversation_id",
       "error_occurred": "error_occurred",
+      "queue_timed_out": "queue_timed_out",
       "copy_id": "copy_id",
       "initiate_feedback": "initiate_feedback",
       "request_follow_up_feedback": "request_follow_up_feedback",
@@ -341,7 +348,8 @@ The avatar of the widget
       "file_type_unsupported": "file_type_unsupported",
       "file_too_large": "file_too_large",
       "file_limit_reached": "file_limit_reached",
-      "typing_indicator": "typing_indicator"
+      "typing_indicator": "typing_indicator",
+      "rich_content_unavailable": "rich_content_unavailable"
     },
     "styles": {
       "base": "base",

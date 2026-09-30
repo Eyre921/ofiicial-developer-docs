@@ -63,7 +63,7 @@ func main() {
 | `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
 | `containerID` | `string` | :heavy\_check\_mark: | The canonical container id, exactly as returned in a bash/shell tool result — a restarted session has its own `-r<nonce>`-suffixed id. A session-derived id is always `sess_` + the sanitized session key, which is not necessarily the raw session id that was sent. | sess\_abc123 |
 | `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of files to return (1-1000). Defaults to 100 when absent. | 100 |
-| `after` | `*string` | :heavy\_minus\_sign: | Forward cursor: the previous page’s `last_id` (or any container file id); listing resumes strictly after that path. | cfile\_b3V0L3JlcG9ydC5jc3Y |
+| `after` | `*string` | :heavy\_minus\_sign: | Forward cursor: the previous page’s `last_id` (or any container file id); listing resumes strictly after that path. A `last_id` from a page that stopped at the scan bound may name a directory-marker path (trailing `/`) that was never listed as a file; such cursors are accepted. | cfile\_b3V0L3JlcG9ydC5jc3Y |
 | `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
 
 ### Response

@@ -571,10 +571,10 @@ allow_dynamic_registration = true
 
 ### Step 2: Create the MCP server
 
-The fastest path is the [MCP Server block](https://supabase.com/library/docs/headless/mcp-server) in the Supabase Library. It installs an Edge Function with the middleware already wired, a `whoami` tool, and a small tool registry to extend:
+The fastest path is the [MCP Server block](https://supabase.com/library/docs/headless/mcp) in the Supabase Library. It installs an Edge Function with the middleware already wired, a `whoami` tool, and a small tool registry to extend:
 
 ```bash
-npx shadcn@latest add https://supabase.com/library/r/mcp-server.json
+npx shadcn@latest add https://supabase.com/library/r/mcp.json
 ```
 
 To write the function yourself, start with a table for the tools to work on. Create it with RLS so each user only sees their own rows; the `user_id` default means inserts don't need to pass it. Save this as a migration with `supabase migration new create_todos` and paste it into the generated file:
@@ -792,7 +792,7 @@ Both examples in this guide are in the `supabase/supabase` repository, ready to 
 
 ## Resources
 
-- [MCP Server block](https://supabase.com/library/docs/headless/mcp-server) and [Headless App block](https://supabase.com/library/docs/tanstack/headless-app) in the Supabase Library
+- [MCP Server block](https://supabase.com/library/docs/headless/mcp) and [Headless App block](https://supabase.com/library/docs/tanstack/headless-app) in the Supabase Library
 - [`@supabase/server` reference](https://supabase.com/docs/reference/server/introduction)
 - [MCP authentication with Supabase Auth](https://supabase.com/docs/guides/auth/oauth-server/mcp-authentication)
 - [OAuth 2.1 server](https://supabase.com/docs/guides/auth/oauth-server)
@@ -8928,6 +8928,15 @@ Here's the text formatted as a proper markdown table:
 | 42P17                  | 500                            | infinite recursion              |
 | 42501                  | if authenticated 403, else 401 | insufficient privileges         |
 | other                  | 400                            |                                 |
+
+Note: Some codes in this table are triggered by platform conditions rather than application code. Seeing them in high volume usually points to an infrastructure event rather than a bug in your queries:
+
+- **25006** — The database has entered read-only mode due to disk quota. See [Read-only mode](https://supabase.com/docs/guides/platform/database-size#read-only-mode) for causes and recovery steps.
+- **53100** — Disk is full. Supabase emits this alongside 25006 during severe disk exhaustion.
+- **53300** — Too many connections. The connection pool has reached its limit; check your [connection pool settings](https://supabase.com/docs/guides/database/connection-management).
+- **57P03** — The database cannot accept connections, typically during a restart or failover.
+
+When you see these codes in volume, check the [Database dashboard](https://supabase.com/dashboard/project/_/observability/database) before debugging application code.
 
 ## API level errors
 
@@ -19157,7 +19166,7 @@ Deno.serve(
 )
 ```
 
-The [MCP Server block](https://supabase.com/library/docs/headless/mcp-server) in the Supabase Library packages this as an installable Edge Function, and the [OAuth Consent block](https://supabase.com/library/docs/nextjs/oauth-consent) provides the consent screen. See [Deploy MCP servers](https://supabase.com/docs/guides/ai-tools/byo-mcp) for the full setup.
+The [MCP Server block](https://supabase.com/library/docs/headless/mcp) in the Supabase Library packages this as an installable Edge Function, and the [OAuth Consent block](https://supabase.com/library/docs/nextjs/oauth-consent) provides the consent screen. See [Deploy MCP servers](https://supabase.com/docs/guides/ai-tools/byo-mcp) for the full setup.
 
 Note: **Looking for an easier way to build MCP servers?**
 
@@ -66611,7 +66620,7 @@ Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/
 
 Optionally adjust [destination settings](#destination-settings) and [table partitioning and clustering](#table-partitioning-and-clustering) before creation.
 
-Click **Create and start pipeline** and complete the validation and cost confirmations.
+Click **Start pipeline** to validate the destination. Review the cost estimate, then click **Create and start pipeline**.
 
 Supabase Pipelines charges and Google Cloud charges are separate. BigQuery can charge for Storage Write API ingestion, storage, and the compute used to apply CDC changes. See [BigQuery CDC pricing](https://cloud.google.com/bigquery/docs/change-data-capture#CDC_pricing).
 
@@ -66765,59 +66774,61 @@ Note: Supabase Pipelines is currently in public alpha. Features and behavior may
 
 The ClickHouse destination is in private alpha and available only to approved organizations. [Request access](https://supabase.com/go/supabase-pipelines-new-destinations) before following this guide.
 
-Replicate Postgres changes to [ClickHouse](https://clickhouse.com/) as current-state tables or an append-only history. [Choose a table engine](#choose-a-table-engine), [prepare resources](#prepare-clickhouse-resources), then [configure the destination](#configure-clickhouse-as-a-destination).
+[ClickHouse](https://clickhouse.com/) is a database for analytics. Supabase Pipelines replicates Postgres tables to ClickHouse as either current-state tables or an append-only history of changes.
+
+To replicate data to ClickHouse:
+
+1. [Choose a table engine](#choose-a-table-engine) and check the [source table requirements](#source-table-requirements).
+2. [Prepare a database, user, and HTTPS endpoint](#prepare-clickhouse-resources) in ClickHouse.
+3. [Configure the ClickHouse destination](#configure-clickhouse-as-a-destination) in the Dashboard.
+4. [Query the replicated data](#query-replicated-data) in ClickHouse.
 
 ## Source table requirements
 
-`ReplacingMergeTree` requires a source primary key. `MergeTree` can replicate insert-only tables without one. Include all primary-key columns in the publication when the table has a key.
+The source table requirements depend on the selected table engine and the operations in the Postgres publication. `ReplacingMergeTree` requires a source primary key. `MergeTree` can replicate insert-only tables without one. If a table has a primary key, include all its key columns in the publication.
 
 Check the [replica-identity and array requirements](#replica-identity-and-arrays) for your source tables.
 
 ### Choose a table engine
 
-The table engine controls how ClickHouse represents changes. It is selected for the entire destination.
-
-Choose the engine before creating the pipeline. Changing **Table engine** later does not convert existing destination tables; writes fail if their engine differs from the configured one. Restore the previous setting to resume using those tables.
+The table engine determines how ClickHouse stores and queries replicated changes. Choose one engine for the entire destination:
 
 | Engine               | Data model and query pattern                                                                     |
 | -------------------- | ------------------------------------------------------------------------------------------------ |
 | `ReplacingMergeTree` | Current-state tables. Requires a primary key. Query the generated `__current` view.              |
 | `MergeTree`          | Append-only CDC history. A primary key is optional for insert-only tables. Query the base table. |
 
-Updating a source primary-key value removes the old key from the current-state view and writes the row under its new key. Changing the primary-key definition is a separate [schema change](#schema-change-support).
+Choose the engine before creating the pipeline. Changing **Table engine** later does not convert existing destination tables. Writes fail if their engine differs from the configured one. Restore the previous setting to resume writing to those tables.
+
+With `ReplacingMergeTree`, changing a source primary-key value removes the old key from the current-state view and writes the row under its new key. Changing which columns make up the primary key is a separate [schema change](#schema-change-support).
 
 ## Prepare ClickHouse resources
 
-Before creating the destination:
+Managed Pipelines run in AWS `eu-central-1` (Frankfurt). When creating your ClickHouse service, choose a nearby region to [reduce replication latency](https://supabase.com/docs/guides/database/replication/pipelines#region). Then prepare these resources in ClickHouse before creating the destination:
 
-1. Create or choose a ClickHouse database for the replicated tables.
-2. Create a dedicated ClickHouse user for Pipelines.
-3. Grant the user access to the target database. Pipelines must be able to:
+1. Create an empty database for the replicated tables. In ClickHouse Cloud, open your service's **SQL console** and run `create database if not exists pipelines;`, replacing `pipelines` if you prefer another name. Pipelines creates and manages the tables and, for `ReplacingMergeTree`, the current-state views. Do not create or alter these objects yourself.
+2. Create a dedicated database user for Pipelines and grant it access to that database. In ClickHouse Cloud, create this user in the **SQL console**; the organization's **Users and roles** page manages console members. The database user must be able to:
    - Query `system.databases`, `system.tables`, and `system.columns`
    - Create, alter, truncate, and drop tables
    - Create and drop views when using `ReplacingMergeTree`
    - Insert rows into managed tables
-4. Copy the database's HTTPS endpoint, including its port when required. Pipelines rejects HTTP endpoints and private or internal hostnames.
+3. Copy the public HTTPS endpoint for your ClickHouse server. In ClickHouse Cloud, click **Connect** and select **HTTPS** to find it. Include the port if your endpoint requires one. Pipelines cannot connect to HTTP endpoints or private and internal hostnames.
 
-Keep the database otherwise empty. Pipelines manages the replicated tables and current-state views. Don't pre-create or manually alter those objects.
-
-The default `ReplacingMergeTree` engine requires ClickHouse 23.5 or later. The `MergeTree` event-log engine does not have this minimum-version requirement.
+For `ReplacingMergeTree`, the ClickHouse server must run version 23.5 or later. `MergeTree` does not have this minimum-version requirement.
 
 ## Configure ClickHouse as a destination
 
-Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview) and select **ClickHouse**. Enter these destination settings:
+Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview). When prompted to choose a destination, select **ClickHouse** and enter the following settings:
 
-| Field            | Value                                                                      |
-| ---------------- | -------------------------------------------------------------------------- |
-| **URL**          | Public HTTPS endpoint, including its port when required                    |
-| **User**         | Dedicated ClickHouse user                                                  |
-| **Password**     | User's password, if required                                               |
-| **Database**     | Existing target database                                                   |
-| **Table engine** | `replacing_merge_tree` for current state or `merge_tree` for event history |
+| Field              | Value                                                                   |
+| ------------------ | ----------------------------------------------------------------------- |
+| **HTTPS endpoint** | Public HTTPS endpoint, including its port when required                 |
+| **User**           | Your dedicated database user, such as `pipelines_user`                  |
+| **Password**       | That user's password, if set                                            |
+| **Database**       | Destination database, such as `pipelines`                               |
+| **Table engine**   | `ReplacingMergeTree` for current state or `MergeTree` for event history |
 
-Click **Create and start pipeline** and complete the validation and cost confirmations.
-
-Place ClickHouse near the [managed pipeline region](https://supabase.com/docs/guides/database/replication/pipelines#region).
+Click **Start pipeline** to validate the destination. Review the cost estimate, then click **Create and start pipeline**.
 
 ## Query replicated data
 
@@ -66834,7 +66845,7 @@ Postgres schema and table names cannot start or end with `_` or contain `"` or `
 
 ### ReplacingMergeTree
 
-`ReplacingMergeTree` is the default and is intended for current-state analytics. Pipelines:
+Use the generated `__current` view when you need the latest version of each source row. `ReplacingMergeTree` is the default engine. Pipelines:
 
 - Uses the source primary key as ClickHouse's sorting and deduplication key
 - Adds an `_etl_version UInt128` ordering column
@@ -66847,16 +66858,16 @@ Query the generated view for the current state:
 
 ```sql
 select *
-from "public_orders__current";
+from pipelines."public_orders__current";
 ```
 
-ClickHouse background merges combine older row versions over time. Until they do, querying the base table without `FINAL` can return multiple versions of the same source row. Use the generated `__current` view for normal current-state queries.
+ClickHouse background merges combine older row versions over time. Before a merge, the base table can contain multiple versions of the same source row. The generated view uses `FINAL` to return the current version and excludes deleted rows.
 
 Pipelines does not run `OPTIMIZE ... FINAL CLEANUP`. ClickHouse operators remain responsible for any physical tombstone cleanup required by their storage-retention policy.
 
 ### MergeTree
 
-`MergeTree` stores every replicated change as an append-only event. Pipelines adds:
+Query the base table when you need the history of inserts, updates, and deletes. `MergeTree` stores each replicated change as an append-only event. Pipelines adds:
 
 - `cdc_operation`, containing `INSERT`, `UPDATE`, or `DELETE`
 - `cdc_lsn`, containing the Postgres commit LSN for the change
@@ -66866,7 +66877,7 @@ The `cdc_operation`, `cdc_lsn`, and `cdc_tx_ordinal` names are reserved and can'
 
 Inserts and updates append the complete new row. A primary-key value update also appends a `DELETE` for the old key. Deletes append the old row when the source uses `REPLICA IDENTITY FULL`. With primary-key identity, a delete contains the key values; other fields use `NULL` for nullable scalars or placeholders such as zero, empty strings, and empty arrays. Those placeholders are not the deleted row's original values.
 
-Read the base table to analyze the event history. Order source changes by `cdc_lsn` and then `cdc_tx_ordinal`. The old-key delete and new-key update from one primary-key value change share both values, so this pair is not a unique destination-row ID.
+Order source changes by `cdc_lsn` and then `cdc_tx_ordinal`. The old-key delete and new-key update from one primary-key value change share both values, so this pair is not a unique destination-row ID.
 
 ### Truncates and table restarts
 
@@ -101363,6 +101374,41 @@ limit 100;
 
 Combine predicates with `and`, `or`, and `not`. Select only the fields needed for the investigation. To correlate sources, use an identifier present in both; a shared timestamp alone does not establish that events belong to the same request.
 
+## Filter by Postgres error code \[#sqlstate-filtering]
+
+Filter `postgres_logs` by SQLSTATE to surface errors at a specific category rather than by message text. The code lives in `log_attributes['parsed.sql_state_code']`.
+
+To see which error codes are occurring across a time window:
+
+```sql
+select
+  log_attributes['parsed.sql_state_code'] as sqlstate,
+  count() as occurrences
+from logs
+where source = 'postgres_logs'
+  and log_attributes['parsed.sql_state_code'] != ''
+group by sqlstate
+order by occurrences desc
+limit 50;
+```
+
+During a platform-level incident (such as the database entering read-only mode), codes like `25006` (`read_only_sql_transaction`) and `53100` (`disk_full`) will dominate the results. To focus on application errors while a platform incident is active, exclude the known platform codes:
+
+```sql
+select
+  timestamp,
+  log_attributes['parsed.sql_state_code'] as sqlstate,
+  event_message
+from logs
+where source = 'postgres_logs'
+  and log_attributes['parsed.sql_state_code'] not in ('25006', '53100', '57P03')
+  and log_attributes['parsed.error_severity'] = 'ERROR'
+order by timestamp desc
+limit 50;
+```
+
+SQLSTATE codes starting with `25` or `53` usually indicate platform-level resource events rather than application bugs. See the [PostgREST error codes reference](https://supabase.com/docs/guides/api/rest/postgrest-error-codes#database-level-errors) and [Database size guide](https://supabase.com/docs/guides/platform/database-size#read-only-mode) for context.
+
 ## Query limits \[#limit-and-result-row-limitations]
 
 Use an explicit `limit` and narrow time range. The logs query surface rejects `select *` and `count(*)`; list columns and use `count()`. A result limit bounds returned rows, not the time range scanned.
@@ -108078,7 +108124,24 @@ To resolve it, upgrade your plan or disable your Spend Cap to lift the restricti
 
 In some cases Supabase may put your database into read-only mode to prevent your database from exceeding the billing or disk limitations.
 
-In read-only mode, clients will encounter errors such as `cannot execute INSERT in a read-only transaction`. Regular operation (read-write mode) is automatically re-enabled once usage is below 95% of the disk size,
+In read-only mode, clients will encounter errors such as `cannot execute INSERT in a read-only transaction`. The Postgres SQLSTATE code for this error is **25006** (`read_only_sql_transaction`). During severe disk exhaustion, **SQLSTATE 53100** (`disk_full`) may also appear. Regular operation (read-write mode) is automatically re-enabled once usage is below 95% of the disk size.
+
+While in read-only mode, all write operations are blocked — including background jobs, scheduled tasks, and internal monitoring writes. Data that those jobs write (such as disk usage snapshots) will be stale until the database returns to read-write mode.
+
+To confirm that your database has entered read-only mode, query Postgres logs for the relevant SQLSTATE codes using the [Logs Explorer](https://supabase.com/dashboard/project/_/logs/explorer) with the query source set to **Logs**:
+
+```sql
+select
+  timestamp,
+  log_attributes['parsed.error_severity'] as severity,
+  log_attributes['parsed.sql_state_code'] as sqlstate,
+  event_message
+from logs
+where source = 'postgres_logs'
+  and log_attributes['parsed.sql_state_code'] in ('25006', '53100', '57P03')
+order by timestamp desc
+limit 50;
+```
 
 ### Disabling read-only mode
 
@@ -108090,7 +108153,7 @@ First, change the [transaction access mode](https://www.postgresql.org/docs/curr
 set session characteristics as transaction read write;
 ```
 
-This allows you to delete data from within the session. After deleting data, consider running a vacuum to reclaim as much space as possible:
+This allows you to delete data from within the current session. After deleting data, consider running a vacuum to reclaim as much space as possible:
 
 ```sql
 vacuum;
@@ -108101,6 +108164,8 @@ Once you have reclaimed space, you can run the following to disable [read-only](
 ```sql
 set default_transaction_read_only = 'off';
 ```
+
+Note: `SET SESSION CHARACTERISTICS` applies only to the current session. Background jobs and scheduled tasks resume writes automatically once the platform exits read-only mode — no manual step is needed.
 
 ### Disk size distribution
 
@@ -128839,10 +128904,11 @@ To change the database password, read [Changing database password](#changing-dat
 
 ## Accessing Edge Functions
 
-Edge Functions live in `volumes/functions`. The default setup includes a `hello` function you can invoke with `curl`:
+Edge Functions live in `volumes/functions`. The default setup includes a `hello` function you can invoke with `curl`. It requires your publishable or secret key in the `apikey` header:
 
 ```sh
-curl http://<your-domain>:8000/functions/v1/hello
+curl http://<your-domain>:8000/functions/v1/hello \
+  --header 'apikey: <SUPABASE_PUBLISHABLE_KEY>'
 ```
 
 Add new functions at `volumes/functions/<FUNCTION_NAME>/index.ts`, then restart the service to pick them up:
@@ -130881,7 +130947,7 @@ Routes are matched in the order declared. The first matching prefix wins. Protec
 | `/.well-known/oauth-authorization-server` | auth      | -                        | Open           | OAuth 2.0 Authorization Server Metadata (RFC 8414)                     |
 | `/auth/v1/sso/saml/acs`                   | auth      | `/sso/saml/acs`          | Open           | SAML assertion consumer                                                |
 | `/auth/v1/sso/saml/metadata`              | auth      | `/sso/saml/metadata`     | Open           | SAML metadata                                                          |
-| `/functions/v1/`                          | functions | `/`                      | Bypass         | Edge Functions runtime performs its own JWT verification; 150s timeout |
+| `/functions/v1/`                          | functions | `/`                      | `sb_` keys     | Rejects invalid and conflicting `sb_` keys; others pass; timeout: 150s |
 | `/storage/v1/`                            | storage   | `/`                      | Bypass         | Storage performs its own authorization                                 |
 | `/auth/v1/`                               | auth      | `/`                      | API key        | Protected Auth endpoints                                               |
 | `/rest/v1/`                               | rest      | `/`                      | API key        | PostgREST Open API root (requires secret key)                          |
@@ -130918,7 +130984,7 @@ A Lua filter rejects missing or invalid keys with HTTP `401 Unauthorized`. An RB
 
 ### Opaque key translation
 
-When the new API keys (`sb_publishable_*`, `sb_secret_*`) are configured, a chain of Lua filters translates opaque keys into the corresponding pre-signed internal JWTs before the request reaches API key enforcement and upstream services. **The entire chain is skipped on `/functions/v1/`**: the Edge Runtime receives the original `apikey` and `Authorization` headers unchanged.
+When the new API keys (`sb_publishable_*`, `sb_secret_*`) are configured, a chain of Lua filters translates opaque keys into the corresponding pre-signed internal JWTs before the request reaches API key enforcement and upstream services. **The chain is skipped on `/functions/v1/`**, which has its own filter. See [Edge Functions](#edge-functions).
 
 The chain operates in this order:
 
@@ -130929,6 +130995,23 @@ The chain operates in this order:
 5. **`Authorization` synthesis.** If the client did not send a real JWT in the `Authorization` header (or sent only a `Bearer sb_*` value, which is not a valid JWT), the gateway synthesizes `Authorization: Bearer <apikey>` from the (potentially translated) `apikey` header. This is skipped on the Realtime WebSocket route, which uses `x-api-key` instead.
 
 For background on opaque vs asymmetric keys, see [New API Keys and Asymmetric Authentication](https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys).
+
+### Edge Functions
+
+On `/functions/v1/`, a dedicated Lua filter handles API keys without changing the `apikey` or `Authorization` headers. When the new API keys are configured, it works as follows:
+
+| Request                                                            | Result                                                   |
+| ------------------------------------------------------------------ | -------------------------------------------------------- |
+| No `apikey` or `Authorization`                                     | Passed through                                           |
+| `apikey` is `sb_publishable_*` or `sb_secret_*`                    | Passed through with `sb-api-key` set to the internal JWT |
+| `Authorization: Bearer sb_...` and no `apikey`                     | Same as above, using the key from `Authorization`        |
+| Non-`sb_` value (legacy API key, user session token, any other)    | Passed through                                           |
+| Unknown `sb_` key                                                  | Rejected with `401 Unauthorized`                         |
+| `apikey` and `Authorization: Bearer sb_...` contain different keys | Rejected with `401 Unauthorized`                         |
+
+The filter always removes any `sb-api-key` header sent by the client. Without the new API keys configured, all other requests pass through unchanged. The `sb-api-key` value is the raw JWT, without a `Bearer` prefix. The `apikey` query parameter is not read on this route.
+
+When `FUNCTIONS_VERIFY_JWT` is `true`, the functions service verifies the JWT in `Authorization`. If `Authorization` is missing or contains an `sb_` key, it verifies `sb-api-key` instead. It removes `sb-api-key` before the request reaches your function. Functions can also check API keys themselves, for example with `withSupabase` from `@supabase/server`. See [Self-hosted Edge Functions](https://supabase.com/docs/guides/self-hosting/self-hosted-functions).
 
 ## Forwarded headers and CORS
 
@@ -131083,7 +131166,7 @@ Add the following code to `index.ts`:
 import { withSupabase } from '@supabase/server'
 
 export default {
-  fetch: withSupabase({ auth: 'none' }, async (req) => {
+  fetch: withSupabase({ auth: ['publishable', 'secret'] }, async (req) => {
     const { name } = await req.json()
     const message = `Hello, ${name}!`
 
@@ -131092,7 +131175,7 @@ export default {
 }
 ```
 
-The `auth` option controls who can call the function: `'none'` accepts every request, `'user'` requires a valid user JWT, and `'publishable'` / `'secret'` require an API key. See the [Edge Functions auth guide](https://supabase.com/docs/guides/functions/auth) for details.
+The `auth` option controls who can call the function. This example matches the default `hello` function and requires a publishable or secret API key in the `apikey` header. `'none'` accepts every request, and `'user'` requires a valid user JWT. See the [Edge Functions auth guide](https://supabase.com/docs/guides/functions/auth) for details.
 
 ### Step 2: Restart the functions service to pick up the new function
 
@@ -131104,6 +131187,7 @@ sh run.sh restart functions
 
 ```sh
 curl -X POST http://<your-domain>/functions/v1/my-function \
+  -H 'apikey: <SUPABASE_PUBLISHABLE_KEY>' \
   -H 'Content-Type: application/json' \
   -d '{"name": "World"}'
 ```
@@ -131259,7 +131343,8 @@ Common causes: syntax errors in your function code, invalid imports, or missing 
 ### 401 "invalid JWT"
 
 - Check that `FUNCTIONS_VERIFY_JWT` matches your intent (`true` or `false`) in `.env`
-- If verification is enabled, ensure you're passing a valid token: `Authorization: Bearer <anon_key or service_role_key>`
+- If verification is enabled, pass either a valid JWT in `Authorization: Bearer <token>` (a user session token or a legacy API key), or an `sb_publishable_*` or `sb_secret_*` key in the `apikey` header. The API gateway translates `sb_` keys to an internal JWT, which the functions service then verifies.
+- Verifying asymmetric JWTs, including translated `sb_` keys, requires `SUPABASE_JWKS` to be set for the `functions` service in `docker-compose.yml`. See [New API Keys and Asymmetric Authentication](https://supabase.com/docs/guides/self-hosting/self-hosted-auth-keys).
 
 ### Changes to function code not reflected after editing
 
@@ -175880,7 +175965,7 @@ const { data } = await ctx.supabase.rpc('get_my_items')
 
 ## fromSupabaseUrl
 
-**Alpha.** Points `authorizationServer` at a Supabase project's Auth
+Points `authorizationServer` at a Supabase project's Auth
 issuer.
 
 Use this off Supabase Edge Functions, where the app's own origin is unrelated
@@ -175942,28 +176027,22 @@ transaction that injects the caller's claims and drops to their role;
 
 ## PostgresPoolOptions
 
-**Alpha.** Pool sizing for `withPostgresClient` and
+Pool sizing for `withPostgresClient` and
 `withPostgresAdminClient`. Two entries on the same connection string share
 a pool only when their options resolve to the same values.
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## RequestClaims
 
-**Alpha.** Minimal claims shape withPostgresClient needs on the
+Minimal claims shape withPostgresClient needs on the
 upstream context.
 
 Satisfied both by `withSupabase`'s JWKS-verified `ctx.jwtClaims` and by the
 standalone `withClaims` middleware — `withPostgresClient` only reads `role`
 and serializes the whole object into `request.jwt.claims`.
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## resourceMetadataResponse
 
-**Alpha.** RFC 9728 OAuth Protected Resource Metadata response.
+RFC 9728 OAuth Protected Resource Metadata response.
 Advertises the authorization server, resource URI, and bearer methods supported.
 URLs default to the Edge Functions derivation and throw off platform; pass
 `resource` / `authorizationServers` to override.
@@ -175974,7 +176053,7 @@ release.
 
 ## unauthorizedResponse
 
-**Alpha.** `401` response with a
+`401` response with a
 `WWW-Authenticate: Bearer resource_metadata="..."` header (RFC 9728).
 The metadata URL defaults to the Edge Functions derivation and throws off
 platform; pass `resourceMetadataUrl` to override for custom setups.
@@ -175985,7 +176064,7 @@ release.
 
 ## withClaims
 
-**Alpha.** Contributes `ctx.jwtClaims` by verifying the caller's Bearer
+Contributes `ctx.jwtClaims` by verifying the caller's Bearer
 token against the project JWKS — the same verification core `withSupabase`
 uses for its `user` auth mode.
 
@@ -176030,19 +176109,13 @@ export default {
 }
 ```
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## WithClaimsConfig
 
-**Alpha.** Configuration for withClaims.
-
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
+Configuration for withClaims.
 
 ## withOAuthProtectedResource
 
-**Alpha.** Wraps a request handler with OAuth 2.1 Protected Resource
+Wraps a request handler with OAuth 2.1 Protected Resource
 behavior (RFC 9728).
 
 - Serves OAuth Protected Resource Metadata at `GET {resource}/oauth-protected-resource`
@@ -176126,7 +176199,7 @@ withOAuthProtectedResource(
 
 ## withPostgresAdminClient
 
-**Alpha.** Contributes `ctx.postgresAdmin` — a `pg` client that **bypasses
+Contributes `ctx.postgresAdmin` — a `pg` client that **bypasses
 RLS**, for full-table access. The direct-connection counterpart to
 `withSupabaseAdminClient`, and the deliberate opt-out from the guardrails
 `withPostgresClient` (`@supabase/server/middleware/postgres`) enforces.
@@ -176162,19 +176235,13 @@ pipeline([withSupabase({ auth: 'user' }), withPostgresClient(), withPostgresAdmi
 > **Runtime note.** `pg` needs raw TCP, so this runs on Node/Deno (including
 > the Supabase Edge runtime), **not** on Workers-style isolates.
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## WithPostgresAdminClientConfig
 
-**Alpha.** Configuration for withPostgresAdminClient.
-
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
+Configuration for withPostgresAdminClient.
 
 ## withPostgresClient
 
-**Alpha.** Contributes `ctx.postgres` — an RLS-scoped `pg` client, the safe
+Contributes `ctx.postgres` — an RLS-scoped `pg` client, the safe
 version of "authenticate, then query as the user". This is the
 direct-connection counterpart to `withSupabaseClient`, and its service-role
 companion is `withPostgresAdminClient`
@@ -176224,19 +176291,13 @@ is present before it runs.
 > **Runtime note.** `pg` needs raw TCP, so this runs on Node/Deno (including
 > the Supabase Edge runtime), **not** on Workers-style isolates.
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## WithPostgresClientConfig
 
-**Alpha.** Configuration for withPostgresClient.
-
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
+Configuration for withPostgresClient.
 
 ## withRequiredClaims
 
-**Alpha.** The user-mode auth gate: requires a valid user JWT and
+The user-mode auth gate: requires a valid user JWT and
 contributes **non-null** `ctx.jwtClaims`. Verification runs against the
 project JWKS, the same core `withSupabase` uses for its `user` auth mode.
 
@@ -176290,15 +176351,9 @@ export default {
 }
 ```
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## WithRequiredClaimsConfig
 
-**Alpha.** Configuration for withRequiredClaims.
-
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
+Configuration for withRequiredClaims.
 
 ## withSupabase
 
@@ -176325,7 +176380,7 @@ export default {
 
 ## withSupabaseAdminClient
 
-**Alpha.** Contributes `ctx.supabaseAdmin` — an admin Supabase client that
+Contributes `ctx.supabaseAdmin` — an admin Supabase client that
 bypasses Row-Level Security, authenticated with a secret key. This is the
 same middleware `withSupabase` composes internally to build its context.
 
@@ -176349,21 +176404,15 @@ export default {
 }
 ```
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## WithSupabaseAdminClientConfig
 
-**Alpha.** Configuration for withSupabaseAdminClient — the same
+Configuration for withSupabaseAdminClient — the same
 environment and client options `createAdminClient` accepts, minus the
 per-request auth identity (which is read from the upstream context).
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## withSupabaseClient
 
-**Alpha.** Contributes `ctx.supabase` — a Supabase client scoped to the
+Contributes `ctx.supabase` — a Supabase client scoped to the
 caller's identity, so Row-Level Security policies apply. This is the same
 middleware `withSupabase` composes internally to build its context.
 
@@ -176387,18 +176436,12 @@ export default {
 }
 ```
 
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
-
 ## WithSupabaseClientConfig
 
-**Alpha.** Configuration for withSupabaseClient — the same
+Configuration for withSupabaseClient — the same
 environment and client options `createContextClient` accepts, minus the
 per-request auth identity (which is read from the request and the upstream
 context).
-
-The composable middleware surface tracks `@supabase/middleware` 0.x — entry
-shapes, context keys, and config options may change between 0.x releases.
 
 ## Primitives
 
@@ -177069,7 +177112,7 @@ This is the raw JWT payload — use UserClaims for a normalized, camelCase view.
 
 ## OAuthProtectedResourceConfig
 
-**Alpha.** Configuration for withOAuthProtectedResource.
+Configuration for withOAuthProtectedResource.
 
 Both options accept a fixed string or a function of the request. Both default
 to values derived from the request as it arrives through the Supabase Edge
@@ -177081,7 +177124,7 @@ release.
 
 ## ResourceMetadataOptions
 
-**Alpha.** Options for resourceMetadataResponse.
+Options for resourceMetadataResponse.
 
 The OAuth Protected Resource surface is alpha — the config shape, the
 contributed context key, and the metadata route may change in a minor
@@ -177111,7 +177154,7 @@ but can be passed explicitly via the `env` option.
 
 ## UnauthorizedResponseOptions
 
-**Alpha.** Options for unauthorizedResponse.
+Options for unauthorizedResponse.
 
 The OAuth Protected Resource surface is alpha — the config shape, the
 contributed context key, and the metadata route may change in a minor
@@ -177119,7 +177162,7 @@ release.
 
 ## UrlOption
 
-**Alpha.** A configured URL: either a fixed value, or derived per request.
+A configured URL: either a fixed value, or derived per request.
 
 The OAuth Protected Resource surface is alpha — the config shape, the
 contributed context key, and the metadata route may change in a minor

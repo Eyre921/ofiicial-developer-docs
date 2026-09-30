@@ -15,6 +15,7 @@ Object limits are restrictions on the number or size of objects in Pinecone. The
 | Serverless indexes per project <sup>1</sup> | 5 | 10 | 20 | 200 |
 | Serverless index storage per org | 2 GB | 10 GB | N/A | N/A |
 | Namespaces per serverless index | 100 | 1,000 | 100,000 | 1,000,000 |
+| Namespace aliases per serverless index | 1,000 | 1,000 | 1,000 | 1,000 |
 | Serverless backups per project | N/A | N/A | 500 | 1,000 |
 | Collections per project | 100 | N/A | N/A | N/A |
 

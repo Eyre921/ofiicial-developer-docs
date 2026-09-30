@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="September 29, 2026">
+  ### Completing the query tool update in Notion MCP
+
+  `notion-query-database-view` is no longer available. Call `notion-query-data-sources` instead, and pass the same `view_url` as `{"data": {"mode": "view", "view_url": "..."}}`. Calls to the old tool name now return a tool error that names this replacement.
+</Update>
+
 <Update label="September 28, 2026">
   ### Higher Notion MCP search and query limits
 

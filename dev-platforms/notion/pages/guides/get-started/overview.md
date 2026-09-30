@@ -28,7 +28,7 @@ Notion already has a [library](https://www.notion.com/integrations/all) of conne
 
 Notion supports three authentication models:
 
-* **Internal connections** are scoped to a single workspace and use a static API token. They're ideal for custom automations and workflows — things like syncing data, sending notifications, or building internal dashboards.
+* **Internal connections** are scoped to a single workspace and use a static credential called an internal connection API token. They're ideal for custom automations and workflows — things like syncing data, sending notifications, or building internal dashboards.
 * **Public connections** use OAuth 2.0 for authentication. At creation time, you choose their [installation scope](/guides/get-started/public-connections#installation-scope): **Any workspace** (any Notion user can install; Marketplace-eligible) or **Selected workspaces only** (restricted to workspaces you select; not Marketplace-eligible).
 * **Personal access tokens (PATs)** are user-scoped tokens for scripts, CLI workflows, Workers, and tools that should act as one Notion user. A PAT uses the creator's workspace membership and page permissions. See [Personal access tokens](/guides/get-started/personal-access-tokens).
 
@@ -44,7 +44,7 @@ Notion supports three authentication models:
 | Installation scope | Single workspace. | Any workspace, or a specific set of workspaces chosen at creation time. Scope can't change after creation. | One user in one workspace. |
 | User access | Only members of the workspace where it's installed. | Any user in a workspace where the connection is allowed to install. | The member who created the token. |
 | Content access | Granted directly to the connection, not tied to any specific user. | Users choose which pages to share during the OAuth flow or via the Add connections menu. | Uses the creator's Notion permissions; pages do not need to be shared with a bot. |
-| Authentication | Static API token. | OAuth 2.0. | Static bearer token. |
+| Authentication | Internal connection API token. | OAuth 2.0. | Static bearer token. |
 
 <Info>
   **Looking for SCIM or SAML SSO?**
@@ -138,7 +138,7 @@ Once you're ready to build further, choose the authentication model that fits yo
   </Step>
 
   <Step>
-    [**Handling API keys**](/guides/get-started/handling-api-keys) — Secure and manage your API tokens in production.
+    [**Secure API credentials**](/guides/get-started/handling-api-keys) — Secure and manage your API credentials in production.
   </Step>
 
   <Step>

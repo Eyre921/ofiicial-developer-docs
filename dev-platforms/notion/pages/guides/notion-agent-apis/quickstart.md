@@ -20,7 +20,7 @@ To create a new Custom Agent, see [Build a Custom Agent](https://www.notion.com/
 
 **A token to authenticate requests**
 
-Each request needs a token. You can use a [personal access token](/guides/get-started/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection's installation access token, described below.
+Each request needs a token. You can use a [personal access token](/guides/get-started/personal-access-tokens) (PAT), which lets you authenticate as yourself without setting up OAuth and carries your own access, so it can reach exactly the Custom Agents you can reach in Notion. Alternatively, you can use an internal connection API token, described below.
 
 <Steps>
   <Step>
@@ -40,9 +40,9 @@ Each request needs a token. You can use a [personal access token](/guides/get-st
   </Step>
 </Steps>
 
-**An internal connection token to authenticate requests**
+**An internal connection API token to authenticate requests**
 
-You can instead use an internal connection's installation access token. The connection can access only Custom Agents that are explicitly shared with it.
+You can instead use an internal connection API token. The connection can access only Custom Agents that are explicitly shared with it.
 
 <Steps>
   <Step>
@@ -58,7 +58,7 @@ You can instead use an internal connection's installation access token. The conn
   </Step>
 
   <Step>
-    Return to the **Configuration** tab, copy the **Installation access token**, and save it somewhere secure.
+    Return to the **Configuration** tab, copy the **API token**, and save it somewhere secure.
   </Step>
 </Steps>
 
