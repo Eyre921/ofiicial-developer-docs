@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/guides/manage-data/namespace-aliases/overview
 path: guides/manage-data/namespace-aliases/overview
 ---
 
-A namespace alias is a movable name for a namespace, letting you switch the data your application reads without a code change or redeploy.
+A namespace alias is a stable name for a namespace that you can repoint at any time, switching the data your application reads without a code change or redeploy.
 
 <Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API. Reading through an alias works on any API version, including the current SDKs.
+  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 </Note>
 
 A **namespace alias** is a stable, repointable name inside an index that points at a [namespace](/guides/index-data/indexing-overview#namespaces). An alias holds no data of its own. It's a pointer. Your application reads through the alias name, and you can atomically repoint the alias to a different namespace in the same index at any time, with no application config change and no redeploy.
@@ -41,7 +41,7 @@ An alias name must be unique within the index and can't match a namespace name. 
 * Aliases are a separate resource from namespaces. They don't appear in namespace listings (`GET /namespaces`) or in `describe_index_stats`; list them with `GET /namespace-aliases`.
 * Deleting an alias makes reads through that name return empty results, not an error, so move readers to a live name before you delete.
 * Restoring an index from a backup creates a new index, so the original's aliases don't carry over.
-* You manage aliases through the REST API, and reads through an alias work in the SDKs.
+* You manage aliases through the REST API or the Pinecone console, and reads through an alias work in the SDKs.
 * Alias changes aren't in the audit log export.
 
 ## See also

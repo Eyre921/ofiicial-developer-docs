@@ -10,8 +10,6 @@ Learn about your tax obligations and the registration types Stripe Tax supports.
 
 > [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
 
-Stripe Tax also checks the following on your account:
-
 As a business, you’re required to identify the states, provinces, and countries where you have tax obligations. You must then register with the tax authorities in the applicable jurisdictions, and add your registrations to Stripe using the [Locations](https://dashboard.stripe.com/test/tax/locations) tab in the Dashboard or [Tax Registrations API](https://docs.stripe.com/api/tax/registrations.md). You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register.md) on your behalf.
 
 Registration requirements vary by jurisdiction, and you can trigger it in a few ways, including, but not limited to:

@@ -24,7 +24,7 @@ The easiest way to order a dub from Productions is through the [Productions](htt
 * **Source language** (e.g., English)
 * **Target language** (e.g., Spanish, Hindi, Arabic)
 
-![Productions Home](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233127Z&X-Amz-Expires=604800&X-Amz-Signature=d43ad41618898075ef67be249aa8b9490ac089955ae9c2c90e3809c4d2bd0e15&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Home](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113137Z&X-Amz-Expires=604800&X-Amz-Signature=38d17d4a5bfcc4da478fb5fc36d50b62cfec36c82bc0e4ad1b54f08526ef3359&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Processing
 

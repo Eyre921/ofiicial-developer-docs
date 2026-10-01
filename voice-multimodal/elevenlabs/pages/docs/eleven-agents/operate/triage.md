@@ -17,7 +17,7 @@ Triage tickets collect problems with an agent's real conversations so you can re
 > Triage tickets are about an agent's own performance. They are separate from support tickets that
 > an agent opens on behalf of an end user during a conversation.
 
-![Triage queue for an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fe035e0f67b9c462de2e0260d9f93adfaef42303666b28e4e28e372f4185430/assets/images/agents/triage-queue.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233229Z&X-Amz-Expires=604800&X-Amz-Signature=995c82a2ebf706ef032e53ecc31e43b3ffa9f11f1c9cd61dfb012aad903758fe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Triage queue for an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fe035e0f67b9c462de2e0260d9f93adfaef42303666b28e4e28e372f4185430/assets/images/agents/triage-queue.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100021Z&X-Amz-Expires=604800&X-Amz-Signature=87a58c59b5b9359a53750e3ad7c102d3309adae0d65bde305a0d626aaa998911&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Where tickets come from
 
@@ -26,7 +26,7 @@ Triage tickets collect problems with an agent's real conversations so you can re
 * **Conversation review**: you or a teammate open a ticket while reviewing a transcript.
 * **Architect review (coming soon)**: Architect opens a ticket after spotting a recurring pattern across recent conversations.
 
-![Flag issue button on a conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ddb939cbd0cb690f643ad7051ae29dee94a33f5696f6ff4fe554e9e714afcac/assets/images/agents/triage-manual-flag.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233229Z&X-Amz-Expires=604800&X-Amz-Signature=f49efd20c6037afd530d353288454872bea6c84828ff742e69b54f64f6464fd1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Flag issue button on a conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ddb939cbd0cb690f643ad7051ae29dee94a33f5696f6ff4fe554e9e714afcac/assets/images/agents/triage-manual-flag.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100021Z&X-Amz-Expires=604800&X-Amz-Signature=b9754ed50fbde572d3f96b5020ed85d30f293798f8c6795073d4255407f2c0cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Ticket statuses
 

@@ -282,7 +282,7 @@ Pinecone is the vector database for AI agents and applications, built for semant
 
 <CardGroup>
   <Card title="IDEs & CLIs" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
-    Use Pinecone with Claude Code, Gemini CLI, Cursor, and other agentic tools
+    Use Pinecone with Claude Code, Codex, Gemini CLI, Cursor, and other agentic tools
   </Card>
 
   <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">
@@ -322,7 +322,7 @@ Add Pinecone to your app or agent and run your first search. Choose the path tha
 
 If you use an AI coding agent, the quickest path is to let it do the setup: it designs your schema, ingests your data, and runs your first query, all conversationally.
 
-The steps below use Claude Code. Using Cursor, Gemini CLI, or another agent? See [all supported IDEs and CLIs](/integrations/ai-coding-tools) for the equivalent setup.
+The steps below use Claude Code. Using Cursor, Codex, Gemini CLI, or another agent? See [all supported IDEs and CLIs](/integrations/ai-coding-tools) for the equivalent setup.
 
 <Steps>
   <Step title="Set your API key and install the plugin">
@@ -1367,7 +1367,7 @@ An index with a document schema stores typed JSON documents. The schema declares
   Full-text search isn't integrated embedding. A `string` field with `full_text_search` is indexed for BM25 ranking and Lucene queries. It doesn't call an embedding model. Integrated embedding remains available for vector indexes.
 </Note>
 
-Indexes with document schemas use API version `2026-07`, supported through REST and the Python SDK. For other languages, call the REST endpoint directly.
+Indexes with document schemas use API version `2026-07`, supported through REST and the Python (v10 or later), Node.js (v9 or later), and Go (v7 or later) SDKs. For other languages, call the REST endpoint directly.
 
 ### Minimal: BM25 on a single text field
 
@@ -2292,7 +2292,7 @@ For ongoing ingestion into an index, one record or document at a time, or in bat
 
 Import and upsert move vectors into Pinecone. For workflows where you only need vectors from hosted models (for example, to embed offline and upsert later), use the Inference API as follows:
 
-You can call the [`embed` operation](/reference/api/latest/inference/generate-vectors) through Pinecone Inference to turn text into vectors without writing to an index. That differs from [`upsert_records`](/reference/api/latest/data-plane/upsert_records) on an index with integrated embedding, where each request embeds and stores records in one step. To see how embedding consumption appears in billing and usage reports, see [Embedding tokens](/guides/manage-cost/monitor-usage-and-costs#embedding-tokens).
+You can call the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation through Pinecone Inference to turn text into vectors without writing to an index. That differs from the [Upsert text](/reference/api/latest/data-plane/upsert_records) operation on an index with integrated embedding, where each request embeds and stores records in one step. To see how embedding consumption appears in billing and usage reports, see [Embedding tokens](/guides/manage-cost/monitor-usage-and-costs#embedding-tokens).
 
 ## Ingestion cost
 
@@ -3211,7 +3211,7 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
 
 <Steps>
   <Step title="Create the index">
-    Call [Create an index](/reference/api/2025-10/control-plane/create_index). In the request body, in the `spec.serverless.read_capacity` object, set the following fields:
+    Call [Create an index](/reference/api/2026-07/control-plane/create_index). In the request body, in the `read_capacity` object, set the following fields:
 
     | Field | Value | Notes |
     | :- | :- | :- |
@@ -3235,30 +3235,31 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
            -H "Accept: application/json" \
            -H "Content-Type: application/json" \
            -H "Api-Key: $PINECONE_API_KEY" \
-           -H "X-Pinecone-Api-Version: 2025-10" \
+           -H "X-Pinecone-Api-Version: 2026-07" \
            -d '{
                  "name": "example-dedicated-index",
-                 "dimension": 1024,
-                 "metric": "cosine",
                  "deletion_protection": "enabled",
                  "tags": {
                    "environment": "production"
                  },
-                 "vector_type": "dense",
-                 "spec": {
-                   "serverless": {
-                     "cloud": "aws",
-                     "region": "us-east-1",
-                     "read_capacity": {
-                       "mode": "Dedicated",
-                       "dedicated": {
-                         "node_type": "b1",
-                         "scaling": "Manual",
-                         "manual": {
-                           "shards": 2,
-                           "replicas": 1
-                         }
-                       }
+                 "deployment": {
+                   "deployment_type": "managed",
+                   "cloud": "aws",
+                   "region": "us-east-1"
+                 },
+                 "schema": {
+                   "fields": {
+                     "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
+                   }
+                 },
+                 "read_capacity": {
+                   "mode": "Dedicated",
+                   "dedicated": {
+                     "node_type": "b1",
+                     "scaling": "Manual",
+                     "manual": {
+                       "shards": 2,
+                       "replicas": 1
                      }
                    }
                  }
@@ -3270,34 +3271,36 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
       ```jsonc Response expandable theme={null}
       {
         "name": "example-dedicated-index",
-        "vector_type": "dense",
-        "metric": "cosine",
-        "dimension": 1024,
         "status": {
           "ready": false,
           "state": "Initializing"
         },
         "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-        "spec": {
-          "serverless": {
-            "region": "us-east-1",
-            "cloud": "aws",
-            "read_capacity": {
-              "mode": "Dedicated",
-              "dedicated": {
-                "node_type": "b1",
-                "scaling": "Manual",
-                "manual": {
-                  "shards": 2, // <---- desired state
-                  "replicas": 1
-                }
-              },
-              "status": {
-                "state": "Migrating",
-                "current_shards": null, // <---- current state
-                "current_replicas": null
-              }
+        "deployment": {
+          "deployment_type": "managed",
+          "region": "us-east-1",
+          "cloud": "aws",
+          "environment": "aped-4627-b74a"
+        },
+        "read_capacity": {
+          "mode": "Dedicated",
+          "dedicated": {
+            "node_type": "b1",
+            "scaling": "Manual",
+            "manual": {
+              "shards": 2, // <---- desired state
+              "replicas": 1
             }
+          },
+          "status": {
+            "state": "Migrating",
+            "current_shards": null, // <---- current state
+            "current_replicas": null
+          }
+        },
+        "schema": {
+          "fields": {
+            "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
           }
         },
         "deletion_protection": "enabled",
@@ -3313,12 +3316,12 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
     | Field | Description |
     | :- | :- |
     | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-    | **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
+    | **`read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
     <Note>
       When creating a dedicated read nodes index, `status.state` transitions to `Ready` as soon as the index is ready for reads and writes.
 
-      However, `spec.serverless.read_capacity.status.state` remains `Migrating` until the index scales to its full read capacity, at which point it transitions to `Ready`.
+      However, `read_capacity.status.state` remains `Migrating` until the index scales to its full read capacity, at which point it transitions to `Ready`.
     </Note>
   </Step>
 
@@ -3326,7 +3329,7 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
     After the index is created, [upsert](/guides/index-data/upsert-data) or [import](/guides/index-data/import-data) your data.
 
     <Tip>
-      To upsert and search with text instead of vectors, you can configure your index to use a [hosted embedding model](/guides/index-data/create-an-index#embedding-models). Call [Configure an index](/reference/api/2025-10/control-plane/configure_index) and specify the `embed` object in the request body.
+      To upsert and search with text instead of vectors, create the index with a [hosted embedding model](/guides/index-data/create-an-index#embedding-models) instead. Call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to configure dedicated read nodes.
     </Tip>
   </Step>
 </Steps>
@@ -3351,112 +3354,17 @@ Create a Pinecone dedicated read nodes index from scratch or from a backup of an
 # Manage a dedicated read nodes index
 Source: https://docs.pinecone.io/guides/index-data/dedicated-read-nodes/manage
 
-Add a hosted embedding model, monitor fullness, change node types, pause, or convert a Pinecone dedicated read nodes index back to on-demand.
+Use a hosted embedding model, monitor fullness, change node types, pause, or convert a Pinecone dedicated read nodes index back to on-demand.
 
-## Add a hosted embedding model
+## Use a hosted embedding model
 
-To upsert and search with text instead of vectors, you can configure your index to use a [hosted embedding model](/guides/index-data/create-an-index#embedding-models). To do this, call [Configure an index](/reference/api/2025-10/control-plane/configure_index) and provide an `embed` object in the request body. In this object:
+To upsert and search with text instead of vectors, an index must use a [hosted embedding model](/guides/index-data/create-an-index#embedding-models). On `2026-07`, an index schema is immutable, so you set this when you create the index, not after.
 
-* For the `text` field, specify the name of the field in your data that contains the text to be embedded.
-* Specify a model whose dimension requirements match the dimensions of your index.
-
-### Example
-
-<CodeGroup>
-  ```bash Request expandable theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_NAME="YOUR_INDEX_NAME"
-
-  curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
-       -H "Content-Type: application/json" \
-       -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
-       -d '{
-             "embed": {
-               "field_map": {
-                 "text": "chunk_text"
-               },
-               "model": "llama-text-embed-v2",
-               "read_parameters": {
-                 "input_type": "query",
-                 "truncate": "NONE"
-               },
-               "write_parameters": {
-                 "input_type": "passage"
-               }
-             }
-           }'
-  ```
-</CodeGroup>
-
-<CodeGroup>
-  ```json Response expandable theme={null}
-  {
-    "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
-    "status": {
-      "ready": true,
-      "state": "Ready"
-    },
-    "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 2,
-              "replicas": 1
-            }
-          },
-          "status": {
-            "state": "Ready",
-            "current_shards": 2,
-            "current_replicas": 1
-          }
-        }
-      }
-    },
-    "deletion_protection": "enabled",
-    "tags": {
-      "environment": "testing"
-    },
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "chunk_text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "NONE"
-      },
-      "vector_type": "dense"
-    }
-  }
-  ```
-</CodeGroup>
-
-<Note>
-  You can also create a dedicated read nodes index when calling [Create an index with integrated embedding](/reference/api/2025-10/control-plane/create_for_model). In the request body, use the `read_capacity` object to configure node type, shards, and replicas for dedicated read nodes.
-</Note>
+To create a dedicated read nodes index with a hosted embedding model, call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to set the node type, shards, and replicas.
 
 ## Monitor index fullness
 
-To check [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), call [Get index stats](/reference/api/2025-10/data-plane/describeindexstats).
+To check [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), call [Get index stats](/reference/api/2026-07/data-plane/describeindexstats).
 
 ### Example
 
@@ -3469,7 +3377,7 @@ To check [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index
 
   curl -X GET "https://$INDEX_HOST/describe_index_stats" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10"
+       -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -3512,12 +3420,12 @@ You can change node types in either direction (`b1` → `t1` or `t1` → `b1`). 
   In the meantime, your index will continue to function normally in its original configuration.
 </Warning>
 
-To change node types, call [Configure an index](/reference/api/2025-10/control-plane/configure_index). In the request body, set the following fields:
+To change node types, call [Configure an index](/reference/api/2026-07/control-plane/configure_index). In the request body, set the following fields:
 
 | Field | Value | Notes |
 | :- | :- | :- |
-| `spec.serverless.read_capacity.mode` | `Dedicated` | |
-| `spec.serverless.read_capacity.dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
+| `read_capacity.mode` | `Dedicated` | |
+| `read_capacity.dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
 
 ### Example
 
@@ -3532,16 +3440,12 @@ This example changes the node type from `b1` to `t1`:
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "Dedicated",
-                   "dedicated": {
-                     "node_type": "t1"
-                   }
-                 }
+             "read_capacity": {
+               "mode": "Dedicated",
+               "dedicated": {
+                 "node_type": "t1"
                }
              }
            }'
@@ -3552,57 +3456,40 @@ This example changes the node type from `b1` to `t1`:
   ```json Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "t1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 1,
-              "replicas": 1
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 1,
-            "current_replicas": 1
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "t1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 1,
+          "replicas": 1
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 1,
+        "current_replicas": 1
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>
@@ -3626,7 +3513,7 @@ To pause an index, [set the number of replicas](/guides/index-data/dedicated-rea
 
 ## Check the status of a configuration change
 
-After making a configuration change to a dedicated read nodes index (changing shards, replicas, or node type), check the status of the change by calling [Describe an index](/reference/api/2025-10/control-plane/describe_index).
+After making a configuration change to a dedicated read nodes index (changing shards, replicas, or node type), check the status of the change by calling [Describe an index](/reference/api/2026-07/control-plane/describe_index).
 
 ### Example
 
@@ -3637,7 +3524,7 @@ After making a configuration change to a dedicated read nodes index (changing sh
 
   curl -X GET "https://api.pinecone.io/indexes/$INDEX_NAME" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10"
+       -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -3645,34 +3532,36 @@ After making a configuration change to a dedicated read nodes index (changing sh
   ```jsonc Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1536,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 1,
-              "replicas": 2 // <---- desired state
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 1,
-            "current_replicas": 1 // <---- current state
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 1,
+          "replicas": 2 // <---- desired state
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 1,
+        "current_replicas": 1 // <---- current state
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
       }
     },
     "deletion_protection": "enabled",
@@ -3688,9 +3577,9 @@ The response includes two status fields:
 | Field | Description |
 | :- | :- |
 | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-| **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
+| **`read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
-When changing node types, shards, or replicas, monitor the read capacity status (`spec.serverless.read_capacity.status.state`). Possible values:
+When changing node types, shards, or replicas, monitor the read capacity status (`read_capacity.status.state`). Possible values:
 
 | State | Description |
 | :- | :- |
@@ -3705,7 +3594,7 @@ When changing node types, shards, or replicas, monitor the read capacity status 
 
 ## Convert to on-demand
 
-To convert a dedicated read nodes index back to on-demand, call [Configure an index](/reference/api/2025-10/control-plane/configure_index) and set `spec.serverless.read_capacity.mode` to `OnDemand`. This converts the index in place, keeping the same index name and host.
+To convert a dedicated read nodes index back to on-demand, call [Configure an index](/reference/api/2026-07/control-plane/configure_index) and set `read_capacity.mode` to `OnDemand`. This converts the index in place, keeping the same index name and host.
 
 <CodeGroup>
   ```bash Request theme={null}
@@ -3716,14 +3605,10 @@ To convert a dedicated read nodes index back to on-demand, call [Configure an in
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "OnDemand"
-                 }
-               }
+             "read_capacity": {
+               "mode": "OnDemand"
              }
            }'
   ```
@@ -3733,49 +3618,32 @@ To convert a dedicated read nodes index back to on-demand, call [Configure an in
   ```jsonc Response expandable theme={null}
   {
     "name": "example-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "OnDemand",
-          "status": {
-            "state": "Ready",
-            "current_shards": null,
-            "current_replicas": null
-          }
-        }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "OnDemand",
+      "status": {
+        "state": "Ready",
+        "current_shards": null,
+        "current_replicas": null
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>
@@ -3823,7 +3691,7 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
   </Step>
 
   <Step title="Migrate the index">
-    Call [Configure an index](/reference/api/2025-10/control-plane/configure_index). In the request body, in the `spec.serverless.read_capacity` object, set the following fields:
+    Call [Configure an index](/reference/api/2026-07/control-plane/configure_index). In the request body, in the `read_capacity` object, set the following fields:
 
     | Field | Value | Notes |
     | :- | :- | :- |
@@ -3844,20 +3712,16 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
            -H "Accept: application/json" \
            -H "Content-Type: application/json" \
            -H "Api-Key: $PINECONE_API_KEY" \
-           -H "X-Pinecone-Api-Version: 2025-10" \
+           -H "X-Pinecone-Api-Version: 2026-07" \
            -d '{
-                 "spec": {
-                   "serverless": {
-                     "read_capacity": {
-                       "mode": "Dedicated",
-                       "dedicated": {
-                         "node_type": "b1",
-                         "scaling": "Manual",
-                         "manual": {
-                           "shards": 1,
-                           "replicas": 1
-                         }
-                       }
+                 "read_capacity": {
+                   "mode": "Dedicated",
+                   "dedicated": {
+                     "node_type": "b1",
+                     "scaling": "Manual",
+                     "manual": {
+                       "shards": 1,
+                       "replicas": 1
                      }
                    }
                  }
@@ -3869,57 +3733,40 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
       ```jsonc Response expandable theme={null}
       {
         "name": "example-index-to-migrate",
-        "vector_type": "dense",
-        "metric": "cosine",
-        "dimension": 1024,
         "status": {
           "ready": true,
           "state": "Ready"
         },
         "host": "example-index-to-migrate-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-        "spec": {
-          "serverless": {
-            "region": "us-east-1",
-            "cloud": "aws",
-            "read_capacity": {
-              "mode": "Dedicated",
-              "dedicated": {
-                "node_type": "b1",
-                "scaling": "Manual",
-                "manual": {
-                  "shards": 1, // <---- desired state
-                  "replicas": 1
-                }
-              },
-              "status": {
-                "state": "Migrating",
-                "current_shards": null, //<---- current state
-                "current_replicas": null
-              }
+        "deployment": {
+          "deployment_type": "managed",
+          "region": "us-east-1",
+          "cloud": "aws",
+          "environment": "aped-4627-b74a"
+        },
+        "read_capacity": {
+          "mode": "Dedicated",
+          "dedicated": {
+            "node_type": "b1",
+            "scaling": "Manual",
+            "manual": {
+              "shards": 1, // <---- desired state
+              "replicas": 1
             }
+          },
+          "status": {
+            "state": "Migrating",
+            "current_shards": null, // <---- current state
+            "current_replicas": null
+          }
+        },
+        "schema": {
+          "fields": {
+            "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
           }
         },
         "deletion_protection": "disabled",
-        "tags": null,
-        "embed": {
-          "model": "llama-text-embed-v2",
-          "field_map": {
-            "text": "text"
-          },
-          "dimension": 1024,
-          "metric": "cosine",
-          "write_parameters": {
-            "dimension": 1024,
-            "input_type": "passage",
-            "truncate": "END"
-          },
-          "read_parameters": {
-            "dimension": 1024,
-            "input_type": "query",
-            "truncate": "END"
-          },
-          "vector_type": "dense"
-        }
+        "tags": null
       }
       ```
     </CodeGroup>
@@ -3929,7 +3776,7 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
     | Field | Description |
     | :- | :- |
     | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-    | **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
+    | **`read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
     <Warning>
       If `status.state` is set to `Error`, the allocated number of shards was insufficient for the size of the index. Try again, adding more shards as needed.
@@ -3937,7 +3784,7 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
   </Step>
 
   <Step title="Monitor the migration">
-    [Check the status](/guides/index-data/dedicated-read-nodes/manage#check-the-status-of-a-configuration-change) until `spec.serverless.read_capacity.status.state` is `Ready`.
+    [Check the status](/guides/index-data/dedicated-read-nodes/manage#check-the-status-of-a-configuration-change) until `read_capacity.status.state` is `Ready`.
   </Step>
 
   <Step title="Verify performance">
@@ -4192,13 +4039,13 @@ Throughput scales approximately linearly with replicas. For high availability, a
   If you'd rather reduce per-query compute than add replicas, you can also tune [query-time search parameters](/guides/index-data/dedicated-read-nodes/tune-queries) to trade some recall for higher throughput.
 </Tip>
 
-To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas), call [Configure an index](/reference/api/2025-10/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
+To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas), call [Configure an index](/reference/api/2026-07/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
 
 | Field | Value | Notes |
 | :- | :- | :- |
-| `spec.serverless.read_capacity.mode` | `Dedicated` | |
-| `spec.serverless.read_capacity.dedicated.scaling` | `Manual` | |
-| `spec.serverless.read_capacity.dedicated.manual.replicas` | Desired number of [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) | Add replicas to increase query throughput |
+| `read_capacity.mode` | `Dedicated` | |
+| `read_capacity.dedicated.scaling` | `Manual` | |
+| `read_capacity.dedicated.manual.replicas` | Desired number of [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) | Add replicas to increase query throughput |
 
 ### Example
 
@@ -4211,18 +4058,14 @@ To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#rep
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "Dedicated",
-                   "dedicated": {
-                     "scaling": "Manual",
-                     "manual": {
-                       "replicas": 2
-                     }
-                   }
+             "read_capacity": {
+               "mode": "Dedicated",
+               "dedicated": {
+                 "scaling": "Manual",
+                 "manual": {
+                   "replicas": 2
                  }
                }
              }
@@ -4234,57 +4077,40 @@ To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#rep
   ```jsonc Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 1,
-              "replicas": 2 // <---- desired state
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 1,
-            "current_replicas": 1 // <---- current state
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 1,
+          "replicas": 2 // <---- desired state
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 1,
+        "current_replicas": 1 // <---- current state
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>
@@ -4308,13 +4134,13 @@ To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#rep
 
 To check the current value, see [Monitor index fullness](/guides/index-data/dedicated-read-nodes/manage#monitor-index-fullness).
 
-To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shards), call [Configure an index](/reference/api/2025-10/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
+To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shards), call [Configure an index](/reference/api/2026-07/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
 
 | Field | Value | Notes |
 | :- | :- | :- |
-| `spec.serverless.read_capacity.mode` | `Dedicated` | |
-| `spec.serverless.read_capacity.dedicated.scaling` | `Manual` | |
-| `spec.serverless.read_capacity.dedicated.manual.shards` | Desired number of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) | Each shard provides 250 GB of storage |
+| `read_capacity.mode` | `Dedicated` | |
+| `read_capacity.dedicated.scaling` | `Manual` | |
+| `read_capacity.dedicated.manual.shards` | Desired number of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) | Each shard provides 250 GB of storage |
 
 ### Example
 
@@ -4327,18 +4153,14 @@ To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shard
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "Dedicated",
-                   "dedicated": {
-                     "scaling": "Manual",
-                     "manual": {
-                       "shards": 3
-                     }
-                   }
+             "read_capacity": {
+               "mode": "Dedicated",
+               "dedicated": {
+                 "scaling": "Manual",
+                 "manual": {
+                   "shards": 3
                  }
                }
              }
@@ -4350,57 +4172,40 @@ To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shard
   ```jsonc Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 3, // <---- desired state
-              "replicas": 1
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 2, // <---- current state
-            "current_replicas": 1
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 3, // <---- desired state
+          "replicas": 1
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 2, // <---- current state
+        "current_replicas": 1
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>
@@ -4716,7 +4521,7 @@ Both parameters are optional fields on the `POST /query` request.
   curl "https://$INDEX_HOST/query" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "namespace": "example-namespace",
       "topK": 10,
@@ -5218,7 +5023,7 @@ In cases where you have different workload patterns (e.g., RAG and semantic sear
 
 Based on a [breakthrough architecture](/guides/core-concepts/architecture), serverless indexes scale automatically based on usage, and you pay only for the amount of data stored and operations performed. Combined with the isolation of tenant data using namespaces (next step), serverless indexes are ideal for multitenant use cases.
 
-To [create a serverless index](/guides/index-data/create-an-index#create-a-serverless-index), use the `spec` parameter to define the cloud and region where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
+To [create a serverless index](/guides/index-data/create-an-index#create-a-serverless-index), define the cloud and region where the index should be deployed. The SDKs set this with the `spec` parameter (in Python, import the `ServerlessSpec` class). The REST API uses a `deployment` object instead, and defines the vector dimension and metric on the reserved `_values` field in `schema`.
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -5327,15 +5132,17 @@ To [create a serverless index](/guides/index-data/create-an-index#create-a-serve
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
            "name": "multitenant-app",
-           "dimension": 8,
-           "metric": "cosine",
-           "spec": {
-              "serverless": {
-                 "cloud": "aws",
-                 "region": "us-east-1"
+           "deployment": {
+              "deployment_type": "managed",
+              "cloud": "aws",
+              "region": "us-east-1"
+           },
+           "schema": {
+              "fields": {
+                 "_values": { "type": "dense_vector", "dimension": 8, "metric": "cosine" }
               }
            }
         }'
@@ -5531,7 +5338,7 @@ To [create a namespace for a tenant](/guides/index-data/indexing-overview#namesp
   curl "https://$INDEX_HOST/vectors/upsert" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "vectors": [
         {
@@ -5557,7 +5364,7 @@ To [create a namespace for a tenant](/guides/index-data/indexing-overview#namesp
   curl "https://$INDEX_HOST/vectors/upsert" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "vectors": [
         {
@@ -5643,14 +5450,14 @@ When upserting additional records for a tenant, or when [updating](/guides/manag
   INDEX_HOST="INDEX_HOST"
 
   curl "https://$INDEX_HOST/vectors/update" \
-  	-H "Api-Key: $PINECONE_API_KEY" \
-  	-H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
-  	-d '{
-  			"id": "A",
-  			"values": [01., 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
-  			"namespace": "tenant1"
-  		}'
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H 'Content-Type: application/json' \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "id": "A",
+      "values": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+      "namespace": "tenant1"
+    }'
   ```
 </CodeGroup>
 
@@ -5871,7 +5678,7 @@ For example, the following code queries only `tenant2` for the 3 vectors that ar
   curl "https://$INDEX_HOST/query" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "namespace": "tenant2",
       "vector": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
@@ -5899,7 +5706,7 @@ For example, the following code queries only `tenant2` for the 3 vectors that ar
   #     }
   #   ],
   #   "namespace": "tenant2",
-  #   "usage": {"read_units": 6}
+  #   "usage": {"readUnits": 6}
   # }
   ```
 </CodeGroup>
@@ -5958,7 +5765,7 @@ For example, the following code deletes the namespace and all records for `tenan
   curl "https://$INDEX_HOST/vectors/delete" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "deleteAll": true,
       "namespace": "tenant1"
@@ -6050,7 +5857,7 @@ To import records from a public data source, a storage integration isn't require
 
     <Tabs>
       <Tab title="Document schema">
-        To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to [`documents.upsert`](/reference/api/latest/data-plane/upsert_documents):
+        To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 
         | Field | JSON type | Description |
         | - | - | - |
@@ -6176,7 +5983,7 @@ To import records from a public data source, a storage integration isn't require
   The examples below use Parquet files, for indexes **without** a schema definition. Indexes with document schemas import [JSONL files](#prepare-document-schema-files-jsonl) instead. Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 </Note>
 
-Use the [`start_import`](/reference/api/latest/data-plane/start_import) operation to start an asynchronous import of vectors from object storage into an index.
+Use the [Start import](/reference/api/latest/data-plane/start_import) operation to start an asynchronous import of vectors from object storage into an index.
 
 * For `uri`, specify the URI of the bucket and import directory containing the namespaces and Parquet files you want to import. For example:
 
@@ -6336,7 +6143,7 @@ The amount of time required for an import depends on various factors, including:
 * The number of namespaces to import, and the number of records in each
 * The total size (in bytes) of the import
 
-To track an import's progress, check its status bar in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/import) or use the [`describe_import`](/reference/api/latest/data-plane/describe_import) operation with the import ID:
+To track an import's progress, check its status bar in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/import) or use the [Describe an import](/reference/api/latest/data-plane/describe_import) operation with the import ID:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -6468,7 +6275,7 @@ If the import fails, the response contains an `error` field with the reason for 
 
 ## Prepare document-schema files (JSONL)
 
-For indexes with a document schema, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you would pass to [`documents.upsert`](/reference/api/latest/data-plane/upsert_documents), and validated through the same code path, so a document that upserts cleanly imports cleanly.
+For indexes with a document schema, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation, and validated through the same code path, so a document that upserts cleanly imports cleanly.
 
 ### File format
 
@@ -6605,7 +6412,7 @@ with gzip.open("0.jsonl.gz", "wt") as f:
 
 ### List imports
 
-Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operation to list all of the recent and ongoing imports. By default, the operation returns up to 100 imports per page. If the `limit` parameter is passed, the operation returns up to that number of imports per page instead. For example, if `limit=3`, up to 3 imports are returned per page. Whenever there are additional imports to return, the response includes a `pagination_token` for fetching the next page of imports.
+Use the [List imports](/reference/api/latest/data-plane/list_imports) operation to list all of the recent and ongoing imports. By default, the operation returns up to 100 imports per page. If the `limit` parameter is passed, the operation returns up to that number of imports per page instead. For example, if `limit=3`, up to 3 imports are returned per page. Whenever there are additional imports to return, the response includes a `pagination_token` for fetching the next page of imports.
 
 <Tabs>
   <Tab title="Python SDK">
@@ -6752,7 +6559,7 @@ Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operatio
 
 ### Cancel an import
 
-The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation cancels an import if it isn't yet finished. It has no effect if the import is already complete.
+The [Cancel an import](/reference/api/latest/data-plane/cancel_import) operation cancels an import if it isn't yet finished. It has no effect if the import is already complete.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -7773,7 +7580,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
       Upserting text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
     </Note>
 
-    To upsert source text into an [index of dense vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [`upsert_records`](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to dense vectors automatically using the hosted dense embedding model associated with the index.
+    To upsert source text into an [index of dense vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [Upsert text](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to dense vectors automatically using the hosted dense embedding model associated with the index.
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:
@@ -7990,7 +7797,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
   </Tab>
 
   <Tab title="Upsert vectors">
-    To upsert dense vectors into an [index of dense vectors](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [`upsert`](/reference/api/latest/data-plane/upsert) operation as follows:
+    To upsert dense vectors into an [index of dense vectors](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [Upsert records](/reference/api/latest/data-plane/upsert) operation as follows:
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:
@@ -8268,7 +8075,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
       Upserting text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
     </Note>
 
-    To upsert source text into an [index of sparse vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [`upsert_records`](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to sparse vectors automatically using the hosted sparse embedding model associated with the index.
+    To upsert source text into an [index of sparse vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [Upsert text](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to sparse vectors automatically using the hosted sparse embedding model associated with the index.
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:
@@ -8494,7 +8301,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
   </Tab>
 
   <Tab title="Upsert vectors">
-    To upsert sparse vectors into an [index of sparse vectors](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [`upsert`](/reference/api/latest/data-plane/upsert) operation as follows:
+    To upsert sparse vectors into an [index of sparse vectors](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [Upsert records](/reference/api/latest/data-plane/upsert) operation as follows:
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:
@@ -9743,7 +9550,7 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
   </Tab>
 
   <Tab title="API/SDK">
-    1. Use the [`create_collection`](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
+    1. Use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
 
        <CodeGroup>
          ```javascript JavaScript theme={null}
@@ -9809,9 +9616,9 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
          ```
        </CodeGroup>
 
-    2. Use the [`create_index`](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
+    2. Use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
 
-       * Use API verison `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
+       * Use API version `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
        * Set `dimension` to the same dimension as the pod-based index. Changing the dimension isn't supported.
        * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud isn't supported.
        * Set `source_collection` to the name of the collection you created in step 1.
@@ -10718,7 +10525,7 @@ To edit a spend alert:
 
 ## List by ID prefix
 
-By using a [hierarchical ID schema](/guides/index-data/data-modeling#use-structured-ids), you can retrieve records without performing a query. To do so, you can use [`list`](/reference/api/latest/data-plane/list) to retrieve records by ID prefix, then use `fetch` to retrieve the records you need. This can reduce costs, because [`query` consumes more RUs when scanning a larger namespace](/guides/manage-cost/understanding-cost#query), while [`fetch` consumes a fixed ratio of RUs to records retrieved](/guides/manage-cost/understanding-cost#fetch).
+By using a [hierarchical ID schema](/guides/index-data/data-modeling#use-structured-ids), you can retrieve records without performing a query. To do so, you can use [List record IDs](/reference/api/latest/data-plane/list) to retrieve records by ID prefix, then use `fetch` to retrieve the records you need. This can reduce costs, because [`query` consumes more RUs when scanning a larger namespace](/guides/manage-cost/understanding-cost#query), while [`fetch` consumes a fixed ratio of RUs to records retrieved](/guides/manage-cost/understanding-cost#fetch).
 
 ## Use namespaces for multitenancy
 
@@ -11017,7 +10824,7 @@ For a more in-depth demonstration of how to use read units to inspect read costs
 
 ### Embedding tokens
 
-Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [`embed` operation](/reference/api/latest/inference/generate-vectors) or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` parameter with the total tokens generated.
+Requests to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models), either directly via the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation or automatically when upserting or querying an [index with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), return a `usage` parameter with the total tokens generated.
 
 For example, the following request to use the `multilingual-e5-large` model to generate embeddings for sentences related to the word “apple” might return this request and summary of embedding tokens generated:
 
@@ -13717,7 +13524,7 @@ To fetch records from a namespace based on their IDs, use the `fetch` operation 
 * `ids`: The IDs of the records to fetch. Maximum of 1000.
 
 <Note>
-  For on-demand indexes, since vector values are retrieved from object storage, fetch operations may have increased latency. If you only need metadata or IDs, consider using the [`query`](/reference/api/latest/data-plane/query) operation instead, with `include_values` left at its default of `false`. See [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed) for more details.
+  For on-demand indexes, since vector values are retrieved from object storage, fetch operations may have increased latency. If you only need metadata or IDs, consider using the [Search with a vector](/reference/api/latest/data-plane/query) operation instead, with `include_values` left at its default of `false`. See [Decrease latency](/guides/optimize/decrease-latency#avoid-including-vector-values-when-not-needed) for more details.
 </Note>
 
 <CodeGroup>
@@ -15012,7 +14819,7 @@ This page shows you how to manage your existing serverless indexes.
 
 ## List indexes
 
-Use the [`list_indexes`](/reference/api/latest/control-plane/list_indexes) operation to get a complete description of all indexes in a project:
+Use the [List indexes](/reference/api/latest/control-plane/list_indexes) operation to get a complete description of all indexes in a project:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -15372,7 +15179,7 @@ for index_name in pc.list_indexes().names:
 
 ## Describe an index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
+Use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -15588,7 +15395,7 @@ The response will look like this:
 
 ## Delete an index
 
-Use the [`delete_index`](/reference/api/latest/control-plane/delete_index) operation to delete an index and all of its associated resources.
+Use the [Delete an index](/reference/api/latest/control-plane/delete_index) operation to delete an index and all of its associated resources.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -15679,7 +15486,7 @@ Before you can delete such an index, you must first [disable deletion protection
 
 [Integrated inference](/guides/index-data/indexing-overview#integrated-embedding) lets you upsert and search without extra steps for embedding data and reranking results.
 
-To configure an existing serverless index for an embedding model, use the [`configure_index`](/reference/api/latest/control-plane/configure_index) operation as follows:
+To configure an existing serverless index for an embedding model, use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation as follows:
 
 * Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models).
 * Set `embed.field_map` to the name of the field in your source document that contains the data for embedding.
@@ -16665,7 +16472,7 @@ Create, describe, list, and delete namespaces in Pinecone serverless indexes, in
   This feature requires the `2025-10` version of the API or later.
 </Note>
 
-Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [`create_namespace`](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/configure-metadata-indexing).
+Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [Create a namespace](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/configure-metadata-indexing).
 
 <CodeGroup>
   ```python Python theme={null}
@@ -16871,7 +16678,7 @@ The response will look like the following:
 
 ## List all namespaces in an index
 
-Use the [`list_namespaces`](/reference/api/latest/data-plane/listnamespaces) operation to list all namespaces in a serverless index.
+Use the [List namespaces](/reference/api/latest/data-plane/listnamespaces) operation to list all namespaces in a serverless index.
 
 Up to 100 namespaces are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of namespaces are returned instead. Whenever there are additional namespaces to return, the response also includes a `pagination_token` that you can use to get the next batch of namespaces. When the response doesn't include a `pagination_token`, there are no more namespaces to return.
 
@@ -17086,7 +16893,7 @@ The response will look like the following:
 
 ## Describe a namespace
 
-Use the [`describe_namespace`](/reference/api/latest/data-plane/describenamespace) operation to get details about a namespace in a serverless index, including the total number of vectors in the namespace.
+Use the [Describe a namespace](/reference/api/latest/data-plane/describenamespace) operation to get details about a namespace in a serverless index, including the total number of vectors in the namespace.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -17233,7 +17040,7 @@ The response will look like the following:
 
 ## Delete a namespace
 
-Use the [`delete_namespace`](/reference/api/latest/data-plane/deletenamespace) operation to delete a namespace in a serverless index.
+Use the [Delete a namespace](/reference/api/latest/data-plane/deletenamespace) operation to delete a namespace in a serverless index.
 
 <Warning>
   Deleting a namespace is irreversible. All data in the namespace is permanently deleted.
@@ -17351,15 +17158,15 @@ Pinecone doesn't support moving records between namespaces directly. Instead, yo
 # Manage namespace aliases
 Source: https://docs.pinecone.io/guides/manage-data/namespace-aliases/manage-aliases
 
-Create, list, describe, repoint, and delete namespace aliases in a Pinecone index with the REST API, with a request example for each alias operation.
+Create, list, describe, repoint, and delete namespace aliases in a Pinecone index with the REST API or the Pinecone console.
 
 <Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API. Reading through an alias works on any API version, including the current SDKs.
+  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 </Note>
 
 Create, list, describe, repoint, and delete [namespace aliases](/guides/manage-data/namespace-aliases/overview) in an index. Each operation is a single REST call to your [index host](/guides/manage-data/target-an-index). To swap the data an application reads with no downtime, see [Swap a namespace](/guides/manage-data/namespace-aliases/swap-a-namespace).
 
-You need a project role that can manage namespaces, such as [`DataPlaneEditor`](/guides/production/manage-rbac), `ProjectOwner`, or `ProjectManager`. Managing aliases needs the same access as managing namespaces directly.
+You need a [project role](/guides/production/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
 
 ## Operations
 
@@ -17372,6 +17179,8 @@ You need a project role that can manage namespaces, such as [`DataPlaneEditor`](
 | Delete an alias | `DELETE /namespace-aliases/{alias_name}` |
 
 Each alias is returned as `{name, target_namespace, created_at, updated_at}`. `updated_at` advances on every repoint.
+
+You can also manage aliases in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Open the index, go to the **Namespaces** tab, and click **Manage aliases** to create, repoint, or delete an alias.
 
 ## Errors
 
@@ -17517,10 +17326,10 @@ curl -X DELETE "https://$INDEX_HOST/namespace-aliases/example-alias" \
 # Namespace aliases overview
 Source: https://docs.pinecone.io/guides/manage-data/namespace-aliases/overview
 
-A namespace alias is a movable name for a namespace, letting you switch the data your application reads without a code change or redeploy.
+A namespace alias is a stable name for a namespace that you can repoint at any time, switching the data your application reads without a code change or redeploy.
 
 <Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API. Reading through an alias works on any API version, including the current SDKs.
+  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 </Note>
 
 A **namespace alias** is a stable, repointable name inside an index that points at a [namespace](/guides/index-data/indexing-overview#namespaces). An alias holds no data of its own. It's a pointer. Your application reads through the alias name, and you can atomically repoint the alias to a different namespace in the same index at any time, with no application config change and no redeploy.
@@ -17554,7 +17363,7 @@ An alias name must be unique within the index and can't match a namespace name. 
 * Aliases are a separate resource from namespaces. They don't appear in namespace listings (`GET /namespaces`) or in `describe_index_stats`; list them with `GET /namespace-aliases`.
 * Deleting an alias makes reads through that name return empty results, not an error, so move readers to a live name before you delete.
 * Restoring an index from a backup creates a new index, so the original's aliases don't carry over.
-* You manage aliases through the REST API, and reads through an alias work in the SDKs.
+* You manage aliases through the REST API or the Pinecone console, and reads through an alias work in the SDKs.
 * Alias changes aren't in the audit log export.
 
 ## See also
@@ -17570,7 +17379,7 @@ Source: https://docs.pinecone.io/guides/manage-data/namespace-aliases/swap-a-nam
 Refresh the data behind a namespace alias with no downtime: create an alias, ingest a new namespace, then atomically repoint reads to it.
 
 <Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API. Reading through an alias works on any API version, including the current SDKs.
+  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 </Note>
 
 The primary use case for a [namespace alias](/guides/manage-data/namespace-aliases/overview) is swapping the data an application reads without a redeploy: re-ingest into a new namespace, validate it, then flip live reads to it in one call. This guide refreshes the data behind an alias named `example-alias`, moving it from `example-namespace-v1` to `example-namespace-v2` with no downtime. The examples use the vector API; the same alias substitution works on any read endpoint.
@@ -17580,7 +17389,7 @@ The primary use case for a [namespace alias](/guides/manage-data/namespace-alias
 Ensure you have the following:
 
 * An existing index containing the namespace serving live traffic.
-* A project role that can manage namespaces, such as [`DataPlaneEditor`](/guides/production/manage-rbac), `ProjectOwner`, or `ProjectManager`. Managing aliases needs the same access as managing namespaces directly.
+* A [project role](/guides/production/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
 
 ## Swap the namespace
 
@@ -18437,7 +18246,7 @@ To get an index host from the Pinecone console:
 3. Select the index.
 4. Copy the URL under **HOST**.
 
-To get an index host from the Pinecone API, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) operation, which returns the index host as the `host` value:
+To get an index host from the Pinecone API, use the [Describe an index](/reference/api/latest/control-plane/describe_index) operation, which returns the index host as the `host` value:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -18772,7 +18581,7 @@ For the full request and response schema, see [Update documents](/reference/api/
 
 ## Update by ID
 
-To update the vector and/or metadata of a single record, use the [`update`](/reference/api/latest/data-plane/update) operation with the following parameters:
+To update the vector and/or metadata of a single record, use the [Update a record](/reference/api/latest/data-plane/update) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) containing the record to update. To use the default namespace, set the namespace to `"__default__"`.
 * `id`: The ID of the record to update.
@@ -21263,7 +21072,7 @@ This page shows you how to configure [Antigravity](https://antigravity.google/),
 </Note>
 
 <Tip>
-  Pinecone also offers plugins and extensions with built-in skills for agentic IDEs and CLIs. See [Agentic IDEs and CLIs](/integrations/ai-coding-tools) for an overview, or jump directly to the [Claude Code plugin](/integrations/claude-code), [Gemini CLI extension](/integrations/gemini-cli), [Cursor plugin](/integrations/cursor), or [Agent Skills](/integrations/agent-skills) for GitHub Copilot and other IDEs.
+  Pinecone also offers plugins and extensions with built-in skills for agentic IDEs and CLIs. See [Agentic IDEs and CLIs](/integrations/ai-coding-tools) for an overview, or jump directly to the [Claude Code plugin](/integrations/claude-code), [Codex plugin](/integrations/codex), [Gemini CLI extension](/integrations/gemini-cli), [Cursor plugin](/integrations/cursor), or [Agent Skills](/integrations/agent-skills) for GitHub Copilot and other IDEs.
 </Tip>
 
 ## Tools
@@ -21604,7 +21413,7 @@ If you're batching queries, try reducing the number of queries per call to a sin
 
 ## Avoid including vector values when not needed
 
-Including vector values increases response size, especially at higher `top_k` values, and larger responses can raise round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` on [`query`](/reference/api/latest/data-plane/query). [`fetch`](/reference/api/latest/data-plane/fetch) always returns values, so use `query` when you're searching and only need IDs or metadata.
+Including vector values increases response size, especially at higher `top_k` values, and larger responses can raise round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` in [Search with a vector](/reference/api/latest/data-plane/query) requests. The [Fetch records](/reference/api/latest/data-plane/fetch) operation always returns values, so use `query` when you're searching and only need IDs or metadata.
 
 <Note>
   On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. Dedicated read nodes indexes cache values locally and aren't affected.
@@ -21661,7 +21470,7 @@ A common consequence is that searching by text for the exact string you upserted
 
 **Is a low score expected for identical short strings?** Yes. The query/passage split has the largest effect on short, low-semantic text such as exact names, error codes, SKUs, and IDs, where there is little meaning for the model to align across the two paths. Scores in roughly the `0.5`–`0.8` range for identical short strings are normal. The asymmetry helps on true semantic search (a short question matched to a longer answer passage) and only looks like a problem on exact-token-match workloads.
 
-**When should you query through the passage path?** Only when the workload is exact or near-exact lookup (IDs, error logs, product names) rather than semantic search, and you want exact matches to score near `1.0`. You can override the read-time input type at the index level with [`configure_index`](/reference/api/latest/control-plane/configure_index). Set `model` and `field_map` to the index's existing values, and set `read_parameters.input_type` to `passage`:
+**When should you query through the passage path?** Only when the workload is exact or near-exact lookup (IDs, error logs, product names) rather than semantic search, and you want exact matches to score near `1.0`. You can override the read-time input type at the index level with the [Configure an index](/reference/api/latest/control-plane/configure_index) operation. Set `model` and `field_map` to the index's existing values, and set `read_parameters.input_type` to `passage`:
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -21681,7 +21490,7 @@ pc.configure_index(
 Note the trade-offs:
 
 * This setting degrades true semantic search, since queries no longer use the input type the model was trained to expect.
-* It applies to the whole index. With integrated inference you can't choose `query` or `passage` per request. If you need that control, embed text yourself with the [Inference API](/reference/api/latest/inference/generate-vectors) and search with the [`query`](/reference/api/latest/data-plane/query) operation using your own vectors.
+* It applies to the whole index. With integrated inference you can't choose `query` or `passage` per request. If you need that control, embed text yourself with the [Inference API](/reference/api/latest/inference/generate-vectors) and search with the [Search with a vector](/reference/api/latest/data-plane/query) operation using your own vectors.
 
 For pure exact-match retrieval, a [sparse index](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) or [full-text search](/guides/search/full-text-search) is usually a better fit than forcing dense embeddings through the passage path. See [Use full-text search for keyword matching](#use-full-text-search-for-keyword-matching) above for when keyword and phrase matching is the right tool.
 
@@ -24659,25 +24468,26 @@ Control plane operations like [creating](/reference/api/latest/control-plane/cre
          -H "Accept: application/json" \
          -H "Content-Type: application/json" \
          -H "Api-Key: $PINECONE_API_KEY" \
-         -H "X-Pinecone-Api-Version: 2025-10" \
+         -H "X-Pinecone-Api-Version: 2026-07" \
          -d '{
                "name": "example-byoc-index",
-               "dimension": 1536,
-               "metric": "cosine",
-               "vector_type": "dense",
-               "spec": {
-                 "byoc": {
-                   "environment": "aws-us-east-1-26bf.byoc",
-                   "read_capacity": {
-                     "mode": "Dedicated",
-                     "dedicated": {
-                       "node_type": "b1",
-                       "scaling": "Manual",
-                       "manual": {
-                         "shards": 1,
-                         "replicas": 1
-                       }
-                     }
+               "deployment": {
+                 "deployment_type": "byoc",
+                 "environment": "aws-us-east-1-26bf.byoc"
+               },
+               "schema": {
+                 "fields": {
+                   "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+                 }
+               },
+               "read_capacity": {
+                 "mode": "Dedicated",
+                 "dedicated": {
+                   "node_type": "b1",
+                   "scaling": "Manual",
+                   "manual": {
+                     "shards": 1,
+                     "replicas": 1
                    }
                  }
                },
@@ -25572,7 +25382,7 @@ You can get the private endpoint URL for an index from the Pinecone console or A
   </Tab>
 
   <Tab title="API">
-    To get the private endpoint URL for an index from the API, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) operation, which returns the private endpoint URL as the `private_host` value:
+    To get the private endpoint URL for an index from the API, use the [Describe an index](/reference/api/latest/control-plane/describe_index) operation, which returns the private endpoint URL as the `private_host` value:
 
     <CodeGroup>
       ```JavaScript JavaScript theme={null}
@@ -28555,7 +28365,7 @@ Full-text search ranks documents by keyword and phrase relevance using **BM25** 
 Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, an [index with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
 
 <Note>
-  Full-text search requires [API version](/reference/api/versioning) `2026-07`: send `X-Pinecone-Api-Version: 2026-07` on REST requests, or use the `2026-07` Python SDK (v10 or later).
+  Full-text search requires [API version](/reference/api/versioning) `2026-07`. Send `X-Pinecone-Api-Version: 2026-07` on REST requests, or use a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later).
 </Note>
 
 ## Capabilities
@@ -29016,7 +28826,7 @@ Everything in this section applies to indexes with document schemas. For dense, 
 
 ### Requirements
 
-* **Entry points**: Use the REST API, the Python SDK (v10 or later), or the Pinecone console. REST requests must send `X-Pinecone-Api-Version: 2026-07`, and the SDK sends it for you.
+* **Entry points**: Use the REST API, a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later), or the Pinecone console. REST requests must send `X-Pinecone-Api-Version: 2026-07`, and the SDKs send it for you.
 * **Endpoint compatibility**: Indexes with document schemas use the `/namespaces/{namespace}/documents/*` endpoints. Dense, sparse, and integrated-inference indexes continue to use `/vectors/*`, and `/records/*` for integrated inference. The two endpoint families are index-type-specific and don't cross over.
 * **Deployment**: Only managed (serverless) deployments are supported, with `read_capacity.mode` set to `OnDemand` or `Dedicated`.
 
@@ -30297,7 +30107,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
 
 <Steps>
   <Step title="Create the index">
-    To store both dense and sparse vectors in a single index, use the [`create_index`](/reference/api/2026-04/control-plane/create_index) operation, setting the `vector_type` to `dense` and the `metric` to `dotproduct`. This is the only combination that supports dense/sparse search on a single index.
+    To store both dense and sparse vectors in a single index, use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation, setting the `vector_type` to `dense` and the `metric` to `dotproduct`. This is the only combination that supports dense/sparse search on a single index.
 
     ```python Python theme={null}
     from pinecone.grpc import PineconeGRPC as Pinecone
@@ -30444,7 +30254,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Upsert records with dense and sparse vectors">
-    Use the [`upsert`](/reference/api/latest/data-plane/upsert) operation, specifying dense values in the `value` parameter and sparse values in the `sparse_values` parameter.
+    Use the [Upsert records](/reference/api/latest/data-plane/upsert) operation, specifying dense values in the `value` parameter and sparse values in the `sparse_values` parameter.
 
     <Note>
       Only indexes that store dense vectors with the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) accept records that also have sparse vectors. Upserting such records into an index with a different distance metric will succeed, but querying will return an error.
@@ -30475,7 +30285,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Search the index">
-    Use the [`embed`](/reference/api/latest/inference/generate-vectors) operation to convert your query into a dense vector and a sparse vector, and then use the [`query`](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
+    Use the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation to convert your query into a dense vector and a sparse vector, and then use the [Search with a vector](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
 
     ```Python Python theme={null}
     query = "Q3 2024 us economic data"
@@ -30814,7 +30624,7 @@ Sparse-vector search uses [sparse vectors](https://www.pinecone.io/learn/sparse-
   Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
 </Note>
 
-To search an index of sparse vectors with a query text, use the [`search_records`](/reference/api/latest/data-plane/search_records) operation with the following parameters:
+To search an index of sparse vectors with a query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `query.inputs.text`:  The query text. Pinecone uses the [embedding model](/guides/index-data/create-an-index#embedding-models) integrated with the index to convert the text to a sparse vector automatically.
@@ -31140,7 +30950,7 @@ The results will look as follows. The most similar records are scored highest.
 
 ## Search with a sparse vector
 
-To search an index of sparse vectors with a sparse vector representation of a query, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+To search an index of sparse vectors with a sparse vector representation of a query, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `sparse_vector`: The sparse vector values and indices.
@@ -31559,7 +31369,7 @@ The results will look as follows. The most similar records are scored highest.
 
 ## Search with a record ID
 
-When you search with a record ID, Pinecone uses the sparse vector associated with the record as the query. To search an index of sparse vectors with a record ID, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+When you search with a record ID, Pinecone uses the sparse vector associated with the record as the query. To search an index of sparse vectors with a record ID, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `id`: The unique record ID containing the sparse vector to use as the query.
@@ -31911,7 +31721,7 @@ Pinecone provides [hosted reranking models](#reranking-models) so it's easy to m
 
 ## Integrated reranking
 
-To rerank initial results as an integrated part of a query, without any extra steps, use the [`search`](/reference/api/latest/data-plane/search_records) operation with the `rerank` parameter, including the [hosted reranking model](#reranking-models) you want to use, the number of reranked results to return, and the fields to use for reranking, if different than the main query.
+To rerank initial results as an integrated part of a query, without any extra steps, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the `rerank` parameter, including the [hosted reranking model](#reranking-models) you want to use, the number of reranked results to return, and the fields to use for reranking, if different than the main query.
 
 For example, the following code searches for the 3 records most semantically related to a query text and uses the hosted `bge-reranker-v2-m3` model to rerank the results and return only the 2 most relevant documents:
 
@@ -32230,7 +32040,7 @@ The response looks as follows. For each hit, the `_score` represents the relevan
 
 ## Standalone reranking
 
-To rerank initial results as a standalone operation, use the [`rerank`](/reference/api/latest/inference/rerank-results) operation with the [hosted reranking model](#reranking-models) you want to use, the query results and the query, the number of ranked results to return, the field to use for reranking, and any other model-specific parameters.
+To rerank initial results as a standalone operation, use the [Rerank results](/reference/api/latest/inference/rerank-results) operation with the [hosted reranking model](#reranking-models) you want to use, the query results and the query, the number of ranked results to return, the field to use for reranking, and any other model-specific parameters.
 
 For example, the following code uses the hosted `bge-reranker-v2-m3` model to rerank the values of the `documents.chunk_text` fields based on their relevance to the query and return only the 2 most relevant documents, along with their score:
 
@@ -33261,7 +33071,7 @@ Semantic search uses [dense vectors](https://www.pinecone.io/learn/vector-embedd
   Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
 </Note>
 
-To search an index of dense vectors with a query text, use the [`search_records`](/reference/api/latest/data-plane/search_records) operation with the following parameters:
+To search an index of dense vectors with a query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
 * The `namespace` to query. To use the default namespace, set the namespace to `"__default__"`.
 * The `query.inputs.text` parameter with the query text. Pinecone uses the embedding model integrated with the index to convert the text to a dense vector automatically.
@@ -33551,7 +33361,7 @@ The response will look as follows. Each record is returned with a similarity sco
 
 ## Search with a dense vector
 
-To search an index of dense vectors with a dense vector representation of a query, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+To search an index of dense vectors with a dense vector representation of a query, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * The `namespace` to query. To use the default namespace, set the namespace to `"__default__"`.
 * The `vector` parameter with the dense vector values representing your query.
@@ -33907,7 +33717,7 @@ The response will look as follows. Each record is returned with a similarity sco
 
 ## Search with a record ID
 
-When you search with a record ID, Pinecone uses the dense vector associated with the record as the query. To search an index of dense vectors with a record ID, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+When you search with a record ID, Pinecone uses the dense vector associated with the record as the query. To search an index of dense vectors with a record ID, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * The `namespace` to query. To use the default namespace, set the namespace to `"__default__"`.
 * The `id` parameter with the unique record ID containing the vector to use as the query.
@@ -34132,7 +33942,7 @@ This page describes how to create a static copy of a pod-based index, also known
 
 ## Create a collection
 
-To create a backup of your pod-based index, use the [`create_collection`](/reference/api/latest/control-plane/create_collection) operation.
+To create a backup of your pod-based index, use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation.
 
 The following example creates a [collection](/guides/indexes/pods/understanding-collections) named `example-collection` from an index named `docs-example`:
 
@@ -34225,7 +34035,7 @@ The following example creates a [collection](/guides/indexes/pods/understanding-
 
 ## Check the status of a collection
 
-To retrieve the status of the process creating a collection and the size of the collection, use the [`describe_collection`](/reference/api/latest/control-plane/describe_collection) operation. Specify the name of the collection to check. You can only call `describe_collection` on a collection in the current project.
+To retrieve the status of the process creating a collection and the size of the collection, use the [Describe a collection](/reference/api/latest/control-plane/describe_collection) operation. Specify the name of the collection to check. You can only call `describe_collection` on a collection in the current project.
 
 The `describe_collection` operation returns an object containing key-value pairs representing the name of the collection, the size in bytes, and the creation status of the collection.
 
@@ -34309,7 +34119,7 @@ The following example gets the creation status and size of a collection named `e
 
 ## List your collections
 
-To get a list of the collections in the current project, use the [`list_collections`](/reference/api/latest/control-plane/list_collections) operation.
+To get a list of the collections in the current project, use the [List collections](/reference/api/latest/control-plane/list_collections) operation.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -34400,7 +34210,7 @@ To get a list of the collections in the current project, use the [`list_collecti
 
 ## Delete a collection
 
-To delete a collection, use the [`delete_collection`](/reference/api/latest/control-plane/delete_collection) operation. Specify the name of the collection to delete.
+To delete a collection, use the [Delete a collection](/reference/api/latest/control-plane/delete_collection) operation. Specify the name of the collection to delete.
 
 Deleting the collection takes several minutes. During this time, the [`describe_collection`](#check-the-status-of-a-collection) operation returns the status "deleting".
 
@@ -34500,7 +34310,7 @@ This page shows you how to create a pod-based index. For guidance on serverless 
 
 ## Create a pod index
 
-To create a pod index, use the [`create_index`](/reference/api/latest/control-plane/create_index) operation as follows:
+To create a pod index, use the [Create an index](/reference/api/latest/control-plane/create_index) operation as follows:
 
 * Provide a `name` for the index.
 * Specify the `dimension` and `metric` of the vectors you'll store in the index. This should match the dimension and metric supported by your embedding model.
@@ -34650,7 +34460,7 @@ For guidance on serverless indexes, see [Manage serverless indexes](/guides/mana
 
 ## Describe a pod-based index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
+Use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -34836,7 +34646,7 @@ Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) e
 
 ## Delete a pod-based index
 
-Use the [`delete_index`](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
+Use the [Delete an index](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
 
 <Note>
   You are billed for a pod-based index even when it's not in use.
@@ -35796,7 +35606,7 @@ You can restore a pod-based index by creating a new index from a [collection](/g
 
 ## Create a pod-based index from a collection
 
-To create a pod-based index from a [collection](/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections), use the [`create_index`](/reference/api/latest/control-plane/create_index) endpoint and provide a [`source_collection`](/reference/api/latest/control-plane/create_index#!path=source%5Fcollection\&t=request) parameter containing the name of the collection from which you wish to create an index. The new index can differ from the original source index: the new index can have a different name, number of pods, or pod type. The new index is queryable and writable.
+To create a pod-based index from a [collection](/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections), use the [Create an index](/reference/api/latest/control-plane/create_index) endpoint and provide a [`source_collection`](/reference/api/latest/control-plane/create_index#!path=source%5Fcollection\&t=request) parameter containing the name of the collection from which you wish to create an index. The new index can differ from the original source index: the new index can have a different name, number of pods, or pod type. The new index is queryable and writable.
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -35969,7 +35779,7 @@ You can increase the pod size in the Pinecone console or using the API.
   </Tab>
 
   <Tab title="API">
-    Use the [`configure_index`](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
+    Use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
 
     **Example**
 
@@ -36066,9 +35876,9 @@ After creating an index, you can't vertically downscale the index/pod size. Inst
 
 ### Check the status of a pod size change
 
-To check the status of a pod size change, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
+To check the status of a pod size change, use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
 
-The index fullness metric provided by [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) may be inaccurate until the resizing process is complete.
+The index fullness metric provided by the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation may be inaccurate until the resizing process is complete.
 
 **Example**
 
@@ -36808,10 +36618,10 @@ To create an index from a backup, use [Create index from backup](https://docs.pi
 
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
-Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll [`GET /indexes/{index_name}`](/reference/api/2026-07/control-plane/describe_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
+Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll the [Describe an index](/reference/api/2026-07/control-plane/describe_index) operation until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
 
 <Note>
-  To create a classic vector index (read and written through the Vectors API), use the reserved `_values` (dense) and/or `_sparse_values` (sparse) schema fields. These replace the top-level `dimension`, `metric`, and `vector_type` of earlier API versions, and are REST-only for now.
+  To create a classic vector index (read and written through the Vectors API), use the reserved `_values` (dense) and/or `_sparse_values` (sparse) schema fields. These replace the top-level `dimension`, `metric`, and `vector_type` of earlier API versions.
 </Note>
 
 <Note>
@@ -37181,7 +36991,7 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/describe_in
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /indexes/{index_name}
 Get a description of an index.
 
-Returns detailed information about a specific index, including its schema, status, host URL, and read capacity. Poll this endpoint after [`POST /indexes`](/reference/api/2026-07/control-plane/create_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
+Returns detailed information about a specific index, including its schema, status, host URL, and read capacity. Poll this endpoint after calling [Create an index](/reference/api/2026-07/control-plane/create_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
 
 <RequestExample>
   ```python Python theme={null}
@@ -37335,7 +37145,7 @@ Source: https://docs.pinecone.io/reference/api/2026-07/control-plane/list_indexe
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /indexes
 List all indexes in a project.
 
-Returns all indexes in the project, including their current status and configuration. Each item in the response has the same shape as [`GET /indexes/{index_name}`](/reference/api/2026-07/control-plane/describe_index).
+Returns all indexes in the project, including their current status and configuration. Each item in the response has the same shape as the response from [Describe an index](/reference/api/2026-07/control-plane/describe_index).
 
 <RequestExample>
   ```python Python theme={null}
@@ -38575,7 +38385,7 @@ automatically indexed for filtering.
 If a document with the same `_id` already exists, it is completely replaced. Documents become searchable within approximately one minute. The `namespace` is auto-created on first upsert; use `"__default__"` if you don't need partitioning.
 
 <Note>
-  Upsert replaces the whole document. For partial changes to specific fields, use [`POST /namespaces/{namespace}/documents/update`](/reference/api/2026-07/data-plane/update_documents), which patches fields per ID or in bulk by metadata filter.
+  Upsert replaces the whole document. For partial changes to specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents), which patches fields per ID or in bulk by metadata filter.
 </Note>
 
 <Note>
@@ -39409,7 +39219,7 @@ This page describes known limitations and feature restrictions in Pinecone.
 
 ## Upserts
 
-* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
+* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
 * Only indexes using the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) support querying sparse-dense vectors. Upserting, updating, and fetching sparse-dense vectors in indexes with a different distance metric will succeed, but querying will return an error.
 * Indexes created before February 22, 2023 don't support sparse vectors.
 
@@ -40241,7 +40051,7 @@ This page describes known limitations and feature restrictions in Pinecone.
 
 ## Upserts
 
-* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
+* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
 * Only indexes using the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) support querying sparse-dense vectors. Upserting, updating, and fetching sparse-dense vectors in indexes with a different distance metric will succeed, but querying will return an error.
 * Indexes created before February 22, 2023 don't support sparse vectors.
 
@@ -45956,7 +45766,7 @@ This page describes known limitations and feature restrictions in Pinecone.
 
 ## Upserts
 
-* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
+* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
 * Only indexes using the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) support querying sparse-dense vectors. Upserting, updating, and fetching sparse-dense vectors in indexes with a different distance metric will succeed, but querying will return an error.
 * Indexes created before February 22, 2023 don't support sparse vectors.
 
@@ -51671,7 +51481,7 @@ This page describes known limitations and feature restrictions in Pinecone.
 
 ## Upserts
 
-* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
+* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
 * Only indexes using the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) support querying sparse-dense vectors. Upserting, updating, and fetching sparse-dense vectors in indexes with a different distance metric will succeed, but querying will return an error.
 * Indexes created before February 22, 2023 don't support sparse vectors.
 
@@ -57386,7 +57196,7 @@ This page describes known limitations and feature restrictions in Pinecone.
 
 ## Upserts
 
-* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
+* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
 * Only indexes using the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) support querying sparse-dense vectors. Upserting, updating, and fetching sparse-dense vectors in indexes with a different distance metric will succeed, but querying will return an error.
 * Indexes created before February 22, 2023 don't support sparse vectors.
 
@@ -62623,12 +62433,17 @@ Install the Pinecone Agent Skills library in any agentic IDE to manage indexes, 
 
 Pinecone's official [Agent Skills](https://github.com/pinecone-io/skills) library brings Pinecone capabilities to any agentic IDE that supports the Agent Skills standard. Use skills to manage indexes, run semantic search, create document Q\&A assistants, and more — all through natural language in your IDE.
 
-Compatible with [GitHub Copilot](https://github.com/features/copilot), [Codex](https://chatgpt.com/codex), and other agentic IDEs.
+Compatible with [GitHub Copilot](https://github.com/features/copilot) and other agentic IDEs.
 
 <PrimarySecondaryCTA />
 
 <Tip>
-  If you use **Claude Code**, install the dedicated [Pinecone plugin for Claude Code](/integrations/claude-code) instead. If you use **Gemini CLI**, install the dedicated [Pinecone extension for Gemini CLI](/integrations/gemini-cli) instead. If you use **Cursor**, install the dedicated [Pinecone plugin for Cursor](/integrations/cursor) instead. Each includes additional features specific to that tool.
+  These tools have a dedicated Pinecone plugin or extension with additional features. Install it instead of Agent Skills:
+
+  * [Claude Code](/integrations/claude-code)
+  * [Codex](/integrations/codex)
+  * [Cursor](/integrations/cursor)
+  * [Gemini CLI](/integrations/gemini-cli)
 </Tip>
 
 ## Features
@@ -62645,7 +62460,9 @@ Compatible with [GitHub Copilot](https://github.com/features/copilot), [Codex](h
 * [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (optional, runs bundled Python scripts)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `cli` skill)
 
-## Installation
+## Set up Agent Skills
+
+Set your API key, add the skills to your project, and optionally connect the MCP server.
 
 <Steps>
   <Step title="Set your API key">
@@ -62698,30 +62515,34 @@ For the full list of MCP tools, see [Use the Pinecone MCP server](/guides/operat
 # Agentic IDEs and CLIs
 Source: https://docs.pinecone.io/integrations/ai-coding-tools
 
-Use Pinecone with agentic IDEs and CLIs like Claude Code, Gemini CLI, and Cursor via MCP server, plugins, and agent skills for vector search.
+Use Pinecone with agentic IDEs and CLIs like Claude Code, Codex, Gemini CLI, and Cursor via MCP server, plugins, and agent skills for vector search.
 
 Pinecone provides official plugins, extensions, and agent skills for agentic IDEs and CLIs. Use the Pinecone [MCP server](/guides/operations/mcp-server) (Model Context Protocol) and built-in skills to manage vector database indexes, run semantic search, and build RAG applications — all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
 
 ## Choose your tool
 
 <CardGroup>
-  <Card title="Claude Code Plugin" icon="plug" href="/integrations/claude-code">
+  <Card title="Claude Code plugin" icon="plug" href="/integrations/claude-code">
     Official Pinecone plugin for Claude Code with skills, MCP tools, and slash commands.
   </Card>
 
-  <Card title="Gemini CLI Extension" icon="terminal" href="/integrations/gemini-cli">
+  <Card title="Codex plugin" icon="plug" href="/integrations/codex">
+    Official Pinecone plugin for Codex with skills and MCP tools.
+  </Card>
+
+  <Card title="Gemini CLI extension" icon="terminal" href="/integrations/gemini-cli">
     Official Pinecone extension for Gemini CLI with skills and MCP tools.
   </Card>
 
-  <Card title="Cursor Plugin" icon="plug" href="/integrations/cursor">
+  <Card title="Cursor plugin" icon="plug" href="/integrations/cursor">
     Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.
   </Card>
 
   <Card title="Agent Skills" icon="layer-group" href="/integrations/agent-skills">
-    Universal skills library for GitHub Copilot, Codex, and other agentic IDEs.
+    Universal skills library for GitHub Copilot and other agentic IDEs.
   </Card>
 
-  <Card title="MCP Server" icon="server" href="/guides/operations/mcp-server">
+  <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">
     Connect any MCP-compatible client to Pinecone for index management and search.
   </Card>
 
@@ -62735,9 +62556,10 @@ Pinecone provides official plugins, extensions, and agent skills for agentic IDE
 | If you use... | Install... | Command |
 | - | - | - |
 | [Claude Code](https://claude.ai/code) | [Pinecone plugin for Claude Code](/integrations/claude-code) | `claude plugin install pinecone` |
+| [Codex](https://developers.openai.com/codex) | [Pinecone plugin for Codex](/integrations/codex) | See [install steps](/integrations/codex#install-the-plugin) |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | [Pinecone Gemini CLI extension](/integrations/gemini-cli) | `gemini extensions install https://github.com/pinecone-io/gemini-cli-extension` |
 | [Cursor](https://www.cursor.com/) | [Pinecone Cursor plugin](/integrations/cursor) | `/add-plugin pinecone` |
-| [GitHub Copilot](https://github.com/features/copilot), [Codex](https://chatgpt.com/codex), or another agentic IDE | [Pinecone Agent Skills](/integrations/agent-skills) | `npx skills add pinecone-io/skills` |
+| [GitHub Copilot](https://github.com/features/copilot) or another agentic IDE | [Pinecone Agent Skills](/integrations/agent-skills) | `npx skills add pinecone-io/skills` |
 | Claude Desktop, Antigravity, or another MCP client | [Pinecone MCP server](/guides/operations/mcp-server) | See [MCP server setup](/guides/operations/mcp-server) |
 | Your terminal directly (no agent) | [Pinecone CLI](/reference/cli/quickstart) | `brew install pinecone-io/tap/pinecone` |
 
@@ -63054,7 +62876,7 @@ This integration allows embeddings generation based on content stored in a parti
 <PrimarySecondaryCTA />
 
 
-# Claude Code Plugin
+# Claude Code plugin
 Source: https://docs.pinecone.io/integrations/claude-code
 
 Install the official Pinecone plugin for Claude Code to manage indexes, run vector search, and build RAG assistants from the terminal with slash commands.
@@ -63117,7 +62939,7 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides 
 | **Query** | `/pinecone:query` | Search integrated indexes using natural language. |
 | **Assistant** | `/pinecone:assistant` | Create, upload, sync, and chat with Pinecone Assistants. |
 | **CLI** | `/pinecone:cli` | Guide for using the Pinecone CLI from the terminal. |
-| **Full-text search** | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. |
+| **Full-text search** | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. Requires Python SDK v10.0.0 or later. |
 | **n8n** | `/pinecone:n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
 | **MCP** | `/pinecone:mcp` | Reference for all Pinecone MCP server tools. |
 | **Docs** | `/pinecone:docs` | Curated links to official Pinecone documentation. |
@@ -63168,246 +62990,173 @@ Cloudera's Accelerators for Machine Learning Projects (AMPs) drive efficient dep
 * [Jupyter notebook](https://github.com/cloudera/CML_llm-hol/blob/main/3_query_vector_db/pinecone_vectordb_query.ipynb) - Example of querying Pinecone collections
 
 
-# Cohere
-Source: https://docs.pinecone.io/integrations/cohere
+# Codex plugin
+Source: https://docs.pinecone.io/integrations/codex
 
-Connect Pinecone and Cohere to ship vector search and RAG applications: generate Cohere embeddings, index them in Pinecone, and rerank results.
+Install the official Pinecone plugin for Codex to manage indexes, run vector search, and build RAG assistants from Codex using skills and MCP tools.
 
-The Cohere platform builds natural language processing and generation into your product with a few lines of code. Cohere's large language models (LLMs) can solve a broad spectrum of natural language use cases, including classification, semantic search, paraphrasing, summarization, and content generation.
-
-Use the Cohere Embed API endpoint to generate language embeddings, and then index those embeddings in the Pinecone vector database for fast and scalable vector search.
+The official Pinecone plugin for [Codex](https://developers.openai.com/codex) adds Pinecone skills and the Pinecone MCP server to your Codex sessions. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants, with up-to-date Pinecone API knowledge.
 
 <PrimarySecondaryCTA />
 
-## Setup guide
+## Features
 
-[View source](https://github.com/pinecone-io/examples/blob/master/integrations/cohere/)
+* **Built-in skills** for index management, semantic search, full-text search, assistant creation, and more
+* **Bundled MCP server** for direct Pinecone operations from Codex, with no extra setup
+* **Natural language activation** — Codex invokes the right skill based on your conversation
 
-[Open in Colab](https://colab.research.google.com/github/pinecone-io/examples/blob/master/integrations/cohere/semantic%5Fsearch%5Ftrec.ipynb)
+## Prerequisites
 
-In this guide, you will learn how to use the [Cohere Embed API endpoint](https://docs.cohere.ai/reference/embed) to generate language embeddings, and then index those embeddings in the [Pinecone vector database](https://www.pinecone.io) for fast and scalable vector search.
+* A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
+* The [Codex](https://developers.openai.com/codex) desktop app or CLI installed. The plugin runs locally, so it doesn't work in Codex cloud tasks.
+* [Node.js](https://nodejs.org/) installed and on your `PATH` (required for the bundled MCP server)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for the assistant and full-text search ingestion skills)
+* [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone:cli` skill)
 
-This is a powerful and common combination for building semantic search, question-answering, threat-detection, and other applications that rely on NLP and search over a large corpus of text data.
+## Install the plugin
 
-The basic workflow looks like this:
+Install the plugin from the Codex plugin directory or the command line, then set your API key and launch Codex.
 
-* Embed and index
-  * Use the Cohere Embed API endpoint to generate vector embeddings of your documents (or any text data).
-  * Upload those vector embeddings into Pinecone, which can store and index millions/billions of these vector embeddings, and search through them at ultra-low latencies.
-* Search
-  * Pass your query text or document through the Cohere Embed API endpoint again.
-  * Take the resulting vector embedding and send it as a [query](/guides/search/search-overview) to Pinecone.
-  * Get back semantically similar documents, even if they don't share any keywords with the query.
+<Steps>
+  <Step title="Add the plugin to Codex">
+    <Tabs>
+      <Tab title="Plugin directory">
+        1. In the Codex app, select **Plugins** in the sidebar.
+        2. Find **Pinecone** and select it.
+        3. Select **Install plugin**.
 
-<img alt="Basic workflow of Cohere with Pinecone" />
+        For more about installing plugins, see [Plugins in ChatGPT](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt) in the OpenAI Help Center.
+      </Tab>
 
-### Set up the environment
+      <Tab title="Command line">
+        1. Add the Pinecone marketplace:
 
-Start by installing the Cohere and Pinecone clients and HuggingFace *Datasets* for downloading the TREC dataset used in this guide:
+           ```shell theme={null}
+           codex plugin marketplace add pinecone-io/pinecone-codex-plugin
+           ```
 
-```shell Shell theme={null}
-pip install -U cohere pinecone datasets
-```
+        2. Install the plugin:
 
-### Create embeddings
+           ```shell theme={null}
+           codex plugin add pinecone --marketplace pinecone-codex-plugins
+           ```
 
-Sign up for an API key at [Cohere](https://dashboard.cohere.com/api-keys) and then use it to initialize your connection.
+        3. Confirm the plugin is installed:
 
-```Python Python theme={null}
-import cohere
+           ```shell theme={null}
+           codex plugin list | grep pinecone
+           ```
+      </Tab>
+    </Tabs>
+  </Step>
 
-co = cohere.Client("<YOUR_API_KEY>")
-```
+  <Step title="Set your API key and launch Codex">
+    Installing the plugin doesn't set your API key. Codex reads it from the environment it launches in.
 
-Load the **T**ext **RE**trieval **C**onference (TREC) question classification dataset, which contains 5.5K labeled questions. You will take only the first 1K samples for this walkthrough, but this can be scaled to millions or even billions of samples.
+    <Tabs>
+      <Tab title="Codex CLI">
+        Export the key in the same shell where you run `codex`:
 
-```Python Python theme={null}
-from datasets import load_dataset
+        ```shell theme={null}
+        export PINECONE_API_KEY="YOUR_API_KEY"
+        codex
+        ```
 
-# load the first 1K rows of the TREC dataset
-trec = load_dataset('trec', split='train[:1000]')
-```
+        Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). To keep the key across terminal sessions, add the `export` line to your shell profile, such as `~/.zshrc`.
+      </Tab>
 
-Each sample in `trec` contains two label features and the *text* feature. Pass the questions from the *text* feature to Cohere to create embeddings.
+      <Tab title="Codex desktop app (macOS)">
+        Quit Codex, then export the key and relaunch Codex from the same terminal:
 
-```Python Python theme={null}
-embeds = co.embed(
-    texts=trec['text'],
-    model='embed-english-v3.0',
-    input_type='search_document',
-    truncate='END'
-).embeddings
-```
+        ```shell theme={null}
+        osascript -e 'quit app "Codex"'
+        export PINECONE_API_KEY="YOUR_API_KEY"
+        open -a Codex
+        ```
 
-Check the dimensionality of the returned vectors. You will need to save the embedding dimensionality from this to be used when initializing your Pinecone index later
+        Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
 
-```Python Python theme={null}
-import numpy as np
+        To make the key available when you open Codex from the Dock or Spotlight, set it for all macOS apps instead, then quit and reopen Codex:
 
-shape = np.array(embeds).shape
-print(shape)
+        ```shell theme={null}
+        launchctl setenv PINECONE_API_KEY "YOUR_API_KEY"
+        ```
 
-# [Out]:
-# (1000, 1024)
-```
+        This setting doesn't persist after you restart your Mac, so run it again after each restart.
+      </Tab>
+    </Tabs>
+  </Step>
 
-You can see the `1024` embedding dimensionality produced by Cohere's `embed-english-v3.0` model, and the `1000` samples you built embeddings for.
+  <Step title="Run the quickstart">
+    In a new Codex session, ask:
 
-### Store the Embeddings
+    ```text theme={null}
+    Use Pinecone's quickstart to create an index, add sample data, and run my first search.
+    ```
 
-Now that you have your embeddings, you can move on to indexing them in the Pinecone vector database. For this, you need a [Pinecone API key](/guides/projects/manage-api-keys).
+    Codex invokes the `pinecone:quickstart` skill, checks the connection to the Pinecone MCP server, creates an integrated index, upserts sample records, and runs a search.
+  </Step>
+</Steps>
 
-You first initialize our connection to Pinecone and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When creating the index, you specify that you would like to use the cosine similarity metric to align with Cohere's embeddings, and also pass the embedding dimensionality of `1024`.
+## Available skills
 
-```Python Python theme={null}
-from pinecone import Pinecone
+Codex picks the right skill based on what you ask. To call a skill directly, type `$` followed by its name, such as `$pinecone:quickstart`. To bring in the whole plugin, mention `@pinecone`.
 
-# initialize connection to pinecone (get API key at app.pinecone.io)
-pc = Pinecone(api_key='YOUR_API_KEY')
+| Skill | Description |
+| - | - |
+| `pinecone:help` | Overview of all skills and setup requirements. Start here. |
+| `pinecone:quickstart` | Walks you through creating an index, upserting data, and running a query. |
+| `pinecone:query` | Search integrated indexes using natural language via the Pinecone MCP server. |
+| `pinecone:assistant` | Create, upload, sync, and chat with Pinecone Assistants for document Q\&A with citations. |
+| `pinecone:cli` | Guide for using the Pinecone CLI (`pc`) from the terminal. |
+| `pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. Requires Python SDK v10.0.0 or later. |
+| `pinecone:n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
+| `pinecone:mcp` | Reference for all Pinecone MCP server tools. |
+| `pinecone:docs` | Curated links to official Pinecone documentation. |
 
-index_name = 'cohere-pinecone-trec'
+## MCP tools
 
-# if the index does not exist, we create it
-if not pc.has_index(index_name):
-    pc.create_index(
-        name=index_name,
-        dimension=shape[1],
-        metric="cosine",
-        spec=ServerlessSpec(
-            cloud='aws', 
-            region='us-east-1'
-        ) 
-    )
+The plugin includes the Pinecone MCP server, which provides the following tools:
 
-# connect to index
-index = pc.Index(index_name)
-```
+* `search-docs`: Search the official Pinecone documentation.
+* `list-indexes`: List all available Pinecone indexes.
+* `describe-index`: Get index configuration and namespaces.
+* `describe-index-stats`: Get record counts and namespace statistics.
+* `create-index-for-model`: Create a new index with integrated embeddings.
+* `upsert-records`: Insert or update records in an index.
+* `search-records`: Search records with optional metadata filtering and reranking.
+* `cascading-search`: Search across multiple indexes with deduplication and reranking.
+* `rerank-documents`: Rerank documents using a specified reranking model.
 
-Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format *(id, vector, metadata)*, where the *metadata* field is an optional extra field where you can store anything you want in a dictionary format. For this example, you will store the original text of the embeddings.
+For full MCP server documentation, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
 
-While uploading your data, you will batch everything to avoid pushing too much data in one go.
+## Troubleshooting
 
-```Python Python theme={null}
-batch_size = 128
+<AccordionGroup>
+  <Accordion title="API key not found or 401 errors">
+    * **Codex desktop app (macOS):** Run `launchctl getenv PINECONE_API_KEY`. If it returns nothing, set the key again and quit and reopen Codex.
+    * **Codex CLI:** In the same shell where you run `codex`, run `[ -n "$PINECONE_API_KEY" ] && echo "set" || echo "not set"`. If it prints `not set`, export the key again.
+  </Accordion>
 
-ids = [str(i) for i in range(shape[0])]
-# create list of metadata dictionaries
-meta = [{'text': text} for text in trec['text']]
+  <Accordion title="MCP server not responding">
+    Make sure Node.js is on your `PATH` and your API key is valid, then restart Codex.
+  </Accordion>
 
-# create list of (id, vector, metadata) tuples to be upserted
-to_upsert = list(zip(ids, embeds, meta))
+  <Accordion title="The query skill returns no results">
+    The `pinecone:query` skill works only with integrated indexes, which use a Pinecone-hosted embedding model. For indexes that use external embeddings, use the `pinecone:cli` skill or the MCP tools directly.
+  </Accordion>
 
-for i in range(0, shape[0], batch_size):
-    i_end = min(i+batch_size, shape[0])
-    index.upsert(vectors=to_upsert[i:i_end])
+  <Accordion title="Assistant or full-text search skill errors">
+    Run `uv --version` to confirm `uv` is installed. If it's missing, install it and restart your terminal.
+  </Accordion>
+</AccordionGroup>
 
-# let's view the index statistics
-print(index.describe_index_stats())
+## Resources
 
-# [Out]:
-# {'dimension': 1024,
-#  'index_fullness': 0.0,
-#  'namespaces': {'': {'vector_count': 1000}},
-#  'total_vector_count': 1000}
-```
-
-You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *1000* embeddings. For serverless on-demand indexes, the `index_fullness` metric is typically `0` because storage and compute scale automatically. If you're using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), `index_fullness` (along with `memory_fullness` and `storage_fullness`) tells you how close the index is to its allocated capacity.
-
-### Semantic search
-
-Now that you have your indexed vectors, you can perform a few search queries. When searching, you will first embed your query using Cohere, and then search using the returned vector in Pinecone.
-
-```Python Python theme={null}
-query = "What caused the 1929 Great Depression?"
-
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    truncate='END'
-).embeddings
-
-print(np.array(xq).shape)
-
-# query, returning the top 5 most similar results
-res = index.query(vector=xq, top_k=5, include_metadata=True)
-```
-
-The response from Pinecone includes your original text in the `metadata` field. Let's print out the `top_k` most similar questions and their respective similarity scores.
-
-```Python Python theme={null}
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
-
-# [Out]:
-# 0.62: Why did the world enter a global depression in 1929 ?
-# 0.49: When was `` the Great Depression '' ?
-# 0.38: What crop failure caused the Irish Famine ?
-# 0.32: What caused Harry Houdini 's death ?
-# 0.31: What causes pneumonia ?
-```
-
-Looks good! Let's make it harder and replace *"depression"* with the incorrect term *"recession"*.
-
-```Python Python theme={null}
-query = "What was the cause of the major recession in the early 20th century?"
-
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    truncate='END'
-).embeddings
-
-# query, returning the top 5 most similar results
-res = index.query(vector=xq, top_k=5, include_metadata=True)
-
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
-
-# [Out]:
-# 0.43: When was `` the Great Depression '' ?
-# 0.40: Why did the world enter a global depression in 1929 ?
-# 0.39: When did World War I start ?
-# 0.35: What are some of the significant historical events of the 1990s ?
-# 0.32: What crop failure caused the Irish Famine ?
-```
-
-Let's perform one final search using the definition of depression rather than the word or related words.
-
-```Python Python theme={null}
-query = "Why was there a long-term economic downturn in the early 20th century?"
-
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    truncate='END'
-).embeddings
-
-# query, returning the top 10 most similar results
-res = index.query(vector=xq, top_k=10, include_metadata=True)
-
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
-
-# [Out]:
-# 0.40: When was `` the Great Depression '' ?
-# 0.39: Why did the world enter a global depression in 1929 ?
-# 0.35: When did World War I start ?
-# 0.32: What are some of the significant historical events of the 1990s ?
-# 0.31: What war did the Wanna-Go-Home Riots occur after ?
-# 0.31: What do economists do ?
-# 0.29: What historical event happened in Dogtown in 1899 ?
-# 0.28: When did the Dow first reach ?
-# 0.28: Who earns their money the hard way ?
-# 0.28: What were popular songs and types of songs in the 1920s ?
-```
-
-It's clear from this example that the semantic search pipeline is clearly able to identify the meaning between each of your queries. Using these embeddings with Pinecone allows you to return the most semantically similar questions from the already indexed TREC dataset.
+* [GitHub repository](https://github.com/pinecone-io/pinecone-codex-plugin)
+* [Codex documentation](https://developers.openai.com/codex)
+* [Plugins in ChatGPT (OpenAI Help Center)](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt)
+* [Pinecone MCP server guide](/guides/operations/mcp-server)
 
 
 # Confluent
@@ -63436,7 +63185,7 @@ You can also chat with your Pinecone indexes directly from Context Data's privac
 <PrimarySecondaryCTA />
 
 
-# Cursor Plugin
+# Cursor plugin
 Source: https://docs.pinecone.io/integrations/cursor
 
 Install the official Pinecone plugin for Cursor to manage indexes, run vector search, and build RAG apps from the editor using MCP and slash commands.
@@ -63811,7 +63560,7 @@ One of the building blocks is integration with Vector DB and Knowledge Graphs. G
 <PrimarySecondaryCTA />
 
 
-# Gemini CLI Extension
+# Gemini CLI extension
 Source: https://docs.pinecone.io/integrations/gemini-cli
 
 Install the official Pinecone extension for Gemini CLI to manage indexes, run vector search, and build RAG assistants with natural-language commands.
@@ -65173,12 +64922,12 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
   <Card href="/integrations/agent-skills">
     <span>IDEs & CLIs</span>
     <h2>Agent Skills</h2>
-    <p>Universal Pinecone skills library for GitHub Copilot, Codex, and other agentic IDEs.</p>
+    <p>Universal Pinecone skills library for GitHub Copilot and other agentic IDEs.</p>
   </Card>
 
   <Card href="/integrations/cursor">
     <span>IDEs & CLIs</span>
-    <h2>Cursor Plugin</h2>
+    <h2>Cursor plugin</h2>
     <p>Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.</p>
   </Card>
 
@@ -65274,7 +65023,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
   <Card href="/integrations/claude-code">
     <span>IDEs & CLIs</span>
-    <h2>Claude Code Plugin</h2>
+    <h2>Claude Code plugin</h2>
     <p>Official Pinecone plugin for Claude Code with skills, MCP tools, and slash commands.</p>
   </Card>
 
@@ -65286,6 +65035,12 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
     <span>Frameworks</span>
     <h2>Cloudera AI</h2>
     <p>Vector embedding, RAG, and semantic search at scale.</p>
+  </Card>
+
+  <Card href="/integrations/codex">
+    <span>IDEs & CLIs</span>
+    <h2>Codex plugin</h2>
+    <p>Official Pinecone plugin for Codex with skills and MCP tools.</p>
   </Card>
 
   <Card href="/integrations/cohere">
@@ -65400,7 +65155,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
   <Card href="/integrations/gemini-cli">
     <span>IDEs & CLIs</span>
-    <h2>Gemini CLI Extension</h2>
+    <h2>Gemini CLI extension</h2>
     <p>Official Pinecone extension for Gemini CLI with skills and MCP tools.</p>
   </Card>
 
@@ -67185,7 +66940,7 @@ This page describes known limitations and feature restrictions in Pinecone.
 
 ## Upserts
 
-* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
+* Pinecone is eventually consistent, so there can be a slight delay before [upserted records](/guides/index-data/upsert-data) are available to query. After upserting records, use the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation to check whether the current vector count matches the number of records you expect, although this method may not work for pod-based indexes with multiple replicas.
 * Only indexes using the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) support querying sparse-dense vectors. Upserting, updating, and fetching sparse-dense vectors in indexes with a different distance metric will succeed, but querying will return an error.
 * Indexes created before February 22, 2023 don't support sparse vectors.
 
@@ -79702,6 +79457,248 @@ Listing on our official [Integrations](/integrations/overview) page is a curated
 * [Connect your users to Pinecone](/integrations/build-integration/connect-your-users-to-pinecone)
 
 
+# Cohere
+Source: https://docs.pinecone.io/integrations/cohere
+
+Connect Pinecone and Cohere to ship vector search and RAG applications: generate Cohere embeddings, index them in Pinecone, and rerank results.
+
+The Cohere platform builds natural language processing and generation into your product with a few lines of code. Cohere's large language models (LLMs) can solve a broad spectrum of natural language use cases, including classification, semantic search, paraphrasing, summarization, and content generation.
+
+Use the Cohere Embed API endpoint to generate language embeddings, and then index those embeddings in the Pinecone vector database for fast and scalable vector search.
+
+<PrimarySecondaryCTA />
+
+## Setup guide
+
+[View source](https://github.com/pinecone-io/examples/blob/master/integrations/cohere/)
+
+[Open in Colab](https://colab.research.google.com/github/pinecone-io/examples/blob/master/integrations/cohere/semantic%5Fsearch%5Ftrec.ipynb)
+
+In this guide, you will learn how to use the [Cohere Embed API endpoint](https://docs.cohere.ai/reference/embed) to generate language embeddings, and then index those embeddings in the [Pinecone vector database](https://www.pinecone.io) for fast and scalable vector search.
+
+This is a powerful and common combination for building semantic search, question-answering, threat-detection, and other applications that rely on NLP and search over a large corpus of text data.
+
+The basic workflow looks like this:
+
+* Embed and index
+  * Use the Cohere Embed API endpoint to generate vector embeddings of your documents (or any text data).
+  * Upload those vector embeddings into Pinecone, which can store and index millions/billions of these vector embeddings, and search through them at ultra-low latencies.
+* Search
+  * Pass your query text or document through the Cohere Embed API endpoint again.
+  * Take the resulting vector embedding and send it as a [query](/guides/search/search-overview) to Pinecone.
+  * Get back semantically similar documents, even if they don't share any keywords with the query.
+
+<img alt="Basic workflow of Cohere with Pinecone" />
+
+### Set up the environment
+
+Start by installing the Cohere and Pinecone clients and HuggingFace *Datasets* for downloading the TREC dataset used in this guide:
+
+```shell Shell theme={null}
+pip install -U cohere pinecone datasets
+```
+
+### Create embeddings
+
+Sign up for an API key at [Cohere](https://dashboard.cohere.com/api-keys) and then use it to initialize your connection.
+
+```Python Python theme={null}
+import cohere
+
+co = cohere.Client("<YOUR_API_KEY>")
+```
+
+Load the **T**ext **RE**trieval **C**onference (TREC) question classification dataset, which contains 5.5K labeled questions. You will take only the first 1K samples for this walkthrough, but this can be scaled to millions or even billions of samples.
+
+```Python Python theme={null}
+from datasets import load_dataset
+
+# load the first 1K rows of the TREC dataset
+trec = load_dataset('trec', split='train[:1000]')
+```
+
+Each sample in `trec` contains two label features and the *text* feature. Pass the questions from the *text* feature to Cohere to create embeddings.
+
+```Python Python theme={null}
+embeds = co.embed(
+    texts=trec['text'],
+    model='embed-english-v3.0',
+    input_type='search_document',
+    truncate='END'
+).embeddings
+```
+
+Check the dimensionality of the returned vectors. You will need to save the embedding dimensionality from this to be used when initializing your Pinecone index later
+
+```Python Python theme={null}
+import numpy as np
+
+shape = np.array(embeds).shape
+print(shape)
+
+# [Out]:
+# (1000, 1024)
+```
+
+You can see the `1024` embedding dimensionality produced by Cohere's `embed-english-v3.0` model, and the `1000` samples you built embeddings for.
+
+### Store the Embeddings
+
+Now that you have your embeddings, you can move on to indexing them in the Pinecone vector database. For this, you need a [Pinecone API key](/guides/projects/manage-api-keys).
+
+You first initialize our connection to Pinecone and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When creating the index, you specify that you would like to use the cosine similarity metric to align with Cohere's embeddings, and also pass the embedding dimensionality of `1024`.
+
+```Python Python theme={null}
+from pinecone import Pinecone
+
+# initialize connection to pinecone (get API key at app.pinecone.io)
+pc = Pinecone(api_key='YOUR_API_KEY')
+
+index_name = 'cohere-pinecone-trec'
+
+# if the index does not exist, we create it
+if not pc.has_index(index_name):
+    pc.create_index(
+        name=index_name,
+        dimension=shape[1],
+        metric="cosine",
+        spec=ServerlessSpec(
+            cloud='aws', 
+            region='us-east-1'
+        ) 
+    )
+
+# connect to index
+index = pc.Index(index_name)
+```
+
+Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format *(id, vector, metadata)*, where the *metadata* field is an optional extra field where you can store anything you want in a dictionary format. For this example, you will store the original text of the embeddings.
+
+While uploading your data, you will batch everything to avoid pushing too much data in one go.
+
+```Python Python theme={null}
+batch_size = 128
+
+ids = [str(i) for i in range(shape[0])]
+# create list of metadata dictionaries
+meta = [{'text': text} for text in trec['text']]
+
+# create list of (id, vector, metadata) tuples to be upserted
+to_upsert = list(zip(ids, embeds, meta))
+
+for i in range(0, shape[0], batch_size):
+    i_end = min(i+batch_size, shape[0])
+    index.upsert(vectors=to_upsert[i:i_end])
+
+# let's view the index statistics
+print(index.describe_index_stats())
+
+# [Out]:
+# {'dimension': 1024,
+#  'index_fullness': 0.0,
+#  'namespaces': {'': {'vector_count': 1000}},
+#  'total_vector_count': 1000}
+```
+
+You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *1000* embeddings. For serverless on-demand indexes, the `index_fullness` metric is typically `0` because storage and compute scale automatically. If you're using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), `index_fullness` (along with `memory_fullness` and `storage_fullness`) tells you how close the index is to its allocated capacity.
+
+### Semantic search
+
+Now that you have your indexed vectors, you can perform a few search queries. When searching, you will first embed your query using Cohere, and then search using the returned vector in Pinecone.
+
+```Python Python theme={null}
+query = "What caused the 1929 Great Depression?"
+
+# create the query embedding
+xq = co.embed(
+    texts=[query],
+    model='embed-english-v3.0',
+    input_type='search_query',
+    truncate='END'
+).embeddings
+
+print(np.array(xq).shape)
+
+# query, returning the top 5 most similar results
+res = index.query(vector=xq, top_k=5, include_metadata=True)
+```
+
+The response from Pinecone includes your original text in the `metadata` field. Let's print out the `top_k` most similar questions and their respective similarity scores.
+
+```Python Python theme={null}
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+
+# [Out]:
+# 0.62: Why did the world enter a global depression in 1929 ?
+# 0.49: When was `` the Great Depression '' ?
+# 0.38: What crop failure caused the Irish Famine ?
+# 0.32: What caused Harry Houdini 's death ?
+# 0.31: What causes pneumonia ?
+```
+
+Looks good! Let's make it harder and replace *"depression"* with the incorrect term *"recession"*.
+
+```Python Python theme={null}
+query = "What was the cause of the major recession in the early 20th century?"
+
+# create the query embedding
+xq = co.embed(
+    texts=[query],
+    model='embed-english-v3.0',
+    input_type='search_query',
+    truncate='END'
+).embeddings
+
+# query, returning the top 5 most similar results
+res = index.query(vector=xq, top_k=5, include_metadata=True)
+
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+
+# [Out]:
+# 0.43: When was `` the Great Depression '' ?
+# 0.40: Why did the world enter a global depression in 1929 ?
+# 0.39: When did World War I start ?
+# 0.35: What are some of the significant historical events of the 1990s ?
+# 0.32: What crop failure caused the Irish Famine ?
+```
+
+Let's perform one final search using the definition of depression rather than the word or related words.
+
+```Python Python theme={null}
+query = "Why was there a long-term economic downturn in the early 20th century?"
+
+# create the query embedding
+xq = co.embed(
+    texts=[query],
+    model='embed-english-v3.0',
+    input_type='search_query',
+    truncate='END'
+).embeddings
+
+# query, returning the top 10 most similar results
+res = index.query(vector=xq, top_k=10, include_metadata=True)
+
+for match in res['matches']:
+    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+
+# [Out]:
+# 0.40: When was `` the Great Depression '' ?
+# 0.39: Why did the world enter a global depression in 1929 ?
+# 0.35: When did World War I start ?
+# 0.32: What are some of the significant historical events of the 1990s ?
+# 0.31: What war did the Wanna-Go-Home Riots occur after ?
+# 0.31: What do economists do ?
+# 0.29: What historical event happened in Dogtown in 1899 ?
+# 0.28: When did the Dow first reach ?
+# 0.28: Who earns their money the hard way ?
+# 0.28: What were popular songs and types of songs in the 1920s ?
+```
+
+It's clear from this example that the semantic search pipeline is clearly able to identify the meaning between each of your queries. Using these embeddings with Pinecone allows you to return the most semantically similar questions from the already indexed TREC dataset.
+
+
 # Datadog
 Source: https://docs.pinecone.io/integrations/datadog
 
@@ -81219,92 +81216,6 @@ Get an API key's details, excluding its secret.
     "roles": [
       "ProjectEditor"
     ]
-  }
-  ```
-</ResponseExample>
-
-
-# Get project details
-Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/fetch_project
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}
-Get a project's details.
-
-<RequestExample>
-  ```javascript JavaScript theme={null}
-  // Requires Node.js SDK v8.2.0 or later
-  import { AdminClient } from '@pinecone-database/pinecone';
-
-  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
-  const admin = new AdminClient();
-
-  const project = await admin.projects.describe('YOUR_PROJECT_ID');
-  console.log(project);
-  ```
-
-  ```go Go theme={null}
-  // Requires Go SDK v6.0.0 or later
-  package main
-
-  import (
-      "context"
-      "fmt"
-      "log"
-      "os"
-
-      "github.com/pinecone-io/go-pinecone/v6/pinecone"
-  )
-
-  func main() {
-      ctx := context.Background()
-
-      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
-          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
-          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
-      })
-      if err != nil {
-          log.Fatalf("Failed to create AdminClient: %v", err)
-      }
-
-      project, err := adminClient.Project.Describe(ctx, "YOUR_PROJECT_ID")
-      if err != nil {
-          log.Fatalf("Failed to describe project: %v", err)
-      }
-      fmt.Printf("Project: %v (%v)\n", project.Name, project.Id)
-  }
-  ```
-
-  ```hcl Terraform theme={null}
-  # Requires Terraform provider v4.0.0 or later
-  data "pinecone_project" "example" {
-    id = "YOUR_PROJECT_ID"
-  }
-
-  output "project_name" {
-    value = data.pinecone_project.example.name
-  }
-  ```
-
-  ```bash curl theme={null}
-  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
-  PROJECT_ID="3fa85f64-5717-4562-b3fc-2c963f66afa6"
-
-  curl -X GET "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
-      -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
-  	-H "X-Pinecone-Api-Version: 2026-04" \
-      -H "accept: application/json"
-  ```
-</RequestExample>
-
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "name": "example-project",
-    "max_pods": 0,
-    "force_encryption_with_cmek": false,
-    "organization_id": "string",
-    "created_at": "2025-03-17T00:30:23.262Z"
   }
   ```
 </ResponseExample>
@@ -83093,14 +83004,6 @@ def wait_on_index(index: str):
 Calling `wait_on_index()` would then allow your application to only continue to upsert data once the index is fully online and available to accept data, avoiding potential 403 or 404 errors.
 
 
-# Exchange a Pinecone API key for a session token
-Source: https://docs.pinecone.io/api-reference/auth/exchange-a-pinecone-api-key-for-a-session-token
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /auth/login
-Exchange a Pinecone API key for the session token every other endpoint expects. Send the token as a bearer credential.
-
-
-
 # Create a workspace
 Source: https://docs.pinecone.io/api-reference/manage-workspaces/create-a-workspace
 
@@ -84686,6 +84589,92 @@ Delete a project and all its configuration; delete its indexes, assistants, back
 </RequestExample>
 
 
+# Get project details
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/fetch_project
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}
+Get a project's details.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const project = await admin.projects.describe('YOUR_PROJECT_ID');
+  console.log(project);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      project, err := adminClient.Project.Describe(ctx, "YOUR_PROJECT_ID")
+      if err != nil {
+          log.Fatalf("Failed to describe project: %v", err)
+      }
+      fmt.Printf("Project: %v (%v)\n", project.Name, project.Id)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  data "pinecone_project" "example" {
+    id = "YOUR_PROJECT_ID"
+  }
+
+  output "project_name" {
+    value = data.pinecone_project.example.name
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PROJECT_ID="3fa85f64-5717-4562-b3fc-2c963f66afa6"
+
+  curl -X GET "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+      -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+  	-H "X-Pinecone-Api-Version: 2026-04" \
+      -H "accept: application/json"
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "example-project",
+    "max_pods": 0,
+    "force_encryption_with_cmek": false,
+    "organization_id": "string",
+    "created_at": "2025-03-17T00:30:23.262Z"
+  }
+  ```
+</ResponseExample>
+
+
 # Create an access token
 Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/get_token
 
@@ -85155,6 +85144,14 @@ Source: https://docs.pinecone.io/api-reference/auth/current-identity-whoami
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /auth
 Who the current credential authenticates, and which project and workspace it is scoped to.
+
+
+
+# Exchange a Pinecone API key for a session token
+Source: https://docs.pinecone.io/api-reference/auth/exchange-a-pinecone-api-key-for-a-session-token
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /auth/login
+Exchange a Pinecone API key for the session token every other endpoint expects. Send the token as a bearer credential.
 
 
 

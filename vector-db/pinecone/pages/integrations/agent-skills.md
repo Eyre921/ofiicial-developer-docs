@@ -8,12 +8,17 @@ Install the Pinecone Agent Skills library in any agentic IDE to manage indexes, 
 
 Pinecone's official [Agent Skills](https://github.com/pinecone-io/skills) library brings Pinecone capabilities to any agentic IDE that supports the Agent Skills standard. Use skills to manage indexes, run semantic search, create document Q\&A assistants, and more — all through natural language in your IDE.
 
-Compatible with [GitHub Copilot](https://github.com/features/copilot), [Codex](https://chatgpt.com/codex), and other agentic IDEs.
+Compatible with [GitHub Copilot](https://github.com/features/copilot) and other agentic IDEs.
 
 <PrimarySecondaryCTA />
 
 <Tip>
-  If you use **Claude Code**, install the dedicated [Pinecone plugin for Claude Code](/integrations/claude-code) instead. If you use **Gemini CLI**, install the dedicated [Pinecone extension for Gemini CLI](/integrations/gemini-cli) instead. If you use **Cursor**, install the dedicated [Pinecone plugin for Cursor](/integrations/cursor) instead. Each includes additional features specific to that tool.
+  These tools have a dedicated Pinecone plugin or extension with additional features. Install it instead of Agent Skills:
+
+  * [Claude Code](/integrations/claude-code)
+  * [Codex](/integrations/codex)
+  * [Cursor](/integrations/cursor)
+  * [Gemini CLI](/integrations/gemini-cli)
 </Tip>
 
 ## Features
@@ -30,7 +35,9 @@ Compatible with [GitHub Copilot](https://github.com/features/copilot), [Codex](h
 * [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (optional, runs bundled Python scripts)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `cli` skill)
 
-## Installation
+## Set up Agent Skills
+
+Set your API key, add the skills to your project, and optionally connect the MCP server.
 
 <Steps>
   <Step title="Set your API key">

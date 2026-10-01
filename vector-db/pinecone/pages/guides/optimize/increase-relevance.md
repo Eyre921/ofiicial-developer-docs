@@ -38,7 +38,7 @@ A common consequence is that searching by text for the exact string you upserted
 
 **Is a low score expected for identical short strings?** Yes. The query/passage split has the largest effect on short, low-semantic text such as exact names, error codes, SKUs, and IDs, where there is little meaning for the model to align across the two paths. Scores in roughly the `0.5`–`0.8` range for identical short strings are normal. The asymmetry helps on true semantic search (a short question matched to a longer answer passage) and only looks like a problem on exact-token-match workloads.
 
-**When should you query through the passage path?** Only when the workload is exact or near-exact lookup (IDs, error logs, product names) rather than semantic search, and you want exact matches to score near `1.0`. You can override the read-time input type at the index level with [`configure_index`](/reference/api/latest/control-plane/configure_index). Set `model` and `field_map` to the index's existing values, and set `read_parameters.input_type` to `passage`:
+**When should you query through the passage path?** Only when the workload is exact or near-exact lookup (IDs, error logs, product names) rather than semantic search, and you want exact matches to score near `1.0`. You can override the read-time input type at the index level with the [Configure an index](/reference/api/latest/control-plane/configure_index) operation. Set `model` and `field_map` to the index's existing values, and set `read_parameters.input_type` to `passage`:
 
 ```python Python theme={null}
 from pinecone import Pinecone
@@ -58,7 +58,7 @@ pc.configure_index(
 Note the trade-offs:
 
 * This setting degrades true semantic search, since queries no longer use the input type the model was trained to expect.
-* It applies to the whole index. With integrated inference you can't choose `query` or `passage` per request. If you need that control, embed text yourself with the [Inference API](/reference/api/latest/inference/generate-vectors) and search with the [`query`](/reference/api/latest/data-plane/query) operation using your own vectors.
+* It applies to the whole index. With integrated inference you can't choose `query` or `passage` per request. If you need that control, embed text yourself with the [Inference API](/reference/api/latest/inference/generate-vectors) and search with the [Search with a vector](/reference/api/latest/data-plane/query) operation using your own vectors.
 
 For pure exact-match retrieval, a [sparse index](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) or [full-text search](/guides/search/full-text-search) is usually a better fit than forcing dense embeddings through the passage path. See [Use full-text search for keyword matching](#use-full-text-search-for-keyword-matching) above for when keyword and phrase matching is the right tool.
 

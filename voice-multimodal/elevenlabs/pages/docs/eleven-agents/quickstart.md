@@ -24,7 +24,7 @@ In this guide, you'll learn how to create your first conversational agent. This 
 
 ElevenLabs Agents are managed either through the [ElevenAgents dashboard](https://elevenlabs.io/app/agents), the [ElevenLabs API](/docs/api-reference/introduction), the [Agents CLI](/docs/eleven-agents/operate/cli) or the [hosted MCP server](/docs/eleven-agents/operate/hosted-mcp).
 
-![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233125Z&X-Amz-Expires=604800&X-Amz-Signature=5065ec960e8f74401f636f20bfa4f655ddeb8134cbc529758e4fefb8526bd720&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=fe1998e7de52105cc676d2c9594413cf98ecf1cccdfe6cc55f421b4e5a1ea234&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Creating your first agent
 
@@ -34,7 +34,7 @@ In this quickstart guide we'll start by creating an agent via the API or the web
 
 In this guide, we'll create a conversational support assistant capable of answering questions about your product, documentation, or service. This assistant can be embedded into your website or app to provide real-time support to your customers.
 
-![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233125Z&X-Amz-Expires=604800&X-Amz-Signature=5065ec960e8f74401f636f20bfa4f655ddeb8134cbc529758e4fefb8526bd720&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![ElevenLabs Agents](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/62ad20de44cee44a439b138d56764c801c4eb939cf3b0f167f594d5c6a6895fb/assets/images/conversational-ai/widget.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=fe1998e7de52105cc676d2c9594413cf98ecf1cccdfe6cc55f421b4e5a1ea234&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Sign in to ElevenLabs
 
@@ -44,7 +44,7 @@ Go to [elevenlabs.io](https://elevenlabs.io/app/sign-up) and sign in to or creat
 
 In the **ElevenLabs Dashboard**, create a new assistant by entering a name and selecting the `Blank template` option.
 
-![Dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/61b0e1df291ea587a8ff3e116579a47f66d48c74b24f44cfcd4804a568eb0a9d/assets/images/conversational-ai/assistant-create-flow.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233125Z&X-Amz-Expires=604800&X-Amz-Signature=2699888f288788d171604faf350103a05980b7d5977b7113b74488f4b27b80b0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dashboard](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/61b0e1df291ea587a8ff3e116579a47f66d48c74b24f44cfcd4804a568eb0a9d/assets/images/conversational-ai/assistant-create-flow.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=55bc7ca1dabf262dfaa19b26a8b49e3cc4c8c96c284d9305f576fc1cc3acfbeb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure the assistant behavior
 
@@ -98,7 +98,7 @@ Next we'll configure the voice for your assistant.
 
 In the **Voice** tab, choose a voice that best matches your assistant from the [voice library](https://elevenlabs.io/voice-library):
 
-![Voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14aad328f468daafa9ec95d3b7a55489a8cb1a34869368020e05b207c9b0360a/assets/images/conversational-ai/voice-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233125Z&X-Amz-Expires=604800&X-Amz-Signature=b86b7c3dfd39e536ef48f3200c2f1ff7762423dea5942cfbb69206de63a096c1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Voice settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14aad328f468daafa9ec95d3b7a55489a8cb1a34869368020e05b207c9b0360a/assets/images/conversational-ai/voice-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=e3bf2e28206c0b119f8ba396c3186df49512a060ef08eebddab073e34bc48365&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >
@@ -114,7 +114,7 @@ Configure evaluation criteria and data collection to analyze conversations and i
 
 Navigate to the **Analysis** tab in your assistant's settings to define custom criteria for evaluating conversations.
 
-![Analysis settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438/assets/images/conversational-ai/analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233125Z&X-Amz-Expires=604800&X-Amz-Signature=f7fbdd037ce70b34956124b06f45aad0c473f79145e9df00e5e53195ca5c15f4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analysis settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438/assets/images/conversational-ai/analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=8abb9e875f66ba311c6c356d65d5772644b0c3f203c411fea17e9f96985b7922&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Every conversation transcript is passed to the LLM to verify if specific goals were met. Results will either be `success`, `failure`, or `unknown`, along with a rationale explaining the chosen result.
 
@@ -154,7 +154,7 @@ Extract the user's questions & inquiries from the conversation.
 
 View evaluation results and collected data for each conversation in the **Call history** tab.
 
-![Conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fd517a080ba2c0d678c1ce34ea79afbd0dad764a19da43ca045a1c29b693ee48/assets/images/conversational-ai/transcript.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233125Z&X-Amz-Expires=604800&X-Amz-Signature=893b5dbaa7a06819adacdf8f2c3fe305ecb6297b22c35a77bc10cb34a771f793&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fd517a080ba2c0d678c1ce34ea79afbd0dad764a19da43ca045a1c29b693ee48/assets/images/conversational-ai/transcript.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=14aeac3e4e6b1f7bb80a01b2c47a9946ed8313ee0a4466a9a8902360f83561e7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Tip**
 >

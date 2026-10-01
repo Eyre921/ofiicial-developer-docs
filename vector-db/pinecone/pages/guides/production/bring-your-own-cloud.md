@@ -292,25 +292,26 @@ Control plane operations like [creating](/reference/api/latest/control-plane/cre
          -H "Accept: application/json" \
          -H "Content-Type: application/json" \
          -H "Api-Key: $PINECONE_API_KEY" \
-         -H "X-Pinecone-Api-Version: 2025-10" \
+         -H "X-Pinecone-Api-Version: 2026-07" \
          -d '{
                "name": "example-byoc-index",
-               "dimension": 1536,
-               "metric": "cosine",
-               "vector_type": "dense",
-               "spec": {
-                 "byoc": {
-                   "environment": "aws-us-east-1-26bf.byoc",
-                   "read_capacity": {
-                     "mode": "Dedicated",
-                     "dedicated": {
-                       "node_type": "b1",
-                       "scaling": "Manual",
-                       "manual": {
-                         "shards": 1,
-                         "replicas": 1
-                       }
-                     }
+               "deployment": {
+                 "deployment_type": "byoc",
+                 "environment": "aws-us-east-1-26bf.byoc"
+               },
+               "schema": {
+                 "fields": {
+                   "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
+                 }
+               },
+               "read_capacity": {
+                 "mode": "Dedicated",
+                 "dedicated": {
+                   "node_type": "b1",
+                   "scaling": "Manual",
+                   "manual": {
+                     "shards": 1,
+                     "replicas": 1
                    }
                  }
                },

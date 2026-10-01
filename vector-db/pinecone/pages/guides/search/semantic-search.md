@@ -16,7 +16,7 @@ Semantic search uses [dense vectors](https://www.pinecone.io/learn/vector-embedd
   Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
 </Note>
 
-To search an index of dense vectors with a query text, use the [`search_records`](/reference/api/latest/data-plane/search_records) operation with the following parameters:
+To search an index of dense vectors with a query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
 * The `namespace` to query. To use the default namespace, set the namespace to `"__default__"`.
 * The `query.inputs.text` parameter with the query text. Pinecone uses the embedding model integrated with the index to convert the text to a dense vector automatically.
@@ -306,7 +306,7 @@ The response will look as follows. Each record is returned with a similarity sco
 
 ## Search with a dense vector
 
-To search an index of dense vectors with a dense vector representation of a query, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+To search an index of dense vectors with a dense vector representation of a query, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * The `namespace` to query. To use the default namespace, set the namespace to `"__default__"`.
 * The `vector` parameter with the dense vector values representing your query.
@@ -662,7 +662,7 @@ The response will look as follows. Each record is returned with a similarity sco
 
 ## Search with a record ID
 
-When you search with a record ID, Pinecone uses the dense vector associated with the record as the query. To search an index of dense vectors with a record ID, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+When you search with a record ID, Pinecone uses the dense vector associated with the record as the query. To search an index of dense vectors with a record ID, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * The `namespace` to query. To use the default namespace, set the namespace to `"__default__"`.
 * The `id` parameter with the unique record ID containing the vector to use as the query.

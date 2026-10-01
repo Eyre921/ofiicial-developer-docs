@@ -77,7 +77,7 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
   </Tab>
 
   <Tab title="API/SDK">
-    1. Use the [`create_collection`](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
+    1. Use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation to create a backup of your pod-based index:
 
        <CodeGroup>
          ```javascript JavaScript theme={null}
@@ -143,9 +143,9 @@ Migrating a pod-based index to serverless can take anywhere from a few minutes t
          ```
        </CodeGroup>
 
-    2. Use the [`create_index`](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
+    2. Use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation to create a new serverless index from the collection:
 
-       * Use API verison `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
+       * Use API version `2025-04` or later. Creating a serverless index from a collection isn't supported in earlier versions.
        * Set `dimension` to the same dimension as the pod-based index. Changing the dimension isn't supported.
        * Set `cloud` to the cloud where the pod-based index is hosted. Migrating to a different cloud isn't supported.
        * Set `source_collection` to the name of the collection you created in step 1.

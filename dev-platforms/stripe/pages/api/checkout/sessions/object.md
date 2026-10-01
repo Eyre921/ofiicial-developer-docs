@@ -156,10 +156,10 @@ Possible enum values:
   Currency conversion details for [Adaptive Pricing](https://docs.stripe.com/payments/checkout/adaptive-pricing.md) sessions created before 2025-03-31.
 
 - [`custom_fields`](https://docs.stripe.com/api/checkout/sessions/object.md?query=custom_fields) (array of objects)
-  Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `custom`.
+  Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `elements`.
 
 - [`custom_text`](https://docs.stripe.com/api/checkout/sessions/object.md?query=custom_text) (object)
-  Display additional text for your customers using custom text. You can’t set this parameter if `ui_mode` is `custom`.
+  Display additional text for your customers using custom text. You can’t set this parameter if `ui_mode` is `elements`.
 
 - `customer` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
   The ID of the customer for this Session. For Checkout Sessions in `subscription` mode or Checkout Sessions with `customer_creation` set as `always` in `payment` mode, Checkout will create a new customer object based on information provided during the payment flow unless an existing customer was provided when the Session was created.

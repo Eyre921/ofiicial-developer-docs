@@ -129,8 +129,8 @@ See the [Webhooks guide](/workers/guides/webhooks) for defining webhook handlers
 | Command | Description |
 | :- | :- |
 | `ntn workers webhooks list [worker-id]` | List webhook URLs for a worker's webhook capabilities. Alias: `ls`. |
-| `ntn workers webhooks verification enable <key>` | Enable synchronous verification for a webhook capability. |
-| `ntn workers webhooks verification disable <key>` | Disable synchronous verification and use asynchronous delivery for a webhook capability. |
+| `ntn workers webhooks verification enable <key>` | Turn on synchronous verification for a webhook. |
+| `ntn workers webhooks verification disable <key>` | Turn off synchronous verification. `POST` requests get `202 Accepted` and go straight to `execute`. |
 
 ## API
 

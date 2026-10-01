@@ -8,7 +8,7 @@ path: api/versioning
 
 Starting with the 2024-09-30.acacia release, Stripe follows a [new API release process](https://stripe.com/blog/introducing-stripes-new-api-release-process) where we release new API versions monthly with no breaking changes. Twice a year, we issue a new major release (for example, [Basil](https://docs.stripe.com/changelog/basil.md)) that starts with an API version containing breaking changes. You can safely upgrade to any monthly release without updating your code. Upgrading to a new major release can require changes to your existing integration.
 
-The current version is 2026-08-26.dahlia. For information on all API updates, view our [API changelog](https://docs.stripe.com/changelog.md). To upgrade your API version, see [API upgrades](https://docs.stripe.com/upgrades.md).
+The current version is 2026-09-30.endive. For information on all API updates, view our [API changelog](https://docs.stripe.com/changelog.md). To upgrade your API version, see [API upgrades](https://docs.stripe.com/upgrades.md).
 
 Requests made with curl use your Stripe account’s default API version (controlled in [Workbench](https://dashboard.stripe.com/workbench)) unless you override it by setting the `Stripe-Version` header.
 

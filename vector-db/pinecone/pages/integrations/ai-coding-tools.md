@@ -4,30 +4,34 @@ source: https://docs.pinecone.io/integrations/ai-coding-tools
 path: integrations/ai-coding-tools
 ---
 
-Use Pinecone with agentic IDEs and CLIs like Claude Code, Gemini CLI, and Cursor via MCP server, plugins, and agent skills for vector search.
+Use Pinecone with agentic IDEs and CLIs like Claude Code, Codex, Gemini CLI, and Cursor via MCP server, plugins, and agent skills for vector search.
 
 Pinecone provides official plugins, extensions, and agent skills for agentic IDEs and CLIs. Use the Pinecone [MCP server](/guides/operations/mcp-server) (Model Context Protocol) and built-in skills to manage vector database indexes, run semantic search, and build RAG applications — all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
 
 ## Choose your tool
 
 <CardGroup>
-  <Card title="Claude Code Plugin" icon="plug" href="/integrations/claude-code">
+  <Card title="Claude Code plugin" icon="plug" href="/integrations/claude-code">
     Official Pinecone plugin for Claude Code with skills, MCP tools, and slash commands.
   </Card>
 
-  <Card title="Gemini CLI Extension" icon="terminal" href="/integrations/gemini-cli">
+  <Card title="Codex plugin" icon="plug" href="/integrations/codex">
+    Official Pinecone plugin for Codex with skills and MCP tools.
+  </Card>
+
+  <Card title="Gemini CLI extension" icon="terminal" href="/integrations/gemini-cli">
     Official Pinecone extension for Gemini CLI with skills and MCP tools.
   </Card>
 
-  <Card title="Cursor Plugin" icon="plug" href="/integrations/cursor">
+  <Card title="Cursor plugin" icon="plug" href="/integrations/cursor">
     Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.
   </Card>
 
   <Card title="Agent Skills" icon="layer-group" href="/integrations/agent-skills">
-    Universal skills library for GitHub Copilot, Codex, and other agentic IDEs.
+    Universal skills library for GitHub Copilot and other agentic IDEs.
   </Card>
 
-  <Card title="MCP Server" icon="server" href="/guides/operations/mcp-server">
+  <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">
     Connect any MCP-compatible client to Pinecone for index management and search.
   </Card>
 
@@ -41,9 +45,10 @@ Pinecone provides official plugins, extensions, and agent skills for agentic IDE
 | If you use... | Install... | Command |
 | - | - | - |
 | [Claude Code](https://claude.ai/code) | [Pinecone plugin for Claude Code](/integrations/claude-code) | `claude plugin install pinecone` |
+| [Codex](https://developers.openai.com/codex) | [Pinecone plugin for Codex](/integrations/codex) | See [install steps](/integrations/codex#install-the-plugin) |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | [Pinecone Gemini CLI extension](/integrations/gemini-cli) | `gemini extensions install https://github.com/pinecone-io/gemini-cli-extension` |
 | [Cursor](https://www.cursor.com/) | [Pinecone Cursor plugin](/integrations/cursor) | `/add-plugin pinecone` |
-| [GitHub Copilot](https://github.com/features/copilot), [Codex](https://chatgpt.com/codex), or another agentic IDE | [Pinecone Agent Skills](/integrations/agent-skills) | `npx skills add pinecone-io/skills` |
+| [GitHub Copilot](https://github.com/features/copilot) or another agentic IDE | [Pinecone Agent Skills](/integrations/agent-skills) | `npx skills add pinecone-io/skills` |
 | Claude Desktop, Antigravity, or another MCP client | [Pinecone MCP server](/guides/operations/mcp-server) | See [MCP server setup](/guides/operations/mcp-server) |
 | Your terminal directly (no agent) | [Pinecone CLI](/reference/cli/quickstart) | `brew install pinecone-io/tap/pinecone` |
 

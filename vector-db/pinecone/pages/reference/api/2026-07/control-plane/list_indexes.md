@@ -7,7 +7,7 @@ path: reference/api/2026-07/control-plane/list_indexes
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /indexes
 List all indexes in a project.
 
-Returns all indexes in the project, including their current status and configuration. Each item in the response has the same shape as [`GET /indexes/{index_name}`](/reference/api/2026-07/control-plane/describe_index).
+Returns all indexes in the project, including their current status and configuration. Each item in the response has the same shape as the response from [Describe an index](/reference/api/2026-07/control-plane/describe_index).
 
 <RequestExample>
   ```python Python theme={null}

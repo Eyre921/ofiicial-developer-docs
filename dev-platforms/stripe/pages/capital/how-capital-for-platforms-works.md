@@ -108,6 +108,33 @@ When an Australian connected account accepts a refill, the payout automatically 
 
 *Financing is provided by Fundbox, an external finance provider, with payments facilitated by Stripe. Funding amounts, rates, and terms are based on review and approval of a completed application, and are subject to change. Financing offers might require additional documentation.*
 
+#### CA
+
+### Additional eligibility considerations
+
+- The person who applies for and guarantees the offer must be a representative, controller, or director who owns at least 25% of the business. They must also be at least 18 years old and provide a Canadian address.
+- Capital isn’t available to connected accounts based in Saskatchewan or to sole proprietors based in Quebec. Other business entity types in Quebec can qualify if they meet the eligibility requirements.
+
+### Types of financing offers
+
+Fundbox provides Canadian connected accounts one type of financing: a `loan`.
+
+| **Offer terms** | **Loan** |
+| --- | --- |
+| **Min offer** | 500 CAD |
+| **Max offer** | 150,000 CAD (up to 250,000 CAD for refills) |
+| **Expected duration** | 8–9 months |
+| **Minimum payment** | Every 30 days |
+| **Bank debit if minimum not met** | Yes |
+| **Credit check** | No |
+| **Transaction withholding** | Fixed % for the life of the loan |
+
+### Refill behavior
+
+When a Canadian connected account accepts a refill, the refill payout first pays the remaining balance on the current financing. The new financing then begins. Connected accounts repay one offer at a time.
+
+*Fundbox, an external finance provider, provides the financing, and Stripe facilitates payments. Fundbox determines funding amounts, rates, and terms after reviewing and approving a completed application. These details can change, and Fundbox might require additional documentation.*
+
 #### DE
 
 ### Regulatory requirement for platforms

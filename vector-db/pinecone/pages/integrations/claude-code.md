@@ -1,5 +1,5 @@
 ---
-title: "Claude Code Plugin"
+title: "Claude Code plugin"
 source: https://docs.pinecone.io/integrations/claude-code
 path: integrations/claude-code
 ---
@@ -64,7 +64,7 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides 
 | **Query** | `/pinecone:query` | Search integrated indexes using natural language. |
 | **Assistant** | `/pinecone:assistant` | Create, upload, sync, and chat with Pinecone Assistants. |
 | **CLI** | `/pinecone:cli` | Guide for using the Pinecone CLI from the terminal. |
-| **Full-text search** | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. |
+| **Full-text search** | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. Requires Python SDK v10.0.0 or later. |
 | **n8n** | `/pinecone:n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
 | **MCP** | `/pinecone:mcp` | Reference for all Pinecone MCP server tools. |
 | **Docs** | `/pinecone:docs` | Curated links to official Pinecone documentation. |

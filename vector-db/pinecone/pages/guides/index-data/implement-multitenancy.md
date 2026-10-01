@@ -52,7 +52,7 @@ In cases where you have different workload patterns (e.g., RAG and semantic sear
 
 Based on a [breakthrough architecture](/guides/core-concepts/architecture), serverless indexes scale automatically based on usage, and you pay only for the amount of data stored and operations performed. Combined with the isolation of tenant data using namespaces (next step), serverless indexes are ideal for multitenant use cases.
 
-To [create a serverless index](/guides/index-data/create-an-index#create-a-serverless-index), use the `spec` parameter to define the cloud and region where the index should be deployed. For Python, you also need to import the `ServerlessSpec` class.
+To [create a serverless index](/guides/index-data/create-an-index#create-a-serverless-index), define the cloud and region where the index should be deployed. The SDKs set this with the `spec` parameter (in Python, import the `ServerlessSpec` class). The REST API uses a `deployment` object instead, and defines the vector dimension and metric on the reserved `_values` field in `schema`.
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -161,15 +161,17 @@ To [create a serverless index](/guides/index-data/create-an-index#create-a-serve
     -H "Accept: application/json" \
     -H "Content-Type: application/json" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
            "name": "multitenant-app",
-           "dimension": 8,
-           "metric": "cosine",
-           "spec": {
-              "serverless": {
-                 "cloud": "aws",
-                 "region": "us-east-1"
+           "deployment": {
+              "deployment_type": "managed",
+              "cloud": "aws",
+              "region": "us-east-1"
+           },
+           "schema": {
+              "fields": {
+                 "_values": { "type": "dense_vector", "dimension": 8, "metric": "cosine" }
               }
            }
         }'
@@ -365,7 +367,7 @@ To [create a namespace for a tenant](/guides/index-data/indexing-overview#namesp
   curl "https://$INDEX_HOST/vectors/upsert" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "vectors": [
         {
@@ -391,7 +393,7 @@ To [create a namespace for a tenant](/guides/index-data/indexing-overview#namesp
   curl "https://$INDEX_HOST/vectors/upsert" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "vectors": [
         {
@@ -477,14 +479,14 @@ When upserting additional records for a tenant, or when [updating](/guides/manag
   INDEX_HOST="INDEX_HOST"
 
   curl "https://$INDEX_HOST/vectors/update" \
-  	-H "Api-Key: $PINECONE_API_KEY" \
-  	-H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
-  	-d '{
-  			"id": "A",
-  			"values": [01., 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
-  			"namespace": "tenant1"
-  		}'
+    -H "Api-Key: $PINECONE_API_KEY" \
+    -H 'Content-Type: application/json' \
+    -H "X-Pinecone-Api-Version: 2026-07" \
+    -d '{
+      "id": "A",
+      "values": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8],
+      "namespace": "tenant1"
+    }'
   ```
 </CodeGroup>
 
@@ -705,7 +707,7 @@ For example, the following code queries only `tenant2` for the 3 vectors that ar
   curl "https://$INDEX_HOST/query" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "namespace": "tenant2",
       "vector": [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7],
@@ -733,7 +735,7 @@ For example, the following code queries only `tenant2` for the 3 vectors that ar
   #     }
   #   ],
   #   "namespace": "tenant2",
-  #   "usage": {"read_units": 6}
+  #   "usage": {"readUnits": 6}
   # }
   ```
 </CodeGroup>
@@ -792,7 +794,7 @@ For example, the following code deletes the namespace and all records for `tenan
   curl "https://$INDEX_HOST/vectors/delete" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H 'Content-Type: application/json' \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "deleteAll": true,
       "namespace": "tenant1"

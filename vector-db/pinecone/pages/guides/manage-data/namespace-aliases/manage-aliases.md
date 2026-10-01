@@ -4,15 +4,15 @@ source: https://docs.pinecone.io/guides/manage-data/namespace-aliases/manage-ali
 path: guides/manage-data/namespace-aliases/manage-aliases
 ---
 
-Create, list, describe, repoint, and delete namespace aliases in a Pinecone index with the REST API, with a request example for each alias operation.
+Create, list, describe, repoint, and delete namespace aliases in a Pinecone index with the REST API or the Pinecone console.
 
 <Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API. Reading through an alias works on any API version, including the current SDKs.
+  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 </Note>
 
 Create, list, describe, repoint, and delete [namespace aliases](/guides/manage-data/namespace-aliases/overview) in an index. Each operation is a single REST call to your [index host](/guides/manage-data/target-an-index). To swap the data an application reads with no downtime, see [Swap a namespace](/guides/manage-data/namespace-aliases/swap-a-namespace).
 
-You need a project role that can manage namespaces, such as [`DataPlaneEditor`](/guides/production/manage-rbac), `ProjectOwner`, or `ProjectManager`. Managing aliases needs the same access as managing namespaces directly.
+You need a [project role](/guides/production/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
 
 ## Operations
 
@@ -25,6 +25,8 @@ You need a project role that can manage namespaces, such as [`DataPlaneEditor`](
 | Delete an alias | `DELETE /namespace-aliases/{alias_name}` |
 
 Each alias is returned as `{name, target_namespace, created_at, updated_at}`. `updated_at` advances on every repoint.
+
+You can also manage aliases in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Open the index, go to the **Namespaces** tab, and click **Manage aliases** to create, repoint, or delete an alias.
 
 ## Errors
 

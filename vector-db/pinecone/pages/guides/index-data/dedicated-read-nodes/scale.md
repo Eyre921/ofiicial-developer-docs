@@ -37,13 +37,13 @@ Throughput scales approximately linearly with replicas. For high availability, a
   If you'd rather reduce per-query compute than add replicas, you can also tune [query-time search parameters](/guides/index-data/dedicated-read-nodes/tune-queries) to trade some recall for higher throughput.
 </Tip>
 
-To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas), call [Configure an index](/reference/api/2025-10/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
+To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas), call [Configure an index](/reference/api/2026-07/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
 
 | Field | Value | Notes |
 | :- | :- | :- |
-| `spec.serverless.read_capacity.mode` | `Dedicated` | |
-| `spec.serverless.read_capacity.dedicated.scaling` | `Manual` | |
-| `spec.serverless.read_capacity.dedicated.manual.replicas` | Desired number of [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) | Add replicas to increase query throughput |
+| `read_capacity.mode` | `Dedicated` | |
+| `read_capacity.dedicated.scaling` | `Manual` | |
+| `read_capacity.dedicated.manual.replicas` | Desired number of [replicas](/guides/index-data/dedicated-read-nodes/concepts#replicas) | Add replicas to increase query throughput |
 
 ### Example
 
@@ -56,18 +56,14 @@ To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#rep
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "Dedicated",
-                   "dedicated": {
-                     "scaling": "Manual",
-                     "manual": {
-                       "replicas": 2
-                     }
-                   }
+             "read_capacity": {
+               "mode": "Dedicated",
+               "dedicated": {
+                 "scaling": "Manual",
+                 "manual": {
+                   "replicas": 2
                  }
                }
              }
@@ -79,57 +75,40 @@ To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#rep
   ```jsonc Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 1,
-              "replicas": 2 // <---- desired state
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 1,
-            "current_replicas": 1 // <---- current state
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 1,
+          "replicas": 2 // <---- desired state
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 1,
+        "current_replicas": 1 // <---- current state
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>
@@ -153,13 +132,13 @@ To add or remove [replicas](/guides/index-data/dedicated-read-nodes/concepts#rep
 
 To check the current value, see [Monitor index fullness](/guides/index-data/dedicated-read-nodes/manage#monitor-index-fullness).
 
-To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shards), call [Configure an index](/reference/api/2025-10/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
+To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shards), call [Configure an index](/reference/api/2026-07/control-plane/configure_index). This operation doesn't require downtime, but can take up to 30 minutes to complete. In the request body, set the following fields:
 
 | Field | Value | Notes |
 | :- | :- | :- |
-| `spec.serverless.read_capacity.mode` | `Dedicated` | |
-| `spec.serverless.read_capacity.dedicated.scaling` | `Manual` | |
-| `spec.serverless.read_capacity.dedicated.manual.shards` | Desired number of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) | Each shard provides 250 GB of storage |
+| `read_capacity.mode` | `Dedicated` | |
+| `read_capacity.dedicated.scaling` | `Manual` | |
+| `read_capacity.dedicated.manual.shards` | Desired number of [shards](/guides/index-data/dedicated-read-nodes/concepts#shards) | Each shard provides 250 GB of storage |
 
 ### Example
 
@@ -172,18 +151,14 @@ To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shard
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "Dedicated",
-                   "dedicated": {
-                     "scaling": "Manual",
-                     "manual": {
-                       "shards": 3
-                     }
-                   }
+             "read_capacity": {
+               "mode": "Dedicated",
+               "dedicated": {
+                 "scaling": "Manual",
+                 "manual": {
+                   "shards": 3
                  }
                }
              }
@@ -195,57 +170,40 @@ To add or remove [shards](/guides/index-data/dedicated-read-nodes/concepts#shard
   ```jsonc Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 3, // <---- desired state
-              "replicas": 1
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 2, // <---- current state
-            "current_replicas": 1
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 3, // <---- desired state
+          "replicas": 1
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 2, // <---- current state
+        "current_replicas": 1
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>

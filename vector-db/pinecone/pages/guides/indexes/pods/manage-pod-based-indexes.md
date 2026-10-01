@@ -16,7 +16,7 @@ For guidance on serverless indexes, see [Manage serverless indexes](/guides/mana
 
 ## Describe a pod-based index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
+Use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -202,7 +202,7 @@ Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) e
 
 ## Delete a pod-based index
 
-Use the [`delete_index`](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
+Use the [Delete an index](/reference/api/latest/control-plane/delete_index) operation to delete a pod-based index and all of its associated resources.
 
 <Note>
   You are billed for a pod-based index even when it's not in use.

@@ -98,7 +98,7 @@ To get an index host from the Pinecone console:
 3. Select the index.
 4. Copy the URL under **HOST**.
 
-To get an index host from the Pinecone API, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) operation, which returns the index host as the `host` value:
+To get an index host from the Pinecone API, use the [Describe an index](/reference/api/latest/control-plane/describe_index) operation, which returns the index host as the `host` value:
 
 <CodeGroup>
   ```Python Python theme={null}

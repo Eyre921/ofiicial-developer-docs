@@ -214,6 +214,9 @@ Possible enum values:
   - `kriya`
     Kriya is a payment method.
 
+  - `line_pay`
+    LINE Pay is a Thai mobile wallet payment method.
+
   - `link`
     [Link (also known as Onelink in the UK)](https://docs.stripe.com/payments/link.md) allows customers to pay with their saved payment details.
 
@@ -675,6 +678,9 @@ Possible enum values:
 
 - `payment_method_types` (array of strings)
   The list of payment method types (e.g. card) that this PaymentIntent is allowed to use. A comprehensive list of valid payment method types can be found [here](https://docs.stripe.com/api/payment_methods/object.md#payment_method_object-type).
+
+- `payment_record` (string, nullable, expandable (can be expanded into an object with the `expand` request parameter))
+  ID of the [Payment Record object](https://docs.stripe.com/api/payment-record.md) created by this PaymentIntent.
 
 - [`presentment_details`](https://docs.stripe.com/api/payment_intents/object.md?query=presentment_details) (object, nullable)
   A hash containing information about the currency presentation to the customer, including the displayed currency and amount used for conversion from the integration currency.

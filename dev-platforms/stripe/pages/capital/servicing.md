@@ -11,6 +11,7 @@ Support your Capital customers by region.
 Capital for Platforms is available in the following countries. Servicing arrangements vary by country based on the financing partner.
 
 - AU
+- CA
 - DE
 - FR
 - GB
@@ -93,6 +94,21 @@ Stripe and Fundbox handle the following servicing functions:
 - General administration of the financing
 - Responding to borrower inquiries
 - Following up on delinquencies
+
+#### CA
+
+### Canada
+
+Stripe and Fundbox support financing inquiries from your users. Direct questions about eligibility or missed minimum payments to Fundbox at [stripe-capital-ca@fundbox.com](mailto:stripe-capital-ca@fundbox.com). Forward all other financing questions or concerns to Stripe at [capital+support@stripe.com](mailto:capital+support@stripe.com). Escalate complaints to Stripe as described below.
+
+Stripe and Fundbox:
+
+- Review applications
+- Collect payments
+- Maintain payment and balance records
+- Administer financing
+- Respond to borrower inquiries
+- Follow up on delinquencies
 
 ## Escalate complaints
 

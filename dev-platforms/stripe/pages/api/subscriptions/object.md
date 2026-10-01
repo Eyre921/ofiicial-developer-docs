@@ -52,6 +52,7 @@ path: api/subscriptions/object
         "created": 1679609768,
         "current_period_end": 1682288167,
         "current_period_start": 1679609767,
+        "current_trial": null,
         "metadata": {},
         "plan": {
           "id": "price_1MowQULkdIwHu7ixraBm864M",
@@ -131,7 +132,8 @@ path: api/subscriptions/object
   "trial_end": null,
   "trial_settings": {
     "end_behavior": {
-      "missing_payment_method": "create_invoice"
+      "missing_payment_method": "create_invoice",
+      "billing_cycle_anchor": "now"
     }
   },
   "trial_start": null

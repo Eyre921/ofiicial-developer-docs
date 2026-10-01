@@ -20,8 +20,10 @@ Go to [Settings → Notifications](https://openrouter.ai/settings/notifications)
 limit alert is the exception — it belongs to a single key, so it is set on that key's own page.
 
 <Note>
-  **Workspace budget limit** and **API key spend limit** are in Enterprise
-  private preview, along with Slack and custom webhook delivery. [Contact our
+  **Low balance alert**, **Model deprecation alert**, and **Model price drop
+  alert** are available on every plan. **Workspace budget limit**, **API key
+  spend limit**, and **New model available** are in Enterprise private preview,
+  along with Slack and custom webhook delivery. [Contact our
   enterprise team](https://openrouter.ai/enterprise/form) for enrollment.
 </Note>
 
@@ -37,6 +39,8 @@ limit alert is the exception — it belongs to a single key, so it is set on tha
 **Models**
 
 * **Model deprecation alert.** A model in recent use is scheduled to be retired.
+* **Model price drop alert.** A model endpoint in recent use lowers its input or output price.
+* **New model available.** A new model is added to OpenRouter.
 
 ## Turn on an alert
 
@@ -72,6 +76,10 @@ Each key carries its own setting, so a fleet of per-service keys is configured k
   reached. Thresholds can be changed, removed, or added.
 * **Model deprecation alert.** Nothing to set. When a recently used model is scheduled to be retired,
   the alert names the model, when it goes, and what to move to.
+* **Model price drop alert.** Nothing to set. Price drops on recently used model endpoints are
+  collected into a daily digest that shows each old and new price per million tokens.
+* **New model available.** Nothing to set. The alert fires when a new model becomes available
+  through OpenRouter.
 
 ## Who gets an alert
 

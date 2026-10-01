@@ -133,7 +133,7 @@ Learn more about [setting up your integration](https://docs.stripe.com/terminal/
 
 For Apps on Devices, you can use `AppsOnDevicesConnectionTokenProvider` instead of a back-end token provider. This enables initialization without a back-end server providing connection tokens.
 
-```js
+```tsx
 import {
   StripeTerminalProvider,
   AppsOnDevicesConnectionTokenProvider,
@@ -235,7 +235,7 @@ You must register a new Stripe device to your account as a new [Reader object](h
 
 The following example shows how to discover and connect to a Stripe reader using Apps on Devices mode in a React Native app:
 
-```js
+```tsx
 const { discoverReaders, connectReader, discoveredReaders } =
     useStripeTerminal({
       onUpdateDiscoveredReaders: async (readers) => {
@@ -537,6 +537,8 @@ The device user’s language selection (not country) informs the value returned 
 Stripe Android devices have the *Auto-rotate screen* setting enabled by default. Your app can override this setting by locking the UI to a specific screen orientation.
 
 This can be achieved by setting the [screenOrientation](https://developer.android.com/guide/topics/manifest/activity-element#screen) attribute on the relevant `<activity>` tags in the manifest.
+
+> On Stripe Reader T600, set `android:screenOrientation="nosensor"` to make sure your app runs in the reader’s landscape orientation.
 
 ```xml
 <activity

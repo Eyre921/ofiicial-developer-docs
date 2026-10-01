@@ -15,7 +15,7 @@ automatically indexed for filtering.
 If a document with the same `_id` already exists, it is completely replaced. Documents become searchable within approximately one minute. The `namespace` is auto-created on first upsert; use `"__default__"` if you don't need partitioning.
 
 <Note>
-  Upsert replaces the whole document. For partial changes to specific fields, use [`POST /namespaces/{namespace}/documents/update`](/reference/api/2026-07/data-plane/update_documents), which patches fields per ID or in bulk by metadata filter.
+  Upsert replaces the whole document. For partial changes to specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents), which patches fields per ID or in bulk by metadata filter.
 </Note>
 
 <Note>

@@ -26,7 +26,7 @@ Pinecone is the vector database for AI agents and applications, built for semant
 
 <CardGroup>
   <Card title="IDEs & CLIs" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
-    Use Pinecone with Claude Code, Gemini CLI, Cursor, and other agentic tools
+    Use Pinecone with Claude Code, Codex, Gemini CLI, Cursor, and other agentic tools
   </Card>
 
   <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">

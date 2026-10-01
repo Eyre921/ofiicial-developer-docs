@@ -7,7 +7,7 @@ path: reference/api/2026-07/control-plane/describe_index
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/db_control_2026-07.oas.yaml get /indexes/{index_name}
 Get a description of an index.
 
-Returns detailed information about a specific index, including its schema, status, host URL, and read capacity. Poll this endpoint after [`POST /indexes`](/reference/api/2026-07/control-plane/create_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
+Returns detailed information about a specific index, including its schema, status, host URL, and read capacity. Poll this endpoint after calling [Create an index](/reference/api/2026-07/control-plane/create_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
 
 <RequestExample>
   ```python Python theme={null}

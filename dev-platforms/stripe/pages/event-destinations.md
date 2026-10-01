@@ -8,8 +8,6 @@ path: event-destinations
 
 Send events from Stripe to webhook endpoints and cloud services.
 
-> [Thin events](https://docs.stripe.com/event-destinations.md#thin-events) for API v1 resources are available in private preview. You can use them to streamline integration upgrades without changing your webhook configuration. Previously, thin events only supported API v2 resources. [Learn more and request access](https://docs.google.com/forms/d/e/1FAIpQLSeEkqzB02afvlklMkqwA6wsBH90eW8gxmc-hBOvqe2N6TRujQ/viewform?usp=dialog).
-
 Set up an event destination to receive events from Stripe across multiple destination types, including webhook endpoints, [Amazon EventBridge](https://docs.stripe.com/event-destinations/eventbridge.md), and [Azure Event Grid](https://docs.stripe.com/event-destinations/eventgrid.md). You can receive events in either:
 
 - Self-contained [snapshot events](https://docs.stripe.com/event-destinations.md#choosing-event-format) for a point-in-time view of your resources
@@ -134,9 +132,7 @@ View the following example of an `setup_intent.created` snapshot event, which in
           "verification_method": "automatic"
         }
       },
-      "payment_method_types": [
-        "acss_debit"
-      ],
+      "payment_method_types": ["acss_debit"],
       "single_use_mandate": null,
       "status": "requires_confirmation",
       "usage": "off_session"

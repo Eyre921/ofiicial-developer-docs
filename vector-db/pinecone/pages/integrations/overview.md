@@ -10,12 +10,12 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
   <Card href="/integrations/agent-skills">
     <span>IDEs & CLIs</span>
     <h2>Agent Skills</h2>
-    <p>Universal Pinecone skills library for GitHub Copilot, Codex, and other agentic IDEs.</p>
+    <p>Universal Pinecone skills library for GitHub Copilot and other agentic IDEs.</p>
   </Card>
 
   <Card href="/integrations/cursor">
     <span>IDEs & CLIs</span>
-    <h2>Cursor Plugin</h2>
+    <h2>Cursor plugin</h2>
     <p>Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.</p>
   </Card>
 
@@ -111,7 +111,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
   <Card href="/integrations/claude-code">
     <span>IDEs & CLIs</span>
-    <h2>Claude Code Plugin</h2>
+    <h2>Claude Code plugin</h2>
     <p>Official Pinecone plugin for Claude Code with skills, MCP tools, and slash commands.</p>
   </Card>
 
@@ -123,6 +123,12 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
     <span>Frameworks</span>
     <h2>Cloudera AI</h2>
     <p>Vector embedding, RAG, and semantic search at scale.</p>
+  </Card>
+
+  <Card href="/integrations/codex">
+    <span>IDEs & CLIs</span>
+    <h2>Codex plugin</h2>
+    <p>Official Pinecone plugin for Codex with skills and MCP tools.</p>
   </Card>
 
   <Card href="/integrations/cohere">
@@ -237,7 +243,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
   <Card href="/integrations/gemini-cli">
     <span>IDEs & CLIs</span>
-    <h2>Gemini CLI Extension</h2>
+    <h2>Gemini CLI extension</h2>
     <p>Official Pinecone extension for Gemini CLI with skills and MCP tools.</p>
   </Card>
 

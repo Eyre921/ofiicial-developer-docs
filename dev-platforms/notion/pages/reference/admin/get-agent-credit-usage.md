@@ -10,3 +10,5 @@ Get credit usage for an agent in a space.
 The organization bot token must have the following scopes:
 
 * `workflows:read`
+
+This endpoint also reports usage for lite database Autofill agents, including those with zero premium AI credit usage or those moved to Trash.

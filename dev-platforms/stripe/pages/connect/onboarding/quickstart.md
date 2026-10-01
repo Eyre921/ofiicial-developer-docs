@@ -3092,10 +3092,10 @@ export const useStripeConnect = (connectedAccountId) => {
   return stripeConnectInstance;
 };
 export const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2026-08-26.dahlia',
+  apiVersion: '2026-09-30.endive',
 });
 export const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2026-08-26.dahlia',
+  apiVersion: '2026-09-30.endive',
 });
   margin-top: 0;
   margin-bottom: 80px;

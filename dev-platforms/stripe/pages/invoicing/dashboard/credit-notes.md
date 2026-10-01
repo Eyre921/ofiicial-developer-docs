@@ -42,7 +42,7 @@ You can create credit notes for open or paid invoices.
 
 2. Select the open or paid invoice you want to add a credit note to.
 
-3. Click **More** and select **Issue a credit note**.
+3. Click **More actions** and select **Issue a credit note**.
 
 4. Select a reason for the credit note.
 

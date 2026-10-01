@@ -7,7 +7,7 @@ path: guides/manage-data/namespace-aliases/swap-a-namespace
 Refresh the data behind a namespace alias with no downtime: create an alias, ingest a new namespace, then atomically repoint reads to it.
 
 <Note>
-  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API. Reading through an alias works on any API version, including the current SDKs.
+  Creating and managing aliases requires API version `2026-07` or later and is available through the REST API and the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/indexes). Reading through an alias works on any API version, including the current SDKs.
 </Note>
 
 The primary use case for a [namespace alias](/guides/manage-data/namespace-aliases/overview) is swapping the data an application reads without a redeploy: re-ingest into a new namespace, validate it, then flip live reads to it in one call. This guide refreshes the data behind an alias named `example-alias`, moving it from `example-namespace-v1` to `example-namespace-v2` with no downtime. The examples use the vector API; the same alias substitution works on any read endpoint.
@@ -17,7 +17,7 @@ The primary use case for a [namespace alias](/guides/manage-data/namespace-alias
 Ensure you have the following:
 
 * An existing index containing the namespace serving live traffic.
-* A project role that can manage namespaces, such as [`DataPlaneEditor`](/guides/production/manage-rbac), `ProjectOwner`, or `ProjectManager`. Managing aliases needs the same access as managing namespaces directly.
+* A [project role](/guides/production/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
 
 ## Swap the namespace
 

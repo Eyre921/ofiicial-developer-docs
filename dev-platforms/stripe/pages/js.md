@@ -2903,7 +2903,9 @@ Default is `auto`.
 Specify `never` to make tax ID an optional field.
 Default is `auto`.
     - `verification`
-      Configure real-time tax ID verification. Requires the `elements_tax_id_verification_1` beta. To use it, pass `betas: ['elements_tax_id_1', 'elements_tax_id_verification_1']` when initializing Stripe.js
+      Configure real-time tax ID verification.
+Requires a [Tax Complete subscription or Tax Custom pricing](https://stripe.com/tax/pricing).
+If your account isn't eligible, the Tax ID Element emits a [loaderror](https://docs.stripe.com/js/element/events/on_loaderror.md) event.
       - `taxId`
         - `mode`
           Specify `if_supported` to enable real-time tax ID verification for supported tax ID types.
@@ -4838,7 +4840,9 @@ When `name_collection.business.enabled` is `true` on the Checkout Session and `n
 Specify `never` to make tax ID an optional field.
 Default is `auto`.
     - `verification`
-      Configure real-time tax ID verification. Requires the `custom_checkout_tax_id_verification_1` beta. To use it, pass `betas: ['custom_checkout_tax_id_1', 'custom_checkout_tax_id_verification_1']` when initializing Stripe.js
+      Configure real-time tax ID verification.
+Requires a [Tax Complete subscription or Tax Custom pricing](https://stripe.com/tax/pricing).
+If your account isn't eligible, the Tax ID Element emits a [loaderror](https://docs.stripe.com/js/custom_checkout/element_events/on_loaderror.md) event.
       - `taxId`
         - `mode`
           Specify `if_supported` to enable real-time tax ID verification for supported tax ID types.
@@ -7399,7 +7403,9 @@ When `name_collection.business.enabled` is `true` on the Checkout Session and `n
 Specify `never` to make tax ID an optional field.
 Default is `auto`.
     - `verification`
-      Configure real-time tax ID verification. Requires the `custom_checkout_tax_id_verification_1` beta. To use it, pass `betas: ['custom_checkout_tax_id_1', 'custom_checkout_tax_id_verification_1']` when initializing Stripe.js
+      Configure real-time tax ID verification.
+Requires a [Tax Complete subscription or Tax Custom pricing](https://stripe.com/tax/pricing).
+If your account isn't eligible, the Tax ID Element emits a [loaderror](https://docs.stripe.com/js/custom_checkout/element_events/on_loaderror.md) event.
       - `taxId`
         - `mode`
           Specify `if_supported` to enable real-time tax ID verification for supported tax ID types.
@@ -10073,7 +10079,9 @@ Default is `auto`.
 Specify `never` to make tax ID an optional field.
 Default is `auto`.
     - `verification`
-      Configure real-time tax ID verification. Requires the `elements_tax_id_verification_1` beta. To use it, pass `betas: ['elements_tax_id_1', 'elements_tax_id_verification_1']` when initializing Stripe.js
+      Configure real-time tax ID verification.
+Requires a [Tax Complete subscription or Tax Custom pricing](https://stripe.com/tax/pricing).
+If your account isn't eligible, the Tax ID Element emits a [loaderror](https://docs.stripe.com/js/element/events/on_loaderror.md) event.
       - `taxId`
         - `mode`
           Specify `if_supported` to enable real-time tax ID verification for supported tax ID types.

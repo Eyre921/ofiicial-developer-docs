@@ -93,7 +93,7 @@ Both parameters are optional fields on the `POST /query` request.
   curl "https://$INDEX_HOST/query" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2025-10" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "namespace": "example-namespace",
       "topK": 10,

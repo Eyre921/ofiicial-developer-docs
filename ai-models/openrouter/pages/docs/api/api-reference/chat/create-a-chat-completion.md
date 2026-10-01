@@ -1835,7 +1835,7 @@ components:
             the stage signals. "passthrough" serves the eligible candidates in
             the order OpenRouter already ranked them, with no routing decision
             and no judge call. Omit this field to use the platform default,
-            capability.
+            stage.
           enum:
             - capability
             - stage
@@ -2381,6 +2381,7 @@ components:
         - $ref: '#/components/schemas/WebFetchServerTool'
         - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
         - $ref: '#/components/schemas/ChatWebSearchShorthand'
+        - $ref: '#/components/schemas/ChatDynamicServerTool'
       description: >-
         Tool definition for function calling (regular function or OpenRouter
         built-in server tool)
@@ -4340,6 +4341,24 @@ components:
           $ref: '#/components/schemas/WebSearchUserLocationServerTool'
         x_search:
           $ref: '#/components/schemas/XSearchOptions'
+      required:
+        - type
+      type: object
+    ChatDynamicServerTool:
+      description: >-
+        Generic OpenRouter server-tool envelope. `type` names a registered
+        server tool (canonical `openrouter:*` form or a registered shorthand);
+        `parameters` carries tool-specific configuration validated against the
+        tool definition.
+      example:
+        parameters: {}
+        type: openrouter:datetime_v2
+      properties:
+        parameters:
+          additionalProperties: {}
+          type: object
+        type:
+          type: string
       required:
         - type
       type: object

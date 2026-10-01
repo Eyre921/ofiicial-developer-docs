@@ -169,7 +169,7 @@ Yes, we offer annual plans for all of our subscription tiers. At the moment, we 
 
 On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T231906Z&X-Amz-Expires=604800&X-Amz-Signature=0f54f8a729d369c8e0780c00819a231fac41d9c607bcd850ab19aa1a7c0707bb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100715Z&X-Amz-Expires=604800&X-Amz-Signature=1d10f6dd2604ae8a778695b243404c425b66a406feab5708f4a8b3802edaa2e9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Annual plans are billed on an annual cycle and will renew automatically unless cancelled.
 
@@ -314,17 +314,17 @@ The screenshots below show the browser payment settings to enable in Chrome for 
 
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T231906Z&X-Amz-Expires=604800&X-Amz-Signature=bbabf21379320dd2c5a9857cfe8b59564bc8648ae64cafc458f21e0f4add2911&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1b4dfe694da01f17db72c894b6fcf7a565de0835f6f2bb743e91e8c578aa99b8/assets/images/help-center/account/payment-billing/elevenlabs-googlepay.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100715Z&X-Amz-Expires=604800&X-Amz-Signature=ed9081d209fa5e20c56837b7187d56a6f2e04c607794e3246ef9283a30064539&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T231906Z&X-Amz-Expires=604800&X-Amz-Signature=4eedebc626bc6d99369d83b8c0c6c85556adabf84b5167042d681d204172ead6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/aa530c55277c6b502d5a8d972c7794ec26d7e6aac1bd43b0691b5bd0b8f55be5/assets/images/help-center/account/payment-billing/elevenlabs-chrome-desktop-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100715Z&X-Amz-Expires=604800&X-Amz-Signature=edea4c2dad0e8fa71e6df5ce8b4c7ce75e4103e29caf5232e283db71e3de0d1d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T231906Z&X-Amz-Expires=604800&X-Amz-Signature=8945c620f3c0aed1ce24f6e33e1e4d91d82650195ea66826dfe6fa99c8197ed6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25f3fa160ce62ea0879b21a3e5db0beee14ebb8e5055c74abb0b17e0568dfa6f/assets/images/help-center/account/payment-billing/elevenlabs-chrome-mobile-settings.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100715Z&X-Amz-Expires=604800&X-Amz-Signature=4c6c8575c4a541d5427b9da14df7f5c94421a1ae77a1003f322836bb8aee0376&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Can I pay for my ElevenLabs subscription in INR?
 
@@ -360,7 +360,7 @@ Usage based billing is a legacy feature, and is not available on new self-serve 
 
 For self-serve subscriptions, Pay As You Go is our replacement for usage based billing. For more information, see our [Pay As You Go documentation. ](/docs/overview/administration/pay-as-you-go)
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T231906Z&X-Amz-Expires=604800&X-Amz-Signature=83c83d49d78f9249a7f6ba5dc165981c570969735ab7588687905ed25cdcc559&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/707e3ca222db4b26e352bda08d034698c5c69d7cb0836c19ce2f83c65b9b12df/assets/images/help-center/account/general/how-do-i-enable-usage-based-billing-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100715Z&X-Amz-Expires=604800&X-Amz-Signature=d99a2221712ec1cdf44b1cedb62451858db373e0178df4bc2f282c735dfd393b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. If you're on an eligible plan, here’s how to enable usage based billing for your account:
 
@@ -392,7 +392,7 @@ For self-serve subscriptions, Pay As You Go is our replacement for usage based b
 
 On Enterprise and legacy Creator, Pro, Scale and Business plans, you have the option to activate usage based billing. This will enable you to pay for additional credits used after exceeding your monthly quota.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T231906Z&X-Amz-Expires=604800&X-Amz-Signature=0af4c0c01651c911a97b22fb4f7bab8852f676cd1fb6cce47be9e24c2aa4a216&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bb3f6653c5ab9e8087db9801d24e8a52ce7bdeda7a45ef1e661122199b013656/assets/images/help-center/account/general/how-do-i-change-the-usage-based-billing-threshold-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100715Z&X-Amz-Expires=604800&X-Amz-Signature=24cbdb33ec491492210b4ec2b78f0e6d4bea55a91698dda46e047ac2c37d0501&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 To allow for more control over charges, usage based billing lets you set a maximum number of additional credits that can be used on your account. You can set this threshold when you enable usage based billing, or adjust it at any time.
 

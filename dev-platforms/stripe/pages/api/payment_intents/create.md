@@ -230,6 +230,9 @@ Possible enum values:
   - `kriya`
     Kriya is a payment method.
 
+  - `line_pay`
+    LINE Pay is a Thai mobile wallet payment method.
+
   - `link`
     [Link (also known as Onelink in the UK)](https://docs.stripe.com/payments/link.md) allows customers to pay with their saved payment details.
 

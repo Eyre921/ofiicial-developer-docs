@@ -37,8 +37,8 @@ With the Payment Element, you get:
 
 ## Stripe in-app Elements demo
 
-Scan this App Clip Code with your iOS mobile device, or open the [App Store link](https://apps.apple.com/app/id6450683352), to try an interactive demo of Stripe’s in-app Elements. In the demo, you can generate different UI configurations to find the one that works best for your use case.
-![Stripe In-app Payments Showcase App Clip Code for Payment Element](https://b.stripecdn.com/docs-statics-srv/assets/embedded_app_clip.77900f08daadccd2a6f49cbbdb909a24.svg)
+Scan this App Clip Code with your iOS device to try an interactive demo of Stripe’s in-app Elements. In the demo, you can generate different UI configurations to find the one that works best for your use case. [![Stripe In-app Payments Showcase App Clip Code for Payment Element](https://b.stripecdn.com/docs-statics-srv/assets/embedded_app_clip.77900f08daadccd2a6f49cbbdb909a24.svg)
+](https://apps.apple.com/demo/id6450683352?app-clip-bundle-id=com.stripe.PaymentSheetDemo.Clip)
 
 ## Layout
 

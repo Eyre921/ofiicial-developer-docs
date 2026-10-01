@@ -31,19 +31,19 @@ We offer 2 types of human transcripts:
 
 The easiest way to order a new transcript from Productions is from the [Productions](https://elevenlabs.io/app/productions) page in your ElevenLabs account.
 
-![Productions Home](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233123Z&X-Amz-Expires=604800&X-Amz-Signature=82170a1b918de3db0f24644d29eca0ac12f30551754ee87f483b0b9398551d81&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Home](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd072dfc01c9b277960c0583a3900ca963ee0ca766f204f5fac602117f5a8174/assets/images/productions/productions-home.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113138Z&X-Amz-Expires=604800&X-Amz-Signature=acf8931f885e48c11799bf68279f043f93af88714e21a088a112af1c5efb3cb1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Speech to Text Order Dialog
 
 You can also select the *Human Transcript* option in the [Speech to Text](/docs/overview/capabilities/speech-to-text) order dialog.
 
-![Productions STT Dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9/assets/images/productions/productions-stt-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233123Z&X-Amz-Expires=604800&X-Amz-Signature=37eec6cab4e7620ddbc8bdc14a0bd17b14658fa70aa98686c1aa2486b026d1cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions STT Dialog](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1d18c451ce48b05fb9943a11707e86cd7a8c883b30e7557551f1bdccc05851a9/assets/images/productions/productions-stt-dialog.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113138Z&X-Amz-Expires=604800&X-Amz-Signature=a1fef3c135f28fbb0279278282d1aa4709b95ac6b01e8e3c4edacb6decf3be65&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Starting from an existing transcript
 
 Open an existing transcript and click the *Get human review* button to create a new Productions order for that transcript.
 
-![Productions Get Human Review](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863/assets/images/productions/productions-get-human-review.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233123Z&X-Amz-Expires=604800&X-Amz-Signature=cc4b7ddc1dce08fd267c12e37d3d845859208c0ee99d9d6540ccb211abb1961e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Get Human Review](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b25a0e08ad610f29b352c4cf9a1ef8f29061487c61f51de7c5c0b2cfb0533863/assets/images/productions/productions-get-human-review.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113138Z&X-Amz-Expires=604800&X-Amz-Signature=026ef5d0e325a5bfd17e923e27fab008eed118f1da6e2b58f4f9487070241916&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Export transcript
 
@@ -53,13 +53,13 @@ You will receive an email notification when your transcript is ready and see it 
 
 Open a transcript on your [Productions](https://elevenlabs.io/app/productions) page and click the three dots, then the *Export* button.
 
-![Export menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ba125ad4d96992a9a078b275cc0b85e3a21f6d5ca6bea1f36f775c10c98856b/assets/images/productions/productions-export.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233123Z&X-Amz-Expires=604800&X-Amz-Signature=d503312ea15fde84afbcd3ed1d9e9042e1aaf04f22e575f82994ad6131d31be1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Export menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ba125ad4d96992a9a078b275cc0b85e3a21f6d5ca6bea1f36f775c10c98856b/assets/images/productions/productions-export.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113138Z&X-Amz-Expires=604800&X-Amz-Signature=8e8d2f7d77d6246cec6055774424517a2035a5b0ab6b1c3ebd127533ee5e3d1b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Export from viewer
 
 Open a transcript on your [Productions](https://elevenlabs.io/app/productions) page and click the *View* icon to open the transcript viewer.
 
-![Viewer export menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f28752b990b7c64764c7c73e4be3e3e7dc24e10b3a51d4e445cf70a47dea5f19/assets/images/productions/productions-viewer-export.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233123Z&X-Amz-Expires=604800&X-Amz-Signature=544d2b97a2865b8514fd4c0260fe8a8e40977be82885e7c9bd1d7c4f421c711b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Viewer export menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f28752b990b7c64764c7c73e4be3e3e7dc24e10b3a51d4e445cf70a47dea5f19/assets/images/productions/productions-viewer-export.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113138Z&X-Amz-Expires=604800&X-Amz-Signature=8ab87a556056d06b64591e99257b02569ce86af2e9fb49852f98f7d096493070&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Pricing
 
@@ -73,7 +73,7 @@ We aim to deliver all transcripts **within 48 hours.** If you are an enterprise 
 
 When ordering a Productions transcript, you will see the option to activate 'Verbatim' mode. Please read the breakdown below for more information about this option.
 
-![Productions Style Guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdf172c15645a4cfe48e59cb436adcaae7ff6c16979374e358d4ce56071250a9/assets/images/productions/productions-style-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233123Z&X-Amz-Expires=604800&X-Amz-Signature=7aa788ae6abac662836c98c2ca6a8ae190c097939ab3e828c30dbb58d8e58bb4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Productions Style Guide](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fdf172c15645a4cfe48e59cb436adcaae7ff6c16979374e358d4ce56071250a9/assets/images/productions/productions-style-guide.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113138Z&X-Amz-Expires=604800&X-Amz-Signature=16da28566336360ba7051c37395a21068ed7ea56f782774405a29e86abff5667&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Non-verbatim
 

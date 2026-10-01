@@ -34,7 +34,7 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
   </Step>
 
   <Step title="Migrate the index">
-    Call [Configure an index](/reference/api/2025-10/control-plane/configure_index). In the request body, in the `spec.serverless.read_capacity` object, set the following fields:
+    Call [Configure an index](/reference/api/2026-07/control-plane/configure_index). In the request body, in the `read_capacity` object, set the following fields:
 
     | Field | Value | Notes |
     | :- | :- | :- |
@@ -55,20 +55,16 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
            -H "Accept: application/json" \
            -H "Content-Type: application/json" \
            -H "Api-Key: $PINECONE_API_KEY" \
-           -H "X-Pinecone-Api-Version: 2025-10" \
+           -H "X-Pinecone-Api-Version: 2026-07" \
            -d '{
-                 "spec": {
-                   "serverless": {
-                     "read_capacity": {
-                       "mode": "Dedicated",
-                       "dedicated": {
-                         "node_type": "b1",
-                         "scaling": "Manual",
-                         "manual": {
-                           "shards": 1,
-                           "replicas": 1
-                         }
-                       }
+                 "read_capacity": {
+                   "mode": "Dedicated",
+                   "dedicated": {
+                     "node_type": "b1",
+                     "scaling": "Manual",
+                     "manual": {
+                       "shards": 1,
+                       "replicas": 1
                      }
                    }
                  }
@@ -80,57 +76,40 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
       ```jsonc Response expandable theme={null}
       {
         "name": "example-index-to-migrate",
-        "vector_type": "dense",
-        "metric": "cosine",
-        "dimension": 1024,
         "status": {
           "ready": true,
           "state": "Ready"
         },
         "host": "example-index-to-migrate-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-        "spec": {
-          "serverless": {
-            "region": "us-east-1",
-            "cloud": "aws",
-            "read_capacity": {
-              "mode": "Dedicated",
-              "dedicated": {
-                "node_type": "b1",
-                "scaling": "Manual",
-                "manual": {
-                  "shards": 1, // <---- desired state
-                  "replicas": 1
-                }
-              },
-              "status": {
-                "state": "Migrating",
-                "current_shards": null, //<---- current state
-                "current_replicas": null
-              }
+        "deployment": {
+          "deployment_type": "managed",
+          "region": "us-east-1",
+          "cloud": "aws",
+          "environment": "aped-4627-b74a"
+        },
+        "read_capacity": {
+          "mode": "Dedicated",
+          "dedicated": {
+            "node_type": "b1",
+            "scaling": "Manual",
+            "manual": {
+              "shards": 1, // <---- desired state
+              "replicas": 1
             }
+          },
+          "status": {
+            "state": "Migrating",
+            "current_shards": null, // <---- current state
+            "current_replicas": null
+          }
+        },
+        "schema": {
+          "fields": {
+            "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
           }
         },
         "deletion_protection": "disabled",
-        "tags": null,
-        "embed": {
-          "model": "llama-text-embed-v2",
-          "field_map": {
-            "text": "text"
-          },
-          "dimension": 1024,
-          "metric": "cosine",
-          "write_parameters": {
-            "dimension": 1024,
-            "input_type": "passage",
-            "truncate": "END"
-          },
-          "read_parameters": {
-            "dimension": 1024,
-            "input_type": "query",
-            "truncate": "END"
-          },
-          "vector_type": "dense"
-        }
+        "tags": null
       }
       ```
     </CodeGroup>
@@ -140,7 +119,7 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
     | Field | Description |
     | :- | :- |
     | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-    | **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
+    | **`read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
     <Warning>
       If `status.state` is set to `Error`, the allocated number of shards was insufficient for the size of the index. Try again, adding more shards as needed.
@@ -148,7 +127,7 @@ To migrate an existing on-demand index to dedicated read nodes (including one yo
   </Step>
 
   <Step title="Monitor the migration">
-    [Check the status](/guides/index-data/dedicated-read-nodes/manage#check-the-status-of-a-configuration-change) until `spec.serverless.read_capacity.status.state` is `Ready`.
+    [Check the status](/guides/index-data/dedicated-read-nodes/manage#check-the-status-of-a-configuration-change) until `read_capacity.status.state` is `Ready`.
   </Step>
 
   <Step title="Verify performance">

@@ -63,14 +63,14 @@ The connector in the Claude directory and the default server URL connect to the 
 In a new chat, select the **+** button, then **Add connector** > **Add custom connector**. You
 can also add connectors from **Settings** > **Connectors**.
 
-![The Claude chat input menu with Add connector and Add custom connector highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1c3f441dcc1e77404715e95da3f290f61f913b65b8e3636e404b71b1f4da3797/assets/images/agents/hosted-mcp-add-custom-connector.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233228Z&X-Amz-Expires=604800&X-Amz-Signature=8a859fb14105850c9501b16f4fdbc8f1ef52969a97526c5920486597c0610c78&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The Claude chat input menu with Add connector and Add custom connector highlighted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1c3f441dcc1e77404715e95da3f290f61f913b65b8e3636e404b71b1f4da3797/assets/images/agents/hosted-mcp-add-custom-connector.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113224Z&X-Amz-Expires=604800&X-Amz-Signature=9554231c8e7fcb3ce80efa8287ac2da8ea974b454dc6b4e99020730c531b76a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Enter a name and your region's URL
 
 Name the connector so the region is clear, for example "ElevenLabs EU", and enter your region's
 MCP server URL. Select **Continue**.
 
-![The Add custom connector dialog with the name ElevenLabs EU and the EU server URL filled in](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1f5f6c459eafc68ce220f1e4d6dd1402e5e78f0d7abb87a41d1800ba6e4c355/assets/images/agents/hosted-mcp-custom-connector-url.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233228Z&X-Amz-Expires=604800&X-Amz-Signature=efc7f97959a637bb104e8276afd02feba42aee4f494ac90958ae3bc11a2ae1a6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The Add custom connector dialog with the name ElevenLabs EU and the EU server URL filled in](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1f5f6c459eafc68ce220f1e4d6dd1402e5e78f0d7abb87a41d1800ba6e4c355/assets/images/agents/hosted-mcp-custom-connector-url.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113224Z&X-Amz-Expires=604800&X-Amz-Signature=4a031d8a34cb2d85d6635ae49a02691ef08fb6d813c851f2a02ba304978e9cff&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Keep the detected settings
 
@@ -78,14 +78,14 @@ Claude detects the server's settings automatically: authentication is set to **A
 required** and the OAuth client uses **Anthropic's hosted client metadata**. Leave both as
 detected and select **Add**.
 
-![The connector authentication settings with Always required and hosted client metadata detected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f5b5941ec2d311769570cb194bbd70dc347db5bde46c812f94bae7da1c25c47/assets/images/agents/hosted-mcp-custom-connector-auth.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233228Z&X-Amz-Expires=604800&X-Amz-Signature=80e09f3432c8377c964b6c1c4681272ba97125ce42080da88cbaf0b754396da6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The connector authentication settings with Always required and hosted client metadata detected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5f5b5941ec2d311769570cb194bbd70dc347db5bde46c812f94bae7da1c25c47/assets/images/agents/hosted-mcp-custom-connector-auth.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113224Z&X-Amz-Expires=604800&X-Amz-Signature=c9f3e96d259a1b0c8b7c04e43318f102d0a1ee025176d86b1ea2b47a2d40ba62&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Sign in and authorize
 
 Complete the OAuth flow with your account for that environment. Choose the workspace, review
 the requested permissions, and select **Authorize**.
 
-![The ElevenLabs consent screen showing the workspace picker and requested permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/550401ee663f8b123ad61feffcc8cd6767f3f8f665419bf0a0b5cf999a6688ec/assets/images/agents/hosted-mcp-oauth-consent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233228Z&X-Amz-Expires=604800&X-Amz-Signature=e81ebc62d4b84922dee7d8b0f9f80876123ab8a8032c739dee8eb06f5bafd17c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![The ElevenLabs consent screen showing the workspace picker and requested permissions](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/550401ee663f8b123ad61feffcc8cd6767f3f8f665419bf0a0b5cf999a6688ec/assets/images/agents/hosted-mcp-oauth-consent.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113224Z&X-Amz-Expires=604800&X-Amz-Signature=691d31922f3f7a0a729970925b6090f192736f082d0b4d5cd66663315b70ffcb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >

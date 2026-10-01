@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 572 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 573 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -249,12 +249,13 @@
 - `integrations/build-integration/attribute-usage-to-your-integration` — [Attribute usage to your integration](pages/integrations/build-integration/attribute-usage-to-your-integration.md) · [原文](https://docs.pinecone.io/integrations/build-integration/attribute-usage-to-your-integration)
 - `integrations/build-integration/connect-your-users-to-pinecone` — [Connect your users to Pinecone](pages/integrations/build-integration/connect-your-users-to-pinecone.md) · [原文](https://docs.pinecone.io/integrations/build-integration/connect-your-users-to-pinecone)
 - `integrations/build-integration/integration-ecosystem` — [Integration ecosystem](pages/integrations/build-integration/integration-ecosystem.md) · [原文](https://docs.pinecone.io/integrations/build-integration/integration-ecosystem)
-- `integrations/claude-code` — [Claude Code Plugin](pages/integrations/claude-code.md) · [原文](https://docs.pinecone.io/integrations/claude-code)
+- `integrations/claude-code` — [Claude Code plugin](pages/integrations/claude-code.md) · [原文](https://docs.pinecone.io/integrations/claude-code)
 - `integrations/cloudera` — [Cloudera AI](pages/integrations/cloudera.md) · [原文](https://docs.pinecone.io/integrations/cloudera)
+- `integrations/codex` — [Codex plugin](pages/integrations/codex.md) · [原文](https://docs.pinecone.io/integrations/codex)
 - `integrations/cohere` — [Cohere](pages/integrations/cohere.md) · [原文](https://docs.pinecone.io/integrations/cohere)
 - `integrations/confluent` — [Confluent](pages/integrations/confluent.md) · [原文](https://docs.pinecone.io/integrations/confluent)
 - `integrations/context-data` — [Context Data](pages/integrations/context-data.md) · [原文](https://docs.pinecone.io/integrations/context-data)
-- `integrations/cursor` — [Cursor Plugin](pages/integrations/cursor.md) · [原文](https://docs.pinecone.io/integrations/cursor)
+- `integrations/cursor` — [Cursor plugin](pages/integrations/cursor.md) · [原文](https://docs.pinecone.io/integrations/cursor)
 - `integrations/databricks` — [Databricks](pages/integrations/databricks.md) · [原文](https://docs.pinecone.io/integrations/databricks)
 - `integrations/datadog` — [Datadog](pages/integrations/datadog.md) · [原文](https://docs.pinecone.io/integrations/datadog)
 - `integrations/datavolo` — [Datavolo](pages/integrations/datavolo.md) · [原文](https://docs.pinecone.io/integrations/datavolo)
@@ -262,7 +263,7 @@
 - `integrations/fleak` — [Fleak](pages/integrations/fleak.md) · [原文](https://docs.pinecone.io/integrations/fleak)
 - `integrations/flowise` — [FlowiseAI](pages/integrations/flowise.md) · [原文](https://docs.pinecone.io/integrations/flowise)
 - `integrations/gathr` — [Gathr](pages/integrations/gathr.md) · [原文](https://docs.pinecone.io/integrations/gathr)
-- `integrations/gemini-cli` — [Gemini CLI Extension](pages/integrations/gemini-cli.md) · [原文](https://docs.pinecone.io/integrations/gemini-cli)
+- `integrations/gemini-cli` — [Gemini CLI extension](pages/integrations/gemini-cli.md) · [原文](https://docs.pinecone.io/integrations/gemini-cli)
 - `integrations/genkit` — [Genkit](pages/integrations/genkit.md) · [原文](https://docs.pinecone.io/integrations/genkit)
 - `integrations/github-copilot` — [GitHub Copilot](pages/integrations/github-copilot.md) · [原文](https://docs.pinecone.io/integrations/github-copilot)
 - `integrations/google-cloud-marketplace` — [Google Cloud Marketplace](pages/integrations/google-cloud-marketplace.md) · [原文](https://docs.pinecone.io/integrations/google-cloud-marketplace)

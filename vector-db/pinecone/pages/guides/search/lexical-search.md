@@ -22,7 +22,7 @@ Sparse-vector search uses [sparse vectors](https://www.pinecone.io/learn/sparse-
   Searching with text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
 </Note>
 
-To search an index of sparse vectors with a query text, use the [`search_records`](/reference/api/latest/data-plane/search_records) operation with the following parameters:
+To search an index of sparse vectors with a query text, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `query.inputs.text`:  The query text. Pinecone uses the [embedding model](/guides/index-data/create-an-index#embedding-models) integrated with the index to convert the text to a sparse vector automatically.
@@ -348,7 +348,7 @@ The results will look as follows. The most similar records are scored highest.
 
 ## Search with a sparse vector
 
-To search an index of sparse vectors with a sparse vector representation of a query, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+To search an index of sparse vectors with a sparse vector representation of a query, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `sparse_vector`: The sparse vector values and indices.
@@ -767,7 +767,7 @@ The results will look as follows. The most similar records are scored highest.
 
 ## Search with a record ID
 
-When you search with a record ID, Pinecone uses the sparse vector associated with the record as the query. To search an index of sparse vectors with a record ID, use the [`query`](/reference/api/latest/data-plane/query) operation with the following parameters:
+When you search with a record ID, Pinecone uses the sparse vector associated with the record as the query. To search an index of sparse vectors with a record ID, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) to query. To use the default namespace, set to `"__default__"`.
 * `id`: The unique record ID containing the sparse vector to use as the query.

@@ -121,10 +121,10 @@ Possible enum values:
   Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md).
 
 - [`custom_fields`](https://docs.stripe.com/api/payment-link/object.md?query=custom_fields) (array of objects)
-  Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `custom`.
+  Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `elements`.
 
 - [`custom_text`](https://docs.stripe.com/api/payment-link/object.md?query=custom_text) (object)
-  Display additional text for your customers using custom text. You can’t set this parameter if `ui_mode` is `custom`.
+  Display additional text for your customers using custom text. You can’t set this parameter if `ui_mode` is `elements`.
 
 - `customer_creation` (enum)
   Configuration for Customer creation during checkout.

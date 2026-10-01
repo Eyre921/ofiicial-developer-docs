@@ -4,112 +4,17 @@ source: https://docs.pinecone.io/guides/index-data/dedicated-read-nodes/manage
 path: guides/index-data/dedicated-read-nodes/manage
 ---
 
-Add a hosted embedding model, monitor fullness, change node types, pause, or convert a Pinecone dedicated read nodes index back to on-demand.
+Use a hosted embedding model, monitor fullness, change node types, pause, or convert a Pinecone dedicated read nodes index back to on-demand.
 
-## Add a hosted embedding model
+## Use a hosted embedding model
 
-To upsert and search with text instead of vectors, you can configure your index to use a [hosted embedding model](/guides/index-data/create-an-index#embedding-models). To do this, call [Configure an index](/reference/api/2025-10/control-plane/configure_index) and provide an `embed` object in the request body. In this object:
+To upsert and search with text instead of vectors, an index must use a [hosted embedding model](/guides/index-data/create-an-index#embedding-models). On `2026-07`, an index schema is immutable, so you set this when you create the index, not after.
 
-* For the `text` field, specify the name of the field in your data that contains the text to be embedded.
-* Specify a model whose dimension requirements match the dimensions of your index.
-
-### Example
-
-<CodeGroup>
-  ```bash Request expandable theme={null}
-  PINECONE_API_KEY="YOUR_API_KEY"
-  INDEX_NAME="YOUR_INDEX_NAME"
-
-  curl -X PATCH "https://api.pinecone.io/indexes/$INDEX_NAME" \
-       -H "Content-Type: application/json" \
-       -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
-       -d '{
-             "embed": {
-               "field_map": {
-                 "text": "chunk_text"
-               },
-               "model": "llama-text-embed-v2",
-               "read_parameters": {
-                 "input_type": "query",
-                 "truncate": "NONE"
-               },
-               "write_parameters": {
-                 "input_type": "passage"
-               }
-             }
-           }'
-  ```
-</CodeGroup>
-
-<CodeGroup>
-  ```json Response expandable theme={null}
-  {
-    "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
-    "status": {
-      "ready": true,
-      "state": "Ready"
-    },
-    "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 2,
-              "replicas": 1
-            }
-          },
-          "status": {
-            "state": "Ready",
-            "current_shards": 2,
-            "current_replicas": 1
-          }
-        }
-      }
-    },
-    "deletion_protection": "enabled",
-    "tags": {
-      "environment": "testing"
-    },
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "chunk_text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "NONE"
-      },
-      "vector_type": "dense"
-    }
-  }
-  ```
-</CodeGroup>
-
-<Note>
-  You can also create a dedicated read nodes index when calling [Create an index with integrated embedding](/reference/api/2025-10/control-plane/create_for_model). In the request body, use the `read_capacity` object to configure node type, shards, and replicas for dedicated read nodes.
-</Note>
+To create a dedicated read nodes index with a hosted embedding model, call [Create an index with integrated embedding](/reference/api/2026-07/control-plane/create_for_model) and include the `read_capacity` object to set the node type, shards, and replicas.
 
 ## Monitor index fullness
 
-To check [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), call [Get index stats](/reference/api/2025-10/data-plane/describeindexstats).
+To check [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), call [Get index stats](/reference/api/2026-07/data-plane/describeindexstats).
 
 ### Example
 
@@ -122,7 +27,7 @@ To check [index fullness](/guides/index-data/dedicated-read-nodes/concepts#index
 
   curl -X GET "https://$INDEX_HOST/describe_index_stats" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10"
+       -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -165,12 +70,12 @@ You can change node types in either direction (`b1` → `t1` or `t1` → `b1`). 
   In the meantime, your index will continue to function normally in its original configuration.
 </Warning>
 
-To change node types, call [Configure an index](/reference/api/2025-10/control-plane/configure_index). In the request body, set the following fields:
+To change node types, call [Configure an index](/reference/api/2026-07/control-plane/configure_index). In the request body, set the following fields:
 
 | Field | Value | Notes |
 | :- | :- | :- |
-| `spec.serverless.read_capacity.mode` | `Dedicated` | |
-| `spec.serverless.read_capacity.dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
+| `read_capacity.mode` | `Dedicated` | |
+| `read_capacity.dedicated.node_type` | `b1` or `t1` | See [node types](/guides/index-data/dedicated-read-nodes/concepts#node-types) |
 
 ### Example
 
@@ -185,16 +90,12 @@ This example changes the node type from `b1` to `t1`:
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "Dedicated",
-                   "dedicated": {
-                     "node_type": "t1"
-                   }
-                 }
+             "read_capacity": {
+               "mode": "Dedicated",
+               "dedicated": {
+                 "node_type": "t1"
                }
              }
            }'
@@ -205,57 +106,40 @@ This example changes the node type from `b1` to `t1`:
   ```json Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "t1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 1,
-              "replicas": 1
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 1,
-            "current_replicas": 1
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "t1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 1,
+          "replicas": 1
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 1,
+        "current_replicas": 1
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>
@@ -279,7 +163,7 @@ To pause an index, [set the number of replicas](/guides/index-data/dedicated-rea
 
 ## Check the status of a configuration change
 
-After making a configuration change to a dedicated read nodes index (changing shards, replicas, or node type), check the status of the change by calling [Describe an index](/reference/api/2025-10/control-plane/describe_index).
+After making a configuration change to a dedicated read nodes index (changing shards, replicas, or node type), check the status of the change by calling [Describe an index](/reference/api/2026-07/control-plane/describe_index).
 
 ### Example
 
@@ -290,7 +174,7 @@ After making a configuration change to a dedicated read nodes index (changing sh
 
   curl -X GET "https://api.pinecone.io/indexes/$INDEX_NAME" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10"
+       -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </CodeGroup>
 
@@ -298,34 +182,36 @@ After making a configuration change to a dedicated read nodes index (changing sh
   ```jsonc Response expandable theme={null}
   {
     "name": "example-dedicated-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1536,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-dedicated-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "Dedicated",
-          "dedicated": {
-            "node_type": "b1",
-            "scaling": "Manual",
-            "manual": {
-              "shards": 1,
-              "replicas": 2 // <---- desired state
-            }
-          },
-          "status": {
-            "state": "Scaling",
-            "current_shards": 1,
-            "current_replicas": 1 // <---- current state
-          }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "Dedicated",
+      "dedicated": {
+        "node_type": "b1",
+        "scaling": "Manual",
+        "manual": {
+          "shards": 1,
+          "replicas": 2 // <---- desired state
         }
+      },
+      "status": {
+        "state": "Scaling",
+        "current_shards": 1,
+        "current_replicas": 1 // <---- current state
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
       }
     },
     "deletion_protection": "enabled",
@@ -341,9 +227,9 @@ The response includes two status fields:
 | Field | Description |
 | :- | :- |
 | **`status.state`** | Overall index status (for example, `Initializing`, `Ready`, `Terminating`) |
-| **`spec.serverless.read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
+| **`read_capacity.status.state`** | Read capacity status (`Migrating`, `Scaling`, `Ready`, `Error`) |
 
-When changing node types, shards, or replicas, monitor the read capacity status (`spec.serverless.read_capacity.status.state`). Possible values:
+When changing node types, shards, or replicas, monitor the read capacity status (`read_capacity.status.state`). Possible values:
 
 | State | Description |
 | :- | :- |
@@ -358,7 +244,7 @@ When changing node types, shards, or replicas, monitor the read capacity status 
 
 ## Convert to on-demand
 
-To convert a dedicated read nodes index back to on-demand, call [Configure an index](/reference/api/2025-10/control-plane/configure_index) and set `spec.serverless.read_capacity.mode` to `OnDemand`. This converts the index in place, keeping the same index name and host.
+To convert a dedicated read nodes index back to on-demand, call [Configure an index](/reference/api/2026-07/control-plane/configure_index) and set `read_capacity.mode` to `OnDemand`. This converts the index in place, keeping the same index name and host.
 
 <CodeGroup>
   ```bash Request theme={null}
@@ -369,14 +255,10 @@ To convert a dedicated read nodes index back to on-demand, call [Configure an in
        -H "Accept: application/json" \
        -H "Content-Type: application/json" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2025-10" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -d '{
-             "spec": {
-               "serverless": {
-                 "read_capacity": {
-                   "mode": "OnDemand"
-                 }
-               }
+             "read_capacity": {
+               "mode": "OnDemand"
              }
            }'
   ```
@@ -386,49 +268,32 @@ To convert a dedicated read nodes index back to on-demand, call [Configure an in
   ```jsonc Response expandable theme={null}
   {
     "name": "example-index",
-    "vector_type": "dense",
-    "metric": "cosine",
-    "dimension": 1024,
     "status": {
       "ready": true,
       "state": "Ready"
     },
     "host": "example-index-1c6ab6aa.svc.aped-4627-b74a.pinecone.io",
-    "spec": {
-      "serverless": {
-        "region": "us-east-1",
-        "cloud": "aws",
-        "read_capacity": {
-          "mode": "OnDemand",
-          "status": {
-            "state": "Ready",
-            "current_shards": null,
-            "current_replicas": null
-          }
-        }
+    "deployment": {
+      "deployment_type": "managed",
+      "region": "us-east-1",
+      "cloud": "aws",
+      "environment": "aped-4627-b74a"
+    },
+    "read_capacity": {
+      "mode": "OnDemand",
+      "status": {
+        "state": "Ready",
+        "current_shards": null,
+        "current_replicas": null
+      }
+    },
+    "schema": {
+      "fields": {
+        "_values": { "type": "dense_vector", "dimension": 1024, "metric": "cosine" }
       }
     },
     "deletion_protection": "disabled",
-    "tags": null,
-    "embed": {
-      "model": "llama-text-embed-v2",
-      "field_map": {
-        "text": "text"
-      },
-      "dimension": 1024,
-      "metric": "cosine",
-      "write_parameters": {
-        "dimension": 1024,
-        "input_type": "passage",
-        "truncate": "END"
-      },
-      "read_parameters": {
-        "dimension": 1024,
-        "input_type": "query",
-        "truncate": "END"
-      },
-      "vector_type": "dense"
-    }
+    "tags": null
   }
   ```
 </CodeGroup>

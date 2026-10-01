@@ -51,20 +51,15 @@ App resources are limited by the device specs, and app functionality might be co
 
 #### APK size limit
 
-APK files that you upload to the Stripe API have a 200MB size limit.
+APK files that you upload to the Stripe API have a 200 MB size limit.
 
 #### Device specs
 
-- To see the hardware specifications for Verifone readers, see [Set up Verifone readers](https://docs.stripe.com/terminal/payments/setup-reader/verifone.md).
-- To see the hardware specifications for the [Stripe Reader S700/S710](https://docs.stripe.com/terminal/payments/setup-reader/stripe-reader-s700-s710.md), see the following table:
+To see the hardware specifications for each compatible reader, see the following:
 
-|  |
-| CPU | Qualcomm Snapdragon 665 QCM6125 |
-| RAM | 4GB |
-| Storage | 64GB |
-| OS | Android 10 |
-| Screen dimensions | 1080x1920 pixels |
-| Screen pixel density | 420dpi (xxhdpi) |
+- [Stripe Reader T600 device specifications](https://docs.stripe.com/terminal/readers/stripe-reader-t600.md#device-specifications)
+- [Stripe Reader S700/S710 device specifications](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md#device-specifications)
+- [Set up Verifone readers](https://docs.stripe.com/terminal/payments/setup-reader/verifone.md)
 
 #### Device storage
 
@@ -79,6 +74,12 @@ The Stripe SmartPOS OS is built for security and PCI-compliance based on the And
 - Production devices have a disabled USB port. Additionally, [Android Debug Bridge](https://developer.android.com/studio/command-line/adb) (`adb`) and debugging aren’t available.
 
 You can use a [DevKit device](https://docs.stripe.com/terminal/features/apps-on-devices/build.md) for development purposes.
+
+## Stripe Reader T600
+
+The Stripe Reader T600 doesn’t have a main battery, which means apps are more likely to terminate with partial file writes than devices with a main battery. Make sure your app can handle partial file writes for operations like data stores, logging, and downloads.
+
+Stripe Reader T600 requires the use of a T-bridge to provide power and data connectivity to devkits. A T-bridge is included with each T600 Devkit. See the [T-bridge](https://docs.stripe.com/terminal/payments/stripe-reader-t600/accessories.md#t-bridge) section for more details on how to set it up.
 
 ## Android permissions
 

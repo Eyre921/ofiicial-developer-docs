@@ -10,10 +10,11 @@ Learn about Stripe's pre-certified in-person payment readers.
 
 In the Dashboard, [browse and purchase available readers and accessories](https://dashboard.stripe.com/terminal/shop).
 
-Terminal’s smart readers are compatible with the JavaScript, iOS, Android, and React Native SDKs. In addition to the Terminal SDKs, the BBPOS WisePOS, the Stripe Reader S700/S710, and Verifone readers are compatible with a server-driven integration. Smart readers communicate with the SDKs and Stripe API over the internet.
+Terminal’s smart readers are compatible with the JavaScript, iOS, Android, and React Native SDKs. In addition to the Terminal SDKs, the BBPOS WisePOS, the Stripe Reader T600, the Stripe Reader S700/S710, and Verifone readers are compatible with a server-driven integration. Smart readers communicate with the SDKs and Stripe API over the internet.
 
 | Reader | Available in |
 | --- | --- |
+| [Stripe Reader T600](https://docs.stripe.com/terminal/readers/stripe-reader-t600.md) | Available in: AT, AU, BE, CA, CH, CZ, DK, ES, FI, FR, GB, IE, IT, LU, MY, NL, NO, NZ, PL, PT, SE, SG, US |
 | [Stripe Reader S700](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: US, CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP |
 | [Stripe Reader S710](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: AU, BE, BG, CA, HR, CY, EE, FR, HU, IE, LV, LI, LT, MY, MT, NZ, RO, SG, SK, SI, GB, US |
 | [BBPOS WisePOS E](https://docs.stripe.com/terminal/readers/bbpos-wisepos-e.md) | Available in: US, CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL |

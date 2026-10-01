@@ -103,7 +103,7 @@ If you're batching queries, try reducing the number of queries per call to a sin
 
 ## Avoid including vector values when not needed
 
-Including vector values increases response size, especially at higher `top_k` values, and larger responses can raise round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` on [`query`](/reference/api/latest/data-plane/query). [`fetch`](/reference/api/latest/data-plane/fetch) always returns values, so use `query` when you're searching and only need IDs or metadata.
+Including vector values increases response size, especially at higher `top_k` values, and larger responses can raise round-trip latency. If you don't need vector values in your response, leave `include_values` at its default of `false` in [Search with a vector](/reference/api/latest/data-plane/query) requests. The [Fetch records](/reference/api/latest/data-plane/fetch) operation always returns values, so use `query` when you're searching and only need IDs or metadata.
 
 <Note>
   On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. Dedicated read nodes indexes cache values locally and aren't affected.

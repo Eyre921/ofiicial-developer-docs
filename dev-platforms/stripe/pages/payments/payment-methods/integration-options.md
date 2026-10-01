@@ -69,12 +69,12 @@ curl https://api.stripe.com/v1/checkout/sessions \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=2" \
   --data-urlencode "success_url=https://example.com/success" \
-  -d "payment_method_types[0]=bancontact" \
-  -d "payment_method_types[1]=card" \
-  -d "payment_method_types[2]=eps" \
-  -d "payment_method_types[3]=ideal" \
-  -d "payment_method_types[4]=p24" \
-  -d "payment_method_types[5]=sepa_debit"
+  -d "allowed_payment_method_types[0]=bancontact" \
+  -d "allowed_payment_method_types[1]=card" \
+  -d "allowed_payment_method_types[2]=eps" \
+  -d "allowed_payment_method_types[3]=ideal" \
+  -d "allowed_payment_method_types[4]=p24" \
+  -d "allowed_payment_method_types[5]=sepa_debit"
 ```
 
 #### Payment Intents

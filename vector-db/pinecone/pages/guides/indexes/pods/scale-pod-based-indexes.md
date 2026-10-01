@@ -50,7 +50,7 @@ You can increase the pod size in the Pinecone console or using the API.
   </Tab>
 
   <Tab title="API">
-    Use the [`configure_index`](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
+    Use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation and append the new size to the `pod_type` parameter, separated by a period (.).
 
     **Example**
 
@@ -147,9 +147,9 @@ After creating an index, you can't vertically downscale the index/pod size. Inst
 
 ### Check the status of a pod size change
 
-To check the status of a pod size change, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
+To check the status of a pod size change, use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint. The `status` field in the results contains the key-value pair `"state":"ScalingUp"` or `"state":"ScalingDown"` during the resizing process and the key-value pair `"state":"Ready"` after the process is complete.
 
-The index fullness metric provided by [`describe_index_stats`](/reference/api/latest/data-plane/describeindexstats) may be inaccurate until the resizing process is complete.
+The index fullness metric provided by the [Get index stats](/reference/api/latest/data-plane/describeindexstats) operation may be inaccurate until the resizing process is complete.
 
 **Example**
 

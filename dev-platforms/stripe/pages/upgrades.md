@@ -35,7 +35,7 @@ To set the API version **globally** with the SDK, assign the version to the `Str
 ```ruby
 require 'stripe'
 # Don't put any keys in code. See /keys-best-practices.
-client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-08-26.dahlia')
+client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>', stripe_version: '2026-09-30.endive')
 ```
 
 Or set the version per-request:
@@ -47,7 +47,7 @@ client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
 intent = client.v1.payment_intents.retrieve(
   'pi_1DlIVK2eZvKYlo2CW4yj5l2C',
   {
-    stripe_version: '2026-08-26.dahlia',
+    stripe_version: '2026-09-30.endive',
   },
 )
 intent.capture
@@ -67,7 +67,7 @@ To set the API version **globally** with the SDK, assign the version to the `str
 import stripe
 # Don't put any keys in code. See /keys-best-practices.
 stripe.api_key = <<YOUR_SECRET_KEY>>
-stripe.api_version = '2026-08-26.dahlia'
+stripe.api_version = '2026-09-30.endive'
 ```
 
 Or set the version per-request:
@@ -76,7 +76,7 @@ Or set the version per-request:
 import stripe
 intent = stripe.PaymentIntent.retrieve(
   "pi_1DlIVK2eZvKYlo2CW4yj5l2C",
-  stripe_version="2026-08-26.dahlia",
+  stripe_version="2026-09-30.endive",
 )
 intent.capture()
 ```
@@ -95,7 +95,7 @@ To set the API version **globally** with the SDK, pass the version to the `\Stri
 $stripe = new \Stripe\StripeClient([
   // Don't put any keys in code. See /keys-best-practices.
   "api_key" => "<<YOUR_SECRET_KEY>>",
-  "stripe_version" => "2026-08-26.dahlia"
+  "stripe_version" => "2026-09-30.endive"
 ]);
 ```
 
@@ -105,7 +105,7 @@ Or set the version per-request:
 $intent = $stripe->paymentIntents->capture(
   'pi_1DlIVK2eZvKYlo2CW4yj5l2C',
   [],
-  ['stripe_version' => '2026-08-26.dahlia']
+  ['stripe_version' => '2026-09-30.endive']
 );
 ```
 
@@ -128,7 +128,7 @@ To set the API version **globally** with the SDK, provide the `apiVersion` optio
 ```javascript
 // Don't put any keys in code. See /keys-best-practices.
 const stripe = require('stripe')('<<YOUR_SECRET_KEY>>', {
-  apiVersion: '2026-08-26.dahlia',
+  apiVersion: '2026-09-30.endive',
 });
 ```
 
@@ -136,7 +136,7 @@ Or set the version per-request:
 
 ```javascript
 const intent = await stripe.paymentIntents.retrieve('pi_1DlIVK2eZvKYlo2CW4yj5l2C', {
-  apiVersion: '2026-08-26.dahlia',
+  apiVersion: '2026-09-30.endive',
 });
 ```
 
@@ -149,7 +149,7 @@ Import Stripe as a default import and instantiate it as `new Stripe()` with the 
 ```javascript
 import Stripe from 'stripe';
 const stripe = new Stripe('<<YOUR_PUBLISHABLE_KEY>>', {
-  apiVersion: '2026-08-26.dahlia'
+  apiVersion: '2026-09-30.endive'
 });
 ```
 
@@ -170,13 +170,13 @@ We don’t recommend setting a different API version for strongly-typed programm
 ```sh
 curl https://api.stripe.com/v1/charges \
   -u <<YOUR_SECRET_KEY>>: \
-  -H "Stripe-Version: 2026-08-26.dahlia"
+  -H "Stripe-Version: 2026-09-30.endive"
 ```
 
 #### Stripe CLI
 
 ```sh
-stripe charges create --stripe-version 2026-08-26.dahlia
+stripe charges create --stripe-version 2026-09-30.endive
 ```
 
 ## Update your code to handle API changes
@@ -186,8 +186,6 @@ Review your most important requests and update your code to handle changes to th
 View your API requests in the [Overview tab](https://dashboard.stripe.com/workbench/overview) of [Workbench](https://docs.stripe.com/workbench/overview.md).
 
 ## Update your event destinations
-
-> [Thin events](https://docs.stripe.com/event-destinations.md#thin-events) for API v1 resources are available in private preview. You can use them to streamline integration upgrades without changing your webhook configuration. Previously, thin events only supported API v2 resources. [Learn more and request access](https://docs.google.com/forms/d/e/1FAIpQLSeEkqzB02afvlklMkqwA6wsBH90eW8gxmc-hBOvqe2N6TRujQ/viewform?usp=dialog).
 
 Review each event destination that receives snapshot events, including webhook endpoints and cloud destinations for Amazon EventBridge and Azure Event Grid. For snapshot events, the destination’s [snapshot_api_version](https://docs.stripe.com/api/v2/core/event-destinations/object.md#v2_event_destination_object-snapshot_api_version) property controls the API version used to render the event payload. This setting is independent of the API version used by your server-side SDK. Thin event payloads are unversioned.
 

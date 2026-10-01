@@ -14,7 +14,7 @@ This page shows you how to manage your existing serverless indexes.
 
 ## List indexes
 
-Use the [`list_indexes`](/reference/api/latest/control-plane/list_indexes) operation to get a complete description of all indexes in a project:
+Use the [List indexes](/reference/api/latest/control-plane/list_indexes) operation to get a complete description of all indexes in a project:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -374,7 +374,7 @@ for index_name in pc.list_indexes().names:
 
 ## Describe an index
 
-Use the [`describe_index`](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
+Use the [Describe an index](/reference/api/latest/control-plane/describe_index) endpoint to get a complete description of a specific index:
 
 <CodeGroup>
   ```Python Python theme={null}
@@ -590,7 +590,7 @@ The response will look like this:
 
 ## Delete an index
 
-Use the [`delete_index`](/reference/api/latest/control-plane/delete_index) operation to delete an index and all of its associated resources.
+Use the [Delete an index](/reference/api/latest/control-plane/delete_index) operation to delete an index and all of its associated resources.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -681,7 +681,7 @@ Before you can delete such an index, you must first [disable deletion protection
 
 [Integrated inference](/guides/index-data/indexing-overview#integrated-embedding) lets you upsert and search without extra steps for embedding data and reranking results.
 
-To configure an existing serverless index for an embedding model, use the [`configure_index`](/reference/api/latest/control-plane/configure_index) operation as follows:
+To configure an existing serverless index for an embedding model, use the [Configure an index](/reference/api/latest/control-plane/configure_index) operation as follows:
 
 * Set `embed.model` to one of [Pinecone's hosted embedding models](/guides/index-data/create-an-index#embedding-models).
 * Set `embed.field_map` to the name of the field in your source document that contains the data for embedding.

@@ -14,7 +14,7 @@ We built an AI interviewer using ElevenLabs Agents to collect qualitative user f
 
 The goal was to replicate the depth and nuance of live customer interviews without the scheduling, language, and operational constraints of human-led sessions.
 
-![AI interviewer conversation transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b1711145aee1061e0113055518005ec22f4a3c1b251db76f8e7c599a5f2468d/assets/images/agents-interview-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233241Z&X-Amz-Expires=604800&X-Amz-Signature=7de0b1f9df68a77718ee22dc715396a7a9159fe13334e654cddd8876a207f1e2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![AI interviewer conversation transcript](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b1711145aee1061e0113055518005ec22f4a3c1b251db76f8e7c599a5f2468d/assets/images/agents-interview-transcript.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100017Z&X-Amz-Expires=604800&X-Amz-Signature=dc76ec62d86785263e5907ae1dde7d8fdd20d27f127f75ca5396cd18437d429b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## System architecture
 
@@ -27,7 +27,7 @@ The AI interviewer was implemented entirely on ElevenAgents, with the following 
 
 ## Agent design
 
-![Agent configuration UI](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c27dd1e46379f2cf6e2baf32a42dda33945f0505be6e877f182c1f0bd74c819/assets/images/agents-interview-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233241Z&X-Amz-Expires=604800&X-Amz-Signature=20770d885e7c316648189acb4da60d512c8b14990308523519cae7bb059bbcc1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent configuration UI](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0c27dd1e46379f2cf6e2baf32a42dda33945f0505be6e877f182c1f0bd74c819/assets/images/agents-interview-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100017Z&X-Amz-Expires=604800&X-Amz-Signature=442ec332779c2c046ea4e20a5b43c8d796fb2eeabf3e3177df727d80435b4a0c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Research objectives
 
@@ -192,7 +192,7 @@ Each interview was capped at ten minutes. The agent used the `end_call` tool to:
 
 ## Data collection and analysis
 
-![Analysis and data collection UI](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c61890de3525fdcb252541af0242f6a65e66daa23480413fb6882e962cf0adf8/assets/images/agents-interview-analysis.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233241Z&X-Amz-Expires=604800&X-Amz-Signature=c23cfb5051d273a859972610e90f935e9fff2b63ed2301bb29d264f87d10badb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analysis and data collection UI](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c61890de3525fdcb252541af0242f6a65e66daa23480413fb6882e962cf0adf8/assets/images/agents-interview-analysis.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100017Z&X-Amz-Expires=604800&X-Amz-Signature=ab74569c864849193e887912faa30a580f9d9c2d8be660b62ef31af5f0691fc0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Transcript processing
 

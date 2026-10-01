@@ -149,8 +149,8 @@ See [Secrets](/workers/guides/secrets) for more ways to manage worker environmen
 
 <Warning>
   After 5 consecutive `WebhookVerificationError` failures, Notion blocks that
-  webhook before running your handler. Redeploy the worker, or turn synchronous
-  verification off or on, to reset the failure counter.
+  webhook before running your handler. To reset the failure counter, redeploy
+  the worker or [change the synchronous verification setting](#turn-synchronous-verification-off).
 </Warning>
 
 This check runs after Notion has already answered the provider with `202 Accepted`, so the provider never sees the result. Use it when all you need is to drop unsigned events. If the provider expects verification in the HTTP response itself, add a `verify` handler instead.
@@ -228,37 +228,41 @@ Like `execute`, `verify` receives the capability context as its second argument.
 | `status` | `number` | Response status code. Only 2xx and 4xx are allowed. |
 | `body` | `string` | Optional response body, at most 8KB. |
 | `contentType` | `"application/json" \| "text/plain"` | Optional response content type. Defaults to `"text/plain"`. |
-| `deliver` | `boolean` | Optional delivery decision. `true` queues the request for `execute`; `false` skips `execute`. When omitted, delivery follows the status code. |
+| `deliver` | `boolean` | Optional. Whether to queue the request for `execute`. When omitted, Notion decides from the status. |
 
-The returned status dictates whether or not the Webhook actually executes:
+### Choose whether `execute` runs
 
-* **2xx** — Notion returns your status, body, and content type to the provider, then queues the request for `execute`.
-* **4xx** — Notion returns your response and queues nothing. `execute` never runs.
+Notion always returns your status, body, and content type to the provider. Separately, it decides whether to queue the request for `execute`. By default, any 2xx status code queues the request for execution, while any non-2xx status does not. You can optionally set a `deliver` field in your response to control delivery for execution. Setting `deliver` overrides the status code.
 
-Set `deliver` when the provider-facing status and delivery decision differ. For
-example, answer a successful challenge without executing the webhook:
+Set `deliver` when the answer to the provider and the delivery decision differ. `deliver` always wins over the status.
+
+| `verify` returns | Provider sees | Queued for `execute` |
+| :- | :- | :- |
+| `{ status: 200 }` | `200` | Yes |
+| `{ status: 401 }` | `401` | No |
+| `{ status: 200, deliver: false }` | `200` | No |
+| `{ status: 401, deliver: true }` | `401` | Yes |
+
+A common case is a subscription challenge. The provider needs a `200` with the challenge echoed back, but the challenge isn't an event, so there's nothing for `execute` to do:
 
 ```typescript theme={null}
-return { status: 200, body: challenge, deliver: false };
+verify: (request) => {
+  const body = JSON.parse(request.rawBody || "{}");
+  if (body.type === "url_verification") {
+    return { status: 200, body: body.challenge, deliver: false };
+  }
+  // ...check the signature, then:
+  return { status: 200 };
+},
 ```
 
-Or acknowledge and retain a rejected payload for asynchronous handling:
+Without `deliver: false`, `execute` would receive the challenge and would need to skip it.
+
+The opposite case is a request you reject but still want to keep. For example, you can answer `401` to a request with a bad signature and still queue it, so `execute` can log it for auditing:
 
 ```typescript theme={null}
-return { status: 401, deliver: true };
+return { status: 401, body: "Invalid signature", deliver: true };
 ```
-
-You can disable synchronous verification without redeploying the worker. POST
-requests then return to the normal `202` asynchronous delivery path. Changing
-the setting also clears a block caused by repeated verification failures:
-
-```bash theme={null}
-ntn workers webhooks verification disable onProviderEvent
-ntn workers webhooks verification enable onProviderEvent
-```
-
-The same setting is available from the webhook's **Sync verification** control
-in the Workers UI.
 
 ### Timing and failures
 
@@ -266,26 +270,47 @@ in the Workers UI.
 
 | Outcome | Provider sees | Queued for `execute` |
 | :- | :- | :- |
-| Returns 2xx | Your status and body | Yes |
-| Returns 4xx | Your status and body | No |
+| Returns 2xx | Your status and body | Yes, unless `deliver` is `false` |
+| Returns 4xx | Your status and body | No, unless `deliver` is `true` |
 | Throws, or returns a status outside 2xx and 4xx, or a body over 8KB | `400` | No |
 | Exceeds the time budget | `503` with `Retry-After` | No |
 
 <Warning>
   A handler that throws or returns an invalid response counts toward the same
   five-consecutive-failure limit as `WebhookVerificationError`, after which
-  Notion blocks the webhook until you redeploy or toggle synchronous
-  verification. Deliberately returning a 4xx is
-  not a failure and resets the counter.
+  Notion blocks the webhook until you redeploy or change the synchronous
+  verification setting. Deliberately returning a 4xx is not a failure and
+  resets the counter.
 </Warning>
 
 Exceeding the budget is usually a cold sandbox start. The provider can retry, and will generally land on a warm sandbox.
+
+### Turn synchronous verification off
+
+You can turn off a webhook's `verify` handler without redeploying the worker. This helps when a `verify` bug is rejecting real events, or when a webhook is blocked by repeated failures and you need events flowing again right away.
+
+Turn it off or back on with the webhook's key:
+
+```bash theme={null}
+ntn workers webhooks verification disable onProviderEvent
+ntn workers webhooks verification enable onProviderEvent
+```
+
+The commands use the worker in `workers.json`. Pass `--worker-id` to pick a different worker, and `--json` or `--plain` for scripted output. You can also use the **Sync verification** switch in the webhooks table on the worker's **Overview** tab.
+
+While synchronous verification is off, the webhook acts as if it had no `verify` handler:
+
+* `POST` requests get `202 Accepted` and are queued for `execute`.
+* `GET` and `HEAD` requests get `405 Method Not Allowed`, so handshake probes fail.
+* `execute` still runs, so any signature check you do there still applies.
+
+The setting stays in place across deploys. Deploying a new version doesn't turn synchronous verification back on. Changing the setting in either direction also resets the verification failure counter, which unblocks a blocked webhook.
 
 ## Execution and retries
 
 When a webhook request reaches Notion, Notion validates the URL, enqueues the event, and responds with `202 Accepted`. Your worker runs asynchronously after the HTTP response is sent.
 
-A webhook with a `verify` handler answers with whatever `verify` returned instead of `202`, and enqueues the event only on a 2xx.
+A webhook with a `verify` handler answers with whatever `verify` returned instead of `202`. It enqueues the event when `deliver` is `true`, or when `deliver` is omitted and the status is 2xx.
 
 If your handler throws `WebhookVerificationError`, Notion records a verification failure and does not retry that event. If your handler throws another error, Notion retries the worker run up to 3 times.
 

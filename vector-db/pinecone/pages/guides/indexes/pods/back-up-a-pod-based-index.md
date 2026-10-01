@@ -18,7 +18,7 @@ This page describes how to create a static copy of a pod-based index, also known
 
 ## Create a collection
 
-To create a backup of your pod-based index, use the [`create_collection`](/reference/api/latest/control-plane/create_collection) operation.
+To create a backup of your pod-based index, use the [Create a collection](/reference/api/latest/control-plane/create_collection) operation.
 
 The following example creates a [collection](/guides/indexes/pods/understanding-collections) named `example-collection` from an index named `docs-example`:
 
@@ -111,7 +111,7 @@ The following example creates a [collection](/guides/indexes/pods/understanding-
 
 ## Check the status of a collection
 
-To retrieve the status of the process creating a collection and the size of the collection, use the [`describe_collection`](/reference/api/latest/control-plane/describe_collection) operation. Specify the name of the collection to check. You can only call `describe_collection` on a collection in the current project.
+To retrieve the status of the process creating a collection and the size of the collection, use the [Describe a collection](/reference/api/latest/control-plane/describe_collection) operation. Specify the name of the collection to check. You can only call `describe_collection` on a collection in the current project.
 
 The `describe_collection` operation returns an object containing key-value pairs representing the name of the collection, the size in bytes, and the creation status of the collection.
 
@@ -195,7 +195,7 @@ The following example gets the creation status and size of a collection named `e
 
 ## List your collections
 
-To get a list of the collections in the current project, use the [`list_collections`](/reference/api/latest/control-plane/list_collections) operation.
+To get a list of the collections in the current project, use the [List collections](/reference/api/latest/control-plane/list_collections) operation.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -286,7 +286,7 @@ To get a list of the collections in the current project, use the [`list_collecti
 
 ## Delete a collection
 
-To delete a collection, use the [`delete_collection`](/reference/api/latest/control-plane/delete_collection) operation. Specify the name of the collection to delete.
+To delete a collection, use the [Delete a collection](/reference/api/latest/control-plane/delete_collection) operation. Specify the name of the collection to delete.
 
 Deleting the collection takes several minutes. During this time, the [`describe_collection`](#check-the-status-of-a-collection) operation returns the status "deleting".
 

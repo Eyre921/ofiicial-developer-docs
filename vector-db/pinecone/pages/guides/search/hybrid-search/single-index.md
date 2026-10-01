@@ -35,7 +35,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
 
 <Steps>
   <Step title="Create the index">
-    To store both dense and sparse vectors in a single index, use the [`create_index`](/reference/api/2026-04/control-plane/create_index) operation, setting the `vector_type` to `dense` and the `metric` to `dotproduct`. This is the only combination that supports dense/sparse search on a single index.
+    To store both dense and sparse vectors in a single index, use the [Create an index](/reference/api/2026-04/control-plane/create_index) operation, setting the `vector_type` to `dense` and the `metric` to `dotproduct`. This is the only combination that supports dense/sparse search on a single index.
 
     ```python Python theme={null}
     from pinecone.grpc import PineconeGRPC as Pinecone
@@ -182,7 +182,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Upsert records with dense and sparse vectors">
-    Use the [`upsert`](/reference/api/latest/data-plane/upsert) operation, specifying dense values in the `value` parameter and sparse values in the `sparse_values` parameter.
+    Use the [Upsert records](/reference/api/latest/data-plane/upsert) operation, specifying dense values in the `value` parameter and sparse values in the `sparse_values` parameter.
 
     <Note>
       Only indexes that store dense vectors with the [dotproduct distance metric](/guides/index-data/indexing-overview#dotproduct) accept records that also have sparse vectors. Upserting such records into an index with a different distance metric will succeed, but querying will return an error.
@@ -213,7 +213,7 @@ To perform hybrid search with a single index that stores both dense and sparse v
   </Step>
 
   <Step title="Search the index">
-    Use the [`embed`](/reference/api/latest/inference/generate-vectors) operation to convert your query into a dense vector and a sparse vector, and then use the [`query`](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
+    Use the [Generate vectors](/reference/api/latest/inference/generate-vectors) operation to convert your query into a dense vector and a sparse vector, and then use the [Search with a vector](/reference/api/latest/data-plane/query) operation to search the index for the 40 most relevant records.
 
     ```Python Python theme={null}
     query = "Q3 2024 us economic data"

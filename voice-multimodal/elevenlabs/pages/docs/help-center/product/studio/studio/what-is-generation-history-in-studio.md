@@ -10,7 +10,7 @@ path: docs/help-center/product/studio/studio/what-is-generation-history-in-studi
 
 Generation History allows you to listen to, download and restore previous audio generations for each paragraph.
 
-![Generation history in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/94402fb3c1b118e30f7e3c6f185f849416de954a23a9142185fa76c3e175acfe/assets/images/product-guides/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233553Z&X-Amz-Expires=604800&X-Amz-Signature=a33892fc8fe30535b1b8b68ab87907c16eb8eb5dbe6a70c8beba30d07f566008&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Generation history in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/94402fb3c1b118e30f7e3c6f185f849416de954a23a9142185fa76c3e175acfe/assets/images/product-guides/studio/studio-generation-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T113616Z&X-Amz-Expires=604800&X-Amz-Signature=bcfa02d5be2bd3a1c18834115d6b407566c3dcfb704ff748e8ff62204df3070e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The Generation History for each paragraph appears in the left sidebar when you select it. You can see and listen to all the previous generations for the selected paragraph.
 

@@ -89,10 +89,13 @@
 - [Tool rejection plan](https://docs.vapi.ai/tools/tool-rejection-plan.md): Prevent unintended Vapi tool calls with a rejection plan that evaluates recent conversation state and blocks a tool when your conditions are met.
 - [Tool argument encryption](https://docs.vapi.ai/tools/encryption.md): Encrypt sensitive tool arguments like SSNs and card numbers in Vapi, protecting specific fields before they are sent to your server during a tool call.
 - [Troubleshoot tools](https://docs.vapi.ai/tools/custom-tools-troubleshooting.md): Troubleshoot Function tool integrations in Vapi, including trigger failures, response errors, token truncation, multiple tool responses, and async behavior.
-- [GPT-Live](https://docs.vapi.ai/gpt-live/overview.md): Learn what GPT-Live brings to Vapi, how its speaker and reasoner work together, and where to start with conversation design, configuration, and compatibility.
-- [Design your GPT-Live assistant](https://docs.vapi.ai/gpt-live/design.md): Design GPT-Live conversations with speaker and reasoner roles, outcome-based delegation, useful overlap during tools, flexible pacing, and personality packs.
-- [Configure GPT-Live](https://docs.vapi.ai/gpt-live/configuration.md): Configure a GPT-Live assistant in Vapi using the dashboard or API, with speaker and reasoner settings, voices, idle-message hooks, tools, call connections, and analysis.
-- [GPT-Live limitations and FAQs](https://docs.vapi.ai/gpt-live/limitations.md): Check GPT-Live support for squads, call control, commentary injection, transfers, simulations, voices, fallbacks, recordings, and post-call data in Vapi.
+- [GPT-Live](https://docs.vapi.ai/gpt-live/overview.md): Learn what GPT-Live changes for a Vapi assistant, how its speaker and reasoner work together, whether it fits your use case, and where to start.
+- [GPT-Live quickstart](https://docs.vapi.ai/gpt-live/quickstart.md): Create a GPT-Live assistant in the Vapi dashboard or API with no custom backend, talk to it in the browser, and check the call record for the end-call action.
+- [Design GPT-Live conversations](https://docs.vapi.ai/gpt-live/design.md): Design GPT-Live conversations around the caller's aim, with speaking and listening happening while the reasoner and tools work. Covers dependencies, useful waiting, returning results, corrections, speaking style, personality packs, idle callers, and paired prompts.
+- [Build with tools](https://docs.vapi.ai/gpt-live/tools.md): How GPT-Live uses tools. Design tool inputs and results, handle actions that change state, return results correctly, handle slow and external work, and connect retrieval, transfers, and MCP tools.
+- [Migrate to GPT-Live](https://docs.vapi.ai/gpt-live/migrate.md): Migrate a Vapi assistant to GPT-Live. Check fit, convert a copy, split prompts between the speaker and reasoner, compare results, and roll back safely.
+- [Test and improve GPT-Live assistants](https://docs.vapi.ai/gpt-live/testing.md): Test GPT-Live assistants with representative scenarios, Voice Simulations, and call records. Measure latency and cost, monitor production calls, and troubleshoot common symptoms.
+- [GPT-Live settings and compatibility](https://docs.vapi.ai/gpt-live/configuration.md): Reference for GPT-Live in Vapi. Feature compatibility, speaker and reasoner fields, personality packs, voices with previews, greetings, idle-message hooks, call connections, and live call control.
 - [Keywords and keyterm prompting](https://docs.vapi.ai/customization/custom-keywords.md): Boost Vapi transcription accuracy for domain terms and proper nouns using Deepgram keyword boosting and AssemblyAI keyterm prompting on your assistant.
 - [Custom voices](https://docs.vapi.ai/customization/custom-voices/custom-voice.md): Use a custom voice from any supported provider in Vapi by setting the voice property in your assistant configuration with the provider's voice details.
 - [ElevenLabs](https://docs.vapi.ai/customization/custom-voices/elevenlabs.md): Set up a custom or cloned ElevenLabs voice in Vapi, subscribing to an ElevenLabs API plan and adding your API key and voice ID to your assistant.
@@ -346,6 +349,10 @@
 - API reference > Sessions [Get Session](https://docs.vapi.ai/api-reference/sessions/get.md)
 - API reference > Sessions [Delete Session](https://docs.vapi.ai/api-reference/sessions/delete.md)
 - API reference > Sessions [Update Session](https://docs.vapi.ai/api-reference/sessions/update.md)
+- API reference > Traffic Allocations [List traffic allocations](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-find-all-paginated.md)
+- API reference > Traffic Allocations [Create traffic allocation](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-create.md)
+- API reference > Traffic Allocations [Get latest traffic allocation](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-latest-get.md)
+- API reference > Traffic Allocations [Get traffic allocation](https://docs.vapi.ai/api-reference/traffic-allocations/traffic-allocation-controller-find-one.md)
 - API reference > Phone Numbers [List Phone Numbers](https://docs.vapi.ai/api-reference/phone-numbers/list.md)
 - API reference > Phone Numbers [Create Phone Number](https://docs.vapi.ai/api-reference/phone-numbers/create.md)
 - API reference > Phone Numbers [Get Phone Number](https://docs.vapi.ai/api-reference/phone-numbers/get.md)

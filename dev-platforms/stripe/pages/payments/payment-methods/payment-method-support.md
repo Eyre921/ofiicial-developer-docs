@@ -103,7 +103,7 @@ To determine which payment methods each Stripe product supports, refer to the fo
 | Payment method | [Connect](https://docs.stripe.com/connect.md) | [Checkout](https://docs.stripe.com/payments/checkout.md) | [Payment Links](https://docs.stripe.com/payment-links.md) | [Payment Element](https://docs.stripe.com/payments/payment-element.md) | [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md) | [Mobile Payment Element](https://docs.stripe.com/payments/mobile.md) | [Subscriptions](https://docs.stripe.com/subscriptions.md) | [Invoicing](https://docs.stripe.com/invoicing.md) | [Customer Portal](https://docs.stripe.com/customer-management.md) |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 7 | Invite only | - Unsupported |
-| [BLIK](https://docs.stripe.com/payments/blik.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported 3,4 | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported |
+| [BLIK](https://docs.stripe.com/payments/blik.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported 3,4 | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
 | [EPS](https://docs.stripe.com/payments/eps.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 7 | Invite only | - Unsupported |
 | [FPX](https://docs.stripe.com/payments/fpx.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 7 | ✓ Supported | - Unsupported |
 | [iDEAL | Wero](https://docs.stripe.com/payments/ideal.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 5,6,7 | ✓ Supported 6 | - Unsupported |
@@ -237,7 +237,7 @@ The following payment methods support `on_behalf_of` in private preview:
 | Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
 | [Bancontact](https://docs.stripe.com/payments/bancontact.md) | `bancontact` | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | Yes |
-| [BLIK](https://docs.stripe.com/payments/blik.md)4 | `blik` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | No |
+| [BLIK](https://docs.stripe.com/payments/blik.md)4 | `blik` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported 1 | No |
 | [EPS](https://docs.stripe.com/payments/eps.md) | `eps` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [FPX](https://docs.stripe.com/payments/fpx.md) | `fpx` | ✓ Supported | - Unsupported | - Unsupported | - Unsupported | Yes |
 | [iDEAL | Wero](https://docs.stripe.com/payments/ideal.md) | `ideal` | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | Yes |

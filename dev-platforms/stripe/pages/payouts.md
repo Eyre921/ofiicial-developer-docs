@@ -1379,7 +1379,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `AT861904300235473202` | Payout fails with a no_account code. |
 | `AT89370400440532013002` | Payout fails with a account_closed code. |
 | `AT981904300002222227` | Payout fails with a insufficient_funds code. |
-| `AT89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `AT201904300000454545` | Payout fails with a debit_not_authorized code. |
 | `AT89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Australia
@@ -1435,7 +1435,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `BE68539007547034` | Payout fails with a no_account code. |
 | `BE89370400440532013002` | Payout fails with a account_closed code. |
 | `BE90510002222227` | Payout fails with a insufficient_funds code. |
-| `BE89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `BE12510000454545` | Payout fails with a debit_not_authorized code. |
 | `BE89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Bulgaria
@@ -1557,7 +1557,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `CH5362200119938136497` | Payout fails with a no_account code. |
 | `CH89370400440532013002` | Payout fails with a account_closed code. |
 | `CH1800762000002222227` | Payout fails with a insufficient_funds code. |
-| `CH89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `CH3700762000000454545` | Payout fails with a debit_not_authorized code. |
 | `CH89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Côte d’Ivoire
@@ -1634,7 +1634,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `DE62370400440532013001` | Payout fails with a no_account code. |
 | `DE89370400440532013002` | Payout fails with a account_closed code. |
 | `DE65370400440002222227` | Payout fails with a insufficient_funds code. |
-| `DE89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `DE84370400440000454545` | Payout fails with a debit_not_authorized code. |
 | `DE89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Denmark
@@ -1645,7 +1645,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `DK8003450003179681` | Payout fails with a no_account code. |
 | `DK89370400440532013002` | Payout fails with a account_closed code. |
 | `DK89370400440532013003` | Payout fails with a insufficient_funds code. |
-| `DK89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `DK7600400000454545` | Payout fails with a debit_not_authorized code. |
 | `DK89370400440532013005` | Payout fails with a invalid_currency code. |
 | `DK5600400000888883` | Payout fails if method is instant. Bank account is not eligible for Instant Payouts. |
 
@@ -1690,7 +1690,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `EE762200221020145680` | Payout fails with a no_account code. |
 | `EE89370400440532013002` | Payout fails with a account_closed code. |
 | `EE672200000002222227` | Payout fails with a insufficient_funds code. |
-| `EE89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `EE862200000000454545` | Payout fails with a debit_not_authorized code. |
 | `EE89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Egypt
@@ -1712,7 +1712,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `ES9121000418450200051332` | Payout fails with a no_account code. |
 | `ES89370400440532013002` | Payout fails with a account_closed code. |
 | `ES1700120345000002222227` | Payout fails with a insufficient_funds code. |
-| `ES89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `ES3600120345000000454545` | Payout fails with a debit_not_authorized code. |
 | `ES89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Ethiopia
@@ -1734,7 +1734,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `FI9112345600000786` | Payout fails with a no_account code. |
 | `FI89370400440532013002` | Payout fails with a account_closed code. |
 | `FI6712345602222227` | Payout fails with a insufficient_funds code. |
-| `FI89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `FI8612345600454545` | Payout fails with a debit_not_authorized code. |
 | `FI89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### France
@@ -1745,7 +1745,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `FR8420041010050500013M02607` | Payout fails with a no_account code. |
 | `FR89370400440532013002` | Payout fails with a account_closed code. |
 | `FR9720041010050000002222227` | Payout fails with a insufficient_funds code. |
-| `FR89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `FR1920041010050000000454545` | Payout fails with a debit_not_authorized code. |
 | `FR89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Gabon
@@ -1779,7 +1779,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `GB55WEST12345698765433` | Payout fails with a no_account code. |
 | `GB89370400440532013002` | Payout fails with a account_closed code. |
 | `GB70WEST12345602222227` | Payout fails with a insufficient_funds code. |
-| `GB89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `GB89WEST12345600454545` | Payout fails with a debit_not_authorized code. |
 | `GB89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Ghana
@@ -1801,7 +1801,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `GI41SAFA461293238477751` | Payout fails with a no_account code. |
 | `GI89370400440532013002` | Payout fails with a account_closed code. |
 | `GI14NWBK000000002222227` | Payout fails with a insufficient_funds code. |
-| `GI89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `GI33NWBK000000000454545` | Payout fails with a debit_not_authorized code. |
 | `GI89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Gambia
@@ -1868,7 +1868,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `HR2725000096983499248` | Payout fails with a no_account code. |
 | `HR89370400440532013002` | Payout fails with a account_closed code. |
 | `HR7424020060002222227` | Payout fails with a insufficient_funds code. |
-| `HR89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `HR9324020060000454545` | Payout fails with a debit_not_authorized code. |
 | `HR89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Hungary
@@ -1901,7 +1901,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `IE02AIBK93115212345679` | Payout fails with a no_account code. |
 | `IE89370400440532013002` | Payout fails with a account_closed code. |
 | `IE10AIBK93115202222227` | Payout fails with a insufficient_funds code. |
-| `IE89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `IE29AIBK93115200454545` | Payout fails with a debit_not_authorized code. |
 | `IE89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Israel
@@ -1945,7 +1945,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `IT60X0542811101000000123456` | Payout fails with a no_account code. |
 | `IT89370400440532013002` | Payout fails with a account_closed code. |
 | `IT89370400440532013003` | Payout fails with a insufficient_funds code. |
-| `IT89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `IT80X0542811101000000454545` | Payout fails with a debit_not_authorized code. |
 | `IT89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Jamaica
@@ -2066,7 +2066,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `LI1208800143823175626` | Payout fails with a no_account code. |
 | `LI89370400440532013002` | Payout fails with a account_closed code. |
 | `LI2408800000002222227` | Payout fails with a insufficient_funds code. |
-| `LI89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `LI4308800000000454545` | Payout fails with a debit_not_authorized code. |
 | `LI89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Sri Lanka
@@ -2088,7 +2088,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `LT821000011101001001` | Payout fails with a no_account code. |
 | `LT89370400440532013002` | Payout fails with a account_closed code. |
 | `LT591000000002222227` | Payout fails with a insufficient_funds code. |
-| `LT89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `LT781000000000454545` | Payout fails with a debit_not_authorized code. |
 | `LT89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Luxembourg
@@ -2099,7 +2099,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `LU980019400644750001` | Payout fails with a no_account code. |
 | `LU89370400440532013002` | Payout fails with a account_closed code. |
 | `LU900010000002222227` | Payout fails with a insufficient_funds code. |
-| `LU89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `LU120010000000454545` | Payout fails with a debit_not_authorized code. |
 | `LU89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Latvia
@@ -2286,7 +2286,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `NL91ABNA0417164300` | Payout fails with a no_account code. |
 | `NL89370400440532013002` | Payout fails with a account_closed code. |
 | `NL27RABO0002222227` | Payout fails with a insufficient_funds code. |
-| `NL89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `NL46RABO0000454545` | Payout fails with a debit_not_authorized code. |
 | `NL89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Norway
@@ -2297,7 +2297,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `NO6686011117948` | Payout fails with a no_account code. |
 | `NO89370400440532013002` | Payout fails with a account_closed code. |
 | `NO0586012222227` | Payout fails with a insufficient_funds code. |
-| `NO89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `NO2486010454545` | Payout fails with a debit_not_authorized code. |
 | `NO89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### New Zealand
@@ -2385,7 +2385,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `PT23000201231234567890155` | Payout fails with a no_account code. |
 | `PT89370400440532013002` | Payout fails with a account_closed code. |
 | `PT05000201230000002222227` | Payout fails with a insufficient_funds code. |
-| `PT89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `PT24000201230000000454545` | Payout fails with a debit_not_authorized code. |
 | `PT89370400440532013005` | Payout fails with a invalid_currency code. |
 
 #### Paraguay
@@ -2462,7 +2462,7 @@ Use these test bank account numbers to test payouts. You can only use them with 
 | `SE0850000000054910000004` | Payout fails with a no_account code. |
 | `SE89370400440532013002` | Payout fails with a account_closed code. |
 | `SE2850000000000002222227` | Payout fails with a insufficient_funds code. |
-| `SE89370400440532013004` | Payout fails with a debit_not_authorized code. |
+| `SE4750000000000000454545` | Payout fails with a debit_not_authorized code. |
 | `SE89370400440532013005` | Payout fails with a invalid_currency code. |
 | `SE2750000000000000888883` | Payout fails if method is instant. Bank account is not eligible for Instant Payouts. |
 

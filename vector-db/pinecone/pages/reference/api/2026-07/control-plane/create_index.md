@@ -13,10 +13,10 @@ To create an index from a backup, use [Create index from backup](https://docs.pi
 
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
-Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll [`GET /indexes/{index_name}`](/reference/api/2026-07/control-plane/describe_index) until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
+Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll the [Describe an index](/reference/api/2026-07/control-plane/describe_index) operation until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
 
 <Note>
-  To create a classic vector index (read and written through the Vectors API), use the reserved `_values` (dense) and/or `_sparse_values` (sparse) schema fields. These replace the top-level `dimension`, `metric`, and `vector_type` of earlier API versions, and are REST-only for now.
+  To create a classic vector index (read and written through the Vectors API), use the reserved `_values` (dense) and/or `_sparse_values` (sparse) schema fields. These replace the top-level `dimension`, `metric`, and `vector_type` of earlier API versions.
 </Note>
 
 <Note>

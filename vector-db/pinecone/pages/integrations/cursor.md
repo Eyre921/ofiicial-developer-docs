@@ -1,5 +1,5 @@
 ---
-title: "Cursor Plugin"
+title: "Cursor plugin"
 source: https://docs.pinecone.io/integrations/cursor
 path: integrations/cursor
 ---

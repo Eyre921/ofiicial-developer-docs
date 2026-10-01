@@ -1504,7 +1504,7 @@ components:
             the stage signals. "passthrough" serves the eligible candidates in
             the order OpenRouter already ranked them, with no routing decision
             and no judge call. Omit this field to use the platform default,
-            capability.
+            stage.
           enum:
             - capability
             - stage

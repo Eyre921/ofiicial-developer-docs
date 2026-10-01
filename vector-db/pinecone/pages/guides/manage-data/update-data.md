@@ -107,7 +107,7 @@ For the full request and response schema, see [Update documents](/reference/api/
 
 ## Update by ID
 
-To update the vector and/or metadata of a single record, use the [`update`](/reference/api/latest/data-plane/update) operation with the following parameters:
+To update the vector and/or metadata of a single record, use the [Update a record](/reference/api/latest/data-plane/update) operation with the following parameters:
 
 * `namespace`: The [namespace](/guides/index-data/indexing-overview#namespaces) containing the record to update. To use the default namespace, set the namespace to `"__default__"`.
 * `id`: The ID of the record to update.

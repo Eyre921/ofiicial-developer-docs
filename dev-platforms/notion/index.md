@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 251 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 252 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -73,6 +73,7 @@
 ## prompts
 
 - `prompts/setup` — [Set up Notion for your agent](pages/prompts/setup.md) · [原文](https://developers.notion.com/prompts/setup)
+- `prompts/setup/changelog` — [Notion MCP setup prompt changelog](pages/prompts/setup/changelog.md) · [原文](https://developers.notion.com/prompts/setup/changelog)
 
 ## reference
 

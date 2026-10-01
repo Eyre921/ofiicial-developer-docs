@@ -103,6 +103,7 @@ Events are split into the following categories:
 * **Asana data fetched**: That a Notion admin fetched Asana data on behalf of a workspace user for Asana data importer triage/debugging.
 * **Audit Log exported**: That the audit log was exported.
 * **Auto-create accounts on sign-in toggled**: That a workspace owner has enabled automatically creating accounts on sign-in.
+* **ChatGPT subscription sharing setting updated**: That ChatGPT subscription sharing was enabled or disabled for the workspace.
 * **Claimable workspace deletion status change**: That the status of workspace deletion of a claimable workspace has changed.
 * **Claimable workspace transfer status change**: That the status of ownership transfer on a claimable workspace has changed.
 * **Claimable workspace upgrade status change**: That the status of a claim and upgrade to Enterprise of a claimable workspace has changed.

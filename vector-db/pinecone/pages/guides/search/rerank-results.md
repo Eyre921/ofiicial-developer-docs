@@ -16,7 +16,7 @@ Pinecone provides [hosted reranking models](#reranking-models) so it's easy to m
 
 ## Integrated reranking
 
-To rerank initial results as an integrated part of a query, without any extra steps, use the [`search`](/reference/api/latest/data-plane/search_records) operation with the `rerank` parameter, including the [hosted reranking model](#reranking-models) you want to use, the number of reranked results to return, and the fields to use for reranking, if different than the main query.
+To rerank initial results as an integrated part of a query, without any extra steps, use the [Search with text](/reference/api/latest/data-plane/search_records) operation with the `rerank` parameter, including the [hosted reranking model](#reranking-models) you want to use, the number of reranked results to return, and the fields to use for reranking, if different than the main query.
 
 For example, the following code searches for the 3 records most semantically related to a query text and uses the hosted `bge-reranker-v2-m3` model to rerank the results and return only the 2 most relevant documents:
 
@@ -335,7 +335,7 @@ The response looks as follows. For each hit, the `_score` represents the relevan
 
 ## Standalone reranking
 
-To rerank initial results as a standalone operation, use the [`rerank`](/reference/api/latest/inference/rerank-results) operation with the [hosted reranking model](#reranking-models) you want to use, the query results and the query, the number of ranked results to return, the field to use for reranking, and any other model-specific parameters.
+To rerank initial results as a standalone operation, use the [Rerank results](/reference/api/latest/inference/rerank-results) operation with the [hosted reranking model](#reranking-models) you want to use, the query results and the query, the number of ranked results to return, the field to use for reranking, and any other model-specific parameters.
 
 For example, the following code uses the hosted `bge-reranker-v2-m3` model to rerank the values of the `documents.chunk_text` fields based on their relevance to the query and return only the 2 most relevant documents, along with their score:
 

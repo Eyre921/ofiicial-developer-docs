@@ -12,6 +12,10 @@ In the Dashboard, [browse and purchase available readers and accessories](https:
 
 These product sheets contain important device specifications, operating information and instructions, and disclosures and warnings provided by the manufacturer.
 
+## Stripe Reader T600 
+
+- [Stripe Reader T600](https://docs.stripecdn.com/t600-product-sheet.pdf)
+
 ## Stripe Reader S700 and S710 
 
 - [Stripe Reader S710](https://stripe.com/s710/manual)

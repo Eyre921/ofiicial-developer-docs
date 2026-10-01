@@ -711,8 +711,6 @@ This page and the [Tax Codes API](https://docs.stripe.com/api/tax_codes/list.md)
 | txcd_92010001 | Shipping | A shipping charge for the delivery of physical goods in conjunction with the sale of these goods. The shipping charge is optional, meaning the customer had other means of obtaining the goods purchased and delivered via this charge. This tax category is not appropriate for stand alone transportation charges that are not associated with the sale of the goods being delivered. | Physical goods | optional | 2021-04-01 |
 | txcd_92010004 | Handling Charge | Handling Charge. | Physical goods | optional | 2021-04-01 |
 
-1 [Events tax codes](https://docs.stripe.com/tax/location-sales.md) are available in public preview.
-
 ## See also
 
 - [Products, prices, tax codes, and tax behavior](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md)

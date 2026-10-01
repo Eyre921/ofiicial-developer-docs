@@ -170,6 +170,10 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Register a reader
 
+A simulated reader lets you get started quickly and build a working integration without requiring physical hardware. Create a simulated reader by using the special registration code `simulated-t600`. Keep track of your reader ID so you can use it later to process a payment on the reader.
+
+### Register a reader
+
 A simulated reader lets you get started quickly and build a working integration without requiring physical hardware. Create a simulated reader by using the special registration code `simulated-s700`. Keep track of your reader ID so you can use it later to process a payment on the reader.
 
 ### Register a reader
@@ -1341,6 +1345,8 @@ app.post("/create_location", async (req, res) => {
 app.post("/register_reader", async (req, res) => {
   const reader = await stripe.terminal.readers.create({
     location: req.body.location_id,
+    label: 'Quickstart - T600 Simulated Reader',
+    registration_code: 'simulated-t600',
     label: 'Quickstart - S700 Simulated Reader',
     registration_code: 'simulated-s700',
     label: 'Quickstart - S710 Simulated Reader',
@@ -1602,6 +1608,8 @@ post '/register_reader' do
 
   reader = $client.v1.terminal.readers.create(
     location: data['location_id'],
+    label: 'Quickstart - T600 Simulated Reader',
+    registration_code: 'simulated-t600'
     label: 'Quickstart - S700 Simulated Reader',
     registration_code: 'simulated-s700'
     label: 'Quickstart - S710 Simulated Reader',
@@ -1810,6 +1818,8 @@ def register_reader():
 
   reader = client.v1.terminal.readers.create(params={
     'location': data['location_id'],
+    'label': 'Quickstart - T600 Simulated Reader',
+    'registration_code': 'simulated-t600',
     'label': 'Quickstart - S700 Simulated Reader',
     'registration_code': 'simulated-s700',
     'label': 'Quickstart - S710 Simulated Reader',
@@ -1981,6 +1991,8 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
 $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
   $reader = $stripe->terminal->readers->create([
     'location' => $json_obj->location_id,
+    'label' => 'Quickstart - T600 Simulated Reader',
+    'registration_code' => 'simulated-t600'
     'label' => 'Quickstart - S700 Simulated Reader',
     'registration_code' => 'simulated-s700'
     'label' => 'Quickstart - S710 Simulated Reader',
@@ -2267,6 +2279,8 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
       var options = new ReaderCreateOptions
       {
         Location = request.LocationId,
+        Label = "Quickstart - T600 Simulated Reader",
+        RegistrationCode = "simulated-t600",
         Label = "Quickstart - S700 Simulated Reader",
         RegistrationCode = "simulated-s700",
         Label = "Quickstart - S710 Simulated Reader",
@@ -2608,6 +2622,8 @@ func handleRegisterReader(sc *stripe.Client, w http.ResponseWriter, r *http.Requ
 
   params := &stripe.TerminalReaderCreateParams{
     Location: stripe.String(req.LocationID),
+    Label: stripe.String("Quickstart - T600 Simulated Reader"),
+    RegistrationCode: stripe.String("simulated-t600"),
     Label: stripe.String("Quickstart - S700 Simulated Reader"),
     RegistrationCode: stripe.String("simulated-s700"),
     Label: stripe.String("Quickstart - S710 Simulated Reader"),
@@ -2939,6 +2955,8 @@ post("/create_location", (request, response) -> {
       ReaderCreateParams params =
         ReaderCreateParams.builder()
           .setLocation(postBody.getLocationId())
+          .setLabel("Quickstart - T600 Simulated Reader")
+          .setRegistrationCode("simulated-t600")
           .setLabel("Quickstart - S700 Simulated Reader")
           .setRegistrationCode("simulated-s700")
           .setLabel("Quickstart - S710 Simulated Reader")

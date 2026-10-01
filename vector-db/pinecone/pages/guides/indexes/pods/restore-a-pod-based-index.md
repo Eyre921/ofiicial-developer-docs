@@ -18,7 +18,7 @@ You can restore a pod-based index by creating a new index from a [collection](/g
 
 ## Create a pod-based index from a collection
 
-To create a pod-based index from a [collection](/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections), use the [`create_index`](/reference/api/latest/control-plane/create_index) endpoint and provide a [`source_collection`](/reference/api/latest/control-plane/create_index#!path=source%5Fcollection\&t=request) parameter containing the name of the collection from which you wish to create an index. The new index can differ from the original source index: the new index can have a different name, number of pods, or pod type. The new index is queryable and writable.
+To create a pod-based index from a [collection](/guides/manage-data/back-up-an-index#pod-based-index-backups-using-collections), use the [Create an index](/reference/api/latest/control-plane/create_index) endpoint and provide a [`source_collection`](/reference/api/latest/control-plane/create_index#!path=source%5Fcollection\&t=request) parameter containing the name of the collection from which you wish to create an index. The new index can differ from the original source index: the new index can have a different name, number of pods, or pod type. The new index is queryable and writable.
 
 <CodeGroup>
   ```Python Python theme={null}

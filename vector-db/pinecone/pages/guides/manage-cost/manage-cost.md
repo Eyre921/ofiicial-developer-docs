@@ -40,7 +40,7 @@ To edit a spend alert:
 
 ## List by ID prefix
 
-By using a [hierarchical ID schema](/guides/index-data/data-modeling#use-structured-ids), you can retrieve records without performing a query. To do so, you can use [`list`](/reference/api/latest/data-plane/list) to retrieve records by ID prefix, then use `fetch` to retrieve the records you need. This can reduce costs, because [`query` consumes more RUs when scanning a larger namespace](/guides/manage-cost/understanding-cost#query), while [`fetch` consumes a fixed ratio of RUs to records retrieved](/guides/manage-cost/understanding-cost#fetch).
+By using a [hierarchical ID schema](/guides/index-data/data-modeling#use-structured-ids), you can retrieve records without performing a query. To do so, you can use [List record IDs](/reference/api/latest/data-plane/list) to retrieve records by ID prefix, then use `fetch` to retrieve the records you need. This can reduce costs, because [`query` consumes more RUs when scanning a larger namespace](/guides/manage-cost/understanding-cost#query), while [`fetch` consumes a fixed ratio of RUs to records retrieved](/guides/manage-cost/understanding-cost#fetch).
 
 ## Use namespaces for multitenancy
 

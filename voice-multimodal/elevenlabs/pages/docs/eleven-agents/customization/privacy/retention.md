@@ -41,7 +41,7 @@ The retention settings apply separately to:
 
 Navigate to your agent's settings and select the "Advanced" tab. The retention settings are located in the "Data Retention" section.
 
-![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/39019a60151b8d999d5e1719e1553508a91c3bf7a34e6f5729ea2942c3dc4d57/assets/images/conversational-ai/retention.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T110059Z&X-Amz-Expires=604800&X-Amz-Signature=8fc7a05f6c842799b15a3a2d363b06a3e290669ca4ac0bcc71d189d7ebef12a0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/39019a60151b8d999d5e1719e1553508a91c3bf7a34e6f5729ea2942c3dc4d57/assets/images/conversational-ai/retention.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=c44cd5cd60c18887c70341719a174b49dcd3b6886b8049bb4a6eb723f901999c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Update retention period
 
@@ -49,7 +49,7 @@ Navigate to your agent's settings and select the "Advanced" tab. The retention s
 2. Choose whether to apply changes to existing data
 3. Click "Save" to confirm changes
 
-![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a5d069a0957ee06672aab4a8784362a72ed7d3f055d548eb54b32998ec246aad/assets/images/conversational-ai/retention-apply-existing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T110059Z&X-Amz-Expires=604800&X-Amz-Signature=3960d9db920976e7d41b0d433ee92ce3efaf53e582e99b8455d48981ee3f3d85&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Enable overrides](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a5d069a0957ee06672aab4a8784362a72ed7d3f055d548eb54b32998ec246aad/assets/images/conversational-ai/retention-apply-existing.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=f26050775e2042b6de4ce8eb82e0d376adcf8ca3cb170968eeafc1f18728dd8a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 When modifying retention settings, you'll have the option to apply the new retention period to existing conversation data or only to new conversations going forward.
 

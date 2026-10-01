@@ -1,7 +1,7 @@
 ---
 title: "HubSpot"
-source: https://elevenlabs.io/docs/reception-ai/integrations/hub-spot.md
-path: docs/reception-ai/integrations/hub-spot
+source: https://elevenlabs.io/docs/reception-ai/integrations/hubspot.md
+path: docs/reception-ai/integrations/hubspot
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.

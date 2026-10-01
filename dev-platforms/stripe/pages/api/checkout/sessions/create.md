@@ -153,10 +153,10 @@ Possible enum values:
   Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md). Required in `setup` mode when `payment_method_types` is not set.
 
 - [`custom_fields`](https://docs.stripe.com/api/checkout/sessions/create.md?query=custom_fields) (array of objects, optional)
-  Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `custom`.
+  Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `elements`.
 
 - [`custom_text`](https://docs.stripe.com/api/checkout/sessions/create.md?query=custom_text) (object, optional)
-  Display additional text for your customers using custom text. You can’t set this parameter if `ui_mode` is `custom`.
+  Display additional text for your customers using custom text. You can’t set this parameter if `ui_mode` is `elements`.
 
 - `customer` (string, optional)
   ID of an existing Customer, if one exists. In `payment` mode, the customer’s most recently saved card payment method will be used to prefill the email, name, card details, and billing address on the Checkout page. In `subscription` mode, the customer’s [default payment method](https://docs.stripe.com/api/customers/update.md#update_customer-invoice_settings-default_payment_method) will be used if it’s a card, otherwise the most recently saved card will be used. A valid billing address, billing name and billing email are required on the payment method for Checkout to prefill the customer’s card details.
@@ -296,7 +296,7 @@ Possible enum values:
 
   For `subscription` mode, there is a maximum of 20 line items and optional items with recurring Prices and 20 line items and optional items with one-time Prices.
 
-  You can’t set this parameter if `ui_mode` is `custom`.
+  You can’t set this parameter if `ui_mode` is `elements` or `form`.
 
 - `origin_context` (enum, optional)
   Where the user is coming from. This informs the optimizations that are applied to the session. You can’t set this parameter if `ui_mode` is `elements`.
@@ -335,7 +335,7 @@ Possible enum values:
   Payment-method-specific configuration.
 
 - [`permissions`](https://docs.stripe.com/api/checkout/sessions/create.md?query=permissions) (object, optional)
-  This property is used to set up permissions for various actions (e.g., update) on the CheckoutSession object. Can only be set when creating `embedded` or `custom` sessions.
+  This property is used to set up permissions for various actions (for example, update) on the CheckoutSession object. Can only be set when creating `embedded_page` or `elements` sessions.
 
   For specific permissions, please refer to their dedicated subsections, such as `permissions.update_shipping_details`.
 

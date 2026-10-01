@@ -628,8 +628,10 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | Prisma | Database |
 | Privy | Payments, authentication |
 | Pydantic | Observability, analytics |
+| Quo | Communications |
 | Railway | Hosting, database, storage, cache |
 | Render | Hosting, database |
+| Resend | Email |
 | RevenueCat | Payments, analytics |
 | Runloop | Sandboxes, AI |
 | Schematic | Feature flags, payments |

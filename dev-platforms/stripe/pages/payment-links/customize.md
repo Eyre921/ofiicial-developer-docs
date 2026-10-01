@@ -400,7 +400,7 @@ Set [automatic_surcharge[enabled]](https://docs.stripe.com/api/payment-link/crea
 ```curl
 curl https://api.stripe.com/v1/payment_links \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-08-26.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -d "line_items[0][price]={{PRICE_ID}}" \
   -d "line_items[0][quantity]=1" \
   -d "automatic_surcharge[enabled]=true" \

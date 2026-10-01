@@ -26,7 +26,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
       Upserting text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
     </Note>
 
-    To upsert source text into an [index of dense vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [`upsert_records`](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to dense vectors automatically using the hosted dense embedding model associated with the index.
+    To upsert source text into an [index of dense vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [Upsert text](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to dense vectors automatically using the hosted dense embedding model associated with the index.
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:
@@ -243,7 +243,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
   </Tab>
 
   <Tab title="Upsert vectors">
-    To upsert dense vectors into an [index of dense vectors](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [`upsert`](/reference/api/latest/data-plane/upsert) operation as follows:
+    To upsert dense vectors into an [index of dense vectors](/guides/index-data/create-an-index#create-an-index-for-dense-vectors), use the [Upsert records](/reference/api/latest/data-plane/upsert) operation as follows:
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:
@@ -521,7 +521,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
       Upserting text is supported only for [indexes with integrated embedding](/guides/index-data/indexing-overview#integrated-embedding).
     </Note>
 
-    To upsert source text into an [index of sparse vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [`upsert_records`](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to sparse vectors automatically using the hosted sparse embedding model associated with the index.
+    To upsert source text into an [index of sparse vectors with integrated embedding](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [Upsert text](/reference/api/latest/data-plane/upsert_records) operation. Pinecone converts the text to sparse vectors automatically using the hosted sparse embedding model associated with the index.
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:
@@ -747,7 +747,7 @@ If a record ID already exists, upserting overwrites the entire record. To change
   </Tab>
 
   <Tab title="Upsert vectors">
-    To upsert sparse vectors into an [index of sparse vectors](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [`upsert`](/reference/api/latest/data-plane/upsert) operation as follows:
+    To upsert sparse vectors into an [index of sparse vectors](/guides/index-data/create-an-index#create-an-index-for-sparse-vectors), use the [Upsert records](/reference/api/latest/data-plane/upsert) operation as follows:
 
     * Specify the [`namespace`](/guides/index-data/indexing-overview#namespaces) to upsert into. If the namespace doesn't exist, it's created. To use the default namespace, set the namespace to `"__default__"`.
     * Format your input data as records, each with the following:

@@ -65,7 +65,7 @@ To import records from a public data source, a storage integration isn't require
 
     <Tabs>
       <Tab title="Document schema">
-        To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to [`documents.upsert`](/reference/api/latest/data-plane/upsert_documents):
+        To import into a namespace in an [index with a document schema](/guides/index-data/data-modeling#documents), use JSONL (`.jsonl`, or gzip-compressed `.jsonl.gz`) files instead of Parquet. Each line is one [document](/guides/core-concepts/key-terms#document), identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation:
 
         | Field | JSON type | Description |
         | - | - | - |
@@ -191,7 +191,7 @@ To import records from a public data source, a storage integration isn't require
   The examples below use Parquet files, for indexes **without** a schema definition. Indexes with document schemas import [JSONL files](#prepare-document-schema-files-jsonl) instead. Semantic-text (auto-embedded) fields aren't yet supported in document schemas.
 </Note>
 
-Use the [`start_import`](/reference/api/latest/data-plane/start_import) operation to start an asynchronous import of vectors from object storage into an index.
+Use the [Start import](/reference/api/latest/data-plane/start_import) operation to start an asynchronous import of vectors from object storage into an index.
 
 * For `uri`, specify the URI of the bucket and import directory containing the namespaces and Parquet files you want to import. For example:
 
@@ -351,7 +351,7 @@ The amount of time required for an import depends on various factors, including:
 * The number of namespaces to import, and the number of records in each
 * The total size (in bytes) of the import
 
-To track an import's progress, check its status bar in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/import) or use the [`describe_import`](/reference/api/latest/data-plane/describe_import) operation with the import ID:
+To track an import's progress, check its status bar in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/import) or use the [Describe an import](/reference/api/latest/data-plane/describe_import) operation with the import ID:
 
 <CodeGroup>
   ```python Python theme={null}
@@ -483,7 +483,7 @@ If the import fails, the response contains an `error` field with the reason for 
 
 ## Prepare document-schema files (JSONL)
 
-For indexes with a document schema, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you would pass to [`documents.upsert`](/reference/api/latest/data-plane/upsert_documents), and validated through the same code path, so a document that upserts cleanly imports cleanly.
+For indexes with a document schema, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`), instead of Parquet. Each line is one document, identical in shape to a document you would pass to the [Upsert documents](/reference/api/latest/data-plane/upsert_documents) operation, and validated through the same code path, so a document that upserts cleanly imports cleanly.
 
 ### File format
 
@@ -620,7 +620,7 @@ with gzip.open("0.jsonl.gz", "wt") as f:
 
 ### List imports
 
-Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operation to list all of the recent and ongoing imports. By default, the operation returns up to 100 imports per page. If the `limit` parameter is passed, the operation returns up to that number of imports per page instead. For example, if `limit=3`, up to 3 imports are returned per page. Whenever there are additional imports to return, the response includes a `pagination_token` for fetching the next page of imports.
+Use the [List imports](/reference/api/latest/data-plane/list_imports) operation to list all of the recent and ongoing imports. By default, the operation returns up to 100 imports per page. If the `limit` parameter is passed, the operation returns up to that number of imports per page instead. For example, if `limit=3`, up to 3 imports are returned per page. Whenever there are additional imports to return, the response includes a `pagination_token` for fetching the next page of imports.
 
 <Tabs>
   <Tab title="Python SDK">
@@ -767,7 +767,7 @@ Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operatio
 
 ### Cancel an import
 
-The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation cancels an import if it isn't yet finished. It has no effect if the import is already complete.
+The [Cancel an import](/reference/api/latest/data-plane/cancel_import) operation cancels an import if it isn't yet finished. It has no effect if the import is already complete.
 
 <CodeGroup>
   ```python Python theme={null}

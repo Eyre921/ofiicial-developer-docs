@@ -30,7 +30,7 @@ curl https://docs.stripe.com/preview/register \
 
 ## Before you begin
 
-- Embedded components are available to display to connected accounts in the United States (US), United Kingdom (GB), France (FR), Germany (DE), and Australia (AU).
+- Embedded components are available to display to connected accounts in the United States (US), United Kingdom (GB), France (FR), Germany (DE), Australia (AU), and Canada (CA).
 - Before you activate Capital, you must [enable automatic offers](https://docs.stripe.com/capital/embedded-component-integration.md#enable-automatic-offers) and [submit your integration to Stripe for review](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md#submit-for-review).
 - When you [render the component](https://docs.stripe.com/connect/supported-embedded-components/capital-financing.md#render-the-component), it links out to Stripe content by default. You can replace the link for [Privacy policy](https://stripe.com/privacy) and [How Capital for platforms works](https://docs.stripe.com/capital/how-capital-for-platforms-works.md) with your equivalent documentation.
 
@@ -77,7 +77,7 @@ In your [create an Account Session](https://docs.stripe.com/api/account_sessions
 ```curl
 curl https://api.stripe.com/v1/account_sessions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-08-26.preview; embedded_connect_beta=v2;" \
+  -H "Stripe-Version: 2026-09-30.preview; embedded_connect_beta=v2;" \
   -d "account={{CONNECTEDACCOUNT_ID}}" \
   -d "components[capital_financing][enabled]=true"
 ```

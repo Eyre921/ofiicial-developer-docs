@@ -26,7 +26,7 @@ An index with a document schema stores typed JSON documents. The schema declares
   Full-text search isn't integrated embedding. A `string` field with `full_text_search` is indexed for BM25 ranking and Lucene queries. It doesn't call an embedding model. Integrated embedding remains available for vector indexes.
 </Note>
 
-Indexes with document schemas use API version `2026-07`, supported through REST and the Python SDK. For other languages, call the REST endpoint directly.
+Indexes with document schemas use API version `2026-07`, supported through REST and the Python (v10 or later), Node.js (v9 or later), and Go (v7 or later) SDKs. For other languages, call the REST endpoint directly.
 
 ### Minimal: BM25 on a single text field
 

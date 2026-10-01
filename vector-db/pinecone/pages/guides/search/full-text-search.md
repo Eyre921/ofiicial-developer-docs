@@ -17,7 +17,7 @@ Full-text search ranks documents by keyword and phrase relevance using **BM25** 
 Reach for full-text search when exact words, phrases, names, codes, or identifiers matter, not just semantic similarity. For semantic-only or vector-only workloads, an [index with dense vectors](/guides/core-concepts/key-terms#index-with-dense-vectors) (the Vectors API) is simpler. See [Search overview](/guides/search/search-overview) to choose the right approach.
 
 <Note>
-  Full-text search requires [API version](/reference/api/versioning) `2026-07`: send `X-Pinecone-Api-Version: 2026-07` on REST requests, or use the `2026-07` Python SDK (v10 or later).
+  Full-text search requires [API version](/reference/api/versioning) `2026-07`. Send `X-Pinecone-Api-Version: 2026-07` on REST requests, or use a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later).
 </Note>
 
 ## Capabilities
@@ -478,7 +478,7 @@ Everything in this section applies to indexes with document schemas. For dense, 
 
 ### Requirements
 
-* **Entry points**: Use the REST API, the Python SDK (v10 or later), or the Pinecone console. REST requests must send `X-Pinecone-Api-Version: 2026-07`, and the SDK sends it for you.
+* **Entry points**: Use the REST API, a `2026-07` SDK (Python v10 or later, Node.js v9 or later, or Go v7 or later), or the Pinecone console. REST requests must send `X-Pinecone-Api-Version: 2026-07`, and the SDKs send it for you.
 * **Endpoint compatibility**: Indexes with document schemas use the `/namespaces/{namespace}/documents/*` endpoints. Dense, sparse, and integrated-inference indexes continue to use `/vectors/*`, and `/records/*` for integrated inference. The two endpoint families are index-type-specific and don't cross over.
 * **Deployment**: Only managed (serverless) deployments are supported, with `read_capacity.mode` set to `OnDemand` or `Dedicated`.
 

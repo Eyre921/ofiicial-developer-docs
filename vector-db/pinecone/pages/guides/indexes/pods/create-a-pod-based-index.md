@@ -18,7 +18,7 @@ This page shows you how to create a pod-based index. For guidance on serverless 
 
 ## Create a pod index
 
-To create a pod index, use the [`create_index`](/reference/api/latest/control-plane/create_index) operation as follows:
+To create a pod index, use the [Create an index](/reference/api/latest/control-plane/create_index) operation as follows:
 
 * Provide a `name` for the index.
 * Specify the `dimension` and `metric` of the vectors you'll store in the index. This should match the dimension and metric supported by your embedding model.

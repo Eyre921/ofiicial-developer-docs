@@ -20,7 +20,18 @@ Voice cloning accuracy takes a major step forward with Eleven v4. Cloned voices 
 
 Instant Voice Clones (IVCs) are more accurate than ever in Eleven v4. They capture the defining characteristics of a source voice more faithfully, making it easier to create a convincing clone quickly from a short audio sample.
 
+> **Tip**
+>
+> Instant Voice Cloning has received a significant upgrade in Eleven v4, delivering noticeably
+> better accuracy overall. If you haven't tried it yet, now is a good time to test it with your own
+> audio.
+
 Professional Voice Clones (PVCs) are fully supported in Eleven v4. They build on the same advances in voice accuracy, offering a more faithful reproduction of the source voice for workflows that require the highest level of consistency and control.
+
+> **Warning**
+>
+> Professional Voice Clone support for Eleven v4 is currently rolling out to everyone and should be
+> available within the next few days.
 
 Because of this significant leap in accuracy, Eleven v4 may sound substantially different from Eleven v3. Eleven v3 laid the foundation for Eleven v4, with a strong emphasis on delivery and accuracy, while Eleven v4 builds on that foundation with substantially improved voice accuracy. As a result, Eleven v4 is designed to capture the source voice more faithfully, though you may still prefer how a voice sounded in Eleven v3. Accuracy and personal preference are not always the same, so we recommend comparing both versions with your own content to choose the best fit for your use case.
 

@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/payouts
 
 # Payouts
 
-![Payouts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233115Z&X-Amz-Expires=604800&X-Amz-Signature=f274b21abf153831f0caed58cfd4b5df12b4fc9e17a02062eaa408a7b449195a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Payouts](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2827fdd8be3ad39ff50a5fe9b0a5d4d7a2dcf4aa7f1fc6a8406d451c1dd3d30d/assets/images/product-guides/voices/payouts-product-feature.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=609f7c0e7834e93f39683de30a4124e5f92eb90ef8bfc5be5071015040834bb2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -22,7 +22,7 @@ To set up your Payouts account:
 
 * Click on your profile icon in the top right corner and select [Payouts](https://elevenlabs.io/app/payouts).
 
-![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233115Z&X-Amz-Expires=604800&X-Amz-Signature=34cc09d9ca7654680287beb464c9019162612ae8985c21fb696b0fad6aa86447&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Payouts overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a8a2f7f41a9d548644fbd90d54d416e1d1811c358c8a46f8b64f78b818af63d9/assets/images/product-guides/voices/payouts-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=3535adaf7f91707dc904adef6fa081fcd9cad478d7bbcd33f7261f738043143d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 * Follow the prompts from Stripe Connect to complete the account setup.
 
@@ -205,7 +205,7 @@ To set up your Payouts account:
 
       To complete the process, please visit your Payouts page, and click **Complete Account Setup**, and follow the steps.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233115Z&X-Amz-Expires=604800&X-Amz-Signature=836bd93de8f59e3245363f72393b8bdefb1287f192e2782982a112e4fd43807e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb52e5ffc758de83e815dccbf38f589f443d01943aa46e083839af073a7cd568/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=99200b70061dbd1960efdb569d5753034c976ab98bede536a059e235a7812ba5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If you still see **Complete Account Setup** after completing all the steps, please contact Support by emailing [support@elevenlabs.io](mailto:support@elevenlabs.io).
 
@@ -215,11 +215,11 @@ To set up your Payouts account:
 
       Payouts will be disabled for any user who does not have a valid tax form. To resume Payouts, please visit your Payouts page and click **Manage Account**.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233115Z&X-Amz-Expires=604800&X-Amz-Signature=23b7c7a51e505f15ed35f9a537d8cb2c57dbae01ff3f8f02c9a77780da1d4fae&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5b05f4b71a2fa97f474b763834ab81479a21e159b7a24753be81adfd0b61db04/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=833dc6cdbecb5fa3812e16d48f9ee8b8a09b5ab67315c169795a956202841c95&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You will then see **Missing W-8/W-9 certification**. To complete your certification, click **Update** and answer the questions in the form.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233115Z&X-Amz-Expires=604800&X-Amz-Signature=cfab342ca837036c14a35280f1f08c043156658666d57a57756b56debe7bb26b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/why-are-payouts-not-enabled-for-my-account-3.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=78d05230fe3fdadcc2a8ddc4c5ee99588389c4d4838911d60ad4c30917de8a1a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
     </td>
   </tr>
 
@@ -306,7 +306,7 @@ To set up your Payouts account:
       You will see a section for W-8/W-9 certification, which will be marked **Incomplete**. Click **Update** to open the form\
 
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T233115Z&X-Amz-Expires=604800&X-Amz-Signature=15643a1315bb833d0c80c7b4571f4d7a802ab25c1df029a1ee6d077d0785d0fb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100018Z&X-Amz-Expires=604800&X-Amz-Signature=3e50a6f74c1660e6257fb16a9d5558611a3e2b72beafed55815ba4ff50168745&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Answer the questions on screen. The first question, "Are you considered a U.S. person for Federal Tax Purpose?", will determine whether you complete Form W-9 or Form W-8.
 

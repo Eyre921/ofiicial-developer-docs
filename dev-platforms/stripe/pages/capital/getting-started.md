@@ -16,9 +16,9 @@ Use this table to determine which integration best fits your platform’s market
 
 | Capability | No-code (Recommended) | Embedded components | API |
 | --- | --- | --- | --- |
-| **Supported markets** | US, AU | US, AU, GB, FR, DE | US, AU, GB, FR, DE |
+| **Supported markets** | US, AU | US, AU, CA, GB, FR, DE | US, AU, CA, GB, FR, DE |
 | **Implementation effort** | Minutes to hours | Hours to days | Days to weeks |
-| **Who sends offer emails** | Stripe | Stripe (US/AU) or platform (GB, FR, DE) | Platform |
+| **Who sends offer emails** | Stripe | Stripe (US/AU) or platform (CA, GB, FR, DE) | Platform |
 | **Who handles the application flow** | Stripe | Embedded in your UI | Stripe-hosted |
 | **Who handles marketing** | Stripe sends co-branded emails | Platform with optional Stripe co-branding | Platform |
 | **Customization** | Low | Medium | High |

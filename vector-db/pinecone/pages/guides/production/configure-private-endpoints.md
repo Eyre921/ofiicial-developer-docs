@@ -176,7 +176,7 @@ You can get the private endpoint URL for an index from the Pinecone console or A
   </Tab>
 
   <Tab title="API">
-    To get the private endpoint URL for an index from the API, use the [`describe_index`](/reference/api/latest/control-plane/describe_index) operation, which returns the private endpoint URL as the `private_host` value:
+    To get the private endpoint URL for an index from the API, use the [Describe an index](/reference/api/latest/control-plane/describe_index) operation, which returns the private endpoint URL as the `private_host` value:
 
     <CodeGroup>
       ```JavaScript JavaScript theme={null}

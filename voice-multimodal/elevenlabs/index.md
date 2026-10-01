@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1353 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1351 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -698,7 +698,6 @@
 - `docs/eleven-agents/libraries/java-script` — [JavaScript SDK](pages/docs/eleven-agents/libraries/java-script.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/java-script.md)
 - `docs/eleven-agents/libraries/kotlin` — [Kotlin SDK](pages/docs/eleven-agents/libraries/kotlin.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/kotlin.md)
 - `docs/eleven-agents/libraries/python` — [Python SDK](pages/docs/eleven-agents/libraries/python.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/python.md)
-- `docs/eleven-agents/libraries/react` — [React SDK](pages/docs/eleven-agents/libraries/react.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/react.md)
 - `docs/eleven-agents/libraries/react-native` — [React Native SDK](pages/docs/eleven-agents/libraries/react-native.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/react-native.md)
 - `docs/eleven-agents/libraries/swift` — [Swift SDK](pages/docs/eleven-agents/libraries/swift.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/swift.md)
 - `docs/eleven-agents/libraries/web-sockets` — [WebSocket](pages/docs/eleven-agents/libraries/web-sockets.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/web-sockets.md)
@@ -1332,8 +1331,7 @@
 - `docs/reception-ai/features/quote-requests` — [Quote requests](pages/docs/reception-ai/features/quote-requests.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/quote-requests.md)
 - `docs/reception-ai/integrations/cal-com` — [Cal.com](pages/docs/reception-ai/integrations/cal-com.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/cal-com.md)
 - `docs/reception-ai/integrations/calendly` — [Calendly](pages/docs/reception-ai/integrations/calendly.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/calendly.md)
-- `docs/reception-ai/integrations/google-calendar` — [Google Calendar](pages/docs/reception-ai/integrations/google-calendar.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/google-calendar.md)
-- `docs/reception-ai/integrations/hub-spot` — [HubSpot](pages/docs/reception-ai/integrations/hub-spot.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/hub-spot.md)
+- `docs/reception-ai/integrations/hubspot` — [HubSpot](pages/docs/reception-ai/integrations/hubspot.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/hubspot.md)
 - `docs/reception-ai/integrations/mcp-server` — [MCP server](pages/docs/reception-ai/integrations/mcp-server.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/mcp-server.md)
 - `docs/reception-ai/integrations/overview` — [Integrations](pages/docs/reception-ai/integrations/overview.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/overview.md)
 - `docs/reception-ai/integrations/webhooks` — [Webhooks](pages/docs/reception-ai/integrations/webhooks.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/webhooks.md)

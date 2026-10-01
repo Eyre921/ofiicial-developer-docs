@@ -59,6 +59,21 @@ Stripe creates event types marked as **Selection required** only when at least o
 
   Occurs whenever an application fee is refunded, whether from refunding a charge or from [refunding the application fee directly](https://docs.stripe.com/api/events/types.md#fee_refunds). This includes partial refunds.
 
+- `apps.install.created`
+  `data.object` is one of: [`apps.install`](https://docs.stripe.com/api#apps_install_object)
+
+  Occurs whenever a user installs a Stripe app. Sent to the app developer, embedding platform, and installing merchant.
+
+- `apps.install.deleted`
+  `data.object` is one of: [`apps.install`](https://docs.stripe.com/api#apps_install_object)
+
+  Occurs whenever a user uninstalls a Stripe app. Sent to the app developer, embedding platform, and installing merchant.
+
+- `apps.install.updated`
+  `data.object` is one of: [`apps.install`](https://docs.stripe.com/api#apps_install_object)
+
+  Occurs whenever a user updates a Stripe app. Sent to the app developer, embedding platform, and installing merchant.
+
 - `balance_settings.updated`
   `data.object` is one of: [`balance_settings`](https://docs.stripe.com/api#balance_settings_object)
 
@@ -607,7 +622,7 @@ Stripe creates event types marked as **Selection required** only when at least o
 - `issuing_authorization.created`
   `data.object` is one of: [`issuing.authorization`](https://docs.stripe.com/api#issuing_authorization_object)
 
-  Occurs whenever an authorization is created.
+  Occurs whenever an authorization is created. For verification authorizations, this event is only accessible via private preview.
 
 - `issuing_authorization.request` [requires explicit opt-in]
   `data.object` is one of: [`issuing.authorization`](https://docs.stripe.com/api#issuing_authorization_object)
@@ -617,7 +632,7 @@ Stripe creates event types marked as **Selection required** only when at least o
 - `issuing_authorization.updated`
   `data.object` is one of: [`issuing.authorization`](https://docs.stripe.com/api#issuing_authorization_object)
 
-  Occurs whenever an authorization is updated.
+  Occurs whenever an authorization is updated. For verification authorizations, this event is only accessible via private preview.
 
 - `issuing_card.created`
   `data.object` is one of: [`issuing.card`](https://docs.stripe.com/api#issuing_card_object)

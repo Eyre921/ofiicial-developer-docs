@@ -8,7 +8,7 @@ path: capital/refills
 
 Learn how to enable refills for your Capital program.
 
-Refills are additional financing offers sent to connected accounts who’ve made substantial repayment progress towards their in-progress financing offer balance. If approved, refill offers for connected accounts based in the United States (US) and Australia (AU) pay down the remaining balance on the in-progress balance.
+Refills are additional financing offers sent to connected accounts who’ve made substantial repayment progress towards their in-progress financing offer balance. If approved, refill offers for connected accounts based in the United States (US), Australia (AU), and Canada (CA) pay down the remaining balance on the in-progress financing.
 
 For France (FR), Germany (DE), and the United Kingdom (GB), review [stacked refill behavior](https://docs.stripe.com/capital/refills.md#stacked-refill).
 

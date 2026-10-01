@@ -12,7 +12,7 @@ Create, describe, list, and delete namespaces in Pinecone serverless indexes, in
   This feature requires the `2025-10` version of the API or later.
 </Note>
 
-Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [`create_namespace`](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/configure-metadata-indexing).
+Namespaces are created automatically as you [upsert](/guides/index-data/upsert-data) records. However, you can also create namespaces ahead of time using the [Create a namespace](/reference/api/latest/data-plane/createnamespace) operation. Specify a name for the namespace and, optionally, the [metadata fields to index](/guides/index-data/configure-metadata-indexing).
 
 <CodeGroup>
   ```python Python theme={null}
@@ -218,7 +218,7 @@ The response will look like the following:
 
 ## List all namespaces in an index
 
-Use the [`list_namespaces`](/reference/api/latest/data-plane/listnamespaces) operation to list all namespaces in a serverless index.
+Use the [List namespaces](/reference/api/latest/data-plane/listnamespaces) operation to list all namespaces in a serverless index.
 
 Up to 100 namespaces are returned at a time by default, in sorted order (bitwise “C” collation). If the `limit` parameter is set, up to that number of namespaces are returned instead. Whenever there are additional namespaces to return, the response also includes a `pagination_token` that you can use to get the next batch of namespaces. When the response doesn't include a `pagination_token`, there are no more namespaces to return.
 
@@ -433,7 +433,7 @@ The response will look like the following:
 
 ## Describe a namespace
 
-Use the [`describe_namespace`](/reference/api/latest/data-plane/describenamespace) operation to get details about a namespace in a serverless index, including the total number of vectors in the namespace.
+Use the [Describe a namespace](/reference/api/latest/data-plane/describenamespace) operation to get details about a namespace in a serverless index, including the total number of vectors in the namespace.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -580,7 +580,7 @@ The response will look like the following:
 
 ## Delete a namespace
 
-Use the [`delete_namespace`](/reference/api/latest/data-plane/deletenamespace) operation to delete a namespace in a serverless index.
+Use the [Delete a namespace](/reference/api/latest/data-plane/deletenamespace) operation to delete a namespace in a serverless index.
 
 <Warning>
   Deleting a namespace is irreversible. All data in the namespace is permanently deleted.

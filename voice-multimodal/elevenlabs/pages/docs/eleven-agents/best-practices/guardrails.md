@@ -158,7 +158,7 @@ You can use these placeholders in the feedback text:
 
 You can see an estimated cost (under the prompt) when creating or editing a custom guardrail.
 
-![Custom guardrail cost estimation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20260930%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260930T105936Z&X-Amz-Expires=604800&X-Amz-Signature=4cb5029493fc5e7e92f2f0902868ee36086edd9596af24339e7ea73668a0daca&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Custom guardrail cost estimation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T111934Z&X-Amz-Expires=604800&X-Amz-Signature=affde4e300851ad55f5ae18489271b3448ed50ddfa094f32365ccdd5c59a92cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >

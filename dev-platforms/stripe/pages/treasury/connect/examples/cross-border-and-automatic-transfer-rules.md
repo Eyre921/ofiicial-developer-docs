@@ -352,7 +352,7 @@ curl -G https://api.stripe.com/v2/core/accounts/{{RECIPIENTACCOUNTID_ID}} \
     "collector": "stripe",
     "entries": [],
     "summary": { "minimum_deadline": { "status": "past_due", "time": null } }
-  },
+  }
 }
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Gemini CLI Extension"
+title: "Gemini CLI extension"
 source: https://docs.pinecone.io/integrations/gemini-cli
 path: integrations/gemini-cli
 ---
