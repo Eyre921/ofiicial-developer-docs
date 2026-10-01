@@ -54,14 +54,14 @@ Open a proposal from the branch whose changes you want reviewed:
 In the agent's **Branches** tab, open the options menu on the source branch and select **Open
 merge proposal**.
 
-![Open merge proposal option in a branch's options menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5216047fc93408959d31bba118e0f0e8853129da106a9d75c00d57a2307e33e0/assets/images/agents/merge-proposal-open-from-branch-list.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=ec5cecec483f5be12f78d2de9f6b5fb526f6b677d2cb697c4da4b625583203cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Open merge proposal option in a branch's options menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5216047fc93408959d31bba118e0f0e8853129da106a9d75c00d57a2307e33e0/assets/images/agents/merge-proposal-open-from-branch-list.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T233214Z&X-Amz-Expires=604800&X-Amz-Signature=963e679da367c35f9c7aac4d5d72d54dedb7e1ac0021010a216a30fb90281bba&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### From the Proposals tab
 
 In the agent's **Branches > Proposals** tab, select the source branch, then click **Create
 proposal**.
 
-![Proposals tab on an agent's Branches page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0/assets/images/agents/merge-proposals-list.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=1456cfcf71fee608b8427c3da69f283fdfd7c96192c0ec546708713e2a2c4395&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Proposals tab on an agent's Branches page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0/assets/images/agents/merge-proposals-list.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T233214Z&X-Amz-Expires=604800&X-Amz-Signature=c61c69f1747d05c0014e1d5a183ba4c25cfd18a6ef8ccc914dac00665794b471&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Give the proposal a title, an optional description, and pick a target branch from the agent's other non-archived branches. Opening a proposal does not change either branch; it only records the request.
 
@@ -78,25 +78,25 @@ A proposal's page has these tabs:
 
 The description, review history, and a form for leaving a review.
 
-![Overview tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/44894b2d2cbb79aeff99813f83d5832ab4a9e6ff44796c772e3681c69120b04c/assets/images/agents/merge-proposal-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=dc70ee74016b679ae99c7d52a54767241d60575ec5d32a69c3bd1a6cb52becb7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Overview tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/44894b2d2cbb79aeff99813f83d5832ab4a9e6ff44796c772e3681c69120b04c/assets/images/agents/merge-proposal-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T233214Z&X-Amz-Expires=604800&X-Amz-Signature=098d8364c53a8d57a484e468b8f53bc13564c406999793afaa74b9c9cf2ee242&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Changes
 
 A diff between the source and target branch configurations.
 
-![Changes tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/968126763b1bb7e5bf57ad68ee334d5d5bc64b43a7ce3006184a462ce0c3d929/assets/images/agents/merge-proposal-changes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=296c19cafe2192b1c0b138a2bbdd81e92981be4d365f8acd752352dfed4c8a34&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Changes tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/968126763b1bb7e5bf57ad68ee334d5d5bc64b43a7ce3006184a462ce0c3d929/assets/images/agents/merge-proposal-changes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T233214Z&X-Amz-Expires=604800&X-Amz-Signature=720f369b12e62e0de3301f600f2e6898b01309a26d3de0cc5cb568bfc1c51122&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Test runs
 
 The source branch's test history, so reviewers can check it still passes before approving.
 
-![Test runs tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a39354598b070cef39720159b84da10414d7b17820c8c71780ed2bd5a66a47fc/assets/images/agents/merge-proposal-test-runs.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=2488f118f4649a9537eda26e490962c91f846e6e872225f5173566a34842b3a4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Test runs tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a39354598b070cef39720159b84da10414d7b17820c8c71780ed2bd5a66a47fc/assets/images/agents/merge-proposal-test-runs.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T233214Z&X-Amz-Expires=604800&X-Amz-Signature=fedabfb942baac7ac8c52ea1c0fce23729f4cc69a1eac64609fde40e2bdacbdf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Conversations
 
 Recent conversations on the source branch.
 
-![Conversations tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c37286e50107428225c57804a8bc8e09fe364b1ad6dc6cf582084dd8c52a6565/assets/images/agents/merge-proposal-conversations.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T100020Z&X-Amz-Expires=604800&X-Amz-Signature=f61a2bff01b72b38cddfd64bf68e000c2776ad807732f907cc52fa19270f627e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Conversations tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c37286e50107428225c57804a8bc8e09fe364b1ad6dc6cf582084dd8c52a6565/assets/images/agents/merge-proposal-conversations.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T233214Z&X-Amz-Expires=604800&X-Amz-Signature=b0f13c52e0b1d6e14c5dbe09ac85a098f85d57fb1b15a73f0360202f7e8a0aa9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Anyone with edit access to the agent, other than the proposal's own author, can leave a review with an optional comment. Comments support markdown.
 

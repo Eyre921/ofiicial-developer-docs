@@ -81,6 +81,22 @@ Remove the restriction and return the account to unrestricted serving:
 firectl policy residency clear
 ```
 
+## Configure with the API
+
+Set the region with [Update Policy Settings](/api-reference/update-policy-settings), using an API key that belongs to an account Admin and naming `residency` in `updateMask`:
+
+```bash theme={null}
+curl -X PATCH \
+  "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/policySettings?updateMask=residency" \
+  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{"residency": "US"}'
+```
+
+To remove the restriction, send the same request with an empty body (`-d '{}'`).
+
+[Get Policy Settings](/api-reference/get-policy-settings) returns the current setting. An absent `residency` means serving is unrestricted.
+
 ## Pricing
 
 Regional models are priced at a premium over the base serverless price for the same model. See [Serverless pricing](/serverless/pricing).

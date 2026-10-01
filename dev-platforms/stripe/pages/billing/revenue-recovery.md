@@ -8,7 +8,7 @@ path: billing/revenue-recovery
 
 Learn about automated recovery features that reduce and recover failed subscription payments.
 
-Prevent lost revenue and reduce churn with Stripe’s revenue recovery features. These automated tools make sure you don’t lose revenue to failed payments or missed trial conversions. None of the features require you to write code, so you can start recovering revenue today.
+Prevent lost revenue and reduce churn with Stripe revenue recovery features. These automated tools make sure you don’t lose revenue to failed payments or missed trial conversions. None of the features require you to write code, so you can start recovering revenue today.
 
 > #### Recovering one-off invoices
 > 

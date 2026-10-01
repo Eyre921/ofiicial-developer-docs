@@ -208,7 +208,7 @@ Add a button to your order preview page. When your customer clicks this button, 
 
 ### Add an order preview page
 
-Add a file under `pages/` to create a page showing a preview of the customer’s order. Allow them to review or modify their order—as soon as they’re sent to the Checkout page, the order is final and they can’t modify it without creating a new Checkout Session
+Add the order preview page at `app/page.jsx`, as shown in the example. Allow customers to review or modify their order—as soon as they’re sent to the Checkout page, the order is final and they can’t modify it without creating a new Checkout Session.
 
 ### Fetch a Checkout Session
 

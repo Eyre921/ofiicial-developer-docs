@@ -8,10 +8,6 @@ path: docs/eleven-agents/best-practices/guardrails
 
 # Guardrails
 
-> **Tip**
->
-> Guardrails is currently in Alpha. See details in [Release status](#release-status).
-
 ## Overview
 
 Guardrails give teams a powerful way to govern how agents behave in production, keeping them on-topic, on-brand, and resistant to manipulation at enterprise scale.
@@ -32,12 +28,12 @@ Guardrails protect conversations at three levels:
 
 System prompt hardening is the foundation. Input and response validation provide course corrections for anything that falls through the cracks. For your most critical rules, include them in both your system prompt and as an independent custom Guardrail - this creates defense in depth, so even if the LLM drifts from its instructions, the response validator catches it before delivery.
 
-| Guardrail    | What it does                                              | Protection                | Latency impact                               | Cost        | Exit strategy           |
-| ------------ | --------------------------------------------------------- | ------------------------- | -------------------------------------------- | ----------- | ----------------------- |
-| Focus        | Keeps agents on-topic and aligned with your system prompt | System prompt hardening   | Minimal                                      | Included    | N/A                     |
-| Manipulation | Detects and blocks prompt injection                       | User input validation     | No effect                                    | Included    | Terminates conversation |
-| Content      | Flags and prevents inappropriate content                  | Agent response validation | [Depends on execution mode](#execution-mode) | Included    | Configurable            |
-| Custom       | Enforces your business-specific policies                  | Agent response validation | [Depends on execution mode](#execution-mode) | Usage-based | Configurable            |
+| Guardrail    | What it does                                              | Protection                | Latency impact                               | Cost        | Exit strategy           | Release status |
+| ------------ | --------------------------------------------------------- | ------------------------- | -------------------------------------------- | ----------- | ----------------------- | -------------- |
+| Focus        | Keeps agents on-topic and aligned with your system prompt | System prompt hardening   | Minimal                                      | Included    | N/A                     | GA             |
+| Manipulation | Detects and blocks prompt injection                       | User input validation     | No effect                                    | Included    | Terminates conversation | GA             |
+| Content      | Flags and prevents inappropriate content                  | Agent response validation | [Depends on execution mode](#execution-mode) | Included    | Configurable            | Alpha          |
+| Custom       | Enforces your business-specific policies                  | Agent response validation | [Depends on execution mode](#execution-mode) | Usage-based | Configurable            | Alpha          |
 
 ## System Prompt Hardening
 
@@ -158,7 +154,7 @@ You can use these placeholders in the feedback text:
 
 You can see an estimated cost (under the prompt) when creating or editing a custom guardrail.
 
-![Custom guardrail cost estimation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T111934Z&X-Amz-Expires=604800&X-Amz-Signature=affde4e300851ad55f5ae18489271b3448ed50ddfa094f32365ccdd5c59a92cf&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Custom guardrail cost estimation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a829a7451a1bb209dcbbe718dc75c3f6a28191f4de8ad6be44da6e0b7d4466ec/assets/images/agents/agents-custom-guardail-prompt-estimated-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T223141Z&X-Amz-Expires=604800&X-Amz-Signature=77f96ca333b3b40a88dc8753dea85c812926824b0779907ca6048b4fe8fbac18&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >
@@ -413,6 +409,8 @@ enforcement as a safety net. Using both creates defense in depth.
 
 ## Release status
 
-Guardrails is currently in Alpha, and we are actively improving the product and expanding its capabilities. You can expect the feature set, defaults, dashboard controls, and API fields to continue evolving before general availability, and some changes may be breaking.
+Guardrails is generally available, including the Focus and Manipulation guardrails.
 
-As we continue improving Guardrails, we recommend validating your setup and monitoring guardrail behavior in your logs. We also recommend revisiting your configuration as updates roll out.
+The Content and Custom guardrails are in Alpha. We are actively improving them, and you can expect their defaults, dashboard controls, and API fields to continue evolving before general availability. Some changes may be breaking.
+
+If you use Content or Custom guardrails, we recommend validating your setup, monitoring guardrail behavior in your logs, and revisiting your configuration as updates roll out.

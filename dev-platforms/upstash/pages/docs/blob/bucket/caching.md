@@ -114,7 +114,7 @@ import { uniquePath, uploadHandler } from "@upstash/blob"
 
 export const uploads = uploadHandler({
   onBeforeUpload: ({ file }) => ({
-    path: uniquePath`uploads/${file.name}`,
+    path: uniquePath(`uploads/${file.name}`),
     cache: "immutable",
   }),
 })

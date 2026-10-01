@@ -14,6 +14,8 @@ path: docs/guides/features/workspaces/workspace-budgets
 
 Workspace budgets let you cap how much a workspace can spend on OpenRouter inference. Set a dollar limit on any combination of intervals — daily, weekly, monthly, or lifetime — and OpenRouter blocks requests automatically once a limit is reached.
 
+Workspace budgets pair with [guardrail budgets](/docs/guides/features/guardrails#budget-enforcement) to provide both pooled team caps and per-member limits. For recommended approaches, see the [Spend Controls best practices guide](/docs/guides/best-practices/spend-controls).
+
 <Note>
   Workspace budgets are available on the **Enterprise** plan. In the dashboard, only **Organization Administrators** can create, edit, or delete budgets — other workspace members can view budgets and current spend but cannot modify them. Programmatic budget management uses organization [management API keys](/docs/guides/overview/auth/management-api-keys), which operate at the account level. Contact [sales](https://openrouter.ai/contact/sales) to get started.
 </Note>
@@ -200,7 +202,7 @@ Enterprise org admins can also set budgets when creating a new workspace. The wo
   </Accordion>
 
   <Accordion title="Who gets notified when a budget is exceeded?">
-    Users receive a `403 Forbidden` error on the blocked request with a message naming the exceeded budget. To hear about it before that happens, turn on the [workspace budget limit alert](/docs/guides/features/notifications), which fires at chosen percentages of the budget. Budget status is also visible in the workspace settings dashboard.
+    Users receive a `403 Forbidden` error on the blocked request with a message naming the exceeded budget. To hear about it before that happens, turn on the [workspace budget limit alert](/docs/guides/features/notifications) (Business and Enterprise plans), which fires at chosen percentages of the budget. Budget status is also visible in the workspace settings dashboard.
   </Accordion>
 
   <Accordion title="Can workspace members override a budget?">

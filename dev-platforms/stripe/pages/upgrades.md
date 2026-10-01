@@ -8,7 +8,7 @@ path: upgrades
 
 Upgrade your integration to the latest API version.
 
-Check the [Developer Changelog](https://docs.stripe.com/changelog.md) for the complete record of changes to Stripe’s API.
+Check the [Developer Changelog](https://docs.stripe.com/changelog.md) for the complete record of changes to the Stripe API.
 
 To upgrade your integration, complete the following steps. Search the [Changelog](https://docs.stripe.com/changelog.md?api_usage=true) for information specific to your integration.
 

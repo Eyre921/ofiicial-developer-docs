@@ -15264,7 +15264,7 @@ In the **setup flow**, a session already at AAL1 calls the Enroll API, which ret
 
 In the **sign-in flow**, the user signs in (upgrading the session to AAL1) and the List Factors API is called. If the user has one or more factors, they open their authenticator and enter a code, which follows the same Challenge and Verify path to reach AAL2. If they have no factors enrolled, they are sent through the setup flow first.
 
-Note: [TOTP MFA API](https://supabase.com/docs/reference/javascript/auth-mfa-api) is free to use and is enabled on all Supabase projects by default.
+Note: [TOTP MFA API](https://supabase.com/docs/reference/javascript/auth-mfa) is free to use and is enabled on all Supabase projects by default.
 
 ### Add enrollment flow
 
@@ -18991,7 +18991,7 @@ Response:
 }
 ```
 
-Note: For complete API documentation, see the [OAuth Admin API reference](https://supabase.com/docs/reference/javascript/auth-admin-oauth-admin).
+Note: For complete API documentation, see the [OAuth Admin API reference](https://supabase.com/docs/reference/javascript/oauth-admin).
 
 ### List OAuth clients
 
@@ -20040,7 +20040,7 @@ Note: **Build a settings page for your users**
 
 It's a good practice to provide a settings page where users can view all authorized applications and revoke access to any they no longer trust or use. This increases transparency and gives users control over their data.
 
-For complete API reference, see the [OAuth methods in supabase-js](https://supabase.com/docs/reference/javascript/auth-admin-oauth-server).
+For complete API reference, see the [OAuth methods in supabase-js](https://supabase.com/docs/reference/javascript/oauth-server).
 
 ## Next steps
 
@@ -20977,7 +20977,7 @@ Note: Leaked password protection is available on the Pro Plan and above.
 
 Users will need to be recently logged in to change their password without requiring reauthentication. (A user is considered recently logged in if the session was created within the last 24 hours.) If disabled, a user can change their password at any time.
 
-When enabled, a `nonce` will be sent to the user and this nonce must be validated before the a password change can occur. This can be triggered with the [reauthenticate()](https://supabase.com/docs/reference/javascript/auth-reauthentication) API call.
+When enabled, a `nonce` will be sent to the user and this nonce must be validated before the a password change can occur. This can be triggered with the [reauthenticate()](https://supabase.com/docs/reference/javascript/auth-reauthenticate) API call.
 
 ```
 const { error } = await supabase.auth.reauthenticate()
@@ -25337,7 +25337,7 @@ When a JWT is issued by Supabase Auth, the key used to create its [signature](ht
 
 | System       | Type                                  | Description                                                                                                                                                                                                                                                                                                                                          |
 | ------------ | ------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Legacy       | JWT secret                            | Initially Supabase was designed to use a single shared secret key to sign all JWTs. This includes the `anon` and `service_role` keys, all user access tokens including some [Storage pre-signed URLs](https://supabase.com/docs/reference/javascript/storage-from-createsignedurl). **No longer recommended.** Available for backward compatibility. |
+| Legacy       | JWT secret                            | Initially Supabase was designed to use a single shared secret key to sign all JWTs. This includes the `anon` and `service_role` keys, all user access tokens including some [Storage pre-signed URLs](https://supabase.com/docs/reference/javascript/file-buckets-createsignedurl). **No longer recommended.** Available for backward compatibility. |
 | Signing keys | Asymmetric key (RSA, Elliptic Curves) | A JWT signing key based on [public-key cryptography](https://en.wikipedia.org/wiki/Public-key_cryptography) (RSA, Elliptic Curves) that follows industry best practices and significantly improves the security, reliability and performance of your applications.                                                                                   |
 | Signing keys | Shared secret key                     | A JWT signing key based on a [shared secret](https://en.wikipedia.org/wiki/HMAC).                                                                                                                                                                                                                                                                    |
 
@@ -58958,7 +58958,7 @@ select * from websearch_books('"little puppy" or train -vegetables');
 Creating and using Postgres functions.
 
 Postgres has built-in support for [SQL functions](https://www.postgresql.org/docs/current/sql-createfunction.html).
-These functions live inside your database, and they can be [used with the API](../../reference/javascript/rpc).
+These functions live inside your database, and you can call them from your app with [`rpc()`](../../reference/javascript/rpc).
 
 ## Quick demo
 
@@ -58966,14 +58966,15 @@ These functions live inside your database, and they can be [used with the API](.
 
 ## Getting started
 
-Supabase provides several options for creating database functions. You can use the Dashboard or create them directly using SQL.
-We provide a SQL editor within the Dashboard, or you can [connect](../../guides/database/connecting-to-postgres) to your database
-and run the SQL queries yourself.
+Create a database function from the Dashboard, or write the SQL yourself against a
+[direct connection](../../guides/database/connecting-to-postgres).
 
-1. Go to the "SQL editor" section.
-2. Click "New Query".
-3. Enter the SQL to create or replace your Database function.
-4. Click "Run" or cmd+enter (ctrl+enter).
+To use the Dashboard:
+
+1. Go to the **SQL Editor** section.
+2. Click **New Query**.
+3. Enter the SQL that creates or replaces your database function.
+4. Click **Run**. You can also press `cmd+enter` or `ctrl+enter`.
 
 ## Basic functions \[#simple-functions]
 
@@ -58991,20 +58992,18 @@ $$; --6
 
 Show/Hide Details
 
-At it's most basic a function has the following parts:
+At its most basic, a function has the following parts:
 
-1. `create or replace function hello_world()`: The function declaration, where `hello_world` is the name of the function. You can use either `create` when creating a new function or `replace` when replacing an existing function. Or you can use `create or replace` together to handle either.
-2. `returns text`: The type of data that the function returns. If it returns nothing, you can `returns void`.
+1. `create or replace function hello_world()`: The function declaration, where `hello_world` is the name of the function. Use `create` for a new function, `replace` for one that exists, or `create or replace` when the function might not exist yet.
+2. `returns text`: The type of data the function returns. For a function that returns nothing, write `returns void`.
 3. `language sql`: The language used inside the function body. This can also be a procedural language: `plpgsql`, `plpython`, etc.
-4. `as $$`: The function wrapper. Anything enclosed inside the `$$` symbols will be part of the function body.
-5. `select 'hello world';`: A basic function body. The final `select` statement inside a function body will be returned if there are no statements following it.
+4. `as $$`: The function wrapper. Anything inside the `$$` symbols is part of the function body.
+5. `select 'hello world';`: A basic function body. The function returns the result of the last `select` statement in its body.
 6. `$$;`: The closing symbols of the function wrapper.
 
+Caution: Overloaded functions aren't supported. Give every function a unique name.
 
-
-Caution: When naming your functions, make the name of the function unique as overloaded functions are not supported.
-
-After the Function is created, we have several ways of "executing" the function - either directly inside the database using SQL, or with one of the client libraries.
+After you create the function, you can run it inside the database with SQL, or with one of the client libraries.
 
 **SQL**
 
@@ -59063,9 +59062,9 @@ Reference: [`Rpc()`](../../reference/csharp/rpc)
 
 ## Returning data sets
 
-Database Functions can also return data sets from [Tables](../../guides/database/tables) or Views.
+A database function can also return a data set from a [table](../../guides/database/tables) or a view.
 
-For example, if we had a database with some Star Wars data inside:
+For example, take a database holding some Star Wars data:
 
 **Data**
 
@@ -59120,7 +59119,7 @@ values
   (4, 'Chewbacca', 3);
 ```
 
-We could create a function which returns all the planets:
+The following function returns all the planets:
 
 ```sql
 create or replace function get_planets()
@@ -59131,7 +59130,7 @@ as $$
 $$;
 ```
 
-Because this function returns a table set, we can also apply filters and selectors. For example, if we only wanted the first planet:
+Because this function returns a table set, you can apply filters and selectors to it. To get the first planet only:
 
 **SQL**
 
@@ -59179,7 +59178,7 @@ data = supabase.rpc('get_planets').eq('id', 1).execute()
 
 ## Passing parameters
 
-Create a function to insert a new planet into the `planets` table and return the new ID. Note that this time we're using the `plpgsql` language.
+Create a function that inserts a new planet into the `planets` table and returns the new ID. This function uses the `plpgsql` language.
 
 ```sql
 create or replace function add_planet(name text)
@@ -59198,7 +59197,7 @@ end;
 $$;
 ```
 
-Once again, you can execute this function either inside your database using a `select` query, or with the client libraries:
+You can run this function inside your database with a `select` query, or with the client libraries:
 
 **SQL**
 
@@ -59272,14 +59271,13 @@ await supabase.Rpc("add_planet", new Dictionary<string, object> { { "name", "Jak
 
 ### Database Functions vs Edge Functions
 
-For data-intensive operations, use Database Functions, which are executed within your database
-and can be called remotely using the [REST and GraphQL API](../api).
+For data-intensive operations, use database functions. They run inside your database, and you can call them remotely with the [REST and GraphQL API](../api).
 
-For use-cases which require low-latency, use [Edge Functions](../../guides/functions), which are globally-distributed and can be written in Typescript.
+For use cases that need low latency, use [Edge Functions](../../guides/functions). They're globally distributed and you write them in TypeScript.
 
 ### Security `definer` vs `invoker`
 
-Postgres allows you to specify whether you want the function to be executed as the user *calling* the function (`invoker`), or as the *creator* of the function (`definer`). For example:
+Postgres runs a function either as the user *calling* it (`invoker`) or as its *creator* (`definer`). For example:
 
 ```sql
 create function hello_world()
@@ -59293,31 +59291,31 @@ end;
 $$;
 ```
 
-It is best practice to use `security invoker` (which is also the default). If you ever use `security definer`, you *must* set the `search_path`.
-If you use an empty search path (`search_path = ''`), you must explicitly state the schema for every relation in the function body (e.g. `from public.table`).
-This limits the potential damage if you allow access to schemas which the user executing the function should not have.
+Prefer `security invoker`, which is also the default. When you use `security definer`, you must set the `search_path`.
+
+With an empty search path, `search_path = ''`, name the schema for every relation in the function body, such as `from public.table`. An empty search path limits the damage when the function can reach a schema you don't want the calling user to reach.
 
 ### Function privileges
 
-By default, database functions can be executed by any role. There are two main ways to restrict this:
+By default, any role can run a database function. You can restrict execution in two ways:
 
-1. On a case-by-case basis. Specifically revoke permissions for functions you want to protect. Execution needs to be revoked for both `public` and the role you're restricting:
+1. Revoke on a case-by-case basis. Revoke execute for the functions you want to protect, from both `public` and the role you're restricting:
 
    ```sql
    revoke execute on function public.hello_world from public;
    revoke execute on function public.hello_world from anon;
    ```
 
-2. Restrict function execution by default. Specifically *grant* access when you want a function to be executable by a specific role.
+2. Restrict execution by default, then grant access to the roles that need each function.
 
-   To restrict all existing functions, revoke execution permissions from both `public` *and* the role you want to restrict:
+   To restrict every function that exists, revoke execute from both `public` and the role you want to restrict:
 
    ```sql
    revoke execute on all functions in schema public from public;
    revoke execute on all functions in schema public from anon, authenticated;
    ```
 
-   To restrict all new functions, change the default privileges for both `public` *and* the role you want to restrict:
+   To restrict every function created later, change the default privileges for both `public` and the role you want to restrict:
 
    ```sql
    alter default privileges in schema public revoke execute on functions from public;
@@ -59332,7 +59330,7 @@ By default, database functions can be executed by any role. There are two main w
 
 ### Debugging functions
 
-You can add logs to help you debug functions. This is especially recommended for complex functions.
+Add logs to help you debug a function. Logs matter most in a complex function.
 
 Good targets to log include:
 
@@ -59341,7 +59339,7 @@ Good targets to log include:
 
 #### General logging
 
-To create custom logs in the [Dashboard's Postgres Logs](https://supabase.com/dashboard/project/_/logs/postgres-logs), you can use the `raise` keyword. By default, there are 3 observed severity levels:
+Use the `raise` keyword to write custom logs to the [Postgres logs](https://supabase.com/dashboard/project/_/logs/postgres-logs) in the Dashboard. Three severity levels appear by default:
 
 - `log`
 - `warning`
@@ -59392,14 +59390,14 @@ $$;
 select error_if_null(null);
 ```
 
-Value checking is common, so Postgres provides a shorthand: the `assert` keyword. It uses the following format:
+Value checking is common, so Postgres provides the `assert` keyword as a shorthand. It takes the following format:
 
 ```sql
 -- throw error when condition is false
 assert <some condition>, 'message';
 ```
 
-Below is an example
+For example:
 
 ```sql
 create function assert_example(name text)
@@ -59426,7 +59424,7 @@ $$;
 select assert_example('Harry Potter');
 ```
 
-Error messages can also be captured and modified with the `exception` keyword:
+You can also capture and modify an error message with the `exception` keyword:
 
 ```sql
 create function error_example()
@@ -59446,7 +59444,7 @@ $$;
 
 #### Advanced logging
 
-For more complex functions or complicated debugging, try logging:
+For a more complex function, or for harder debugging, log the following:
 
 - Formatted variables
 - Individual rows
@@ -72016,9 +72014,11 @@ Authentication patterns for Edge Functions
 
 Authentication patterns for Supabase Edge Functions.
 
-The `withSupabase` wrapper from [`@supabase/server`](https://github.com/supabase/server) verifies the caller's credentials against a declared `auth` mode and hands you a pre-configured Supabase client on `ctx`. The sections below show how to use it for each common auth scenario.
+Secure an Edge Function by declaring which credentials it accepts. The `withSupabase` wrapper from the [`@supabase/server` package](https://github.com/supabase/server) on GitHub checks each caller against the `auth` mode you set. Your handler receives a preconfigured Supabase client on `ctx`.
 
-For how authorization headers and the `verify_jwt` platform check work under the hood, see [Authorization headers](https://supabase.com/docs/guides/functions/auth-headers).
+For how authorization headers and the `verify_jwt` platform check work, see [Authorization headers](https://supabase.com/docs/guides/functions/auth-headers).
+
+The wrapper accepts four `auth` modes:
 
 | Mode            | Accepts                                    |
 | --------------- | ------------------------------------------ |
@@ -72029,7 +72029,7 @@ For how authorization headers and the `verify_jwt` platform check work under the
 
 ## Authenticated user calls
 
-Functions called by signed-in users — typically through `supabase.functions.invoke` from the client — send the user's session JWT on the `Authorization` header. Keep `verify_jwt = true` (the default) so the platform validates the JWT before your handler runs, then use `auth: 'user'` to get `ctx.supabase` already scoped to the caller's RLS policies.
+When a signed-in user calls a function, the request carries the user's session JWT on the `Authorization` header. Your app usually makes that call through `supabase.functions.invoke`. The default is `verify_jwt = true`. The platform validates the JWT before your handler runs. Use `auth: 'user'` to get a `ctx.supabase` scoped to the caller's Row Level Security (RLS) policies.
 
 ```ts
 import { withSupabase } from 'npm:@supabase/server@1'
@@ -72051,7 +72051,7 @@ export default {
 
 ## Service-to-service calls
 
-Cron jobs, workers, `pg_net`, or another Edge Function make calls with a secret key on the `apikey` header rather than a user JWT. Disable `verify_jwt` and use `auth: 'secret'` to validate the key against any secret key from your [dashboard](https://supabase.com/dashboard/project/_/settings/api-keys). You get `ctx.supabaseAdmin` for privileged work.
+Cron jobs, workers, `pg_net`, and other Edge Functions make calls with a secret key on the `apikey` header rather than a user JWT. Disable `verify_jwt` and use `auth: 'secret'`. The wrapper validates the key against any secret key in your [project's API keys](https://supabase.com/dashboard/project/_/settings/api-keys), and gives your handler `ctx.supabaseAdmin` for privileged work.
 
 ```ts
 import { withSupabase } from 'npm:@supabase/server@1'
@@ -72064,13 +72064,13 @@ export default {
 }
 ```
 
-Note: To accept only one specific key, use `auth: 'secret:<name>'`. For example, `auth: 'secret:automations'` only accepts the secret key you named "automations" in the [**Settings > API keys**](https://supabase.com/dashboard/project/_/settings/api-keys) section of the Dashboard. The same syntax works for publishable keys (`auth: 'publishable:<name>'`).
+Note: To accept only one specific key, use `auth: 'secret:<name>'`. For example, `auth: 'secret:automations'` accepts only the secret key named `automations`. To name a key, open [**Settings > API keys**](https://supabase.com/dashboard/project/_/settings/api-keys) in the Supabase Dashboard. The same syntax works for publishable keys: `auth: 'publishable:<name>'`.
 
-![A secret key named "automations" listed under Secret keys in the Supabase dashboard.](/docs/img/guides/functions/secret-keys-automations.png)
+![The Secret keys section of the Supabase Dashboard. A table with Name and API key columns lists two keys, "default" and "automations". Each row shows a masked sb\_secret\_ value with reveal and copy buttons.](/docs/img/guides/functions/secret-keys-automations.png)
 
 ## Public functions
 
-For a genuinely public function, like a health check, use `auth: 'none'` with `verify_jwt = false` so anonymous callers can reach the handler.
+For a genuinely public function, such as a health check, use `auth: 'none'` with `verify_jwt = false` so anonymous callers can reach the handler.
 
 ```toml
 [functions.health]
@@ -72088,11 +72088,11 @@ export default {
 }
 ```
 
-`auth: 'none'` skips every credential check — see the caution under [External webhooks](#external-webhooks) before using it on anything that reads or writes sensitive data.
+`auth: 'none'` accepts every caller. For a function that authenticates callers itself, see the [External webhooks](#external-webhooks) section of this page.
 
 ## External webhooks
 
-External providers like Stripe or GitHub don't send Supabase credentials. They sign the request body with their own shared secret. Use `auth: 'none'` to skip the SDK's credential check, then verify the provider's signature inside the handler. Keep `verify_jwt = false`.
+External providers such as Stripe or GitHub don't send Supabase credentials. They sign the request body with their own shared secret. Use `auth: 'none'` to skip the wrapper's credential check, then verify the provider's signature inside the handler. Keep `verify_jwt = false`.
 
 ```ts
 import { withSupabase } from 'npm:@supabase/server@1'
@@ -72124,17 +72124,17 @@ export default {
       return new Response('bad signature', { status: 400 })
     }
 
-    // your business logic. ctx.supabaseAdmin available for db work
+    // your business logic. ctx.supabaseAdmin available for database work
     return Response.json({ received: true })
   }),
 }
 ```
 
-Caution: `auth: 'none'` disables every credential check. Your handler is fully responsible for authenticating the caller. Never use it on an endpoint that reads or writes sensitive data without verifying the caller some other way.
+Danger: `auth: 'none'` disables every credential check, so your handler is fully responsible for authenticating the caller. When the function reads or writes sensitive data, verify the caller yourself inside the handler.
 
 ## Combining modes
 
-Functions that answer both users and internal callers take an array on `auth`. Modes are tried in order. The first match wins, and `ctx.authMode` tells you which matched.
+Functions that answer both users and internal callers take an array on `auth`. The wrapper tries each mode in order and uses the first one that matches. `ctx.authMode` tells you which mode matched.
 
 ```ts
 import { withSupabase } from 'npm:@supabase/server@1'
@@ -72154,7 +72154,7 @@ export default {
 
 ## Custom error responses
 
-To shape the 401 response yourself, use `createSupabaseContext` instead of `withSupabase`. It returns a `{ data, error }` tuple so you stay in control.
+To shape the 401 response yourself, use `createSupabaseContext` instead of `withSupabase`. It returns a `{ data, error }` tuple instead of rejecting the request for you.
 
 ```ts
 import { createSupabaseContext } from 'npm:@supabase/server@1'
@@ -72172,7 +72172,7 @@ export default {
 
 ## Environment variables
 
-`@supabase/server` reads its configuration from a standard set of environment variables. On the Supabase platform and in local development with the CLI, these are auto-provisioned.
+`@supabase/server` reads its configuration from a standard set of environment variables, which the Supabase Platform and the Supabase CLI provision for you.
 
 | Variable                    | What it is                                |
 | --------------------------- | ----------------------------------------- |
@@ -72181,9 +72181,9 @@ export default {
 | `SUPABASE_SECRET_KEYS`      | Named secret keys as a JSON object        |
 | `SUPABASE_JWKS`             | JSON Web Key Set used to verify user JWTs |
 
-Local development with the CLI uses a single-key setup, which the SDK also accepts as a fallback: `SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY`.
+Local development with the CLI uses a single-key setup. `@supabase/server` also accepts `SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY` as a fallback.
 
-Note: The same zero-config experience is available on other runtimes. Install [`@supabase/server`](https://github.com/supabase/server) in your Node.js, Bun, Cloudflare Workers, or self-hosted Deno app and set the environment variables above. See the package's [environment variables guide](https://github.com/supabase/server/blob/main/docs/environment-variables.md) for the full reference.
+Note: `@supabase/server` configures itself the same way on other runtimes. Install it in your Node.js, Bun, Cloudflare Workers, or self-hosted Deno app, then set the same variables. For the full reference, see the [environment variables guide](https://github.com/supabase/server/blob/main/docs/environment-variables.md) in the `@supabase/server` repository.
 
 
 ---
@@ -78302,17 +78302,21 @@ select
 
 # Environment variables
 
-Manage sensitive data securely across environments.
+Store API keys and other secrets where your Edge Functions can read them.
 
-Managing secrets and environment variables.
+Set, read, and deploy Edge Function secrets.
 
-Store API keys and other secrets where your Edge Functions can read them. Local development and production load them differently, so set them in both.
+Local development and production load secrets differently, so set them in both.
+
+- [Local secrets](#local-secrets) and [Production secrets](#production-secrets) have the steps for each environment.
+- [Accessing environment variables](#accessing-environment-variables) shows how to read a secret from your function code. [When your function can't read a secret](#when-your-function-cant-read-a-secret) covers the local case where nothing arrives.
+- [Reference](#reference) explains which file feeds which runtime, and lists the variables Supabase injects for you.
 
 ## Local secrets
 
-In development, Edge Functions read secrets from `supabase/functions/.env`, which is automatically loaded on `supabase start`. Create the file before you start the stack.
+Locally, Edge Functions read secrets from `supabase/functions/.env`. The local stack loads that file on `supabase start`.
 
-1. Create `supabase/functions/.env` and add each secret with the value you want the function to read. A `.env.example` template isn't enough on its own, because the runtime reads the values rather than the variable names.
+1. Create `supabase/functions/.env` and add each secret with the value you want the function to read. A `.env.example` template isn't enough, because the runtime reads the values rather than the variable names.
 
    ```bash
    # supabase/functions/.env
@@ -78333,7 +78337,7 @@ In development, Edge Functions read secrets from `supabase/functions/.env`, whic
    supabase functions new hello-world
    ```
 
-   ```tsx
+   ```ts
    // supabase/functions/hello-world/index.ts
    Deno.serve(() => {
      const secretKey = Deno.env.get('STRIPE_SECRET_KEY')
@@ -78347,7 +78351,7 @@ In development, Edge Functions read secrets from `supabase/functions/.env`, whic
    supabase start
    ```
 
-5. Call the function. A `configured` of `true` means the runtime handed it the secret.
+5. Call the function. When `configured` comes back `true`, the runtime handed the secret to your function.
 
    ```bash
    curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/hello-world' \
@@ -78358,9 +78362,59 @@ Your function now reads the secret from your local environment.
 
 ***
 
+## Production secrets
+
+Set secrets for your production Edge Functions in the Supabase Dashboard or with the Supabase CLI.
+
+Creating or deleting a production secret requires the Owner or Administrator role. Developers can view secrets but not change them. See [Access control](https://supabase.com/docs/guides/platform/access-control#edge-config-permissions) for the full matrix.
+
+A secret name can't start with `SUPABASE_`. That prefix is reserved for the variables Supabase injects, and both the Dashboard and the Management API reject it.
+
+### Using the Dashboard
+
+1. Open [Edge Function Secrets](https://supabase.com/dashboard/project/_/functions/secrets) in the Dashboard.
+2. Enter the **Key** and **Value** for your secret, then click **Save**.
+
+![The Edge Function Secrets page in the Supabase Dashboard. An Add new secrets card holds a Key field whose placeholder reads "e.g. CLIENT_KEY" and a Value field with a reveal toggle and a remove button, above an Add another button and a Save button.](https://supabase.com/docs/img/edge-functions-secrets.jpg)
+
+You can paste multiple secrets at once.
+
+### Using the CLI
+
+1. Create a `.env` file with the secrets you want to deploy, and add it to your `.gitignore` before you commit.
+
+   ```bash
+   # .env
+   STRIPE_SECRET_KEY=sk_live_...
+   ```
+
+2. Push every secret in the file to your remote project. The command also makes them visible in the Dashboard.
+
+   ```bash
+   supabase secrets set --env-file .env
+   ```
+
+`supabase secrets set` also sets production secrets individually, without a `.env` file.
+
+```bash
+supabase secrets set STRIPE_SECRET_KEY=sk_live_...
+```
+
+List the secrets set on your remote project:
+
+```bash
+supabase secrets list
+```
+
+Note: Your functions read a new secret immediately, so you don't need to redeploy.
+
+Your deployed functions can now read the secret.
+
+***
+
 ## Accessing environment variables
 
-Access an environment variable with the `Deno.env.get` method, passing the name of the variable you want.
+Read an environment variable with `Deno.env.get`, passing the name of the variable.
 
 ```js
 Deno.env.get('NAME_OF_SECRET')
@@ -78368,12 +78422,14 @@ Deno.env.get('NAME_OF_SECRET')
 
 ### In an Edge Function
 
+Inside an Edge Function, the Supabase keys are already in the environment. Read them and pass them to `createClient`:
+
 ```ts
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
 const SUPABASE_PUBLISHABLE_KEYS = JSON.parse(Deno.env.get('SUPABASE_PUBLISHABLE_KEYS')!)
 
-// For user-facing operations (respects RLS)
+// For user-facing operations (respects Row Level Security)
 const supabase = createClient(
   Deno.env.get('SUPABASE_URL')!,
   // To use a different API key, change 'default' to your preferred key name
@@ -78381,7 +78437,7 @@ const supabase = createClient(
 )
 
 const SUPABASE_SECRET_KEYS = JSON.parse(Deno.env.get('SUPABASE_SECRET_KEYS')!)
-// For admin operations (bypasses RLS)
+// For admin operations (bypasses Row Level Security)
 const supabaseAdmin = createClient(
   Deno.env.get('SUPABASE_URL')!,
   // To use a different API key, change 'default' to your preferred key name
@@ -78391,7 +78447,7 @@ const supabaseAdmin = createClient(
 
 ### In a Deno script
 
-A Deno script you run yourself, outside `supabase functions serve`, doesn't read `supabase/functions/.env`. Pass the file, and grant the script access to the environment with `--allow-env`:
+A Deno script you run yourself, outside `supabase functions serve`, doesn't read `supabase/functions/.env`. Pass the file with `--env-file`, and grant the script access to environment variables with `--allow-env`:
 
 ```bash
 deno run --allow-env --env-file=supabase/functions/.env script.ts
@@ -78407,7 +78463,7 @@ STRIPE_SECRET_KEY=sk_test_... deno run --allow-env script.ts
 
 ## When your function can't read a secret
 
-The local runtime loads `supabase/functions/.env` when the stack starts, so a function that returns nothing for a variable usually means the value never reached it.
+A variable that comes back empty usually means the value never reached the runtime.
 
 Restart the stack, or serve the function with the file passed explicitly:
 
@@ -78415,71 +78471,21 @@ Restart the stack, or serve the function with the file passed explicitly:
 supabase functions serve hello-world --env-file supabase/functions/.env
 ```
 
-To keep a separate file per environment, name your own and pass it the same way:
-
-```bash
-supabase functions serve --env-file .env.local
-```
+If the value still doesn't arrive, confirm you edited the file your runtime reads.
 
 ***
 
-## Production secrets
+## Reference
 
-Set secrets for your production Edge Functions in the Dashboard or with the CLI.
+Look up which file feeds which runtime, and which variables Supabase injects for you.
 
-Creating or deleting a production secret requires the Owner or Administrator role. Developers can view secrets but not change them. See [Access control](https://supabase.com/docs/guides/platform/access-control#edge-config-permissions) for the full matrix.
-
-A secret name can't start with `SUPABASE_`. That prefix is reserved for the variables Supabase injects, and both the Dashboard and the Management API reject it.
-
-### Using the Dashboard
-
-1. Open [Edge Function Secrets](https://supabase.com/dashboard/project/_/functions/secrets) in the Dashboard.
-2. Enter the **Key** and **Value** for your secret, then click **Save**.
-
-![The Edge Function Secrets page in the Supabase Dashboard. An Add new secrets card holds a Key field hinting e.g. CLIENT_KEY and a Value field with a reveal toggle and a remove button, above an Add another button and a Save button.](https://supabase.com/docs/img/edge-functions-secrets.jpg)
-
-You can paste multiple secrets at once.
-
-### Using the CLI
-
-Create a `.env` file with the secrets you want to deploy. Add it to your `.gitignore` before you commit.
-
-```bash
-# .env
-STRIPE_SECRET_KEY=sk_live_...
-```
-
-Push every secret in the file to your remote project with `supabase secrets set`, which also makes them visible in the Dashboard.
-
-```bash
-supabase secrets set --env-file .env
-```
-
-This command also sets production secrets individually, without a `.env` file.
-
-```bash
-supabase secrets set STRIPE_SECRET_KEY=sk_live_...
-```
-
-To see the secrets you have set remotely, use `supabase secrets list`.
-
-```bash
-supabase secrets list
-```
-
-Note: Secrets are available in your functions immediately. You don't need to redeploy after setting them.
-
-Your deployed functions can now read the secret.
-
-***
-
-## Where local values come from
+### Where local values come from
 
 A project can hold more than one file that feeds local environment variables, and they aren't interchangeable:
 
 - `supabase/functions/.env` is the one your Edge Functions read, loaded when the stack starts.
-- A file you name yourself, such as `.env.local`, passed to `supabase functions serve` with `--env-file`.
-- A `.env` at the root of your project is the one `config.toml` reads, through its `env()` function. See [Using secrets inside config.toml](https://supabase.com/docs/guides/local-development/managing-config#using-secrets-inside-configtoml). A variable your function needs has to be in `supabase/functions/.env` too, even when the same value is already in the root file.
+- A file you name yourself, such as `.env.local`, is read only when you pass it to `supabase functions serve` with `--env-file`.
+- A `.env` at the root of your project is the one `config.toml` reads, through its `env()` function. See [Using secrets inside config.toml](https://supabase.com/docs/guides/local-development/managing-config#using-secrets-inside-configtoml). A variable your function needs also has to be in `supabase/functions/.env`, even when the root file already holds the same value.
 
 You can also set local values in `config.toml` itself, under `[edge_runtime.secrets]`:
 
@@ -78488,28 +78494,32 @@ You can also set local values in `config.toml` itself, under `[edge_runtime.secr
 STRIPE_SECRET_KEY = "env(STRIPE_SECRET_KEY)"
 ```
 
-***
-
-## Default secrets
+### Default secrets
 
 Alongside the secrets you set yourself, Edge Functions have access to these by default:
 
-- `SUPABASE_URL`: The API gateway for your Supabase project
-- `SUPABASE_DB_URL`: The URL for your Postgres database. Use it to connect directly to your database
-- `SUPABASE_PUBLISHABLE_KEYS`: The `publishable` keys JSON dictionary for your Supabase API. This is safe to use in a browser when you have Row Level Security enabled
-- `SUPABASE_SECRET_KEYS`: The `secret` keys JSON dictionary for your Supabase API. This is safe to use in Edge Functions, but **never** use it in a browser. These keys bypass Row Level Security
-- `SUPABASE_JWKS`: The JSON Web Key Set used to verify user JWTs. Same value served at `https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json`
+| Variable                    | Description                                                                                                                                              |
+| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SUPABASE_URL`              | The API gateway for your Supabase project.                                                                                                               |
+| `SUPABASE_DB_URL`           | The URL for your Postgres database. Use it to connect directly to your database.                                                                         |
+| `SUPABASE_PUBLISHABLE_KEYS` | The `publishable` keys JSON dictionary for your Supabase API. Safe to use in a browser when you have Row Level Security enabled.                         |
+| `SUPABASE_SECRET_KEYS`      | The `secret` keys JSON dictionary for your Supabase API. These keys bypass Row Level Security, so use them in Edge Functions and **never** in a browser. |
+| `SUPABASE_JWKS`             | The JSON Web Key Set used to verify user JWTs. Same value served at `https://<project-ref>.supabase.co/auth/v1/.well-known/jwks.json`.                   |
 
 Legacy keys:
 
-- `SUPABASE_ANON_KEY`: The `anon` key for your Supabase API. This is safe to use in a browser when you have Row Level Security enabled
-- `SUPABASE_SERVICE_ROLE_KEY`: The `service_role` key for your Supabase API. This is safe to use in Edge Functions, but **never** use it in a browser. This key bypasses Row Level Security
+| Variable                    | Description                                                                                                                                 |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `SUPABASE_ANON_KEY`         | The `anon` key for your Supabase API. Safe to use in a browser when you have Row Level Security enabled.                                    |
+| `SUPABASE_SERVICE_ROLE_KEY` | The `service_role` key for your Supabase API. This key bypasses Row Level Security, so use it in Edge Functions and **never** in a browser. |
 
-In a hosted environment, functions have access to the following environment variables:
+In a hosted environment, functions also have access to these variables:
 
-- `SB_REGION`: The region the function was invoked in
-- `SB_EXECUTION_ID`: A UUID for the function instance, or [isolate](https://supabase.com/docs/guides/functions/architecture#4-execution-mechanics-fast-and-isolated)
-- `DENO_DEPLOYMENT_ID`: The version of the function code, formatted as `{project_ref}_{function_id}_{version}`
+| Variable             | Description                                                                                                                                      |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `SB_REGION`          | The region the function was invoked in.                                                                                                          |
+| `SB_EXECUTION_ID`    | A UUID for the function instance, or [isolate](https://supabase.com/docs/guides/functions/architecture#4-execution-mechanics-fast-and-isolated). |
+| `DENO_DEPLOYMENT_ID` | The version of the function code, formatted as `{project_ref}_{function_id}_{version}`.                                                          |
 
 
 ---
@@ -127757,7 +127767,7 @@ Various products at Supabase have their own hardening and configuration guides, 
 
 - [Object ownership](https://supabase.com/docs/guides/storage/security/ownership)
 - [Access control](https://supabase.com/docs/guides/storage/security/access-control)
-  - The Storage API docs contain hints about required [RLS policy permissions](https://supabase.com/docs/reference/javascript/storage-createbucket)
+  - The Storage API docs contain hints about required [RLS policy permissions](https://supabase.com/docs/reference/javascript/file-buckets-createbucket)
 - [Custom roles with the storage schema](https://supabase.com/docs/guides/storage/schema/custom-roles)
 
 ## Realtime
@@ -130526,7 +130536,7 @@ sh run.sh recreate auth
 
 Use the Auth admin API to create providers. You need your project's secret key for authentication.
 
-Danger: The JavaScript examples use a [supabase-js](https://supabase.com/docs/reference/javascript/start) client created with the secret key (`SUPABASE_SECRET_KEY`), which must only run in trusted server-side environments.
+Danger: The JavaScript examples use a [supabase-js](https://supabase.com/docs/reference/javascript/introduction) client created with the secret key (`SUPABASE_SECRET_KEY`), which must only run in trusted server-side environments.
 
 ```js
 import { createClient } from '@supabase/supabase-js'
@@ -130948,31 +130958,33 @@ sh run.sh restart api-gw
 
 Routes are matched in the order declared. The first matching prefix wins. Protected routes require a valid `apikey` header; open routes pass through without API key validation.
 
-| Path prefix                               | Upstream  | Path rewrite             | Access control | Notes                                                                  |
-| ----------------------------------------- | --------- | ------------------------ | -------------- | ---------------------------------------------------------------------- |
-| `/auth/v1/verify`                         | auth      | `/verify`                | Open           | Email verification                                                     |
-| `/auth/v1/callback`                       | auth      | `/callback`              | Open           | OAuth callback                                                         |
-| `/auth/v1/authorize`                      | auth      | `/authorize`             | Open           | OAuth authorize                                                        |
-| `/auth/v1/.well-known/jwks.json`          | auth      | `/.well-known/jwks.json` | Open           | JWKS for third-party verification                                      |
-| `/.well-known/oauth-authorization-server` | auth      | -                        | Open           | OAuth 2.0 Authorization Server Metadata (RFC 8414)                     |
-| `/auth/v1/sso/saml/acs`                   | auth      | `/sso/saml/acs`          | Open           | SAML assertion consumer                                                |
-| `/auth/v1/sso/saml/metadata`              | auth      | `/sso/saml/metadata`     | Open           | SAML metadata                                                          |
-| `/functions/v1/`                          | functions | `/`                      | `sb_` keys     | Rejects invalid and conflicting `sb_` keys; others pass; timeout: 150s |
-| `/storage/v1/`                            | storage   | `/`                      | Bypass         | Storage performs its own authorization                                 |
-| `/auth/v1/`                               | auth      | `/`                      | API key        | Protected Auth endpoints                                               |
-| `/rest/v1/`                               | rest      | `/`                      | API key        | PostgREST Open API root (requires secret key)                          |
-| `/rest/v1/*`                              | rest      | `/`                      | API key        | PostgREST data endpoints                                               |
-| `/graphql/v1`                             | rest      | `/rpc/graphql`           | API key        | pg\_graphql (adds `Content-Profile: graphql_public`)                   |
-| `/realtime/v1/api/tenants`                | realtime  | -                        | Denied         | Realtime management API (blocked by default)                           |
-| `/realtime/v1/api/openapi`                | realtime  | -                        | Denied         | Realtime OpenAPI spec (blocked by default)                             |
-| `/realtime/v1/api`                        | realtime  | `/api`                   | API key        | Realtime REST API (broadcast, channels, ping)                          |
-| `/realtime/v1/`                           | realtime  | `/socket/`               | API key        | Realtime WebSocket                                                     |
-| `/pg/`                                    | meta      | `/`                      | API key        | postgres-meta / Studio database operations (requires secret key)       |
-| `/api/mcp`                                | studio    | -                        | Denied         | MCP endpoint (blocked by default via RBAC DENY)                        |
-| `/mcp`                                    | studio    | `/api/mcp`               | Denied         | MCP endpoint (blocked by default via RBAC DENY)                        |
-| `/` (catch-all)                           | studio    | -                        | Basic auth     | Dashboard; strips inbound `Authorization` header                       |
+| Path prefix                               | Upstream  | Path rewrite             | Access control | Notes                                                                                                      |
+| ----------------------------------------- | --------- | ------------------------ | -------------- | ---------------------------------------------------------------------------------------------------------- |
+| `/auth/v1/verify`                         | auth      | `/verify`                | Open           | Email verification                                                                                         |
+| `/auth/v1/callback`                       | auth      | `/callback`              | Open           | OAuth callback                                                                                             |
+| `/auth/v1/authorize`                      | auth      | `/authorize`             | Open           | OAuth authorize                                                                                            |
+| `/auth/v1/.well-known/jwks.json`          | auth      | `/.well-known/jwks.json` | Open           | JWKS for third-party verification                                                                          |
+| `/.well-known/oauth-authorization-server` | auth      | -                        | Open           | OAuth 2.0 Authorization Server Metadata (RFC 8414)                                                         |
+| `/auth/v1/sso/saml/acs`                   | auth      | `/sso/saml/acs`          | Open           | SAML assertion consumer                                                                                    |
+| `/auth/v1/sso/saml/metadata`              | auth      | `/sso/saml/metadata`     | Open           | SAML metadata                                                                                              |
+| `/functions/v1/`                          | functions | `/`                      | `sb_` keys     | Rejects invalid and conflicting `sb_` keys; others pass; 160s idle timeout, 410s upstream response timeout |
+| `/storage/v1/`                            | storage   | `/`                      | Bypass         | Storage performs its own authorization                                                                     |
+| `/auth/v1/`                               | auth      | `/`                      | API key        | Protected Auth endpoints                                                                                   |
+| `/rest/v1/`                               | rest      | `/`                      | API key        | PostgREST Open API root (requires secret key)                                                              |
+| `/rest/v1/*`                              | rest      | `/`                      | API key        | PostgREST data endpoints                                                                                   |
+| `/graphql/v1`                             | rest      | `/rpc/graphql`           | API key        | pg\_graphql (adds `Content-Profile: graphql_public`)                                                       |
+| `/realtime/v1/api/tenants`                | realtime  | -                        | Denied         | Realtime management API (blocked by default)                                                               |
+| `/realtime/v1/api/openapi`                | realtime  | -                        | Denied         | Realtime OpenAPI spec (blocked by default)                                                                 |
+| `/realtime/v1/api`                        | realtime  | `/api`                   | API key        | Realtime REST API (broadcast, channels, ping)                                                              |
+| `/realtime/v1/`                           | realtime  | `/socket/`               | API key        | Realtime WebSocket                                                                                         |
+| `/pg/`                                    | meta      | `/`                      | API key        | postgres-meta / Studio database operations (requires secret key)                                           |
+| `/api/mcp`                                | studio    | -                        | Denied         | MCP endpoint (blocked by default via RBAC DENY)                                                            |
+| `/mcp`                                    | studio    | `/api/mcp`               | Denied         | MCP endpoint (blocked by default via RBAC DENY)                                                            |
+| `/` (catch-all)                           | studio    | -                        | Basic auth     | Dashboard; strips inbound `Authorization` header                                                           |
 
 Note: MCP routes are denied at the gateway by default. Allowing local access requires editing the RBAC rule on the `/mcp` route. See the inline comments in `lds.template.yaml` for the allowed pattern, and [Enabling MCP Server Access](https://supabase.com/docs/guides/self-hosting/enable-mcp) for the security model.
+
+The `/functions/v1/` route sets `idle_timeout` to `160s` and `timeout` to `410s` in `volumes/api/envoy/lds.template.yaml`. These allow the runtime's 150-second request idle timeout and 400-second worker lifetime limit to expire first. See [Memory or timeout errors](https://supabase.com/docs/guides/self-hosting/self-hosted-functions#memory-or-timeout-errors) for the runtime settings.
 
 ## Authentication
 
@@ -131336,11 +131348,13 @@ For more details, see:
 
 ## Troubleshooting
 
-### 400 "missing function name in request"
+### 404 `NOT_FOUND`
 
-The request URL must include the function name after `/functions/v1/`. For example, `/functions/v1/hello`.
+The request URL must include the function name after `/functions/v1/`. For example, `/functions/v1/hello`. Check that the corresponding directory exists at `volumes/functions/hello/`.
 
-### 500 error on invocation
+### Function invocation errors
+
+Inspect the `sb-error-code` response header and see [Edge Functions error codes](https://supabase.com/docs/guides/functions/error-codes) for details about the error.
 
 Check the functions service logs:
 
@@ -131348,7 +131362,7 @@ Check the functions service logs:
 docker compose logs functions
 ```
 
-Common causes: syntax errors in your function code, invalid imports, or missing dependencies.
+For 503 `BOOT_ERROR`, check for syntax errors, invalid imports, or missing dependencies that prevent the function from starting.
 
 ### 401 "invalid JWT"
 
@@ -131378,7 +131392,21 @@ sh run.sh recreate functions
 
 ### Memory or timeout errors
 
-The default limits are 150 MB memory and 60 seconds timeout per function invocation. These are set in `volumes/functions/main/index.ts`. To adjust them, edit the `memoryLimitMb` and `workerTimeoutMs` values and restart the functions service.
+The default limits in `volumes/functions/main/index.ts` apply to each worker:
+
+| Setting                  | Default    | Description                                                                                 |
+| ------------------------ | ---------- | ------------------------------------------------------------------------------------------- |
+| `memoryLimitMb`          | 150 MB     | Maximum memory usage.                                                                       |
+| `workerTimeoutMs`        | 400,000 ms | Maximum worker lifetime.                                                                    |
+| `requestAbsentTimeoutMs` | 60,000 ms  | Allows the worker to shut down after 60 seconds without requests when no tasks are pending. |
+
+To adjust these limits, edit the values in `volumes/functions/main/index.ts` and restart the functions service.
+
+Requests have a separate idle timeout of 150 seconds. This is set by `--user-worker-request-idle-timeout` in the functions service command in `docker-compose.yml`, with the value `150000` in milliseconds. Recreate the functions container after changing this value.
+
+The [Envoy gateway](https://supabase.com/docs/guides/self-hosting/self-hosted-envoy#routes) has separate limits of 160 seconds of inactivity and a 410-second upstream response timeout.
+
+If you use the optional Kong gateway, `read_timeout` in `volumes/api/kong.yml` is set to `160000` milliseconds, allowing 160 seconds of inactivity between reads from the functions service.
 
 
 ---
@@ -134214,7 +134242,7 @@ const { data, error } = await supabase.storage.createBucket('avatars', {
 })
 ```
 
-[Reference.](https://supabase.com/docs/reference/javascript/storage-createbucket)
+[Reference.](https://supabase.com/docs/reference/javascript/file-buckets-createbucket)
 
 **Dashboard**
 
@@ -134318,8 +134346,8 @@ When a bucket is set to **Private** all operations are subject to access control
 
 The only ways to download assets within a private bucket is to:
 
-- Use the [download method](https://supabase.com/docs/reference/javascript/storage-from-download) by providing an authorization header containing your user's JWT. The RLS policy you create on the `storage.objects` table will use this user to determine if they have access.
-- Create a signed URL with the [`createSignedUrl` method](https://supabase.com/docs/reference/javascript/storage-from-createsignedurl) that can be accessed for a limited time.
+- Use the [download method](https://supabase.com/docs/reference/javascript/file-buckets-download) by providing an authorization header containing your user's JWT. The RLS policy you create on the `storage.objects` table will use this user to determine if they have access.
+- Create a signed URL with the [`createSignedUrl` method](https://supabase.com/docs/reference/javascript/file-buckets-createsignedurl) that can be accessed for a limited time.
 
 #### Example use cases:
 
@@ -134536,7 +134564,7 @@ Note: Smart CDN caching is automatically enabled for [Pro Plan and above](https:
 
 ## Cache duration
 
-When Smart CDN is enabled, the asset is cached on the CDN for as long as possible. You can still control how long assets are stored in the browser using the [`cacheControl`](https://supabase.com/docs/reference/javascript/storage-from-upload) option when uploading a file. Smart CDN caching works with all types of storage operations including signed URLs.
+When Smart CDN is enabled, the asset is cached on the CDN for as long as possible. You can still control how long assets are stored in the browser using the [`cacheControl`](https://supabase.com/docs/reference/javascript/file-buckets-upload) option when uploading a file. Smart CDN caching works with all types of storage operations including signed URLs.
 
 When a file is updated or deleted, the CDN cache is automatically invalidated to reflect the change (including transformed images). It can take **up to 60 seconds** for the CDN cache to be invalidated as the asset metadata has to propagate across all the data-centers around the globe.
 
@@ -135207,7 +135235,7 @@ values
 const { data, error } = await supabase.storage.createBucket('avatars')
 ```
 
-[Reference.](https://supabase.com/docs/reference/javascript/storage-createbucket)
+[Reference.](https://supabase.com/docs/reference/javascript/file-buckets-createbucket)
 
 **Dart**
 
@@ -135267,7 +135295,7 @@ const { data, error } = await supabase.storage
   .upload('public/avatar1.png', avatarFile)
 ```
 
-[Reference.](https://supabase.com/docs/reference/javascript/storage-from-upload)
+[Reference.](https://supabase.com/docs/reference/javascript/file-buckets-upload)
 
 **Dart**
 
@@ -135318,7 +135346,7 @@ You can download a file from the Dashboard, or within a browser using our JS lib
 const { data, error } = await supabase.storage.from('avatars').download('public/avatar1.png')
 ```
 
-[Reference.](https://supabase.com/docs/reference/javascript/storage-from-download)
+[Reference.](https://supabase.com/docs/reference/javascript/file-buckets-download)
 
 **Dart**
 
@@ -135333,7 +135361,7 @@ void main() async {
 }
 ```
 
-[Reference.](https://supabase.com/docs/reference/dart/storage-from-download)
+[Reference.](https://supabase.com/docs/reference/dart/file-buckets-download)
 
 **Swift**
 
@@ -135807,9 +135835,9 @@ You can find the documentation for the storage schema [here](https://supabase.co
 
 If you need different `SELECT` policies for different Storage actions, such as listing objects versus reading authenticated objects, use the operation-aware helpers `storage.allow_only_operation()` and `storage.allow_any_operation()` documented in [Storage Helper Functions](https://supabase.com/docs/guides/storage/schema/helper-functions).
 
-Note: The RLS policies required for different operations are documented [here](https://supabase.com/docs/reference/javascript/storage-createbucket)
+Note: The RLS policies required for different operations are documented [here](https://supabase.com/docs/reference/javascript/file-buckets-createbucket)
 
-For example, the only RLS policy required for [uploading](https://supabase.com/docs/reference/javascript/storage-from-upload) objects is to grant the `INSERT` permission to the `storage.objects` table.
+For example, the only RLS policy required for [uploading](https://supabase.com/docs/reference/javascript/file-buckets-upload) objects is to grant the `INSERT` permission to the `storage.objects` table.
 
 To allow overwriting files using the `upsert` functionality you will need to additionally grant `SELECT` and `UPDATE` permissions.
 
@@ -136069,7 +136097,7 @@ final response = await supabase.storage
   );
 ```
 
-[Reference.](https://supabase.com/docs/reference/dart/storage-from-download)
+[Reference.](https://supabase.com/docs/reference/dart/file-buckets-download)
 
 **Swift**
 
@@ -177281,6 +177309,8 @@ A `supabase/config.toml` file is created in your current working directory. This
 > You may override the directory path by specifying the `SUPABASE_WORKDIR` environment variable or `--workdir` flag.
 
 In addition to `config.toml`, the `supabase` directory may also contain other Supabase objects, such as `migrations`, `functions`, `tests`, etc.
+
+To use OrioleDB as the Postgres storage engine, run `supabase init --use-orioledb`. The command writes the OrioleDB version to `db.orioledb_version` in `supabase/config.toml`.
 
 ```sh
 supabase init [flags]

@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 388 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -200,6 +200,7 @@
 - `docs/self-hosted-deployment-environments` — [Deployment Environments](pages/docs/self-hosted-deployment-environments.md) · [原文](https://developers.deepgram.com/docs/self-hosted-deployment-environments.md)
 - `docs/self-hosted-ingress-auth` — [Ingress Authentication](pages/docs/self-hosted-ingress-auth.md) · [原文](https://developers.deepgram.com/docs/self-hosted-ingress-auth.md)
 - `docs/self-hosted-introduction` — [Introduction](pages/docs/self-hosted-introduction.md) · [原文](https://developers.deepgram.com/docs/self-hosted-introduction.md)
+- `docs/self-hosted-redact-usage` — [Redact Usage](pages/docs/self-hosted-redact-usage.md) · [原文](https://developers.deepgram.com/docs/self-hosted-redact-usage.md)
 - `docs/self-hosted-self-service-tutorial` — [Self Service Licensing & Credentials](pages/docs/self-hosted-self-service-tutorial.md) · [原文](https://developers.deepgram.com/docs/self-hosted-self-service-tutorial.md)
 - `docs/self-hosted-smart-formatting` — [Smart formatting](pages/docs/self-hosted-smart-formatting.md) · [原文](https://developers.deepgram.com/docs/self-hosted-smart-formatting.md)
 - `docs/self-hosted-status-endpoint` — [Status Endpoint](pages/docs/self-hosted-status-endpoint.md) · [原文](https://developers.deepgram.com/docs/self-hosted-status-endpoint.md)

@@ -22,9 +22,12 @@ Currently, the following models are natively supported and can be configured via
 
 | Provider       | Model                  |
 | -------------- | ---------------------- |
-| **ElevenLabs** | Qwen3.6-35B-A3B        |
+| **ElevenLabs** | DeepSeek Flash 4.1     |
+|                | GLM 5.2                |
+|                | Qwen3.6-35B-A3B        |
 |                | Qwen3.5-397B-A17B      |
-| **Google**     | Gemini 3.7 Flash       |
+| **Google**     | Gemini 3.8 Flash       |
+|                | Gemini 3.7 Flash       |
 |                | Gemini 3.6 Flash       |
 |                | Gemini 3.5 Flash       |
 |                | Gemini 3.5 Flash-Lite  |
@@ -33,7 +36,11 @@ Currently, the following models are natively supported and can be configured via
 |                | Gemini 3 Flash Preview |
 |                | Gemini 2.5 Flash       |
 |                | Gemini 2.5 Flash Lite  |
-| **OpenAI**     | GPT-5.6 Sol            |
+| **OpenAI**     | GPT-6.1 Sol            |
+|                | GPT-6 Astra            |
+|                | GPT-6 Sol              |
+|                | GPT-6 Luna             |
+|                | GPT-5.6 Sol            |
 |                | GPT-5.6 Terra          |
 |                | GPT-5.6 Luna           |
 |                | GPT-5.5                |
@@ -50,8 +57,11 @@ Currently, the following models are natively supported and can be configured via
 |                | GPT-4.1 Nano           |
 |                | GPT-4o                 |
 |                | GPT-4o Mini            |
-| **Anthropic**  | Claude Opus 4.8        |
+| **Anthropic**  | Claude Opus 5.5        |
+|                | Claude Opus 5          |
+|                | Claude Opus 4.8        |
 |                | Claude Opus 4.7        |
+|                | Claude Sonnet 5.5      |
 |                | Claude Sonnet 5        |
 |                | Claude Sonnet 4.6      |
 |                | Claude Sonnet 4.5      |

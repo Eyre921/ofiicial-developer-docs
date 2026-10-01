@@ -12,6 +12,10 @@ path: docs/api/api-reference/api-keys/update-an-api-key
 
 > Update an existing API key. Authenticate with a [management key](/docs/guides/overview/auth/management-api-keys).
 
+<Warning>
+You can't change `workspace_id` through the API. The request body accepts only the fields listed below, and unrecognized fields are ignored. To move a key to another workspace, use the OpenRouter dashboard. If the body contains none of the accepted fields, the request fails with `400` and the message `No update fields provided`.
+</Warning>
+
 
 
 ## OpenAPI
@@ -152,6 +156,17 @@ paths:
       description: >-
         Update an existing API key. Authenticate with a [management
         key](/docs/guides/overview/auth/management-api-keys).
+
+
+        <Warning>
+
+        You can't change `workspace_id` through the API. The request body
+        accepts only the fields listed below, and unrecognized fields are
+        ignored. To move a key to another workspace, use the OpenRouter
+        dashboard. If the body contains none of the accepted fields, the request
+        fails with `400` and the message `No update fields provided`.
+
+        </Warning>
       operationId: updateKeys
       parameters:
         - description: The hash identifier of the API key to update
@@ -457,10 +472,23 @@ paths:
         '400':
           content:
             application/json:
-              example:
-                error:
-                  code: 400
-                  message: Invalid request parameters
+              examples:
+                invalid_parameters:
+                  summary: Invalid request parameters
+                  value:
+                    error:
+                      code: 400
+                      message: Invalid request parameters
+                no_update_fields:
+                  description: >-
+                    Returned when the body contains none of the accepted fields,
+                    for example `{"workspace_id": "..."}`. `workspace_id` can't
+                    be changed through the API.
+                  summary: No accepted fields in the request body
+                  value:
+                    error:
+                      code: 400
+                      message: No update fields provided
               schema:
                 $ref: '#/components/schemas/BadRequestResponse'
           description: Bad Request - Invalid request parameters or malformed input

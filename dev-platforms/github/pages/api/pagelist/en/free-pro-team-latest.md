@@ -1689,10 +1689,12 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/copilot-cli/tool-search
 /en/copilot/concepts/agents/copilot-cli/understanding-local-sandboxing
 /en/copilot/concepts/agents/github-copilot-app
+/en/copilot/concepts/agents/computer-use
 /en/copilot/concepts/agents/copilot-in-jetbrains
 /en/copilot/concepts/agents/code-review
 /en/copilot/concepts/agents/about-github-agentic-workflows
 /en/copilot/concepts/agents/copilot-memory
+/en/copilot/concepts/agents/dynamic-workflows
 /en/copilot/concepts/agents/hooks
 /en/copilot/concepts/agents/about-plugins
 /en/copilot/concepts/agents/about-third-party-coding-agents
@@ -1833,6 +1835,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/overview
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/allowing-tools
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/voice-input
+/en/copilot/how-tos/copilot-cli/use-copilot-cli/computer-use
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/connecting-vs-code
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/delegate-tasks-to-cca
 /en/copilot/how-tos/copilot-cli/use-copilot-cli/browse-issues-prs-gists
@@ -1873,6 +1876,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/github-copilot-app
 /en/copilot/how-tos/github-copilot-app/customize-github-copilot-app
 /en/copilot/how-tos/github-copilot-app/agent-sessions
+/en/copilot/how-tos/github-copilot-app/computer-use
 /en/copilot/how-tos/github-copilot-app/configure-local-sandboxing
 /en/copilot/how-tos/github-copilot-app/working-with-canvas-extensions
 /en/copilot/how-tos/github-copilot-app/managing-issues-and-pull-requests
@@ -1947,11 +1951,11 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-with-mcp
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-from-raycast
 /en/copilot/how-tos/use-copilot-agents/cloud-agent/troubleshoot-cloud-agent
-/en/copilot/how-tos/use-copilot-agents/request-a-code-review
-/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review
 /en/copilot/how-tos/use-copilot-agents/copilot-memory
 /en/copilot/how-tos/use-copilot-agents/copilot-memory/manage-for-yourself
 /en/copilot/how-tos/use-copilot-agents/copilot-memory/manage-as-administrator
+/en/copilot/how-tos/use-copilot-agents/use-code-review
+/en/copilot/how-tos/use-copilot-agents/use-dynamic-workflows
 /en/copilot/how-tos/copilot-integrations
 /en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-slack
 /en/copilot/how-tos/copilot-integrations/integrate-cloud-agent-with-teams
@@ -2951,6 +2955,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/communities/setting-up-your-project-for-healthy-contributions/accessing-a-projects-community-profile
 /en/communities/setting-up-your-project-for-healthy-contributions/adding-a-code-of-conduct-to-your-project
 /en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors
+/en/communities/setting-up-your-project-for-healthy-contributions/adding-an-accessibility-page-to-your-repository
 /en/communities/setting-up-your-project-for-healthy-contributions/adding-a-license-to-a-repository
 /en/communities/setting-up-your-project-for-healthy-contributions/adding-support-resources-to-your-project
 /en/communities/setting-up-your-project-for-healthy-contributions/creating-a-default-community-health-file

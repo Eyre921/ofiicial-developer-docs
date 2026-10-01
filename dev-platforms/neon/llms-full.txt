@@ -1011,7 +1011,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon -s n
 
 ## Get access
 
-You need a project in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), or AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Using the AI Gateway requires a paid Neon plan with prepaid credits, which gives you the open-weight models. To request access to foundation models, see [Model access](https://neon.com/docs/ai-gateway/overview#model-access).
+You need a project in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), or AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward [all regions](https://neon.com/docs/introduction/regions). Using the AI Gateway requires a paid Neon plan with prepaid credits, which gives you every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for details.
 
 ## Create a credential
 
@@ -1258,7 +1258,7 @@ const models = Object.values(catalog.neon.models).filter((model) => model.releas
 
 Neon AI Gateway gives you one credential for both open-weight and foundation models. The catalog grows continuously as new models roll out, so the [table below](https://neon.com/docs/ai-gateway/models#available-models) is always the source of truth for what you can call today.
 
-Using the AI Gateway requires a paid plan with prepaid credits, which gives you the open-weight models. Foundation models are rolled out gradually. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for what's included and how to request access to foundation models.
+Using the AI Gateway requires a paid plan with prepaid credits, which gives you every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for details.
 
 ## Available models
 
@@ -1478,7 +1478,7 @@ curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
 
 The response returns one object per model. Key fields:
 
-- `enabled` is whether your account can call the model. If `false`, a request returns a `403` (see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#403-model-requires-a-verified-account)). Gated models are sometimes left out of the list entirely, so use `enabled: true` as your check. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for what determines access and how to request more models.
+- `enabled` is whether the model is currently callable. Any paid account with prepaid credits can call every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for details.
 - `id`, `name`, and `owned_by` identify the model. Use `id` (or its `databricks-` prefixed form) in the `model` field of a request.
 - `canonical_slug`, `architecture`, and `top_provider` are OpenRouter-compatible descriptive fields.
 - `created` is always `0`, and `pricing`, `per_request_limits`, and `context_length` are currently always `null`. Use the tables earlier on this page for context windows and model details.
@@ -9039,9 +9039,7 @@ Neon AI Gateway is an LLM gateway built into your Postgres branch. Point your ex
 
 ## Model access
 
-Neon AI Gateway serves open-weight and foundation models. Any paid project with prepaid credits can use the open-weight models right away. Foundation models are rolled out gradually, so the full catalog opens up over time.
-
-To request access to foundation models that aren't enabled for your project yet, drop your email below and we'll reach out as access opens up.
+Neon AI Gateway serves open-weight and foundation models. Any paid project with prepaid credits can use every model in the catalog.
 
 **See every supported model in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models).** See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits) to add credits.
 
@@ -9065,7 +9063,7 @@ Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets 
 
 AI Gateway usage draws down a prepaid credit balance. Here's how pricing works:
 
-- **Paid plans only.** AI Gateway is available on Neon's Launch and Scale plans, with no difference in pricing or model access between the two. Any paid customer with prepaid credits can use the open-weight models. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for the full foundation model catalog.
+- **Paid plans only.** AI Gateway is available on Neon's Launch and Scale plans, with no difference in pricing or model access between the two. Any paid customer with prepaid credits can use every model in the catalog. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for details.
 - **No markup.** Neon charges the same per-token rate as the model provider. Published provider prices are passed on to users with no additional markup.
 - **Prepaid credits.** Inference draws down a prepaid credit balance. 1 credit equals $1 USD, with a $5 minimum purchase, and credits are valid for 12 months from purchase. You buy credits from the **Billing** page in the [Neon Console](https://console.neon.tech/app/billing).
 
@@ -9196,10 +9194,8 @@ When you exceed a limit, the API returns **HTTP 429**:
 
 ## Model access
 
-A paid account with prepaid credits can use the open-weight AI Gateway models.
-Foundation models are rolled out gradually and require requesting access.
-See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for what's included and
-how to apply.
+A paid account with prepaid credits can use every AI Gateway model.
+See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for details.
 
 The model list is subject to change. See
 [Supported models](https://neon.com/docs/ai-gateway/models) for the current catalog.
@@ -9233,7 +9229,7 @@ usable again when you upgrade to a paid plan.
 
 ### Who can use AI Gateway?
 
-AI Gateway is available on Neon's paid plans (Launch and Scale). Any paid Neon customer with prepaid credits can use the open-weight models. Foundation models are rolled out gradually; see [Model access](https://neon.com/docs/ai-gateway/overview#model-access) to request access to foundation models.
+AI Gateway is available on Neon's paid plans (Launch and Scale). Any paid Neon customer with prepaid credits can use every model in the catalog.
 
 ### How much do AI Gateway credits cost?
 
@@ -9332,7 +9328,7 @@ The model exists in the catalog, but your account can't call it yet. This is a p
 }
 ```
 
-**Fix:** List `GET /v1/models` and filter on `enabled` to see which models your account can call (see [Check what your account can call](https://neon.com/docs/ai-gateway/models#check-what-your-account-can-call)). If you're on a paid plan and still can't call a model, it's a foundation model you haven't been granted yet. See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) to request access.
+**Fix:** List `GET /v1/models` and filter on `enabled` to see which models your account can call (see [Check what your account can call](https://neon.com/docs/ai-gateway/models#check-what-your-account-can-call)). If you're on a paid plan with prepaid credits and still can't call a model, [contact Support](https://neon.com/docs/introduction/support).
 
 ---
 
@@ -11221,7 +11217,7 @@ To learn more about Neon's autoscaling feature and how to enable it, refer to ou
 
 ## Storage
 
-On the Free plan, you get 0.5 GB of storage per project. Storage on paid plans is usage based. See [Neon plans](https://neon.com/docs/introduction/plans) for details.
+On the Free plan, you get 1 GB of Postgres storage per project. Storage on paid plans is usage based. See [Neon plans](https://neon.com/docs/introduction/plans) for details.
 
 ## Read replicas
 
@@ -63737,7 +63733,7 @@ Neon fits into every stage of growth, from the first side project to operating l
 
 When you're looking for a free plan to start building, what you want is simplicity and enough room to work. Neon's Free plan abstracts most backend configuration, delivers real-world performance, and gives you branching and autoscaling. And you get more than a database: alongside Lakebase Postgres, you can deploy Managed Better Auth, Object Storage for your files, and Functions, all on the same plan.
 
-- A [Free plan with real resources](https://neon.com/docs/introduction/plans): up to 100 projects, each project with its own 100 CU-hours of database compute (autoscaling between 0.25 and 2 CU), 0.5 GB of database storage, and 5 GB of egress, enough to build and test real applications
+- A [Free plan with real resources](https://neon.com/docs/introduction/plans): up to 100 projects, each project with its own 100 CU-hours of database compute (autoscaling between 0.25 and 2 CU), 1 GB of Postgres storage, and 5 GB of egress, enough to build and test real applications
 - Plus the rest of the backend: [Managed Better Auth](https://neon.com/docs/auth/overview) (up to 60,000 MAU), [Object Storage](https://neon.com/docs/storage/overview) (5 GB per project), and [Functions](https://neon.com/docs/compute/functions/overview) (1 million invocations per month)
 - [Scale to zero](https://neon.com/docs/introduction/scale-to-zero) means idle projects don't eat into your compute allowance: only active time counts
 - [Instant branching](https://neon.com/docs/introduction/branching) gives each experiment its own copy of the whole backend, data and buckets included, so you can try changes without risk
@@ -65171,7 +65167,7 @@ Neon fits into every stage of growth, from the first side project to operating l
 
 When you're looking for a free plan to run Postgres, what you want is simplicity and enough room to build. Neon's Free plan abstracts most configuration work, delivers real-world performance, and gives you access to core Neon features like branching and autoscaling.
 
-- You get a [Free Plan with real resources](https://neon.com/blog/why-so-many-projects-in-the-neon-free-plan), including up to 100 projects, computes with up to 2 CUs, and 0.5 GB of storage per project - enough to build and test real applications
+- You get a [Free Plan with real resources](https://neon.com/blog/why-so-many-projects-in-the-neon-free-plan), including up to 100 projects, computes with up to 2 CUs, and 1 GB of Postgres storage per project - enough to build and test real applications
 - You get a Postgres connection string in a second so you can start building right away
 - [Scale to zero](https://neon.com/docs/introduction/scale-to-zero) ensures idle databases don't eat up your compute limits: only active time counts
 - Standard Postgres compatibility means you can plug Neon into [any framework, ORM, or tool that speaks Postgres](https://neon.com/docs/get-started/frameworks)
@@ -66241,7 +66237,7 @@ For free-tier users, create projects in your Free organization (sponsored by Neo
 | ----------------- | ------------------ | ---------------------------------------- |
 | **Compute**       | 0.25 / 2 CU        | Autoscales from 0.25 to 2 compute units  |
 | **Active time**   | `360000` seconds   | 100 hours of compute activity per month  |
-| **Storage**       | `536870912` bytes  | 512 MB total storage limit               |
+| **Storage**       | `1073741824` bytes | 1 GB total storage limit                 |
 | **Data transfer** | `5368709120` bytes | 5 GB data transfer per project per month |
 
 Example API request:
@@ -66259,7 +66255,7 @@ curl --request POST \
     "settings": {
       "quota": {
         "active_time_seconds": 360000,
-        "logical_size_bytes": 536870912,
+        "logical_size_bytes": 1073741824,
         "data_transfer_bytes": 5368709120
       }
     },
@@ -66278,12 +66274,12 @@ For paid users, create projects in your paid organization with higher resource q
 
 #### Example: Pro tier
 
-| Resource          | Pro Tier Quota      | Description                             |
-| ----------------- | ------------------- | --------------------------------------- |
-| **Compute**       | 0.25 / 2 CU         | Autoscales from 0.25 to 2 compute units |
-| **Active time**   | `2700000` seconds   | 750 hours of compute activity per month |
-| **Storage**       | `10737418240` bytes | 10 GB storage limit                     |
-| **Data transfer** | `53687091200` bytes | 50 GB data transfer per month           |
+| Resource             | Pro Tier Quota      | Description                             |
+| -------------------- | ------------------- | --------------------------------------- |
+| **Compute**          | 0.25 / 2 CU         | Autoscales from 0.25 to 2 compute units |
+| **Active time**      | `2700000` seconds   | 750 hours of compute activity per month |
+| **Postgres storage** | `10737418240` bytes | 10 GB Postgres storage limit            |
+| **Data transfer**    | `53687091200` bytes | 50 GB data transfer per month           |
 
 Example API request:
 
@@ -66446,7 +66442,7 @@ curl --request PATCH \
     "settings": {
       "quota": {
         "active_time_seconds": 360000,
-        "logical_size_bytes": 536870912,
+        "logical_size_bytes": 1073741824,
         "data_transfer_bytes": 5368709120
       }
     },
@@ -73707,11 +73703,11 @@ There are certain allowances associated with schema-only branches:
 
 - A schema-only branch is a [root branch](https://neon.com/docs/reference/glossary#root-branch), and only a certain number of root branches are permitted per Neon project, depending on your Neon plan.
 - The `main` root branch created with each Neon project counts toward the _root branch allowance per project_, as do certain [backup branches](https://neon.com/docs/reference/glossary#backup-branch) created by restore operations.
-- On the Free plan, all branches in a project share a total storage limit of 0.5 GB. Schema-only branches count toward this limit like any other branch. On paid plans, ordinary branch storage is unlimited, but each schema-only branch has its own maximum storage allowance, as outlined in the following table. These allowances apply only to schema-only branches; they are not a general storage cap.
+- On the Free plan, all branches in a project share a total storage limit of 1 GB. Schema-only branches count toward this limit like any other branch. On paid plans, ordinary branch storage is unlimited, but each schema-only branch has its own maximum storage allowance, as outlined in the following table. These allowances apply only to schema-only branches; they are not a general storage cap.
 
 | Plan   | Root branch allowance per project | Maximum storage allowance per schema-only branch |
 | :----- | :-------------------------------- | :----------------------------------------------- |
-| Free   | 3                                 | 0.5 GB                                           |
+| Free   | 3                                 | 1 GB                                             |
 | Launch | 5                                 | 3 GB                                             |
 | Scale  | 25                                | 20 GB                                            |
 
@@ -77353,7 +77349,7 @@ We're always looking to improve! If you have feature requests or feedback, pleas
 
 --- [Document source](https://neon.com/docs/guides/deno.md) ---
 
-> Summary: Guide to connecting a Lakebase Postgres database to a Deno application using the Neon serverless driver (@neon/serverless on JSR) for both local Deno Runtime and production edge deployment on Deno Deploy via deployctl. Use this page when building a TypeScript or JavaScript app on Deno's serverless platform and need to query Postgres over HTTP without a persistent connection. Covers DATABASE_URL setup, the deployctl deploy command, and optional GitHub integration for automated deployments.
+> Summary: Guide to connecting a Lakebase Postgres database to a Deno application using the Neon serverless driver (@neondatabase/serverless from npm) for both local Deno Runtime and production edge deployment on Deno Deploy via deployctl. Use this page when building a TypeScript or JavaScript app on Deno's serverless platform and need to query Postgres over HTTP without a persistent connection. Covers DATABASE_URL setup, the deployctl deploy command, and optional GitHub integration for automated deployments.
 
 # Use Neon with Deno Deploy
 
@@ -77361,7 +77357,7 @@ Connect a Lakebase Postgres database to your Deno Deploy application
 
 [Deno Deploy](https://deno.com/deploy) is a scalable serverless platform for running JavaScript, TypeScript, and WebAssembly at the edge, designed by the creators of Deno. It simplifies the deployment process and offers automatic scaling, zero-downtime deployments, and global distribution.
 
-This guide demonstrates how to connect to a Lakebase Postgres database from a simple Deno application using the Neon serverless driver on JSR.
+This guide demonstrates how to connect to a Lakebase Postgres database from a simple Deno application using the Neon serverless driver from npm. Deno installs the npm package directly, so no JSR package is required.
 
 The guide covers two deployment options:
 
@@ -77397,26 +77393,20 @@ Follow the [Install Deno and deployctl](https://docs.deno.com/deploy/manual/#ins
 
 ### Set up the Neon serverless driver
 
-First, install the Neon serverless driver using the `deno add` command:
+First, install the Neon serverless driver from npm using the `deno add` command:
 
 ```bash
-deno add jsr:@neon/serverless
+deno add npm:@neondatabase/serverless
 ```
 
-**Note:**
-
-You can also use npm to install the Neon serverless driver
-
-```bash
-npx jsr add @neon/serverless
-```
+**Note:** The JSR publication of the driver (`@neon/serverless`) is deprecated. Install the npm package (`@neondatabase/serverless`) instead, as shown above.
 
 This will create or update your `deno.json` file with the necessary dependency:
 
 ```json
 {
   "imports": {
-    "@neon/serverless": "jsr:@neon/serverless@^0.10.1"
+    "@neondatabase/serverless": "npm:@neondatabase/serverless@^1.2.0"
   }
 }
 ```
@@ -77428,7 +77418,7 @@ Next, create the `server.ts` script on your local machine.
 ```ts
 // server.ts
 
-import { neon } from '@neon/serverless';
+import { neon } from '@neondatabase/serverless';
 
 const databaseUrl = Deno.env.get('DATABASE_URL')!;
 const sql = neon(databaseUrl);
@@ -77619,8 +77609,8 @@ To delete your Neon project, refer to [Delete a project](https://neon.com/docs/m
 - [Deno Deploy](https://deno.com/deploy)
 - [Deno Runtime Quickstart](https://docs.deno.com/runtime/manual)
 - [Deno Deploy Quickstart](https://docs.deno.com/deploy/manual/)
-- [Neon Serverless Driver](https://jsr.io/@neon/serverless)
-- [JSR](https://jsr.io/)
+- [Neon serverless driver](https://github.com/neondatabase/serverless)
+- [Neon serverless driver on npm](https://www.npmjs.com/package/@neondatabase/serverless)
 
 --- [Document source](https://neon.com/docs/guides/django-migrations.md) ---
 
@@ -109701,14 +109691,14 @@ This guide describes how to download and install sample data for use with Neon.
 - A `psql` client for connecting to your Neon database and loading data. This client is included with a standalone PostgreSQL installation. See [PostgreSQL Downloads](https://www.postgresql.org/download/).
 - A `pg_restore` client if you are loading the [employees](https://neon.com/docs/import/import-sample-data#employees-database) or [postgres_air](https://neon.com/docs/import/import-sample-data#postgres-air-database) database. The `pg_restore` client is included with a standalone PostgreSQL installation. See [PostgreSQL Downloads](https://www.postgresql.org/download/).
 - A Neon database connection string. After creating a database, you can find the connection details by clicking the **Connect** button in the Console nav. In the instructions that follow, replace `postgresql://[user]:[password]@[neon_hostname]/[dbname]` with your connection string.
-- A Neon [paid plan](https://neon.com/docs/introduction/plans) if you intend to install a dataset larger than 0.5 GB.
+- A Neon [paid plan](https://neon.com/docs/introduction/plans) if you intend to install a dataset larger than 1 GB.
 - Instructions for each dataset require that you create a database. You can do so from a client such as `psql` or from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor).
 
 **Note:** You can also load sample data using the Neon CLI. See [Load sample data with the Neon CLI](https://neon.com/docs/import/import-sample-data#load-sample-data-with-the-neon-cli).
 
 ## Sample data
 
-Sample datasets are listed in order of the smallest to largest installed size. Please be aware that the Neon Free plan has a storage limit of 500 MB per branch. Datasets larger than 500 MB cannot be loaded on the Free plan.
+Sample datasets are listed in order of the smallest to largest installed size. Please be aware that the Neon Free plan has a storage limit of 1 GB per project. Datasets larger than 1 GB cannot be loaded on the Free plan.
 
 | Name                                                                                                       | Tables | Records  | Source file size | Installed size |
 | ---------------------------------------------------------------------------------------------------------- | ------ | -------- | ---------------- | -------------- |
@@ -111382,7 +111372,7 @@ To import your data from another Neon project:
 
 --- [Document source](https://neon.com/docs/import/migrate-from-planetscale.md) ---
 
-> Summary: Migrating a PlanetScale MySQL (Vitess-compatible) database to Lakebase Postgres uses pgloader, which converts schema, maps types (MySQL AUTO_INCREMENT to Postgres SERIAL, TINYINT to BOOLEAN), and transfers data in a single point-in-time operation. Writes on PlanetScale must be paused during migration to prevent data loss. Use this guide when switching from PlanetScale to Neon and needing a full schema-plus-data transfer. Neon's Free plan supports up to 0.5 GB; larger databases require a paid plan. The Neon connection string needs the endpoint ID embedded in the password field as a pgloader workaround.
+> Summary: Migrating a PlanetScale MySQL (Vitess-compatible) database to Lakebase Postgres uses pgloader, which converts schema, maps types (MySQL AUTO_INCREMENT to Postgres SERIAL, TINYINT to BOOLEAN), and transfers data in a single point-in-time operation. Writes on PlanetScale must be paused during migration to prevent data loss. Use this guide when switching from PlanetScale to Neon and needing a full schema-plus-data transfer. Neon's Free plan supports up to 1 GB; larger databases require a paid plan. The Neon connection string needs the endpoint ID embedded in the password field as a pgloader workaround.
 
 # Migrate from PlanetScale MySQL to Lakebase Postgres
 
@@ -111397,7 +111387,7 @@ Before you begin, make sure that you have the following:
 - A PlanetScale account and a database you want to migrate. PlanetScale databases use MySQL-compatible Vitess.
 - A Neon account and a project. See [Sign up](https://neon.com/docs/get-started/signing-up).
 - A properly named database. For example, if you are migrating a database named `my_app`, you might want to create a database of the same name in Neon. See [Create a database](https://neon.com/docs/manage/databases#create-a-database) for instructions.
-- Neon's Free plan supports 0.5 GB of data. If your data size is more than 0.5 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
+- Neon's Free plan supports 1 GB of data. If your data size is more than 1 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
 - **Schedule migration downtime:** `pgloader` performs a point-in-time migration, which means that any changes made to the PlanetScale database after the migration process has started will not be reflected in the Neon database. You will need to pause writes to your PlanetScale database (schedule downtime) during the migration to avoid data loss.
 - **Configure IP allowlisting:** Ensure that the machine running `pgloader` has its IP address permitted on both the PlanetScale and Neon sides. See [PlanetScale IP restrictions](https://planetscale.com/docs/postgres/connecting/ip-restrictions) and Neon [IP allow rules](https://neon.com/docs/manage/projects#configure-ip-allow).
 
@@ -112282,7 +112272,7 @@ For more information on the Postgres utilities used in this guide, refer to the 
 
 --- [Document source](https://neon.com/docs/import/migrate-from-turso.md) ---
 
-> Summary: Migration guide for moving a Turso (libSQL/SQLite) database to Lakebase Postgres using pgloader. Dumps the Turso database to a local SQLite file with the Turso CLI, then loads it into Neon where pgloader converts SQLite type affinities to Postgres types. Use this guide when the source is Turso or SQLite; it also covers swapping Turso drivers for the Neon serverless driver, translating `?` placeholders to `$1` parameters, adapting dialect differences like LIKE vs ILIKE, and verifying sequences after migration. Neon's Free plan supports up to 0.5 GB; larger Turso databases require a paid Neon plan.
+> Summary: Migration guide for moving a Turso (libSQL/SQLite) database to Lakebase Postgres using pgloader. Dumps the Turso database to a local SQLite file with the Turso CLI, then loads it into Neon where pgloader converts SQLite type affinities to Postgres types. Use this guide when the source is Turso or SQLite; it also covers swapping Turso drivers for the Neon serverless driver, translating `?` placeholders to `$1` parameters, adapting dialect differences like LIKE vs ILIKE, and verifying sequences after migration. Neon's Free plan supports up to 1 GB; larger Turso databases require a paid Neon plan.
 
 # Migrate from Turso to Lakebase Postgres
 
@@ -112298,7 +112288,7 @@ Before you begin, ensure you have the following:
 - A database created in your Neon project. For instructions, see [Create a database](https://neon.com/docs/manage/databases#create-a-database).
 - The [Turso CLI](https://docs.turso.tech/cli/introduction) installed. You'll use it to export your database.
 - The `sqlite3` command-line tool, typically pre-installed on macOS and Linux.
-- Neon's Free plan supports 0.5 GB of data. If your data size is more than 0.5 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
+- Neon's Free plan supports 1 GB of data. If your data size is more than 1 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
 
 A review of the [pgloader SQLite to Postgres Guide](https://pgloader.readthedocs.io/en/latest/ref/sqlite.html) is also recommended. It provides a comprehensive overview of `pgloader`'s capabilities and type mappings, which will be helpful for understanding the migration process.
 
@@ -112767,7 +112757,7 @@ For near-zero downtime Postgres database migrations using logical replication, s
 
 --- [Document source](https://neon.com/docs/import/migrate-mssql.md) ---
 
-> Summary: Migrating from Microsoft SQL Server (MSSQL) or Azure SQL to Lakebase Postgres uses pgloader, which streams data through the Postgres COPY protocol and automatically detects schemas, indexes, and constraints. Use this page when you need end-to-end steps covering credentials, firewall rules, pgloader configuration, running the migration, and post-migration verification. Neon's Free plan supports up to 0.5 GB; larger datasets require a paid plan. Azure SQL users may need FreeTDS driver configuration to resolve pgloader connection errors.
+> Summary: Migrating from Microsoft SQL Server (MSSQL) or Azure SQL to Lakebase Postgres uses pgloader, which streams data through the Postgres COPY protocol and automatically detects schemas, indexes, and constraints. Use this page when you need end-to-end steps covering credentials, firewall rules, pgloader configuration, running the migration, and post-migration verification. Neon's Free plan supports up to 1 GB; larger datasets require a paid plan. Azure SQL users may need FreeTDS driver configuration to resolve pgloader connection errors.
 
 # Migrate from Microsoft SQL Server to Lakebase Postgres
 
@@ -112787,7 +112777,7 @@ The `pgloader` utility transforms data to a Postgres-compatible format as it rea
 
   For detailed information on creating a Neon project, see [Create a project](https://neon.com/docs/manage/projects#create-a-project).
 
-- Neon's Free plan supports 0.5 GB of data. If your data size is more than 0.5 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
+- Neon's Free plan supports 1 GB of data. If your data size is more than 1 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
 
 - Review the [Pgloader MSSQL to Postgres Guide](https://pgloader.readthedocs.io/en/latest/ref/mssql.html) guide. It will provide you with a good understanding of `pgloader` capabilities and how to configure your `pgloader` configuration file, if necessary.
 
@@ -112996,7 +112986,7 @@ For more information on `pgloader` and database migration, refer to the followin
 
 --- [Document source](https://neon.com/docs/import/migrate-mysql.md) ---
 
-> Summary: MySQL to Lakebase Postgres migration uses pgloader, which reads from a MySQL source and streams data into Postgres via the COPY protocol, automatically transforming data types. Use this page when moving an existing MySQL database to Neon. It covers credentials, connection string setup including the required endpoint ID workaround, and running pgloader from the command line or Docker. Neon's Free plan supports up to 0.5 GB; larger databases require a paid plan.
+> Summary: MySQL to Lakebase Postgres migration uses pgloader, which reads from a MySQL source and streams data into Postgres via the COPY protocol, automatically transforming data types. Use this page when moving an existing MySQL database to Neon. It covers credentials, connection string setup including the required endpoint ID workaround, and running pgloader from the command line or Docker. Neon's Free plan supports up to 1 GB; larger databases require a paid plan.
 
 # Migrate from MySQL to Lakebase Postgres
 
@@ -113010,7 +113000,7 @@ Before you begin, make sure that you have the following:
 
 - A Neon account and a project. See [Sign up](https://neon.com/docs/get-started/signing-up).
 - A properly named database. For example, if you are migrating a database named `sakila`, you might want to create a database of the same name in Neon. See [Create a database](https://neon.com/docs/manage/databases#create-a-database) for instructions.
-- Neon's Free plan supports 0.5 GB of data. If your data size is more than 0.5 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
+- Neon's Free plan supports 1 GB of data. If your data size is more than 1 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
 
 Also, a close review of the [Pgloader MySQL to Postgres Guide](https://pgloader.readthedocs.io/en/latest/ref/mysql.html) guide is recommended before you start. This guide will provide you with a good understanding of `pgloader` capabilities and how to configure your `pgloader` configuration file, if necessary.
 
@@ -113241,7 +113231,7 @@ After you've loaded the schema, you can view the result with this `psql` command
 
 --- [Document source](https://neon.com/docs/import/migrate-sqlite.md) ---
 
-> Summary: SQLite-to-Lakebase Postgres migration using pgloader transfers schemas and data while mapping SQLite type affinities to strict Postgres types. Use this page when moving an existing SQLite or Turso database to Neon and needing control over type casting via pgloader CAST clauses, as distinct from guides covering MySQL, CSV, or logical replication imports. Neon's Free plan supports up to 0.5 GB; the guide also covers sequence verification after import and a Docker SSL workaround.
+> Summary: SQLite-to-Lakebase Postgres migration using pgloader transfers schemas and data while mapping SQLite type affinities to strict Postgres types. Use this page when moving an existing SQLite or Turso database to Neon and needing control over type casting via pgloader CAST clauses, as distinct from guides covering MySQL, CSV, or logical replication imports. Neon's Free plan supports up to 1 GB; the guide also covers sequence verification after import and a Docker SSL workaround.
 
 # Migrate from SQLite to Lakebase Postgres
 
@@ -113256,7 +113246,7 @@ Before you begin, ensure you have the following:
 - A Neon account and a project. If you don't have one, see [Sign up](https://neon.com/docs/get-started/signing-up).
 - A database created in your Neon project. For instructions, see [Create a database](https://neon.com/docs/manage/databases#create-a-database).
 - The file path to your source SQLite database file. If you don't have one, you can create a sample database in the next step.
-- Neon's Free plan supports 0.5 GB of data. If your data size is more than 0.5 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
+- Neon's Free plan supports 1 GB of data. If your data size is more than 1 GB, you'll need to upgrade to one of Neon's paid plans. See [Neon plans](https://neon.com/docs/introduction/plans) for more information.
 
 A review of the [pgloader SQLite to Postgres Guide](https://pgloader.readthedocs.io/en/latest/ref/sqlite.html) is also recommended. It provides a comprehensive overview of `pgloader`'s capabilities.
 
@@ -114380,7 +114370,7 @@ Yes. Any data-modifying operation, including deletes, generates [WAL records](ht
 
 Storage limits depend on your Neon plan:
 
-- **Free plan**: The Free plan includes 0.5 GB of storage per project. If you reach this limit, database operations that would increase storage (inserts, updates, and deletes) will fail until you reduce your storage or [upgrade to a paid plan](https://neon.com/docs/introduction/manage-billing#change-your-plan).
+- **Free plan**: The Free plan includes 1 GB of storage per project. If you reach this limit, database operations that would increase storage (inserts, updates, and deletes) will fail until you reduce your storage or [upgrade to a paid plan](https://neon.com/docs/introduction/manage-billing#change-your-plan).
 - **Paid plans**: Storage is unlimited on Launch and Scale: there's no hard per-branch size limit, your storage grows with your usage, and you pay only for what you use.
 
 </details>
@@ -114426,7 +114416,7 @@ VACUUM FULL your_table_name;
 However, there are some trade-offs:
 
 - **Table locking.** `VACUUM FULL` locks your table during the operation. If this is your production database, this may not be an option.
-- **Temporary storage spike.** The process creates a new copy of the table, temporarily increasing your storage usage. On the Free plan, this could cause the operation to fail if you hit the 0.5 GB storage limit.
+- **Temporary storage spike.** The process creates a new copy of the table, temporarily increasing your storage usage. On the Free plan, this could cause the operation to fail if you hit the 1 GB storage limit.
 
 In short, `VACUUM FULL` can help reduce your data size and future storage costs, but be aware of the temporary storage spike and table locking during the operation.
 
@@ -114449,7 +114439,7 @@ In short, `VACUUM FULL` can help reduce your data size and future storage costs,
 
 <summary>**What is the maximum data size that Neon supports?**</summary>
 
-Storage is unlimited on paid plans (Launch and Scale). Neon applies quota-based soft limits to help you avoid unexpected costs; if you approach your quota, writes slow down rather than stop, and you can contact [Neon Support](https://neon.com/docs/introduction/support) to raise it. The Free plan is limited to 0.5 GB per project.
+Storage is unlimited on paid plans (Launch and Scale). Neon applies quota-based soft limits to help you avoid unexpected costs; if you approach your quota, writes slow down rather than stop, and you can contact [Neon Support](https://neon.com/docs/introduction/support) to raise it. The Free plan is limited to 1 GB per project.
 
 </details>
 
@@ -115710,7 +115700,7 @@ Without the Neon CLI, run `npx skills add neondatabase/agent-skills -s neon-post
 
 --- [Document source](https://neon.com/docs/introduction/plans.md) ---
 
-> Summary: Storage on Neon is unlimited on paid plans (Launch and Scale): there is no hard per-branch size limit and your storage grows with your usage. The Free plan includes 0.5 GB of storage per project. Free, Launch, and Scale also differ in compute rates, branch counts, storage pricing, and autoscaling limits. Compare per-unit pricing, feature availability, and billing examples to choose a plan or estimate monthly costs. Scale adds compliance certifications, uptime SLAs, private networking, and configurable scale-to-zero. Launch and Free plans share pay-only-for-what-you-use pricing with no monthly minimum.
+> Summary: Storage on Neon is unlimited on paid plans (Launch and Scale): there is no hard per-branch size limit and your storage grows with your usage. The Free plan includes 1 GB of Postgres storage per project, up to 20 GB across all projects. Free, Launch, and Scale also differ in compute rates, branch counts, storage pricing, and autoscaling limits. Compare per-unit pricing, feature availability, and billing examples to choose a plan or estimate monthly costs. Scale adds compliance certifications, uptime SLAs, private networking, and configurable scale-to-zero. Launch and Free plans share pay-only-for-what-you-use pricing with no monthly minimum.
 
 # Neon plans
 
@@ -115738,7 +115728,7 @@ For AI agent platforms that provision thousands of databases, Neon offers an **A
 | [Compute](https://neon.com/docs/introduction/plans#compute)                                   | 100 CU-hours/project                                   | $0.106/CU-hour                             | $0.222/CU-hour                                                                                                    |
 | [Autoscaling](https://neon.com/docs/introduction/plans#autoscaling)                           | Up to 2 CU (8 GB RAM)                                  | Up to 16 CU (64 GB RAM)                    | Up to 16 CU autoscaling, or fixed sizes up to 56 CU (224 GB RAM)                                                  |
 | [Scale to zero](https://neon.com/docs/introduction/plans#scale-to-zero)                       | After 5 min                                            | After 5 min, can be disabled               | Configurable (1 minute to always on)                                                                              |
-| [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 0.5 GB/project                                         | $0.35/GB-month                             | $0.35/GB-month                                                                                                    |
+| [Storage](https://neon.com/docs/introduction/plans#storage)                                   | 1 GB/project, 20 GB account total                      | $0.35/GB-month                             | $0.35/GB-month                                                                                                    |
 | [Public network transfer](https://neon.com/docs/introduction/plans#public-network-transfer)   | 5 GB per project included                              | 500 GB per project included, then $0.10/GB | 500 GB per project included, then $0.10/GB                                                                        |
 | [Monitoring](https://neon.com/docs/introduction/plans#monitoring)                             | 1 day                                                  | 3 days                                     | 14 days                                                                                                           |
 | [Metrics/logs export](https://neon.com/docs/introduction/plans#metricslogs-export)            | —                                                      | —                                          | ✅                                                                                                                 |
@@ -115775,7 +115765,7 @@ On the **Free** plan, there is no monthly cost. You get usage allowances for pro
 
 ### Who it's for
 
-- **Free**: Prototypes, side projects, and small teams. Includes 100 projects, 100 CU-hours/project, 0.5 GB storage per project, and 5 GB of egress per project. Upgrade if you need more resources or features.
+- **Free**: Prototypes, side projects, and small teams. Includes 100 projects, 100 CU-hours/project, 1 GB Postgres storage per project (up to 20 GB total across all projects), and 5 GB of egress per project. Upgrade if you need more resources or features.
 - **Launch**: Startups and growing teams needing more resources, features, and flexibility. Pay only for what you use.
 - **Scale**: Production-grade workloads and large teams. Higher limits, advanced features, full support, compliance, additional security, and SLAs. Pay only for what you use.
 
@@ -115917,11 +115907,11 @@ Even though child branch storage is capped at your logical data size, it's still
 - Delete child branches when they're no longer needed
 - For production workloads, use a [root branch](https://neon.com/docs/manage/branches#root-branch) instead; root branches are billed on your actual data size with no delta tracking overhead.
 
-> **Free** plan users get 0.5 GB of storage per project
+> **Free** plan users get 1 GB of Postgres storage per project, up to 20 GB total across all projects
 
 #### Unlimited storage
 
-**Storage is unlimited on paid plans (Launch and Scale): there's no hard per-branch size limit, and your storage grows with your usage.** The Free plan is limited to 0.5 GB per project.
+**Storage is unlimited on paid plans (Launch and Scale): there's no hard per-branch size limit, and your storage grows with your usage.** The Free plan is limited to 1 GB of Postgres storage per project, and to 20 GB in total across all your projects. These two limits are enforced independently: the total Postgres storage across all your Free projects can't exceed 20 GB, even though each project is also individually capped at 1 GB. This limit applies to Postgres storage and is separate from [Object Storage](https://neon.com/docs/introduction/plans#object-storage), which has its own Free allowance.
 
 ### Public network transfer
 
@@ -116062,7 +116052,7 @@ See [Neon Functions](https://neon.com/docs/compute/functions/overview) for what'
 
 ### AI Gateway
 
-Neon AI Gateway provides access to open-weight and foundation models from multiple providers through a single Neon credential. It's available on paid plans (Launch and Scale). Any paid customer with prepaid credits can use the open-weight models. Foundation models are rolled out gradually; see [Model access](https://neon.com/docs/ai-gateway/overview#model-access) to request access to the full catalog.
+Neon AI Gateway provides access to open-weight and foundation models from multiple providers through a single Neon credential. It's available on paid plans (Launch and Scale). Any paid customer with prepaid credits can use every model in the catalog; see [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for details.
 
 Prices match each provider's published list prices, with no additional markup, and draw down a prepaid credit balance you buy from the **Billing** page in the Neon Console.
 
@@ -116240,7 +116230,7 @@ Your plan's compute price per CU-hour depends on whether you are on Launch or Sc
 
 Storage is billed based on actual usage, measured in **GB-months**:  
 1 GB-month = 1 GB stored for 1 month  
-Storage usage is metered hourly and summed over the month. For child branches, you're billed for the minimum of accumulated changes or logical data size; capped at your actual data size. On the Free plan, you get 0.5 GB per project.
+Storage usage is metered hourly and summed over the month. For child branches, you're billed for the minimum of accumulated changes or logical data size; capped at your actual data size. On the Free plan, you get 1 GB of Postgres storage per project, up to 20 GB total across all projects.
 
 ### How do branches affect storage?
 
@@ -116287,11 +116277,11 @@ Only available on Scale: $0.01/GB, bidirectional, between Neon and private netwo
 
 ### What are the limits and quotas for the Free plan?
 
-The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 0.5 GB of storage per project, and 5 GB of public network transfer per project per month. It also includes a 6-hour instant restore history (capped at 1 GB-month of changes), 1 manual snapshot, up to 60,000 Managed Better Auth MAU, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
+The Free plan costs $0/month and includes 100 projects, 10 branches per project, 100 CU-hours of compute per project per month, autoscaling up to 2 CU (≈8 GB RAM), 1 GB of Postgres storage per project (up to 20 GB total across all projects), and 5 GB of public network transfer per project per month. It also includes a 6-hour instant restore history (capped at 1 GB-month of changes), 1 manual snapshot, up to 60,000 Managed Better Auth MAU, 1 day of monitoring history, and community support. Scale to zero is always enabled (computes suspend after 5 minutes of inactivity) and can't be disabled. Compute (CU-hours) and network transfer reset each monthly billing period; projects, branches, and storage are continuous limits. For the full row-by-row breakdown, see the [Plan overview](https://neon.com/docs/introduction/plans#plan-overview) table.
 
 ### What happens if I exceed my Free plan limits?
 
-On the Free plan, when you run out of CU-hours or public network transfer, your compute is suspended until the next billing period or until you upgrade. Exceeding the 0.5 GB storage cap causes operations that increase storage (inserts, updates, and deletes) to fail until you free space or upgrade. Branch creation fails once you reach 10 branches per project. None of these limits delete your data.
+On the Free plan, when you run out of CU-hours or public network transfer, your compute is suspended until the next billing period or until you upgrade. Exceeding the 1 GB per-project storage cap, or the 20 GB total cap across all your projects, causes operations that increase storage (inserts, updates, and deletes) to fail until you free space or upgrade. Branch creation fails once you reach 10 branches per project. None of these limits delete your data.
 
 ### Do you charge for idle computes?
 
@@ -119698,7 +119688,7 @@ Data size is your logical data size.
 
 **Note: Storage is unlimited on paid plans**
 
-**Storage is unlimited on paid plans (Launch and Scale): there's no hard per-branch size limit, and your branch storage grows with your usage.** The Free plan is limited to 0.5 GB per project.
+**Storage is unlimited on paid plans (Launch and Scale): there's no hard per-branch size limit, and your branch storage grows with your usage.** The Free plan is limited to 1 GB per project.
 
 ## Branch types
 
@@ -122827,7 +122817,7 @@ neon api /projects/$PROJECT_ID/members/$MEMBER_ID/role -X PUT -F role=editor
 
 --- [Document source](https://neon.com/docs/manage/projects.md) ---
 
-> Summary: Storage is unlimited on paid plans: there's no hard per-branch size limit and project storage grows with your usage. A Neon project is the top-level workspace that groups branches, databases, roles, and computes. This page covers the full project lifecycle: create, configure, and delete, via the Console or API. Use it when you need to set project-level defaults such as compute autoscaling, history window for instant restore and Time Travel, IP Allow rules, logical replication, or project access. Deleted projects can be recovered within a 7-day window using the CLI or API.
+> Summary: Postgres storage is unlimited on paid plans: there's no hard per-branch size limit and project storage grows with your usage. A Neon project is the top-level workspace that groups branches, databases, roles, and computes. This page covers the full project lifecycle: create, configure, and delete, via the Console or API. Use it when you need to set project-level defaults such as compute autoscaling, history window for instant restore and Time Travel, IP Allow rules, logical replication, or project access. Deleted projects can be recovered within a 7-day window using the CLI or API.
 
 # Manage projects
 
@@ -122843,7 +122833,7 @@ When you add a new project, Neon creates the following resources by default:
 - A single primary read-write compute. This is the compute associated with the branch. For more information, see [Manage computes](https://neon.com/docs/manage/computes).
 - A Postgres database that resides on the project's default branch. If you did not specify your own database name when creating the project, the database created is named `neondb`.
 - A Postgres role that is named for your database. For example, if your database is named `neondb`, the project is created with a default role named `neondb_owner`.
-- Storage depends on your [Neon plan](https://neon.com/docs/introduction/plans). **On paid plans (Launch and Scale), there's no hard per-branch size limit**; your storage grows with your usage, and you pay only for the storage you use. The Free plan includes 0.5 GB per project, shared across all branches.
+- Postgres storage depends on your [Neon plan](https://neon.com/docs/introduction/plans). **On paid plans (Launch and Scale), there's no hard per-branch size limit**; your storage grows with your usage, and you pay only for the storage you use. The Free plan includes 1 GB of Postgres storage per project, shared across all branches. This is separate from [Object Storage](https://neon.com/docs/storage/overview), which has its own allowance.
 
 ## Create a project
 
@@ -133238,7 +133228,9 @@ npm install @neondatabase/serverless
 
 The driver includes TypeScript types (the equivalent of `@types/pg`). No additional installation is required.
 
-**Note:** The Neon serverless driver is also available as a [JavaScript Registry (JSR)](https://jsr.io/docs/introduction) package: [https://jsr.io/@neon/serverless](https://jsr.io/@neon/serverless). The JavaScript Registry (JSR) is a package registry for JavaScript and TypeScript. JSR works with many runtimes (Node.js, Deno, browsers, and more) and is backward compatible with `npm`.
+**Important: JSR package is deprecated**
+
+The [JavaScript Registry (JSR)](https://jsr.io/@neon/serverless) publication of the driver is deprecated and no longer updated. Install from npm instead. Runtimes that consume JSR packages, including Deno, can install the npm package directly (for example, `deno add npm:@neondatabase/serverless`).
 
 ## Configure your Neon database connection
 

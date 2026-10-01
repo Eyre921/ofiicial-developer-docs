@@ -995,6 +995,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | AT321904300235473204 | pm_sepaDebit_successDelayed_at | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | AT861904300235473202 | pm_sepaDebit_failed_at | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | AT051904300235473205 | pm_sepaDebit_failedDelayed_at | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| AT201904300000454545 | pm_sepaDebit_mandateRevoked_at | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | AT591904300235473203 | pm_sepaDebit_disputed_at | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | AT981904300000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_at | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | AT601904300000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_at | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1009,6 +1010,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | BE78510007547064 | pm_sepaDebit_successDelayed_be | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | BE68539007547034 | pm_sepaDebit_failed_be | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | BE51510007547065 | pm_sepaDebit_failedDelayed_be | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| BE12510000454545 | pm_sepaDebit_mandateRevoked_be | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | BE08510007547063 | pm_sepaDebit_disputed_be | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | BE90510000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_be | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | BE52510000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_be | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1023,6 +1025,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | HR6323600002337876649 | pm_sepaDebit_successDelayed_hr | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | HR2725000096983499248 | pm_sepaDebit_failed_hr | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | HR6723600004878117427 | pm_sepaDebit_failedDelayed_hr | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| HR9324020060000454545 | pm_sepaDebit_mandateRevoked_hr | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | HR8724840081455523553 | pm_sepaDebit_disputed_hr | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | HR7424020060000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_hr | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | HR3624020060000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_hr | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1037,6 +1040,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | EE222200221020145682 | pm_sepaDebit_successDelayed_ee | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | EE762200221020145680 | pm_sepaDebit_failed_ee | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | EE922200221020145683 | pm_sepaDebit_failedDelayed_ee | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| EE862200000000454545 | pm_sepaDebit_mandateRevoked_ee | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | EE492200221020145681 | pm_sepaDebit_disputed_ee | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | EE672200000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_ee | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | EE292200000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_ee | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1051,6 +1055,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | FI3712345600000788 | pm_sepaDebit_successDelayed_fi | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | FI9112345600000786 | pm_sepaDebit_failed_fi | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | FI1012345600000789 | pm_sepaDebit_failedDelayed_fi | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| FI8612345600454545 | pm_sepaDebit_mandateRevoked_fi | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | FI6412345600000787 | pm_sepaDebit_disputed_fi | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | FI6712345600343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_fi | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | FI2912345600121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_fi | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1065,6 +1070,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | FR3020041010050500013M02609 | pm_sepaDebit_successDelayed_fr | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | FR8420041010050500013M02607 | pm_sepaDebit_failed_fr | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | FR7920041010050500013M02600 | pm_sepaDebit_failedDelayed_fr | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| FR1920041010050000000454545 | pm_sepaDebit_mandateRevoked_fr | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | FR5720041010050500013M02608 | pm_sepaDebit_disputed_fr | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | FR9720041010050000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_fr | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | FR5920041010050000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_fr | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1079,6 +1085,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | DE08370400440532013003 | pm_sepaDebit_successDelayed_de | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | DE62370400440532013001 | pm_sepaDebit_failed_de | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | DE78370400440532013004 | pm_sepaDebit_failedDelayed_de | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| DE84370400440000454545 | pm_sepaDebit_mandateRevoked_de | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | DE35370400440532013002 | pm_sepaDebit_disputed_de | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | DE65370400440000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_de | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | DE27370400440000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_de | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1093,6 +1100,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | GI08RRNW626436291644533 | pm_sepaDebit_successDelayed_gi | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | GI41SAFA461293238477751 | pm_sepaDebit_failed_gi | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | GI50LROG772261344693297 | pm_sepaDebit_failedDelayed_gi | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| GI33NWBK000000000454545 | pm_sepaDebit_mandateRevoked_gi | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | GI26KJBC361883934534696 | pm_sepaDebit_disputed_gi | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | GI14NWBK000000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_gi | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | GI73NWBK000000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_gi | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1107,6 +1115,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | IE24AIBK93115212345671 | pm_sepaDebit_successDelayed_ie | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | IE02AIBK93115212345679 | pm_sepaDebit_failed_ie | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | IE94AIBK93115212345672 | pm_sepaDebit_failedDelayed_ie | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| IE29AIBK93115200454545 | pm_sepaDebit_mandateRevoked_ie | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | IE51AIBK93115212345670 | pm_sepaDebit_disputed_ie | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | IE10AIBK93115200343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_ie | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | IE69AIBK93115200121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_ie | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1121,6 +1130,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | LI4408800387787111369 | pm_sepaDebit_successDelayed_li | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | LI1208800143823175626 | pm_sepaDebit_failed_li | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | LI4908800356441975566 | pm_sepaDebit_failedDelayed_li | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| LI4308800000000454545 | pm_sepaDebit_mandateRevoked_li | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | LI7708800125525347723 | pm_sepaDebit_disputed_li | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | LI2408800000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_li | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | LI8308800000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_li | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1135,6 +1145,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | LT281000011101001003 | pm_sepaDebit_successDelayed_lt | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | LT821000011101001001 | pm_sepaDebit_failed_lt | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | LT981000011101001004 | pm_sepaDebit_failedDelayed_lt | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| LT781000000000454545 | pm_sepaDebit_mandateRevoked_lt | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | LT551000011101001002 | pm_sepaDebit_disputed_lt | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | LT591000000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_lt | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | LT211000000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_lt | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1149,6 +1160,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | LU440019400644750003 | pm_sepaDebit_successDelayed_lu | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | LU980019400644750001 | pm_sepaDebit_failed_lu | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | LU170019400644750004 | pm_sepaDebit_failedDelayed_lu | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| LU120010000000454545 | pm_sepaDebit_mandateRevoked_lu | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | LU710019400644750002 | pm_sepaDebit_disputed_lu | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | LU900010000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_lu | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | LU520010000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_lu | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1163,6 +1175,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | NL55RABO0300065267 | pm_sepaDebit_successDelayed_nl | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | NL91ABNA0417164300 | pm_sepaDebit_failed_nl | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | NL28RABO0300065268 | pm_sepaDebit_failedDelayed_nl | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| NL46RABO0000454545 | pm_sepaDebit_mandateRevoked_nl | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | NL82RABO0300065266 | pm_sepaDebit_disputed_nl | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | NL27RABO0000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_nl | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | NL86RABO0000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_nl | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1177,6 +1190,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | NO8886011117940 | pm_sepaDebit_successDelayed_no | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | NO6686011117948 | pm_sepaDebit_failed_no | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | NO6186011117941 | pm_sepaDebit_failedDelayed_no | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| NO2486010454545 | pm_sepaDebit_mandateRevoked_no | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | NO3986011117949 | pm_sepaDebit_disputed_no | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | NO0586010343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_no | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | NO6486010121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_no | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1191,6 +1205,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | PT66000201231234567890157 | pm_sepaDebit_successDelayed_pt | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | PT23000201231234567890155 | pm_sepaDebit_failed_pt | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | PT39000201231234567890158 | pm_sepaDebit_failedDelayed_pt | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| PT24000201230000000454545 | pm_sepaDebit_mandateRevoked_pt | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | PT93000201231234567890156 | pm_sepaDebit_disputed_pt | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | PT05000201230000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_pt | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | PT64000201230000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_pt | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1205,6 +1220,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | ES2300120345030000067893 | pm_sepaDebit_successDelayed_es | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | ES9121000418450200051332 | pm_sepaDebit_failed_es | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | ES9300120345030000067894 | pm_sepaDebit_failedDelayed_es | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| ES3600120345000000454545 | pm_sepaDebit_mandateRevoked_es | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | ES5000120345030000067892 | pm_sepaDebit_disputed_es | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | ES1700120345000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_es | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | ES7600120345000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_es | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1219,6 +1235,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | SE5150000000054910000006 | pm_sepaDebit_successDelayed_se | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | SE0850000000054910000004 | pm_sepaDebit_failed_se | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | SE2450000000054910000007 | pm_sepaDebit_failedDelayed_se | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| SE4750000000000000454545 | pm_sepaDebit_mandateRevoked_se | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | SE7850000000054910000005 | pm_sepaDebit_disputed_se | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | SE2850000000000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_se | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | SE8750000000000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_se | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1233,6 +1250,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | CH8656663438253651553 | pm_sepaDebit_successDelayed_ch | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | CH5362200119938136497 | pm_sepaDebit_failed_ch | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | CH1843597160341964438 | pm_sepaDebit_failedDelayed_ch | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| CH3700762000000454545 | pm_sepaDebit_mandateRevoked_ch | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | CH1260378413965193069 | pm_sepaDebit_disputed_ch | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | CH1800762000000343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_ch | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | CH7700762000000121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_ch | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |
@@ -1247,6 +1265,7 @@ Create a test `PaymentIntent` that either succeeds or fails by doing the followi
 | GB98WEST12345698765435 | pm_sepaDebit_successDelayed_gb | The PaymentIntent status transitions from `processing` to `succeeded` after at least three minutes. |
 | GB55WEST12345698765433 | pm_sepaDebit_failed_gb | The PaymentIntent status transitions from `processing` to `requires_payment_method`. |
 | GB71WEST12345698765436 | pm_sepaDebit_failedDelayed_gb | The PaymentIntent status transitions from `processing` to `requires_payment_method` after at least three minutes. |
+| GB89WEST12345600454545 | pm_sepaDebit_mandateRevoked_gb | The PaymentIntent status transitions from `processing` to `requires_payment_method` with a `debit_not_authorized` failure code. The mandate becomes `inactive`. Collect a new mandate before retrying the payment. |
 | GB28WEST12345698765434 | pm_sepaDebit_disputed_gb | The PaymentIntent status transitions from `processing` to `succeeded`, but a dispute is immediately created. |
 | GB70WEST12345600343434 | pm_sepaDebit_exceedsWeeklyVolumeLimit_gb | The payment fails with a `charge_exceeds_source_limit` failure code due to payment amount causing account to exceed its weekly payment volume limit. |
 | GB32WEST12345600121212 | pm_sepaDebit_exceedsWeeklyTransactionLimit_gb | The payment fails with a `charge_exceeds_weekly_limit` failure code due to payment amount exceeding account's transaction volume limit. |

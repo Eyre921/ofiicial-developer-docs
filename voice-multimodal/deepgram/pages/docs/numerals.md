@@ -27,6 +27,7 @@ Supported languages include:
 * German: `de`
 * German (Switzerland): `de-CH`
 * Italian: `it`
+* Japanese: `ja`
 * Korean: `ko`, `ko-KR`
 * Malay: `ms`
 * Norwegian: `no`

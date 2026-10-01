@@ -63,7 +63,7 @@ Link *isn’t* visible in the Card Element if:
 
 ## Use the Card Element and Payment Request Button 
 
-You can also use Link with the [Payment Request Button](https://docs.stripe.com/payments/link/payment-request-button-link.md). Link in the Card Element operates independently from Link in the Payment Request button. If you use both the Payment Request Button and the Card Element, Link might appear in both during checkout. For more information on when Link appears in the Payment Request Button, see [Link in the Payment Request Button](https://docs.stripe.com/payments/link/payment-request-button-link.md).
+The Payment Request Button is deprecated and isn’t supported in Stripe.js `endive` or later. Existing integrations continue to work in earlier Stripe.js versions for as long as those versions are supported. If you use the Payment Request Button alongside the Card Element, [migrate to the Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element/migration.md). Link in the Card Element operates independently from Link in the Payment Request Button, so Link might appear in both during checkout until you migrate.
 
 ## Link and Connect platforms 
 

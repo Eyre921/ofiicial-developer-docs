@@ -331,6 +331,10 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 ### Push notifications
 - [Using push notifications](https://docs.expo.dev/guides/using-push-notifications-services.md)
 
+### Testing
+- [Using e2e by TesterArmy](https://docs.expo.dev/guides/using-e2e.md)
+- [Using TesterArmy](https://docs.expo.dev/guides/using-testerarmy.md)
+
 ### Tools
 - [Using ESLint and Prettier](https://docs.expo.dev/guides/using-eslint.md)
 - [Using TypeScript](https://docs.expo.dev/guides/typescript.md)

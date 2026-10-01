@@ -139,6 +139,32 @@ Accounts can view their VAMP metrics in their [VAMP dashboard](https://dashboard
 | Stripe data | Stripe’s own computation of VAMP data by statement descriptor. Use this to cross-check Visa’s reported numbers and monitor your metrics in real time. These estimates might differ from Visa’s final VAMP numbers. |
 | Resources | Links to documentation for understanding the VAMP program, preventing disputes, and reducing fraud. |
 
+### MERP: Visa Merchant Elevated Risk Program 
+
+Effective October 2026, the Visa Merchant Elevated Risk Program (MERP) applies to businesses that accept Visa payments in the Asia Pacific region.
+
+Visa evaluates businesses individually under MERP. The program identifies elevated risk early in a business’s lifecycle, before transaction volumes are high enough to qualify for portfolio-level monitoring programs.
+
+Visa considers several signals when identifying a business under MERP, including transaction count and volume, fraud volume and rate, non-fraud dispute volume and rate, and authorization count and decline rate. Visa evaluates these signals together rather than against individual thresholds, and doesn’t publish the thresholds it uses.
+
+#### MERP identification outcomes
+
+Visa notifies Stripe when it identifies a business under MERP. If your account is still active, Stripe contacts you. MERP response timelines are short, so respond promptly if Stripe requests information. This helps Stripe contest the identification when the evidence supports doing so.
+
+If Visa confirms the identification, the consequences can include:
+
+- **Network non-compliance assessments**: Visa charges these assessments to Stripe, which might be passed on to you.
+- **Backdated fraud disputes**: During a specific window, Visa lets card issuers submit fraud disputes for earlier transactions, including transactions past the standard dispute deadline. You might receive disputes for payments you considered settled.
+- **A remediation plan**: You might need to document the controls you implemented to address the activity Visa identified.
+- **Account closure**: Under certain circumstances, Stripe might have to close your account.
+- **Visa Merchant Screening Service (VMSS) listing**: Stripe might also add your business to VMSS, where other acquirers can view this listing. This can potentially affect your ability to accept card payments elsewhere.
+
+#### Reduce your risk
+
+MERP focuses on concentrated fraud, disputes, and authorization declines, particularly for recently launched accounts. You can [follow the same practices](https://docs.stripe.com/disputes/monitoring-programs.md#best-practices-for-preventing-fraud-and-disputes) that help you avoid other monitoring programs.
+
+If you’re launching a business or product line, closely monitor authorization declines and early fraud signals during your first months of processing.
+
 ### Visa Secure Excessive Fraud Program (US-only) 
 
 The Visa Secure Excessive Fraud Program applies only to US-based businesses with US-based custom accounts and an excessive level of fraud on domestic Visa 3D-Secure-authenticated (3DS) transactions on US-issued cards.

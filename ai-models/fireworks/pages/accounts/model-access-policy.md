@@ -119,8 +119,8 @@ firectl policy remove <model-id>
 
 Account admins can also manage policy through the API:
 
-* `GET /v1/accounts/{account_id}/policySettings`
-* `PATCH /v1/accounts/{account_id}/policySettings`
+* [Get Policy Settings](/api-reference/get-policy-settings): `GET /v1/accounts/{account_id}/policySettings`
+* [Update Policy Settings](/api-reference/update-policy-settings): `PATCH /v1/accounts/{account_id}/policySettings`
 
 Example allowlist body:
 

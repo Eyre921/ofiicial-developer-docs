@@ -16,10 +16,10 @@ Please familiarize yourself with these general requirements before attempting to
 
 * Flux TTS runs on the NVIDIA L4, L40S, A100, H100, and Blackwell-generation GPUs. The NVIDIA T4 and A10 are not supported. All of them require NVIDIA driver `>=580` with the **open** kernel modules; see [Drivers and Containerization Platforms](/docs/drivers-and-containerization-platforms). See [Model and GPU Compatibility](/docs/self-hosted-deployment-environments#model-and-gpu-compatibility) for how this compares to Deepgram's other models.
 * Each host running a Flux TTS Engine needs at least 64 GB of system RAM. See [Memory Requirements](#memory-requirements) below.
-* Flux TTS requires Deepgram container images from `release-260812` or later. It runs on both the standard and the FIPS-compliant images. On FIPS images, MP3 and FLAC output are a known issue: set `encoding` explicitly on batch `/v2/speak` requests, which return MP3 by default. Streaming output is unaffected. See [MP3 and FLAC Output](/docs/fips-compliant-deployment#mp3-and-flac-output).
+* Flux TTS requires Deepgram container images from `release-261001` or later. It runs on both the standard and the FIPS-compliant images. On FIPS images, MP3 and FLAC output are a known issue: set `encoding` explicitly on batch `/v2/speak` requests, which return MP3 by default. Streaming output is unaffected. See [MP3 and FLAC Output](/docs/fips-compliant-deployment#mp3-and-flac-output).
 * Flux TTS must be enabled explicitly in your Engine configuration file. It is off by default.
 * Flux TTS requires a dedicated Engine. It cannot share an Engine with Aura models.
-* The Flux TTS model file must be present in your Engine `models` directory. Request it from your Deepgram account representative.
+* Two model files must be present in your Engine `models` directory: the Flux TTS model (`flux-tts.<uuid>.dgv2`) and the watermarker model (`watermarker.<uuid>.dgv2`). Deepgram provisions both together. Request them from your Deepgram account representative. See [Watermarking](#watermarking) below.
 * Your API configuration must enable the `/v2/speak` endpoint.
 
 ## Memory Requirements
@@ -40,7 +40,7 @@ Flux TTS requires a couple of configuration changes in your self-hosted Deepgram
 
 ### Engine
 
-In your Deepgram Engine configuration, enable Flux TTS and select the model. Both `uuid` and `max_batch_size` are required when `enabled = true`.
+In your Deepgram Engine configuration, enable Flux TTS and select the Flux TTS and watermarker models. `uuid`, `watermarker_uuid`, and `max_batch_size` are all required when `enabled = true`.
 
 **`Deepgram Engine Configuration`**
 
@@ -48,12 +48,23 @@ In your Deepgram Engine configuration, enable Flux TTS and select the model. Bot
 [flux_tts]
 enabled = true
 uuid = "<model UUID provided by Deepgram>"
+watermarker_uuid = "<watermarker UUID provided by Deepgram>"
 max_batch_size = 0 # Placeholder; not a working value. See the warning below.
 ```
 
 > **Warning**
 >
 > `max_batch_size` has no safe default. The correct value differs substantially between GPUs, and a value tuned for one will underperform or exhaust memory on another. Engine will not start until you set it to a non-zero value. Contact your Deepgram account representative for a recommended value for the GPUs in your deployment.
+
+#### Watermarking
+
+All Flux TTS audio is watermarked. The watermarker ships as its own model file, separate from the Flux TTS model, and both must be in your `models` directory. Set `watermarker_uuid` to the watermarker UUID provided by Deepgram.
+
+> **Warning**
+>
+> Engine will not start with Flux TTS enabled if the watermarker model is missing.
+
+Container images earlier than `release-261001` do not use the watermarker. If the watermarker file is present on one of those releases, Engine ignores it and logs a `NoManifestFound` warning for it every 60 seconds. Upgrade to `release-261001` or later to enable watermarking.
 
 ### API
 
@@ -71,7 +82,7 @@ speak_v2_streaming = true
 
 ### Helm
 
-The Helm chart exposes `fluxTts.enabled`, `fluxTts.uuid`, and `fluxTts.maxBatchSize` for the Engine side, and `api.features.speakV2` and `api.features.speakV2Streaming` for the API side. Helm users do not edit the Engine configuration file directly; the chart renders it for them. See `charts/deepgram-self-hosted/samples/08-flux-tts-setup.values.yaml` in the [self-hosted-resources repository](https://github.com/deepgram/self-hosted-resources) for a complete example.
+The Helm chart exposes `fluxTts.enabled`, `fluxTts.uuid`, `fluxTts.watermarkerUuid`, and `fluxTts.maxBatchSize` for the Engine side, and `api.features.speakV2` and `api.features.speakV2Streaming` for the API side. Helm users do not edit the Engine configuration file directly; the chart renders it for them. See `charts/deepgram-self-hosted/samples/08-flux-tts-setup.values.yaml` in the [self-hosted-resources repository](https://github.com/deepgram/self-hosted-resources) for a complete example.
 
 ## Deployment Constraints
 

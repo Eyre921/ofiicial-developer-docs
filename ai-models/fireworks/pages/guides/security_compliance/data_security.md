@@ -40,7 +40,7 @@ Dedicated workloads run in logically isolated environments, preventing cross-cus
 
 ## Secure Training
 
-Fireworks enables secure model training, including fine-tuning and reinforcement learning, while maintaining customer control over sensitive components and data. This approach builds on our [Zero Data Retention](#zero-data-retention) policy to ensure sensitive training data never persists on our platform.
+Fireworks enables secure model training, including fine-tuning and reinforcement learning, while maintaining customer control over sensitive components and data. Training workflows can persist datasets, checkpoints, traces, and trained model artifacts. Enterprise account admins can turn on the [Zero Data Retention policy](/accounts/zero-data-retention) for Training to reject training jobs and dataset uploads.
 
 **Customer-Controlled Architecture:** For advanced training workflows like reinforcement learning, critical components remain under customer control:
 

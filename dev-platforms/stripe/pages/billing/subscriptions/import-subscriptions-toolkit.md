@@ -369,7 +369,7 @@ You can collect payment for the migrated subscriptions either automatically with
 
 **Example 4 (Basic): Migrate past-due subscriptions**. For example, migrate a 100 USD monthly subscription with a last cycle start date of December 25, which hasn’t been paid. Migrate this mid-cycle starting January 1, with a renewal date on the 25th of each month. This creates a prorated invoice from January 1 to January 25 that Stripe can attempt to collect payment for.
 
-To migrate subscriptions that are in an active cycle but haven’t been paid in the previous system, set `proration_behavior` to `create_prorations` to immediately create an invoice and collect payment. This also enters the subscription into Stripe’s dunning flow, if the payment is still unpaid.
+To migrate subscriptions that are in an active cycle but haven’t been paid in the previous system, set `proration_behavior` to `create_prorations` to immediately create an invoice and collect payment. This also enters the subscription into the Stripe dunning flow if the payment is still unpaid.
 
 |  |
 | **ATTRIBUTE** | customer (required) | start_date (required) | price (required) | quantity | metadata.third_party_sub_id | automatic_tax | billing_cycle_anchor | coupon | trial_end | proration_behavior | collection_method | default_tax_rate | backdate_start_date | days_until_due | cancel_at_period_end | add_invoice_items.0.amount | add_invoice_items.0.product | add_invoice_items.0.currency |

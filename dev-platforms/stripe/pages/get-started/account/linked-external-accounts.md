@@ -23,7 +23,7 @@ Different Stripe products use linked account data in different ways. We might as
 - You request access to Stripe products or features with eligibility requirements.
 - We need to re-evaluate [reserve](https://support.stripe.com/topics/reserves) balances during a risk review.
 
-> We handle data from your linked financial accounts according to the [Stripe Services Agreement](https://stripe.com/legal/ssa), [Stripe Privacy Policy](https://stripe.com/privacy) and the [partner terms](https://connect.finicity.com/assets/html/connect-eula.html). Stripe’s partner can only obtain financial account information as authorized by you. Stripe doesn’t sell your data to unaffiliated third parties.
+> We handle data from your linked financial accounts according to the [Stripe Services Agreement](https://stripe.com/legal/ssa), [Stripe Privacy Policy](https://stripe.com/privacy) and the [partner terms](https://connect.finicity.com/assets/html/connect-eula.html). The Stripe partner can only obtain financial account information as authorized by you. Stripe doesn’t sell your data to unaffiliated third parties.
 
 ## Stripe access to external account data 
 
@@ -81,7 +81,7 @@ For details on how Stripe uses and shares linked financial account data, see the
 
 ### Trusted entities 
 
-For details about the parties involved in accessing linked financial account data, see the [What data does Stripe access from my linked financial account?](https://support.stripe.com/user/questions/what-data-does-stripe-access-from-my-linked-financial-account) Support article, the [What is the relationship between Stripe and Stripe’s service providers?](https://support.stripe.com/user/questions/what-is-the-relationship-between-stripe-and-stripes-service-providers) Support article, and the [Financial Connections Terms](https://stripe.com/legal/consumer#financial-connections-terms).
+For details about the parties involved in accessing linked financial account data, see the [What data does Stripe access from my linked financial account?](https://support.stripe.com/user/questions/what-data-does-stripe-access-from-my-linked-financial-account) Support article, the [What is the relationship between Stripe and its service providers?](https://support.stripe.com/user/questions/what-is-the-relationship-between-stripe-and-stripes-service-providers) Support article, and the [Financial Connections Terms](https://stripe.com/legal/consumer#financial-connections-terms).
 
 ### Technology partners 
 

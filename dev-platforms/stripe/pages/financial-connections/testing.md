@@ -55,6 +55,8 @@ You can test different [tokenized account number](https://docs.stripe.com/financ
 - **Expired Tokenized Account Number**: The session returns a TAN with a `deactivated` status.
 - **Eventually Expiring Tokenized Account Number**: The TAN expires after 30 days and triggers the `financial_connections.account.upcoming_account_number_expiry` webhook event.
 - **Immediately Expiring Tokenized Account Number**: The TAN expires immediately after the session and triggers the `financial_connections.account.account_numbers_updated` webhook event.
+- **Eventually Activating Tokenized Account Number**: The TAN will activate 45 minutes after the account is created and trigger the `financial_connections.account.account_numbers_updated` webhook event.
+- **Immediately Activating Tokenized Account Number**: The TAN will activate 5 minutes after the account is created and trigger the `financial_connections.account.account_numbers_updated` webhook event.
 
 #### Simulating account deactivation
 

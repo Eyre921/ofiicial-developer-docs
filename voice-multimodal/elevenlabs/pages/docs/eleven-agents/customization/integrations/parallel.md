@@ -35,6 +35,15 @@ In the [Parallel Platform](https://platform.parallel.ai), go to **Settings > API
 
 In the ElevenLabs integration setup, paste your Parallel API key in the **API Key** field.
 
+## Search options
+
+Each search is described by two parameters that the agent provides:
+
+* **Objective** — a concise, self-contained description of the search goal, naming the key entity or topic along with any freshness or source requirements.
+* **Search queries** — three short keyword queries (roughly three to six words each) that approach the objective from different angles. These are keyword phrases rather than full sentences or questions.
+
+Searches run in Parallel's `fast` mode and return up to 10 results with excerpts.
+
 ## Useful links
 
 * [Parallel API documentation](https://docs.parallel.ai)

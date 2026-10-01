@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1660 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1665 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -548,6 +548,7 @@
 - `langsmith/self-host-organization-charts` — [View trace counts across your organization](pages/langsmith/self-host-organization-charts.md) · [原文](https://docs.langchain.com/langsmith/self-host-organization-charts)
 - `langsmith/self-host-playground-environment-settings` — [Use environment variables for model providers](pages/langsmith/self-host-playground-environment-settings.md) · [原文](https://docs.langchain.com/langsmith/self-host-playground-environment-settings)
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
+- `langsmith/self-host-slack` — [Connect self-hosted LangSmith to Slack](pages/langsmith/self-host-slack.md) · [原文](https://docs.langchain.com/langsmith/self-host-slack)
 - `langsmith/self-host-smithdb` — [Enable SmithDB on self-hosted LangSmith](pages/langsmith/self-host-smithdb.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb)
 - `langsmith/self-host-smithdb-infrastructure` — [Prepare SmithDB supporting infrastructure](pages/langsmith/self-host-smithdb-infrastructure.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-infrastructure)
 - `langsmith/self-host-smithdb-install` — [Install LangSmith with SmithDB](pages/langsmith/self-host-smithdb-install.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-install)
@@ -752,6 +753,7 @@
 - `langsmith/smith-api/examples/count-examples` — [Count examples](pages/langsmith/smith-api/examples/count-examples.md) · [原文](https://docs.langchain.com/langsmith/smith-api/examples/count-examples)
 - `langsmith/smith-api/examples/create-example` — [Create example](pages/langsmith/smith-api/examples/create-example.md) · [原文](https://docs.langchain.com/langsmith/smith-api/examples/create-example)
 - `langsmith/smith-api/examples/create-examples` — [Create examples](pages/langsmith/smith-api/examples/create-examples.md) · [原文](https://docs.langchain.com/langsmith/smith-api/examples/create-examples)
+- `langsmith/smith-api/examples/delete-an-example` — [Delete an example](pages/langsmith/smith-api/examples/delete-an-example.md) · [原文](https://docs.langchain.com/langsmith/smith-api/examples/delete-an-example)
 - `langsmith/smith-api/examples/delete-example` — [Delete example](pages/langsmith/smith-api/examples/delete-example.md) · [原文](https://docs.langchain.com/langsmith/smith-api/examples/delete-example)
 - `langsmith/smith-api/examples/delete-examples` — [Delete examples](pages/langsmith/smith-api/examples/delete-examples.md) · [原文](https://docs.langchain.com/langsmith/smith-api/examples/delete-examples)
 - `langsmith/smith-api/examples/hard-delete-examples` — [Hard delete examples](pages/langsmith/smith-api/examples/hard-delete-examples.md) · [原文](https://docs.langchain.com/langsmith/smith-api/examples/hard-delete-examples)
@@ -1380,8 +1382,10 @@
 - `oss/javascript/langchain/install` — [Install LangChain](pages/oss/javascript/langchain/install.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/install)
 - `oss/javascript/langchain/knowledge-base` — [Build a semantic search engine with LangChain](pages/oss/javascript/langchain/knowledge-base.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/knowledge-base)
 - `oss/javascript/langchain/long-term-memory` — [Long-term memory](pages/oss/javascript/langchain/long-term-memory.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/long-term-memory)
-- `oss/javascript/langchain/mcp` — [Model Context Protocol (MCP)](pages/oss/javascript/langchain/mcp.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/mcp)
+- `oss/javascript/langchain/mcp/auth` — [Authentication](pages/oss/javascript/langchain/mcp/auth.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/mcp/auth)
+- `oss/javascript/langchain/mcp/connections` — [Connections](pages/oss/javascript/langchain/mcp/connections.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/mcp/connections)
 - `oss/javascript/langchain/mcp/index` — [Model Context Protocol (MCP)](pages/oss/javascript/langchain/mcp/index.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/mcp/index)
+- `oss/javascript/langchain/mcp/tools` — [Tools](pages/oss/javascript/langchain/mcp/tools.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/mcp/tools)
 - `oss/javascript/langchain/messages` — [Messages](pages/oss/javascript/langchain/messages.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/messages)
 - `oss/javascript/langchain/middleware/built-in` — [Prebuilt middleware](pages/oss/javascript/langchain/middleware/built-in.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/middleware/built-in)
 - `oss/javascript/langchain/middleware/custom` — [Custom middleware](pages/oss/javascript/langchain/middleware/custom.md) · [原文](https://docs.langchain.com/oss/javascript/langchain/middleware/custom)
@@ -1450,6 +1454,7 @@
 - `oss/javascript/langgraph/use-time-travel` — [Use time-travel](pages/oss/javascript/langgraph/use-time-travel.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/use-time-travel)
 - `oss/javascript/langgraph/workflows-agents` — [Workflows and agents](pages/oss/javascript/langgraph/workflows-agents.md) · [原文](https://docs.langchain.com/oss/javascript/langgraph/workflows-agents)
 - `oss/javascript/learn` — [Learn](pages/oss/javascript/learn.md) · [原文](https://docs.langchain.com/oss/javascript/learn)
+- `oss/javascript/migrate/langchain-mcp-adapters` — [Migrate to @langchain/mcp-adapters 2.0](pages/oss/javascript/migrate/langchain-mcp-adapters.md) · [原文](https://docs.langchain.com/oss/javascript/migrate/langchain-mcp-adapters)
 - `oss/javascript/migrate/langchain-v1` — [LangChain v1 migration guide](pages/oss/javascript/migrate/langchain-v1.md) · [原文](https://docs.langchain.com/oss/javascript/migrate/langchain-v1)
 - `oss/javascript/migrate/langgraph-v1` — [LangGraph v1 migration guide](pages/oss/javascript/migrate/langgraph-v1.md) · [原文](https://docs.langchain.com/oss/javascript/migrate/langgraph-v1)
 - `oss/javascript/reference/deepagents-javascript` — [Deep Agents](pages/oss/javascript/reference/deepagents-javascript.md) · [原文](https://docs.langchain.com/oss/javascript/reference/deepagents-javascript)

@@ -231,10 +231,6 @@ Influences available payment methods. This should match the [capture_method](htt
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md), [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md), and [Card Elements](https://docs.stripe.com/payments/card-element.md).
 
 The Stripe account ID which is the business of record. See [use cases](https://docs.stripe.com/connect/charges.md) to determine if this option is relevant for your integration. This should match the [on_behalf_of](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-on_behalf_of) provided on the Intent used when confirming payment.
-    - `paymentMethodTypes`
-      Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
-
-A list of payment method types to render. You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
     - `paymentMethodConfiguration`
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
@@ -723,10 +719,6 @@ Influences available payment methods. This should match the [capture method](htt
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md). This property can't be updated when used with the [Card Element](https://docs.stripe.com/payments/card-element.md).
 
 The Stripe account ID, which is the business of record. Review the [use cases](https://docs.stripe.com/connect/charges.md) to determine if this option is relevant for your integration. Make sure this matches the [on_behalf_of](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-on_behalf_of) provided on the Intent used when confirming payment.
-    - `paymentMethodTypes`
-      Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and the [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
-
-Instead of using dynamic payment methods, declare specific [payment methods](https://docs.stripe.com/payments/payment-methods/overview.md) to enable.
     - `paymentMethodConfiguration`
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 
@@ -3917,7 +3909,7 @@ to subscribe to updates.
   The business name as configured in the Business Public Details settings of your Stripe account.
 
 - `canConfirm`
-  Whether the Checkout Session has collected enough data to confirm. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
+  Whether the Checkout Session is ready to confirm. This value is `false` while data that Checkout or mounted Elements must collect is missing or invalid. In Stripe.js `endive` or later, it's also `false` when a confirmation is in progress, or an asynchronous update is pending. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
 
 - `currency`
   Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in
@@ -4432,6 +4424,8 @@ This method creates an instance of a Payment Element.
       By default, the Payment Element collects only the necessary billing details to complete a payment.
 
 To collect billing details outside of the Payment Element, use the `fields` option to disable Payment Element collection of certain fields.
+
+If you set a field to `never`, you're responsible for providing it with the corresponding Checkout update method or when calling [confirm](https://docs.stripe.com/js/custom_checkout/confirm.md) if it's required for any payment methods.
 
 You can set `billingDetails` at the top level to apply the same field collection settings to all payment methods,
 or set `billingDetails` under a supported payment method type to override the top-level setting for that payment method.
@@ -5451,7 +5445,7 @@ Use `useCheckoutElements` inside a [CheckoutElementsProvider](https://docs.strip
   The business name as configured in the Business Public Details settings of your Stripe account.
 
 - `canConfirm`
-  Whether the Checkout Session has collected enough data to confirm. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
+  Whether the Checkout Session is ready to confirm. This value is `false` while data that Checkout or mounted Elements must collect is missing or invalid. In Stripe.js `endive` or later, it's also `false` when a confirmation is in progress, or an asynchronous update is pending. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
 
 - `currency`
   Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in
@@ -5967,7 +5961,7 @@ Upon success, it returns a [Session object](https://docs.stripe.com/js/custom_ch
   The business name as configured in the Business Public Details settings of your Stripe account.
 
 - `canConfirm`
-  Whether the Checkout Session has collected enough data to confirm. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
+  Whether the Checkout Session is ready to confirm. This value is `false` while data that Checkout or mounted Elements must collect is missing or invalid. In Stripe.js `endive` or later, it's also `false` when a confirmation is in progress, or an asynchronous update is pending. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
 
 - `currency`
   Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in
@@ -6784,6 +6778,8 @@ target the Element for styling or testing.
 
 To collect billing details outside of the Payment Element, use the `fields` option to disable Payment Element collection of certain fields.
 
+If you set a field to `never`, you're responsible for providing it with the corresponding Checkout update method or when calling [confirm](https://docs.stripe.com/js/custom_checkout/confirm.md) if it's required for any payment methods.
+
 You can set `billingDetails` at the top level to apply the same field collection settings to all payment methods,
 or set `billingDetails` under a supported payment method type to override the top-level setting for that payment method.
       - `billingDetails`
@@ -7533,7 +7529,7 @@ Use `useCheckoutForm` inside a [CheckoutFormProvider](https://docs.stripe.com/js
   The business name as configured in the Business Public Details settings of your Stripe account.
 
 - `canConfirm`
-  Whether the Checkout Session has collected enough data to confirm. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
+  Whether the Checkout Session is ready to confirm. This value is `false` while data that Checkout or mounted Elements must collect is missing or invalid. In Stripe.js `endive` or later, it's also `false` when a confirmation is in progress, or an asynchronous update is pending. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
 
 - `currency`
   Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in
@@ -8049,7 +8045,7 @@ Upon success, it returns a [Session object](https://docs.stripe.com/js/custom_ch
   The business name as configured in the Business Public Details settings of your Stripe account.
 
 - `canConfirm`
-  Whether the Checkout Session has collected enough data to confirm. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
+  Whether the Checkout Session is ready to confirm. This value is `false` while data that Checkout or mounted Elements must collect is missing or invalid. In Stripe.js `endive` or later, it's also `false` when a confirmation is in progress, or an asynchronous update is pending. Use this field to indicate to your customer if they can proceed, such as disabling the pay button.
 
 - `currency`
   Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in
@@ -8795,10 +8791,6 @@ Influences available payment methods. This should match the [capture_method](htt
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md), [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md), and [Card Elements](https://docs.stripe.com/payments/card-element.md).
 
 The Stripe account ID which is the business of record. See [use cases](https://docs.stripe.com/connect/charges.md) to determine if this option is relevant for your integration. This should match the [on_behalf_of](https://docs.stripe.com/api/payment_intents/create.md#create_payment_intent-on_behalf_of) provided on the Intent used when confirming payment.
-    - `paymentMethodTypes`
-      Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
-
-A list of payment method types to render. You can omit this attribute to manage your payment methods from the [Stripe Dashboard](https://dashboard.stripe.com/settings/payment_methods).
     - `paymentMethodConfiguration`
       Used with the [Payment Element](https://docs.stripe.com/payments/payment-element.md) and [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md).
 

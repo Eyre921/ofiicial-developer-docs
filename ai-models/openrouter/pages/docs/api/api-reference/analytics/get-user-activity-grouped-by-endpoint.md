@@ -236,6 +236,7 @@ paths:
               example:
                 data:
                   - byok_usage_inference: 0.012
+                    cached_tokens: 10
                     completion_tokens: 125
                     date: '2025-08-24'
                     endpoint_id: 550e8400-e29b-41d4-a716-446655440000
@@ -305,6 +306,7 @@ components:
       example:
         data:
           - byok_usage_inference: 0.012
+            cached_tokens: 10
             completion_tokens: 125
             date: '2025-08-24'
             endpoint_id: 550e8400-e29b-41d4-a716-446655440000
@@ -432,6 +434,7 @@ components:
     ActivityItem:
       example:
         byok_usage_inference: 0.012
+        cached_tokens: 10
         completion_tokens: 125
         date: '2025-08-24'
         endpoint_id: 550e8400-e29b-41d4-a716-446655440000
@@ -448,6 +451,14 @@ components:
           example: 0.012
           format: double
           type: number
+        cached_tokens:
+          description: >-
+            Total prompt tokens read from the provider prompt cache (cache
+            hits). Generally a subset of `prompt_tokens`; for replayed
+            response-cache hits the provider may report the two counters over
+            disjoint token sets, so `cached_tokens` can exceed `prompt_tokens`.
+          example: 10
+          type: integer
         completion_tokens:
           description: Total completion tokens generated
           example: 125
@@ -509,6 +520,7 @@ components:
         - prompt_tokens
         - completion_tokens
         - reasoning_tokens
+        - cached_tokens
       type: object
     BadRequestResponseErrorData:
       description: Error data for BadRequestResponse

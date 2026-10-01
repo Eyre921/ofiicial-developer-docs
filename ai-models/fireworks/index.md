@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 383 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -19,6 +19,7 @@
 - `accounts/service-accounts` — [Service Accounts](pages/accounts/service-accounts.md) · [原文](https://docs.fireworks.ai/accounts/service-accounts)
 - `accounts/sso` — [Custom SSO](pages/accounts/sso.md) · [原文](https://docs.fireworks.ai/accounts/sso)
 - `accounts/users` — [Managing users](pages/accounts/users.md) · [原文](https://docs.fireworks.ai/accounts/users)
+- `accounts/zero-data-retention` — [Zero Data Retention policy](pages/accounts/zero-data-retention.md) · [原文](https://docs.fireworks.ai/accounts/zero-data-retention)
 
 ## api-reference
 
@@ -78,6 +79,7 @@
 - `api-reference/get-model` — [Get Model](pages/api-reference/get-model.md) · [原文](https://docs.fireworks.ai/api-reference/get-model)
 - `api-reference/get-model-download-endpoint` — [Get Model Download Endpoint](pages/api-reference/get-model-download-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-model-download-endpoint)
 - `api-reference/get-model-upload-endpoint` — [Get Model Upload Endpoint](pages/api-reference/get-model-upload-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-model-upload-endpoint)
+- `api-reference/get-policy-settings` — [Get Policy Settings](pages/api-reference/get-policy-settings.md) · [原文](https://docs.fireworks.ai/api-reference/get-policy-settings)
 - `api-reference/get-quota` — [Get Quota](pages/api-reference/get-quota.md) · [原文](https://docs.fireworks.ai/api-reference/get-quota)
 - `api-reference/get-reinforcement-fine-tuning-job` — [Get Reinforcement Fine-tuning Job](pages/api-reference/get-reinforcement-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-job)
 - `api-reference/get-reinforcement-fine-tuning-step` — [Get Reinforcement Fine-tuning Step](pages/api-reference/get-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-step)
@@ -124,6 +126,7 @@
 - `api-reference/update-deployment` — [Update Deployment](pages/api-reference/update-deployment.md) · [原文](https://docs.fireworks.ai/api-reference/update-deployment)
 - `api-reference/update-evaluator` — [Update Evaluator](pages/api-reference/update-evaluator.md) · [原文](https://docs.fireworks.ai/api-reference/update-evaluator)
 - `api-reference/update-model` — [Update Model](pages/api-reference/update-model.md) · [原文](https://docs.fireworks.ai/api-reference/update-model)
+- `api-reference/update-policy-settings` — [Update Policy Settings](pages/api-reference/update-policy-settings.md) · [原文](https://docs.fireworks.ai/api-reference/update-policy-settings)
 - `api-reference/update-quota` — [Update Quota](pages/api-reference/update-quota.md) · [原文](https://docs.fireworks.ai/api-reference/update-quota)
 - `api-reference/update-router` — [Update Router](pages/api-reference/update-router.md) · [原文](https://docs.fireworks.ai/api-reference/update-router)
 - `api-reference/update-secret` — [Update secret](pages/api-reference/update-secret.md) · [原文](https://docs.fireworks.ai/api-reference/update-secret)
@@ -194,6 +197,10 @@
 - `faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless` — [How to check if a model is available on serverless?](pages/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless)
 - `faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques` — [There’s a model I would like to use that isn’t available on Fireworks. Can I request it?](pages/faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques)
 - `faq-new/models-inference/what-factors-affect-the-number-of-simultaneous-requests-that-can-be-handled` — [What factors affect the number of simultaneous requests that can be handled?](pages/faq-new/models-inference/what-factors-affect-the-number-of-simultaneous-requests-that-can-be-handled.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/what-factors-affect-the-number-of-simultaneous-requests-that-can-be-handled)
+
+## field-eng
+
+- `field-eng/p1-alert-intake` — [P1 alert intake](pages/field-eng/p1-alert-intake.md) · [原文](https://docs.fireworks.ai/field-eng/p1-alert-intake)
 
 ## fine-tuning
 

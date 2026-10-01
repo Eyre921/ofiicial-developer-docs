@@ -189,6 +189,36 @@ const connection = await elevenlabs.speechToText.realtime.connect({
 });
 ```
 
+## Keeping the connection alive during silence
+
+The official SDKs don't drop the connection when no messages arrive, so most integrations don't need this. If your own WebSocket client, or a proxy or load balancer in between, closes the connection when no frames arrive for a while, pass the optional `keepalive_interval_ms` query parameter when connecting. This matters during long stretches of silence, for example a phone call with 10-15 second pauses. About once per interval, the server sends a keepalive `partial_transcript`: empty (`text: ""`) if the current segment has no uncommitted text, or a repeat of the latest partial text if it does.
+
+> **Warning**
+>
+> Keepalives are not a free-running ping: you must keep streaming audio (silence frames are fine).
+> If you stop sending audio, no keepalives are sent, and the server closes the connection after 15
+> seconds without any client messages. This server limit is not configurable.
+
+* Accepts an integer between `500` and `10000` (milliseconds). It is disabled by default; omit the parameter to keep the existing behavior.
+* Out-of-range or non-integer values cause the server to send an `invalid_request` error and close the connection.
+* Keepalives are driven by the model actually processing the silent audio you send, not a free-running timer, so they also confirm the transcription path is alive.
+* Audio is processed in roughly 1-second chunks, so keepalives arrive about once per interval rounded to that cadence (for example, `1000` fires about once a second, `3000` about once every 3 seconds). The first keepalive of a session arrives about 2 seconds after it starts, since the server buffers the first \~2 seconds of audio before transcribing. Set your interval to at most about a third of your own read timeout to leave margin.
+* A keepalive's `text` is only empty when the current segment has no uncommitted text yet. If a pause happens after speech but before a commit — most visible with `filter_background_audio=true` or in manual commit mode without committing — the keepalive repeats the latest partial text instead, so it never blanks interim text. After a commit, keepalives go back to empty until new speech arrives.
+* Works with both `commit_strategy=manual` and `commit_strategy=vad`, and with `filter_background_audio=true`. Has no billing impact beyond the audio you're already streaming.
+* The `session_started` message's `config` echoes back `keepalive_interval_ms` (`null` when disabled).
+
+> **Info**
+>
+> An empty `partial_transcript` (`text: ""`) means "no speech in the current segment." A repeated,
+> identical `partial_transcript` during a pause is also a keepalive — clients should simply render
+> partials as they already do rather than special-casing the repeat.
+
+Add the parameter to the WebSocket URL:
+
+```text
+wss://api.elevenlabs.io/v1/speech-to-text/realtime?model_id=scribe_v2_realtime&commit_strategy=vad&keepalive_interval_ms=1000
+```
+
 ## Supported audio formats
 
 | Format     | Sample Rate | Description                             |

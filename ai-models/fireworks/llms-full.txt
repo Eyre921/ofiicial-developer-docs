@@ -85,6 +85,22 @@ Remove the restriction and return the account to unrestricted serving:
 firectl policy residency clear
 ```
 
+## Configure with the API
+
+Set the region with [Update Policy Settings](/api-reference/update-policy-settings), using an API key that belongs to an account Admin and naming `residency` in `updateMask`:
+
+```bash theme={null}
+curl -X PATCH \
+  "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/policySettings?updateMask=residency" \
+  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{"residency": "US"}'
+```
+
+To remove the restriction, send the same request with an empty body (`-d '{}'`).
+
+[Get Policy Settings](/api-reference/get-policy-settings) returns the current setting. An absent `residency` means serving is unrestricted.
+
 ## Pricing
 
 Regional models are priced at a premium over the base serverless price for the same model. See [Serverless pricing](/serverless/pricing).
@@ -129,6 +145,10 @@ Fireworks Enterprise accounts can use additional governance and administration f
 
   <Card title="Data residency" icon="flag-usa" href="/accounts/data-residency">
     Restrict inference and training data processing to a selected region for the account.
+  </Card>
+
+  <Card title="Zero Data Retention policy" icon="shield" href="/accounts/zero-data-retention">
+    Reject requests and jobs that would persist or log customer content.
   </Card>
 
   <Card title="Custom SSO" icon="key" href="/accounts/sso">
@@ -989,8 +1009,8 @@ firectl policy remove <model-id>
 
 Account admins can also manage policy through the API:
 
-* `GET /v1/accounts/{account_id}/policySettings`
-* `PATCH /v1/accounts/{account_id}/policySettings`
+* [Get Policy Settings](/api-reference/get-policy-settings): `GET /v1/accounts/{account_id}/policySettings`
+* [Update Policy Settings](/api-reference/update-policy-settings): `PATCH /v1/accounts/{account_id}/policySettings`
 
 Example allowlist body:
 
@@ -1354,6 +1374,139 @@ Users can be organized into groups. A group is a named set of users in your acco
 Groups are provisioned from your identity provider through [SCIM group provisioning](/accounts/sso#group-provisioning), which is the only way to create one. They are read-only in Fireworks: create, rename, delete, and populate groups in your directory.
 
 Groups do not confer roles — roles are set per user. What a group can carry is a [group limit](/nexus/usage-limits#group-limits), which caps serverless spend for each of its members. That is a **Fireworks Nexus** feature, enabled separately from group sync.
+
+
+# Zero Data Retention policy
+Source: https://docs.fireworks.ai/accounts/zero-data-retention
+
+Ensure no user actions on your account can persist or log customer content
+
+[Most of Fireworks](/guides/security_compliance/data_handling) never stores prompts or generations. A few features do store customer content, such as stored responses, batch jobs, and training. The Zero Data Retention policy blocks those features for everyone on the account by rejecting every request and job that would persist or log customer content.
+
+<Info>
+  **Enterprise feature.** The Zero Data Retention policy is available on Enterprise accounts. Contact your Fireworks representative if you need this enabled.
+</Info>
+
+<Info>
+  Only account **Admins** can change the Zero Data Retention policy. Other roles can view the current setting but cannot change it.
+</Info>
+
+The policy applies **account-wide**: every user and API key on the account follows it.
+
+The policy doesn't affect prompt caching, which holds KV caches only in memory, or the request metadata used to operate and bill the service. Fireworks may still retain data where required by law or to prevent abuse.
+
+## Settings
+
+| Setting | Effect |
+| :- | :- |
+| **Default Policy** | Applies to Inference and Training. Off by default. |
+| **Inference** | Follows Default Policy unless set to enforced or not enforced. |
+| **Training** | Follows Default Policy unless set to enforced or not enforced. |
+
+## What it controls
+
+| Operation | Scope | When enforced |
+| :- | :- | :- |
+| Chat completions and completions | Inference | Allowed |
+| Chat completions and completions with `store: true` | Inference | **Rejected** |
+| Anthropic Messages API | Inference | Allowed |
+| Embeddings and reranking | Inference | Allowed |
+| Responses API with `store: false` | Inference | Allowed |
+| Responses API with `store: true` (default) | Inference | **Rejected** |
+| Responses API with `background: true` | Inference | **Rejected** |
+| FireRouter virtual models | Inference | **Rejected** |
+| Batch inference jobs | Inference | **Rejected** |
+| Supervised fine-tuning, DPO, and reinforcement fine-tuning jobs | Training | **Rejected** |
+| Training API: forward and backward passes, optimizer steps, sampling, and checkpoints | Training | **Rejected** |
+| Evaluators and evaluation jobs | Training | **Rejected** |
+| Dataset uploads | Training | **Rejected** |
+| Custom model uploads and imports | Inference or Training | **Rejected** |
+| Model quantization with `firectl model prepare` | Inference or Training | **Rejected** |
+
+Data sent to third parties, such as MCP servers you connect or the search providers and websites behind web search, is handled under their own policies.
+
+## Existing data
+
+Turning on the policy doesn't delete anything already stored on the account, such as stored responses, datasets, and uploaded models. You can delete any of it whenever you like.
+
+## Configure in the console
+
+Account admins can set the Zero Data Retention policy in the Fireworks console at **Settings → Governances → Zero Data Retention** ([open in console](https://app.fireworks.ai/settings/governances/zero-data-retention)).
+
+Turn on Default Policy, or set Inference and Training individually, and save.
+
+## Configure with firectl
+
+Enforce for Inference and Training:
+
+```bash theme={null}
+firectl policy zdr set --default on
+```
+
+Set Inference and Training individually:
+
+```bash theme={null}
+firectl policy zdr set --inference on --training off
+```
+
+Inspect the current setting:
+
+```bash theme={null}
+firectl policy zdr get
+```
+
+Make Inference and Training follow Default Policy again:
+
+```bash theme={null}
+firectl policy zdr reset
+```
+
+Turn the policy off:
+
+```bash theme={null}
+firectl policy zdr set --default off --inference inherit --training inherit
+```
+
+## Configure with the API
+
+Use [Update Policy Settings](/api-reference/update-policy-settings) with `updateMask=zero_data_retention` and an API key that belongs to an account Admin. Each request replaces the whole Zero Data Retention section, so always send `defaultEnforced`. A scope you leave out follows Default Policy.
+
+Enforce for Inference and Training:
+
+```bash theme={null}
+curl -X PATCH \
+  "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/policySettings?updateMask=zero_data_retention" \
+  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{"zeroDataRetention": {"defaultEnforced": true}}'
+```
+
+Set Inference and Training individually:
+
+```bash theme={null}
+curl -X PATCH \
+  "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/policySettings?updateMask=zero_data_retention" \
+  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "zeroDataRetention": {
+      "defaultEnforced": false,
+      "inference": {"enforcement": "ENFORCED"},
+      "training": {"enforcement": "NOT_ENFORCED"}
+    }
+  }'
+```
+
+To turn the policy off, send `{"zeroDataRetention": {"defaultEnforced": false}}`.
+
+[Get Policy Settings](/api-reference/get-policy-settings) returns the current setting. An absent `zeroDataRetention` means the policy is off.
+
+## Related
+
+* [Zero Data Retention](/guides/security_compliance/data_handling) — baseline Fireworks retention behavior
+* [Data Security & Privacy](/guides/security_compliance/data_security) — encryption and data controls
+* [Data residency](/accounts/data-residency) — restrict processing geography
+* [Model access policy](/accounts/model-access-policy) — restrict model capabilities
 
 
 # Create a Message
@@ -1900,6 +2053,30 @@ post /v1/accounts/{account_id}/models/{model_id}:getUploadEndpoint
 
 
 
+# Get Policy Settings
+Source: https://docs.fireworks.ai/api-reference/get-policy-settings
+
+get /v1/accounts/{account_id}/policySettings
+
+Returns the account's governance settings in one object:
+
+| Field | Setting |
+| :- | :- |
+| `defaultPermissions`, `rules` | [Model access policy](/accounts/model-access-policy) |
+| `residency` | [Data residency](/accounts/data-residency) |
+| `zeroDataRetention` | [Zero Data Retention policy](/accounts/zero-data-retention) |
+| `cmekRequired` | [Customer-managed encryption keys](/guides/security_compliance/secure_training/cmek) |
+
+Any account member can read the policy settings.
+
+```bash theme={null}
+curl -s "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/policySettings" \
+  -H "Authorization: Bearer ${FIREWORKS_API_KEY}"
+```
+
+An absent `residency` means serving is unrestricted, and an absent `zeroDataRetention` means the policy is off. An account that has never saved policy settings can return `404`, which also means no policy is set.
+
+
 # Get Quota
 Source: https://docs.fireworks.ai/api-reference/get-quota
 
@@ -2377,6 +2554,31 @@ Source: https://docs.fireworks.ai/api-reference/update-model
 
 patch /v1/accounts/{account_id}/models/{model_id}
 
+
+
+# Update Policy Settings
+Source: https://docs.fireworks.ai/api-reference/update-policy-settings
+
+patch /v1/accounts/{account_id}/policySettings
+
+Updates the account's governance settings. The API key must belong to an account **Admin** on an Enterprise account, either a user or a [service account](/accounts/service-accounts) with the Admin role. Requests with any other key fail with a permission error.
+
+Pass `updateMask` with the proto field names of the settings you are changing, comma-separated. If you omit it, the mask is derived from the fields present in your request body. Settings outside the mask are left unchanged.
+
+| Setting | `updateMask` | Notes |
+| :- | :- | :- |
+| [Model access policy](/accounts/model-access-policy) | `default_permissions`, `rules` | `rules` replaces the whole list. Every permissions object needs all four booleans. |
+| [Data residency](/accounts/data-residency) | `residency` | Accepts `US`. Mask `residency` and omit the field to remove the restriction. |
+| [Zero Data Retention policy](/accounts/zero-data-retention) | `zero_data_retention` | Replaces the whole section, so always send `defaultEnforced`. A scope you leave out follows `defaultEnforced`. |
+| [Customer-managed encryption keys](/guides/security_compliance/secure_training/cmek) | `cmek_required` | Only Fireworks can change it. |
+
+```bash theme={null}
+curl -X PATCH \
+  "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/policySettings?updateMask=zero_data_retention" \
+  -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+  -H "Content-Type: application/json" \
+  -d '{"zeroDataRetention": {"defaultEnforced": true}}'
+```
 
 
 # Update Quota
@@ -5073,6 +5275,89 @@ Request handling capacity depends on several factors:
 * **Prompt size**
 * **Generation token length**
 * **Deployment type** (serverless vs. on-demand)
+
+
+# P1 alert intake
+Source: https://docs.fireworks.ai/field-eng/p1-alert-intake
+
+How to get a new or materially changed P1 customer alert approved to page.
+
+A new or materially changed P1 customer alert needs an intake file before it can page.
+Only about 10% of alerts in `#customer-incidents-alerts` were ever acked, so each P1 now
+has to justify waking someone.
+
+## The process
+
+<Steps>
+  <Step title="Open your PR with the alert change" />
+
+  <Step title="Add the intake file">
+    Copy [`example.yaml.template`](https://github.com/fw-ai/fireworks/blob/main/terraform/gcp/fw-ai-cp-prod/alerts/intake/example.yaml.template) in the alerts `intake/` folder to `<alert-name>.yaml`.
+  </Step>
+
+  <Step title="Fill it in">
+    Owner and customer, critical impact, signal, threshold and duration with rationale,
+    evidence, expected pages per month, on-call action, runbook, review date. Push without
+    the resource address or fingerprint if you don't have them. CI reports the exact
+    values to paste.
+  </Step>
+
+  <Step title="CI validates the file">
+    CI checks the intake file against your Terraform plan and fails if it is missing, incomplete, or inconsistent.
+  </Step>
+
+  <Step title="The review agent comments on your PR">
+    It reads the diff and the planned alert, opens your evidence links, and flags arbitrary
+    thresholds, low-sample conclusions, likely false positives, and runbooks with no action.
+    It posts `RECOMMEND`, `DO NOT RECOMMEND`, or `INSUFFICIENT EVIDENCE` with citations.
+    Advisory only. It cannot approve or merge.
+  </Step>
+
+  <Step title="A human approves the paging decision">
+    Prefer the most recent customer on-call as reviewer.
+  </Step>
+</Steps>
+
+The file stays in Git as the record of why the alert is allowed to page.
+
+## When intake is required
+
+Creating a new critical customer alert, promoting an alert to critical, or materially
+changing an enrolled P1: its signal or query, threshold, duration, scope, severity,
+routing, owner, or runbook.
+
+Not required for P2 and P3 alerts, severity downgrades, or formatting-only edits. P1s
+predating the process are reported as a notice, not a failure.
+
+## What qualifies as P1
+
+| Criterion | Definition | Examples |
+| - | - | - |
+| **SLA violation** | Customer production traffic is failing or breaching an agreed SLA at meaningful scale | 429s blocking production inference; majority of requests failing; majority of traffic over agreed latency |
+| **Loss of service** | An active, agreed customer need is unmet, causing loss of service or a customer-side incident | Production deployment down and not serving; traffic in a forbidden region; high rate of 500s |
+
+<Warning>
+  If neither criterion applies, it is not a P1. Route it to the customer's Slack channel or
+  a dashboard instead. P0 and P1 page a phone, P2 pings Slack, and P3 does not belong in
+  `#customer-incidents-alerts` at all.
+</Warning>
+
+A past incident is not required. A first-occurrence risk qualifies when the failure mode is
+credible, the impact would be critical, and the threshold is supported by testing, capacity
+limits, or SLO modeling.
+
+## Review criteria
+
+Reviewers approve only when the impact meets one of the two criteria, the threshold follows
+from the cited evidence, the expected page volume is reasonable for a phone page, routing
+and ownership are correct, and the on-call has a documented immediate action. Approvals
+should say so explicitly.
+
+## After approval
+
+Each intake carries a review date, and due alerts are reassessed against ack rate. A daily
+DM lists the alerts that paged you with **Actionable** and **Not actionable** buttons.
+Rating them is what drives alert cleanup. Raise problem alerts in `#amle-on-call-automation`.
 
 
 # Agent Skills
@@ -19648,6 +19933,10 @@ Fireworks has Zero Data Retention by default. Specifically, this means
 * Fireworks logs metadata (e.g. number of tokens in a request) as required to deliver the service.
 * Users can explicitly opt-in to log prompt and generation data for certain advanced features (e.g. FireOptimizer).
 
+<Info>
+  Enterprise account admins can additionally turn on the [Zero Data Retention policy](/accounts/zero-data-retention) to reject requests and jobs that would persist or log customer content.
+</Info>
+
 ## Response API data retention
 
 For the Response API specifically, Fireworks retains conversation data with the following policy when the API request has `store=True` (the default):
@@ -19706,7 +19995,7 @@ Dedicated workloads run in logically isolated environments, preventing cross-cus
 
 ## Secure Training
 
-Fireworks enables secure model training, including fine-tuning and reinforcement learning, while maintaining customer control over sensitive components and data. This approach builds on our [Zero Data Retention](#zero-data-retention) policy to ensure sensitive training data never persists on our platform.
+Fireworks enables secure model training, including fine-tuning and reinforcement learning, while maintaining customer control over sensitive components and data. Training workflows can persist datasets, checkpoints, traces, and trained model artifacts. Enterprise account admins can turn on the [Zero Data Retention policy](/accounts/zero-data-retention) for Training to reject training jobs and dataset uploads.
 
 **Customer-Controlled Architecture:** For advanced training workflows like reinforcement learning, critical components remain under customer control:
 

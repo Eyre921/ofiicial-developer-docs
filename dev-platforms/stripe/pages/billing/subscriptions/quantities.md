@@ -187,7 +187,7 @@ When you bill your customers, you might want to track usage at a different granu
 | 6 | 2 | 20 USD |
 | 7 | 2 | 20 USD |
 
-With the [transform_quantity](https://docs.stripe.com/api/prices/create.md#create_price-transform_quantity) parameter, you can instruct Stripe to transform the quantity before applying the per unit cost. The following subscription allows you to naturally report the current number of users as the subscription item `quantity`. Stripe’s billing system divides the quantity by 5 and rounds up before calculating by the unit cost.
+With the [transform_quantity](https://docs.stripe.com/api/prices/create.md#create_price-transform_quantity) parameter, you can instruct Stripe to transform the quantity before applying the per unit cost. The following subscription allows you to naturally report the current number of users as the subscription item `quantity`. The Stripe billing system divides the quantity by 5 and rounds up before calculating by the unit cost.
 
 ```curl
 curl https://api.stripe.com/v1/prices \

@@ -192,12 +192,6 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds support for metadata in confirmation tokens](https://docs.stripe.com/changelog/dahlia/2026-08-26/adds-metadata-support-to-confirmation-tokens.md) | Payments | Non-breaking | api |
 | [Adds a funding source identifier to Link wallet card payments](https://docs.stripe.com/changelog/dahlia/2026-08-26/adds-funding-source-group-property-to-link-wallet-payments-on-card-charges.md) | Payments | Non-breaking | api |
 
-### Additional updates
-
-| Title | Affected Products | Breaking change? | Category |
-| --- | --- | --- | --- |
-| [Adds support for specifying place of supply scheme on IGIC tax in the EU](https://docs.stripe.com/changelog/dahlia/2026-08-26/adds-igic-tax-registration-type-with-place-of-supply-scheme-for-eu-countries.md) | Tax | Non-breaking | api |
-
 ## 2026-08-26.preview
 
 ### Connect

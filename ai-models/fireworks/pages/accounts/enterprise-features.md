@@ -27,6 +27,10 @@ Fireworks Enterprise accounts can use additional governance and administration f
     Restrict inference and training data processing to a selected region for the account.
   </Card>
 
+  <Card title="Zero Data Retention policy" icon="shield" href="/accounts/zero-data-retention">
+    Reject requests and jobs that would persist or log customer content.
+  </Card>
+
   <Card title="Custom SSO" icon="key" href="/accounts/sso">
     Bring your own OpenID Connect or SAML identity provider for enterprise authentication.
   </Card>

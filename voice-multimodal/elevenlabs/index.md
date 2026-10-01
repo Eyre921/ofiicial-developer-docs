@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1351 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1353 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -698,6 +698,7 @@
 - `docs/eleven-agents/libraries/java-script` — [JavaScript SDK](pages/docs/eleven-agents/libraries/java-script.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/java-script.md)
 - `docs/eleven-agents/libraries/kotlin` — [Kotlin SDK](pages/docs/eleven-agents/libraries/kotlin.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/kotlin.md)
 - `docs/eleven-agents/libraries/python` — [Python SDK](pages/docs/eleven-agents/libraries/python.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/python.md)
+- `docs/eleven-agents/libraries/react` — [React SDK](pages/docs/eleven-agents/libraries/react.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/react.md)
 - `docs/eleven-agents/libraries/react-native` — [React Native SDK](pages/docs/eleven-agents/libraries/react-native.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/react-native.md)
 - `docs/eleven-agents/libraries/swift` — [Swift SDK](pages/docs/eleven-agents/libraries/swift.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/swift.md)
 - `docs/eleven-agents/libraries/web-sockets` — [WebSocket](pages/docs/eleven-agents/libraries/web-sockets.md) · [原文](https://elevenlabs.io/docs/eleven-agents/libraries/web-sockets.md)
@@ -728,6 +729,7 @@
 - `docs/eleven-agents/phone-numbers/telephony/bandwidth` — [Bandwidth SIP trunking](pages/docs/eleven-agents/phone-numbers/telephony/bandwidth.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/bandwidth.md)
 - `docs/eleven-agents/phone-numbers/telephony/exotel` — [Exotel integration](pages/docs/eleven-agents/phone-numbers/telephony/exotel.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/exotel.md)
 - `docs/eleven-agents/phone-numbers/telephony/plivo` — [Plivo](pages/docs/eleven-agents/phone-numbers/telephony/plivo.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/plivo.md)
+- `docs/eleven-agents/phone-numbers/telephony/sinch` — [Sinch SIP trunking](pages/docs/eleven-agents/phone-numbers/telephony/sinch.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/sinch.md)
 - `docs/eleven-agents/phone-numbers/telephony/telnyx` — [Telnyx SIP trunking](pages/docs/eleven-agents/phone-numbers/telephony/telnyx.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/telnyx.md)
 - `docs/eleven-agents/phone-numbers/telephony/vonage` — [Vonage integration](pages/docs/eleven-agents/phone-numbers/telephony/vonage.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/vonage.md)
 - `docs/eleven-agents/phone-numbers/twilio-integration/custom-llm-integration` — [Custom LLM integration](pages/docs/eleven-agents/phone-numbers/twilio-integration/custom-llm-integration.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/twilio-integration/custom-llm-integration.md)
@@ -1072,7 +1074,6 @@
 - `docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api` — [Can I edit and regenerate Dubbing v2 via the API?](pages/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md)
 - `docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing` — [Do you offer lip sync in Dubbing?](pages/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md)
 - `docs/help-center/product/dubbing/how-do-i-access-dubbing-studio` — [How do I access Dubbing Studio?](pages/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md)
-- `docs/help-center/product/dubbing/how-much-does-dubbing-cost` — [How much does Dubbing cost?](pages/docs/help-center/product/dubbing/how-much-does-dubbing-cost.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-much-does-dubbing-cost.md)
 - `docs/help-center/product/dubbing/on-which-plans-can-i-use-dubbing` — [On which plans can I use Dubbing?](pages/docs/help-center/product/dubbing/on-which-plans-can-i-use-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/on-which-plans-can-i-use-dubbing.md)
 - `docs/help-center/product/dubbing/what-happens-to-my-dubs-if-i-downgrade-my-subscription` — [What happens to my dubs if I downgrade my subscription?](pages/docs/help-center/product/dubbing/what-happens-to-my-dubs-if-i-downgrade-my-subscription.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/what-happens-to-my-dubs-if-i-downgrade-my-subscription.md)
 - `docs/help-center/product/dubbing/what-is-dubbing` — [What is Dubbing?](pages/docs/help-center/product/dubbing/what-is-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/what-is-dubbing.md)
@@ -1331,6 +1332,7 @@
 - `docs/reception-ai/features/quote-requests` — [Quote requests](pages/docs/reception-ai/features/quote-requests.md) · [原文](https://elevenlabs.io/docs/reception-ai/features/quote-requests.md)
 - `docs/reception-ai/integrations/cal-com` — [Cal.com](pages/docs/reception-ai/integrations/cal-com.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/cal-com.md)
 - `docs/reception-ai/integrations/calendly` — [Calendly](pages/docs/reception-ai/integrations/calendly.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/calendly.md)
+- `docs/reception-ai/integrations/google-calendar` — [Google Calendar](pages/docs/reception-ai/integrations/google-calendar.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/google-calendar.md)
 - `docs/reception-ai/integrations/hubspot` — [HubSpot](pages/docs/reception-ai/integrations/hubspot.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/hubspot.md)
 - `docs/reception-ai/integrations/mcp-server` — [MCP server](pages/docs/reception-ai/integrations/mcp-server.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/mcp-server.md)
 - `docs/reception-ai/integrations/overview` — [Integrations](pages/docs/reception-ai/integrations/overview.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/overview.md)

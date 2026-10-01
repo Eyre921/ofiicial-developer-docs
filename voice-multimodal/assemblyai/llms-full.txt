@@ -125,6 +125,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Self-Hosted Streaming](#self-hosted-streaming-docs-streaming-self-hosted-streaming-mdx)
 - [Universal-3.6 Pro on LiveKit](#universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx)
 - [Universal-3.6 Pro on Pipecat](#universal-3-6-pro-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx)
+- [Universal-3.6 Pro on Vapi](#universal-3-6-pro-on-vapi-docs-voice-agents-vapi-mdx)
 - [Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Streaming](#streaming-migration-guide-universal-streaming-to-universal-3-6-pro-streaming-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx)
 - [Streaming Migration Guide: Deepgram to AssemblyAI](#streaming-migration-guide-deepgram-to-assemblyai-docs-streaming-migration-guides-dg-to-aai-streaming-mdx)
 - [Migration guide: Speechmatics to AssemblyAI](#migration-guide-speechmatics-to-assemblyai-docs-streaming-migration-guides-speechmatics-to-aai-streaming-mdx)
@@ -697,7 +698,7 @@ Core REST endpoints:
 
 Streaming:
 - `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro`
-- `GET https://streaming.assemblyai.com/v3/token?expires_in_seconds=60` — mint a single-use temp token for browser/mobile clients. Optional `max_session_duration_seconds` (60–10800, defaults to 3 h) caps the downstream session length.
+- `GET https://streaming.assemblyai.com/v3/token?expires_in_seconds=60` — mint a temp token for browser/mobile clients. The token is reusable until `expires_in_seconds` elapses, so mint a fresh one per session. Optional `max_session_duration_seconds` (60–10800, defaults to 3 h) caps the downstream session length. At the cap, the session ends after the current turn or up to 60 s later, and that extra time is billed.
 
 ---
 
@@ -864,7 +865,7 @@ curl -s "https://streaming.assemblyai.com/v3/token?expires_in_seconds=60" \
   -H "Authorization: $ASSEMBLYAI_API_KEY"
 # { "token": "..." }
 ```
-`expires_in_seconds` must be 1–600. Tokens are single-use per session.
+`expires_in_seconds` must be 1–600. A token can start multiple sessions until it expires, so mint a fresh one per session and keep the expiry short.
 
 ### Server messages (JSON)
 
@@ -1400,6 +1401,9 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
     href="/voice-agents/pipecat-universal-3-5-pro"
   >
     Use AssemblyAI with Pipecat's voice agent orchestrator.
+  
+  
+    Use AssemblyAI as the transcriber for Vapi voice assistants.
   
 
 ## Model gateways
@@ -25339,7 +25343,7 @@ When the session begins, you receive a `Begin` message with the session ID, expi
 }
 ```
 
-`expires_at` is a Unix timestamp (seconds). When it is reached, the server closes the session with error `3008`.
+`expires_at` is a Unix timestamp (seconds). When it is reached, the server closes the session with error `3008` after the current turn ends, or up to 60 seconds later. You're billed for this extra time.
 
   Always check that `configuration.model` matches the `speech_model` you requested. Unrecognized or misspelled query parameters are ignored rather than rejected, so this echo is the fastest way to catch a typo (for example, `speechModel` instead of `speech_model`).
 
@@ -25808,11 +25812,15 @@ async function createTemporaryToken() {
   specified, `max_session_duration_seconds` must be a value between `60` and
   `10800` seconds (defaults to maximum session duration of 3 hours).
 
+  When a session reaches `max_session_duration_seconds`, the server doesn't close it immediately. The session ends after the current turn ends, or up to 60 seconds later, whichever comes first. You're billed for this extra time. To avoid it, run a client-side timer and [terminate the session](/streaming/getting-started/transcribe-streaming-audio) yourself before the limit.
+
 The client should retrieve the token from the server and use the token to authenticate the transcriber.
 
-  Each token has a one-time use restriction and can only be used for a single
-  session. Any usage associated with a temporary token will be attributed to the
-  API key that generated it.
+  A token stays valid until `expires_in_seconds` elapses. Until then, you can
+  use the same token to start more than one session, including concurrent
+  sessions. To limit how a token is used, request a new token for each session
+  and keep `expires_in_seconds` short. Any usage associated with a temporary
+  token will be attributed to the API key that generated it.
 
 To use it, specify the `token` parameter as a query parameter in the WebSocket URL.
 
@@ -26550,7 +26558,7 @@ When a session ends because of an error (rather than a normal closure), the serv
 
 | Code   | Reason                                                                         | Description                                                                                                                                                                                                                                                     |
 | ------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `3008` | Session Expired: Maximum session duration exceeded                             | Session exceeded 3 hour limit (or max session duration set by [temporary token](/streaming/authenticate-with-a-temporary-token)). You are billed for the full session duration. Always [terminate sessions](/streaming/getting-started/transcribe-streaming-audio) explicitly to control costs. |
+| `3008` | Session Expired: Maximum session duration exceeded                             | Session exceeded 3 hour limit (or max session duration set by [temporary token](/streaming/authenticate-with-a-temporary-token)). The session closes after the current turn ends, or up to 60 seconds after the limit. You are billed for the full session duration, including this extra time. Always [terminate sessions](/streaming/getting-started/transcribe-streaming-audio) explicitly to control costs. |
 | `3007` | Input duration violation: `<time>` ms. Expected between 50 and 1000 ms         | Audio chunk size less than 50ms or greater than 1000ms.                                                                                                                                                                                                         |
 | `3006` | Invalid Message Type: `<message>`                                              | Unsupported [message type](/streaming/common-session-errors-and-closures).                                                                                                                                                                                 |
 | `3006` | Invalid JSON: `<json>`                                                         | Message contains invalid JSON.                                                                                                                                                                                                                                  |
@@ -28964,6 +28972,810 @@ Interested in using a different model?
   automatically sets it to `1.0` in Pipecat mode to disable semantic turn
   detection and ensure fast responses. You don't need to configure this
   parameter manually.
+
+---
+
+<a id="universal-3-6-pro-on-vapi-docs-voice-agents-vapi-mdx"></a>
+
+# Universal-3.6 Pro on Vapi
+
+URL: https://www.assemblyai.com/docs/voice-agents/vapi
+Source: docs/voice-agents/vapi.mdx
+Navigation: Real-time STT > Integrations
+Description: Configure AssemblyAI's Universal-3.6 Pro speech-to-text model as the transcriber for a Vapi voice assistant
+
+## Overview
+
+This guide covers configuring AssemblyAI's **Universal-3.6 Pro** speech-to-text model as the transcriber for a [Vapi](https://vapi.ai/) voice assistant, using the [Vapi API](https://docs.vapi.ai/api-reference).
+
+Vapi is a hosted platform for building voice agents. You define an **assistant** — its transcriber, LLM, voice, and turn-taking behavior — as a JSON object, then connect it to phone numbers, web calls, or SIP. Vapi runs the real-time pipeline for you, so there's no agent server to deploy.
+
+  **Universal-3.6 Pro is our flagship next-generation streaming model for voice agents** — [multilingual](/streaming/multilingual-transcription) and [promptable](/streaming/prompting-and-keyterms), with [conversation context](#conversation-context).
+
+  Set `transcriber.provider` to `"assembly-ai"` and `transcriber.speechModel` to `"universal-3-6-pro"`. Vapi defaults to `universal-streaming-english`, so set the model explicitly.
+
+AssemblyAI provides the speech-to-text and the turn detection in your Vapi assistant:
+
+```mermaid
+flowchart LR
+  U["Caller audio<br/>(phone, web, SIP)"] --> V["Vapi"]
+  V --> STT["AssemblyAI STT<br/>Universal-3.6 Pro<br/>+ end of turn"]
+  STT --> LLM["LLM"]
+  LLM --> TTS["TTS"]
+  TTS --> U
+```
+
+Once you have an assistant running, tune it for what matters most to your use case:
+
+  
+    Decide when the caller is done speaking, and how Vapi uses AssemblyAI's end-of-turn signal.
+  
+  
+    Shorten the gap between the caller finishing and the assistant replying.
+  
+  
+    Prompting, key terms, language steering, and conversation context.
+  
+  
+    Barge-in and backchannels with Vapi's stop speaking plan.
+  
+
+  For a standalone voice agent without Vapi, see the [AssemblyAI Voice Agent API](/voice-agents/voice-agent-api), which handles STT, LLM routing, and TTS in a single WebSocket connection.
+
+## Quickstart
+
+Create an assistant with Universal-3.6 Pro through the API, then call it.
+
+You need a Vapi **private** API key from the [Vapi dashboard](https://dashboard.vapi.ai). Vapi's API authenticates with it as a bearer token:
+
+```bash
+export VAPI_API_KEY=your_vapi_private_key
+```
+
+An AssemblyAI API key is optional. By default, Vapi provides access to AssemblyAI through its own account and bills transcription on your Vapi invoice. To use your own AssemblyAI account instead, see the next step.
+
+To have AssemblyAI bill transcription directly, add your AssemblyAI API key to Vapi. In the dashboard, open **Integrations** and add AssemblyAI, or create the credential through the API:
+
+```bash
+curl -X POST https://api.vapi.ai/credential \
+  -H "Authorization: Bearer $VAPI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "provider": "assembly-ai",
+    "apiKey": "'"$ASSEMBLYAI_API_KEY"'",
+    "name": "AssemblyAI"
+  }'
+```
+
+Once the key is validated, AssemblyAI transcription runs on your AssemblyAI account and Vapi no longer charges for it. See Vapi's [provider keys](https://docs.vapi.ai/customization/provider-keys) guide.
+
+  You can obtain an AssemblyAI API key by [signing up for a free
+  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
+
+Create an assistant with a Universal-3.6 Pro transcriber. The request leaves `startSpeakingPlan.smartEndpointingPlan` unset, which is what tells Vapi to use [AssemblyAI's end-of-turn detection](#turn-detection):
+
+```bash
+curl -X POST https://api.vapi.ai/assistant \
+  -H "Authorization: Bearer $VAPI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Support agent",
+    "firstMessage": "Hi, thanks for calling Acme. What is the email on your account?",
+    "voice": {
+      "provider": "vapi",
+      "voiceId": "Elliot"
+    },
+    "model": {
+      "provider": "openai",
+      "model": "gpt-4o",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful voice assistant. Keep replies brief and speakable."
+        }
+      ]
+    },
+    "transcriber": {
+      "provider": "assembly-ai",
+      "speechModel": "universal-3-6-pro",
+      "mode": "balanced",
+      "minEndOfTurnSilenceWhenConfident": 128,
+      "maxTurnSilence": 1280,
+      "vadAssistedEndpointingEnabled": false,
+      "agentContext": "Hi, thanks for calling Acme. What is the email on your account?",
+      "agentContextAutoUpdateEnabled": true
+    }
+  }'
+```
+
+```python
+import os
+
+import requests
+
+GREETING = "Hi, thanks for calling Acme. What is the email on your account?"
+
+response = requests.post(
+    "https://api.vapi.ai/assistant",
+    headers={"Authorization": f"Bearer {os.environ['VAPI_API_KEY']}"},
+    json={
+        "name": "Support agent",
+        "firstMessage": GREETING,
+        "voice": {"provider": "vapi", "voiceId": "Elliot"},
+        "model": {
+            "provider": "openai",
+            "model": "gpt-4o",
+            "messages": [
+                {
+                    "role": "system",
+                    "content": "You are a helpful voice assistant. Keep replies brief and speakable.",
+                }
+            ],
+        },
+        "transcriber": {
+            "provider": "assembly-ai",
+            "speechModel": "universal-3-6-pro",
+            "mode": "balanced",
+            "minEndOfTurnSilenceWhenConfident": 128,
+            "maxTurnSilence": 1280,
+            "vadAssistedEndpointingEnabled": False,  # Act on AssemblyAI's end-of-turn immediately
+            "agentContext": GREETING,  # Seeds context for the caller's first reply
+            "agentContextAutoUpdateEnabled": True,  # Feeds each later reply automatically
+        },
+    },
+)
+response.raise_for_status()
+print(response.json()["id"])
+```
+
+```javascript
+const GREETING =
+  "Hi, thanks for calling Acme. What is the email on your account?";
+
+const response = await fetch("https://api.vapi.ai/assistant", {
+  method: "POST",
+  headers: {
+    Authorization: `Bearer ${process.env.VAPI_API_KEY}`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    name: "Support agent",
+    firstMessage: GREETING,
+    voice: { provider: "vapi", voiceId: "Elliot" },
+    model: {
+      provider: "openai",
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a helpful voice assistant. Keep replies brief and speakable.",
+        },
+      ],
+    },
+    transcriber: {
+      provider: "assembly-ai",
+      speechModel: "universal-3-6-pro",
+      mode: "balanced",
+      minEndOfTurnSilenceWhenConfident: 128,
+      maxTurnSilence: 1280,
+      vadAssistedEndpointingEnabled: false, // Act on AssemblyAI's end-of-turn immediately
+      agentContext: GREETING, // Seeds context for the caller's first reply
+      agentContextAutoUpdateEnabled: true, // Feeds each later reply automatically
+    },
+  }),
+});
+
+const assistant = await response.json();
+console.log(assistant.id);
+```
+
+The response includes the assistant's `id`. Always set `voice` explicitly: if you leave it out, Vapi assigns a default voice rather than the one you expect. The example uses Vapi's built-in `Elliot` voice; see Vapi's [Create assistant](https://docs.vapi.ai/api-reference/assistants/create) reference for every voice provider and field.
+
+`minEndOfTurnSilenceWhenConfident` and `maxTurnSilence` above are the values the `balanced` preset uses, so they behave the same as `mode` alone; keeping them in the request makes the timing explicit and gives you the two values to tune. `vadAssistedEndpointingEnabled: false` makes Vapi act on AssemblyAI's end-of-turn as soon as it arrives. See [Turn detection](#turn-detection) for the recommended settings.
+
+  This guide calls the REST API directly. Vapi's server SDKs (`@vapi-ai/server-sdk`, `vapi_server_sdk`) wrap the same endpoints, but their generated types can lag behind the API. If your SDK version's types don't include `universal-3-6-pro` yet, upgrade the SDK or send the request with the REST API.
+
+The quickest test is a web call from the dashboard: open **Assistants**, select your assistant, and select **Talk**.
+
+To have the assistant call a phone, pass its `id` and a Vapi phone number to `POST /call`:
+
+```bash
+curl -X POST https://api.vapi.ai/call \
+  -H "Authorization: Bearer $VAPI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "assistantId": "'"$ASSISTANT_ID"'",
+    "phoneNumberId": "'"$PHONE_NUMBER_ID"'",
+    "customer": {
+      "number": "+15555550123"
+    }
+  }'
+```
+
+To answer inbound calls, assign the assistant to a phone number in the dashboard. To embed the assistant in a web page, use the [Vapi Web SDK](https://docs.vapi.ai/quickstart/web). After each call, the call log in the dashboard shows the AssemblyAI transcript.
+
+### Switching an existing assistant to Universal-3.6 Pro
+
+To move an existing assistant to AssemblyAI, update its `transcriber` with `PATCH /assistant/{id}`:
+
+```bash
+curl -X PATCH "https://api.vapi.ai/assistant/$ASSISTANT_ID" \
+  -H "Authorization: Bearer $VAPI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "transcriber": {
+      "provider": "assembly-ai",
+      "speechModel": "universal-3-6-pro",
+      "mode": "balanced",
+      "minEndOfTurnSilenceWhenConfident": 128,
+      "maxTurnSilence": 1280,
+      "vadAssistedEndpointingEnabled": false,
+      "agentContextAutoUpdateEnabled": true
+    }
+  }'
+```
+
+  **`PATCH` replaces the whole `transcriber` object.** Fields you leave out are dropped, not kept. A patch that sends only `{"provider": "assembly-ai", "keytermsPrompt": [...]}` removes `speechModel`, and the assistant falls back to Vapi's default model, `universal-streaming-english`. Always send the complete transcriber configuration.
+
+If the assistant has a `startSpeakingPlan.smartEndpointingPlan`, remove it too, so Vapi uses AssemblyAI's end-of-turn detection instead of its own. See [Turn detection](#turn-detection).
+
+In the dashboard, the same settings are on the assistant's **Transcriber** tab: set **Provider** to `assembly-ai`.
+
+## Parameters reference
+
+### **Universal-3.6 Pro** parameters
+
+Set these inside the assistant's `transcriber` object. Vapi uses camelCase names; where a name differs from AssemblyAI's [streaming API](/streaming/api-spec/streaming-websocket) parameter, the AssemblyAI name is given.
+
+  Set to `"assembly-ai"`.
+
+  The streaming model: `"universal-3-6-pro"` (recommended), `"universal-3-5-pro"`,
+  `"universal-streaming-english"`, or `"universal-streaming-multilingual"`. Vapi
+  defaults to `"universal-streaming-english"`, so set it explicitly. See
+  [Speech models](#speech-models).
+
+  Accuracy/latency preset: `"min_latency"`, `"balanced"`, or `"max_accuracy"`.
+  Sets defaults for the mode-dependent fields on AssemblyAI's side. Any value you
+  set explicitly, including `minEndOfTurnSilenceWhenConfident` and
+  `maxTurnSilence`, still takes precedence. Universal-3.6 Pro and 3.5 Pro only.
+  See [Optimizing accuracy and
+  latency](/streaming/getting-started/optimizing-accuracy-and-latency).
+
+  AssemblyAI's `min_turn_silence`: milliseconds of silence before the model runs
+  an end-of-turn check. If the turn reads as complete, it ends. Otherwise the
+  turn stays open. When unset, Vapi doesn't send it and the `mode` preset's value applies (`128` for
+  `balanced`). Only used when `startSpeakingPlan.smartEndpointingPlan` is not set.
+
+  AssemblyAI's `max_turn_silence`: maximum milliseconds of silence before the
+  turn is forced to end, regardless of content. When unset, Vapi doesn't send it
+  and the `mode` preset's value applies (`1280` for `balanced`). Turns that end
+  on a dictated entity (a phone number or email address) are held until this
+  limit, so it sets the response time for those turns. Only used when
+  `startSpeakingPlan.smartEndpointingPlan` is not set.
+
+  A Vapi-side setting. When `true`, Vapi holds AssemblyAI's end-of-turn until its
+  own VAD also detects that the caller has stopped. When `false`, Vapi acts on
+  AssemblyAI's end-of-turn immediately. **We recommend `false`** for faster
+  replies. Only used when `startSpeakingPlan.smartEndpointingPlan` is not set.
+
+  Contextual prompt — a natural-language description of what the audio is about
+  (domain, scenario, or full details). Up to 1750 characters. Universal-3.6 Pro
+  and 3.5 Pro only. See [Prompting](#prompting).
+
+  Names, brands, or domain terms to boost. Up to 100 terms, each up to 50
+  characters. Included at no extra cost on Universal-3.6 Pro and 3.5 Pro. See
+  [Key terms](#key-terms).
+
+  AssemblyAI's `agent_context`: context about what the assistant just said, used
+  to transcribe the next caller turn more accurately. Up to 1750 characters. Set
+  it to your `firstMessage` to seed the caller's first reply. Universal-3.6 Pro
+  and 3.5 Pro only. See [Conversation context](#conversation-context).
+
+  A Vapi-side setting. When `true`, Vapi sends the text the assistant just spoke
+  to AssemblyAI as `agent_context` after every assistant turn. **Off by default;
+  we recommend turning it on.** Universal-3.6 Pro and 3.5 Pro only.
+
+  AssemblyAI's `language_codes`: languages to steer transcription toward.
+  Universal-3.6 Pro code-switches across all 32 [supported
+  languages](/streaming/multilingual-transcription#supported-languages) by
+  default. Pass one code (`["es"]`) to pin a monolingual session, or several
+  (`["en", "es"]`) to constrain code-switching. Omit for automatic detection.
+  Universal-3.6 Pro and 3.5 Pro only.
+
+  Transcribers to fall back to if the primary transcriber fails. See [Fallback
+  transcribers](#fallback-transcribers).
+
+For every transcriber field, see the `AssemblyAITranscriber` schema in Vapi's [Create assistant](https://docs.vapi.ai/api-reference/assistants/create) reference.
+
+  Some Universal-3.6 Pro parameters available on AssemblyAI's API and in the LiveKit and Pipecat plugins aren't exposed by Vapi's transcriber, including `voice_focus`, `speaker_labels`, `interruption_delay`, `vad_threshold`, and `previous_context_n_turns`. On Vapi, the model uses AssemblyAI's defaults for these (or the values the `mode` preset sets).
+
+### Vapi turn-taking parameters
+
+These live on the assistant, outside `transcriber`, and shape how Vapi acts on AssemblyAI's transcripts:
+
+  Vapi's own endpointing (`"vapi"`, `"livekit"`, or `"custom-endpointing-model"`).
+  **Leave unset** to use AssemblyAI's end-of-turn detection. When set, it
+  overrides AssemblyAI's end-of-turn signal and the AssemblyAI silence fields
+  above are ignored. See [Other turn detection
+  options](#other-turn-detection-options).
+
+  How long the assistant waits before speaking after the caller finishes, in
+  seconds (`0`–`5`). With AssemblyAI's end-of-turn detection, tune the AssemblyAI
+  silence thresholds and `vadAssistedEndpointingEnabled` first — they have a
+  larger effect on response time.
+
+  When the caller's speech interrupts the assistant: `numWords`, `voiceSeconds`,
+  `backoffSeconds`, `acknowledgementPhrases`, and `interruptionPhrases`. See
+  [Interruption handling](#interruption-handling).
+
+### Legacy parameters
+
+These apply to the `universal-streaming-english` and `universal-streaming-multilingual` models, but **do not affect Universal-3.6 Pro or 3.5 Pro**:
+
+  Confidence threshold for end-of-turn detection on the Universal-Streaming
+  models. Universal-3.6 Pro doesn't use a confidence threshold to end turns, so
+  this field has no effect. Vapi's [AssemblyAI endpointing
+  presets](https://docs.vapi.ai/customization/voice-pipeline-configuration)
+  include it because they were written for Universal-Streaming.
+
+  Whether to return formatted final transcripts on the Universal-Streaming
+  models. Universal-3.6 Pro always returns formatted transcripts.
+
+  `"en"` or `"multi"`, for the Universal-Streaming models. For Universal-3.6 Pro,
+  leave it unset and use `languageCodes` to steer languages.
+
+## Turn detection
+
+Vapi decides when the caller has finished speaking in one of two ways, chosen by whether the assistant has a `startSpeakingPlan.smartEndpointingPlan`:
+
+- **No `smartEndpointingPlan` (recommended):** Vapi uses AssemblyAI's end-of-turn detection.
+- **A `smartEndpointingPlan`:** Vapi's own endpointing decides, and AssemblyAI provides the transcripts. See [Other turn detection options](#other-turn-detection-options).
+
+### AssemblyAI end-of-turn detection (recommended)
+
+**When to use:** Most assistants. Leave `smartEndpointingPlan` unset and Vapi acts on the `end_of_turn` flag AssemblyAI sends with each final transcript: it streams the turn to the LLM and generates a response.
+
+**Recommended starting configuration:**
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "mode": "balanced",
+    "minEndOfTurnSilenceWhenConfident": 128,
+    "maxTurnSilence": 1280,
+    "vadAssistedEndpointingEnabled": false
+  }
+}
+```
+
+| Setting                            | Recommended | Why                                                                                                          |
+| ---------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------ |
+| `smartEndpointingPlan`             | unset       | Lets AssemblyAI's end-of-turn signal drive turn-taking.                                                      |
+| `mode`                             | `balanced`  | Sets `128` / `1280` ms silence thresholds. Also AssemblyAI's default when unset.                             |
+| `minEndOfTurnSilenceWhenConfident` | `128` ms    | Silence before the end-of-turn check. Matches `balanced`; set it to make the value explicit.                 |
+| `maxTurnSilence`                   | `1280` ms   | Silence before a forced end. The main value to tune — see [Tuning `maxTurnSilence`](#tuning-maxturnsilence). |
+| `vadAssistedEndpointingEnabled`    | `false`     | Vapi acts on AssemblyAI's end-of-turn as soon as it arrives, instead of also waiting for its own VAD.        |
+
+**How it works:**
+
+1. The caller speaks → Vapi streams the audio to AssemblyAI.
+2. The caller pauses for `minEndOfTurnSilenceWhenConfident` (e.g., `128` ms) → the model runs an end-of-turn check on what was said.
+3. The turn doesn't read as complete (no terminal punctuation) → a partial is emitted and the turn stays open.
+4. The turn ends in terminal punctuation, but the tail looks like an entity mid-dictation (an email address or phone number) → the turn is held anyway.
+5. The turn reads as complete → AssemblyAI ends the turn with `end_of_turn: true`.
+6. Silence reaches `maxTurnSilence` (e.g., `1280` ms) → the turn is forced closed regardless.
+7. If `vadAssistedEndpointingEnabled` is `true` (Vapi's default), Vapi also waits for its own VAD to register the caller as stopped before responding. With `false`, Vapi responds as soon as AssemblyAI ends the turn.
+
+If you leave the two silence thresholds unset, Vapi doesn't send them and AssemblyAI applies the values of the `mode` preset. Values you set override the preset. Vapi's `transcriptionEndpointingPlan` (`onPunctuationSeconds`, `onNoPunctuationSeconds`, `onNumberSeconds`) is not used in this mode; it only applies to transcribers without built-in end-of-turn detection.
+
+#### Choosing a preset
+
+| `mode`         | Silence thresholds | Use when                                                                                                                                 |
+| -------------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `balanced`     | `128` / `1280` ms  | Most assistants. Fast replies to complete sentences, with room for short mid-thought pauses.                                             |
+| `min_latency`  | `128` / `640` ms   | Callers answer in short, complete phrases. Pauses longer than `640` ms end the turn, so sentences and entities split more often.         |
+| `max_accuracy` | `512` / `2560` ms  | Accuracy matters more than speed. Turns rarely split, but every turn that needs the forced end waits up to `2560` ms.                     |
+
+#### Tuning `maxTurnSilence`
+
+`maxTurnSilence` sets how long the assistant waits whenever a turn doesn't read as complete:
+
+- **Dictated entities end at `maxTurnSilence`.** AssemblyAI holds a turn open when it ends on an entity such as a phone number or email address, even after terminal punctuation, so those turns close only when silence reaches `maxTurnSilence`. Raising it protects entities, but it adds the same amount of wait to every entity turn.
+- **Short, unpunctuated replies end at `maxTurnSilence`.** A bare "yes" or "okay" often comes back without terminal punctuation, so it also waits for the forced end.
+- **Long pauses end the turn early.** A caller who pauses longer than `maxTurnSilence` mid-thought gets a reply before they finish. If your callers pause to look things up, raise it (e.g., `1500`–`2000` ms).
+
+See [Entity splitting tradeoff](#entity-splitting-tradeoff) for examples.
+
+  **Check what Vapi sent to AssemblyAI.** Open the call in the Vapi dashboard and find the `AssemblyAI Universal WebSocket request` entry in its logs. The request URL lists the exact `speech_model`, `mode`, `min_turn_silence`, and `max_turn_silence` for the call.
+
+### Other turn detection options
+
+Setting `startSpeakingPlan.smartEndpointingPlan` hands turn-taking to Vapi. AssemblyAI keeps transcribing with the `mode` preset you set, but its end-of-turn signal no longer ends the turn, and `minEndOfTurnSilenceWhenConfident`, `maxTurnSilence`, and `vadAssistedEndpointingEnabled` are ignored. Use one of these options when you want Vapi to own turn-taking, for example to keep one endpointing configuration across several transcribers. See Vapi's [speech configuration](https://docs.vapi.ai/customization/speech-configuration) guide for details.
+
+#### Vapi smart endpointing
+
+Vapi's endpointing models evaluate the transcript to decide when the caller is done. Vapi recommends `"livekit"` for English and `"vapi"` for other languages:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "mode": "balanced"
+  },
+  "startSpeakingPlan": {
+    "smartEndpointingPlan": {
+      "provider": "livekit",
+      "waitFunction": "20 + 500 * sqrt(x) + 2500 * x^3"
+    }
+  }
+}
+```
+
+With `"livekit"`, `waitFunction` maps the model's probability that the caller is still speaking (`x`, from `0` to `1`) to how many milliseconds to wait before replying. The value above is Vapi's default. Lower coefficients reply sooner; higher ones wait longer when the model is unsure. When you evaluate either provider, include short answers such as "yes" in your tests.
+
+#### Custom endpointing model
+
+To decide the timeout yourself, set the provider to `"custom-endpointing-model"` and point it at your server:
+
+```json
+{
+  "startSpeakingPlan": {
+    "smartEndpointingPlan": {
+      "provider": "custom-endpointing-model",
+      "server": {
+        "url": "https://example.com/vapi/endpointing"
+      }
+    }
+  }
+}
+```
+
+Vapi sends your server a `call.endpointing.request` message with the conversation so far each time a new transcript arrives, and your server responds with how long to wait:
+
+```json
+{
+  "timeoutSeconds": 0.5
+}
+```
+
+If `server` is omitted, Vapi sends the request to `assistant.server`, then `org.server`.
+
+#### Custom endpointing rules
+
+`startSpeakingPlan.customEndpointingRules` set a fixed timeout when a regex matches the caller's speech, the assistant's last message, or both. Vapi evaluates rules in order, and a matching rule takes precedence over the `smartEndpointingPlan`. For example, to wait longer after the assistant asks for a phone number:
+
+```json
+{
+  "startSpeakingPlan": {
+    "smartEndpointingPlan": { "provider": "livekit" },
+    "customEndpointingRules": [
+      {
+        "type": "assistant",
+        "regex": "phone number|account number",
+        "regexOptions": [{ "type": "ignore-case", "enabled": true }],
+        "timeoutSeconds": 3
+      }
+    ]
+  }
+}
+```
+
+`type` is `"assistant"` (match the assistant's last message), `"customer"` (match the caller's current transcript), or `"both"`. `timeoutSeconds` ranges from `0` to `15`.
+
+### Entity splitting tradeoff
+
+Lower silence values produce faster turns but can split entities or utterances across turns. The two thresholds affect this differently.
+
+#### `minEndOfTurnSilenceWhenConfident` too low
+
+The end-of-turn check fires during short pauses in a dictated entity:
+
+```text
+# With (minEndOfTurnSilenceWhenConfident=100, maxTurnSilence=1000)
+"It's John."                    → FINAL (100ms pause, check fires, period found → turn ends)
+"Smith."                        → FINAL
+"At gmail.com."                 → FINAL
+
+# With (minEndOfTurnSilenceWhenConfident=400, maxTurnSilence=1000)
+"It's john.smith@gmail.com."    → FINAL (single turn, properly formatted)
+```
+
+#### `maxTurnSilence` too low
+
+The forced end cuts the caller off mid-thought:
+
+```text
+# With (minEndOfTurnSilenceWhenConfident=100, maxTurnSilence=1000)
+"I wanted to check on my order from..."  → FINAL (1000ms silence, forced end)
+"last Tuesday, order number 4829."       → FINAL (new turn)
+
+# With (minEndOfTurnSilenceWhenConfident=100, maxTurnSilence=2000)
+"I wanted to check on my order from last Tuesday, order number 4829."  → FINAL (single turn)
+```
+
+  **Universal-3.6 Pro's** formatting is significantly better when it has the
+  full entity in a single turn — email addresses, phone numbers, credit card
+  numbers, and physical addresses all benefit. If your assistant collects
+  alphanumeric input, raise `maxTurnSilence` (e.g., to `2000`–`3000` ms) for that
+  assistant, or split entity collection into a dedicated assistant with a longer
+  window.
+
+## Latency
+
+A voice agent feels responsive when the gap between the caller finishing and the assistant replying is short. On Vapi, that gap is AssemblyAI's end-of-turn timing plus Vapi's own start-speaking settings.
+
+Start with the **`mode` preset** — the highest-level dial for the accuracy/latency trade-off:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "mode": "balanced"
+  }
+}
+```
+
+Use `"min_latency"` for the fastest turns or `"max_accuracy"` for the best transcripts. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
+
+From there, fine-tune the individual levers:
+
+- **End-of-turn timing.** `minEndOfTurnSilenceWhenConfident` (check) and `maxTurnSilence` (forced end) directly control how soon AssemblyAI ends a turn. Lower is faster but risks splitting entities — see [Entity splitting tradeoff](#entity-splitting-tradeoff).
+- **VAD-assisted endpointing.** Set `vadAssistedEndpointingEnabled: false`. With Vapi's default (`true`), Vapi waits for its own VAD to agree before acting on AssemblyAI's end-of-turn, which adds time to every turn.
+- **Vapi's wait before speaking.** `startSpeakingPlan.waitSeconds` (default `0.4` s) is how long the assistant waits before speaking. With AssemblyAI's end-of-turn detection, it has less effect on response time than the levers above.
+- **Skip audio preprocessing.** Noise suppression applied before audio reaches the model usually hurts accuracy more than the original noise. If you enable Vapi's `backgroundSpeechDenoisingPlan`, compare transcripts with and without it.
+
+### Latency breakdown
+
+| Stage                                    | Typical                                 | Controlled by                       |
+| ---------------------------------------- | --------------------------------------- | ----------------------------------- |
+| Speech-to-text                           | ~200–300 ms                             | model                               |
+| End of turn (turn reads as complete)     | `minEndOfTurnSilenceWhenConfident`      | `minEndOfTurnSilenceWhenConfident`  |
+| End of turn (forced)                     | up to `maxTurnSilence`                  | `maxTurnSilence`                    |
+| VAD hold                                 | when enabled (Vapi's default)           | `vadAssistedEndpointingEnabled`     |
+| LLM and TTS                              | depends on providers                    | `model`, `voice`                    |
+
+## Accuracy
+
+**Universal-3.6 Pro** is accurate out of the box. When you need more — domain vocabulary, proper nouns, known languages — reach for these levers. For entity-heavy dictation, also tune turn detection (see [Entity splitting tradeoff](#entity-splitting-tradeoff)).
+
+### Prompting
+
+**Universal-3.6 Pro** supports a `prompt` field for [contextual prompting](/streaming/prompting-and-keyterms) — a description of what the audio is about. Transcription behavior (verbatim output, punctuation, turn detection) is built in and optimized automatically; the prompt carries context, not instructions.
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "prompt": "Customer support call about an internet service outage."
+  }
+}
+```
+
+**Tips:**
+
+- **Start with no prompt.** Universal-3.6 Pro delivers strong accuracy without one — add context only if domain vocabulary is being misrecognized.
+- **Describe the conversation.** Domain, scenario, or full details — start broad, and add only details your application actually knows (see the [three context levels](/streaming/prompting-and-keyterms#contextual-prompting)).
+
+### Key terms
+
+Use `keytermsPrompt` to boost recognition of specific names, brands, or domain terms — up to 100 terms, each up to 50 characters:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "keytermsPrompt": ["Xiomara", "Saoirse", "Acme Fiber", "PCI compliance"]
+  }
+}
+```
+
+`keytermsPrompt` and `prompt` can be used together, with `prompt` describing the conversation and `keytermsPrompt` listing the terms.
+
+### Language selection
+
+By default, **Universal-3.6 Pro** auto-detects and code-switches across all 32 supported languages. If you know which languages callers will speak, `languageCodes` steers transcription toward them for better accuracy on short or ambiguous turns:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "languageCodes": ["en", "es"]
+  }
+}
+```
+
+See [Multilingual transcription](/streaming/multilingual-transcription) for the full language list.
+
+### Conversation context
+
+Give the model both sides of the dialog so it transcribes the next caller turn more accurately. **Universal-3.6 Pro** keeps a short, per-session memory of the conversation:
+
+- **The agent half** — what the assistant just said, sent as `agentContext`.
+- **The caller half** — prior finalized caller turns, carried forward automatically.
+
+With the assistant's question in context, the model can anticipate the answer, sharpen entity recognition, and disambiguate similar-sounding words. For example, after the assistant asks `"What's your email address?"`, the model can produce `"user@assemblyai.com"` instead of `"user at assemblyai dot com"`. This has the biggest impact on short replies (`"yes"`, `"7pm"`, single names) and spelled-out entities. See [Conversation context](/streaming/universal-3-5-pro/context-carryover) for the full reference.
+
+On Vapi, turn on `agentContextAutoUpdateEnabled` and seed the first turn with `agentContext`:
+
+```json
+{
+  "firstMessage": "Hi, thanks for calling Acme. What is the email on your account?",
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "agentContext": "Hi, thanks for calling Acme. What is the email on your account?",
+    "agentContextAutoUpdateEnabled": true
+  }
+}
+```
+
+| Field                           | Type    | Description                                                                                                                                                                     |
+| ------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `agentContext`                  | string  | Seeds context for the caller's first reply. Set it to your `firstMessage`. Up to 1750 characters.                                                                               |
+| `agentContextAutoUpdateEnabled` | boolean | Sends the text the assistant just spoke as `agent_context` after every assistant turn, replacing the previous value. Replies over 1750 characters keep their last 1750. Default `false`. |
+
+  `agentContextAutoUpdateEnabled` is **off by default** on Vapi, unlike the
+  LiveKit and Pipecat integrations, where the agent's replies are forwarded
+  automatically. When the caller interrupts a reply and Vapi detects the
+  interruption by voice activity (the default, `stopSpeakingPlan.numWords: 0`),
+  that interrupted reply isn't sent.
+
+### Per-call configuration
+
+To tailor the transcriber to a single call, pass it in `assistantOverrides` on `POST /call`. This is useful when you know details before the call starts — the caller's name, account number, or language:
+
+```bash
+curl -X POST https://api.vapi.ai/call \
+  -H "Authorization: Bearer $VAPI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "assistantId": "'"$ASSISTANT_ID"'",
+    "phoneNumberId": "'"$PHONE_NUMBER_ID"'",
+    "customer": { "number": "+15555550123" },
+    "assistantOverrides": {
+      "transcriber": {
+        "provider": "assembly-ai",
+        "prompt": "Billing call with Saoirse Nakamura about account 48291.",
+        "keytermsPrompt": ["Saoirse", "Nakamura"]
+      }
+    }
+  }'
+```
+
+Overrides merge with the assistant's saved transcriber: pass `provider` and the fields that change, and the rest of the configuration (model, mode, silence thresholds) carries over. This is the opposite of `PATCH`, which replaces the whole object.
+
+## Interruption handling
+
+Barge-in — the caller interrupting while the assistant is speaking — is handled by Vapi's `stopSpeakingPlan`:
+
+```json
+{
+  "stopSpeakingPlan": {
+    "numWords": 0,
+    "voiceSeconds": 0.2,
+    "backoffSeconds": 1
+  }
+}
+```
+
+| Field                    | Default           | What it does                                                                                                                         |
+| ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `numWords`               | `0`               | Words the caller must say before the assistant stops. `0` interrupts on voice activity instead (see `voiceSeconds`).                |
+| `voiceSeconds`           | `0.2`             | Seconds of detected voice that interrupt the assistant. Only used when `numWords` is `0`.                                           |
+| `backoffSeconds`         | `1`               | Seconds to wait before the assistant speaks again after an interruption.                                                            |
+| `acknowledgementPhrases` | "okay", "yeah", … | Backchannels that never interrupt, even when `numWords` is met.                                                                      |
+| `interruptionPhrases`    | "stop", "wait", … | Phrases that always interrupt immediately, regardless of `numWords`.                                                                  |
+
+**Choosing a strategy:**
+
+- **Voice activity (`numWords: 0`, the default).** The fastest barge-in, driven by Vapi's VAD. Background noise and short backchannels ("mhm", "yeah") can stop the assistant. Raise `voiceSeconds` (up to `0.5`) if that happens too often.
+- **Word count (`numWords: 1`–`3`).** The assistant stops only once AssemblyAI has transcribed that many words, and Vapi's `acknowledgementPhrases` filter out backchannels. This resists false interruptions but depends on how quickly partial transcripts arrive. The `min_latency` mode emits first partials sooner than `balanced` and `max_accuracy`, so pair it with word-count interruption if barge-in feels slow — explicit `minEndOfTurnSilenceWhenConfident` and `maxTurnSilence` values still override the preset's turn timing.
+
+Edit `acknowledgementPhrases` for your domain. In a booking flow, a bare "yes" is often a real confirmation, not a backchannel.
+
+## Fallback transcribers
+
+If AssemblyAI is unavailable or rejects the session, Vapi can switch to another transcriber for the rest of the call. List fallbacks in `transcriber.fallbackPlan.transcribers`, in order:
+
+```json
+{
+  "transcriber": {
+    "provider": "assembly-ai",
+    "speechModel": "universal-3-6-pro",
+    "minEndOfTurnSilenceWhenConfident": 128,
+    "maxTurnSilence": 1280,
+    "fallbackPlan": {
+      "transcribers": [
+        {
+          "provider": "assembly-ai",
+          "speechModel": "universal-3-5-pro",
+          "minEndOfTurnSilenceWhenConfident": 128,
+          "maxTurnSilence": 1280
+        }
+      ]
+    }
+  }
+}
+```
+
+Fallback entries take the same fields as the primary transcriber, except `fallbackPlan`. When you create an assistant without a `fallbackPlan`, Vapi adds `"autoFallback": {"enabled": true}`, which lets it choose a fallback transcriber on its own; set an explicit `fallbackPlan` if you want to control which transcriber takes over. See Vapi's [transcriber fallback](https://docs.vapi.ai/customization/transcriber-fallback-plan) guide.
+
+## Speech models
+
+| `speechModel`                      | Languages                                                   | Notes                                                                                      |
+| ---------------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `universal-3-6-pro`                | 32, with automatic detection and code-switching              | **Recommended.** Supports `mode`, `prompt`, `agentContext`, and `languageCodes`.           |
+| `universal-3-5-pro`                | 18, with automatic detection and code-switching              | Supports `mode`, `prompt`, `agentContext`, and `languageCodes`.                            |
+| `universal-streaming-english`      | English                                                     | Vapi's default. Uses the [legacy parameters](#legacy-parameters) for turn detection.       |
+| `universal-streaming-multilingual` | English, Spanish, French, German, Italian, and Portuguese   | Uses the [legacy parameters](#legacy-parameters) for turn detection.                       |
+
+  **Universal-3.6 Pro is recommended** for all new Vapi assistants. The
+  Universal-Streaming models are maintained for backward compatibility but lack
+  prompting, conversation context, language steering, and the `mode` preset.
+
+## Billing
+
+- **Vapi-managed access (default).** Vapi bills AssemblyAI transcription on your Vapi account. You don't need an AssemblyAI account.
+- **Your own AssemblyAI key.** Once you [connect your key](#quickstart), AssemblyAI bills transcription on your AssemblyAI account and Vapi doesn't charge for it. See [AssemblyAI pricing](https://www.assemblyai.com/pricing).
+
+Telephony, LLM, and TTS usage are billed separately either way.
+
+## Troubleshooting
+
+| Issue                                      | Cause                                                              | Solution                                                                                                    |
+| ------------------------------------------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Assistant still uses the old model         | `speechModel` not set, so Vapi's default applies                   | Set `speechModel: "universal-3-6-pro"` explicitly                                                           |
+| Callers cut off mid-sentence               | `maxTurnSilence` too low for the caller's pauses                   | Raise `maxTurnSilence` (e.g. `1280`–`2000`)                                                                 |
+| Entities split across turns                | `maxTurnSilence` or `minEndOfTurnSilenceWhenConfident` too low     | Raise `maxTurnSilence` to `2000`–`3000` ms; raise `minEndOfTurnSilenceWhenConfident` to `200`–`500` ms       |
+| Silence settings have no effect            | A `smartEndpointingPlan` is set and overrides AssemblyAI           | Remove `startSpeakingPlan.smartEndpointingPlan`                                                             |
+| Replies feel slow after the caller finishes | Vapi waits for its own VAD before acting on AssemblyAI's end-of-turn | Set `vadAssistedEndpointingEnabled: false`                                                              |
+| Conversation context has no effect         | `agentContextAutoUpdateEnabled` is off, or a Universal-Streaming model | Set `agentContextAutoUpdateEnabled: true` on `universal-3-6-pro`                                         |
+| Backchannels stop the assistant            | Voice-activity interruption (`numWords: 0`)                        | Raise `voiceSeconds`, or set `numWords` to `1`–`3` and tune `acknowledgementPhrases`                         |
+| Mis-heard names, brands, or jargon         | No vocabulary hints                                                | Add `keytermsPrompt`, or describe the call in `prompt`                                                      |
+| `endOfTurnConfidenceThreshold` changes nothing | Legacy field                                                   | Expected on Universal-3.6 Pro — tune the two silence fields instead                                         |
+
+## Migrating from another transcriber
+
+To balance accuracy, latency, turn-taking, and interruption handling, map your current Vapi configuration to AssemblyAI using the tables below.
+
+### How is the assistant detecting end-of-turn today?
+
+| Today                                                   | Recommended with AssemblyAI                                                                                              |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| The transcriber's own end-of-turn model (e.g. Deepgram Flux) | Leave `smartEndpointingPlan` unset. AssemblyAI's end-of-turn replaces it: `minEndOfTurnSilenceWhenConfident: 128`, `maxTurnSilence: 1280`. |
+| Vapi smart endpointing (`"livekit"` or `"vapi"`)        | Try removing `smartEndpointingPlan` to use AssemblyAI's end-of-turn, and compare. Keep it if you want Vapi to own turn-taking. |
+| `transcriptionEndpointingPlan` timings                  | Not used with AssemblyAI. Move the intent to `minEndOfTurnSilenceWhenConfident` and `maxTurnSilence`.                      |
+
+### Which settings are you migrating from?
+
+| What you set today                          | AssemblyAI equivalent                                                                                   |
+| ------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| Another transcriber `provider` and model    | `provider: "assembly-ai"`, `speechModel: "universal-3-6-pro"`                                           |
+| Overall accuracy/latency tuning             | `mode: "min_latency"` / `"balanced"` / `"max_accuracy"` — a one-line starting point before fine-tuning  |
+| Keywords or keyterms                        | `keytermsPrompt: [...]`; broader domain context → `prompt`                                              |
+| A fixed `language`                          | `languageCodes: ["<code>"]` to pin one language, or omit for automatic code-switching                   |
+| Universal-Streaming `endOfTurnConfidenceThreshold` presets | Drop `endOfTurnConfidenceThreshold`; keep the silence values or use `mode`                  |
+| Background noise suppression                | Compare transcripts with and without `backgroundSpeechDenoisingPlan`                                    |
+
+Migrating a production deployment? [Talk to our team](https://www.assemblyai.com/contact/sales).
+
+## Resources
+
+- [Vapi AssemblyAI transcriber docs](https://docs.vapi.ai/providers/transcriber/assembly-ai)
+- [Vapi Create assistant API reference](https://docs.vapi.ai/api-reference/assistants/create)
+- [Vapi speech configuration](https://docs.vapi.ai/customization/speech-configuration)
+- [Vapi voice pipeline configuration](https://docs.vapi.ai/customization/voice-pipeline-configuration)
+- [AssemblyAI turn detection](/streaming/turn-detection)
+- [AssemblyAI prompting and key terms](/streaming/prompting-and-keyterms)
 
 ---
 
@@ -76169,7 +76981,7 @@ Core REST endpoints:
 
 Streaming:
 - `wss://streaming.assemblyai.com/v3/ws?sample_rate=16000&speech_model=universal-3-5-pro`
-- `GET https://streaming.assemblyai.com/v3/token?expires_in_seconds=60` — mint a single-use temp token for browser/mobile clients. Optional `max_session_duration_seconds` (60–10800, defaults to 3 h) caps the downstream session length.
+- `GET https://streaming.assemblyai.com/v3/token?expires_in_seconds=60` — mint a temp token for browser/mobile clients. The token is reusable until `expires_in_seconds` elapses, so mint a fresh one per session. Optional `max_session_duration_seconds` (60–10800, defaults to 3 h) caps the downstream session length. At the cap, the session ends after the current turn or up to 60 s later, and that extra time is billed.
 
 ---
 
@@ -76336,7 +77148,7 @@ curl -s "https://streaming.assemblyai.com/v3/token?expires_in_seconds=60" \
   -H "Authorization: $ASSEMBLYAI_API_KEY"
 # { "token": "..." }
 ```
-`expires_in_seconds` must be 1–600. Tokens are single-use per session.
+`expires_in_seconds` must be 1–600. A token can start multiple sessions until it expires, so mint a fresh one per session and keep the expiry short.
 
 ### Server messages (JSON)
 
@@ -77540,9 +78352,8 @@ The expiration time must be a value between 60 and 360000 seconds.
 
 The client should retrieve the token from the server and use the token to authenticate the transcriber.
 
-  Each token has a one-time use restriction and can only be used for a single
-  session. Any usage associated with a temporary token will be attributed to the
-  API key that generated it.
+  A token stays valid until it expires. Any usage associated with a temporary
+  token will be attributed to the API key that generated it.
 
   
 To use it, specify the `token` parameter as a query parameter in the WebSocket URL.
@@ -86522,7 +87333,7 @@ paths:
         - name: expires_in_seconds
           in: query
           description: |
-            Token redemption window, in seconds. The token must be used to open a WebSocket connection within this window. If the window has elapsed when the WebSocket is opened, the server rejects the session on the first frame. This does NOT cap the duration of the resulting streaming session — once the WebSocket is open the session runs for up to `max_session_duration_seconds`.
+            Token redemption window, in seconds. The token must be used to open a WebSocket connection within this window. If the window has elapsed when the WebSocket is opened, the server rejects the session on the first frame. This does NOT cap the duration of the resulting streaming session — once the WebSocket is open the session runs for up to `max_session_duration_seconds`. The token is not single-use: until this window elapses, the same token can open multiple sessions, including concurrent sessions.
           required: true
           schema:
             type: integer
@@ -86532,7 +87343,7 @@ paths:
         - name: max_session_duration_seconds
           in: query
           description: |
-            Maximum duration of the streaming session started with this token, in seconds. If you need to finalize work before the session ends, run a client-side timer using the value you passed here.
+            Maximum duration of the streaming session started with this token, in seconds. When the limit is reached, the session closes after the current turn ends, or up to 60 seconds later, and this extra time is billed. If you need to finalize work before the session ends, run a client-side timer using the value you passed here.
           required: false
           schema:
             type: integer

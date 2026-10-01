@@ -58,6 +58,24 @@ Show all contacts.
   }
   ```
 
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _contacts = resend
+      .contacts
+      .list(
+          ListOptions::default(),
+      )
+      .await?;
+
+    Ok(())
+  }
+  ```
+
   ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
   import com.resend.Resend;
   import com.resend.core.exception.ResendException;

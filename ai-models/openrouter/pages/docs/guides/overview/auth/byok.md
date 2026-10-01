@@ -244,6 +244,8 @@ To count BYOK spend toward a guardrail's budget, enable **Include BYOK spend** o
 
 This toggle is available on all guardrail budgets, including the workspace default guardrail. It has no effect on a guardrail without a budget limit.
 
+For guidance on combining workspace budgets with guardrail budgets, including how to structure tiered per-member limits and avoid common pitfalls, see the [Spend Controls best practices guide](/docs/guides/best-practices/spend-controls).
+
 ### BYOK and Workspace Budgets
 
 [Workspace budgets](/docs/guides/features/workspaces/workspace-budgets) behave the same way and are controlled separately from guardrails. By default BYOK spend does **not** count toward them; enable **Include BYOK spend** in the workspace's Budgets settings, or set `include_byok_in_budgets` to `true` on the workspace budget endpoint.

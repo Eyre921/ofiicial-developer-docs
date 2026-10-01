@@ -240,7 +240,7 @@ To display order information to your customer, add a new route and return compon
 
 ### Add a return page
 
-To display order information to your customer, add a file under `pages/` for the URL you provided as the Checkout Session `return_url`. Stripe redirects your customer to this page after they check out.
+To display order information to your customer, add the return page at `app/return/page.jsx`, as shown in the example, for the URL you provided as the Checkout Session `return_url`. Stripe redirects your customer to this page after they check out.
 
 ### Retrieve a Checkout session
 

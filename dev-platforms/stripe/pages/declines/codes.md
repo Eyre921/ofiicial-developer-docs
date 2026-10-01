@@ -75,8 +75,6 @@ These are the Stripe decline codes that are used for card payments:
 
 The following Stripe decline codes can be used for local payment method (LPM) payments:
 
-Starting with API version `2026-09-30.endive`, BLIK payments can return `code_invalid`, `code_expired`, `insufficient_funds`, `customer_declined`, `payment_limit_exceeded`, and `partner_generic_decline`. Older API versions return `generic_decline` for those BLIK failures.
-
 | Decline code | Charge outcome reason | Seller message | API error message |
 | --- | --- | --- | --- |
 | `partner_generic_decline` | `partner_generic_decline` | The payment provider has declined the payment. | The payment provider has declined the payment. |

@@ -344,32 +344,16 @@ Seed Audio 1.0 takes no provider options; every field it reads is derived from t
 
 #### Azure (MAI-Voice)
 
-Azure serves `microsoft/mai-voice-2`. Azure TTS uses SSML internally, but this is fully abstracted, so you only need the standard parameters. The `voice` parameter takes a full Azure voice ID with the model suffix (e.g., `en-US-Harper:MAI-Voice-2`), and the voice's locale sets the synthesis language. Set `response_format` to `mp3` or `pcm` (24 kHz mono), and `speed` is supported (range: 0.5–2.0). The full list of voices is in the `supported_voices` field of the [models API](https://openrouter.ai/api/v1/models?output_modalities=speech).
-
-For expressive synthesis, pass `style` and optionally `styledegree` via provider options. Available styles depend on the voice; a style the voice doesn't support is rejected with a 400.
+Azure serves `microsoft/mai-voice-2`, `microsoft/mai-voice-2.1`, and `microsoft/mai-voice-2.1-flash`. Azure TTS uses SSML internally, but this is fully abstracted, so you only need the standard parameters. The `voice` parameter takes a full Azure voice ID with the model suffix (`:MAI-Voice-2`, `:MAI-Voice-2.1`, or `:MAI-Voice-2.1-Flash`, e.g., `en-US-Harper:MAI-Voice-2.1`), and the voice's locale sets the synthesis language. Set `response_format` to `mp3` or `pcm` (24 kHz mono). The full list of voices for each model is in the `supported_voices` field of the [models API](https://openrouter.ai/api/v1/models?output_modalities=speech).
 
 ```json lines theme={null}
 {
-  "model": "microsoft/mai-voice-2",
+  "model": "microsoft/mai-voice-2.1",
   "input": "Welcome to the event!",
-  "voice": "en-US-Harper:MAI-Voice-2",
-  "response_format": "mp3",
-  "speed": 1.0,
-  "provider": {
-    "options": {
-      "azure": {
-        "style": "excited",
-        "styledegree": 1.2
-      }
-    }
-  }
+  "voice": "en-US-Harper:MAI-Voice-2.1",
+  "response_format": "mp3"
 }
 ```
-
-| Option | Type | Description |
-| - | - | - |
-| `style` | string | Expressive speaking style (e.g., `excited`, `happy`). Available styles depend on the voice. |
-| `styledegree` | number | Intensity of the style effect. Default is `1.0`; higher values increase expressiveness. |
 
 #### Google (Gemini TTS)
 

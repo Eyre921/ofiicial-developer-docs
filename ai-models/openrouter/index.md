@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 502 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 504 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -370,6 +370,7 @@
 - `docs/guides/best-practices/latency-and-performance` — [Latency and Performance](pages/docs/guides/best-practices/latency-and-performance.md) · [原文](https://openrouter.ai/docs/guides/best-practices/latency-and-performance.md)
 - `docs/guides/best-practices/prompt-caching` — [Prompt Caching](pages/docs/guides/best-practices/prompt-caching.md) · [原文](https://openrouter.ai/docs/guides/best-practices/prompt-caching.md)
 - `docs/guides/best-practices/reasoning-tokens` — [Reasoning Tokens](pages/docs/guides/best-practices/reasoning-tokens.md) · [原文](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md)
+- `docs/guides/best-practices/spend-controls` — [Spend Controls](pages/docs/guides/best-practices/spend-controls.md) · [原文](https://openrouter.ai/docs/guides/best-practices/spend-controls.md)
 - `docs/guides/best-practices/uptime-optimization` — [Uptime Optimization](pages/docs/guides/best-practices/uptime-optimization.md) · [原文](https://openrouter.ai/docs/guides/best-practices/uptime-optimization.md)
 - `docs/guides/community/anthropic-agent-sdk` — [Anthropic Agent SDK](pages/docs/guides/community/anthropic-agent-sdk.md) · [原文](https://openrouter.ai/docs/guides/community/anthropic-agent-sdk.md)
 - `docs/guides/community/arize` — [Arize AX](pages/docs/guides/community/arize.md) · [原文](https://openrouter.ai/docs/guides/community/arize.md)
@@ -468,6 +469,7 @@
 - `docs/guides/overview/auth/byok` — [BYOK](pages/docs/guides/overview/auth/byok.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/byok.md)
 - `docs/guides/overview/auth/management-api-keys` — [Management API Keys](pages/docs/guides/overview/auth/management-api-keys.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/management-api-keys.md)
 - `docs/guides/overview/auth/oauth` — [OAuth PKCE](pages/docs/guides/overview/auth/oauth.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/oauth.md)
+- `docs/guides/overview/auth/security-settings` — [Security settings](pages/docs/guides/overview/auth/security-settings.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/security-settings.md)
 - `docs/guides/overview/auth/workload-identity-federation` — [Workload Identity Federation](pages/docs/guides/overview/auth/workload-identity-federation.md) · [原文](https://openrouter.ai/docs/guides/overview/auth/workload-identity-federation.md)
 - `docs/guides/overview/mcp-server` — [MCP](pages/docs/guides/overview/mcp-server.md) · [原文](https://openrouter.ai/docs/guides/overview/mcp-server.md)
 - `docs/guides/overview/models` — [Models](pages/docs/guides/overview/models.md) · [原文](https://openrouter.ai/docs/guides/overview/models.md)
