@@ -10,7 +10,7 @@ path: docs/help-center/technical/how-do-i-find-the-voice-id-of-my-voices-via-the
 
 The easiest way to obtain the voice ID of individual voices is to find it in [My Voices](https://elevenlabs.io/app/voice-lab), click **More actions** (three dots) then **Copy voice ID**. This copies the voice ID to your clipboard.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2d308c33fd263135e42520e54ab7e7f2837c72d03b278079fc0dda3d2cf937ef/assets/images/help-center/technical/how-do-i-find-the-voice-id-of-my-voices-via-the-website-and-api.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261001%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261001T233717Z&X-Amz-Expires=604800&X-Amz-Signature=70578c0fc312ecf76f6c83a0251e79e3fec4286d678b426c054d77ce8d564d08&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2d308c33fd263135e42520e54ab7e7f2837c72d03b278079fc0dda3d2cf937ef/assets/images/help-center/technical/how-do-i-find-the-voice-id-of-my-voices-via-the-website-and-api.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T112732Z&X-Amz-Expires=604800&X-Amz-Signature=c755064fe27da6be7c40b941dec0705621bb421481c2d0b21711c29fb8a5bd03&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can also use the [List Voices API endpoint](/docs/api-reference/voices/search) to return a list of all available voices for a user.
 

@@ -135,15 +135,17 @@ When using a [Pinecone SDK](/reference/pinecone-sdks), initialize a client objec
   curl -s "https://api.pinecone.io/indexes" \
       -H "Api-Key: YOUR_API_KEY" \
       -H "Content-Type: application/json" \
-      -H "X-Pinecone-Api-Version: 2025-10" \
+      -H "X-Pinecone-Api-Version: 2026-07" \
       -d '{
           "name":  "docs-example",
-          "dimension": 1536,
-          "metric": "cosine",
-          "spec": {
-              "serverless": {
-                 "cloud":"aws",
-                 "region": "us-east-1"
+          "deployment": {
+              "deployment_type": "managed",
+              "cloud": "aws",
+              "region": "us-east-1"
+          },
+          "schema": {
+              "fields": {
+                  "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
               }
           }
       }'
@@ -158,15 +160,17 @@ All HTTP requests to Pinecone APIs must contain an `Api-Key` header that specifi
 curl https://api.pinecone.io/indexes \
    -H "Content-Type: application/json" \
    -H "Api-Key: $PINECONE_API_KEY" \
-  -H "X-Pinecone-Api-Version: 2025-10" \
+  -H "X-Pinecone-Api-Version: 2026-07" \
    -d '{
          "name":  "docs-example",
-         "dimension": 1536,
-         "metric": "cosine",
-         "spec": {
-            "serverless": {
-               "cloud":"aws",
-               "region": "us-east-1"
+         "deployment": {
+            "deployment_type": "managed",
+            "cloud": "aws",
+            "region": "us-east-1"
+         },
+         "schema": {
+            "fields": {
+               "_values": { "type": "dense_vector", "dimension": 1536, "metric": "cosine" }
             }
          }
       }'

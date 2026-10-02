@@ -42,13 +42,13 @@ npx trigger.dev@latest skills --target claude-code --target cursor -y
 
 ## Available skills
 
-| Skill                           | Use for                                          | Covers                                                                                                    |
-| ------------------------------- | ------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| `trigger-authoring-tasks`       | Writing background and scheduled tasks           | `task`/`schemaTask`, retries, queues, waits, idempotency, metadata, triggering, cron, `trigger.config.ts` |
-| `trigger-realtime-and-frontend` | Live run updates and triggering from the browser | `runs.subscribeToRun`, `@trigger.dev/react-hooks`, public access tokens, streams                          |
-| `trigger-authoring-chat-agent`  | Building durable AI chat agents                  | `chat.agent` run loop, `toStreamTextOptions`, server actions, `useChat` transport, tools, lifecycle hooks |
-| `trigger-chat-agent-advanced`   | Advanced chat.agent patterns                     | sessions, human-in-the-loop, sub-agents, compaction, fast starts, resilience, version upgrades            |
-| `trigger-cost-savings`          | Auditing and reducing compute spend              | right-sizing machines, `maxDuration`, batch vs sequential, debounce, schedule frequency, MCP run analysis |
+| Skill | Use for | Covers |
+| - | - | - |
+| `trigger-authoring-tasks` | Writing background and scheduled tasks | `task`/`schemaTask`, retries, queues, waits, idempotency, metadata, triggering, cron, `trigger.config.ts` |
+| `trigger-realtime-and-frontend` | Live run updates and triggering from the browser | `runs.subscribeToRun`, `@trigger.dev/react-hooks`, public access tokens, streams |
+| `trigger-authoring-chat-agent` | Building durable AI chat agents | `chat.agent` run loop, `toStreamTextOptions`, server actions, `useChat` transport, tools, lifecycle hooks |
+| `trigger-chat-agent-advanced` | Advanced chat.agent patterns | sessions, human-in-the-loop, sub-agents, compaction, fast starts, resilience, version upgrades |
+| `trigger-cost-savings` | Auditing and reducing compute spend | right-sizing machines, `maxDuration`, batch vs sequential, debounce, schedule frequency, MCP run analysis |
 
 Not sure which to install? Pick `trigger-authoring-tasks`; it covers the most common patterns for writing Trigger.dev tasks.
 
@@ -56,12 +56,12 @@ Not sure which to install? Pick `trigger-authoring-tasks`; it covers the most co
 
 Skills use the open [Agent Skills standard](https://agentskills.io). The CLI installs natively into the tools that support a skills directory today:
 
-| Assistant                                                       | Installs to       |
-| --------------------------------------------------------------- | ----------------- |
-| [Claude Code](https://docs.anthropic.com/en/docs/claude-code)   | `.claude/skills/` |
-| [Cursor](https://cursor.com)                                    | `.cursor/skills/` |
+| Assistant | Installs to |
+| - | - |
+| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `.claude/skills/` |
+| [Cursor](https://cursor.com) | `.cursor/skills/` |
 | [GitHub Copilot (VS Code)](https://github.com/features/copilot) | `.github/skills/` |
-| [Codex CLI](https://github.com/openai/codex), Jules, OpenCode   | `.agents/skills/` |
+| [Codex CLI](https://github.com/openai/codex), Jules, OpenCode | `.agents/skills/` |
 
 Using a tool that does not support skills yet? Select "Unsupported target" in the installer for manual setup instructions.
 

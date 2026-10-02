@@ -22,6 +22,7 @@ The mappings between API versions and Go SDK versions are as follows:
 
 | API version | SDK version |
 | :- | :- |
+| `2026-07` | v7.x |
 | `2026-04` | v6.x |
 | `2025-10` | v5.x |
 | `2025-04` | v4.x |
@@ -37,13 +38,13 @@ When a new stable API version is released, you should upgrade your SDK to the la
 To install the latest version of the [Go SDK](https://github.com/pinecone-io/go-pinecone), add a dependency to the current module:
 
 ```shell theme={null}
-go get github.com/pinecone-io/go-pinecone/v6/pinecone
+go get github.com/pinecone-io/go-pinecone/v7/pinecone
 ```
 
 To install a specific version of the Go SDK, run the following command:
 
 ```shell theme={null}
-go get github.com/pinecone-io/go-pinecone/v6/pinecone@<version>
+go get github.com/pinecone-io/go-pinecone/v7/pinecone@<version>
 ```
 
 To check your SDK version, run the following command:
@@ -55,25 +56,33 @@ go list -u -m all | grep go-pinecone
 ## Upgrade
 
 <Warning>
-  Before upgrading to `v3.0.0` or later, update all relevant code to account for the breaking changes explained [here](/release-notes/2025#2025-02-07-4).
+  Before upgrading to `v7.0.0`, update all relevant code to account for the following breaking changes. See the [v7 migration guide](https://github.com/pinecone-io/go-pinecone/blob/main/guides/migration/v7.md) for before-and-after examples.
+
+  * Pod-based index creation is removed. `CreatePodIndex` and `CreatePodIndexRequest` no longer exist, but existing pod-based indexes keep working.
+  * Enum constants are prefixed with their type name. For example, `Aws` is now `CloudAWS`, and `Cosine` is now `IndexMetricCosine`.
+  * `ListImports` takes a `*ListImportsRequest`, and `QueryByVectorIdRequest.SparseValues` is removed.
+  * `SourceCollection` and `Schema` on the legacy create requests now return an error. `ConfigureIndexParams.Embed` is replaced by `ConfigureIndexParams.Schema`.
+  * `Backup` field types changed, and some invalid requests now fail client-side.
+
+  If you are upgrading from `v2` or earlier, also account for the `v3.0.0` breaking changes explained [here](/release-notes/2025#2025-02-07-4).
 </Warning>
 
-Each major version carries its version number in the module path, so crossing a major requires updating the import path in every file that uses the SDK. For example, moving from `v4` to `v6` means changing:
+Each major version carries its version number in the module path, so crossing a major requires updating the import path in every file that uses the SDK. For example, moving from `v6` to `v7` means changing:
 
 ```go theme={null}
 // before
-import "github.com/pinecone-io/go-pinecone/v4/pinecone"
+import "github.com/pinecone-io/go-pinecone/v6/pinecone"
 
 // after
-import "github.com/pinecone-io/go-pinecone/v6/pinecone"
+import "github.com/pinecone-io/go-pinecone/v7/pinecone"
 ```
 
-Apart from the module path, `v5.0.0` and `v6.0.0` are backward compatible with the release lines before them.
+Apart from the module path, `v5.0.0` and `v6.0.0` are backward compatible with the release lines before them. `v7.0.0` targets API version `2026-07` and includes the breaking changes listed above. To stay on API version `2026-04`, keep using `v6`.
 
 If you already have the Go SDK, upgrade to the latest version as follows:
 
 ```shell theme={null}
-go get -u github.com/pinecone-io/go-pinecone/v6/pinecone@latest
+go get -u github.com/pinecone-io/go-pinecone/v7/pinecone@latest
 ```
 
 ## Initialize
@@ -87,7 +96,7 @@ import (
     "context"
     "log"
 
-    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
 )
 
 func main() {
@@ -112,7 +121,7 @@ import (
     "log"
     "os"
 
-    "github.com/pinecone-io/go-pinecone/v6/pinecone"
+    "github.com/pinecone-io/go-pinecone/v7/pinecone"
 )
 
 func main() {

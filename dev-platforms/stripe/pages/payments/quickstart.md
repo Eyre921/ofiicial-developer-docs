@@ -1068,7 +1068,7 @@ require github.com/stripe/stripe-go/v86 v86.4.0
 
       return map;
     }, gson::toJson);
-    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <script src="https://js.stripe.com/endive/stripe.js"></script>
     <form id="payment-form">
       <div id="contact-details-element">
         <!--Stripe.js injects the Contact Details Element-->
@@ -1156,7 +1156,7 @@ async function handleSubmit(e) {
 
   setLoading(false);
 }
-    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <script src="https://js.stripe.com/endive/stripe.js"></script>
     <script src="complete.js" defer></script>
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);

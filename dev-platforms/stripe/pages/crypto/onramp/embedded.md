@@ -33,7 +33,7 @@ Don’t include the scripts in a bundle or host a copy yourself because your int
 ```html
 <head>
   <title>Onramp</title>
-  <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+  <script src="https://js.stripe.com/endive/stripe.js"></script>
   <script src="https://crypto-js.stripe.com/crypto-onramp-outer.js"></script>
 </head>
 ```
@@ -55,7 +55,7 @@ Alternatively, you can install the [Stripe Crypto ES module](https://www.npmjs.c
    ```html
    <head>
      <title>Onramp</title>
-     <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+     <script src="https://js.stripe.com/endive/stripe.js"></script>
      <script src="https://crypto-js.stripe.com/crypto-onramp-outer.js"></script>
    </head>
    ```
@@ -364,7 +364,7 @@ Import both the StripeJS and the OnrampJS bundles:
     <title>Crypto Onramp</title>
     <meta name="description" content="A demo of the hosted onramp" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <script src="https://js.stripe.com/endive/stripe.js"></script>
     <script src="https://crypto-js.stripe.com/crypto-onramp-outer.js"></script>
     <script src="onramp.js" defer></script>
   </head>

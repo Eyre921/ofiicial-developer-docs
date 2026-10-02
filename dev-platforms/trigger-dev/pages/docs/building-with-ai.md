@@ -36,13 +36,13 @@ We provide multiple tools to help AI coding assistants write correct Trigger.dev
 
 Skills and the MCP server do different jobs and work best together. Here's how they compare:
 
-|                   | **Skills**                                                                 | **MCP Server**                                      |
-| :---------------- | :------------------------------------------------------------------------- | :-------------------------------------------------- |
-| **What it does**  | Drops skill files into your project that teach Trigger.dev patterns        | Runs a live server your AI connects to              |
-| **Installs to**   | `.claude/skills/`, `.cursor/skills/`, `.github/skills/`, `.agents/skills/` | `mcp.json`, `~/.claude.json`, etc.                  |
-| **Updates**       | Re-run `npx trigger.dev@latest skills`, or auto-prompted on `trigger dev`  | Always latest (uses `@latest`)                      |
-| **Best for**      | Teaching patterns and best practices                                       | Live project interaction (deploy, trigger, monitor) |
-| **Works offline** | Yes                                                                        | No (calls Trigger.dev API)                          |
+| | **Skills** | **MCP Server** |
+| :- | :- | :- |
+| **What it does** | Drops skill files into your project that teach Trigger.dev patterns | Runs a live server your AI connects to |
+| **Installs to** | `.claude/skills/`, `.cursor/skills/`, `.github/skills/`, `.agents/skills/` | `mcp.json`, `~/.claude.json`, etc. |
+| **Updates** | Re-run `npx trigger.dev@latest skills`, or auto-prompted on `trigger dev` | Always latest (uses `@latest`) |
+| **Best for** | Teaching patterns and best practices | Live project interaction (deploy, trigger, monitor) |
+| **Works offline** | Yes | No (calls Trigger.dev API) |
 
 **Our recommendation:** Install both. Skills teach your AI *how* to write Trigger.dev code; the MCP Server lets it *do things* in your project.
 
@@ -50,13 +50,13 @@ Skills and the MCP server do different jobs and work best together. Here's how t
 
 If you prefer a lightweight/passive approach, paste the snippet below into a context file at the root of your project. Different AI tools read different files:
 
-| File                              | Read by                       |
-| :-------------------------------- | :---------------------------- |
-| `CLAUDE.md`                       | Claude Code                   |
-| `AGENTS.md`                       | OpenAI Codex, Jules, OpenCode |
-| `.cursor/rules/*.md`              | Cursor                        |
-| `.github/copilot-instructions.md` | GitHub Copilot                |
-| `CONVENTIONS.md`                  | Windsurf, Cline, and others   |
+| File | Read by |
+| :- | :- |
+| `CLAUDE.md` | Claude Code |
+| `AGENTS.md` | OpenAI Codex, Jules, OpenCode |
+| `.cursor/rules/*.md` | Cursor |
+| `.github/copilot-instructions.md` | GitHub Copilot |
+| `CONVENTIONS.md` | Windsurf, Cline, and others |
 
 Create the file that matches your AI tool (or multiple files if your team uses different tools) and paste the snippet below. This gives the AI essential Trigger.dev context without installing anything.
 

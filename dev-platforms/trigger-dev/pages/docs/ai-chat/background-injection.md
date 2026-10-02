@@ -224,14 +224,14 @@ Use it for the conversation write, a message insert, or anything else the fronte
 
 A registered promise that rejects, or that runs longer than the internal timeout, lets the answer through rather than stalling the conversation. It is a best-effort ordering guarantee, not a lock.
 
-|                                         | `chat.defer()`                      | `chat.deferBeforeOutput()`                              |
-| --------------------------------------- | ----------------------------------- | ------------------------------------------------------- |
-| **Awaited by the hook**                 | No                                  | No                                                      |
-| **Costs time to first token**           | No                                  | No                                                      |
-| **Answer waits for it**                 | No                                  | Yes                                                     |
-| **Settled by**                          | Before `onTurnComplete`             | Before the first chunk reaches the session              |
-| **Read back by tools in the same turn** | No                                  | No                                                      |
-| **Use for**                             | Analytics, audit logs, index writes | Conversation and message writes the frontend reads back |
+| | `chat.defer()` | `chat.deferBeforeOutput()` |
+| - | - | - |
+| **Awaited by the hook** | No | No |
+| **Costs time to first token** | No | No |
+| **Answer waits for it** | No | Yes |
+| **Settled by** | Before `onTurnComplete` | Before the first chunk reaches the session |
+| **Read back by tools in the same turn** | No | No |
+| **Use for** | Analytics, audit logs, index writes | Conversation and message writes the frontend reads back |
 
 <Note>
   If your agent persists through a [transcript storage](/docs/ai-chat/transcript-storage), the runtime already does this for the incoming message on your behalf. `chat.deferBeforeOutput` is for writes your app owns on top of that.
@@ -239,13 +239,13 @@ A registered promise that rejects, or that runs longer than the internal timeout
 
 ## How it differs from pending messages
 
-|                         | `chat.inject()`                                                                | [Pending messages](/docs/ai-chat/pending-messages) |
-| ----------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------- |
-| **Source**              | Backend task code                                                              | Frontend user input                                |
-| **Triggered by**        | Your code (e.g. `onTurnComplete` + `chat.defer()`)                             | User sending a message during streaming            |
-| **Injection point**     | Start of next turn, or next `prepareStep` boundary                             | Next `prepareStep` boundary only                   |
-| **Message role**        | Any. `system` becomes an instruction, others join the conversation (see below) | Typically `user`                                   |
-| **Frontend visibility** | Not visible unless you write custom `data-*` chunks                            | Visible via `usePendingMessages` hook              |
+| | `chat.inject()` | [Pending messages](/docs/ai-chat/pending-messages) |
+| - | - | - |
+| **Source** | Backend task code | Frontend user input |
+| **Triggered by** | Your code (e.g. `onTurnComplete` + `chat.defer()`) | User sending a message during streaming |
+| **Injection point** | Start of next turn, or next `prepareStep` boundary | Next `prepareStep` boundary only |
+| **Message role** | Any. `system` becomes an instruction, others join the conversation (see below) | Typically `user` |
+| **Frontend visibility** | Not visible unless you write custom `data-*` chunks | Visible via `usePendingMessages` hook |
 
 ## Two lanes: trusted and untrusted
 
@@ -309,8 +309,8 @@ Lifetime: a conversational message (`role: "user"` or `"assistant"`) becomes par
 
 **Parameters:**
 
-| Parameter  | Type             | Description                                      |
-| ---------- | ---------------- | ------------------------------------------------ |
+| Parameter | Type | Description |
+| - | - | - |
 | `messages` | `ModelMessage[]` | Model messages to inject (from the `ai` package) |
 
 Messages are drained (consumed) when:

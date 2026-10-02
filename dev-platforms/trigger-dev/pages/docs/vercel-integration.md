@@ -8,7 +8,7 @@ Automatically deploy your tasks whenever you deploy to Vercel.
 
 ## How it works
 
-The Vercel integration connects your Vercel project to your Trigger.dev project so that every Vercel deployment automatically triggers a Trigger.dev deployment. It also syncs environment variables from Vercel into Trigger.dev, and sets up [version skew protection](/docs/deployment/version-skew-protection) so your app and tasks stay in sync.
+The Vercel integration connects your Vercel project to your Trigger.dev project so that every Vercel deployment automatically triggers a Trigger.dev deployment. It also syncs environment variables from Vercel into Trigger.dev, and sets up [version skew protection](/docs/deployment/atomic-deployment) so your app and tasks stay in sync.
 
 This eliminates the need to manually run the `trigger.dev deploy` command or maintain custom CI/CD workflows for Vercel-based projects.
 
@@ -120,7 +120,7 @@ If you use [Supabase Branching](https://supabase.com/docs/guides/deployment/bran
 
 ## Version skew protection
 
-Your Vercel app and your tasks are deployed separately, so there is always a window where a new app can trigger tasks built from older code. [Version skew protection](/docs/deployment/version-skew-protection) closes that window: each Trigger.dev deployment is tagged with your commit SHA, your app sends the same SHA when it triggers, and every run is pinned to the deployment built from the same commit. Runs triggered before the task build finishes wait for it rather than running on the previous version.
+Your Vercel app and your tasks are deployed separately, so there is always a window where a new app can trigger tasks built from older code. [Version skew protection](/docs/deployment/atomic-deployment) closes that window: each Trigger.dev deployment is tagged with your commit SHA, your app sends the same SHA when it triggers, and every run is pinned to the deployment built from the same commit. Runs triggered before the task build finishes wait for it rather than running on the previous version.
 
 The integration sets this up for you:
 
@@ -144,7 +144,7 @@ To opt out, set `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION` to `0` on your Verce
 
 <Warning>
   **Automatic atomic deployments are deprecated.** Use [version skew
-  protection](/docs/deployment/version-skew-protection) instead — it needs no second Vercel deployment,
+  protection](/docs/deployment/atomic-deployment) instead — it needs no second Vercel deployment,
   never gates your app's deploy, doesn't touch `Auto-assign Custom Production Domains`, and covers
   staging and preview as well as production.
 
@@ -192,18 +192,18 @@ Atomic deployments are off by default for new connections. Projects that already
   that setting in Vercel or promote deployments yourself.
 </Note>
 
-Previously, setting up atomic deployments with Vercel required custom GitHub Actions workflows. The Vercel integration automates this entirely. For more details on how atomic deployments work, see [Atomic deploys](/docs/deployment/atomic-deployment). For how to move off them, see [replacing automatic atomic deployments](/docs/deployment/version-skew-protection#replacing-automatic-atomic-deployments).
+Previously, setting up atomic deployments with Vercel required custom GitHub Actions workflows. The Vercel integration automates this entirely. For how to move off them, see [legacy atomic deployments](/docs/deployment/atomic-deployment#legacy-atomic-deployments).
 
 ## Environment mapping
 
 The integration maps Vercel environments to Trigger.dev environments:
 
-| Vercel environment | Trigger.dev environment        |
-| ------------------ | ------------------------------ |
-| Production         | Production                     |
+| Vercel environment | Trigger.dev environment |
+| - | - |
+| Production | Production |
 | Custom environment | Staging (you choose which one) |
-| Preview            | Preview                        |
-| Development        | Development                    |
+| Preview | Preview |
+| Development | Development |
 
 If your Vercel project has a custom environment, you can select which one maps to your Trigger.dev staging environment during setup or in your project settings.
 
@@ -216,7 +216,7 @@ If your Vercel project has a custom environment, you can select which one maps t
 
 You can configure the following settings per-environment from your project's Vercel settings:
 
-* **Atomic deployments** (deprecated): Controls whether Trigger.dev gates and redeploys your Vercel deployment to keep it in sync. Off by default for new connections — use [version skew protection](/docs/deployment/version-skew-protection) instead.
+* **Atomic deployments** (deprecated): Controls whether Trigger.dev gates and redeploys your Vercel deployment to keep it in sync. Off by default for new connections — use [version skew protection](/docs/deployment/atomic-deployment) instead.
 * **Pull env vars before build**: When enabled, Trigger.dev pulls the latest environment variables from Vercel before each build. Enabled for production, staging, and preview by default.
 * **Discover new env vars**: When enabled, new environment variables found in Vercel that don't yet exist in Trigger.dev are created automatically during builds. Only available for environments that also have env var pulling enabled. Enabled for production, staging, and preview by default.
 
@@ -233,8 +233,7 @@ Disconnecting stops automatic deployments, environment variable syncing, and dep
 
 ## Related
 
-* [Version skew protection](/docs/deployment/version-skew-protection)
+* [Atomic deployments (version skew protection)](/docs/deployment/atomic-deployment)
 * [GitHub integration](/docs/github-integration)
-* [Atomic deploys](/docs/deployment/atomic-deployment) (deprecated for Vercel)
 * [Environment variables](/docs/deploy-environment-variables)
 * [Preview branches](/docs/deployment/preview-branches)

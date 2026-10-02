@@ -18,12 +18,12 @@ This is the gap this page closes. After each turn, mirror what the provider comp
 
 They are not competing; they compose. Native compaction is the per-turn optimization, and Trigger.dev compaction is the durable, portable checkpoint.
 
-|                                   | Native (provider)                                         | Trigger.dev `compaction`                           |
-| --------------------------------- | --------------------------------------------------------- | -------------------------------------------------- |
-| Runs                              | Inside one provider request                               | Between steps / turns, in your run                 |
-| Scope                             | Provider-specific (Anthropic edits, OpenAI stored thread) | Provider-agnostic                                  |
-| Portable across a provider switch | No, the handle is a cache miss on the other provider      | Yes, `summarize` returns a plain string            |
-| Persisted by default              | No, you mirror it in `onTurnComplete`                     | Yes, replaces model messages and keeps UI messages |
+| | Native (provider) | Trigger.dev `compaction` |
+| - | - | - |
+| Runs | Inside one provider request | Between steps / turns, in your run |
+| Scope | Provider-specific (Anthropic edits, OpenAI stored thread) | Provider-agnostic |
+| Portable across a provider switch | No, the handle is a cache miss on the other provider | Yes, `summarize` returns a plain string |
+| Persisted by default | No, you mirror it in `onTurnComplete` | Yes, replaces model messages and keeps UI messages |
 
 ## Persist Anthropic native context editing
 

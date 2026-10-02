@@ -57,7 +57,7 @@ To disable advanced fraud detection risk factors with [Stripe.js](https://docs.s
 #### HTML
 
 ```html
-<script src="https://js.stripe.com/dahlia/stripe.js?advancedFraudSignals=false"></script>
+<script src="https://js.stripe.com/endive/stripe.js?advancedFraudSignals=false"></script>
 ```
 
 ### iOS SDK

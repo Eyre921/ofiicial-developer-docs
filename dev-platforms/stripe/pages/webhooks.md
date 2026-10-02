@@ -432,7 +432,7 @@ If your event destination receives [Organization](https://docs.stripe.com/get-st
 - Organization destinations receiving `checkout_sessions.completed` can’t [handle redirect behavior](https://docs.stripe.com/checkout/fulfillment.md#redirect-hosted-checkout) when you embed [Checkout](https://docs.stripe.com/payments/checkout.md) directly in your website or redirect customers to a Stripe-hosted payment page. To influence Checkout redirect behavior, process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization.
 - Organization destinations responding unsuccessfully to an `invoice.created` event can’t influence [automatic invoice finalization when using automatic collection](https://docs.stripe.com/billing/subscriptions/webhooks.md#understand). You must process this event type with a [webhook endpoint](https://docs.stripe.com/webhooks.md#example-endpoint) configured in a Stripe account within the organization to trigger automatic invoice finalization.
 
-#### Using `context` 
+#### Using context 
 
 #### Snapshot events
 
@@ -770,7 +770,7 @@ Split the header using the `,` character as the separator to get a list of eleme
 
 The value for the prefix `t` corresponds to the timestamp, and `v1` corresponds to the signature (or signatures). You can discard all other elements.
 
-#### Step 2: Prepare the `signed_payload` string 
+#### Step 2: Prepare the signed_payload string 
 
 The `signed_payload` string is created by concatenating:
 

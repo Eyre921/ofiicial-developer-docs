@@ -98,8 +98,8 @@ Dashboards are powered by Query so have [the same limits](/docs/observability/qu
 
 There is a separate concurrency limits for metric widgets.
 
-| Limit                     | Details        |
-| :------------------------ | :------------- |
+| Limit | Details |
+| :- | :- |
 | Concurrent widget queries | 30 per project |
 
 See [Limits](/docs/limits) for details.

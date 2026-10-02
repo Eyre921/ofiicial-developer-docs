@@ -34,11 +34,11 @@ Once archived you can still view the dashboard for the branch but you can't trig
 
 This limit exists because each branch has an independent concurrency limit. For the Cloud product these are the limits:
 
-| Plan  | Active preview branches |
-| ----- | ----------------------- |
-| Free  | 0                       |
-| Hobby | 5                       |
-| Pro   | 20 (then paid for more) |
+| Plan | Active preview branches |
+| - | - |
+| Free | 0 |
+| Hobby | 5 |
+| Pro | 20 (then paid for more) |
 
 For full details see our [pricing page](https://trigger.dev/pricing).
 
@@ -126,12 +126,12 @@ jobs:
       - name: Deploy preview branch
         run: npx trigger.dev@latest deploy --env preview
         env:
-          TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_ACCESS_TOKEN }}
+          TRIGGER_ACCESS_TOKEN: ${{ secrets.TRIGGER_PREVIEW_ACCESS_TOKEN }}
 ```
 
 For this workflow to work, you need to set the following secrets in your GitHub repository:
 
-* `TRIGGER_ACCESS_TOKEN`: A Trigger.dev personal access token (they start with `tr_pat_`). [Learn how to create one and set it in GitHub](/docs/github-actions#creating-a-personal-access-token).
+* `TRIGGER_PREVIEW_ACCESS_TOKEN`: A Trigger.dev API key for the Preview environment with **Deploy only** access. [Create a deployment API key and add it to GitHub](/docs/github-actions#create-a-deployment-api-key).
 
 Notice that the deploy command has `--env preview` at the end. We automatically detect the preview branch from the GitHub actions env var.
 

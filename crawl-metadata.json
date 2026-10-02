@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15007 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -13,7 +13,7 @@
     "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
-    "pages": 210,
+    "pages": 220,
     "status": "ok"
   },
   "ai-models/groq": {
@@ -26,7 +26,7 @@
     "status": "error: curl failed (22) for https://docs.together.ai/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/fireworks": {
-    "pages": 387,
+    "pages": 386,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -50,15 +50,14 @@
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://www.assemblyai.com/docs/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 3528601 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
   },
   "voice-multimodal/vapi": {
     "pages": 0,
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 573,
+    "pages": 1142,
     "status": "ok"
   },
   "vector-db/qdrant": {
@@ -101,7 +100,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -143,7 +142,7 @@
     "status": "ok"
   },
   "dev-platforms/trigger-dev": {
-    "pages": 327,
+    "pages": 332,
     "status": "ok"
   },
   "dev-platforms/sentry": {
@@ -151,7 +150,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 252,
+    "pages": 500,
     "status": "ok"
   },
   "dev-platforms/twilio": {
@@ -186,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 101,
+    "pages": 94,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -202,8 +201,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1353,
+    "pages": 1354,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-01T23:30:32Z"
+  "_last_crawl": "2026-10-02T11:30:40Z"
 }

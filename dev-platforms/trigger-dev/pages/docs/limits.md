@@ -15,11 +15,15 @@ You can view your current limits, quotas, and rate limit usage in real-time by v
 
 ## Concurrency limits
 
-| Pricing tier | Limit                |
-| :----------- | :------------------- |
-| Free         | 10 concurrent runs   |
-| Hobby        | 25 concurrent runs   |
-| Pro          | 100+ concurrent runs |
+Concurrency is allocated **per environment**, not as a single figure for the whole organization. Each plan sets a separate default for production, staging, preview and development:
+
+| Pricing tier | Production | Staging | Preview | Development |
+| :- | :- | :- | :- | :- |
+| Free | 20 | 10 | 10 | 25 |
+| Hobby | 50 | 25 | 25 | 25 |
+| Pro | 200+ | 100 | 100 | 25 |
+
+These are plan defaults. The limit actually enforced for one of your environments can be higher: purchased add-on concurrency and any manual increase we have applied are both included in it. The **Concurrency** page in the dashboard (left sidebar) is authoritative for your organization — if it disagrees with the table above, the dashboard is correct.
 
 Extra concurrency above the Pro tier limit is available via the dashboard. Click the "Concurrency" page from the left sidebar when on the Pro plan to purchase more.
 
@@ -27,9 +31,9 @@ Extra concurrency above the Pro tier limit is available via the dashboard. Click
 
 Generally speaking each SDK call is an API call.
 
-| Limit | Details                   |
-| :---- | :------------------------ |
-| API   | 1,500 requests per minute |
+| Limit | Details |
+| :- | :- |
+| API | 1,500 requests per minute |
 
 You can request a higher rate limit from us if you're on a paid plan.
 
@@ -44,22 +48,28 @@ The maximum number of runs that can be queued **per queue** (not across all queu
 </Note>
 
 | Pricing tier | Development (per queue) | Staging / Production (per queue) |
-| :----------- | :---------------------- | :------------------------------- |
-| Free         | 500                     | 10,000                           |
-| Hobby        | 500                     | 250,000                          |
-| Pro          | 5,000                   | 1,000,000                        |
+| :- | :- | :- |
+| Free | 500 | 10,000 |
+| Hobby | 500 | 250,000 |
+| Pro | 5,000 | 1,000,000 |
 
 ## Maximum run TTL
 
-On Trigger.dev Cloud, all runs have an enforced maximum TTL of 14 days. Runs without an explicit TTL automatically receive the 14-day TTL; runs with a TTL longer than 14 days are clamped to 14 days. This prevents queued runs from accumulating indefinitely. If you self-host, you can configure a maximum TTL via the `RUN_ENGINE_DEFAULT_MAX_TTL` environment variable — see [Self-hosting environment variables](/docs/self-hosting/env/webapp#run-engine).
+On Trigger.dev Cloud, all runs have an enforced maximum TTL of 14 days. Runs without an explicit TTL automatically receive the 14-day TTL; runs with a TTL longer than 14 days are clamped to 14 days. This prevents queued runs from accumulating indefinitely.
+
+**The TTL cap does not limit how far ahead you can schedule a run.** TTL governs how long a run may sit *queued* waiting for a concurrency slot. A run triggered with [`delay`](/docs/triggering#delay) is not queued while it is delayed, and no TTL expiry is armed for it — the TTL clock only starts once the delay elapses and the run is enqueued. So scheduling a run a month out with `delay` works fine, and the 14 days then applies to how long it may wait for a slot after that month is up.
+
+There is no maximum on `delay`.
+
+If you self-host, you can configure a maximum TTL via the `RUN_ENGINE_DEFAULT_MAX_TTL` environment variable — see [Self-hosting environment variables](/docs/self-hosting/env/webapp#run-engine).
 
 ## Schedules
 
-| Pricing tier | Limit              |
-| :----------- | :----------------- |
-| Free         | 10 per project     |
-| Hobby        | 100 per project    |
-| Pro          | 1,000+ per project |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 10 per project |
+| Hobby | 100 per project |
+| Pro | 1,000+ per project |
 
 Additional bundles above the Pro tier are available for \$10/month per 1,000 schedules. Contact us via [email](https://trigger.dev/contact) or [Discord](https://trigger.dev/discord) to request more.
 
@@ -71,39 +81,39 @@ If you're creating schedules for your user you will definitely need to request m
 
 ## Projects
 
-| Pricing tier | Limit               |
-| :----------- | :------------------ |
-| All tiers    | 10 per organization |
+| Pricing tier | Limit |
+| :- | :- |
+| All tiers | 10 per organization |
 
 Each project receives its own concurrency allocation. If you need to support multiple tenants with the same codebase but different environment variables, see the [Multi-tenant applications](/docs/deploy-environment-variables#multi-tenant-applications) section for a recommended workaround.
 
 ## Preview branches
 
-| Pricing tier | Limit                |
-| :----------- | :------------------- |
-| Free         | Not available        |
-| Hobby        | 5 preview branches   |
-| Pro          | 20+ preview branches |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | Not available |
+| Hobby | 5 preview branches |
+| Pro | 20+ preview branches |
 
 Additional bundles above the Pro tier are available for \$10/month per preview branch. Contact us via [email](https://trigger.dev/contact) or [Discord](https://trigger.dev/discord) to request more.
 
 ## Realtime connections
 
-| Pricing tier | Limit                       |
-| :----------- | :-------------------------- |
-| Free         | 10 concurrent connections   |
-| Hobby        | 50 concurrent connections   |
-| Pro          | 500+ concurrent connections |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 10 concurrent connections |
+| Hobby | 50 concurrent connections |
+| Pro | 500+ concurrent connections |
 
 Additional bundles are available for \$10/month per 100 concurrent connections. Contact us via [email](https://trigger.dev/contact) or [Discord](https://trigger.dev/discord) to request more.
 
 ## Task payloads and outputs
 
-| Limit                  | Details                                                            |
-| :--------------------- | :----------------------------------------------------------------- |
-| Single trigger payload | Must not exceed 3MB                                                |
-| Batch trigger payload  | Each item can be up to 3MB (SDK 4.3.1+). Prior: 1MB total combined |
-| Task outputs           | Must not exceed 10MB                                               |
+| Limit | Details |
+| :- | :- |
+| Single trigger payload | Must not exceed 3MB |
+| Batch trigger payload | Each item can be up to 3MB (SDK 4.3.1+). Prior: 1MB total combined |
+| Task outputs | Must not exceed 10MB |
 
 Large payloads and outputs are offloaded to object storage automatically. You don't need to do anything to handle this in your tasks, as we upload and download the data transparently during operation.
 
@@ -121,11 +131,11 @@ A single batch can have a maximum of 1,000 items with SDK 4.3.1+. Prior versions
 
 Batch triggering uses a token bucket algorithm to rate limit the number of runs you can trigger per environment. Each run in a batch consumes one token.
 
-| Pricing tier | Bucket size | Refill rate           |
-| :----------- | :---------- | :-------------------- |
-| Free         | 1,200 runs  | 100 runs every 10 sec |
-| Hobby        | 5,000 runs  | 500 runs every 5 sec  |
-| Pro          | 5,000 runs  | 500 runs every 5 sec  |
+| Pricing tier | Bucket size | Refill rate |
+| :- | :- | :- |
+| Free | 1,200 runs | 100 runs every 10 sec |
+| Hobby | 5,000 runs | 500 runs every 5 sec |
+| Pro | 5,000 runs | 500 runs every 5 sec |
 
 **How it works**: You can burst up to your bucket size, then tokens refill at the specified rate. For example, a Free user can trigger 1,200 runs immediately, then must wait for tokens to refill (100 runs become available every 10 seconds).
 
@@ -139,19 +149,19 @@ Batch triggering uses a token bucket algorithm to rate limit the number of runs 
 
 When you send a batch trigger, we convert it into individual runs. This limit controls the maximum number of batches being converted into runs simultaneously per environment. It is not a limit on how many batch runs can be executing at once.
 
-| Pricing tier | Limit                 |
-| :----------- | :-------------------- |
-| Free         | 5 concurrent batches  |
-| Hobby        | 10 concurrent batches |
-| Pro          | 50 concurrent batches |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 5 concurrent batches |
+| Hobby | 10 concurrent batches |
+| Pro | 50 concurrent batches |
 
 ## Log retention
 
-| Pricing tier | Limit   |
-| :----------- | :------ |
-| Free         | 1 day   |
-| Hobby        | 7 days  |
-| Pro          | 30 days |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 1 day |
+| Hobby | 7 days |
+| Pro | 30 days |
 
 ## Log size
 
@@ -194,11 +204,11 @@ We limit the size of logs to prevent oversized data potentially causing issues.
 
 An alert destination is a single email address, Slack channel, or webhook URL that you want to send alerts to.
 
-| Pricing tier | Limit                   |
-| :----------- | :---------------------- |
-| Free         | 1 alert destination     |
-| Hobby        | 3 alert destinations    |
-| Pro          | 100+ alert destinations |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 1 alert destination |
+| Hobby | 3 alert destinations |
+| Pro | 100+ alert destinations |
 
 If you're on the Pro plan and need more than the plan limit, you can request more by contacting us via [email](https://trigger.dev/contact) or [Discord](https://trigger.dev/discord).
 
@@ -206,21 +216,21 @@ If you're on the Pro plan and need more than the plan limit, you can request mor
 
 Query execution is subject to the following limits:
 
-| Limit              | Details               |
-| :----------------- | :-------------------- |
-| Max execution time | 10 seconds per query  |
-| Max result rows    | 10,000 rows per query |
-| Concurrent queries | 3 per project         |
+| Limit | Details |
+| :- | :- |
+| Max execution time | 10 seconds per query |
+| Max result rows | 10,000 rows per query |
+| Concurrent queries | 3 per project |
 
 ### Query lookback period
 
 The maximum time range a query can look back is based on your plan:
 
-| Pricing tier | Limit   |
-| :----------- | :------ |
-| Free         | 1 day   |
-| Hobby        | 7 days  |
-| Pro          | 30 days |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 1 day |
+| Hobby | 7 days |
+| Pro | 30 days |
 
 If your query's time range exceeds your plan's lookback limit, it will be automatically clipped to the maximum allowed period.
 
@@ -228,8 +238,8 @@ If your query's time range exceeds your plan's lookback limit, it will be automa
 
 The number of metric widgets that can be queried concurrently per project.
 
-| Limit                     | Details        |
-| :------------------------ | :------------- |
+| Limit | Details |
+| :- | :- |
 | Concurrent widget queries | 30 per project |
 
 ## Machines
@@ -240,10 +250,10 @@ See the [machine configurations](/docs/machines#machine-configurations) for more
 
 ## Team members
 
-| Pricing tier | Limit            |
-| :----------- | :--------------- |
-| Free         | 5 team members   |
-| Hobby        | 5 team members   |
-| Pro          | 25+ team members |
+| Pricing tier | Limit |
+| :- | :- |
+| Free | 5 team members |
+| Hobby | 5 team members |
+| Pro | 25+ team members |
 
 Additional seats are available for \$20/month per seat. Contact us via [email](https://trigger.dev/contact) or [Discord](https://trigger.dev/discord) to request more.

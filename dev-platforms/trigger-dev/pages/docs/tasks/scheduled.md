@@ -264,15 +264,15 @@ You need to attach a schedule to a task before it will run on a schedule. You ca
 
     These are the options when creating a schedule:
 
-    | Name              | Description                                                                                                                            |
-    | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-    | Task              | The id of the task you want to attach to.                                                                                              |
-    | Cron pattern      | The schedule in cron format. You can also describe it in natural language and press "Generate" to fill this in.                        |
-    | Timezone          | The timezone the schedule will run in. Defaults to "UTC"                                                                               |
-    | Window            | An optional [window](#spreading-runs-with-windows) to spread runs after their cron time, e.g. `30m`, `2h`, or `50%`.                   |
-    | External id       | An optional external id, usually you'd use a userId.                                                                                   |
+    | Name | Description |
+    | - | - |
+    | Task | The id of the task you want to attach to. |
+    | Cron pattern | The schedule in cron format. You can also describe it in natural language and press "Generate" to fill this in. |
+    | Timezone | The timezone the schedule will run in. Defaults to "UTC" |
+    | Window | An optional [window](#spreading-runs-with-windows) to spread runs after their cron time, e.g. `30m`, `2h`, or `50%`. |
+    | External id | An optional external id, usually you'd use a userId. |
     | Deduplication key | An optional deduplication key. If you pass the same value, it will update rather than create. Scoped per project, not per environment. |
-    | Environments      | The environments this schedule will run in.                                                                                            |
+    | Environments | The environments this schedule will run in. |
   </Step>
 </Steps>
 

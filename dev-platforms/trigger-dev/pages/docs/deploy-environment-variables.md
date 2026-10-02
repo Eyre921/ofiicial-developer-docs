@@ -44,6 +44,12 @@ When creating an environment variable, you can mark it as a **Secret**. Secret v
 
 You can edit an environment variable's values. You cannot edit the key name, you must delete and create a new one.
 
+<Note>
+  An empty string is a valid value. Saving a variable with an empty value stores it as an empty
+  string (your task sees the variable set to `""`), which is different from deleting the variable
+  (where your task does not see it at all).
+</Note>
+
 <Steps>
   <Step title="Press the action button on a variable">
     <img alt="Environment variables page" />
@@ -92,14 +98,14 @@ You can use our SDK to get and manipulate environment variables. You can also ea
 
 We have a complete set of SDK functions (and REST API) you can use to directly manipulate environment variables.
 
-| Function                                                | Description                                                 |
-| ------------------------------------------------------- | ----------------------------------------------------------- |
-| [envvars.list()](/docs/management/envvars/list)         | List all environment variables                              |
-| [envvars.upload()](/docs/management/envvars/import)     | Upload multiple env vars. You can override existing values. |
-| [envvars.create()](/docs/management/envvars/create)     | Create a new environment variable                           |
-| [envvars.retrieve()](/docs/management/envvars/retrieve) | Retrieve an environment variable                            |
-| [envvars.update()](/docs/management/envvars/update)     | Update a single environment variable                        |
-| [envvars.del()](/docs/management/envvars/delete)        | Delete a single environment variable                        |
+| Function | Description |
+| - | - |
+| [envvars.list()](/docs/management/envvars/list) | List all environment variables |
+| [envvars.upload()](/docs/management/envvars/import) | Upload multiple env vars. You can override existing values. |
+| [envvars.create()](/docs/management/envvars/create) | Create a new environment variable |
+| [envvars.retrieve()](/docs/management/envvars/retrieve) | Retrieve an environment variable |
+| [envvars.update()](/docs/management/envvars/update) | Update a single environment variable |
+| [envvars.del()](/docs/management/envvars/delete) | Delete a single environment variable |
 
 #### Initial load from .env file
 

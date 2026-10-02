@@ -119,19 +119,19 @@ TRIGGER_VERSION=20250228.1
 <Tip>
   If what you actually want is for each release of your app to run against the tasks built from the
   same commit, you don't need to plumb version numbers around by hand. See [version skew
-  protection](/docs/deployment/version-skew-protection).
+  protection](/docs/deployment/atomic-deployment).
 </Tip>
 
 ### Child tasks and auto-version locking
 
 Trigger and wait functions version lock child task runs to the parent task run version. This ensures the results from child runs match what the parent task is expecting. If you don't wait then version locking doesn't apply.
 
-| Trigger function        | Parent task version | Child task version | isLocked |
-| ----------------------- | ------------------- | ------------------ | -------- |
-| `trigger()`             | `20240313.2`        | Current            | No       |
-| `batchTrigger()`        | `20240313.2`        | Current            | No       |
-| `triggerAndWait()`      | `20240313.2`        | `20240313.2`       | Yes      |
-| `batchTriggerAndWait()` | `20240313.2`        | `20240313.2`       | Yes      |
+| Trigger function | Parent task version | Child task version | isLocked |
+| - | - | - | - |
+| `trigger()` | `20240313.2` | Current | No |
+| `batchTrigger()` | `20240313.2` | Current | No |
+| `triggerAndWait()` | `20240313.2` | `20240313.2` | Yes |
+| `batchTriggerAndWait()` | `20240313.2` | `20240313.2` | Yes |
 
 ### Skipping promotion
 
@@ -155,7 +155,7 @@ Or from the dashboard:
 
 <img alt="Trigger.dev dashboard showing the promote button" />
 
-To learn more about skipping promotion and how this enables atomic deployments, see our [Atomic deployment](/docs/deployment/atomic-deployment) guide. To keep your app and tasks in sync without coordinating promotion at all, see [version skew protection](/docs/deployment/version-skew-protection).
+To keep your app and tasks in sync without coordinating promotion at all, see [atomic deployments](/docs/deployment/atomic-deployment).
 
 ## Staging deploys
 

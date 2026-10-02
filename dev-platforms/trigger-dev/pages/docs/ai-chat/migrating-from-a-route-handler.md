@@ -12,17 +12,17 @@ This guide assumes a Next.js App Router app with `useChat` on the client and an 
 
 ## What changes
 
-|           | Before                                                           | After                                                                                 |
-| --------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| **Stays** | `streamText` call, model, `system`, `stopWhen`, provider options | Same call, inside `run()`                                                             |
-| **Stays** | Tool definitions (`inputSchema`, `execute`, `toModelOutput`)     | Same tools, also declared on the agent config                                         |
-| **Stays** | `useChat`, `messages`, `message.parts`, your UI                  | Unchanged                                                                             |
-| **Goes**  | `app/api/chat/route.ts`                                          | Deleted, or kept as a [Head Start](#keep-the-first-turn-fast-with-head-start) handler |
-| **Goes**  | `convertToModelMessages`, `toUIMessageStreamResponse`            | The runtime does both                                                                 |
-| **Goes**  | `resumable-stream` / Redis, the stream-resume `GET` route        | The transport resumes from `lastEventId`                                              |
-| **New**   | —                                                                | A `chat.agent` task in `trigger/chat.ts`                                              |
-| **New**   | —                                                                | Two server actions: mint a token, start a session                                     |
-| **New**   | —                                                                | `useTriggerChatTransport` in place of the `api` URL                                   |
+| | Before | After |
+| - | - | - |
+| **Stays** | `streamText` call, model, `system`, `stopWhen`, provider options | Same call, inside `run()` |
+| **Stays** | Tool definitions (`inputSchema`, `execute`, `toModelOutput`) | Same tools, also declared on the agent config |
+| **Stays** | `useChat`, `messages`, `message.parts`, your UI | Unchanged |
+| **Goes** | `app/api/chat/route.ts` | Deleted, or kept as a [Head Start](#keep-the-first-turn-fast-with-head-start) handler |
+| **Goes** | `convertToModelMessages`, `toUIMessageStreamResponse` | The runtime does both |
+| **Goes** | `resumable-stream` / Redis, the stream-resume `GET` route | The transport resumes from `lastEventId` |
+| **New** | — | A `chat.agent` task in `trigger/chat.ts` |
+| **New** | — | Two server actions: mint a token, start a session |
+| **New** | — | `useTriggerChatTransport` in place of the `api` URL |
 
 <Note>
   One thing gets slower, and it's the thing you'll notice first: the opening response of a brand-new chat. Your route handler answered out of an already-warm process; the agent run has to boot before it reaches the model. [Head Start](#keep-the-first-turn-fast-with-head-start) gives that back — get the migration working first, then add it.

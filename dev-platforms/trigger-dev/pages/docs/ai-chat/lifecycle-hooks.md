@@ -18,12 +18,12 @@ Hook into every stage of a chat agent's run: preload, turn start, turn complete,
 
 **Four scopes to keep straight:**
 
-| Scope                                                                               | Fires when                                                                                                     | Use for                                                                                             |
-| ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
-| **Process** ([`onBoot`](#onboot))                                                   | Every fresh worker boots — initial, preloaded, and reactive continuation (post-cancel/crash/`endRun`/upgrade). | Initialize `chat.local`, open per-process resources, re-hydrate state from your DB on continuation. |
-| **Recovery** ([`onRecoveryBoot`](#onrecoveryboot))                                  | Continuation boot where the dead run was mid-stream — a partial assistant survives on `session.out`.           | Override the smart default — drop the partial, synthesize tool results, emit a recovery banner.     |
-| **Chat** ([`onChatStart`](#onchatstart))                                            | First message of a chat's lifetime. Does NOT fire on continuation runs or OOM retries.                         | One-time DB rows for the chat, resources tied to the chat's lifetime.                               |
-| **Turn** ([`onTurnStart`](#onturnstart), [`onTurnComplete`](#onturncomplete), etc.) | Every turn.                                                                                                    | Persist messages, post-process responses.                                                           |
+| Scope | Fires when | Use for |
+| - | - | - |
+| **Process** ([`onBoot`](#onboot)) | Every fresh worker boots — initial, preloaded, and reactive continuation (post-cancel/crash/`endRun`/upgrade). | Initialize `chat.local`, open per-process resources, re-hydrate state from your DB on continuation. |
+| **Recovery** ([`onRecoveryBoot`](#onrecoveryboot)) | Continuation boot where the dead run was mid-stream — a partial assistant survives on `session.out`. | Override the smart default — drop the partial, synthesize tool results, emit a recovery banner. |
+| **Chat** ([`onChatStart`](#onchatstart)) | First message of a chat's lifetime. Does NOT fire on continuation runs or OOM retries. | One-time DB rows for the chat, resources tied to the chat's lifetime. |
+| **Turn** ([`onTurnStart`](#onturnstart), [`onTurnComplete`](#onturncomplete), etc.) | Every turn. | Persist messages, post-process responses. |
 
 ## Task context (`ctx`)
 
@@ -69,16 +69,16 @@ export const myChat = chat.agent({
 });
 ```
 
-| Field             | Type                        | Description                                                                       |
-| ----------------- | --------------------------- | --------------------------------------------------------------------------------- |
-| `ctx`             | `TaskRunContext`            | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx). |
-| `chatId`          | `string`                    | Chat session ID                                                                   |
-| `runId`           | `string`                    | The Trigger.dev run ID for this run boot                                          |
-| `chatAccessToken` | `string`                    | Scoped access token for this run                                                  |
-| `clientData`      | Typed by `clientDataSchema` | Custom data from the frontend                                                     |
-| `continuation`    | `boolean`                   | `true` when this run is taking over from a prior dead run                         |
-| `previousRunId`   | `string \| undefined`       | Public id of the prior run when `continuation` is true                            |
-| `preloaded`       | `boolean`                   | Whether this run was triggered as a preload                                       |
+| Field | Type | Description |
+| - | - | - |
+| `ctx` | `TaskRunContext` | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx). |
+| `chatId` | `string` | Chat session ID |
+| `runId` | `string` | The Trigger.dev run ID for this run boot |
+| `chatAccessToken` | `string` | Scoped access token for this run |
+| `clientData` | Typed by `clientDataSchema` | Custom data from the frontend |
+| `continuation` | `boolean` | `true` when this run is taking over from a prior dead run |
+| `previousRunId` | `string \| undefined` | Public id of the prior run when `continuation` is true |
+| `preloaded` | `boolean` | Whether this run was triggered as a preload |
 
 <Tip>
   `onBoot` and `onChatStart` are complementary — keep DB-row creation in `onChatStart` (it only needs to happen once per chat) and put process-level setup (`chat.local`, connections, caches) in `onBoot` (it needs to happen on every fresh worker).
@@ -107,18 +107,18 @@ export const myChat = chat.agent({
 });
 ```
 
-| Field              | Type                                                | Description                                                                                       |
-| ------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `ctx`              | `TaskRunContext`                                    | Full task run context                                                                             |
-| `chatId`           | `string`                                            | Chat session ID                                                                                   |
-| `runId`            | `string`                                            | The Trigger.dev run ID for this run boot                                                          |
-| `previousRunId`    | `string`                                            | Public id of the prior run that died                                                              |
-| `cause`            | `"cancelled" \| "crashed" \| "unknown"`             | Best-effort cause. Currently always `"unknown"` — don't branch on it                              |
-| `settledMessages`  | `TUIMessage[]`                                      | The chain persisted by the predecessor's last `onTurnComplete`                                    |
-| `inFlightUsers`    | `TUIMessage[]`                                      | User messages on `session.in` past the cursor — the message(s) the predecessor never acknowledged |
-| `partialAssistant` | `TUIMessage \| undefined`                           | The trailing assistant message whose stream never received `finish`                               |
-| `pendingToolCalls` | `Array<{ toolCallId, toolName, input, partIndex }>` | Tool calls in `input-available` state extracted from `partialAssistant`                           |
-| `writer`           | `ChatWriter`                                        | Lazy session.out writer — write a recovery banner / signal here                                   |
+| Field | Type | Description |
+| - | - | - |
+| `ctx` | `TaskRunContext` | Full task run context |
+| `chatId` | `string` | Chat session ID |
+| `runId` | `string` | The Trigger.dev run ID for this run boot |
+| `previousRunId` | `string` | Public id of the prior run that died |
+| `cause` | `"cancelled" \| "crashed" \| "unknown"` | Best-effort cause. Currently always `"unknown"` — don't branch on it |
+| `settledMessages` | `TUIMessage[]` | The chain persisted by the predecessor's last `onTurnComplete` |
+| `inFlightUsers` | `TUIMessage[]` | User messages on `session.in` past the cursor — the message(s) the predecessor never acknowledged |
+| `partialAssistant` | `TUIMessage \| undefined` | The trailing assistant message whose stream never received `finish` |
+| `pendingToolCalls` | `Array<{ toolCallId, toolName, input, partIndex }>` | Tool calls in `input-available` state extracted from `partialAssistant` |
+| `writer` | `ChatWriter` | Lazy session.out writer — write a recovery banner / signal here |
 
 Returns `{ chain?, recoveredTurns?, beforeBoot? }` — every field optional. Omitted fields fall through to the smart default. See [Recovery boot](/docs/ai-chat/patterns/recovery-boot) for the full guide, examples (drop partial, synthesize tool results, persist before boot), and interaction notes.
 
@@ -164,14 +164,14 @@ export const myChat = chat.agent({
 });
 ```
 
-| Field             | Type                                               | Description                                                                       |
-| ----------------- | -------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `ctx`             | `TaskRunContext`                                   | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx). |
-| `chatId`          | `string`                                           | Chat session ID                                                                   |
-| `runId`           | `string`                                           | The Trigger.dev run ID                                                            |
-| `chatAccessToken` | `string`                                           | Scoped access token for this run                                                  |
-| `clientData`      | Typed by `clientDataSchema`                        | Custom data from the frontend                                                     |
-| `writer`          | [`ChatWriter`](/docs/ai-chat/reference#chatwriter) | Stream writer for custom chunks                                                   |
+| Field | Type | Description |
+| - | - | - |
+| `ctx` | `TaskRunContext` | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx). |
+| `chatId` | `string` | Chat session ID |
+| `runId` | `string` | The Trigger.dev run ID |
+| `chatAccessToken` | `string` | Scoped access token for this run |
+| `clientData` | Typed by `clientDataSchema` | Custom data from the frontend |
+| `writer` | [`ChatWriter`](/docs/ai-chat/reference#chatwriter) | Stream writer for custom chunks |
 
 Every lifecycle callback receives a `writer`, a lazy stream writer that lets you send custom `UIMessageChunk` parts (like `data-*` parts) to the frontend. Non-transient `data-*` chunks written via the `writer` are automatically added to the response message and available in `onTurnComplete`. Add `transient: true` for ephemeral chunks (progress indicators, etc.) that should not persist. See [Custom data parts](/docs/ai-chat/backend#custom-data-parts).
 
@@ -227,12 +227,12 @@ Return the validated messages array. Throw to abort the turn with an error.
 
 This is the right place to call the AI SDK's [`validateUIMessages`](https://ai-sdk.dev/docs/ai-sdk-ui/chatbot-message-persistence#validating-messages-on-the-server) to catch malformed messages from storage or untrusted input before they reach the model, especially useful when persisting conversations to a database where tool schemas may drift between deploys.
 
-| Field      | Type                                                               | Description                        |
-| ---------- | ------------------------------------------------------------------ | ---------------------------------- |
-| `messages` | `UIMessage[]`                                                      | Incoming UI messages for this turn |
-| `chatId`   | `string`                                                           | Chat session ID                    |
-| `turn`     | `number`                                                           | Turn number (0-indexed)            |
-| `trigger`  | `"submit-message" \| "regenerate-message" \| "preload" \| "close"` | The trigger type for this turn     |
+| Field | Type | Description |
+| - | - | - |
+| `messages` | `UIMessage[]` | Incoming UI messages for this turn |
+| `chatId` | `string` | Chat session ID |
+| `turn` | `number` | Turn number (0-indexed) |
+| `trigger` | `"submit-message" \| "regenerate-message" \| "preload" \| "close"` | The trigger type for this turn |
 
 ```ts theme={"theme":"css-variables"}
 import { validateUIMessages } from "ai";
@@ -270,16 +270,16 @@ Load the full message history from your backend on every turn, replacing the bui
 
 Use this when the backend should be the source of truth for message history: abuse prevention, branching conversations (DAGs), or rollback/undo support.
 
-| Field              | Type                                                   | Description                                                                                                                                                                                                                                                                                                                |
-| ------------------ | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chatId`           | `string`                                               | Chat session ID                                                                                                                                                                                                                                                                                                            |
-| `turn`             | `number`                                               | Turn number (0-indexed)                                                                                                                                                                                                                                                                                                    |
-| `trigger`          | `"submit-message" \| "regenerate-message" \| "action"` | The trigger type for this turn                                                                                                                                                                                                                                                                                             |
-| `incomingMessages` | `UIMessage[]`                                          | Validated incoming messages for this turn. Usually 0-or-1 (empty for actions, regenerates, and continuations; one element for normal `submit-message` and tool-approval responses). On a [Head Start](/docs/ai-chat/fast-starts#with-hydratemessages) first turn, this can contain the route handler's first-turn history. |
-| `previousMessages` | `UIMessage[]`                                          | Accumulated UI messages before this turn (`[]` on turn 0)                                                                                                                                                                                                                                                                  |
-| `clientData`       | Typed by `clientDataSchema`                            | Custom data from the frontend                                                                                                                                                                                                                                                                                              |
-| `continuation`     | `boolean`                                              | Whether this run is continuing an existing chat                                                                                                                                                                                                                                                                            |
-| `previousRunId`    | `string \| undefined`                                  | The previous run ID (if continuation)                                                                                                                                                                                                                                                                                      |
+| Field | Type | Description |
+| - | - | - |
+| `chatId` | `string` | Chat session ID |
+| `turn` | `number` | Turn number (0-indexed) |
+| `trigger` | `"submit-message" \| "regenerate-message" \| "action"` | The trigger type for this turn |
+| `incomingMessages` | `UIMessage[]` | Validated incoming messages for this turn. Usually 0-or-1 (empty for actions, regenerates, and continuations; one element for normal `submit-message` and tool-approval responses). On a [Head Start](/docs/ai-chat/fast-starts#with-hydratemessages) first turn, this can contain the route handler's first-turn history. |
+| `previousMessages` | `UIMessage[]` | Accumulated UI messages before this turn (`[]` on turn 0) |
+| `clientData` | Typed by `clientDataSchema` | Custom data from the frontend |
+| `continuation` | `boolean` | Whether this run is continuing an existing chat |
+| `previousRunId` | `string \| undefined` | The previous run ID (if continuation) |
 
 ```ts theme={"theme":"css-variables"}
 import { chat, upsertIncomingMessage } from "@trigger.dev/sdk/ai";
@@ -332,19 +332,19 @@ After the hook returns, the runtime overlays the wire's tool-state advances (`ou
 
 Fires at the start of **every turn** — including the first turn of a continuation run, where `onChatStart` doesn't fire. Runs after message accumulation and (when applicable) `onChatStart`, but **before** `run()` executes. Use it to persist messages before streaming begins so a mid-stream page refresh still shows the user's message.
 
-| Field             | Type                                               | Description                                                                       |
-| ----------------- | -------------------------------------------------- | --------------------------------------------------------------------------------- |
-| `ctx`             | `TaskRunContext`                                   | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx). |
-| `chatId`          | `string`                                           | Chat session ID                                                                   |
-| `messages`        | `ModelMessage[]`                                   | Full accumulated conversation (model format)                                      |
-| `uiMessages`      | `UIMessage[]`                                      | Full accumulated conversation (UI format)                                         |
-| `turn`            | `number`                                           | Turn number (0-indexed)                                                           |
-| `runId`           | `string`                                           | The Trigger.dev run ID                                                            |
-| `chatAccessToken` | `string`                                           | Scoped access token for this run                                                  |
-| `continuation`    | `boolean`                                          | Whether this run is continuing an existing chat                                   |
-| `preloaded`       | `boolean`                                          | Whether this run was preloaded                                                    |
-| `clientData`      | Typed by `clientDataSchema`                        | Custom data from the frontend                                                     |
-| `writer`          | [`ChatWriter`](/docs/ai-chat/reference#chatwriter) | Stream writer for custom chunks                                                   |
+| Field | Type | Description |
+| - | - | - |
+| `ctx` | `TaskRunContext` | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx). |
+| `chatId` | `string` | Chat session ID |
+| `messages` | `ModelMessage[]` | Full accumulated conversation (model format) |
+| `uiMessages` | `UIMessage[]` | Full accumulated conversation (UI format) |
+| `turn` | `number` | Turn number (0-indexed) |
+| `runId` | `string` | The Trigger.dev run ID |
+| `chatAccessToken` | `string` | Scoped access token for this run |
+| `continuation` | `boolean` | Whether this run is continuing an existing chat |
+| `preloaded` | `boolean` | Whether this run was preloaded |
+| `clientData` | Typed by `clientDataSchema` | Custom data from the frontend |
+| `writer` | [`ChatWriter`](/docs/ai-chat/reference#chatwriter) | Stream writer for custom chunks |
 
 ```ts theme={"theme":"css-variables"}
 export const myChat = chat.agent({
@@ -409,21 +409,21 @@ Fires after each turn completes, after the response is captured and the stream i
 
 Same-ID approval and handover continuations include a full replacement assistant response. Persist `messages` for future model context, or upsert `newUIMessages` by message ID for the visible conversation. `newMessages` includes steps summarized during the turn and is not an append-only delta for these continuations.
 
-| Field                | Type                     | Description                                                                                  |
-| -------------------- | ------------------------ | -------------------------------------------------------------------------------------------- |
-| `ctx`                | `TaskRunContext`         | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx).            |
-| `chatId`             | `string`                 | Chat session ID                                                                              |
-| `messages`           | `ModelMessage[]`         | Full accumulated conversation (model format)                                                 |
-| `uiMessages`         | `UIMessage[]`            | Full accumulated conversation (UI format)                                                    |
-| `newMessages`        | `ModelMessage[]`         | This turn's model messages, including full same-ID replacement responses                     |
-| `newUIMessages`      | `UIMessage[]`            | New or updated UI messages; upsert by message ID                                             |
-| `responseMessage`    | `UIMessage \| undefined` | The assistant's response for this turn                                                       |
-| `turn`               | `number`                 | Turn number (0-indexed)                                                                      |
-| `runId`              | `string`                 | The Trigger.dev run ID                                                                       |
-| `chatAccessToken`    | `string`                 | Scoped access token for this run                                                             |
-| `lastEventId`        | `string \| undefined`    | Stream position for resumption. Persist this with the session.                               |
-| `stopped`            | `boolean`                | Whether the user stopped generation during this turn                                         |
-| `continuation`       | `boolean`                | Whether this run is continuing an existing chat                                              |
+| Field | Type | Description |
+| - | - | - |
+| `ctx` | `TaskRunContext` | Full task run context. See [reference](/docs/ai-chat/reference#task-context-ctx). |
+| `chatId` | `string` | Chat session ID |
+| `messages` | `ModelMessage[]` | Full accumulated conversation (model format) |
+| `uiMessages` | `UIMessage[]` | Full accumulated conversation (UI format) |
+| `newMessages` | `ModelMessage[]` | This turn's model messages, including full same-ID replacement responses |
+| `newUIMessages` | `UIMessage[]` | New or updated UI messages; upsert by message ID |
+| `responseMessage` | `UIMessage \| undefined` | The assistant's response for this turn |
+| `turn` | `number` | Turn number (0-indexed) |
+| `runId` | `string` | The Trigger.dev run ID |
+| `chatAccessToken` | `string` | Scoped access token for this run |
+| `lastEventId` | `string \| undefined` | Stream position for resumption. Persist this with the session. |
+| `stopped` | `boolean` | Whether the user stopped generation during this turn |
+| `continuation` | `boolean` | Whether this run is continuing an existing chat |
 | `rawResponseMessage` | `UIMessage \| undefined` | The raw assistant response before abort cleanup (same as `responseMessage` when not stopped) |
 
 ```ts theme={"theme":"css-variables"}
@@ -492,16 +492,16 @@ export const myChat = chat.agent({
 });
 ```
 
-| Field        | Type                        | Description                                          |
-| ------------ | --------------------------- | ---------------------------------------------------- |
-| `phase`      | `"preload" \| "turn"`       | Whether this is a preload or post-turn suspension    |
-| `ctx`        | `TaskRunContext`            | Full task run context                                |
-| `chatId`     | `string`                    | Chat session ID                                      |
-| `runId`      | `string`                    | The Trigger.dev run ID                               |
-| `clientData` | Typed by `clientDataSchema` | Custom data from the frontend                        |
-| `turn`       | `number`                    | Turn number (**`"turn"` phase only**)                |
-| `messages`   | `ModelMessage[]`            | Accumulated model messages (**`"turn"` phase only**) |
-| `uiMessages` | `UIMessage[]`               | Accumulated UI messages (**`"turn"` phase only**)    |
+| Field | Type | Description |
+| - | - | - |
+| `phase` | `"preload" \| "turn"` | Whether this is a preload or post-turn suspension |
+| `ctx` | `TaskRunContext` | Full task run context |
+| `chatId` | `string` | Chat session ID |
+| `runId` | `string` | The Trigger.dev run ID |
+| `clientData` | Typed by `clientDataSchema` | Custom data from the frontend |
+| `turn` | `number` | Turn number (**`"turn"` phase only**) |
+| `messages` | `ModelMessage[]` | Accumulated model messages (**`"turn"` phase only**) |
+| `uiMessages` | `UIMessage[]` | Accumulated UI messages (**`"turn"` phase only**) |
 
 <Tip>
   Unlike `onWait` (which fires for all wait types: duration, task, batch, token), `onChatSuspend` fires only at chat suspension points with full chat context. No need to filter on `wait.type`.

@@ -349,7 +349,7 @@ Boolean attributes are false instead of missing when the transaction doesn’t h
 
 More generally: any comparison (for example, `=`, `!=`, `>`, `<`) of a missing feature against another static value or feature (missing or present) always returns false. Usage of the `NOT` operator with any comparison containing a missing feature always returns false.
 
-#### Explicit handling with the `is_missing` function
+#### Explicit handling with the is_missing function
 
 If you want to explicitly check for the existence of an attribute or metadata attribute, use the `is_missing` function. Provide this function with the attribute or metadata key that might be missing.
 

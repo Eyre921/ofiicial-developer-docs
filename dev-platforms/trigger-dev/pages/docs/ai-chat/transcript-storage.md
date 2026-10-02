@@ -124,12 +124,12 @@ A changeset carries the same save two ways, and a storage uses whichever suits i
 
 `changes` is the ordered list of what changed since the last save. A row-per-message store applies them, as one transaction where the backend supports one:
 
-| Change          | Meaning                                                                                                                                                                                                   |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `put`           | Upsert by `message.id`. An unknown id appends at the end; a known id is replaced in place. `final` is `false` for a partial answer captured from a turn that failed or was stopped, and `true` otherwise. |
-| `remove`        | Delete by id. A no-op for an unknown id.                                                                                                                                                                  |
-| `truncateAfter` | Drop every message ordered after `afterId`. This is what an undo or a regenerate becomes. A no-op for an unknown id.                                                                                      |
-| `state`         | Replace the runtime's opaque record; `null` clears it.                                                                                                                                                    |
+| Change | Meaning |
+| - | - |
+| `put` | Upsert by `message.id`. An unknown id appends at the end; a known id is replaced in place. `final` is `false` for a partial answer captured from a turn that failed or was stopped, and `true` otherwise. |
+| `remove` | Delete by id. A no-op for an unknown id. |
+| `truncateAfter` | Drop every message ordered after `afterId`. This is what an undo or a regenerate becomes. A no-op for an unknown id. |
+| `state` | Replace the runtime's opaque record; `null` clears it. |
 
 `transcript` is the whole conversation as it stands after those changes, `entries` plus `state`. A store that keeps the conversation as one document (object storage, a key-value store, a JSON column) writes it as-is and keeps no state of its own between saves. The default storage is exactly that: it serialises `transcript` and rewrites the blob.
 

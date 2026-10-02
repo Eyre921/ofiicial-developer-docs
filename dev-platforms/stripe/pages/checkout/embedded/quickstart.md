@@ -727,7 +727,7 @@ require github.com/stripe/stripe-go/v86 v86.4.0
 
       return map;
     }, gson::toJson);
-    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <script src="https://js.stripe.com/endive/stripe.js"></script>
       <div id="checkout">
         <!-- Checkout will insert the payment form here -->
       </div>

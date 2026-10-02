@@ -45,11 +45,11 @@ If there's a `partialAssistant` and two or more `inFlightUsers`, the runtime spl
 
 Modern instruction-following models prioritize the latest user message. The follow-up determines the response:
 
-| Follow-up                          | Model behavior                                             |
-| ---------------------------------- | ---------------------------------------------------------- |
-| "keep going" / "continue" / "more" | Continues the partial essay from where it stopped.         |
-| "actually, what's 7+8?"            | Answers the new question. Prior context doesn't derail it. |
-| "scrap that, do something else"    | Abandons the partial work and follows the new direction.   |
+| Follow-up | Model behavior |
+| - | - |
+| "keep going" / "continue" / "more" | Continues the partial essay from where it stopped. |
+| "actually, what's 7+8?" | Answers the new question. Prior context doesn't derail it. |
+| "scrap that, do something else" | Abandons the partial work and follows the new direction. |
 
 No customer code needed for any of these.
 

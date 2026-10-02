@@ -149,35 +149,35 @@ compactModelMessages: ({ modelMessages, summary }) => [
 
 The `shouldCompact` callback receives context about the current state:
 
-| Field          | Type                  | Description                                    |
-| -------------- | --------------------- | ---------------------------------------------- |
-| `messages`     | `ModelMessage[]`      | Current model messages                         |
-| `totalTokens`  | `number \| undefined` | Total tokens from the triggering step/turn     |
-| `inputTokens`  | `number \| undefined` | Input tokens                                   |
-| `outputTokens` | `number \| undefined` | Output tokens                                  |
-| `usage`        | `LanguageModelUsage`  | Full usage object                              |
-| `totalUsage`   | `LanguageModelUsage`  | Cumulative usage across all turns              |
-| `chatId`       | `string`              | Chat session ID                                |
-| `turn`         | `number`              | Current turn (0-indexed)                       |
-| `clientData`   | `unknown`             | Custom data from the frontend                  |
-| `source`       | `"inner" \| "outer"`  | Whether this is between steps or between turns |
-| `steps`        | `CompactionStep[]`    | Steps array (inner loop only)                  |
-| `stepNumber`   | `number`              | Step index (inner loop only)                   |
+| Field | Type | Description |
+| - | - | - |
+| `messages` | `ModelMessage[]` | Current model messages |
+| `totalTokens` | `number \| undefined` | Total tokens from the triggering step/turn |
+| `inputTokens` | `number \| undefined` | Input tokens |
+| `outputTokens` | `number \| undefined` | Output tokens |
+| `usage` | `LanguageModelUsage` | Full usage object |
+| `totalUsage` | `LanguageModelUsage` | Cumulative usage across all turns |
+| `chatId` | `string` | Chat session ID |
+| `turn` | `number` | Current turn (0-indexed) |
+| `clientData` | `unknown` | Custom data from the frontend |
+| `source` | `"inner" \| "outer"` | Whether this is between steps or between turns |
+| `steps` | `CompactionStep[]` | Steps array (inner loop only) |
+| `stepNumber` | `number` | Step index (inner loop only) |
 
 ## summarize event
 
 The `summarize` callback receives similar context:
 
-| Field        | Type                 | Description                         |
-| ------------ | -------------------- | ----------------------------------- |
-| `messages`   | `ModelMessage[]`     | Messages to summarize               |
-| `usage`      | `LanguageModelUsage` | Usage from the triggering step/turn |
-| `totalUsage` | `LanguageModelUsage` | Cumulative usage                    |
-| `chatId`     | `string`             | Chat session ID                     |
-| `turn`       | `number`             | Current turn                        |
-| `clientData` | `unknown`            | Custom data from the frontend       |
-| `source`     | `"inner" \| "outer"` | Where compaction is running         |
-| `stepNumber` | `number`             | Step index (inner loop only)        |
+| Field | Type | Description |
+| - | - | - |
+| `messages` | `ModelMessage[]` | Messages to summarize |
+| `usage` | `LanguageModelUsage` | Usage from the triggering step/turn |
+| `totalUsage` | `LanguageModelUsage` | Cumulative usage |
+| `chatId` | `string` | Chat session ID |
+| `turn` | `number` | Current turn |
+| `clientData` | `unknown` | Custom data from the frontend |
+| `source` | `"inner" \| "outer"` | Where compaction is running |
+| `stepNumber` | `number` | Step index (inner loop only) |
 
 ## onCompacted hook
 

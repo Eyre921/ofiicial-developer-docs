@@ -308,6 +308,10 @@ Note: See how these tools perform on real Supabase tasks in [Supabase Evals](htt
 - **Plugin**: a single install that bundles the MCP server and Agent Skills together for a specific agent.
 - **Prompts**: static prompt files you copy into your project for agents that don't support MCP, plugins, or skills natively.
 
+## Local projects for parallel agents
+
+Agents that work in separate git worktrees or branches each need their own database. Otherwise migrations and seed data from one task affect another. With the experimental `supabase stack` commands turned on, `supabase start` gives each worktree or branch its own local Supabase project with its own ports and data. Agents that share one checkout and branch share a local project, so give each agent its own worktree. The commands also run without Docker on Linux and on macOS on Apple silicon, which covers agent sandboxes that have no container engine. See [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects) and [Docker and native runtimes](https://supabase.com/docs/guides/local-development/docker-and-native-runtimes).
+
 ## Building AI into your app?
 
 The tools above are for your development workflow. If you're building AI capabilities into your own product:
@@ -819,7 +823,7 @@ Choose your Supabase platform, project, and MCP client and follow the installati
 
 The hosted Supabase MCP server is available at `https://mcp.supabase.com/mcp`. If you're developing locally with the Supabase CLI, use `http://localhost:54321/mcp` instead.
 
-Find your client below and add the configuration shown. You can scope the server by appending URL query parameters: `?project_ref=<id>` to limit it to a single project, `?read_only=true` to allow only read queries, and `?features=database,docs` to enable specific tool groups.
+Find your client below and add the configuration shown. You can scope the server by appending URL query parameters: `?project_ref=<id>` to limit it to a single project, `?read_only=true` to allow only read queries, and `?features=database,docs` to enable specific tool groups. For hosted connections, the optional `skip_elicitations` parameter selects which [form confirmations](/docs/guides/ai-tools/mcp#skip-form-confirmations) to skip when elicitation is available.
 
 #### AI Agent CLI
 
@@ -1294,6 +1298,7 @@ The Supabase MCP server provides tools organized into feature groups. All groups
 - `list_edge_functions` - List all Edge Functions
 - `get_edge_function` - Get a specific Edge Function
 - `deploy_edge_function` - Deploy an Edge Function
+- `create_edge_function_secret` - When available, request secret entry in the Supabase Dashboard. See [Edge Function secrets](#edge-function-secrets) for requirements.
 
 ### Account management
 
@@ -1302,7 +1307,7 @@ Note: Disabled when using project-scoped mode (`project_ref` parameter).
 - `list_projects` / `get_project` - List or get project details
 - `create_project` / `pause_project` / `restore_project` - Manage projects
 - `list_organizations` / `get_organization` - Organization management
-- `get_cost` / `confirm_cost` - Cost information
+- `get_cost` / `confirm_cost` - Cost information for tools that use the [legacy cost confirmation workflow](#cost-confirmation)
 
 ### Docs
 
@@ -1320,19 +1325,97 @@ Note: Requires a paid plan.
 - `list_storage_buckets` - List storage buckets
 - `get_storage_config` / `update_storage_config` - Storage configuration
 
+## Elicitations
+
+[Elicitation](https://modelcontextprotocol.io/specification/2026-07-28/client/elicitation) lets an MCP server pause a tool call to ask you for input or confirmation. These flows require both server availability and an MCP client that supports the appropriate elicitation mode: forms for [cost confirmation](#cost-confirmation) and [SQL confirmations](#destructive-sql-confirmations), or URLs for [secret entry](#edge-function-secrets).
+
+Server elicitation is separate from your MCP client's own approval of tool calls. It does not replace manual approval or the [security recommendations](#recommendations).
+
+Treat elicitations as a guardrail, not a guarantee of human review or approval. Some clients support hooks or rules that answer elicitations automatically.
+
+### Client support
+
+Elicitations require your MCP client to support the corresponding mode for the request.
+
+| Mode | Supabase use                                                                                                |
+| ---- | ----------------------------------------------------------------------------------------------------------- |
+| Form | [Cost confirmation](#cost-confirmation) and [destructive SQL confirmations](#destructive-sql-confirmations) |
+| URL  | [Edge Function secret entry](#edge-function-secrets) in the Supabase Dashboard                              |
+
+Support for one mode does not imply support for the other. Check your client's documentation for the modes it supports. The MCP specification revision alone does not determine which flows your connection uses.
+
+### Cost confirmation
+
+When your connection uses form-based cost confirmation, your MCP client shows the expected cost before your agent takes an action that incurs additional charges. The action proceeds only on explicit approval.
+
+Cost confirmation applies to `create_project` and `create_branch`. When your agent calls one of these tools, the tool call pauses and your client displays the resource, the standard rate, and the billing interval, along with controls to accept or decline. The exact labels vary by client.
+
+- Accepting resumes the same tool call to create the resource.
+- Declining or dismissing the confirmation creates nothing, and the agent receives a result that it can relay to you.
+- Confirmations are valid for a short time. If one expires, nothing is created. The agent can call the tool again to request a fresh confirmation.
+- The cost is checked again immediately before creation. If it has changed to a different nonzero amount since you confirmed, you receive a fresh confirmation that shows the updated cost.
+
+Project creation with a zero-cost quote does not trigger a cost confirmation prompt. When branch creation uses form-based cost confirmation, it asks you to confirm the standard rate before any allowances or exemptions are applied.
+
+If form-based cost confirmation is unavailable, unsupported by your client, or [skipped for the tool](#skip-form-confirmations), the legacy cost confirmation workflow applies: the agent quotes the cost in chat, uses `get_cost` and `confirm_cost`, and passes the returned `confirm_cost_id` to `create_project` or `create_branch`. These helpers are account tools and are not exposed in project-scoped connections. Skipping the form does not approve the cost or avoid charges.
+
+To check which flow a creation tool uses, ask your client to list the available Supabase tools and the resource types accepted by `get_cost` and `confirm_cost`. The resource types accepted by these helpers use the legacy cost confirmation workflow; another resource type can use form-based cost confirmation on the same connection. Their absence does not prove that form-based cost confirmation is active: project scoping, account feature settings, or server availability can also hide them.
+
+Your MCP client controls how the confirmation is collected. Some clients support hooks or rules that answer elicitations automatically, so treat cost confirmation as a guardrail rather than proof that a person approved each action.
+
+Troubleshooting: If you expect a dialog and don't see one, see [Cost confirmations do not appear in your MCP client](https://supabase.com/docs/guides/troubleshooting/cost-confirmations-do-not-appear-in-your-mcp-client-mVq3Lp).
+
+### Destructive SQL confirmations
+
+When SQL elicitation is available and your client supports forms, `execute_sql` and `apply_migration` ask for confirmation when they detect destructive SQL. The `execute_sql` confirmation applies only outside read-only mode. SQL not classified as destructive proceeds without this additional warning. Treat this elicitation as a guardrail - it may not catch every destructive operation and is not a security guarantee.
+
+If SQL elicitation is unavailable, unsupported by your client, or skipped with [`skip_elicitations`](#skip-form-confirmations), SQL follows the existing execution path without an additional MCP confirmation. Read-only restrictions and permissions still apply. Keep the [security recommendations](#recommendations) in place.
+
+Troubleshooting: If you expect a dialog and don't see one, see [SQL confirmations do not appear in your MCP client](https://supabase.com/docs/guides/troubleshooting/sql-confirmations-do-not-appear-in-your-mcp-client-sQf7Kp).
+
+### Edge Function secrets
+
+`create_edge_function_secret` is available only when the server offers it, your client supports URL elicitation, Edge Functions tools are enabled, and the connection is not read-only. You also need permission to read and write Edge Function secrets for the project.
+
+Enter secret values only in the Supabase Dashboard, never in chat, model input, or MCP tool arguments. The tool requests the secret name and project, not the secret value.
+
+1. Ask your AI assistant to add an Edge Function secret, specifying the project and secret name without providing the value.
+2. Open the Supabase Dashboard URL presented by your MCP client.
+3. Enter and save the secret value in the Dashboard.
+4. Return to your MCP client and confirm that you saved it.
+
+Save the secret in the Dashboard before confirming in your MCP client. If you cancel the request, this does not undo a secret you already saved in the Dashboard.
+
+Troubleshooting: If the tool is unavailable or the Dashboard flow is incomplete, see [Edge Function secret collection is unavailable or incomplete](https://supabase.com/docs/guides/troubleshooting/edge-function-secret-collection-is-unavailable-or-incomplete-eFs4Nx).
+
 ## Configuration options
 
-The [configuration panel above](#configure-your-ai-tool) can set these options for you. If you prefer to configure manually, the following URL query parameters are available:
+The [configuration panel](#configure-your-ai-tool) can set project scope, read-only mode, and feature groups. For hosted connections, you can also set `skip_elicitations` in the panel or edit your MCP server URL manually. The following URL query parameters are available:
 
-| Parameter           | Description                                          | Example                   |
-| ------------------- | ---------------------------------------------------- | ------------------------- |
-| `read_only=true`    | Execute all queries as a read-only Postgres user     | `?read_only=true`         |
-| `project_ref=<id>`  | Scope to a specific project (disables account tools) | `?project_ref=abc123`     |
-| `features=<groups>` | Enable only specific tool groups (comma-separated)   | `?features=database,docs` |
+| Parameter                   | Description                                                                                           | Example                                          |
+| --------------------------- | ----------------------------------------------------------------------------------------------------- | ------------------------------------------------ |
+| `read_only=true`            | Execute all queries as a read-only Postgres user                                                      | `?read_only=true`                                |
+| `project_ref=<id>`          | Scope to a specific project (disables account tools)                                                  | `?project_ref=abc123`                            |
+| `features=<groups>`         | Enable only specific tool groups (comma-separated)                                                    | `?features=database,docs`                        |
+| `skip_elicitations=<tools>` | Skip form confirmations for the named tools. See [Skip form confirmations](#skip-form-confirmations). | `?skip_elicitations=execute_sql,apply_migration` |
 
 Parameters can be combined: https://mcp.supabase.com/mcp?project_ref=abc123&read_only=true
 
-Note: When using [Supabase CLI](https://supabase.com/docs/guides/local-development) for local development, the MCP server is available at http://localhost:54321/mcp.
+Note: When using [Supabase CLI](https://supabase.com/docs/guides/local-development) for local development, the MCP server is available at http://localhost:54321/mcp. With the experimental `[experimental] stack` setting on, local projects use assigned ports instead, so read the MCP URL from the output of `supabase status`. See [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects).
+
+### Skip form confirmations
+
+Use one `skip_elicitations` parameter with a comma-separated list of tool names: `create_project`, `create_branch`, `execute_sql`, or `apply_migration`.
+
+Names are case-sensitive. Omit the parameter or leave it empty to skip none; this does not enable confirmations that the server does not offer. Invalid names are rejected. There is no boolean or `all` switch, and `create_edge_function_secret` is not supported by this parameter.
+
+In the panel, skip choices are hidden for read-only and local connections. Cost confirmation choices require a connection not scoped to a project with account helpers enabled; `create_branch` also requires branching. SQL-confirmation choices require the database feature group. These limits apply to the panel, not to manually supplied URL parameters.
+
+Skip cost confirmation: https://mcp.supabase.com/mcp?skip_elicitations=create_project,create_branch
+
+Skip SQL confirmations: https://mcp.supabase.com/mcp?skip_elicitations=execute_sql,apply_migration
+
+Skipping cost confirmations retains the [legacy cost confirmation workflow](#cost-confirmation). Skipping SQL confirmations uses the existing SQL execution path without an additional MCP confirmation. Neither option bypasses authentication, permissions, read-only restrictions, or charges.
 
 ## Manual authentication
 
@@ -1413,6 +1496,7 @@ We recommend the following best practices to mitigate security risks when using 
 - **Read-only mode**: Set unattended monitoring and diagnostic routines to [read-only](#configuration-options) mode, which executes SQL queries as a read-only Postgres user.
 - **Project scoping**: Scope your MCP server to a [specific project](#configuration-options), limiting access to only that project's resources. This prevents LLMs from accessing data from other projects in your Supabase account.
 - **Branching**: Use Supabase's [branching feature](https://supabase.com/docs/guides/deployment/branching) to create a development branch for your database. This allows you to test changes in a safe environment before merging them to production.
+- **Cost confirmation**: When your connection uses cost confirmation dialogs, the server asks for [confirmation through your client](#cost-confirmation) before it creates resources that incur charges. This is a guardrail on top of authentication and authorization, not a replacement for them.
 - **Feature groups**: Restrict which [tool groups](#available-tools) are available using the `features` [configuration option](#configuration-options). This helps reduce the attack surface and limits the actions that LLMs can perform to only those that you need.
 
 ## On GitHub
@@ -7519,9 +7603,22 @@ Danger: You should only enable retries if your requests fail with network errors
 
 ## Built-in retries for PostgREST queries
 
-Starting with `supabase-js` v2.102.0, PostgREST queries (`.from()`, `.rpc()`) include built-in automatic retries for transient errors. Retries are **enabled by default** and use exponential backoff with jitter.
+Starting with `supabase-js` v2.102.0, PostgREST queries (`.from()`, `.rpc()`) include built-in automatic retries for transient errors. Retries are **enabled by default** and use exponential backoff.
 
-Retryable errors include HTTP status codes 408 (Request Timeout), 409 (Conflict), 503 (Service Unavailable), and 504 (Gateway Timeout), as well as network failures. Only idempotent HTTP methods (GET, HEAD, OPTIONS) and POST requests (used by PostgREST) are retried.
+`supabase-js` retries only idempotent HTTP methods: GET, HEAD, and OPTIONS. The built-in retry policy doesn't retry POST, PATCH, PUT, or DELETE. For the methods it does retry, it retries on HTTP status codes 503 Service Unavailable and 520 Unknown Error, and on network failures.
+
+Because `.rpc()` sends POST by default, RPC calls aren't retried. Pass `{ get: true }` or `{ head: true }` to send the call as GET or HEAD, which the built-in retries cover.
+
+### Set a request timeout
+
+Retries only run after a request fails. A request that hangs never fails, so it never reaches the retry logic. This can happen during a slow upstream timeout. Pass an `AbortSignal` to cap how long a request can take:
+
+```javascript
+const { data, error } = await supabase
+  .from('your_table')
+  .select('*')
+  .abortSignal(AbortSignal.timeout(10_000))
+```
 
 ### Disable built-in retries
 
@@ -66979,7 +67076,7 @@ Insert-only tables don't require a primary key or replica identity. Updates and 
 
 ## Prepare DuckLake resources \[#understand-the-ducklake-components]
 
-Prepare a Postgres catalog, object storage, and a compatible query engine:
+DuckLake stores metadata in a Postgres catalog and data in object storage. With **Select Supabase projects**, choose a project for the catalog, then a project and bucket for storage. The catalog and storage can use the same project. Pipelines creates the connection credentials. With **Enter connection details**, you provide the catalog URL and storage credentials. You also need a compatible query engine to read the replicated data.
 
 | Component        | Purpose                                                                                                                             |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -66991,56 +67088,54 @@ You can query replicated tables, but treat them and their underlying catalog and
 
 ## Configure DuckLake as a destination \[#choose-a-configuration-mode]
 
-Choose a mode below for its resource requirements and configuration steps.
+Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview). In **Add pipeline**, select **DuckLake**, enter a **Pipeline name**, choose a **Publication**, and set **Initial sync**. Then choose how to configure the catalog and storage.
 
-Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview), select **DuckLake**, then choose **Use Supabase** or **Custom parameters** for the catalog and storage.
+### Select Supabase projects \[#use-supabase]
 
-### Use Supabase
-
-Use this mode to back the DuckLake with Supabase projects. Pipelines provisions its own catalog and object-storage credentials when you create the destination.
+Choose Supabase projects for the Postgres catalog and Storage bucket. Pipelines creates the connection credentials when you create the destination.
 
 Before you begin:
 
 - Choose active, healthy, non-branch projects from the same organization for the catalog and storage. You can use the same project for both.
 - Make sure your organization role can administer SQL in the catalog project and Storage in the storage project.
-- Create a private standard Storage bucket, or create one from the destination form.
-- Choose a metadata schema unique to this DuckLake. Use only letters, numbers, and underscores.
+- Choose a Files bucket for DuckLake data. You can create a private bucket from the destination form.
+- Choose an unused metadata schema name for this DuckLake. Pipelines creates the schema and its tables. Use only letters, numbers, and underscores. If the catalog project already uses the default `ducklake` schema for Warehouse, enter a different name.
 - Keep catalog and storage in the same region when possible, near the [managed pipeline region](https://supabase.com/docs/guides/database/replication/pipelines#region).
 
 To configure the destination:
 
-1. Select **Use Supabase**.
-2. Choose the **Catalog project**, **Pool size**, and **Metadata schema**. Pool size allows `1` to `6` concurrent DuckDB connections; the default is `4`.
-3. Choose the **Storage project** and private **Bucket**.
-4. Click **Create and start pipeline** and complete the validation and cost confirmations.
+1. Select **Select Supabase projects** under **Configuration method**.
+2. Choose the **Catalog project** and **Metadata schema**.
+3. Choose the **Storage project** and **Bucket**. Select **New bucket** at the bottom of the bucket list if you haven't created one yet.
+4. Optionally adjust **Pool size** under **Advanced settings**. It allows 1 to 6 concurrent DuckDB connections; the default is 4.
+5. Click **Start pipeline**. Review any validation warnings, then confirm the estimated cost with **Create and start pipeline**.
 
 Credential-provisioning warnings are expected before creation: catalog and Storage credentials are provisioned when you save the destination. Review the selected resources before proceeding.
 
-### Custom parameters
+### Enter connection details \[#custom-parameters]
 
-Use this mode with a Postgres catalog and S3-compatible object storage that you control.
+Use this mode to connect an existing Postgres database and S3-compatible object storage. You provide their connection details and credentials.
 
 Prepare the following resources:
 
-1. A Postgres database reachable from managed Pipelines. Create a dedicated user that can create and modify the DuckLake metadata schema and its tables.
+1. A Postgres database reachable from managed Pipelines. Create a dedicated user with permission to create the DuckLake metadata schema and its tables.
 2. An S3-compatible bucket and a dedicated prefix for this DuckLake.
 3. Object-storage credentials that can list, read, write, and delete objects under that prefix. Delete access is required for managed file cleanup.
 
-Use a new catalog metadata schema and data prefix for each destination. Reusing an existing schema or prefix can mix the metadata or files of different DuckLakes.
+Choose an unused metadata schema name and a new data prefix for each destination. Pipelines creates the schema and its tables. Initialising a DuckLake catalog in that schema beforehand triggers a validation warning; reusing its schema or prefix can mix metadata or files from different DuckLakes.
 
-Configure these fields in the destination form:
+Select **Enter connection details** under **Configuration method**, then configure these fields:
 
-- **Catalog URL**: A `postgres://` or `postgresql://` connection URL, including credentials and an `sslmode` appropriate for your provider
+- **Catalog URL**: A `postgres://` or `postgresql://` URL for your existing database, including credentials. If your provider requires TLS, append `?sslmode=require` after the database name, or `&sslmode=require` if the URL already has query parameters. Keep the database name from your provider's URL; it doesn't need to be `ducklake_catalog`.
 - **Data path**: An `s3://<bucket>/<prefix>` URL
-- **Pool size**: From `1` to `6`; the default is `4`
 - **S3 access key ID** and **S3 secret access key**: A credential pair for the data path
+- **S3 endpoint**: A publicly reachable provider endpoint without `http://` or `https://`
 - **S3 region**: The storage provider's region
-- **S3 endpoint**: The provider endpoint without `http://` or `https://`
-- **S3 URL style**: `path` for Supabase Storage and many S3-compatible providers, or `vhost` for virtual-host-style addressing
-- **Use SSL**: Keep enabled for production endpoints
+- **S3 URL style**: Path style if the bucket is in the URL path, or virtual-host style if the bucket is in the hostname
+- **Use SSL**: Choose **On** for HTTPS, or **Off** if your provider requires HTTP
 - **Metadata schema**: A unique Postgres schema for DuckLake metadata, using only letters, numbers, and underscores
 
-Click **Create and start pipeline** and complete the validation and cost confirmations.
+Optionally adjust **Pool size** under **Advanced settings**. It allows 1 to 6 concurrent DuckDB connections; the default is 4. Click **Start pipeline**, review the validation results, then confirm the estimated cost with **Create and start pipeline**.
 
 The catalog URL and storage credentials are stored as secrets and aren't returned after creation. When editing the destination, leave a secret field empty to keep its stored value, or enter a new value to replace it.
 
@@ -67056,7 +67151,7 @@ A source `TRUNCATE` truncates the DuckLake table. A [table restart](https://supa
 
 Connect DuckDB with its `ducklake` extension, or another compatible engine, to the same catalog and storage path. Query through the catalog; reading raw Parquet files can miss inlined changes, delete files, and the current snapshot.
 
-For **Use Supabase** mode, create separate read credentials for the selected catalog and Storage projects. The writer credentials generated for Pipelines aren't exposed. For **Custom parameters**, use separate read-only credentials when your catalog and storage provider support them.
+If you selected Supabase projects, create separate read credentials for the catalog and Storage projects. The writer credentials generated for Pipelines aren't exposed. If you entered connection details, use separate read-only credentials when your catalog and storage provider support them.
 
 After attaching the catalog under an alias such as `my_ducklake`, source schemas and tables are available as qualified DuckLake tables:
 
@@ -67124,14 +67219,14 @@ For type changes, unsupported changes, and interrupted schema changes, see the s
 
 ## Troubleshooting
 
-| Issue                                    | Resolution                                                                                                                                                  |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Credential-provisioning warnings         | Expected in [Use Supabase](#use-supabase) mode before saving. Review the selected resources.                                                                |
-| Catalog or storage validation fails      | Check [custom parameters](#custom-parameters), credentials, connectivity, and permissions for the configured prefix. Local `file://` paths are unsupported. |
-| Metadata schema exists                   | Choose a new schema, unless intentionally reusing the same DuckLake and its corresponding data path.                                                        |
-| Inserts work but updates or deletes fail | Check [replica identity and published columns](#source-table-requirements).                                                                                 |
-| Queries omit changes or deleted rows     | [Query through the catalog](#query-the-destination) with credentials for both catalog and storage.                                                          |
-| A schema change fails                    | Review [supported changes](#schema-change-support). Don't modify catalog tables or files manually.                                                          |
+| Issue                                    | Resolution                                                                                                                                                       |
+| ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Credential-provisioning warnings         | Expected when you [select Supabase projects](#use-supabase) before saving. Review the selected resources.                                                        |
+| Catalog or storage validation fails      | Check the [connection details](#custom-parameters), credentials, connectivity, and permissions for the configured prefix. Local `file://` paths are unsupported. |
+| Metadata schema exists                   | Choose a new schema, unless intentionally reusing the same DuckLake and its corresponding data path.                                                             |
+| Inserts work but updates or deletes fail | Check [replica identity and published columns](#source-table-requirements).                                                                                      |
+| Queries omit changes or deleted rows     | [Query through the catalog](#query-the-destination) with credentials for both catalog and storage.                                                               |
+| A schema change fails                    | Review [supported changes](#schema-change-support). Don't modify catalog tables or files manually.                                                               |
 
 Use [pipeline monitoring](https://supabase.com/docs/guides/database/replication/pipelines-monitoring) to inspect errors. For unresolved failures, [contact support](https://supabase.com/dashboard/support/new) with the pipeline ID and error details.
 
@@ -70432,7 +70527,7 @@ This guide shows you how to set up your local Supabase development environment t
 
 ## Set up a local environment
 
-The first step is to set up your local repository with the Supabase CLI:
+The first step is to set up your local repository with the Supabase CLI. Each developer, and each feature branch or git worktree, can have its own local database. To run several local projects at the same time on one machine, see [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects).
 
 ```bash
 supabase init
@@ -97957,12 +98052,14 @@ Learn how to develop locally and use the Supabase CLI
 
 To develop your applications using the locally running Supabase stack, you'll need to install the [Supabase CLI](#cli) and a container runtime.
 
-Note: A container manager compatible with Docker APIs is a prerequisite:
+Note: A container manager compatible with Docker APIs is a prerequisite for `supabase start`:
 
 - [OrbStack](https://orbstack.dev/) (macOS) - recommended on macOS
 - [Docker Desktop](https://docs.docker.com/desktop/) (macOS, Windows, Linux) - recommended on Windows and Linux
 - [Rancher Desktop](https://rancherdesktop.io/) (macOS, Windows, Linux)
 - [Podman](https://podman.io/) (macOS, Windows, Linux)
+
+The experimental `supabase stack` commands can also run a local project as processes on your machine without Docker on Linux and on macOS on Apple silicon. See [Docker and native runtimes](https://supabase.com/docs/guides/local-development/docker-and-native-runtimes).
 
 ## Quickstart
 
@@ -98071,6 +98168,8 @@ Local development with Supabase allows you to work on your projects in a self-co
 
 Once set up, you can initialize a new Supabase project, start the local stack, and begin developing your application using local Supabase services. This includes access to a local Postgres database, Auth, Storage, and other Supabase features.
 
+With the default ports, `supabase start` runs one local project per machine. To run a local project for each app or git worktree at the same time, use the experimental `supabase stack` commands described in [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects).
+
 ## CLI
 
 The Supabase CLI is a tool that enables developers to run Supabase services locally and manage hosted projects directly from the terminal. It provides a suite of commands for various tasks, including:
@@ -98102,6 +98201,8 @@ There are two starting points, both leading to the same place: database schema a
 ## Before you begin
 
 You need the Supabase CLI installed and a Docker-compatible runtime running. If you haven't set these up yet, see [Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) for installation across macOS, Windows, and Linux, and for the details of what `supabase start` brings up and how to access each service.
+
+This guide assumes one running local project. If you work on several apps or git worktrees at once and need a local project for each, see [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects).
 
 Keep in mind that **the local stack is for development only**. It is not hardened for production use and must never be exposed to external traffic. It has no TLS, no rate limiting, and default credentials. Use it to develop and test, then deploy to the [Supabase Platform](https://supabase.com) or a proper self-hosted setup for anything beyond that.
 
@@ -98552,6 +98653,10 @@ supabase start
 
 If problems persist, `supabase stop --no-backup` for a clean restart (this removes local database data).
 
+**`supabase start` fails because a port is already allocated**
+
+Another local Supabase project is using the default ports. Stop it with `supabase stop` from its directory. To run both projects at the same time, turn on the experimental `supabase stack` commands and remove the fixed ports from each project's `config.toml`. See [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects).
+
 
 ---
 
@@ -98881,6 +98986,8 @@ When you are finished working on your Supabase project, you can stop the stack (
 ```bash
 supabase stop
 ```
+
+With the default ports, `supabase start` runs one local project per machine, because every project's `config.toml` uses the same ports. To run several local projects or git worktrees at the same time, see [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects).
 
 ## Telemetry
 
@@ -99933,6 +100040,121 @@ To go back, set `enabled = false` under `[experimental.pgdelta]`, or use the per
 
 ---
 
+# Docker and native runtimes
+
+Run a local Supabase project in containers or as processes on your machine without Docker
+
+How the experimental supabase stack commands run a local Supabase project in Docker or as native processes, how the CLI picks a runtime, and what the native runtime needs.
+
+This guide explains the two runtimes the experimental `supabase stack` commands use, how the CLI picks one, and which to choose. The Docker runtime runs each service in a container, with Docker or Podman. The native runtime runs each service as a process on your machine, with no container engine, on Linux and on macOS on Apple silicon.
+
+Both runtimes run the same local Supabase project with the same services. The default `supabase start` command always uses Docker. The runtime choice exists only after you turn on the `[experimental] stack` setting. See [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects#turn-on-the-stack-commands) for how to turn it on.
+
+Caution: The `supabase stack` commands are experimental. Their flags and output can change between releases, and the CLI compatibility promise doesn't cover them.
+
+## Which runtime to choose
+
+Use Docker when Docker or Podman is available. Containers give each local project its own network namespace and file system. That isolation matters most when you run several local projects on one machine.
+
+Use the native runtime where no container engine is available, such as coding agent sandboxes and CI runners. The native runtime is intended for one local project per environment. Native processes share the host's process table and file locks. Several native local projects on one machine are less isolated from each other than containers are.
+
+## How the two runtimes differ
+
+The following table compares how each runtime runs services, what it needs, and where it stores data.
+
+|                                  | Docker runtime                                                                                                | Native runtime                                                                                             |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Flag                             | `--runtime docker` or `--runtime podman`                                                                      | `--runtime native`                                                                                         |
+| How services run                 | One container per service, from images the CLI pulls                                                          | One process per service, from archives the CLI downloads and verifies                                      |
+| Requires                         | A running Docker or Podman engine                                                                             | A supported platform, `tar` on the host, and, on first start, network access to the archive download hosts |
+| Database data                    | A Docker volume when the Docker client and daemon are both version 26 or later, or a host directory otherwise | `~/.supabase/stacks/<id>/` in your home directory                                                          |
+| Downloaded artifacts             | The engine's image cache                                                                                      | `~/.supabase/cache/stack` in your home directory, shared by all local projects                             |
+| Isolation between local projects | Separate network namespaces and file systems                                                                  | Shared host process table and file locks                                                                   |
+
+Both runtimes keep each local project's saved settings under `~/.supabase/stacks/<id>/`. The native runtime keeps its database data there too. If you set `SUPABASE_HOME`, the CLI uses that directory instead of `~/.supabase`.
+
+In both runtimes, Postgres starts right away and other services start on their first request. By default, services that started this way stop again after 60 seconds idle, and Studio after 5 minutes. Functions doesn't stop on its own. A service also stays up while a running service depends on it, such as pgmeta while Studio runs. Pass `--eager` to start every enabled service before the command returns and turn off idle stops.
+
+Starting a service on demand doesn't mean downloading it on demand. By default, the first `supabase start` pulls or downloads every enabled service before it returns. Pass `--preparation on-demand` to defer each download until the service's first request.
+
+## How the CLI picks a runtime
+
+When you don't pass `--runtime`, a new local project uses the first of these that responds:
+
+1. Docker, when the Docker daemon answers `docker version`
+2. Podman, when the Podman engine answers `podman info`
+3. Native, on Linux `amd64` and `arm64` and on macOS on Apple silicon
+
+Each check waits up to 10 seconds. Having the `docker` command installed isn't enough. If the Docker daemon is stopped, the CLI moves on to Podman or native. It prints a notice that it skipped Docker, with the steps to switch. With no responding engine on a platform without native support, the start fails and asks you to start Docker or Podman.
+
+Passing `--runtime docker`, `--runtime podman`, or `--runtime native` requires that runtime, and the CLI never falls back to another one. If Docker isn't reachable with `--runtime docker`, the start fails and suggests starting Docker, or `--runtime native` for a new local project on a supported platform. With `--runtime native` on an unsupported platform, the start fails before the CLI creates the local project.
+
+The CLI records the runtime when it creates a local project and reuses it on every later start, without checking again. Passing a different `--runtime` to a local project that you already created fails. To move an app to another runtime, start a new named local project, or destroy the local project and start it again. The CLI doesn't convert data between runtimes.
+
+Different apps on one machine can use different runtimes.
+
+## Native runtime requirements
+
+The native runtime runs on these platforms:
+
+| Platform                    | Support                                                                                                                   |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| Linux on `amd64` or `arm64` | Supported on Ubuntu 22.04 or later, or another distribution with glibc 2.35 or later. Some services use the host's glibc. |
+| macOS on Apple silicon      | Supported on macOS 14 or later.                                                                                           |
+| Windows                     | Not supported. Use Docker.                                                                                                |
+| macOS on Intel              | Not supported. Use Docker.                                                                                                |
+
+The native runtime doesn't run as `root`, because Postgres `initdb` can't. To run it as `root`, such as in a CI container, set `SUPABASE_NATIVE_POSTGRES_USER` to a non-root account. Create the account first if it doesn't exist. The CLI then runs Postgres as that user. In some supported coding agent sandboxes, the CLI finds a suitable non-root account without the variable.
+
+On first start, the CLI downloads service archives from the [`supabase/slim-services` GitHub releases](https://github.com/supabase/slim-services/releases), with `supabase-cli-artifacts.s3.us-east-1.amazonaws.com` as a fallback. It verifies their checksums and extracts them with the system `tar`, so install `tar` in minimal sandbox images. In a sandbox with an allowlist, allow `github.com` or that S3 host. Allowing only `ghcr.io` isn't enough.
+
+To download the archives ahead of time without starting any services, such as when you build a sandbox image, run:
+
+```bash
+supabase stack prepare --runtime native
+```
+
+If the local project doesn't exist, `prepare` creates it, so it appears in `supabase stack list` and you can remove it with `supabase stack destroy`.
+
+The cache in `~/.supabase/cache/stack` is shared by every local project on the machine, and `supabase stack destroy` leaves it in place. Delete that directory to reclaim its disk space and force a fresh download.
+
+## Start with a specific runtime
+
+Start a local project in the native runtime:
+
+```bash
+supabase start --runtime native
+```
+
+Require Docker for a new local project:
+
+```bash
+supabase start --runtime docker
+```
+
+Check which runtime a local project uses:
+
+```bash
+supabase stack status --output-format json
+```
+
+The `runtime` field is `docker`, `podman`, or `native`. The text output of `supabase status` and `supabase stack list` shows the runtime too.
+
+## Limitations
+
+- A local project keeps the runtime it was created with, and the CLI doesn't move data between runtimes. See [How the CLI picks a runtime](#how-the-cli-picks-a-runtime).
+- Running several native local projects on one machine works, but they share host resources without the isolation containers provide. Use Docker for that case.
+- If Postgres takes too long to become ready on a cold start, raise `health_timeout` under `[db]` in `config.toml`. Both runtimes use that setting.
+
+## Learn more
+
+- **[Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects):** Run a local project for every app, git worktree, or environment on one machine.
+- **[Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started):** Install the CLI and start your first local project.
+- **[CLI configuration](https://supabase.com/docs/guides/local-development/cli/config):** Every key in config.toml, including the experimental stack setting.
+
+
+---
+
 # Managing config and secrets
 
 Managing local configuration using config.toml.
@@ -100039,6 +100261,290 @@ supabase start
 ```
 
 A Postgres database started with Supabase CLI is not production ready and should not be used outside of local development.
+
+
+---
+
+# Running multiple local projects
+
+Run a local Supabase project for every app, git worktree, or environment on one machine
+
+Run more than one local Supabase project on the same machine, one per app, git worktree, or named environment, with the experimental supabase stack commands.
+
+This guide explains how to run more than one local Supabase project on one machine with the experimental `supabase stack` commands. Use it when you switch between apps, work in several git worktrees, run coding agents in parallel, or want separate `dev` and `test` environments for one app.
+
+In this guide, a local project is the set of Supabase services running on your machine for one app, the same thing `supabase start` gives you. Your app is your own code, in the directory where you ran `supabase init`.
+
+With the default ports, `supabase start` runs one local project per machine. Every app's generated `config.toml` uses the same ports, so a second local project fails with a port conflict. The `supabase stack` commands assign each local project its own ports and keep its data separate.
+
+This guide covers:
+
+- [How local projects stay isolated](#how-local-projects-stay-isolated) explains which directories, branches, and names get their own local project. Read it first if you use a monorepo or run several agents.
+- [Turn on the stack commands](#turn-on-the-stack-commands) and [Remove fixed ports from config.toml](#remove-fixed-ports-from-configtoml) are one-time setup for each app.
+- [Start a local project in each app directory or worktree](#start-a-local-project-in-each-app-directory-or-worktree) through [Stop and destroy local projects](#stop-and-destroy-local-projects) cover day-to-day use.
+- [Differences from the default `supabase start`](#differences-from-the-default-supabase-start) and [Limitations](#limitations) list what changes when you switch.
+
+Caution: The `supabase stack` commands are experimental. Their flags and output can change between releases, and the CLI compatibility promise doesn't cover them. Local projects started with these commands keep their own data, separate from any local project started with the default `supabase start`.
+
+## How local projects stay isolated
+
+Every local project has an identity made from three parts:
+
+- **Project root**: the nearest directory, starting from your current directory and walking up, that contains `supabase/config.toml`. Without a config file, the project root is the current directory.
+- **Git branch**: if the project root is in a git repository, the current branch is part of the identity. The CLI reads it from the `.git` metadata, so git doesn't need to be installed.
+- **Name**: an optional name that you pass with `--stack`.
+
+Two local projects with different identities never share containers, processes, ports, database data, or Storage data. You get a separate local project for each:
+
+- App with its own `supabase/` directory
+- Git worktree, because each worktree is a different directory
+- Git branch, when you check out a different branch in the same directory
+- Name you pass with `--stack`, so one app can run `dev` and `test` side by side
+
+Everything else shares one local project. Packages in a monorepo get separate local projects only if each one has its own `supabase/` directory. Two packages under one `supabase/` directory share a local project. So do two coding agents working in the same checkout on the same branch. To isolate them, use separate git worktrees or different `--stack` names.
+
+Local projects for the same project root also share the project files in its `supabase/` directory. For example, Studio saves SQL snippets to `supabase/snippets`, so the `dev` and `test` local projects of one app see the same snippets.
+
+The CLI assigns ports for each local project from the range 20000 to 32767 and keeps them stable across restarts. Ports written in `config.toml` are used as written, so see [Remove fixed ports from config.toml](#remove-fixed-ports-from-configtoml) first.
+
+## Before you begin
+
+You need:
+
+- Supabase CLI v2.119.0 or later. See [Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started).
+- A container engine or a supported platform. The Docker runtime needs a running Docker or Podman engine, and is the recommended runtime for several local projects at the same time. The native runtime needs no container engine but runs only on macOS on Apple silicon and on Linux for `amd64` and `arm64`. See [Choose a runtime](#choose-a-runtime).
+- An app directory initialized with `supabase init`, or a directory without a `supabase/config.toml`. Without a config file, the local project starts with default settings and doesn't create a config file.
+
+## Turn on the stack commands
+
+The `supabase stack` commands exist only when the `[experimental] stack` setting is on. Without it, `supabase stack` commands fail with `Unknown subcommand "stack"`.
+
+1. Add this to `supabase/config.toml` in your app directory:
+
+   ```toml
+   [experimental]
+   stack = true
+   ```
+
+   In a directory without a `config.toml`, set the environment variable instead:
+
+   ```bash
+   export SUPABASE_EXPERIMENTAL_STACK=1
+   ```
+
+2. Confirm that the commands are available:
+
+   ```bash
+   supabase stack --help
+   ```
+
+   The help starts with `Manage an experimental, unstable local Supabase stack`. If you see the general `Supabase CLI` help instead, the setting isn't on.
+
+With the setting on, `supabase start`, `supabase status`, and `supabase stop` run the stack commands. The rest of this guide uses those top-level commands. `supabase stack start`, `supabase stack status`, and `supabase stack stop` do the same thing. Commands that only exist under `supabase stack`, such as `list` and `destroy`, keep the prefix.
+
+The setting also routes the local targets of the `db`, `migration`, `test`, `gen`, `inspect`, `pull`, `storage`, `seed`, and `services` commands, and `functions serve`, to the stack.
+
+The environment variable takes precedence over the config file. Set `SUPABASE_EXPERIMENTAL_STACK=0` to use the default commands for one session without editing the file.
+
+## Remove fixed ports from config.toml
+
+`supabase init` writes fixed ports into `config.toml`. The CLI treats a port in the file as an exact request. Two local projects that both request port `54321` can't run at the same time.
+
+For a new app, run `init` with the setting turned on. The CLI writes `[experimental] stack = true` and leaves the port keys out:
+
+```bash
+SUPABASE_EXPERIMENTAL_STACK=1 supabase init
+```
+
+For an app that already has a `config.toml`, remove the port lines from each app that you want to run in parallel:
+
+1. Open `supabase/config.toml` in your app directory.
+2. Delete or comment out these keys:
+   - `port` under `[api]`, `[db]`, `[db.pooler]`, `[studio]`, `[local_smtp]`, and `[analytics]`
+   - `shadow_port` under `[db]`
+   - `inspector_port` under `[edge_runtime]`
+   - `smtp_port` and `pop3_port` under `[local_smtp]`, and `vector_port` under `[analytics]`, if you set them. `supabase init` writes the SMTP ports commented out.
+3. Save the file and commit it, so everyone on the team gets the same behavior.
+
+Remove the ports before the app's first `supabase start` with the setting on. A local project keeps the ports it was created with. If you already started one with the fixed ports, removing them afterward makes `supabase start` fail with `cannot change on the saved stack`. Start a new local project with a different `--stack` name, or run `supabase stack destroy` and start again. Destroying deletes the local project's data.
+
+The CLI also treats ports you set with an environment variable, such as `SUPABASE_API_PORT` or `SUPABASE_DB_PORT`, as exact requests. If another process already listens on that port, the start fails. When the port belongs to another local project, the error names that local project.
+
+## Start a local project in each app directory or worktree
+
+The following steps start two independent local projects from two app directories. The same steps work for git worktrees of one repository.
+
+1. Open a terminal in the first app directory and start its local project:
+
+   ```bash
+   supabase start
+   ```
+
+   When the local project is ready, the command prints `Stack is ready.` and a connection summary. The summary lists the API, REST, Functions, Studio, MCP, Mailpit, and database URLs, the publishable and secret keys, the state of each service, and the runtime.
+
+2. Open a second terminal in the other app directory or worktree and run the same command:
+
+   ```bash
+   supabase start
+   ```
+
+   The second local project gets its own ports and its own database. Both keep running after the commands return.
+
+3. Point each app at the Project URL of its own local project. The ports stay the same the next time you start it. To write the URLs and keys to a dotenv file, see [Find a local project's endpoints and keys](#find-a-local-projects-endpoints-and-keys).
+
+The first start in each runtime takes longer. By default, the command downloads or pulls every enabled service before it returns. Later starts reuse the cache. To defer each download until the service's first request, pass `--preparation on-demand`.
+
+Postgres starts right away. Other services start on their first request. By default, they stop again after 60 seconds idle, and Studio after 5 minutes. Functions doesn't stop on its own. A service also stays up while a running service depends on it, such as pgmeta while Studio runs. To start every enabled service before the command returns and turn off idle stops, pass `--eager`.
+
+To leave services out, pass `--exclude` with one or more of `rest`, `auth`, `realtime`, `storage`, `functions`, `studio`, `mail`, `analytics`, and `pooler`:
+
+```bash
+supabase start --exclude studio,mail
+```
+
+The database can't be excluded. Studio needs the REST API, so to exclude `rest`, exclude `studio` too. Excluding `studio` also removes the MCP server, because Studio serves `/mcp`.
+
+Running `supabase start` again on a running local project keeps its current settings and prints `Stack is already running with its current services`. To apply a change to `config.toml`, `--exclude`, or `--eager`, stop the local project and start it again. Starting without `--exclude` restores the services enabled in `config.toml`.
+
+Stopping and starting doesn't apply changes to ports or to the Postgres major version. For those, start a new local project with a different `--stack` name, or run `supabase stack destroy` and start again.
+
+## Run named local projects for one app
+
+One app can run several local projects by name. This keeps a destructive test run away from your development data.
+
+1. Start a `dev` local project:
+
+   ```bash
+   supabase start --stack dev
+   ```
+
+2. Start a `test` local project in the same directory:
+
+   ```bash
+   supabase start --stack test
+   ```
+
+3. Pass the same `--stack` name to `supabase status`, `supabase stop`, and `supabase stack destroy` to target that local project later.
+
+A local project started without `--stack` is the app directory's default local project. Named local projects and the default one are independent of each other.
+
+The `db`, `migration`, and other database commands use the default local project for the current branch. They can't target a named local project. See [Limitations](#limitations).
+
+## Find a local project's endpoints and keys
+
+Ports differ between local projects, so don't assume the defaults from the CLI documentation. To see the URLs, keys, and service states of a local project, run this in its app directory:
+
+```bash
+supabase status
+```
+
+Pass `--stack <name>` for a named local project. The local database password is `postgres`, so the database URL in the output works with `psql` and `--db-url`.
+
+To export the connection details as environment variables, pass `--env`:
+
+```bash
+supabase status --env --output-format text > .env.local
+```
+
+The file includes `API_URL`, `DB_URL`, `PUBLISHABLE_KEY`, `SECRET_KEY`, `ANON_KEY`, and `SERVICE_ROLE_KEY`, plus the URLs of the other available services. To match the variable names your framework expects, pass `--override-name`:
+
+```bash
+supabase status --env --override-name API_URL=NEXT_PUBLIC_SUPABASE_URL,ANON_KEY=NEXT_PUBLIC_SUPABASE_ANON_KEY
+```
+
+For scripts and agents, request JSON from `supabase start` or `supabase status`:
+
+```bash
+supabase start --output-format json
+```
+
+The `start` JSON includes the local project's `id`, its `runtime`, `lazy_services` that start on their first request, and the same `env` map that `--env` exports. Its `endpoints` object is keyed by service and endpoint, such as `database.sql`, and each entry has a `protocol`, `address`, `port`, and `url`.
+
+To list every local project on the machine, across all apps, run:
+
+```bash
+supabase stack list
+```
+
+The list shows each local project's name, project root, branch, runtime, and a short ID. Pass `--output-format json` to get the full ID that `--stack-id` accepts.
+
+To stream live logs from a local project, run `supabase stack logs`. Pass `--service database` to limit the output to one service.
+
+## Choose a runtime
+
+A local project runs in the Docker runtime or the native runtime. The Docker runtime runs each service in a container, with Docker or Podman. The native runtime runs each service as a process on your machine, with no container engine. It runs on macOS on Apple silicon and on Linux `amd64` and `arm64`. Both runtimes run the same services.
+
+For several local projects on one machine, use Docker. Containers give each local project its own network namespace and file system. Native local projects share the host's process table and file locks. Use the native runtime where no container engine is available, such as coding agent sandboxes and CI runners.
+
+When you don't pass `--runtime`, a new local project uses Docker if the Docker daemon responds, then Podman, then native on supported platforms. Having the `docker` command installed isn't enough. The runtime is fixed for the life of a local project. For details, platform requirements, and what the native runtime downloads, see [Docker and native runtimes](https://supabase.com/docs/guides/local-development/docker-and-native-runtimes).
+
+## Stop and destroy local projects
+
+Stopping a local project keeps its data and ports. Destroying it deletes its data.
+
+To stop the app directory's default local project, run this in that directory:
+
+```bash
+supabase stop
+```
+
+To stop a named local project, pass its name:
+
+```bash
+supabase stop --stack test
+```
+
+To stop every local project on the machine, across all apps, pass `--all`. If any local project fails to stop, the command exits with an error that lists the failed local projects:
+
+```bash
+supabase stack stop --all
+```
+
+To permanently delete one local project and its data, run `supabase stack destroy`. The command asks for confirmation. Pass `--yes` to skip the prompt in scripts:
+
+```bash
+supabase stack destroy --stack test --yes
+```
+
+Danger: `supabase stack destroy` deletes the local project's database data and frees its ports. There is no backup and no undo. There is also no bulk destroy, so one command removes one local project.
+
+`destroy` keeps two kinds of data:
+
+- Storage upload files, which live in your app at `supabase/.temp/stack-uploads/<id>/`. Delete that directory to remove them.
+- Container engine resources, if Docker or Podman isn't running. If no process for the local project is still running, the command removes the local project's registration. It prints cleanup commands to run after the engine starts again. Otherwise it fails and asks you to start the engine and retry.
+
+The printed cleanup command deletes only this local project's database data, from a Docker volume that other local projects share. Don't delete the volume itself.
+
+## Differences from the default `supabase start`
+
+Keep these differences in mind when you turn the setting on for an app that used the default `supabase start`:
+
+- Local projects started this way keep separate data. Turning on the setting doesn't copy the database from a local project you started with the default `supabase start`. It also doesn't stop that local project.
+- `supabase stop --no-backup` and `supabase stop --project-id` aren't available. Use `supabase stack destroy` to remove data and `supabase stack stop --all` to stop every local project.
+- The `-o` and `--output` flags aren't available. Use `--output-format` instead, and `--env` in place of `-o env`.
+- `functions serve` needs a running local project. Start one with `supabase start` first.
+
+## Limitations
+
+- Some `config.toml` settings aren't supported. `supabase start` fails with a message that names the setting. The unsupported settings are:
+  - `api.tls`
+  - The Analytics GCP settings, and Analytics backends other than Postgres
+  - Custom Auth email templates with `content_path`
+  - Storage Analytics and Storage vector buckets
+  - A custom `edge_runtime.deno_version`
+  - OrioleDB, and `db.major_version` values other than 15 and 17
+- Database commands can't target a named local project. `supabase db reset`, `supabase db diff`, `supabase db pull`, `supabase db dump`, and the other local database commands use the app directory's default local project for the current branch, and don't accept `--stack`.
+- Switching branches switches local projects. The git branch is part of the identity. After you check out another branch in the same directory, `supabase start` creates or resumes a different local project with its own data. The first branch's local project keeps running until you stop it.
+- Moving or renaming an app directory creates a new local project, because the identity includes the project root path. The previous local project's data stays until you destroy it.
+- `supabase stack logs` streams new log lines only. It has no history.
+
+## Learn more
+
+- **[Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started):** Install the CLI and start your first local project.
+- **[Local development workflow](https://supabase.com/docs/guides/local-development/cli-workflows):** Day-to-day commands for one local project, from migrations to troubleshooting.
+- **[Docker and native runtimes](https://supabase.com/docs/guides/local-development/docker-and-native-runtimes):** How the CLI picks a runtime, what the native runtime needs, and where it stores data.
+- **[Managing config and secrets](https://supabase.com/docs/guides/local-development/managing-config):** Keep configuration and secrets consistent across local, staging, and production.
+- **[CLI configuration](https://supabase.com/docs/guides/local-development/cli/config):** Every key in config.toml, including the experimental stack setting.
 
 
 ---
@@ -101251,7 +101757,7 @@ rollback;
 
 # Observability
 
-Read project data, diagnose issues, and hire an agent to monitor your project
+Read project data, diagnose issues, and run agent prompts to check your project
 
 Use project data to understand what is happening, investigate issues, and give an agent repeatable checks to run.
 
@@ -101271,14 +101777,14 @@ Query logs for events, inspect database statistics, or review advisor findings. 
 
 Run [detection checks](https://supabase.com/docs/guides/observability/detecting) to identify health, security, performance, or capacity issues. Take the resulting error code, time window, or affected object to the [troubleshooting guides](https://supabase.com/docs/guides/troubleshooting), then rerun the check after a fix.
 
-## Hire an agent
+## Agent prompts
 
-Give an agent recurring checks to run and findings to report. [Set up an agent](https://supabase.com/docs/guides/observability/automate-with-agents) with read-only access to your project.
+Give an agent a prompt to check your project and report issues to fix. [See the prompts](https://supabase.com/docs/guides/observability/automate-with-agents) and run them with read-only access to your project.
 
-- **[Health monitor](https://supabase.com/docs/guides/observability/automate-with-agents/health):** Once per hour. Check API and Auth server errors and connection pressure.
-- **[Security monitor](https://supabase.com/docs/guides/observability/automate-with-agents/security):** Once per day. Review advisor findings and authorization failures.
-- **[Performance monitor](https://supabase.com/docs/guides/observability/automate-with-agents/performance):** Once per hour. Review sessions, query regressions, and performance advisors.
-- **[Resource monitor](https://supabase.com/docs/guides/observability/automate-with-agents/usage):** Once each morning. Track sizes, connections, request growth, and supported forecasts.
+- **[Health](https://supabase.com/docs/guides/observability/automate-with-agents/health):** Once per hour. Check API and Auth server errors and connection pressure.
+- **[Security](https://supabase.com/docs/guides/observability/automate-with-agents/security):** Once per day. Review advisor findings and authorization failures.
+- **[Performance](https://supabase.com/docs/guides/observability/automate-with-agents/performance):** Once per hour. Review sessions, query regressions, and performance advisors.
+- **[Resources](https://supabase.com/docs/guides/observability/automate-with-agents/usage):** Once each morning. Track sizes, connections, request growth, and supported forecasts.
 
 ## Configure and export
 
@@ -103589,35 +104095,35 @@ In these cases the lint can be safely ignored, but verify the table is not accum
 
 ---
 
-# Hire an agent
+# Agent prompts
 
-Run a read-only monitoring routine in your own agent harness.
+Give an agent a prompt to check your project and report issues to fix.
 
-Choose and set up a Health, Security, Performance, or Resource monitor in Claude, Codex, or Cursor.
+Run a Health, Security, Performance, or Resource prompt in Claude, Codex, or Cursor.
 
-This guide explains how to run a Supabase monitoring agent in your own harness. Each agent is a prompt plus a schedule. It reads project data and reports findings. It does not change the project.
+Each prompt tells an agent to check one area of your project — health, security, performance, or resources — and report issues worth fixing. It reads project data read-only and changes nothing. Run it on demand, or put it on a schedule.
 
-## Choose a routine
+## Choose a prompt
 
-Start with one monitor. Add another only when the project needs a different source or cadence.
+Start with one prompt. Add another only when you need a different source or cadence.
 
-| Monitor                                                                                                | What it watches                                                               | Default cadence | Use it when                                                    |
-| ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------- | --------------- | -------------------------------------------------------------- |
-| [Health monitor](https://supabase.com/docs/guides/observability/automate-with-agents/health)           | API and Auth server errors, error-rate spikes, connection pressure            | Hourly          | You need incident detection and regular feedback loops         |
-| [Security monitor](https://supabase.com/docs/guides/observability/automate-with-agents/security)       | Security Advisor findings, authentication and authorization failures          | Daily           | You need a regular access-control and configuration review     |
-| [Performance monitor](https://supabase.com/docs/guides/observability/automate-with-agents/performance) | Slow queries, lock waits, long-running sessions, Performance Advisor findings | Hourly          | You need query and database performance checks                 |
-| [Resource monitor](https://supabase.com/docs/guides/observability/automate-with-agents/usage)          | Request, error, storage, table, and connection growth                         | Daily           | You need to identify growth before it reaches a resource limit |
+| Prompt                                                                                         | What it checks                                                                | Suggested cadence | Use it when                                                    |
+| ---------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- | ----------------- | -------------------------------------------------------------- |
+| [Health](https://supabase.com/docs/guides/observability/automate-with-agents/health)           | API and Auth server errors, error-rate spikes, connection pressure            | Hourly            | You need incident detection and regular feedback loops         |
+| [Security](https://supabase.com/docs/guides/observability/automate-with-agents/security)       | Security Advisor findings, authentication and authorization failures          | Daily             | You need a regular access-control and configuration review     |
+| [Performance](https://supabase.com/docs/guides/observability/automate-with-agents/performance) | Slow queries, lock waits, long-running sessions, Performance Advisor findings | Hourly            | You need query and database performance checks                 |
+| [Resources](https://supabase.com/docs/guides/observability/automate-with-agents/usage)         | Request, error, storage, table, and connection growth                         | Daily             | You need to identify growth before it reaches a resource limit |
 
-For a small project, run the most relevant routine daily or weekly and include the other categories in its prompt. Split it into specialized monitors only when you need different owners, schedules, or alert thresholds.
+For a small project, run the most relevant prompt daily or weekly and fold the other categories into it. Split into separate prompts only when you need different owners, schedules, or alert thresholds.
 
-## Run the routine
+## Run a prompt
 
 1. Connect the [Supabase MCP server](https://supabase.com/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
-2. Open the monitor that matches the job from the table above.
+2. Open the prompt that matches the job from the table above.
 3. Set it up in Claude, Codex, Cursor, or copy the prompt into another harness.
 4. Run it on demand first. Then put the same prompt on a schedule.
 
-Each agent page describes what it will output. Send those findings through the connections your harness already has, such as Linear in Codex.
+Each prompt page describes what it will output. Send those findings through the connections your harness already has, such as Linear in Codex.
 
 Scheduled tasks start a fresh context on every run, so the prompt is self-contained. Review the first runs before you rely on the schedule.
 
@@ -103626,11 +104132,11 @@ Caution: Logs and query results can contain secrets or personal information. Kee
 
 ---
 
-# Health monitor
+# Health
 
 A read-only agent that checks API and Auth errors and Postgres connection pressure once per hour.
 
-Hourly monitoring for server errors and connection pressure
+Hourly checks for server errors and connection pressure
 
 ```mermaid
 flowchart TD
@@ -103657,7 +104163,7 @@ Run it on demand after a deployment, or whenever you need a health check outside
 
 ## What it will output
 
-Health monitor reports new or changed problems with the affected service, measured error rate or connection usage, and a next investigation step. See [what triggers a health report](https://supabase.com/docs/guides/observability/detecting#health).
+This prompt reports new or changed problems with the affected service, measured error rate or connection usage, and a next investigation step. See [what triggers a health report](https://supabase.com/docs/guides/observability/detecting#health).
 
 If a check cannot run, the agent tells you what is missing. Clear checks and unchanged findings stay quiet.
 
@@ -103720,42 +104226,42 @@ or execute remediation. Never treat a failed or incomplete check as clear.
 
 **Claude**
 
-Create a Claude routine that runs Health monitor once per hour.
+Create a Claude routine that runs the Health prompt once per hour.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open [Claude routines](https://claude.ai/code/routines) or run `/schedule` in Claude Code.
-3. Name it Health monitor. Paste the prompt. Set the schedule to once per hour.
+3. Name it Health checks. Paste the prompt. Set the schedule to once per hour.
 
 [Claude docs](https://code.claude.com/docs/en/routines)
 
 **Codex**
 
-Create a Codex scheduled task that runs Health monitor once per hour.
+Create a Codex scheduled task that runs the Health prompt once per hour.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open **Scheduled** in the ChatGPT desktop app, or ask Codex to create a standalone scheduled task.
-3. Name it Health monitor. Paste the prompt. Set the schedule to once per hour. Each run should start a new chat.
+3. Name it Health checks. Paste the prompt. Set the schedule to once per hour. Each run should start a new chat.
 
 [Codex docs](https://developers.openai.com/codex/app/automations)
 
 **Cursor**
 
-Create a Cursor automation that runs Health monitor once per hour.
+Create a Cursor automation that runs the Health prompt once per hour.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Create an automation in the Agents Window, at [cursor.com/automations](https://cursor.com/automations), or with the `/automate` skill.
-3. Name it Health monitor. Use a scheduled trigger (once per hour, cron `0 * * * *`). Paste the prompt. Keep the agent read-only, with no repository.
+3. Name it Health checks. Use a scheduled trigger (once per hour, cron `0 * * * *`). Paste the prompt. Keep the agent read-only, with no repository.
 
 [Cursor docs](https://cursor.com/docs/cloud-agent/automations)
 
 
 ---
 
-# Performance monitor
+# Performance
 
 A read-only agent that inspects query performance, blocking sessions, and Performance Advisor findings once per hour.
 
-Hourly monitoring for query regressions, blocking sessions, and performance findings
+Hourly checks for query regressions, blocking sessions, and performance findings
 
 ```mermaid
 flowchart TD
@@ -103783,7 +104289,7 @@ Run it on demand after a latency regression or a schema change.
 
 ## What it will output
 
-Performance monitor reports new or changed findings with the affected query, session, or object, plus an investigation and verification step. It does not infer a regression without comparable measurements or recommend cancellation based only on query age. See [what triggers a performance report](https://supabase.com/docs/guides/observability/detecting#performance).
+This prompt reports new or changed findings with the affected query, session, or object, plus an investigation and verification step. It does not infer a regression without comparable measurements or recommend cancellation based only on query age. See [what triggers a performance report](https://supabase.com/docs/guides/observability/detecting#performance).
 
 If a check cannot run, the agent tells you what is missing. Clear checks and unchanged findings stay quiet.
 
@@ -103846,38 +104352,38 @@ or execute remediation. Never treat a failed or incomplete check as clear.
 
 **Claude**
 
-Create a Claude routine that runs Performance monitor once per hour.
+Create a Claude routine that runs the Performance prompt once per hour.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open [Claude routines](https://claude.ai/code/routines) or run `/schedule` in Claude Code.
-3. Name it Performance monitor. Paste the prompt. Set the schedule to once per hour.
+3. Name it Performance checks. Paste the prompt. Set the schedule to once per hour.
 
 [Claude docs](https://code.claude.com/docs/en/routines)
 
 **Codex**
 
-Create a Codex scheduled task that runs Performance monitor once per hour.
+Create a Codex scheduled task that runs the Performance prompt once per hour.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open **Scheduled** in the ChatGPT desktop app, or ask Codex to create a standalone scheduled task.
-3. Name it Performance monitor. Paste the prompt. Set the schedule to once per hour. Each run should start a new chat.
+3. Name it Performance checks. Paste the prompt. Set the schedule to once per hour. Each run should start a new chat.
 
 [Codex docs](https://developers.openai.com/codex/app/automations)
 
 **Cursor**
 
-Create a Cursor automation that runs Performance monitor once per hour.
+Create a Cursor automation that runs the Performance prompt once per hour.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Create an automation in the Agents Window, at [cursor.com/automations](https://cursor.com/automations), or with the `/automate` skill.
-3. Name it Performance monitor. Use a scheduled trigger (once per hour, cron `0 * * * *`). Paste the prompt. Keep the agent read-only, with no repository.
+3. Name it Performance checks. Use a scheduled trigger (once per hour, cron `0 * * * *`). Paste the prompt. Keep the agent read-only, with no repository.
 
 [Cursor docs](https://cursor.com/docs/cloud-agent/automations)
 
 
 ---
 
-# Security monitor
+# Security
 
 A read-only agent that reviews Security Advisor findings and authentication and authorization failures each day.
 
@@ -103909,7 +104415,7 @@ Run it on demand after you change Auth, RLS, or other access controls.
 
 ## What it will output
 
-Security monitor reports new or changed advisor findings and access-failure spikes, with the affected object or service and a next investigation step. A spike is a review signal, not proof of an attack. See [what triggers a security report](https://supabase.com/docs/guides/observability/detecting#security).
+This prompt reports new or changed advisor findings and access-failure spikes, with the affected object or service and a next investigation step. A spike is a review signal, not proof of an attack. See [what triggers a security report](https://supabase.com/docs/guides/observability/detecting#security).
 
 If a check cannot run, the agent tells you what is missing. Clear checks and unchanged findings stay quiet.
 
@@ -103972,42 +104478,42 @@ or execute remediation. Never treat a failed or incomplete check as clear.
 
 **Claude**
 
-Create a Claude routine that runs Security monitor once per day.
+Create a Claude routine that runs the Security prompt once per day.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open [Claude routines](https://claude.ai/code/routines) or run `/schedule` in Claude Code.
-3. Name it Security monitor. Paste the prompt. Set the schedule to once per day.
+3. Name it Security checks. Paste the prompt. Set the schedule to once per day.
 
 [Claude docs](https://code.claude.com/docs/en/routines)
 
 **Codex**
 
-Create a Codex scheduled task that runs Security monitor once per day.
+Create a Codex scheduled task that runs the Security prompt once per day.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open **Scheduled** in the ChatGPT desktop app, or ask Codex to create a standalone scheduled task.
-3. Name it Security monitor. Paste the prompt. Set the schedule to once per day. Each run should start a new chat.
+3. Name it Security checks. Paste the prompt. Set the schedule to once per day. Each run should start a new chat.
 
 [Codex docs](https://developers.openai.com/codex/app/automations)
 
 **Cursor**
 
-Create a Cursor automation that runs Security monitor once per day.
+Create a Cursor automation that runs the Security prompt once per day.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Create an automation in the Agents Window, at [cursor.com/automations](https://cursor.com/automations), or with the `/automate` skill.
-3. Name it Security monitor. Use a scheduled trigger (once per day, cron `0 9 * * *`). Paste the prompt. Keep the agent read-only, with no repository.
+3. Name it Security checks. Use a scheduled trigger (once per day, cron `0 9 * * *`). Paste the prompt. Keep the agent read-only, with no repository.
 
 [Cursor docs](https://cursor.com/docs/cloud-agent/automations)
 
 
 ---
 
-# Resource monitor
+# Resources
 
 A read-only agent that tracks resource and request growth and estimates when a confirmed limit could be reached.
 
-Daily monitoring for resource growth and approaching limits
+Daily checks for resource growth and approaching limits
 
 ```mermaid
 flowchart TD
@@ -104036,7 +104542,7 @@ Run it on demand after an unexpected traffic change.
 
 ## What it will output
 
-Resource monitor reports new or changed request-growth signals and resource-limit risks. When saved measurements support a forecast within 14 days, it includes the estimated date, calculation, and scaling guide. If history or a matching limit is missing, it explains what it needs instead of inventing a date. See [what triggers a resource report](https://supabase.com/docs/guides/observability/detecting#usage).
+This prompt reports new or changed request-growth signals and resource-limit risks. When saved measurements support a forecast within 14 days, it includes the estimated date, calculation, and scaling guide. If history or a matching limit is missing, it explains what it needs instead of inventing a date. See [what triggers a resource report](https://supabase.com/docs/guides/observability/detecting#usage).
 
 If a check cannot run, the agent tells you what is missing. Clear checks and unchanged findings stay quiet.
 
@@ -104099,31 +104605,31 @@ or execute remediation. Never treat a failed or incomplete check as clear.
 
 **Claude**
 
-Create a Claude routine that runs Resource monitor once each morning.
+Create a Claude routine that runs the Resources prompt once each morning.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open [Claude routines](https://claude.ai/code/routines) or run `/schedule` in Claude Code.
-3. Name it Resource monitor. Paste the prompt. Set the schedule to once each morning.
+3. Name it Resources checks. Paste the prompt. Set the schedule to once each morning.
 
 [Claude docs](https://code.claude.com/docs/en/routines)
 
 **Codex**
 
-Create a Codex scheduled task that runs Resource monitor once each morning.
+Create a Codex scheduled task that runs the Resources prompt once each morning.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Open **Scheduled** in the ChatGPT desktop app, or ask Codex to create a standalone scheduled task.
-3. Name it Resource monitor. Paste the prompt. Set the schedule to once each morning. Each run should start a new chat.
+3. Name it Resources checks. Paste the prompt. Set the schedule to once each morning. Each run should start a new chat.
 
 [Codex docs](https://developers.openai.com/codex/app/automations)
 
 **Cursor**
 
-Create a Cursor automation that runs Resource monitor once each morning.
+Create a Cursor automation that runs the Resources prompt once each morning.
 
 1. Connect the [Supabase MCP server](/docs/guides/ai-tools/mcp) with `project_ref` and `read_only=true`.
 2. Create an automation in the Agents Window, at [cursor.com/automations](https://cursor.com/automations), or with the `/automate` skill.
-3. Name it Resource monitor. Use a scheduled trigger (once each morning, cron `0 9 * * *`). Paste the prompt. Keep the agent read-only, with no repository.
+3. Name it Resources checks. Use a scheduled trigger (once each morning, cron `0 9 * * *`). Paste the prompt. Keep the agent read-only, with no repository.
 
 [Cursor docs](https://cursor.com/docs/cloud-agent/automations)
 
@@ -104438,7 +104944,7 @@ For truncation and capture constraints, see [Log sources and fields](https://sup
 
 Repeatable health, security, performance, and capacity checks with explicit inputs and outcomes
 
-Use these checks to identify evidence worth investigating. A finding does not establish a cause. The specialist [monitoring agents](https://supabase.com/docs/guides/observability/automate-with-agents) use these same checks.
+Use these checks to identify evidence worth investigating. A finding does not establish a cause. The [agent prompts](https://supabase.com/docs/guides/observability/automate-with-agents) use these same checks.
 
 ## Before running checks
 
@@ -127919,24 +128425,24 @@ The fastest and recommended way to self-host Supabase is to use Docker.
 
 - **[Docker](https://supabase.com/docs/guides/self-hosting/docker):** Deploy Supabase within your own infrastructure using Docker Compose.
 
-## Community-driven projects
+## Community projects
 
-There are several other options to deploy Supabase. If you're interested in helping these projects, visit our [Community page](https://supabase.com/contribute).
+These projects are maintained by the Supabase community, not by Supabase. To get involved, see the [Community page](https://supabase.com/contribute).
 
-- **[Kubernetes](https://github.com/supabase-community/supabase-kubernetes):** Helm charts to deploy a Supabase on Kubernetes.
-- **[Traefik](https://github.com/supabase-community/supabase-traefik):** A self-hosted Supabase setup with Traefik as a reverse proxy.
+- **[Kubernetes](https://github.com/supabase-community/supabase-kubernetes):** Run Supabase on Kubernetes with the Supabase Operator or a Helm chart.
+- **[Observability](https://github.com/supabase-community/supabase-observability):** Collect logs, metrics, and traces from self-hosted Supabase with open-source tools.
 
 ## How self-hosted Supabase differs
 
-Self-hosted Supabase runs as a single project which means that Studio doesn't support multiple organizations or projects. Most settings are configured through [environment variables](https://github.com/supabase/supabase/blob/master/docker/.env.example).
+Self-hosted Supabase runs as a single project, which means that Studio doesn't support multiple organizations or projects. Most settings are configured through [environment variables](https://github.com/supabase/supabase/blob/master/docker/.env.example).
 
-Unlike the managed platform, which is fully hosted and operated by Supabase, branching, advanced metrics beyond logs, managed backups and PITR, analytics and vector buckets, ETL, and the platform management API are **unavailable**.
+Some features of the managed platform aren't available when self-hosting: branching, advanced metrics beyond logs, managed backups and PITR, analytics and vector buckets, ETL, and the Management API. To collect logs and metrics yourself, see the community-maintained [observability project](https://github.com/supabase-community/supabase-observability).
 
 ### Not the same as local development
 
 [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) runs a local stack for development and testing. That stack is not a self-hosted deployment: it is not hardened for production and must not be exposed to external traffic.
 
-To self-host, use [Docker](https://supabase.com/docs/guides/self-hosting/docker) or one of the community deployment options.
+To self-host, use [Docker](https://supabase.com/docs/guides/self-hosting/docker) or the community-maintained [Kubernetes project](https://github.com/supabase-community/supabase-kubernetes).
 
 ## Your responsibilities when self-hosting
 
@@ -127950,9 +128456,15 @@ When you self-host, **you are responsible for**:
 - Backups and disaster recovery
 - Monitoring and uptime
 
+## Third-party guides
+
+Guides written by other projects and companies. Supabase doesn't maintain them, so check that they match your version of self-hosted Supabase.
+
+- **[Secure self-hosted Supabase with NetBird](https://netbird.io/knowledge-hub/supabase-self-hosted-netbird):** By NetBird. Keep Studio and Postgres off the public internet with NetBird network access controls.
+
 ## Telemetry
 
-Self-hosted Supabase (run via Docker Compose) **does not phone home or collect any telemetry**.
+Self-hosted Supabase **does not phone home or collect any telemetry**.
 
 The **Supabase CLI**, a separate tool also used for [local development](https://supabase.com/docs/guides/local-development/cli/getting-started), collects usage telemetry to help improve the developer experience. See [CLI telemetry](https://supabase.com/docs/guides/local-development/cli/getting-started#telemetry) for opt-out methods.
 
@@ -139379,6 +139891,7 @@ results = index.query(
 - [Check usage for monthly active users (MAU)](https://supabase.com/docs/guides/troubleshooting/check-usage-for-monthly-active-users-mau-MwZaBs)
 - ['Cloudflare Origin Error 1016' on Custom Domain](https://supabase.com/docs/guides/troubleshooting/cloudflare-origin-error-1016-on-custom-domain-a57af4)
 - [Converted GitHub account to organization / GitHub Account was deleted - Lost Supabase account access](https://supabase.com/docs/guides/troubleshooting/converted-github-account-to-organisation---lost-supabase-account-access-5wsE_1)
+- [Cost confirmations do not appear in your MCP client](https://supabase.com/docs/guides/troubleshooting/cost-confirmations-do-not-appear-in-your-mcp-client-mVq3Lp)
 - [Customizing Emails by Language](https://supabase.com/docs/guides/troubleshooting/customizing-emails-by-language-KZ_38Q)
 - [Errors when creating / updating / deleting users](https://supabase.com/docs/guides/troubleshooting/dashboard-errors-when-managing-users-N1ls4A)
 - [Database API 42501 errors](https://supabase.com/docs/guides/troubleshooting/database-api-42501-errors)
@@ -139402,6 +139915,7 @@ results = index.query(
 - [Edge Function error: 'Rate limit exceeded for trace'](https://supabase.com/docs/guides/troubleshooting/edge-function-error-rate-limit-exceeded-for-trace-1094d3)
 - [Edge Function deploy failed due to an internal error](https://supabase.com/docs/guides/troubleshooting/edge-function-fails-deploy)
 - [Monitoring Edge Function resource usage](https://supabase.com/docs/guides/troubleshooting/edge-function-monitoring-resource-usage)
+- [Edge Function secret collection is unavailable or incomplete](https://supabase.com/docs/guides/troubleshooting/edge-function-secret-collection-is-unavailable-or-incomplete-eFs4Nx)
 - [Edge Function shutdown reasons explained](https://supabase.com/docs/guides/troubleshooting/edge-function-shutdown-reasons-explained)
 - [Edge Function takes too long to respond](https://supabase.com/docs/guides/troubleshooting/edge-function-takes-too-long-to-respond)
 - [Edge Function 'wall clock time limit reached'](https://supabase.com/docs/guides/troubleshooting/edge-function-wall-clock-time-limit-reached-Nk38bW)
@@ -139532,6 +140046,7 @@ results = index.query(
 - [Should I set a shorter Max-Age parameter on the cookies?](https://supabase.com/docs/guides/troubleshooting/should-i-set-a-shorter-max-age-parameter-on-the-cookies-8sbF4V)
 - [Slow Execution of ALTER TABLE on Large Table when changing column type](https://supabase.com/docs/guides/troubleshooting/slow-execution-of-alter-table-on-large-table-when-changing-column-type-qmZRpZ)
 - [Implementing soft deletes with supabase-js](https://supabase.com/docs/guides/troubleshooting/soft-deletes-with-supabase-js)
+- [SQL confirmations do not appear in your MCP client](https://supabase.com/docs/guides/troubleshooting/sql-confirmations-do-not-appear-in-your-mcp-client-sQf7Kp)
 - [SSO Error: "You do not have permissions to join this organization" or prompts to create new organization](https://supabase.com/docs/guides/troubleshooting/sso-error-you-do-not-have-permissions-to-join-this-organization-or-prompts-to-create-new-organization)
 - [Steps to improve query performance with indexes](https://supabase.com/docs/guides/troubleshooting/steps-to-improve-query-performance-with-indexes-q8PoC9)
 - [Storage error: 403 Forbidden: 'new row violates row-level security policy' on upload](https://supabase.com/docs/guides/troubleshooting/storage-error-403-forbidden-new-row-violates-row-level-security-policy-on-upload-a94384)
@@ -140186,6 +140701,35 @@ When encountering a 'Cloudflare Origin Error 1016' when accessing a custom domai
 If possible, create a new GitHub account using the **same email** as the previous GitHub account that was turned into a Organization or that was deleted. Once you sign in with that newly created account, you should have access to the old account. You can then invite any new account to have access to the Organization and Projects as needed.
 
 If that is not possible, Supabase can help you transfer ownership of an existing organization on your account by inviting a new owner to your organization. This new user will need to have a different email from the previous one, and you will need to email [support@supabase.com](email:support@supabase.com) with that new email as well to confirm that you own the email address.
+
+
+---
+
+# Cost confirmations do not appear in your MCP client
+
+When your connection uses cost confirmation dialogs, the Supabase MCP server asks for [confirmation through your MCP client](https://supabase.com/docs/guides/ai-tools/mcp#cost-confirmation) before `create_project` or `create_branch` creates a resource that incurs charges. If you expect a confirmation dialog and don't see one, work through these checks.
+
+## Your client uses the `get_cost` and `confirm_cost` flow
+
+Cost confirmation dialogs appear when the server offers form-based cost confirmation for the tool and your client supports form elicitations for the request. The specification revision alone does not determine which flow your connection uses. If form-based cost confirmation is unavailable or unsupported, the tool uses the legacy cost confirmation workflow instead. In that workflow, the agent quotes the cost in chat and asks you before creating the resource. No dialog appears, and this is the expected behavior.
+
+To check which flow a creation tool uses, ask your client to list the available Supabase tools and the resource types accepted by `get_cost` and `confirm_cost`. The resource types accepted by these helpers use the legacy cost confirmation workflow; another resource type can use form-based cost confirmation on the same connection. Their absence does not prove that form-based cost confirmation is active: project scoping, account feature settings, or server availability can also hide them.
+
+## Cost confirmations are skipped for the tool
+
+Check your MCP server URL for `skip_elicitations`. If it includes `create_project` or `create_branch`, that tool uses the legacy cost confirmation workflow instead of a confirmation dialog. Skipping the form does not approve the cost or avoid charges. See [Skip form confirmations](https://supabase.com/docs/guides/ai-tools/mcp#skip-form-confirmations).
+
+## The project creation is quoted at zero cost
+
+When a new project creation request uses form-based cost confirmation and is quoted at zero cost, no confirmation is requested and the project is created directly. This exception does not apply to branch creation: when it uses form-based cost confirmation, it asks you to confirm the standard rate before any allowances or exemptions are applied.
+
+## Your client answers elicitations automatically
+
+Some clients support hooks or rules that respond to elicitations without showing a dialog. If resources are created without a visible confirmation on a client that supports the dialog, check your client's elicitation or hook configuration.
+
+## Still stuck?
+
+If none of these explain what you're seeing, open an issue on the [Supabase MCP repository](https://github.com/supabase/mcp) with your client name and version.
 
 
 ---
@@ -142523,6 +143067,39 @@ if (cachedResult) {
 - [Edge Function shutdown reasons explained](./edge-function-shutdown-reasons-explained)
 - [Edge Function limits](https://supabase.com/docs/guides/functions/limits)
 - [Debugging Edge Functions](https://supabase.com/docs/guides/functions/logging)
+
+
+---
+
+# Edge Function secret collection is unavailable or incomplete
+
+The `create_edge_function_secret` tool uses a [Dashboard flow to collect an Edge Function secret](https://supabase.com/docs/guides/ai-tools/mcp#edge-function-secrets). If the tool is unavailable or the flow is incomplete, work through these checks.
+
+## Your connection does not support URL elicitation
+
+The tool requires the server to offer secret collection and your client to support URL elicitations. Support for form elicitations does not imply support for URL elicitations. Check [Client support](https://supabase.com/docs/guides/ai-tools/mcp#client-support) for your connection.
+
+## The tool is unavailable for your project
+
+Check that Edge Functions tools are enabled, your connection is not read-only, and you have read and write permissions for project secrets. These are required for `create_edge_function_secret` to be available.
+
+`skip_elicitations` cannot include `create_edge_function_secret` and does not enable this flow.
+
+## The secret has not been saved in the Dashboard
+
+The tool takes the secret name and project information, not the secret value. Never put the secret value in chat, send it to the model, or include it in tool arguments.
+
+To complete the flow:
+
+1. Open the Dashboard URL provided by the tool.
+2. Enter and save the secret value in the Supabase Dashboard.
+3. Return to your MCP client and confirm completion.
+
+Confirming in your client does not replace saving the value in the Dashboard.
+
+## You cancel after saving the secret
+
+If you cancel the elicitation, this does not undo a secret already saved in the Dashboard. Check the secret in the Dashboard rather than assuming cancellation removed it.
 
 
 ---
@@ -146019,6 +146596,8 @@ Another process may be using the required ports. Check for:
 - Other Supabase projects running locally
 - Docker containers
 - Other development servers
+
+If the conflict comes from another Supabase project, run both projects at the same time with the experimental `supabase stack` commands. They assign each local project its own ports. Turn on the commands and remove the fixed ports from each project's `config.toml` first. See [Running multiple local projects](https://supabase.com/docs/guides/local-development/running-multiple-local-projects).
 
 ### Deno cache issues
 
@@ -150410,6 +150989,39 @@ await supabase.from('items').update({ deleted_at: null }).eq('id', 123)
 Soft deletes are easy to implement with Supabase and Postgres. By combining a `deleted_at` column with views, you can cleanly separate active and deleted records, keeping your application logic clean and maintainable.
 
 This approach provides the flexibility of retaining data for audits or recovery while keeping your app's interface clean and efficient. Start using soft deletes in your Supabase projects today!
+
+
+---
+
+# SQL confirmations do not appear in your MCP client
+
+The Supabase MCP server can ask for [confirmation before running detected destructive SQL](https://supabase.com/docs/guides/ai-tools/mcp#destructive-sql-confirmations) through `execute_sql` or `apply_migration`. If you expect a confirmation dialog and don't see one, work through these checks.
+
+## Form-based SQL confirmation is unavailable or unsupported
+
+SQL confirmation dialogs require your client to support form elicitations for the request. Check your connection against [Client support](https://supabase.com/docs/guides/ai-tools/mcp#client-support).
+
+If form-based SQL confirmation is unavailable or unsupported, the tools follow their existing SQL execution behavior without an additional MCP confirmation prompt. Permissions and read-only restrictions still apply. There is no legacy cost-style confirmation workflow for SQL.
+
+## The SQL does not trigger detection
+
+The tools only request confirmation for SQL detected as destructive. Detection does not catch every destructive statement. A missing prompt does not prove that SQL is safe.
+
+Review the SQL itself rather than relying on a confirmation dialog. Do not run destructive SQL to test whether a prompt appears.
+
+## Your connection is read-only
+
+`execute_sql` only requests destructive SQL confirmation outside read-only mode. Keep read-only mode enabled when you do not need write access; do not disable it to get a confirmation prompt.
+
+## SQL confirmations are skipped for the tool
+
+Check your MCP server URL for `skip_elicitations`. If it includes `execute_sql` or `apply_migration`, that tool follows its existing SQL execution behavior without the additional MCP confirmation prompt. Permissions and read-only restrictions still apply.
+
+To receive supported confirmations, remove the affected tool from `skip_elicitations`. See [Skip form confirmations](https://supabase.com/docs/guides/ai-tools/mcp#skip-form-confirmations).
+
+## Your client answers elicitations automatically
+
+Some clients support hooks or rules that respond to elicitations without showing a dialog. If your client supports form elicitations but no dialog appears, check its elicitation or hook configuration.
 
 
 ---

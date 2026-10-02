@@ -10,12 +10,12 @@ The Trigger.dev MCP server includes tools for having conversations with your cha
 
 ## Available tools
 
-| Tool                 | Description                           |
-| -------------------- | ------------------------------------- |
-| `list_agents`        | List all agents in the current worker |
-| `start_agent_chat`   | Start a conversation with an agent    |
-| `send_agent_message` | Send a message and get the response   |
-| `close_agent_chat`   | Close a conversation                  |
+| Tool | Description |
+| - | - |
+| `list_agents` | List all agents in the current worker |
+| `start_agent_chat` | Start a conversation with an agent |
+| `send_agent_message` | Send a message and get the response |
+| `close_agent_chat` | Close a conversation |
 
 See the [MCP Tools Reference](/docs/mcp-tools#agent-chat-tools) for full details on each tool.
 

@@ -418,7 +418,7 @@ Calculate and collect the right amount of tax on your Stripe transactions. Learn
 
 Set the `automatic_tax` parameter to `enabled: true`.
 
-    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <script src="https://js.stripe.com/endive/stripe.js"></script>
       <div class="product">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14px" height="16px" viewBox="0 0 14 16" version="1.1">
             <defs/>

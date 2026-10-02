@@ -14,7 +14,7 @@ By default (without `pendingMessages`), a message sent while the agent is respon
 
 The `pendingMessages` option enables steering instead, injecting user messages between tool-call steps via the AI SDK's `prepareStep`. Messages that arrive during streaming are queued and injected at the next step boundary. A message that is not injected becomes the next turn instead, whether that is because `shouldInject` returned `false` or because there were no more step boundaries (single-step response or final text generation). The backend handles that, so no client-side re-send is involved.
 
-Injection is what needs wiring: the `pendingMessages` options only reach `streamText` if you spread `chat.toStreamTextOptions()` (or pass `prepareStep`). Without that, nothing injects, so every mid-turn message is answered as the next turn. Deferral does not depend on it.
+Use the `streamText` passed to your agent's `run` callback. It wires up pending-message injection automatically. If you import `streamText` directly from `ai`, spread `chat.toStreamTextOptions()` into its options to connect injection.
 
 ## How it works
 
@@ -32,20 +32,32 @@ Add `pendingMessages` to your `chat.agent` configuration:
 
 ```ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { stepCountIs } from "ai";
+import { stepCountIs, tool } from "ai";
 import { anthropic } from "@ai-sdk/anthropic";
+import { z } from "zod";
+import { setTimeout } from "node:timers/promises";
 
 export const myChat = chat.agent({
   id: "my-chat",
-  registry,
   pendingMessages: {
     // Only inject when there are completed steps (tool calls happened)
     shouldInject: ({ steps }) => steps.length > 0,
   },
   run: async ({ messages, signal, streamText }) => {
     return streamText({
+      model: anthropic("claude-sonnet-4-5"),
       messages,
-      tools: { /* ... */ },
+      tools: {
+        inspectDocument: tool({
+          description: "Inspect a document before summarizing it.",
+          inputSchema: z.object({ topic: z.string() }),
+          execute: async ({ topic }, { abortSignal }) => {
+            // Leave time to send a steering message in this example.
+            await setTimeout(10_000, undefined, { signal: abortSignal });
+            return { topic, findings: "The document describes a chat application." };
+          },
+        }),
+      },
       abortSignal: signal,
       stopWhen: stepCountIs(15),
     });
@@ -53,16 +65,18 @@ export const myChat = chat.agent({
 });
 ```
 
-The `prepareStep` for injection is automatically included when you spread `chat.toStreamTextOptions()`. If you provide your own `prepareStep` after the spread, it overrides the auto-injected one.
+The managed `streamText` composes your `prepareStep` callback after its own. You can add step-specific settings without disconnecting steering. With the manual `chat.toStreamTextOptions()` spread, a later `prepareStep` property replaces the spread's callback.
+
+To try it, ask the agent to inspect a document and summarize it in English. While the tool runs, send a steering message asking for French. The next model step receives that instruction, and the stream includes `data-pending-message-injected`.
 
 ### Options
 
-| Option         | Type                                                   | Description                                                                                         |
-| -------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
-| `shouldInject` | `(event: PendingMessagesBatchEvent) => boolean`        | Decide whether to inject the batch. Called once per step boundary. If absent, no injection happens. |
-| `prepare`      | `(event: PendingMessagesBatchEvent) => ModelMessage[]` | Transform the batch before injection. Default: convert each message via `convertToModelMessages`.   |
-| `onReceived`   | `(event) => void`                                      | Called when a message arrives during streaming (per-message).                                       |
-| `onInjected`   | `(event) => void`                                      | Called after a batch is injected.                                                                   |
+| Option | Type | Description |
+| - | - | - |
+| `shouldInject` | `(event: PendingMessagesBatchEvent) => boolean` | Decide whether to inject the batch. Called once per step boundary. If absent, no injection happens. |
+| `prepare` | `(event: PendingMessagesBatchEvent) => ModelMessage[]` | Transform the batch before injection. Default: convert each message via `convertToModelMessages`. |
+| `onReceived` | `(event) => void` | Called when a message arrives during streaming (per-message). |
+| `onInjected` | `(event) => void` | Called after a batch is injected. |
 
 ### shouldInject
 
@@ -83,15 +97,15 @@ pendingMessages: {
 
 The event includes:
 
-| Field           | Type               | Description                  |
-| --------------- | ------------------ | ---------------------------- |
-| `messages`      | `UIMessage[]`      | All pending messages (batch) |
-| `modelMessages` | `ModelMessage[]`   | Current conversation         |
-| `steps`         | `CompactionStep[]` | Completed steps              |
-| `stepNumber`    | `number`           | Current step (0-indexed)     |
-| `chatId`        | `string`           | Chat session ID              |
-| `turn`          | `number`           | Current turn                 |
-| `clientData`    | `unknown`          | Frontend metadata            |
+| Field | Type | Description |
+| - | - | - |
+| `messages` | `UIMessage[]` | All pending messages (batch) |
+| `modelMessages` | `ModelMessage[]` | Current conversation |
+| `steps` | `CompactionStep[]` | Completed steps |
+| `stepNumber` | `number` | Current step (0-indexed) |
+| `chatId` | `string` | Chat session ID |
+| `turn` | `number` | Current turn |
+| `clientData` | `unknown` | Frontend metadata |
 
 ### prepare
 
@@ -198,12 +212,12 @@ for (let turn = 0; turn < 100; turn++) {
 
 ### MessageAccumulator methods
 
-| Method                           | Description                                                    |
-| -------------------------------- | -------------------------------------------------------------- |
-| `steer(message, modelMessages?)` | Queue a UIMessage for injection (sync)                         |
-| `steerAsync(message)`            | Queue a UIMessage, converting to model messages automatically  |
-| `drainSteering()`                | Get and clear unconsumed steering messages                     |
-| `prepareStep()`                  | Returns a prepareStep function handling injection + compaction |
+| Method | Description |
+| - | - |
+| `steer(message, modelMessages?)` | Queue a UIMessage for injection (sync) |
+| `steerAsync(message)` | Queue a UIMessage, converting to model messages automatically |
+| `drainSteering()` | Get and clear unconsumed steering messages |
+| `prepareStep()` | Returns a prepareStep function handling injection + compaction |
 
 ## Frontend: usePendingMessages hook
 
@@ -294,24 +308,24 @@ function Chat({ chatId }: { chatId: string }) {
 
 ### Hook API
 
-| Property/Method               | Type                                   | Description                                                               |
-| ----------------------------- | -------------------------------------- | ------------------------------------------------------------------------- |
-| `pending`                     | `PendingMessage[]`                     | Current pending messages with `id`, `text`, `mode`, and `injected` status |
-| `steer(text)`                 | `(text: string) => void`               | Send a steering message during streaming, or normal message when ready    |
-| `queue(text)`                 | `(text: string) => void`               | Queue for next turn during streaming, or send normally when ready         |
-| `promoteToSteering(id)`       | `(id: string) => void`                 | Convert a queued message to steering (sends via input stream immediately) |
-| `isInjectionPoint(part)`      | `(part: unknown) => boolean`           | Check if an assistant message part is an injection confirmation           |
-| `getInjectedMessageIds(part)` | `(part: unknown) => string[]`          | Get message IDs from an injection point                                   |
-| `getInjectedMessages(part)`   | `(part: unknown) => InjectedMessage[]` | Get messages (id + text) from an injection point                          |
+| Property/Method | Type | Description |
+| - | - | - |
+| `pending` | `PendingMessage[]` | Current pending messages with `id`, `text`, `mode`, and `injected` status |
+| `steer(text)` | `(text: string) => void` | Send a steering message during streaming, or normal message when ready |
+| `queue(text)` | `(text: string) => void` | Queue for next turn during streaming, or send normally when ready |
+| `promoteToSteering(id)` | `(id: string) => void` | Convert a queued message to steering (sends via input stream immediately) |
+| `isInjectionPoint(part)` | `(part: unknown) => boolean` | Check if an assistant message part is an injection confirmation |
+| `getInjectedMessageIds(part)` | `(part: unknown) => string[]` | Get message IDs from an injection point |
+| `getInjectedMessages(part)` | `(part: unknown) => InjectedMessage[]` | Get messages (id + text) from an injection point |
 
 ### PendingMessage
 
-| Field      | Type                     | Description                             |
-| ---------- | ------------------------ | --------------------------------------- |
-| `id`       | `string`                 | Unique message ID                       |
-| `text`     | `string`                 | Message text                            |
-| `mode`     | `"steering" \| "queued"` | How the message is being handled        |
-| `injected` | `boolean`                | Whether the backend confirmed injection |
+| Field | Type | Description |
+| - | - | - |
+| `id` | `string` | Unique message ID |
+| `text` | `string` | Message text |
+| `mode` | `"steering" \| "queued"` | How the message is being handled |
+| `injected` | `boolean` | Whether the backend confirmed injection |
 
 ### Message lifecycle
 

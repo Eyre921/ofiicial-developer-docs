@@ -1,0 +1,48 @@
+---
+title: "Understanding collections"
+source: https://docs.pinecone.io/guides/indexes/pods/understanding-collections
+path: guides/indexes/pods/understanding-collections
+---
+
+Legacy documentation for Pinecone collections, a pod-only feature for creating static index snapshots. Collections aren't available for serverless indexes.
+
+<Warning>
+  Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
+</Warning>
+
+<Note>
+  SDKs that target API version `2026-07` don't support creating pod-based indexes, and they reject creating an index from a collection. You can still list, describe, and delete existing collections. To create or restore a pod-based index, use an [SDK version](/reference/pinecone-sdks#sdk-versions) that targets an earlier API version, or send an earlier `X-Pinecone-Api-Version` with the REST API. To move a pod-based index to serverless, see [Migrate a pod-based index to serverless](/guides/indexes/pods/migrate-a-pod-based-index-to-serverless).
+</Note>
+
+A collection is a static copy of a pod-based index that only consumes storage. It's a non-queryable representation of a set of records. You can [create a collection](/guides/indexes/pods/back-up-a-pod-based-index) of a pod-based index, and you can [create a new pod-based index from a collection](/guides/indexes/pods/restore-a-pod-based-index). This allows you to restore the index with the same or different configurations.
+
+<Note>
+  Once a collection is created, it can't be moved to a different project.
+</Note>
+
+## Use cases
+
+Creating a collection is useful when performing tasks like the following:
+
+* Protecting an index from manual or system failures.
+* Temporarily shutting down an index.
+* Copying the data from one index into a different index.
+* Making a backup of your index.
+* Experimenting with different index configurations.
+
+## Performance
+
+Collections operations perform differently, depending on the pod type of the index:
+
+* Creating a `p1` or `s1` index from a collection takes approximately 10 minutes.
+* Creating a `p2` index from a collection can take several hours when the number of vectors is on the order of 1,000,000.
+
+## Limitations
+
+Collection limitations are as follows:
+
+* You can only perform operations on collections in the current Pinecone project.
+
+## Pricing
+
+See [Pricing](https://www.pinecone.io/pricing/) for up-to-date pricing information.

@@ -457,13 +457,13 @@ Changelog for the AI Agents SDK.
 
   Customers building human-in-the-loop tools were re-implementing the same accumulator-walking logic to figure out which tool calls were pending, which were resolved, and which results in an incoming wire message were actually new. Lifted into the SDK as five new methods on `chat.history`:
 
-  | Method                                        | Description                                                                                                                                                                         |
-  | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | `chat.history.getPendingToolCalls()`          | Tool calls on the most recent assistant message in `input-available` state — gates fresh user turns during HITL.                                                                    |
-  | `chat.history.getResolvedToolCalls()`         | All tool calls in the chain in `output-available` or `output-error` state.                                                                                                          |
+  | Method | Description |
+  | - | - |
+  | `chat.history.getPendingToolCalls()` | Tool calls on the most recent assistant message in `input-available` state — gates fresh user turns during HITL. |
+  | `chat.history.getResolvedToolCalls()` | All tool calls in the chain in `output-available` or `output-error` state. |
   | `chat.history.extractNewToolResults(message)` | Tool results in `message` whose `toolCallId` is not already resolved on the chain. Most useful in `hydrateMessages` against an incoming wire message, before the runtime merges it. |
-  | `chat.history.getChain()`                     | Same as `chat.history.all()` — alias that reads better alongside parent-aware APIs.                                                                                                 |
-  | `chat.history.findMessage(messageId)`         | Direct lookup; `undefined` if absent.                                                                                                                                               |
+  | `chat.history.getChain()` | Same as `chat.history.all()` — alias that reads better alongside parent-aware APIs. |
+  | `chat.history.findMessage(messageId)` | Direct lookup; `undefined` if absent. |
 
   ```ts theme={"theme":"css-variables"}
   // Refuse a regenerate while a tool call is awaiting an answer

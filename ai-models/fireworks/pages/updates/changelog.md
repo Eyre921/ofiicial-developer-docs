@@ -4,6 +4,42 @@ source: https://docs.fireworks.ai/updates/changelog
 path: updates/changelog
 ---
 
+<ChangelogSearch />
+
+<Update label="2026-10-01">
+  <Badge>Training</Badge>
+
+  # Managed RFT is paused; try RL on the Training API
+
+  **Managed reinforcement fine-tuning (RFT) is paused.** Managed Training no longer accepts new RFT jobs from the Fireworks UI, `firectl`, or the REST API. Existing jobs stay visible in your dashboard, and models you already trained with managed RFT keep serving.
+
+  Try RL on the [Training API](/fine-tuning/training-api/introduction), where you write the rollout and training loop yourself and Fireworks runs the GPUs. Compared with managed RFT, you also get:
+
+  * **Full-parameter RL** on most current models, not just LoRA
+  * **The training shape's full context length**, up to 524K tokens, instead of managed RFT's fixed 32K limit
+  * **Other methods** such as on-policy distillation (OPD) and custom objectives
+
+  Your evaluator logic carries over. Start with [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl).
+
+  **Managed SFT and DPO are unaffected.**
+
+  ## Models no longer available for fine-tuning
+
+  The 70 models below were tunable only through managed RFT. With managed RFT paused, none of them can be fine-tuned on Fireworks anymore, and they no longer appear on the [Models](/fine-tuning/models) page. Inference on these models is not affected by this change.
+
+  <Accordion title="Full list (70 models)">
+    * **DeepSeek:** `deepseek-r1`, `deepseek-r1-basic`, `deepseek-r1-0528`, `deepseek-r1-0528-distill-qwen3-8b`, `deepseek-r1-distill-llama-8b`, `deepseek-r1-distill-llama-70b`, `deepseek-r1-distill-qwen-14b`, `deepseek-r1-distill-qwen-32b`, `deepseek-v3`, `deepseek-v3-0324`, `deepseek-v3p1`, `deepseek-v3p1-terminus`, `deepseek-prover-v2`, `deepseek-coder-1b-base`
+    * **Kimi:** `kimi-k2-instruct`, `kimi-k2-instruct-0905`, `kimi-k2-thinking`
+    * **GLM:** `glm-4p5`, `glm-4p6`, `glm-4p7`
+    * **Qwen 3:** `qwen3-1p7b`, `qwen3-30b-a3b`, `qwen3-30b-a3b-thinking-2507`, `qwen3-235b-a22b`, `qwen3-235b-a22b-thinking-2507`, `qwen3-coder-30b-a3b-instruct`, `qwen3-vl-30b-a3b-instruct`, `qwen3-vl-30b-a3b-thinking`, `qwen3-vl-235b-a22b-instruct`, `qwen3-vl-235b-a22b-thinking`
+    * **Qwen 2.5 and QwQ:** `qwen2p5-14b`, `qwen2p5-14b-instruct`, `qwen-v2p5-14b-instruct`, `qwen2p5-32b`, `qwen2p5-coder-14b`, `qwen2p5-coder-14b-instruct`, `qwen2p5-coder-32b`, `qwen2p5-coder-32b-instruct`, `qwen2p5-coder-32b-instruct-32k-rope`, `qwen2p5-coder-32b-instruct-64k`, `qwen2p5-coder-32b-instruct-128k`, `qwen2p5-vl-7b-instruct`, `qwq-32b`, `qwen-qwq-32b-preview`
+    * **Llama:** `llama-v3-8b`, `llama-v3-8b-instruct`, `llama-v3-8b-instruct-hf`, `llama-v3-70b-instruct`, `llama-v3-70b-instruct-hf`, `llama-v3p1-70b-instruct`, `llama-v3p1-nemotron-70b-instruct`, `llama-v3p2-1b`, `llama-v3p2-1b-instruct`, `llama-guard-2-8b`, `llama-guard-3-1b`, `llama-guard-3-8b`
+    * **gpt-oss:** `gpt-oss-20b`, `gpt-oss-120b`, `gpt-oss-safeguard-20b`, `gpt-oss-safeguard-120b`
+    * **Gemma:** `gemma-3-27b-it`
+    * **Other:** `cogito-v1-preview-llama-8b`, `cogito-v1-preview-llama-70b`, `cogito-v1-preview-qwen-14b`, `cogito-v1-preview-qwen-32b`, `fare-20b`, `firefunction-v2`, `kat-dev-32b`, `mirothinker-1p7`, `rolm-ocr`
+  </Accordion>
+</Update>
+
 <Update label="2026-10-01">
   <Badge>Inference</Badge>
 
@@ -19,6 +55,16 @@ path: updates/changelog
   We are also rolling out infrastructure improvements designed to improve cache hit rate, minimize cost per task, and deliver a faster, more reliable experience across the board.
 
   See [Serverless pricing](/serverless/pricing) for the full rate card.
+</Update>
+
+<Update label="2026-09-28">
+  <Badge>Training</Badge>
+
+  # New training model: DeepSeek V4.1 Flash
+
+  **[DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), with up to 262K context. It's a strong base for agentic coding, terminal automation, and tool use. SFT is supported at launch, and RL support is coming soon.
+
+  See the [training model catalog](/fine-tuning/models) for current availability.
 </Update>
 
 <Update label="2026-09-26">
@@ -41,6 +87,26 @@ path: updates/changelog
   See [Serverless pricing](/serverless/pricing) and [Which model should I use?](/guides/recommended-models).
 </Update>
 
+<Update label="2026-09-22">
+  <Badge>Training</Badge>
+
+  # New Serverless Training model: GLM 5.3 Flash
+
+  **[GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 200K context and both text and vision inputs.
+
+  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
+</Update>
+
+<Update label="2026-09-16">
+  <Badge>Training</Badge>
+
+  # New Serverless Training model: GLM 5.3
+
+  **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** is now available for LoRA workloads on the shared Serverless Training pool, with up to 262K context. There's no capacity to reserve and you pay per token. Move the same loop to [Dedicated Training](/fine-tuning/training-api/dedicated) for your most demanding workloads.
+
+  See the [Serverless Training guide](/fine-tuning/training-api/serverless) for setup and the [training model catalog](/fine-tuning/models) for current availability.
+</Update>
+
 <Update label="2026-09-16">
   <Badge>Platform</Badge>
 
@@ -52,6 +118,16 @@ path: updates/changelog
   * **`acceptShapelessRisk=true`** — an explicit opt-out that creates the deployment without a shape, preserving current behavior. It cannot be combined with a shape.
 
   Deployments created without a shape skip shape validation and are the most common cause of failed deployment creations. Enforcement is coming soon: shapeless creation will then require the explicit opt-in, so start passing a shape (or `default`) now. The opt-out is for advanced users only. If you have a workload no existing shape covers, [contact us](https://fireworks.ai/contact) and we'll help you find or add one.
+</Update>
+
+<Update label="2026-09-13">
+  <Badge>Training</Badge>
+
+  # New training model: GLM 5.3 Flash
+
+  **[GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), including vision training, with up to 262K context. It performs well on agentic coding, document analysis, and tool use, and is cost-efficient to serve.
+
+  See the [training model catalog](/fine-tuning/models) for current availability.
 </Update>
 
 <Update label="2026-09-12">
@@ -114,6 +190,16 @@ path: updates/changelog
   Existing stored annotations were not rewritten. Clients using a bare key such as `environment` should set `custom/environment` and update reads to use that canonical key.
 
   See [Deployment Tags](/deployments/deployment-tags) for commands, REST examples, validation rules, and migration guidance.
+</Update>
+
+<Update label="2026-09-07">
+  <Badge>Training</Badge>
+
+  # New training model: GLM 5.3
+
+  **[GLM 5.3](https://app.fireworks.ai/models/fireworks/glm-5p3)** is now available for LoRA training on the [Dedicated Training API](/fine-tuning/training-api/dedicated), with up to 204K context. It's built for complex coding and long-horizon agents.
+
+  See the [training model catalog](/fine-tuning/models) for current availability.
 </Update>
 
 <Update label="2026-09-01">

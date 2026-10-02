@@ -140,11 +140,11 @@ There is a [huge library of instrumentations](https://opentelemetry.io/ecosystem
 
 Some ones we recommend:
 
-| Package                               | Description                                                                                                              |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `@opentelemetry/instrumentation-http` | Logs all HTTP calls                                                                                                      |
-| `@prisma/instrumentation`             | Logs all Prisma calls, you need to [enable tracing](https://github.com/prisma/prisma/tree/main/packages/instrumentation) |
-| `@traceloop/instrumentation-openai`   | Logs all OpenAI calls                                                                                                    |
+| Package | Description |
+| - | - |
+| `@opentelemetry/instrumentation-http` | Logs all HTTP calls |
+| `@prisma/instrumentation` | Logs all Prisma calls, you need to [enable tracing](https://github.com/prisma/prisma/tree/main/packages/instrumentation) |
+| `@traceloop/instrumentation-openai` | Logs all OpenAI calls |
 
 <Note>
   `@opentelemetry/instrumentation-fs` which logs all file system calls is currently not supported.
@@ -267,6 +267,8 @@ export default defineConfig({
 
 ## Runtime
 
+If you don't set a `runtime`, your tasks run on the current Node.js LTS. Setting `runtime: "node"` does the same thing — see the Node.js versions section below to pin a specific version instead.
+
 We currently only officially support the `node` runtime, but you can try our experimental `bun` runtime by setting the `runtime` option in your config file:
 
 ```ts trigger.config.ts theme={"theme":"css-variables"}
@@ -283,15 +285,15 @@ See our [Bun guide](/docs/guides/frameworks/bun) for more information.
 
 ### Node.js versions
 
-Trigger.dev runs your tasks on specific Node.js versions:
+Trigger.dev runs your deployed tasks on one of these runtimes:
 
-* Node.js `21.7.3` (default)
-* Node.js `22.16.0` (`node-22`)
-* Node.js `24.18.0` (`node-24`)
-* Node.js `26.4.0` (`node-26`)
-* Bun `1.3.3` (`bun`)
+* Node.js `node` — the default, tracks the current Node.js LTS (today `24.18.0`)
+* Node.js `node-22` — `22.16.0`
+* Node.js `node-24` — `24.18.0`
+* Node.js `node-26` — `26.4.0`
+* Bun `bun` — `1.3.3`
 
-You can change the runtime by setting the `runtime` field in your `trigger.config.ts` file.
+If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on the current Node.js LTS. That version moves forward as new LTS releases land, so set an explicit version — for example `runtime: "node-24"` — if you need it to stay fixed.
 
 ```ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";

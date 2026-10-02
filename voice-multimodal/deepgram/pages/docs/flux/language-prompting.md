@@ -12,7 +12,7 @@ path: docs/flux/language-prompting
 
 Flux Multilingual (`flux-general-multi`) is a single model supporting 10 languages with the same turn-aware, interruption-aware conversational intelligence as `flux-general-en`. The optional `language_hint` parameter biases the model toward specific languages, delivering accuracy on par with dedicated monolingual models. Without hints, the model auto-detects the spoken language.
 
-Flux Multilingual uses the same production endpoint and API key you already use for Flux. Just set `model=flux-general-multi` — no new credentials or endpoints required. Pricing is the same as `flux-general-en`.
+Flux Multilingual uses the same production endpoint and API key you already use for Flux. Just set `model=flux-general-multi` — no new credentials or endpoints required.
 
 > **Info**
 >

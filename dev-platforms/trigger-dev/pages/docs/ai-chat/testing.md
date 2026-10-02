@@ -75,11 +75,11 @@ describe("myChatAgent", () => {
 });
 ```
 
-The agent reads the mock model from `clientData`:
+This test-only agent reads the mock model from `clientData`. Keep this injection point in your test fixture; select production models on the server.
 
 ```ts trigger/my-chat.ts theme={"theme":"css-variables"}
 import { chat } from "@trigger.dev/sdk/ai";
-import { streamText, type LanguageModel } from "ai";
+import { stepCountIs, type LanguageModel } from "ai";
 import { z } from "zod";
 
 type ClientData = { model: LanguageModel };
@@ -92,7 +92,7 @@ export const myChatAgent = chat
   })
   .agent({
     id: "my-chat",
-    run: async ({ messages, clientData, signal }) => {
+    run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
         model: clientData?.model ?? "openai/gpt-4o-mini",
         messages,
@@ -161,7 +161,7 @@ export const agent = chat
   .withClientData({ schema: z.custom<ClientData>() })
   .agent({
     id: "agent",
-    run: async ({ messages, clientData, signal }) => {
+    run: async ({ messages, clientData, signal, streamText }) => {
       return streamText({
         model: clientData?.model ?? anthropic("claude-haiku-4-5"),
         messages,
@@ -602,50 +602,50 @@ function mockChatAgent(
 
 #### MockChatAgentOptions
 
-| Option          | Type                                                                    | Default       | Description                                                                                                                                                                                                                                                                                      |
-| --------------- | ----------------------------------------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `chatId`        | `string`                                                                | `"test-chat"` | Chat session id passed in every wire payload.                                                                                                                                                                                                                                                    |
-| `clientData`    | `unknown`                                                               | `undefined`   | Client-provided data forwarded to `run()` and every hook.                                                                                                                                                                                                                                        |
-| `taskContext`   | `MockTaskContextOptions`                                                | `{}`          | Overrides for the mock `TaskRunContext`. Use `ctx.attempt.number > 1` to simulate an OOM-retry attempt — the agent skips `onChatStart` (same as continuation runs).                                                                                                                              |
-| `preload`       | `boolean`                                                               | `true`        | Start in preload mode. When `false`, the first `sendMessage()` starts turn 0 directly without preload. Ignored when `mode` is set explicitly.                                                                                                                                                    |
-| `mode`          | `"preload" \| "submit-message" \| "handover-prepare" \| "continuation"` | derived       | Initial boot trigger. Defaults to `"preload"` (or `"submit-message"` when `preload: false`, or `"continuation"` when `continuation: true`). See [Boot modes](#boot-modes) below.                                                                                                                 |
-| `continuation`  | `boolean`                                                               | `false`       | Boot as a continuation run (a new run on an existing session). Auto-selects `mode: "continuation"` if `mode` is not set — boots with `trigger` omitted and `continuation: true` in the payload, exercising the SDK's continuation-wait branch. `onChatStart` does NOT fire on continuation runs. |
-| `previousRunId` | `string`                                                                | `undefined`   | Set `payload.previousRunId` on the initial wire payload. Typically paired with `continuation: true`.                                                                                                                                                                                             |
-| `snapshot`      | `ChatSnapshotV1`                                                        | `undefined`   | Pre-seed the snapshot the agent reads at run boot (replaces the real S3 GET). Use to drive resume scenarios with prior history. See [Persistence and replay](/docs/ai-chat/patterns/persistence-and-replay) for the production snapshot model.                                                   |
-| `setupLocals`   | `({ set }) => void \| Promise<void>`                                    | `undefined`   | Callback invoked before `run()` starts. Use `set(key, value)` to inject server-side dependencies (DB clients, service stubs) that the agent reads via `locals.get()`.                                                                                                                            |
+| Option | Type | Default | Description |
+| - | - | - | - |
+| `chatId` | `string` | `"test-chat"` | Chat session id passed in every wire payload. |
+| `clientData` | `unknown` | `undefined` | Client-provided data forwarded to `run()` and every hook. |
+| `taskContext` | `MockTaskContextOptions` | `{}` | Overrides for the mock `TaskRunContext`. Use `ctx.attempt.number > 1` to simulate an OOM-retry attempt — the agent skips `onChatStart` (same as continuation runs). |
+| `preload` | `boolean` | `true` | Start in preload mode. When `false`, the first `sendMessage()` starts turn 0 directly without preload. Ignored when `mode` is set explicitly. |
+| `mode` | `"preload" \| "submit-message" \| "handover-prepare" \| "continuation"` | derived | Initial boot trigger. Defaults to `"preload"` (or `"submit-message"` when `preload: false`, or `"continuation"` when `continuation: true`). See [Boot modes](#boot-modes) below. |
+| `continuation` | `boolean` | `false` | Boot as a continuation run (a new run on an existing session). Auto-selects `mode: "continuation"` if `mode` is not set — boots with `trigger` omitted and `continuation: true` in the payload, exercising the SDK's continuation-wait branch. `onChatStart` does NOT fire on continuation runs. |
+| `previousRunId` | `string` | `undefined` | Set `payload.previousRunId` on the initial wire payload. Typically paired with `continuation: true`. |
+| `snapshot` | `ChatSnapshotV1` | `undefined` | Pre-seed the snapshot the agent reads at run boot (replaces the real S3 GET). Use to drive resume scenarios with prior history. See [Persistence and replay](/docs/ai-chat/patterns/persistence-and-replay) for the production snapshot model. |
+| `setupLocals` | `({ set }) => void \| Promise<void>` | `undefined` | Callback invoked before `run()` starts. Use `set(key, value)` to inject server-side dependencies (DB clients, service stubs) that the agent reads via `locals.get()`. |
 
 ##### Boot modes
 
 The harness's initial wire payload depends on `mode`:
 
-| Mode                 | Wire payload                            | Use when                                                                                                                                                                                                                                                                                                       |
-| -------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `"preload"`          | `{ trigger: "preload" }`                | Simulating a `transport.preload(chatId)` warm-up. Fires `onPreload`, waits for the first `sendMessage()`.                                                                                                                                                                                                      |
-| `"submit-message"`   | `{ trigger: "submit-message" }`         | Skipping preload — `sendMessage()` drives turn 0 directly.                                                                                                                                                                                                                                                     |
-| `"continuation"`     | `{ continuation: true }` (no `trigger`) | A new run picking up an existing session after the prior run ended (`chat.endRun`, waitpoint timeout, `chat.requestUpgrade`). Mirrors the boot payload the server's `ensureRunForSession` / `swapSessionRun` produce. The SDK enters its continuation-wait branch — `onPreload` and `onChatStart` do NOT fire. |
-| `"handover-prepare"` | `{ trigger: "handover-prepare" }`       | Driving the `chat.handover` wait path. Use `sendHandover()` / `sendHandoverSkip()` to dispatch the handover signal.                                                                                                                                                                                            |
+| Mode | Wire payload | Use when |
+| - | - | - |
+| `"preload"` | `{ trigger: "preload" }` | Simulating a `transport.preload(chatId)` warm-up. Fires `onPreload`, waits for the first `sendMessage()`. |
+| `"submit-message"` | `{ trigger: "submit-message" }` | Skipping preload — `sendMessage()` drives turn 0 directly. |
+| `"continuation"` | `{ continuation: true }` (no `trigger`) | A new run picking up an existing session after the prior run ended (`chat.endRun`, waitpoint timeout, `chat.requestUpgrade`). Mirrors the boot payload the server's `ensureRunForSession` / `swapSessionRun` produce. The SDK enters its continuation-wait branch — `onPreload` and `onChatStart` do NOT fire. |
+| `"handover-prepare"` | `{ trigger: "handover-prepare" }` | Driving the `chat.handover` wait path. Use `sendHandover()` / `sendHandoverSkip()` to dispatch the handover signal. |
 
 #### MockChatAgentHarness
 
-| Member                                                            | Description                                                                                                                                                                                     |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chatId`                                                          | The chat session id used by this harness.                                                                                                                                                       |
-| `sendMessage(message)`                                            | Send a single user message (or tool-approval-responded assistant message). Slim wire: at most ONE message per record. Returns the chunks produced during the resulting turn.                    |
-| `sendRegenerate()`                                                | Send a regenerate-message trigger (no body — slim wire). The agent trims trailing assistant messages from its accumulator and re-runs.                                                          |
-| `sendHeadStart({ messages })`                                     | Drive the head-start path: sends `trigger: "handover-prepare"` with `headStartMessages` carrying the first-turn UIMessage history. Used only at the very first turn before any snapshot exists. |
-| `sendHandover({ partialAssistantMessage, isFinal?, messageId? })` | Dispatch a `handover` signal — only meaningful when started with `mode: "handover-prepare"`. The agent picks up partial assistant messages and continues the turn.                              |
-| `sendHandoverSkip()`                                              | Dispatch a `handover-skip` signal — only meaningful when started with `mode: "handover-prepare"`. The agent exits cleanly without firing turn hooks.                                            |
-| `sendAction(action)`                                              | Route a custom action through `actionSchema` + `onAction`.                                                                                                                                      |
-| `sendPendingMessage(message)`                                     | Append a user message mid-turn without waiting for a turn to complete, so it reaches the running turn as a steering message. Resolves once the record has landed on `session.in`.               |
-| `sendStop(message?)`                                              | Fire a stop signal. Does not wait for the turn — the run's `signal.aborted` becomes `true`.                                                                                                     |
-| `seedSnapshot(snapshot)`                                          | Pre-seed the snapshot read for the next boot. Effective on the next run boot only.                                                                                                              |
-| `seedSessionOutTail(chunks?)`                                     | Pre-seed `session.out` chunks for the next boot's replay. Reduces to settled assistant turns.                                                                                                   |
-| `seedSessionOutPartial(message?)`                                 | Pre-seed a trailing partial assistant for the next boot's replay. Surfaces as `event.partialAssistant` in `onRecoveryBoot`.                                                                     |
-| `seedSessionInTail(messages)`                                     | Pre-seed user messages on `session.in` for the next boot. Surfaces as `event.inFlightUsers` in `onRecoveryBoot`.                                                                                |
-| `getSnapshot()`                                                   | The most recently written snapshot, or `undefined` if no snapshot was written.                                                                                                                  |
-| `close()`                                                         | Send a `close` trigger, abort the signal, wait for `run()` to return. Always call at end of test.                                                                                               |
-| `allChunks`                                                       | Every `UIMessageChunk` emitted since the harness was created.                                                                                                                                   |
-| `allRawChunks`                                                    | Every raw chunk emitted since creation, including control chunks (`trigger:turn-complete`, errors).                                                                                             |
+| Member | Description |
+| - | - |
+| `chatId` | The chat session id used by this harness. |
+| `sendMessage(message)` | Send a single user message (or tool-approval-responded assistant message). Slim wire: at most ONE message per record. Returns the chunks produced during the resulting turn. |
+| `sendRegenerate()` | Send a regenerate-message trigger (no body — slim wire). The agent trims trailing assistant messages from its accumulator and re-runs. |
+| `sendHeadStart({ messages })` | Drive the head-start path: sends `trigger: "handover-prepare"` with `headStartMessages` carrying the first-turn UIMessage history. Used only at the very first turn before any snapshot exists. |
+| `sendHandover({ partialAssistantMessage, isFinal?, messageId? })` | Dispatch a `handover` signal — only meaningful when started with `mode: "handover-prepare"`. The agent picks up partial assistant messages and continues the turn. |
+| `sendHandoverSkip()` | Dispatch a `handover-skip` signal — only meaningful when started with `mode: "handover-prepare"`. The agent exits cleanly without firing turn hooks. |
+| `sendAction(action)` | Route a custom action through `actionSchema` + `onAction`. |
+| `sendPendingMessage(message)` | Append a user message mid-turn without waiting for a turn to complete, so it reaches the running turn as a steering message. Resolves once the record has landed on `session.in`. |
+| `sendStop(message?)` | Fire a stop signal. Does not wait for the turn — the run's `signal.aborted` becomes `true`. |
+| `seedSnapshot(snapshot)` | Pre-seed the snapshot read for the next boot. Effective on the next run boot only. |
+| `seedSessionOutTail(chunks?)` | Pre-seed `session.out` chunks for the next boot's replay. Reduces to settled assistant turns. |
+| `seedSessionOutPartial(message?)` | Pre-seed a trailing partial assistant for the next boot's replay. Surfaces as `event.partialAssistant` in `onRecoveryBoot`. |
+| `seedSessionInTail(messages)` | Pre-seed user messages on `session.in` for the next boot. Surfaces as `event.inFlightUsers` in `onRecoveryBoot`. |
+| `getSnapshot()` | The most recently written snapshot, or `undefined` if no snapshot was written. |
+| `close()` | Send a `close` trigger, abort the signal, wait for `run()` to return. Always call at end of test. |
+| `allChunks` | Every `UIMessageChunk` emitted since the harness was created. |
+| `allRawChunks` | Every raw chunk emitted since creation, including control chunks (`trigger:turn-complete`, errors). |
 
 ### runInMockTaskContext
 
@@ -679,3 +679,15 @@ await runInMockTaskContext(
 * **Single agent per process.** The resource catalog is process-global; tests within a file are sequential by default. If you parallelize across files, vitest runs each file in its own worker, which avoids registry collisions.
 * **Time-sensitive hooks.** `onTurnComplete` runs *after* the `turn-complete` chunk is written, so `sendMessage()` resolves before that hook finishes. Add a brief `await new Promise((r) => setTimeout(r, 20))` if you need to assert on hook side-effects.
 * **No real LLM.** The harness does not call providers — you must inject `MockLanguageModelV3` (or another mock) yourself.
+
+## Check the deployed behavior
+
+The harness checks your agent logic without a running platform. Also exercise the transport against a development or staging environment with a real model:
+
+* Send a message, reload during a tool call, and check that the conversation resumes without duplicate message IDs.
+* Send a pending message during a slow tool. Test both injection and deferral to the next turn.
+* Interrupt the model stream after some text arrives. Check the error, partial transcript, and a successful next turn.
+* Stop a resumed response and check `stopped` in `onTurnComplete`.
+* Try reading a chat and minting its token as another user. Both requests should fail before calling the SDK.
+
+For custom storage, test against your actual adapter. Include pagination boundaries, repeated saves, partial responses, and branch isolation. Development workers don't exercise deployed-worker checkpoint and restore; verify that separately if your application relies on it.

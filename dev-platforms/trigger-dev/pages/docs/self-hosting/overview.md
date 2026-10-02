@@ -42,37 +42,37 @@ The self-hosted version is a set of containers running on your own infrastructur
 
 While [limits](#limits) are generally configurable when self-hosting, some features are only available on Trigger.dev Cloud:
 
-| Feature           | Cloud | Self-hosted | Description                             |
-| :---------------- | :---- | :---------- | :-------------------------------------- |
-| Warm starts       | ✅     | ❌           | Faster startups for consecutive runs    |
-| Auto-scaling      | ✅     | ❌           | No need for manual worker node scaling  |
-| Checkpoints       | ✅     | ❌           | Non-blocking waits, less resource usage |
-| Dedicated support | ✅     | ❌           | Direct access to our support team       |
-| Community support | ✅     | ✅           | Access to our Discord community         |
-| ARM support       | ✅     | ✅           | ARM-based deployments                   |
+| Feature | Cloud | Self-hosted | Description |
+| :- | :- | :- | :- |
+| Warm starts | ✅ | ❌ | Faster startups for consecutive runs |
+| Auto-scaling | ✅ | ❌ | No need for manual worker node scaling |
+| Checkpoints | ✅ | ❌ | Non-blocking waits, less resource usage |
+| Dedicated support | ✅ | ❌ | Direct access to our support team |
+| Community support | ✅ | ✅ | Access to our Discord community |
+| ARM support | ✅ | ✅ | ARM-based deployments |
 
 ## Limits
 
 Most of the [limits](/docs/limits) are configurable when self-hosting, with some hardcoded exceptions. You can configure them via environment variables on the [webapp](/docs/self-hosting/env/webapp) container.
 
-| Limit             | Configurable | Hardcoded value |
-| :---------------- | :----------- | :-------------- |
-| Concurrency       | ✅            | —               |
-| Rate limits       | ✅            | —               |
-| Queued tasks      | ✅            | —               |
-| Task payloads     | ✅            | —               |
-| Batch payloads    | ✅            | —               |
-| Task outputs      | ✅            | —               |
-| Batch size        | ✅            | —               |
-| Log size          | ✅            | —               |
-| Machines          | ✅            | —               |
-| OTel limits       | ✅            | —               |
-| Log retention     | —            | Never deleted   |
-| I/O packet length | ❌            | 128KB           |
-| Alerts            | ❌            | 100M            |
-| Schedules         | ❌            | 100M            |
-| Team members      | ❌            | 100M            |
-| Preview branches  | ❌            | 100M            |
+| Limit | Configurable | Hardcoded value |
+| :- | :- | :- |
+| Concurrency | ✅ | — |
+| Rate limits | ✅ | — |
+| Queued tasks | ✅ | — |
+| Task payloads | ✅ | — |
+| Batch payloads | ✅ | — |
+| Task outputs | ✅ | — |
+| Batch size | ✅ | — |
+| Log size | ✅ | — |
+| Machines | ✅ | — |
+| OTel limits | ✅ | — |
+| Log retention | — | Never deleted |
+| I/O packet length | ❌ | 128KB |
+| Alerts | ❌ | 100M |
+| Schedules | ❌ | 100M |
+| Team members | ❌ | 100M |
+| Preview branches | ❌ | 100M |
 
 ### Machine overrides
 

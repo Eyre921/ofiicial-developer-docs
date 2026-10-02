@@ -192,29 +192,31 @@ Pick `"preload"` when the UI has rendered but the user hasn't typed (warms the a
 
 ### Required fields
 
-| Field                       | Type     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| --------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`                      | `string` | Discriminator. Use `"chat.agent"`.                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `taskIdentifier`            | `string` | The `id` you passed to `chat.agent({ id: ... })` — e.g. `"ai-chat"`.                                                                                                                                                                                                                                                                                                                                                                                           |
+| Field | Type | Description |
+| - | - | - |
+| `type` | `string` | Discriminator. Use `"chat.agent"`. |
+| `taskIdentifier` | `string` | The `id` you passed to `chat.agent({ id: ... })` — e.g. `"ai-chat"`. |
 | `triggerConfig.basePayload` | `object` | The wire payload sent to the **first run** created by this call. Same shape as [`ChatTaskWirePayload`](#chattaskwirepayload) in Step 3. Durable fields (`chatId`, `metadata`, `idleTimeoutInSeconds`, `sessionId`) flow through to continuation runs too; first-turn-only fields (`message`, `trigger`) are stripped on continuations — those are session-create concerns and don't replay. See [What goes in `basePayload`](#what-goes-in-basepayload) below. |
 
 ### Optional fields
 
-| Field                                | Type                | Description                                                                                                                                                                                             |
-| ------------------------------------ | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `externalId`                         | `string`            | Your stable chat ID. Strongly recommended — without it, repeat calls create new sessions. Cannot start with `session_`.                                                                                 |
-| `tags`                               | `string[]`          | Up to 10 dashboard tags.                                                                                                                                                                                |
-| `metadata`                           | `object`            | Arbitrary JSON metadata stored on the session row (separate from `basePayload.metadata`, which goes to the agent).                                                                                      |
-| `expiresAt`                          | `string` (ISO date) | Retention cap.                                                                                                                                                                                          |
-| `triggerConfig.machine`              | `string`            | Machine preset (`micro`, `small-1x`, …) for every run.                                                                                                                                                  |
-| `triggerConfig.queue`                | `string`            | Queue name.                                                                                                                                                                                             |
-| `triggerConfig.tags`                 | `string[]`          | Tags applied to every run (in addition to session-level `tags`).                                                                                                                                        |
-| `triggerConfig.maxAttempts`          | `number`            | Per-run retry cap (1–10).                                                                                                                                                                               |
-| `triggerConfig.maxDuration`          | `number`            | Per-run wall-clock cap, seconds.                                                                                                                                                                        |
-| `triggerConfig.lockToVersion`        | `string`            | Pin every run to a specific worker version.                                                                                                                                                             |
-| `triggerConfig.externalDeploymentId` | `string \| null`    | Pin every run to the deployment carrying this [external deployment id](/docs/deployment/version-skew-protection#chat-sessions). Discovered from the environment when omitted; `null` opts the chat out. |
-| `triggerConfig.region`               | `string`            | Region preference.                                                                                                                                                                                      |
-| `triggerConfig.idleTimeoutInSeconds` | `number`            | Surfaced to the agent through the wire payload (1–3600).                                                                                                                                                |
+| Field | Type | Description |
+| - | - | - |
+| `externalId` | `string` | Your stable chat ID. Strongly recommended — without it, repeat calls create new sessions. Cannot start with `session_`. |
+| `tags` | `string[]` | Up to 10 dashboard tags. |
+| `metadata` | `object` | Arbitrary JSON metadata stored on the session row (separate from `basePayload.metadata`, which goes to the agent). |
+| `expiresAt` | `string` (ISO date) | Retention cap. |
+| `triggerConfig.machine` | `string` | Machine preset (`micro`, `small-1x`, …) for every run. |
+| `triggerConfig.queue` | `string` | Queue name. |
+| `triggerConfig.concurrency` | `string[]` | Up to two [named concurrency limits](/docs/concurrency#sharing-a-limit-between-tasks) every run holds, replacing the task's declared named limits. |
+| `triggerConfig.concurrencyKey` | `string` | Scopes every run of this session to its own pool under each `perKey` bound it holds. Never defaulted — pass one (e.g. your chat or tenant ID) to isolate sessions from each other. |
+| `triggerConfig.tags` | `string[]` | Tags applied to every run (in addition to session-level `tags`). |
+| `triggerConfig.maxAttempts` | `number` | Per-run retry cap (1–10). |
+| `triggerConfig.maxDuration` | `number` | Per-run wall-clock cap, seconds. |
+| `triggerConfig.lockToVersion` | `string` | Pin every run to a specific worker version. |
+| `triggerConfig.externalDeploymentId` | `string \| null` | Pin every run to the deployment carrying this [external deployment id](/docs/deployment/atomic-deployment#chat-sessions). Discovered from the environment when omitted; `null` opts the chat out. |
+| `triggerConfig.region` | `string` | Region preference. |
+| `triggerConfig.idleTimeoutInSeconds` | `number` | Surfaced to the agent through the wire payload (1–3600). |
 
 ### What goes in `basePayload`
 
@@ -253,12 +255,12 @@ x-trigger-jwt-claims: {"sub":"...","scopes":["read:runs:run_abc123","write:input
 }
 ```
 
-| Field                    | Description                                                                                                                                                                                                                                             |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                     | The `session_*` friendly ID. Stable for the life of the conversation.                                                                                                                                                                                   |
-| `runId` / `currentRunId` | Friendly ID of the first run. Identical on a fresh create; will diverge over the conversation (see [Continuations](#continuations)).                                                                                                                    |
-| `publicAccessToken`      | Session-scoped JWT carrying `read:sessions:{externalId}` + `write:sessions:{externalId}`. **This is the token you use for every subsequent `.in`/`.out` call.** Persist it. Lifetime is 60 minutes — see [Refreshing the token](#refreshing-the-token). |
-| `isCached`               | `true` if the session existed already (idempotent re-create). HTTP status is 200 in that case, 201 on a fresh create.                                                                                                                                   |
+| Field | Description |
+| - | - |
+| `id` | The `session_*` friendly ID. Stable for the life of the conversation. |
+| `runId` / `currentRunId` | Friendly ID of the first run. Identical on a fresh create; will diverge over the conversation (see [Continuations](#continuations)). |
+| `publicAccessToken` | Session-scoped JWT carrying `read:sessions:{externalId}` + `write:sessions:{externalId}`. **This is the token you use for every subsequent `.in`/`.out` call.** Persist it. Lifetime is 60 minutes — see [Refreshing the token](#refreshing-the-token). |
+| `isCached` | `true` if the session existed already (idempotent re-create). HTTP status is 200 in that case, 201 on a fresh create. |
 
 <Warning>
   **Use `publicAccessToken` from the body, not the `x-trigger-jwt` response header.** The header is included by the underlying run-trigger machinery and carries **run-scoped** scopes (`read:runs:{runId}` + `write:inputStreams:{runId}`) — it cannot subscribe to `.out` or append to `.in`. The body's `publicAccessToken` is the only token with the correct session-level scopes.
@@ -320,11 +322,11 @@ If nothing arrives by the deadline, the server sends `data: [DONE]` and closes. 
 
 The output stream uses [S2](https://s2.dev) under the hood and follows the standard SSE wire format ([WHATWG spec](https://html.spec.whatwg.org/multipage/server-sent-events.html#parsing-an-event-stream)). Three event types arrive on the wire:
 
-| Event                                | Meaning                                                                                                                                                                                                                                                                                 |
-| ------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `batch`                              | One or more records. The records you actually care about.                                                                                                                                                                                                                               |
-| `ping`                               | Keepalive (\~every 5s on idle). Body is `{"timestamp": <ms>}`, and on backends that report it a `tail` (same `{seq_num, timestamp}` shape as a batch tail). The tail is what lets you tell you have caught up to the live edge; if you don't need caught-up detection, ignore the ping. |
-| *(no `event:`, just `data: [DONE]`)* | Stream is closing — server sends this once before EOF.                                                                                                                                                                                                                                  |
+| Event | Meaning |
+| - | - |
+| `batch` | One or more records. The records you actually care about. |
+| `ping` | Keepalive (\~every 5s on idle). Body is `{"timestamp": <ms>}`, and on backends that report it a `tail` (same `{seq_num, timestamp}` shape as a batch tail). The tail is what lets you tell you have caught up to the live edge; if you don't need caught-up detection, ignore the ping. |
+| *(no `event:`, just `data: [DONE]`)* | Stream is closing — server sends this once before EOF. |
 
 A `batch` event in raw SSE format looks like this — note the `data` is a single line of JSON, no embedded newlines (per the SSE spec):
 
@@ -355,25 +357,25 @@ Decoded `data` payload:
 }
 ```
 
-| Field                 | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `records[]`           | One or more records delivered in this batch, in arrival order.                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `records[].seq_num`   | Monotonic per-record cursor. Use the **last** one you successfully processed as your `Last-Event-ID` on resume.                                                                                                                                                                                                                                                                                                                                                                    |
-| `records[].timestamp` | Unix ms when the record was written to S2.                                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `records[].body`      | For data records: a JSON-encoded **string** wrapping `{ data: UIMessageChunk, id: string }`. For control records: an empty string (semantics live in `headers`). For S2 command records: opaque bytes. See [Records on session.out](#records-on-session-out).                                                                                                                                                                                                                      |
-| `records[].headers`   | Optional `[name, value]` pairs. Empty for data records; a `trigger-control` entry for control records; a single empty-name `["", "<op>"]` entry for S2 command records.                                                                                                                                                                                                                                                                                                            |
-| `tail.seq_num`        | Latest known tail of the S2 stream, useful for detecting how far behind the live edge you are. Track the **highest `seq_num` you have received**, counting every record in the batch (including the command records you skip, see below), not just the last application-visible one. When `highest received seq_num + 1 === tail.seq_num` you have drained the backlog and are caught up to the live edge. The same `tail` also rides on `ping` events. Skip if you don't need it. |
-| `tail.timestamp`      | Timestamp of `tail.seq_num`.                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Field | Description |
+| - | - |
+| `records[]` | One or more records delivered in this batch, in arrival order. |
+| `records[].seq_num` | Monotonic per-record cursor. Use the **last** one you successfully processed as your `Last-Event-ID` on resume. |
+| `records[].timestamp` | Unix ms when the record was written to S2. |
+| `records[].body` | For data records: a JSON-encoded **string** wrapping `{ data: UIMessageChunk, id: string }`. For control records: an empty string (semantics live in `headers`). For S2 command records: opaque bytes. See [Records on session.out](#records-on-session-out). |
+| `records[].headers` | Optional `[name, value]` pairs. Empty for data records; a `trigger-control` entry for control records; a single empty-name `["", "<op>"]` entry for S2 command records. |
+| `tail.seq_num` | Latest known tail of the S2 stream, useful for detecting how far behind the live edge you are. Track the **highest `seq_num` you have received**, counting every record in the batch (including the command records you skip, see below), not just the last application-visible one. When `highest received seq_num + 1 === tail.seq_num` you have drained the backlog and are caught up to the live edge. The same `tail` also rides on `ping` events. Skip if you don't need it. |
+| `tail.timestamp` | Timestamp of `tail.seq_num`. |
 
 ### Records on `session.out`
 
 Three kinds of records can arrive on the wire. They all share the `batch` envelope above; you tell them apart by `headers`.
 
-| Kind                       | `headers[0][0]`                 | `headers` carries                                                                                                                                               | `body`                                                   |
-| -------------------------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| **Data record**            | *empty array or non-empty name* | (currently none from the agent)                                                                                                                                 | JSON envelope `{"data": UIMessageChunk, "id": <partId>}` |
-| **Trigger control record** | `"trigger-control"`             | `["trigger-control", <subtype>]` plus subtype-specific siblings (e.g. `["public-access-token", <jwt>]` and `["session-in-event-id", <seq>]` on `turn-complete`) | empty string                                             |
-| **S2 command record**      | `""` (empty name)               | `["", "<op>"]` (currently `"trim"`)                                                                                                                             | opaque bytes — S2-interpreted                            |
+| Kind | `headers[0][0]` | `headers` carries | `body` |
+| - | - | - | - |
+| **Data record** | *empty array or non-empty name* | (currently none from the agent) | JSON envelope `{"data": UIMessageChunk, "id": <partId>}` |
+| **Trigger control record** | `"trigger-control"` | `["trigger-control", <subtype>]` plus subtype-specific siblings (e.g. `["public-access-token", <jwt>]` and `["session-in-event-id", <seq>]` on `turn-complete`) | empty string |
+| **S2 command record** | `""` (empty name) | `["", "<op>"]` (currently `"trim"`) | opaque bytes — S2-interpreted |
 
 **Uniform filter rule for custom readers:**
 
@@ -566,15 +568,15 @@ Data records on the stream carry a `UIMessageChunk` from the [AI SDK](https://ai
 
 Within a single assistant turn the AI SDK chunk types you'll typically see, in order:
 
-| Chunk type                                                       | Shape                                       | Notes                                                                                                                                                                       |
-| ---------------------------------------------------------------- | ------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `start`                                                          | `{ type: "start", messageId: string }`      | First chunk of a new assistant message. **Persist `messageId`** — you'll need it to send tool-approval responses (see [Tool approval responses](#tool-approval-responses)). |
-| `start-step`                                                     | `{ type: "start-step" }`                    | New `prepareStep` boundary.                                                                                                                                                 |
-| `text-start` / `text-delta` / `text-end`                         | `{ type: ..., id: string, delta?: string }` | Streaming text. Concatenate `delta`s for the visible reply.                                                                                                                 |
-| `tool-input-start` / `tool-input-delta` / `tool-input-available` | tool-call argument streaming                | The tool the model is calling.                                                                                                                                              |
-| `tool-output-available`                                          | tool result                                 | After the agent runs the tool.                                                                                                                                              |
-| `data-*`                                                         | `{ type: "data-<name>", data: ... }`        | Custom data parts written by the agent's hooks.                                                                                                                             |
-| `finish-step` / `finish`                                         | end markers for the assistant message       | Followed by the `turn-complete` control record.                                                                                                                             |
+| Chunk type | Shape | Notes |
+| - | - | - |
+| `start` | `{ type: "start", messageId: string }` | First chunk of a new assistant message. **Persist `messageId`** — you'll need it to send tool-approval responses (see [Tool approval responses](#tool-approval-responses)). |
+| `start-step` | `{ type: "start-step" }` | New `prepareStep` boundary. |
+| `text-start` / `text-delta` / `text-end` | `{ type: ..., id: string, delta?: string }` | Streaming text. Concatenate `delta`s for the visible reply. |
+| `tool-input-start` / `tool-input-delta` / `tool-input-available` | tool-call argument streaming | The tool the model is calling. |
+| `tool-output-available` | tool result | After the agent runs the tool. |
+| `data-*` | `{ type: "data-<name>", data: ... }` | Custom data parts written by the agent's hooks. |
+| `finish-step` / `finish` | end markers for the assistant message | Followed by the `turn-complete` control record. |
 
 Refer to the AI SDK docs linked above for the full union — only the two control records below are Trigger.dev-specific.
 
@@ -590,10 +592,10 @@ headers:
 body: ""
 ```
 
-| Header                                  | Description                                                                                                                                                                                                                                                                                                                                    |
-| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `trigger-control: turn-complete`        | Always present on this record.                                                                                                                                                                                                                                                                                                                 |
-| `public-access-token: <jwt>` (optional) | A refreshed JWT with the same session + run scopes. If present, replace your stored token.                                                                                                                                                                                                                                                     |
+| Header | Description |
+| - | - |
+| `trigger-control: turn-complete` | Always present on this record. |
+| `public-access-token: <jwt>` (optional) | A refreshed JWT with the same session + run scopes. If present, replace your stored token. |
 | `session-in-event-id: <seq>` (optional) | The agent's committed `.in` cursor for this turn: the seq of the last user record it had consumed when the turn finished. Compare it to the `seq` from your `.in/append` to tell whether this turn-complete is *yours* (see the warning below). Also used internally to resume `.in` across worker boots without replaying processed messages. |
 
 When you receive this record:
@@ -694,13 +696,13 @@ Content-Type: application/json
 
 The body is a JSON-serialized [`ChatInputChunk`](#chatinputchunk), a tagged union covering messages, stops, and actions. Send them as raw JSON strings (not wrapped in a `data` field). On success the response is `200 OK` with body `{ "ok": true, "seq": <number> }`, where `seq` is the appended record's `.in` sequence number. Use it to correlate this send to the turn that consumes it (see [`turn-complete` control record](#turn-complete-control-record)). On failure it's `4xx`/`5xx` with `{ "ok": false, "error": "<message>" }`. Common failures:
 
-| Status | When                                                                                                                                                                                                                                                                                                                                      |
-| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `401`  | Missing or invalid `Authorization` header.                                                                                                                                                                                                                                                                                                |
-| `403`  | Token doesn't carry `write:sessions:{externalId}`.                                                                                                                                                                                                                                                                                        |
-| `409`  | The session is closed: `{ "ok": false, "error": "Cannot append to a closed session", "code": "session_closed", "closedReason": "<reason or null>" }`. Key on `code`, not the message. Terminal: do not retry, and stop reconnecting to `.out`.                                                                                            |
-| `413`  | Body exceeds 1 MiB **or** the wrapped record would exceed S2's \~1 MiB per-record metered ceiling. A normal `kind: "message"` payload is a few KB; if you hit this you're shipping more than one message per record or pushing a single tool output that's itself oversized. Carries CORS headers so browser fetches can read the status. |
-| `500`  | Transient backend failure on the durable stream. Safe to retry — appends are idempotent on `(externalId, X-Part-Id)` if you set the optional `X-Part-Id` request header (the built-in clients set it from a UUID).                                                                                                                        |
+| Status | When |
+| - | - |
+| `401` | Missing or invalid `Authorization` header. |
+| `403` | Token doesn't carry `write:sessions:{externalId}`. |
+| `409` | The session is closed: `{ "ok": false, "error": "Cannot append to a closed session", "code": "session_closed", "closedReason": "<reason or null>" }`. Key on `code`, not the message. Terminal: do not retry, and stop reconnecting to `.out`. |
+| `413` | Body exceeds 1 MiB **or** the wrapped record would exceed S2's \~1 MiB per-record metered ceiling. A normal `kind: "message"` payload is a few KB; if you hit this you're shipping more than one message per record or pushing a single tool output that's itself oversized. Carries CORS headers so browser fetches can read the status. |
+| `500` | Transient backend failure on the durable stream. Safe to retry — appends are idempotent on `(externalId, X-Part-Id)` if you set the optional `X-Part-Id` request header (the built-in clients set it from a UUID). |
 
 <Warning>
   **Schema validation of `metadata` happens inside the agent, not at this endpoint.** A `kind: "message"` with bad or missing metadata returns `200 OK` here, but the agent rejects the turn at run time. From the wire the failure looks like a `turn-complete` control record with no preceding `text-delta` — i.e. an empty assistant response.
@@ -1031,24 +1033,24 @@ A long-running chat that's just between turns is a **live** session, not a close
 
 A client needs to track per-conversation:
 
-| Field               | Description                                                                                                                         |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `sessionId`         | Durable session ID (`session_*`). Stable for the life of the conversation.                                                          |
-| `chatId`            | Your stable conversation ID (passed as `externalId` on create).                                                                     |
-| `runId`             | Current run ID. Changes when a run ends and a continuation starts. Only needed if you want to display it.                           |
+| Field | Description |
+| - | - |
+| `sessionId` | Durable session ID (`session_*`). Stable for the life of the conversation. |
+| `chatId` | Your stable conversation ID (passed as `externalId` on create). |
+| `runId` | Current run ID. Changes when a run ends and a continuation starts. Only needed if you want to display it. |
 | `publicAccessToken` | JWT for session access. Stable across runs; refreshed via the `public-access-token` header on every `turn-complete` control record. |
-| `lastEventId`       | Last `record.seq_num` received on `.out`. Use to resume mid-stream.                                                                 |
+| `lastEventId` | Last `record.seq_num` received on `.out`. Use to resume mid-stream. |
 
 `sessionId`, `chatId`, and `publicAccessToken` are durable. `runId` is live-run state that refreshes on each new run. On reload, you only need `sessionId` + `publicAccessToken` + `lastEventId` to resume — `runId` is a hint that can be `null` when no run is active.
 
 ## Authentication
 
-| Operation                                          | Auth                                                                                                    |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| Create session (`POST /api/v1/sessions`)           | Secret API key, or JWT with `write:sessions` super-scope plus a matching `tasks:{taskIdentifier}` scope |
-| Close session (`POST /api/v1/sessions/{id}/close`) | Secret API key, or JWT with `admin:sessions:{id}` / `admin:sessions` super-scope                        |
-| `.in` append                                       | The session's `publicAccessToken` (carries `write:sessions:{id}`)                                       |
-| `.out` subscribe                                   | The session's `publicAccessToken` (carries `read:sessions:{id}`)                                        |
+| Operation | Auth |
+| - | - |
+| Create session (`POST /api/v1/sessions`) | Secret API key, or JWT with `write:sessions` super-scope plus a matching `tasks:{taskIdentifier}` scope |
+| Close session (`POST /api/v1/sessions/{id}/close`) | Secret API key, or JWT with `admin:sessions:{id}` / `admin:sessions` super-scope |
+| `.in` append | The session's `publicAccessToken` (carries `write:sessions:{id}`) |
+| `.out` subscribe | The session's `publicAccessToken` (carries `read:sessions:{id}`) |
 
 The `publicAccessToken` returned in the body of `POST /api/v1/sessions` carries both `read:sessions:{externalId}` and `write:sessions:{externalId}` and is **the only token you need** for every `.in`/`.out` operation thereafter. A token minted on the externalId form authorizes both the externalId and the friendlyId URL forms on every read and write route, so use whichever URL form your client already has on hand.
 

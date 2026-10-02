@@ -79,11 +79,11 @@ export const myAgent = chat.agent({
 
 Beyond the three core parts:
 
-| Page                                          | What it covers                                        |
-| --------------------------------------------- | ----------------------------------------------------- |
+| Page | What it covers |
+| - | - |
 | [Server-side chat](/docs/ai-chat/server-chat) | Driving a chat from your backend instead of a browser |
-| [chat.local](/docs/ai-chat/chat-local)        | Per-run typed state inside the turn loop              |
-| [Types](/docs/ai-chat/types)                  | Type-safe payloads, client data, and messages         |
-| [Custom agents](/docs/ai-chat/custom-agents)  | Building without the managed lifecycle                |
+| [chat.local](/docs/ai-chat/chat-local) | Per-run typed state inside the turn loop |
+| [Types](/docs/ai-chat/types) | Type-safe payloads, client data, and messages |
+| [Custom agents](/docs/ai-chat/custom-agents) | Building without the managed lifecycle |
 
 [Features](/docs/ai-chat/fast-starts) covers opt-in capabilities (Head Start, compaction, steering, actions), and [Patterns](/docs/ai-chat/patterns/sub-agents) covers production recipes (sub-agents, HITL approvals, persistence, recovery).

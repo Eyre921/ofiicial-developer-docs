@@ -5468,6 +5468,8 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `openai/gpt-6-sol-pro`
 * `openai/gpt-6-sol-pro:batch`
 * `openai/gpt-6-sol:batch`
+* `openai/gpt-6.1-sol`
+* `openai/gpt-6.1-sol-pro`
 * `openai/gpt-audio`
 * `openai/gpt-audio-mini`
 * `openai/gpt-chat-latest`
@@ -5521,6 +5523,8 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `anthropic/claude-sonnet-4.6`
 * `anthropic/claude-sonnet-4.6:batch`
 * `anthropic/claude-sonnet-5`
+* `anthropic/claude-sonnet-5.5`
+* `anthropic/claude-sonnet-5.5:batch`
 * `anthropic/claude-sonnet-5:batch`
 * `~anthropic/claude-fable-latest`
 * `~anthropic/claude-haiku-latest`
@@ -5592,7 +5596,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `deepseek/deepseek-chat-v3.1`
 * `deepseek/deepseek-r1`
 * `deepseek/deepseek-r1-0528`
-* `deepseek/deepseek-r1-distill-llama-70b`
 * `deepseek/deepseek-v3.1-terminus`
 * `deepseek/deepseek-v3.2`
 * `deepseek/deepseek-v3.2-exp`
@@ -5885,7 +5888,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 
 * `inclusionai/ling-3.0-flash`
 * `inclusionai/ling-3.0-flash-fin`
-* `inclusionai/ling-3.0-flash-fin:free`
 * `inclusionai/ling-3.0-flash-sante:free`
 * `inclusionai/ling-3.0-flash-vl`
 
@@ -5914,6 +5916,11 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 
 * `morph/morph-v3-fast`
 * `morph/morph-v3-large`
+
+## Nex AGI[​](#nex-agi "Direct link to Nex AGI")
+
+* `nex-agi/nex-n2.5-mini`
+* `nex-agi/nex-n2.5-pro`
 
 ## Nous Research[​](#nous-research "Direct link to Nous Research")
 
@@ -5981,6 +5988,7 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 ## Unbiased[​](#unbiased "Direct link to Unbiased")
 
 * `unbiased/pareto`
+* `unbiased/pareto-26.10-preview`
 
 ## Undi95[​](#undi95 "Direct link to Undi95")
 
@@ -13459,7 +13467,7 @@ Metadata about the currently executing Convex function.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:218](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L218)
+[server/meta.ts:220](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L220)
 
 ***
 
@@ -13475,7 +13483,7 @@ Metadata about the deployment this function is running on.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:222](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L222)
+[server/meta.ts:224](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L224)
 
 ***
 
@@ -13495,7 +13503,7 @@ Functions called from within a function (i.e. using `runMutation` or `runAction`
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:232](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L232)
+[server/meta.ts:234](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L234)
 
 
 ---
@@ -13512,9 +13520,11 @@ Functions called from within a function (i.e. using `runMutation` or `runAction`
 
 • `Optional` **transactionLimits**: [`TransactionLimits`](/api/interfaces/server.TransactionLimits.md)
 
+Custom limits for a nested transaction. Each field specifies the absolute maximum allowed for the nested function call. Values are capped at the global transaction limits, so they can only lower limits, never raise them.
+
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/registration.ts:1237](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1237)
+[server/registration.ts:1242](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1242)
 
 ***
 
@@ -13526,9 +13536,11 @@ Run a query on a recent snapshot of the database that is not guaranteed to be up
 
 This is an advanced feature which can introduce subtle race conditions, so its use is generally discouraged except for specific use-cases where database read conflicts are expected, e.g. reading from an append-only table with immutable records where the only read conflicts are from concurrent appends.
 
+To determine the snapshot of the nested query, you can call `ctx.meta.getSnapshotTs()` from within the stale snapshot query. To compare to the parent mutation's snapshot timestamp, you can return that value from the query and call `ctx.meta.getSnapshotTs()` from the parent.
+
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/registration.ts:1248](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1248)
+[server/registration.ts:1258](https://github.com/get-convex/convex-js/blob/main/src/server/registration.ts#L1258)
 
 
 ---
@@ -16222,6 +16234,8 @@ Since the timestamp differs on every execution, calling this in a query limits c
 
 Note: this should not be compared to `_creationTime` or `Date.now()`, as those are based on wall-clock time rather than the database clock, and aren't guaranteed to follow commit order.
 
+Docs: <https://docs.convex.dev/database/advanced/commit-timestamp>
+
 #### Returns[​](#returns-3 "Direct link to Returns")
 
 `bigint`
@@ -16232,7 +16246,7 @@ Note: this should not be compared to `_creationTime` or `Date.now()`, as those a
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:188](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L188)
+[server/meta.ts:190](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L190)
 
 ***
 
@@ -16252,7 +16266,7 @@ Functions called from within a function (i.e. using `runMutation`) will have the
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[server/meta.ts:206](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L206)
+[server/meta.ts:208](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L208)
 
 
 ---
@@ -17360,13 +17374,15 @@ Since the timestamp differs on every execution, calling this in a query limits c
 
 Note: this should not be compared to `_creationTime` or `Date.now()`, as those are based on wall-clock time rather than the database clock, and aren't guaranteed to follow commit order.
 
+Docs: <https://docs.convex.dev/database/advanced/commit-timestamp>
+
 #### Returns[​](#returns-3 "Direct link to Returns")
 
 `bigint`
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:188](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L188)
+[server/meta.ts:190](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L190)
 
 
 ---
@@ -38792,7 +38808,7 @@ component.use(childComponent, { httpPrefix: "/child/" });
 export default component;
 ```
 
-Within all of a component’s functions, `process.env.CONVEX_SITE_URL` reflects the full URL where the component is mounted, including the `httpPrefix`. This allows the component to construct correct URLs for callbacks, redirects, or self-referencing links without needing to know its mount path at build time.
+Within all of a component’s functions, `env.CONVEX_SITE_URL` reflects the full URL where the component is mounted, including the `httpPrefix`. This allows the component to construct correct URLs for callbacks, redirects, or self-referencing links without needing to know its mount path at build time.
 
 **Limitation:** Component HTTP actions do not have access to `ctx.auth` or the app’s environment variables. If an HTTP handler needs to authenticate users or access data from the application, define the HTTP action handler in the component’s client code and mount it in the app’s `convex/http.ts` instead. There’s an example of this pattern in the [Twilio component](https://github.com/get-convex/twilio/blob/0bdf7fd4ee7dd46d442be3693280564eea597b68/src/client/index.ts#L71).
 
@@ -38931,6 +38947,8 @@ import type {
 
 } from "convex/server";
 
+import { env } from "./_generated/server.js";
+
 import type { ComponentApi } from "../component/_generated/component.js";
 
 
@@ -38951,7 +38969,7 @@ export async function callMyFunction(
 
   const functionHandle = await createFunctionHandle(args.someFn);
 
-  const someArg = process.env.SOME_ARG;
+  const someArg = env.SOME_ARG;
 
   await ctx.runMutation(component.call.fn, {
 
@@ -39157,7 +39175,7 @@ export class Foo {
 
   ) {
 
-    this.apiKey = options?.FOO_AUTH_KEY ?? process.env.FOO_AUTH_KEY!;
+    this.apiKey = options?.FOO_AUTH_KEY ?? env.FOO_AUTH_KEY;
 
   }
 
@@ -41281,6 +41299,24 @@ export const enqueueViaSubtransaction = mutation({
 ```
 
 Note that it is not possible to schedule a function with the commit timestamp as an argument. Furthermore, you cannot return the commit timestamp placeholder from a query, as queries are not committed.
+
+## Snapshot timestamp[​](#snapshot-timestamp "Direct link to Snapshot timestamp")
+
+Every transaction reads from a consistent snapshot of the database. `ctx.meta.getSnapshotTs()` returns the database timestamp of that snapshot, in nanoseconds. All commit timestamps at or before it are observable in the transaction, and no later commits are. The value is fixed for the lifetime of the transaction and shared with all nested `runMutation` and `runQuery` calls unless `useStaleSnapshot: true` is passed (see below).
+
+The snapshot timestamp is on the same clock as `db.vars.commitTs`: documents observable in the transaction have `commitTs` values at or before it, and no new documents will be written with a `commitTs` at or below it, including from the current transaction. When reading documents with an index in `commitTs` order, you can use it as an upper bound to prevent conflicting with racing inserts, and safely advance a cursor to it without missing later commits.
+
+Note: using this in a query prevents efficiently caching the result, since the value could be different on each invocation, similar to reading `Date.now()`. For predictable caching behavior for time-based queries, pass explicit arguments instead of reading volatile time values within the query.
+
+Like the commit timestamp, the snapshot timestamp should not be compared to `_creationTime` or `Date.now()`, as those are based on wall-clock time rather than the database clock, and aren't guaranteed to follow commit order.
+
+### Snapshot timestamps within a stale snapshot query[​](#snapshot-timestamps-within-a-stale-snapshot-query "Direct link to Snapshot timestamps within a stale snapshot query")
+
+If a query is being run with `useStaleSnapshot: true`, then it may (in a future version of the Convex backend) choose a slightly older snapshot timestamp for the nested query.
+
+In that case, a call to `ctx.meta.getSnapshotTs()` within the nested query would return the older value, and could be returned alongside query results to the parent mutation.
+
+When advancing cursors based on results from a stale snapshot query, therefore, you should be sure to bound query advancement to at most the snapshotTs of the nested snapshot query, not the snapshotTs of the parent mutation.
 
 
 ---
@@ -45112,7 +45148,7 @@ export const updateCounter = mutation({
 
   handler: async (ctx) => {
 
-    const doc = await ctx.db.get("counts", process.env.COUNTER_ID);
+    const doc = (await ctx.db.query("counts").first())!;
 
     await ctx.db.patch("counts", doc._id, { value: doc.value + 1 });
 
@@ -53153,6 +53189,8 @@ For additional security, consider validating that the `timestamp` field of the l
 ```
 import { Hono } from "hono";
 
+import { env } from "./_generated/server";
+
 
 
 const app = new Hono();
@@ -53203,7 +53241,7 @@ app.post("/webhook", async (c) => {
 
     "raw",
 
-    new TextEncoder().encode(process.env.WEBHOOK_SECRET!),
+    new TextEncoder().encode(env.WEBHOOK_SECRET),
 
     { name: "HMAC", hash: "SHA-256" },
 
@@ -54468,14 +54506,18 @@ All infrastructure powering your deployment will be hosted in the selected regio
 
 ## Available regions[​](#available-regions "Direct link to Available regions")
 
-| Region               | Location              |
-| -------------------- | --------------------- |
-| `aws-us-east-1`      | US East (N. Virginia) |
-| `aws-eu-west-1`      | Europe (Ireland)      |
-| `aws-ap-southeast-2` | Asia Pacific (Sydney) |
-| `aws-ca-central-1`   | Canada (Central)      |
+| Region               | Location              | Pricing                |
+| -------------------- | --------------------- | ---------------------- |
+| `aws-us-east-1`      | US East (N. Virginia) | Standard               |
+| `aws-eu-west-1`      | Europe (Ireland)      | 30% regional surcharge |
+| `aws-ap-southeast-2` | Asia Pacific (Sydney) | 30% regional surcharge |
+| `aws-ca-central-1`   | Canada (Central)      | 30% regional surcharge |
 
 More regions will be added in the future.
+
+## Pricing[​](#pricing "Direct link to Pricing")
+
+Usage in regions outside the US is billed at 1.3x the standard rate (a 30% regional surcharge). See the [pricing page](https://www.convex.dev/pricing) for standard rates and [Limits](/production/state/limits.md) for per-plan resource limits.
 
 ## Selecting a region[​](#selecting-a-region "Direct link to Selecting a region")
 
@@ -54565,7 +54607,7 @@ Business and Enterprise plans use custom resource allocations unless otherwise n
 
 Free and Starter share the same S16 provisioned performance tier. Free has hard resource caps, while Starter can exceed its included resource amounts with usage-based pricing.
 
-Unless otherwise noted, pricing quoted on this page is for US regions. EU region pricing is 1.3x.
+Unless otherwise noted, pricing quoted on this page is for US regions. Pricing in [other regions](/production/regions.md#pricing) is 1.3x.
 
 ## Team[​](#team "Direct link to Team")
 
@@ -54591,20 +54633,31 @@ Unless otherwise noted, pricing quoted on this page is for US regions. EU region
 
 ## Documents[​](#documents "Direct link to Documents")
 
-Applied per document and to any nested `Object` unless stated otherwise.
-
-|                     |               | Notes                                                            |
-| ------------------- | ------------- | ---------------------------------------------------------------- |
-| Size                | 1 MiB         |                                                                  |
-| Fields              | 1024          | The number of fields/keys                                        |
-| Field name length   | 64 characters | Nested `Object` keys can have length up to 1024 characters.      |
-| Field nesting depth | 16            | How many times objects and arrays can be nested, e.g. `[[[[]]]]` |
-| Array elements      | 8192          |                                                                  |
+|                   |               | Notes                                                            |
+| ----------------- | ------------- | ---------------------------------------------------------------- |
+| Size              | 1 MiB         |                                                                  |
+| Top-level fields  | 1024          | Includes the system fields `_id` and `_creationTime`.            |
+| Field name length | 64 characters | Nested `Object` keys can have length up to 1024 characters.      |
+| Nesting depth     | 16            | How many times objects and arrays can be nested, e.g. `[[[[]]]]` |
 
 ### Restrictions[​](#restrictions-1 "Direct link to Restrictions")
 
-* Field names must only contain non-control alphanumeric ASCII characters and underscores and must start with an alphabetic character or underscore.
+* Document top-level field names must only contain non-control alphanumeric ASCII characters and underscores and must start with an alphabetic character or underscore.
 * Documents cannot contain top-level fields that start with an underscore, other than the system-provided `_id` and `_creationTime` fields.
+
+## Values[​](#values "Direct link to Values")
+
+Applied to every [Convex value](/database/types.md), including values in documents, function arguments, and return values.
+
+|                   |                 | Notes                                                                                       |
+| ----------------- | --------------- | ------------------------------------------------------------------------------------------- |
+| Array elements    | 8192            | Per array                                                                                   |
+| Object fields     | 1024            | Per object                                                                                  |
+| Field name length | 1024 characters |                                                                                             |
+| Nesting depth     | 64              | How many times objects and arrays can be nested. [Documents](#documents) are limited to 16. |
+
+### Restrictions[​](#restrictions-2 "Direct link to Restrictions")
+
 * Strings must be valid Unicode sequences with no unpaired surrogates.
 
 ## Functions[​](#functions "Direct link to Functions")
@@ -61375,6 +61428,48 @@ test("authenticated functions", async () => {
   const leesTasks = await asLee.query(api.tasks.list);
 
   expect(leesTasks).toEqual([]);
+
+});
+
+
+
+const modules = import.meta.glob("./**/*.ts");
+```
+
+### Request metadata[​](#request-metadata "Direct link to Request metadata")
+
+Mutations, actions, and HTTP actions can read details about the request that triggered them with `ctx.meta.getRequestMetadata()`. To test functions that depend on the client's IP address or user agent, create a version of the `t` accessor with `t.withRequestMetadata` (version `0.0.59` and later):
+
+convex/requestMetadata.test.ts
+
+```
+import { convexTest } from "convex-test";
+
+import { expect, test } from "vitest";
+
+import { api } from "./_generated/api";
+
+import schema from "./schema";
+
+
+
+test("request metadata", async () => {
+
+  const t = convexTest(schema, modules);
+
+
+
+  const fromBrowser = t.withRequestMetadata({
+
+    ip: "203.0.113.7",
+
+    userAgent: "Mozilla/5.0",
+
+  });
+
+  const clientInfo = await fromBrowser.mutation(api.requestMetadata.clientInfo);
+
+  expect(clientInfo).toEqual({ ip: "203.0.113.7", userAgent: "Mozilla/5.0" });
 
 });
 

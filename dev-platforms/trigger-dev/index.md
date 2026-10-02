@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 327 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 332 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -72,6 +72,7 @@
 - `docs/cli-update-commands` — [CLI update command](pages/docs/cli-update-commands.md) · [原文](https://trigger.dev/docs/cli-update-commands)
 - `docs/cli-whoami-commands` — [CLI whoami command](pages/docs/cli-whoami-commands.md) · [原文](https://trigger.dev/docs/cli-whoami-commands)
 - `docs/community` — [Discord Community](pages/docs/community.md) · [原文](https://trigger.dev/docs/community)
+- `docs/concurrency` — [Concurrency](pages/docs/concurrency.md) · [原文](https://trigger.dev/docs/concurrency)
 - `docs/config/config-file` — [The trigger.config.ts file](pages/docs/config/config-file.md) · [原文](https://trigger.dev/docs/config/config-file)
 - `docs/config/extensions/additionalfiles` — [Additional Files](pages/docs/config/extensions/additionalfiles.md) · [原文](https://trigger.dev/docs/config/extensions/additionalFiles)
 - `docs/config/extensions/additionalpackages` — [Additional Packages](pages/docs/config/extensions/additionalpackages.md) · [原文](https://trigger.dev/docs/config/extensions/additionalPackages)
@@ -91,11 +92,10 @@
 - `docs/context` — [Context](pages/docs/context.md) · [原文](https://trigger.dev/docs/context)
 - `docs/database-connections` — [Database connections](pages/docs/database-connections.md) · [原文](https://trigger.dev/docs/database-connections)
 - `docs/deploy-environment-variables` — [Environment Variables](pages/docs/deploy-environment-variables.md) · [原文](https://trigger.dev/docs/deploy-environment-variables)
-- `docs/deployment/atomic-deployment` — [Atomic deploys](pages/docs/deployment/atomic-deployment.md) · [原文](https://trigger.dev/docs/deployment/atomic-deployment)
+- `docs/deployment/atomic-deployment` — [Atomic deployments](pages/docs/deployment/atomic-deployment.md) · [原文](https://trigger.dev/docs/deployment/atomic-deployment)
 - `docs/deployment/dev-branches` — [Development branches](pages/docs/deployment/dev-branches.md) · [原文](https://trigger.dev/docs/deployment/dev-branches)
 - `docs/deployment/overview` — [Deployment](pages/docs/deployment/overview.md) · [原文](https://trigger.dev/docs/deployment/overview)
 - `docs/deployment/preview-branches` — [Preview branches](pages/docs/deployment/preview-branches.md) · [原文](https://trigger.dev/docs/deployment/preview-branches)
-- `docs/deployment/version-skew-protection` — [Version skew protection](pages/docs/deployment/version-skew-protection.md) · [原文](https://trigger.dev/docs/deployment/version-skew-protection)
 - `docs/errors-retrying` — [Errors & Retrying](pages/docs/errors-retrying.md) · [原文](https://trigger.dev/docs/errors-retrying)
 - `docs/github-actions` — [CI / GitHub Actions](pages/docs/github-actions.md) · [原文](https://trigger.dev/docs/github-actions)
 - `docs/github-integration` — [GitHub integration](pages/docs/github-integration.md) · [原文](https://trigger.dev/docs/github-integration)
@@ -205,6 +205,11 @@
 - `docs/management/bulk-actions/create` — [Create bulk action](pages/docs/management/bulk-actions/create.md) · [原文](https://trigger.dev/docs/management/bulk-actions/create)
 - `docs/management/bulk-actions/list` — [List bulk actions](pages/docs/management/bulk-actions/list.md) · [原文](https://trigger.dev/docs/management/bulk-actions/list)
 - `docs/management/bulk-actions/retrieve` — [Retrieve bulk action](pages/docs/management/bulk-actions/retrieve.md) · [原文](https://trigger.dev/docs/management/bulk-actions/retrieve)
+- `docs/management/concurrency-limits/list` — [List Concurrency Limits](pages/docs/management/concurrency-limits/list.md) · [原文](https://trigger.dev/docs/management/concurrency-limits/list)
+- `docs/management/concurrency-limits/override` — [Override Concurrency Limit](pages/docs/management/concurrency-limits/override.md) · [原文](https://trigger.dev/docs/management/concurrency-limits/override)
+- `docs/management/concurrency-limits/pause` — [Pause or Resume Concurrency Limit](pages/docs/management/concurrency-limits/pause.md) · [原文](https://trigger.dev/docs/management/concurrency-limits/pause)
+- `docs/management/concurrency-limits/reset` — [Reset Concurrency Limit](pages/docs/management/concurrency-limits/reset.md) · [原文](https://trigger.dev/docs/management/concurrency-limits/reset)
+- `docs/management/concurrency-limits/retrieve` — [Retrieve Concurrency Limit](pages/docs/management/concurrency-limits/retrieve.md) · [原文](https://trigger.dev/docs/management/concurrency-limits/retrieve)
 - `docs/management/deployments/get-latest` — [Get latest deployment](pages/docs/management/deployments/get-latest.md) · [原文](https://trigger.dev/docs/management/deployments/get-latest)
 - `docs/management/deployments/list` — [List deployments](pages/docs/management/deployments/list.md) · [原文](https://trigger.dev/docs/management/deployments/list)
 - `docs/management/deployments/promote` — [Promote deployment](pages/docs/management/deployments/promote.md) · [原文](https://trigger.dev/docs/management/deployments/promote)
@@ -276,7 +281,7 @@
 - `docs/private-networking/aws-console-setup` — [Setting up PrivateLink in the AWS Console](pages/docs/private-networking/aws-console-setup.md) · [原文](https://trigger.dev/docs/private-networking/aws-console-setup)
 - `docs/private-networking/overview` — [Private networking](pages/docs/private-networking/overview.md) · [原文](https://trigger.dev/docs/private-networking/overview)
 - `docs/private-networking/troubleshooting` — [Troubleshooting private networking](pages/docs/private-networking/troubleshooting.md) · [原文](https://trigger.dev/docs/private-networking/troubleshooting)
-- `docs/queue-concurrency` — [Concurrency & Queues](pages/docs/queue-concurrency.md) · [原文](https://trigger.dev/docs/queue-concurrency)
+- `docs/queues` — [Queues](pages/docs/queues.md) · [原文](https://trigger.dev/docs/queues)
 - `docs/quick-start` — [Quick start: add Trigger.dev to your project](pages/docs/quick-start.md) · [原文](https://trigger.dev/docs/quick-start)
 - `docs/realtime/auth` — [Realtime authentication](pages/docs/realtime/auth.md) · [原文](https://trigger.dev/docs/realtime/auth)
 - `docs/realtime/backend/overview` — [Subscribe to tasks from your backend](pages/docs/realtime/backend/overview.md) · [原文](https://trigger.dev/docs/realtime/backend/overview)

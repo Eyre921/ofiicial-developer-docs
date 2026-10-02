@@ -10,23 +10,23 @@ Tasks need to be triggered in order to run.
 
 Trigger tasks **from your backend**:
 
-| Function               | What it does                                                                                     |                             |
-| :--------------------- | :----------------------------------------------------------------------------------------------- | --------------------------- |
-| `tasks.trigger()`      | Triggers a task and returns a handle you can use to fetch and manage the run.                    | [Docs](#tasks-trigger)      |
+| Function | What it does | |
+| :- | :- | - |
+| `tasks.trigger()` | Triggers a task and returns a handle you can use to fetch and manage the run. | [Docs](#tasks-trigger) |
 | `tasks.batchTrigger()` | Triggers a single task in a batch and returns a handle you can use to fetch and manage the runs. | [Docs](#tasks-batchtrigger) |
-| `batch.trigger()`      | Similar to `tasks.batchTrigger` but allows running multiple different tasks                      | [Docs](#batch-trigger)      |
+| `batch.trigger()` | Similar to `tasks.batchTrigger` but allows running multiple different tasks | [Docs](#batch-trigger) |
 
 Trigger tasks **from inside a another task**:
 
-| Function                         | What it does                                                                                                                       |                                       |
-| :------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| `yourTask.trigger()`             | Triggers a task and gets a handle you can use to monitor and manage the run. It does not wait for the result.                      | [Docs](#yourtask-trigger)             |
-| `yourTask.batchTrigger()`        | Triggers a task multiple times and gets a handle you can use to monitor and manage the runs. It does not wait for the results.     | [Docs](#yourtask-batchtrigger)        |
-| `yourTask.triggerAndWait()`      | Triggers a task and then waits until it's complete. You get the result data to continue with.                                      | [Docs](#yourtask-triggerandwait)      |
+| Function | What it does | |
+| :- | :- | - |
+| `yourTask.trigger()` | Triggers a task and gets a handle you can use to monitor and manage the run. It does not wait for the result. | [Docs](#yourtask-trigger) |
+| `yourTask.batchTrigger()` | Triggers a task multiple times and gets a handle you can use to monitor and manage the runs. It does not wait for the results. | [Docs](#yourtask-batchtrigger) |
+| `yourTask.triggerAndWait()` | Triggers a task and then waits until it's complete. You get the result data to continue with. | [Docs](#yourtask-triggerandwait) |
 | `yourTask.batchTriggerAndWait()` | Triggers a task multiple times in parallel and then waits until they're all complete. You get the resulting data to continue with. | [Docs](#yourtask-batchtriggerandwait) |
-| `batch.triggerAndWait()`         | Similar to `batch.trigger` but will wait on the triggered tasks to finish and return the results.                                  | [Docs](#batch-triggerandwait)         |
-| `batch.triggerByTask()`          | Similar to `batch.trigger` but allows passing in task instances instead of task IDs.                                               | [Docs](#batch-triggerbytask)          |
-| `batch.triggerByTaskAndWait()`   | Similar to `batch.triggerbyTask` but will wait on the triggered tasks to finish and return the results.                            | [Docs](#batch-triggerbytaskandwait)   |
+| `batch.triggerAndWait()` | Similar to `batch.trigger` but will wait on the triggered tasks to finish and return the results. | [Docs](#batch-triggerandwait) |
+| `batch.triggerByTask()` | Similar to `batch.trigger` but allows passing in task instances instead of task IDs. | [Docs](#batch-triggerbytask) |
+| `batch.triggerByTaskAndWait()` | Similar to `batch.triggerbyTask` but will wait on the triggered tasks to finish and return the results. | [Docs](#batch-triggerbytaskandwait) |
 
 ## Triggering from your backend
 
@@ -911,15 +911,15 @@ This is useful for scenarios like:
 
 Consider `delay: "5s"` and `maxDelay: "30s"` with triggers arriving every 2 seconds:
 
-| Time | Event      | Result                                                                             |
-| :--- | :--------- | :--------------------------------------------------------------------------------- |
-| 0s   | Trigger 1  | Run A created, scheduled for 5s                                                    |
-| 2s   | Trigger 2  | Run A rescheduled to 7s                                                            |
-| 4s   | Trigger 3  | Run A rescheduled to 9s                                                            |
-| ...  | ...        | ...                                                                                |
-| 26s  | Trigger 14 | Run A rescheduled to 31s                                                           |
-| 28s  | Trigger 15 | Would reschedule to 33s, but exceeds maxDelay (30s). Run A executes, Run B created |
-| 30s  | Trigger 16 | Run B rescheduled to 35s                                                           |
+| Time | Event | Result |
+| :- | :- | :- |
+| 0s | Trigger 1 | Run A created, scheduled for 5s |
+| 2s | Trigger 2 | Run A rescheduled to 7s |
+| 4s | Trigger 3 | Run A rescheduled to 9s |
+| ... | ... | ... |
+| 26s | Trigger 14 | Run A rescheduled to 31s |
+| 28s | Trigger 15 | Would reschedule to 33s, but exceeds maxDelay (30s). Run A executes, Run B created |
+| 30s | Trigger 16 | Run B rescheduled to 35s |
 
 Without `maxDelay`, continuous triggers would prevent the run from ever executing. With `maxDelay: "30s"`, execution is guaranteed within 30 seconds of the first trigger.
 
@@ -1167,14 +1167,14 @@ file processing where you don't want to load all items into memory at once.
 
 When batch triggering fails, the SDK throws a `BatchTriggerError` with properties that help you understand what went wrong and how to react:
 
-| Property        | Type                   | Description                                     |
-| :-------------- | :--------------------- | :---------------------------------------------- |
-| `isRateLimited` | `boolean`              | `true` if the error was caused by rate limiting |
-| `retryAfterMs`  | `number \| undefined`  | Milliseconds until the rate limit resets        |
-| `phase`         | `"create" \| "stream"` | Which phase of batch creation failed            |
-| `batchId`       | `string \| undefined`  | The batch ID if it was created before failure   |
-| `itemCount`     | `number`               | Number of items attempted in the batch          |
-| `cause`         | `unknown`              | The underlying error                            |
+| Property | Type | Description |
+| :- | :- | :- |
+| `isRateLimited` | `boolean` | `true` if the error was caused by rate limiting |
+| `retryAfterMs` | `number \| undefined` | Milliseconds until the rate limit resets |
+| `phase` | `"create" \| "stream"` | Which phase of batch creation failed |
+| `batchId` | `string \| undefined` | The batch ID if it was created before failure |
+| `itemCount` | `number` | Number of items attempted in the batch |
+| `cause` | `unknown` | The underlying error |
 
 ### Detecting and handling rate limits
 

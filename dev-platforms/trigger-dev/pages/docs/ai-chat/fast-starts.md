@@ -10,15 +10,15 @@ The first turn of a brand-new conversation pays for the chat.agent run's cold st
 
 ## Picking an approach
 
-|                                    | [Preload](#preload)                                | [Head Start](#head-start)                                                     |
-| ---------------------------------- | -------------------------------------------------- | ----------------------------------------------------------------------------- |
-| **What it does**                   | Eagerly triggers the run before the first message  | Runs step 1's LLM call in your warm process while the agent boots in parallel |
-| **First-turn TTFC win**            | Hides agent boot if the user *does* send a message | \~50% reduction (LLM TTFB floor); boot fully overlaps with TTFB               |
-| **When to fire**                   | Page load / input focus — your call                | First message arrival — automatic                                             |
-| **Cost when user never sends**     | Idle compute until the preload window times out    | Zero (no run was triggered)                                                   |
-| **Requires a warm server process** | No — works for browser-only surfaces               | Yes — your route handler runs step 1                                          |
-| **Requires LLM keys client-side?** | No                                                 | No — keys stay in your warm server                                            |
-| **Bundle constraints**             | None                                               | Route handler must import schema-only tools (no heavy executes)               |
+| | [Preload](#preload) | [Head Start](#head-start) |
+| - | - | - |
+| **What it does** | Eagerly triggers the run before the first message | Runs step 1's LLM call in your warm process while the agent boots in parallel |
+| **First-turn TTFC win** | Hides agent boot if the user *does* send a message | \~50% reduction (LLM TTFB floor); boot fully overlaps with TTFB |
+| **When to fire** | Page load / input focus — your call | First message arrival — automatic |
+| **Cost when user never sends** | Idle compute until the preload window times out | Zero (no run was triggered) |
+| **Requires a warm server process** | No — works for browser-only surfaces | Yes — your route handler runs step 1 |
+| **Requires LLM keys client-side?** | No | No — keys stay in your warm server |
+| **Bundle constraints** | None | Route handler must import schema-only tools (no heavy executes) |
 
 **Pick one, not both.** Running both for the same chat is wasted work — Head Start gates on a real first message, so adding Preload on top eats the idle-compute cost Head Start was avoiding.
 
@@ -124,11 +124,11 @@ When the first turn is pure text (no tool calls), the agent run boots and exits 
 
 3 runs each, prompt `"say hi in five words"`, same model both sides (Anthropic Claude Sonnet 4):
 
-|              | Without Head Start | With Head Start | Δ        |
-| ------------ | ------------------ | --------------- | -------- |
-| TTFT (avg)   | 2801 ms            | **1218 ms**     | **−57%** |
-| TTFT (range) | 2351–3101 ms       | 1201–1252 ms    |          |
-| Total turn   | 4180 ms            | 2345 ms         | −44%     |
+| | Without Head Start | With Head Start | Δ |
+| - | - | - | - |
+| TTFT (avg) | 2801 ms | **1218 ms** | **−57%** |
+| TTFT (range) | 2351–3101 ms | 1201–1252 ms | |
+| Total turn | 4180 ms | 2345 ms | −44% |
 
 With Head Start, time-to-first-text is essentially the LLM TTFB floor (50ms spread). Without it, agent boot + hooks stack before the LLM call, adding 750ms of variance.
 
@@ -526,15 +526,15 @@ The handler keeps the SSE response open until the agent run signals turn-complet
 
 ### What gets routed where
 
-|                                         | First turn (handover)                                             | Subsequent turns             |
-| --------------------------------------- | ----------------------------------------------------------------- | ---------------------------- |
-| Browser sends message via               | POST to `headStart` URL                                           | Direct write to `session.in` |
-| Step 1 LLM call runs in                 | Your warm process                                                 | Trigger.dev agent run        |
-| Tool execution runs in                  | Trigger.dev agent run                                             | Trigger.dev agent run        |
-| Step 2+ LLM call runs in                | Trigger.dev agent run                                             | Trigger.dev agent run        |
-| `onChatStart` / `onTurnStart` fire      | After handover signal arrives                                     | Normally                     |
-| `hydrateMessages` fires (if registered) | After handover, with the first-turn history as `incomingMessages` | Normally                     |
-| `onTurnComplete` fires                  | After turn finishes (handover) or skipped (handover-skip)         | Normally                     |
+| | First turn (handover) | Subsequent turns |
+| - | - | - |
+| Browser sends message via | POST to `headStart` URL | Direct write to `session.in` |
+| Step 1 LLM call runs in | Your warm process | Trigger.dev agent run |
+| Tool execution runs in | Trigger.dev agent run | Trigger.dev agent run |
+| Step 2+ LLM call runs in | Trigger.dev agent run | Trigger.dev agent run |
+| `onChatStart` / `onTurnStart` fire | After handover signal arrives | Normally |
+| `hydrateMessages` fires (if registered) | After handover, with the first-turn history as `incomingMessages` | Normally |
+| `onTurnComplete` fires | After turn finishes (handover) or skipped (handover-skip) | Normally |
 
 ### Persistence and the handover contract
 
@@ -646,12 +646,12 @@ The `run` callback receives:
 
 The SDK owns these keys. Passing one to the callback's `streamText` is a type error, and a throw behind that; re-setting one after a `chat.toStreamTextOptions()` spread breaks the protocol with no error at all:
 
-| Key           | What the SDK sets                    | Why                                           |
-| ------------- | ------------------------------------ | --------------------------------------------- |
-| `messages`    | `convertToModelMessages(uiMessages)` | First-turn user history                       |
-| `prompt`      | Nothing, and rejects yours           | `messages` already carries the history        |
-| `stopWhen`    | `stepCountIs(1)`                     | Step 1 only, the agent picks up step 2 onward |
-| `abortSignal` | Combined request + idle timeout      | Safe cleanup on disconnect                    |
+| Key | What the SDK sets | Why |
+| - | - | - |
+| `messages` | `convertToModelMessages(uiMessages)` | First-turn user history |
+| `prompt` | Nothing, and rejects yours | `messages` already carries the history |
+| `stopWhen` | `stepCountIs(1)` | Step 1 only, the agent picks up step 2 onward |
+| `abortSignal` | Combined request + idle timeout | Safe cleanup on disconnect |
 
 You bring `model`, `system`, `providerOptions`, `prepareStep`, anything else `streamText` accepts. `tools` is yours too: pass your schema-only set to the callback's `streamText` (or to `chat.toStreamTextOptions({ tools })`), since the SDK cannot know it.
 
@@ -748,7 +748,7 @@ chat.startHeadStart<TTools>({
 
 `completion` resolves once the head start finishes; `await` it or hand it to `waitUntil`. It rejects if the warm step or the dispatch fails.
 
-`pendingVersion` is `true` when the agent run is parked waiting for the deployment carrying the session's [external deployment id](/docs/deployment/version-skew-protection#chat-sessions). Step 1 still runs in your process and still reaches the browser, so pass the flag to the destination page if you want it to say a deploy is in progress rather than appear to stall on step 2.
+`pendingVersion` is `true` when the agent run is parked waiting for the deployment carrying the session's [external deployment id](/docs/deployment/atomic-deployment#chat-sessions). Step 1 still runs in your process and still reaches the browser, so pass the flag to the destination page if you want it to say a deploy is in progress rather than appear to stall on step 2.
 
 ### Limitations
 

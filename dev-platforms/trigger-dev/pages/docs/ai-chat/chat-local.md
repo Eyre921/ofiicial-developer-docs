@@ -152,13 +152,13 @@ onTurnComplete: async ({ chatId }) => {
 
 ## API
 
-| Method                  | Description                                                     |
-| ----------------------- | --------------------------------------------------------------- |
+| Method | Description |
+| - | - |
 | `chat.local<T>({ id })` | Create a typed local with a unique id (declare at module level) |
-| `local.init(value)`     | Initialize with a value (call in hooks or `run`)                |
-| `local.hasChanged()`    | Returns `true` if modified since last check, resets flag        |
-| `local.get()`           | Returns a plain object copy (for serialization)                 |
-| `local.property`        | Direct property access (read/write via Proxy)                   |
+| `local.init(value)` | Initialize with a value (call in hooks or `run`) |
+| `local.hasChanged()` | Returns `true` if modified since last check, resets flag |
+| `local.get()` | Returns a plain object copy (for serialization) |
+| `local.property` | Direct property access (read/write via Proxy) |
 
 <Note>
   Locals use shallow proxying. Nested object mutations like `local.prefs.theme = "dark"` won't trigger the dirty flag. Instead, replace the whole property: `local.prefs = { ...local.prefs, theme: "dark" }`.

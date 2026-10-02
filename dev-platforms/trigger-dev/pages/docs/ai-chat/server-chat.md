@@ -237,25 +237,25 @@ const stream = await chat.reconnect();
 
 ## AgentChat options
 
-| Option                 | Type                                                                                                      | Default                    | Description                                                                                                                                                                                                                                                               |
-| ---------------------- | --------------------------------------------------------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `agent`                | `string`                                                                                                  | required                   | The agent task ID to trigger                                                                                                                                                                                                                                              |
-| `id`                   | `string`                                                                                                  | `crypto.randomUUID()`      | Conversation ID for tagging and correlation                                                                                                                                                                                                                               |
-| `clientData`           | typed from agent                                                                                          | `undefined`                | Client data included in every request                                                                                                                                                                                                                                     |
-| `session`              | `ChatSession` (`{ lastEventId?: string }`)                                                                | `undefined`                | Restore a previous session's SSE resume cursor. The Session row itself is keyed on `chatId` (durable) — no other state to thread.                                                                                                                                         |
-| `onTriggered`          | `(event) => void`                                                                                         | `undefined`                | Called when a new run is created                                                                                                                                                                                                                                          |
-| `onTurnComplete`       | `(event) => void`                                                                                         | `undefined`                | Called when a turn's stream ends                                                                                                                                                                                                                                          |
-| `streamTimeoutSeconds` | `number`                                                                                                  | `120`                      | SSE timeout in seconds                                                                                                                                                                                                                                                    |
-| `triggerConfig`        | `SessionTriggerConfig`                                                                                    | `undefined`                | Tags, queue, machine, `maxAttempts`, `idleTimeoutInSeconds`, `basePayload` — folded into `sessions.start({...})`                                                                                                                                                          |
-| `baseURL`              | `string \| (ctx: { endpoint: "in" \| "out"; chatId: string }) => string`                                  | `apiClientManager.baseURL` | API base URL. String form applies to every endpoint; function form picks per endpoint — useful for routing `.in/append` through an edge proxy while keeping `.out` SSE direct. Defaults to whatever `@trigger.dev/sdk` was configured with (typically `TRIGGER_API_URL`). |
-| `fetch`                | `(url: string, init: RequestInit, ctx: { endpoint: "in" \| "out"; chatId: string }) => Promise<Response>` | `undefined`                | Per-request fetch override. Invoked for both `.in/append` POSTs and the `.out` SSE GET. Use for header injection, custom retries, or proxy rewrites.                                                                                                                      |
+| Option | Type | Default | Description |
+| - | - | - | - |
+| `agent` | `string` | required | The agent task ID to trigger |
+| `id` | `string` | `crypto.randomUUID()` | Conversation ID for tagging and correlation |
+| `clientData` | typed from agent | `undefined` | Client data included in every request |
+| `session` | `ChatSession` (`{ lastEventId?: string }`) | `undefined` | Restore a previous session's SSE resume cursor. The Session row itself is keyed on `chatId` (durable) — no other state to thread. |
+| `onTriggered` | `(event) => void` | `undefined` | Called when a new run is created |
+| `onTurnComplete` | `(event) => void` | `undefined` | Called when a turn's stream ends |
+| `streamTimeoutSeconds` | `number` | `120` | SSE timeout in seconds |
+| `triggerConfig` | `SessionTriggerConfig` | `undefined` | Tags, queue, machine, `maxAttempts`, `idleTimeoutInSeconds`, `basePayload` — folded into `sessions.start({...})` |
+| `baseURL` | `string \| (ctx: { endpoint: "in" \| "out"; chatId: string }) => string` | `apiClientManager.baseURL` | API base URL. String form applies to every endpoint; function form picks per endpoint — useful for routing `.in/append` through an edge proxy while keeping `.out` SSE direct. Defaults to whatever `@trigger.dev/sdk` was configured with (typically `TRIGGER_API_URL`). |
+| `fetch` | `(url: string, init: RequestInit, ctx: { endpoint: "in" \| "out"; chatId: string }) => Promise<Response>` | `undefined` | Per-request fetch override. Invoked for both `.in/append` POSTs and the `.out` SSE GET. Use for header injection, custom retries, or proxy rewrites. |
 
 ## ChatStream methods
 
-| Method                   | Returns                          | Description                                               |
-| ------------------------ | -------------------------------- | --------------------------------------------------------- |
-| `text()`                 | `Promise<string>`                | Consume stream, return accumulated text                   |
-| `result()`               | `Promise<ChatStreamResult>`      | Consume stream, return `{ text, toolCalls, toolResults }` |
-| `messages()`             | `AsyncGenerator<UIMessage>`      | Yield accumulated UIMessage snapshots (sub-agent pattern) |
-| `[Symbol.asyncIterator]` | `UIMessageChunk`                 | Iterate over typed stream chunks                          |
-| `.stream`                | `ReadableStream<UIMessageChunk>` | Raw stream for AI SDK utilities                           |
+| Method | Returns | Description |
+| - | - | - |
+| `text()` | `Promise<string>` | Consume stream, return accumulated text |
+| `result()` | `Promise<ChatStreamResult>` | Consume stream, return `{ text, toolCalls, toolResults }` |
+| `messages()` | `AsyncGenerator<UIMessage>` | Yield accumulated UIMessage snapshots (sub-agent pattern) |
+| `[Symbol.asyncIterator]` | `UIMessageChunk` | Iterate over typed stream chunks |
+| `.stream` | `ReadableStream<UIMessageChunk>` | Raw stream for AI SDK utilities |

@@ -52,16 +52,16 @@ The tunnel is brought up once per worker process and reused across runs, so you 
 
 Two userspace clients fit this pattern. Pick one before you start.
 
-|                                                           | Tailscale                                             | WireGuard (`wireproxy`)         |
-| --------------------------------------------------------- | ----------------------------------------------------- | ------------------------------- |
-| Reaches VM Postgres                                       | yes                                                   | yes                             |
-| Reaches managed Cloud SQL (private IP, via subnet router) | yes                                                   | yes                             |
-| Cold tunnel bring-up                                      | \~1.2s                                                | \~0.1s                          |
-| Warm run                                                  | \~0.17s                                               | \~0.17s                         |
-| Access control                                            | tailnet ACLs (tags and grants)                        | none built in                   |
-| NAT traversal / dynamic peers                             | yes                                                   | no (needs a reachable endpoint) |
-| Key management                                            | auth keys, rotation, admin UI                         | you manage static keys          |
-| Vendor cost                                               | SaaS device or minute limits (or self-host Headscale) | none                            |
+| | Tailscale | WireGuard (`wireproxy`) |
+| - | - | - |
+| Reaches VM Postgres | yes | yes |
+| Reaches managed Cloud SQL (private IP, via subnet router) | yes | yes |
+| Cold tunnel bring-up | \~1.2s | \~0.1s |
+| Warm run | \~0.17s | \~0.17s |
+| Access control | tailnet ACLs (tags and grants) | none built in |
+| NAT traversal / dynamic peers | yes | no (needs a reachable endpoint) |
+| Key management | auth keys, rotation, admin UI | you manage static keys |
+| Vendor cost | SaaS device or minute limits (or self-host Headscale) | none |
 
 Use **WireGuard** when you control a stable endpoint in the VPC and want the fastest cold start with no vendor limits. Use **Tailscale** when you want ACLs, managed key rotation, NAT traversal, and a managed control plane, and can accept the roughly one-second cold-start handshake (or [self-host the control plane](#self-hosting-the-control-plane-with-headscale) to shrink it).
 
@@ -364,24 +364,24 @@ Set these on your Trigger.dev project through the dashboard or the API. Never co
 
 <Tabs>
   <Tab title="Tailscale">
-    | Variable                               | Value                                                                      |
-    | -------------------------------------- | -------------------------------------------------------------------------- |
-    | `TS_AUTHKEY`                           | An ephemeral, reusable, tagged (`tag:trigger`) auth key                    |
-    | `PGHOST`                               | The resource's tailnet IP or MagicDNS name (or a subnet-routed private IP) |
-    | `PGPORT`                               | `5432`                                                                     |
-    | `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres credentials                                                  |
-    | `TS_LOGIN_SERVER`                      | Optional. A self-hosted Headscale URL                                      |
+    | Variable | Value |
+    | - | - |
+    | `TS_AUTHKEY` | An ephemeral, reusable, tagged (`tag:trigger`) auth key |
+    | `PGHOST` | The resource's tailnet IP or MagicDNS name (or a subnet-routed private IP) |
+    | `PGPORT` | `5432` |
+    | `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres credentials |
+    | `TS_LOGIN_SERVER` | Optional. A self-hosted Headscale URL |
   </Tab>
 
   <Tab title="WireGuard">
-    | Variable                                          | Value                                                        |
-    | ------------------------------------------------- | ------------------------------------------------------------ |
-    | `WG_PRIVATE_KEY`                                  | The client (task) WireGuard private key                      |
-    | `WG_SERVER_PUBLIC_KEY`                            | The server's WireGuard public key                            |
-    | `WG_ENDPOINT`                                     | `<server public ip>:51820`                                   |
-    | `WG_ALLOWED_IPS`                                  | The server's WG address, plus any subnet-routed IPs to reach |
-    | `PGHOST`                                          | The WireGuard server's own address (for example `10.9.0.1`)  |
-    | `PGPORT` / `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres connection details                             |
+    | Variable | Value |
+    | - | - |
+    | `WG_PRIVATE_KEY` | The client (task) WireGuard private key |
+    | `WG_SERVER_PUBLIC_KEY` | The server's WireGuard public key |
+    | `WG_ENDPOINT` | `<server public ip>:51820` |
+    | `WG_ALLOWED_IPS` | The server's WG address, plus any subnet-routed IPs to reach |
+    | `PGHOST` | The WireGuard server's own address (for example `10.9.0.1`) |
+    | `PGPORT` / `PGUSER` / `PGPASSWORD` / `PGDATABASE` | Your Postgres connection details |
   </Tab>
 </Tabs>
 
@@ -500,11 +500,11 @@ Create the Cloud SQL instance with a private IP (Private Service Access), note i
 
 The tunnel is brought up once per worker process and reused across runs, so you pay setup only on a cold start. `processKeepAlive: true` keeps the process, and therefore the tunnel, alive between runs. Numbers below are from a deployed managed-worker project with the GCP resource in us-east4 and workers in AWS us-east-1:
 
-|                            | Tailscale | WireGuard       |
-| -------------------------- | --------- | --------------- |
-| Cold tunnel bring-up       | \~1.2s    | \~0.1s          |
-| Warm run                   | \~0.17s   | \~0.17s         |
-| Query latency (same metro) | \~0.12s   | \~0.03 to 0.12s |
+| | Tailscale | WireGuard |
+| - | - | - |
+| Cold tunnel bring-up | \~1.2s | \~0.1s |
+| Warm run | \~0.17s | \~0.17s |
+| Query latency (same metro) | \~0.12s | \~0.03 to 0.12s |
 
 The gap is the handshake. Tailscale registers a fresh node with its coordination server and negotiates connectivity on every cold node, roughly one second of round trips. Static WireGuard does a single handshake to a known endpoint with no coordination server, so bring-up is about 100ms.
 

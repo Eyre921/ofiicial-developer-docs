@@ -45,11 +45,11 @@ Declaring `tools` on the config does two things you can't get by passing them to
 
 There are three places a tool set shows up. Declare once, reuse:
 
-| Surface                                                      | What it's for                                                                                                                                                                                                                                                                                                                                    |
-| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `chat.agent({ tools })`                                      | Re-applies `toModelOutput` on prior-turn history; hands the set back typed on the `run()` payload.                                                                                                                                                                                                                                               |
+| Surface | What it's for |
+| - | - |
+| `chat.agent({ tools })` | Re-applies `toModelOutput` on prior-turn history; hands the set back typed on the `run()` payload. |
 | `streamText({ tools })` on the `run` argument's `streamText` | What the model actually calls. Detects which calls need [HITL approval](/docs/ai-chat/patterns/human-in-the-loop) (`needsApproval`) and merges the auto-injected [skill](/docs/ai-chat/patterns/skills) tools on top. Naming `tools` replaces the config set for that call, so you can narrow it; omitting `tools` falls back to the config set. |
-| `chat.toStreamTextOptions({ tools })`                        | The same job by hand, for a [custom agent](#manual-turn-loops-chatcustomagent), which has no `run` argument.                                                                                                                                                                                                                                     |
+| `chat.toStreamTextOptions({ tools })` | The same job by hand, for a [custom agent](#manual-turn-loops-chatcustomagent), which has no `run` argument. |
 
 The canonical pattern: declare `tools` on the config, read them back from the `run()` payload, and pass that set to the `streamText` the payload also carries.
 
@@ -124,12 +124,12 @@ export const myChat = chat
 
 The function receives a `ResolveToolsEvent` and runs once per turn (after `clientData` is parsed):
 
-| Field          | Type          | Description                                      |
-| -------------- | ------------- | ------------------------------------------------ |
-| `chatId`       | `string`      | The chat session ID.                             |
-| `turn`         | `number`      | The current turn number (0-indexed).             |
-| `continuation` | `boolean`     | Whether this run is continuing an existing chat. |
-| `clientData`   | `TClientData` | Parsed client data from the frontend.            |
+| Field | Type | Description |
+| - | - | - |
+| `chatId` | `string` | The chat session ID. |
+| `turn` | `number` | The current turn number (0-indexed). |
+| `continuation` | `boolean` | Whether this run is continuing an existing chat. |
+| `clientData` | `TClientData` | Parsed client data from the frontend. |
 
 The resolved set is what lands on the `run()` payload's `tools`.
 

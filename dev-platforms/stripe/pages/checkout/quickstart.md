@@ -612,7 +612,7 @@ require github.com/stripe/stripe-go/v86 v86.4.0
             .build();
       response.redirect(session.getUrl(), 303);
       return "";
-    <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+    <script src="https://js.stripe.com/endive/stripe.js"></script>
       <div class="product">
         <img src="https://i.imgur.com/EHyR2nP.png" alt="The cover of Stubborn Attachments" />
         <div class="description">

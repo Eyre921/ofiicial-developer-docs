@@ -16,11 +16,11 @@ Caching is provider-specific. This guide covers Anthropic (`@ai-sdk/anthropic`),
 
 A request renders as `tools` → `system` → `messages`. There are three prefix regions worth caching, in order:
 
-| Region                  | How to cache it                                                                                         | Stability                                                   |
-| ----------------------- | ------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| System prompt (+ tools) | `cacheControl` / `systemProviderOptions` on `chat.agent()`, or `providerOptions` on `chat.prompt.set()` | Set once, never changes — the highest-value target          |
-| Conversation history    | `prepareMessages` adds a breakpoint to the last message                                                 | Grows append-only across turns                              |
-| Tool definitions        | Stable as long as your tool set doesn't change between turns                                            | Render at position 0 — changing them invalidates everything |
+| Region | How to cache it | Stability |
+| - | - | - |
+| System prompt (+ tools) | `cacheControl` / `systemProviderOptions` on `chat.agent()`, or `providerOptions` on `chat.prompt.set()` | Set once, never changes — the highest-value target |
+| Conversation history | `prepareMessages` adds a breakpoint to the last message | Grows append-only across turns |
+| Tool definitions | Stable as long as your tool set doesn't change between turns | Render at position 0 — changing them invalidates everything |
 
 `chat.agent` preserves `providerOptions` through message persistence and rehydration, so a breakpoint you place survives a suspend/resume or a page refresh. The recommended way to place message breakpoints is `prepareMessages` (below) rather than baking `cacheControl` into stored messages — `prepareMessages` runs on every prompt-assembly path, including after compaction, so the breakpoint is always in the right place.
 

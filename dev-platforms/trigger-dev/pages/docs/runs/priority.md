@@ -30,5 +30,6 @@ await myTask.trigger({ foo: "bar" }, { priority: 10 });
 If you passed a value of `3600` the run would dequeue before runs that were triggered an hour ago (with no priority).
 
 <Note>
-  Setting a high priority will not allow you to beat runs from other organizations. It will only affect the order of your own runs.
+  Setting a high priority will not allow you to beat runs from other organizations. It will only
+  affect the order of your own runs.
 </Note>

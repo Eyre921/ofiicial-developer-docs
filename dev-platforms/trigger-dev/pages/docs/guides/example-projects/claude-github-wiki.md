@@ -49,12 +49,12 @@ The agent workflow:
 
 ## Relevant code
 
-| File                                                                                                                                              | Description                                                         |
-| ------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
-| [`trigger/analyze-repo.ts`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/trigger/analyze-repo.ts)                 | Main task that clones repo, runs Claude agent, and streams response |
-| [`trigger/agent-stream.ts`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/trigger/agent-stream.ts)                 | Typed stream definition for real-time text responses                |
-| [`app/api/analyze-repo/route.ts`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/app/api/analyze-repo/route.ts)     | API endpoint that triggers the task                                 |
-| [`app/response/[runId]/page.tsx`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/app/response/%5BrunId%5D/page.tsx) | Real-time streaming display with progress                           |
+| File | Description |
+| - | - |
+| [`trigger/analyze-repo.ts`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/trigger/analyze-repo.ts) | Main task that clones repo, runs Claude agent, and streams response |
+| [`trigger/agent-stream.ts`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/trigger/agent-stream.ts) | Typed stream definition for real-time text responses |
+| [`app/api/analyze-repo/route.ts`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/app/api/analyze-repo/route.ts) | API endpoint that triggers the task |
+| [`app/response/[runId]/page.tsx`](https://github.com/triggerdotdev/examples/blob/main/claude-agent-github-wiki/app/response/%5BrunId%5D/page.tsx) | Real-time streaming display with progress |
 
 ## trigger.config.ts
 

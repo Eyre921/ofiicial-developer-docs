@@ -86,13 +86,13 @@ export const taskWithRetries = task({
 });
 ```
 
-| Option           | What it does                                                                                                                                                      |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `maxAttempts`    | Total number of attempts (including the first). Default: 3                                                                                                        |
-| `factor`         | Exponential backoff multiplier. Each retry delay = previous delay x factor. With `factor: 1.8` and `minTimeoutInMs: 500`, retries wait 500ms, 900ms, 1620ms, etc. |
-| `minTimeoutInMs` | Delay before the first retry                                                                                                                                      |
-| `maxTimeoutInMs` | Cap on the delay between retries                                                                                                                                  |
-| `randomize`      | Add jitter to retry delays to prevent multiple failing tasks from retrying in lockstep                                                                            |
+| Option | What it does |
+| - | - |
+| `maxAttempts` | Total number of attempts (including the first). Default: 3 |
+| `factor` | Exponential backoff multiplier. Each retry delay = previous delay x factor. With `factor: 1.8` and `minTimeoutInMs: 500`, retries wait 500ms, 900ms, 1620ms, etc. |
+| `minTimeoutInMs` | Delay before the first retry |
+| `maxTimeoutInMs` | Cap on the delay between retries |
+| `randomize` | Add jitter to retry delays to prevent multiple failing tasks from retrying in lockstep |
 
 <Note>Task-level retry settings override the defaults in your `trigger.config` file.</Note>
 
@@ -100,16 +100,14 @@ For more information read [the retrying guide](/docs/errors-retrying).
 
 It's also worth mentioning that you can [retry a block of code](/docs/errors-retrying) inside your tasks as well.
 
-### `queue` options
+### `queue` and `concurrency` options
 
-Queues allow you to control the concurrency of your tasks. This allows you to have one-at-a-time execution and parallel executions. There are also more advanced techniques like having different concurrencies for different sets of your users. For more information read [the concurrency & queues guide](/docs/queue-concurrency).
+Queues control the order your runs execute in, and concurrency limits control how many execute at once: one-at-a-time execution, parallel executions, and more advanced techniques like separate concurrency for different sets of your users. For more information read the [Queues](/docs/queues) and [Concurrency](/docs/concurrency) guides.
 
 ```ts /trigger/one-at-a-time.ts theme={"theme":"css-variables"}
 export const oneAtATime = task({
   id: "one-at-a-time",
-  queue: {
-    concurrencyLimit: 1,
-  },
+  concurrency: { total: 1 },
   run: async (payload: any, { ctx }) => {
     //...
   },

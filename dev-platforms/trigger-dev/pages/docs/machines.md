@@ -33,15 +33,15 @@ export const config: TriggerConfig = {
 
 ## Machine configurations
 
-| Preset             | vCPU | Memory | Disk space |
-| :----------------- | :--- | :----- | :--------- |
-| micro              | 0.25 | 0.25   | 10GB       |
-| small-1x (default) | 0.5  | 0.5    | 10GB       |
-| small-2x           | 1    | 1      | 10GB       |
-| medium-1x          | 1    | 2      | 10GB       |
-| medium-2x          | 2    | 4      | 10GB       |
-| large-1x           | 4    | 8      | 10GB       |
-| large-2x           | 8    | 16     | 10GB       |
+| Preset | vCPU | Memory | Disk space |
+| :- | :- | :- | :- |
+| micro | 0.25 | 0.25 | 10GB |
+| small-1x (default) | 0.5 | 0.5 | 10GB |
+| small-2x | 1 | 1 | 10GB |
+| medium-1x | 1 | 2 | 10GB |
+| medium-2x | 2 | 4 | 10GB |
+| large-1x | 4 | 8 | 10GB |
+| large-2x | 8 | 16 | 10GB |
 
 You can view the Trigger.dev cloud pricing for these machines [here](https://trigger.dev/pricing#computePricing).
 

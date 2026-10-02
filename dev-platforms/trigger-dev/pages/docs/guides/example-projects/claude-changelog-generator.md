@@ -51,12 +51,12 @@ The agent workflow:
 
 ## Relevant code
 
-| File                                                                                                                                                 | Description                            |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| [`trigger/generate-changelog.ts`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/trigger/generate-changelog.ts)             | Main task with custom tools            |
-| [`trigger/changelog-stream.ts`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/trigger/changelog-stream.ts)                 | Stream definition for real-time output |
-| [`app/api/generate-changelog/route.ts`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/app/api/generate-changelog/route.ts) | API endpoint that triggers the task    |
-| [`app/response/[runId]/page.tsx`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/app/response/%5BrunId%5D/page.tsx)         | Streaming display page                 |
+| File | Description |
+| - | - |
+| [`trigger/generate-changelog.ts`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/trigger/generate-changelog.ts) | Main task with custom tools |
+| [`trigger/changelog-stream.ts`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/trigger/changelog-stream.ts) | Stream definition for real-time output |
+| [`app/api/generate-changelog/route.ts`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/app/api/generate-changelog/route.ts) | API endpoint that triggers the task |
+| [`app/response/[runId]/page.tsx`](https://github.com/triggerdotdev/examples/blob/main/changelog-generator/app/response/%5BrunId%5D/page.tsx) | Streaming display page |
 
 ## trigger.config.ts
 

@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -197,10 +197,6 @@
 - `faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless` — [How to check if a model is available on serverless?](pages/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/how-to-check-if-a-model-is-available-on-serverless)
 - `faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques` — [There’s a model I would like to use that isn’t available on Fireworks. Can I request it?](pages/faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/theres-a-model-i-would-like-to-use-that-isnt-available-on-fireworks-can-i-reques)
 - `faq-new/models-inference/what-factors-affect-the-number-of-simultaneous-requests-that-can-be-handled` — [What factors affect the number of simultaneous requests that can be handled?](pages/faq-new/models-inference/what-factors-affect-the-number-of-simultaneous-requests-that-can-be-handled.md) · [原文](https://docs.fireworks.ai/faq-new/models-inference/what-factors-affect-the-number-of-simultaneous-requests-that-can-be-handled)
-
-## field-eng
-
-- `field-eng/p1-alert-intake` — [P1 alert intake](pages/field-eng/p1-alert-intake.md) · [原文](https://docs.fireworks.ai/field-eng/p1-alert-intake)
 
 ## fine-tuning
 

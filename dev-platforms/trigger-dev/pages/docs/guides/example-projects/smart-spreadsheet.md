@@ -73,13 +73,13 @@ The frontend subscribes to these metadata updates using [Realtime](/docs/realtim
 
 ## Relevant code
 
-| File                                                                                                                                           | Description                                                            |
-| ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
-| [`src/trigger/enrich-company.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/enrich-company.ts)         | Main orchestrator that triggers parallel subtasks and persists results |
-| [`src/trigger/get-basic-info.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-basic-info.ts)         | Extracts company website and description                               |
-| [`src/trigger/get-industry.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-industry.ts)             | Classifies company industry                                            |
-| [`src/trigger/get-employee-count.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-employee-count.ts) | Finds employee headcount                                               |
-| [`src/trigger/get-funding-round.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-funding-round.ts)   | Discovers latest funding information                                   |
+| File | Description |
+| - | - |
+| [`src/trigger/enrich-company.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/enrich-company.ts) | Main orchestrator that triggers parallel subtasks and persists results |
+| [`src/trigger/get-basic-info.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-basic-info.ts) | Extracts company website and description |
+| [`src/trigger/get-industry.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-industry.ts) | Classifies company industry |
+| [`src/trigger/get-employee-count.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-employee-count.ts) | Finds employee headcount |
+| [`src/trigger/get-funding-round.ts`](https://github.com/triggerdotdev/examples/blob/main/smart-spreadsheet/src/trigger/get-funding-round.ts) | Discovers latest funding information |
 
 ## Learn more about Trigger.dev Realtime
 

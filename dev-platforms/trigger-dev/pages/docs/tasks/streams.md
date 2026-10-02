@@ -31,13 +31,13 @@ Streams v2 is the **default** when using SDK 4.1.0 or later. If you trigger task
 
 ## Limits Comparison
 
-| Limit                            | Legacy (pre-4.1.0) | Current   |
-| -------------------------------- | ------------------ | --------- |
-| Maximum stream length            | 2000               | Unlimited |
-| Number of active streams per run | 5                  | Unlimited |
-| Maximum streams per run          | 10                 | Unlimited |
-| Maximum stream TTL               | 1 day              | 28 days   |
-| Maximum stream size              | 10MB               | 300 MiB   |
+| Limit | Legacy (pre-4.1.0) | Current |
+| - | - | - |
+| Maximum stream length | 2000 | Unlimited |
+| Number of active streams per run | 5 | Unlimited |
+| Maximum streams per run | 10 | Unlimited |
+| Maximum stream TTL | 1 day | 28 days |
+| Maximum stream size | 10MB | 300 MiB |
 
 ## Quick Start
 
@@ -554,12 +554,12 @@ Type safety is enforced through the generic — both `.send()` and the receiving
 
 ### Receiving data inside a task
 
-| Method         | Task suspended? | Compute cost while waiting | Best for                                                             |
-| -------------- | --------------- | -------------------------- | -------------------------------------------------------------------- |
-| `.wait()`      | **Yes**         | **None** — process freed   | Approval gates, human-in-the-loop, long waits                        |
-| `.once()`      | No              | Full — process stays alive | Short waits, concurrent work; returns result object with `.unwrap()` |
-| `.on(handler)` | No              | Full — process stays alive | Continuous listening (cancel signals, live updates)                  |
-| `.peek()`      | No              | None                       | Non-blocking check for latest buffered value                         |
+| Method | Task suspended? | Compute cost while waiting | Best for |
+| - | - | - | - |
+| `.wait()` | **Yes** | **None** — process freed | Approval gates, human-in-the-loop, long waits |
+| `.once()` | No | Full — process stays alive | Short waits, concurrent work; returns result object with `.unwrap()` |
+| `.on(handler)` | No | Full — process stays alive | Continuous listening (cancel signals, live updates) |
+| `.peek()` | No | None | Non-blocking check for latest buffered value |
 
 #### `wait()` — Suspend until data arrives
 

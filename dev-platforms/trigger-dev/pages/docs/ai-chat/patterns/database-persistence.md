@@ -21,10 +21,10 @@ This page describes a **hook mapping** that works with any database. Adapt table
 
 You can use one table or two; the important split is **semantic**:
 
-| Concept            | Purpose                               | Typical fields                                                                                                |
-| ------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Conversation**   | Durable transcript + display metadata | Stable id (same as **`chatId`**), serialized **`uiMessages`**, title, model choice, owner/user id, timestamps |
-| **Active session** | Hydrate the transport on page reload  | Same **`chatId`** as key (or FK), **`publicAccessToken`**, optional **`lastEventId`**                         |
+| Concept | Purpose | Typical fields |
+| - | - | - |
+| **Conversation** | Durable transcript + display metadata | Stable id (same as **`chatId`**), serialized **`uiMessages`**, title, model choice, owner/user id, timestamps |
+| **Active session** | Hydrate the transport on page reload | Same **`chatId`** as key (or FK), **`publicAccessToken`**, optional **`lastEventId`** |
 
 The **conversation** row is what your UI lists as "chats." The **session** row is what the **transport** needs after a refresh: a session-scoped PAT (so the transport doesn't have to re-mint on first paint) and the SSE resume cursor.
 

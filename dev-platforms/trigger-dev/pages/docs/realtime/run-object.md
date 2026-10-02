@@ -46,22 +46,22 @@ Type-safety is supported for the run object, so you can infer the types of the r
   Current status of the run.
 
   <Accordion title="RunStatus enum">
-    | Status               | Description                                                                                               |
-    | -------------------- | --------------------------------------------------------------------------------------------------------- |
-    | `WAITING_FOR_DEPLOY` | Task hasn't been deployed yet but is waiting to be executed                                               |
-    | `QUEUED`             | Run is waiting to be executed by a worker                                                                 |
-    | `EXECUTING`          | Run is currently being executed by a worker                                                               |
-    | `REATTEMPTING`       | Run has failed and is waiting to be retried                                                               |
-    | `FROZEN`             | Run has been paused by the system, and will be resumed by the system                                      |
-    | `COMPLETED`          | Run has been completed successfully                                                                       |
-    | `CANCELED`           | Run has been canceled by the user                                                                         |
-    | `FAILED`             | Run has been completed with errors                                                                        |
-    | `CRASHED`            | Run has crashed and won't be retried, most likely the worker ran out of resources, e.g. memory or storage |
-    | `INTERRUPTED`        | Run was interrupted during execution, mostly this happens in development environments                     |
-    | `SYSTEM_FAILURE`     | Run has failed to complete, due to an error in the system                                                 |
-    | `DELAYED`            | Run has been scheduled to run at a specific time                                                          |
-    | `EXPIRED`            | Run has expired and won't be executed                                                                     |
-    | `TIMED_OUT`          | Run has reached it's maxDuration and has been stopped                                                     |
+    | Status | Description |
+    | - | - |
+    | `WAITING_FOR_DEPLOY` | Task hasn't been deployed yet but is waiting to be executed |
+    | `QUEUED` | Run is waiting to be executed by a worker |
+    | `EXECUTING` | Run is currently being executed by a worker |
+    | `REATTEMPTING` | Run has failed and is waiting to be retried |
+    | `FROZEN` | Run has been paused by the system, and will be resumed by the system |
+    | `COMPLETED` | Run has been completed successfully |
+    | `CANCELED` | Run has been canceled by the user |
+    | `FAILED` | Run has been completed with errors |
+    | `CRASHED` | Run has crashed and won't be retried, most likely the worker ran out of resources, e.g. memory or storage |
+    | `INTERRUPTED` | Run was interrupted during execution, mostly this happens in development environments |
+    | `SYSTEM_FAILURE` | Run has failed to complete, due to an error in the system |
+    | `DELAYED` | Run has been scheduled to run at a specific time |
+    | `EXPIRED` | Run has expired and won't be executed |
+    | `TIMED_OUT` | Run has reached it's maxDuration and has been stopped |
   </Accordion>
 </ParamField>
 

@@ -1,12 +1,12 @@
 ---
-title: "Compile Procedures"
+title: "Compile Procedures (legacy)"
 source: https://elevenlabs.io/docs/api-reference/agents/procedures/compile.md
 path: docs/api-reference/agents/procedures/compile
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Compile Procedures
+# Compile Procedures (legacy)
 
 POST https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/compile
 

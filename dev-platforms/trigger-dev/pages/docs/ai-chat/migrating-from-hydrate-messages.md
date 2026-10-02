@@ -14,17 +14,17 @@ Learn how to replace a `hydrateMessages` hook with a `storage` on the same table
 
 With `hydrateMessages`, your hook was the source of truth and the runtime wrote nothing, so your app re-derived from its own rows everything the runtime already knew. A [transcript storage](/docs/ai-chat/transcript-storage) inverts that: the runtime owns the transcript and calls your storage at the durable boundaries.
 
-| Concern                                   | With `hydrateMessages`                                                | With `storage`                                                                                  |
-| ----------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Reading history                           | Your hook, on every turn and action                                   | `load`, once when a run boots                                                                   |
-| Writing the user's message and the answer | Your `onTurnStart` / `onTurnComplete` code                            | `save` receives them as `put` changes                                                           |
-| A message sent mid-answer (steering)      | You wrote it, and placed it before the answer                         | Arrives in the same changeset, in order                                                         |
-| Undo, edit, regenerate                    | Row writes paired with each `chat.history` call                       | Arrive as `truncateAfter` and `put` changes                                                     |
-| Partial answer after a crash              | Your partial rows and a recovery flag                                 | A `put` with `final: false`; you report it back in `nonFinalIds`                                |
-| Tool call the dead run never answered     | Your repair pass                                                      | Cleaned up by the runtime before the save                                                       |
-| Compaction summary                        | Your summary column and watermark, invalidated on every rollback path | An opaque `state` blob you store and return; the runtime discards it when a rollback crosses it |
-| Resume cursors                            | Your `lastEventId` write, in the same transaction as the answer       | `cursors` on the changeset; write them in the same transaction                                  |
-| Deciding what the model sees              | The array your hook returned                                          | The transcript, or `loadContext` if your database decides                                       |
+| Concern | With `hydrateMessages` | With `storage` |
+| - | - | - |
+| Reading history | Your hook, on every turn and action | `load`, once when a run boots |
+| Writing the user's message and the answer | Your `onTurnStart` / `onTurnComplete` code | `save` receives them as `put` changes |
+| A message sent mid-answer (steering) | You wrote it, and placed it before the answer | Arrives in the same changeset, in order |
+| Undo, edit, regenerate | Row writes paired with each `chat.history` call | Arrive as `truncateAfter` and `put` changes |
+| Partial answer after a crash | Your partial rows and a recovery flag | A `put` with `final: false`; you report it back in `nonFinalIds` |
+| Tool call the dead run never answered | Your repair pass | Cleaned up by the runtime before the save |
+| Compaction summary | Your summary column and watermark, invalidated on every rollback path | An opaque `state` blob you store and return; the runtime discards it when a rollback crosses it |
+| Resume cursors | Your `lastEventId` write, in the same transaction as the answer | `cursors` on the changeset; write them in the same transaction |
+| Deciding what the model sees | The array your hook returned | The transcript, or `loadContext` if your database decides |
 
 ## Before you start
 

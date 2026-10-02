@@ -20772,11 +20772,8 @@ neon api-keys list
 
 ```text filename="Output"
 Account API keys
-┌─────────┬──────────────────────┬──────────────────────┬──────────────────────┬─────────────────────┐
-│ Id      │ Name                 │ Created At           │ Last Used At         │ Last Used From Addr │
-├─────────┼──────────────────────┼──────────────────────┼──────────────────────┼─────────────────────┤
-│ 3225782 │ ci-deploy            │ 2026-07-29T00:50:26Z │ 2026-07-29T18:06:55Z │ 192.0.2.10          │
-└─────────┴──────────────────────┴──────────────────────┴──────────────────────┴─────────────────────┘
+Id       Name       Created At            Last Used At          Last Used From Addr
+3225782  ci-deploy  2026-07-29T00:50:26Z  2026-07-29T18:06:55Z  192.0.2.10
 ```
 
 Organization keys are invisible to your account, so listing them needs `--org-id`:
@@ -20789,13 +20786,9 @@ This covers both scopes, since a project-scoped key is owned by the project's or
 
 ```text filename="Output"
 API keys in org-example-12345678
-┌─────────┬─────────────┬───────────────────────┬──────────────────────┬──────────────────────┬─────────────────────┐
-│ Id      │ Name        │ Project               │ Created At           │ Last Used At         │ Last Used From Addr │
-├─────────┼─────────────┼───────────────────────┼──────────────────────┼──────────────────────┼─────────────────────┤
-│ 3243240 │ preview-bot │ green-breeze-12345678 │ 2026-08-04T18:51:36Z │ 2026-08-05T18:51:36Z │ 192.0.2.10          │
-├─────────┼─────────────┼───────────────────────┼──────────────────────┼──────────────────────┼─────────────────────┤
-│ 3177950 │ org-key     │ (all projects)        │ 2026-07-08T01:28:49Z │ 2026-07-08T01:31:20Z │ 192.0.2.10          │
-└─────────┴─────────────┴───────────────────────┴──────────────────────┴──────────────────────┴─────────────────────┘
+Id       Name         Project                Created At            Last Used At          Last Used From Addr
+3243240  preview-bot  green-breeze-12345678  2026-08-04T18:51:36Z  2026-08-05T18:51:36Z  192.0.2.10
+3177950  org-key      (all projects)         2026-07-08T01:28:49Z  2026-07-08T01:31:20Z  192.0.2.10
 ```
 
 `(all projects)` is a table label only. In JSON and YAML the field is `project_id`, and it is `null` for an organization-wide key:
@@ -20840,11 +20833,8 @@ neon api-keys create --name ci-deploy
 
 ```text filename="Output"
 API key
-┌─────────┬───────────┐
-│ Id      │ Name      │
-├─────────┼───────────┤
-│ 3225782 │ ci-deploy │
-└─────────┴───────────┘
+Id    3225782
+Name  ci-deploy
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
@@ -20859,11 +20849,8 @@ neon api-keys create --name org-key --org-id org-example-12345678
 
 ```text filename="Output"
 API key
-┌─────────┬─────────┐
-│ Id      │ Name    │
-├─────────┼─────────┤
-│ 3177950 │ org-key │
-└─────────┴─────────┘
+Id    3177950
+Name  org-key
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
@@ -20878,11 +20865,9 @@ neon api-keys create --name preview-bot --project-id green-breeze-12345678
 
 ```text filename="Output"
 API key
-┌─────────┬─────────────┬───────────────────────┐
-│ Id      │ Name        │ Project               │
-├─────────┼─────────────┼───────────────────────┤
-│ 3243240 │ preview-bot │ green-breeze-12345678 │
-└─────────┴─────────────┴───────────────────────┘
+Id       3243240
+Name     preview-bot
+Project  green-breeze-12345678
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
@@ -20919,11 +20904,10 @@ neon api-keys revoke 3225782
 
 ```text filename="Output"
 API key
-┌─────────┬───────────┬─────────┬──────────────────────┐
-│ Id      │ Name      │ Revoked │ Last Used At         │
-├─────────┼───────────┼─────────┼──────────────────────┤
-│ 3225782 │ ci-deploy │ true    │ 2026-07-29T18:06:55Z │
-└─────────┴───────────┴─────────┴──────────────────────┘
+Id            3225782
+Name          ci-deploy
+Revoked       true
+Last Used At  2026-07-29T18:06:55Z
 ```
 
 `Last Used At` is empty for a key that was never used.
@@ -21197,13 +21181,9 @@ neon branches list --project-id solitary-leaf-288182
 ```
 
 ```text filename="Output"
-┌────────────────────────┬──────────────────────────┬──────────────────────┬──────────────────────┐
-│ Id                     │ Name                     │ Created At           │ Updated At           │
-├────────────────────────┼──────────────────────────┼──────────────────────┼──────────────────────┤
-│ br-small-meadow-878874 │ production [default]     │ 2023-07-06T13:15:12Z │ 2023-07-06T14:26:32Z │
-├────────────────────────┼──────────────────────────┼──────────────────────┼──────────────────────┤
-│ br-round-queen-335380  │ development [current]    │ 2023-07-06T14:45:50Z │ 2023-07-06T14:45:50Z │
-└────────────────────────┴──────────────────────────┴──────────────────────┴──────────────────────┘
+Name                   Id                     Current State  Created At
+[default] production   br-wispy-cloud-123456  ready          2026-09-30T13:15:12Z
+[current] development  br-cool-forest-123456  ready          2026-09-30T14:45:50Z
 ```
 
 Branch names include text labels that indicate status: `[default]` marks the project's default branch, `[protected]` marks a protected branch, `[anon]` marks an anonymized branch, and `[current]` marks the branch pinned in your local `.neon` context file.
@@ -21221,7 +21201,7 @@ neon branches list --project-id solitary-leaf-288182 --output json
 ```json
 [
   {
-    "id": "br-wild-boat-648259",
+    "id": "br-wild-boat-123456",
     "project_id": "solitary-leaf-288182",
     "name": "production",
     "current_state": "ready",
@@ -21233,13 +21213,13 @@ neon branches list --project-id solitary-leaf-288182 --output json
     "active_time_seconds": 312,
     "written_data_bytes": 107816,
     "data_transfer_bytes": 0,
-    "created_at": "2023-07-09T17:01:34Z",
-    "updated_at": "2023-07-09T17:15:13Z"
+    "created_at": "2026-07-09T17:01:34Z",
+    "updated_at": "2026-07-09T17:15:13Z"
   },
   {
-    "id": "br-shy-cake-201321",
+    "id": "br-shy-cake-123456",
     "project_id": "solitary-leaf-288182",
-    "parent_id": "br-wild-boat-648259",
+    "parent_id": "br-wild-boat-123456",
     "parent_lsn": "0/1E88838",
     "name": "development",
     "current_state": "ready",
@@ -21250,8 +21230,8 @@ neon branches list --project-id solitary-leaf-288182 --output json
     "active_time_seconds": 0,
     "written_data_bytes": 0,
     "data_transfer_bytes": 0,
-    "created_at": "2023-07-09T17:37:10Z",
-    "updated_at": "2023-07-09T17:37:10Z"
+    "created_at": "2026-07-09T17:37:10Z",
+    "updated_at": "2026-07-09T17:37:10Z"
   }
 ]
 ```
@@ -21290,23 +21270,19 @@ neon branches create
 ```
 
 ```text filename="Output"
-┌─────────────────────────┬─────────────────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                      │ Name                    │ Default │ Created At           │ Updated At           │
-├─────────────────────────┼─────────────────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-mute-sunset-67218628 │ br-mute-sunset-67218628 │ false   │ 2023-08-03T20:07:27Z │ 2023-08-03T20:07:27Z │
-└─────────────────────────┴─────────────────────────┴─────────┴──────────────────────┴──────────────────────┘
-endpoints
-┌───────────────────────────┬──────────────────────┐
-│ Id                        │ Created At           │
-├───────────────────────────┼──────────────────────┤
-│ ep-floral-violet-94096438 │ 2023-08-03T20:07:27Z │
-└───────────────────────────┴──────────────────────┘
-connection_uris
-┌──────────────────────────────────────────────────────────────────────────────────────────┐
-│ Connection Uri                                                                           │
-├──────────────────────────────────────────────────────────────────────────────────────────┤
-│ postgresql://[user]:[password]@[neon_hostname]/[dbname]                                  │
-└──────────────────────────────────────────────────────────────────────────────────────────┘
+Branch
+Name           br-mute-sunset-123456
+Id             br-mute-sunset-123456
+Current State  ready
+Created At     2026-09-30T20:07:27Z
+
+Compute
+Id                       Created At
+ep-floral-violet-123456  2026-09-30T20:07:27Z
+
+Connection string
+Connection Uri
+postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
 **Note:** If the parent branch has more than one role or database, the `branches create` command does not output a connection URI. As an alternative, you can use the `connection-string` command to retrieve the connection URI for a branch. This command includes options for specifying the role and database. See [the connection-string command](https://neon.com/docs/cli/connection-string).
@@ -21332,11 +21308,11 @@ neon branches create --output json
 ```json
 {
   "branch": {
-    "id": "br-frosty-art-30264288",
+    "id": "br-frosty-art-123456",
     "project_id": "polished-shape-60485499",
-    "parent_id": "br-polished-fire-02083731",
+    "parent_id": "br-polished-fire-123456",
     "parent_lsn": "0/1E887C8",
-    "name": "br-frosty-art-30264288",
+    "name": "br-frosty-art-123456",
     "current_state": "init",
     "pending_state": "ready",
     "creation_source": "neon",
@@ -21346,15 +21322,15 @@ neon branches create --output json
     "active_time_seconds": 0,
     "written_data_bytes": 0,
     "data_transfer_bytes": 0,
-    "created_at": "2023-08-03T20:12:24Z",
-    "updated_at": "2023-08-03T20:12:24Z"
+    "created_at": "2026-08-03T20:12:24Z",
+    "updated_at": "2026-08-03T20:12:24Z"
   },
   "endpoints": [
     {
       "host": "ep-cool-darkness-123456.us-east-2.aws.neon.tech",
       "id": "ep-cool-darkness-123456",
       "project_id": "polished-shape-60485499",
-      "branch_id": "br-frosty-art-30264288",
+      "branch_id": "br-frosty-art-123456",
       "autoscaling_limit_min_cu": 1,
       "autoscaling_limit_max_cu": 1,
       "region_id": "aws-us-east-2",
@@ -21367,8 +21343,8 @@ neon branches create --output json
       "disabled": false,
       "passwordless_access": true,
       "creation_source": "neon",
-      "created_at": "2023-08-03T20:12:24Z",
-      "updated_at": "2023-08-03T20:12:24Z",
+      "created_at": "2026-08-03T20:12:24Z",
+      "updated_at": "2026-08-03T20:12:24Z",
       "proxy_host": "us-east-2.aws.neon.tech",
       "suspend_timeout_seconds": 0,
       "provisioner": "k8s-pod"
@@ -21470,11 +21446,11 @@ neon branches reset development --parent
 ```
 
 ```text filename="Output"
-┌──────────────────────┬─────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                   │ Name        │ Default │ Created At           │ Last Reset At        │
-├──────────────────────┼─────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-aged-sun-a5qowy01 │ development │ false   │ 2024-05-07T09:31:59Z │ 2024-05-07T09:36:32Z │
-└──────────────────────┴─────────────┴─────────┴──────────────────────┴──────────────────────┘
+Name           development
+Id             br-cool-forest-123456
+Current State  ready
+Created At     2026-09-30T14:45:50Z
+Last Reset At  2026-09-30T15:36:32Z
 ```
 
 ## neon branches restore
@@ -21496,26 +21472,22 @@ neon branches restore <target-id|name> <source>[@(timestamp|lsn)]
 
 The `--preserve-under-name` option is required when restoring to `^self`.
 
-Restore `main` to an earlier point in its own history, saving the previous state to a backup branch named `main_restore_backup_2024-05-06`:
+Restore `main` to an earlier point in its own history, saving the previous state to a backup branch named `main_restore_backup_2026-09-29`:
 
 ```bash
-neon branches restore main ^self@2024-05-06T10:00:00.000Z --preserve-under-name main_restore_backup_2024-05-06
+neon branches restore main ^self@2026-09-29T10:00:00.000Z --preserve-under-name main_restore_backup_2026-09-29
 ```
 
 ```text filename="Output"
-INFO: Restoring branch br-purple-dust-a5hok5mk to the branch br-purple-dust-a5hok5mk timestamp 2024-05-06T10:00:00.000Z
+INFO: Restoring main to main at timestamp 2026-09-29T10:00:00.000Z
 Restored branch
-┌─────────────────────────┬──────┬──────────────────────┐
-│ Id                      │ Name │ Last Reset At        │
-├─────────────────────────┼──────┼──────────────────────┤
-│ br-purple-dust-a5hok5mk │ main │ 2024-05-07T09:45:21Z │
-└─────────────────────────┴──────┴──────────────────────┘
+Id             br-purple-dust-123456
+Name           main
+Last Reset At  2026-09-30T09:45:21Z
+
 Backup branch
-┌─────────────────────────┬────────────────────────────────┐
-│ Id                      │ Name                           │
-├─────────────────────────┼────────────────────────────────┤
-│ br-flat-forest-a5z016gm │ main_restore_backup_2024-05-06 │
-└─────────────────────────┴────────────────────────────────┘
+Id    br-flat-forest-123456
+Name  main_restore_backup_2026-09-29
 ```
 
 Restore the target branch `feature/user-auth` to the head of the source branch `main`:
@@ -21525,29 +21497,25 @@ neon branches restore feature/user-auth main
 ```
 
 ```text filename="Output"
-INFO: Restoring branch br-restless-frost-69810125 to the branch br-curly-bar-82389180 head
+INFO: Restoring feature/user-auth to the head of main
 Restored branch
-┌────────────────────────────┬───────────────────┬──────────────────────┐
-│ Id                         │ Name              │ Last Reset At        │
-├────────────────────────────┼───────────────────┼──────────────────────┤
-│ br-restless-frost-69810125 │ feature/user-auth │ 2024-02-21T15:42:34Z │
-└────────────────────────────┴───────────────────┴──────────────────────┘
+Id             br-restless-frost-123456
+Name           feature/user-auth
+Last Reset At  2026-09-30T15:42:34Z
 ```
 
 Restore `feature/user-auth` to an earlier point in time from its parent branch:
 
 ```bash
-neon branches restore feature/user-auth ^parent@2024-02-21T10:30:00.000Z
+neon branches restore feature/user-auth ^parent@2026-09-29T10:30:00.000Z
 ```
 
 ```text filename="Output"
-INFO: Restoring branch br-restless-frost-69810125 to the branch br-patient-union-a5s838zf timestamp 2024-02-21T10:30:00.000Z
+INFO: Restoring feature/user-auth to main at timestamp 2026-09-29T10:30:00.000Z
 Restored branch
-┌────────────────────────────┬───────────────────┬──────────────────────┐
-│ Id                         │ Name              │ Last Reset At        │
-├────────────────────────────┼───────────────────┼──────────────────────┤
-│ br-restless-frost-69810125 │ feature/user-auth │ 2024-02-21T15:55:04Z │
-└────────────────────────────┴───────────────────┴──────────────────────┘
+Id             br-restless-frost-123456
+Name           feature/user-auth
+Last Reset At  2026-09-30T15:55:04Z
 ```
 
 ## neon branches rename
@@ -21569,11 +21537,10 @@ neon branches rename mybranch teambranch
 ```
 
 ```text filename="Output"
-┌───────────────────────┬────────────┬──────────────────────┬──────────────────────┐
-│ Id                    │ Name       │ Created At           │ Updated At           │
-├───────────────────────┼────────────┼──────────────────────┼──────────────────────┤
-│ br-rough-sound-590393 │ teambranch │ 2023-07-09T20:46:58Z │ 2023-07-09T21:02:27Z │
-└───────────────────────┴────────────┴──────────────────────┴──────────────────────┘
+Name           teambranch
+Id             br-rough-sound-123456
+Current State  ready
+Created At     2026-09-30T20:46:58Z
 ```
 
 ## neon branches schema-diff
@@ -21658,11 +21625,10 @@ neon branches set-default mybranch
 ```
 
 ```text filename="Output"
-┌────────────────────┬──────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                 │ Name     │ Default │ Created At           │ Updated At           │
-├────────────────────┼──────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-odd-frog-703504 │ mybranch │ true    │ 2023-07-11T12:22:12Z │ 2023-07-11T12:22:59Z │
-└────────────────────┴──────────┴─────────┴──────────────────────┴──────────────────────┘
+Name           [default] mybranch
+Id             br-odd-frog-123456
+Current State  ready
+Created At     2026-09-30T12:22:12Z
 ```
 
 ## neon branches set-expiration
@@ -21714,11 +21680,8 @@ neon branches add-compute mybranch --type read_only
 ```
 
 ```text filename="Output"
-┌─────────────────────┬──────────────────────────────────────────────────┐
-│ Id                  │ Host                                             │
-├─────────────────────┼──────────────────────────────────────────────────┤
-│ ep-rough-lab-865061 │ ep-rough-lab-865061.ap-southeast-1.aws.neon.tech │
-└─────────────────────┴──────────────────────────────────────────────────┘
+Id    ep-rough-lab-123456
+Host  ep-rough-lab-123456.us-east-2.aws.neon.tech
 ```
 
 Set the compute size when adding a compute to a branch:
@@ -21746,15 +21709,14 @@ neon branches delete <id|name> [options]
 | `--project-id` | Project ID  | string | —       |    No    |
 
 ```bash
-neon branches delete br-rough-sky-158193
+neon branches delete br-rough-sky-123456
 ```
 
 ```text filename="Output"
-┌─────────────────────┬─────────────────┬──────────────────────┬──────────────────────┐
-│ Id                  │ Name            │ Created At           │ Updated At           │
-├─────────────────────┼─────────────────┼──────────────────────┼──────────────────────┤
-│ br-rough-sky-158193 │ my_child_branch │ 2023-07-09T20:57:39Z │ 2023-07-09T21:06:41Z │
-└─────────────────────┴─────────────────┴──────────────────────┴──────────────────────┘
+Name           my_child_branch
+Id             br-rough-sky-123456
+Current State  ready
+Created At     2026-09-30T20:57:39Z
 ```
 
 ## neon branches get
@@ -21776,11 +21738,11 @@ neon branches get production
 ```
 
 ```text filename="Output"
-┌────────────────────────┬────────────┬──────────────────────┬──────────────────────┐
-│ Id                     │ Name       │ Created At           │ Updated At           │
-├────────────────────────┼────────────┼──────────────────────┼──────────────────────┤
-│ br-small-meadow-878874 │ production │ 2023-07-06T13:15:12Z │ 2023-07-06T13:32:37Z │
-└────────────────────────┴────────────┴──────────────────────┴──────────────────────┘
+Name           [default] production
+Id             br-wispy-cloud-123456
+Current State  ready
+Created At     2026-09-30T13:15:12Z
+Logical Size   30.6 MiB
 ```
 
 Get a branch with the `--output` format option set to `json`:
@@ -21795,7 +21757,7 @@ neon branches get production --output json
 
 ```json
 {
-  "id": "br-lingering-bread-896475",
+  "id": "br-lingering-bread-123456",
   "project_id": "noisy-rain-039137",
   "name": "production",
   "current_state": "ready",
@@ -21807,8 +21769,8 @@ neon branches get production --output json
   "active_time_seconds": 2088,
   "written_data_bytes": 174433,
   "data_transfer_bytes": 20715,
-  "created_at": "2023-06-28T10:17:28Z",
-  "updated_at": "2023-07-11T12:22:59Z"
+  "created_at": "2026-06-28T10:17:28Z",
+  "updated_at": "2026-07-11T12:22:59Z"
 }
 ```
 
@@ -23007,11 +22969,8 @@ neon databases list --branch br-autumn-dust-190886
 ```
 
 ```text filename="Output"
-┌────────┬────────────┬──────────────────────┐
-│ Name   │ Owner Name │ Created At           │
-├────────┼────────────┼──────────────────────┤
-│ neondb │ daniel     │ 2023-06-19T18:27:19Z │
-└────────┴────────────┴──────────────────────┘
+Name    Owner Name    Created At
+neondb  neondb_owner  2026-06-19T18:27:19Z
 ```
 
 ## neon databases create
@@ -23030,15 +22989,12 @@ neon databases create [options]
 | `--project-id` | Project ID        | string | —       |    No    |
 
 ```bash
-neon databases create --name mynewdb --owner-name john
+neon databases create --name mynewdb --owner-name alex
 ```
 
 ```text filename="Output"
-┌─────────┬────────────┬──────────────────────┐
-│ Name    │ Owner Name │ Created At           │
-├─────────┼────────────┼──────────────────────┤
-│ mynewdb │ john       │ 2023-06-19T23:45:45Z │
-└─────────┴────────────┴──────────────────────┘
+Name     Owner Name  Created At
+mynewdb  alex        2026-06-19T23:45:45Z
 ```
 
 ## neon databases delete
@@ -23059,11 +23015,8 @@ neon databases delete mydb
 ```
 
 ```text filename="Output"
-┌─────────┬────────────┬──────────────────────┐
-│ Name    │ Owner Name │ Created At           │
-├─────────┼────────────┼──────────────────────┤
-│ mydb    │ daniel     │ 2023-06-19T23:45:45Z │
-└─────────┴────────────┴──────────────────────┘
+Name  Owner Name    Created At
+mydb  neondb_owner  2026-06-19T23:45:45Z
 ```
 
 --- [Document source](https://neon.com/docs/cli/deploy.md) ---
@@ -23331,11 +23284,12 @@ neon functions deploy hello --src functions/hello.ts
 
 ```text filename="Output"
 INFO: Function deployment triggered for function hello.
-┌────┬───────────┬──────────┬────────────┬─────────────────────────────┐
-│ Id │ Status    │ Runtime  │ Memory Mib │ Created At                  │
-├────┼───────────┼──────────┼────────────┼─────────────────────────────┤
-│ 1  │ completed │ nodejs24 │ 2048       │ 2026-06-12T00:14:58.044690Z │
-└────┴───────────┴──────────┴────────────┴─────────────────────────────┘
+Id              1
+Status          completed
+Invocation Url  https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon.tech/
+Runtime         nodejs24
+Memory Mib      2048
+Created At      2026-06-12T00:14:58.044690Z
 INFO: Function deployment hello/1 completed.
 ```
 
@@ -23363,11 +23317,8 @@ neon functions list
 ```
 
 ```text filename="Output"
-┌───────┬───────┬─────────────────────────────────────────────────────────────────────────────┬─────────────────────────────┐
-│ Slug  │ Name  │ Invocation Url                                                              │ Created At                  │
-├───────┼───────┼─────────────────────────────────────────────────────────────────────────────┼─────────────────────────────┤
-│ hello │ hello │ https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon.tech/ │ 2026-06-12T00:14:57.942988Z │
-└───────┴───────┴─────────────────────────────────────────────────────────────────────────────┴─────────────────────────────┘
+Slug   Name   Status     Invocation Url                                                              Created At
+hello  hello  completed  https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon.tech/  2026-06-12T00:14:57.942988Z
 ```
 
 List with full deployment details for scripts and agents:
@@ -23428,17 +23379,17 @@ neon functions get hello
 
 ```text filename="Output"
 function
-┌───────┬───────┬─────────────────────────────────────────────────────────────────────────────┬─────────────────────────────┐
-│ Slug  │ Name  │ Invocation Url                                                              │ Created At                  │
-├───────┼───────┼─────────────────────────────────────────────────────────────────────────────┼─────────────────────────────┤
-│ hello │ hello │ https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon.tech/ │ 2026-06-12T00:14:57.942988Z │
-└───────┴───────┴─────────────────────────────────────────────────────────────────────────────┴─────────────────────────────┘
+Slug            hello
+Name            hello
+Invocation Url  https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon.tech/
+Created At      2026-06-12T00:14:57.942988Z
+
 deployment (current, active)
-┌────┬───────────┬──────────┬────────────┬─────────────────────────────┐
-│ Id │ Status    │ Runtime  │ Memory Mib │ Created At                  │
-├────┼───────────┼──────────┼────────────┼─────────────────────────────┤
-│ 1  │ completed │ nodejs24 │ 2048       │ 2026-06-12T00:14:58.044690Z │
-└────┴───────────┴──────────┴────────────┴─────────────────────────────┘
+Id          1
+Status      completed
+Runtime     nodejs24
+Memory Mib  2048
+Created At  2026-06-12T00:14:58.044690Z
 ```
 
 ## neon functions delete
@@ -23917,15 +23868,10 @@ neon inspect db table-sizes
 ```
 
 ```text
-┌────────┬───────────┬─────────┐
-│ Schema │ Name      │ Size    │
-├────────┼───────────┼─────────┤
-│ public │ events    │ 16 MB   │
-├────────┼───────────┼─────────┤
-│ public │ orders    │ 4752 kB │
-├────────┼───────────┼─────────┤
-│ public │ customers │ 1616 kB │
-└────────┴───────────┴─────────┘
+Schema  Name       Size
+public  events     16 MB
+public  orders     4752 kB
+public  customers  1616 kB
 ```
 
 ### neon inspect db index-sizes
@@ -23945,17 +23891,11 @@ neon inspect db unused-indexes
 ```
 
 ```text
-┌──────────────────┬────────────────────────┬────────────┬─────────────┐
-│ Table            │ Index                  │ Index Size │ Index Scans │
-├──────────────────┼────────────────────────┼────────────┼─────────────┤
-│ public.events    │ events_created_at_idx  │ 1368 kB    │ 0           │
-├──────────────────┼────────────────────────┼────────────┼─────────────┤
-│ public.orders    │ orders_customer_id_idx │ 1024 kB    │ 2           │
-├──────────────────┼────────────────────────┼────────────┼─────────────┤
-│ public.customers │ customers_email_idx    │ 808 kB     │ 0           │
-├──────────────────┼────────────────────────┼────────────┼─────────────┤
-│ public.orders    │ orders_status_idx      │ 560 kB     │ 20          │
-└──────────────────┴────────────────────────┴────────────┴─────────────┘
+Table             Index                   Index Size  Index Scans
+public.events     events_created_at_idx   1368 kB     0
+public.orders     orders_customer_id_idx  1024 kB     2
+public.customers  customers_email_idx     808 kB      0
+public.orders     orders_status_idx       560 kB      20
 ```
 
 ### neon inspect db seq-scans
@@ -24023,15 +23963,10 @@ neon inspect db outliers
 <summary>Show output</summary>
 
 ```text
-┌─────────────────┬────────────────┬────────┬───────────────────────────────────────────────────────────────────────┐
-│ Total Exec Time │ Prop Exec Time │ Ncalls │ Query                                                                 │
-├─────────────────┼────────────────┼────────┼───────────────────────────────────────────────────────────────────────┤
-│ 00:00:00.875831 │ 57.0%          │ 250    │ SELECT * FROM orders WHERE customer_id = $1                           │
-├─────────────────┼────────────────┼────────┼───────────────────────────────────────────────────────────────────────┤
-│ 00:00:00.439406 │ 28.6%          │ 400    │ SELECT * FROM customers WHERE email = $1                              │
-├─────────────────┼────────────────┼────────┼───────────────────────────────────────────────────────────────────────┤
-│ 00:00:00.220669 │ 14.4%          │ 15     │ SELECT status, count(*), sum(total_cents) FROM orders GROUP BY status │
-└─────────────────┴────────────────┴────────┴───────────────────────────────────────────────────────────────────────┘
+Total Exec Time  Prop Exec Time  Ncalls  Query
+00:00:00.875831  57.0%           250     SELECT * FROM orders WHERE customer_id = $1
+00:00:00.439406  28.6%           400     SELECT * FROM customers WHERE email = $1
+00:00:00.220669  14.4%           15      SELECT status, count(*), sum(total_cents) FROM orders GROUP BY status
 ```
 
 </details>
@@ -24049,15 +23984,10 @@ neon inspect db calls
 <summary>Show output</summary>
 
 ```text
-┌────────┬─────────────────┬────────────────┬───────────────────────────────────────────────────────────────────────┐
-│ Ncalls │ Total Exec Time │ Prop Exec Time │ Query                                                                 │
-├────────┼─────────────────┼────────────────┼───────────────────────────────────────────────────────────────────────┤
-│ 400    │ 00:00:00.439406 │ 59.8%          │ SELECT * FROM customers WHERE email = $1                              │
-├────────┼─────────────────┼────────────────┼───────────────────────────────────────────────────────────────────────┤
-│ 250    │ 00:00:00.875831 │ 37.4%          │ SELECT * FROM orders WHERE customer_id = $1                           │
-├────────┼─────────────────┼────────────────┼───────────────────────────────────────────────────────────────────────┤
-│ 15     │ 00:00:00.220669 │ 2.2%           │ SELECT status, count(*), sum(total_cents) FROM orders GROUP BY status │
-└────────┴─────────────────┴────────────────┴───────────────────────────────────────────────────────────────────────┘
+Ncalls  Total Exec Time  Prop Exec Time  Query
+400     00:00:00.439406  59.8%           SELECT * FROM customers WHERE email = $1
+250     00:00:00.875831  37.4%           SELECT * FROM orders WHERE customer_id = $1
+15      00:00:00.220669  2.2%            SELECT status, count(*), sum(total_cents) FROM orders GROUP BY status
 ```
 
 </details>
@@ -24079,17 +24009,11 @@ neon inspect db working-set
 ```
 
 ```text
-┌────────┬─────────────┬──────────┬─────────────┐
-│ Window │ Working Set │ Lfc Size │ Exceeds Lfc │
-├────────┼─────────────┼──────────┼─────────────┤
-│ 1m     │ 48 MB       │ 607 MB   │ no          │
-├────────┼─────────────┼──────────┼─────────────┤
-│ 5m     │ 48 MB       │ 607 MB   │ no          │
-├────────┼─────────────┼──────────┼─────────────┤
-│ 15m    │ 48 MB       │ 607 MB   │ no          │
-├────────┼─────────────┼──────────┼─────────────┤
-│ 1h     │ 48 MB       │ 607 MB   │ no          │
-└────────┴─────────────┴──────────┴─────────────┘
+Window  Working Set  Lfc Size  Exceeds Lfc
+1m      48 MB        607 MB    no
+5m      48 MB        607 MB    no
+15m     48 MB        607 MB    no
+1h      48 MB        607 MB    no
 ```
 
 ### neon inspect db vacuum-stats
@@ -24853,11 +24777,10 @@ neon me
 ```
 
 ```text filename="Output"
-┌────────────────┬──────────────────────────┬─────────────┬────────────────┐
-│ Login          │ Email                    │ Name        │ Projects Limit │
-├────────────────┼──────────────────────────┼─────────────┼────────────────┤
-│ sally          │ sally@example.com        │ Sally Smith │       1        │
-└────────────────┴──────────────────────────┴─────────────┴────────────────┘
+Login           sally
+Email           sally@example.com
+Name            Sally Smith
+Projects Limit  1
 ```
 
 Show details with `--output json`, which includes data omitted from the `table` output:
@@ -24878,7 +24801,7 @@ neon me -o json
       "type": ""
     },
     "subscription_type": "free",
-    "quota_reset_at_last": "2023-07-01T00:00:00Z",
+    "quota_reset_at_last": "2026-07-01T00:00:00Z",
     "email": "sally@example.com",
     "address_city": "",
     "address_country": "",
@@ -25567,15 +25490,10 @@ neon operations list
 ```
 
 ```text filename="Output"
-┌──────────────────────────────────────┬────────────────────┬──────────┬──────────────────────┐
-│ Id                                   │ Action             │ Status   │ Created At           │
-├──────────────────────────────────────┼────────────────────┼──────────┼──────────────────────┤
-│ fce8642e-259e-4662-bdce-518880aee723 │ apply_config       │ finished │ 2023-06-20T00:45:19Z │
-├──────────────────────────────────────┼────────────────────┼──────────┼──────────────────────┤
-│ dc1dfb0c-b854-474b-be20-2ea1d2172563 │ apply_config       │ finished │ 2023-06-20T00:43:17Z │
-├──────────────────────────────────────┼────────────────────┼──────────┼──────────────────────┤
-│ 7a83e300-cf5f-4c1a-b9b5-569b6d6feab9 │ suspend_compute    │ finished │ 2023-06-19T23:50:56Z │
-└──────────────────────────────────────┴────────────────────┴──────────┴──────────────────────┘
+Id                                    Action           Status    Created At
+fce8642e-259e-4662-bdce-518880aee723  apply_config     finished  2026-06-20T00:45:19Z
+dc1dfb0c-b854-474b-be20-2ea1d2172563  apply_config     finished  2026-06-20T00:43:17Z
+7a83e300-cf5f-4c1a-b9b5-569b6d6feab9  suspend_compute  finished  2026-06-19T23:50:56Z
 ```
 
 --- [Document source](https://neon.com/docs/cli/orgs.md) ---
@@ -25606,11 +25524,8 @@ neon orgs list
 
 ```text filename="Output"
 Organizations
-┌────────────────────────┬──────────────────┐
-│ Id                     │ Name             │
-├────────────────────────┼──────────────────┤
-│ org-xxxxxxxx-xxxxxxxx  │ Example Org      │
-└────────────────────────┴──────────────────┘
+Id                     Name
+org-xxxxxxxx-xxxxxxxx  Example Org
 ```
 
 List your organizations with `--output json`, which also shows the `created_at` and `updated_at` timestamps omitted from the `table` output:
@@ -25629,8 +25544,8 @@ neon orgs list -o json
     "id": "org-xxxxxxxx-xxxxxxxx",
     "name": "Example Org",
     "handle": "example-org-xxxxxxxx",
-    "created_at": "2024-04-22T16:50:41Z",
-    "updated_at": "2024-06-28T15:38:26Z"
+    "created_at": "2026-04-22T16:50:41Z",
+    "updated_at": "2026-06-28T15:38:26Z"
   }
 ]
 ```
@@ -25752,11 +25667,10 @@ neon me --profile work
 ```
 
 ```text filename="Output"
-┌────────┬──────────────────┬────────────┬────────────────┐
-│ Login  │ Email            │ Name       │ Projects Limit │
-├────────┼──────────────────┼────────────┼────────────────┤
-│ alex   │ alex@domain.com  │ Alex Lopez │ 0              │
-└────────┴──────────────────┴────────────┴────────────────┘
+Login           alex
+Email           alex@domain.com
+Name            Alex Lopez
+Projects Limit  0
 ```
 
 Naming a profile that doesn't exist is an error, not a silent fall back to `DEFAULT`.
@@ -25839,21 +25753,13 @@ neon profile list
 
 ```text filename="Output"
 Profiles
-┌────────┬─────────┬──────────────────────────────────────┬─────────┬────────────────────────────────┬──────┬─────────┬──────────────────────────┐
-│ Active │ Name    │ Account                              │ Auth    │ Scope                          │ File │ Storage │ Credentials              │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
-│ *      │ DEFAULT │ 3f8a1c2e-5b7d-4e9a-8c1f-2d6b9e0a4c53 │ oauth   │ -                              │ ok   │ file    │ credentials.json         │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
-│        │ work    │ alex@example.com                     │ oauth   │ -                              │ ok   │ file    │ credentials.work.json    │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
-│        │ ci      │ alex@example.com                     │ api key │ account                        │ ok   │ file    │ credentials.ci.json      │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
-│        │ org     │ org-example-12345678                 │ api key │ org org-example-12345678       │ ok   │ file    │ credentials.org.json     │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
-│        │ project │ org-example-12345678                 │ api key │ project cool-darkness-12345678 │ ok   │ file    │ credentials.project.json │
-├────────┼─────────┼──────────────────────────────────────┼─────────┼────────────────────────────────┼──────┼─────────┼──────────────────────────┤
-│        │ laptop  │ alex@example.com                     │ oauth   │ -                              │ ok   │ keyring │ keyring                  │
-└────────┴─────────┴──────────────────────────────────────┴─────────┴────────────────────────────────┴──────┴─────────┴──────────────────────────┘
+Active  Name     Account                               Auth     Scope                           File  Storage  Credentials
+*       DEFAULT  3f8a1c2e-5b7d-4e9a-8c1f-2d6b9e0a4c53  oauth    -                               ok    file     credentials.json
+        work     alex@example.com                      oauth    -                               ok    file     credentials.work.json
+        ci       alex@example.com                      api key  account                         ok    file     credentials.ci.json
+        org      org-example-12345678                  api key  org org-example-12345678        ok    file     credentials.org.json
+        project  org-example-12345678                  api key  project cool-darkness-12345678  ok    file     credentials.project.json
+        laptop   alex@example.com                      oauth    -                               ok    keyring  keyring
 ```
 
 `Account` is the recorded email label, the user ID when there's no label (as with a `DEFAULT` profile from a plain `neon login`), or the organization identifier for an organization- or project-scoped key. `Auth` shows how the profile authenticates (`oauth` for a browser sign-in, `api key` for a stored key), and `Scope` shows what a minted key is limited to: `account`, `org <org-id>`, or `project <project-id>`. `File` reports whether the credential could be read: `ok` when it's present and readable, otherwise `missing`, `invalid`, or `unreadable`. `Storage` shows where the credential lives, `file` or `keyring`, and `Credentials` gives the file's name, or `keyring` when it's kept in the OS keyring.
@@ -25949,21 +25855,13 @@ neon projects list [options]
 
   ```text
   Projects
-  ┌────────────────────────┬────────────────────┬───────────────┬──────────────────────┐
-  │ Id                     │ Name               │ Region Id     │ Created At           │
-  ├────────────────────────┼────────────────────┼───────────────┼──────────────────────┤
-  │ crimson-voice-12345678 │ frontend           │ aws-us-east-2 │ 2024-04-15T11:17:30Z │
-  ├────────────────────────┼────────────────────┼───────────────┼──────────────────────┤
-  │ calm-thunder-12121212  │ backend            │ aws-us-east-2 │ 2024-04-10T15:21:01Z │
-  ├────────────────────────┼────────────────────┼───────────────┼──────────────────────┤
-  │ nameless-hall-87654321 │ billing            │ aws-us-east-2 │ 2024-04-10T14:35:17Z │
-  └────────────────────────┴────────────────────┴───────────────┴──────────────────────┘
+  Id                      Name      Region Id      Created At
+  crimson-voice-12345678  frontend  aws-us-east-2  2026-04-15T11:17:30Z
+  calm-thunder-12121212   backend   aws-us-east-2  2026-04-10T15:21:01Z
+  nameless-hall-87654321  billing   aws-us-east-2  2026-04-10T14:35:17Z
   Shared with you
-  ┌───────────────────┬────────────────────┬──────────────────┬──────────────────────┐
-  │ Id                │ Name               │ Region Id        │ Created At           │
-  ├───────────────────┼────────────────────┼──────────────────┼──────────────────────┤
-  │ noisy-fire-212121 │ API                │ aws-eu-central-1 │ 2023-04-22T18:41:13Z │
-  └───────────────────┴────────────────────┴──────────────────┴──────────────────────┘
+  Id                 Name  Region Id         Created At
+  noisy-fire-212121  API   aws-eu-central-1  2026-04-22T18:41:13Z
   ```
 
 List all projects belonging to a specific organization:
@@ -25980,11 +25878,8 @@ neon projects list --recoverable-only
 
 ```text filename="Output"
 Projects
-┌─────────────────────┬───────────┬───────────────┬──────────────────────┬──────────────────────┬──────────────────────┐
-│ Id                  │ Name      │ Region Id     │ Created At           │ Deleted At           │ Recoverable Until    │
-├─────────────────────┼───────────┼───────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
-│ crimson-voice-12345 │ myproject │ aws-us-east-2 │ 2024-04-15T11:17:30Z │ 2024-04-16T14:22:15Z │ 2024-04-23T14:22:15Z │
-└─────────────────────┴───────────┴───────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
+Id                   Name       Region Id      Created At            Deleted At            Recoverable Until
+crimson-voice-12345  myproject  aws-us-east-2  2026-04-15T11:17:30Z  2026-04-16T14:22:15Z  2026-04-23T14:22:15Z
 ```
 
 ## neon projects create
@@ -26030,17 +25925,15 @@ neon projects create --name mynewproject --region-id aws-us-west-2
 ```
 
 ```text filename="Output"
-┌───────────────────┬──────────────┬───────────────┬──────────────────────┐
-│ Id                │ Name         │ Region Id     │ Created At           │
-├───────────────────┼──────────────┼───────────────┼──────────────────────┤
-│ muddy-wood-859533 │ mynewproject │ aws-us-west-2 │ 2023-07-09T17:04:29Z │
-└───────────────────┴──────────────┴───────────────┴──────────────────────┘
+Project
+Id          muddy-wood-123456
+Name        mynewproject
+Region Id   aws-us-west-2
+Created At  2026-07-09T17:04:29Z
 
-┌──────────────────────────────────────────────────────────────────────────────────────┐
-│ Connection Uri                                                                       │
-├──────────────────────────────────────────────────────────────────────────────────────┤
-│ postgresql://[user]:[password]@[neon_hostname]/[dbname]                              │
-└──────────────────────────────────────────────────────────────────────────────────────┘
+Connection URIs
+Connection Uri
+postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
 **Tip:** The Neon CLI provides a `neon connection-string` command you can use to extract a connection URI programmatically. See [the connection-string command](https://neon.com/docs/cli/connection-string).
@@ -26095,8 +25988,8 @@ Needs Neon CLI 4.9.0+; older versions ignore `--no-secrets` and still print the 
       "store_passwords": true,
       "creation_source": "neon",
       "history_retention_seconds": 604800,
-      "created_at": "2023-08-04T16:16:45Z",
-      "updated_at": "2023-08-04T16:16:45Z",
+      "created_at": "2026-08-04T16:16:45Z",
+      "updated_at": "2026-08-04T16:16:45Z",
       "consumption_period_start": "0001-01-01T00:00:00Z",
       "consumption_period_end": "0001-01-01T00:00:00Z",
       "owner_id": "e56ad68e-7f2f-4d74-928c-9ea25d7e9864"
@@ -26155,15 +26048,14 @@ neon projects update <id> [options]
 Update the project name:
 
 ```bash
-neon projects update muddy-wood-859533 --name dev_project_1
+neon projects update muddy-wood-123456 --name dev_project_1
 ```
 
 ```text filename="Output"
-┌───────────────────┬───────────────┬───────────────┬──────────────────────┐
-│ Id                │ Name          │ Region Id     │ Created At           │
-├───────────────────┼───────────────┼───────────────┼──────────────────────┤
-│ muddy-wood-859533 │ dev_project_1 │ aws-us-west-2 │ 2023-07-09T17:04:29Z │
-└───────────────────┴───────────────┴───────────────┴──────────────────────┘
+Id          muddy-wood-123456
+Name        dev_project_1
+Region Id   aws-us-west-2
+Created At  2026-07-09T17:04:29Z
 ```
 
 Block connections from the public internet (see [restrict public internet access](https://neon.com/docs/guides/neon-private-networking#restrict-public-internet-access)):
@@ -26187,15 +26079,14 @@ neon projects delete <id> [options]
 ```
 
 ```bash
-neon projects delete muddy-wood-859533
+neon projects delete muddy-wood-123456
 ```
 
 ```text filename="Output"
-┌───────────────────┬───────────────┬───────────────┬──────────────────────┐
-│ Id                │ Name          │ Region Id     │ Created At           │
-├───────────────────┼───────────────┼───────────────┼──────────────────────┤
-│ muddy-wood-859533 │ dev_project_1 │ aws-us-west-2 │ 2023-07-09T17:04:29Z │
-└───────────────────┴───────────────┴───────────────┴──────────────────────┘
+Id          muddy-wood-123456
+Name        dev_project_1
+Region Id   aws-us-west-2
+Created At  2026-07-09T17:04:29Z
 ```
 
 Verify the deletion with `neon projects list`.
@@ -26213,11 +26104,10 @@ neon projects recover crimson-voice-12345678
 ```
 
 ```text filename="Output"
-┌────────────────────────┬───────────┬───────────────┬──────────────────────┐
-│ Id                     │ Name      │ Region Id     │ Created At           │
-├────────────────────────┼───────────┼───────────────┼──────────────────────┤
-│ crimson-voice-12345678 │ myproject │ aws-us-east-2 │ 2024-04-15T11:17:30Z │
-└────────────────────────┴───────────┴───────────────┴──────────────────────┘
+Id          crimson-voice-12345678
+Name        myproject
+Region Id   aws-us-east-2
+Created At  2026-04-15T11:17:30Z
 ```
 
 For details on what's recovered and what requires reconfiguration after recovery, see [Recover a deleted project](https://neon.com/docs/manage/projects#recover-a-deleted-project).
@@ -26231,15 +26121,14 @@ neon projects get <id> [options]
 ```
 
 ```bash
-neon projects get muddy-wood-859533
+neon projects get muddy-wood-123456
 ```
 
 ```text filename="Output"
-┌───────────────────┬───────────────┬───────────────┬──────────────────────┐
-│ Id                │ Name          │ Region Id     │ Created At           │
-├───────────────────┼───────────────┼───────────────┼──────────────────────┤
-│ muddy-wood-859533 │ dev_project_1 │ aws-us-west-2 │ 2023-07-09T17:04:29Z │
-└───────────────────┴───────────────┴───────────────┴──────────────────────┘
+Id          muddy-wood-123456
+Name        dev_project_1
+Region Id   aws-us-west-2
+Created At  2026-07-09T17:04:29Z
 ```
 
 --- [Document source](https://neon.com/docs/cli/psql.md) ---
@@ -26567,11 +26456,8 @@ neon roles list
 ```
 
 ```text filename="Output"
-┌────────┬──────────────────────┐
-│ Name   │ Created At           │
-├────────┼──────────────────────┤
-│ daniel │ 2023-06-19T18:27:19Z │
-└────────┴──────────────────────┘
+Name          Created At
+neondb_owner  2026-06-19T18:27:19Z
 ```
 
 List roles with the `--output` format set to `json`:
@@ -26587,11 +26473,11 @@ neon roles list --output json
 ```json
 [
   {
-    "branch_id": "br-odd-frog-703504",
-    "name": "daniel",
+    "branch_id": "br-odd-frog-123456",
+    "name": "neondb_owner",
     "protected": false,
-    "created_at": "2023-06-28T10:17:28Z",
-    "updated_at": "2023-06-28T10:17:28Z"
+    "created_at": "2026-06-28T10:17:28Z",
+    "updated_at": "2026-06-28T10:17:28Z"
   }
 ]
 ```
@@ -26618,11 +26504,8 @@ neon roles create --name sally
 ```
 
 ```text filename="Output"
-┌───────┬──────────────────────┐
-│ Name  │ Created At           │
-├───────┼──────────────────────┤
-│ sally │ 2023-06-20T00:43:17Z │
-└───────┴──────────────────────┘
+Name   Created At
+sally  2026-06-20T00:43:17Z
 ```
 
 ## neon roles delete
@@ -26643,11 +26526,8 @@ neon roles delete sally
 ```
 
 ```text filename="Output"
-┌───────┬──────────────────────┐
-│ Name  │ Created At           │
-├───────┼──────────────────────┤
-│ sally │ 2023-06-20T00:43:17Z │
-└───────┴──────────────────────┘
+Name   Created At
+sally  2026-06-20T00:43:17Z
 ```
 
 --- [Document source](https://neon.com/docs/cli/set-context.md) ---
@@ -26703,13 +26583,9 @@ neon branches list
 ```
 
 ```text filename="Output"
-┌──────────────────────────┬─────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                       │ Name        │ Default │ Created At           │ Updated At           │
-├──────────────────────────┼─────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-raspy-meadow-26349337 │ development │ false   │ 2023-11-28T19:19:11Z │ 2023-12-01T00:18:21Z │
-├──────────────────────────┼─────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-curly-bar-82389180    │ main        │ true    │ 2023-10-23T12:49:41Z │ 2023-12-01T00:18:21Z │
-└──────────────────────────┴─────────────┴─────────┴──────────────────────┴──────────────────────┘
+Name            Id                      Current State  Created At
+development     br-raspy-meadow-123456  ready          2026-11-28T19:19:11Z
+[default] main  br-curly-bar-123456     ready          2026-10-23T12:49:41Z
 ```
 
 ## Using a named context file
@@ -26727,15 +26603,10 @@ neon branches list --context-file Documents/MyContext
 ```
 
 ```text filename="Output"
-┌─────────────────────────────┬─────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                          │ Name        │ Default │ Created At           │ Updated At           │
-├─────────────────────────────┼─────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-soft-base-86343042       │ development │ false   │ 2023-11-21T18:41:47Z │ 2023-12-01T00:00:14Z │
-├─────────────────────────────┼─────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-young-bush-89857627      │ main        │ true    │ 2023-11-21T18:00:10Z │ 2023-12-01T03:33:53Z │
-├─────────────────────────────┼─────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-billowing-union-41102466 │ staging     │ false   │ 2023-11-21T18:44:22Z │ 2023-12-01T08:32:40Z │
-└─────────────────────────────┴─────────────┴─────────┴──────────────────────┴──────────────────────┘
+Name            Id                         Current State  Created At
+development     br-soft-base-123456        ready          2026-11-21T18:41:47Z
+[default] main  br-young-bush-123456       ready          2026-11-21T18:00:10Z
+staging         br-billowing-union-123456  ready          2026-11-21T18:44:22Z
 ```
 
 **Note:** These two `branches list` commands use independent contexts in the same account: the default `.neon` file points to `patient-frost-50125040`, while the named context file points to `plain-waterfall-84865553`. You can set as many context files as you'd like, using unique names or different directories.
@@ -55896,6 +55767,8 @@ This creates an index on the year and month components of the event timestamp, w
 
 # Postgres functions
 
+_Looking for serverless functions on your Neon branch? See [Neon Functions](https://neon.com/docs/compute/functions/overview)._
+
 Get started with commonly-used Postgres functions with Neon's function guides. For other functions that Postgres supports, visit the official Postgres [Functions and Operators](https://www.postgresql.org/docs/current/functions.html) documentation.
 
 ## Aggregate functions
@@ -65588,24 +65461,17 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
 
    ```bash
    Projects
-   ┌─────────────────────┬────────────┬───────────────┬──────────────────────┐
-   │ Id                  │ Name       │ Region Id     │ Created At           │
-   ├─────────────────────┼────────────┼───────────────┼──────────────────────┤
-   │ cool-forest-12345678│ myproject  │ aws-us-east-2 │ 2025-10-14T14:33:43Z │
-   └─────────────────────┴────────────┴───────────────┴──────────────────────┘
+   Id                    Name       Region Id      Created At
+   cool-forest-12345678  myproject  aws-us-east-2  2026-10-14T14:33:43Z
    ```
 
    Now list your branches using your project ID:
 
    ```bash
    neon branches list --project-id cool-forest-12345678
-   ┌──────────────┬────────────────────────────┬───────────────┬──────────────────────┐
-   │ Name         │ Id                         │ Current State │ Created At           │
-   ├──────────────┼────────────────────────────┼───────────────┼──────────────────────┤
-   │ development  │ br-calm-sky-a5xd78mn       │ ready         │ 2025-12-23T21:05:05Z │
-   ├──────────────┼────────────────────────────┼───────────────┼──────────────────────┤
-   │ ✱ production │ br-bold-wind-a4p92kpx      │ ready         │ 2025-12-23T21:04:57Z │
-   └──────────────┴────────────────────────────┴───────────────┴──────────────────────┘
+   Name                            Id                   Current State  Created At
+   development                     br-calm-sky-123456   ready          2026-12-23T21:05:05Z
+   [default] [current] production  br-bold-wind-123456  ready          2026-12-23T21:04:57Z
    ```
 
    This command shows your existing branches, including the `production` branch and the `development` branch you just created.
@@ -72281,11 +72147,8 @@ The Neon CLI [branches list](https://neon.com/docs/cli/branches#list) command sh
 
   ```bash
   neon branches list --project-id green-hat-46829796
-  ┌───────────────────────────┬──────┬─────────┬───────────────┬──────────────────────┐
-  │ Id                        │ Name │ Default │ Current State │ Created At           │
-  ├───────────────────────────┼──────┼─────────┼───────────────┼──────────────────────┤
-  │ br-muddy-firefly-a7kzf0d4 │ main │ true    │ ready         │ 2024-10-30T14:59:57Z │
-  └───────────────────────────┴──────┴─────────┴───────────────┴──────────────────────┘
+  Name            Id                       Current State  Created At
+  [default] main  br-muddy-firefly-123456  ready          2026-10-30T14:59:57Z
   ```
 
 **API**
@@ -73336,24 +73199,19 @@ The command response includes the branch ID, the compute endpoint ID, and the co
 ```bash
 neon branches create
 
-branch
-┌───────────────────────┬───────────────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                    │ Name                  │ Default │ Created At           │ Updated At           │
-├───────────────────────┼───────────────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-lucky-mud-08878834 │ br-lucky-mud-08878834 │ false   │ 2023-07-24T20:22:42Z │ 2023-07-24T20:22:42Z │
-└───────────────────────┴───────────────────────┴─────────┴──────────────────────┴──────────────────────┘
-endpoints
-┌────────────────────────┬──────────────────────┐
-│ Id                     │ Created At           │
-├────────────────────────┼──────────────────────┤
-│ ep-mute-voice-52609794 │ 2023-07-24T20:22:42Z │
-└────────────────────────┴──────────────────────┘
-connection_uris
-┌───────────────────────────────────────────────────────────────────────────────────────┐
-│ Connection Uri                                                                        │
-├───────────────────────────────────────────────────────────────────────────────────────┤
-│ postgresql://[user]:[password]@[neon_hostname]/[dbname]                               │
-└───────────────────────────────────────────────────────────────────────────────────────┘
+Branch
+Name           br-lucky-mud-123456
+Id             br-lucky-mud-123456
+Current State  ready
+Created At     2026-07-24T20:22:42Z
+
+Compute
+Id                    Created At
+ep-mute-voice-123456  2026-07-24T20:22:42Z
+
+Connection string
+Connection Uri
+postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
 **Tip:** The Neon CLI provides a `neon connection-string` command you can use to extract a connection uri programmatically. See [Neon CLI commands — connection-string](https://neon.com/docs/cli/connection-string).
@@ -73368,24 +73226,19 @@ In this example, we're creating a hotfix branch called `hotfix/critical-fix` usi
 
 ```bash
 neon branches create --name hotfix/critical-fix --parent development --project-id crimson-voice-12345678
-branch
-┌───────────────────────┬─────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                    │ Name        │ Default │ Created At           │ Updated At           │
-├───────────────────────┼─────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-misty-mud-a5poo34s │ hotfix/critical-fix │ false   │ 2024-04-23T17:04:10Z │ 2024-04-23T17:04:10Z │
-└───────────────────────┴─────────────┴─────────┴──────────────────────┴──────────────────────┘
-endpoints
-┌──────────────────────────┬──────────────────────┐
-│ Id                       │ Created At           │
-├──────────────────────────┼──────────────────────┤
-│ ep-orange-heart-123456 │ 2024-04-23T17:04:10Z │
-└──────────────────────────┴──────────────────────┘
-connection_uris
-┌──────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
-│ Connection Uri                                                                                               │
-├──────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
-│ postgresql://neondb_owner:123456@ep-orange-heart-a54grm9j.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require     │
-└──────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+Branch
+Name           hotfix/critical-fix
+Id             br-misty-mud-123456
+Current State  ready
+Created At     2026-04-23T17:04:10Z
+
+Compute
+Id                      Created At
+ep-orange-heart-123456  2026-04-23T17:04:10Z
+
+Connection string
+Connection Uri
+postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
 ## List branches with the CLI
@@ -73397,34 +73250,22 @@ First, list your projects to get your project ID:
 ```bash
 neon projects list
 Projects
-┌────────────────────────┬────────────────────┬───────────────┬──────────────────────┐
-│ Id                     │ Name               │ Region Id     │ Created At           │
-├────────────────────────┼────────────────────┼───────────────┼──────────────────────┤
-│ crimson-voice-12345678 │ frontend           │ aws-us-east-2 │ 2024-04-15T11:17:30Z │
-├────────────────────────┼────────────────────┼───────────────┼──────────────────────┤
-│ calm-thunder-12121212  │ backend            │ aws-us-east-2 │ 2024-04-10T15:21:01Z │
-├────────────────────────┼────────────────────┼───────────────┼──────────────────────┤
-│ nameless-hall-87654321 │ billing            │ aws-us-east-2 │ 2024-04-10T14:35:17Z │
-└────────────────────────┴────────────────────┴───────────────┴──────────────────────┘
+Id                      Name      Region Id      Created At
+crimson-voice-12345678  frontend  aws-us-east-2  2026-04-15T11:17:30Z
+calm-thunder-12121212   backend   aws-us-east-2  2026-04-10T15:21:01Z
+nameless-hall-87654321  billing   aws-us-east-2  2026-04-10T14:35:17Z
 Shared with you
-┌───────────────────┬────────────────────┬──────────────────┬──────────────────────┐
-│ Id                │ Name               │ Region Id        │ Created At           │
-├───────────────────┼────────────────────┼──────────────────┼──────────────────────┤
-│ noisy-fire-212121 │ API                │ aws-eu-central-1 │ 2023-04-22T18:41:13Z │
-└───────────────────┴────────────────────┴──────────────────┴──────────────────────┘
+Id                 Name  Region Id         Created At
+noisy-fire-212121  API   aws-eu-central-1  2026-04-22T18:41:13Z
 ```
 
 Now list your branches using your project ID:
 
 ```bash
 neon branches list --project-id crimson-voice-12345678
-┌──────────────┬────────────────────────────┬───────────────┬──────────────────────┐
-│ Name         │ Id                         │ Current State │ Created At           │
-├──────────────┼────────────────────────────┼───────────────┼──────────────────────┤
-│ development  │ br-calm-sky-a5xd78mn       │ ready         │ 2024-04-23T21:05:05Z │
-├──────────────┼────────────────────────────┼───────────────┼──────────────────────┤
-│ ✱ main       │ br-bold-wind-a4p92kpx      │ ready         │ 2024-04-23T21:04:57Z │
-└──────────────┴────────────────────────────┴───────────────┴──────────────────────┘
+Name                      Id                   Current State  Created At
+development               br-calm-sky-123456   ready          2026-04-23T21:05:05Z
+[default] [current] main  br-bold-wind-123456  ready          2026-04-23T21:04:57Z
 ```
 
 **Tip:** To avoid specifying `--project-id` with each command, use `neon set-context` to set your default project and organization. See [set-context](https://neon.com/docs/cli/set-context) for details.
@@ -73434,12 +73275,11 @@ neon branches list --project-id crimson-voice-12345678
 The following Neon CLI command deletes the specified branch. This command requires a `--project-id` option unless you've set a default project with `neon set-context`. To view the CLI documentation for this command, refer to the [Neon CLI reference](https://neon.com/docs/cli/branches#delete). You can delete a branch by its ID or name.
 
 ```bash
-neon branches delete br-rough-sky-158193 --project-id crimson-voice-12345678
-┌───────────────────────┬───────────────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                    │ Name                  │ Default │ Created At           │ Updated At           │
-├───────────────────────┼───────────────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-lucky-mud-08878834 │ br-lucky-mud-08878834 │ false   │ 2023-07-24T20:22:42Z │ 2023-07-24T20:44:51Z │
-└───────────────────────┴───────────────────────┴─────────┴──────────────────────┴──────────────────────┘
+neon branches delete br-lucky-mud-123456 --project-id crimson-voice-12345678
+Name           br-lucky-mud-123456
+Id             br-lucky-mud-123456
+Current State  ready
+Created At     2026-07-24T20:22:42Z
 ```
 
 ## Branching automation with the Neon CLI
@@ -73501,10 +73341,11 @@ This example resets a feature branch to match the latest state of its parent bra
 
 ```bash
 neon branches reset feature/user-auth --parent --project-id crimson-voice-12345678
-┌────────────────────────────┬───────────────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                         │ Name              │ Default │ Created At           │ Last Reset At        │
-├────────────────────────────┼───────────────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-twilight-smoke-123456   │ feature/user-auth │ false   │ 2024-04-23T17:01:49Z │ 2024-04-23T17:57:35Z │
+Name           feature/user-auth
+Id             br-twilight-smoke-123456
+Current State  ready
+Created At     2026-04-23T17:01:49Z
+Last Reset At  2026-04-23T17:57:35Z
 ```
 
 **Note:** **Branch expiration behavior:** When you reset a branch that has an expiration set, the expiration timer restarts from the reset time using the original duration. For example, if your branch was originally set to expire in 24 hours, resetting gives it another full 24 hours from the reset time. This process recalculates the new `expires_at` value using the preserved `ttl_interval_seconds`, but the TTL interval itself remains unchanged. For more details, see [branch expiration](https://neon.com/docs/guides/branch-expiration).
@@ -73515,10 +73356,11 @@ For example, here we are resetting `feature/user-auth` to its parent while prese
 
 ```bash
 neon branches reset feature/user-auth --parent --preserve-under-name feature/user-auth-backup --project-id crimson-voice-12345678
-┌────────────────────────────┬──────────┬─────────┬──────────────────────┬──────────────────────┐
-│ Id                         │ Name     │ Default │ Created At           │ Last Reset At        │
-├────────────────────────────┼──────────┼─────────┼──────────────────────┼──────────────────────┤
-│ br-twilight-smoke-a5ofkxry │ feature/user-auth │ false   │ 2024-04-23T17:01:49Z │ 2024-04-23T18:02:36Z │
+Name           feature/user-auth
+Id             br-twilight-smoke-123456
+Current State  ready
+Created At     2026-04-23T17:01:49Z
+Last Reset At  2026-04-23T18:02:36Z
 ```
 
 For more details, see [Reset from parent](https://neon.com/docs/guides/reset-from-parent).
@@ -73531,28 +73373,24 @@ Using the CLI, you can restore a branch to an earlier point in its history or an
 neon branches restore <target id|name> <source id|name @ timestamp|lsn>
 ```
 
-This command restores the branch `production` to an earlier timestamp in its own history, saving to a backup branch called `production_restore_backup_2024-05-06`:
+This command restores the branch `production` to an earlier timestamp in its own history, saving to a backup branch called `production_restore_backup_2026-05-06`:
 
 ```bash
-neon branches restore production ^self@2024-05-06T10:00:00.000Z --preserve-under-name production_restore_backup_2024-05-06 --project-id crimson-voice-12345678
+neon branches restore production ^self@2026-05-06T10:00:00.000Z --preserve-under-name production_restore_backup_2026-05-06 --project-id crimson-voice-12345678
 ```
 
 Results of the operation:
 
 ```bash
-INFO: Restoring branch br-purple-dust-a5hok5mk to the branch br-purple-dust-a5hok5mk timestamp 2024-05-06T10:00:00.000Z
+INFO: Restoring production to production at timestamp 2026-05-06T10:00:00.000Z
 Restored branch
-┌─────────────────────────┬──────┬──────────────────────┐
-│ Id                      │ Name │ Last Reset At        │
-├─────────────────────────┼──────┼──────────────────────┤
-│ br-purple-dust-a5hok5mk │ main │ 2024-05-07T09:45:21Z │
-└─────────────────────────┴──────┴──────────────────────┘
+Id             br-purple-dust-123456
+Name           production
+Last Reset At  2026-05-07T09:45:21Z
+
 Backup branch
-┌─────────────────────────┬────────────────────────────────┐
-│ Id                      │ Name                           │
-├─────────────────────────┼────────────────────────────────┤
-│ br-flat-forest-a5z016gm │ production_restore_backup_2024-05-06 │
-└─────────────────────────┴────────────────────────────────┘
+Id    br-flat-forest-123456
+Name  production_restore_backup_2026-05-06
 ```
 
 For full details about the different restore options available with this command, see [Restoring using the CLI](https://neon.com/docs/introduction/branch-restore#how-to-use-instant-restore).
@@ -94978,11 +94816,10 @@ After adding a restriction, you can check the status of the VPC endpoint to view
 
 ```bash
 neon vpc endpoint status vpce-1234567890abcdef0 --region-id=aws-eu-central-1 --org-id=org-nameless-block-72040075
-┌────────────────────────┬───────┬─────────────────────────┬─────────────────────────────┐
-│ Vpc Endpoint Id        │ State │ Num Restricted Projects │ Example Restricted Projects │
-├────────────────────────┼───────┼─────────────────────────┼─────────────────────────────┤
-│ vpce-1234567890abcdef0 │ new   │ 1                       │ orange-credit-12345678      │
-└────────────────────────┴───────┴─────────────────────────┴─────────────────────────────┘
+Vpc Endpoint Id              vpce-1234567890abcdef0
+State                        new
+Num Restricted Projects      1
+Example Restricted Projects  orange-credit-12345678
 ```
 
 **API**
@@ -98628,12 +98465,10 @@ The [Neon CLI ip-allow command](https://neon.com/docs/cli/ip-allow) supports IP 
 
 ```bash
 neon ip-allow add 203.0.113.0 203.0.113.1
-┌─────────────────────┬─────────────────────┬──────────────┬─────────────────────┐
-│ Id                  │ Name                │ IP Addresses │ Protected Only      │
-├─────────────────────┼─────────────────────┼──────────────┼─────────────────────┤
-│ wispy-haze-26469780 │ wispy-haze-26469780 │ 203.0.113.0  │ false               │
-│                     │                     │ 203.0.113.1  │                     │
-└─────────────────────┴─────────────────────┴──────────────┴─────────────────────┘
+Id              wispy-haze-123456
+Name            wispy-haze-123456
+IP Addresses    203.0.113.0, 203.0.113.1
+Protected Only  false
 ```
 
 To apply an IP allowlist to protected branches only, you can use the `--protected-only` option:
@@ -118112,11 +117947,8 @@ neon api-keys create --name development
 
 ```text
 API key
-┌─────────┬─────────────┐
-│ Id      │ Name        │
-├─────────┼─────────────┤
-│ 3225999 │ development │
-└─────────┴─────────────┘
+Id    3225999
+Name  development
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
@@ -118177,11 +118009,8 @@ neon api-keys create --name orgkey --org-id org-example-12345678
 
 ```text
 API key
-┌─────────┬────────┐
-│ Id      │ Name   │
-├─────────┼────────┤
-│ 3243302 │ orgkey │
-└─────────┴────────┘
+Id    3243302
+Name  orgkey
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
@@ -118238,11 +118067,9 @@ neon api-keys create --name only-this-project --project-id some-project-123
 
 ```text
 API key
-┌─────────┬───────────────────┬───────────────────┐
-│ Id      │ Name              │ Project           │
-├─────────┼───────────────────┼───────────────────┤
-│ 3243162 │ only-this-project │ some-project-123  │
-└─────────┴───────────────────┴───────────────────┘
+Id       3243162
+Name     only-this-project
+Project  some-project-123
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
@@ -118276,7 +118103,7 @@ curl --request POST \
   "id": 1904821,
   "key": "neon_project_key_1234567890abcdef1234567890abcdef",
   "name": "test-project-scope",
-  "created_at": "2024-12-11T21:34:58Z",
+  "created_at": "2026-12-11T21:34:58Z",
   "created_by": "user_01h84bfr2npa81rn8h8jzz8mx4",
   "project_id": "project-id-123"
 }
@@ -118317,8 +118144,8 @@ For attribute definitions, find the [Retrieve project details](https://neon.com/
       "provisioner": "k8s-pod",
       "pg_version": 15,
       "locked": false,
-      "created_at": "2023-01-03T18:22:56Z",
-      "updated_at": "2023-01-03T18:22:56Z",
+      "created_at": "2026-01-03T18:22:56Z",
+      "updated_at": "2026-01-03T18:22:56Z",
       "proxy_host": "us-east-2.aws.neon.tech",
       "branch_logical_size_limit": 3072
     }
@@ -119045,7 +118872,7 @@ You can create and manage branches using the Neon Console, [Neon CLI](https://ne
 
 ## Branch naming requirements
 
-Specifying a branch name is optional. If you don't provide one, the branch name defaults to the automatically generated branch ID with a `br-` prefix (for example, `br-curly-wave-af4i4oeu`).
+Specifying a branch name is optional. If you don't provide one, the branch name defaults to the automatically generated branch ID with a `br-` prefix (for example, `br-curly-wave-123456`).
 
 If you do specify a custom branch name when creating or renaming a branch, it must meet the following requirements:
 
@@ -119120,14 +118947,14 @@ For attribute definitions, find the [Create branch](https://neon.com/docs/refere
 ```json
 {
   "branch": {
-    "id": "br-curly-wave-af4i4oeu",
+    "id": "br-curly-wave-123456",
     "project_id": "dry-heart-13671059",
-    "parent_id": "br-morning-meadow-afu2s1jl",
+    "parent_id": "br-morning-meadow-123456",
     "parent_lsn": "0/1FA22C0",
-    "name": "br-curly-wave-af4i4oeu",
+    "name": "br-curly-wave-123456",
     "current_state": "init",
     "pending_state": "ready",
-    "state_changed_at": "2025-08-04T07:13:09Z",
+    "state_changed_at": "2026-08-04T07:13:09Z",
     "creation_source": "console",
     "primary": false,
     "default": false,
@@ -119137,8 +118964,8 @@ For attribute definitions, find the [Create branch](https://neon.com/docs/refere
     "active_time_seconds": 0,
     "written_data_bytes": 0,
     "data_transfer_bytes": 0,
-    "created_at": "2025-08-04T07:13:09Z",
-    "updated_at": "2025-08-04T07:13:09Z",
+    "created_at": "2026-08-04T07:13:09Z",
+    "updated_at": "2026-08-04T07:13:09Z",
     "created_by": {
       "name": "your@email.com",
       "image": ""
@@ -119150,7 +118977,7 @@ For attribute definitions, find the [Create branch](https://neon.com/docs/refere
       "host": "ep-cool-darkness-123456.c-2.us-west-2.aws.neon.tech",
       "id": "ep-cool-darkness-123456",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-curly-wave-af4i4oeu",
+      "branch_id": "br-curly-wave-123456",
       "autoscaling_limit_min_cu": 0.25,
       "autoscaling_limit_max_cu": 0.25,
       "region_id": "aws-us-west-2",
@@ -119163,8 +118990,8 @@ For attribute definitions, find the [Create branch](https://neon.com/docs/refere
       "disabled": false,
       "passwordless_access": true,
       "creation_source": "console",
-      "created_at": "2025-08-04T07:13:09Z",
-      "updated_at": "2025-08-04T07:13:09Z",
+      "created_at": "2026-08-04T07:13:09Z",
+      "updated_at": "2026-08-04T07:13:09Z",
       "proxy_host": "c-2.us-west-2.aws.neon.tech",
       "suspend_timeout_seconds": 0,
       "provisioner": "k8s-neonvm"
@@ -119174,44 +119001,44 @@ For attribute definitions, find the [Create branch](https://neon.com/docs/refere
     {
       "id": "8289b00a-4341-48d2-b3f1-d0c8dbb7e806",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-curly-wave-af4i4oeu",
+      "branch_id": "br-curly-wave-123456",
       "action": "create_branch",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T07:13:09Z",
-      "updated_at": "2025-08-04T07:13:09Z",
+      "created_at": "2026-08-04T07:13:09Z",
+      "updated_at": "2026-08-04T07:13:09Z",
       "total_duration_ms": 0
     },
     {
       "id": "a3c9baa4-6732-4774-a141-9d03396babce",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-curly-wave-af4i4oeu",
+      "branch_id": "br-curly-wave-123456",
       "endpoint_id": "ep-cool-darkness-123456",
       "action": "start_compute",
       "status": "scheduling",
       "failures_count": 0,
-      "created_at": "2025-08-04T07:13:09Z",
-      "updated_at": "2025-08-04T07:13:09Z",
+      "created_at": "2026-08-04T07:13:09Z",
+      "updated_at": "2026-08-04T07:13:09Z",
       "total_duration_ms": 0
     }
   ],
   "roles": [
     {
-      "branch_id": "br-curly-wave-af4i4oeu",
+      "branch_id": "br-curly-wave-123456",
       "name": "alex",
       "protected": false,
-      "created_at": "2025-08-04T07:07:55Z",
-      "updated_at": "2025-08-04T07:07:55Z"
+      "created_at": "2026-08-04T07:07:55Z",
+      "updated_at": "2026-08-04T07:07:55Z"
     }
   ],
   "databases": [
     {
       "id": 2886327,
-      "branch_id": "br-curly-wave-af4i4oeu",
+      "branch_id": "br-curly-wave-123456",
       "name": "dbname",
       "owner_name": "alex",
-      "created_at": "2025-08-04T07:07:55Z",
-      "updated_at": "2025-08-04T07:07:55Z"
+      "created_at": "2026-08-04T07:07:55Z",
+      "updated_at": "2026-08-04T07:07:55Z"
     }
   ],
   "connection_uris": [
@@ -119280,13 +119107,9 @@ neon branches list --project-id dry-heart-13671059
 ```
 
 ```text filename="Output"
-┌────────────────────────────┬────────────────────────┬──────────────────────┬──────────────────────┐
-│ Id                         │ Name                   │ Created At           │ Updated At           │
-├────────────────────────────┼────────────────────────┼──────────────────────┼──────────────────────┤
-│ br-morning-meadow-afu2s1jl │ main [default]         │ 2025-08-04T07:07:55Z │ 2025-08-04T07:13:11Z │
-├────────────────────────────┼────────────────────────┼──────────────────────┼──────────────────────┤
-│ br-curly-wave-af4i4oeu     │ br-curly-wave-af4i4oeu │ 2025-08-04T07:13:09Z │ 2025-08-04T07:18:15Z │
-└────────────────────────────┴────────────────────────┴──────────────────────┴──────────────────────┘
+Name                  Id                        Current State  Created At
+[default] main        br-morning-meadow-123456  ready          2026-08-04T07:07:55Z
+br-curly-wave-123456  br-curly-wave-123456      ready          2026-08-04T07:13:09Z
 ```
 
 **API**
@@ -119309,14 +119132,14 @@ For attribute definitions, find the [List branches](https://neon.com/docs/refere
 {
   "branches": [
     {
-      "id": "br-curly-wave-af4i4oeu",
+      "id": "br-curly-wave-123456",
       "project_id": "dry-heart-13671059",
-      "parent_id": "br-morning-meadow-afu2s1jl",
+      "parent_id": "br-morning-meadow-123456",
       "parent_lsn": "0/1FA22C0",
-      "parent_timestamp": "2025-08-04T07:08:48Z",
-      "name": "br-curly-wave-af4i4oeu",
+      "parent_timestamp": "2026-08-04T07:08:48Z",
+      "name": "br-curly-wave-123456",
       "current_state": "ready",
-      "state_changed_at": "2025-08-04T07:13:09Z",
+      "state_changed_at": "2026-08-04T07:13:09Z",
       "creation_source": "console",
       "primary": false,
       "default": false,
@@ -119326,8 +119149,8 @@ For attribute definitions, find the [List branches](https://neon.com/docs/refere
       "active_time_seconds": 0,
       "written_data_bytes": 0,
       "data_transfer_bytes": 0,
-      "created_at": "2025-08-04T07:13:09Z",
-      "updated_at": "2025-08-04T07:18:15Z",
+      "created_at": "2026-08-04T07:13:09Z",
+      "updated_at": "2026-08-04T07:18:15Z",
       "created_by": {
         "name": "your@email.com",
         "image": ""
@@ -119335,11 +119158,11 @@ For attribute definitions, find the [List branches](https://neon.com/docs/refere
       "init_source": "parent-data"
     },
     {
-      "id": "br-morning-meadow-afu2s1jl",
+      "id": "br-morning-meadow-123456",
       "project_id": "dry-heart-13671059",
       "name": "main",
       "current_state": "ready",
-      "state_changed_at": "2025-08-04T07:07:58Z",
+      "state_changed_at": "2026-08-04T07:07:58Z",
       "logical_size": 30777344,
       "creation_source": "console",
       "primary": true,
@@ -119350,8 +119173,8 @@ For attribute definitions, find the [List branches](https://neon.com/docs/refere
       "active_time_seconds": 0,
       "written_data_bytes": 0,
       "data_transfer_bytes": 0,
-      "created_at": "2025-08-04T07:07:55Z",
-      "updated_at": "2025-08-04T07:13:11Z",
+      "created_at": "2026-08-04T07:07:55Z",
+      "updated_at": "2026-08-04T07:13:11Z",
       "created_by": {
         "name": "your@email.com",
         "image": ""
@@ -119394,7 +119217,7 @@ To rename a branch:
 Rename a branch with [`neon branches rename`](https://neon.com/docs/cli/branches#rename), passing the current name or ID and the new name:
 
 ```bash
-neon branches rename br-rough-sky-158193 teambranch
+neon branches rename br-rough-sky-123456 teambranch
 ```
 
 **API**
@@ -119403,7 +119226,7 @@ Rename a branch with the [Update branch](https://neon.com/docs/reference/api/bra
 
 ```bash
 curl -X 'PATCH' \
-  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-rough-sky-158193' \
+  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-rough-sky-123456' \
   -H 'accept: application/json' \
   -H "Authorization: Bearer $NEON_API_KEY" \
   -H 'Content-Type: application/json' \
@@ -119431,7 +119254,7 @@ To set a branch as the default branch:
 Set the default branch with [`neon branches set-default`](https://neon.com/docs/cli/branches#set-default):
 
 ```bash
-neon branches set-default br-curly-wave-af4i4oeu
+neon branches set-default br-curly-wave-123456
 ```
 
 **API**
@@ -119439,7 +119262,7 @@ neon branches set-default br-curly-wave-af4i4oeu
 Set the default branch with the [Set default branch](https://neon.com/docs/reference/api/branches/set-default-project-branch) endpoint:
 
 ```bash
-curl -X POST 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu/set_as_default' \
+curl -X POST 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-123456/set_as_default' \
   -H 'Accept: application/json' \
   -H "Authorization: Bearer $NEON_API_KEY"
 ```
@@ -119463,7 +119286,7 @@ To set a branch as protected:
 No dedicated command sets protection, so use the [`neon api`](https://neon.com/docs/cli/api) passthrough, which sends the request with your CLI credentials:
 
 ```bash
-neon api /projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu -X PATCH -F branch.protected=true
+neon api /projects/dry-heart-13671059/branches/br-curly-wave-123456 -X PATCH -F branch.protected=true
 ```
 
 **API**
@@ -119471,7 +119294,7 @@ neon api /projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu -X PATCH -
 Mark a branch as protected with the [Update branch](https://neon.com/docs/reference/api/branches/update-project-branch) endpoint:
 
 ```bash
-curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu' \
+curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-123456' \
   -H 'Accept: application/json' \
   -H "Authorization: Bearer $NEON_API_KEY" \
   -H 'Content-Type: application/json' \
@@ -119498,7 +119321,7 @@ To set or update a branch's expiration (auto-deletion TTL):
 Set an expiration with [`neon branches set-expiration`](https://neon.com/docs/cli/branches#set-expiration). Omit `--expires-at` to remove it:
 
 ```bash
-neon branches set-expiration br-curly-wave-af4i4oeu --expires-at 2025-08-15T18:00:00Z
+neon branches set-expiration br-curly-wave-123456 --expires-at 2025-08-15T18:00:00Z
 ```
 
 **API**
@@ -119506,7 +119329,7 @@ neon branches set-expiration br-curly-wave-af4i4oeu --expires-at 2025-08-15T18:0
 Set an expiration with the [Update branch](https://neon.com/docs/reference/api/branches/update-project-branch) endpoint:
 
 ```bash
-curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu' \
+curl -X PATCH 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-123456' \
   -H 'Accept: application/json' \
   -H "Authorization: Bearer $NEON_API_KEY" \
   -H 'Content-Type: application/json' \
@@ -119530,13 +119353,13 @@ Click **Connect** in the Console nav, then select the branch, database, and role
 Connect directly with [`neon psql`](https://neon.com/docs/cli/psql):
 
 ```bash
-neon psql br-curly-wave-af4i4oeu
+neon psql br-curly-wave-123456
 ```
 
 Or print the connection string to use elsewhere with [`neon connection-string`](https://neon.com/docs/cli/connection-string) (add `--pooled` or `--prisma` as needed):
 
 ```bash
-neon connection-string br-curly-wave-af4i4oeu --database-name neondb --role-name alex
+neon connection-string br-curly-wave-123456 --database-name neondb --role-name alex
 ```
 
 **API**
@@ -119544,7 +119367,7 @@ neon connection-string br-curly-wave-af4i4oeu --database-name neondb --role-name
 Retrieve the connection string with the [Get connection URI](https://neon.com/docs/reference/api/projects/get-connection-uri) endpoint (`database_name` and `role_name` are required):
 
 ```bash
-curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/connection_uri?branch_id=br-curly-wave-af4i4oeu&database_name=neondb&role_name=alex' \
+curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/connection_uri?branch_id=br-curly-wave-123456&database_name=neondb&role_name=alex' \
   -H "Authorization: Bearer $NEON_API_KEY"
 ```
 
@@ -119591,7 +119414,7 @@ To delete a branch:
 Delete a branch with [`neon branches delete`](https://neon.com/docs/cli/branches#delete), passing the branch name or ID:
 
 ```bash
-neon branches delete br-curly-wave-af4i4oeu
+neon branches delete br-curly-wave-123456
 ```
 
 **API**
@@ -119600,7 +119423,7 @@ Delete a branch with the [Delete branch](https://neon.com/docs/reference/api/bra
 
 ```bash
 curl -X 'DELETE' \
-  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu' \
+  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-123456' \
   -H 'accept: application/json' \
   -H "Authorization: Bearer $NEON_API_KEY"
 ```
@@ -119614,15 +119437,15 @@ For attribute definitions, find the [Delete branches](https://neon.com/docs/refe
 ```json
 {
   "branch": {
-    "id": "br-curly-wave-af4i4oeu",
+    "id": "br-curly-wave-123456",
     "project_id": "dry-heart-13671059",
-    "parent_id": "br-morning-meadow-afu2s1jl",
+    "parent_id": "br-morning-meadow-123456",
     "parent_lsn": "0/1FA22C0",
-    "parent_timestamp": "2025-08-04T07:08:48Z",
-    "name": "br-curly-wave-af4i4oeu",
+    "parent_timestamp": "2026-08-04T07:08:48Z",
+    "name": "br-curly-wave-123456",
     "current_state": "ready",
     "pending_state": "storage_deleted",
-    "state_changed_at": "2025-08-04T07:13:09Z",
+    "state_changed_at": "2026-08-04T07:13:09Z",
     "logical_size": 30851072,
     "creation_source": "console",
     "primary": false,
@@ -119633,8 +119456,8 @@ For attribute definitions, find the [Delete branches](https://neon.com/docs/refe
     "active_time_seconds": 0,
     "written_data_bytes": 0,
     "data_transfer_bytes": 0,
-    "created_at": "2025-08-04T07:13:09Z",
-    "updated_at": "2025-08-04T07:21:55Z",
+    "created_at": "2026-08-04T07:13:09Z",
+    "updated_at": "2026-08-04T07:21:55Z",
     "created_by": {
       "name": "your@email.com",
       "image": ""
@@ -119645,24 +119468,24 @@ For attribute definitions, find the [Delete branches](https://neon.com/docs/refe
     {
       "id": "eb85073d-53fc-4d37-a32a-ca9e9ea1eeb1",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-curly-wave-af4i4oeu",
-      "endpoint_id": "ep-soft-art-af5jvg5j",
+      "branch_id": "br-curly-wave-123456",
+      "endpoint_id": "ep-soft-art-123456",
       "action": "suspend_compute",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T07:21:55Z",
-      "updated_at": "2025-08-04T07:21:55Z",
+      "created_at": "2026-08-04T07:21:55Z",
+      "updated_at": "2026-08-04T07:21:55Z",
       "total_duration_ms": 0
     },
     {
       "id": "586af342-1ffe-4e0a-9e11-326db1164ad7",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-curly-wave-af4i4oeu",
+      "branch_id": "br-curly-wave-123456",
       "action": "delete_timeline",
       "status": "scheduling",
       "failures_count": 0,
-      "created_at": "2025-08-04T07:21:55Z",
-      "updated_at": "2025-08-04T07:21:55Z",
+      "created_at": "2026-08-04T07:21:55Z",
+      "updated_at": "2026-08-04T07:21:55Z",
       "total_duration_ms": 0
     }
   ]
@@ -120805,23 +120628,23 @@ For attribute definitions, find the [Create database](https://neon.com/docs/refe
 {
   "database": {
     "id": 2889509,
-    "branch_id": "br-morning-meadow-afu2s1jl",
+    "branch_id": "br-morning-meadow-123456",
     "name": "mydb",
     "owner_name": "casey",
-    "created_at": "2025-08-04T08:14:14Z",
-    "updated_at": "2025-08-04T08:14:14Z"
+    "created_at": "2026-08-04T08:14:14Z",
+    "updated_at": "2026-08-04T08:14:14Z"
   },
   "operations": [
     {
       "id": "b51c8ece-b78e-49f7-8ec1-78b37cbae3c4",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "endpoint_id": "ep-holy-heart-afbmgcfx",
+      "branch_id": "br-morning-meadow-123456",
+      "endpoint_id": "ep-holy-heart-123456",
       "action": "apply_config",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T08:14:14Z",
-      "updated_at": "2025-08-04T08:14:14Z",
+      "created_at": "2026-08-04T08:14:14Z",
+      "updated_at": "2026-08-04T08:14:14Z",
       "total_duration_ms": 0
     }
   ]
@@ -120850,13 +120673,9 @@ neon databases list
 ```
 
 ```text filename="Output"
-┌────────┬────────────┬──────────────────────┐
-│ Name   │ Owner Name │ Created At           │
-├────────┼────────────┼──────────────────────┤
-│ neondb │ casey      │ 2023-06-19T18:27:19Z │
-├────────┼────────────┼──────────────────────┤
-│ mydb   │ casey      │ 2023-06-19T18:27:19Z │
-└────────┴────────────┴──────────────────────┘
+Name    Owner Name  Created At
+neondb  casey       2026-06-19T18:27:19Z
+mydb    casey       2026-06-19T18:27:19Z
 ```
 
 **API**
@@ -120880,19 +120699,19 @@ For attribute definitions, find the [List databases](https://neon.com/docs/refer
   "databases": [
     {
       "id": 1139149,
-      "branch_id": "br-morning-meadow-afu2s1jl",
+      "branch_id": "br-morning-meadow-123456",
       "name": "neondb",
       "owner_name": "casey",
-      "created_at": "2023-01-04T18:38:23Z",
-      "updated_at": "2023-01-04T18:38:23Z"
+      "created_at": "2026-01-04T18:38:23Z",
+      "updated_at": "2026-01-04T18:38:23Z"
     },
     {
       "id": 1140822,
-      "branch_id": "br-morning-meadow-afu2s1jl",
+      "branch_id": "br-morning-meadow-123456",
       "name": "mydb",
       "owner_name": "casey",
-      "created_at": "2023-01-04T21:17:17Z",
-      "updated_at": "2023-01-04T21:17:17Z"
+      "created_at": "2026-01-04T21:17:17Z",
+      "updated_at": "2026-01-04T21:17:17Z"
     }
   ]
 }
@@ -120926,23 +120745,23 @@ For attribute definitions, find the [Update database](https://neon.com/docs/refe
 {
   "database": {
     "id": 2889509,
-    "branch_id": "br-morning-meadow-afu2s1jl",
+    "branch_id": "br-morning-meadow-123456",
     "name": "database1",
     "owner_name": "casey",
-    "created_at": "2025-08-04T08:14:14Z",
-    "updated_at": "2025-08-04T08:14:14Z"
+    "created_at": "2026-08-04T08:14:14Z",
+    "updated_at": "2026-08-04T08:14:14Z"
   },
   "operations": [
     {
       "id": "2f8c0a6a-33b5-4d56-964b-739614b699c0",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "endpoint_id": "ep-holy-heart-afbmgcfx",
+      "branch_id": "br-morning-meadow-123456",
+      "endpoint_id": "ep-holy-heart-123456",
       "action": "apply_config",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T08:17:22Z",
-      "updated_at": "2025-08-04T08:17:22Z",
+      "created_at": "2026-08-04T08:17:22Z",
+      "updated_at": "2026-08-04T08:17:22Z",
       "total_duration_ms": 0
     }
   ]
@@ -120993,23 +120812,23 @@ For attribute definitions, find the [Delete database](https://neon.com/docs/refe
 {
   "database": {
     "id": 2889509,
-    "branch_id": "br-morning-meadow-afu2s1jl",
+    "branch_id": "br-morning-meadow-123456",
     "name": "database1",
     "owner_name": "casey",
-    "created_at": "2025-08-04T08:14:14Z",
-    "updated_at": "2025-08-04T08:14:14Z"
+    "created_at": "2026-08-04T08:14:14Z",
+    "updated_at": "2026-08-04T08:14:14Z"
   },
   "operations": [
     {
       "id": "4cd4881b-2807-4377-a76d-8e7d39bc5448",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "endpoint_id": "ep-holy-heart-afbmgcfx",
+      "branch_id": "br-morning-meadow-123456",
+      "endpoint_id": "ep-holy-heart-123456",
       "action": "apply_config",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T08:19:39Z",
-      "updated_at": "2025-08-04T08:19:39Z",
+      "created_at": "2026-08-04T08:19:39Z",
+      "updated_at": "2026-08-04T08:19:39Z",
       "total_duration_ms": 0
     }
   ]
@@ -122222,11 +122041,8 @@ Example:
 ```bash
 neon orgs list
 Organizations
-┌────────────────────────┬──────────────────┐
-│ Id                     │ Name             │
-├────────────────────────┼──────────────────┤
-│ org-ocean-art-12345678 │ Example Org      │
-└────────────────────────┴──────────────────┘
+Id                      Name
+org-ocean-art-12345678  Example Org
 ```
 
 See [Orgs - CLI](https://neon.com/docs/cli/orgs) to learn more.
@@ -122240,15 +122056,10 @@ Example: Listing all projects in an organization:
 ```bash
 neon projects list --org-id org-xxxx-xxxx
 Projects
-┌───────────────────────────┬───────────────────────────┬────────────────────┬──────────────────────┐
-│ Id                        │ Name                      │ Region Id          │ Created At           │
-├───────────────────────────┼───────────────────────────┼────────────────────┼──────────────────────┤
-│ bright-moon-12345678      │ dev-backend-api           │ aws-us-east-2      │ 2024-07-26T11:43:37Z │
-├───────────────────────────┼───────────────────────────┼────────────────────┼──────────────────────┤
-│ silent-forest-87654321    │ test-integration-service  │ aws-eu-central-1   │ 2024-05-30T22:14:49Z │
-├───────────────────────────┼───────────────────────────┼────────────────────┼──────────────────────┤
-│ crystal-stream-23456789   │ staging-web-app           │ aws-us-east-2      │ 2024-05-17T13:47:35Z │
-└───────────────────────────┴───────────────────────────┴────────────────────┴──────────────────────┘
+Id                       Name                      Region Id         Created At
+bright-moon-12345678     dev-backend-api           aws-us-east-2     2026-07-26T11:43:37Z
+silent-forest-87654321   test-integration-service  aws-eu-central-1  2026-05-30T22:14:49Z
+crystal-stream-23456789  staging-web-app           aws-us-east-2     2026-05-17T13:47:35Z
 ```
 
 You can include the `org-id` to apply the following subcommands specifically to your organization:
@@ -122995,12 +122806,10 @@ The [Neon CLI ip-allow command](https://neon.com/docs/cli/ip-allow) supports IP 
 
 ```bash
 neon ip-allow add 203.0.113.0 203.0.113.1
-┌─────────────────────┬─────────────────────┬──────────────┬─────────────────────┐
-│ Id                  │ Name                │ IP Addresses │ Protected Only      │
-├─────────────────────|─────────────────────┼──────────────┼─────────────────────┤
-│ wispy-haze-26469780 │ wispy-haze-26469780 │ 203.0.113.0  │ false               │
-│                     │                     │ 203.0.113.1  │                     │
-└─────────────────────┴─────────────────────┴──────────────┴─────────────────────┘
+Id              wispy-haze-123456
+Name            wispy-haze-123456
+IP Addresses    203.0.113.0, 203.0.113.1
+Protected Only  false
 ```
 
 To apply an IP allowlist to protected branches only, you can use the `--protected-only` option:
@@ -123292,8 +123101,8 @@ For attribute definitions, find the [Create project](https://neon.com/docs/refer
     "store_passwords": true,
     "creation_source": "console",
     "history_retention_seconds": 86400,
-    "created_at": "2025-08-04T05:15:41Z",
-    "updated_at": "2025-08-04T05:15:41Z",
+    "created_at": "2026-08-04T05:15:41Z",
+    "updated_at": "2026-08-04T05:15:41Z",
     "consumption_period_start": "0001-01-01T00:00:00Z",
     "consumption_period_end": "0001-01-01T00:00:00Z",
     "owner_id": "91cbdacd-06c2-49f5-bacf-78b9463c81ca"
@@ -123312,56 +123121,56 @@ For attribute definitions, find the [Create project](https://neon.com/docs/refer
   ],
   "roles": [
     {
-      "branch_id": "br-gentle-salad-ad7v90qq",
+      "branch_id": "br-gentle-salad-123456",
       "name": "neondb_owner",
       "password": "npg_Se0ECYqaJ5jA",
       "protected": false,
-      "created_at": "2025-08-04T05:15:41Z",
-      "updated_at": "2025-08-04T05:15:41Z"
+      "created_at": "2026-08-04T05:15:41Z",
+      "updated_at": "2026-08-04T05:15:41Z"
     }
   ],
   "databases": [
     {
       "id": 5140981,
-      "branch_id": "br-gentle-salad-ad7v90qq",
+      "branch_id": "br-gentle-salad-123456",
       "name": "neondb",
       "owner_name": "neondb_owner",
-      "created_at": "2025-08-04T05:15:41Z",
-      "updated_at": "2025-08-04T05:15:41Z"
+      "created_at": "2026-08-04T05:15:41Z",
+      "updated_at": "2026-08-04T05:15:41Z"
     }
   ],
   "operations": [
     {
       "id": "cacca1d4-ad0e-46dc-ae82-886ffb96889d",
       "project_id": "ep-cool-darkness-123456",
-      "branch_id": "br-gentle-salad-ad7v90qq",
+      "branch_id": "br-gentle-salad-123456",
       "action": "create_timeline",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T05:15:41Z",
-      "updated_at": "2025-08-04T05:15:41Z",
+      "created_at": "2026-08-04T05:15:41Z",
+      "updated_at": "2026-08-04T05:15:41Z",
       "total_duration_ms": 0
     },
     {
       "id": "1df43d11-5c07-4de1-9440-ac09d305fdf3",
       "project_id": "ep-cool-darkness-123456",
-      "branch_id": "br-gentle-salad-ad7v90qq",
+      "branch_id": "br-gentle-salad-123456",
       "endpoint_id": "ep-cool-darkness-123456",
       "action": "start_compute",
       "status": "scheduling",
       "failures_count": 0,
-      "created_at": "2025-08-04T05:15:41Z",
-      "updated_at": "2025-08-04T05:15:41Z",
+      "created_at": "2026-08-04T05:15:41Z",
+      "updated_at": "2026-08-04T05:15:41Z",
       "total_duration_ms": 0
     }
   ],
   "branch": {
-    "id": "br-gentle-salad-ad7v90qq",
+    "id": "br-gentle-salad-123456",
     "project_id": "ep-cool-darkness-123456",
     "name": "main",
     "current_state": "init",
     "pending_state": "ready",
-    "state_changed_at": "2025-08-04T05:15:41Z",
+    "state_changed_at": "2026-08-04T05:15:41Z",
     "creation_source": "console",
     "primary": true,
     "default": true,
@@ -123371,8 +123180,8 @@ For attribute definitions, find the [Create project](https://neon.com/docs/refer
     "active_time_seconds": 0,
     "written_data_bytes": 0,
     "data_transfer_bytes": 0,
-    "created_at": "2025-08-04T05:15:41Z",
-    "updated_at": "2025-08-04T05:15:41Z",
+    "created_at": "2026-08-04T05:15:41Z",
+    "updated_at": "2026-08-04T05:15:41Z",
     "init_source": "parent-data"
   },
   "endpoints": [
@@ -123380,7 +123189,7 @@ For attribute definitions, find the [Create project](https://neon.com/docs/refer
       "host": "ep-cool-darkness-123456.c-2.us-east-1.aws.neon.tech",
       "id": "ep-cool-darkness-123456",
       "project_id": "ep-cool-darkness-123456",
-      "branch_id": "br-gentle-salad-ad7v90qq",
+      "branch_id": "br-gentle-salad-123456",
       "autoscaling_limit_min_cu": 0.25,
       "autoscaling_limit_max_cu": 0.25,
       "region_id": "aws-us-east-1",
@@ -123393,8 +123202,8 @@ For attribute definitions, find the [Create project](https://neon.com/docs/refer
       "disabled": false,
       "passwordless_access": true,
       "creation_source": "console",
-      "created_at": "2025-08-04T05:15:41Z",
-      "updated_at": "2025-08-04T05:15:41Z",
+      "created_at": "2026-08-04T05:15:41Z",
+      "updated_at": "2026-08-04T05:15:41Z",
       "proxy_host": "c-2.us-east-1.aws.neon.tech",
       "suspend_timeout_seconds": 0,
       "provisioner": "k8s-neonvm"
@@ -123464,12 +123273,12 @@ For attribute definitions, find the [List projects](https://neon.com/docs/refere
       "active_time": 1260,
       "cpu_used_sec": 319,
       "creation_source": "console",
-      "created_at": "2024-11-08T17:20:01Z",
-      "updated_at": "2025-08-03T01:16:18Z",
+      "created_at": "2026-11-08T17:20:01Z",
+      "updated_at": "2026-08-03T01:16:18Z",
       "synthetic_storage_size": 96929448,
-      "quota_reset_at": "2025-09-01T00:00:00Z",
+      "quota_reset_at": "2026-09-01T00:00:00Z",
       "owner_id": "91cbdacd-06c2-49f5-bacf-78b9463c81ca",
-      "compute_last_active_at": "2025-08-03T01:16:18Z",
+      "compute_last_active_at": "2026-08-03T01:16:18Z",
       "history_retention_seconds": 86400
     },
     {
@@ -123506,12 +123315,12 @@ For attribute definitions, find the [List projects](https://neon.com/docs/refere
       "active_time": 0,
       "cpu_used_sec": 0,
       "creation_source": "console",
-      "created_at": "2024-10-28T16:26:49Z",
-      "updated_at": "2025-08-01T00:34:48Z",
+      "created_at": "2026-10-28T16:26:49Z",
+      "updated_at": "2026-08-01T00:34:48Z",
       "synthetic_storage_size": 31082816,
-      "quota_reset_at": "2025-09-01T00:00:00Z",
+      "quota_reset_at": "2026-09-01T00:00:00Z",
       "owner_id": "91cbdacd-06c2-49f5-bacf-78b9463c81ca",
-      "compute_last_active_at": "2025-02-14T09:51:30Z",
+      "compute_last_active_at": "2026-02-14T09:51:30Z",
       "history_retention_seconds": 86400
     }
   ],
@@ -123599,13 +123408,13 @@ For attribute definitions, find the [Update project](https://neon.com/docs/refer
     "store_passwords": true,
     "creation_source": "console",
     "history_retention_seconds": 86400,
-    "created_at": "2025-08-04T05:15:41Z",
-    "updated_at": "2025-08-04T05:55:58Z",
+    "created_at": "2026-08-04T05:15:41Z",
+    "updated_at": "2026-08-04T05:55:58Z",
     "synthetic_storage_size": 35697544,
     "consumption_period_start": "0001-01-01T00:00:00Z",
     "consumption_period_end": "0001-01-01T00:00:00Z",
     "owner_id": "91cbdacd-06c2-49f5-bacf-78b9463c81ca",
-    "compute_last_active_at": "2025-08-04T05:15:47Z"
+    "compute_last_active_at": "2026-08-04T05:15:47Z"
   },
   "operations": []
 }
@@ -123677,13 +123486,13 @@ For attribute definitions, find the [Delete project](https://neon.com/docs/refer
     "store_passwords": true,
     "creation_source": "console",
     "history_retention_seconds": 86400,
-    "created_at": "2025-08-04T05:15:41Z",
-    "updated_at": "2025-08-04T06:10:55Z",
+    "created_at": "2026-08-04T05:15:41Z",
+    "updated_at": "2026-08-04T06:10:55Z",
     "synthetic_storage_size": 35697544,
     "consumption_period_start": "0001-01-01T00:00:00Z",
     "consumption_period_end": "0001-01-01T00:00:00Z",
     "owner_id": "91cbdacd-06c2-49f5-bacf-78b9463c81ca",
-    "compute_last_active_at": "2025-08-04T05:15:47Z"
+    "compute_last_active_at": "2026-08-04T05:15:47Z"
   }
 }
 ```
@@ -123742,11 +123551,10 @@ The command returns details about the recovered project.
 
 ```bash
 neon projects recover crimson-voice-12345678
-┌────────────────────────┬───────────┬───────────────┬──────────────────────┐
-│ Id                     │ Name      │ Region Id     │ Created At           │
-├────────────────────────┼───────────┼───────────────┼──────────────────────┤
-│ crimson-voice-12345678 │ myproject │ aws-us-east-2 │ 2024-04-15T11:17:30Z │
-└────────────────────────┴───────────┴───────────────┴──────────────────────┘
+Id          crimson-voice-12345678
+Name        myproject
+Region Id   aws-us-east-2
+Created At  2026-04-15T11:17:30Z
 ```
 
 For more information about the Neon CLI, see [Neon CLI — projects](https://neon.com/docs/cli/projects).
@@ -123881,24 +123689,24 @@ For attribute definitions, find the [Create role](https://neon.com/docs/referenc
 ```json
 {
   "role": {
-    "branch_id": "br-morning-meadow-afu2s1jl",
+    "branch_id": "br-morning-meadow-123456",
     "name": "alex",
     "password": "npg_A9xYoejTz6iQ",
     "protected": false,
-    "created_at": "2025-08-04T07:47:05Z",
-    "updated_at": "2025-08-04T07:47:05Z"
+    "created_at": "2026-08-04T07:47:05Z",
+    "updated_at": "2026-08-04T07:47:05Z"
   },
   "operations": [
     {
       "id": "9c61fc28-c89e-4b25-ad5c-8777742e66a3",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "endpoint_id": "ep-holy-heart-afbmgcfx",
+      "branch_id": "br-morning-meadow-123456",
+      "endpoint_id": "ep-holy-heart-123456",
       "action": "apply_config",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T07:47:05Z",
-      "updated_at": "2025-08-04T07:47:05Z",
+      "created_at": "2026-08-04T07:47:05Z",
+      "updated_at": "2026-08-04T07:47:05Z",
       "total_duration_ms": 0
     }
   ]
@@ -123924,13 +123732,9 @@ neon roles list
 ```
 
 ```text filename="Output"
-┌────────┬──────────────────────┐
-│ Name   │ Created At           │
-├────────┼──────────────────────┤
-│ daniel │ 2023-06-19T18:27:19Z │
-├────────┼──────────────────────┤
-│ alex   │ 2023-07-13T06:42:55Z │
-└────────┴──────────────────────┘
+Name          Created At
+neondb_owner  2026-06-19T18:27:19Z
+alex          2026-07-13T06:42:55Z
 ```
 
 **API**
@@ -123953,18 +123757,18 @@ For attribute definitions, find the [List roles](https://neon.com/docs/reference
 {
   "roles": [
     {
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "name": "daniel",
+      "branch_id": "br-morning-meadow-123456",
+      "name": "neondb_owner",
       "protected": false,
-      "created_at": "2023-07-09T17:01:34Z",
-      "updated_at": "2023-07-09T17:01:34Z"
+      "created_at": "2026-07-09T17:01:34Z",
+      "updated_at": "2026-07-09T17:01:34Z"
     },
     {
-      "branch_id": "br-morning-meadow-afu2s1jl",
+      "branch_id": "br-morning-meadow-123456",
       "name": "alex",
       "protected": false,
-      "created_at": "2023-07-13T06:42:55Z",
-      "updated_at": "2023-07-13T14:48:29Z"
+      "created_at": "2026-07-13T06:42:55Z",
+      "updated_at": "2026-07-13T14:48:29Z"
     }
   ]
 }
@@ -124013,23 +123817,23 @@ For attribute definitions, find the [Delete role](https://neon.com/docs/referenc
 ```json
 {
   "role": {
-    "branch_id": "br-morning-meadow-afu2s1jl",
+    "branch_id": "br-morning-meadow-123456",
     "name": "alex",
     "protected": false,
-    "created_at": "2025-08-04T07:47:05Z",
-    "updated_at": "2025-08-04T07:51:10Z"
+    "created_at": "2026-08-04T07:47:05Z",
+    "updated_at": "2026-08-04T07:51:10Z"
   },
   "operations": [
     {
       "id": "722b9f9b-c50e-424c-845e-78b38151b82f",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "endpoint_id": "ep-holy-heart-afbmgcfx",
+      "branch_id": "br-morning-meadow-123456",
+      "endpoint_id": "ep-holy-heart-123456",
       "action": "apply_config",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T07:53:22Z",
-      "updated_at": "2025-08-04T07:53:22Z",
+      "created_at": "2026-08-04T07:53:22Z",
+      "updated_at": "2026-08-04T07:53:22Z",
       "total_duration_ms": 0
     }
   ]
@@ -124071,24 +123875,24 @@ For attribute definitions, find the [Reset role password](https://neon.com/docs/
 ```json
 {
   "role": {
-    "branch_id": "br-morning-meadow-afu2s1jl",
+    "branch_id": "br-morning-meadow-123456",
     "name": "alex",
     "password": "npg_iDKnwMW7bUg5",
     "protected": false,
-    "created_at": "2025-08-04T07:47:05Z",
-    "updated_at": "2025-08-04T07:51:10Z"
+    "created_at": "2026-08-04T07:47:05Z",
+    "updated_at": "2026-08-04T07:51:10Z"
   },
   "operations": [
     {
       "id": "23b3db33-d36a-45bf-9fda-0e73b5b272e5",
       "project_id": "dry-heart-13671059",
-      "branch_id": "br-morning-meadow-afu2s1jl",
-      "endpoint_id": "ep-holy-heart-afbmgcfx",
+      "branch_id": "br-morning-meadow-123456",
+      "endpoint_id": "ep-holy-heart-123456",
       "action": "apply_config",
       "status": "running",
       "failures_count": 0,
-      "created_at": "2025-08-04T07:51:10Z",
-      "updated_at": "2025-08-04T07:51:10Z",
+      "created_at": "2026-08-04T07:51:10Z",
+      "updated_at": "2026-08-04T07:51:10Z",
       "total_duration_ms": 0
     }
   ]

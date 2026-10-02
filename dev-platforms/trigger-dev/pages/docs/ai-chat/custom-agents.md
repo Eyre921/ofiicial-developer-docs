@@ -136,14 +136,14 @@ export const myChat = chat
 
 ### ChatSessionOptions
 
-| Option                 | Type                         | Default     | Description                                                                                           |
-| ---------------------- | ---------------------------- | ----------- | ----------------------------------------------------------------------------------------------------- |
-| `signal`               | `AbortSignal`                | required    | Run-level cancel signal (from task context)                                                           |
-| `idleTimeoutInSeconds` | `number`                     | `30`        | Seconds to stay idle between turns before suspending                                                  |
-| `timeout`              | `string`                     | `"1h"`      | Duration string for suspend timeout                                                                   |
-| `maxTurns`             | `number`                     | `100`       | Max turns before ending                                                                               |
-| `compaction`           | `ChatAgentCompactionOptions` | `undefined` | Automatic context [compaction](/docs/ai-chat/compaction) — same options as on `chat.agent()`          |
-| `pendingMessages`      | `PendingMessagesOptions`     | `undefined` | Mid-execution [message injection](/docs/ai-chat/pending-messages) — same options as on `chat.agent()` |
+| Option | Type | Default | Description |
+| - | - | - | - |
+| `signal` | `AbortSignal` | required | Run-level cancel signal (from task context) |
+| `idleTimeoutInSeconds` | `number` | `30` | Seconds to stay idle between turns before suspending |
+| `timeout` | `string` | `"1h"` | Duration string for suspend timeout |
+| `maxTurns` | `number` | `100` | Max turns before ending |
+| `compaction` | `ChatAgentCompactionOptions` | `undefined` | Automatic context [compaction](/docs/ai-chat/compaction) — same options as on `chat.agent()` |
+| `pendingMessages` | `PendingMessagesOptions` | `undefined` | Mid-execution [message injection](/docs/ai-chat/pending-messages) — same options as on `chat.agent()` |
 
 Between turns the run idles on `waitWithIdleTimeout`: after `idleTimeoutInSeconds` with no message it suspends (compute is freed), and the next message restores it on the same run — the same warm/suspended pipeline `chat.agent()` uses.
 
@@ -151,28 +151,28 @@ Between turns the run idles on `waitWithIdleTimeout`: after `idleTimeoutInSecond
 
 Each turn yielded by the iterator provides:
 
-| Field               | Type                              | Description                                                                                                                          |
-| ------------------- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `number`            | `number`                          | Turn number (0-indexed)                                                                                                              |
-| `chatId`            | `string`                          | Chat session ID                                                                                                                      |
-| `trigger`           | `string`                          | What triggered this turn                                                                                                             |
-| `clientData`        | Schema output or `unknown`        | Parsed client data when `withClientData` is configured                                                                               |
-| `messages`          | `ModelMessage[]`                  | Full accumulated model messages — pass to `streamText`                                                                               |
-| `uiMessages`        | `UIMessage[]`                     | Full accumulated UI messages — use for persistence                                                                                   |
-| `signal`            | `AbortSignal`                     | Combined stop+cancel signal (fresh each turn)                                                                                        |
-| `stopped`           | `boolean`                         | Whether the user stopped generation this turn                                                                                        |
-| `continuation`      | `boolean`                         | Whether this is a continuation run                                                                                                   |
-| `previousTurnUsage` | `LanguageModelUsage \| undefined` | Token usage from the previous turn (undefined on turn 0)                                                                             |
-| `totalUsage`        | `LanguageModelUsage`              | Cumulative token usage across all completed turns                                                                                    |
-| `handover`          | `{ isFinal: boolean } \| null`    | The [`chat.headStart`](/docs/ai-chat/fast-starts#handover-with-custom-agents) handover for this turn (turn 0 only); `null` otherwise |
+| Field | Type | Description |
+| - | - | - |
+| `number` | `number` | Turn number (0-indexed) |
+| `chatId` | `string` | Chat session ID |
+| `trigger` | `string` | What triggered this turn |
+| `clientData` | Schema output or `unknown` | Parsed client data when `withClientData` is configured |
+| `messages` | `ModelMessage[]` | Full accumulated model messages — pass to `streamText` |
+| `uiMessages` | `UIMessage[]` | Full accumulated UI messages — use for persistence |
+| `signal` | `AbortSignal` | Combined stop+cancel signal (fresh each turn) |
+| `stopped` | `boolean` | Whether the user stopped generation this turn |
+| `continuation` | `boolean` | Whether this is a continuation run |
+| `previousTurnUsage` | `LanguageModelUsage \| undefined` | Token usage from the previous turn (undefined on turn 0) |
+| `totalUsage` | `LanguageModelUsage` | Cumulative token usage across all completed turns |
+| `handover` | `{ isFinal: boolean } \| null` | The [`chat.headStart`](/docs/ai-chat/fast-starts#handover-with-custom-agents) handover for this turn (turn 0 only); `null` otherwise |
 
-| Method                         | Description                                                                                                                                                                                              |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `turn.complete(source?)`       | Pipe stream, capture response, accumulate, and signal turn-complete. Call with no source on a final head-start handover (`turn.handover.isFinal`), where the warm step-1 partial is already the response |
-| `turn.done()`                  | Signal turn-complete only (when you have piped manually)                                                                                                                                                 |
-| `turn.addResponse(response)`   | Add a response to the accumulator manually                                                                                                                                                               |
-| `turn.setMessages(uiMessages)` | Replace the accumulated messages — continuation seeding and on-demand compaction                                                                                                                         |
-| `turn.prepareStep()`           | `prepareStep` callback wiring compaction + injection — pass to `streamText` when not spreading `chat.toStreamTextOptions()`                                                                              |
+| Method | Description |
+| - | - |
+| `turn.complete(source?)` | Pipe stream, capture response, accumulate, and signal turn-complete. Call with no source on a final head-start handover (`turn.handover.isFinal`), where the warm step-1 partial is already the response |
+| `turn.done()` | Signal turn-complete only (when you have piped manually) |
+| `turn.addResponse(response)` | Add a response to the accumulator manually |
+| `turn.setMessages(uiMessages)` | Replace the accumulated messages — continuation seeding and on-demand compaction |
+| `turn.prepareStep()` | `prepareStep` callback wiring compaction + injection — pass to `streamText` when not spreading `chat.toStreamTextOptions()` |
 
 ### Continuation runs and history seeding
 
@@ -319,28 +319,28 @@ Only `chat.agent` and `chat.customAgent` bind the run to its Session, so `chat.c
 
 For full control, skip `createSession` and compose the primitives directly:
 
-| Primitive                       | Description                                                                                                |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `chat.messages`                 | Mailbox for incoming messages — inspect buffered input, consume one record, or suspend until the next turn |
-| `chat.createStopSignal()`       | Create a managed stop signal wired to the stop input stream                                                |
-| `chat.pipeAndCapture(result)`   | Pipe a stream and capture the response; returns `{ message, status, error }`                               |
-| `chat.writeTurnComplete()`      | Signal turn complete; returns `{ lastEventId, sessionInEventId }` resume cursors                           |
-| `chat.endAndContinue()`         | Hand off the Session to a continuation run; call between turns, then return                                |
-| `chat.MessageAccumulator`       | Accumulates conversation messages across turns                                                             |
-| `chat.pipe(stream)`             | Pipe a stream to the frontend (no response capture)                                                        |
-| `chat.cleanupAbortedParts(msg)` | Clean up incomplete parts from a stopped response                                                          |
+| Primitive | Description |
+| - | - |
+| `chat.messages` | Mailbox for incoming messages — inspect buffered input, consume one record, or suspend until the next turn |
+| `chat.createStopSignal()` | Create a managed stop signal wired to the stop input stream |
+| `chat.pipeAndCapture(result)` | Pipe a stream and capture the response; returns `{ message, status, error }` |
+| `chat.writeTurnComplete()` | Signal turn complete; returns `{ lastEventId, sessionInEventId }` resume cursors |
+| `chat.endAndContinue()` | Hand off the Session to a continuation run; call between turns, then return |
+| `chat.MessageAccumulator` | Accumulates conversation messages across turns |
+| `chat.pipe(stream)` | Pipe a stream to the frontend (no response capture) |
+| `chat.cleanupAbortedParts(msg)` | Clean up incomplete parts from a stopped response |
 
 ### `chat.messages` mailbox
 
 `chat.messages` exposes the incoming message mailbox for hand-rolled loops:
 
-| Method                         | Behavior                                                                                                      |
-| ------------------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `peek()`                       | Return the next queued message without consuming it, or `undefined` when none is queued                       |
-| `hasPending()`                 | Resolve `true` when a message is queued; does not consume it                                                  |
-| `next({ timeoutInSeconds? })`  | Consume exactly one message record in channel order, or resolve `undefined` when the optional timeout elapses |
-| `on(handler)`                  | Consume messages as they arrive and invoke the handler                                                        |
-| `waitWithIdleTimeout(options)` | Wait warm, then suspend the run until the next message arrives                                                |
+| Method | Behavior |
+| - | - |
+| `peek()` | Return the next queued message without consuming it, or `undefined` when none is queued |
+| `hasPending()` | Resolve `true` when a message is queued; does not consume it |
+| `next({ timeoutInSeconds? })` | Consume exactly one message record in channel order, or resolve `undefined` when the optional timeout elapses |
+| `on(handler)` | Consume messages as they arrive and invoke the handler |
+| `waitWithIdleTimeout(options)` | Wait warm, then suspend the run until the next message arrives |
 
 `hasPending()` checks whether a message has already been delivered locally and is
 waiting for `next()` to take it. It does not query the remote Session channel or

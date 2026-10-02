@@ -186,12 +186,12 @@ const { messages, sendMessage, status } = useChat({ transport });
 
 Every model id, voice id and tuning constant lives in `lib/voice-config.ts`. The file stays import-light because it's shared with the Head Start route bundle, and Head Start only pays off while that bundle stays small. The knobs that matter most:
 
-| Constant           | Default | Effect                                                                                                    |
-| ------------------ | ------- | --------------------------------------------------------------------------------------------------------- |
-| `VAD_SILENCE_SECS` | `1`     | Seconds of silence that end your turn. Lower feels snappier but cuts you off; higher gives room to pause. |
-| `HISTORY_TURNS`    | `3`     | Turns kept in context. Keeps latency flat; the cost is shorter memory.                                    |
-| `MAX_REPLY_TOKENS` | `100`   | Caps reply length so a turn can't run long.                                                               |
-| `TTS_VOICE_ID`     | Roger   | Any voice on your ElevenLabs account. Also settable via `NEXT_PUBLIC_TTS_VOICE_ID`.                       |
+| Constant | Default | Effect |
+| - | - | - |
+| `VAD_SILENCE_SECS` | `1` | Seconds of silence that end your turn. Lower feels snappier but cuts you off; higher gives room to pause. |
+| `HISTORY_TURNS` | `3` | Turns kept in context. Keeps latency flat; the cost is shorter memory. |
+| `MAX_REPLY_TOKENS` | `100` | Caps reply length so a turn can't run long. |
+| `TTS_VOICE_ID` | Roger | Any voice on your ElevenLabs account. Also settable via `NEXT_PUBLIC_TTS_VOICE_ID`. |
 
 The `SYSTEM_PROMPT` in the same file keeps replies short (every reply is read aloud, so a long one is seconds of dead air) and formats punctuation and numbers for ElevenLabs Flash, which reads ellipses, dashes and raw figures unpredictably.
 

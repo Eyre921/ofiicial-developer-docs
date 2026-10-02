@@ -373,11 +373,11 @@ export const mySubtask = schemaTask({
 });
 ```
 
-| Helper                                   | Returns                                                   | Description                                                                         |
-| ---------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| `ai.toolCallId()`                        | `string \| undefined`                                     | The AI SDK tool call ID                                                             |
-| `ai.chatContext<typeof myChat>()`        | `{ chatId, turn, continuation, clientData } \| undefined` | Chat context with typed `clientData`. Returns `undefined` if not in a chat context. |
-| `ai.chatContextOrThrow<typeof myChat>()` | `{ chatId, turn, continuation, clientData }`              | Same as above but throws if not in a chat context                                   |
-| `ai.currentToolOptions()`                | `ToolCallExecutionOptions \| undefined`                   | Full tool execution options                                                         |
+| Helper | Returns | Description |
+| - | - | - |
+| `ai.toolCallId()` | `string \| undefined` | The AI SDK tool call ID |
+| `ai.chatContext<typeof myChat>()` | `{ chatId, turn, continuation, clientData } \| undefined` | Chat context with typed `clientData`. Returns `undefined` if not in a chat context. |
+| `ai.chatContextOrThrow<typeof myChat>()` | `{ chatId, turn, continuation, clientData }` | Same as above but throws if not in a chat context |
+| `ai.currentToolOptions()` | `ToolCallExecutionOptions \| undefined` | Full tool execution options |
 
 The subtask body also has read-only access to any [`chat.local`](/docs/ai-chat/chat-local) values initialized in the parent — auto-hydrated from the parent's metadata on first access.

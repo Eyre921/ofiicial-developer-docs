@@ -19,31 +19,31 @@ What's new in v4, how to migrate, and breaking changes.
 
 ## What's new in v4?
 
-| Feature                                                                   | Description                                                                                                                                                                                                               |
-| :------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Wait for token](/docs/wait-for-token)                                    | Create and wait for tokens to be completed, enabling approval workflows and waiting for arbitrary external conditions.                                                                                                    |
-| Wait idempotency                                                          | Skip waits if the same idempotency key is used again when using [wait for](/docs/wait-for#wait-idempotency), [wait until](/docs/wait-until#wait-idempotency), or [wait for token](/docs/wait-for-token#wait-idempotency). |
-| [Priority](/docs/runs/priority)                                           | Specify a priority when triggering a task.                                                                                                                                                                                |
-| [Global lifecycle hooks](/docs/tasks/overview#global-lifecycle-hooks)     | Register global lifecycle hooks that are executed for all runs, regardless of the task.                                                                                                                                   |
-| [onWait and onResume](/docs/tasks/overview#onwait-and-onresume-functions) | Run code when a run is paused or resumed because of a wait.                                                                                                                                                               |
-| [onComplete](/docs/tasks/overview#oncomplete-function)                    | Run code when a run completes, regardless of whether it succeeded or failed.                                                                                                                                              |
-| [onCancel](/docs/tasks/overview#oncancel-function)                        | Run code when a run is cancelled.                                                                                                                                                                                         |
-| [Hidden tasks](/docs/hidden-tasks)                                        | Create tasks that are not exported from your trigger files but can still be executed.                                                                                                                                     |
-| [Middleware & locals](#middleware-and-locals)                             | The middleware system runs at the top level, executing before and after all lifecycle hooks. The locals API allows sharing data between middleware and hooks.                                                             |
-| [useWaitToken](/docs/realtime/react-hooks/use-wait-token)                 | Use the useWaitToken hook to complete a wait token from a React component.                                                                                                                                                |
-| [Task-backed AI tools](/docs/tasks/schemaTask#task-backed-ai-tools)       | Use `schemaTask` with AI SDK `tool()` and `ai.toolExecute()` (legacy `ai.tool` is deprecated).                                                                                                                            |
+| Feature | Description |
+| :- | :- |
+| [Wait for token](/docs/wait-for-token) | Create and wait for tokens to be completed, enabling approval workflows and waiting for arbitrary external conditions. |
+| Wait idempotency | Skip waits if the same idempotency key is used again when using [wait for](/docs/wait-for#wait-idempotency), [wait until](/docs/wait-until#wait-idempotency), or [wait for token](/docs/wait-for-token#wait-idempotency). |
+| [Priority](/docs/runs/priority) | Specify a priority when triggering a task. |
+| [Global lifecycle hooks](/docs/tasks/overview#global-lifecycle-hooks) | Register global lifecycle hooks that are executed for all runs, regardless of the task. |
+| [onWait and onResume](/docs/tasks/overview#onwait-and-onresume-functions) | Run code when a run is paused or resumed because of a wait. |
+| [onComplete](/docs/tasks/overview#oncomplete-function) | Run code when a run completes, regardless of whether it succeeded or failed. |
+| [onCancel](/docs/tasks/overview#oncancel-function) | Run code when a run is cancelled. |
+| [Hidden tasks](/docs/hidden-tasks) | Create tasks that are not exported from your trigger files but can still be executed. |
+| [Middleware & locals](#middleware-and-locals) | The middleware system runs at the top level, executing before and after all lifecycle hooks. The locals API allows sharing data between middleware and hooks. |
+| [useWaitToken](/docs/realtime/react-hooks/use-wait-token) | Use the useWaitToken hook to complete a wait token from a React component. |
+| [Task-backed AI tools](/docs/tasks/schemaTask#task-backed-ai-tools) | Use `schemaTask` with AI SDK `tool()` and `ai.toolExecute()` (legacy `ai.tool` is deprecated). |
 
 ## Node.js support
 
-Trigger.dev runs your tasks on specific Node.js versions:
+Trigger.dev runs your deployed tasks on one of these runtimes:
 
-* Node.js `21.7.3` (default)
-* Node.js `22.16.0` (`node-22`)
-* Node.js `24.18.0` (`node-24`)
-* Node.js `26.4.0` (`node-26`)
-* Bun `1.3.3` (`bun`)
+* Node.js `node` — the default, tracks the current Node.js LTS (today `24.18.0`)
+* Node.js `node-22` — `22.16.0`
+* Node.js `node-24` — `24.18.0`
+* Node.js `node-26` — `26.4.0`
+* Bun `bun` — `1.3.3`
 
-You can change the runtime by setting the `runtime` field in your `trigger.config.ts` file.
+If you don't set a `runtime`, or you set `runtime: "node"`, your tasks run on the current Node.js LTS. That version moves forward as new LTS releases land, so set an explicit version — for example `runtime: "node-24"` — if you need it to stay fixed.
 
 ```ts theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";
@@ -558,9 +558,9 @@ console.log(batch.runs);
 
 We are now using newer versions of the OpenTelemetry packages. This means that if you're using custom exporters you may need to update the packages:
 
-| Package                                   | Previous Version | New Version | Change Type  |
-| ----------------------------------------- | ---------------- | ----------- | ------------ |
-| `@opentelemetry/api-logs`                 | 0.52.1           | 0.203.0     | Major update |
-| `@opentelemetry/exporter-logs-otlp-http`  | 0.52.1           | 0.203.0     | Major update |
-| `@opentelemetry/exporter-trace-otlp-http` | 0.52.1           | 0.203.0     | Major update |
-| `@opentelemetry/instrumentation`          | 0.52.1           | 0.203.0     | Major update |
+| Package | Previous Version | New Version | Change Type |
+| - | - | - | - |
+| `@opentelemetry/api-logs` | 0.52.1 | 0.203.0 | Major update |
+| `@opentelemetry/exporter-logs-otlp-http` | 0.52.1 | 0.203.0 | Major update |
+| `@opentelemetry/exporter-trace-otlp-http` | 0.52.1 | 0.203.0 | Major update |
+| `@opentelemetry/instrumentation` | 0.52.1 | 0.203.0 | Major update |

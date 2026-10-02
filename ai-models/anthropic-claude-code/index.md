@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 210 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 220 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -190,6 +190,16 @@
 - `plugins/manifest-reference` — [Plugin manifest reference](pages/plugins/manifest-reference.md) · [原文](https://code.claude.com/docs/en/plugins/manifest-reference)
 - `plugins/marketplace-reference` — [Marketplace reference](pages/plugins/marketplace-reference.md) · [原文](https://code.claude.com/docs/en/plugins/marketplace-reference)
 - `plugins/measure` — [Measure plugin cost and usage](pages/plugins/measure.md) · [原文](https://code.claude.com/docs/en/plugins/measure)
+- `plugins/mods/admin` — [Manage mods for your organization](pages/plugins/mods/admin.md) · [原文](https://code.claude.com/docs/en/plugins/mods/admin)
+- `plugins/mods/api` — [Use the mods API](pages/plugins/mods/api.md) · [原文](https://code.claude.com/docs/en/plugins/mods/api)
+- `plugins/mods/create` — [Create a mod](pages/plugins/mods/create.md) · [原文](https://code.claude.com/docs/en/plugins/mods/create)
+- `plugins/mods/events` — [React to events with a mod](pages/plugins/mods/events.md) · [原文](https://code.claude.com/docs/en/plugins/mods/events)
+- `plugins/mods/gallery` — [Interface gallery for mods](pages/plugins/mods/gallery.md) · [原文](https://code.claude.com/docs/en/plugins/mods/gallery)
+- `plugins/mods/interface` — [Draw in the interface with a mod](pages/plugins/mods/interface.md) · [原文](https://code.claude.com/docs/en/plugins/mods/interface)
+- `plugins/mods/overview` — [Mods overview](pages/plugins/mods/overview.md) · [原文](https://code.claude.com/docs/en/plugins/mods/overview)
+- `plugins/mods/reference` — [Mods reference](pages/plugins/mods/reference.md) · [原文](https://code.claude.com/docs/en/plugins/mods/reference)
+- `plugins/mods/test` — [Test a mod](pages/plugins/mods/test.md) · [原文](https://code.claude.com/docs/en/plugins/mods/test)
+- `plugins/mods/troubleshoot` — [Troubleshoot a mod](pages/plugins/mods/troubleshoot.md) · [原文](https://code.claude.com/docs/en/plugins/mods/troubleshoot)
 - `plugins/org` — [Manage Claude Code plugins for your organization](pages/plugins/org.md) · [原文](https://code.claude.com/docs/en/plugins/org)
 - `plugins/overview` — [Plugins overview](pages/plugins/overview.md) · [原文](https://code.claude.com/docs/en/plugins/overview)
 - `plugins/publish` — [Publish and distribute a plugin](pages/plugins/publish.md) · [原文](https://code.claude.com/docs/en/plugins/publish)

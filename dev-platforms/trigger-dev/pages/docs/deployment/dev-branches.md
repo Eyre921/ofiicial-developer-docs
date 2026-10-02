@@ -79,10 +79,10 @@ You can also create and archive branches from the **Dev branches** page in the d
 
 Each branch has its own concurrency, so we limit how many can be active per project. Archive a branch at any time to unlock another slot.
 
-| Plan  | Active dev branches |
-| ----- | ------------------- |
-| Free  | 25                  |
-| Hobby | 25                  |
-| Pro   | 25                  |
+| Plan | Active dev branches |
+| - | - |
+| Free | 25 |
+| Hobby | 25 |
+| Pro | 25 |
 
 Need more? [Get in touch](https://trigger.dev/contact) and we'll raise the limit.

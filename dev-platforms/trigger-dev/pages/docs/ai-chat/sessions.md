@@ -108,24 +108,24 @@ const { id, runId, publicAccessToken, isCached } = await sessions.start({
 });
 ```
 
-| Field            | Type                       | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| ---------------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `type`           | `string`                   | Free-form discriminator. `chat.agent` uses `"chat.agent"`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| `externalId`     | `string?`                  | Your stable identity. Cannot start with `session_` (reserved).                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `taskIdentifier` | `string`                   | Task this session triggers runs against.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| `triggerConfig`  | `SessionTriggerConfig`     | Trigger options applied to every run: `tags` (up to 10, same as [run tags](/docs/tags); the chat helpers such as `chat.createStartSessionAction` and `AgentChat` add a `chat:{chatId}` tag themselves, which uses one slot. Direct `sessions.start` callers get all 10 and must add any chat tag themselves), `queue`, `machine`, `maxAttempts`, `maxDuration`, `region`, `idleTimeoutInSeconds`, `basePayload`, and the version pins `lockToVersion` / [`externalDeploymentId`](/docs/deployment/version-skew-protection#chat-sessions). |
-| `tags`           | `string[]?`                | Up to 10 tags on the Session row (separate from `triggerConfig.tags`).                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `metadata`       | `Record<string, unknown>?` | Arbitrary JSON.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-| `expiresAt`      | `Date?`                    | Hard retention deadline.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| Field | Type | Notes |
+| - | - | - |
+| `type` | `string` | Free-form discriminator. `chat.agent` uses `"chat.agent"`. |
+| `externalId` | `string?` | Your stable identity. Cannot start with `session_` (reserved). |
+| `taskIdentifier` | `string` | Task this session triggers runs against. |
+| `triggerConfig` | `SessionTriggerConfig` | Trigger options applied to every run: `tags` (up to 10, same as [run tags](/docs/tags); the chat helpers such as `chat.createStartSessionAction` and `AgentChat` add a `chat:{chatId}` tag themselves, which uses one slot. Direct `sessions.start` callers get all 10 and must add any chat tag themselves), `queue`, `machine`, `maxAttempts`, `maxDuration`, `region`, `idleTimeoutInSeconds`, `basePayload`, and the version pins `lockToVersion` / [`externalDeploymentId`](/docs/deployment/atomic-deployment#chat-sessions). |
+| `tags` | `string[]?` | Up to 10 tags on the Session row (separate from `triggerConfig.tags`). |
+| `metadata` | `Record<string, unknown>?` | Arbitrary JSON. |
+| `expiresAt` | `Date?` | Hard retention deadline. |
 
 Returns `CreatedSessionResponseBody`:
 
-| Field               | Type      | Notes                                                            |
-| ------------------- | --------- | ---------------------------------------------------------------- |
-| `id`                | `string`  | Server-assigned `session_*` friendlyId.                          |
-| `runId`             | `string`  | The first run created alongside the session.                     |
-| `publicAccessToken` | `string`  | Session-scoped PAT (`read:sessions:{id} + write:sessions:{id}`). |
-| `isCached`          | `boolean` | `true` if the session already existed (idempotent upsert).       |
+| Field | Type | Notes |
+| - | - | - |
+| `id` | `string` | Server-assigned `session_*` friendlyId. |
+| `runId` | `string` | The first run created alongside the session. |
+| `publicAccessToken` | `string` | Session-scoped PAT (`read:sessions:{id} + write:sessions:{id}`). |
+| `isCached` | `boolean` | `true` if the session already existed (idempotent upsert). |
 
 ### `sessions.retrieve(idOrExternalId, requestOptions?)`
 
@@ -167,15 +167,15 @@ for await (const s of sessions.list({
 }
 ```
 
-| Filter                       | Type                                | Notes                                   |
-| ---------------------------- | ----------------------------------- | --------------------------------------- |
-| `type`                       | `string \| string[]`                | e.g. `"chat.agent"`                     |
-| `tag`                        | `string \| string[]`                | Matches `triggerConfig.tags`            |
-| `taskIdentifier`             | `string \| string[]`                | Filter by task                          |
-| `externalId`                 | `string`                            | Exact match                             |
-| `status`                     | `"ACTIVE" \| "CLOSED" \| "EXPIRED"` | Lifecycle state                         |
-| `period` / `from` / `to`     | window                              | Time-range filter                       |
-| `limit` / `after` / `before` | cursor                              | Pagination (1–100 per page; default 20) |
+| Filter | Type | Notes |
+| - | - | - |
+| `type` | `string \| string[]` | e.g. `"chat.agent"` |
+| `tag` | `string \| string[]` | Matches `triggerConfig.tags` |
+| `taskIdentifier` | `string \| string[]` | Filter by task |
+| `externalId` | `string` | Exact match |
+| `status` | `"ACTIVE" \| "CLOSED" \| "EXPIRED"` | Lifecycle state |
+| `period` / `from` / `to` | window | Time-range filter |
+| `limit` / `after` / `before` | cursor | Pagination (1–100 per page; default 20) |
 
 ### `sessions.open(idOrExternalId)`
 

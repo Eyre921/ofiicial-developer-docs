@@ -12,7 +12,7 @@ Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upser
 
 ## Requirements
 
-The Pinecone Node SDK requires TypeScript 4.1 or later and Node 18.x or later.
+The Pinecone Node.js SDK requires Node.js 22 or later. Its type declarations support TypeScript 5.2 to 7.x.
 
 ## SDK versions
 
@@ -48,6 +48,20 @@ npm list | grep @pinecone-database/pinecone
 ```
 
 ## Upgrade
+
+`v9.0.0` targets API version `2026-07`. To stay on API version `2026-04`, keep using `v8`. The flat control methods, such as `pc.createIndex` and `pc.configureIndex`, still work in `v9` but are deprecated in favor of resource clients such as `pc.indexes`.
+
+<Warning>
+  Before upgrading to `v9.0.0`, update all relevant code to account for the following breaking changes. See the [v9 migration guide](https://github.com/pinecone-io/pinecone-ts-client/blob/main/guides/upgrading/v9-migration.md) for before-and-after examples.
+
+  * Node.js 22 or later is required.
+  * `pc.preview` and the `Preview*` exports are removed. Document operations move to `index.documents`, where `index` comes from `pc.index({ name, namespace })` or `pc.index(name).namespace(namespace)`. Control operations move to resource clients such as `pc.indexes`.
+  * Pod-based index creation, legacy metadata-indexing schemas, and the `sourceCollection` and `sourceBackupId` creation options are rejected. Existing pod-based indexes keep working. To restore from a backup, use `pc.backups.createIndex(backupId, options)`.
+  * A top-level `embed` option when configuring an index is rejected. Update the semantic field through a `schema.fields` patch instead.
+  * Legacy index response properties such as `dimension`, `metric`, and `spec` are compatibility getters derived from `schema` and `deployment`. They are omitted when a response is spread or serialized, and can throw `Errors.PineconeIndexPropertyError` when there is no legacy equivalent.
+  * `NamespaceDescription.recordCount` and `sizeBytes` are now decimal strings, and `BackupModel.createdAt` is now a `Date`.
+  * Some generated type names are renamed or removed. For example, `BackupPaginationResponse` is now `BackupListPagination`.
+</Warning>
 
 If you already have the Node.js SDK, upgrade to the latest version as follows:
 

@@ -14,11 +14,11 @@ Every report reads a live window of your project's data and returns a headline v
 
 The report splits a project into three dimensions, each with its own verdict:
 
-| Dimension     | Question                            | What a bad verdict means                                                                        |
-| ------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------- |
-| **Flow**      | Is work starting?                   | Runs are queuing but not being picked up — a concurrency limit, a throttle, or a trigger spike. |
-| **Execution** | Are the runs that start succeeding? | Runs are failing or slowing more than your baseline — usually your code.                        |
-| **Liveness**  | Is the telemetry fresh?             | The data behind the report is stale, so the verdict can't be trusted.                           |
+| Dimension | Question | What a bad verdict means |
+| - | - | - |
+| **Flow** | Is work starting? | Runs are queuing but not being picked up — a concurrency limit, a throttle, or a trigger spike. |
+| **Execution** | Are the runs that start succeeding? | Runs are failing or slowing more than your baseline — usually your code. |
+| **Liveness** | Is the telemetry fresh? | The data behind the report is stale, so the verdict can't be trusted. |
 
 Splitting Flow from Execution is the point: a project can be failing to *start* work (Flow) while every run that does start *completes* fine (Execution), or the reverse. The report names which one, so you know whether to look at your concurrency settings or your task code.
 
@@ -64,14 +64,14 @@ The verdict reads top to bottom:
 
 Every surface carries meaning in glyphs, never color alone, so the report is legible in a monochrome terminal or a plain-text MCP host:
 
-| Glyph       | Meaning                                     |
-| ----------- | ------------------------------------------- |
-| `✓`         | Healthy                                     |
-| `⚠`         | Degraded                                    |
-| `✕`         | Failing                                     |
-| `○`         | Genuinely unknown — neither good nor bad    |
-| `⚑`         | The data behind the report can't be trusted |
-| `↑` `↓` `→` | Above, below, or flat against the baseline  |
+| Glyph | Meaning |
+| - | - |
+| `✓` | Healthy |
+| `⚠` | Degraded |
+| `✕` | Failing |
+| `○` | Genuinely unknown — neither good nor bad |
+| `⚑` | The data behind the report can't be trusted |
+| `↑` `↓` `→` | Above, below, or flat against the baseline |
 
 <Note>
   The markdown surface swaps the status glyphs for traffic-light emoji (`🟢` `🟡` `🔴` `⚪` `🚩`) — the one color cue a chat host that renders neither ANSI nor HTML can show. The glyph and the emoji mean the same thing.
@@ -89,14 +89,14 @@ Print an interpreted report for an environment. The command defaults to the `hea
 npx trigger.dev@latest report health --env prod --period 24h
 ```
 
-| Flag                | Default     | Description                                                               |
-| ------------------- | ----------- | ------------------------------------------------------------------------- |
-| `[key]`             | `health`    | The report to render (positional argument).                               |
-| `-e, --env`         | `prod`      | The environment: `dev`, `staging`, `prod`, or `preview`.                  |
-| `-b, --branch`      | —           | The preview branch. Required when `--env preview`.                        |
-| `--period`          | `1h`        | The live window: `30m`, `1h`, `24h`, `7d`. Minutes to weeks, max 90 days. |
-| `-p, --project-ref` | from config | The project ref (`proj_…`). Required if there is no `trigger.config.ts`.  |
-| `-c, --config`      | —           | Path to the config file.                                                  |
+| Flag | Default | Description |
+| - | - | - |
+| `[key]` | `health` | The report to render (positional argument). |
+| `-e, --env` | `prod` | The environment: `dev`, `staging`, `prod`, or `preview`. |
+| `-b, --branch` | — | The preview branch. Required when `--env preview`. |
+| `--period` | `1h` | The live window: `30m`, `1h`, `24h`, `7d`. Minutes to weeks, max 90 days. |
+| `-p, --project-ref` | from config | The project ref (`proj_…`). Required if there is no `trigger.config.ts`. |
+| `-c, --config` | — | Path to the config file. |
 
 The command prints only the report — no banner — so it pipes cleanly. Output is ANSI-colored in a real terminal and plain markdown when piped:
 
@@ -110,14 +110,14 @@ Color follows the [supports-color](https://github.com/chalk/supports-color) conv
 
 Fetch the report from an AI coding tool through the [Trigger.dev MCP server](/docs/mcp-introduction). The tool returns plain markdown by default, or ANSI when `color` is set (for hosts that display escapes in tool output). It is read-only.
 
-| Parameter     | Default       | Description                                                                                                                                             |
-| ------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `key`         | —             | The report to render. Currently only `health`.                                                                                                          |
-| `environment` | `dev`         | The environment. The MCP server is dev-centric, so an unspecified environment reports on `dev` — pass `environment` explicitly to report on production. |
-| `period`      | `1h`          | Time window shorthand, e.g. `1h`, `24h`, `7d`.                                                                                                          |
-| `color`       | `false`       | Return ANSI-colored text instead of markdown.                                                                                                           |
-| `projectRef`  | auto-detected | The project ref. Detected from `trigger.config.ts` if present.                                                                                          |
-| `branch`      | —             | The preview branch, for preview or branchable dev environments.                                                                                         |
+| Parameter | Default | Description |
+| - | - | - |
+| `key` | — | The report to render. Currently only `health`. |
+| `environment` | `dev` | The environment. The MCP server is dev-centric, so an unspecified environment reports on `dev` — pass `environment` explicitly to report on production. |
+| `period` | `1h` | Time window shorthand, e.g. `1h`, `24h`, `7d`. |
+| `color` | `false` | Return ANSI-colored text instead of markdown. |
+| `projectRef` | auto-detected | The project ref. Detected from `trigger.config.ts` if present. |
+| `branch` | — | The preview branch, for preview or branchable dev environments. |
 
 ### MCP prompt: `/report`
 
@@ -127,10 +127,10 @@ The MCP server also registers a `report` prompt, which hosts that support MCP pr
 
 The endpoint behind every surface. It accepts a `period` and a `format`, and authenticates with a token scoped to read the report's query tables (`read:query`).
 
-| Query param | Default    | Description                               |
-| ----------- | ---------- | ----------------------------------------- |
-| `period`    | `1h`       | The live window, same grammar as the CLI. |
-| `format`    | `markdown` | `markdown`, `ansi`, or `json`.            |
+| Query param | Default | Description |
+| - | - | - |
+| `period` | `1h` | The live window, same grammar as the CLI. |
+| `format` | `markdown` | `markdown`, `ansi`, or `json`. |
 
 `format=markdown` and `format=ansi` return the rendered text. `format=json` returns the `ReportViewModel` — the semantic payload behind the render, where verdicts are codes rather than prose, for building your own surface on top of the report.
 
@@ -152,7 +152,7 @@ An unknown report key returns `404` with the list of available keys.
     Every tool the MCP server exposes, including `get_report`.
   </Card>
 
-  <Card title="Concurrency & queues" icon="layer-group" href="/docs/queue-concurrency">
+  <Card title="Concurrency" icon="layer-group" href="/docs/concurrency">
     Configure the concurrency limits the Flow verdict checks against.
   </Card>
 

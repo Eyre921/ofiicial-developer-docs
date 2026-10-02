@@ -19,6 +19,7 @@ Sentry does not make any guarantees about the functionality or availability of t
 To build and publish your own, see the [Integration Platform docs](https://docs.sentry.io/integrations/integration-platform.md).
 
 * [Aether](https://docs.runaether.dev/introduction)
+* [Aldena](https://aldena.ai/integrations/sentry)
 * [Application Platform](https://www.application-platform.com/en/docs/)
 * [Applied Edge](https://appliededge.com/)
 * [Arg0](https://www.arg0.app/en/integrations)
@@ -53,6 +54,7 @@ To build and publish your own, see the [Integration Platform docs](https://docs.
 * [Ratchet](https://ratchet.foundersbridge.org/docs/getting-started)
 * [ReleaseTag](https://docs.releasetag.com/)
 * [Shiprail](https://www.shiprail.ai/)
+* [Shipfox](https://www.shipfox.io/docs)
 * [Sonarly](https://docs.sonarly.com/integrations/sentry)
 * [SpecSource](https://www.specsource.ai/docs/connectors/sentry)
 * [StackStitch](https://stackstitch.dev/sentry.html)

@@ -14,22 +14,47 @@ Query allows you to write custom queries against your data using TRQL (Trigger.d
 
 ### `metrics` table columns
 
-| Column             | Type     | Description                                         |
-| :----------------- | :------- | :-------------------------------------------------- |
-| `metric_name`      | string   | Metric identifier (e.g., `process.cpu.utilization`) |
-| `metric_type`      | string   | `gauge`, `sum`, or `histogram`                      |
-| `metric_value`     | number   | The observed value                                  |
-| `bucket_start`     | datetime | 10-second aggregation bucket start time             |
-| `run_id`           | string   | Associated run ID                                   |
-| `task_identifier`  | string   | Task slug                                           |
-| `attempt_number`   | number   | Attempt number                                      |
-| `machine_id`       | string   | Machine that produced the metric                    |
-| `machine_name`     | string   | Machine preset (e.g., `small-1x`)                   |
-| `worker_version`   | string   | Worker version                                      |
-| `environment_type` | string   | `PRODUCTION`, `STAGING`, `DEVELOPMENT`, `PREVIEW`   |
-| `attributes`       | json     | Raw JSON attributes for custom data                 |
+| Column | Type | Description |
+| :- | :- | :- |
+| `metric_name` | string | Metric identifier (e.g., `process.cpu.utilization`) |
+| `metric_type` | string | `gauge`, `sum`, or `histogram` |
+| `metric_value` | number | The observed value |
+| `bucket_start` | datetime | 10-second aggregation bucket start time |
+| `run_id` | string | Associated run ID |
+| `task_identifier` | string | Task slug |
+| `attempt_number` | number | Attempt number |
+| `machine_id` | string | Machine that produced the metric |
+| `machine_name` | string | Machine preset (e.g., `small-1x`) |
+| `worker_version` | string | Worker version |
+| `environment_type` | string | `PRODUCTION`, `STAGING`, `DEVELOPMENT`, `PREVIEW` |
+| `attributes` | json | Raw JSON attributes for custom data |
 
 See [Logging, tracing & metrics](/docs/logging#automatic-system-and-runtime-metrics) for the full list of automatically collected metrics and how to create custom metrics. You can visualize this data on [Dashboards](/docs/observability/dashboards).
+
+#### API rate limit metrics
+
+The `metrics` table also records how the API rate limiter treated requests made with your environment's secret API key, per environment and per `bucket_start` bucket:
+
+* `api.rate_limit.allowed` (`sum`): requests that passed the rate limiter
+* `api.rate_limit.denied` (`sum`): requests rejected with a 429
+* `api.rate_limit.remaining_min` (`gauge`): the lowest remaining token count seen in the bucket
+* `api.rate_limit.limit.per_second` (`gauge`): the sustained rate your limit refills at, in requests per second
+* `api.rate_limit.limit.burst` (`gauge`): the most requests the limit admits at once
+
+These rows have no run, task, or machine attributes (`run_id`, `task_identifier`, `machine_id` and so on are empty). Sum the counters over time, take `min()` of `api.rate_limit.remaining_min` and `max()` of the limit gauges. Total attempts in a bucket are `allowed + denied`. To draw the sustained limit for a bucket, multiply `api.rate_limit.limit.per_second` by that bucket's width in seconds; `timeBucket()` picks its width from the query's time range, so use a fixed `toStartOfMinute(bucket_start)` grouping when you want a known width (recording buckets never straddle a minute, so this grouping never splits a bucket; the example assumes a bucket width of at most one minute, which includes the default 10 seconds, and with a wider width you would group by that width and multiply by it instead). The limit gauges only exist in buckets that saw requests, and they follow any change to your limit, so a chart stays correct after an increase. Requests from preview branches share the parent preview environment's rate limit bucket and are recorded against that environment, so query at project scope to see them. Self-hosted instances enable recording with `API_RATE_LIMIT_METRICS_ENABLED=1`, or `allowlist` to record only organizations with the `apiRateLimitMetricsEnabled` feature flag.
+
+```sql theme={"theme":"css-variables"}
+SELECT
+  toStartOfMinute(bucket_start) AS minute,
+  sumIf(metric_value, metric_name IN ('api.rate_limit.allowed', 'api.rate_limit.denied')) AS attempts,
+  sumIf(metric_value, metric_name = 'api.rate_limit.denied') AS denied,
+  maxIf(metric_value, metric_name = 'api.rate_limit.limit.per_second') * 60 AS limit_per_minute
+FROM metrics
+WHERE metric_name LIKE 'api.rate_limit.%'
+GROUP BY minute
+ORDER BY minute
+LIMIT 1000
+```
 
 ### `prettyFormat()`
 

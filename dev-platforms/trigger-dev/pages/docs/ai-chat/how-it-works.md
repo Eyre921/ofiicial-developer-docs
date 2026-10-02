@@ -140,13 +140,13 @@ Unlike the other two layers, this one is client-side. The server doesn't even ne
 
 ### Which layer covers which failure mode
 
-| What happened                                               | Recovery layer                           | Same run?                   | In-memory state preserved? |
-| ----------------------------------------------------------- | ---------------------------------------- | --------------------------- | -------------------------- |
-| Idle gap mid-conversation (suspend → resume)                | Engine checkpoint                        | Yes                         | Yes                        |
-| Run exited cleanly (`endRun`, `requestUpgrade`, `maxTurns`) | Chat snapshot                            | No (fresh continuation run) | No                         |
-| Run crashed mid-turn (OOM, exception)                       | Chat snapshot + `.out` tail replay       | (retried as a new attempt)  | No                         |
-| Browser tab reloaded mid-stream                             | `lastEventId` cursor on `.out`           | (run unaffected)            | (n/a)                      |
-| Deploy rolled out a new version mid-chat                    | Chat snapshot, via `requestUpgrade` flow | No                          | No                         |
+| What happened | Recovery layer | Same run? | In-memory state preserved? |
+| - | - | - | - |
+| Idle gap mid-conversation (suspend → resume) | Engine checkpoint | Yes | Yes |
+| Run exited cleanly (`endRun`, `requestUpgrade`, `maxTurns`) | Chat snapshot | No (fresh continuation run) | No |
+| Run crashed mid-turn (OOM, exception) | Chat snapshot + `.out` tail replay | (retried as a new attempt) | No |
+| Browser tab reloaded mid-stream | `lastEventId` cursor on `.out` | (run unaffected) | (n/a) |
+| Deploy rolled out a new version mid-chat | Chat snapshot, via `requestUpgrade` flow | No | No |
 
 No single layer covers every case. The engine checkpoint alone can't survive a run exit (there's nothing to restore). The chat snapshot alone can't survive a tab refresh mid-turn (chunks already streamed would be lost). The `lastEventId` cursor alone can't bridge run boundaries (the new run wouldn't know the history). Together they cover every realistic failure.
 
@@ -164,17 +164,17 @@ All three look identical to the browser. Only the agent task knows which path it
 
 ## Lifecycle hooks: where you plug in
 
-| Hook                             | When it fires                                                                   | Typical use                                     |
-| -------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `onBoot`                         | Once per worker process, before any chat work                                   | Initialize `chat.local` resources               |
-| `onPreload`                      | Once per chat lifetime, if the chat was preloaded before the first message      | Warm caches, fetch the user's profile           |
-| `onChatStart`                    | Once per chat lifetime, on the first turn of a fresh chat (not on continuation) | First-message persistence, system-prompt setup  |
-| `onValidateMessages`             | Every turn, before merging the incoming message                                 | Reject or transform user input                  |
-| `hydrateMessages`                | Every turn, instead of snapshot+replay                                          | Use your DB as the source of truth              |
-| `onTurnStart`                    | Every turn, before `run()`                                                      | Compact history, persist the user message       |
-| `onBeforeTurnComplete`           | Every turn, after streaming, before the turn-complete record                    | Emit a final custom chunk                       |
-| `onTurnComplete`                 | Every turn, after the turn-complete record is written                           | Persist the assistant message and `lastEventId` |
-| `onChatSuspend` / `onChatResume` | At the idle → suspend / suspend → wake transitions                              | Release/reacquire expensive resources           |
+| Hook | When it fires | Typical use |
+| - | - | - |
+| `onBoot` | Once per worker process, before any chat work | Initialize `chat.local` resources |
+| `onPreload` | Once per chat lifetime, if the chat was preloaded before the first message | Warm caches, fetch the user's profile |
+| `onChatStart` | Once per chat lifetime, on the first turn of a fresh chat (not on continuation) | First-message persistence, system-prompt setup |
+| `onValidateMessages` | Every turn, before merging the incoming message | Reject or transform user input |
+| `hydrateMessages` | Every turn, instead of snapshot+replay | Use your DB as the source of truth |
+| `onTurnStart` | Every turn, before `run()` | Compact history, persist the user message |
+| `onBeforeTurnComplete` | Every turn, after streaming, before the turn-complete record | Emit a final custom chunk |
+| `onTurnComplete` | Every turn, after the turn-complete record is written | Persist the assistant message and `lastEventId` |
+| `onChatSuspend` / `onChatResume` | At the idle → suspend / suspend → wake transitions | Release/reacquire expensive resources |
 
 See [Lifecycle hooks](/docs/ai-chat/lifecycle-hooks) for the full signatures and firing order.
 

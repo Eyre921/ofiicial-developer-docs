@@ -10,10 +10,10 @@ Subscribe to run progress, stream AI output, and react to task status changes fr
 
 ## What's available
 
-| Category        | What it does                                                   | Guide                                           |
-| --------------- | -------------------------------------------------------------- | ----------------------------------------------- |
-| **Run updates** | Subscribe to run status, metadata, and tag changes             | [Run updates](/docs/realtime/backend/subscribe) |
-| **Streaming**   | Read AI output, file chunks, or any continuous data from tasks | [Streaming](/docs/realtime/backend/streams)     |
+| Category | What it does | Guide |
+| - | - | - |
+| **Run updates** | Subscribe to run status, metadata, and tag changes | [Run updates](/docs/realtime/backend/subscribe) |
+| **Streaming** | Read AI output, file chunks, or any continuous data from tasks | [Streaming](/docs/realtime/backend/streams) |
 
 <Note>
   To learn how to emit streams from your tasks, see [Streaming data from tasks](/docs/tasks/streams).

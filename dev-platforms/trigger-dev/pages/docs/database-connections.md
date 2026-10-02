@@ -62,23 +62,23 @@ A run uses connections only while it is actively executing. Queued, waiting, and
 
 Set the pool small. A task usually runs its queries in sequence, so one connection per run (`max: 1`) is enough for node-postgres, Prisma, and Drizzle; raise it only when a single run issues queries in parallel. The MongoDB driver shares one pool across all operations, so keep `maxPoolSize` in the low single digits. Each client's out-of-the-box default is far larger:
 
-| Client                                                                                                                                  | Default pool size               |
-| --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-| [node-postgres (`pg`)](https://node-postgres.com/guides/pool-sizing)                                                                    | 10                              |
-| postgres-js                                                                                                                             | 10                              |
+| Client | Default pool size |
+| - | - |
+| [node-postgres (`pg`)](https://node-postgres.com/guides/pool-sizing) | 10 |
+| postgres-js | 10 |
 | [Prisma (v7, `pg` adapter)](https://www.prisma.io/docs/orm/prisma-client/setup-and-configuration/databases-connections/connection-pool) | 10 (the adapter's `pg` default) |
-| Drizzle (node-postgres)                                                                                                                 | 10 (the underlying `pg` pool)   |
-| [MongoDB driver](https://www.mongodb.com/docs/drivers/node/current/connect/connection-options/connection-pools/)                        | 100 (`maxPoolSize`)             |
+| Drizzle (node-postgres) | 10 (the underlying `pg` pool) |
+| [MongoDB driver](https://www.mongodb.com/docs/drivers/node/current/connect/connection-options/connection-pools/) | 100 (`maxPoolSize`) |
 
-Keep `concurrent runs × pool size` under your provider's connection limit, and cap how many runs execute at once with [concurrency limits](/docs/queue-concurrency) so runs queue instead of overrunning the database. Direct connection limits for common Postgres providers:
+Keep `concurrent runs × pool size` under your provider's connection limit, and cap how many runs execute at once with [concurrency limits](/docs/concurrency) so runs queue instead of overrunning the database. Direct connection limits for common Postgres providers:
 
-| Provider                                                                                           | Direct connection limit                                                     |
-| -------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| [PostgreSQL (self-hosted)](https://www.postgresql.org/docs/current/runtime-config-connection.html) | `max_connections`, default `100`                                            |
-| [Supabase](https://supabase.com/docs/guides/platform/compute-and-disk)                             | `60` (Nano/Micro) up to `500` (16XL), by compute size                       |
-| [Neon](https://neon.com/docs/connect/connection-pooling)                                           | `104` (0.25 CU) up to `4000` (capped at 9 CU and above), by compute size    |
-| [AWS RDS / Aurora](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html)        | `LEAST(DBInstanceClassMemory / 9531392, 5000)`, \~5 reserved for superusers |
-| [PlanetScale Postgres](https://planetscale.com/docs/postgres/connecting)                           | set per cluster size (Cluster, then Parameters, then `max_connections`)     |
+| Provider | Direct connection limit |
+| - | - |
+| [PostgreSQL (self-hosted)](https://www.postgresql.org/docs/current/runtime-config-connection.html) | `max_connections`, default `100` |
+| [Supabase](https://supabase.com/docs/guides/platform/compute-and-disk) | `60` (Nano/Micro) up to `500` (16XL), by compute size |
+| [Neon](https://neon.com/docs/connect/connection-pooling) | `104` (0.25 CU) up to `4000` (capped at 9 CU and above), by compute size |
+| [AWS RDS / Aurora](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_Limits.html) | `LEAST(DBInstanceClassMemory / 9531392, 5000)`, \~5 reserved for superusers |
+| [PlanetScale Postgres](https://planetscale.com/docs/postgres/connecting) | set per cluster size (Cluster, then Parameters, then `max_connections`) |
 
 [MongoDB Atlas](https://www.mongodb.com/docs/atlas/reference/atlas-limits/) limits connections per node: `500` on Free and Flex, `1500` on M10, `3000` on M20.
 
@@ -88,13 +88,13 @@ When `concurrent runs × pool size` approaches these numbers, connect through a 
 
 A pooler (PgBouncer, RDS Proxy, Supavisor, Prisma Accelerate) sits between your tasks and the database and multiplexes many client connections onto a few backend connections. Point your connection string at the pooler's endpoint and the ceiling rises without changing your code. Use one when many runs execute concurrently, and for chat agents.
 
-| Provider                                                                                         | Pooled endpoint                    | Pooled client limit                |
-| ------------------------------------------------------------------------------------------------ | ---------------------------------- | ---------------------------------- |
-| [Supabase Supavisor](https://supabase.com/docs/guides/database/connection-management)            | port `6543` (transaction mode)     | `200` (Nano) up to `12,000` (16XL) |
-| [Neon](https://neon.com/docs/connect/connection-pooling)                                         | add `-pooler` to the endpoint host | up to `10,000`                     |
-| [AWS RDS Proxy](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html)           | the proxy endpoint                 | managed                            |
-| [PlanetScale Postgres](https://planetscale.com/blog/scaling-postgres-connections-with-pgbouncer) | PgBouncer endpoint                 | managed                            |
-| Self-hosted                                                                                      | PgBouncer or PgCat                 | configured                         |
+| Provider | Pooled endpoint | Pooled client limit |
+| - | - | - |
+| [Supabase Supavisor](https://supabase.com/docs/guides/database/connection-management) | port `6543` (transaction mode) | `200` (Nano) up to `12,000` (16XL) |
+| [Neon](https://neon.com/docs/connect/connection-pooling) | add `-pooler` to the endpoint host | up to `10,000` |
+| [AWS RDS Proxy](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/rds-proxy.html) | the proxy endpoint | managed |
+| [PlanetScale Postgres](https://planetscale.com/blog/scaling-postgres-connections-with-pgbouncer) | PgBouncer endpoint | managed |
+| Self-hosted | PgBouncer or PgCat | configured |
 
 Use the pooled endpoint for your tasks. Use the direct endpoint for schema migrations (Prisma Migrate, Drizzle Kit), which need a stable session that a transaction pooler does not provide.
 
@@ -199,7 +199,7 @@ export const myChat = chat.agent({
 
 ## Troubleshooting
 
-`too many connections` or connection refused: `concurrent runs × pool size` is over your provider's limit. Lower the pool size, cap [concurrency](/docs/queue-concurrency), or connect through a pooler.
+`too many connections` or connection refused: `concurrent runs × pool size` is over your provider's limit. Lower the pool size, cap [concurrency](/docs/concurrency), or connect through a pooler.
 
 The worker crashes right after resuming from a wait: an idle connection that closed during the suspend emitted an unhandled `error` event. Attach `pool.on("error", ...)` on a `pg` pool (node-postgres or Drizzle); Prisma and the MongoDB driver handle this internally.
 
@@ -210,6 +210,6 @@ When a task waits, the runtime can [checkpoint](/docs/how-it-works#the-checkpoin
 ## See also
 
 * [Wait](/docs/wait) for the primitives that trigger a checkpoint.
-* [Concurrency and queues](/docs/queue-concurrency) to cap how many runs execute at once.
+* [Concurrency](/docs/concurrency) to cap how many runs execute at once.
 * [Lifecycle functions](/docs/tasks/overview#onwait-and-onresume-functions) for global `tasks.onWait` and `tasks.onResume`.
 * [Chat agent lifecycle hooks](/docs/ai-chat/lifecycle-hooks) for `onChatSuspend` and `onChatResume`.

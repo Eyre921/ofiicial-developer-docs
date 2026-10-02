@@ -138,11 +138,11 @@ The agent continues until it completes the task or reaches `maxTurns`.
 
 ### Permission modes
 
-| Mode                  | What it does                                          |
-| --------------------- | ----------------------------------------------------- |
-| `"default"`           | Asks for approval on potentially dangerous operations |
-| `"acceptEdits"`       | Auto-approves file operations, asks for bash/network  |
-| `"bypassPermissions"` | Skips all safety checks (not recommended)             |
+| Mode | What it does |
+| - | - |
+| `"default"` | Asks for approval on potentially dangerous operations |
+| `"acceptEdits"` | Auto-approves file operations, asks for bash/network |
+| `"bypassPermissions"` | Skips all safety checks (not recommended) |
 
 ### Available tools
 

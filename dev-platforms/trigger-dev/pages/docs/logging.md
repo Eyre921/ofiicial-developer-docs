@@ -40,10 +40,10 @@ Tracing is a way to follow the flow of your code. It's very useful for debugging
 
 Trigger.dev uses OpenTelemetry tracing under the hood. With automatic tracing for many things like task triggering, task attempts, HTTP requests, and more.
 
-| Name          | Description                      |
-| :------------ | :------------------------------- |
-| Task triggers | Task triggers                    |
-| Task attempts | Task attempts                    |
+| Name | Description |
+| :- | :- |
+| Task triggers | Task triggers |
+| Task attempts | Task attempts |
 | HTTP requests | HTTP requests made by your code. |
 
 ### Adding instrumentations
@@ -138,11 +138,11 @@ export const processQueue = task({
 
 #### Available instrument types
 
-| Instrument    | Method                        | Use case                                                         |
-| :------------ | :---------------------------- | :--------------------------------------------------------------- |
-| Counter       | `meter.createCounter()`       | Monotonically increasing values (items processed, requests sent) |
-| Histogram     | `meter.createHistogram()`     | Distributions of values (durations, sizes)                       |
-| UpDownCounter | `meter.createUpDownCounter()` | Values that go up and down (queue depth, active connections)     |
+| Instrument | Method | Use case |
+| :- | :- | :- |
+| Counter | `meter.createCounter()` | Monotonically increasing values (items processed, requests sent) |
+| Histogram | `meter.createHistogram()` | Distributions of values (durations, sizes) |
+| UpDownCounter | `meter.createUpDownCounter()` | Values that go up and down (queue depth, active connections) |
 
 All instruments accept optional attributes when recording values. Attributes let you break down metrics by dimension (e.g., by item type, status, or region).
 
@@ -150,16 +150,16 @@ All instruments accept optional attributes when recording values. Attributes let
 
 Trigger.dev automatically collects the following metrics for deployed tasks. No configuration is needed. Requires SDK version **4.4.1 or later**.
 
-| Metric name                     | Type    | Unit    | Description                  |
-| :------------------------------ | :------ | :------ | :--------------------------- |
-| `process.cpu.utilization`       | gauge   | ratio   | Process CPU usage (0-1)      |
-| `process.cpu.time`              | counter | seconds | CPU time consumed            |
-| `process.memory.usage`          | gauge   | bytes   | Process memory usage         |
-| `nodejs.event_loop.utilization` | gauge   | ratio   | Event loop utilization (0-1) |
-| `nodejs.event_loop.delay.p95`   | gauge   | seconds | Event loop delay p95         |
-| `nodejs.event_loop.delay.max`   | gauge   | seconds | Event loop delay max         |
-| `nodejs.heap.used`              | gauge   | bytes   | V8 heap used                 |
-| `nodejs.heap.total`             | gauge   | bytes   | V8 heap total                |
+| Metric name | Type | Unit | Description |
+| :- | :- | :- | :- |
+| `process.cpu.utilization` | gauge | ratio | Process CPU usage (0-1) |
+| `process.cpu.time` | counter | seconds | CPU time consumed |
+| `process.memory.usage` | gauge | bytes | Process memory usage |
+| `nodejs.event_loop.utilization` | gauge | ratio | Event loop utilization (0-1) |
+| `nodejs.event_loop.delay.p95` | gauge | seconds | Event loop delay p95 |
+| `nodejs.event_loop.delay.max` | gauge | seconds | Event loop delay max |
+| `nodejs.heap.used` | gauge | bytes | V8 heap used |
+| `nodejs.heap.total` | gauge | bytes | V8 heap total |
 
 <Note>
   In dev mode (`trigger dev`), only `process.*` and custom metrics are available.

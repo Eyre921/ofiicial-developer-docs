@@ -33,12 +33,12 @@ Delayed runs are locked to the version that's active when they begin executing, 
 
 Trigger and wait functions version lock child task runs to the parent task run version. This ensures the results from child runs match what the parent task is expecting. If you don't wait then version locking doesn't apply.
 
-| Trigger function        | Parent task version | Child task version | isLocked |
-| ----------------------- | ------------------- | ------------------ | -------- |
-| `trigger()`             | `20240313.2`        | Latest             | No       |
-| `batchTrigger()`        | `20240313.2`        | Latest             | No       |
-| `triggerAndWait()`      | `20240313.2`        | `20240313.2`       | Yes      |
-| `batchTriggerAndWait()` | `20240313.2`        | `20240313.2`       | Yes      |
+| Trigger function | Parent task version | Child task version | isLocked |
+| - | - | - | - |
+| `trigger()` | `20240313.2` | Latest | No |
+| `batchTrigger()` | `20240313.2` | Latest | No |
+| `triggerAndWait()` | `20240313.2` | `20240313.2` | Yes |
+| `batchTriggerAndWait()` | `20240313.2` | `20240313.2` | Yes |
 
 ## Local development
 
@@ -50,7 +50,7 @@ So a task run will continue running on the version it was locked to. We do this 
 
 Every deployment creates a new version of all tasks for that environment.
 
-Because your application and your tasks deploy separately, a release of your app can briefly trigger tasks that belong to a different version. [Version skew protection](/docs/deployment/version-skew-protection) pins each run to the deployment built from the same commit, once your app sends the id it was deployed with.
+Because your application and your tasks deploy separately, a release of your app can briefly trigger tasks that belong to a different version. [Version skew protection](/docs/deployment/atomic-deployment) pins each run to the deployment built from the same commit, once your app sends the id it was deployed with.
 
 ## Retries and reattempts
 

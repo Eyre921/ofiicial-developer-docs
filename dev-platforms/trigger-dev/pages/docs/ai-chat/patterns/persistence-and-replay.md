@@ -198,14 +198,14 @@ For local development this is sometimes fine — you're not testing continuation
 
 ## Snapshot key & lifecycle
 
-| Field      | Value                                                                                    |
-| ---------- | ---------------------------------------------------------------------------------------- |
-| Bucket     | Whatever `OBJECT_STORE_BASE_URL` points to                                               |
-| Key prefix | `packets/{projectRef}/{envSlug}/` (server-prefixed)                                      |
-| Key suffix | `sessions/{sessionId}/snapshot.json`                                                     |
-| Final key  | `packets/{projectRef}/{envSlug}/sessions/{sessionId}/snapshot.json`                      |
-| Size       | Tens of KB typical, capped only by object-store limits                                   |
-| Cadence    | Overwritten after every successful `onTurnComplete`, and after a history-changing action |
+| Field | Value |
+| - | - |
+| Bucket | Whatever `OBJECT_STORE_BASE_URL` points to |
+| Key prefix | `packets/{projectRef}/{envSlug}/` (server-prefixed) |
+| Key suffix | `sessions/{sessionId}/snapshot.json` |
+| Final key | `packets/{projectRef}/{envSlug}/sessions/{sessionId}/snapshot.json` |
+| Size | Tens of KB typical, capped only by object-store limits |
+| Cadence | Overwritten after every successful `onTurnComplete`, and after a history-changing action |
 
 Snapshots accumulate per-session forever unless you set a lifecycle policy on the bucket. A 90-day expiry on `packets/*/sessions/*/snapshot.json` is a reasonable default if your chats don't typically resume after that window. Closed sessions are not auto-cleaned today.
 

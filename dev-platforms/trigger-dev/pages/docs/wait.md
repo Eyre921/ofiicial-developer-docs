@@ -15,9 +15,9 @@ When triggering and waiting for subtasks, the parent is checkpointed and while w
 
 Free compute isn't the same as freed concurrency: the concurrency slot is only released once we've snapshotted the machine and shut it down. For `wait.for` and `wait.until` that happens 60 seconds into the wait, so anything shorter stays `EXECUTING` and holds its slot for the whole wait.
 
-| Function                                                                   | What it does                                       |
-| :------------------------------------------------------------------------- | :------------------------------------------------- |
-| [wait.for()](/docs/wait-for)                                               | Waits for a specific period of time, e.g. 1 day.   |
-| [wait.until()](/docs/wait-until)                                           | Waits until the provided `Date`.                   |
-| [wait.forToken()](/docs/wait-for-token)                                    | Pauses runs until a token is completed.            |
+| Function | What it does |
+| :- | :- |
+| [wait.for()](/docs/wait-for) | Waits for a specific period of time, e.g. 1 day. |
+| [wait.until()](/docs/wait-until) | Waits until the provided `Date`. |
+| [wait.forToken()](/docs/wait-for-token) | Pauses runs until a token is completed. |
 | [inputStream.wait()](/docs/tasks/streams#wait--suspend-until-data-arrives) | Pauses runs until data arrives on an input stream. |

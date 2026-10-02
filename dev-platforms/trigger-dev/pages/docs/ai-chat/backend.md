@@ -8,15 +8,15 @@ Three approaches to building your chat backend — chat.agent(), session iterato
 
 There are three abstraction levels for a chat backend. All three speak the same wire protocol, so the [frontend transport](/docs/ai-chat/frontend) works unchanged whichever you pick.
 
-| Capability                            | `chat.agent()` | `chat.createSession()`                                                              | Raw primitives |
-| ------------------------------------- | -------------- | ----------------------------------------------------------------------------------- | -------------- |
-| Turn loop, stop signals, accumulation | Managed        | Managed                                                                             | You write it   |
-| Lifecycle hooks                       | Yes            | No — inline code per turn                                                           | No             |
-| Continuation recovery on new runs     | Automatic      | [Manual seeding](/docs/ai-chat/custom-agents#continuation-runs-and-history-seeding) | Manual seeding |
-| Compaction / steering                 | Built-in       | Built-in                                                                            | Manual         |
-| Head Start, actions, tool approvals   | Yes            | No                                                                                  | No             |
-| Custom stream conversion              | No             | Limited                                                                             | Full control   |
-| Agent dashboard visibility            | Yes            | Yes (via `customAgent`)                                                             | Yes            |
+| Capability | `chat.agent()` | `chat.createSession()` | Raw primitives |
+| - | - | - | - |
+| Turn loop, stop signals, accumulation | Managed | Managed | You write it |
+| Lifecycle hooks | Yes | No — inline code per turn | No |
+| Continuation recovery on new runs | Automatic | [Manual seeding](/docs/ai-chat/custom-agents#continuation-runs-and-history-seeding) | Manual seeding |
+| Compaction / steering | Built-in | Built-in | Manual |
+| Head Start, actions, tool approvals | Yes | No | No |
+| Custom stream conversion | No | Limited | Full control |
+| Agent dashboard visibility | Yes | Yes (via `customAgent`) | Yes |
 
 The raw-primitives column assumes [`chat.customAgent()`](/docs/ai-chat/custom-agents) as the wrapper, which is what makes the task visible to the agent dashboard.
 
@@ -77,11 +77,11 @@ Note the destructured `streamText`: it shadows the one imported from `ai` inside
 
 It differs from the spread in three ways, all of them about what happens when your options collide with the managed ones:
 
-| Option        | Spread                                                                                                            | Managed `streamText`                       |
-| ------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
-| `tools`       | Passing `tools` after the spread replaces the skill tools                                                         | Merged, so skill tools survive             |
+| Option | Spread | Managed `streamText` |
+| - | - | - |
+| `tools` | Passing `tools` after the spread replaces the skill tools | Merged, so skill tools survive |
 | `prepareStep` | Passing your own after the spread replaces the managed one, silently disabling steering, compaction and injection | Composed, yours runs after the managed one |
-| `system`      | Yours replaces the managed prompt and any injected instructions                                                   | Throws                                     |
+| `system` | Yours replaces the managed prompt and any injected instructions | Throws |
 
 `system` throws rather than merging because there is no shape that combines two system values on every supported AI SDK version: v5 rejects an array of blocks, and a structured block carries the provider options that make [prompt caching](/docs/ai-chat/prompt-caching) work, so concatenating discards the cache entry. Set a static prompt with [`chat.prompt.set()`](#using-prompts) and add per-turn context with [`chat.inject()`](/docs/ai-chat/background-injection).
 
@@ -190,12 +190,12 @@ await waitUntilComplete();
 
 `chat.stream` exposes the full stream API:
 
-| Method                                | Description                                |
-| ------------------------------------- | ------------------------------------------ |
-| `chat.stream.writer(options)`         | Write individual chunks via a callback     |
-| `chat.stream.pipe(stream, options?)`  | Pipe a `ReadableStream` or `AsyncIterable` |
-| `chat.stream.append(value, options?)` | Append raw data                            |
-| `chat.stream.read(runId, options?)`   | Read the stream by run ID                  |
+| Method | Description |
+| - | - |
+| `chat.stream.writer(options)` | Write individual chunks via a callback |
+| `chat.stream.pipe(stream, options?)` | Pipe a `ReadableStream` or `AsyncIterable` |
+| `chat.stream.append(value, options?)` | Append raw data |
+| `chat.stream.read(runId, options?)` | Read the stream by run ID |
 
 For piping streams from subtasks to the parent chat (via `target: "root"`), see the [Sub-agents pattern](/docs/ai-chat/patterns/sub-agents).
 
@@ -293,11 +293,11 @@ Calling `stop()` from `useChat` sends a stop signal to the running task via inpu
 
 The `run` function receives three abort signals:
 
-| Signal         | Fires when                                  | Use for                                                                |
-| -------------- | ------------------------------------------- | ---------------------------------------------------------------------- |
-| `signal`       | Stop **or** cancel                          | Pass to `streamText` — handles both cases. **Use this in most cases.** |
-| `stopSignal`   | Stop only (per-turn, reset each turn)       | Custom logic that should only run on user stop, not cancellation       |
-| `cancelSignal` | Run cancel, expire, or maxDuration exceeded | Cleanup that should only happen on full cancellation                   |
+| Signal | Fires when | Use for |
+| - | - | - |
+| `signal` | Stop **or** cancel | Pass to `streamText` — handles both cases. **Use this in most cases.** |
+| `stopSignal` | Stop only (per-turn, reset each turn) | Custom logic that should only run on user stop, not cancellation |
+| `cancelSignal` | Run cancel, expire, or maxDuration exceeded | Cleanup that should only happen on full cancellation |
 
 ```ts theme={"theme":"css-variables"}
 export const myChat = chat.agent({
@@ -509,26 +509,26 @@ Imperative API for reading and modifying the accumulated message history. Works 
 
 **Reads.** Synchronous against the current accumulator state.
 
-| Method                                        | Description                                                                                                                                                                         |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `chat.history.all()`                          | Returns a copy of the current accumulated UI messages.                                                                                                                              |
-| `chat.history.getChain()`                     | Same as `all()`. Use whichever name reads better in context.                                                                                                                        |
-| `chat.history.findMessage(messageId)`         | Returns the message with that id, or `undefined`.                                                                                                                                   |
-| `chat.history.getPendingToolCalls()`          | Tool calls on the most recent assistant message that are still in `input-available` state (waiting on `addToolOutput`).                                                             |
-| `chat.history.getResolvedToolCalls()`         | All tool calls in the chain in `output-available` or `output-error` state.                                                                                                          |
+| Method | Description |
+| - | - |
+| `chat.history.all()` | Returns a copy of the current accumulated UI messages. |
+| `chat.history.getChain()` | Same as `all()`. Use whichever name reads better in context. |
+| `chat.history.findMessage(messageId)` | Returns the message with that id, or `undefined`. |
+| `chat.history.getPendingToolCalls()` | Tool calls on the most recent assistant message that are still in `input-available` state (waiting on `addToolOutput`). |
+| `chat.history.getResolvedToolCalls()` | All tool calls in the chain in `output-available` or `output-error` state. |
 | `chat.history.extractNewToolResults(message)` | Tool results in `message` whose `toolCallId` is not already resolved in the chain. Most useful in `hydrateMessages` against an incoming wire message, before the runtime merges it. |
 
 Each pending and resolved entry is shaped `{ toolCallId, toolName, messageId }`. Each new-result entry is `{ toolCallId, toolName, output, errorText? }`, where `errorText` is set only for `output-error` parts.
 
 **Mutations.** Applied at lifecycle checkpoints (after hooks return). Multiple mutations in the same hook compose correctly.
 
-| Method                                     | Description                                            |
-| ------------------------------------------ | ------------------------------------------------------ |
-| `chat.history.set(messages)`               | Replace all messages. Same as `chat.setMessages()`.    |
-| `chat.history.remove(messageId)`           | Remove a specific message by ID.                       |
-| `chat.history.rollbackTo(messageId)`       | Keep messages up to and including the given ID (undo). |
-| `chat.history.replace(messageId, message)` | Replace a specific message by ID (edit).               |
-| `chat.history.slice(start, end?)`          | Keep only messages in the given range.                 |
+| Method | Description |
+| - | - |
+| `chat.history.set(messages)` | Replace all messages. Same as `chat.setMessages()`. |
+| `chat.history.remove(messageId)` | Remove a specific message by ID. |
+| `chat.history.rollbackTo(messageId)` | Keep messages up to and including the given ID (undo). |
+| `chat.history.replace(messageId, message)` | Replace a specific message by ID (edit). |
+| `chat.history.slice(start, end?)` | Keep only messages in the given range. |
 
 ```ts theme={"theme":"css-variables"}
 // Undo the last exchange in onAction
@@ -602,11 +602,11 @@ export const myChat = chat.agent({
 
 The `reason` field tells you why messages are being prepared:
 
-| Reason                 | Description                                       |
-| ---------------------- | ------------------------------------------------- |
-| `"run"`                | Messages being passed to `run()` for `streamText` |
-| `"compaction-rebuild"` | Rebuilding from a previous compaction summary     |
-| `"compaction-result"`  | Fresh compaction just produced these messages     |
+| Reason | Description |
+| - | - |
+| `"run"` | Messages being passed to `run()` for `streamText` |
+| `"compaction-rebuild"` | Rebuilding from a previous compaction summary |
+| `"compaction-result"` | Fresh compaction just produced these messages |
 
 ### Version upgrades
 
@@ -674,11 +674,11 @@ if (transport.sessionStatus(chatId) === "closed") {
 
 `chat.agent` stops at three levels, each with a different "what happens next".
 
-| Level   | Primitive                                                                                 | What stops                    | What happens next                                                     |
-| ------- | ----------------------------------------------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------- |
-| Turn    | `stopWhen`, or the [stop signal](/docs/ai-chat/backend#stop-generation) aborting `signal` | The current `streamText`      | The turn completes, the agent idles for the next message              |
-| Run     | `chat.endRun()`                                                                           | The current worker            | The next message on the same `chatId` starts a fresh continuation run |
-| Session | `chat.close()`                                                                            | The conversation, permanently | Nothing. Appends are refused with 409 and no run is triggered         |
+| Level | Primitive | What stops | What happens next |
+| - | - | - | - |
+| Turn | `stopWhen`, or the [stop signal](/docs/ai-chat/backend#stop-generation) aborting `signal` | The current `streamText` | The turn completes, the agent idles for the next message |
+| Run | `chat.endRun()` | The current worker | The next message on the same `chatId` starts a fresh continuation run |
+| Session | `chat.close()` | The conversation, permanently | Nothing. Appends are refused with 409 and no run is triggered |
 
 Reach for the narrowest level that does the job: a turn budget is a `stopWhen`, a finished one-shot answer is `chat.endRun()`, and an exhausted account or a signed-out user is `chat.close()`.
 

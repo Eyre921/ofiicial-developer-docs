@@ -75,7 +75,7 @@ The name of the preview branch matches the branch name of the pull request.
 
 ## Version skew protection
 
-Every deployment the GitHub integration creates is tagged with the commit SHA it was built from. That is the deploy half of [version skew protection](/docs/deployment/version-skew-protection) — you get it for free.
+Every deployment the GitHub integration creates is tagged with the commit SHA it was built from. That is the deploy half of [version skew protection](/docs/deployment/atomic-deployment) — you get it for free.
 
 To complete it, give your running application the same value. Unlike the Vercel integration, we have no access to wherever your app is hosted, so this half is yours to set:
 
@@ -83,7 +83,7 @@ To complete it, give your running application the same value. Unlike the Vercel 
 TRIGGER_EXTERNAL_DEPLOYMENT_ID=<the-commit-sha-this-release-was-built-from>
 ```
 
-If your host already exposes the commit SHA at runtime, set `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION=1` instead and the SDK will find it — see the [platform table](/docs/deployment/version-skew-protection#hosting-platforms).
+If your host already exposes the commit SHA at runtime, set `TRIGGER_AUTOMATIC_SKEW_VERSION_PROTECTION=1` instead and the SDK will find it — see the [platform table](/docs/deployment/atomic-deployment#hosting-platforms).
 
 ## Disconnecting a repository
 

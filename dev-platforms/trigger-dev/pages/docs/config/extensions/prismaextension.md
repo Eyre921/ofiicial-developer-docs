@@ -348,13 +348,13 @@ If you are using the [Trigger.dev Github integration](/docs/github-integration),
 
 ## Version compatibility matrix
 
-| Prisma version   | Recommended mode      | Notes                                        |
-| ---------------- | --------------------- | -------------------------------------------- |
-| \< 5.0           | Legacy                | Older Prisma versions                        |
-| 5.0 - 6.15       | Legacy                | Standard Prisma setup                        |
-| 6.7+             | Legacy                | Multi-file schema support                    |
-| 6.16+            | Engine-only or Modern | Modern mode requires `engineType = "client"` |
-| 6.20+ (7.0 beta) | Modern                | Prisma 7 with new architecture               |
+| Prisma version | Recommended mode | Notes |
+| - | - | - |
+| \< 5.0 | Legacy | Older Prisma versions |
+| 5.0 - 6.15 | Legacy | Standard Prisma setup |
+| 6.7+ | Legacy | Multi-file schema support |
+| 6.16+ | Engine-only or Modern | Modern mode requires `engineType = "client"` |
+| 6.20+ (7.0 beta) | Modern | Prisma 7 with new architecture |
 
 ***
 
@@ -411,12 +411,12 @@ prismaExtension({
 
 **When to use which:**
 
-| Use `schema` option          | Use `configFile` option           |
-| ---------------------------- | --------------------------------- |
-| Standard Prisma setup        | Using Prisma 6+ with config files |
-| Single or multi-file schemas | Preparing for Prisma 7            |
-| No `prisma.config.ts` file   | Centralized configuration needed  |
-| Simple setup                 | Want migrations path in config    |
+| Use `schema` option | Use `configFile` option |
+| - | - |
+| Standard Prisma setup | Using Prisma 6+ with config files |
+| Single or multi-file schemas | Preparing for Prisma 7 |
+| No `prisma.config.ts` file | Centralized configuration needed |
+| Simple setup | Want migrations path in config |
 
 ***
 

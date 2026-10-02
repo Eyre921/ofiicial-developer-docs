@@ -48,14 +48,14 @@ Respond to the customer's issue. Be concise and helpful.`,
 
 ### Options
 
-| Option        | Type               | Required | Description                                                         |
-| ------------- | ------------------ | -------- | ------------------------------------------------------------------- |
-| `id`          | `string`           | Yes      | Unique identifier (becomes the prompt slug)                         |
-| `description` | `string`           | No       | Shown in the dashboard                                              |
-| `model`       | `string`           | No       | Default model (e.g. `"gpt-4o"`, `"claude-sonnet-4-6"`)              |
-| `config`      | `object`           | No       | Default config (temperature, maxTokens, etc.)                       |
-| `variables`   | Zod/ArkType schema | No       | Schema for template variables (enables validation and dashboard UI) |
-| `content`     | `string`           | Yes      | The prompt template with `{{variable}}` placeholders                |
+| Option | Type | Required | Description |
+| - | - | - | - |
+| `id` | `string` | Yes | Unique identifier (becomes the prompt slug) |
+| `description` | `string` | No | Shown in the dashboard |
+| `model` | `string` | No | Default model (e.g. `"gpt-4o"`, `"claude-sonnet-4-6"`) |
+| `config` | `object` | No | Default config (temperature, maxTokens, etc.) |
+| `variables` | Zod/ArkType schema | No | Schema for template variables (enables validation and dashboard UI) |
+| `content` | `string` | Yes | The prompt template with `{{variable}}` placeholders |
 
 ### Template syntax
 
@@ -353,16 +353,16 @@ await prompts.promote("customer-support", 2);
 
 ### All management methods
 
-| Method                                        | Description                                 |
-| --------------------------------------------- | ------------------------------------------- |
-| `prompts.list()`                              | List all prompts in the current environment |
-| `prompts.versions(slug)`                      | List all versions for a prompt              |
-| `prompts.resolve(slug, variables?, options?)` | Resolve a prompt by slug                    |
-| `prompts.promote(slug, version)`              | Promote a version to current                |
-| `prompts.createOverride(slug, body)`          | Create an override                          |
-| `prompts.updateOverride(slug, body)`          | Update the active override                  |
-| `prompts.removeOverride(slug)`                | Remove the active override                  |
-| `prompts.reactivateOverride(slug, version)`   | Reactivate a removed override               |
+| Method | Description |
+| - | - |
+| `prompts.list()` | List all prompts in the current environment |
+| `prompts.versions(slug)` | List all versions for a prompt |
+| `prompts.resolve(slug, variables?, options?)` | Resolve a prompt by slug |
+| `prompts.promote(slug, version)` | Promote a version to current |
+| `prompts.createOverride(slug, body)` | Create an override |
+| `prompts.updateOverride(slug, body)` | Update the active override |
+| `prompts.removeOverride(slug)` | Remove the active override |
+| `prompts.reactivateOverride(slug, version)` | Reactivate a removed override |
 
 ## Overrides
 

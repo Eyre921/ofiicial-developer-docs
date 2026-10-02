@@ -249,7 +249,7 @@ The Payment Element is automatically available as a feature of Stripe.js. Includ
 ```html
 <head>
   <title>Pay Invoice</title>
-  <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+  <script src="https://js.stripe.com/endive/stripe.js"></script>
 </head>
 ```
 
@@ -462,7 +462,7 @@ Always load Stripe.js directly from js.stripe.com to remain PCI compliant. Donâ€
 ```html
 <head>
   <title>Subscription prices</title>
-  <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+  <script src="https://js.stripe.com/endive/stripe.js"></script>
 </head>
 ```
 

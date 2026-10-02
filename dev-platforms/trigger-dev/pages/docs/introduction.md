@@ -58,7 +58,7 @@ Build durable, multi-turn agents with the [chat agent](/docs/ai-chat/overview): 
 
 ## Scale and scheduling
 
-Set how many runs of a task execute at once, globally or per tenant, with [queues and concurrency](/docs/queue-concurrency). Run a task on a [cron schedule](/docs/tasks/scheduled) with timezone support, choose the CPU and memory each task runs on with [machines](/docs/machines), and control what happens when a task throws with [errors and retries](/docs/errors-retrying).
+Set how many runs of a task execute at once, globally or per tenant, with [concurrency](/docs/concurrency) and [queues](/docs/queues). Run a task on a [cron schedule](/docs/tasks/scheduled) with timezone support, choose the CPU and memory each task runs on with [machines](/docs/machines), and control what happens when a task throws with [errors and retries](/docs/errors-retrying).
 
 ## Self-hosting
 

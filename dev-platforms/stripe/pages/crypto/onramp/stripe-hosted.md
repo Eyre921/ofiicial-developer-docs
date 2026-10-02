@@ -62,7 +62,7 @@ Include the following scripts using script tags within the `<head>` element of y
 ```html
 <head>
   <title>Onramp</title>
-  <script src="https://js.stripe.com/dahlia/stripe.js"></script>
+  <script src="https://js.stripe.com/endive/stripe.js"></script>
   <script src="https://crypto-js.stripe.com/crypto-onramp-outer.js"></script>
 </head>
 ```

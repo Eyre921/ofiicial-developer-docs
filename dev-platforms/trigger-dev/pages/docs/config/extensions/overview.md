@@ -48,21 +48,21 @@ export default defineConfig({
 
 Trigger.dev provides a set of built-in extensions that you can use to customize how your project is built and deployed. These extensions are available out of the box and can be configured in your `trigger.config.ts` file.
 
-| Extension                                                                      | Description                                                                    |
-| :----------------------------------------------------------------------------- | :----------------------------------------------------------------------------- |
-| [prismaExtension](/docs/config/extensions/prismaExtension)                     | Using prisma in your Trigger.dev tasks                                         |
-| [pythonExtension](/docs/config/extensions/pythonExtension)                     | Execute Python scripts in your project                                         |
-| [puppeteer](/docs/config/extensions/puppeteer)                                 | Use Puppeteer in your Trigger.dev tasks                                        |
-| [ffmpeg](/docs/config/extensions/ffmpeg)                                       | Use FFmpeg in your Trigger.dev tasks                                           |
-| [aptGet](/docs/config/extensions/aptGet)                                       | Install system packages in your build image                                    |
-| [additionalFiles](/docs/config/extensions/additionalFiles)                     | Copy additional files to your build image                                      |
-| [additionalPackages](/docs/config/extensions/additionalPackages)               | Install additional npm packages in your build image                            |
-| [syncEnvVars](/docs/config/extensions/syncEnvVars)                             | Automatically sync environment variables from external services to Trigger.dev |
-| [syncVercelEnvVars](/docs/config/extensions/syncEnvVars#syncVercelEnvVars)     | Automatically sync environment variables from Vercel to Trigger.dev            |
-| [syncSupabaseEnvVars](/docs/config/extensions/syncEnvVars#syncSupabaseEnvVars) | Automatically sync environment variables from Supabase to Trigger.dev          |
-| [esbuildPlugin](/docs/config/extensions/esbuildPlugin)                         | Add existing or custom esbuild extensions to customize your build process      |
-| [emitDecoratorMetadata](/docs/config/extensions/emitDecoratorMetadata)         | Enable `emitDecoratorMetadata` in your TypeScript build                        |
-| [audioWaveform](/docs/config/extensions/audioWaveform)                         | Add Audio Waveform to your build image                                         |
+| Extension | Description |
+| :- | :- |
+| [prismaExtension](/docs/config/extensions/prismaExtension) | Using prisma in your Trigger.dev tasks |
+| [pythonExtension](/docs/config/extensions/pythonExtension) | Execute Python scripts in your project |
+| [puppeteer](/docs/config/extensions/puppeteer) | Use Puppeteer in your Trigger.dev tasks |
+| [ffmpeg](/docs/config/extensions/ffmpeg) | Use FFmpeg in your Trigger.dev tasks |
+| [aptGet](/docs/config/extensions/aptGet) | Install system packages in your build image |
+| [additionalFiles](/docs/config/extensions/additionalFiles) | Copy additional files to your build image |
+| [additionalPackages](/docs/config/extensions/additionalPackages) | Install additional npm packages in your build image |
+| [syncEnvVars](/docs/config/extensions/syncEnvVars) | Automatically sync environment variables from external services to Trigger.dev |
+| [syncVercelEnvVars](/docs/config/extensions/syncEnvVars#syncVercelEnvVars) | Automatically sync environment variables from Vercel to Trigger.dev |
+| [syncSupabaseEnvVars](/docs/config/extensions/syncEnvVars#syncSupabaseEnvVars) | Automatically sync environment variables from Supabase to Trigger.dev |
+| [esbuildPlugin](/docs/config/extensions/esbuildPlugin) | Add existing or custom esbuild extensions to customize your build process |
+| [emitDecoratorMetadata](/docs/config/extensions/emitDecoratorMetadata) | Enable `emitDecoratorMetadata` in your TypeScript build |
+| [audioWaveform](/docs/config/extensions/audioWaveform) | Add Audio Waveform to your build image |
 
 ## Custom extensions
 

@@ -133,12 +133,12 @@ export function Chat() {
 
 The transport calls them in two distinct flows:
 
-| Trigger                                                          | Callback fired              |
-| ---------------------------------------------------------------- | --------------------------- |
-| `transport.preload(chatId)`                                      | `startSession`              |
-| First `sendMessage` for a chatId with no cached PAT              | `startSession` (auto)       |
-| Any 401/403 from `.in/append`, `.out` SSE, or `end-and-continue` | `accessToken`               |
-| Page hydrates with `sessions: { [chatId]: ... }`                 | Neither (uses hydrated PAT) |
+| Trigger | Callback fired |
+| - | - |
+| `transport.preload(chatId)` | `startSession` |
+| First `sendMessage` for a chatId with no cached PAT | `startSession` (auto) |
+| Any 401/403 from `.in/append`, `.out` SSE, or `end-and-continue` | `accessToken` |
+| Page hydrates with `sessions: { [chatId]: ... }` | Neither (uses hydrated PAT) |
 
 `startSession` is deduped via an in-flight promise — concurrent
 `preload` + `sendMessage` calls converge to one server action invocation.
@@ -276,11 +276,11 @@ The new run is recorded in a `SessionRun` audit row with
 If your code talks to the realtime API directly instead of going through
 the SDK, the URL shapes changed:
 
-| Before                                                            | After                                                                                |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `GET /realtime/v1/streams/{runId}/chat`                           | `GET /realtime/v1/sessions/{chatId}/out`                                             |
+| Before | After |
+| - | - |
+| `GET /realtime/v1/streams/{runId}/chat` | `GET /realtime/v1/sessions/{chatId}/out` |
 | `POST /realtime/v1/streams/{runId}/{target}/chat-messages/append` | `POST /realtime/v1/sessions/{chatId}/in/append` (body: `{kind: "message", payload}`) |
-| `POST /realtime/v1/streams/{runId}/{target}/chat-stop/append`     | `POST /realtime/v1/sessions/{chatId}/in/append` (body: `{kind: "stop"}`)             |
+| `POST /realtime/v1/streams/{runId}/{target}/chat-stop/append` | `POST /realtime/v1/sessions/{chatId}/in/append` (body: `{kind: "stop"}`) |
 
 The session-scoped PAT
 (`read:sessions:{chatId} + write:sessions:{chatId}`) authorizes both the
@@ -363,12 +363,12 @@ The wire is now **delta-only**: each `.in/append` carries at most one new `UIMes
 
 Snapshot read/write uses Trigger.dev's existing object-store infrastructure — the same presigned-URL routes used for large payloads. Set the standard `OBJECT_STORE_*` env vars on your webapp deployment if you haven't already; MinIO and S3-compatible stores work via `OBJECT_STORE_DEFAULT_PROTOCOL`.
 
-| Env var                          | Purpose                            |
-| -------------------------------- | ---------------------------------- |
-| `OBJECT_STORE_BASE_URL`          | Endpoint URL (S3, MinIO, R2, etc.) |
-| `OBJECT_STORE_ACCESS_KEY_ID`     | Access key                         |
-| `OBJECT_STORE_SECRET_ACCESS_KEY` | Secret key                         |
-| `OBJECT_STORE_DEFAULT_PROTOCOL`  | `s3` (default), `minio`, etc.      |
+| Env var | Purpose |
+| - | - |
+| `OBJECT_STORE_BASE_URL` | Endpoint URL (S3, MinIO, R2, etc.) |
+| `OBJECT_STORE_ACCESS_KEY_ID` | Access key |
+| `OBJECT_STORE_SECRET_ACCESS_KEY` | Secret key |
+| `OBJECT_STORE_DEFAULT_PROTOCOL` | `s3` (default), `minio`, etc. |
 
 Snapshots are written under `packets/{projectRef}/{envSlug}/sessions/{sessionId}/snapshot.json`. Each snapshot is small (typically tens of KB) and overwritten every turn — no append-only growth.
 
@@ -407,12 +407,12 @@ type ChatTaskWirePayload = {
 
 What to send per trigger:
 
-| Trigger                              | What to put in the payload                                                         |
-| ------------------------------------ | ---------------------------------------------------------------------------------- |
-| `submit-message`                     | The new user message (or a tool-approval-responded assistant message) in `message` |
-| `regenerate-message`                 | No `message` — the agent trims its own tail                                        |
-| `preload` / `close` / `action`       | No `message`                                                                       |
-| `handover-prepare` (head-start only) | Full prior history in `headStartMessages` (route handler — not on `/in/append`)    |
+| Trigger | What to put in the payload |
+| - | - |
+| `submit-message` | The new user message (or a tool-approval-responded assistant message) in `message` |
+| `regenerate-message` | No `message` — the agent trims its own tail |
+| `preload` / `close` / `action` | No `message` |
+| `handover-prepare` (head-start only) | Full prior history in `headStartMessages` (route handler — not on `/in/append`) |
 
 The full wire breakdown is in the rewritten [Client Protocol](/docs/ai-chat/client-protocol).
 

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1353 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1354 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -33,7 +33,7 @@
 - `docs/api-reference/agents/merge-proposals/merge` — [Merge A Merge Proposal](pages/docs/api-reference/agents/merge-proposals/merge.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/merge.md)
 - `docs/api-reference/agents/merge-proposals/submit-review` — [Review A Merge Proposal](pages/docs/api-reference/agents/merge-proposals/submit-review.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/submit-review.md)
 - `docs/api-reference/agents/merge-proposals/update` — [Update A Merge Proposal](pages/docs/api-reference/agents/merge-proposals/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/merge-proposals/update.md)
-- `docs/api-reference/agents/procedures/compile` — [Compile Procedures](pages/docs/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/compile.md)
+- `docs/api-reference/agents/procedures/compile` — [Compile Procedures (legacy)](pages/docs/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/compile.md)
 - `docs/api-reference/agents/procedures/create` — [Create Procedure](pages/docs/api-reference/agents/procedures/create.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/create.md)
 - `docs/api-reference/agents/procedures/delete` — [Delete Procedure Draft](pages/docs/api-reference/agents/procedures/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/delete.md)
 - `docs/api-reference/agents/procedures/get` — [Get Procedure](pages/docs/api-reference/agents/procedures/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/procedures/get.md)
@@ -420,7 +420,7 @@
 - `docs/eleven-agents/api-reference/agents/merge-proposals/merge` — [Merge A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/merge.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/submit-review` — [Review A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/submit-review.md)
 - `docs/eleven-agents/api-reference/agents/merge-proposals/update` — [Update A Merge Proposal](pages/docs/eleven-agents/api-reference/agents/merge-proposals/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-proposals/update.md)
-- `docs/eleven-agents/api-reference/agents/procedures/compile` — [Compile Procedures](pages/docs/eleven-agents/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md)
+- `docs/eleven-agents/api-reference/agents/procedures/compile` — [Compile Procedures (legacy)](pages/docs/eleven-agents/api-reference/agents/procedures/compile.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/compile.md)
 - `docs/eleven-agents/api-reference/agents/procedures/create` — [Create Procedure](pages/docs/eleven-agents/api-reference/agents/procedures/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/create.md)
 - `docs/eleven-agents/api-reference/agents/procedures/delete` — [Delete Procedure Draft](pages/docs/eleven-agents/api-reference/agents/procedures/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/delete.md)
 - `docs/eleven-agents/api-reference/agents/procedures/get` — [Get Procedure](pages/docs/eleven-agents/api-reference/agents/procedures/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/procedures/get.md)
@@ -1074,6 +1074,7 @@
 - `docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api` — [Can I edit and regenerate Dubbing v2 via the API?](pages/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/can-i-edit-and-regenerate-dubbing-v-2-via-the-api.md)
 - `docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing` — [Do you offer lip sync in Dubbing?](pages/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/do-you-offer-lip-sync-in-dubbing.md)
 - `docs/help-center/product/dubbing/how-do-i-access-dubbing-studio` — [How do I access Dubbing Studio?](pages/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-do-i-access-dubbing-studio.md)
+- `docs/help-center/product/dubbing/how-much-does-dubbing-cost` — [How much does Dubbing cost?](pages/docs/help-center/product/dubbing/how-much-does-dubbing-cost.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/how-much-does-dubbing-cost.md)
 - `docs/help-center/product/dubbing/on-which-plans-can-i-use-dubbing` — [On which plans can I use Dubbing?](pages/docs/help-center/product/dubbing/on-which-plans-can-i-use-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/on-which-plans-can-i-use-dubbing.md)
 - `docs/help-center/product/dubbing/what-happens-to-my-dubs-if-i-downgrade-my-subscription` — [What happens to my dubs if I downgrade my subscription?](pages/docs/help-center/product/dubbing/what-happens-to-my-dubs-if-i-downgrade-my-subscription.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/what-happens-to-my-dubs-if-i-downgrade-my-subscription.md)
 - `docs/help-center/product/dubbing/what-is-dubbing` — [What is Dubbing?](pages/docs/help-center/product/dubbing/what-is-dubbing.md) · [原文](https://elevenlabs.io/docs/help-center/product/dubbing/what-is-dubbing.md)

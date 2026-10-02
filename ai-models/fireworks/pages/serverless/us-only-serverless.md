@@ -15,10 +15,7 @@ US-only Serverless serves inference exclusively from the US, making it a good fi
 | Model | `model` ID |
 | - | - |
 | Kimi K3 | `accounts/fireworks/routers/kimi-k3-us` |
-| DeepSeek V4 Flash (0731) | `accounts/fireworks/routers/deepseek-v4-flash-0731-us` |
 | DeepSeek V4.1 Flash | `accounts/fireworks/routers/deepseek-v4p1-flash-us` |
-| GLM 5.2 | `accounts/fireworks/routers/glm-5p2-us` |
-| GLM 5.2 Fast | `accounts/fireworks/routers/glm-5p2-fast-us` |
 | GLM 5.3 | `accounts/fireworks/routers/glm-5p3-us` |
 | GLM 5.3 Flash | `accounts/fireworks/routers/glm-5p3-flash-us` |
 
@@ -53,7 +50,7 @@ To require this for every request on your account, see [Data residency](/account
 
 ## Pricing
 
-Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium, while GLM 5.2 Fast US is an exception and matches global GLM 5.2 Fast pricing. See [Serverless pricing](/serverless/pricing).
+Beginning September 1, 2026, launched US-only models are priced at 1.5x the base model serverless prices. Kimi K3 (US) already includes this premium. See [Serverless pricing](/serverless/pricing).
 
 ## Other regions
 

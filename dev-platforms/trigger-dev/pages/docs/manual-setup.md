@@ -169,7 +169,7 @@ export default defineConfig({
 
 ### Using the Bun runtime
 
-By default, Trigger.dev will use the Node.js runtime. If you're using Bun, you can specify the runtime:
+By default, Trigger.dev runs your tasks on the current Node.js LTS. If you're using Bun, you can specify the runtime:
 
 ```typescript theme={"theme":"css-variables"}
 import { defineConfig } from "@trigger.dev/sdk";

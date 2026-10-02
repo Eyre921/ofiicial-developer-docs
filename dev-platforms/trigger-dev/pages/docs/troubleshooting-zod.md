@@ -10,12 +10,12 @@ Resolve Zod typechecking, test, and deployment errors when upgrading to Trigger.
 
 Use this guide if typechecking, tests, or deployment fail after upgrading. The supported project dependency range is `^3.25.56 || ^4.0.0`.
 
-| Your project's Zod dependency                | What to do                                                                                            |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| No direct Zod dependency                     | No Zod-specific change is needed. Trigger.dev installs a compatible runtime dependency automatically. |
-| Zod below 3.25.56                            | Upgrade before using Trigger.dev v4.6. These versions are unsupported.                                |
-| Zod 3.25.56 or later in the 3.x release line | Keep using your Zod 3 schemas with supported SDK APIs. Review the cross-major caveats below.          |
-| Zod 4.x                                      | Supported and the recommended default.                                                                |
+| Your project's Zod dependency | What to do |
+| - | - |
+| No direct Zod dependency | No Zod-specific change is needed. Trigger.dev installs a compatible runtime dependency automatically. |
+| Zod below 3.25.56 | Upgrade before using Trigger.dev v4.6. These versions are unsupported. |
+| Zod 3.25.56 or later in the 3.x release line | Keep using your Zod 3 schemas with supported SDK APIs. Review the cross-major caveats below. |
+| Zod 4.x | Supported and the recommended default. |
 
 Passing your own supported Zod 3 schema to [`schemaTask`](/docs/tasks/schemaTask) or `toolTask` remains supported. This does not make Zod 3 and Zod 4 schemas interchangeable when you compose or inspect them yourself.
 

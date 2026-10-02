@@ -48,10 +48,10 @@ curl -N "https://api.trigger.dev/realtime/v1/sessions/{session}/out" \
   -H "Timeout-Seconds: 60"
 ```
 
-| Header            | Direction | Description                                                                                                                        |
-| ----------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| `Last-Event-ID`   | request   | Resume after this sequence number. Set it to the last `id:` you received to pick up exactly where you left off after a disconnect. |
-| `Timeout-Seconds` | request   | How long the server holds the stream open with no new records before closing, `1`–`600`.                                           |
+| Header | Direction | Description |
+| - | - | - |
+| `Last-Event-ID` | request | Resume after this sequence number. Set it to the last `id:` you received to pick up exactly where you left off after a disconnect. |
+| `Timeout-Seconds` | request | How long the server holds the stream open with no new records before closing, `1`–`600`. |
 
 Each SSE event carries:
 
@@ -67,10 +67,10 @@ data: {"data":{"type":"text","text":"echo: hello"},"id":42}
 
 Some `.out` events are **control records** rather than data. A control record has an empty body and carries a `trigger-control` header naming its subtype:
 
-| Subtype            | Meaning                                                                                                                                           |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `turn-complete`    | The current turn finished. Carries sibling headers `public-access-token` (a refreshed session token), `session-in-event-id`, and `last-event-id`. |
-| `upgrade-required` | The session needs to hand off to a run on a newer deployed version.                                                                               |
+| Subtype | Meaning |
+| - | - |
+| `turn-complete` | The current turn finished. Carries sibling headers `public-access-token` (a refreshed session token), `session-in-event-id`, and `last-event-id`. |
+| `upgrade-required` | The session needs to hand off to a run on a newer deployed version. |
 
 Route control records by their subtype instead of treating them as message content. The TypeScript SDK does this for you — `session.out.read` filters control records out of the chunk stream and surfaces them through `onControl`.
 
@@ -99,14 +99,14 @@ Each record carries `data`, `id`, `seqNum`, and an optional `headers` array (pre
 
 The action you can take depends on your token and the channel:
 
-| Action                    | Endpoint              | Required authorization                           |
-| ------------------------- | --------------------- | ------------------------------------------------ |
-| Subscribe to `.out` (SSE) | `GET .../out`         | `read:sessions:{id}` or `read:sessions:{id}:out` |
-| Drain `.out` records      | `GET .../out/records` | `read:sessions:{id}` or `read:sessions:{id}:out` |
-| Subscribe to `.in` (SSE)  | `GET .../in`          | Secret key only                                  |
-| Drain `.in` records       | `GET .../in/records`  | Secret key only                                  |
-| Append to `.in`           | `POST .../in/append`  | `write:sessions:{id}`                            |
-| Append to `.out`          | `POST .../out/append` | Secret key only                                  |
+| Action | Endpoint | Required authorization |
+| - | - | - |
+| Subscribe to `.out` (SSE) | `GET .../out` | `read:sessions:{id}` or `read:sessions:{id}:out` |
+| Drain `.out` records | `GET .../out/records` | `read:sessions:{id}` or `read:sessions:{id}:out` |
+| Subscribe to `.in` (SSE) | `GET .../in` | Secret key only |
+| Drain `.in` records | `GET .../in/records` | Secret key only |
+| Append to `.in` | `POST .../in/append` | `write:sessions:{id}` |
+| Append to `.out` | `POST .../out/append` | Secret key only |
 
 Each direction has one side that is the task's alone: `.out` is written by the task and read by clients, `.in` is written by clients and read by the task. A public token can read `.out` and append to `.in`; reading `.in` or appending to `.out` requires a secret key. `read:sessions:{id}:out` narrows a read token to the `.out` stream, so a browser-held token cannot also retrieve the session row or read named channels. See [session scopes](/docs/management/authentication#session-scopes) for how to mint a token.
 

@@ -65,10 +65,10 @@ If you’re manually creating a [PaymentIntent](https://docs.stripe.com/api/paym
 Include [Stripe.js](https://docs.stripe.com/payments/elements.md) on every page of your site, not just the checkout page where your customer enters their payment information. This helps Stripe detect anomalous behavior as customers browse, and provides [additional risk factors](https://docs.stripe.com/disputes/prevention/advanced-fraud-detection.md) that can help improve fraud detection.
 
 ```html
-<script async src="https://js.stripe.com/dahlia/stripe.js"></script>
+<script async src="https://js.stripe.com/endive/stripe.js"></script>
 ```
 
-Always load Stripe.js directly from **https://js.stripe.com/dahlia/stripe.js**. We don’t support using a local copy of Stripe.js, as it can result in user-visible errors, and reduces the effectiveness of our fraud detection.
+Always load Stripe.js directly from **https://js.stripe.com/endive/stripe.js**. We don’t support using a local copy of Stripe.js, as it can result in user-visible errors, and reduces the effectiveness of our fraud detection.
 
 ### Update your privacy policy 
 
