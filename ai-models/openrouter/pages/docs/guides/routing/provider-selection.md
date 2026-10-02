@@ -1275,6 +1275,8 @@ You can enforce Zero Data Retention (ZDR) on a per-request basis using the `zdr`
 
 When `zdr` is set to `true`, the request will only be routed to endpoints that have a Zero Data Retention policy. When `zdr` is `false` or not provided, it has no effect on routing.
 
+`zdr` filters model inference endpoints. The [Advisor](/docs/guides/features/server-tools/advisor) and [Subagent](/docs/guides/features/server-tools/subagent) server tools forward your `provider` preferences, including `zdr`, to their inner generations. Tool backends are not filtered by `zdr`. See [Privacy and regional availability](/docs/guides/features/server-tools#privacy-and-regional-availability).
+
 <Tip>
   **Per-Model-Group and Account-Wide ZDR**
 

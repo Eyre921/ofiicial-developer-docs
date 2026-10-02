@@ -75447,7 +75447,7 @@ Description: Can I get a list of all transcripts I have created? documentation.
 
 You can retrieve a list of all transcripts that you have created by [making a `GET` request to the API](/api-reference/transcripts/list).
 
-Note historical transcripts can only be retrieved for the last 90 days via this endpoint. If you need transcript information from farther back please reach out to our Support team at support@assemblyai.com.
+Note historical transcripts can only be retrieved for the last 30 days via this endpoint.
 
 ---
 
@@ -80100,9 +80100,7 @@ paths:
       description: |
         <Note>To retrieve your transcriptions on our EU server, replace `api.assemblyai.com` with `api.eu.assemblyai.com`.</Note>
         Retrieve a list of transcripts you created.
-        Transcripts are sorted from newest to oldest and can be retrieved for the last 90 days of usage. The previous URL always points to a page with older transcripts.
-
-        If you need to retrieve transcripts from more than 90 days ago please reach out to our Support team at support@assemblyai.com.
+        Transcripts are sorted from newest to oldest and can be retrieved for the last 30 days of usage. The previous URL always points to a page with older transcripts.
 
         **Pagination**
 

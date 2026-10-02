@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 389 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 390 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -68,6 +68,7 @@
 - `docs/channels` — [Channels](pages/docs/channels.md) · [原文](https://developers.deepgram.com/docs/channels.md)
 - `docs/close-stream` — [Close Stream](pages/docs/close-stream.md) · [原文](https://developers.deepgram.com/docs/close-stream.md)
 - `docs/confidence` — [Understanding Word Confidence Scores](pages/docs/confidence.md) · [原文](https://developers.deepgram.com/docs/confidence.md)
+- `docs/configure` — [Configure](pages/docs/configure.md) · [原文](https://developers.deepgram.com/docs/configure.md)
 - `docs/configure-deepgram-modal-deployment` — [Configure Deepgram on Modal](pages/docs/configure-deepgram-modal-deployment.md) · [原文](https://developers.deepgram.com/docs/configure-deepgram-modal-deployment.md)
 - `docs/configure-sagemaker-deployments` — [Configure Amazon SageMaker Deployments](pages/docs/configure-sagemaker-deployments.md) · [原文](https://developers.deepgram.com/docs/configure-sagemaker-deployments.md)
 - `docs/configure-voice-agent` — [Configure the Voice Agent](pages/docs/configure-voice-agent.md) · [原文](https://developers.deepgram.com/docs/configure-voice-agent.md)

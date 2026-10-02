@@ -134,7 +134,10 @@ For details on territories where Stripe Tax applies the parent country tax treat
 - Saint Martin
 - Saint Pierre and Miquelon
 - Wallis and Futuna |
-| Italy | - Vatican City |
+| Greece | - Mount Athos |
+| Italy | - Campione d’Italia
+- Livigno
+- Vatican City |
 | Monaco | - Monaco |
 | Netherlands | - Bonaire
 - Curacao

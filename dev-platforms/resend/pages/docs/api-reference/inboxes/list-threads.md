@@ -64,7 +64,7 @@ A thread is a conversation within an inbox, made up of one or more messages.
 
 <ParamField type="string">
   The ID of the first thread on the current page. Returns the previous, newer
-  page.
+  page. Cannot be combined with `after`.
 </ParamField>
 
 ## Folders

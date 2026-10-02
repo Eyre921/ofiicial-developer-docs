@@ -18,7 +18,9 @@ Dubbing Studio can output in the following formats:
 
 Dubbing v2 returns a single lossless audio file.
 
-You can upload audio and video files in the following formats for Dubbing:
+Dubbed video is a high-quality preview, not a production master. It is most commonly output at 1080p and may not match the source resolution. Audio is mono for Dubbing v1 and at most stereo for Dubbing v2, so 5.1 and other multichannel audio is not preserved. For production, download the dubbed audio and use it to replace the audio track on your original video.
+
+You can upload audio and video files in the following formats for Dubbing. Video can be up to 4K resolution.
 
 * AAC
 * AIFF

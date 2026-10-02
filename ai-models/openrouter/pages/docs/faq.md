@@ -27,8 +27,6 @@ export const BYOK_PAYG_MONTHLY_LIST_PRICE_THRESHOLD_USD = '$25,000';
 
 export const BYOK_FEE_PERCENTAGE = '5';
 
-export const BYOK_ENTERPRISE_MONTHLY_LIST_PRICE_THRESHOLD_USD = '$200,000';
-
 ## Getting started
 
 <AccordionGroup>
@@ -93,7 +91,7 @@ export const BYOK_ENTERPRISE_MONTHLY_LIST_PRICE_THRESHOLD_USD = '$200,000';
     Yes. BYOK has a plan-dependent free allowance measured by list-price
     inference cost, not request count. Pay-as-you-go includes
     {BYOK_PAYG_MONTHLY_LIST_PRICE_THRESHOLD_USD} per month with no BYOK fee,
-    while Enterprise includes {BYOK_ENTERPRISE_MONTHLY_LIST_PRICE_THRESHOLD_USD}.
+    while Enterprise allowances are custom.
     Usage above the allowance has a fee of {BYOK_FEE_PERCENTAGE}% of what the
     same model and provider would normally cost on OpenRouter. This fee is
     deducted from your OpenRouter credits. This allows you to manage your rate

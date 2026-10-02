@@ -30,7 +30,7 @@ Update the internal inbox name or the name recipients see when sending.
   </CodeGroup>
 </Warning>
 
-At least one of `name` or `friendly_name` is required.
+At least one of `name` or `from_name` is required.
 
 ## Path Parameters
 
@@ -57,7 +57,7 @@ At least one of `name` or `friendly_name` is required.
 
   const { data, error } = await resend.inboxes.update(
     'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
-    { name: 'Customer Support', friendlyName: 'Ada from Support' },
+    { name: 'Customer Support', fromName: 'Ada from Support' },
   );
   ```
 
@@ -67,14 +67,14 @@ At least one of `name` or `friendly_name` is required.
        -H 'Content-Type: application/json' \
        -d $'{
     "name": "Customer Support",
-    "friendly_name": "Ada from Support"
+    "from_name": "Ada from Support"
   }'
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
   resend inboxes update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --name "Customer Support" \
-    --friendly_name "Ada from Support"
+    --from_name "Ada from Support"
   ```
 </RequestExample>
 

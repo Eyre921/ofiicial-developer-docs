@@ -287,5 +287,9 @@ For example, you might sample your checkout flow at 100% to catch any issues, wh
 
 To configure `tracesSampler` for your SDK, see the tracing options in your SDK's [configuration documentation](https://docs.sentry.io/platform-redirect.md?next=/configuration/options/).
 
-With these tools, the new Trace Explorer gives you powerful ways to understand your application’s performance, identify bottlenecks, and make informed optimizations.
+## [Ingestion Delay](https://docs.sentry.io/product/trace-explorer.md#ingestion-delay)
+
+Newly sent spans can take a short time to show up in Sentry. Sentry estimates this delay for your organization, so the most recent part of a chart may be marked as incomplete. Hover over an incomplete bucket to see roughly when its data should settle. Counts there may go up as the rest of the data arrives. This also applies to logs and metrics.
+
+This estimate is not a guarantee. Some delays, such as data sent late from your application, can't be measured, so data may still arrive after buckets are marked as settled.
 

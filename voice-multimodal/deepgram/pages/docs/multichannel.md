@@ -355,4 +355,8 @@ This first message represents the transcription of the first channel. It will be
 }
 ```
 
+## Entity Features and Multichannel
+
+For pre-recorded audio, [Entity Detection](/docs/detect-entities), entity-based [Redaction](/docs/redaction), and [Smart Formatting](/docs/smart-format) use context from all channels. For example, if an agent on one channel asks for a card's expiration date, the customer's answer on another channel can be recognized and redacted as a credit card expiration date. Streaming requests don't share context across channels. See [Entity Detection: Multichannel Audio](/docs/detect-entities#multichannel-audio) for details.
+
 ---

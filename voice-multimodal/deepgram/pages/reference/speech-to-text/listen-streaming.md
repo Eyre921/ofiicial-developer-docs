@@ -125,6 +125,8 @@ channels:
               #/components/messages/subpackage_listen/v1.listen.v1-server-2-ListenV1UtteranceEnd
           - $ref: >-
               #/components/messages/subpackage_listen/v1.listen.v1-server-3-ListenV1SpeechStarted
+          - $ref: >-
+              #/components/messages/subpackage_listen/v1.listen.v1-server-4-ListenV1Error
     subscribe:
       operationId: subpackage_listen/v1.listen.v1-subscribe
       summary: Client messages
@@ -138,6 +140,8 @@ channels:
               #/components/messages/subpackage_listen/v1.listen.v1-client-2-ListenV1CloseStream
           - $ref: >-
               #/components/messages/subpackage_listen/v1.listen.v1-client-3-ListenV1KeepAlive
+          - $ref: >-
+              #/components/messages/subpackage_listen/v1.listen.v1-client-4-ListenV1Configure
 servers:
   Production:
     url: wss://api.deepgram.com/
@@ -169,6 +173,14 @@ components:
       description: Receive a speech started event
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1SpeechStarted'
+    subpackage_listen/v1.listen.v1-server-4-ListenV1Error:
+      name: ListenV1Error
+      title: ListenV1Error
+      description: >-
+        Receive a non-fatal error message, such as a rejected Configure or an
+        unparseable text message. Fatal failures close the socket instead.
+      payload:
+        $ref: '#/components/schemas/ListenV1_ListenV1Error'
     subpackage_listen/v1.listen.v1-client-0-ListenV1Media:
       name: ListenV1Media
       title: ListenV1Media
@@ -193,6 +205,14 @@ components:
       description: Send a KeepAlive message to keep the WebSocket stream alive
       payload:
         $ref: '#/components/schemas/ListenV1_ListenV1KeepAlive'
+    subpackage_listen/v1.listen.v1-client-4-ListenV1Configure:
+      name: ListenV1Configure
+      title: ListenV1Configure
+      description: >-
+        Send a Configure message to update keyterms or formatting features
+        mid-stream
+      payload:
+        $ref: '#/components/schemas/ListenV1_ListenV1Configure'
   schemas:
     ListenV1Callback:
       description: Any type
@@ -727,6 +747,46 @@ components:
         - channel
         - timestamp
       title: ListenV1_ListenV1SpeechStarted
+    ChannelsListenV1MessagesListenV1ErrorType:
+      type: string
+      enum:
+        - Error
+      description: Message type identifier for error responses
+      title: ChannelsListenV1MessagesListenV1ErrorType
+    ListenV1_ListenV1Error:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ChannelsListenV1MessagesListenV1ErrorType'
+          description: Message type identifier for error responses
+        variant:
+          type: string
+          description: >
+            The error category. `SchemaError` means the server could not parse a
+            client text message.
+
+            `InvalidConfigureMessage` means the server rejected a `Configure`
+            message.
+        description:
+          type: string
+          description: A human-readable description of what went wrong
+        code:
+          type: string
+          description: >
+            Identifies the reason for an `InvalidConfigureMessage` error, for
+            example `KeytermsNotSupported`
+
+            when `keyterms` are sent on a model other than Nova-3.
+        message:
+          type: string
+          description: >-
+            For `SchemaError`, the original client message that could not be
+            parsed
+      required:
+        - type
+        - variant
+        - description
+      title: ListenV1_ListenV1Error
     ListenV1_ListenV1Media:
       type: string
       format: binary
@@ -782,5 +842,53 @@ components:
       required:
         - type
       title: ListenV1_ListenV1KeepAlive
+    ChannelsListenV1MessagesListenV1ConfigureType:
+      type: string
+      enum:
+        - Configure
+      description: Message type identifier
+      title: ChannelsListenV1MessagesListenV1ConfigureType
+    ListenV1_ListenV1Configure:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ChannelsListenV1MessagesListenV1ConfigureType'
+          description: Message type identifier
+        keyterms:
+          type: array
+          items:
+            type: string
+          description: >
+            Replaces the stream's keyterms. Compatible with all Nova-3 models,
+            monolingual and multilingual; on other
+
+            models the server returns an `Error` with code
+            `KeytermsNotSupported`. Each array replaces the entire list,
+
+            including keyterms set with the `keyterm` query parameter. Send an
+            empty array to clear all keyterms. Omit
+
+            the field, or set it to `null`, to keep the current keyterms.
+
+
+            Each entry is a plain term or phrase with no weights or
+            intensifiers. The 500-token keyterm limit that
+
+            applies to the `keyterm` query parameter also applies to each
+            update. An over-limit update returns an
+
+            `Error`, and the stream keeps its previous keyterms.
+        features:
+          type: object
+          additionalProperties:
+            type: boolean
+          description: >
+            Turns formatting features on or off. Each key is a feature name and
+            each value is a boolean, for
+
+            example `{"numerals": true}`.
+      required:
+        - type
+      title: ListenV1_ListenV1Configure
 
 ```

@@ -13465,7 +13465,9 @@ Create a draft on an inbox, either as a new conversation or as a reply.
 </Warning>
 
 A draft is an unsent message. Omit `thread_id` for a new conversation. Pass
-`thread_id` and `reply_to_email_id` together to attach it as a reply.
+`thread_id` and `reply_to_email_id` together to attach it as a reply. A reply
+draft doesn't copy recipients from the message it replies to, so set `to`
+before you send it.
 
 At least one of `to`, `cc`, `bcc`, `subject`, `text`, or `html` must be
 non-empty. Combined recipients cannot exceed 50. Returns `201` for a new draft,
@@ -13606,6 +13608,7 @@ or `200` if that reply draft already exists.
        -d $'{
     "thread_id": "4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12",
     "reply_to_email_id": "5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60",
+    "to": ["replies@example.org"],
     "text": "Refund issued for order 1041."
   }'
   ```
@@ -13682,7 +13685,8 @@ An inbox sends and receives email at an address on one of your domains, such as
 </ResendParamField>
 
 <ParamField type="string">
-  Internal name for the inbox. Recipients do not see it.
+  Internal name for the inbox. Recipients do not see it. Defaults to
+  `email_address`.
 </ParamField>
 
 <ResendParamField type="string">
@@ -13730,6 +13734,14 @@ An inbox sends and receives email at an address on one of your domains, such as
   The number of unread threads in the inbox.
 </ParamField>
 
+<ParamField type="number">
+  The number of unsent drafts.
+</ParamField>
+
+<ParamField type="string | null">
+  ISO 8601 timestamp when a thread in this inbox was last active.
+</ParamField>
+
 <ParamField type="string">
   ISO 8601 timestamp when the inbox was created.
 </ParamField>
@@ -13743,7 +13755,7 @@ An inbox sends and receives email at an address on one of your domains, such as
   const { data, error } = await resend.inboxes.create({
     emailAddress: 'support@example.com',
     name: 'Customer Support',
-    friendlyName: 'Ada from Support',
+    fromName: 'Ada from Support',
   });
   ```
 
@@ -13754,7 +13766,7 @@ An inbox sends and receives email at an address on one of your domains, such as
        -d $'{
     "email_address": "support@example.com",
     "name": "Customer Support",
-    "friendly_name": "Ada from Support"
+    "from_name": "Ada from Support"
   }'
   ```
 
@@ -13762,7 +13774,7 @@ An inbox sends and receives email at an address on one of your domains, such as
   resend inboxes create \
     --email_address support@example.com \
     --name "Customer Support" \
-    --friendly_name "Ada from Support"
+    --from_name "Ada from Support"
   ```
 </RequestExample>
 
@@ -13775,8 +13787,10 @@ An inbox sends and receives email at an address on one of your domains, such as
     "email_address": "support@example.com",
     "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
     "receiving_address": null,
-    "friendly_name": "Ada from Support",
+    "from_name": "Ada from Support",
     "unread": 0,
+    "drafts": 0,
+    "last_received": null,
     "created_at": "2026-08-05T14:03:11.229Z"
   }
   ```
@@ -14264,7 +14278,17 @@ quoted under a forwarded-message banner.
 
 <ParamField type="string | string[]">
   Recipient email address. For multiple addresses, send as an array of strings.
-  Max 50.
+  `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+</ParamField>
+
+<ParamField type="string | string[]">
+  CC recipient email address. For multiple addresses, send as an array of
+  strings. Counts toward the 50-recipient limit with `to`.
+</ParamField>
+
+<ParamField type="string | string[]">
+  BCC recipient email address. For multiple addresses, send as an array of
+  strings. Counts toward the 50-recipient limit with `to`.
 </ParamField>
 
 <ParamField type="string">
@@ -14277,7 +14301,7 @@ quoted under a forwarded-message banner.
 
 <ParamField type="string">
   The subject of the forward. When omitted, the thread subject is used, prefixed
-  with `Fwd:` if it isn't already.
+  with `Fwd:` if it isn't already. Max 2000 characters.
 </ParamField>
 
 ## Response Fields
@@ -14311,7 +14335,7 @@ quoted under a forwarded-message banner.
 </ParamField>
 
 <ParamField type="string[]">
-  The Reply-To addresses.
+  Always empty in this response.
 </ParamField>
 
 <ParamField type="string">
@@ -14319,7 +14343,7 @@ quoted under a forwarded-message banner.
 </ParamField>
 
 <ParamField type="string | null">
-  The Message-ID header of the message.
+  Always `null` in this response.
 </ParamField>
 
 <ParamField type="string | null">
@@ -14331,25 +14355,11 @@ quoted under a forwarded-message banner.
 </ParamField>
 
 <ParamField type="array">
-  The attachments on the message.
-
-  <Expandable title="properties">
-    <ParamField type="string">
-      The ID of the attachment.
-    </ParamField>
-
-    <ParamField type="string | null">
-      The filename of the attachment.
-    </ParamField>
-
-    <ParamField type="number | null">
-      The size of the attachment in bytes.
-    </ParamField>
-  </Expandable>
+  Always empty in this response.
 </ParamField>
 
 <ParamField type="boolean">
-  Whether the message has been read.
+  Always `true`.
 </ParamField>
 
 <ParamField type="string">
@@ -14367,6 +14377,8 @@ quoted under a forwarded-message banner.
     threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
     emailId: '5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60',
     to: ['colleague@example.org'],
+    cc: ['billing@example.com'],
+    bcc: ['records@example.com'],
     text: 'Flagging this refund request for you.',
   });
   ```
@@ -14377,6 +14389,8 @@ quoted under a forwarded-message banner.
        -H 'Content-Type: application/json' \
        -d $'{
     "to": ["colleague@example.org"],
+    "cc": ["billing@example.com"],
+    "bcc": ["records@example.com"],
     "text": "Flagging this refund request for you."
   }'
   ```
@@ -14401,18 +14415,12 @@ quoted under a forwarded-message banner.
     "to": ["colleague@example.org"],
     "cc": ["billing@example.com"],
     "bcc": ["records@example.com"],
-    "reply_to": ["support@example.com"],
+    "reply_to": [],
     "subject": "Fwd: Refund for order 1041",
-    "message_id": "<6a0c8e58@example.com>",
+    "message_id": null,
     "html": "<div>Flagging this refund request for you.<br>\n<br>\n---------- Forwarded message ---------<br>\nFrom: Ada Lovelace &lt;ada@example.org&gt;<br>\nDate: Wed, Aug 5, 2026 at 2:03 PM<br>\nSubject: Refund for order 1041<br>\nTo: support@example.com<br>\n<br>\nCould I get a refund for order 1041?</div>",
     "text": "Flagging this refund request for you.\n\n---------- Forwarded message ---------\nFrom: Ada Lovelace <ada@example.org>\nDate: Wed, Aug 5, 2026 at 2:03 PM\nSubject: Refund for order 1041\nTo: support@example.com\n\nCould I get a refund for order 1041?",
-    "attachments": [
-      {
-        "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
-        "filename": "receipt.pdf",
-        "size": 20841
-      }
-    ],
+    "attachments": [],
     "read": true,
     "received_at": "2026-08-05T14:12:04.110Z"
   }
@@ -14567,7 +14575,7 @@ Retrieve a single draft by its ID.
 Source: https://resend.com/docs/api-reference/inboxes/get-inbox
 
 GET /inboxes/:inbox_id
-Retrieve a single inbox by its ID.
+Retrieve a single inbox by its ID or email address.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -14595,7 +14603,7 @@ Retrieve a single inbox by its ID.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Response Fields
@@ -14608,12 +14616,16 @@ Retrieve a single inbox by its ID.
   The ID of the inbox.
 </ParamField>
 
-<ParamField type="string | null">
+<ParamField type="string">
   Internal name for the inbox. Recipients do not see it.
 </ParamField>
 
 <ParamField type="string">
   The address of the inbox.
+</ParamField>
+
+<ParamField type="string">
+  The ID of the domain that owns the address.
 </ParamField>
 
 <ParamField type="string | null">
@@ -14635,6 +14647,10 @@ Retrieve a single inbox by its ID.
 
 <ParamField type="string | null">
   ISO 8601 timestamp when a thread in this inbox was last active.
+</ParamField>
+
+<ParamField type="string">
+  ISO 8601 timestamp when the inbox was created.
 </ParamField>
 
 <RequestExample>
@@ -14665,11 +14681,13 @@ Retrieve a single inbox by its ID.
     "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
     "name": "Customer Support",
     "email_address": "support@example.com",
+    "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
     "receiving_address": null,
-    "friendly_name": "Ada from Support",
+    "from_name": "Ada from Support",
     "unread": 3,
     "drafts": 2,
-    "last_received": "2026-08-05T14:03:11.229Z"
+    "last_received": "2026-08-05T14:03:11.229Z",
+    "created_at": "2026-08-01T09:12:44.512Z"
   }
   ```
 </ResponseExample>
@@ -15220,7 +15238,7 @@ Inboxes are returned newest first. Results are paginated with cursors. See
         "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
         "name": "Customer Support",
         "email_address": "support@example.com",
-        "friendly_name": "Ada from Support",
+        "from_name": "Ada from Support",
         "unread": 3,
         "last_received": "2026-08-05T14:03:11.229Z"
       },
@@ -15228,7 +15246,7 @@ Inboxes are returned newest first. Results are paginated with cursors. See
         "id": "1c5e0f3a-6b21-4d9a-8e77-5c0a9d8b4e12",
         "name": "billing@example.com",
         "email_address": "billing@example.com",
-        "friendly_name": null,
+        "from_name": null,
         "unread": 0,
         "last_received": null
       }
@@ -15403,7 +15421,7 @@ Thread Email](/docs/api-reference/inboxes/get-thread-email).
 
 <ParamField type="string">
   The ID of the first message on the current page. Returns the previous, older
-  page.
+  page. Cannot be combined with `after`.
 </ParamField>
 
 ## Response Fields
@@ -15615,7 +15633,7 @@ A thread is a conversation within an inbox, made up of one or more messages.
 
 <ParamField type="string">
   The ID of the first thread on the current page. Returns the previous, newer
-  page.
+  page. Cannot be combined with `after`.
 </ParamField>
 
 ## Folders
@@ -15781,8 +15799,9 @@ Send a reply to a message in an inbox thread.
   </CodeGroup>
 </Warning>
 
-Replies from the inbox address. Recipients are taken from the message you
-reply to.
+Replies from the inbox address. `to` is taken from the message you reply to.
+Add more recipients with `cc` and `bcc`. The total number of recipients can't
+exceed 50.
 
 At least one of `html` or `text` is required.
 
@@ -15803,6 +15822,16 @@ At least one of `html` or `text` is required.
 
 ## Body Parameters
 
+<ParamField type="string | string[]">
+  CC recipient email address. For multiple addresses, send as an array of
+  strings. Not copied from the message you reply to.
+</ParamField>
+
+<ParamField type="string | string[]">
+  BCC recipient email address. For multiple addresses, send as an array of
+  strings. Not copied from the message you reply to.
+</ParamField>
+
 <ParamField type="string">
   The HTML body.
 </ParamField>
@@ -15813,7 +15842,7 @@ At least one of `html` or `text` is required.
 
 <ParamField type="string">
   The subject of the reply. When omitted, the thread subject is used, prefixed
-  with `Re:` if it isn't already.
+  with `Re:` if it isn't already. Max 2000 characters.
 </ParamField>
 
 ## Response Fields
@@ -15847,7 +15876,7 @@ At least one of `html` or `text` is required.
 </ParamField>
 
 <ParamField type="string[]">
-  The Reply-To addresses.
+  Always empty in this response.
 </ParamField>
 
 <ParamField type="string">
@@ -15855,7 +15884,7 @@ At least one of `html` or `text` is required.
 </ParamField>
 
 <ParamField type="string | null">
-  The Message-ID header of the message.
+  Always `null` in this response.
 </ParamField>
 
 <ParamField type="string | null">
@@ -15867,25 +15896,11 @@ At least one of `html` or `text` is required.
 </ParamField>
 
 <ParamField type="array">
-  The attachments on the message.
-
-  <Expandable title="properties">
-    <ParamField type="string">
-      The ID of the attachment.
-    </ParamField>
-
-    <ParamField type="string | null">
-      The filename of the attachment.
-    </ParamField>
-
-    <ParamField type="number | null">
-      The size of the attachment in bytes.
-    </ParamField>
-  </Expandable>
+  Always empty in this response.
 </ParamField>
 
 <ParamField type="boolean">
-  Whether the message has been read.
+  Always `true`.
 </ParamField>
 
 <ParamField type="string">
@@ -15902,6 +15917,8 @@ At least one of `html` or `text` is required.
     inboxId: 'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
     threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
     emailId: '5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60',
+    cc: ['billing@example.com'],
+    bcc: ['records@example.com'],
     html: '<p>Refund issued for order 1041.</p>',
     text: 'Refund issued for order 1041.',
   });
@@ -15912,6 +15929,8 @@ At least one of `html` or `text` is required.
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json' \
        -d $'{
+    "cc": ["billing@example.com"],
+    "bcc": ["records@example.com"],
     "html": "<p>Refund issued for order 1041.</p>",
     "text": "Refund issued for order 1041."
   }'
@@ -15934,21 +15953,15 @@ At least one of `html` or `text` is required.
     "email_id": "6a0c8e58-3d9e-4f7a-8b14-2e3f4a5b6c71",
     "direction": "outbound",
     "from": "support@example.com",
-    "to": ["Ada Lovelace <ada@example.org>"],
+    "to": ["replies@example.org"],
     "cc": ["billing@example.com"],
     "bcc": ["records@example.com"],
-    "reply_to": ["support@example.com"],
+    "reply_to": [],
     "subject": "Re: Refund for order 1041",
-    "message_id": "<6a0c8e58@example.com>",
+    "message_id": null,
     "html": "<p>Refund issued for order 1041.</p>",
     "text": "Refund issued for order 1041.",
-    "attachments": [
-      {
-        "id": "1c7e4a90-5b2d-4f8a-9c31-6d0e1f2a3b44",
-        "filename": "refund-receipt.pdf",
-        "size": 18420
-      }
-    ],
+    "attachments": [],
     "read": true,
     "received_at": "2026-08-05T14:12:04.110Z"
   }
@@ -16260,7 +16273,7 @@ Update the internal inbox name or the name recipients see when sending.
   </CodeGroup>
 </Warning>
 
-At least one of `name` or `friendly_name` is required.
+At least one of `name` or `from_name` is required.
 
 ## Path Parameters
 
@@ -16287,7 +16300,7 @@ At least one of `name` or `friendly_name` is required.
 
   const { data, error } = await resend.inboxes.update(
     'b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1',
-    { name: 'Customer Support', friendlyName: 'Ada from Support' },
+    { name: 'Customer Support', fromName: 'Ada from Support' },
   );
   ```
 
@@ -16297,14 +16310,14 @@ At least one of `name` or `friendly_name` is required.
        -H 'Content-Type: application/json' \
        -d $'{
     "name": "Customer Support",
-    "friendly_name": "Ada from Support"
+    "from_name": "Ada from Support"
   }'
   ```
 
   ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
   resend inboxes update b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1 \
     --name "Customer Support" \
-    --friendly_name "Ada from Support"
+    --from_name "Ada from Support"
   ```
 </RequestExample>
 
@@ -41039,8 +41052,9 @@ Receiving emails requires an extra [MX record](/docs/knowledge-base/how-do-i-avo
   if the required `MX` record is not the lowest priority value for the domain.
 
   Alternatively, you can configure your email service to forward emails to an address
-  that's configured in Resend or forward them directly to the SMTP server address
-  that appears in the receiving `MX` record.
+  on a domain where receiving is verified in Resend. Don't forward directly to the
+  SMTP server address that appears in the receiving `MX` record: Resend drops emails
+  for domains whose receiving `MX` record isn't verified.
 </Warning>
 
 You can now [create a webhook to receive emails](/docs/dashboard/receiving/create-receiving-webhook) at your custom domain in your application.
@@ -41072,8 +41086,10 @@ Once you add the MX record, confirm by clicking the **I've added the record** bu
 
     If you still want to use the same domain both in for Resend and your day-to-day
     email service, you can also set up forwarding rules in your existing email service
-    to forward emails to an address that's configured in Resend or forward them directly
-    to the SMTP server address that appears in the receiving `MX` record.
+    to forward emails to an address on a domain where receiving is verified in Resend.
+    Forwarding directly to the SMTP server address that appears in the receiving `MX`
+    record doesn't work: Resend drops emails for domains whose receiving `MX` record
+    isn't verified.
   </Accordion>
 
   <Accordion title="I have already verified my domain for sending. Do I need to verify it again for receiving?">
@@ -68101,6 +68117,14 @@ Event triggered whenever an **inbox is created**.
         The number of unread threads in the inbox
       </ParamField>
 
+      <ParamField type="number">
+        The number of unsent drafts
+      </ParamField>
+
+      <ParamField type="string | null">
+        ISO 8601 timestamp when a thread in this inbox was last active
+      </ParamField>
+
       <ParamField type="string">
         ISO 8601 timestamp when the inbox was created
       </ParamField>
@@ -68123,8 +68147,10 @@ Event triggered whenever an **inbox is created**.
         "email_address": "support@example.com",
         "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
         "receiving_address": null,
-        "friendly_name": "Ada from Support",
-        "unread": 3,
+        "from_name": "Ada from Support",
+        "unread": 0,
+        "drafts": 0,
+        "last_received": null,
         "created_at": "2026-09-29T12:00:00.000Z"
       }
     }
@@ -69970,6 +69996,14 @@ Event triggered whenever an **inbox's settings change**.
         The number of unread threads in the inbox
       </ParamField>
 
+      <ParamField type="number">
+        The number of unsent drafts
+      </ParamField>
+
+      <ParamField type="string | null">
+        ISO 8601 timestamp when a thread in this inbox was last active
+      </ParamField>
+
       <ParamField type="string">
         ISO 8601 timestamp when the inbox was created
       </ParamField>
@@ -69992,8 +70026,10 @@ Event triggered whenever an **inbox's settings change**.
         "email_address": "support@example.com",
         "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
         "receiving_address": null,
-        "friendly_name": "Ada from Support",
+        "from_name": "Ada from Support",
         "unread": 3,
+        "drafts": 2,
+        "last_received": "2026-09-29T11:42:08.000Z",
         "created_at": "2026-09-01T09:30:00.000Z"
       }
     }

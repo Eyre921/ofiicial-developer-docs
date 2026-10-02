@@ -105,10 +105,10 @@ Regional endpoints use your existing API keys and SDKs. You only change the base
 | Australia      | `api.au.deepgram.com` | Within Australia                               |
 | India          | `api.in.deepgram.com` | Within India                                   |
 
-All regional endpoints support the same APIs:
+All regional endpoints support these APIs. Feature-level exceptions are listed under Known Limitations on [Regional Endpoints](/reference/regional-endpoints):
 
-* **Speech-to-Text** — Nova and Flux models (Whisper is not supported)
-* **Text-to-Speech** — Aura and Flux models
+* **Speech-to-Text**: Nova and Flux STT models (Whisper is not supported)
+* **Text-to-Speech**: Aura and Flux TTS models
 * **Voice Agent**
 * **Text Intelligence**
 

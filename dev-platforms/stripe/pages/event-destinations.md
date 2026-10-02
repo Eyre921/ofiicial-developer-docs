@@ -233,6 +233,29 @@ In the **Events** tab in Workbench, you can access events within the last 13 mon
 
 Use the [Retrieve event](https://docs.stripe.com/api/v2/core/events/retrieve.md) and [List events](https://docs.stripe.com/api/v2/core/events/list.md) APIs to access events with their full payload from the past 30 days.
 
+## Recover from missing event types 
+
+If your destination’s `enabled_events` list omits event types your integration needs, add those types and retrieve available historical events. Updating `enabled_events` affects future delivery only. Stripe doesn’t automatically deliver earlier events.
+
+Before retrieving events, check the [event permissions](https://docs.stripe.com/event-destinations.md#event-permissions) and query the account context that produced them. For connected accounts, use the [Stripe-Account header](https://docs.stripe.com/connect/authentication.md#stripe-account-header). For organization accounts or other account relationships, use the [Stripe-Context header](https://docs.stripe.com/context.md). If your destination receives events from multiple accounts, query each affected account context separately.
+
+1. Update `enabled_events` in the [Dashboard](https://dashboard.stripe.com/webhooks) or with the [event destinations API](https://docs.stripe.com/api/v2/event-destinations.md) to include the missing event types.
+
+2. Retrieve and process historical events. Events that weren’t delivered to your destination might still be available through the Events API for 30 days. Use the API that matches your event format:
+
+   - **Snapshot events**: Use [List events (v1)](https://docs.stripe.com/api/events/list.md) with the `type` parameter to filter by event type.
+   - **Thin events**: Use [List events (v2)](https://docs.stripe.com/api/v2/core/events/list.md) with the `types` array parameter to filter by event type, then [retrieve the complete event](https://docs.stripe.com/api/v2/core/events/retrieve.md).
+
+   Process the returned `Event` objects in your integration. If you need the latest resource state, retrieve the related resource separately.
+
+3. Inspect older events in [Events](https://dashboard.stripe.com/workbench/events) in Workbench. Events older than 30 days have summaries with truncated fields, and you can’t retrieve their full payloads or resend them. Summaries are available for up to 13 months. See [Event retention](https://docs.stripe.com/event-destinations.md#event-retention) for details.
+
+### Amazon EventBridge recovery constraints
+
+For Amazon EventBridge destinations, you can’t manually resend events through Stripe. Follow the recovery steps in this section to retrieve available events from the past 30 days and process them directly in your application.
+
+An EventBridge archive can’t recover events that Stripe never delivered to your event bus. For guidance on archiving events that the bus receives, see [EventBridge delivery behaviors](https://docs.stripe.com/event-destinations/eventbridge.md#event-delivery-behaviors).
+
 ## Event destination limits
 
 You can register a maximum of 16 event destinations in each livemode or sandbox account. When registering a snapshot event destination with a version different from your merchant’s default version, you can register up to three uniquely versioned snapshot event destinations.

@@ -22,8 +22,8 @@ Adaptive rate limit ceilings depend on the model's total parameter count. Smalle
 
 | Tier | Total parameters | Total Prompt TPM | Uncached Prompt TPM | Generated TPM |
 | - | - | - | - | - |
-| **Small** | \< 400B | 64.8M | 16.2M | 648k |
-| **Medium** | 400B – \< 1.6T | 43.2M | 10.8M | 432k |
+| **Small** | \< 600B | 108M | 27M | 1.08M |
+| **Medium** | 600B – \< 1.6T | 43.2M | 10.8M | 432k |
 | **Large** | ≥ 1.6T | 21.6M | 5.4M | 216k |
 
 Fast, Priority, and US-only variants of a model share the same tier and ceilings as the base model. Models without a known parameter count use **Large** ceilings.
@@ -48,7 +48,7 @@ Adaptive rate limits have an upper and lower bound. A higher account [Spending T
   </Accordion>
 
   <Accordion title="How is my model's ceiling tier determined?">
-    Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 400B), **Medium** (400B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values.
+    Ceiling tiers are based on the model's **total parameter count**: **Small** (\< 600B), **Medium** (600B – \< 1.6T), or **Large** (≥ 1.6T). See [Model size tiers](#model-size-tiers) for the ceiling values.
   </Accordion>
 
   <Accordion title="What should I do first when I see 429s?">

@@ -16,8 +16,6 @@ export const BYOK_PAYG_MONTHLY_LIST_PRICE_THRESHOLD_USD = '$25,000';
 
 export const BYOK_FEE_PERCENTAGE = '5';
 
-export const BYOK_ENTERPRISE_MONTHLY_LIST_PRICE_THRESHOLD_USD = '$200,000';
-
 ## Bring your own API Keys
 
 OpenRouter supports both OpenRouter credits and the
@@ -38,7 +36,7 @@ normally on OpenRouter** and will be deducted from your OpenRouter
 credits. The free allowance is plan-dependent and measured by list-price
 inference cost, not request count: Pay-as-you-go includes
 {BYOK_PAYG_MONTHLY_LIST_PRICE_THRESHOLD_USD} per month, while Enterprise
-includes {BYOK_ENTERPRISE_MONTHLY_LIST_PRICE_THRESHOLD_USD}. See the
+allowances are custom. See the
 [pricing page](https://openrouter.ai/pricing) for details.
 
 ### Key Priority and Fallback

@@ -434,6 +434,46 @@ Each entity object in the `entities` array contains the following fields:
 | `raw_value`  | Included when formatting is enabled | Included when formatting is enabled |
 | Availability | Always                              | Only in `is_final: true` messages   |
 
+## Multichannel Audio
+
+When you send multichannel audio with [`multichannel=true`](/docs/multichannel), how entity recognition uses context from other channels depends on whether the request is pre-recorded or streaming.
+
+|              | Context used to recognize entities        |
+| ------------ | ----------------------------------------- |
+| Pre-recorded | All English channels in the request       |
+| Streaming    | Only the channel the entity was spoken on |
+
+### Pre-recorded: cross-channel context
+
+For pre-recorded audio, entity recognition considers the full conversation across all channels. Each channel still gets its own transcript and `entities` array, but an entity's label can depend on what was said on other channels.
+
+This matters most for split-channel calls, where a question is on one channel and the answer is on another. For example, an agent on channel 0 asks for a card's security code and expiration date, and the customer answers on channel 1:
+
+| Channel      | Speech                                                                                                      |
+| ------------ | ----------------------------------------------------------------------------------------------------------- |
+| 0 (agent)    | Can you read me the three digit security code on the back of the card? ... And what is the expiration date? |
+| 1 (customer) | Sure. It is four one seven. ... Oh nine twenty eight.                                                       |
+
+| Request                            | Entities on channel 1                                               |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| Both channels, `multichannel=true` | `CVV`: four one seven `CREDIT_CARD_EXPIRATION`: O nine twenty eight |
+| Channel 1 sent by itself           | `CVV`: four one seven `CVV`: O nine twenty eight                    |
+
+With the agent's question available, "O nine twenty eight" is correctly labeled as an expiration date.
+
+Cross-channel context applies to every feature built on entity recognition, so it also affects:
+
+* **[Redaction](/docs/redaction):** entity-based redaction (`pci`, `pii`, `phi`, and specific entity types) uses the same labels. In the example above, `redact=credit_card_expiration` replaces the expiration date with `[CREDIT_CARD_EXPIRATION_1]` in the multichannel request, but leaves it unredacted when channel 1 is sent by itself.
+* **[Smart Formatting](/docs/smart-format):** entity-aware formatting uses the same labels. In the example above, the expiration date formats as `09/28` in the multichannel request and as `0928` when channel 1 is sent by itself.
+
+Only English channels supply context, because entity recognition is English-only. If you use [language detection](/docs/language-detection) and a channel is detected as another language, that channel's speech is not used to label entities on the other channels.
+
+As a result, the same audio can return different entities depending on whether a channel is sent alone or together with the other channels.
+
+### Streaming: per-channel only
+
+For streaming audio, entities on each channel are recognized using only that channel's speech. If you need cross-channel context for entity detection or redaction on streaming calls, send the recording as a pre-recorded request after the call ends.
+
 ## Identifiable Entities
 
 View all options here: [Supported Entity Types](/docs/supported-entity-types)

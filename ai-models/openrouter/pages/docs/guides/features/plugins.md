@@ -54,6 +54,8 @@ export const API_KEY_REF = '<OPENROUTER_API_KEY>';
 
 OpenRouter plugins extend the capabilities of any model by injecting or mutating a request or response to add functionality like PDF processing, automatic JSON repair, and context compression. Unlike [server tools](/docs/guides/features/server-tools) (which the model can call 0-N times), plugins always run once when enabled. Plugins can be enabled per-request via the API or configured as defaults for all your API requests through the [Plugins settings page](https://openrouter.ai/settings/plugins).
 
+Plugins use the `plugins` array; server tools use the `tools` array. [ZDR enforcement](/docs/guides/features/zdr) filters the model inference endpoint, not plugin backends, with one exception: the [Web Search plugin](/docs/guides/features/plugins/web-search) rejects the Firecrawl engine when ZDR is enforced in your account privacy settings or a guardrail. On [In-Region Routing](/docs/guides/features/in-region-routing) endpoints, a plugin engine that is not resident in the region returns an error. See [Privacy and regional availability](/docs/guides/features/server-tools#privacy-and-regional-availability).
+
 ## Available Plugins
 
 OpenRouter currently supports the following plugins:

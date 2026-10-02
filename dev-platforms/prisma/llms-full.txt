@@ -7825,272 +7825,6 @@ One habit pays for all of this. Ship each service's fake from its own package as
 - [`Databases`](https://www.prisma.io/docs/composer/databases): Give a service a Postgres database, either as a plain connection or typed by a Prisma ORM contract with managed migrations.
 - [`Deploying`](https://www.prisma.io/docs/composer/deploying): Deploy a Prisma App to production or an isolated stage, run it in CI, and tear environments down safely.
 
-# Concepts (/docs/console/concepts)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-Location: Console > Concepts
-
-The Console workflows are based on five main concepts:
-
-* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
-* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
-* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
-* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
-* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
-
-Here is a visual illustration of how these concepts relate to each other:
-
-![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
-
-## User account [#user-account]
-
-A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
-
-If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-
-## Workspace [#workspace]
-
-You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
-
-In each workspace, you can:
-
-* view and manage all projects (and their resources) in that workspace.
-* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
-* view the usage of your enabled Prisma products across all projects in that workspace.
-* invite other users to collaborate in the workspace.
-* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
-
-## Project [#project]
-
-In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
-
-In each project, you can:
-
-* view and manage all resources (like databases) in that project.
-
-The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
-
-## Branch [#branch]
-
-For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
-
-```text
-workspace → project → branch → { apps, databases }
-```
-
-A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
-
-* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
-* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
-* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
-
-Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
-
-## Resources [#resources]
-
-Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
-
-* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
-* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
-* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
-
-In each project, you can:
-
-* Create and manage multiple resources (databases or environments)
-* Generate connection strings specific to each resource
-* Configure product-specific settings:
-  * **For Prisma Postgres databases**:
-    * View database metrics and performance
-    * Configure connection settings
-    * Manage database users and permissions
-  * **For Accelerate resources**:
-    * Set your database connection string
-    * Configure the region for connection pooling
-    * Adjust connection pool size and performance settings
-    * Set query duration and response size limits
-    * Enable static IP for secure connections
-
-The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
-
-## Related pages
-
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
-
-# Getting Started (/docs/console/getting-started)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Quick start guide for setting up and using the Prisma Console
-
-Location: Console > Getting Started
-
-This guide walks you through setting up your Console account and creating your first project.
-
-## Prerequisites [#prerequisites]
-
-* A GitHub account (for authentication)
-* A Prisma project (optional, but recommended)
-
-## Step 1: Create your account [#step-1-create-your-account]
-
-1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
-2. Click **Sign in with GitHub**
-3. Authorize Prisma Console to access your GitHub account
-
-You now have a Console account with a default workspace.
-
-## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
-
-When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
-
-### Create a workspace (optional) [#create-a-workspace-optional]
-
-To create an additional workspace:
-
-1. Click the workspace dropdown in the top navigation
-2. Click **Create Workspace**
-3. Enter a name for your workspace
-4. Click **Create**
-
-## Step 3: Create a project [#step-3-create-a-project]
-
-Projects organize your databases and environments within a workspace.
-
-### Using the Console web interface [#using-the-console-web-interface]
-
-1. Navigate to your workspace
-2. Click **Create Project**
-3. Enter a project name
-4. Click **Create**
-
-## Step 4: Create a resource [#step-4-create-a-resource]
-
-Resources are the actual databases or environments within your project.
-
-### For Prisma Postgres [#for-prisma-postgres]
-
-1. Navigate to your project
-2. Click **Create Database**
-3. Enter a database name
-4. Select a region
-5. Click **Create**
-
-### For Accelerate [#for-accelerate]
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
-> 
-> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-
-1. Navigate to your project
-2. Click **Create Environment**
-3. Enter an environment name (e.g., "production")
-4. Click **Create**
-
-## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
-
-Connection strings authenticate your application's requests to Prisma products.
-
-### Using the Console web interface [#using-the-console-web-interface-1]
-
-1. Navigate to your resource (database or environment)
-2. Click **Connection Strings** tab
-3. Click **Create Connection String**
-4. Enter a name for the connection string
-5. Copy the connection string and store it securely
-6. Click **Done**
-
-## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
-
-Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
-
-```bash
-# Application traffic over pooled TCP
-DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
-
-# Prisma CLI commands and administrative tooling
-DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
-```
-
-In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
-> 
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-
-## Next steps [#next-steps]
-
-* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
-* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
-* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-# Console (/docs/console)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use the Console to manage and integrate Prisma products into your application.
-
-Location: Console
-
-## Overview [#overview]
-
-The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
-
-* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
-* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
-* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
-
-## Getting started [#getting-started]
-
-To start using Prisma products, you'll need to:
-
-1. Create a Console account
-2. Set up a workspace for your team
-3. Create a project for your application
-4. Generate connection strings for your resources
-
-Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
-
-## Core concepts [#core-concepts]
-
-The Console is organized around four main concepts:
-
-* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
-* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
-* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
-* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
-
-Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
-
-## Console CLI [#console-cli]
-
-In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
-
-Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
-
 # Alchemy (/docs/compute/alchemy)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -11398,6 +11132,272 @@ Send something early even when the real payload is not ready, and keep data flow
 - [`Deploy on push`](https://www.prisma.io/docs/compute/deploy-on-push): Graduate a Composer app from manual deploys to a Git workflow, with production deploys on push and an isolated preview environment per branch.
 - [`Deployments`](https://www.prisma.io/docs/compute/deployments): How deploys create service versions on Prisma Compute, and how to inspect, promote, roll back, start, and stop them.
 
+# Concepts (/docs/console/concepts)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+Location: Console > Concepts
+
+The Console workflows are based on five main concepts:
+
+* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
+* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
+* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
+* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
+* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
+
+Here is a visual illustration of how these concepts relate to each other:
+
+![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
+
+## User account [#user-account]
+
+A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
+
+If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+
+## Workspace [#workspace]
+
+You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
+
+In each workspace, you can:
+
+* view and manage all projects (and their resources) in that workspace.
+* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
+* view the usage of your enabled Prisma products across all projects in that workspace.
+* invite other users to collaborate in the workspace.
+* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
+
+## Project [#project]
+
+In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
+
+In each project, you can:
+
+* view and manage all resources (like databases) in that project.
+
+The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
+
+## Branch [#branch]
+
+For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
+
+```text
+workspace → project → branch → { apps, databases }
+```
+
+A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
+
+* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
+* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
+* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
+
+Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
+
+## Resources [#resources]
+
+Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
+
+* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
+* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
+* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
+
+In each project, you can:
+
+* Create and manage multiple resources (databases or environments)
+* Generate connection strings specific to each resource
+* Configure product-specific settings:
+  * **For Prisma Postgres databases**:
+    * View database metrics and performance
+    * Configure connection settings
+    * Manage database users and permissions
+  * **For Accelerate resources**:
+    * Set your database connection string
+    * Configure the region for connection pooling
+    * Adjust connection pool size and performance settings
+    * Set query duration and response size limits
+    * Enable static IP for secure connections
+
+The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
+
+## Related pages
+
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+
+# Getting Started (/docs/console/getting-started)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Quick start guide for setting up and using the Prisma Console
+
+Location: Console > Getting Started
+
+This guide walks you through setting up your Console account and creating your first project.
+
+## Prerequisites [#prerequisites]
+
+* A GitHub account (for authentication)
+* A Prisma project (optional, but recommended)
+
+## Step 1: Create your account [#step-1-create-your-account]
+
+1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
+2. Click **Sign in with GitHub**
+3. Authorize Prisma Console to access your GitHub account
+
+You now have a Console account with a default workspace.
+
+## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
+
+When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
+
+### Create a workspace (optional) [#create-a-workspace-optional]
+
+To create an additional workspace:
+
+1. Click the workspace dropdown in the top navigation
+2. Click **Create Workspace**
+3. Enter a name for your workspace
+4. Click **Create**
+
+## Step 3: Create a project [#step-3-create-a-project]
+
+Projects organize your databases and environments within a workspace.
+
+### Using the Console web interface [#using-the-console-web-interface]
+
+1. Navigate to your workspace
+2. Click **Create Project**
+3. Enter a project name
+4. Click **Create**
+
+## Step 4: Create a resource [#step-4-create-a-resource]
+
+Resources are the actual databases or environments within your project.
+
+### For Prisma Postgres [#for-prisma-postgres]
+
+1. Navigate to your project
+2. Click **Create Database**
+3. Enter a database name
+4. Select a region
+5. Click **Create**
+
+### For Accelerate [#for-accelerate]
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
+> 
+> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+
+1. Navigate to your project
+2. Click **Create Environment**
+3. Enter an environment name (e.g., "production")
+4. Click **Create**
+
+## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
+
+Connection strings authenticate your application's requests to Prisma products.
+
+### Using the Console web interface [#using-the-console-web-interface-1]
+
+1. Navigate to your resource (database or environment)
+2. Click **Connection Strings** tab
+3. Click **Create Connection String**
+4. Enter a name for the connection string
+5. Copy the connection string and store it securely
+6. Click **Done**
+
+## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
+
+Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
+
+```bash
+# Application traffic over pooled TCP
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
+
+# Prisma CLI commands and administrative tooling
+DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
+```
+
+In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
+> 
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+
+## Next steps [#next-steps]
+
+* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
+* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
+* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+# Console (/docs/console)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use the Console to manage and integrate Prisma products into your application.
+
+Location: Console
+
+## Overview [#overview]
+
+The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
+
+* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
+* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
+* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
+
+## Getting started [#getting-started]
+
+To start using Prisma products, you'll need to:
+
+1. Create a Console account
+2. Set up a workspace for your team
+3. Create a project for your application
+4. Generate connection strings for your resources
+
+Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
+
+## Core concepts [#core-concepts]
+
+The Console is organized around four main concepts:
+
+* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
+* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
+* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
+* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
+
+Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
+
+## Console CLI [#console-cli]
+
+In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
+
+Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+
 # Overview (/docs/guides)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -14109,6 +14109,198 @@ Because a database library is an extension, a community package can add a databa
 - [`Overview`](https://www.prisma.io/docs/orm/data-modeling): Describe the data your application needs with models, primary keys, scalar fields, and relations.
 - [`Prisma 7`](https://www.prisma.io/docs/orm/v7): Prisma ORM is a next-generation Node.js and TypeScript ORM that provides type-safe database access, migrations, and a visual data editor.
 
+# Query Insights (/docs/query-insights)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes with Prisma Postgres.
+
+Location: Query Insights
+
+Query Insights is built into Prisma Postgres and helps you understand which queries are slow, why they are expensive, and what to change next. It does not automatically rewrite your queries or schema.
+
+> [!NOTE]
+> Query Insights replaces Prisma Optimize and is now included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
+
+## Dashboard [#dashboard]
+
+The main Query Insights view gives you a live summary of query activity for your database.
+
+At the top of the page, you can inspect:
+
+* Average latency over the selected period
+* Queries per second
+* A time-based chart for each metric
+* Hover values for exact timestamps and measurements
+* Playback controls for stepping through captured activity
+
+This makes it easier to see whether a problem is steady, bursty, or tied to a short window of activity.
+
+## Query list [#query-list]
+
+Below the charts, Query Insights shows a list of grouped queries.
+
+Each row includes:
+
+* Latency
+* Executions
+* Reads
+* Last seen
+* The SQL statement shape
+
+You can use the controls above the table to:
+
+* Filter results by table
+* Sort the list to surface the most important queries first
+* Focus on repeated, high-read, or recently executed statements
+
+Use this view to decide which query patterns to investigate first.
+
+## Query detail [#query-detail]
+
+Selecting a query opens a detail view for that statement.
+
+The detail view shows:
+
+* A stat summary describing the query's table, execution count, average latency, and reads per call
+* The full SQL statement
+* An AI-generated analysis explaining whether the query needs optimization and why
+* A copyable prompt you can paste directly into your editor or an AI coding assistant to apply the suggested fix
+
+The AI analysis describes the likely cause of the performance issue, the specific change it recommends, and the expected impact. The copyable prompt includes your actual query along with context, so you can paste it into your editor or a tool like Cursor, Copilot, or Claude and get a concrete code change without switching context.
+
+> [!NOTE]
+> Treat the AI analysis as a starting point, not a final answer. Review any suggested change before shipping it.
+
+## Prisma ORM attribution [#prisma-orm-attribution]
+
+When using Prisma ORM, Query Insights can trace the full chain from your application code to the SQL it generates. This means you can see which `prisma.*` call produced a slow query, even when a single Prisma call expands into multiple SQL statements.
+
+For raw SQL or queries issued outside Prisma ORM, Query Insights still shows full SQL behavior, but ORM-level attribution requires the steps below.
+
+### Setup [#setup]
+
+To enable ORM attribution, install the `@prisma/sqlcommenter-query-insights` package:
+
+```bash
+npm install @prisma/sqlcommenter-query-insights
+```
+
+Then pass it to the `comments` option in your `PrismaClient` constructor:
+
+```ts
+import "dotenv/config";
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { prismaQueryInsights } from "@prisma/sqlcommenter-query-insights";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+
+export const prisma = new PrismaClient({
+  adapter: adapter,
+  comments: [prismaQueryInsights()],
+})
+
+```
+
+This adds SQL comment annotations to queries so Query Insights can map SQL statements back to the Prisma calls that generated them. It is built on top of the [SQL comments](https://www.prisma.io/docs/orm/v7/prisma-client/observability-and-logging/sql-comments) feature in Prisma Client.
+
+## Availability [#availability]
+
+Query Insights is included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
+
+## Typical issues [#typical-issues]
+
+Query Insights is most useful when it connects a database symptom to a concrete code change.
+
+| Issue              | What you might see                   | Typical fix                                 |
+| ------------------ | ------------------------------------ | ------------------------------------------- |
+| N+1 queries        | High query count for one request     | Use nested reads, batching, or joins        |
+| Missing indexes    | High reads relative to rows returned | Add the right index for the filter pattern  |
+| Over-fetching      | Wide rows or large payloads          | Use `select` to fetch fewer fields          |
+| Offset pagination  | Reads grow on deeper pages           | Switch to cursor pagination                 |
+| Large nested reads | High reads and large payloads        | Limit fields, limit depth, or split queries |
+| Repeated queries   | The same statement shape runs often  | Cache or reuse results when appropriate     |
+
+## How to use it [#how-to-use-it]
+
+When an endpoint gets slow, Query Insights gives you a practical workflow:
+
+1. Open Query Insights and scan the latency and queries-per-second charts.
+2. Sort or filter the query list to isolate the expensive statement.
+3. Open the query detail view.
+4. Read the AI analysis and inspect the SQL.
+5. Copy the suggested prompt and paste it into your editor.
+6. Review the suggested change, then apply it in code or schema.
+7. Re-run the workload and compare the same signals again.
+
+In most cases, the next change falls into one of these buckets:
+
+* Change the Prisma query shape
+* Add or adjust an index
+* Return fewer fields or fewer rows
+* Cache repeated work
+
+## Example [#example]
+
+A common example is an N+1 pattern:
+
+```ts
+const users = await prisma.user.findMany({
+  select: { id: true, name: true, email: true },
+});
+
+for (const user of users) {
+  await prisma.post.findMany({
+    where: { authorId: user.id },
+    select: { id: true, title: true },
+  });
+}
+```
+
+Query Insights would typically show:
+
+* One query to load users
+* Many repeated queries to load posts
+* A high execution count for the same statement shape
+* More reads and latency than the route should need
+
+In this case, the likely fix is to load the related posts in one nested read:
+
+```ts
+const usersWithPosts = await prisma.user.findMany({
+  select: {
+    id: true,
+    name: true,
+    email: true,
+    posts: {
+      select: {
+        id: true,
+        title: true,
+      },
+    },
+  },
+});
+```
+
+The same pattern applies to other issues. Query Insights helps you identify the expensive query shape, understand why it is expensive, and choose the next change to verify.
+
+## Next steps [#next-steps]
+
+* Review [Connection pooling](https://www.prisma.io/docs/postgres/database/connection-pooling) for high-concurrency workloads
+* Use [Connecting to your database](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) when choosing connection strings for other tools
+* See [Prisma Client query optimization](https://www.prisma.io/docs/orm/v7/prisma-client/queries/advanced/query-optimization-performance) for related Prisma ORM patterns
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+
 # Best Postgres for AI apps (/docs/postgres/best-postgres-for-ai-apps)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -15386,198 +15578,6 @@ To resolve this issue, consider the following options:
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
 - [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
-
-# Query Insights (/docs/query-insights)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes with Prisma Postgres.
-
-Location: Query Insights
-
-Query Insights is built into Prisma Postgres and helps you understand which queries are slow, why they are expensive, and what to change next. It does not automatically rewrite your queries or schema.
-
-> [!NOTE]
-> Query Insights replaces Prisma Optimize and is now included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
-
-## Dashboard [#dashboard]
-
-The main Query Insights view gives you a live summary of query activity for your database.
-
-At the top of the page, you can inspect:
-
-* Average latency over the selected period
-* Queries per second
-* A time-based chart for each metric
-* Hover values for exact timestamps and measurements
-* Playback controls for stepping through captured activity
-
-This makes it easier to see whether a problem is steady, bursty, or tied to a short window of activity.
-
-## Query list [#query-list]
-
-Below the charts, Query Insights shows a list of grouped queries.
-
-Each row includes:
-
-* Latency
-* Executions
-* Reads
-* Last seen
-* The SQL statement shape
-
-You can use the controls above the table to:
-
-* Filter results by table
-* Sort the list to surface the most important queries first
-* Focus on repeated, high-read, or recently executed statements
-
-Use this view to decide which query patterns to investigate first.
-
-## Query detail [#query-detail]
-
-Selecting a query opens a detail view for that statement.
-
-The detail view shows:
-
-* A stat summary describing the query's table, execution count, average latency, and reads per call
-* The full SQL statement
-* An AI-generated analysis explaining whether the query needs optimization and why
-* A copyable prompt you can paste directly into your editor or an AI coding assistant to apply the suggested fix
-
-The AI analysis describes the likely cause of the performance issue, the specific change it recommends, and the expected impact. The copyable prompt includes your actual query along with context, so you can paste it into your editor or a tool like Cursor, Copilot, or Claude and get a concrete code change without switching context.
-
-> [!NOTE]
-> Treat the AI analysis as a starting point, not a final answer. Review any suggested change before shipping it.
-
-## Prisma ORM attribution [#prisma-orm-attribution]
-
-When using Prisma ORM, Query Insights can trace the full chain from your application code to the SQL it generates. This means you can see which `prisma.*` call produced a slow query, even when a single Prisma call expands into multiple SQL statements.
-
-For raw SQL or queries issued outside Prisma ORM, Query Insights still shows full SQL behavior, but ORM-level attribution requires the steps below.
-
-### Setup [#setup]
-
-To enable ORM attribution, install the `@prisma/sqlcommenter-query-insights` package:
-
-```bash
-npm install @prisma/sqlcommenter-query-insights
-```
-
-Then pass it to the `comments` option in your `PrismaClient` constructor:
-
-```ts
-import "dotenv/config";
-import { PrismaClient } from "../generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { prismaQueryInsights } from "@prisma/sqlcommenter-query-insights";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
-
-export const prisma = new PrismaClient({
-  adapter: adapter,
-  comments: [prismaQueryInsights()],
-})
-
-```
-
-This adds SQL comment annotations to queries so Query Insights can map SQL statements back to the Prisma calls that generated them. It is built on top of the [SQL comments](https://www.prisma.io/docs/orm/v7/prisma-client/observability-and-logging/sql-comments) feature in Prisma Client.
-
-## Availability [#availability]
-
-Query Insights is included with Prisma Postgres at no extra cost. You can try it today in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=query-insights).
-
-## Typical issues [#typical-issues]
-
-Query Insights is most useful when it connects a database symptom to a concrete code change.
-
-| Issue              | What you might see                   | Typical fix                                 |
-| ------------------ | ------------------------------------ | ------------------------------------------- |
-| N+1 queries        | High query count for one request     | Use nested reads, batching, or joins        |
-| Missing indexes    | High reads relative to rows returned | Add the right index for the filter pattern  |
-| Over-fetching      | Wide rows or large payloads          | Use `select` to fetch fewer fields          |
-| Offset pagination  | Reads grow on deeper pages           | Switch to cursor pagination                 |
-| Large nested reads | High reads and large payloads        | Limit fields, limit depth, or split queries |
-| Repeated queries   | The same statement shape runs often  | Cache or reuse results when appropriate     |
-
-## How to use it [#how-to-use-it]
-
-When an endpoint gets slow, Query Insights gives you a practical workflow:
-
-1. Open Query Insights and scan the latency and queries-per-second charts.
-2. Sort or filter the query list to isolate the expensive statement.
-3. Open the query detail view.
-4. Read the AI analysis and inspect the SQL.
-5. Copy the suggested prompt and paste it into your editor.
-6. Review the suggested change, then apply it in code or schema.
-7. Re-run the workload and compare the same signals again.
-
-In most cases, the next change falls into one of these buckets:
-
-* Change the Prisma query shape
-* Add or adjust an index
-* Return fewer fields or fewer rows
-* Cache repeated work
-
-## Example [#example]
-
-A common example is an N+1 pattern:
-
-```ts
-const users = await prisma.user.findMany({
-  select: { id: true, name: true, email: true },
-});
-
-for (const user of users) {
-  await prisma.post.findMany({
-    where: { authorId: user.id },
-    select: { id: true, title: true },
-  });
-}
-```
-
-Query Insights would typically show:
-
-* One query to load users
-* Many repeated queries to load posts
-* A high execution count for the same statement shape
-* More reads and latency than the route should need
-
-In this case, the likely fix is to load the related posts in one nested read:
-
-```ts
-const usersWithPosts = await prisma.user.findMany({
-  select: {
-    id: true,
-    name: true,
-    email: true,
-    posts: {
-      select: {
-        id: true,
-        title: true,
-      },
-    },
-  },
-});
-```
-
-The same pattern applies to other issues. Query Insights helps you identify the expensive query shape, understand why it is expensive, and choose the next change to verify.
-
-## Next steps [#next-steps]
-
-* Review [Connection pooling](https://www.prisma.io/docs/postgres/database/connection-pooling) for high-concurrency workloads
-* Use [Connecting to your database](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) when choosing connection strings for other tools
-* See [Prisma Client query optimization](https://www.prisma.io/docs/orm/v7/prisma-client/queries/advanced/query-optimization-performance) for related Prisma ORM patterns
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
 
 # Using API Clients (/docs/rest-api/api-clients)
 
@@ -83062,1568 +83062,6 @@ You now have a Next.js application where Clerk handles authentication, new sign-
 
 - [`Clerk (with Astro)`](https://www.prisma.io/docs/guides/authentication/clerk/astro): Learn how to use Prisma ORM in an Astro app with Clerk Auth
 
-# Expand-and-contract migrations (Prisma ORM v7) (/docs/guides/v7/database/data-migration)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
-
-Location: Guides > v7 > Database > Expand-and-contract migrations
-
-## Introduction [#introduction]
-
-When you change your database schema in production, you need to keep the data consistent and avoid downtime. This guide shows you how to use the expand and contract pattern to safely migrate data between columns. The example replaces a boolean field with an enum field while preserving existing data.
-
-## Prerequisites [#prerequisites]
-
-Before starting this guide, make sure you have:
-
-* Node.js installed (version 20 or higher)
-* A Prisma ORM project with an existing schema
-* A supported database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
-* Access to both development and production databases
-* Basic understanding of Git branching
-* Basic familiarity with TypeScript
-
-## 1. Set up your environment [#1-set-up-your-environment]
-
-### 1.1. Review initial schema [#11-review-initial-schema]
-
-Start with a basic schema containing a Post model:
-
-```prisma
-generator client {
-  provider = "prisma-client"
-  output   = "./generated/prisma"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-}
-```
-
-### 1.2. Configure Prisma [#12-configure-prisma]
-
-Create a `prisma.config.ts` file in the root of your project with the following content:
-
-```typescript title="prisma.config.ts"
-import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-> [!NOTE]
-> You'll need to install the required packages. If you haven't already, install them using your package manager:
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add prisma@prev tsx @types/pg --dev
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add prisma@prev tsx @types/pg --save-dev
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add prisma@prev tsx @types/pg --dev
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install prisma@prev tsx @types/pg --save-dev
->     ```
->
-> 
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install @prisma/client@7 @prisma/adapter-pg pg dotenv
->     ```
->
-> 
-> 
-> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
-
-### 1.3. Create a development branch [#13-create-a-development-branch]
-
-Create a new branch for your changes:
-
-```bash
-git checkout -b create-status-field
-```
-
-## 2. Expand the schema [#2-expand-the-schema]
-
-### 2.1. Add new column [#21-add-new-column]
-
-Update your schema to add the new Status enum and field:
-
-```prisma
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean? @default(false)
-  status    Status   @default(Unknown)
-}
-
-enum Status {
-  Unknown
-  Draft
-  InProgress
-  InReview
-  Published
-}
-```
-
-### 2.2. Create migration [#22-create-migration]
-
-Generate the migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name add-status-column
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name add-status-column
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name add-status-column
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name add-status-column
-```
-
-Then generate Prisma Client:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-## 3. Migrate the data [#3-migrate-the-data]
-
-### 3.1. Create migration script [#31-create-migration-script]
-
-Create a new TypeScript file for the data migration:
-
-```typescript
-import { PrismaClient } from "../generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import "dotenv/config";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL,
-});
-
-const prisma = new PrismaClient({
-  adapter,
-});
-
-async function main() {
-  await prisma.$transaction(async (tx) => {
-    const posts = await tx.post.findMany();
-    for (const post of posts) {
-      await tx.post.update({
-        where: { id: post.id },
-        data: {
-          status: post.published ? "Published" : "Unknown",
-        },
-      });
-    }
-  });
-}
-
-main()
-  .catch(async (e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => await prisma.$disconnect());
-```
-
-### 3.2. Set up migration script [#32-set-up-migration-script]
-
-Add the migration script to your package.json:
-
-```json
-{
-  "scripts": {
-    "data-migration:add-status-column": "tsx ./prisma/migrations/<migration-timestamp>/data-migration.ts"
-  }
-}
-```
-
-### 3.3. Execute migration [#33-execute-migration]
-
-1. Update your DATABASE_URL to point to the production database
-2. Run the migration script:
-
-  
-
-#### bun
-
-```bash
-bun run data-migration:add-status-column
-```
-
-#### pnpm
-
-```bash
-pnpm run data-migration:add-status-column
-```
-
-#### yarn
-
-```bash
-yarn data-migration:add-status-column
-```
-
-#### npm
-
-```bash
-npm run data-migration:add-status-column
-```
-
-## 4. Contract the schema [#4-contract-the-schema]
-
-### 4.1. Create cleanup branch [#41-create-cleanup-branch]
-
-Create a new branch for removing the old column:
-
-```bash
-git checkout -b drop-published-column
-```
-
-### 4.2. Remove old column [#42-remove-old-column]
-
-Update your schema to remove the published field:
-
-```prisma
-model Post {
-  id      Int      @id @default(autoincrement())
-  title   String
-  content String?
-  status  Status   @default(Draft)
-}
-
-enum Status {
-  Draft
-  InProgress
-  InReview
-  Published
-}
-```
-
-### 4.3. Generate cleanup migration [#43-generate-cleanup-migration]
-
-Create and run the final migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name drop-published-column
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name drop-published-column
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name drop-published-column
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name drop-published-column
-```
-
-Then generate Prisma Client:
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-## 5. Deploy to production [#5-deploy-to-production]
-
-### 5.1. Set up deployment [#51-set-up-deployment]
-
-Add the following command to your CI/CD pipeline:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate deploy
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate deploy
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate deploy
-```
-
-#### npm
-
-```bash
-npx prisma migrate deploy
-```
-
-### 5.2. Monitor deployment [#52-monitor-deployment]
-
-Watch for any errors in your logs and monitor your application's behavior after deployment.
-
-## Troubleshooting [#troubleshooting]
-
-### Common issues and solutions [#common-issues-and-solutions]
-
-1. **Migration fails due to missing default**
-   * Ensure you've added a proper default value
-   * Check that all existing records can be migrated
-
-2. **Data loss prevention**
-   * Always backup your database before running migrations
-   * Test migrations on a copy of production data first
-
-3. **Transaction rollback**
-   * If the data migration fails, the transaction will automatically rollback
-   * Fix any errors and retry the migration
-
-## Next steps [#next-steps]
-
-Now that you've completed your first expand and contract migration, you can:
-
-* Learn more about [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate)
-* Explore [schema prototyping](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema)
-* Understand [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
-
-For more information:
-
-* [Expand and Contract Pattern Documentation](https://www.prisma.io/dataguide/types/relational/expand-and-contract-pattern)
-* [Prisma Migrate Workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
-
-## Related pages
-
-- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
-- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
-
-# Multiple databases (Prisma ORM v7) (/docs/guides/v7/database/multiple-databases)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
-
-Location: Guides > v7 > Database > Multiple databases
-
-## Introduction [#introduction]
-
-This guide shows you how to use multiple databases using Prisma ORM in a single [Next.js app](https://nextjs.org/). You will learn how to connect to two different Prisma Postgres databases, manage migrations, and deploy your application to Vercel. This approach is useful for multi-tenant applications or when you need to separate concerns when managing connections to multiple databases.
-
-## Prerequisites [#prerequisites]
-
-Before you begin, make sure that you have the following:
-
-* Node.js 20+ installed.
-* A [Prisma Data Platform account](https://pris.ly/pdp?utm_campaign=multi-client\&utm_source=docs).
-* A Vercel account (if you plan to deploy your application).
-
-## 1. Set up a Next.js project [#1-set-up-a-nextjs-project]
-
-Create a new Next.js app using `create-next-app` from your desired directory:
-
-  
-
-#### bun
-
-```bash
-bunx create-next-app@latest my-multi-client-app
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-next-app@latest my-multi-client-app
-```
-
-#### yarn
-
-```bash
-yarn dlx create-next-app@latest my-multi-client-app
-```
-
-#### npm
-
-```bash
-npx create-next-app@latest my-multi-client-app
-```
-
-You will be prompted to answer a few questions about your project. Select all of the defaults.
-
-> [!NOTE]
-> For completeness, those are:
-> 
-> * TypeScript
-> * ESLint
-> * Tailwind CSS
-> * No `src` directory
-> * App Router
-> * Turbopack
-> * Default custom import alias: `@/*`
-
-Then, navigate to the project directory:
-
-```bash
-cd my-multi-client-app
-```
-
-## 2. Set up your databases and Prisma Clients [#2-set-up-your-databases-and-prisma-clients]
-
-In this section, you will create two separate Prisma Postgres instances, one for user data and one for post data. You will also configure the Prisma schema and environment variables for each.
-
-First, install Prisma and the required dependencies:
-
-  
-
-#### bun
-
-```bash
-bun add prisma@prev tsx @types/pg --dev
-```
-
-#### pnpm
-
-```bash
-pnpm add prisma@prev tsx @types/pg --save-dev
-```
-
-#### yarn
-
-```bash
-yarn add prisma@prev tsx @types/pg --dev
-```
-
-#### npm
-
-```bash
-npm install prisma@prev tsx @types/pg --save-dev
-```
-
-  
-
-#### bun
-
-```bash
-bun add @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-#### pnpm
-
-```bash
-pnpm add @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-#### yarn
-
-```bash
-yarn add @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-#### npm
-
-```bash
-npm install @prisma/client@7 @prisma/adapter-pg dotenv pg
-```
-
-> [!NOTE]
-> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
-
-You have installed the required dependencies for the project.
-
-### 2.1. Create a Prisma Postgres instance to contain user data [#21-create-a-prisma-postgres-instance-to-contain-user-data]
-
-Initialize Prisma with a [Prisma Postgres](https://www.prisma.io/docs/postgres) instance by running:
-
-  
-
-#### bun
-
-```bash
-bunx --bun prisma@prev init --db
-```
-
-#### pnpm
-
-```bash
-pnpm dlx prisma@prev init --db
-```
-
-#### yarn
-
-```bash
-yarn dlx prisma@prev init --db
-```
-
-#### npm
-
-```bash
-npx prisma@prev init --db
-```
-
-> [!NOTE]
-> If you are not using a Prisma Postgres database, do not use the `--db` flag. Instead, create two PostgreSQL database instances and add their connection URLs to the `.env` file as `PPG_USER_DATABASE_URL` and `PPG_POST_DATABASE_URL`.
-
-Follow the prompts to name your project and choose a database region.
-
-The `prisma@prev init --db` command:
-
-* Connects your CLI to your [Prisma Data Platform](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=guides) account. If you are not logged in or do not have an account, your browser will open to guide you through creating a new account or signing into your existing one.
-* Creates a `prisma` directory containing a `schema.prisma` file for your database models.
-* Creates a `.env` file with your `DATABASE_URL` (e.g., `DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"`).
-
-Rename the `prisma` folder to `prisma-user-database`:
-
-```bash
-mv prisma prisma-user-database
-```
-
-Edit your `.env` file to rename `DATABASE_URL` to `PPG_USER_DATABASE_URL`:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
-PPG_USER_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
-```
-
-Open `prisma-user-database/schema.prisma` file and update it to define a `User` model. Also, set the environment variable and specify a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider) for the generated Prisma Client:
-
-```prisma title="prisma-user-database/schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output = "../prisma-user-database/user-database-client-types" // [!code ++]
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User { // [!code ++]
-  id    Int     @id @default(autoincrement()) // [!code ++]
-  email String  @unique // [!code ++]
-  name  String? // [!code ++]
-} // [!code ++]
-```
-
-Create a `prisma.config.ts` file for the user database:
-
-```typescript title="prisma-user-database/prisma.config.ts"
-import "dotenv/config"; // [!code ++]
-import { defineConfig, env } from "prisma/config"; // [!code ++]
-// [!code ++]
-export default defineConfig({
-  // [!code ++]
-  schema: "prisma-user-database/schema.prisma", // [!code ++]
-  migrations: {
-    // [!code ++]
-    path: "prisma-user-database/migrations", // [!code ++]
-  }, // [!code ++]
-  datasource: {
-    // [!code ++]
-    url: env("PPG_USER_DATABASE_URL"), // [!code ++]
-  }, // [!code ++]
-}); // [!code ++]
-```
-
-> [!NOTE]
-> You'll need to install the `dotenv` package if you haven't already:
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add dotenv
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add dotenv
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add dotenv
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install dotenv
->     ```
->
-> 
-
-Your user database schema is now ready.
-
-### 2.2. Create a Prisma Postgres instance for post data [#22-create-a-prisma-postgres-instance-for-post-data]
-
-Repeat the initialization for the post database:
-
-  
-
-#### bun
-
-```bash
-bunx --bun prisma init
-bunx create-db
-```
-
-#### pnpm
-
-```bash
-pnpm prisma init
-pnpm dlx create-db
-```
-
-#### yarn
-
-```bash
-yarn prisma init
-yarn dlx create-db
-```
-
-#### npm
-
-```bash
-npx prisma init
-npx create-db
-```
-
-Replace the generated `DATABASE_URL` in your `.env` file with the value from `npx create-db`, then rename the new `prisma` folder to `prisma-post-database`:
-
-```bash
-mv prisma prisma-post-database
-```
-
-Rename the `DATABASE_URL` variable in `.env` to `PPG_POST_DATABASE_URL`:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
-PPG_POST_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
-```
-
-Edit the `prisma-post-database/schema.prisma` file to define a `Post` model. Also, update the datasource URL and set a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider):
-
-```prisma title="prisma-post-database/schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output = "../prisma-post-database/post-database-client-types" // [!code ++]
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model Post { // [!code ++]
-  id    Int     @id @default(autoincrement()) // [!code ++]
-  title String // [!code ++]
-  content  String? // [!code ++]
-} // [!code ++]
-```
-
-Create a `prisma.config.ts` file for the post database:
-
-```typescript title="prisma-post-database/prisma.config.ts"
-import "dotenv/config"; // [!code ++]
-import { defineConfig, env } from "prisma/config"; // [!code ++]
-// [!code ++]
-export default defineConfig({
-  // [!code ++]
-  schema: "prisma-post-database/schema.prisma", // [!code ++]
-  migrations: {
-    // [!code ++]
-    path: "prisma-post-database/migrations", // [!code ++]
-  }, // [!code ++]
-  datasource: {
-    // [!code ++]
-    url: env("PPG_POST_DATABASE_URL"), // [!code ++]
-  }, // [!code ++]
-}); // [!code ++]
-```
-
-Your post database schema is now set.
-
-### 2.3. Add helper scripts and migrate the schemas [#23-add-helper-scripts-and-migrate-the-schemas]
-
-So you don't have to pass `--schema` for each database on every command, add helper scripts to your `package.json` file that run Prisma commands for both databases:
-
-```json title="package.json"
-"scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts", // [!code ++]
-    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556" // [!code ++]
-}
-```
-
-Here is an explanation of the custom scripts:
-
-* `postinstall`: Runs immediately after installing dependencies to generate Prisma Clients for both the user and post databases using their respective schema files.
-* `generate`: Manually triggers the generation of Prisma Clients for both schemas, ensuring your client code reflects the latest models.
-* `migrate`: Applies pending migrations in development mode for both databases using [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate), updating their schemas based on changes in your Prisma files.
-* `deploy`: Executes migrations in a production environment, synchronizing your live databases with your Prisma schemas.
-* `studio`: Opens Prisma Studio for both databases simultaneously on different ports (`5555` for the user database and `5556` for the post database) for visual data management.
-
-Run the migrations:
-
-  
-
-#### bun
-
-```bash
-bun run migrate
-```
-
-#### pnpm
-
-```bash
-pnpm run migrate
-```
-
-#### yarn
-
-```bash
-yarn migrate
-```
-
-#### npm
-
-```bash
-npm run migrate
-```
-
-When prompted, name the migration for each database accordingly.
-
-## 3. Prepare the application to use multiple Prisma Clients [#3-prepare-the-application-to-use-multiple-prisma-clients]
-
-Next, create a `lib` folder to store helper files for instantiating and exporting your Prisma Clients:
-
-```bash
-mkdir -p lib && touch lib/user-prisma-client.ts lib/post-prisma-client.ts
-```
-
-### 3.1. Instantiate and export the Prisma Client for the user database [#31-instantiate-and-export-the-prisma-client-for-the-user-database]
-
-In `lib/user-prisma-client.ts`, add the following code:
-
-```ts title="lib/user-prisma-client.ts"
-import { PrismaClient } from "../prisma-user-database/user-database-client-types/client"; // [!code ++]
-import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
-// [!code ++]
-const adapter = new PrismaPg({
-  // [!code ++]
-  connectionString: process.env.PPG_USER_DATABASE_URL, // [!code ++]
-}); // [!code ++]
-// [!code ++]
-const getPrisma = () =>
-  new PrismaClient({
-    // [!code ++]
-    adapter, // [!code ++]
-  }); // [!code ++]
-// [!code ++]
-const globalForUserDBPrismaClient = global as unknown as {
-  // [!code ++]
-  userDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
-}; // [!code ++]
-// [!code ++]
-export const userDBPrismaClient = globalForUserDBPrismaClient.userDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
-// [!code ++]
-if (process.env.NODE_ENV !== "production")
-  // [!code ++]
-  globalForUserDBPrismaClient.userDBPrismaClient = userDBPrismaClient; // [!code ++]
-```
-
-### 3.2. Instantiate and export the Prisma Client for the post database [#32-instantiate-and-export-the-prisma-client-for-the-post-database]
-
-In `lib/post-prisma-client.ts`, add this code:
-
-```ts title="lib/post-prisma-client.ts"
-import { PrismaClient } from "../prisma-post-database/post-database-client-types/client"; // [!code ++]
-import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
-// [!code ++]
-const adapter = new PrismaPg({
-  // [!code ++]
-  connectionString: process.env.PPG_POST_DATABASE_URL, // [!code ++]
-}); // [!code ++]
-// [!code ++]
-const getPrisma = () =>
-  new PrismaClient({
-    // [!code ++]
-    adapter, // [!code ++]
-  }); // [!code ++]
-// [!code ++]
-const globalForPostDBPrismaClient = global as unknown as {
-  // [!code ++]
-  postDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
-}; // [!code ++]
-// [!code ++]
-export const postDBPrismaClient = globalForPostDBPrismaClient.postDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
-// [!code ++]
-if (process.env.NODE_ENV !== "production")
-  // [!code ++]
-  globalForPostDBPrismaClient.postDBPrismaClient = postDBPrismaClient; // [!code ++]
-```
-
-## 4. Integrate multiple Prisma Clients in your Next.js app [#4-integrate-multiple-prisma-clients-in-your-nextjs-app]
-
-Modify your application code to fetch data from both databases. Update the `app/page.tsx` file as follows:
-
-```ts title="app/page.tsx"
-import { postDBPrismaClient } from "@/lib/post-prisma-client"; // [!code ++]
-import { userDBPrismaClient } from "@/lib/user-prisma-client"; // [!code ++]
- // [!code ++]
-export default async function Home() { // [!code ++]
-  const user = await userDBPrismaClient.user.findFirst(); // [!code ++]
-  const post = await postDBPrismaClient.post.findFirst(); // [!code ++]
- // [!code ++]
-  return ( // [!code ++]
-    <main className="min-h-screen bg-gray-50 py-12"> // [!code ++]
-      <div className="max-w-4xl mx-auto px-4"> // [!code ++]
-        <header className="mb-12 text-center"> // [!code ++]
-          <h1 className="text-5xl font-extrabold text-gray-900">Multi-DB Showcase</h1> // [!code ++]
-          <p className="mt-4 text-xl text-gray-600"> // [!code ++]
-            Data fetched from two distinct databases. // [!code ++]
-          </p> // [!code ++]
-        </header> // [!code ++]
- // [!code ++]
-        <section className="mb-8 bg-white shadow-md rounded-lg p-6"> // [!code ++]
-          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
-            User Data // [!code ++]
-          </h2> // [!code ++]
-          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
-            {user ? JSON.stringify(user, null, 2) : "No user data available."} // [!code ++]
-          </pre> // [!code ++]
-        </section> // [!code ++]
- // [!code ++]
-        <section className="bg-white shadow-md rounded-lg p-6"> // [!code ++]
-          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
-            Post Data // [!code ++]
-          </h2> // [!code ++]
-          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
-            {post ? JSON.stringify(post, null, 2) : "No post data available."} // [!code ++]
-          </pre> // [!code ++]
-        </section> // [!code ++]
-      </div> // [!code ++]
-    </main> // [!code ++]
-  ); // [!code ++]
-} // [!code ++]
-```
-
-### 4.1. Populate your databases with data [#41-populate-your-databases-with-data]
-
-In a separate terminal window, open two instances of [Prisma Studio](https://www.prisma.io/docs/studio) to add data to your databases by running the script:
-
-  
-
-#### bun
-
-```bash
-bun run studio
-```
-
-#### pnpm
-
-```bash
-pnpm run studio
-```
-
-#### yarn
-
-```bash
-yarn studio
-```
-
-#### npm
-
-```bash
-npm run studio
-```
-
-This will open up two browser windows, one in `http://localhost:5555` and one in `http://localhost:5556`. Navigate to those windows and add sample data to both databases.
-
-### 4.2. Run the development server [#42-run-the-development-server]
-
-Before starting the development server, note that if you are using Next.js `v15.2.0`, do not use Turbopack as there is a known [issue](https://github.com/vercel/next.js/issues/76497). Remove Turbopack from your dev script by updating your `package.json`:
-
-```json title="package.json"
-"scripts": {
-    "dev": "next dev --turbopack", // [!code --]
-    "dev": "next dev", // [!code ++]
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
-    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
-    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts",
-    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts",
-    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556"
-}
-```
-
-In a separate terminal window, start the development server by running:
-
-  
-
-#### bun
-
-```bash
-bun run dev
-```
-
-#### pnpm
-
-```bash
-pnpm run dev
-```
-
-#### yarn
-
-```bash
-yarn dev
-```
-
-#### npm
-
-```bash
-npm run dev
-```
-
-Navigate to `http://localhost:3000` to see your Next.js app display data from both databases:
-
-![App displaying data by querying two separate database instances](https://www.prisma.io/img/guides/multi-client-app-demo.png)
-
-Congratulations, you have a Next.js app running with two Prisma Client instances querying different databases.
-
-## 5. Deploy your Next.js app using multiple databases to Vercel [#5-deploy-your-nextjs-app-using-multiple-databases-to-vercel]
-
-Deploy your app by following these steps:
-
-1. Ensure your project is version-controlled and pushed to a GitHub repository. If you do not have a repository yet, [create one on GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository). Once the repository is ready, run the following commands:
-   ```bash
-   git add .
-   git commit -m "Initial commit with Prisma Postgres integration"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/<repository-name>.git
-   git push -u origin main
-   ```
-   > [!NOTE]
-> Replace `<your-username>` and `<repository-name>` with your GitHub username and the name of your repository.
-2. Log in to [Vercel](https://vercel.com/) and navigate to your [Dashboard](https://vercel.com/docs/deployments).
-3. Create a new project. Follow Vercel's [Import an existing project](https://vercel.com/docs/getting-started-with-vercel/import) guide, but stop at [step 3](https://vercel.com/docs/getting-started-with-vercel/import#optionally-configure-any-settings) where you will configure environment variables *before* clicking **Deploy**.
-4. Configure the `DATABASE_URL` environment variable:
-   1. Expand the **Environment variables** section.
-   2. Add the `PPG_USER_DATABASE_URL` environment variable:
-      * **Key**: `PPG_USER_DATABASE_URL`
-      * **Value**: Paste your user database connection URL, e.g. by copying it from the `.env` file in your project.
-   3. Add the `PPG_POST_DATABASE_URL` environment variable:
-      * **Key**: `PPG_POST_DATABASE_URL`
-      * **Value**: Paste your post database connection URL, e.g. by copying it from the `.env` file in your project.
-        > [!WARNING]
-> Do not deploy without setting the environment variables. Your deployment will fail if the application cannot connect to the databases.
-5. Click the **Deploy** button. Vercel will build your project and deploy it to a live URL.
-
-Open the live URL provided by Vercel and verify that your application is working.
-
-Your application now runs on Vercel and uses two Prisma Clients to query two different databases.
-
-## Next steps [#next-steps]
-
-In this guide, you learned how to use multiple databases using Prisma ORM in a single Next.js app by:
-
-* Setting up separate Prisma schemas for user and post databases.
-* Configuring custom output directories and environment variables.
-* Creating helper scripts to generate and migrate each schema.
-* Instantiating and integrating multiple Prisma Clients into your application.
-* Deploying your multi-database application to Vercel.
-
-This approach allows you to maintain a clear separation of data models and simplifies multi-tenant or multi-database scenarios.
-
-For further improvements in managing your project, consider using a monorepo setup. Check out our related guides:
-
-* [How to use Prisma ORM in a pnpm workspaces monorepo](https://www.prisma.io/docs/guides/v7/deployment/pnpm-workspaces)
-* [How to use Prisma ORM with Turborepo](https://www.prisma.io/docs/guides/v7/deployment/turborepo)
-
-## Related pages
-
-- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
-- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
-
-# Schema management in teams (Prisma ORM v7) (/docs/guides/v7/database/schema-changes)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use Prisma Migrate effectively when collaborating on a project as a team
-
-Location: Guides > v7 > Database > Schema management in teams
-
-## Introduction [#introduction]
-
-When working in a team, managing database schema changes can be challenging. This guide shows you how to effectively collaborate on schema changes using Prisma Migrate, ensuring that all team members can safely contribute to and incorporate schema changes.
-
-## Prerequisites [#prerequisites]
-
-Before starting this guide, make sure you have:
-
-* Node.js installed (version 20 or higher)
-* A Prisma project set up with migrations
-* A relational database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
-* Basic understanding of Git
-* Basic familiarity with Prisma Migrate
-
-> [!WARNING]
-> This guide **does not apply for MongoDB**.<br />
-> Instead of `migrate dev`, [`db push`](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema) is used for [MongoDB](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/mongodb).
-
-## 1. Understand migration basics [#1-understand-migration-basics]
-
-### 1.1. Migration order [#11-migration-order]
-
-Migrations are **applied in the same order as they were created**. The creation date is part of the migration subfolder name - for example, `20210316081837-updated-fields` was created on `2021-03-16-08:18:37`.
-
-### 1.2. Source control requirements [#12-source-control-requirements]
-
-You should commit the following files to source control:
-
-* The contents of the `prisma/migrations` folder, including the `migration_lock.toml` file
-* The Prisma Schema (`schema.prisma`)
-
-Source-controlling the `schema.prisma` file is not enough - you must include your migration history because:
-
-* Customized migrations contain information that cannot be represented in the Prisma schema
-* The `prisma migrate deploy` command only runs migration files
-
-### 1.3. Configure Prisma [#13-configure-prisma]
-
-Create a `prisma.config.ts` file in the root of your project with the following content:
-
-```typescript title="prisma.config.ts"
-import "dotenv/config";
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-> [!NOTE]
-> You'll need to install the `dotenv` package to load environment variables. If you haven't already, install it using your package manager:
-> 
-> 
->   
-> 
->   #### bun
-
->     ```bash
->     bun add dotenv
->     ```
->
-> 
->   #### pnpm
-
->     ```bash
->     pnpm add dotenv
->     ```
->
-> 
->   #### yarn
-
->     ```bash
->     yarn add dotenv
->     ```
->
-> 
->   #### npm
-
->     ```bash
->     npm install dotenv
->     ```
->
-> 
-
-## 2. Incorporate team changes [#2-incorporate-team-changes]
-
-### 2.1. Pull latest changes [#21-pull-latest-changes]
-
-To incorporate changes from collaborators:
-
-1. Pull the changed Prisma schema and `./prisma/migrations` folder
-2. Run the migrate command:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev
-```
-
-### 2.2. Example scenario [#22-example-scenario]
-
-Consider a sample scenario with three developers sharing schema changes:
-
-  
-
-#### Before
-
-```prisma title="schema.prisma" 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-}
-```
-
-#### After
-
-```prisma title="schema.prisma" 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User?   @relation(fields: [authorId], references: [id])
-  authorId  Int?
-}
-
-model User {
-  id              Int     @id @default(autoincrement())
-  email           String  @unique
-  name            String?
-  favoriteColor   String? // Added by Ania // [!code ++]
-  bestPacmanScore Int? // Added by you // [!code ++]
-  posts           Post[]
-}
-
-// Added by Javier // [!code ++]
-model Tag { // [!code ++]
-  tagName     String   @id // [!code ++]
-  tagCategory Category // [!code ++]
-} // [!code ++]
-```
-
-## 3. Handle concurrent changes [#3-handle-concurrent-changes]
-
-### 3.1. Developer A's changes [#31-developer-as-changes]
-
-Ania adds a new field:
-
-```prisma
-model User {
-  /* ... */
-  favoriteColor String?
-}
-```
-
-And generates a migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name new-field
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name new-field
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name new-field
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name new-field
-```
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-### 3.2. Developer B's changes [#32-developer-bs-changes]
-
-Javier adds a new model:
-
-```prisma
-model Tag {
-  tagName     String   @id
-  tagCategory Category
-}
-```
-
-And generates a migration:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name new-model
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name new-model
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name new-model
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name new-model
-```
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-### 3.3. Merge changes [#33-merge-changes]
-
-The migration history now has two new migrations:
-
-![A diagram showing changes by two separate developers converging in a single migration history.](https://www.prisma.io/img/guides/migrate-team-dev.png)
-
-## 4. Integrate your changes [#4-integrate-your-changes]
-
-### 4.1. Pull team changes [#41-pull-team-changes]
-
-1. Pull the most recent changes:
-   * Two new migrations
-   * Updated schema file
-
-2. Review the merged schema:
-
-```prisma
-model User {
-  /* ... */
-  favoriteColor   String?
-  bestPacmanScore Int?
-}
-
-model Tag {
-  tagName     String   @id
-  tagCategory Category
-  posts       Post[]
-}
-```
-
-### 4.2. Generate your migration [#42-generate-your-migration]
-
-Run the migrate command:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev
-```
-
-  
-
-#### bun
-
-```bash
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma generate
-```
-
-This will:
-
-1. Apply your team's migrations
-2. Create a new migration for your changes
-3. Apply your new migration
-
-### 4.3. Commit changes [#43-commit-changes]
-
-Commit:
-
-* The merged `schema.prisma`
-* Your new migration file
-
-## Next steps [#next-steps]
-
-Now that you understand team schema management, you can:
-
-* Learn about [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
-* Explore [deployment workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
-
-For more information:
-
-* [Prisma Migrate documentation](https://www.prisma.io/docs/orm/v7/prisma-migrate)
-* [Team development workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
-
-## Related pages
-
-- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
-- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
-
 # Bun workspaces (Prisma ORM v7) (/docs/guides/v7/deployment/bun-workspaces)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -88227,6 +86665,1568 @@ Prisma ORM is now set up as a shared package in your Turborepo.
 - [`Cloudflare Workers`](https://www.prisma.io/docs/guides/v7/deployment/cloudflare-workers): Learn how to use Prisma ORM and Prisma Postgres in a Cloudflare Workers project
 - [`Docker`](https://www.prisma.io/docs/guides/v7/deployment/docker): Learn step-by-step configure a Prisma ORM app in Docker
 - [`pnpm workspaces`](https://www.prisma.io/docs/guides/v7/deployment/pnpm-workspaces): Learn step-by-step how to integrate Prisma ORM in a pnpm workspaces monorepo through a shared database package
+
+# Expand-and-contract migrations (Prisma ORM v7) (/docs/guides/v7/database/data-migration)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
+
+Location: Guides > v7 > Database > Expand-and-contract migrations
+
+## Introduction [#introduction]
+
+When you change your database schema in production, you need to keep the data consistent and avoid downtime. This guide shows you how to use the expand and contract pattern to safely migrate data between columns. The example replaces a boolean field with an enum field while preserving existing data.
+
+## Prerequisites [#prerequisites]
+
+Before starting this guide, make sure you have:
+
+* Node.js installed (version 20 or higher)
+* A Prisma ORM project with an existing schema
+* A supported database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
+* Access to both development and production databases
+* Basic understanding of Git branching
+* Basic familiarity with TypeScript
+
+## 1. Set up your environment [#1-set-up-your-environment]
+
+### 1.1. Review initial schema [#11-review-initial-schema]
+
+Start with a basic schema containing a Post model:
+
+```prisma
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+}
+```
+
+### 1.2. Configure Prisma [#12-configure-prisma]
+
+Create a `prisma.config.ts` file in the root of your project with the following content:
+
+```typescript title="prisma.config.ts"
+import "dotenv/config";
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+> [!NOTE]
+> You'll need to install the required packages. If you haven't already, install them using your package manager:
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add prisma@prev tsx @types/pg --dev
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add prisma@prev tsx @types/pg --save-dev
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add prisma@prev tsx @types/pg --dev
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install prisma@prev tsx @types/pg --save-dev
+>     ```
+>
+> 
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install @prisma/client@7 @prisma/adapter-pg pg dotenv
+>     ```
+>
+> 
+> 
+> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
+
+### 1.3. Create a development branch [#13-create-a-development-branch]
+
+Create a new branch for your changes:
+
+```bash
+git checkout -b create-status-field
+```
+
+## 2. Expand the schema [#2-expand-the-schema]
+
+### 2.1. Add new column [#21-add-new-column]
+
+Update your schema to add the new Status enum and field:
+
+```prisma
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean? @default(false)
+  status    Status   @default(Unknown)
+}
+
+enum Status {
+  Unknown
+  Draft
+  InProgress
+  InReview
+  Published
+}
+```
+
+### 2.2. Create migration [#22-create-migration]
+
+Generate the migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name add-status-column
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name add-status-column
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name add-status-column
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name add-status-column
+```
+
+Then generate Prisma Client:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+## 3. Migrate the data [#3-migrate-the-data]
+
+### 3.1. Create migration script [#31-create-migration-script]
+
+Create a new TypeScript file for the data migration:
+
+```typescript
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import "dotenv/config";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
+
+const prisma = new PrismaClient({
+  adapter,
+});
+
+async function main() {
+  await prisma.$transaction(async (tx) => {
+    const posts = await tx.post.findMany();
+    for (const post of posts) {
+      await tx.post.update({
+        where: { id: post.id },
+        data: {
+          status: post.published ? "Published" : "Unknown",
+        },
+      });
+    }
+  });
+}
+
+main()
+  .catch(async (e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => await prisma.$disconnect());
+```
+
+### 3.2. Set up migration script [#32-set-up-migration-script]
+
+Add the migration script to your package.json:
+
+```json
+{
+  "scripts": {
+    "data-migration:add-status-column": "tsx ./prisma/migrations/<migration-timestamp>/data-migration.ts"
+  }
+}
+```
+
+### 3.3. Execute migration [#33-execute-migration]
+
+1. Update your DATABASE_URL to point to the production database
+2. Run the migration script:
+
+  
+
+#### bun
+
+```bash
+bun run data-migration:add-status-column
+```
+
+#### pnpm
+
+```bash
+pnpm run data-migration:add-status-column
+```
+
+#### yarn
+
+```bash
+yarn data-migration:add-status-column
+```
+
+#### npm
+
+```bash
+npm run data-migration:add-status-column
+```
+
+## 4. Contract the schema [#4-contract-the-schema]
+
+### 4.1. Create cleanup branch [#41-create-cleanup-branch]
+
+Create a new branch for removing the old column:
+
+```bash
+git checkout -b drop-published-column
+```
+
+### 4.2. Remove old column [#42-remove-old-column]
+
+Update your schema to remove the published field:
+
+```prisma
+model Post {
+  id      Int      @id @default(autoincrement())
+  title   String
+  content String?
+  status  Status   @default(Draft)
+}
+
+enum Status {
+  Draft
+  InProgress
+  InReview
+  Published
+}
+```
+
+### 4.3. Generate cleanup migration [#43-generate-cleanup-migration]
+
+Create and run the final migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name drop-published-column
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name drop-published-column
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name drop-published-column
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name drop-published-column
+```
+
+Then generate Prisma Client:
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+## 5. Deploy to production [#5-deploy-to-production]
+
+### 5.1. Set up deployment [#51-set-up-deployment]
+
+Add the following command to your CI/CD pipeline:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate deploy
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate deploy
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate deploy
+```
+
+#### npm
+
+```bash
+npx prisma migrate deploy
+```
+
+### 5.2. Monitor deployment [#52-monitor-deployment]
+
+Watch for any errors in your logs and monitor your application's behavior after deployment.
+
+## Troubleshooting [#troubleshooting]
+
+### Common issues and solutions [#common-issues-and-solutions]
+
+1. **Migration fails due to missing default**
+   * Ensure you've added a proper default value
+   * Check that all existing records can be migrated
+
+2. **Data loss prevention**
+   * Always backup your database before running migrations
+   * Test migrations on a copy of production data first
+
+3. **Transaction rollback**
+   * If the data migration fails, the transaction will automatically rollback
+   * Fix any errors and retry the migration
+
+## Next steps [#next-steps]
+
+Now that you've completed your first expand and contract migration, you can:
+
+* Learn more about [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate)
+* Explore [schema prototyping](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema)
+* Understand [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
+
+For more information:
+
+* [Expand and Contract Pattern Documentation](https://www.prisma.io/dataguide/types/relational/expand-and-contract-pattern)
+* [Prisma Migrate Workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
+
+## Related pages
+
+- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
+- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
+
+# Multiple databases (Prisma ORM v7) (/docs/guides/v7/database/multiple-databases)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
+
+Location: Guides > v7 > Database > Multiple databases
+
+## Introduction [#introduction]
+
+This guide shows you how to use multiple databases using Prisma ORM in a single [Next.js app](https://nextjs.org/). You will learn how to connect to two different Prisma Postgres databases, manage migrations, and deploy your application to Vercel. This approach is useful for multi-tenant applications or when you need to separate concerns when managing connections to multiple databases.
+
+## Prerequisites [#prerequisites]
+
+Before you begin, make sure that you have the following:
+
+* Node.js 20+ installed.
+* A [Prisma Data Platform account](https://pris.ly/pdp?utm_campaign=multi-client\&utm_source=docs).
+* A Vercel account (if you plan to deploy your application).
+
+## 1. Set up a Next.js project [#1-set-up-a-nextjs-project]
+
+Create a new Next.js app using `create-next-app` from your desired directory:
+
+  
+
+#### bun
+
+```bash
+bunx create-next-app@latest my-multi-client-app
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-next-app@latest my-multi-client-app
+```
+
+#### yarn
+
+```bash
+yarn dlx create-next-app@latest my-multi-client-app
+```
+
+#### npm
+
+```bash
+npx create-next-app@latest my-multi-client-app
+```
+
+You will be prompted to answer a few questions about your project. Select all of the defaults.
+
+> [!NOTE]
+> For completeness, those are:
+> 
+> * TypeScript
+> * ESLint
+> * Tailwind CSS
+> * No `src` directory
+> * App Router
+> * Turbopack
+> * Default custom import alias: `@/*`
+
+Then, navigate to the project directory:
+
+```bash
+cd my-multi-client-app
+```
+
+## 2. Set up your databases and Prisma Clients [#2-set-up-your-databases-and-prisma-clients]
+
+In this section, you will create two separate Prisma Postgres instances, one for user data and one for post data. You will also configure the Prisma schema and environment variables for each.
+
+First, install Prisma and the required dependencies:
+
+  
+
+#### bun
+
+```bash
+bun add prisma@prev tsx @types/pg --dev
+```
+
+#### pnpm
+
+```bash
+pnpm add prisma@prev tsx @types/pg --save-dev
+```
+
+#### yarn
+
+```bash
+yarn add prisma@prev tsx @types/pg --dev
+```
+
+#### npm
+
+```bash
+npm install prisma@prev tsx @types/pg --save-dev
+```
+
+  
+
+#### bun
+
+```bash
+bun add @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+#### pnpm
+
+```bash
+pnpm add @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+#### yarn
+
+```bash
+yarn add @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+#### npm
+
+```bash
+npm install @prisma/client@7 @prisma/adapter-pg dotenv pg
+```
+
+> [!NOTE]
+> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
+
+You have installed the required dependencies for the project.
+
+### 2.1. Create a Prisma Postgres instance to contain user data [#21-create-a-prisma-postgres-instance-to-contain-user-data]
+
+Initialize Prisma with a [Prisma Postgres](https://www.prisma.io/docs/postgres) instance by running:
+
+  
+
+#### bun
+
+```bash
+bunx --bun prisma@prev init --db
+```
+
+#### pnpm
+
+```bash
+pnpm dlx prisma@prev init --db
+```
+
+#### yarn
+
+```bash
+yarn dlx prisma@prev init --db
+```
+
+#### npm
+
+```bash
+npx prisma@prev init --db
+```
+
+> [!NOTE]
+> If you are not using a Prisma Postgres database, do not use the `--db` flag. Instead, create two PostgreSQL database instances and add their connection URLs to the `.env` file as `PPG_USER_DATABASE_URL` and `PPG_POST_DATABASE_URL`.
+
+Follow the prompts to name your project and choose a database region.
+
+The `prisma@prev init --db` command:
+
+* Connects your CLI to your [Prisma Data Platform](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=guides) account. If you are not logged in or do not have an account, your browser will open to guide you through creating a new account or signing into your existing one.
+* Creates a `prisma` directory containing a `schema.prisma` file for your database models.
+* Creates a `.env` file with your `DATABASE_URL` (e.g., `DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require"`).
+
+Rename the `prisma` folder to `prisma-user-database`:
+
+```bash
+mv prisma prisma-user-database
+```
+
+Edit your `.env` file to rename `DATABASE_URL` to `PPG_USER_DATABASE_URL`:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
+PPG_USER_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
+```
+
+Open `prisma-user-database/schema.prisma` file and update it to define a `User` model. Also, set the environment variable and specify a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider) for the generated Prisma Client:
+
+```prisma title="prisma-user-database/schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output = "../prisma-user-database/user-database-client-types" // [!code ++]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User { // [!code ++]
+  id    Int     @id @default(autoincrement()) // [!code ++]
+  email String  @unique // [!code ++]
+  name  String? // [!code ++]
+} // [!code ++]
+```
+
+Create a `prisma.config.ts` file for the user database:
+
+```typescript title="prisma-user-database/prisma.config.ts"
+import "dotenv/config"; // [!code ++]
+import { defineConfig, env } from "prisma/config"; // [!code ++]
+// [!code ++]
+export default defineConfig({
+  // [!code ++]
+  schema: "prisma-user-database/schema.prisma", // [!code ++]
+  migrations: {
+    // [!code ++]
+    path: "prisma-user-database/migrations", // [!code ++]
+  }, // [!code ++]
+  datasource: {
+    // [!code ++]
+    url: env("PPG_USER_DATABASE_URL"), // [!code ++]
+  }, // [!code ++]
+}); // [!code ++]
+```
+
+> [!NOTE]
+> You'll need to install the `dotenv` package if you haven't already:
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add dotenv
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add dotenv
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add dotenv
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install dotenv
+>     ```
+>
+> 
+
+Your user database schema is now ready.
+
+### 2.2. Create a Prisma Postgres instance for post data [#22-create-a-prisma-postgres-instance-for-post-data]
+
+Repeat the initialization for the post database:
+
+  
+
+#### bun
+
+```bash
+bunx --bun prisma init
+bunx create-db
+```
+
+#### pnpm
+
+```bash
+pnpm prisma init
+pnpm dlx create-db
+```
+
+#### yarn
+
+```bash
+yarn prisma init
+yarn dlx create-db
+```
+
+#### npm
+
+```bash
+npx prisma init
+npx create-db
+```
+
+Replace the generated `DATABASE_URL` in your `.env` file with the value from `npx create-db`, then rename the new `prisma` folder to `prisma-post-database`:
+
+```bash
+mv prisma prisma-post-database
+```
+
+Rename the `DATABASE_URL` variable in `.env` to `PPG_POST_DATABASE_URL`:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code --]
+PPG_POST_DATABASE_URL="postgresql://user:password@host:5432/database?sslmode=require" # [!code ++]
+```
+
+Edit the `prisma-post-database/schema.prisma` file to define a `Post` model. Also, update the datasource URL and set a [custom `output` directory](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#fields-for-prisma-client-provider):
+
+```prisma title="prisma-post-database/schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output = "../prisma-post-database/post-database-client-types" // [!code ++]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Post { // [!code ++]
+  id    Int     @id @default(autoincrement()) // [!code ++]
+  title String // [!code ++]
+  content  String? // [!code ++]
+} // [!code ++]
+```
+
+Create a `prisma.config.ts` file for the post database:
+
+```typescript title="prisma-post-database/prisma.config.ts"
+import "dotenv/config"; // [!code ++]
+import { defineConfig, env } from "prisma/config"; // [!code ++]
+// [!code ++]
+export default defineConfig({
+  // [!code ++]
+  schema: "prisma-post-database/schema.prisma", // [!code ++]
+  migrations: {
+    // [!code ++]
+    path: "prisma-post-database/migrations", // [!code ++]
+  }, // [!code ++]
+  datasource: {
+    // [!code ++]
+    url: env("PPG_POST_DATABASE_URL"), // [!code ++]
+  }, // [!code ++]
+}); // [!code ++]
+```
+
+Your post database schema is now set.
+
+### 2.3. Add helper scripts and migrate the schemas [#23-add-helper-scripts-and-migrate-the-schemas]
+
+So you don't have to pass `--schema` for each database on every command, add helper scripts to your `package.json` file that run Prisma commands for both databases:
+
+```json title="package.json"
+"scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts", // [!code ++]
+    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556" // [!code ++]
+}
+```
+
+Here is an explanation of the custom scripts:
+
+* `postinstall`: Runs immediately after installing dependencies to generate Prisma Clients for both the user and post databases using their respective schema files.
+* `generate`: Manually triggers the generation of Prisma Clients for both schemas, ensuring your client code reflects the latest models.
+* `migrate`: Applies pending migrations in development mode for both databases using [Prisma Migrate](https://www.prisma.io/docs/orm/v7/prisma-migrate), updating their schemas based on changes in your Prisma files.
+* `deploy`: Executes migrations in a production environment, synchronizing your live databases with your Prisma schemas.
+* `studio`: Opens Prisma Studio for both databases simultaneously on different ports (`5555` for the user database and `5556` for the post database) for visual data management.
+
+Run the migrations:
+
+  
+
+#### bun
+
+```bash
+bun run migrate
+```
+
+#### pnpm
+
+```bash
+pnpm run migrate
+```
+
+#### yarn
+
+```bash
+yarn migrate
+```
+
+#### npm
+
+```bash
+npm run migrate
+```
+
+When prompted, name the migration for each database accordingly.
+
+## 3. Prepare the application to use multiple Prisma Clients [#3-prepare-the-application-to-use-multiple-prisma-clients]
+
+Next, create a `lib` folder to store helper files for instantiating and exporting your Prisma Clients:
+
+```bash
+mkdir -p lib && touch lib/user-prisma-client.ts lib/post-prisma-client.ts
+```
+
+### 3.1. Instantiate and export the Prisma Client for the user database [#31-instantiate-and-export-the-prisma-client-for-the-user-database]
+
+In `lib/user-prisma-client.ts`, add the following code:
+
+```ts title="lib/user-prisma-client.ts"
+import { PrismaClient } from "../prisma-user-database/user-database-client-types/client"; // [!code ++]
+import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
+// [!code ++]
+const adapter = new PrismaPg({
+  // [!code ++]
+  connectionString: process.env.PPG_USER_DATABASE_URL, // [!code ++]
+}); // [!code ++]
+// [!code ++]
+const getPrisma = () =>
+  new PrismaClient({
+    // [!code ++]
+    adapter, // [!code ++]
+  }); // [!code ++]
+// [!code ++]
+const globalForUserDBPrismaClient = global as unknown as {
+  // [!code ++]
+  userDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
+}; // [!code ++]
+// [!code ++]
+export const userDBPrismaClient = globalForUserDBPrismaClient.userDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
+// [!code ++]
+if (process.env.NODE_ENV !== "production")
+  // [!code ++]
+  globalForUserDBPrismaClient.userDBPrismaClient = userDBPrismaClient; // [!code ++]
+```
+
+### 3.2. Instantiate and export the Prisma Client for the post database [#32-instantiate-and-export-the-prisma-client-for-the-post-database]
+
+In `lib/post-prisma-client.ts`, add this code:
+
+```ts title="lib/post-prisma-client.ts"
+import { PrismaClient } from "../prisma-post-database/post-database-client-types/client"; // [!code ++]
+import { PrismaPg } from "@prisma/adapter-pg"; // [!code ++]
+// [!code ++]
+const adapter = new PrismaPg({
+  // [!code ++]
+  connectionString: process.env.PPG_POST_DATABASE_URL, // [!code ++]
+}); // [!code ++]
+// [!code ++]
+const getPrisma = () =>
+  new PrismaClient({
+    // [!code ++]
+    adapter, // [!code ++]
+  }); // [!code ++]
+// [!code ++]
+const globalForPostDBPrismaClient = global as unknown as {
+  // [!code ++]
+  postDBPrismaClient: ReturnType<typeof getPrisma>; // [!code ++]
+}; // [!code ++]
+// [!code ++]
+export const postDBPrismaClient = globalForPostDBPrismaClient.postDBPrismaClient || getPrisma(); // [!code ++] // [!code ++]
+// [!code ++]
+if (process.env.NODE_ENV !== "production")
+  // [!code ++]
+  globalForPostDBPrismaClient.postDBPrismaClient = postDBPrismaClient; // [!code ++]
+```
+
+## 4. Integrate multiple Prisma Clients in your Next.js app [#4-integrate-multiple-prisma-clients-in-your-nextjs-app]
+
+Modify your application code to fetch data from both databases. Update the `app/page.tsx` file as follows:
+
+```ts title="app/page.tsx"
+import { postDBPrismaClient } from "@/lib/post-prisma-client"; // [!code ++]
+import { userDBPrismaClient } from "@/lib/user-prisma-client"; // [!code ++]
+ // [!code ++]
+export default async function Home() { // [!code ++]
+  const user = await userDBPrismaClient.user.findFirst(); // [!code ++]
+  const post = await postDBPrismaClient.post.findFirst(); // [!code ++]
+ // [!code ++]
+  return ( // [!code ++]
+    <main className="min-h-screen bg-gray-50 py-12"> // [!code ++]
+      <div className="max-w-4xl mx-auto px-4"> // [!code ++]
+        <header className="mb-12 text-center"> // [!code ++]
+          <h1 className="text-5xl font-extrabold text-gray-900">Multi-DB Showcase</h1> // [!code ++]
+          <p className="mt-4 text-xl text-gray-600"> // [!code ++]
+            Data fetched from two distinct databases. // [!code ++]
+          </p> // [!code ++]
+        </header> // [!code ++]
+ // [!code ++]
+        <section className="mb-8 bg-white shadow-md rounded-lg p-6"> // [!code ++]
+          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
+            User Data // [!code ++]
+          </h2> // [!code ++]
+          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
+            {user ? JSON.stringify(user, null, 2) : "No user data available."} // [!code ++]
+          </pre> // [!code ++]
+        </section> // [!code ++]
+ // [!code ++]
+        <section className="bg-white shadow-md rounded-lg p-6"> // [!code ++]
+          <h2 className="text-2xl font-semibold text-gray-800 border-b pb-2 mb-4"> // [!code ++]
+            Post Data // [!code ++]
+          </h2> // [!code ++]
+          <pre className="whitespace-pre-wrap text-sm text-gray-700"> // [!code ++]
+            {post ? JSON.stringify(post, null, 2) : "No post data available."} // [!code ++]
+          </pre> // [!code ++]
+        </section> // [!code ++]
+      </div> // [!code ++]
+    </main> // [!code ++]
+  ); // [!code ++]
+} // [!code ++]
+```
+
+### 4.1. Populate your databases with data [#41-populate-your-databases-with-data]
+
+In a separate terminal window, open two instances of [Prisma Studio](https://www.prisma.io/docs/studio) to add data to your databases by running the script:
+
+  
+
+#### bun
+
+```bash
+bun run studio
+```
+
+#### pnpm
+
+```bash
+pnpm run studio
+```
+
+#### yarn
+
+```bash
+yarn studio
+```
+
+#### npm
+
+```bash
+npm run studio
+```
+
+This will open up two browser windows, one in `http://localhost:5555` and one in `http://localhost:5556`. Navigate to those windows and add sample data to both databases.
+
+### 4.2. Run the development server [#42-run-the-development-server]
+
+Before starting the development server, note that if you are using Next.js `v15.2.0`, do not use Turbopack as there is a known [issue](https://github.com/vercel/next.js/issues/76497). Remove Turbopack from your dev script by updating your `package.json`:
+
+```json title="package.json"
+"scripts": {
+    "dev": "next dev --turbopack", // [!code --]
+    "dev": "next dev", // [!code ++]
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
+    "generate": "npx prisma generate --config ./prisma-user-database/prisma.config.ts && npx prisma generate --config ./prisma-post-database/prisma.config.ts",
+    "migrate": "npx prisma migrate dev --config ./prisma-user-database/prisma.config.ts && npx prisma migrate dev --config ./prisma-post-database/prisma.config.ts",
+    "deploy": "npx prisma migrate deploy --config ./prisma-user-database/prisma.config.ts && npx prisma migrate deploy --config ./prisma-post-database/prisma.config.ts",
+    "studio": "npx prisma studio --config ./prisma-user-database/prisma.config.ts --port 5555 & npx prisma studio --config ./prisma-post-database/prisma.config.ts --port 5556"
+}
+```
+
+In a separate terminal window, start the development server by running:
+
+  
+
+#### bun
+
+```bash
+bun run dev
+```
+
+#### pnpm
+
+```bash
+pnpm run dev
+```
+
+#### yarn
+
+```bash
+yarn dev
+```
+
+#### npm
+
+```bash
+npm run dev
+```
+
+Navigate to `http://localhost:3000` to see your Next.js app display data from both databases:
+
+![App displaying data by querying two separate database instances](https://www.prisma.io/img/guides/multi-client-app-demo.png)
+
+Congratulations, you have a Next.js app running with two Prisma Client instances querying different databases.
+
+## 5. Deploy your Next.js app using multiple databases to Vercel [#5-deploy-your-nextjs-app-using-multiple-databases-to-vercel]
+
+Deploy your app by following these steps:
+
+1. Ensure your project is version-controlled and pushed to a GitHub repository. If you do not have a repository yet, [create one on GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository). Once the repository is ready, run the following commands:
+   ```bash
+   git add .
+   git commit -m "Initial commit with Prisma Postgres integration"
+   git branch -M main
+   git remote add origin https://github.com/<your-username>/<repository-name>.git
+   git push -u origin main
+   ```
+   > [!NOTE]
+> Replace `<your-username>` and `<repository-name>` with your GitHub username and the name of your repository.
+2. Log in to [Vercel](https://vercel.com/) and navigate to your [Dashboard](https://vercel.com/docs/deployments).
+3. Create a new project. Follow Vercel's [Import an existing project](https://vercel.com/docs/getting-started-with-vercel/import) guide, but stop at [step 3](https://vercel.com/docs/getting-started-with-vercel/import#optionally-configure-any-settings) where you will configure environment variables *before* clicking **Deploy**.
+4. Configure the `DATABASE_URL` environment variable:
+   1. Expand the **Environment variables** section.
+   2. Add the `PPG_USER_DATABASE_URL` environment variable:
+      * **Key**: `PPG_USER_DATABASE_URL`
+      * **Value**: Paste your user database connection URL, e.g. by copying it from the `.env` file in your project.
+   3. Add the `PPG_POST_DATABASE_URL` environment variable:
+      * **Key**: `PPG_POST_DATABASE_URL`
+      * **Value**: Paste your post database connection URL, e.g. by copying it from the `.env` file in your project.
+        > [!WARNING]
+> Do not deploy without setting the environment variables. Your deployment will fail if the application cannot connect to the databases.
+5. Click the **Deploy** button. Vercel will build your project and deploy it to a live URL.
+
+Open the live URL provided by Vercel and verify that your application is working.
+
+Your application now runs on Vercel and uses two Prisma Clients to query two different databases.
+
+## Next steps [#next-steps]
+
+In this guide, you learned how to use multiple databases using Prisma ORM in a single Next.js app by:
+
+* Setting up separate Prisma schemas for user and post databases.
+* Configuring custom output directories and environment variables.
+* Creating helper scripts to generate and migrate each schema.
+* Instantiating and integrating multiple Prisma Clients into your application.
+* Deploying your multi-database application to Vercel.
+
+This approach allows you to maintain a clear separation of data models and simplifies multi-tenant or multi-database scenarios.
+
+For further improvements in managing your project, consider using a monorepo setup. Check out our related guides:
+
+* [How to use Prisma ORM in a pnpm workspaces monorepo](https://www.prisma.io/docs/guides/v7/deployment/pnpm-workspaces)
+* [How to use Prisma ORM with Turborepo](https://www.prisma.io/docs/guides/v7/deployment/turborepo)
+
+## Related pages
+
+- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
+- [`Schema management in teams`](https://www.prisma.io/docs/guides/v7/database/schema-changes): Learn how to use Prisma Migrate effectively when collaborating on a project as a team
+
+# Schema management in teams (Prisma ORM v7) (/docs/guides/v7/database/schema-changes)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use Prisma Migrate effectively when collaborating on a project as a team
+
+Location: Guides > v7 > Database > Schema management in teams
+
+## Introduction [#introduction]
+
+When working in a team, managing database schema changes can be challenging. This guide shows you how to effectively collaborate on schema changes using Prisma Migrate, ensuring that all team members can safely contribute to and incorporate schema changes.
+
+## Prerequisites [#prerequisites]
+
+Before starting this guide, make sure you have:
+
+* Node.js installed (version 20 or higher)
+* A Prisma project set up with migrations
+* A relational database (PostgreSQL, MySQL, SQLite, SQL Server, etc.)
+* Basic understanding of Git
+* Basic familiarity with Prisma Migrate
+
+> [!WARNING]
+> This guide **does not apply for MongoDB**.<br />
+> Instead of `migrate dev`, [`db push`](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/prototyping-your-schema) is used for [MongoDB](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/mongodb).
+
+## 1. Understand migration basics [#1-understand-migration-basics]
+
+### 1.1. Migration order [#11-migration-order]
+
+Migrations are **applied in the same order as they were created**. The creation date is part of the migration subfolder name - for example, `20210316081837-updated-fields` was created on `2021-03-16-08:18:37`.
+
+### 1.2. Source control requirements [#12-source-control-requirements]
+
+You should commit the following files to source control:
+
+* The contents of the `prisma/migrations` folder, including the `migration_lock.toml` file
+* The Prisma Schema (`schema.prisma`)
+
+Source-controlling the `schema.prisma` file is not enough - you must include your migration history because:
+
+* Customized migrations contain information that cannot be represented in the Prisma schema
+* The `prisma migrate deploy` command only runs migration files
+
+### 1.3. Configure Prisma [#13-configure-prisma]
+
+Create a `prisma.config.ts` file in the root of your project with the following content:
+
+```typescript title="prisma.config.ts"
+import "dotenv/config";
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+> [!NOTE]
+> You'll need to install the `dotenv` package to load environment variables. If you haven't already, install it using your package manager:
+> 
+> 
+>   
+> 
+>   #### bun
+
+>     ```bash
+>     bun add dotenv
+>     ```
+>
+> 
+>   #### pnpm
+
+>     ```bash
+>     pnpm add dotenv
+>     ```
+>
+> 
+>   #### yarn
+
+>     ```bash
+>     yarn add dotenv
+>     ```
+>
+> 
+>   #### npm
+
+>     ```bash
+>     npm install dotenv
+>     ```
+>
+> 
+
+## 2. Incorporate team changes [#2-incorporate-team-changes]
+
+### 2.1. Pull latest changes [#21-pull-latest-changes]
+
+To incorporate changes from collaborators:
+
+1. Pull the changed Prisma schema and `./prisma/migrations` folder
+2. Run the migrate command:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev
+```
+
+### 2.2. Example scenario [#22-example-scenario]
+
+Consider a sample scenario with three developers sharing schema changes:
+
+  
+
+#### Before
+
+```prisma title="schema.prisma" 
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+```
+
+#### After
+
+```prisma title="schema.prisma" 
+model Post {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String?
+  published Boolean @default(false)
+  author    User?   @relation(fields: [authorId], references: [id])
+  authorId  Int?
+}
+
+model User {
+  id              Int     @id @default(autoincrement())
+  email           String  @unique
+  name            String?
+  favoriteColor   String? // Added by Ania // [!code ++]
+  bestPacmanScore Int? // Added by you // [!code ++]
+  posts           Post[]
+}
+
+// Added by Javier // [!code ++]
+model Tag { // [!code ++]
+  tagName     String   @id // [!code ++]
+  tagCategory Category // [!code ++]
+} // [!code ++]
+```
+
+## 3. Handle concurrent changes [#3-handle-concurrent-changes]
+
+### 3.1. Developer A's changes [#31-developer-as-changes]
+
+Ania adds a new field:
+
+```prisma
+model User {
+  /* ... */
+  favoriteColor String?
+}
+```
+
+And generates a migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name new-field
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name new-field
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name new-field
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name new-field
+```
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+### 3.2. Developer B's changes [#32-developer-bs-changes]
+
+Javier adds a new model:
+
+```prisma
+model Tag {
+  tagName     String   @id
+  tagCategory Category
+}
+```
+
+And generates a migration:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name new-model
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name new-model
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name new-model
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name new-model
+```
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+### 3.3. Merge changes [#33-merge-changes]
+
+The migration history now has two new migrations:
+
+![A diagram showing changes by two separate developers converging in a single migration history.](https://www.prisma.io/img/guides/migrate-team-dev.png)
+
+## 4. Integrate your changes [#4-integrate-your-changes]
+
+### 4.1. Pull team changes [#41-pull-team-changes]
+
+1. Pull the most recent changes:
+   * Two new migrations
+   * Updated schema file
+
+2. Review the merged schema:
+
+```prisma
+model User {
+  /* ... */
+  favoriteColor   String?
+  bestPacmanScore Int?
+}
+
+model Tag {
+  tagName     String   @id
+  tagCategory Category
+  posts       Post[]
+}
+```
+
+### 4.2. Generate your migration [#42-generate-your-migration]
+
+Run the migrate command:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev
+```
+
+  
+
+#### bun
+
+```bash
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma generate
+```
+
+This will:
+
+1. Apply your team's migrations
+2. Create a new migration for your changes
+3. Apply your new migration
+
+### 4.3. Commit changes [#43-commit-changes]
+
+Commit:
+
+* The merged `schema.prisma`
+* Your new migration file
+
+## Next steps [#next-steps]
+
+Now that you understand team schema management, you can:
+
+* Learn about [customizing migrations](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/customizing-migrations)
+* Explore [deployment workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
+
+For more information:
+
+* [Prisma Migrate documentation](https://www.prisma.io/docs/orm/v7/prisma-migrate)
+* [Team development workflows](https://www.prisma.io/docs/orm/v7/prisma-migrate/workflows/development-and-production)
+
+## Related pages
+
+- [`Expand-and-contract migrations`](https://www.prisma.io/docs/guides/v7/database/data-migration): Learn how to perform data migrations using the expand and contract pattern with Prisma ORM
+- [`Multiple databases`](https://www.prisma.io/docs/guides/v7/database/multiple-databases): Learn how to use multiple Prisma Clients in a single app to connect to multiple databases, handle migrations, and deploy your application to Vercel
 
 # Astro (Prisma ORM v7) (/docs/guides/v7/frameworks/astro)
 
@@ -96755,772 +96755,6 @@ Because each pull request gets its own database, changes can be tested without t
 - [`Neon with Accelerate`](https://www.prisma.io/docs/guides/v7/integrations/neon-accelerate): Learn how to set up PostgreSQL on Neon with Prisma Accelerate's Connection Pool
 - [`Supabase with Accelerate`](https://www.prisma.io/docs/guides/v7/integrations/supabase-accelerate): Learn how to set up PostgreSQL on Supabase with Prisma Accelerate's Connection Pool
 
-# Bun (Prisma ORM v7) (/docs/guides/v7/runtimes/bun)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use Prisma ORM in a Bun application with Prisma Postgres
-
-Location: Guides > v7 > Runtimes > Bun
-
-## Introduction [#introduction]
-
-[Bun](https://bun.sh) is a fast JavaScript runtime that includes a bundler, test runner, and package manager. In this guide, you will set up a Bun project with Prisma ORM and a Prisma Postgres database. You will create a small HTTP server and build a Bun executable for deployment.
-
-[How to use Prisma ORM with Bun and Prisma Postgres](https://www.youtube.com/watch?v=gE6l4eX0v_I)
-
-## Prerequisites [#prerequisites]
-
-* [Bun](https://bun.sh/docs/installation) installed in your system
-* A [Prisma Postgres database](https://www.prisma.io/docs/postgres) (created during setup)
-* Basic knowledge of JavaScript/TypeScript
-
-## 1. Setting up your Bun project [#1-setting-up-your-bun-project]
-
-First, create a directory for your project and navigate to it:
-
-```bash
-mkdir bun-prisma
-cd bun-prisma
-```
-
-Then, initialise a new Bun project:
-
-  
-
-#### bun
-
-```bash
-bun init
-```
-
-#### pnpm
-
-```bash
-pnpm init
-```
-
-#### yarn
-
-```bash
-yarn init
-```
-
-#### npm
-
-```bash
-npm init
-```
-
-This creates a basic Bun project that includes a `package.json` file and an `index.ts` file.
-
-## 2. Installing and configuring Prisma [#2-installing-and-configuring-prisma]
-
-### 2.1. Install dependencies [#21-install-dependencies]
-
-Install the required Prisma packages and other dependencies:
-
-  
-
-#### bun
-
-```bash
-bun add prisma@prev @types/pg --dev
-bun add @prisma/client@7 @prisma/adapter-pg pg
-```
-
-#### pnpm
-
-```bash
-pnpm add prisma@prev @types/pg --save-dev
-pnpm add @prisma/client@7 @prisma/adapter-pg pg
-```
-
-#### yarn
-
-```bash
-yarn add prisma@prev @types/pg --dev
-yarn add @prisma/client@7 @prisma/adapter-pg pg
-```
-
-#### npm
-
-```bash
-npm install prisma@prev @types/pg --save-dev
-npm install @prisma/client@7 @prisma/adapter-pg pg
-```
-
-> [!NOTE]
-> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
-
-### 2.2. Initialize Prisma ORM with Prisma Postgres [#22-initialize-prisma-orm-with-prisma-postgres]
-
-Initialize Prisma ORM with Prisma Postgres in your project:
-
-  
-
-#### bun
-
-```bash
-bunx --bun prisma init
-```
-
-#### pnpm
-
-```bash
-pnpm prisma init
-```
-
-#### yarn
-
-```bash
-yarn prisma init
-```
-
-#### npm
-
-```bash
-npx prisma init
-```
-
-> [!NOTE]
-> When using the Bun tab for `prisma init`, the `--bun` flag ensures Prisma runs with the Bun runtime instead of falling back to Node.js due to the `#!/usr/bin/env node` shebang in the CLI.
-
-> [!NOTE]
-> `prisma init` creates the Prisma scaffolding and a local `DATABASE_URL`. In the next step, you will create a Prisma Postgres database and replace that value with a direct `postgres://...` connection string.
-
-This command creates:
-
-* A `prisma/` directory with your `schema.prisma` file
-* A `prisma.config.ts` file
-* A `.env` file with your `DATABASE_URL`
-
-### 2.3. Create a Prisma Postgres database [#23-create-a-prisma-postgres-database]
-
-Create a Prisma Postgres database and replace the generated `DATABASE_URL` in your `.env` file with the `postgres://...` connection string from the CLI output:
-
-  
-
-#### bun
-
-```bash
-bunx create-db
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-db
-```
-
-#### yarn
-
-```bash
-yarn dlx create-db
-```
-
-#### npm
-
-```bash
-npx create-db
-```
-
-Update your `.env` file:
-
-```bash title=".env"
-DATABASE_URL="postgres://..."
-```
-
-### 2.4. Update your Prisma schema [#24-update-your-prisma-schema]
-
-Open `prisma/schema.prisma` and update it to include your data model:
-
-```prisma title="prisma/schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User { // [!code ++]
-  id    Int     @id @default(autoincrement()) // [!code ++]
-  email String  @unique // [!code ++]
-  name  String? // [!code ++]
-} // [!code ++]
-```
-
-## 3. Generate Prisma Client and run migrations [#3-generate-prisma-client-and-run-migrations]
-
-Generate the Prisma client and apply your schema to the database:
-
-  
-
-#### bun
-
-```bash
-bunx prisma migrate dev --name init
-bunx prisma generate
-```
-
-#### pnpm
-
-```bash
-pnpm prisma migrate dev --name init
-pnpm prisma generate
-```
-
-#### yarn
-
-```bash
-yarn prisma migrate dev --name init
-yarn prisma generate
-```
-
-#### npm
-
-```bash
-npx prisma migrate dev --name init
-npx prisma generate
-```
-
-This command:
-
-* Creates the database tables based on your schema
-* Generates the Prisma client in the `generated/prisma` directory
-
-## 4. Setting up database configuration and creating a seed script [#4-setting-up-database-configuration-and-creating-a-seed-script]
-
-### 4.1. Create a database utility file [#41-create-a-database-utility-file]
-
-Create a `db.ts` file in your project root to configure `PrismaClient`:
-
-```typescript title="db.ts"
-import { PrismaClient } from "./generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-export const prisma = new PrismaClient({
-  adapter,
-});
-```
-
-### 4.2. Create a seed script [#42-create-a-seed-script]
-
-Create a seed script in the `prisma` folder to populate your database with sample data:
-
-```typescript title="prisma/seed.ts"
-import { PrismaClient } from "../generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-const prisma = new PrismaClient({
-  adapter,
-});
-
-async function main() {
-  // Create multiple users
-  await prisma.user.createMany({
-    data: [
-      { email: "alice@example.com", name: "Alice" },
-      { email: "bob@example.com", name: "Bob" },
-      { email: "charlie@example.com", name: "Charlie" },
-      { email: "diana@example.com", name: "Diana" },
-      { email: "eve@example.com", name: "Eve" },
-      { email: "frank@example.com", name: "Frank" },
-      { email: "grace@example.com", name: "Grace" },
-      { email: "henry@example.com", name: "Henry" },
-      { email: "isabella@example.com", name: "Isabella" },
-      { email: "jack@example.com", name: "Jack" },
-    ],
-    skipDuplicates: true, // prevents errors if you run the seed multiple times
-  });
-
-  console.log("Seed data inserted!");
-}
-
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
-```
-
-### 3.3. Add the seed script to Prisma Config [#33-add-the-seed-script-to-prisma-config]
-
-Add the following content to the file:
-
-```typescript title="prisma.config.ts"
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-    seed: `bun run prisma/seed.ts`, // [!code ++]
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-> [!NOTE]
-> Unlike Node.js, Bun automatically loads `.env` files, so the `import 'dotenv/config'` line is not needed. If you see this import in your generated `prisma.config.ts`, you can safely remove it.
-
-Run the seed script to populate your database:
-
-  
-
-#### bun
-
-```bash
-bunx prisma db seed
-```
-
-#### pnpm
-
-```bash
-pnpm prisma db seed
-```
-
-#### yarn
-
-```bash
-yarn prisma db seed
-```
-
-#### npm
-
-```bash
-npx prisma db seed
-```
-
-## 5. Creating your Bun server [#5-creating-your-bun-server]
-
-Replace the `index.ts` file contents with the following code to build a small HTTP server that uses Prisma ORM to fetch and display users:
-
-```typescript title="index.ts"
-import { prisma } from "./db";
-
-const server = Bun.serve({
-  port: 3000,
-  async fetch(req) {
-    const { pathname } = new URL(req.url);
-
-    // Skip favicon route
-    if (pathname === "/favicon.ico") {
-      return new Response(null, { status: 204 }); // or serve an icon if you have one
-    }
-
-    // Return all users
-    const users = await prisma.user.findMany();
-
-    // Count all users
-    const count = await prisma.user.count();
-
-    // Format the response with JSON
-    return new Response(
-      JSON.stringify({
-        users: users,
-        totalUsers: count,
-      }),
-      { headers: { "Content-Type": "application/json" } },
-    );
-  },
-});
-
-console.log(`Listening on http://localhost:${server.port}`);
-```
-
-## 6. Running your application [#6-running-your-application]
-
-Start your Bun server:
-
-```bash
-bun run index.ts
-```
-
-You should see `Listening on http://localhost:3000` in the console. When you visit `http://localhost:3000` in your browser, you'll see a JSON response with all the users in your database and the total count.
-
-## 7. Building and running a Bun executable [#7-building-and-running-a-bun-executable]
-
-Bun can compile your [TypeScript application into a single executable file](https://bun.com/docs/bundler/executables), which is useful for deployment and distribution.
-
-### 7.1. Build the executable [#71-build-the-executable]
-
-Build your application into an executable:
-
-```bash
-bun build --compile index.ts
-```
-
-This creates an executable file named `index` (or `index.exe` on Windows) in your project directory.
-
-### 7.2. Run the executable [#72-run-the-executable]
-
-Run the compiled executable:
-
-```bash
-./index
-```
-
-You should see the same `Listening on http://localhost:3000` message, and your application will work exactly the same as before. The executable includes all dependencies and can be deployed to any compatible system without requiring Bun or Node.js to be installed.
-
-> [!NOTE]
-> Bun executables are useful for:
-> 
-> * **Deployment**: Ship a single file instead of managing dependencies
-> * **Distribution**: Share your application without requiring users to install Bun
-> * **Performance**: Faster startup times compared to running TypeScript files
-> * **Security**: Your source code is compiled and not easily readable
-
-## Next steps [#next-steps]
-
-You can explore [this example](https://pris.ly/bun_ppg_example) to see a sample application built with Bun and Prisma.
-
-Now that you have a Bun application connected to a Prisma Postgres database, you can continue by:
-
-* Extending your Prisma schema with additional models and relationships
-* Implementing authentication and authorization
-* Adding input validation and error handling
-* Exploring Bun's built-in testing tools
-* Deploying your executable to production servers
-
-### More info [#more-info]
-
-* [Bun Documentation](https://bun.sh/docs)
-* [Prisma Config File](https://www.prisma.io/docs/orm/v7/reference/prisma-config-reference)
-* [Prisma Postgres](https://www.prisma.io/docs/postgres)
-
-## Related pages
-
-- [`Deno`](https://www.prisma.io/docs/guides/v7/runtimes/deno): Learn how to use Prisma ORM in a Deno application with Prisma Postgres
-
-# Deno (Prisma ORM v7) (/docs/guides/v7/runtimes/deno)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use Prisma ORM in a Deno application with Prisma Postgres
-
-Location: Guides > v7 > Runtimes > Deno
-
-## Introduction [#introduction]
-
-[Deno](https://deno.com) is a secure JavaScript and TypeScript runtime built on V8 with built-in TypeScript support, a permissions system, and web-standard APIs. In this guide, you will set up a Deno project with Prisma ORM and a Prisma Postgres database. You will create a small HTTP server that reads from the database and returns the results.
-
-[How to use Prisma ORM with Deno and Prisma Postgres](https://www.youtube.com/watch?v=hAL2J3yQf7I)
-
-## Prerequisites [#prerequisites]
-
-* [Deno](https://docs.deno.com/runtime/#install-deno) v2.0 or later installed on your system
-* A [Prisma Postgres database](https://www.prisma.io/docs/postgres) (created during setup)
-* Basic knowledge of JavaScript/TypeScript
-* [Deno extension for VS Code](https://docs.deno.com/runtime/reference/vscode/) (recommended)
-
-## 1. Setting up your Deno project [#1-setting-up-your-deno-project]
-
-First, create a directory for your project and navigate to it:
-
-```bash
-mkdir deno-prisma
-cd deno-prisma
-```
-
-Then, initialize a new Deno project:
-
-```bash
-deno init
-```
-
-This creates a basic Deno project with a `deno.json` configuration file and a `main.ts` file.
-
-### 1.1. Configure Deno for Prisma [#11-configure-deno-for-prisma]
-
-Update the `deno.json` file with the following configuration to set up Node.js compatibility, import maps, and Prisma-related task scripts:
-
-```json title="deno.json"
-{
-  "nodeModulesDir": "auto",
-  "compilerOptions": {
-    "lib": ["deno.window"],
-    "types": ["node"]
-  },
-  "imports": {
-    "@prisma/adapter-pg": "npm:@prisma/adapter-pg@^7.0.0",
-    "@prisma/client": "npm:@prisma/client@7",
-    "prisma": "npm:prisma@prev"
-  },
-  "tasks": {
-    "dev": "deno run -A --env=.env --watch main.ts",
-    "db:generate": "deno run -A --env=.env npm:prisma@prev generate",
-    "db:push": "deno run -A --env=.env npm:prisma@prev db push",
-    "db:migrate": "deno run -A --env=.env npm:prisma@prev migrate dev",
-    "db:seed": "deno run -A --env=.env npm:prisma@prev db seed"
-  }
-}
-```
-
-> [!NOTE]
-> The `nodeModulesDir: "auto"` setting allows Deno to automatically manage a `node_modules` directory, which is needed for Prisma's generated client. The import map entries let you use bare specifiers like `@prisma/client` in your code.
-
-## 2. Installing and configuring Prisma [#2-installing-and-configuring-prisma]
-
-### 2.1. Initialize Prisma ORM with Prisma Postgres [#21-initialize-prisma-orm-with-prisma-postgres]
-
-Initialize Prisma ORM with Prisma Postgres in your project:
-
-```bash
-deno run -A npm:prisma@prev init
-```
-
-> [!NOTE]
-> `prisma init` creates the Prisma scaffolding and a local `DATABASE_URL`. In the next step, you will create a Prisma Postgres database and replace that value with a direct `postgres://...` connection string.
-
-This command creates:
-
-* A `prisma/` directory with your `schema.prisma` file
-* A `prisma.config.ts` file
-* A `.env` file with your `DATABASE_URL`
-
-### 2.2. Update the Prisma config file [#22-update-the-prisma-config-file]
-
-Open the generated `prisma.config.ts` file. Since Deno loads environment variables using the `--env=.env` flag (configured in `deno.json` tasks), you can remove the `dotenv/config` import if it was generated:
-
-```typescript title="prisma.config.ts"
-import "dotenv/config"; // [!code --]
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-### 2.3. Create a Prisma Postgres database [#23-create-a-prisma-postgres-database]
-
-Create a Prisma Postgres database and replace the generated `DATABASE_URL` in your `.env` file with the `postgres://...` connection string from the CLI output:
-
-```bash
-npx create-db
-```
-
-Update your `.env` file:
-
-```bash title=".env"
-DATABASE_URL="postgres://..."
-```
-
-### 2.4. Update your Prisma schema [#24-update-your-prisma-schema]
-
-Open `prisma/schema.prisma` and update it to include the Deno runtime and your data model:
-
-```prisma title="prisma/schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-  runtime  = "deno" // [!code ++]
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User { // [!code ++]
-  id    Int     @id @default(autoincrement()) // [!code ++]
-  email String  @unique // [!code ++]
-  name  String? // [!code ++]
-} // [!code ++]
-```
-
-> [!NOTE]
-> The `runtime = "deno"` setting in the generator block is required for Prisma Client to work correctly with the Deno runtime.
-
-## 3. Generate Prisma Client and run migrations [#3-generate-prisma-client-and-run-migrations]
-
-Generate the Prisma Client and apply your schema to the database:
-
-```bash
-deno task db:migrate --name init
-deno task db:generate
-```
-
-This command:
-
-* Creates the database tables based on your schema
-* Generates the Prisma Client in the `generated/prisma` directory
-
-## 4. Setting up database configuration and creating a seed script [#4-setting-up-database-configuration-and-creating-a-seed-script]
-
-### 4.1. Create a database utility file [#41-create-a-database-utility-file]
-
-Create a `db.ts` file in your project root to configure `PrismaClient`:
-
-```typescript title="db.ts"
-import { PrismaClient } from "./generated/prisma/client.ts";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: Deno.env.get("DATABASE_URL")!,
-});
-
-export const prisma = new PrismaClient({
-  adapter,
-});
-```
-
-### 4.2. Create a seed script [#42-create-a-seed-script]
-
-Create a seed script in the `prisma` folder to populate your database with sample data:
-
-```typescript title="prisma/seed.ts"
-import { PrismaClient } from "../generated/prisma/client.ts";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: Deno.env.get("DATABASE_URL")!,
-});
-
-const prisma = new PrismaClient({
-  adapter,
-});
-
-async function main() {
-  // Create multiple users
-  await prisma.user.createMany({
-    data: [
-      { email: "alice@example.com", name: "Alice" },
-      { email: "bob@example.com", name: "Bob" },
-      { email: "charlie@example.com", name: "Charlie" },
-      { email: "diana@example.com", name: "Diana" },
-      { email: "eve@example.com", name: "Eve" },
-      { email: "frank@example.com", name: "Frank" },
-      { email: "grace@example.com", name: "Grace" },
-      { email: "henry@example.com", name: "Henry" },
-      { email: "isabella@example.com", name: "Isabella" },
-      { email: "jack@example.com", name: "Jack" },
-    ],
-    skipDuplicates: true, // prevents errors if you run the seed multiple times
-  });
-
-  console.log("Seed data inserted!");
-}
-
-main()
-  .catch((e) => {
-    console.error(e);
-    Deno.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
-```
-
-### 4.3. Add the seed script to Prisma Config [#43-add-the-seed-script-to-prisma-config]
-
-Update the `prisma.config.ts` file to include the seed command:
-
-```typescript title="prisma.config.ts"
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-    seed: "deno run -A --env=.env ./prisma/seed.ts", // [!code ++]
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-Run the seed script to populate your database:
-
-```bash
-deno task db:seed
-```
-
-## 5. Creating your Deno server [#5-creating-your-deno-server]
-
-Replace the `main.ts` file contents with the following code to build a small HTTP server that uses Prisma ORM to fetch and display users:
-
-```typescript title="main.ts"
-import { prisma } from "./db.ts";
-
-async function handler(req: Request): Promise<Response> {
-  const { pathname } = new URL(req.url);
-
-  // Skip favicon route
-  if (pathname === "/favicon.ico") {
-    return new Response(null, { status: 204 });
-  }
-
-  // Return all users
-  const users = await prisma.user.findMany();
-
-  // Count all users
-  const count = await prisma.user.count();
-
-  // Format the response with JSON
-  return new Response(
-    JSON.stringify({
-      users: users,
-      totalUsers: count,
-    }),
-    { headers: { "Content-Type": "application/json" } },
-  );
-}
-
-Deno.serve({ port: 8000 }, handler);
-```
-
-## 6. Running your application [#6-running-your-application]
-
-Start your Deno server:
-
-```bash
-deno task dev
-```
-
-You should see the server running on `http://localhost:8000` in the console. When you visit `http://localhost:8000` in your browser, you'll see a JSON response with all the users in your database and the total count.
-
-## Next steps [#next-steps]
-
-Now that you have a Deno application connected to a Prisma Postgres database, you can continue by:
-
-* Extending your Prisma schema with additional models and relationships
-* Implementing authentication and authorization
-* Adding input validation with Zod
-* Exploring Deno's built-in testing tools
-* Deploying your application to [Deno Deploy](https://www.prisma.io/docs/guides/integrations/deno)
-
-### More info [#more-info]
-
-* [Deno Documentation](https://docs.deno.com)
-* [Prisma Config File](https://www.prisma.io/docs/orm/v7/reference/prisma-config-reference)
-* [Prisma Postgres](https://www.prisma.io/docs/postgres)
-
-## Related pages
-
-- [`Bun`](https://www.prisma.io/docs/guides/v7/runtimes/bun): Learn how to use Prisma ORM in a Bun application with Prisma Postgres
-
 # Drizzle (Prisma ORM v7) (/docs/guides/v7/switch-to-prisma-orm/from-drizzle)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -99095,6 +98329,772 @@ const result = await prisma.$transaction(async (tx) => {
 
 - [`Drizzle`](https://www.prisma.io/docs/guides/v7/switch-to-prisma-orm/from-drizzle): Learn how to migrate from Drizzle to Prisma ORM
 - [`Mongoose`](https://www.prisma.io/docs/guides/v7/switch-to-prisma-orm/from-mongoose): Learn how to migrate from Mongoose to Prisma ORM
+
+# Bun (Prisma ORM v7) (/docs/guides/v7/runtimes/bun)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use Prisma ORM in a Bun application with Prisma Postgres
+
+Location: Guides > v7 > Runtimes > Bun
+
+## Introduction [#introduction]
+
+[Bun](https://bun.sh) is a fast JavaScript runtime that includes a bundler, test runner, and package manager. In this guide, you will set up a Bun project with Prisma ORM and a Prisma Postgres database. You will create a small HTTP server and build a Bun executable for deployment.
+
+[How to use Prisma ORM with Bun and Prisma Postgres](https://www.youtube.com/watch?v=gE6l4eX0v_I)
+
+## Prerequisites [#prerequisites]
+
+* [Bun](https://bun.sh/docs/installation) installed in your system
+* A [Prisma Postgres database](https://www.prisma.io/docs/postgres) (created during setup)
+* Basic knowledge of JavaScript/TypeScript
+
+## 1. Setting up your Bun project [#1-setting-up-your-bun-project]
+
+First, create a directory for your project and navigate to it:
+
+```bash
+mkdir bun-prisma
+cd bun-prisma
+```
+
+Then, initialise a new Bun project:
+
+  
+
+#### bun
+
+```bash
+bun init
+```
+
+#### pnpm
+
+```bash
+pnpm init
+```
+
+#### yarn
+
+```bash
+yarn init
+```
+
+#### npm
+
+```bash
+npm init
+```
+
+This creates a basic Bun project that includes a `package.json` file and an `index.ts` file.
+
+## 2. Installing and configuring Prisma [#2-installing-and-configuring-prisma]
+
+### 2.1. Install dependencies [#21-install-dependencies]
+
+Install the required Prisma packages and other dependencies:
+
+  
+
+#### bun
+
+```bash
+bun add prisma@prev @types/pg --dev
+bun add @prisma/client@7 @prisma/adapter-pg pg
+```
+
+#### pnpm
+
+```bash
+pnpm add prisma@prev @types/pg --save-dev
+pnpm add @prisma/client@7 @prisma/adapter-pg pg
+```
+
+#### yarn
+
+```bash
+yarn add prisma@prev @types/pg --dev
+yarn add @prisma/client@7 @prisma/adapter-pg pg
+```
+
+#### npm
+
+```bash
+npm install prisma@prev @types/pg --save-dev
+npm install @prisma/client@7 @prisma/adapter-pg pg
+```
+
+> [!NOTE]
+> If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers).
+
+### 2.2. Initialize Prisma ORM with Prisma Postgres [#22-initialize-prisma-orm-with-prisma-postgres]
+
+Initialize Prisma ORM with Prisma Postgres in your project:
+
+  
+
+#### bun
+
+```bash
+bunx --bun prisma init
+```
+
+#### pnpm
+
+```bash
+pnpm prisma init
+```
+
+#### yarn
+
+```bash
+yarn prisma init
+```
+
+#### npm
+
+```bash
+npx prisma init
+```
+
+> [!NOTE]
+> When using the Bun tab for `prisma init`, the `--bun` flag ensures Prisma runs with the Bun runtime instead of falling back to Node.js due to the `#!/usr/bin/env node` shebang in the CLI.
+
+> [!NOTE]
+> `prisma init` creates the Prisma scaffolding and a local `DATABASE_URL`. In the next step, you will create a Prisma Postgres database and replace that value with a direct `postgres://...` connection string.
+
+This command creates:
+
+* A `prisma/` directory with your `schema.prisma` file
+* A `prisma.config.ts` file
+* A `.env` file with your `DATABASE_URL`
+
+### 2.3. Create a Prisma Postgres database [#23-create-a-prisma-postgres-database]
+
+Create a Prisma Postgres database and replace the generated `DATABASE_URL` in your `.env` file with the `postgres://...` connection string from the CLI output:
+
+  
+
+#### bun
+
+```bash
+bunx create-db
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-db
+```
+
+#### yarn
+
+```bash
+yarn dlx create-db
+```
+
+#### npm
+
+```bash
+npx create-db
+```
+
+Update your `.env` file:
+
+```bash title=".env"
+DATABASE_URL="postgres://..."
+```
+
+### 2.4. Update your Prisma schema [#24-update-your-prisma-schema]
+
+Open `prisma/schema.prisma` and update it to include your data model:
+
+```prisma title="prisma/schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User { // [!code ++]
+  id    Int     @id @default(autoincrement()) // [!code ++]
+  email String  @unique // [!code ++]
+  name  String? // [!code ++]
+} // [!code ++]
+```
+
+## 3. Generate Prisma Client and run migrations [#3-generate-prisma-client-and-run-migrations]
+
+Generate the Prisma client and apply your schema to the database:
+
+  
+
+#### bun
+
+```bash
+bunx prisma migrate dev --name init
+bunx prisma generate
+```
+
+#### pnpm
+
+```bash
+pnpm prisma migrate dev --name init
+pnpm prisma generate
+```
+
+#### yarn
+
+```bash
+yarn prisma migrate dev --name init
+yarn prisma generate
+```
+
+#### npm
+
+```bash
+npx prisma migrate dev --name init
+npx prisma generate
+```
+
+This command:
+
+* Creates the database tables based on your schema
+* Generates the Prisma client in the `generated/prisma` directory
+
+## 4. Setting up database configuration and creating a seed script [#4-setting-up-database-configuration-and-creating-a-seed-script]
+
+### 4.1. Create a database utility file [#41-create-a-database-utility-file]
+
+Create a `db.ts` file in your project root to configure `PrismaClient`:
+
+```typescript title="db.ts"
+import { PrismaClient } from "./generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+export const prisma = new PrismaClient({
+  adapter,
+});
+```
+
+### 4.2. Create a seed script [#42-create-a-seed-script]
+
+Create a seed script in the `prisma` folder to populate your database with sample data:
+
+```typescript title="prisma/seed.ts"
+import { PrismaClient } from "../generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+const prisma = new PrismaClient({
+  adapter,
+});
+
+async function main() {
+  // Create multiple users
+  await prisma.user.createMany({
+    data: [
+      { email: "alice@example.com", name: "Alice" },
+      { email: "bob@example.com", name: "Bob" },
+      { email: "charlie@example.com", name: "Charlie" },
+      { email: "diana@example.com", name: "Diana" },
+      { email: "eve@example.com", name: "Eve" },
+      { email: "frank@example.com", name: "Frank" },
+      { email: "grace@example.com", name: "Grace" },
+      { email: "henry@example.com", name: "Henry" },
+      { email: "isabella@example.com", name: "Isabella" },
+      { email: "jack@example.com", name: "Jack" },
+    ],
+    skipDuplicates: true, // prevents errors if you run the seed multiple times
+  });
+
+  console.log("Seed data inserted!");
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+```
+
+### 3.3. Add the seed script to Prisma Config [#33-add-the-seed-script-to-prisma-config]
+
+Add the following content to the file:
+
+```typescript title="prisma.config.ts"
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+    seed: `bun run prisma/seed.ts`, // [!code ++]
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+> [!NOTE]
+> Unlike Node.js, Bun automatically loads `.env` files, so the `import 'dotenv/config'` line is not needed. If you see this import in your generated `prisma.config.ts`, you can safely remove it.
+
+Run the seed script to populate your database:
+
+  
+
+#### bun
+
+```bash
+bunx prisma db seed
+```
+
+#### pnpm
+
+```bash
+pnpm prisma db seed
+```
+
+#### yarn
+
+```bash
+yarn prisma db seed
+```
+
+#### npm
+
+```bash
+npx prisma db seed
+```
+
+## 5. Creating your Bun server [#5-creating-your-bun-server]
+
+Replace the `index.ts` file contents with the following code to build a small HTTP server that uses Prisma ORM to fetch and display users:
+
+```typescript title="index.ts"
+import { prisma } from "./db";
+
+const server = Bun.serve({
+  port: 3000,
+  async fetch(req) {
+    const { pathname } = new URL(req.url);
+
+    // Skip favicon route
+    if (pathname === "/favicon.ico") {
+      return new Response(null, { status: 204 }); // or serve an icon if you have one
+    }
+
+    // Return all users
+    const users = await prisma.user.findMany();
+
+    // Count all users
+    const count = await prisma.user.count();
+
+    // Format the response with JSON
+    return new Response(
+      JSON.stringify({
+        users: users,
+        totalUsers: count,
+      }),
+      { headers: { "Content-Type": "application/json" } },
+    );
+  },
+});
+
+console.log(`Listening on http://localhost:${server.port}`);
+```
+
+## 6. Running your application [#6-running-your-application]
+
+Start your Bun server:
+
+```bash
+bun run index.ts
+```
+
+You should see `Listening on http://localhost:3000` in the console. When you visit `http://localhost:3000` in your browser, you'll see a JSON response with all the users in your database and the total count.
+
+## 7. Building and running a Bun executable [#7-building-and-running-a-bun-executable]
+
+Bun can compile your [TypeScript application into a single executable file](https://bun.com/docs/bundler/executables), which is useful for deployment and distribution.
+
+### 7.1. Build the executable [#71-build-the-executable]
+
+Build your application into an executable:
+
+```bash
+bun build --compile index.ts
+```
+
+This creates an executable file named `index` (or `index.exe` on Windows) in your project directory.
+
+### 7.2. Run the executable [#72-run-the-executable]
+
+Run the compiled executable:
+
+```bash
+./index
+```
+
+You should see the same `Listening on http://localhost:3000` message, and your application will work exactly the same as before. The executable includes all dependencies and can be deployed to any compatible system without requiring Bun or Node.js to be installed.
+
+> [!NOTE]
+> Bun executables are useful for:
+> 
+> * **Deployment**: Ship a single file instead of managing dependencies
+> * **Distribution**: Share your application without requiring users to install Bun
+> * **Performance**: Faster startup times compared to running TypeScript files
+> * **Security**: Your source code is compiled and not easily readable
+
+## Next steps [#next-steps]
+
+You can explore [this example](https://pris.ly/bun_ppg_example) to see a sample application built with Bun and Prisma.
+
+Now that you have a Bun application connected to a Prisma Postgres database, you can continue by:
+
+* Extending your Prisma schema with additional models and relationships
+* Implementing authentication and authorization
+* Adding input validation and error handling
+* Exploring Bun's built-in testing tools
+* Deploying your executable to production servers
+
+### More info [#more-info]
+
+* [Bun Documentation](https://bun.sh/docs)
+* [Prisma Config File](https://www.prisma.io/docs/orm/v7/reference/prisma-config-reference)
+* [Prisma Postgres](https://www.prisma.io/docs/postgres)
+
+## Related pages
+
+- [`Deno`](https://www.prisma.io/docs/guides/v7/runtimes/deno): Learn how to use Prisma ORM in a Deno application with Prisma Postgres
+
+# Deno (Prisma ORM v7) (/docs/guides/v7/runtimes/deno)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use Prisma ORM in a Deno application with Prisma Postgres
+
+Location: Guides > v7 > Runtimes > Deno
+
+## Introduction [#introduction]
+
+[Deno](https://deno.com) is a secure JavaScript and TypeScript runtime built on V8 with built-in TypeScript support, a permissions system, and web-standard APIs. In this guide, you will set up a Deno project with Prisma ORM and a Prisma Postgres database. You will create a small HTTP server that reads from the database and returns the results.
+
+[How to use Prisma ORM with Deno and Prisma Postgres](https://www.youtube.com/watch?v=hAL2J3yQf7I)
+
+## Prerequisites [#prerequisites]
+
+* [Deno](https://docs.deno.com/runtime/#install-deno) v2.0 or later installed on your system
+* A [Prisma Postgres database](https://www.prisma.io/docs/postgres) (created during setup)
+* Basic knowledge of JavaScript/TypeScript
+* [Deno extension for VS Code](https://docs.deno.com/runtime/reference/vscode/) (recommended)
+
+## 1. Setting up your Deno project [#1-setting-up-your-deno-project]
+
+First, create a directory for your project and navigate to it:
+
+```bash
+mkdir deno-prisma
+cd deno-prisma
+```
+
+Then, initialize a new Deno project:
+
+```bash
+deno init
+```
+
+This creates a basic Deno project with a `deno.json` configuration file and a `main.ts` file.
+
+### 1.1. Configure Deno for Prisma [#11-configure-deno-for-prisma]
+
+Update the `deno.json` file with the following configuration to set up Node.js compatibility, import maps, and Prisma-related task scripts:
+
+```json title="deno.json"
+{
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "lib": ["deno.window"],
+    "types": ["node"]
+  },
+  "imports": {
+    "@prisma/adapter-pg": "npm:@prisma/adapter-pg@^7.0.0",
+    "@prisma/client": "npm:@prisma/client@7",
+    "prisma": "npm:prisma@prev"
+  },
+  "tasks": {
+    "dev": "deno run -A --env=.env --watch main.ts",
+    "db:generate": "deno run -A --env=.env npm:prisma@prev generate",
+    "db:push": "deno run -A --env=.env npm:prisma@prev db push",
+    "db:migrate": "deno run -A --env=.env npm:prisma@prev migrate dev",
+    "db:seed": "deno run -A --env=.env npm:prisma@prev db seed"
+  }
+}
+```
+
+> [!NOTE]
+> The `nodeModulesDir: "auto"` setting allows Deno to automatically manage a `node_modules` directory, which is needed for Prisma's generated client. The import map entries let you use bare specifiers like `@prisma/client` in your code.
+
+## 2. Installing and configuring Prisma [#2-installing-and-configuring-prisma]
+
+### 2.1. Initialize Prisma ORM with Prisma Postgres [#21-initialize-prisma-orm-with-prisma-postgres]
+
+Initialize Prisma ORM with Prisma Postgres in your project:
+
+```bash
+deno run -A npm:prisma@prev init
+```
+
+> [!NOTE]
+> `prisma init` creates the Prisma scaffolding and a local `DATABASE_URL`. In the next step, you will create a Prisma Postgres database and replace that value with a direct `postgres://...` connection string.
+
+This command creates:
+
+* A `prisma/` directory with your `schema.prisma` file
+* A `prisma.config.ts` file
+* A `.env` file with your `DATABASE_URL`
+
+### 2.2. Update the Prisma config file [#22-update-the-prisma-config-file]
+
+Open the generated `prisma.config.ts` file. Since Deno loads environment variables using the `--env=.env` flag (configured in `deno.json` tasks), you can remove the `dotenv/config` import if it was generated:
+
+```typescript title="prisma.config.ts"
+import "dotenv/config"; // [!code --]
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+### 2.3. Create a Prisma Postgres database [#23-create-a-prisma-postgres-database]
+
+Create a Prisma Postgres database and replace the generated `DATABASE_URL` in your `.env` file with the `postgres://...` connection string from the CLI output:
+
+```bash
+npx create-db
+```
+
+Update your `.env` file:
+
+```bash title=".env"
+DATABASE_URL="postgres://..."
+```
+
+### 2.4. Update your Prisma schema [#24-update-your-prisma-schema]
+
+Open `prisma/schema.prisma` and update it to include the Deno runtime and your data model:
+
+```prisma title="prisma/schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+  runtime  = "deno" // [!code ++]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User { // [!code ++]
+  id    Int     @id @default(autoincrement()) // [!code ++]
+  email String  @unique // [!code ++]
+  name  String? // [!code ++]
+} // [!code ++]
+```
+
+> [!NOTE]
+> The `runtime = "deno"` setting in the generator block is required for Prisma Client to work correctly with the Deno runtime.
+
+## 3. Generate Prisma Client and run migrations [#3-generate-prisma-client-and-run-migrations]
+
+Generate the Prisma Client and apply your schema to the database:
+
+```bash
+deno task db:migrate --name init
+deno task db:generate
+```
+
+This command:
+
+* Creates the database tables based on your schema
+* Generates the Prisma Client in the `generated/prisma` directory
+
+## 4. Setting up database configuration and creating a seed script [#4-setting-up-database-configuration-and-creating-a-seed-script]
+
+### 4.1. Create a database utility file [#41-create-a-database-utility-file]
+
+Create a `db.ts` file in your project root to configure `PrismaClient`:
+
+```typescript title="db.ts"
+import { PrismaClient } from "./generated/prisma/client.ts";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: Deno.env.get("DATABASE_URL")!,
+});
+
+export const prisma = new PrismaClient({
+  adapter,
+});
+```
+
+### 4.2. Create a seed script [#42-create-a-seed-script]
+
+Create a seed script in the `prisma` folder to populate your database with sample data:
+
+```typescript title="prisma/seed.ts"
+import { PrismaClient } from "../generated/prisma/client.ts";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: Deno.env.get("DATABASE_URL")!,
+});
+
+const prisma = new PrismaClient({
+  adapter,
+});
+
+async function main() {
+  // Create multiple users
+  await prisma.user.createMany({
+    data: [
+      { email: "alice@example.com", name: "Alice" },
+      { email: "bob@example.com", name: "Bob" },
+      { email: "charlie@example.com", name: "Charlie" },
+      { email: "diana@example.com", name: "Diana" },
+      { email: "eve@example.com", name: "Eve" },
+      { email: "frank@example.com", name: "Frank" },
+      { email: "grace@example.com", name: "Grace" },
+      { email: "henry@example.com", name: "Henry" },
+      { email: "isabella@example.com", name: "Isabella" },
+      { email: "jack@example.com", name: "Jack" },
+    ],
+    skipDuplicates: true, // prevents errors if you run the seed multiple times
+  });
+
+  console.log("Seed data inserted!");
+}
+
+main()
+  .catch((e) => {
+    console.error(e);
+    Deno.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });
+```
+
+### 4.3. Add the seed script to Prisma Config [#43-add-the-seed-script-to-prisma-config]
+
+Update the `prisma.config.ts` file to include the seed command:
+
+```typescript title="prisma.config.ts"
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+    seed: "deno run -A --env=.env ./prisma/seed.ts", // [!code ++]
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+Run the seed script to populate your database:
+
+```bash
+deno task db:seed
+```
+
+## 5. Creating your Deno server [#5-creating-your-deno-server]
+
+Replace the `main.ts` file contents with the following code to build a small HTTP server that uses Prisma ORM to fetch and display users:
+
+```typescript title="main.ts"
+import { prisma } from "./db.ts";
+
+async function handler(req: Request): Promise<Response> {
+  const { pathname } = new URL(req.url);
+
+  // Skip favicon route
+  if (pathname === "/favicon.ico") {
+    return new Response(null, { status: 204 });
+  }
+
+  // Return all users
+  const users = await prisma.user.findMany();
+
+  // Count all users
+  const count = await prisma.user.count();
+
+  // Format the response with JSON
+  return new Response(
+    JSON.stringify({
+      users: users,
+      totalUsers: count,
+    }),
+    { headers: { "Content-Type": "application/json" } },
+  );
+}
+
+Deno.serve({ port: 8000 }, handler);
+```
+
+## 6. Running your application [#6-running-your-application]
+
+Start your Deno server:
+
+```bash
+deno task dev
+```
+
+You should see the server running on `http://localhost:8000` in the console. When you visit `http://localhost:8000` in your browser, you'll see a JSON response with all the users in your database and the total count.
+
+## Next steps [#next-steps]
+
+Now that you have a Deno application connected to a Prisma Postgres database, you can continue by:
+
+* Extending your Prisma schema with additional models and relationships
+* Implementing authentication and authorization
+* Adding input validation with Zod
+* Exploring Deno's built-in testing tools
+* Deploying your application to [Deno Deploy](https://www.prisma.io/docs/guides/integrations/deno)
+
+### More info [#more-info]
+
+* [Deno Documentation](https://docs.deno.com)
+* [Prisma Config File](https://www.prisma.io/docs/orm/v7/reference/prisma-config-reference)
+* [Prisma Postgres](https://www.prisma.io/docs/postgres)
+
+## Related pages
+
+- [`Bun`](https://www.prisma.io/docs/guides/v7/runtimes/bun): Learn how to use Prisma ORM in a Bun application with Prisma Postgres
 
 # API patterns (Prisma ORM v7) (/docs/orm/v7/core-concepts/api-patterns)
 

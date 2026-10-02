@@ -117,6 +117,14 @@ curl https://api.stripe.com/v1/credit_notes \
   -d "lines[0][amount]=1000"
 ```
 
+## Handle failed or canceled refunds
+
+When a refund is associated with a credit note, the tax liability adjustment is tied to the credit note being issued, not to the refund being triggered. If the refund fails or is canceled, Stripe Tax retains the credit note’s tax reduction. The failed or canceled refund doesn’t settle the amount you intended to refund to your customer.
+
+For a refund that isn’t associated with a credit note, Stripe Tax keeps the tax reduction in your reports only if the refund succeeds. If the refund fails or is canceled after Stripe Tax records the reduction, Stripe Tax reverses the reduction.
+
+Stripe Tax records one tax reduction when a refund and credit note represent the same invoice adjustment. For partial refunds or credit notes, these rules apply only to the tax attributed to the adjusted amount.
+
 ## See also
 
 - [Issue credit notes from the Dashboard](https://docs.stripe.com/invoicing/dashboard/credit-notes.md)

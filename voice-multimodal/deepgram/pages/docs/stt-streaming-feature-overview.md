@@ -76,6 +76,7 @@ path: docs/stt-streaming-feature-overview
 | [Close Stream](/docs/close-stream)   |
 | [Finalize](/docs/finalize)           |
 | [Keep Alive](/docs/audio-keep-alive) |
+| [Configure](/docs/configure)         |
 
 ## Rate Limits
 

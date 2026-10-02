@@ -52,7 +52,17 @@ quoted under a forwarded-message banner.
 
 <ParamField type="string | string[]">
   Recipient email address. For multiple addresses, send as an array of strings.
-  Max 50.
+  `to`, `cc`, and `bcc` combined cannot exceed 50 recipients.
+</ParamField>
+
+<ParamField type="string | string[]">
+  CC recipient email address. For multiple addresses, send as an array of
+  strings. Counts toward the 50-recipient limit with `to`.
+</ParamField>
+
+<ParamField type="string | string[]">
+  BCC recipient email address. For multiple addresses, send as an array of
+  strings. Counts toward the 50-recipient limit with `to`.
 </ParamField>
 
 <ParamField type="string">
@@ -65,7 +75,7 @@ quoted under a forwarded-message banner.
 
 <ParamField type="string">
   The subject of the forward. When omitted, the thread subject is used, prefixed
-  with `Fwd:` if it isn't already.
+  with `Fwd:` if it isn't already. Max 2000 characters.
 </ParamField>
 
 ## Response Fields
@@ -99,7 +109,7 @@ quoted under a forwarded-message banner.
 </ParamField>
 
 <ParamField type="string[]">
-  The Reply-To addresses.
+  Always empty in this response.
 </ParamField>
 
 <ParamField type="string">
@@ -107,7 +117,7 @@ quoted under a forwarded-message banner.
 </ParamField>
 
 <ParamField type="string | null">
-  The Message-ID header of the message.
+  Always `null` in this response.
 </ParamField>
 
 <ParamField type="string | null">
@@ -119,25 +129,11 @@ quoted under a forwarded-message banner.
 </ParamField>
 
 <ParamField type="array">
-  The attachments on the message.
-
-  <Expandable title="properties">
-    <ParamField type="string">
-      The ID of the attachment.
-    </ParamField>
-
-    <ParamField type="string | null">
-      The filename of the attachment.
-    </ParamField>
-
-    <ParamField type="number | null">
-      The size of the attachment in bytes.
-    </ParamField>
-  </Expandable>
+  Always empty in this response.
 </ParamField>
 
 <ParamField type="boolean">
-  Whether the message has been read.
+  Always `true`.
 </ParamField>
 
 <ParamField type="string">
@@ -155,6 +151,8 @@ quoted under a forwarded-message banner.
     threadId: '4d8e2a1c-9b3f-4c6d-8a21-3e5f7c9c0d12',
     emailId: '5b1a9f47-2c8d-4e6f-9a03-1d2e3f4a5b60',
     to: ['colleague@example.org'],
+    cc: ['billing@example.com'],
+    bcc: ['records@example.com'],
     text: 'Flagging this refund request for you.',
   });
   ```
@@ -165,6 +163,8 @@ quoted under a forwarded-message banner.
        -H 'Content-Type: application/json' \
        -d $'{
     "to": ["colleague@example.org"],
+    "cc": ["billing@example.com"],
+    "bcc": ["records@example.com"],
     "text": "Flagging this refund request for you."
   }'
   ```
@@ -189,18 +189,12 @@ quoted under a forwarded-message banner.
     "to": ["colleague@example.org"],
     "cc": ["billing@example.com"],
     "bcc": ["records@example.com"],
-    "reply_to": ["support@example.com"],
+    "reply_to": [],
     "subject": "Fwd: Refund for order 1041",
-    "message_id": "<6a0c8e58@example.com>",
+    "message_id": null,
     "html": "<div>Flagging this refund request for you.<br>\n<br>\n---------- Forwarded message ---------<br>\nFrom: Ada Lovelace &lt;ada@example.org&gt;<br>\nDate: Wed, Aug 5, 2026 at 2:03 PM<br>\nSubject: Refund for order 1041<br>\nTo: support@example.com<br>\n<br>\nCould I get a refund for order 1041?</div>",
     "text": "Flagging this refund request for you.\n\n---------- Forwarded message ---------\nFrom: Ada Lovelace <ada@example.org>\nDate: Wed, Aug 5, 2026 at 2:03 PM\nSubject: Refund for order 1041\nTo: support@example.com\n\nCould I get a refund for order 1041?",
-    "attachments": [
-      {
-        "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
-        "filename": "receipt.pdf",
-        "size": 20841
-      }
-    ],
+    "attachments": [],
     "read": true,
     "received_at": "2026-08-05T14:12:04.110Z"
   }

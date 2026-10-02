@@ -105,7 +105,7 @@ Inboxes are returned newest first. Results are paginated with cursors. See
         "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
         "name": "Customer Support",
         "email_address": "support@example.com",
-        "friendly_name": "Ada from Support",
+        "from_name": "Ada from Support",
         "unread": 3,
         "last_received": "2026-08-05T14:03:11.229Z"
       },
@@ -113,7 +113,7 @@ Inboxes are returned newest first. Results are paginated with cursors. See
         "id": "1c5e0f3a-6b21-4d9a-8e77-5c0a9d8b4e12",
         "name": "billing@example.com",
         "email_address": "billing@example.com",
-        "friendly_name": null,
+        "from_name": null,
         "unread": 0,
         "last_received": null
       }

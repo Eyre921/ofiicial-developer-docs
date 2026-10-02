@@ -172,6 +172,7 @@ Reasoning content is subject to retention and PII redaction settings. You can ac
   * `input_cache_read`: This refers to the cost associated with retrieving previously processed input data from a cache. Utilizing cached data can lead to cost savings if identical inputs are processed multiple times
   * `input_cache_write`: This is the cost associated with storing input data into a cache. Some LLM providers may charge for this operation
 * The prices listed in this document are per 1 million tokens and are based on the information available at the time of writing. These prices are subject to change by the LLM providers
+* **Pass-through pricing**: ElevenLabs passes through third-party LLM costs at the provider's published rate, with no markup. Select Gemini and Claude models are aligned with Vertex AI regional (non-global) pricing, which is what US and EU traffic is billed at — a 10% increase on input, output, and cache tokens, matching Vertex regional rates
 
 For current model capabilities, pricing, and terms of service, consult the provider's documentation.
 

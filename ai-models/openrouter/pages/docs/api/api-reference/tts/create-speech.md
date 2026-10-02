@@ -340,10 +340,40 @@ components:
           example: mistralai/voxtral-mini-tts-2603
           type: string
         provider:
-          description: Provider-specific passthrough configuration
+          description: >-
+            Provider configuration: data policy routing preferences (`zdr`,
+            `data_collection`) and provider-specific passthrough options
           properties:
+            data_collection:
+              description: >-
+                Data collection setting. If no available model provider meets
+                the requirement, your request will return an error.
+
+                - allow: (default) allow providers which store user data
+                non-transiently and may train on it
+
+
+                - deny: use only providers which do not collect user data.
+              enum:
+                - deny
+                - allow
+                - null
+              example: allow
+              title: SpeechRequestDataCollection
+              type:
+                - string
+                - 'null'
             options:
               $ref: '#/components/schemas/ProviderOptions'
+            zdr:
+              description: >-
+                Whether to restrict routing to only ZDR (Zero Data Retention)
+                endpoints. When true, only endpoints that do not retain prompts
+                will be used.
+              example: true
+              type:
+                - boolean
+                - 'null'
           type: object
         response_format:
           default: pcm

@@ -27,6 +27,10 @@ At minimum, Smart Format applies:
 
 Smart Format has the broadest support for English-language models. In English, Smart Format is capable of formatting things like dates, times, currency amounts, phone numbers, emails, and URLs.
 
+> **Info**
+>
+> For pre-recorded audio sent with [`multichannel=true`](/docs/multichannel), English formatting can use context from all channels, so formatting on one channel can depend on what was said on another. Streaming uses only the current channel. See [Entity Detection: Multichannel Audio](/docs/detect-entities#multichannel-audio).
+
 On non-English models, Smart Format will apply all available formatters for that language. This will always include [punctuation](/docs/punctuation/) and [paragraphs](/docs/paragraphs/), with [numerals](/docs/numerals) support also available for select languages.
 
 ## Enable Feature

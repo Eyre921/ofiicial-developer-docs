@@ -41,6 +41,10 @@ You may select the types of entities you wish to redact from [over 50 supported 
 
 Specific entity types rely on entity recognition and are available for English only.
 
+### Multichannel audio
+
+For pre-recorded audio sent with [`multichannel=true`](/docs/multichannel), entity redaction uses context from all channels. For example, a CVV read out by a customer on one channel can be recognized from the agent's question on another. Streaming entity redaction uses only the channel the value was spoken on. The entity types included in `numbers` and `aggressive_numbers` use the same labels. Their numeral rules (three or more consecutive numerals for `numbers`, every numeral for `aggressive_numbers`) do not depend on context. See [Entity Detection: Multichannel Audio](/docs/detect-entities#multichannel-audio) for an example.
+
 ## Enable redaction
 
 To enable redaction, add the `redact` parameter to the query string when you call Deepgram's `/listen` endpoint:

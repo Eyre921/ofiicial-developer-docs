@@ -33,7 +33,7 @@ Keep track of changes and upgrades to the Stripe API.
 | --- | --- | --- | --- |
 | [Adds address validation errors for CMRAs and registered agents to Accounts v1 and Accounts v2](https://docs.stripe.com/changelog/endive/2026-09-30/address-validation-cmra-registered-agents-accounts-v2.md) | Issuing, Treasury | Breaking | api |
 | [Adds rejected status for Accounts v2 capabilities](https://docs.stripe.com/changelog/endive/2026-09-30/rejected-accounts-v2-capabilities.md) | Connect | Breaking | api |
-| [Replaces the generic fraud rejection reason with more granular fraud reasons](https://docs.stripe.com/changelog/endive/2026-09-30/updated-reject-reason-codes.md) | Connect | Breaking | api |
+| [Replaces the generic fraud rejection reason with specific fraud reasons](https://docs.stripe.com/changelog/endive/2026-09-30/updated-reject-reason-codes.md) | Connect | Breaking | api |
 | [Removes the configurations parameter from the Account Links v2 API](https://docs.stripe.com/changelog/endive/2026-09-30/removes-configurations-parameter-from-v2-core-account-links-api.md) | All products | Breaking | api |
 | [Standardizes SEPA Direct Debit payment settings in the Accounts API](https://docs.stripe.com/changelog/endive/2026-09-30/sepa-debit-settings-accounts.md) | Connect, Payments | Breaking | api |
 | [Shows errors for eventually due requirements](https://docs.stripe.com/changelog/endive/2026-09-30/shows-errors-for-eventually-due-requirements.md) | Connect | Breaking | api |

@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 504 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 505 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -508,4 +508,5 @@
 - `docs/guides/routing/routers/jev-router` — [Jev Router](pages/docs/guides/routing/routers/jev-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/jev-router.md)
 - `docs/guides/routing/routers/latest-resolution` — [Latest Model Resolution](pages/docs/guides/routing/routers/latest-resolution.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/latest-resolution.md)
 - `docs/guides/routing/routers/pareto-router` — [Pareto Router](pages/docs/guides/routing/routers/pareto-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/pareto-router.md)
+- `docs/guides/routing/routers/switchyard-router` — [Switchyard Router](pages/docs/guides/routing/routers/switchyard-router.md) · [原文](https://openrouter.ai/docs/guides/routing/routers/switchyard-router.md)
 - `docs/quickstart` — [Quickstart](pages/docs/quickstart.md) · [原文](https://openrouter.ai/docs/quickstart.md)

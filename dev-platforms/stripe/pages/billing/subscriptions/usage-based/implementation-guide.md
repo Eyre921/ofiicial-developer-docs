@@ -153,6 +153,8 @@ Create a new customer or retrieve an existing one to associate with this payment
 
 #### Accounts v2
 
+Set `configuration.customer` to an empty object to enable the customer configuration on this account.
+
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \

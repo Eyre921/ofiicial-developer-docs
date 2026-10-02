@@ -95,6 +95,8 @@ The full terms of service for each provider are linked from the provider's page,
 
 <ProviderDataRetentionTable />
 
+These policies cover model providers. Server tools and plugins that call third-party services, such as search engines and sandboxes, follow those services' policies. See [Privacy and regional availability](/docs/guides/features/server-tools#privacy-and-regional-availability).
+
 <a id="enterprise-eu-in-region-routing" />
 
 <a id="enterprise-in-region-routing" />

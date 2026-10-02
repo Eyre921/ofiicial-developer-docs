@@ -208,9 +208,10 @@ paths:
                 provider:
                   description: >-
                     JSON-encoded provider preferences object, the same shape as
-                    the JSON body field: { "options": { "<provider-slug>": { ...
-                    } } }. Only options for the matched provider are forwarded.
-                    Must decode to a JSON object.
+                    the JSON body field: { "zdr": true, "data_collection":
+                    "deny", "options": { "<provider-slug>": { ... } } }. Only
+                    options for the matched provider are forwarded. Must decode
+                    to a JSON object.
                   type: string
                 response_format:
                   description: >-
@@ -473,10 +474,40 @@ components:
           example: openai/whisper-large-v3
           type: string
         provider:
-          description: Provider-specific passthrough configuration
+          description: >-
+            Provider configuration: data policy routing preferences (`zdr`,
+            `data_collection`) and provider-specific passthrough options
           properties:
+            data_collection:
+              description: >-
+                Data collection setting. If no available model provider meets
+                the requirement, your request will return an error.
+
+                - allow: (default) allow providers which store user data
+                non-transiently and may train on it
+
+
+                - deny: use only providers which do not collect user data.
+              enum:
+                - deny
+                - allow
+                - null
+              example: allow
+              title: STTRequestDataCollection
+              type:
+                - string
+                - 'null'
             options:
               $ref: '#/components/schemas/ProviderOptions'
+            zdr:
+              description: >-
+                Whether to restrict routing to only ZDR (Zero Data Retention)
+                endpoints. When true, only endpoints that do not retain prompts
+                will be used.
+              example: true
+              type:
+                - boolean
+                - 'null'
           type: object
         response_format:
           description: >-

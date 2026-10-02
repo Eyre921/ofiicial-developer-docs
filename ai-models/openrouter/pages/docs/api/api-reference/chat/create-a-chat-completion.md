@@ -6168,7 +6168,7 @@ components:
                 maxLength: 253
                 minLength: 1
                 pattern: >-
-                  ^[a-z0-9*]([a-z0-9*-]{0,61}[a-z0-9*])?(\.[a-z0-9*]([a-z0-9*-]{0,61}[a-z0-9*])?)*$
+                  ^(?![-.])(?!.*[-.]$)(?!.*(?:\.\.|\.-|-\.))(?!.*[^.]{64})[a-z0-9*.-]+$
                 type: string
               maxItems: 50
               minItems: 1

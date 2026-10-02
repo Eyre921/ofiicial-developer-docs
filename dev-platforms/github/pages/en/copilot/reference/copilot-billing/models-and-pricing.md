@@ -94,8 +94,6 @@ Anthropic models include a cache write cost in addition to cached input.
 |                                       |                |           |        |              |             |        |
 | Claude Sonnet 4.6                     | GA             | Versatile |  $3.00 |        $0.30 |       $3.75 | $15.00 |
 |                                       |                |           |        |              |             |        |
-| Claude Opus 4.7                       | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
-|                                       |                |           |        |              |             |        |
 | Claude Opus 4.8                       | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
 |                                       |                |           |        |              |             |        |
 | Claude Opus 5                         | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
@@ -117,17 +115,13 @@ Anthropic models include a cache write cost in addition to cached input.
 
 > \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
 
-| Model                                 | Release status | Category    | Tier    | Threshold (input tokens) | Input | Cached input | Output |
-| ------------------------------------- | -------------- | ----------- | ------- | ------------------------ | ----: | -----------: | -----: |
-|                                       |                |             |         |                          |       |              |        |
-| Gemini 3.5 Flash                      | GA             | Lightweight | Default | Not applicable           | $1.50 |        $0.15 |  $9.00 |
-|                                       |                |             |         |                          |       |              |        |
-| Gemini 3.6 Flash[^gemini-flash-promo] | GA             | Versatile   | Default | Not applicable           | $0.75 |       $0.075 |  $3.75 |
-|                                       |                |             |         |                          |       |              |        |
-| Gemini 3.7 Flash[^gemini-flash-promo] | GA             | Versatile   | Default | Not applicable           | $0.75 |       $0.075 |  $3.75 |
-|                                       |                |             |         |                          |       |              |        |
-| Gemini 3.8 Flash[^gemini-flash-promo] | GA             | Versatile   | Default | Not applicable           | $0.75 |       $0.075 |  $3.75 |
-|                                       |                |             |         |                          |       |              |        |
+| Model                                 | Release status | Category  | Tier    | Threshold (input tokens) | Input | Cached input | Output |
+| ------------------------------------- | -------------- | --------- | ------- | ------------------------ | ----: | -----------: | -----: |
+|                                       |                |           |         |                          |       |              |        |
+| Gemini 3.7 Flash[^gemini-flash-promo] | GA             | Versatile | Default | Not applicable           | $0.75 |       $0.075 |  $3.75 |
+|                                       |                |           |         |                          |       |              |        |
+| Gemini 3.8 Flash[^gemini-flash-promo] | GA             | Versatile | Default | Not applicable           | $0.75 |       $0.075 |  $3.75 |
+|                                       |                |           |         |                          |       |              |        |
 
 ### Fine-tuned (GitHub)
 
@@ -165,13 +159,11 @@ Anthropic models include a cache write cost in addition to cached input.
 
 ### Moonshot AI
 
-| Model          | Release status | Category  | Input | Cached input | Output |
-| -------------- | -------------- | --------- | ----: | -----------: | -----: |
-|                |                |           |       |              |        |
-| Kimi K2.7 Code | GA             | Versatile | $0.95 |        $0.19 |  $4.00 |
-|                |                |           |       |              |        |
-| Kimi K3        | GA             | Powerful  | $3.00 |        $0.30 | $15.00 |
-|                |                |           |       |              |        |
+| Model   | Release status | Category | Input | Cached input | Output |
+| ------- | -------------- | -------- | ----: | -----------: | -----: |
+|         |                |          |       |              |        |
+| Kimi K3 | GA             | Powerful | $3.00 |        $0.30 | $15.00 |
+|         |                |          |       |              |        |
 
 ## Code completions
 
@@ -194,4 +186,4 @@ You can view your current GitHub Actions usage for Copilot code review in the fo
 
 Copilot Pro and Copilot Pro+ subscribers on **existing annual billing plans** using the **request-based billing** model have different model multipliers. See [Model multipliers for annual plans on request-based billing (legacy)](/en/copilot/reference/copilot-billing/request-based-billing-legacy/model-multipliers-for-annual-plans).
 
-[^gemini-flash-promo]: Gemini 3.6 Flash, Gemini 3.7 Flash, and Gemini 3.8 Flash are available at the promotional pricing of $0.75 per 1M input tokens, $0.075 per 1M cached input tokens, and $3.75 per 1M output tokens through December 31, 2026.
+[^gemini-flash-promo]: Gemini 3.7 Flash and Gemini 3.8 Flash are available at the promotional pricing of $0.75 per 1M input tokens, $0.075 per 1M cached input tokens, and $3.75 per 1M output tokens through December 31, 2026.

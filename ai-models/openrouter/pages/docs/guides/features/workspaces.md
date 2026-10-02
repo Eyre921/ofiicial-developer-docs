@@ -59,17 +59,57 @@ Some settings apply globally across all workspaces:
 * **[Privacy](https://openrouter.ai/settings/privacy)**. Account-level data policies and provider/model restrictions that apply to all workspaces.
 * **[Preferences](https://openrouter.ai/settings/preferences)**. Account preferences that apply to all workspaces.
 
+## Deleting the Default Workspace
+
+Organization admins and account owners can delete the Default workspace, but doing so has account-wide effects that deleting any other workspace does not. You can't undo the deletion from the dashboard or the API.
+
+<Warning>
+  Deleting the Default workspace immediately disables every **unscoped** inference API key on the account, meaning any key not assigned to a specific workspace. This includes keys created before workspaces existed. Requests using those keys will start failing as soon as the workspace is deleted.
+</Warning>
+
+### Members no longer land in a workspace
+
+The Default workspace is where org members land by default. After you delete it, there is no default landing workspace, and members aren't moved to another workspace automatically:
+
+* Members whose only workspace was the Default workspace, and members who join the org later, belong to no workspace. They can't see any workspace's keys, settings, or activity until an admin adds them to one.
+* Members who belong to other workspaces, including Chat and Fusion users, land in one of those workspaces instead. They can pick a different one with the [workspace switcher](/docs/guides/features/workspaces/switching).
+* Links and bookmarks to the Default workspace show a "Default workspace deleted" page instead of the workspace.
+
+<img src="https://mintcdn.com/openrouter-d02e98a0/ij8Ir-9aJgXOa1s4/assets/guides/features/workspaces/default-workspace-deleted.png?fit=max&auto=format&n=ij8Ir-9aJgXOa1s4&q=85&s=ff9b70f0568daf00b2b786ab5ddd0511" alt="The &#x22;Default workspace deleted&#x22; page shown to a member who doesn't belong to any other workspace" width="900" height="335" data-path="assets/guides/features/workspaces/default-workspace-deleted.png" />
+
+### What is deleted or disabled
+
+* **Unscoped inference API keys** are permanently disabled. [Management API keys](/docs/guides/overview/auth/management-api-keys) are not affected.
+* **Workspace settings** are deleted, as with any workspace. This includes the Default workspace's budgets, guardrails, classifiers, and broadcast destinations.
+
+Historical activity, logs, and billing records are kept. Your other workspaces and their keys and settings are not affected.
+
+### What changes afterward
+
+* **There is no fallback workspace.** API requests that leave out `workspace_id`, such as creating API keys, BYOK keys, guardrails, or broadcast destinations with a management key, return `400` with a message to pass `workspace_id` explicitly. Update scripts and integrations before you delete.
+* **OAuth flows** ask the user to choose a workspace for the new key, because no Default workspace exists to fall back to.
+
+### Before you delete
+
+1. Create at least one other workspace. You can't delete your last remaining workspace.
+2. Move production traffic to keys scoped to another workspace, then confirm nothing still uses unscoped keys.
+3. Recreate any budgets, guardrails, classifiers, broadcast destinations, BYOK keys, presets, and workspace defaults such as the default model that you want to keep in the destination workspace.
+4. Add org members to the workspaces they need.
+5. Delete any interns in the Default workspace. Deletion is blocked while interns are active.
+6. When deleting through the API, delete any keys scoped to the Default workspace and pass `confirm_default_workspace_deletion=true`.
+
 ## Organization Permissions
 
 * **Org admins** have admin permissions across all workspaces. Organization admins and account owners can create or delete workspaces. Workspace admins can add or remove member access within their workspace; assigning workspace roles requires an Enterprise plan.
 * **Org members** have member permissions in each workspace they've been added to. Members can belong to multiple workspaces, and their API keys in each workspace are governed by that workspace's settings.
+* **Workspace admins** who aren't org admins get management rights in their workspace, such as managing members, classifiers, and settings. They have the same read access as members: they can't view other people's prompt and response content or classification tags.
 * All org members automatically have member access to the **Default workspace**. Chat and Fusion requests run in the member's active workspace, which they can change via the [workspace switcher](/docs/guides/features/workspaces/switching). The Default workspace is the initial active workspace.
 
 ## Frequently Asked Questions
 
 <AccordionGroup>
   <Accordion title="What can my workspace members see about a workspace?">
-    Within a workspace, members can create and manage their own API keys, and view other members and their roles. Members can belong to multiple workspaces. All org members automatically have access to the Default workspace. At the account level, members can view Activity and Logs.
+    Within a workspace, members can create and manage their own API keys, and view other members and their roles. Members can belong to multiple workspaces. All org members automatically have access to the Default workspace. In Activity and Logs, members see request metadata, such as model, cost, tokens, status, and creator, for every request in the workspaces they belong to, including other members' requests. Members can view prompt and response content only for requests attributed to them, which includes requests made with API keys they created. Only org admins can view other people's prompt and response content, see classification tags, and export activity.
   </Accordion>
 
   <Accordion title="What can my organization admins see? What can they edit?">
@@ -85,7 +125,7 @@ Some settings apply globally across all workspaces:
   </Accordion>
 
   <Accordion title="Can I delete the Default workspace?">
-    Yes. Organization admins and account owners can delete the Default workspace. API requests must include `confirm_default_workspace_deletion=true`. Deleting it permanently disables the account's unscoped inference API keys along with the workspace's budgets, guardrails, classifiers, and broadcast destinations. Management keys are retained. The last remaining workspace cannot be deleted.
+    Yes, but deleting it permanently disables the account's unscoped inference API keys and has other account-wide effects. See [Deleting the Default workspace](#deleting-the-default-workspace) before you delete it.
   </Accordion>
 
   <Accordion title="What happens when I remove someone from a workspace?">

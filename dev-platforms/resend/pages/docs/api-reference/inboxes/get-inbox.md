@@ -5,7 +5,7 @@ path: docs/api-reference/inboxes/get-inbox
 ---
 
 GET /inboxes/:inbox_id
-Retrieve a single inbox by its ID.
+Retrieve a single inbox by its ID or email address.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -33,7 +33,7 @@ Retrieve a single inbox by its ID.
 ## Path Parameters
 
 <ResendParamField type="string">
-  The Inbox ID.
+  The Inbox ID or the inbox email address, such as `support@example.com`.
 </ResendParamField>
 
 ## Response Fields
@@ -46,12 +46,16 @@ Retrieve a single inbox by its ID.
   The ID of the inbox.
 </ParamField>
 
-<ParamField type="string | null">
+<ParamField type="string">
   Internal name for the inbox. Recipients do not see it.
 </ParamField>
 
 <ParamField type="string">
   The address of the inbox.
+</ParamField>
+
+<ParamField type="string">
+  The ID of the domain that owns the address.
 </ParamField>
 
 <ParamField type="string | null">
@@ -73,6 +77,10 @@ Retrieve a single inbox by its ID.
 
 <ParamField type="string | null">
   ISO 8601 timestamp when a thread in this inbox was last active.
+</ParamField>
+
+<ParamField type="string">
+  ISO 8601 timestamp when the inbox was created.
 </ParamField>
 
 <RequestExample>
@@ -103,11 +111,13 @@ Retrieve a single inbox by its ID.
     "id": "b3e2b2b6-3f0e-4c8e-9ad3-2f43a1e2c7f1",
     "name": "Customer Support",
     "email_address": "support@example.com",
+    "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
     "receiving_address": null,
-    "friendly_name": "Ada from Support",
+    "from_name": "Ada from Support",
     "unread": 3,
     "drafts": 2,
-    "last_received": "2026-08-05T14:03:11.229Z"
+    "last_received": "2026-08-05T14:03:11.229Z",
+    "created_at": "2026-08-01T09:12:44.512Z"
   }
   ```
 </ResponseExample>

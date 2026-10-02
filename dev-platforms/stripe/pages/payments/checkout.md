@@ -30,7 +30,7 @@ You can use three payment UIs with the Checkout Sessions API. The following imag
 | **API** | [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md) | [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md) | [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md) |
 | **Feature list** | Built-in UI support for Billing, Tax, Adaptive Pricing, Stripe Managed Payments, Link, dynamic payment methods, Surcharging, Split-tender | Built-in UI support for Billing, Tax, Adaptive Pricing, Stripe Managed Payments, Link, dynamic payment methods, Surcharging | Built-in UI support for Adaptive Pricing, Link, dynamic payment methods |
 | **Order summary** | Includes full order summary with subtotals (including tax and shipping costs), cross-sells & upsells, free trials, discounts and promo codes | Limited order summary with subtotals (including tax and shipping costs), discounts and promo codes | No order summary |
-| **Ongoing maintenance required** |  |  |  |
+| **Ongoing maintenance required** | Low | Some | Most |
 | **Hosting** | Hosted or Embedded | Embedded | Embedded |
 | **Complexity** | Low | Some | Most |
 | **Customization** | 15 configurable settings via brand settings | 70 configurable settings via the Appearance API | Full CSS customization via the Appearance API |

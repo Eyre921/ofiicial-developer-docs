@@ -178,8 +178,8 @@ Sentry.init({
 
 ```html
 <script
-  src="https://browser.sentry-cdn.com/11.2.0/bundle.tracing.min.js"
-  integrity="sha384-5EyYN2r/NlnaYDh/j9pfhal6IGKwzChpwGJ1HeBHWSbS43wJc/jfqcxCGBZCRNtT"
+  src="https://browser.sentry-cdn.com/11.4.0/bundle.tracing.min.js"
+  integrity="sha384-leCZtyH0v+/d38CQgHkDf/buaYk8uIH2vrAwzlLXVLKTcrvUWEUGan36c9ooM12N"
   crossorigin="anonymous"
 ></script>
 

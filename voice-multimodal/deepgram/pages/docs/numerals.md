@@ -96,7 +96,7 @@ On the streaming API (`/v1/listen`), you can turn Numerals on or off at any poin
 }
 ```
 
-Numerals can be turned on and off multiple times during a stream if desired.
+Numerals can be turned on and off multiple times during a stream if desired. On Nova-3, you can update [keyterms](/docs/keyterm) in the same message. See [Configure](/docs/configure) for every field the message supports.
 
 ### Toggling Numerals during a Flux STT stream
 

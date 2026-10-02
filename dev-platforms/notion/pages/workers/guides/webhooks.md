@@ -103,129 +103,306 @@ function verifyGitHubSignature(
   headers: Record<string, string>,
 ): void {
   const secret = process.env.GITHUB_WEBHOOK_SECRET;
-  if (!se# Authentication
-Source: https://developers.notion.com/cli/get-started/authentication
+  if (!secret) {
+    throw new WebhookVerificationError("GITHUB_WEBHOOK_SECRET not configured");
+  }
 
-Log in to your Notion workspace and manage CLI credentials.
+  const signature = headers["x-hub-signature-256"];
+  if (!signature?.startsWith("sha256=")) {
+    throw new WebhookVerificationError("Invalid GitHub signature");
+  }
 
-## Log in
+  const expected = `sha256=${crypto
+    .createHmac("sha256", secret)
+    .update(rawBody)
+    .digest("hex")}`;
 
-Authenticate with your Notion workspace:
+  if (signature.length !== expected.length) {
+    throw new WebhookVerificationError("Invalid GitHub signature");
+  }
 
-```bash theme={null}
-ntn login
+  // Use timing-safe comparison to prevent timing attacks.
+  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))) {
+    throw new WebhookVerificationError("Invalid GitHub signature");
+  }
+}
+
+worker.webhook("onGithubPush", {
+  title: "GitHub Push Webhook",
+  description: "Handles push events from GitHub repositories",
+  execute: async (events) => {
+    for (const event of events) {
+      verifyGitHubSignature(event.rawBody, event.headers);
+      console.log("Verified GitHub event:", event.body);
+    }
+  },
+});
 ```
 
-This opens your browser to an authorization page. Confirm that the code in the browser matches the code printed in your terminal before approving. This prevents another page from completing the login in your name.
+Set the secret before deploying or push it from your local `.env` file:
 
-Your workspace-scoped token will be stored securely in your system's keychain.
+```bash theme={null}
+ntn workers env set GITHUB_WEBHOOK_SECRET=your-secret
+```
 
-If you've already logged in to one or more workspaces, you can pick existing workspace to switch the default, or pick **Authenticate with new workspace** to start a fresh browser flow and add another workspace.
+See [Secrets](/workers/guides/secrets) for more ways to manage worker environment variables.
+
+<Warning>
+  After 5 consecutive `WebhookVerificationError` failures, Notion blocks that
+  webhook before running your handler. To reset the failure counter, redeploy
+  the worker or [change the synchronous verification setting](#turn-synchronous-verification-off).
+</Warning>
+
+This check runs after Notion has already answered the provider with `202 Accepted`, so the provider never sees the result. Use it when all you need is to drop unsigned events. If the provider expects verification in the HTTP response itself, add a `verify` handler instead.
+
+## Verify requests synchronously
 
 <Note>
-  `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/get-started/personal-access-tokens) for more on who can create tokens.
+  Synchronous webhook verification requires `@notionhq/workers >= 0.9.0`
+  and `ntn` CLI version `0.23.1`.
 </Note>
 
-## Log in without a browser
+Some providers will not accept a webhook until the endpoint answers completes a synchronous challenge flow. You can add a `verify` handler for these. It runs synchronously before Notion answers the provider, and allows you to control some elements of the webhook HTTP response such as the body and status code.
 
-On a remote machine, container, or CI runner that can't open a browser, use `--no-browser` to get a two-step login flow:
+`verify` runs in the same sandbox as `execute`, with the full Node.js standard library. Read signing secrets from `process.env` and use `node:crypto` for signature checks.
 
-1. Run `ntn login --no-browser`. It prints a URL, a verification code, and a `ntn login poll` command.
-2. Open the URL in any browser, sign in, and confirm the verification code.
-3. Run `ntn login poll` on the original machine to redeem the token.
+```typescript theme={null}
+import * as crypto from "node:crypto";
+import { Worker } from "@notionhq/workers";
 
-`ntn login` also falls back to this flow automatically when it detects there is no terminal (e.g. piped input).
+const worker = new Worker();
+export default worker;
 
-Login sessions expire after a short window. If polling fails because the session expired, run `ntn login` again to start over.
+worker.webhook("onProviderEvent", {
+  title: "Provider Events",
+  description: "Handles events from an external provider",
+  verify: (request) => {
+    const secret = process.env.PROVIDER_WEBHOOK_SECRET;
+    if (!secret) {
+      return { status: 400, body: "PROVIDER_WEBHOOK_SECRET not configured" };
+    }
 
-For unattended use (CI, scripts, bots), prefer a [personal access token](#use-a-personal-access-token) instead.
+    const signature = request.headers["x-signature-256"] ?? "";
+    const expected = crypto
+      .createHmac("sha256", secret)
+      .update(request.rawBody)
+      .digest("hex");
 
-## Target a specific workspace
+    // Compare lengths first: timingSafeEqual throws on buffers of
+    // different lengths.
+    if (
+      signature.length !== expected.length ||
+      !crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expected))
+    ) {
+      return { status: 401, body: "Invalid signature" };
+    }
 
-To run a single command against a non-default workspace without switching defaults, set `NOTION_WORKSPACE_ID`:
-
-```bash theme={null}
-NOTION_WORKSPACE_ID=<workspace-id> ntn api v1/users/me
+    return { status: 200 };
+  },
+  execute: async (events) => {
+    for (const event of events) {
+      console.log("Verified event:", event.body);
+    }
+  },
+});
 ```
 
-Workspace IDs are listed in the output of `ntn debug`.
+### The request object
 
-## Use a personal access token
+`verify` receives the inbound HTTP request, not the array of `WebhookEvent` objects that `execute` receives.
 
-For unattended use, authenticate with a [personal access token](/guides/get-started/personal-access-tokens) (PAT) by exporting it as `NOTION_API_TOKEN`:
+| Property | Type | Description |
+| :- | :- | :- |
+| `method` | `"GET" \| "HEAD" \| "POST"` | Uppercase HTTP method. Deliveries are `POST`; `GET` and `HEAD` are handshake probes. |
+| `url` | `string` | The full webhook URL as received, including the query string. |
+| `query` | `Record<string, string>` | Query string parameters. A repeated parameter keeps its last value. |
+| `headers` | `Record<string, string>` | Request headers. Header names are lowercased. |
+| `rawBody` | `string` | Original request body as a string. Empty for `GET` and `HEAD`. |
 
-```bash theme={null}
-export NOTION_API_TOKEN=ntn_xxx...
-ntn api v1/users/me
+Like `execute`, `verify` receives the capability context as its second argument.
+
+### The response object
+
+| Property | Type | Description |
+| :- | :- | :- |
+| `status` | `number` | Response status code. Only 2xx and 4xx are allowed. |
+| `body` | `string` | Optional response body, at most 8KB. |
+| `contentType` | `"application/json" \| "text/plain"` | Optional response content type. Defaults to `"text/plain"`. |
+| `deliver` | `boolean` | Optional. Whether to queue the request for `execute`. When omitted, Notion decides from the status. |
+
+### Choose whether `execute` runs
+
+Notion always returns your status, body, and content type to the provider. Separately, it decides whether to queue the request for `execute`. By default, any 2xx status code queues the request for execution, while any non-2xx status does not. You can optionally set a `deliver` field in your response to control delivery for execution. Setting `deliver` overrides the status code.
+
+Set `deliver` when the answer to the provider and the delivery decision differ. `deliver` always wins over the status.
+
+| `verify` returns | Provider sees | Queued for `execute` |
+| :- | :- | :- |
+| `{ status: 200 }` | `200` | Yes |
+| `{ status: 401 }` | `401` | No |
+| `{ status: 200, deliver: false }` | `200` | No |
+| `{ status: 401, deliver: true }` | `401` | Yes |
+
+A common case is a subscription challenge. The provider needs a `200` with the challenge echoed back, but the challenge isn't an event, so there's nothing for `execute` to do:
+
+```typescript theme={null}
+verify: (request) => {
+  const body = JSON.parse(request.rawBody || "{}");
+  if (body.type === "url_verification") {
+    return { status: 200, body: body.challenge, deliver: false };
+  }
+  // ...check the signature, then:
+  return { status: 200 };
+},
 ```
 
-`NOTION_API_TOKEN` takes precedence over anything stored in the keychain, so the same shell can mix `ntn login`-based commands and PAT-based commands depending on what's exported.
+Without `deliver: false`, `execute` would receive the challenge and would need to skip it.
 
-## Inspect your session
+The opposite case is a request you reject but still want to keep. For example, you can answer `401` to a request with a bad signature and still queue it, so `execute` can log it for auditing:
 
-```bash theme={null}
-ntn doctor
+```typescript theme={null}
+return { status: 401, body: "Invalid signature", deliver: true };
 ```
 
-## Log out
+### Timing and failures
+
+`verify` answers the provider inline, so the run has a wall-clock budget of about 5 seconds that includes starting your worker's sandbox. Keep it to local computation. Avoid network calls, including `context.notion` requests, which usually will not fit the budget.
+
+| Outcome | Provider sees | Queued for `execute` |
+| :- | :- | :- |
+| Returns 2xx | Your status and body | Yes, unless `deliver` is `false` |
+| Returns 4xx | Your status and body | No, unless `deliver` is `true` |
+| Throws, or returns a status outside 2xx and 4xx, or a body over 8KB | `400` | No |
+| Exceeds the time budget | `503` with `Retry-After` | No |
+
+<Warning>
+  A handler that throws or returns an invalid response counts toward the same
+  five-consecutive-failure limit as `WebhookVerificationError`, after which
+  Notion blocks the webhook until you redeploy or change the synchronous
+  verification setting. Deliberately returning a 4xx is not a failure and
+  resets the counter.
+</Warning>
+
+Exceeding the budget is usually a cold sandbox start. The provider can retry, and will generally land on a warm sandbox.
+
+### Turn synchronous verification off
+
+You can turn off a webhook's `verify` handler without redeploying the worker. This helps when a `verify` bug is rejecting real events, or when a webhook is blocked by repeated failures and you need events flowing again right away.
+
+Turn it off or back on with the webhook's key:
 
 ```bash theme={null}
-ntn logout
+ntn workers webhooks verification disable onProviderEvent
+ntn workers webhooks verification enable onProviderEvent
 ```
 
-This forgets every cached workspace, deletes each one's token from the keychain, and clears the default workspace. The `config.json` and `workspaces.json` files themselves stay in place — run `ntn login` to repopulate them.
+The commands use the worker in `workers.json`. Pass `--worker-id` to pick a different worker, and `--json` or `--plain` for scripted output. You can also use the **Sync verification** switch in the webhooks table on the worker's **Overview** tab.
 
-## Where credentials are stored
+While synchronous verification is off, the webhook acts as if it had no `verify` handler:
 
-Tokens live in your OS credential store (Keychain on macOS, Secret Service on Linux) under the service name `notion-cli`, with the workspace ID as the account.
+* `POST` requests get `202 Accepted` and are queued for `execute`.
+* `GET` and `HEAD` requests get `405 Method Not Allowed`, so handshake probes fail.
+* `execute` still runs, so any signature check you do there still applies.
 
-Two files sit alongside them in the CLI config directory:
+The setting stays in place across deploys. Deploying a new version doesn't turn synchronous verification back on. Changing the setting in either direction also resets the verification failure counter, which unblocks a blocked webhook.
 
-* `config.json` — CLI version, default workspace per, and the optional `keyring` toggle.
-* `workspaces.json` — cached workspace IDs and names for the interactive picker.
+## Execution and retries
 
-The config directory is `NOTION_HOME` if set, otherwise `$XDG_CONFIG_HOME/notion`, `$HOME/.config/notion`, or `$HOME/.notion` as fallbacks.
+When a webhook request reaches Notion, Notion validates the URL, enqueues the event, and responds with `202 Accepted`. Your worker runs asynchronously after the HTTP response is sent.
 
-### Opt out of the OS keychain
+A webhook with a `verify` handler answers with whatever `verify` returned instead of `202`. It enqueues the event when `deliver` is `true`, or when `deliver` is omitted and the status is 2xx.
 
-On systems without a usable keychain, `ntn login` fails with a keychain error. Common examples include Docker containers, CI runners, SSH sessions to a Linux server, etc.
+If your handler throws `WebhookVerificationError`, Notion records a verification failure and does not retry that event. If your handler throws another error, Notion retries the worker run up to 3 times.
 
-Set `NOTION_KEYRING=0` to store tokens in plain JSON at `auth.json` in the config directory instead. Treat that file like any other secret.
+Successful runs reset the consecutive verification failure counter.
+
+Incoming webhook requests can be rejected with `429` before they are queued. A `202 Accepted` response means the event was queued for asynchronous processing, not that your handler has run successfully. Queued webhook executions are rate-limited separately and retried when they reach a rate limit. See [Limits](/workers/reference/limits) for the standard thresholds.
+
+## Use Notion from a webhook
+
+Webhook handlers receive the same context object as other capabilities, including `context.notion`, the Notion API SDK client:
+
+```typescript theme={null}
+worker.webhook("createPageFromWebhook", {
+  title: "Create Page From Webhook",
+  description: "Creates a page when an external event is received",
+  execute: async (events, { notion }) => {
+    const databaseId = process.env.MY_WEBHOOK_DATABASE_ID;
+
+    if (!databaseId) {
+      throw new Error("MY_WEBHOOK_DATABASE_ID is not configured");
+    }
+
+    for (const event of events) {
+      const externalId =
+        typeof event.body.id === "string" ? event.body.id : event.deliveryId;
+
+      await notion.pages.create({
+        parent: { database_id: databaseId },
+        properties: {
+          Name: {
+            title: [
+              {
+                text: {
+                  content: `Webhook event ${externalId}`,
+                },
+              },
+            ],
+          },
+        },
+      });
+    }
+  },
+});
+```
+
+For webhooks, `context.notion` is not automatically authenticated. To call the Notion API, create an internal integration, give it access to the relevant pages or databases, and store the integration token in `NOTION_API_TOKEN`:
 
 ```bash theme={null}
-NOTION_KEYRING=0 ntn login
+ntn workers env set NOTION_API_TOKEN=secret_xxx
 ```
 
-To make it permanent, set `"keyring": false` in `config.json`. The env var always wins.
+At runtime, `context.notion` reads `process.env.NOTION_API_TOKEN` and uses it as the Notion API client token.
 
-## Environment variables
+For more information about creating an integration token for a worker, see [Using Notion API from a worker](/workers/guides/api-client).
 
-| Variable | Purpose |
-| :- | :- |
-| `NOTION_API_TOKEN` | When this is set, it'll take precedence over `ntn login`'s keychain entry. Handy for scripts and CI. |
-| `NOTION_WORKSPACE_ID` | Override the default workspace for a single command. |
-| `NOTION_KEYRING` | Set to `0` to use file-based storage instead of the OS keychain. |
-| `NOTION_HOME` | Override the config directory. |
-| `NOTION_ENV` | Same as `--env`. Rarely needed. |
+## Inspect runs
 
-Run `ntn login --help` for the full list.
+Use worker run logs to debug webhook executions:
+
+```bash theme={null}
+ntn workers runs list
+ntn workers runs logs <run-id>
+```
+
+To find recent webhook runs quickly:
+
+```bash theme={null}
+ntn workers runs list --plain | grep webhook
+```
+
+See the [CLI command reference](/cli/reference/commands) for all `ntn workers` flags and options.
 
 ## Next steps
 
 <CardGroup>
-  <Card title="Workers quickstart" icon="rocket" href="/workers/get-started/quickstart">
-    Create and deploy your first Notion Worker.
+  <Card title="Secrets" icon="lock" href="/workers/guides/secrets">
+    Store webhook signing secrets and API keys.
   </Card>
 
-  <Card title="API requests" icon="terminal" href="/cli/guides/api-requests">
-    Make Notion API requests from the terminal.
+  <Card title="Notion API" icon="database" href="/workers/guides/api-client">
+    Read and write Notion data from a webhook handler.
   </Card>
 
-  <Card title="Command reference" icon="book-open" href="/cli/reference/commands">
-    Full reference for every ntn command.
+  <Card title="OAuth" icon="key" href="/workers/guides/oauth">
+    Authenticate with third-party APIs from your webhook.
   </Card>
 
-  <Card title="Personal access tokens" icon="key" href="/guides/get-started/personal-access-tokens">
-    Create tokens for scripts and CI.
+  <Card title="SDK reference" icon="book-open" href="/workers/reference/sdk#worker-webhook">
+    Detailed API docs for worker.webhook() and WebhookVerificationError.
+  </Card>
+
+  <Card title="Limits" icon="bolt" href="/workers/reference/limits">
+    Webhook ingress and run rate limits.
   </Card>
 </CardGroup>

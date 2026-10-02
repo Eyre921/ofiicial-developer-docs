@@ -263,6 +263,7 @@ Dubbing v1 supports the same languages as the Eleven v3 model. Region-qualified 
 * **Dubbing v2** Alpha — Dubbing v2 is currently in alpha. You may encounter occasional rough edges as we continue to improve the model.
 * **Content types:** All audio and video content types are supported, with up to 32 unique speakers per file.
 * **Speaker preservation:** Each speaker's tone, pace, and style is preserved in the target language.
+* **Output quality:** Dubbed video is a high-quality preview, not a production master. It is most commonly output at 1080p and may not match the source resolution. Audio is mono for Dubbing v1 and at most stereo for Dubbing v2, so 5.1 and other multichannel audio is not preserved. For production, download the dubbed audio and use it to replace the audio track on your original video.
 * **Concurrency:** All self-serve plans (Free, Starter, Creator, Pro, Scale, Business) allow up to 3 concurrent dubbing jobs, and Enterprise plans default to 10. Limits are applied per workspace and counted per model, so v1 and v2 jobs do not share a pool. If you hit a limit, you will receive a `too_many_concurrent_requests` error and should wait for existing jobs to complete before starting new ones.
 
 ## FAQ
@@ -295,3 +296,9 @@ Automatic Dubbing on the main [Dubbing](https://elevenlabs.io/app/dubbing) page 
 by default. To use the legacy v1 model, choose **Dubbing v1** as the model. To create a Dubbing
 Studio project, choose **Dubbing v1**, then select **Dubbing project**. Using v1 is the only way
 to create a Dubbing Studio project.
+
+#### What video resolutions does dubbing support?
+
+Dubbing accepts source video up to 4K. Output resolution varies and does not always match the
+source, but is most commonly 1080p. Treat the dubbed video as a preview: for production, use the
+dubbed audio to replace the audio track on your original video.

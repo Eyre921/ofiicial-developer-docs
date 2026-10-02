@@ -6,6 +6,24 @@ path: updates/changelog
 
 <ChangelogSearch />
 
+<Update label="2026-10-02">
+  <Badge>Inference</Badge>
+
+  # Higher serverless rate limits for Small models
+
+  We increased the adaptive rate-limit ceilings for **Small** serverless models and expanded the Small tier to cover models with **less than 600B total parameters**.
+
+  The Small tier now has these ceilings:
+
+  * **Total Prompt TPM:** 108M
+  * **Uncached Prompt TPM:** 27M
+  * **Generated TPM:** 1.08M
+
+  This applies to Small-tier serverless models such as [GLM 5.3 Flash](https://app.fireworks.ai/models/fireworks/glm-5p3-flash), [DeepSeek V4.1 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4p1-flash), and [OpenAI GPT OSS 120B](https://app.fireworks.ai/models/fireworks/gpt-oss-120b). Medium and Large model ceilings are unchanged.
+
+  See [Serverless rate limits](/serverless/rate-limits) for the full tier table.
+</Update>
+
 <Update label="2026-10-01">
   <Badge>Training</Badge>
 
@@ -207,7 +225,7 @@ path: updates/changelog
 
   # Serverless rate limit ceilings now scale by model size
 
-  Serverless adaptive rate limit ceilings now vary by model size tier. Smaller models (\< 400B parameters) get higher ceilings; medium models (400B – \< 1.6T) get intermediate ceilings; large models (≥ 1.6T) keep the previous base ceilings. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for tier thresholds and ceiling values.
+  Serverless adaptive rate limit ceilings now vary by model size tier. Smaller models get higher ceilings, medium models get intermediate ceilings, and large models use lower ceilings. See [Serverless rate limits](/serverless/rate-limits#model-size-tiers) for current tier thresholds and ceiling values.
 </Update>
 
 <Update label="2026-08-30">

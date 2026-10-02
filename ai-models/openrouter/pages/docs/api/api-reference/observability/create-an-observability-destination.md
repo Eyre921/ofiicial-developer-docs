@@ -1111,6 +1111,12 @@ components:
             password:
               minLength: 1
               type: string
+            shouldIncludeCacheWriteTokens:
+              default: false
+              description: >-
+                Send the cache_write_tokens column (schema v2). Turn this on
+                after the table has that column.
+              type: boolean
             table:
               default: OPENROUTER_TRACES
               type: string
@@ -2833,6 +2839,12 @@ components:
             schema:
               default: PUBLIC
               type: string
+            shouldIncludeCacheWriteTokens:
+              default: false
+              description: >-
+                Send the cache_write_tokens column (schema v2). Turn this on
+                after the table has that column.
+              type: boolean
             table:
               default: OPENROUTER_TRACES
               type: string
