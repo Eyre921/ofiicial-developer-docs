@@ -13,3 +13,4 @@ Valid fields:
 - playground_completed_at
 - evaluation_completed_at
 - success_viewed_at
+- agent_platform_welcome_viewed_at

@@ -99,10 +99,10 @@ For any production-ready application, **start with a Flow**.
 * **Use a Flow** to define the overall structure, state, and logic of your application.
 * **Use a Crew** within a Flow step when you need a team of agents to perform a specific, complex task that requires autonomy.
 
-| Use Case                | Architecture                                                               |
-| :---------------------- | :------------------------------------------------------------------------- |
-| **Simple Automation**   | Single Flow with Python tasks                                              |
-| **Complex Research**    | Flow managing state -> Crew performing research                            |
+| Use Case | Architecture |
+| :- | :- |
+| **Simple Automation** | Single Flow with Python tasks |
+| **Complex Research** | Flow managing state -> Crew performing research |
 | **Application Backend** | Flow handling API requests -> Crew generating content -> Flow saving to DB |
 
 ## Why Choose CrewAI?

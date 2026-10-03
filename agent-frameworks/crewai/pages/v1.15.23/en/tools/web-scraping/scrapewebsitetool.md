@@ -46,6 +46,6 @@ print(text)
 
 ## Arguments
 
-| Argument         | Type     | Description                                                                                                                                        |
-| :--------------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Argument | Type | Description |
+| :- | :- | :- |
 | **website\_url** | `string` | **Mandatory** website URL to read the file. This is the primary input for the tool, specifying which website's content should be scraped and read. |

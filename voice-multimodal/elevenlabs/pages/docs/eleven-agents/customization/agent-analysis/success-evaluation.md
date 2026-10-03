@@ -40,7 +40,7 @@ Each evaluation criterion analyzes the conversation transcript using a custom pr
 
 Navigate to your agent's dashboard and select the **Analysis** tab to configure evaluation criteria.
 
-![Analysis settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438/assets/images/conversational-ai/analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T181043Z&X-Amz-Expires=604800&X-Amz-Signature=3df75a315d9804842ca4b77457b964c7222a26b3660f3323311215f4e8c893c4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analysis settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fee8bc444d5436c71eae3829b9ec8d5cdb6a57c4d4efe6483d7bfed2b066e438/assets/images/conversational-ai/analysis-settings.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T080254Z&X-Amz-Expires=604800&X-Amz-Signature=f2f863309fa73c8d4675879ebb2895748d4cf974970ba587ea380687a068528d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add evaluation criteria
 
@@ -51,7 +51,7 @@ Define your criterion with:
 * **Identifier**: A unique name for the criterion (e.g., `user_was_not_upset`)
 * **Description**: Detailed prompt describing what should be evaluated
 
-![Setting up evaluation criteria](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0e1ad5eec745d5733701dcf8cbf4f413473f55a0b5f26add4faac540dbbd086a/assets/images/conversational-ai/evaluation.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T181043Z&X-Amz-Expires=604800&X-Amz-Signature=41289d37fd1c239afbd8ad9ba3b096ad6c0cfd997aeebcfab8361d130193a69c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Setting up evaluation criteria](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0e1ad5eec745d5733701dcf8cbf4f413473f55a0b5f26add4faac540dbbd086a/assets/images/conversational-ai/evaluation.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T080254Z&X-Amz-Expires=604800&X-Amz-Signature=9f3890b92db5ba2c2b7eeda7e3749143563ca7c366075325963a7743113e40ce&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >
@@ -61,7 +61,7 @@ Define your criterion with:
 
 After conversations complete, evaluation results appear in your conversation history dashboard. Each conversation shows the evaluation outcome and rationale for every configured criterion.
 
-![Evaluation results in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/657888630b51010fa6920275cfbb8f3dce51c0cbcfdb8ecf3d5d938f17a8186a/assets/images/conversational-ai/evaluation_result.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T181043Z&X-Amz-Expires=604800&X-Amz-Signature=8d31d7fe783884d2c9e4cd7eb3549ab82d75ff1352001fed9d5c0614317e6fa2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Evaluation results in conversation history](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/657888630b51010fa6920275cfbb8f3dce51c0cbcfdb8ecf3d5d938f17a8186a/assets/images/conversational-ai/evaluation_result.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T080254Z&X-Amz-Expires=604800&X-Amz-Signature=f49f8f8d3507c67cedad698d347bd46fd699dedd9088cc964b679f083c73d4ea&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Best Practices
 

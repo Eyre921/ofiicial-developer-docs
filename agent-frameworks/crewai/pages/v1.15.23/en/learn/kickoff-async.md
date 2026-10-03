@@ -13,10 +13,10 @@ This feature is particularly useful when you want to run multiple crews concurre
 
 CrewAI offers two approaches for async execution:
 
-| Method            | Type         | Description                                            |
-| ----------------- | ------------ | ------------------------------------------------------ |
-| `akickoff()`      | Native async | True async/await throughout the entire execution chain |
-| `kickoff_async()` | Thread-based | Wraps synchronous execution in `asyncio.to_thread`     |
+| Method | Type | Description |
+| - | - | - |
+| `akickoff()` | Native async | True async/await throughout the entire execution chain |
+| `kickoff_async()` | Thread-based | Wraps synchronous execution in `asyncio.to_thread` |
 
 <Note>
   For high-concurrency workloads, `akickoff()` is recommended as it uses native async for task execution, memory operations, and knowledge retrieval.
@@ -297,11 +297,11 @@ asyncio.run(main())
 
 ## Choosing Between `akickoff()` and `kickoff_async()`
 
-| Feature             | `akickoff()`                          | `kickoff_async()`        |
-| ------------------- | ------------------------------------- | ------------------------ |
-| Execution model     | Native async/await                    | Thread-based wrapper     |
-| Task execution      | Async with `aexecute_sync()`          | Sync in thread pool      |
-| Memory operations   | Async                                 | Sync in thread pool      |
-| Knowledge retrieval | Async                                 | Sync in thread pool      |
-| Best for            | High-concurrency, I/O-bound workloads | Simple async integration |
-| Streaming support   | Yes                                   | Yes                      |
+| Feature | `akickoff()` | `kickoff_async()` |
+| - | - | - |
+| Execution model | Native async/await | Thread-based wrapper |
+| Task execution | Async with `aexecute_sync()` | Sync in thread pool |
+| Memory operations | Async | Sync in thread pool |
+| Knowledge retrieval | Async | Sync in thread pool |
+| Best for | High-concurrency, I/O-bound workloads | Simple async integration |
+| Streaming support | Yes | Yes |

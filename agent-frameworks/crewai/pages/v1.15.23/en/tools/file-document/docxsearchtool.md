@@ -48,8 +48,8 @@ tool = DOCXSearchTool(docx='path/to/your/document.docx')
 
 The following parameters can be used to customize the `DOCXSearchTool`'s behavior:
 
-| Argument | Type     | Description                                                                                                                                                                                                        |
-| :------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Argument | Type | Description |
+| :- | :- | :- |
 | **docx** | `string` | *Optional*. An argument that specifies the path to the DOCX file you want to search. If not provided during initialization, the tool allows for later specification of any DOCX file's content path for searching. |
 
 ## Custom model and embeddings

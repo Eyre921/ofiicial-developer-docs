@@ -26,14 +26,14 @@ CrewAI supports native multimodal file inputs, allowing you to pass images, PDFs
 
 CrewAI supports five specific file types plus a generic `File` class that auto-detects the type:
 
-| Type        | Class       | Use Cases                             |
-| :---------- | :---------- | :------------------------------------ |
-| **Image**   | `ImageFile` | Photos, screenshots, diagrams, charts |
-| **PDF**     | `PDFFile`   | Documents, reports, papers            |
-| **Audio**   | `AudioFile` | Voice recordings, podcasts, meetings  |
-| **Video**   | `VideoFile` | Screen recordings, presentations      |
-| **Text**    | `TextFile`  | Code files, logs, data files          |
-| **Generic** | `File`      | Auto-detect type from content         |
+| Type | Class | Use Cases |
+| :- | :- | :- |
+| **Image** | `ImageFile` | Photos, screenshots, diagrams, charts |
+| **PDF** | `PDFFile` | Documents, reports, papers |
+| **Audio** | `AudioFile` | Voice recordings, podcasts, meetings |
+| **Video** | `VideoFile` | Screen recordings, presentations |
+| **Text** | `TextFile` | Code files, logs, data files |
+| **Generic** | `File` | Auto-detect type from content |
 
 ```python theme={null}
 from crewai_files import File, ImageFile, PDFFile, AudioFile, VideoFile, TextFile
@@ -171,14 +171,14 @@ For example, if both Flow and Task define a file named `"chart"`, the Task's ver
 
 Different providers support different file types. CrewAI automatically formats files for each provider's API.
 
-| Provider                                 | Image | PDF | Audio | Video | Text |
-| :--------------------------------------- | :---: | :-: | :---: | :---: | :--: |
-| **OpenAI** (completions API)             |   ✓   |     |       |       |      |
-| **OpenAI** (responses API)               |   ✓   |  ✓  |   ✓   |       |      |
-| **Anthropic** (claude-3.x)               |   ✓   |  ✓  |       |       |      |
-| **Google Gemini** (gemini-1.5, 2.0, 2.5) |   ✓   |  ✓  |   ✓   |   ✓   |   ✓  |
-| **AWS Bedrock** (claude-3)               |   ✓   |  ✓  |       |       |      |
-| **Azure OpenAI** (gpt-4o)                |   ✓   |     |   ✓   |       |      |
+| Provider | Image | PDF | Audio | Video | Text |
+| :- | :-: | :-: | :-: | :-: | :-: |
+| **OpenAI** (completions API) | ✓ | | | | |
+| **OpenAI** (responses API) | ✓ | ✓ | ✓ | | |
+| **Anthropic** (claude-3.x) | ✓ | ✓ | | | |
+| **Google Gemini** (gemini-1.5, 2.0, 2.5) | ✓ | ✓ | ✓ | ✓ | ✓ |
+| **AWS Bedrock** (claude-3) | ✓ | ✓ | | | |
+| **Azure OpenAI** (gpt-4o) | ✓ | | ✓ | | |
 
 <Note type="info" title="Gemini for Maximum File Support">
   Google Gemini models support all file types including video (up to 1 hour, 2GB). Use Gemini when you need to process video content.
@@ -192,21 +192,21 @@ Different providers support different file types. CrewAI automatically formats f
 
 CrewAI automatically chooses the optimal method to send files to each provider:
 
-| Method              | Description                                | Used When                         |
-| :------------------ | :----------------------------------------- | :-------------------------------- |
-| **Inline Base64**   | File embedded directly in the request      | Small files (\< 5MB typically)    |
+| Method | Description | Used When |
+| :- | :- | :- |
+| **Inline Base64** | File embedded directly in the request | Small files (\< 5MB typically) |
 | **File Upload API** | File uploaded separately, referenced by ID | Large files that exceed threshold |
-| **URL Reference**   | Direct URL passed to the model             | File source is already a URL      |
+| **URL Reference** | Direct URL passed to the model | File source is already a URL |
 
 ### Provider Transmission Methods
 
-| Provider          | Inline Base64 | File Upload API | URL References |
-| :---------------- | :-----------: | :-------------: | :------------: |
-| **OpenAI**        |       ✓       |    ✓ (> 5 MB)   |        ✓       |
-| **Anthropic**     |       ✓       |    ✓ (> 5 MB)   |        ✓       |
-| **Google Gemini** |       ✓       |   ✓ (> 20 MB)   |        ✓       |
-| **AWS Bedrock**   |       ✓       |                 |   ✓ (S3 URIs)  |
-| **Azure OpenAI**  |       ✓       |                 |        ✓       |
+| Provider | Inline Base64 | File Upload API | URL References |
+| :- | :-: | :-: | :-: |
+| **OpenAI** | ✓ | ✓ (> 5 MB) | ✓ |
+| **Anthropic** | ✓ | ✓ (> 5 MB) | ✓ |
+| **Google Gemini** | ✓ | ✓ (> 20 MB) | ✓ |
+| **AWS Bedrock** | ✓ | | ✓ (S3 URIs) |
+| **Azure OpenAI** | ✓ | | ✓ |
 
 <Note type="info" title="Automatic Optimization">
   You don't need to manage this yourself. CrewAI automatically uses the most efficient method based on file size and provider capabilities. Providers without file upload APIs use inline base64 for all files.

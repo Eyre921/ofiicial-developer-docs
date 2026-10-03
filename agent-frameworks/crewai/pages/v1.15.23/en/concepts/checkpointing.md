@@ -423,9 +423,9 @@ Accepted by `Crew`, `Flow`, and `Agent`.
 
 ### CLI
 
-| Command                               | Purpose                                                             |
-| :------------------------------------ | :------------------------------------------------------------------ |
-| `crewai checkpoint`                   | Launch the TUI; auto-detect storage.                                |
-| `crewai checkpoint --location <path>` | Launch the TUI against a specific location.                         |
-| `crewai checkpoint list <path>`       | List checkpoints.                                                   |
-| `crewai checkpoint info <path>`       | Inspect a checkpoint file or the latest entry in a SQLite database. |
+| Command | Purpose |
+| :- | :- |
+| `crewai checkpoint` | Launch the TUI; auto-detect storage. |
+| `crewai checkpoint --location <path>` | Launch the TUI against a specific location. |
+| `crewai checkpoint list <path>` | List checkpoints. |
+| `crewai checkpoint info <path>` | Inspect a checkpoint file or the latest entry in a SQLite database. |

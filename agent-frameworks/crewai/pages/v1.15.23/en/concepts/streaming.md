@@ -12,10 +12,10 @@ Streaming lets your application receive execution updates while work is still ru
 
 CrewAI has two streaming surfaces:
 
-| Surface              | Used by                                       | Output                        |
-| -------------------- | --------------------------------------------- | ----------------------------- |
-| Frame streaming      | Flows, direct LLM calls, conversational turns | Ordered `StreamFrame` objects |
-| Crew chunk streaming | Crews with `stream=True`                      | `CrewStreamingOutput` chunks  |
+| Surface | Used by | Output |
+| - | - | - |
+| Frame streaming | Flows, direct LLM calls, conversational turns | Ordered `StreamFrame` objects |
+| Crew chunk streaming | Crews with `stream=True` | `CrewStreamingOutput` chunks |
 
 For new runtime integrations, UIs, terminal apps, service bridges, and conversational surfaces, use frame streaming. It provides one stable event envelope across the runtime.
 
@@ -39,26 +39,26 @@ frame.content      # printable text for token-like frames, otherwise ""
 
 The important fields for most consumers are:
 
-| Field     | Use it for                                                       |
-| --------- | ---------------------------------------------------------------- |
-| `channel` | Routing frames to the right UI region                            |
-| `type`    | Handling a specific event inside a channel                       |
-| `content` | Printing token-like text                                         |
-| `event`   | Reading structured metadata, such as tool names or message roles |
-| `seq`     | Preserving execution order                                       |
+| Field | Use it for |
+| - | - |
+| `channel` | Routing frames to the right UI region |
+| `type` | Handling a specific event inside a channel |
+| `content` | Printing token-like text |
+| `event` | Reading structured metadata, such as tool names or message roles |
+| `seq` | Preserving execution order |
 
 ## Channels
 
 Frames are grouped into high-level channels:
 
-| Channel     | Contains                                                            |
-| ----------- | ------------------------------------------------------------------- |
-| `llm`       | LLM call lifecycle, text chunks, and thinking chunks                |
-| `flow`      | Flow lifecycle, method execution, routing, pause, and resume events |
-| `tools`     | Tool usage start, finish, and error events                          |
-| `messages`  | Conversation transcript events                                      |
-| `lifecycle` | Runtime lifecycle events that do not belong to another channel      |
-| `custom`    | Events that do not map to a built-in channel                        |
+| Channel | Contains |
+| - | - |
+| `llm` | LLM call lifecycle, text chunks, and thinking chunks |
+| `flow` | Flow lifecycle, method execution, routing, pause, and resume events |
+| `tools` | Tool usage start, finish, and error events |
+| `messages` | Conversation transcript events |
+| `lifecycle` | Runtime lifecycle events that do not belong to another channel |
+| `custom` | Events that do not map to a built-in channel |
 
 The stream itself remains one ordered timeline. Channel projections let consumers focus on only part of that timeline.
 
@@ -106,27 +106,27 @@ result = stream.result
 
 Available projections:
 
-| Projection                 | Frames                              |
-| -------------------------- | ----------------------------------- |
-| `stream.events`            | All frames                          |
-| `stream.llm`               | LLM frames                          |
-| `stream.flow`              | Flow frames                         |
-| `stream.tools`             | Tool frames                         |
-| `stream.messages`          | Conversation message frames         |
+| Projection | Frames |
+| - | - |
+| `stream.events` | All frames |
+| `stream.llm` | LLM frames |
+| `stream.flow` | Flow frames |
+| `stream.tools` | Tool frames |
+| `stream.messages` | Conversation message frames |
 | `stream.interleave([...])` | Selected channels in relative order |
 
 ## Entrypoints
 
 Use the entrypoint that matches the runtime you are streaming:
 
-| Runtime                  | Streaming entrypoint                                                      |
-| ------------------------ | ------------------------------------------------------------------------- |
-| Flow                     | `flow.stream_events(...)`                                                 |
-| Flow with `stream=True`  | `flow.kickoff(...)` returns a stream session                              |
-| Async Flow               | `flow.astream(...)` or `await flow.kickoff_async(...)` when `stream=True` |
-| Direct LLM call          | `llm.stream_events(...)`                                                  |
-| Conversational Flow turn | `flow.stream_turn(...)`                                                   |
-| Crew                     | `Crew(..., stream=True).kickoff(...)` returns `CrewStreamingOutput`       |
+| Runtime | Streaming entrypoint |
+| - | - |
+| Flow | `flow.stream_events(...)` |
+| Flow with `stream=True` | `flow.kickoff(...)` returns a stream session |
+| Async Flow | `flow.astream(...)` or `await flow.kickoff_async(...)` when `stream=True` |
+| Direct LLM call | `llm.stream_events(...)` |
+| Conversational Flow turn | `flow.stream_turn(...)` |
+| Crew | `Crew(..., stream=True).kickoff(...)` returns `CrewStreamingOutput` |
 
 Direct `llm.call(...)` still returns the final assembled LLM result. Use `llm.stream_events(...)` when you want to iterate over LLM chunks as they arrive.
 

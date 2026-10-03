@@ -54,8 +54,8 @@ tool = CodeDocsSearchTool(docs_url='https://docs.example.com/reference')
 
 The following parameters can be used to customize the `CodeDocsSearchTool`'s behavior:
 
-| Argument      | Type     | Description                                                             |
-| :------------ | :------- | :---------------------------------------------------------------------- |
+| Argument | Type | Description |
+| :- | :- | :- |
 | **docs\_url** | `string` | *Optional*. Specifies the URL of the code documentation to be searched. |
 
 ## Custom model and embeddings

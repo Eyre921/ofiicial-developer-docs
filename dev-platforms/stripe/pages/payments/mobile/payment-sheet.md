@@ -44,10 +44,8 @@ With the Payment Sheet, you get:
 ## Stripe in-app Elements demo
 
 Scan this App Clip Code with your iOS device to try an interactive demo of Stripe’s in-app payment UIs. In the demo, you can generate different UI configurations to find the one that works best for your use case.
-
 [![Stripe In-app Payments Showcase App Clip Code for Payment Sheet](https://b.stripecdn.com/docs-statics-srv/assets/paymentsheet_app_clip.800ded19a8655f4d33dce660a1238344.svg)
 ](https://apps.apple.com/demo/id6450683352?app-clip-bundle-id=com.stripe.PaymentSheetDemo.Clip)
-
 ## Layout
 
 Choose the automatic layout to let Stripe select the appropriate payment method layout. You can also choose a vertical or horizontal layout.

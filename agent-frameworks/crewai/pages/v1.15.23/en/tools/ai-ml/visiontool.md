@@ -15,11 +15,11 @@ The URL or the PATH of the image should be passed to the Agent.
 
 You can also ask a custom `query` about the image and pick a `complexity_level` that automatically selects the model best suited for the request:
 
-| Complexity level   | Model           |
-| :----------------- | :-------------- |
-| `easy`             | `gpt-5.6-luna`  |
+| Complexity level | Model |
+| :- | :- |
+| `easy` | `gpt-5.6-luna` |
 | `medium` (default) | `gpt-5.6-terra` |
-| `hard`             | `gpt-5.6-sol`   |
+| `hard` | `gpt-5.6-sol` |
 
 When an explicit `llm` or `model` is provided to the tool, it takes precedence over the complexity-based model selection.
 
@@ -56,8 +56,8 @@ def researcher(self) -> Agent:
 
 The VisionTool accepts the following arguments:
 
-| Argument              | Type     | Description                                                                                                              |
-| :-------------------- | :------- | :----------------------------------------------------------------------------------------------------------------------- |
-| **image\_path\_url**  | `string` | **Mandatory**. The path to the image file (or URL) from which text needs to be extracted.                                |
-| **query**             | `string` | **Optional**. The question or instruction to ask the model about the image. Defaults to `"What's in this image?"`.       |
+| Argument | Type | Description |
+| :- | :- | :- |
+| **image\_path\_url** | `string` | **Mandatory**. The path to the image file (or URL) from which text needs to be extracted. |
+| **query** | `string` | **Optional**. The question or instruction to ask the model about the image. Defaults to `"What's in this image?"`. |
 | **complexity\_level** | `string` | **Optional**. The complexity of the request, which selects the model: `easy`, `medium`, or `hard`. Defaults to `medium`. |

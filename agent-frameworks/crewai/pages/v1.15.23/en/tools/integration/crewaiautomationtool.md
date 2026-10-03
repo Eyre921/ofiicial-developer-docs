@@ -68,14 +68,14 @@ print(result)
 
 ## Tool Arguments
 
-| Argument                | Type   | Required | Default | Description                                         |
-| :---------------------- | :----- | :------- | :------ | :-------------------------------------------------- |
-| **crew\_api\_url**      | `str`  | Yes      | None    | Base URL of the CrewAI Platform automation API      |
-| **crew\_bearer\_token** | `str`  | Yes      | None    | Bearer token for API authentication                 |
-| **crew\_name**          | `str`  | Yes      | None    | Name of the crew automation                         |
-| **crew\_description**   | `str`  | Yes      | None    | Description of what the crew automation does        |
-| **max\_polling\_time**  | `int`  | No       | 600     | Maximum time in seconds to wait for task completion |
-| **crew\_inputs**        | `dict` | No       | None    | Dictionary defining custom input schema fields      |
+| Argument | Type | Required | Default | Description |
+| :- | :- | :- | :- | :- |
+| **crew\_api\_url** | `str` | Yes | None | Base URL of the CrewAI Platform automation API |
+| **crew\_bearer\_token** | `str` | Yes | None | Bearer token for API authentication |
+| **crew\_name** | `str` | Yes | None | Name of the crew automation |
+| **crew\_description** | `str` | Yes | None | Description of what the crew automation does |
+| **max\_polling\_time** | `int` | No | 600 | Maximum time in seconds to wait for task completion |
+| **crew\_inputs** | `dict` | No | None | Dictionary defining custom input schema fields |
 
 ## Environment Variables
 

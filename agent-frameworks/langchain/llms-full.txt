@@ -10559,7 +10559,7 @@ Freeform feedback is valuable for capturing nuanced insights but is harder to ag
 # Control plane API reference for LangSmith Deployment
 Source: https://docs.langchain.com/langsmith/api-ref-control-plane
 
-
+Use the control plane API to programmatically create, manage, and automate Agent Server deployments in LangSmith Deployment.
 
 The control plane API is part of [LangSmith Deployment](/langsmith/deployment). With the control plane API, you can programmatically create, manage, and automate your [Agent Server](/langsmith/agent-server) deployments—for example, as part of a custom CI/CD workflow.
 
@@ -36489,15 +36489,15 @@ To create and configure a GitHub App for a self-hosted deployment:
 # LangSmith Engine notifications
 Source: https://docs.langchain.com/langsmith/engine-notifications
 
-Send LangSmith Engine issue and run-failure notifications to Slack channels and webhook endpoints.
+Send LangSmith Engine notifications to Slack, Jira Automation, and webhook endpoints.
 
-[LangSmith Engine](/langsmith/engine) can notify you when it opens a new issue, links a new trace to an existing issue, or fails to complete a run. Deliver these notifications to a **Slack channel**, an **HTTP webhook endpoint**, or both. Each destination has its own event types and minimum priority, so you can route urgent issues to a paging webhook while sending every issue to a Slack channel.
+[LangSmith Engine](/langsmith/engine) can notify you when it opens a new issue, links a new trace to an existing issue, or fails to complete a run. Deliver these notifications to a **Slack channel**, a **Jira Automation incoming webhook**, or an **HTTP webhook endpoint**. Each destination has its own event types and minimum priority, so you can route urgent issues to a paging webhook while sending every issue to a Slack channel.
 
 ## Add a destination
 
 Notification destinations are configured per tracing project. On the **Engine** page, click **Configure Engine**, then under **Notifications** click **Add**. If no destination exists, the editor opens automatically. For each destination, choose:
 
-* **Destination type**: Select the **Slack** or **Webhook** tab. See [Notify a Slack channel](#notify-a-slack-channel) and [Send to a webhook](#send-to-a-webhook).
+* **Destination type**: Select the **Slack**, **Jira**, or **Webhook** tab. See [Notify a Slack channel](#notify-a-slack-channel), [Create Jira work items](#create-jira-work-items), and [Send to a webhook](#send-to-a-webhook).
 * **Notify when**: The [event types](#event-types) that trigger a notification.
 * **Minimum issue severity**: The issue [severity filter](#severity-filtering) that determines which notifications are sent.
 
@@ -36554,6 +36554,63 @@ Each Slack message includes the issue title, description, and severity, a **View
 
 Slack destinations use the configured Slack app to post messages. They do not send the [webhook payload](#webhook-payload-reference), so webhook signing secrets and custom headers do not apply.
 
+## Create Jira work items
+
+The **Jira** destination sends Engine events to a Jira Automation incoming webhook. Configure a Jira rule to turn new Engine issues into Jira work items. LangSmith sends the [webhook payload](#webhook-payload-reference) with the `X-Automation-Webhook-Token` header. Jira destinations use this token for authentication and do not have an HMAC signing secret.
+
+Use the final incoming-webhook URL. Jira deliveries do not follow redirects, including redirects on the same host. A `3xx` response is a permanent delivery error and is not retried. This keeps the token and payload on the configured endpoint.
+
+You need permission to manage Jira automation rules and a project where the rule can create work items. Jira Cloud hosts the incoming webhook on Atlassian's infrastructure. For Jira Data Center, verify that your installed version's endpoint accepts the required token header. LangSmith's deployment type does not determine whether you use Jira Cloud or Data Center.
+
+To create a work item for each new Engine issue:
+
+<Steps>
+  <Step title="Configure the incoming webhook in Jira">
+    Create a Jira Automation rule with an **Incoming webhook** trigger. If Jira requires a saved rule to generate the URL, save it without enabling it first.
+
+    Select **No work items from the webhook**, called **No issues from the webhook** in older interfaces. Engine sends its own event payload, rather than Jira issue keys.
+
+    Generate the trigger's secret/token. Copy the webhook URL and token before saving. Keep the token out of the URL; LangSmith sends it in the authentication header.
+  </Step>
+
+  <Step title="Add the Jira creation action">
+    Restrict the rule to the intended project. Add a **Create work item** action, called **Create issue** in older interfaces. Select an existing project and issue type, and configure any fields Jira requires.
+
+    For Jira Cloud, set **Summary** to `{{webhookData.object.name}}`. Set **Description** to:
+
+    ```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    {{webhookData.object.description}}
+
+    Severity: {{webhookData.object.severity}}
+    LangSmith issue: {{webhookData.object.url}}
+    ```
+
+    Jira Cloud exposes the envelope's `data` member as `webhookData`. Use `webhookData.object.*` for issue fields. The extra `.data` in `webhookData.data.object.name` resolves to an empty summary. Verify payload handling in your installed Jira Data Center version before using these mappings there.
+  </Step>
+
+  <Step title="Add the Jira destination in LangSmith">
+    On the **Engine** page, click **Configure Engine**. Under **Notifications**, click **Add** and select **Jira**. Enter the **Jira Webhook URL** and **Jira webhook token** from the trigger.
+
+    Under **Notify when**, select only `issue.created` for this creation rule. Choose the **Minimum issue severity**, then click **Add**. Enable the rule in Jira.
+  </Step>
+
+  <Step title="Verify Jira created the work item">
+    After Engine creates an issue that matches your severity filter, check Jira's automation audit log. Confirm that the rule succeeds and creates a work item with the expected summary, description, severity, and LangSmith issue link.
+
+    An HTTP success means Jira accepted the webhook, not that it created a work item. Rule conditions, required fields, actor permissions, and automation usage limits can prevent creation.
+  </Step>
+</Steps>
+
+LangSmith stores the Jira token without displaying it again. To replace it, enter a new token. Changing the webhook URL also requires entering a token for the replacement URL. If you lose the token, rotate it in Jira and update the LangSmith destination.
+
+### Reach a private Jira endpoint
+
+Private Jira endpoints require network access from your LangSmith deployment. In self-hosted and hybrid deployments, webhook delivery runs in the customer data plane. Configure the following before adding the destination:
+
+* **Network access**: Allow DNS resolution and outbound connectivity to Jira from both the LangSmith API and webhook delivery processes. Allow their source addresses through Jira's firewall.
+* **Private addresses**: If the endpoint resolves to a private IP, set `SSRF_ALLOW_PRIVATE_IPS_WEBHOOKS=true` for both processes. Kubernetes-internal hostnames also require `SSRF_ALLOW_K8S_INTERNAL=true`. Other webhook URL protections remain active. For configuration, see [Set self-hosted environment variables](/langsmith/self-host-environment-variables).
+* **TLS trust**: If Jira uses a private certificate authority, add its CA to the webhook delivery processes' trusted roots. Use system roots or `SSL_CERT_FILE`, retain other required roots, and keep TLS verification enabled.
+
 ## Send to a webhook
 
 Forward Engine events to your own incident-management, paging, or chat tooling. Add a destination and select the **Webhook** tab. Enter a URL and, optionally, [custom headers](#custom-headers). Each delivery is [signed](#signing-secret) so you can verify its authenticity.
@@ -36582,7 +36639,7 @@ You can attach arbitrary headers to each destination (for example, `Authorizatio
 
 ### Signing secret
 
-Each destination has a signing secret. LangSmith uses this secret to sign the raw webhook request body and sends the result in the `X-LangSmith-Signature` header.
+Each **Webhook** destination has a signing secret. LangSmith uses this secret to sign the raw webhook request body and sends the result in the `X-LangSmith-Signature` header. Jira destinations use their token header instead.
 
 The header value has this format:
 
@@ -36593,7 +36650,7 @@ sha256=<hex-encoded HMAC-SHA256 digest>
 Verify the signature before parsing or acting on the payload. The HMAC input is the exact raw request body bytes, and the HMAC key is the destination's signing secret. Do not parse and reserialize the JSON body before verification.
 
 <CodeGroup>
-  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import hashlib
   import hmac
   from typing import Optional
@@ -36617,7 +36674,7 @@ Verify the signature before parsing or acting on the payload. The HMAC input is 
       return hmac.compare_digest(expected, signature_header)
   ```
 
-  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createHmac, timingSafeEqual } from "node:crypto";
 
   export function verifyLangSmithSignature({
@@ -36688,7 +36745,7 @@ Use the example body from [`issue.created`](#issue-created) as `sample-issue-cre
 
 ## Webhook payload reference
 
-Webhook destinations receive the JSON payloads below. Slack destinations do not.
+Webhook and Jira destinations receive the JSON payloads below. Slack destinations do not.
 
 ### Event envelope
 
@@ -62065,10 +62122,6 @@ When a run hits an interrupt, it pauses and waits for a human response before co
 
 * **On a deployed agent**, resume the paused run through the LangGraph server API with a resume payload. See [Human-in-the-loop using server API](/langsmith/add-human-in-the-loop).
 
-<Note>
-  During public beta, Managed Deep Agents is CLI-first and programmatic invocation is not yet documented. To resume runs programmatically from your own application, contact your LangChain team.
-</Note>
-
 Human-in-the-loop needs durable thread state to pause and resume. The managed runtime owns the checkpointer, so no extra setup is required.
 
 ## Use tools that require authentication
@@ -65697,15 +65750,15 @@ Every call through the LLM Gateway is traced to LangSmith, and policy violations
 
 ## Where gateway traces appear
 
-By default, tracing of content is turned off for all organizations. When tracing content is on, the gateway-proxied calls are traced to a project named `gateway` in the [workspace](/langsmith/administration-overview#workspaces) associated with the caller's API key, as well as a per-caller project that isolates traffic in the UI. Callers authenticating with a workspace API key get `gateway/short-api-key/<short_key>/api-key-id/<api_key_id>`; callers authenticating with a bearer token and no workspace API key get `gateway/user/<obfuscated_email>/ls_user_id/<ls_user_id>`.
+Every gateway-proxied call is traced to a project named `gateway` in the [workspace](/langsmith/administration-overview#workspaces) associated with the caller's API key. Trace content is off by default for all organizations, so these traces record only metadata unless a [data policy](/langsmith/llm-gateway-data-policy) turns content on.
 
-Control access to these tracing projects with [RBAC](/langsmith/rbac) and [ABAC](/langsmith/abac)
+Control access to the `gateway` project with [RBAC](/langsmith/rbac) and [ABAC](/langsmith/abac).
 
 ### Trace metadata
 
 Gateway-proxied calls are distinguishable from direct LLM calls by the project they land in and the metadata attached to their spans:
 
-* **Gateway project:** all gateway traffic is written to a project named `gateway` in each workspace, with a per-caller copy for UI isolation. Filter by project (or by the presence of `langsmith.metadata.gateway.*` span attributes) to find gateway-proxied calls.
+* **Gateway project:** all gateway traffic is written to a project named `gateway` in each workspace. Filter by project (or by the presence of `langsmith.metadata.gateway.*` span attributes) to find gateway-proxied calls.
 * **Policy evaluation results:** every gateway span records which policies were evaluated and their outcome via `langsmith.metadata.gateway.policy.matched_ids/_names`, `passed_ids/_names`, and `violated_ids/_names`, so both passes and blocks are captured.
 * **Guard rule matches:** when redaction policies apply, the guard pipeline emits a `rule_id → count` map stamped onto the span as `policy.matched_rules`, `passed_rules`, and `violated_rules`. These are rule IDs, not PII or secret category labels.
 * **Cost data:** token counts and cost are computed inline and feed the same spend accumulator that spend-cap policies enforce against.
@@ -66419,7 +66472,7 @@ Provider API keys stay centralized in LangSmith workspace secrets. Gateway Credi
 After configuring a coding agent, make a test call and confirm that:
 
 1. The call succeeds and the agent receives a response.
-2. A trace appears in the `gateway` or `gateway-<short_api_key>-<api_key_id>` tracing project in your LangSmith workspace.
+2. A trace appears in the `gateway` tracing project in your LangSmith workspace.
 
 If the call fails with a `403`, check that your API key's role includes `gateway:invoke` and `workspaces:read`. If a bring-your-own-key call fails with a `400` mentioning a missing provider key, ask your organization admin to add the provider's key to workspace secrets.
 
@@ -66608,7 +66661,7 @@ Contact your account team to change either entitlement.
 
 Every call through the LLM Gateway is traced to LangSmith. The **Trace content** toggle controls whether request and response bodies are stored in those traces. It is off for all organizations, and a data policy turns it on for the requests that policy matches. When trace content is disabled, the gateway still records metadata such as token usage, latency, status, model information, and policy evaluation results. When it is turned on, the same metadata is recorded plus the content of the call.
 
-Gateway traces are written to a shared project named `gateway` in the [workspace](/langsmith/administration-overview#workspaces) associated with the caller's API key, plus a per-caller project that isolates traffic in the UI. For the project naming schemes, the metadata traces carry, and how to restrict trace visibility, see [Traces and access control](/langsmith/llm-gateway-access).
+Gateway traces are written to a project named `gateway` in the [workspace](/langsmith/administration-overview#workspaces) associated with the caller's API key. For the metadata that traces carry and how to restrict trace visibility, see [Traces and access control](/langsmith/llm-gateway-access).
 
 ## Data protection
 
@@ -67883,7 +67936,7 @@ The LLM Gateway calls models across configured providers through one endpoint wi
   </Step>
 
   <Step title="View the trace" icon="activity">
-    Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) and go to the tracing project named `gateway` or `gateway-<short_api_key>-<api_key_id>` in your workspace. Your request appears there with its token counts, cost, and latency.
+    Open [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) and go to the tracing project named `gateway` in your workspace. Your request appears there with its token counts, cost, and latency.
   </Step>
 
   <Step title="Set a spend limit" icon="shield">
@@ -90429,10 +90482,6 @@ When a run hits an interrupt, it pauses and waits for a human response before co
 
 * **During local development**, `mda dev` runs the agent in LangSmith Studio, which surfaces the interrupt so you can inspect the pending tool call and resume the run.
 * **On a deployed agent**, resume the paused run through the LangGraph server API with a `Command(resume=...)` payload. See [Human-in-the-loop using server API](/langsmith/add-human-in-the-loop).
-
-<Note>
-  During public beta, Managed Deep Agents is CLI-first and programmatic invocation is not yet documented. To resume runs programmatically from your own application, contact your LangChain team.
-</Note>
 
 Human-in-the-loop needs durable thread state to pause and resume. The managed runtime owns the checkpointer, so no extra setup is required.
 
@@ -113382,6 +113431,312 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
 
+<Update label="2026-10-02">
+  ## langsmith-0.16.39
+
+  **LangSmith version:** `0.16.69`
+
+  * LangSmith reduced Redis load during trace ingestion by reusing model pricing data more efficiently while preserving custom pricing and calculated costs.
+
+  **Download the Helm chart:** [`langsmith-0.16.39.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.39/langsmith-0.16.39.tgz)
+</Update>
+
+<Update label="2026-10-02">
+  ## langsmith-0.18.0-rc.5
+
+  **LangSmith version:** `0.18.2rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.1. Refer to the [langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.5.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.5/langsmith-0.18.0-rc.5.tgz)
+</Update>
+
+<Update label="2026-10-02">
+  ## langsmith-0.17.0-rc.61
+
+  **LangSmith version:** `0.17.29rc7`
+
+  * LLM-as-judge evaluators whose prompts contained both an old and a current output schema now checked scores against the schema the judge actually used, so their scores were saved, and errors were recorded under the correct feedback keys.
+  * Replacing a dataset's examples in one request with `PUT /v1/platform/datasets/{dataset_id}/examples` succeeded again when it updated existing examples; before, it returned a 500 error on installations using the newer example storage, including fresh self-hosted installations.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.61.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.61/langsmith-0.17.0-rc.61.tgz)
+</Update>
+
+<Update label="2026-10-02">
+  ## langsmith-0.17.0-rc.60
+
+  **LangSmith version:** `0.17.29rc6`
+
+  * LLM-as-a-judge evaluators using Claude Opus 5.5 or Sonnet 5.5 on AWS Bedrock no longer failed due to unsupported forced tool choice.
+  * Air-gapped self-hosted installs couldn't access Engine's rates, so Engine settings, project settings, and the Engine overview now indicated that spend wasn't available instead of showing local estimates; spend limits weren't enforced on those installs, though a project or organization limit of 0 still paused Engine.
+  * Moved the model clear button into the model config combobox.
+  * Engine accepted operator-configured GitHub App page URLs without restricting their path layout, including enterprise-scoped GitHub Enterprise Cloud Apps.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.60.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.60/langsmith-0.17.0-rc.60.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.17.0-rc.59
+
+  **LangSmith version:** `0.17.29rc5`
+
+  * V1 dashboard legends stayed within their chart cards on ClickHouse deployments, with extra series available in a menu when the legend ran out of space.
+  * Trace and run lists displayed a vertical scrollbar that scrolled the table rows and reflected their position, without an extra outer scrollbar.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.59.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.59/langsmith-0.17.0-rc.59.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.18.0-rc.4
+
+  **LangSmith version:** `0.18.2rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.1. Refer to the [langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.4.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.4/langsmith-0.18.0-rc.4.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.16.38
+
+  **LangSmith version:** `0.16.68`
+
+  * This release packages the same LangSmith application version as langsmith-0.16.37. Refer to the [langsmith-0.16.37](#langsmith-0-16-37) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.16.38.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.38/langsmith-0.16.38.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.17.0-rc.58
+
+  **LangSmith version:** `0.17.29rc4`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.56. Refer to the [langsmith-0.17.0-rc.56](#langsmith-0-17-0-rc-56) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.58.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.58/langsmith-0.17.0-rc.58.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.18.0-rc.3
+
+  **LangSmith version:** `0.18.2rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.1. Refer to the [langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.3.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.3/langsmith-0.18.0-rc.3.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.17.0-rc.57
+
+  **LangSmith version:** `0.17.29rc4`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.56. Refer to the [langsmith-0.17.0-rc.56](#langsmith-0-17-0-rc-56) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.57.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.57/langsmith-0.17.0-rc.57.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.17.0-rc.56
+
+  **LangSmith version:** `0.17.29rc4`
+
+  * Optionally embedded trajectory gRPC server in Smith-go.
+  * Self-hosted LangSmith operators could allowlist exact OpenAI-compatible endpoints and Azure scopes so Playground and evaluator calls authenticated with refreshable Azure workload identity tokens.
+  * The Messages view showed the user message on OpenAI Responses API calls that sent it as a plain string, which is how calls chained with previous\_response\_id or a conversation sent each new turn; previously, those user messages were dropped.
+  * The model configuration editor and Gateway homepage code samples explained that Gateway applies model and connection settings, while generation parameters such as max tokens and temperature must be set in API requests.
+  * On self-hosted and BYOC deployments, organization admins could choose which model providers Engine ran on, see whether each provider's keys were ready, and add missing keys from Settings > Engine > Model providers.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.56.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.56/langsmith-0.17.0-rc.56.tgz)
+</Update>
+
+<Update label="2026-10-01">
+  ## langsmith-0.16.37
+
+  **LangSmith version:** `0.16.68`
+
+  * Internal improvements and maintenance updates
+
+  **Download the Helm chart:** [`langsmith-0.16.37.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.37/langsmith-0.16.37.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.17.0-rc.55
+
+  **LangSmith version:** `0.17.29rc3`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.54. Refer to the [langsmith-0.17.0-rc.54](#langsmith-0-17-0-rc-54) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.55.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.55/langsmith-0.17.0-rc.55.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.17.0-rc.54
+
+  **LangSmith version:** `0.17.29rc3`
+
+  * Edited a Context Hub webhook to load its saved custom headers instead of unrelated response headers, preventing overwriting upon saving.
+  * Allowed self-hosted Insights deployments to explicitly opt in to Google Application Default Credentials for Vertex AI models instead of storing service account JSON.
+  * Enabled self-hosted LangSmith Chat to authenticate Vertex AI workspace models with Google Application Default Credentials when no stored service account credential or LLM auth proxy credential was available.
+  * Offered Custom Apps browser creation and editing only when sandbox service URLs and signing keys were configured, preventing provisioning failures on incompletely configured deployments.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.54.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.54/langsmith-0.17.0-rc.54.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.18.0-rc.2
+
+  **LangSmith version:** `0.18.2rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.18.0-rc.1. Refer to the [langsmith-0.18.0-rc.1](#langsmith-0-18-0-rc-1) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.2.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.2/langsmith-0.18.0-rc.2.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.17.0-rc.53
+
+  **LangSmith version:** `0.17.29rc2`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.52. Refer to the [langsmith-0.17.0-rc.52](#langsmith-0-17-0-rc-52) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.53.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.53/langsmith-0.17.0-rc.53.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.16.36
+
+  **LangSmith version:** `0.16.67`
+
+  * This release packages the same LangSmith application version as langsmith-0.16.34. Refer to the [langsmith-0.16.34](#langsmith-0-16-34) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.16.36.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.36/langsmith-0.16.36.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.18.0-rc.1
+
+  **LangSmith version:** `0.18.2rc1`
+
+  * The Playground no longer encountered a React nested-update crash when streaming longer responses.
+  * The model configuration editor and Gateway homepage code samples now explained that Gateway applied model and connection settings, while generation parameters such as max tokens and temperature must be set in API requests.
+  * Made hosted model request cap configurable.
+  * Select dropdowns supported keyboard selection and returned focus when closed. Search fields preserved queries across updates, text areas respected controlled values, and sliders exposed their labels to screen readers.
+  * The LLM Gateway preserved deferred tool declarations and ordered tool additions between Anthropic Messages and OpenAI Responses, mapped hosted tool-search declarations with a warning when search algorithms differed, and rejected unsupported search history and deferred tools on Chat Completions routes instead of silently changing their behavior.
+  * Allowed slower ThinkingState animation.
+  * Collapsing a section of a long interrupt payload in the Studio thread panel kept the section under your pointer instead of jumping back to the start of the thread.
+  * Resolved usage limiting unique violation errors.
+  * Deployment pages showed access and custom authentication guidance when assistant, thread, cron, or connection requests failed instead of showing an empty state.
+  * Changing the role on a workspace-scoped service key now required permission to manage keys in every workspace the key covered, matching the rule for deleting it.
+  * The LLM Gateway preserved ordered and repeated activations of matching deferred tools when translating between OpenAI Responses and Anthropic Messages, without duplicating tool definitions. Conflicting definitions, ambiguous names, and collisions with initially available tools remained rejected.
+  * Deleting a code evaluator no longer waited for sandbox snapshot cleanup, so the delete succeeded instead of timing out. The snapshot ID was queued so cleanup still ran if the API shut down.
+  * A new SankeyChart design-system component visualized stage-to-stage volume — sources through models to outcomes, spend across environments and workloads, or any weighted flow. Nodes sized by flow, legend rows filtered stages, and hovering a stage emphasized its links.
+  * Custom model price entries now had a Clone action, like built-in entries. The model pricing panel asked before discarding unsaved changes when you clicked outside it, pressed Escape, or closed it.
+  * The unified LLM Gateway enforced Messages stop sequences when translating completed and streaming Responses output, including model fallback. Matching truncated delivered text and later content while preserving full upstream usage; it did not cancel upstream generation. Synthetic emulation accepted at most four stop sequences of up to 1024 UTF-8 bytes each; oversized inputs were rejected before a Responses request was sent.
+  * A brief storage backend error no longer left a sandbox's filesystem returning I/O errors until restart. Reads succeeded again once the backend recovered.
+  * Chat now kept working past the first tool call when a workspace Model Configuration pointed at Gemini on Vertex AI, and no longer rejected tool-calling turns on saved Gemini API configurations.
+  * Annotation queue rubric items now appeared in the order they were added instead of alphabetically, in the queue editor, the review sidebar, and CSV exports. Existing rubrics kept their current order.
+  * Implemented weekly per-tenant limit on bulk run deletes.
+  * Read the metadata delete queue in pages.
+  * Auto-ran BYOC preview E2E after deploy and reported on PR.
+  * Gemini OpenAI-compatible requests now filled absent tool-call thought signatures with Google's documented skip\_thought\_signature\_validator sentinel, including configured Gemini routes. Supplied signatures were preserved. This workaround permitted clients that cannot round-trip signatures to continue tool conversations, but did not restore reasoning state and may have reduced model quality.
+  * Online and Preview Test sandbox evaluators that required attachments now resolved each attachment's MIME type via a metadata HEAD before scoring. Built-in voice metrics could therefore pick call recordings even when the attachment key had no audio extension, as long as storage reported an audio Content-Type.
+  * Example timestamp parsing accepted compact calendar timestamps, times without seconds, and additional UTC offset formats. Historical example queries retained microsecond precision and dataset-tag handling. Metadata filters preserved apostrophes inside double-quoted keys.
+  * Costs now resolved for the OpenAI models listed under "All models" on the pricing page, such as GPT-5.6 Luna and Terra. The daily price sync had only been reading the three models the page showed by default, so the rest kept whatever price they were first created with. Runs that reported no provider were also corrected: GPT-5.6 Luna and Terra were still priced at their launch rates, 5x and 1.25x what OpenAI charges today.
+  * Monitoring chart descriptions now wrapped onto multiple lines so the full text remained visible.
+  * Loading a saved Bedrock Converse configuration whose model ID was an application inference profile ARN now kept the provider set in Extra Parameters, so the preset ran without re-entering it.
+  * Chat on a Gemini 3.x model via Vertex AI now completed turns that called several tools in a row, instead of failing once the model narrated its work between calls.
+  * Selected Claude Sonnet 5.5 in Playground and model configurations for Anthropic, Bedrock, and Vertex AI.
+  * Mounted the main-fe Nginx config on AWS frontend previews.
+  * Google Vertex AI model configurations now routed Anthropic Claude models to Vertex's native Anthropic Messages API while Gemini and open models kept using the OpenAI-compatible endpoint. Existing bare Claude IDs continued to work, and publisher-qualified IDs were normalized automatically.
+  * Traces could now contain up to 100,000 runs before the run limit was reached.
+  * Gave ingest-backend the sandbox callback signing key.
+  * Fixed routing for workspace with no agents.
+  * LangSmith Chat now read and wrote the `field:value` filter syntax on the revamped tracing table, and picked the right scope — single run, root run, any run, or thread — for what you asked. A filter it could not express in the scope you were on was refused rather than silently emptying the table.
+
+  **Download the Helm chart:** [`langsmith-0.18.0-rc.1.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.18.0-rc.1/langsmith-0.18.0-rc.1.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.17.0-rc.52
+
+  **LangSmith version:** `0.17.29rc2`
+
+  * Internal improvements and maintenance updates
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.52.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.52/langsmith-0.17.0-rc.52.tgz)
+</Update>
+
+<Update label="2026-09-30">
+  ## langsmith-0.17.0-rc.51
+
+  **LangSmith version:** `0.17.28rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.42. Refer to the [langsmith-0.17.0-rc.42](#langsmith-0-17-0-rc-42) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.51.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.51/langsmith-0.17.0-rc.51.tgz)
+</Update>
+
+<Update label="2026-09-29">
+  ## langsmith-0.17.0-rc.50
+
+  **LangSmith version:** `0.17.28rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.42. Refer to the [langsmith-0.17.0-rc.42](#langsmith-0-17-0-rc-42) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.50.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.50/langsmith-0.17.0-rc.50.tgz)
+</Update>
+
+<Update label="2026-09-29">
+  ## langsmith-0.17.0-rc.49
+
+  **LangSmith version:** `0.17.28rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.42. Refer to the [langsmith-0.17.0-rc.42](#langsmith-0-17-0-rc-42) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.49.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.49/langsmith-0.17.0-rc.49.tgz)
+</Update>
+
+<Update label="2026-09-29">
+  ## langsmith-0.17.0-rc.48
+
+  **LangSmith version:** `0.17.29rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.44. Refer to the [langsmith-0.17.0-rc.44](#langsmith-0-17-0-rc-44) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.48.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.48/langsmith-0.17.0-rc.48.tgz)
+</Update>
+
+<Update label="2026-09-29">
+  ## langsmith-0.17.0-rc.46
+
+  **LangSmith version:** `0.17.28rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.42. Refer to the [langsmith-0.17.0-rc.42](#langsmith-0-17-0-rc-42) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.46.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.46/langsmith-0.17.0-rc.46.tgz)
+</Update>
+
+<Update label="2026-09-29">
+  ## langsmith-0.17.0-rc.47
+
+  **LangSmith version:** `0.17.29rc1`
+
+  * This release packages the same LangSmith application version as langsmith-0.17.0-rc.44. Refer to the [langsmith-0.17.0-rc.44](#langsmith-0-17-0-rc-44) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.17.0-rc.47.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.47/langsmith-0.17.0-rc.47.tgz)
+</Update>
+
+<Update label="2026-09-29">
+  ## langsmith-0.16.35
+
+  **LangSmith version:** `0.16.67`
+
+  * This release packages the same LangSmith application version as langsmith-0.16.34. Refer to the [langsmith-0.16.34](#langsmith-0-16-34) release notes below.
+
+  **Download the Helm chart:** [`langsmith-0.16.35.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.35/langsmith-0.16.35.tgz)
+</Update>
+
 <Update label="2026-09-29">
   ## langsmith-0.17.0-rc.45
 
@@ -118783,7 +119138,7 @@ To disable the A2A endpoint, set `disable_a2a` to `true` in your `langgraph.json
 # Agent Server API reference for LangSmith Deployment
 Source: https://docs.langchain.com/langsmith/server-api-ref
 
-
+Browse the Agent Server API reference for LangSmith Deployment, available within each deployment at the /docs endpoint.
 
 The Agent Server API reference is available within each [deployment](/langsmith/deployment) at the `/docs` endpoint (e.g. `http://localhost:8124/docs`).
 
@@ -120733,7 +121088,7 @@ Included LangSmith skills:
 # LangSmith API reference
 Source: https://docs.langchain.com/langsmith/smith-api-ref
 
-
+The LangSmith REST API provides programmatic access to tracing, datasets, experiments, annotations, and other LangSmith platform features.
 
 The LangSmith REST API provides programmatic access to LangSmith platform features including tracing, datasets, experiments, annotations, and more.
 
@@ -122313,7 +122668,7 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback
 Create a new feedback.
 
 `session_id` identifies the tracing project the feedback belongs to. It is
-required unless the feedback is addressed by `agent_id` and
+required unless the feedback is addressed by `address`, or by `agent_id` and
 `agent_environment`, which name that project through an Agent environment
 that already exists.
 
@@ -122923,6 +123278,7 @@ Valid fields:
 - playground_completed_at
 - evaluation_completed_at
 - success_viewed_at
+- agent_platform_welcome_viewed_at
 
 
 
@@ -164658,7 +165014,7 @@ While any component can be integrated into LangChain, there are specific types o
     Open a PR in the LangChain [docs repo](https://github.com/langchain-ai/docs) so users can find your package. Hosted guides are limited; most integrations are listed via YAML.
 
     <Accordion title="How listing works" icon="book">
-      **Default (under 50,000 monthly downloads, not featured):** File an [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml). After a maintainer applies `integration-run`, automation opens a PR that adds a row to [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml). The name column links to your `docs_url` (partner docs preferred, then GitHub, then PyPI or npm). Do not add a new MDX page.
+      **Default (under 50,000 monthly downloads, not featured):** File an [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml). After a maintainer applies `integration-run`, automation opens a PR that adds a row to [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml). The name column links to your `docs_url` (partner docs preferred, then GitHub, then PyPI or npm). Do not open a manual listing PR or add a new MDX page; automation closes those PRs and redirects to the issue form.
 
       **Hosted guide (50,000+ monthly downloads, or featured by maintainers):** Create a page under `src/oss/python/integrations/<component_type>/` from a template:
 
@@ -164853,7 +165209,7 @@ After publishing, file an **Integration listing** issue in the [LangChain docs r
 
 A maintainer reviews the issue and applies the `integration-run` label. That starts automation, which reads the form fields, applies the eligibility rules below, and opens a pull request that tags a maintainer and you for review. Prefer partner docs URLs in the form.
 
-Do **not** open a manual docs PR for a new listing unless a maintainer asks you to.
+Do **not** open a manual docs PR for a new listing unless a maintainer asks you to. Automation closes manual listing PRs from external contributors and points them to the issue form.
 
 ### Eligibility for hosted guides
 
@@ -203299,7 +203655,7 @@ Source: https://docs.langchain.com/oss/javascript/langchain/academy
 # Agents
 Source: https://docs.langchain.com/oss/javascript/langchain/agents
 
-
+Build a LangChain agent: a model calling tools in a loop until a task is complete, shaped by a harness of prompt, tools, and middleware.
 
 An agent is a model calling tools in a loop until a given task is complete.
 
@@ -214513,7 +214869,7 @@ Review the [execution lifecycle](#execution-lifecycle) above to understand how t
 # Install LangChain
 Source: https://docs.langchain.com/oss/javascript/langchain/install
 
-
+Install the LangChain package and the independent provider packages for the models and integrations you use.
 
 To install the LangChain package:
 
@@ -221621,7 +221977,7 @@ Use [`SystemMessage.concat`](https://reference.langchain.com/javascript/langchai
 </div>
 
 
-# Overview
+# Middleware overview
 Source: https://docs.langchain.com/oss/javascript/langchain/middleware/overview
 
 Control and customize agent execution at every step
@@ -221731,7 +222087,7 @@ The HITL interrupt, summarization, PII redaction, retries, and any custom hooks 
 # Models
 Source: https://docs.langchain.com/oss/javascript/langchain/models
 
-
+Initialize and configure chat models, the reasoning engine of LangChain agents, with support for tool calling, structured output, and multimodal inputs.
 
 [LLMs](https://en.wikipedia.org/wiki/Large_language_model) are powerful AI tools that can interpret and generate text like humans. They're versatile enough to write content, translate languages, summarize, and answer questions without needing specialized training for each task.
 
@@ -236415,7 +236771,7 @@ Learn how to test your agent with real model provider APIs in [Integration testi
 # Tools
 Source: https://docs.langchain.com/oss/javascript/langchain/tools
 
-
+Define tools that let LangChain agents fetch real-time data, execute code, query external databases, and take actions.
 
 Tools extend what [agents](/oss/javascript/langchain/agents) can do—letting them fetch real-time data, execute code, query external databases, and take actions in the world.
 
@@ -244139,7 +244495,7 @@ Please read the section on [determinism](#determinism) for more details.
 # Graph API overview
 Source: https://docs.langchain.com/oss/javascript/langgraph/graph-api
 
-
+LangGraph models agent workflows as graphs: define state, nodes, and edges with StateGraph to build looping, stateful workflows.
 
 ## Graphs
 
@@ -262059,7 +262415,7 @@ While any component can be integrated into LangChain, there are specific types o
     Open a PR in the LangChain [docs repo](https://github.com/langchain-ai/docs) so users can find your package. Hosted guides are limited; most integrations are listed via YAML.
 
     <Accordion title="How listing works" icon="book">
-      **Default (under 50,000 monthly downloads, not featured):** File an [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml). After a maintainer applies `integration-run`, automation opens a PR that adds a row to [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml). The name column links to your `docs_url` (partner docs preferred, then GitHub, then PyPI or npm). Do not add a new MDX page.
+      **Default (under 50,000 monthly downloads, not featured):** File an [Integration listing issue](https://github.com/langchain-ai/docs/issues/new?template=06-integration-submission.yml). After a maintainer applies `integration-run`, automation opens a PR that adds a row to [`scripts/data/integration_external_docs.yaml`](https://github.com/langchain-ai/docs/blob/main/scripts/data/integration_external_docs.yaml). The name column links to your `docs_url` (partner docs preferred, then GitHub, then PyPI or npm). Do not open a manual listing PR or add a new MDX page; automation closes those PRs and redirects to the issue form.
 
       **Hosted guide (50,000+ monthly downloads, or featured by maintainers):** Create a page under `src/oss/python/integrations/<component_type>/` from a template:
 
@@ -262294,7 +262650,7 @@ After publishing, file an **Integration listing** issue in the [LangChain docs r
 
 A maintainer reviews the issue and applies the `integration-run` label. That starts automation, which reads the form fields, applies the eligibility rules below, and opens a pull request that tags a maintainer and you for review. Prefer partner docs URLs in the form.
 
-Do **not** open a manual docs PR for a new listing unless a maintainer asks you to.
+Do **not** open a manual docs PR for a new listing unless a maintainer asks you to. Automation closes manual listing PRs from external contributors and points them to the issue form.
 
 ### Eligibility for hosted guides
 
@@ -294423,6 +294779,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Outcome-aware execution routing for AI agents across models, tools, and parameters.
   </Card>
 
+  <Card title="Kavel" href="https://github.com/hanshs474/langchain-kavel#readme" icon="link">
+    AI image generation and editing. The `KavelImageGenerator` tool returns a URL to the finished image and runs on Kavel's free tier with no API key, or on a kavel.ai account with one.
+  </Card>
+
   <Card title="Keenable" href="https://docs.keenable.ai" icon="link">
     Web search and page-fetch API built for AI agents, with a keyless free tier.
   </Card>
@@ -298981,6 +299341,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`AgentLair`](https://agentlair.dev/docs) | <span>N/A</span> |
   | [`Browserless`](https://browserless.io) | <span>N/A</span> |
   | [`HuangtingFlux`](https://huangtingflux.com/integrations/langchain) | <span>N/A</span> |
+  | [`KavelImageGenerator`](https://github.com/hanshs474/langchain-kavel#readme) | <span>N/A</span> |
   | [`Stagehand`](/oss/python/integrations/tools/stagehand) | <span>N/A</span> |
 </div>
 
@@ -300064,7 +300425,7 @@ Source: https://docs.langchain.com/oss/python/langchain/academy
 # Agents
 Source: https://docs.langchain.com/oss/python/langchain/agents
 
-
+Build a LangChain agent: a model calling tools in a loop until a task is complete, shaped by a harness of prompt, tools, and middleware.
 
 An agent is a model calling tools in a loop until a given task is complete.
 
@@ -312323,7 +312684,7 @@ Review the [execution lifecycle](#execution-lifecycle) above to understand how t
 # Install LangChain
 Source: https://docs.langchain.com/oss/python/langchain/install
 
-
+Install the LangChain package and the independent provider packages for the models and integrations you use.
 
 To install the LangChain package:
 
@@ -319032,7 +319393,7 @@ When working with Anthropic models, use structured content blocks with cache con
 </div>
 
 
-# Overview
+# Middleware overview
 Source: https://docs.langchain.com/oss/python/langchain/middleware/overview
 
 Control and customize agent execution at every step
@@ -319144,7 +319505,7 @@ The HITL interrupt, summarization, PII redaction, retries, and any custom hooks 
 # Models
 Source: https://docs.langchain.com/oss/python/langchain/models
 
-
+Initialize and configure chat models, the reasoning engine of LangChain agents, with support for tool calling, structured output, and multimodal inputs.
 
 [LLMs](https://en.wikipedia.org/wiki/Large_language_model) are powerful AI tools that can interpret and generate text like humans. They're versatile enough to write content, translate languages, summarize, and answer questions without needing specialized training for each task.
 
@@ -333481,7 +333842,7 @@ Learn how to test your agent with real model provider APIs in [Integration testi
 # Tools
 Source: https://docs.langchain.com/oss/python/langchain/tools
 
-
+Define tools that let LangChain agents fetch real-time data, execute code, query external databases, and take actions.
 
 Tools extend what [agents](/oss/python/langchain/agents) can do—letting them fetch real-time data, execute code, query external databases, and take actions in the world.
 
@@ -342236,7 +342597,7 @@ Please read the section on [determinism](#determinism) for more details.
 # Graph API overview
 Source: https://docs.langchain.com/oss/python/langgraph/graph-api
 
-
+LangGraph models agent workflows as graphs: define state, nodes, and edges with StateGraph to build looping, stateful workflows.
 
 ## Graphs
 

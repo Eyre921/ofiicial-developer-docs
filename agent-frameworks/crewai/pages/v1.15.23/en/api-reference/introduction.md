@@ -42,10 +42,10 @@ curl -H "Authorization: Bearer YOUR_CREW_TOKEN" \
 
 ### Token Types
 
-| Token Type            | Scope                     | Use Case                                                     |
-| :-------------------- | :------------------------ | :----------------------------------------------------------- |
-| **Bearer Token**      | Organization-level access | Full crew operations, ideal for server-to-server integration |
-| **User Bearer Token** | User-scoped access        | Limited permissions, suitable for user-specific operations   |
+| Token Type | Scope | Use Case |
+| :- | :- | :- |
+| **Bearer Token** | Organization-level access | Full crew operations, ideal for server-to-server integration |
+| **User Bearer Token** | User-scoped access | Limited permissions, suitable for user-specific operations |
 
 <Tip>
   You can find both token types in the Status tab of your crew's detail page in
@@ -73,14 +73,14 @@ Replace `your-crew-name` with your actual crew's URL from the dashboard.
 
 The API uses standard HTTP status codes:
 
-| Code  | Meaning                                    |
-| ----- | :----------------------------------------- |
-| `200` | Success                                    |
-| `400` | Bad Request - Invalid input format         |
-| `401` | Unauthorized - Invalid bearer token        |
-| `404` | Not Found - Resource doesn't exist         |
+| Code | Meaning |
+| - | :- |
+| `200` | Success |
+| `400` | Bad Request - Invalid input format |
+| `401` | Unauthorized - Invalid bearer token |
+| `404` | Not Found - Resource doesn't exist |
 | `422` | Validation Error - Missing required inputs |
-| `500` | Server Error - Contact support             |
+| `500` | Server Error - Contact support |
 
 ## Interactive Testing
 

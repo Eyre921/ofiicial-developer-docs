@@ -10,12 +10,12 @@ Build multi-turn chat apps with handle_turn per turn, message history, intent ro
 
 Conversational apps treat each user line as a **new flow run** with the **same session id**. CrewAI adds helpers for message history, optional intent routing, deferred tracing, structured turn streaming, and a local `flow.chat()` REPL.
 
-| Concept            | Implementation                                                                                                   |
-| ------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Session id         | `handle_turn(..., session_id=...)` → `kickoff(inputs={"id": ...})` → `state.id`                                  |
-| User line          | `handle_turn(message)` appends to `state.messages` before the graph runs                                         |
-| Turn complete      | `conversation_turn_completed`; with default trace deferral, `FlowFinished` waits for `finalize_session_traces()` |
-| Full-session trace | `ConversationConfig(defer_trace_finalization=True)` + `finalize_session_traces()`                                |
+| Concept | Implementation |
+| - | - |
+| Session id | `handle_turn(..., session_id=...)` → `kickoff(inputs={"id": ...})` → `state.id` |
+| User line | `handle_turn(message)` appends to `state.messages` before the graph runs |
+| Turn complete | `conversation_turn_completed`; with default trace deferral, `FlowFinished` waits for `finalize_session_traces()` |
+| Full-session trace | `ConversationConfig(defer_trace_finalization=True)` + `finalize_session_traces()` |
 
 ## Turn APIs
 
@@ -23,14 +23,14 @@ Use **`flow.handle_turn(message, session_id=...)`** for every user message from 
 
 `Flow.kickoff()` does **not** accept `user_message=` or `session_id=` keyword arguments. For conversational flows, `handle_turn()` stores the pending message and calls `kickoff(inputs={"id": session_id})` internally after resetting per-turn execution state.
 
-| API                                    | Use for                                                      |
-| -------------------------------------- | ------------------------------------------------------------ |
-| `handle_turn(message, session_id=...)` | Ergonomic one-turn wrapper for conversational `Flow`         |
-| `stream_turn(message, session_id=...)` | Stream one conversational turn as ordered runtime frames     |
-| `chat()`                               | Local terminal REPL for conversational `Flow`                |
-| `kickoff(inputs={...})`                | Advanced flow execution without conversational turn handling |
-| `ask()`                                | Blocking prompt **inside** one step (wizard, clarification)  |
-| `@human_feedback`                      | Approve/reject **a step output** — not the next chat line    |
+| API | Use for |
+| - | - |
+| `handle_turn(message, session_id=...)` | Ergonomic one-turn wrapper for conversational `Flow` |
+| `stream_turn(message, session_id=...)` | Stream one conversational turn as ordered runtime frames |
+| `chat()` | Local terminal REPL for conversational `Flow` |
+| `kickoff(inputs={...})` | Advanced flow execution without conversational turn handling |
+| `ask()` | Blocking prompt **inside** one step (wizard, clarification) |
+| `@human_feedback` | Approve/reject **a step output** — not the next chat line |
 
 `handle_turn()`, `stream_turn()`, and `chat()` raise `ValueError` unless conversational mode is enabled. Applying `@ConversationConfig(...)` enables it automatically; otherwise set `conversational = True`.
 
@@ -134,13 +134,13 @@ class MyChatState(ChatState):
     custom_flag: bool = False
 ```
 
-| Field               | Role                                                |
-| ------------------- | --------------------------------------------------- |
-| `id`                | Session UUID (same as `inputs["id"]`)               |
-| `messages`          | `list` of `{role, content}` for LLM history         |
-| `last_user_message` | Latest user line for this turn                      |
-| `last_intent`       | Route label after classification (if used)          |
-| `session_ready`     | One-time bootstrap flag (permissions, caches, etc.) |
+| Field | Role |
+| - | - |
+| `id` | Session UUID (same as `inputs["id"]`) |
+| `messages` | `list` of `{role, content}` for LLM history |
+| `last_user_message` | Latest user line for this turn |
+| `last_intent` | Route label after classification (if used) |
+| `session_ready` | One-time bootstrap flag (permissions, caches, etc.) |
 
 `ConversationalInputs` is a `TypedDict` for conventional `kickoff(inputs={...})` keys: `id`, `user_message`, `last_intent`.
 
@@ -150,12 +150,12 @@ class MyChatState(ChatState):
 
 ### `handle_turn` parameters
 
-| Parameter          | Purpose                                                                                                 |
-| ------------------ | ------------------------------------------------------------------------------------------------------- |
-| `message`          | This turn’s text                                                                                        |
-| `session_id`       | Conversation UUID → `inputs["id"]` / `state.id`                                                         |
-| `intents`          | Outcome labels for pre-kickoff `classify_intent`                                                        |
-| `intent_llm`       | LLM for classification (required with `intents`)                                                        |
+| Parameter | Purpose |
+| - | - |
+| `message` | This turn’s text |
+| `session_id` | Conversation UUID → `inputs["id"]` / `state.id` |
+| `intents` | Outcome labels for pre-kickoff `classify_intent` |
+| `intent_llm` | LLM for classification (required with `intents`) |
 | `**kickoff_kwargs` | Forwarded to `kickoff()` for options like `input_files`, `from_checkpoint`, and `restore_from_state_id` |
 
 ### `kickoff` parameters
@@ -164,40 +164,40 @@ class MyChatState(ChatState):
 
 ### Instance attributes
 
-| Attribute                  | Purpose                                                                                                                         |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `conversational`           | Set to `True` to enable the conversational graph and `handle_turn()`                                                            |
+| Attribute | Purpose |
+| - | - |
+| `conversational` | Set to `True` to enable the conversational graph and `handle_turn()` |
 | `defer_trace_finalization` | Optional instance override. Otherwise `_should_defer_trace_finalization()` reads `ConversationConfig.defer_trace_finalization`. |
-| `suppress_flow_events`     | Hides console flow panels and suppresses method execution events; flow start/finish events still emit                           |
-| `stream`                   | Generic Flow streaming flag. For conversational turns, use `stream_turn()` instead of combining this flag with `handle_turn()`. |
+| `suppress_flow_events` | Hides console flow panels and suppresses method execution events; flow start/finish events still emit |
+| `stream` | Generic Flow streaming flag. For conversational turns, use `stream_turn()` instead of combining this flag with `handle_turn()`. |
 
 ### Methods and properties
 
-| Name                                                     | Description                                                                          |
-| -------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| `append_assistant_message(content)`                      | Append a user-visible assistant reply to `state.messages`                            |
-| `append_message(role, content, **extra)`                 | Lower-level append to `state.messages`                                               |
-| `conversation_messages`                                  | Read-only history for LLM calls                                                      |
-| `classify_intent(text, outcomes, *, llm, context=None)`  | Map text to one outcome (same collapse logic as `@human_feedback`)                   |
-| `receive_user_message(text, *, outcomes=None, llm=None)` | Append user message; optionally set `last_intent`                                    |
-| `finalize_session_traces()`                              | Emit deferred `flow_finished` and finalize the session trace batch                   |
-| `_should_defer_trace_finalization()`                     | Advanced/internal hook that resolves whether per-turn trace finalization is deferred |
-| `input_history`                                          | Audit trail of `ask()` prompts and responses                                         |
+| Name | Description |
+| - | - |
+| `append_assistant_message(content)` | Append a user-visible assistant reply to `state.messages` |
+| `append_message(role, content, **extra)` | Lower-level append to `state.messages` |
+| `conversation_messages` | Read-only history for LLM calls |
+| `classify_intent(text, outcomes, *, llm, context=None)` | Map text to one outcome (same collapse logic as `@human_feedback`) |
+| `receive_user_message(text, *, outcomes=None, llm=None)` | Append user message; optionally set `last_intent` |
+| `finalize_session_traces()` | Emit deferred `flow_finished` and finalize the session trace batch |
+| `_should_defer_trace_finalization()` | Advanced/internal hook that resolves whether per-turn trace finalization is deferred |
+| `input_history` | Audit trail of `ask()` prompts and responses |
 
 ### Module helpers (`crewai.flow.conversation`)
 
 Importable from `crewai.flow.conversation` for tests or custom orchestration. These helpers use the legacy `ConversationalConfig` shape; `prepare_conversational_turn()` also clears `last_intent`, unlike `handle_turn()`, which preserves it as router context.
 
-| Function                                                                                       | Description                                    |
-| ---------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| `normalize_kickoff_inputs(inputs, user_message=..., session_id=...)`                           | Merge conversational kwargs into `inputs`      |
-| `get_conversation_messages(flow)`                                                              | Read messages from state or internal buffer    |
-| `append_message(flow, role, content, **extra)`                                                 | Same as instance method                        |
+| Function | Description |
+| - | - |
+| `normalize_kickoff_inputs(inputs, user_message=..., session_id=...)` | Merge conversational kwargs into `inputs` |
+| `get_conversation_messages(flow)` | Read messages from state or internal buffer |
+| `append_message(flow, role, content, **extra)` | Same as instance method |
 | `prepare_conversational_turn(flow, user_message=..., intents=..., intent_llm=..., config=...)` | Lower-level turn hydration for custom wrappers |
-| `receive_user_message(flow, text, ...)`                                                        | Same as instance method                        |
-| `set_state_field(flow, name, value)`                                                           | Set a field on dict or Pydantic state          |
-| `get_conversational_config(flow)`                                                              | Read class `conversational_config`             |
-| `input_history_to_messages(entries)`                                                           | Convert `input_history` to LLM message format  |
+| `receive_user_message(flow, text, ...)` | Same as instance method |
+| `set_state_field(flow, name, value)` | Set a field on dict or Pydantic state |
+| `get_conversational_config(flow)` | Read class `conversational_config` |
+| `input_history_to_messages(entries)` | Convert `input_history` to LLM message format |
 
 ## Intent routing patterns
 
@@ -294,17 +294,17 @@ def kickoff() -> None:
 
 Class decorator that attaches per-class chat defaults.
 
-| Field                        | Default                                         | Purpose                                                                                                                        |
-| ---------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `system_prompt`              | `slices.conversational_system_prompt` from i18n | System message used by the built-in `converse_turn`. Pass `""` to opt out entirely.                                            |
-| `llm`                        | `None`                                          | Conversation LLM (used by `converse_turn` and as router fallback).                                                             |
-| `router`                     | `None`                                          | Optional `RouterConfig` overrides. With custom listeners and a resolvable LLM, routing auto-enables even when this is omitted. |
-| `answer_from_history_prompt` | Framework default                               | **Deprecated.** Use the `converse` system prompt or override `converse_turn()`.                                                |
-| `answer_from_history_llm`    | `None`                                          | **Deprecated.** Use `llm`; `converse` already receives canonical history.                                                      |
-| `intent_llm`                 | `None`                                          | LLM for legacy `intents=`/`default_intents` pre-classification.                                                                |
-| `default_intents`            | `None`                                          | Outcome labels for legacy pre-classification.                                                                                  |
-| `visible_agent_outputs`      | `None`                                          | `"all"`, or a list of agent names whose `append_agent_result()` calls should be promoted to public assistant messages.         |
-| `defer_trace_finalization`   | `True`                                          | Keep one trace batch open across `handle_turn()` calls.                                                                        |
+| Field | Default | Purpose |
+| - | - | - |
+| `system_prompt` | `slices.conversational_system_prompt` from i18n | System message used by the built-in `converse_turn`. Pass `""` to opt out entirely. |
+| `llm` | `None` | Conversation LLM (used by `converse_turn` and as router fallback). |
+| `router` | `None` | Optional `RouterConfig` overrides. With custom listeners and a resolvable LLM, routing auto-enables even when this is omitted. |
+| `answer_from_history_prompt` | Framework default | **Deprecated.** Use the `converse` system prompt or override `converse_turn()`. |
+| `answer_from_history_llm` | `None` | **Deprecated.** Use `llm`; `converse` already receives canonical history. |
+| `intent_llm` | `None` | LLM for legacy `intents=`/`default_intents` pre-classification. |
+| `default_intents` | `None` | Outcome labels for legacy pre-classification. |
+| `visible_agent_outputs` | `None` | `"all"`, or a list of agent names whose `append_agent_result()` calls should be promoted to public assistant messages. |
+| `defer_trace_finalization` | `True` | Keep one trace batch open across `handle_turn()` calls. |
 
 <Warning>
   `answer_from_history_prompt`, `answer_from_history_llm`, and the
@@ -404,11 +404,11 @@ Routes:
 
 ### Built-in routes
 
-| Route                 | Handler                    | Purpose                                                                                                  |
-| --------------------- | -------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `converse`            | `converse_turn`            | Default chat handler. Calls `ConversationConfig.llm` with the system prompt + canonical message history. |
-| `end`                 | `end_conversation`         | Sets `state.ended = True` and emits a terminator reply.                                                  |
-| `answer_from_history` | `answer_from_history_turn` | **Deprecated compatibility route.** Use `converse`, which already receives canonical history.            |
+| Route | Handler | Purpose |
+| - | - | - |
+| `converse` | `converse_turn` | Default chat handler. Calls `ConversationConfig.llm` with the system prompt + canonical message history. |
+| `end` | `end_conversation` | Sets `state.ended = True` and emits a terminator reply. |
+| `answer_from_history` | `answer_from_history_turn` | **Deprecated compatibility route.** Use `converse`, which already receives canonical history. |
 
 You can override any of these by defining a same-named handler in your subclass.
 
@@ -517,11 +517,11 @@ Declaring the block is the opt-in — `enabled` defaults to `true`. Set `enabled
 
 Three things are supplied for you:
 
-| Supplied           | Detail                                                                                                                                                                                                                |
-| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Supplied | Detail |
+| - | - |
 | The built-in graph | `route_conversation`, `converse_turn`, and `end_conversation` are added automatically. Deprecated `answer_from_history_turn` is retained for compatibility. Declare a method under one of those names to override it. |
-| Conversation state | `ConversationState` is used when there is no `state` block. A Pydantic `ref` or `json_schema` state is automatically composed with the conversational fields; it does not need to extend `ConversationState`.         |
-| The route catalog  | Inferred from non-router methods with `listen` labels, excluding internal routes. Descriptions follow the precedence above, and explicit `router.routes` can limit the choices.                                       |
+| Conversation state | `ConversationState` is used when there is no `state` block. A Pydantic `ref` or `json_schema` state is automatically composed with the conversational fields; it does not need to extend `ConversationState`. |
+| The route catalog | Inferred from non-router methods with `listen` labels, excluding internal routes. Descriptions follow the precedence above, and explicit `router.routes` can limit the choices. |
 
 Declarative `llm`, `router.llm`, and `intent_llm` fields accept either a model id or a configuration mapping such as `{model: openai/gpt-4o-mini, max_tokens: 512}`. The `conversational` block also supports `default_intents`, `visible_agent_outputs`, `defer_trace_finalization`, and the `RouterConfig` fields shown above. Deprecated `answer_from_history_prompt` / `answer_from_history_llm` declarations remain accepted for compatibility.
 
@@ -544,12 +544,12 @@ Route labels and method names share one trigger namespace, so a handler must not
 
 ### What a declaration cannot express
 
-| Not expressible                                | Use instead                                                                                                                                    |
-| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| A live `LLM` instance or a custom `BaseLLM`    | A model id string or static configuration mapping                                                                                              |
+| Not expressible | Use instead |
+| - | - |
+| A live `LLM` instance or a custom `BaseLLM` | A model id string or static configuration mapping |
 | `router.response_format` as a live model class | Name the class with a python ref: `response_format: {python: my_project.schemas.ConversationRoute}`. Omit it and the framework synthesizes one |
-| A `route_turn()` override                      | Author the Flow in Python, or replace the declarative `route_conversation` method with a `call: code` / expression action                      |
-| A `can_answer_from_history()` override         | Deprecated. Use `converse` or override `converse_turn()` in Python.                                                                            |
+| A `route_turn()` override | Author the Flow in Python, or replace the declarative `route_conversation` method with a `call: code` / expression action |
+| A `can_answer_from_history()` override | Deprecated. Use `converse` or override `converse_turn()` in Python. |
 
 `crewai run` opens the chat TUI for a declarative conversational flow — the same one a Python conversational Flow gets. A chat loop needs a terminal, so a headless run exits non-zero with guidance instead of running a single turn; drive it from Python there with `handle_turn()` or `stream_turn()`. A declarative method with a `human_feedback:` block (Python: `@human_feedback`) runs on a terminal REPL, because the runtime collects feedback with a blocking prompt the TUI cannot service. `--inputs` is not accepted for a conversational flow — each turn's input is the message you type — and resuming a session by id is not wired into the CLI yet; use `flow.handle_turn(message, session_id=...)` from Python for that.
 

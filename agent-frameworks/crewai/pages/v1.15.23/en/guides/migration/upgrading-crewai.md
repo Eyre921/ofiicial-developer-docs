@@ -18,9 +18,9 @@ If you're starting fresh, see [Installation](/en/installation). If you're coming
 
 CrewAI lives in two places on your machine, and they upgrade independently:
 
-| What                                       | How it's installed           | How to upgrade                                      |
-| ------------------------------------------ | ---------------------------- | --------------------------------------------------- |
-| The **global `crewai` CLI**                | `uv tool install crewai`     | `uv tool install crewai --upgrade`                  |
+| What | How it's installed | How to upgrade |
+| - | - | - |
+| The **global `crewai` CLI** | `uv tool install crewai` | `uv tool install crewai --upgrade` |
 | The **project venv** (what your code runs) | `crewai install` / `uv sync` | `uv add "crewai[...]>=X.Y.Z"` then `crewai install` |
 
 These can — and often do — get out of sync. Running `crewai --version` tells you the CLI version. Running `uv pip show crewai` inside your project tells you the venv version. If they differ, that's normal; what matters for your running code is the venv version.

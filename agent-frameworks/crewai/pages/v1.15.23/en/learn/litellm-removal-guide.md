@@ -82,19 +82,19 @@ These providers use their own SDKs and work without LiteLLM installed:
 
 If your code uses model prefixes like these, you're routing through LiteLLM:
 
-| Prefix         | Provider      | Uses LiteLLM? |
-| -------------- | ------------- | ------------- |
-| `ollama/`      | Ollama        | ✅ Yes         |
-| `groq/`        | Groq          | ✅ Yes         |
-| `together_ai/` | Together AI   | ✅ Yes         |
-| `mistral/`     | Mistral       | ✅ Yes         |
-| `cohere/`      | Cohere        | ✅ Yes         |
-| `huggingface/` | Hugging Face  | ✅ Yes         |
-| `openai/`      | OpenAI        | ❌ Native      |
-| `anthropic/`   | Anthropic     | ❌ Native      |
-| `gemini/`      | Google Gemini | ❌ Native      |
-| `azure/`       | Azure OpenAI  | ❌ Native      |
-| `bedrock/`     | AWS Bedrock   | ❌ Native      |
+| Prefix | Provider | Uses LiteLLM? |
+| - | - | - |
+| `ollama/` | Ollama | ✅ Yes |
+| `groq/` | Groq | ✅ Yes |
+| `together_ai/` | Together AI | ✅ Yes |
+| `mistral/` | Mistral | ✅ Yes |
+| `cohere/` | Cohere | ✅ Yes |
+| `huggingface/` | Hugging Face | ✅ Yes |
+| `openai/` | OpenAI | ❌ Native |
+| `anthropic/` | Anthropic | ❌ Native |
+| `gemini/` | Google Gemini | ❌ Native |
+| `azure/` | Azure OpenAI | ❌ Native |
+| `bedrock/` | AWS Bedrock | ❌ Native |
 
 ### Check if LiteLLM is installed
 

@@ -204,10 +204,10 @@ crewai skill publish
 
 Publishing reads `name`, `description`, and `metadata.version` from the `SKILL.md` frontmatter and pushes the skill to the CrewAI registry. **Published skills are always scoped to your organization** — like tools, only members of the publishing org can see and install them; there is no public visibility. Useful flags:
 
-| Flag           | Effect                                                      |
-| :------------- | :---------------------------------------------------------- |
+| Flag | Effect |
+| :- | :- |
 | `--org <slug>` | Publish under a specific organization (overrides settings). |
-| `--force`      | Skip git-state validation (uncommitted changes, etc.).      |
+| `--force` | Skip git-state validation (uncommitted changes, etc.). |
 
 ### Install
 
@@ -310,14 +310,14 @@ into the agent's prompt when the skill is activated.
 
 ### Frontmatter Fields
 
-| Field           | Required | Description                                                                |
-| :-------------- | :------- | :------------------------------------------------------------------------- |
-| `name`          | Yes      | 1–64 chars. Lowercase alphanumeric and hyphens. Must match directory name. |
-| `description`   | Yes      | 1–1024 chars. Describes what the skill does and when to use it.            |
-| `license`       | No       | License name or reference to a bundled license file.                       |
-| `compatibility` | No       | Max 500 chars. Environment requirements (products, packages, network).     |
-| `metadata`      | No       | Arbitrary string key-value mapping.                                        |
-| `allowed-tools` | No       | Space-delimited list of pre-approved tools. Experimental.                  |
+| Field | Required | Description |
+| :- | :- | :- |
+| `name` | Yes | 1–64 chars. Lowercase alphanumeric and hyphens. Must match directory name. |
+| `description` | Yes | 1–1024 chars. Describes what the skill does and when to use it. |
+| `license` | No | License name or reference to a bundled license file. |
+| `compatibility` | No | Max 500 chars. Environment requirements (products, packages, network). |
+| `metadata` | No | Arbitrary string key-value mapping. |
+| `allowed-tools` | No | Space-delimited list of pre-approved tools. Experimental. |
 
 ***
 
@@ -365,11 +365,11 @@ agent = Agent(
 
 Skills use **progressive disclosure** — only loading what's needed at each stage:
 
-| Stage      | What's loaded                         | When                                           |
-| :--------- | :------------------------------------ | :--------------------------------------------- |
-| Discovery  | Name, description, frontmatter fields | Agent setup or `discover_skills()`             |
-| Activation | Full SKILL.md body text               | Relevant runtime request or `activate_skill()` |
-| Resources  | Resource directory catalog            | Explicit `load_resources()` call               |
+| Stage | What's loaded | When |
+| :- | :- | :- |
+| Discovery | Name, description, frontmatter fields | Agent setup or `discover_skills()` |
+| Activation | Full SKILL.md body text | Relevant runtime request or `activate_skill()` |
+| Resources | Resource directory catalog | Explicit `load_resources()` call |
 
 With `skills=["./skills"]`, the directory is discovered at setup but the full
 instructions are not placed in every prompt. The agent reviews the metadata on
@@ -387,13 +387,13 @@ instructions should apply to every request.
 
 Both skills and knowledge modify the agent's prompt, but they serve different purposes:
 
-| Aspect                 | Skills                                | Knowledge                                  |
-| :--------------------- | :------------------------------------ | :----------------------------------------- |
-| **What it provides**   | Instructions, procedures, guidelines  | Facts, data, information                   |
-| **How it's stored**    | Markdown files (SKILL.md)             | Embedded in vector store (ChromaDB)        |
-| **How it's retrieved** | Entire body injected into prompt      | Semantic search finds relevant chunks      |
-| **Best for**           | Methodology, checklists, style guides | Company docs, product info, reference data |
-| **Set via**            | `skills=["./skills"]`                 | `knowledge_sources=[source]`               |
+| Aspect | Skills | Knowledge |
+| :- | :- | :- |
+| **What it provides** | Instructions, procedures, guidelines | Facts, data, information |
+| **How it's stored** | Markdown files (SKILL.md) | Embedded in vector store (ChromaDB) |
+| **How it's retrieved** | Entire body injected into prompt | Semantic search finds relevant chunks |
+| **Best for** | Methodology, checklists, style guides | Company docs, product info, reference data |
+| **Set via** | `skills=["./skills"]` | `knowledge_sources=[source]` |
 
 **Rule of thumb:** If the agent needs to follow a *process*, use a skill. If the agent needs to reference *data*, use knowledge.
 

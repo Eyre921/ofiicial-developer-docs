@@ -24,7 +24,7 @@ path: docs/eleven-creative/products/dubbing/dubbing-studio
 
 ## Speaker Cards
 
-![Dubbing Studio Speaker Cards](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c6be1de4bd0554d29e1e8c64623d047724294b0ba4afac818c4a067f5d423465/assets/images/product-guides/dubbing/dubbing-studio-edits.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=1214b994d60d99470c23c2c8c8bcdd7d56252a2b5d564fa2b4aa0975ed2752d0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Speaker Cards](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c6be1de4bd0554d29e1e8c64623d047724294b0ba4afac818c4a067f5d423465/assets/images/product-guides/dubbing/dubbing-studio-edits.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=17f1a170e5bade436e7b35995fd8bba4ad7be2099c6032157f641545c948b524&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Speaker cards show the original transcription and translation (if you add one) of dialogue from the source video. You can click 'Transcribe Audio' to retranscribe
 the original speech, or click the arrow to re-translate an existing transcription.
@@ -57,7 +57,7 @@ There are 3 main ways to navigate the timeline:
 1. Drag the handles on the left or right side of a clip to adjust its length.
 2. Click the refresh icon to regenerate the audio for that clip.
 
-![Dubbing Studio Adjust and Regenerate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3320cc4f5d628066da8d168fcfe0d1586d8a57e618a786fd5e5839ae487642f0/assets/images/product-guides/dubbing/dubbing-studio-adjust-regenerate.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=7f84ac1b2cd3b0fc998fff33021380a0ed62bf8b513fc8bda0b3c725b0cccc4b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Adjust and Regenerate](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3320cc4f5d628066da8d168fcfe0d1586d8a57e618a786fd5e5839ae487642f0/assets/images/product-guides/dubbing/dubbing-studio-adjust-regenerate.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=ed758d676031f9766aafd9f64ca12e310b5009baeb5e28485503e64be5df12e2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ##### Dynamic vs. Fixed Generations
 
@@ -74,7 +74,7 @@ length of the clip to the length of the text and make the audio sound more natur
 But be careful – using Dynamic Generations could affect sync and timing in your videos. If, for example, you select Dynamic Generation for a clip with many words in it,
 and there is not enough room before the next clip for it to properly expand, the audio may not generate properly.
 
-![Dubbing Studio Dynamic Generation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25222c5ca2adb6d17899d1949bd07b4c4b3249f59da4f08d77b9525a572e8721/assets/images/product-guides/dubbing/dubbing-studio-dynamic.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=bbaf6d1fdac8e0a0b8d1a35062bbe5e45d6461813eb21d6b630a71f80e42097b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Dynamic Generation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/25222c5ca2adb6d17899d1949bd07b4c4b3249f59da4f08d77b9525a572e8721/assets/images/product-guides/dubbing/dubbing-studio-dynamic.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=9bdd502f294836a11ec8733d02358de976f7e95488bacd3e0711519d9ebd3790&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ##### Stale Audio
 
@@ -90,7 +90,7 @@ You can right click a clip and select 'Clip History' to view previous generation
 1. To split a clip, move the cursor to a specific timecode and click 'Split'.
 2. To merge two clips, drag the ends of the clips together and click 'Merge.'
 
-![Dubbing Studio Merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/44afe6659b3ea14d9baa16e735725759ced84469ed8d66a5a708f33950363a8f/assets/images/product-guides/dubbing/dubbing-studio-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=ffc0a717a0c50740486262078f1f8a76287d973ae6e0052fdcff3a785a5dc05b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Merge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/44afe6659b3ea14d9baa16e735725759ced84469ed8d66a5a708f33950363a8f/assets/images/product-guides/dubbing/dubbing-studio-split-merge.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=c160a17d41ab8654260169f6cd05ea408690abb90724b04af4daee490f4a80a7&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 As you split and merge clips, the speaker cards above the timeline will update to reflect these changes.
 
@@ -98,13 +98,13 @@ As you split and merge clips, the speaker cards above the timeline will update t
 
 To reassign a clips to a different speaker, click the segment and drag it to another track.
 
-![Dubbing Studio Reassign Clips](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93fc997eba2a8a3e7ec831731cae6a20d3c55df45e5818b9629bb1dcf4d3b519/assets/images/product-guides/dubbing/dubbing-studio-reassign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=affe540a16f6b2972e5f8bafef3cf44a8e7a912c2cc1177bfb61926c9640b55f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Reassign Clips](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/93fc997eba2a8a3e7ec831731cae6a20d3c55df45e5818b9629bb1dcf4d3b519/assets/images/product-guides/dubbing/dubbing-studio-reassign.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=a6b37d9a25a03093b7b7bf044f67f11c456884fb6ce4481a3a686fccfb3c3a42&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Add additional audio tracks
 
 Use the action buttons at the bottom of the timeline to add new audio tracks
 
-![Dubbing Studio Add Tracks](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6144bb02bb8a9da95cd4fbf76d9df479b2174e83fb8569bdeaf9b14743d19cdf/assets/images/product-guides/dubbing/dubbing-studio-add-tracks.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=e32d6a7222b8547f82bd834bb1be39b51b12dfdaeb49f2f9b4891243a1faa534&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Dubbing Studio Add Tracks](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6144bb02bb8a9da95cd4fbf76d9df479b2174e83fb8569bdeaf9b14743d19cdf/assets/images/product-guides/dubbing/dubbing-studio-add-tracks.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=d43af7db5a8b541011a246d44f5b9d25c5745c3fc2c956398882966b338ff9ca&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Voice Settings
 
@@ -132,7 +132,7 @@ You can set voice settings at two levels:
    Disable the 'inherit track settings' toggle and configure your desired settings.
 
 ![Dubbing Studio Voice
-Settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b4d2221711308a019b150e06634b62a9d9161ac9f51662d0aa3aaeb95e623b81/assets/images/product-guides/dubbing/dubbing-studio-clip-settings.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=03821c25ce1232a103827d07039150278fe7d30f365f129efd6109efdfd6bcb6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b4d2221711308a019b150e06634b62a9d9161ac9f51662d0aa3aaeb95e623b81/assets/images/product-guides/dubbing/dubbing-studio-clip-settings.gif?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=4e86afd0f0f6f57b16700a9de37b930445429ad2e783f0a1ee9631a918f456c9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Exports
 
@@ -249,7 +249,7 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
       Once it has completed processing, click the three dots icon and select **Edit** to open your dubbing project.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225845Z&X-Amz-Expires=604800&X-Amz-Signature=7193f16a9df529a80038ba6ef0bc37f3b982da6ea21ee41d5b931b4e7a020367&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/88ae8853b135c164e1b969cc7ffdf4a427ec9e6ca56a50a646fceb54a0210656/assets/images/help-center/product/dubbing/how-do-i-access-dubbing-studio-2.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T093630Z&X-Amz-Expires=604800&X-Amz-Signature=98bf3738a15f2a704499df79d269528c52a2daf4ffb8c4c8df45968b2853c560&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more information about Dubbing Studio, please see our [overview.](/docs/product-guides/products/dubbing/dubbing-studio)
     </td>

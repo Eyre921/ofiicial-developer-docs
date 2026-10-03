@@ -20,7 +20,7 @@ This feature helps organizations control costs and manage consumption by allocat
 
 Credit usage limits and PVC limits are separate controls and can be managed independently.
 
-![Create billing group interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/94471dc9c9c7f01268df811d5837f6a76fe401a8fefc215ccf9035b3d6c5d71e/assets/images/product-guides/administration/create-group.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233056Z&X-Amz-Expires=604800&X-Amz-Signature=df29cbbea601d366f4897e97c861e4ccff9e484df6f75f54c0a92bfe2f2bcc88&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create billing group interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/94471dc9c9c7f01268df811d5837f6a76fe401a8fefc215ccf9035b3d6c5d71e/assets/images/product-guides/administration/create-group.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T080439Z&X-Amz-Expires=604800&X-Amz-Signature=e56af143f715b857ec615183e1c0186e7bcc3662231ef6f37a424d47e46a8e7b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 With billing groups, you can:
 
@@ -88,11 +88,11 @@ When a billing group reaches its **PVCs** limit:
 
 Workspace admins can monitor and adjust billing group limits from **Workspace settings > Groups**. Click the dollar button to view current usage for each group, and to update the group's limits.
 
-![View usage across billing groups](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9aeadadd05234b03a56cc767fb9a53fffc8ef84ceff814161da8baa99d6ba1bb/assets/images/product-guides/administration/view-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233056Z&X-Amz-Expires=604800&X-Amz-Signature=ceaf55c7a83797fa9c9b7ea52cbc8e677fd3b0836ab9899fa56e41c9908bf8b3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![View usage across billing groups](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9aeadadd05234b03a56cc767fb9a53fffc8ef84ceff814161da8baa99d6ba1bb/assets/images/product-guides/administration/view-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T080439Z&X-Amz-Expires=604800&X-Amz-Signature=d6a391beb3879a28c0b229e584f2cd1ba1fc6bbb7be1058af14dc6b65a8ac10e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Individual users can view their own usage details from their account **Settings > Usage & Credit Ceilings**.
 
-![View personal usage in account settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e37f90d763fa71cf5b76724f42213eee23ef45cebd8e97d12f35bf1791c5edc8/assets/images/product-guides/administration/personal-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233056Z&X-Amz-Expires=604800&X-Amz-Signature=4e27b51eebcb90ae7f5707437e1d9e5310eccb7157c7a687c23ff81cbd32db94&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![View personal usage in account settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e37f90d763fa71cf5b76724f42213eee23ef45cebd8e97d12f35bf1791c5edc8/assets/images/product-guides/administration/personal-usage.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T080439Z&X-Amz-Expires=604800&X-Amz-Signature=9a097c2ee8d4050262f63fb615eade313d7599ec51c706bf60a8e1cc0e91c817&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Manage billing group members
 

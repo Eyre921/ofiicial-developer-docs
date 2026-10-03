@@ -699,21 +699,21 @@ crew = Crew(
 
 ### Provider Reference
 
-| Provider             | Key                    | Typical Model                 | Notes                                    |
-| :------------------- | :--------------------- | :---------------------------- | :--------------------------------------- |
-| OpenAI               | `openai`               | `text-embedding-3-large`      | Default. Set `OPENAI_API_KEY`.           |
-| Ollama               | `ollama`               | `mxbai-embed-large`           | Local, no API key needed.                |
-| Azure OpenAI         | `azure`                | `text-embedding-3-large`      | Default model. Requires `deployment_id`. |
-| Google AI            | `google-generativeai`  | `gemini-embedding-001`        | Set `GOOGLE_API_KEY`.                    |
-| Google Vertex        | `google-vertex`        | `gemini-embedding-001`        | Requires `project_id`.                   |
-| Cohere               | `cohere`               | `embed-english-v3.0`          | Strong multilingual support.             |
-| VoyageAI             | `voyageai`             | `voyage-3`                    | Optimized for retrieval.                 |
-| AWS Bedrock          | `amazon-bedrock`       | `amazon.titan-embed-text-v1`  | Uses boto3 credentials.                  |
-| Hugging Face         | `huggingface`          | `all-MiniLM-L6-v2`            | Local sentence-transformers.             |
-| Jina                 | `jina`                 | `jina-embeddings-v2-base-en`  | Set `JINA_API_KEY`.                      |
-| IBM WatsonX          | `watsonx`              | `ibm/slate-30m-english-rtrvr` | Requires `project_id`.                   |
-| Sentence Transformer | `sentence-transformer` | `all-MiniLM-L6-v2`            | Local, no API key.                       |
-| Custom               | `custom`               | --                            | Requires `embedding_callable`.           |
+| Provider | Key | Typical Model | Notes |
+| :- | :- | :- | :- |
+| OpenAI | `openai` | `text-embedding-3-large` | Default. Set `OPENAI_API_KEY`. |
+| Ollama | `ollama` | `mxbai-embed-large` | Local, no API key needed. |
+| Azure OpenAI | `azure` | `text-embedding-3-large` | Default model. Requires `deployment_id`. |
+| Google AI | `google-generativeai` | `gemini-embedding-001` | Set `GOOGLE_API_KEY`. |
+| Google Vertex | `google-vertex` | `gemini-embedding-001` | Requires `project_id`. |
+| Cohere | `cohere` | `embed-english-v3.0` | Strong multilingual support. |
+| VoyageAI | `voyageai` | `voyage-3` | Optimized for retrieval. |
+| AWS Bedrock | `amazon-bedrock` | `amazon.titan-embed-text-v1` | Uses boto3 credentials. |
+| Hugging Face | `huggingface` | `all-MiniLM-L6-v2` | Local sentence-transformers. |
+| Jina | `jina` | `jina-embeddings-v2-base-en` | Set `JINA_API_KEY`. |
+| IBM WatsonX | `watsonx` | `ibm/slate-30m-english-rtrvr` | Requires `project_id`. |
+| Sentence Transformer | `sentence-transformer` | `all-MiniLM-L6-v2` | Local, no API key. |
+| Custom | `custom` | -- | Requires `embedding_callable`. |
 
 ## LLM Configuration
 
@@ -789,16 +789,16 @@ Memory content is sent to the configured LLM for analysis (scope/categories/impo
 
 All memory operations emit events with `source_type="unified_memory"`. You can listen for timing, errors, and content.
 
-| Event                             | Description            | Key Properties                                   |
-| :-------------------------------- | :--------------------- | :----------------------------------------------- |
-| **MemoryQueryStartedEvent**       | Query begins           | `query`, `limit`                                 |
-| **MemoryQueryCompletedEvent**     | Query succeeds         | `query`, `results`, `query_time_ms`              |
-| **MemoryQueryFailedEvent**        | Query fails            | `query`, `error`                                 |
-| **MemorySaveStartedEvent**        | Save begins            | `value`, `metadata`                              |
-| **MemorySaveCompletedEvent**      | Save succeeds          | `value`, `save_time_ms`                          |
-| **MemorySaveFailedEvent**         | Save fails             | `value`, `error`                                 |
-| **MemoryRetrievalStartedEvent**   | Agent retrieval starts | `task_id`                                        |
-| **MemoryRetrievalCompletedEvent** | Agent retrieval done   | `task_id`, `memory_content`, `retrieval_time_ms` |
+| Event | Description | Key Properties |
+| :- | :- | :- |
+| **MemoryQueryStartedEvent** | Query begins | `query`, `limit` |
+| **MemoryQueryCompletedEvent** | Query succeeds | `query`, `results`, `query_time_ms` |
+| **MemoryQueryFailedEvent** | Query fails | `query`, `error` |
+| **MemorySaveStartedEvent** | Save begins | `value`, `metadata` |
+| **MemorySaveCompletedEvent** | Save succeeds | `value`, `save_time_ms` |
+| **MemorySaveFailedEvent** | Save fails | `value`, `error` |
+| **MemoryRetrievalStartedEvent** | Agent retrieval starts | `task_id` |
+| **MemoryRetrievalCompletedEvent** | Agent retrieval done | `task_id`, `memory_content`, `retrieval_time_ms` |
 
 Example: monitor query time:
 
@@ -861,21 +861,21 @@ memory.reset(scope="/project/old")  # Only that subtree
 
 All configuration is passed as keyword arguments to `Memory(...)`. Every parameter has a sensible default.
 
-| Parameter                   | Default                                  | Description                                                                         |
-| :-------------------------- | :--------------------------------------- | :---------------------------------------------------------------------------------- |
-| `llm`                       | `"gpt-4o-mini"`                          | LLM for analysis (model name or `BaseLLM` instance).                                |
-| `storage`                   | `"lancedb"`                              | Storage backend (`"lancedb"`, a path string, or a `StorageBackend` instance).       |
-| `embedder`                  | `None` (OpenAI `text-embedding-3-large`) | Embedder (config dict, callable, or `None` for default OpenAI).                     |
-| `recency_weight`            | `0.3`                                    | Weight for recency in composite score.                                              |
-| `semantic_weight`           | `0.5`                                    | Weight for semantic similarity in composite score.                                  |
-| `importance_weight`         | `0.2`                                    | Weight for importance in composite score.                                           |
-| `recency_half_life_days`    | `30`                                     | Days for recency score to halve (exponential decay).                                |
-| `consolidation_threshold`   | `0.85`                                   | Similarity above which consolidation is triggered on save. Set to `1.0` to disable. |
-| `consolidation_limit`       | `5`                                      | Max existing records to compare during consolidation.                               |
-| `default_importance`        | `0.5`                                    | Importance assigned when not provided and LLM analysis is skipped.                  |
-| `batch_dedup_threshold`     | `0.98`                                   | Cosine similarity for dropping near-duplicates within a `remember_many()` batch.    |
-| `confidence_threshold_high` | `0.8`                                    | Recall confidence above which results are returned directly.                        |
-| `confidence_threshold_low`  | `0.5`                                    | Recall confidence below which deeper exploration is triggered.                      |
-| `complex_query_threshold`   | `0.7`                                    | For complex queries, explore deeper below this confidence.                          |
-| `exploration_budget`        | `1`                                      | Number of LLM-driven exploration rounds during deep recall.                         |
-| `query_analysis_threshold`  | `200`                                    | Queries shorter than this (in characters) skip LLM analysis during deep recall.     |
+| Parameter | Default | Description |
+| :- | :- | :- |
+| `llm` | `"gpt-4o-mini"` | LLM for analysis (model name or `BaseLLM` instance). |
+| `storage` | `"lancedb"` | Storage backend (`"lancedb"`, a path string, or a `StorageBackend` instance). |
+| `embedder` | `None` (OpenAI `text-embedding-3-large`) | Embedder (config dict, callable, or `None` for default OpenAI). |
+| `recency_weight` | `0.3` | Weight for recency in composite score. |
+| `semantic_weight` | `0.5` | Weight for semantic similarity in composite score. |
+| `importance_weight` | `0.2` | Weight for importance in composite score. |
+| `recency_half_life_days` | `30` | Days for recency score to halve (exponential decay). |
+| `consolidation_threshold` | `0.85` | Similarity above which consolidation is triggered on save. Set to `1.0` to disable. |
+| `consolidation_limit` | `5` | Max existing records to compare during consolidation. |
+| `default_importance` | `0.5` | Importance assigned when not provided and LLM analysis is skipped. |
+| `batch_dedup_threshold` | `0.98` | Cosine similarity for dropping near-duplicates within a `remember_many()` batch. |
+| `confidence_threshold_high` | `0.8` | Recall confidence above which results are returned directly. |
+| `confidence_threshold_low` | `0.5` | Recall confidence below which deeper exploration is triggered. |
+| `complex_query_threshold` | `0.7` | For complex queries, explore deeper below this confidence. |
+| `exploration_budget` | `1` | Number of LLM-driven exploration rounds during deep recall. |
+| `query_analysis_threshold` | `200` | Queries shorter than this (in characters) skip LLM analysis during deep recall. |

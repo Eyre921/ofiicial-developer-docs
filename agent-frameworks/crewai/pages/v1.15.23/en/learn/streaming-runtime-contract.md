@@ -34,14 +34,14 @@ frame.content      # printable text for token-like frames, otherwise ""
 
 The `channel` field is the fastest way to route frames in consumers:
 
-| Channel     | Contains                                                           |
-| ----------- | ------------------------------------------------------------------ |
-| `llm`       | Token and thinking chunks from LLM streaming events                |
-| `flow`      | Flow lifecycle, method execution, routing, and pause/resume events |
-| `tools`     | Tool usage events                                                  |
-| `messages`  | Conversation transcript events                                     |
-| `lifecycle` | Runtime lifecycle events that are not specific to another channel  |
-| `custom`    | Events that do not map to a built-in channel                       |
+| Channel | Contains |
+| - | - |
+| `llm` | Token and thinking chunks from LLM streaming events |
+| `flow` | Flow lifecycle, method execution, routing, and pause/resume events |
+| `tools` | Tool usage events |
+| `messages` | Conversation transcript events |
+| `lifecycle` | Runtime lifecycle events that are not specific to another channel |
+| `custom` | Events that do not map to a built-in channel |
 
 `frame.type` preserves the source event type, so consumers can handle specific events inside a channel.
 
@@ -91,14 +91,14 @@ result = stream.result
 
 Available projections are:
 
-| Projection                 | Frames                      |
-| -------------------------- | --------------------------- |
-| `stream.events`            | All frames                  |
-| `stream.llm`               | LLM frames                  |
-| `stream.messages`          | Conversation message frames |
-| `stream.flow`              | Flow frames                 |
-| `stream.tools`             | Tool frames                 |
-| `stream.interleave([...])` | A selected set of channels  |
+| Projection | Frames |
+| - | - |
+| `stream.events` | All frames |
+| `stream.llm` | LLM frames |
+| `stream.messages` | Conversation message frames |
+| `stream.flow` | Flow frames |
+| `stream.tools` | Tool frames |
+| `stream.interleave([...])` | A selected set of channels |
 
 Use `stream.interleave(["flow", "llm", "messages"])` when a consumer wants only some channels but still needs their relative order.
 

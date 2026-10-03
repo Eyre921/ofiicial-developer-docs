@@ -9,24 +9,7 @@ Search for documents in a namespace using one or more scoring methods (dense vec
 
 Returns the top-k most similar documents along with their scores and requested fields.
 
-A request includes a `score_by` array selecting one of the following scoring types:
-
-* **`type: "text"`**, BM25 token matching over one or more text fields named in `fields`; naming several scores the query against all of them. Multi-word queries use OR-style matching (case-insensitive). For exact-phrase ranking, use `query_string` with quoted terms.
-* **`type: "query_string"`**, Lucene query syntax. Supports boolean operators, phrase prefix matching, boosting, fuzzy matching (`term~`, `term~N`), and cross-field queries. See the [query syntax reference](/guides/search/full-text-search/query-syntax). **Does not accept a `field` or `fields` parameter.** Target specific fields using Lucene field qualifiers in the query string itself: `fieldname:value` or `title:(alpha) OR body:(beta)`.
-* **`type: "dense_vector"`**, dense vector similarity ranking against a `dense_vector` field.
-* **`type: "sparse_vector"`**, sparse vector similarity ranking against a `sparse_vector` field.
-
-Any scoring method can be combined with metadata filters (including text match operators `$match_phrase` / `$match_all` / `$match_any` and logical operators `$and` / `$or` / `$not`). Filters are applied **before** scoring: the search only considers documents that match the filter. Scoring-only operators are available in `query_string` scoring but cannot be used inside `filter`: phrase slop (`"phrase"~N`), term boosting (`^N`), and phrase prefix (`"phrase pre"*`).
-
-`include_fields` defaults to `[]` (returns only `_id` and `_score`); use `["*"]` to return all stored fields.
-
-<Note>
-  A single search request ranks by one scoring type. Multi-field BM25 is supported: name several fields in one `text` clause's `fields` array, or pass multiple `text` clauses, which the server combines into one ranking; a `query_string` clause can also target several fields. Every contributing field weighs equally in `2026-07`; there is no per-field weight parameter. To combine BM25 ranking with `dense_vector` or `sparse_vector` ranking, restrict the dense (or sparse) search with a text-match filter (`$match_phrase`, `$match_all`, `$match_any`) on the full-text field, or run separate searches and merge the results client-side.
-</Note>
-
-<Warning>
-  Text-match operators (`$match_phrase`, `$match_all`, `$match_any`) are supported on this endpoint and on [fetch](/reference/api/2026-07/data-plane/fetch_documents). A filtered [update](/reference/api/2026-07/data-plane/update_documents) or [delete](/reference/api/2026-07/data-plane/delete_documents) rejects them with a `400` and accepts plain metadata filters only. To update or delete by text match, search or fetch for the matching IDs first, then act on those IDs.
-</Warning>
+Filters apply before scoring, so only documents that match the `filter` are ranked. For how each scoring type works and how to combine them, see [Full-text search](/guides/search/full-text-search) and the [query syntax reference](/guides/search/full-text-search/query-syntax).
 
 <RequestExample>
   ```python Python theme={null}

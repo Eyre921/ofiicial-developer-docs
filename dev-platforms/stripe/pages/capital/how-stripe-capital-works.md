@@ -10,7 +10,7 @@ Learn how Stripe Capital provides financing for eligible businesses.
 
 If you’re a *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) platform and you want to provide financing to your connected accounts, see [How Capital for platforms works](https://docs.stripe.com/capital/how-capital-for-platforms-works.md) instead.
 
-### Available in
+Stripe Capital is available in the following countries:
 
 - AU
 - CA
@@ -32,7 +32,7 @@ Stripe, with our financial partner, uses a combination of eligibility criteria (
 Each offer specifies the type of financing being offered, which might be a loan or merchant cash advance. You can’t request a particular financing type under the Stripe Capital program.
 
 |  |
-| **Merchant cash advance** | A merchant cash advance is YouLend’s purchase of your business’s future receivables; it isn’t a loan or a credit transaction. Stripe withholds the purchased receivables from your payment processing volume at the percentage stated in your YouLend Advance Agreement. Unlike a loan, you don’t have a fixed payment schedule or periodic debits. Your payments vary with your payment processing volume. |
+| **Merchant cash advance** | A merchant cash advance is YouLend’s purchase of your business’s future receivables. It isn’t a loan or a credit transaction. Stripe withholds the purchased receivables from your payment processing volume at the percentage stated in your YouLend Advance Agreement. Unlike a loan, you don’t have a fixed payment schedule or periodic debits. Your payments vary with your payment processing volume. |
 | **Loans** | Business-purpose term loans are issued by Celtic Bank or Lead Bank to eligible businesses. These loans have a maximum term and periodic payments. If withholdings from your payment processing receivables don’t meet the minimum amount (typically on a 30- or 60-day basis), Stripe debits the shortfall from your linked bank account or account balance.
 - **Line of credit**: You might be given a choice to borrow (up to a prequalified credit limit) through a line of credit. Apply to draw the exact amount you need within your available limit and access the remaining capital for 90 days. As you make repayments, your available credit replenishes, so you can request more capital. After 90 days, we reevaluate your credit limit. We review and approve each draw as a separate loan. |
 
@@ -42,7 +42,7 @@ Stripe, together with our financing partner, determines your eligibility for an 
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
 
-If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, Employee Identification Number (EIN), and business address.
+If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, Employer Identification Number (EIN), and business address.
 
 ### Minimum eligibility requirements
 
@@ -83,13 +83,13 @@ We don’t:
 
 ### Get feedback on your eligibility
 
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/legal/privacy-center#stripe-capital) for more information. Stripe determines your eligibility for a financing offer based on a variety of factors related to your Stripe accounts, including your processing volume and the size of your customer base.
+If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information.
 
 ## Review your offer
 
 Your offer is typically valid for 30 days, after which we re-evaluate your business to see if you’re eligible for an additional offer. Go to the [Capital tab](https://dashboard.stripe.com/capital) in the Stripe Dashboard to customize the amount of your offer up to the maximum offer amount. The offer terms adjust based on the amount you choose. If you’re seeking financing at a later time, continue checking your email and the **Capital** tab of the Dashboard to make sure you’re reviewing your most current offer. In some cases, we extend additional offers to you while you’re actively paying your current financing.
 
-After you select an offer, we review your application. There might be requests for additional information related to your business to complete the review of your application. If you’re approved, we transfer the funds to your Stripe account, typically in as few as 1-2 business days. To make sure funds successfully disburse from your Stripe account, you must set a valid bank account as your primary payout method.
+After you select an offer, we review your application. There might be requests for additional information related to your business to complete the review of your application. If you’re approved, we transfer the funds to your Stripe account, typically in as few as 1–2 business days. To make sure funds successfully disburse from your Stripe account, you must set a valid bank account as your primary payout method.
 
 ## No impact to your personal credit
 
@@ -130,7 +130,7 @@ If you’re unable to meet your minimum for one or more periods, reach out to su
 
 > #### Fixed payment loans
 > 
-> If your loan has a fixed payment instead of a minimum payment, Stripe stops withholding from your Stripe sales when you meet the fixed payment amount. If your sales withholdings don’t meet the fixed payment by the end of the payment period, Stripe automatically debits the balance. You can also make manual payments at any time through your Dashboard using the **Make payment** option. Your financing agreement will specify whether there is a fixed payment amount.
+> If your loan has a fixed payment instead of a minimum payment, Stripe stops withholding from your Stripe sales when you meet the fixed payment amount. If your sales withholdings don’t meet the fixed payment by the end of the payment period, Stripe automatically debits the balance. You can also make manual payments at any time through your Dashboard using the **Make payment** option. Your financing agreement specifies whether there is a fixed payment amount.
 
 ### Examples
 
@@ -149,7 +149,7 @@ The following example scenarios demonstrate how the minimum payment process work
 
 ## Security interests
 
-Stripe Capital loan agreements typically include security interests taken as collateral for your loan. A *UCC-1* (A publicly available notice filed by a creditor that secures the creditor's interest in certain assets of a debtor. Creditors file UCC-1 statements with the secretary of state where a business debtor is incorporated at the time a loan first originates) financing statement might be filed in connection with your loan based on several factors, including the size of your loan, facts and circumstances about your business, and so on. After you finish paying off your loan, you can [contact us](mailto:capital@stripe.com) with a request to terminate a UCC-1 filing. For merchant cash advances, a security interest might be taken under certain circumstances, as specified in the Stripe Capital advance agreement.
+Stripe Capital loan agreements typically include security interests taken as collateral for your loan. A *UCC-1* (A publicly available notice filed by a creditor that secures the creditor's interest in certain assets of a debtor. Creditors file UCC-1 statements with the secretary of state where a business debtor is incorporated at the time a loan first originates) financing statement might be filed in connection with your loan based on several factors, including the size of your loan and facts and circumstances about your business. After you finish paying off your loan, you can [contact us](mailto:capital@stripe.com) with a request to terminate a UCC-1 filing. For merchant cash advances, a security interest might be taken under certain circumstances, as specified in the Stripe Capital advance agreement.
 
 > #### Unknown secured party
 > 
@@ -169,15 +169,15 @@ Stripe Capital offers financing for eligible UK users processing payments throug
 
 Stripe, with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible UK businesses with at least 3 months of processing history receive an email and Dashboard notification if we have an offer available. Stripe has partnered with YouLend to evaluate UK financing applications.
 
-We evaluate your business daily for eligibility, which includes your fixed fee pricing, based on your processing volume and history on Stripe. While many traditional financial products have hidden fees or compounding interest, Stripe Capital financing has a single fixed fee that you pay back over the length of the financing. You don’t pay interest over time, and we don’t charge early payment fees.
+We evaluate your business daily for eligibility, which includes your fixed fee pricing, based on your processing volume and history on Stripe. Stripe Capital financing has a single fixed fee that you pay back over the length of the financing. You don’t pay interest over time, and we don’t charge early payment fees.
 
 Paying off your active financing offer doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional financing offers involves several factors. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding.
 
-We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, Youlend at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
 
-If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from  those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, Employee Identification Number (EIN), and business address.
+If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
 ### Minimum eligibility requirements
 
@@ -193,7 +193,6 @@ Additionally, the person applying for and guaranteeing the offer must:
 - Be a representative, controller, or director with significant ownership (at least 25%)
 - Have an address in the UK to support a credit check
 - Be at least 18 years old on the date of the application
-- Be able to provide an address in the UK.
 
 Meeting the minimum eligibility requirements doesn’t guarantee that your business qualifies for a Stripe Capital offer. In addition to the minimum requirements, Stripe, along with our partner, YouLend, evaluate many other characteristics of your business to determine eligibility. We’ve highlighted some key considerations:
 
@@ -202,7 +201,7 @@ Meeting the minimum eligibility requirements doesn’t guarantee that your busin
 - **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
 - **A low dispute rate**: Businesses with low rates of unresolved chargebacks are more likely to qualify for funding.
 
-[Learn more about how Stripe uses and protects your business’s data](https://stripe.com/gb/privacy-center/legal#stripe-capital).
+[Learn more about how Stripe uses and protects your business’s data](https://stripe.com/gb/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms).
 
 ### Additional steps you can take
 
@@ -212,19 +211,19 @@ Our underwriting model is based on the payment volume that you process on Stripe
 
 ### Get feedback on your eligibility
 
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/gb/privacy-center/legal#stripe-capital) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
+If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/gb/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
 
 ## Review your offer
 
-When you log into the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
 
-Your offer is available for 30 days. After that point, your business is automatically re-evaluated to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We’ll also send you an email if you have an offer.
+Your offer is available for 30 days. After that point, your business is automatically re-evaluated to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
 ## Apply for financing
 
 After you accept an offer, we review your application. If you’re approved, we transfer the funds to your linked bank account, typically within 1 business day. To make sure funds are disbursed successfully, you must set a valid bank account as your primary payout method.
 
-When you apply, our partner, YouLend conducts a soft credit check as part of your application. This credit check won’t impact your credit score, but might be visible to other organisations carrying out credit searches. If approved, when you receive financing, a hard footprint will be left on your credit record, which will impact your credit score.
+When you apply, our partner, YouLend conducts a soft credit check as part of your application. This credit check won’t impact your credit score, but might be visible to other organizations carrying out credit searches. If approved, when you receive financing, a hard footprint will be left on your credit record, which will impact your credit score.
 
 Applicants who are the director and a beneficial owner of the business must provide a personal guarantee as part of the application for financing.
 
@@ -245,9 +244,9 @@ After you pay your financing, we automatically evaluate your business for a new 
 
 If you’re approved for additional financing offers before you pay off your current financing offer, you’ll receive a standardized payment percentage rate across your active financing offers to match your most recently accepted financing offer. Payment of your newly accepted offer begins after your active financing offer is paid off so you’ll only pay off one financing offer at a time.
 
-**Example: You’re currently paying Financing Offer 1 at a 20% payment percentage rate and received additional financing.**
+For example, assume that you’re currently paying the first financing offer at a 20% payment percentage rate and have received an offer for additional financing.
 
-If you apply, we approve you for *financing offer 2* with a 15% payment percentage rate, we’ll update the rate for *financing offer 1* to 15%. Payment for *financing offer 2* begins when you’ve paid off *financing offer 1*. As a result, your overall payment percentage rate will be 15%.
+If you apply for and are approved for the second financing offer with a 15% payment percentage rate, we update the rate for the first financing offer to 15%. Payment for the second financing offer begins after you’ve paid off the first financing offer. As a result, your overall payment percentage rate is 15%.
 
 ## Taxes
 
@@ -263,15 +262,15 @@ Stripe Capital offers financing for eligible French users processing payments th
 
 Stripe, together with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible French businesses with at least 3 months of processing history receive an email and Dashboard notification if there is an offer available. Stripe partners with YouLend to evaluate financing applications.
 
-We evaluate your business regularly for eligibility, which includes your fixed fee pricing, based on your processing volume and history on Stripe. While many traditional financial products have hidden fees or compounding interest, Stripe Capital financing has a single fixed fee that you pay back over the length of the financing. You don’t pay interest over time, and we don’t charge early payment fees.
+We evaluate your business regularly for eligibility, which includes your fixed fee pricing, based on your processing volume and history on Stripe. Stripe Capital financing has a single fixed fee that you pay back over the length of the financing. You don’t pay interest over time, and we don’t charge early payment fees.
 
 Paying off your active financing offer doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional financing offers involves several factors. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding.
 
-We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, Youlend at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
 
-> If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from  those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, Employee Identification Number (EIN), and business address.
+> If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
 ### Minimum eligibility requirements
 
@@ -284,7 +283,7 @@ To qualify for an offer through Stripe Capital, your business must:
 
 Additionally, the person applying for and guaranteeing the offer must:
 
-- Be a Representative, Controller, or Director with significant ownership (at least 25%)
+- Be a representative, controller, or director with significant ownership (at least 25%)
 - Be at least 18 years old on the date of the application
 - Be able to provide an address in France
 
@@ -297,7 +296,7 @@ In addition to the minimum requirements, Stripe, along with our partner, YouLend
 - **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
 - **A low dispute rate**: Businesses with low rates of unresolved chargebacks are more likely to qualify for funding.
 
-[Learn more about how Stripe uses and protects your business’s data](https://stripe.com/fr/privacy-center/legal#stripe-capital).
+[Learn more about how Stripe uses and protects your business’s data](https://stripe.com/fr/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms).
 
 ### Additional steps you can take
 
@@ -307,13 +306,13 @@ Our underwriting model is based on the payment volume that you process on Stripe
 
 ### Get feedback on your eligibility
 
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/fr/legal/privacy-center#stripe-capital) for more information. All financing requests are subject to final review prior to approval. Financing is provided by YouLend.
+If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/fr/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
 
 ## Review your offer
 
-When you log into the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
 
-Your offer is available for 30 days. After that point, your business is automatically re-evaluated to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We’ll also send you an email if you have an offer.
+Your offer is available for 30 days. After that point, your business is automatically re-evaluated to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
 ## Apply for financing
 
@@ -325,8 +324,8 @@ Applicants who are the director and a beneficial owner of the business must prov
 
 When you apply for your Capital financing offer, you can choose where to receive your funds during the application:
 
-- **Financial account** — Receive proceeds into your financial account for immediate access to funds you can spend directly.
-- **External bank account** — Receive proceeds to your linked bank account, typically within 1–2 business days.
+- **Financial account**: Receive proceeds into your financial account for immediate access to funds you can spend directly.
+- **External bank account**: Receive proceeds to your linked bank account, typically within 1–2 business days.
 
 If your application is approved, Stripe sends the proceeds to your selected destination.
 
@@ -342,7 +341,7 @@ If you’re approved for additional financing offers before you pay off your cur
 
 For example, assume that you’re currently paying the first financing offer at a 20% payment percentage rate and have received an offer for additional financing.
 
-If you apply for and are approved for the second financing offer with a 15% payment percentage rate, we’ll update the rate for the first financing offer to 15%. Payment for the second financing offer begins after you’ve paid off the first financing offer. As a result, your overall payment percentage rate will be 15%.
+If you apply for and are approved for the second financing offer with a 15% payment percentage rate, we update the rate for the first financing offer to 15%. Payment for the second financing offer begins after you’ve paid off the first financing offer. As a result, your overall payment percentage rate is 15%.
 
 ## Taxes
 
@@ -358,15 +357,15 @@ Stripe Capital offers financing for eligible German users processing payments th
 
 Stripe, together with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible German businesses with at least 3 months of processing history receive an email and Dashboard notification if there is an offer available. Stripe partners with YouLend to evaluate financing applications.
 
-We evaluate your business regularly for eligibility, which includes the way in which your fixed fee pricing is calculated, based on your processing volume and history on Stripe. While many traditional financial products have hidden fees or compounding interest, Stripe Capital financing has a single fixed fee that you pay back over the length of the financing. You don’t pay interest over time, and we don’t charge early payment fees. Paying off your active financing offer doesn’t automatically qualify you for a new offer.
+We evaluate your business regularly for eligibility, which includes the way in which your fixed fee pricing is calculated, based on your processing volume and history on Stripe. Stripe Capital financing has a single fixed fee that you pay back over the length of the financing. You don’t pay interest over time, and we don’t charge early payment fees. Paying off your active financing offer doesn’t automatically qualify you for a new offer.
 
 When you’re eligible for a new offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional financing offers involves several factors. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding.
 
-We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, Youlend at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+We assess every business regularly, even those actively paying on a financing offer. Even if you aren’t eligible for a new offer today, you might be eligible in the future. For questions regarding eligibility, contact our partner, YouLend, at [stripecapital@youlend.com](mailto:stripecapital@youlend.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
 
 You might see a banner in the Stripe Dashboard that indicates that you’re on track for a future offer. This isn’t a guarantee of a future offer or of specific terms and doesn’t reflect a credit decision or evaluation.
 
-If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from  those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
+If your business has multiple Stripe accounts, a financing offer might be generated based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
 
 ### Minimum eligibility requirements
 
@@ -379,7 +378,7 @@ To qualify for an offer through Stripe Capital, your business must:
 
 Additionally, the person applying for and guaranteeing the offer must:
 
-- Be a Representative, Controller, or Director with significant ownership (at least 25%)
+- Be a representative, controller, or director with significant ownership (at least 25%)
 - Be at least 18 years old on the date of the application
 - Be able to provide an address in Germany
 
@@ -388,11 +387,11 @@ Meeting the minimum eligibility requirements doesn’t guarantee that your busin
 In addition to the minimum requirements, Stripe, along with our partner, YouLend, evaluate many other characteristics of your business to determine eligibility. We’ve highlighted some key considerations:
 
 - **A growing business**: How much you process through Stripe influences the size of your funding offer. Businesses with positive growth trajectories are more likely to be eligible for an offer.
-- **A steady processing record:** A consistent, steady processing record with limited periods of low or zero volume shows stability in your business and increases your likelihood of qualifying for an offer.
+- **A steady processing record**: A consistent, steady processing record with limited periods of low or zero volume shows stability in your business and increases your likelihood of qualifying for an offer.
 - **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
 - **A low dispute rate**: Businesses with low rates of unresolved chargebacks are more likely to qualify for funding.
 
-[Learn more about how Stripe uses and protects your business’ data](https://stripe.com/de/privacy-center/legal#stripe-capital).
+[Learn more about how Stripe uses and protects your business’ data](https://stripe.com/de/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms).
 
 ### Additional steps you can take
 
@@ -402,17 +401,17 @@ Our underwriting model is based on the payment volume that you process on Stripe
 
 ### Get feedback on your eligibility
 
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/de/legal/privacy-center#stripe-capital) for more information. All financing requests are subject to final review prior to approval. Financing is provided by YouLend.
+If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/de/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by YouLend.
 
 ## Review your offer
 
-When you log into the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
 
-Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We’ll also send you an email if you have an offer.
+Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
 ## Apply for financing
 
-After you accept an offer, we and our financing partner, YouLend GmBH, review your application. If you’re approved, the funds are transferred to your linked bank account, typically within 1 business day. To make sure you receive the funds, you must set a valid bank account as your primary payout method.
+After you accept an offer, we and our financing partner, YouLend GmbH, review your application. If you’re approved, the funds are transferred to your linked bank account, typically within 1 business day. To make sure you receive the funds, you must set a valid bank account as your primary payout method.
 
 If you’re a director or a beneficial owner of the business, you must provide a personal guarantee as part of the application for financing.
 
@@ -437,7 +436,7 @@ If you’re approved for additional financing offers before you pay off your cur
 
 For example, assume that you’re currently paying the first financing offer at a 20% payment percentage rate and have received an offer for additional financing.
 
-If you apply for and are approved for the second financing offer with a 15% payment percentage rate, we’ll update the rate for the first financing offer to 15%. Payment for the second financing offer begins after you’ve paid off the first one. As a result, your overall payment percentage rate would be 15%.
+If you apply for and are approved for the second financing offer with a 15% payment percentage rate, we update the rate for the first financing offer to 15%. Payment for the second financing offer begins after you’ve paid off the first one. As a result, your overall payment percentage rate is 15%.
 
 ## Taxes
 
@@ -455,7 +454,7 @@ Stripe Capital offers financing for eligible Australian businesses processing pa
 
 Stripe, together with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible Australian businesses with at least 3 months of processing history receive an email and Dashboard notification if they have an offer available. Stripe partners with Fundbox to evaluate applications.
 
-We evaluate your business regularly for eligibility, which includes how we calculate your fixed fee pricing, based on your processing volume and history on Stripe. While many traditional financial products have hidden fees or compounding interest, Stripe Capital financing has a single fixed fee that you pay back over the length of the loan. You don’t pay interest over time, and we don’t charge early payment fees or late fees. Paying off your active loan doesn’t automatically qualify you for a new offer.
+We evaluate your business regularly for eligibility, which includes how we calculate your fixed fee pricing, based on your processing volume and history on Stripe. Stripe Capital financing has a single fixed fee that you pay back over the length of the loan. You don’t pay interest over time, and we don’t charge early payment fees or late fees. Paying off your active loan doesn’t automatically qualify you for a new offer.
 
 When you’re eligible for a new Stripe Capital offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional offers takes several factors into account. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding. We assess every business regularly, even those actively paying a loan. Even if you aren’t eligible for a new offer today, you might be eligible in the future.
 
@@ -469,7 +468,7 @@ If your business has multiple Stripe accounts, we might generate a financing off
 
 To qualify for an offer through Stripe Capital, your business must:
 
-- Be located or incorporated in Australia. We don’t support New Zealand at this time.
+- Be located or incorporated in Australia. Businesses in New Zealand aren’t eligible.
 - Have processed payments on Stripe for at least 3 months.
 - Have an average processing volume of 1,000 AUD for the last 3 months.
 - Be in good standing with Stripe Capital. If your business previously applied for a Capital offer that we rejected, you’re ineligible to receive a new offer for 90 days.
@@ -489,7 +488,7 @@ In addition to the minimum requirements, Stripe, along with our partner, Fundbox
 - **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
 - **A low dispute rate**: Businesses with low rates of unresolved chargebacks are more likely to qualify for funding.
 
-[Learn more about how Stripe uses and protects the data associated with your business](https://stripe.com/au/privacy-center/legal#stripe-capital).
+[Learn more about how Stripe uses and protects the data associated with your business](https://stripe.com/au/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms).
 
 ### Additional steps you can take
 
@@ -499,13 +498,13 @@ We base our underwriting model on the payment volume that you process on Stripe.
 
 ### Get feedback on your eligibility
 
-If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/au/legal/privacy-center#stripe-capital) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
+If you have any questions regarding your offer eligibility, contact us directly at [capital@stripe.com](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/au/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
 
 ## Review your offer
 
-When you log into the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
 
-Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We’ll also send you an email if you have an offer.
+Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
 ## Apply for financing
 
@@ -559,7 +558,7 @@ Stripe Capital offers financing for eligible Canadian businesses processing paym
 
 Stripe, together with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible Canadian businesses with at least 3 months of processing history receive an email and Dashboard notification if they have an offer available. Stripe partners with Fundbox to evaluate applications.
 
-We evaluate your business regularly for eligibility, which includes how we calculate your fixed fee pricing, based on your processing volume and history on Stripe. While many traditional financial products have hidden fees or compounding interest, Stripe Capital financing has a single fixed fee that you pay back over the length of the loan. You don’t pay interest over time, and we don’t charge early payment fees or late fees. Paying off your active loan doesn’t automatically qualify you for a new offer.
+We evaluate your business regularly for eligibility, which includes how we calculate your fixed fee pricing, based on your processing volume and history on Stripe. Stripe Capital financing has a single fixed fee that you pay back over the length of the loan. You don’t pay interest over time, and we don’t charge early payment fees or late fees. Paying off your active loan doesn’t automatically qualify you for a new offer.
 
 When you’re eligible for a new Stripe Capital offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional offers takes several factors into account. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding. We assess every business regularly, even those actively paying a loan. Even if you aren’t eligible for a new offer today, you might be eligible in the future.
 
@@ -578,7 +577,7 @@ To qualify for an offer through Stripe Capital, your business must:
   - Sole proprietors based in Quebec
 - Have processed payments on Stripe for at least 3 months.
 - Have an average processing volume of 1,000 CAD for the last 3 months.
-- Don’t operate as a fisherperson, farmer, feedlot or ranch operator.
+- Not operate as a fisherperson, farmer, feedlot operator, or ranch operator.
 - Be in good standing with Stripe Capital. If your business previously applied for a Capital offer that we rejected, you’re ineligible to receive a new offer for 90 days.
 
 Additionally, the person applying for and guaranteeing the offer must:
@@ -596,7 +595,7 @@ In addition to the minimum requirements, Stripe, along with our partner, Fundbox
 - **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
 - **A low dispute rate**: Businesses with low rates of unresolved chargebacks are more likely to qualify for funding.
 
-[Learn more about how Stripe uses and protects the data associated with your business](https://stripe.com/ca/privacy-center/legal#stripe-capital).
+[Learn more about how Stripe uses and protects the data associated with your business](https://stripe.com/en-ca/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms).
 
 ### Additional steps you can take
 
@@ -606,13 +605,13 @@ We base our underwriting model on the payment volume that you process on Stripe.
 
 ### Get feedback on your eligibility
 
-If you have any questions regarding your offer eligibility, [contact us directly](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/ca/privacy-center/legal#stripe-capital) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
+If you have any questions regarding your offer eligibility, [contact us directly](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/en-ca/legal/privacy-center#stripe-capital-direct-and-capital-for-platforms) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
 
 ## Review your offer
 
-When you log into the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+When you log in to the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
 
-Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We’ll also send you an email if you have an offer.
+Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We also send you an email if you have an offer.
 
 ## Apply for financing
 

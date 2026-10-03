@@ -8,7 +8,7 @@ path: docs/overview/administration/workspaces/user-groups
 
 # User groups
 
-![Group Management](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3352775553098f965b4c3a92526bf71c6afb836ce32b6eccac2947b80d0fd01/assets/images/product-guides/workspaces/manage-group.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233059Z&X-Amz-Expires=604800&X-Amz-Signature=36aa291bb733961406db262a7dd346ce77b027db5cdb08975038254f2697ea52&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Group Management](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b3352775553098f965b4c3a92526bf71c6afb836ce32b6eccac2947b80d0fd01/assets/images/product-guides/workspaces/manage-group.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113148Z&X-Amz-Expires=604800&X-Amz-Signature=b1eb7f6f7404d4f93560c5d15ffd6bdae835525d1ee178a1f2debdb1c7443f53&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 

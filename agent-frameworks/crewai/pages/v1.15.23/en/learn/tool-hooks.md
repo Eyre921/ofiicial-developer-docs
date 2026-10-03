@@ -15,10 +15,10 @@ monitoring.
 
 Tool hooks are executed at two interception points:
 
-| Point            | When                        | Hook receives                            |
-| ---------------- | --------------------------- | ---------------------------------------- |
-| `PRE_TOOL_CALL`  | Before every tool execution | `ToolCallHookContext`                    |
-| `POST_TOOL_CALL` | After every tool execution  | `ToolCallHookContext` (with results set) |
+| Point | When | Hook receives |
+| - | - | - |
+| `PRE_TOOL_CALL` | Before every tool execution | `ToolCallHookContext` |
+| `POST_TOOL_CALL` | After every tool execution | `ToolCallHookContext` (with results set) |
 
 Write them with the [`@on` decorator](/edge/en/learn/execution-hooks). The
 [legacy `@before_tool_call` / `@after_tool_call` decorators](#legacy-decorators)

@@ -20,10 +20,10 @@ Predictive state updates remove the wait. You project a streaming tool argument 
 
 Both patterns read the agent's state from the frontend, but they solve different problems:
 
-| Pattern                                                   | What it does                                                                                                                       |
-| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **Predictive state**                                      | One-way. Streams an in-progress tool argument into a state field so the UI updates *during* generation, before the call completes. |
-| **[Shared State](/edge/en/guides/frontend/shared-state)** | Two-way. The UI reads *and writes* the agent's committed state, keeping app and agent in sync across turns.                        |
+| Pattern | What it does |
+| - | - |
+| **Predictive state** | One-way. Streams an in-progress tool argument into a state field so the UI updates *during* generation, before the call completes. |
+| **[Shared State](/edge/en/guides/frontend/shared-state)** | Two-way. The UI reads *and writes* the agent's committed state, keeping app and agent in sync across turns. |
 
 Reach for predictive state when you want an optimistic, in-flight preview of what the agent is producing. Reach for [Shared State](/edge/en/guides/frontend/shared-state) when the user needs to edit that state back.
 

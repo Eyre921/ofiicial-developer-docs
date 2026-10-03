@@ -13,15 +13,7 @@ To create an index from a backup, use [Create index from backup](https://docs.pi
 
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
-Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll the [Describe an index](/reference/api/2026-07/control-plane/describe_index) operation until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
-
-<Note>
-  To create a classic vector index (read and written through the Vectors API), use the reserved `_values` (dense) and/or `_sparse_values` (sparse) schema fields. These replace the top-level `dimension`, `metric`, and `vector_type` of earlier API versions.
-</Note>
-
-<Note>
-  Document schemas do not support `semantic_text` fields. To combine semantic ranking with full-text search, declare a `dense_vector` field and provide vector values when you upsert documents. For integrated embedding indexes that use the Records API, see [Create an index](/guides/index-data/create-an-index).
-</Note>
+The index initializes asynchronously. Before sending data plane requests, poll [Describe an index](/reference/api/2026-07/control-plane/describe_index) until `status.ready` is `true` (and, for `Dedicated` read capacity, until `read_capacity.status.state` is `"Ready"`). The response shows each `full_text_search` field's resolved analyzer settings (`language`, `stemming`, and `stop_words`), including any defaults applied at creation.
 
 ## Cloud regions
 
@@ -288,7 +280,3 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
     }'
   ```
 </RequestExample>
-
-<Note>
-  Responses show each `full_text_search` field's resolved analyzer config: `language`, `stemming`, and `stop_words` reflect your request settings or the defaults applied at index creation.
-</Note>

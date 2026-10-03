@@ -14,7 +14,7 @@ path: docs/eleven-agents/customization/tools/system-tools/end-call
 > agents created via API or SDK, if you would like to enable the End Call tool, you must add it
 > manually as a system tool in your agent configuration. [See API Implementation below](#api-implementation) for details.
 
-![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T170218Z&X-Amz-Expires=604800&X-Amz-Signature=1e3f94b96dc8d550ebec1f8f985974b7b7f0c73087b1b84c389338680ded64d1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![End call](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f260bfd4e43f7fb0374ce12d2ed984efb946a8ca9ebaa1c2d4b3e6d5f52a7851/assets/images/conversational-ai/end-call-tool.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T080352Z&X-Amz-Expires=604800&X-Amz-Signature=da8de89eeb6917cf9324087efe4dda0acbd1bf1f0ce3b2557b89cfb41839db3a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 

@@ -168,14 +168,14 @@ If you haven't installed `uv` yet, follow **step 1** to quickly get it set up on
 
   <Step title="Customize Your Project">
     * Your project will contain these essential files:
-      | File             | Purpose                                                             |
-      | ---------------- | ------------------------------------------------------------------- |
-      | `crew.jsonc`     | Configure the crew, task order, process, and input defaults         |
+      | File | Purpose |
+      | - | - |
+      | `crew.jsonc` | Configure the crew, task order, process, and input defaults |
       | `agents/*.jsonc` | Define each agent's role, goal, backstory, LLM, tools, and behavior |
-      | `.env`           | Store API keys and environment variables                            |
-      | `tools/`         | Optional Python files for `custom:<name>` tools                     |
-      | `knowledge/`     | Optional knowledge files for agents                                 |
-      | `skills/`        | Optional skill files applied to the crew                            |
+      | `.env` | Store API keys and environment variables |
+      | `tools/` | Optional Python files for `custom:<name>` tools |
+      | `knowledge/` | Optional knowledge files for agents |
+      | `skills/` | Optional skill files applied to the crew |
 
     * Start by editing `crew.jsonc` and the files in `agents/` to define your crew's behavior.
 

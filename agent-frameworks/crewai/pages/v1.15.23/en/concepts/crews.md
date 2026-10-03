@@ -12,36 +12,36 @@ A crew in crewAI represents a collaborative group of agents working together to 
 
 ## Crew Attributes
 
-| Attribute                                 | Parameters                 | Description                                                                                                                                                                                                                     |   |
-| :---------------------------------------- | :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | - |
-| **Tasks**                                 | `tasks`                    | A list of tasks assigned to the crew.                                                                                                                                                                                           |   |
-| **Agents**                                | `agents`                   | A list of agents that are part of the crew.                                                                                                                                                                                     |   |
-| **Process** *(optional)*                  | `process`                  | The process flow (e.g., sequential, hierarchical) the crew follows. Default is `sequential`.                                                                                                                                    |   |
-| **Verbose** *(optional)*                  | `verbose`                  | The verbosity level for logging during execution. Defaults to `False`.                                                                                                                                                          |   |
-| **Manager LLM** *(optional)*              | `manager_llm`              | The language model used by the manager agent in a hierarchical process. **Required when using a hierarchical process.**                                                                                                         |   |
-| **Function Calling LLM** *(optional)*     | `function_calling_llm`     | If passed, the crew will use this LLM to do function calling for tools for all agents in the crew. Each agent can have its own LLM, which overrides the crew's LLM for function calling.                                        |   |
-| **Config** *(optional)*                   | `config`                   | Optional configuration settings for the crew, in `Json` or `Dict[str, Any]` format.                                                                                                                                             |   |
-| **Max RPM** *(optional)*                  | `max_rpm`                  | Maximum requests per minute the crew adheres to during execution. Defaults to `None`.                                                                                                                                           |   |
-| **Memory** *(optional)*                   | `memory`                   | Utilized for storing execution memories (short-term, long-term, entity memory).                                                                                                                                                 |   |
-| **Cache** *(optional)*                    | `cache`                    | Specifies whether to use a cache for storing the results of tools' execution. Defaults to `True`.                                                                                                                               |   |
-| **Embedder** *(optional)*                 | `embedder`                 | Configuration for the embedder to be used by the crew. Mostly used by memory for now. Default is `{"provider": "openai"}`.                                                                                                      |   |
-| **Step Callback** *(optional)*            | `step_callback`            | A function that is called after each step of every agent. This can be used to log the agent's actions or to perform other operations; it won't override the agent-specific `step_callback`.                                     |   |
-| **Task Callback** *(optional)*            | `task_callback`            | A function that is called after the completion of each task. Useful for monitoring or additional operations post-task execution.                                                                                                |   |
-| **Share Crew** *(optional)*               | `share_crew`               | Whether you want to share the complete crew information and execution with the crewAI team to make the library better, and allow us to train models.                                                                            |   |
-| **Output Log File** *(optional)*          | `output_log_file`          | Set to True to save logs as logs.txt in the current directory or provide a file path. Logs will be in JSON format if the filename ends in .json, otherwise .txt. Defaults to `None`.                                            |   |
-| **Manager Agent** *(optional)*            | `manager_agent`            | `manager` sets a custom agent that will be used as a manager.                                                                                                                                                                   |   |
-| **Prompt File** *(optional)*              | `prompt_file`              | Path to the prompt JSON file to be used for the crew.                                                                                                                                                                           |   |
-| **Planning** *(optional)*                 | `planning`                 | Adds planning ability to the Crew. When activated before each Crew iteration, all Crew data is sent to an AgentPlanner that will plan the tasks and this plan will be added to each task description.                           |   |
-| **Planning LLM** *(optional)*             | `planning_llm`             | The language model used by the AgentPlanner in a planning process.                                                                                                                                                              |   |
-| **Knowledge Sources** *(optional)*        | `knowledge_sources`        | Knowledge sources available at the crew level, accessible to all the agents.                                                                                                                                                    |   |
-| **Stream** *(optional)*                   | `stream`                   | Enable streaming output to receive real-time updates during crew execution. Returns a `CrewStreamingOutput` object that can be iterated for chunks. Defaults to `False`.                                                        |   |
-| **Chat LLM** *(optional)*                 | `chat_llm`                 | The language model used to orchestrate `crewai chat` CLI interactions with the crew. Accepts a model name string or `LLM` instance. Defaults to `None`.                                                                         |   |
-| **Before Kickoff Callbacks** *(optional)* | `before_kickoff_callbacks` | A list of callable functions executed **before** the crew starts. Each callback receives and can modify the inputs dict. Distinct from the `@before_kickoff` decorator. Defaults to `[]`.                                       |   |
-| **After Kickoff Callbacks** *(optional)*  | `after_kickoff_callbacks`  | A list of callable functions executed **after** the crew finishes. Each callback receives and can modify the `CrewOutput`. Distinct from the `@after_kickoff` decorator. Defaults to `[]`.                                      |   |
-| **Tracing** *(optional)*                  | `tracing`                  | Controls tracing for the crew. `True` = always enable, `False` = always disable, `None` = inherit from environment / user settings. Defaults to `None`.                                                                         |   |
-| **Skills** *(optional)*                   | `skills`                   | A list of `Path` objects (skill search directories) or pre-loaded `Skill` objects applied to all agents in the crew. Defaults to `None`.                                                                                        |   |
-| **Security Config** *(optional)*          | `security_config`          | A `SecurityConfig` instance managing crew fingerprinting and identity. Defaults to `SecurityConfig()`.                                                                                                                          |   |
-| **Checkpoint** *(optional)*               | `checkpoint`               | Enables automatic checkpointing. Pass `True` for sensible defaults, a `CheckpointConfig` for full control, `False` to opt out, or `None` to inherit. See the [Checkpointing](#checkpointing) section below. Defaults to `None`. |   |
+| Attribute | Parameters | Description | |
+| :- | :- | :- | - |
+| **Tasks** | `tasks` | A list of tasks assigned to the crew. | |
+| **Agents** | `agents` | A list of agents that are part of the crew. | |
+| **Process** *(optional)* | `process` | The process flow (e.g., sequential, hierarchical) the crew follows. Default is `sequential`. | |
+| **Verbose** *(optional)* | `verbose` | The verbosity level for logging during execution. Defaults to `False`. | |
+| **Manager LLM** *(optional)* | `manager_llm` | The language model used by the manager agent in a hierarchical process. **Required when using a hierarchical process.** | |
+| **Function Calling LLM** *(optional)* | `function_calling_llm` | If passed, the crew will use this LLM to do function calling for tools for all agents in the crew. Each agent can have its own LLM, which overrides the crew's LLM for function calling. | |
+| **Config** *(optional)* | `config` | Optional configuration settings for the crew, in `Json` or `Dict[str, Any]` format. | |
+| **Max RPM** *(optional)* | `max_rpm` | Maximum requests per minute the crew adheres to during execution. Defaults to `None`. | |
+| **Memory** *(optional)* | `memory` | Utilized for storing execution memories (short-term, long-term, entity memory). | |
+| **Cache** *(optional)* | `cache` | Specifies whether to use a cache for storing the results of tools' execution. Defaults to `True`. | |
+| **Embedder** *(optional)* | `embedder` | Configuration for the embedder to be used by the crew. Mostly used by memory for now. Default is `{"provider": "openai"}`. | |
+| **Step Callback** *(optional)* | `step_callback` | A function that is called after each step of every agent. This can be used to log the agent's actions or to perform other operations; it won't override the agent-specific `step_callback`. | |
+| **Task Callback** *(optional)* | `task_callback` | A function that is called after the completion of each task. Useful for monitoring or additional operations post-task execution. | |
+| **Share Crew** *(optional)* | `share_crew` | Whether you want to share the complete crew information and execution with the crewAI team to make the library better, and allow us to train models. | |
+| **Output Log File** *(optional)* | `output_log_file` | Set to True to save logs as logs.txt in the current directory or provide a file path. Logs will be in JSON format if the filename ends in .json, otherwise .txt. Defaults to `None`. | |
+| **Manager Agent** *(optional)* | `manager_agent` | `manager` sets a custom agent that will be used as a manager. | |
+| **Prompt File** *(optional)* | `prompt_file` | Path to the prompt JSON file to be used for the crew. | |
+| **Planning** *(optional)* | `planning` | Adds planning ability to the Crew. When activated before each Crew iteration, all Crew data is sent to an AgentPlanner that will plan the tasks and this plan will be added to each task description. | |
+| **Planning LLM** *(optional)* | `planning_llm` | The language model used by the AgentPlanner in a planning process. | |
+| **Knowledge Sources** *(optional)* | `knowledge_sources` | Knowledge sources available at the crew level, accessible to all the agents. | |
+| **Stream** *(optional)* | `stream` | Enable streaming output to receive real-time updates during crew execution. Returns a `CrewStreamingOutput` object that can be iterated for chunks. Defaults to `False`. | |
+| **Chat LLM** *(optional)* | `chat_llm` | The language model used to orchestrate `crewai chat` CLI interactions with the crew. Accepts a model name string or `LLM` instance. Defaults to `None`. | |
+| **Before Kickoff Callbacks** *(optional)* | `before_kickoff_callbacks` | A list of callable functions executed **before** the crew starts. Each callback receives and can modify the inputs dict. Distinct from the `@before_kickoff` decorator. Defaults to `[]`. | |
+| **After Kickoff Callbacks** *(optional)* | `after_kickoff_callbacks` | A list of callable functions executed **after** the crew finishes. Each callback receives and can modify the `CrewOutput`. Distinct from the `@after_kickoff` decorator. Defaults to `[]`. | |
+| **Tracing** *(optional)* | `tracing` | Controls tracing for the crew. `True` = always enable, `False` = always disable, `None` = inherit from environment / user settings. Defaults to `None`. | |
+| **Skills** *(optional)* | `skills` | A list of `Path` objects (skill search directories) or pre-loaded `Skill` objects applied to all agents in the crew. Defaults to `None`. | |
+| **Security Config** *(optional)* | `security_config` | A `SecurityConfig` instance managing crew fingerprinting and identity. Defaults to `SecurityConfig()`. | |
+| **Checkpoint** *(optional)* | `checkpoint` | Enables automatic checkpointing. Pass `True` for sensible defaults, a `CheckpointConfig` for full control, `False` to opt out, or `None` to inherit. See the [Checkpointing](#checkpointing) section below. Defaults to `None`. | |
 
 <Tip>
   **Crew Max RPM**: The `max_rpm` attribute sets the maximum number of requests per minute the crew can perform to avoid rate limits and will override individual agents' `max_rpm` settings if you set it.
@@ -187,20 +187,20 @@ The `CrewOutput` includes the results from the final task output, token usage, a
 
 ### Crew Output Attributes
 
-| Attribute        | Parameters     | Type                       | Description                                                                                          |
-| :--------------- | :------------- | :------------------------- | :--------------------------------------------------------------------------------------------------- |
-| **Raw**          | `raw`          | `str`                      | The raw output of the crew. This is the default format for the output.                               |
-| **Pydantic**     | `pydantic`     | `Optional[BaseModel]`      | A Pydantic model object representing the structured output of the crew.                              |
-| **JSON Dict**    | `json_dict`    | `Optional[Dict[str, Any]]` | A dictionary representing the JSON output of the crew.                                               |
-| **Tasks Output** | `tasks_output` | `List[TaskOutput]`         | A list of `TaskOutput` objects, each representing the output of a task in the crew.                  |
-| **Token Usage**  | `token_usage`  | `Dict[str, Any]`           | A summary of token usage, providing insights into the language model's performance during execution. |
+| Attribute | Parameters | Type | Description |
+| :- | :- | :- | :- |
+| **Raw** | `raw` | `str` | The raw output of the crew. This is the default format for the output. |
+| **Pydantic** | `pydantic` | `Optional[BaseModel]` | A Pydantic model object representing the structured output of the crew. |
+| **JSON Dict** | `json_dict` | `Optional[Dict[str, Any]]` | A dictionary representing the JSON output of the crew. |
+| **Tasks Output** | `tasks_output` | `List[TaskOutput]` | A list of `TaskOutput` objects, each representing the output of a task in the crew. |
+| **Token Usage** | `token_usage` | `Dict[str, Any]` | A summary of token usage, providing insights into the language model's performance during execution. |
 
 ### Crew Output Methods and Properties
 
-| Method/Property | Description                                                                                       |
-| :-------------- | :------------------------------------------------------------------------------------------------ |
-| **json**        | Returns the JSON string representation of the crew output if the output format is JSON.           |
-| **to\_dict**    | Converts the JSON and Pydantic outputs to a dictionary.                                           |
+| Method/Property | Description |
+| :- | :- |
+| **json** | Returns the JSON string representation of the crew output if the output format is JSON. |
+| **to\_dict** | Converts the JSON and Pydantic outputs to a dictionary. |
 | \***\*str\*\*** | Returns the string representation of the crew output, prioritizing Pydantic, then JSON, then raw. |
 
 ### Accessing Crew Outputs
@@ -303,12 +303,12 @@ crew.kickoff()
 
 ### `CheckpointConfig` Attributes
 
-| Attribute         | Type                             | Default              | Description                                                                                                  |
-| :---------------- | :------------------------------- | :------------------- | :----------------------------------------------------------------------------------------------------------- |
-| `location`        | `str`                            | `"./.checkpoints"`   | Storage destination. For `JsonProvider` this is a directory path; for `SqliteProvider` a database file path. |
-| `on_events`       | `list[str]`                      | `["task_completed"]` | Event types that trigger a checkpoint write. Use `["*"]` to checkpoint on every event.                       |
-| `provider`        | `JsonProvider \| SqliteProvider` | `JsonProvider()`     | Storage backend. Defaults to `JsonProvider` (plain JSON files).                                              |
-| `max_checkpoints` | `int \| None`                    | `None`               | Maximum checkpoints to keep. Oldest are pruned after each write. `None` keeps all.                           |
+| Attribute | Type | Default | Description |
+| :- | :- | :- | :- |
+| `location` | `str` | `"./.checkpoints"` | Storage destination. For `JsonProvider` this is a directory path; for `SqliteProvider` a database file path. |
+| `on_events` | `list[str]` | `["task_completed"]` | Event types that trigger a checkpoint write. Use `["*"]` to checkpoint on every event. |
+| `provider` | `JsonProvider \| SqliteProvider` | `JsonProvider()` | Storage backend. Defaults to `JsonProvider` (plain JSON files). |
+| `max_checkpoints` | `int \| None` | `None` | Maximum checkpoints to keep. Oldest are pruned after each write. `None` keeps all. |
 
 ## Memory Utilization
 
@@ -359,12 +359,12 @@ Once your crew is assembled, initiate the workflow with the appropriate kickoff 
 
 CrewAI offers two approaches for async execution:
 
-| Method                     | Type         | Description                                            |
-| -------------------------- | ------------ | ------------------------------------------------------ |
-| `akickoff()`               | Native async | True async/await throughout the entire execution chain |
-| `akickoff_for_each()`      | Native async | Native async execution for each input in a list        |
-| `kickoff_async()`          | Thread-based | Wraps synchronous execution in `asyncio.to_thread`     |
-| `kickoff_for_each_async()` | Thread-based | Thread-based async for each input in a list            |
+| Method | Type | Description |
+| - | - | - |
+| `akickoff()` | Native async | True async/await throughout the entire execution chain |
+| `akickoff_for_each()` | Native async | Native async execution for each input in a list |
+| `kickoff_async()` | Thread-based | Wraps synchronous execution in `asyncio.to_thread` |
+| `kickoff_for_each_async()` | Thread-based | Thread-based async for each input in a list |
 
 <Note>
   For high-concurrency workloads, `akickoff()` and `akickoff_for_each()` are recommended as they use native async for task execution, memory operations, and knowledge retrieval.

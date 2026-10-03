@@ -273,15 +273,15 @@ print(flow.usage_metrics)
 
 The returned [`UsageMetrics`](https://github.com/crewAIInc/crewAI/blob/main/lib/crewai/src/crewai/types/usage_metrics.py) object uses a provider-neutral contract:
 
-| Field                   | Meaning                                                                             |
-| ----------------------- | ----------------------------------------------------------------------------------- |
-| `total_tokens`          | Billed total: `prompt_tokens + completion_tokens`                                   |
-| `prompt_tokens`         | Full input/prompt tokens billed for the request                                     |
-| `completion_tokens`     | Output/completion tokens billed for the request                                     |
-| `cached_prompt_tokens`  | Cache-read subset of prompt tokens (breakdown only)                                 |
-| `cache_creation_tokens` | Cache-write subset of prompt tokens (breakdown only, Anthropic)                     |
-| `reasoning_tokens`      | Reasoning/thinking subset where the provider reports it separately (breakdown only) |
-| `successful_requests`   | Number of LLM calls aggregated                                                      |
+| Field | Meaning |
+| - | - |
+| `total_tokens` | Billed total: `prompt_tokens + completion_tokens` |
+| `prompt_tokens` | Full input/prompt tokens billed for the request |
+| `completion_tokens` | Output/completion tokens billed for the request |
+| `cached_prompt_tokens` | Cache-read subset of prompt tokens (breakdown only) |
+| `cache_creation_tokens` | Cache-write subset of prompt tokens (breakdown only, Anthropic) |
+| `reasoning_tokens` | Reasoning/thinking subset where the provider reports it separately (breakdown only) |
+| `successful_requests` | Number of LLM calls aggregated |
 
 Breakdown fields such as `cached_prompt_tokens`, `cache_creation_tokens`, and
 `reasoning_tokens` are **not** added on top of `total_tokens` — they describe
@@ -853,21 +853,21 @@ This command will generate a new CrewAI project with the necessary folder struct
 
 After running the `crewai create flow name_of_flow` command, you will see a folder structure similar to the following:
 
-| Directory/File         | Description                                                         |
-| :--------------------- | :------------------------------------------------------------------ |
-| `name_of_flow/`        | Root directory for the flow.                                        |
-| ├── `crews/`           | Contains directories for specific crews.                            |
-| │ └── `poem_crew/`     | Directory for the "poem\_crew" with its configurations and scripts. |
-| │ ├── `config/`        | Configuration files directory for the "poem\_crew".                 |
-| │ │ ├── `agents.yaml`  | YAML file defining the agents for "poem\_crew".                     |
-| │ │ └── `tasks.yaml`   | YAML file defining the tasks for "poem\_crew".                      |
-| │ ├── `poem_crew.py`   | Script for "poem\_crew" functionality.                              |
-| ├── `tools/`           | Directory for additional tools used in the flow.                    |
-| │ └── `custom_tool.py` | Custom tool implementation.                                         |
-| ├── `main.py`          | Main script for running the flow.                                   |
-| ├── `README.md`        | Project description and instructions.                               |
-| ├── `pyproject.toml`   | Configuration file for project dependencies and settings.           |
-| └── `.gitignore`       | Specifies files and directories to ignore in version control.       |
+| Directory/File | Description |
+| :- | :- |
+| `name_of_flow/` | Root directory for the flow. |
+| ├── `crews/` | Contains directories for specific crews. |
+| │ └── `poem_crew/` | Directory for the "poem\_crew" with its configurations and scripts. |
+| │ ├── `config/` | Configuration files directory for the "poem\_crew". |
+| │ │ ├── `agents.yaml` | YAML file defining the agents for "poem\_crew". |
+| │ │ └── `tasks.yaml` | YAML file defining the tasks for "poem\_crew". |
+| │ ├── `poem_crew.py` | Script for "poem\_crew" functionality. |
+| ├── `tools/` | Directory for additional tools used in the flow. |
+| │ └── `custom_tool.py` | Custom tool implementation. |
+| ├── `main.py` | Main script for running the flow. |
+| ├── `README.md` | Project description and instructions. |
+| ├── `pyproject.toml` | Configuration file for project dependencies and settings. |
+| └── `.gitignore` | Specifies files and directories to ignore in version control. |
 
 ### Building Your Crews
 
@@ -1091,11 +1091,11 @@ Every Flow automatically has access to CrewAI's unified [Memory](/concepts/memor
 
 ### Built-in Methods
 
-| Method                             | Description                                                                                |
-| :--------------------------------- | :----------------------------------------------------------------------------------------- |
+| Method | Description |
+| :- | :- |
 | `self.remember(content, **kwargs)` | Store content in memory. Accepts optional `scope`, `categories`, `metadata`, `importance`. |
-| `self.recall(query, **kwargs)`     | Retrieve relevant memories. Accepts optional `scope`, `categories`, `limit`, `depth`.      |
-| `self.extract_memories(content)`   | Break raw text into discrete, self-contained memory statements.                            |
+| `self.recall(query, **kwargs)` | Retrieve relevant memories. Accepts optional `scope`, `categories`, `limit`, `depth`. |
+| `self.extract_memories(content)` | Break raw text into discrete, self-contained memory statements. |
 
 A default `Memory()` instance is created automatically when the Flow initializes. You can also pass a custom one:
 

@@ -107,11 +107,11 @@ All three tools accept the same connection / lifecycle parameters:
 
 ## Sandbox modes
 
-| Mode                | How to activate        | Sandbox lifetime                                                                       |
-| ------------------- | ---------------------- | -------------------------------------------------------------------------------------- |
-| Ephemeral (default) | `persistent=False`     | A new sandbox is created and killed for every `_run` call.                             |
-| Persistent          | `persistent=True`      | A sandbox is lazily created on the first call and killed at process exit via `atexit`. |
-| Attach              | `sandbox_id="sbx_..."` | The tool attaches to an existing sandbox and never kills it.                           |
+| Mode | How to activate | Sandbox lifetime |
+| - | - | - |
+| Ephemeral (default) | `persistent=False` | A new sandbox is created and killed for every `_run` call. |
+| Persistent | `persistent=True` | A sandbox is lazily created on the first call and killed at process exit via `atexit`. |
+| Attach | `sandbox_id="sbx_..."` | The tool attaches to an existing sandbox and never kills it. |
 
 Use ephemeral mode for one-off tasks — it minimizes blast radius. Use persistent mode when an agent needs to keep state across multiple tool calls (e.g. a shell session plus filesystem ops on the same files). Use attach mode when an outside system manages the sandbox lifecycle.
 

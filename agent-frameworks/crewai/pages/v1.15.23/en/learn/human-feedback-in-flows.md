@@ -67,16 +67,16 @@ When this flow runs, it will:
 
 ### Parameters
 
-| Parameter         | Type                    | Required              | Description                                                                                                                                              |
-| ----------------- | ----------------------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `message`         | `str`                   | Yes                   | The message shown to the human alongside the method output                                                                                               |
-| `emit`            | `Sequence[str]`         | No                    | List of possible outcomes. Feedback is collapsed to one of these, which triggers `@listen` decorators                                                    |
-| `llm`             | `str \| BaseLLM`        | When `emit` specified | LLM used to interpret feedback and map to an outcome                                                                                                     |
-| `default_outcome` | `str`                   | No                    | Outcome to use if no feedback provided. Must be in `emit`                                                                                                |
-| `metadata`        | `dict`                  | No                    | Additional data for enterprise integrations                                                                                                              |
-| `provider`        | `HumanFeedbackProvider` | No                    | Custom provider for async/non-blocking feedback. See [Async Human Feedback](#async-human-feedback-non-blocking)                                          |
-| `learn`           | `bool`                  | No                    | Enable HITL learning: distill lessons from feedback and pre-review future output. Default `False`. See [Learning from Feedback](#learning-from-feedback) |
-| `learn_limit`     | `int`                   | No                    | Max past lessons to recall for pre-review. Default `5`                                                                                                   |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `message` | `str` | Yes | The message shown to the human alongside the method output |
+| `emit` | `Sequence[str]` | No | List of possible outcomes. Feedback is collapsed to one of these, which triggers `@listen` decorators |
+| `llm` | `str \| BaseLLM` | When `emit` specified | LLM used to interpret feedback and map to an outcome |
+| `default_outcome` | `str` | No | Outcome to use if no feedback provided. Must be in `emit` |
+| `metadata` | `dict` | No | Additional data for enterprise integrations |
+| `provider` | `HumanFeedbackProvider` | No | Custom provider for async/non-blocking feedback. See [Async Human Feedback](#async-human-feedback-non-blocking) |
+| `learn` | `bool` | No | Enable HITL learning: distill lessons from feedback and pre-review future output. Default `False`. See [Learning from Feedback](#learning-from-feedback) |
+| `learn_limit` | `int` | No | Max past lessons to recall for pre-review. Default `5` |
 
 ### Basic Usage (No Routing)
 
@@ -431,12 +431,12 @@ def create_audit_log(self):
 
 When designing flows, consider whether you need routing:
 
-| Scenario                                            | Use        |
-| --------------------------------------------------- | ---------- |
-| Simple review, just need the feedback text          | No `emit`  |
+| Scenario | Use |
+| - | - |
+| Simple review, just need the feedback text | No `emit` |
 | Need to branch to different paths based on response | Use `emit` |
-| Approval gates with approve/reject/revise           | Use `emit` |
-| Collecting comments for logging only                | No `emit`  |
+| Approval gates with approve/reject/revise | Use `emit` |
+| Collecting comments for logging only | No `emit` |
 
 ## Async Human Feedback (Non-Blocking)
 
@@ -522,12 +522,12 @@ async def handle_feedback_webhook(flow_id: str, feedback: str):
 
 ### Key Types
 
-| Type                     | Description                                              |
-| ------------------------ | -------------------------------------------------------- |
-| `HumanFeedbackProvider`  | Protocol for custom feedback providers                   |
-| `PendingFeedbackContext` | Contains all info needed to resume a paused flow         |
-| `HumanFeedbackPending`   | Returned by `kickoff()` when flow is paused for feedback |
-| `ConsoleProvider`        | Default blocking console input provider                  |
+| Type | Description |
+| - | - |
+| `HumanFeedbackProvider` | Protocol for custom feedback providers |
+| `PendingFeedbackContext` | Contains all info needed to resume a paused flow |
+| `HumanFeedbackPending` | Returned by `kickoff()` when flow is paused for feedback |
+| `ConsoleProvider` | Default blocking console input provider |
 
 ### PendingFeedbackContext
 
@@ -679,10 +679,10 @@ class ArticleReviewFlow(Flow):
 
 ### Configuration
 
-| Parameter     | Default | Description                               |
-| ------------- | ------- | ----------------------------------------- |
-| `learn`       | `False` | Enable HITL learning                      |
-| `learn_limit` | `5`     | Max past lessons to recall for pre-review |
+| Parameter | Default | Description |
+| - | - | - |
+| `learn` | `False` | Enable HITL learning |
+| `learn_limit` | `5` | Max past lessons to recall for pre-review |
 
 ### Key Design Decisions
 

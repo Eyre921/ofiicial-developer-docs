@@ -4,6 +4,8 @@ source: https://docs.langchain.com/oss/javascript/langchain/install
 path: oss/javascript/langchain/install
 ---
 
+Install the LangChain package and the independent provider packages for the models and integrations you use.
+
 To install the LangChain package:
 
 <CodeGroup>

@@ -31,18 +31,18 @@ Get an API key at [https://you.com/platform/api-keys](https://you.com/platform/a
 
 ## Parameters
 
-| Parameter       | Required | Type            | Description                                                    |
-| --------------- | -------- | --------------- | -------------------------------------------------------------- |
-| `urls`          | Yes      | `array[string]` | URLs to extract content from (e.g., `["https://example.com"]`) |
-| `formats`       | No       | `array[string]` | Output formats: `"markdown"`, `"html"`, `"metadata"`           |
-| `crawl_timeout` | No       | `integer`       | Timeout in seconds (1–60) for page crawling                    |
+| Parameter | Required | Type | Description |
+| - | - | - | - |
+| `urls` | Yes | `array[string]` | URLs to extract content from (e.g., `["https://example.com"]`) |
+| `formats` | No | `array[string]` | Output formats: `"markdown"`, `"html"`, `"metadata"` |
+| `crawl_timeout` | No | `integer` | Timeout in seconds (1–60) for page crawling |
 
 ### Format Guidance
 
-| Format     | Best for                                                         |
-| ---------- | ---------------------------------------------------------------- |
-| `markdown` | Text extraction, readability, LLM consumption                    |
-| `html`     | Layout preservation, interactive content, visual fidelity        |
+| Format | Best for |
+| - | - |
+| `markdown` | Text extraction, readability, LLM consumption |
+| `html` | Layout preservation, interactive content, visual fidelity |
 | `metadata` | Structured page information (site name, favicon, OpenGraph data) |
 
 ## Example

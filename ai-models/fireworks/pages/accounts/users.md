@@ -19,10 +19,6 @@ Each user in an account is assigned a role that determines their level of access
 | **Contributor** | Can run inference on any resource and create and manage their own resources. Cannot modify resources owned by others. |
 | **Inference User** | Can view all resources and run inference, but cannot create or modify resources. |
 
-<Note>
-  The `contributor` and `inference-user` roles are newer roles that provide more granular access control. Contact Fireworks support if you need these roles enabled for your account.
-</Note>
-
 #### Resource management
 
 | Permission | Inference User | Contributor | User | Admin |

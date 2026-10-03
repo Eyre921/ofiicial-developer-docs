@@ -76,7 +76,7 @@ path: docs/api-reference/studio-api-information
 
       Select the **Chapters** tab to open the sidebar.
 
-      ![Chapters sidebar in a Studio Audio project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6f636820458f31c4388e8e6f5ce5433fba73340fc4e8712f0ec818f5966365d9/assets/images/product-guides/studio/studio-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233252Z&X-Amz-Expires=604800&X-Amz-Signature=bd00b864d82a5297513fe27e35c98b99934689739cc21d6d5757cc02b323d1b6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![Chapters sidebar in a Studio Audio project](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6f636820458f31c4388e8e6f5ce5433fba73340fc4e8712f0ec818f5966365d9/assets/images/product-guides/studio/studio-chapters.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113545Z&X-Amz-Expires=604800&X-Amz-Signature=0c573b117d24038eac0d7cc9b7044ad50b87cf4dfc5befe3cfdea9d16a18e6c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       Select **+** to add a chapter. Use **Chapter actions** to rename or remove a chapter. Drag chapters to reorder them.
     </td>
@@ -92,7 +92,7 @@ path: docs/api-reference/studio-api-information
 
       If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says **Regenerate**, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.
 
-      ![Generate and Regenerate controls in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/648aadb17d5d4c3bb29a3d1e568f37ad4139f941e092e7fce740c7f34821374c/assets/images/product-guides/studio/studio_generate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233252Z&X-Amz-Expires=604800&X-Amz-Signature=9a16e59ec1e1f34b83205fb69159db298f7909d02b8767adf310fb7f84beb1e3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![Generate and Regenerate controls in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/648aadb17d5d4c3bb29a3d1e568f37ad4139f941e092e7fce740c7f34821374c/assets/images/product-guides/studio/studio_generate.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113545Z&X-Amz-Expires=604800&X-Amz-Signature=795d5c3df75e5e9fac129366f260840960e7cfb9dc9b83313f785d6c4beeb0a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       If your selection isn't eligible for a free regeneration, the button will say **Generate**, and you will be charged for the generation.
     </td>

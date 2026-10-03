@@ -163,22 +163,22 @@ result = crew.kickoff()
 
 ### `from_tool_name()` Method
 
-| Argument                 | Type  | Required | Default                                                | Description                                                        |
-| :----------------------- | :---- | :------- | :----------------------------------------------------- | :----------------------------------------------------------------- |
-| **tool\_name**           | `str` | Yes      | None                                                   | Name of the specific tool to use (e.g., "linear\_\_create\_issue") |
-| **tool\_pack\_id**       | `str` | Yes      | None                                                   | UUID of your Agent Handler Tool Pack                               |
-| **registered\_user\_id** | `str` | Yes      | None                                                   | UUID or origin\_id of the registered user                          |
-| **base\_url**            | `str` | No       | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API                                     |
-| **session\_id**          | `str` | No       | Auto-generated                                         | MCP session ID for maintaining context                             |
+| Argument | Type | Required | Default | Description |
+| :- | :- | :- | :- | :- |
+| **tool\_name** | `str` | Yes | None | Name of the specific tool to use (e.g., "linear\_\_create\_issue") |
+| **tool\_pack\_id** | `str` | Yes | None | UUID of your Agent Handler Tool Pack |
+| **registered\_user\_id** | `str` | Yes | None | UUID or origin\_id of the registered user |
+| **base\_url** | `str` | No | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API |
+| **session\_id** | `str` | No | Auto-generated | MCP session ID for maintaining context |
 
 ### `from_tool_pack()` Method
 
-| Argument                 | Type        | Required | Default                                                | Description                                                     |
-| :----------------------- | :---------- | :------- | :----------------------------------------------------- | :-------------------------------------------------------------- |
-| **tool\_pack\_id**       | `str`       | Yes      | None                                                   | UUID of your Agent Handler Tool Pack                            |
-| **registered\_user\_id** | `str`       | Yes      | None                                                   | UUID or origin\_id of the registered user                       |
-| **tool\_names**          | `list[str]` | No       | None                                                   | Specific tool names to load. If None, loads all available tools |
-| **base\_url**            | `str`       | No       | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API                                  |
+| Argument | Type | Required | Default | Description |
+| :- | :- | :- | :- | :- |
+| **tool\_pack\_id** | `str` | Yes | None | UUID of your Agent Handler Tool Pack |
+| **registered\_user\_id** | `str` | Yes | None | UUID or origin\_id of the registered user |
+| **tool\_names** | `list[str]` | No | None | Specific tool names to load. If None, loads all available tools |
+| **base\_url** | `str` | No | "[https://ah-api.merge.dev](https://ah-api.merge.dev)" | Base URL for Agent Handler API |
 
 ## Environment Variables
 

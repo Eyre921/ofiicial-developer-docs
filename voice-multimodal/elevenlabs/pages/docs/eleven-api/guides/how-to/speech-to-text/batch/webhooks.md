@@ -31,7 +31,7 @@ In the ElevenLabs dashboard, go to
 [**Developers** > **Webhooks**](https://elevenlabs.io/app/developers/webhooks).
 Click **Create webhook**, or edit an existing webhook.
 
-![Create webhook dialog with Transcription completed selected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/866f389106e74e16586a4d68cf8160f2d27568518ff4f984c2fab81cbd1674c9/assets/images/cookbooks/scribe/webhooks/create-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233221Z&X-Amz-Expires=604800&X-Amz-Signature=44bbdabf443492de3bf244fd002a798575bdb9ffdf94b2c7a089b8d6fe8626e1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Create webhook dialog with Transcription completed selected](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/866f389106e74e16586a4d68cf8160f2d27568518ff4f984c2fab81cbd1674c9/assets/images/cookbooks/scribe/webhooks/create-webhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113450Z&X-Amz-Expires=604800&X-Amz-Signature=4454ac9e0c892f87867c5e3b37d0260d90c8e912c513826988d427427ee0f275&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Configure the webhook with:
 

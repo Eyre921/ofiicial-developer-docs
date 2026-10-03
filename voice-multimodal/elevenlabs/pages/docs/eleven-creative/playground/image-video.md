@@ -89,7 +89,7 @@ The **Explore** tab displays a gallery of community creations for discovering in
 
 ## Generate
 
-![Video prompt interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f25b7fd594fb471980501063a9554513c4d22a2b3f8d526537054a0797780b8f/assets/images/product-guides/images-videos/video-prompt.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T224339Z&X-Amz-Expires=604800&X-Amz-Signature=87f7b3a6bec7c9b27b2c077d15709d71a39bbc1b2a0cf8583d535330572d7b6d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video prompt interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f25b7fd594fb471980501063a9554513c4d22a2b3f8d526537054a0797780b8f/assets/images/product-guides/images-videos/video-prompt.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113151Z&X-Amz-Expires=604800&X-Amz-Signature=cb07ce52f2d89e1840609d527ccfd58e4fdd112556b0cfb4e7b24e05915c28c2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The prompt box is anchored at the bottom of the page and provides all controls for creating visual content.
 
@@ -101,7 +101,7 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 
 ### Choose models and settings
 
-![Video models selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/422c8078ccb97a8b5f98e521f1c230d3efbad34a128e5905a457e2ed0deeebce/assets/images/product-guides/images-videos/video-models.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T224339Z&X-Amz-Expires=604800&X-Amz-Signature=1c43d104ece78df9282a9027274b86aed67f5dd8b8a14b83b77b189aba3b7555&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video models selection](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/422c8078ccb97a8b5f98e521f1c230d3efbad34a128e5905a457e2ed0deeebce/assets/images/product-guides/images-videos/video-models.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113151Z&X-Amz-Expires=604800&X-Amz-Signature=f978b7c1d8d94efa135bd40b9034a1eb11a5422828ac0961106bd30de0c53307&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Select model:** Open the model menu to browse available options like Google Veo 3.1, Kling 2.5, or Flux 1 Kontext Pro. Each model has unique strengths and capabilities listed for easy comparison. See the [Models](#models) section for detailed information.
 
@@ -117,7 +117,7 @@ The prompt box is anchored at the bottom of the page and provides all controls f
 ### Add references
 
 ![Video references
-interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e6591dc845bfa071c81202736d8748827ab8110f0fe76c985cab83b9adcb51ec/assets/images/product-guides/images-videos/videos-prompt-references.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T224339Z&X-Amz-Expires=604800&X-Amz-Signature=6a437d4fd5b4904df37d545051c4a79764402b8ee3627c9cfe34aa52dfb9f8d4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e6591dc845bfa071c81202736d8748827ab8110f0fe76c985cab83b9adcb51ec/assets/images/product-guides/images-videos/videos-prompt-references.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113151Z&X-Amz-Expires=604800&X-Amz-Signature=eccbccc6dd15a9dc39225b47c403165fe6641c97ccfe3ee6affe5f76b4e5f639&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For greater control over output, add visual references to guide generation. Availability depends on the selected model. We support a wide range of image file formats including JPG, PNG, WEBP, and more.
 
@@ -138,7 +138,7 @@ Before generating, a cost indicator shows the total cost for the number of asset
 
 ## History
 
-![Video history interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c5da61f1025001d12e41e2113a43da63903ea5ae29748085624eb5422b8c2473/assets/images/product-guides/images-videos/video-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T224339Z&X-Amz-Expires=604800&X-Amz-Signature=d24e9974e2209e6f6f982d7e51061e9bdc083dcaab757d53fcae8571de5c8a62&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video history interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c5da61f1025001d12e41e2113a43da63903ea5ae29748085624eb5422b8c2473/assets/images/product-guides/images-videos/video-history.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113151Z&X-Amz-Expires=604800&X-Amz-Signature=faea51629c44102156206d80ff63831a5e99a89240cdd81a3687ebe9b42780b8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The **History** tab provides a chronological log of everything you've generated and serves as a workspace for refining previous work.
 
@@ -169,7 +169,7 @@ Once you have a generation you're satisfied with, use built-in enhancement tools
 
 ### Exporting your assets
 
-![Video export interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec37123477c4568ad486fea312925a9a12e11a1bf7f252750db0b91f6d85b822/assets/images/product-guides/images-videos/video-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T224339Z&X-Amz-Expires=604800&X-Amz-Signature=3925841f39069e072fb9a90ecda09e5fc97fa65ce905b12b664e3cb1aed24a05&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Video export interface](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec37123477c4568ad486fea312925a9a12e11a1bf7f252750db0b91f6d85b822/assets/images/product-guides/images-videos/video-export.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113151Z&X-Amz-Expires=604800&X-Amz-Signature=bd82f5ff03b15d171eed9e04b09b9f4206b307aacbdfc7cabbd10efc43787fbb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Export finished assets by downloading them locally or sending them directly to ElevenCreative Studio.
 
@@ -2447,7 +2447,7 @@ Converts standard dynamic range video into HDR.
 
       Image & Video enables you to create high-quality visual content from simple text descriptions and optional reference images.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e/assets/images/help-center/product/flows-image-video/image-video/video-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T224339Z&X-Amz-Expires=604800&X-Amz-Signature=e43b9c73de9090471b3a1e04020bc8b736604ff7c2ab57a966498b27824c4df8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e/assets/images/help-center/product/flows-image-video/image-video/video-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113151Z&X-Amz-Expires=604800&X-Amz-Signature=adddd83b6c974e33f577a8f22d545ad9f435893117f80b13e136692db7d51f00&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       You can choose from a range of different image and video generative models, depending on your use case. Your generated content can either be downloaded, or imported directly into Studio projects.
 
@@ -2470,7 +2470,7 @@ Converts standard dynamic range video into HDR.
 
       Before you submit your generation, you will be shown the cost based on the model and settings you've chosen.
 
-      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fe581ba3136d4bd464ded06a391f449c15658bf3f11f7a0b69feaf61d4a0904/assets/images/help-center/product/flows-image-video/image-video/how-much-does-image-video-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T224339Z&X-Amz-Expires=604800&X-Amz-Signature=db3d1f7144a4946ec2c51f98dbb9c36f62ad289b91f1d3b9b52c896cd8eef62f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+      ![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3fe581ba3136d4bd464ded06a391f449c15658bf3f11f7a0b69feaf61d4a0904/assets/images/help-center/product/flows-image-video/image-video/how-much-does-image-video-cost.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113151Z&X-Amz-Expires=604800&X-Amz-Signature=75c776b9f3c0aff32b2ee8b4dd1c033fa642d14f3fa6d3e19ffc9536ffdbbbaa&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
       For more details, see our [Image & Video documentation.](/docs/product-guides/playground/image-video)
 

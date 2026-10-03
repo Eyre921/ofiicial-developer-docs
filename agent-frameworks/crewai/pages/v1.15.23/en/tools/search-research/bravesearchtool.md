@@ -13,15 +13,15 @@ A suite of tools for querying the Brave Search API — covering web, news, image
 CrewAI offers a family of Brave Search tools, each targeting a specific [Brave Search API](https://brave.com/search/api/) endpoint.
 Rather than a single catch-all tool, you can pick exactly the tool that matches the kind of results your agent needs:
 
-| Tool                            | Endpoint     | Use case                                                                             |
-| ------------------------------- | ------------ | ------------------------------------------------------------------------------------ |
-| `BraveWebSearchTool`            | Web Search   | General web results, snippets, and URLs                                              |
-| `BraveNewsSearchTool`           | News Search  | Recent news articles and headlines                                                   |
-| `BraveImageSearchTool`          | Image Search | Image results with dimensions and source URLs                                        |
-| `BraveVideoSearchTool`          | Video Search | Video results from across the web                                                    |
-| `BraveLocalPOIsTool`            | Local POIs   | Find points of interest (e.g., restaurants)                                          |
-| `BraveLocalPOIsDescriptionTool` | Local POIs   | Retrieve AI-generated location descriptions                                          |
-| `BraveLLMContextTool`           | LLM Context  | Pre-extracted web content optimized for AI agents, LLM grounding, and RAG pipelines. |
+| Tool | Endpoint | Use case |
+| - | - | - |
+| `BraveWebSearchTool` | Web Search | General web results, snippets, and URLs |
+| `BraveNewsSearchTool` | News Search | Recent news articles and headlines |
+| `BraveImageSearchTool` | Image Search | Image results with dimensions and source URLs |
+| `BraveVideoSearchTool` | Video Search | Video results from across the web |
+| `BraveLocalPOIsTool` | Local POIs | Find points of interest (e.g., restaurants) |
+| `BraveLocalPOIsDescriptionTool` | Local POIs | Retrieve AI-generated location descriptions |
+| `BraveLLMContextTool` | LLM Context | Pre-extracted web content optimized for AI agents, LLM grounding, and RAG pipelines. |
 
 All tools share a common base class (`BraveSearchToolBase`) that provides consistent behavior — rate limiting, automatic retries on `429` responses, header and parameter validation, and optional file saving.
 
@@ -111,16 +111,16 @@ if "locations" in results:
 
 Every Brave Search tool accepts the following parameters at initialization:
 
-| Parameter             | Type           | Default | Description                                                                                             |
-| --------------------- | -------------- | ------- | ------------------------------------------------------------------------------------------------------- |
-| `api_key`             | `str \| None`  | `None`  | Brave API key. Falls back to the `BRAVE_API_KEY` environment variable.                                  |
-| `headers`             | `dict \| None` | `None`  | Additional HTTP headers to send with every request (e.g., `api-version`, geolocation headers).          |
-| `requests_per_second` | `float`        | `1.0`   | Maximum request rate. The tool will sleep between calls to stay within this limit.                      |
-| `save_file`           | `bool`         | `False` | When `True`, each response is written to a timestamped `.txt` file.                                     |
-| `raw`                 | `bool`         | `False` | When `True`, the full API JSON response is returned without any refinement.                             |
-| `timeout`             | `int`          | `30`    | HTTP request timeout in seconds.                                                                        |
-| `country`             | `str \| None`  | `None`  | Legacy shorthand for geo-targeting (e.g., `"US"`). Prefer using the `country` query parameter directly. |
-| `n_results`           | `int`          | `10`    | Legacy shorthand for result count. Prefer using the `count` query parameter directly.                   |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `api_key` | `str \| None` | `None` | Brave API key. Falls back to the `BRAVE_API_KEY` environment variable. |
+| `headers` | `dict \| None` | `None` | Additional HTTP headers to send with every request (e.g., `api-version`, geolocation headers). |
+| `requests_per_second` | `float` | `1.0` | Maximum request rate. The tool will sleep between calls to stay within this limit. |
+| `save_file` | `bool` | `False` | When `True`, each response is written to a timestamped `.txt` file. |
+| `raw` | `bool` | `False` | When `True`, the full API JSON response is returned without any refinement. |
+| `timeout` | `int` | `30` | HTTP request timeout in seconds. |
+| `country` | `str \| None` | `None` | Legacy shorthand for geo-targeting (e.g., `"US"`). Prefer using the `country` query parameter directly. |
+| `n_results` | `int` | `10` | Legacy shorthand for result count. Prefer using the `count` query parameter directly. |
 
 <Warning>
   The `country` and `n_results` constructor parameters exist for backwards compatibility. They are applied as defaults when the corresponding query parameters (`country`, `count`) are not provided at call time. For new code, we recommend passing `country` and `count` directly as query parameters instead.
@@ -133,76 +133,76 @@ The parameters vary slightly per endpoint — here is a summary of the most comm
 
 ### BraveWebSearchTool
 
-| Parameter        | Description                                                                                                                                      |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `q`              | **(required)** Search query string (max 400 chars).                                                                                              |
-| `country`        | Two-letter country code for geo-targeting (e.g., `"US"`).                                                                                        |
-| `search_lang`    | Two-letter language code for results (e.g., `"en"`).                                                                                             |
-| `count`          | Max number of results to return (1–20).                                                                                                          |
-| `offset`         | Skip the first N pages of results (0–9).                                                                                                         |
-| `safesearch`     | Content filter: `"off"`, `"moderate"`, or `"strict"`.                                                                                            |
-| `freshness`      | Recency filter: `"pd"` (past day), `"pw"` (past week), `"pm"` (past month), `"py"` (past year), or a date range like `"2025-01-01to2025-06-01"`. |
-| `extra_snippets` | Include up to 5 additional text snippets per result.                                                                                             |
-| `goggles`        | Brave Goggles URL(s) and/or source for custom re-ranking.                                                                                        |
+| Parameter | Description |
+| - | - |
+| `q` | **(required)** Search query string (max 400 chars). |
+| `country` | Two-letter country code for geo-targeting (e.g., `"US"`). |
+| `search_lang` | Two-letter language code for results (e.g., `"en"`). |
+| `count` | Max number of results to return (1–20). |
+| `offset` | Skip the first N pages of results (0–9). |
+| `safesearch` | Content filter: `"off"`, `"moderate"`, or `"strict"`. |
+| `freshness` | Recency filter: `"pd"` (past day), `"pw"` (past week), `"pm"` (past month), `"py"` (past year), or a date range like `"2025-01-01to2025-06-01"`. |
+| `extra_snippets` | Include up to 5 additional text snippets per result. |
+| `goggles` | Brave Goggles URL(s) and/or source for custom re-ranking. |
 
 For the complete parameter and header reference, see the [Brave Web Search API documentation](https://api-dashboard.search.brave.com/api-reference/web/search/get).
 
 ### BraveNewsSearchTool
 
-| Parameter     | Description                                               |
-| ------------- | --------------------------------------------------------- |
-| `q`           | **(required)** Search query string (max 400 chars).       |
-| `country`     | Two-letter country code for geo-targeting.                |
-| `search_lang` | Two-letter language code for results.                     |
-| `count`       | Max number of results to return (1–50).                   |
-| `offset`      | Skip the first N pages of results (0–9).                  |
-| `safesearch`  | Content filter: `"off"`, `"moderate"`, or `"strict"`.     |
-| `freshness`   | Recency filter (same options as Web Search).              |
-| `goggles`     | Brave Goggles URL(s) and/or source for custom re-ranking. |
+| Parameter | Description |
+| - | - |
+| `q` | **(required)** Search query string (max 400 chars). |
+| `country` | Two-letter country code for geo-targeting. |
+| `search_lang` | Two-letter language code for results. |
+| `count` | Max number of results to return (1–50). |
+| `offset` | Skip the first N pages of results (0–9). |
+| `safesearch` | Content filter: `"off"`, `"moderate"`, or `"strict"`. |
+| `freshness` | Recency filter (same options as Web Search). |
+| `goggles` | Brave Goggles URL(s) and/or source for custom re-ranking. |
 
 For the complete parameter and header reference, see the [Brave News Search API documentation](https://api-dashboard.search.brave.com/api-reference/news/news_search/get).
 
 ### BraveImageSearchTool
 
-| Parameter     | Description                                         |
-| ------------- | --------------------------------------------------- |
-| `q`           | **(required)** Search query string (max 400 chars). |
-| `country`     | Two-letter country code for geo-targeting.          |
-| `search_lang` | Two-letter language code for results.               |
-| `count`       | Max number of results to return (1–200).            |
-| `safesearch`  | Content filter: `"off"` or `"strict"`.              |
-| `spellcheck`  | Attempt to correct spelling errors in the query.    |
+| Parameter | Description |
+| - | - |
+| `q` | **(required)** Search query string (max 400 chars). |
+| `country` | Two-letter country code for geo-targeting. |
+| `search_lang` | Two-letter language code for results. |
+| `count` | Max number of results to return (1–200). |
+| `safesearch` | Content filter: `"off"` or `"strict"`. |
+| `spellcheck` | Attempt to correct spelling errors in the query. |
 
 For the complete parameter and header reference, see the [Brave Image Search API documentation](https://api-dashboard.search.brave.com/api-reference/images/image_search).
 
 ### BraveVideoSearchTool
 
-| Parameter     | Description                                           |
-| ------------- | ----------------------------------------------------- |
-| `q`           | **(required)** Search query string (max 400 chars).   |
-| `country`     | Two-letter country code for geo-targeting.            |
-| `search_lang` | Two-letter language code for results.                 |
-| `count`       | Max number of results to return (1–50).               |
-| `offset`      | Skip the first N pages of results (0–9).              |
-| `safesearch`  | Content filter: `"off"`, `"moderate"`, or `"strict"`. |
-| `freshness`   | Recency filter (same options as Web Search).          |
+| Parameter | Description |
+| - | - |
+| `q` | **(required)** Search query string (max 400 chars). |
+| `country` | Two-letter country code for geo-targeting. |
+| `search_lang` | Two-letter language code for results. |
+| `count` | Max number of results to return (1–50). |
+| `offset` | Skip the first N pages of results (0–9). |
+| `safesearch` | Content filter: `"off"`, `"moderate"`, or `"strict"`. |
+| `freshness` | Recency filter (same options as Web Search). |
 
 For the complete parameter and header reference, see the [Brave Video Search API documentation](https://api-dashboard.search.brave.com/api-reference/videos/video_search/get).
 
 ### BraveLocalPOIsTool
 
-| Parameter     | Description                                                            |
-| ------------- | ---------------------------------------------------------------------- |
-| `ids`         | **(required)** A list of unique identifiers for the desired locations. |
-| `search_lang` | Two-letter language code for results.                                  |
+| Parameter | Description |
+| - | - |
+| `ids` | **(required)** A list of unique identifiers for the desired locations. |
+| `search_lang` | Two-letter language code for results. |
 
 For the complete parameter and header reference, see [Brave Local POIs API documentation](https://api-dashboard.search.brave.com/api-reference/web/local_pois).
 
 ### BraveLocalPOIsDescriptionTool
 
-| Parameter | Description                                                            |
-| --------- | ---------------------------------------------------------------------- |
-| `ids`     | **(required)** A list of unique identifiers for the desired locations. |
+| Parameter | Description |
+| - | - |
+| `ids` | **(required)** A list of unique identifiers for the desired locations. |
 
 For the complete parameter and header reference, see [Brave POI Descriptions API documentation](https://api-dashboard.search.brave.com/api-reference/web/poi_descriptions).
 

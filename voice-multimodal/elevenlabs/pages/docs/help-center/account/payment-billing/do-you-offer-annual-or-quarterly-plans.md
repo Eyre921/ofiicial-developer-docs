@@ -12,7 +12,7 @@ Yes, we offer annual plans for all of our subscription tiers. At the moment, we 
 
 On our [pricing page](https://elevenlabs.io/pricing) and [subscription page](https://elevenlabs.io/app/subscription), you can toggle between monthly and annual plans to see the different pricing and options available.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233308Z&X-Amz-Expires=604800&X-Amz-Signature=4dbd1788df2d10d9d2c9258fc1e39a198c8d3478978440eaa09aec3b50203032&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5061fc9c3052f020d44e9760a4887a4bb972e4b02b959d9ad68414cb4a2e1730/assets/images/help-center/account/payment-billing/do-you-offer-annual-or-quarterly-plans.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113610Z&X-Amz-Expires=604800&X-Amz-Signature=db93d6e9612f4a3d802c47bc1e4769ddcd9c792483c18b723fcd568bf5971bf2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Annual plans are billed on an annual cycle and will renew automatically unless cancelled.
 

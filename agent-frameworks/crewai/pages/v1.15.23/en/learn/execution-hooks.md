@@ -49,12 +49,12 @@ def add_defaults(ctx):
 
 A hook may do any of four things:
 
-| Action      | How                                    | Effect                                      |
-| ----------- | -------------------------------------- | ------------------------------------------- |
-| **Proceed** | `return None` (or nothing)             | Operation continues unchanged               |
-| **Mutate**  | Change `ctx.payload` / fields in place | Change is visible downstream                |
-| **Replace** | `return new_payload`                   | A non-`None` return replaces `ctx.payload`  |
-| **Abort**   | `raise HookAborted(reason, source)`    | Operation is stopped; the reason propagates |
+| Action | How | Effect |
+| - | - | - |
+| **Proceed** | `return None` (or nothing) | Operation continues unchanged |
+| **Mutate** | Change `ctx.payload` / fields in place | Change is visible downstream |
+| **Replace** | `return new_payload` | A non-`None` return replaces `ctx.payload` |
+| **Abort** | `raise HookAborted(reason, source)` | Operation is stopped; the reason propagates |
 
 ## Registering hooks
 
@@ -91,21 +91,21 @@ semantics, and examples.
 
 ### [Execution boundaries](/edge/en/learn/execution-boundary-hooks)
 
-| Point             | When                              | `ctx.payload`     |
-| ----------------- | --------------------------------- | ----------------- |
-| `EXECUTION_START` | A crew or flow is about to begin  | inputs `dict`     |
-| `INPUT`           | Resolved inputs for the execution | inputs `dict`     |
-| `OUTPUT`          | Final result is ready             | the output object |
-| `EXECUTION_END`   | A crew or flow has finished       | the output object |
+| Point | When | `ctx.payload` |
+| - | - | - |
+| `EXECUTION_START` | A crew or flow is about to begin | inputs `dict` |
+| `INPUT` | Resolved inputs for the execution | inputs `dict` |
+| `OUTPUT` | Final result is ready | the output object |
+| `EXECUTION_END` | A crew or flow has finished | the output object |
 
 ### [Model boundaries](/edge/en/learn/llm-hooks) & [tool boundaries](/edge/en/learn/tool-hooks)
 
-| Point             | When               | Hook receives                              |
-| ----------------- | ------------------ | ------------------------------------------ |
-| `PRE_MODEL_CALL`  | Before an LLM call | `LLMCallHookContext`                       |
-| `POST_MODEL_CALL` | After an LLM call  | `LLMCallHookContext` (with `response` set) |
-| `PRE_TOOL_CALL`   | Before a tool runs | `ToolCallHookContext`                      |
-| `POST_TOOL_CALL`  | After a tool runs  | `ToolCallHookContext` (with results set)   |
+| Point | When | Hook receives |
+| - | - | - |
+| `PRE_MODEL_CALL` | Before an LLM call | `LLMCallHookContext` |
+| `POST_MODEL_CALL` | After an LLM call | `LLMCallHookContext` (with `response` set) |
+| `PRE_TOOL_CALL` | Before a tool runs | `ToolCallHookContext` |
+| `POST_TOOL_CALL` | After a tool runs | `ToolCallHookContext` (with results set) |
 
 At these four points the hook receives the rich legacy context **directly** as
 its argument — there is no separate `ctx.payload`. Mutate `ctx.messages` /
@@ -114,10 +114,10 @@ response / tool result.
 
 ### [Step points](/edge/en/learn/step-hooks)
 
-| Point       | When                              | `ctx.payload` |
-| ----------- | --------------------------------- | ------------- |
-| `PRE_STEP`  | Before a task or flow-method step | step input    |
-| `POST_STEP` | After a task or flow-method step  | step output   |
+| Point | When | `ctx.payload` |
+| - | - | - |
+| `PRE_STEP` | Before a task or flow-method step | step input |
+| `POST_STEP` | After a task or flow-method step | step output |
 
 `PRE_STEP` / `POST_STEP` carry `ctx.kind` (`"task"` or `"flow_method"`) and
 `ctx.step_name`.

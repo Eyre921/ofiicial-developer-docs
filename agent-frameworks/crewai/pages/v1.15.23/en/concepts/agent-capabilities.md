@@ -76,14 +76,14 @@ agent = Agent(
 
 ## When to Use What
 
-| You need...                                          | Use                | Example                                |
-| :--------------------------------------------------- | :----------------- | :------------------------------------- |
-| Agent to search the web                              | **Tools**          | `tools=[SerperDevTool()]`              |
-| Agent to call a remote API via MCP                   | **MCPs**           | `mcps=["https://api.example.com/sse"]` |
-| Agent to send emails via Gmail                       | **Apps**           | `apps=["gmail"]`                       |
-| Agent to follow specific procedures                  | **Skills**         | `skills=["./skills/code-review"]`      |
-| Agent to reference company docs                      | **Knowledge**      | `knowledge_sources=[pdf_source]`       |
-| Agent to search the web AND follow review guidelines | **Tools + Skills** | Use both together                      |
+| You need... | Use | Example |
+| :- | :- | :- |
+| Agent to search the web | **Tools** | `tools=[SerperDevTool()]` |
+| Agent to call a remote API via MCP | **MCPs** | `mcps=["https://api.example.com/sse"]` |
+| Agent to send emails via Gmail | **Apps** | `apps=["gmail"]` |
+| Agent to follow specific procedures | **Skills** | `skills=["./skills/code-review"]` |
+| Agent to reference company docs | **Knowledge** | `knowledge_sources=[pdf_source]` |
+| Agent to search the web AND follow review guidelines | **Tools + Skills** | Use both together |
 
 ***
 
@@ -120,15 +120,15 @@ researcher = Agent(
 
 ## Comparison Table
 
-| Feature                 |    Tools   |     MCPs    |        Apps        |     Skills    |        Knowledge       |
-| :---------------------- | :--------: | :---------: | :----------------: | :-----------: | :--------------------: |
-| **Gives agent actions** |      ✅     |      ✅      |          ✅         |       ❌       |            ❌           |
-| **Modifies prompt**     |      ❌     |      ❌      |          ❌         |       ✅       |            ✅           |
-| **Requires code**       |     Yes    | Config only |     Config only    | Markdown only |       Config only      |
-| **Runs locally**        |     Yes    |   Depends   | Yes (with env var) |      N/A      |           Yes          |
-| **Needs API keys**      |  Per tool  |  Per server |  Integration token |       No      |      Embedder only     |
-| **Set on Agent**        | `tools=[]` |  `mcps=[]`  |      `apps=[]`     |  `skills=[]`  | `knowledge_sources=[]` |
-| **Set on Crew**         |      ❌     |      ❌      |          ❌         |  `skills=[]`  | `knowledge_sources=[]` |
+| Feature | Tools | MCPs | Apps | Skills | Knowledge |
+| :- | :-: | :-: | :-: | :-: | :-: |
+| **Gives agent actions** | ✅ | ✅ | ✅ | ❌ | ❌ |
+| **Modifies prompt** | ❌ | ❌ | ❌ | ✅ | ✅ |
+| **Requires code** | Yes | Config only | Config only | Markdown only | Config only |
+| **Runs locally** | Yes | Depends | Yes (with env var) | N/A | Yes |
+| **Needs API keys** | Per tool | Per server | Integration token | No | Embedder only |
+| **Set on Agent** | `tools=[]` | `mcps=[]` | `apps=[]` | `skills=[]` | `knowledge_sources=[]` |
+| **Set on Crew** | ❌ | ❌ | ❌ | `skills=[]` | `knowledge_sources=[]` |
 
 ***
 

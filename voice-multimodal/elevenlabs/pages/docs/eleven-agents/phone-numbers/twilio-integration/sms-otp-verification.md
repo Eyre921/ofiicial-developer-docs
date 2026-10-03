@@ -8,7 +8,7 @@ path: docs/eleven-agents/phone-numbers/twilio-integration/sms-otp-verification
 
 # SMS OTP verification
 
-![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803/assets/images/conversational-ai/twilio-verify-sms-otp-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233146Z&X-Amz-Expires=604800&X-Amz-Signature=9833df8b377fba106f656057ec4df12dacb1a5eab11e1083218f6e4386dec6db&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/97201c6fdad0c63900236b52726c867d3ff9405fdbd30725858f384653c95803/assets/images/conversational-ai/twilio-verify-sms-otp-conversation.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113238Z&X-Amz-Expires=604800&X-Amz-Signature=eadc523b7a017b48a05266dccc4c4502a5b4bf24f5c6ea81a0aa3141eddbf013&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -74,7 +74,7 @@ Basic dkFDxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
 
 ### send\_SMS\_verification
 
-![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e/assets/images/conversational-ai/configure-webhook-tool-twilio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233146Z&X-Amz-Expires=604800&X-Amz-Signature=c9065831756f2afce4f8308ba97359cf0c7901c985c2755fe241441159a35c5b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Agent conversation collecting a phone number, OTP code, and verification success](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9d72a753674c17481e99ea871b1b178cd7791f2da1ec3491ad4786c3fbc9a84e/assets/images/conversational-ai/configure-webhook-tool-twilio.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113238Z&X-Amz-Expires=604800&X-Amz-Signature=1529389e4fddffaa0c7390bd941de2c1f6375c3416072d8cd896189b7eeb9100&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 In the **Agent** section of your agent settings, choose **Add Tool** and select **Webhook**.
 

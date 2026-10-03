@@ -1,5 +1,5 @@
 ---
-title: "Overview"
+title: "Middleware overview"
 source: https://docs.langchain.com/oss/python/langchain/middleware/overview
 path: oss/python/langchain/middleware/overview
 ---

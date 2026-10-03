@@ -73,7 +73,7 @@ Open your agent's configuration page in the dashboard.
 
 In the Advanced settings panel, toggle the "Monitoring" option.
 
-![Monitoring toggle in agent settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1a4b5507a39ddf6a517772b8c01ede5f7d12429175fdf89e04c8ba910f646f8e/assets/images/agents/realtime-monitoring-toggle.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T225447Z&X-Amz-Expires=604800&X-Amz-Signature=2a2a92ae4a50b3b7571293f36734b0e2b6417c6374f082705fe82c48f6942634&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Monitoring toggle in agent settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1a4b5507a39ddf6a517772b8c01ede5f7d12429175fdf89e04c8ba910f646f8e/assets/images/agents/realtime-monitoring-toggle.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113332Z&X-Amz-Expires=604800&X-Amz-Signature=b18277da08f920acd09da5769e17d7c0e5f204f634a6c294a15aaeff20c90529&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Select events
 

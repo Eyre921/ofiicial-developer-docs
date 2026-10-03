@@ -4,6 +4,8 @@ source: https://docs.langchain.com/oss/javascript/langchain/agents
 path: oss/javascript/langchain/agents
 ---
 
+Build a LangChain agent: a model calling tools in a loop until a task is complete, shaped by a harness of prompt, tools, and middleware.
+
 An agent is a model calling tools in a loop until a given task is complete.
 
 <img alt="Core agent loop diagram" />

@@ -15,10 +15,10 @@ or monitoring.
 
 LLM hooks are executed at two interception points:
 
-| Point             | When                  | Hook receives                              |
-| ----------------- | --------------------- | ------------------------------------------ |
-| `PRE_MODEL_CALL`  | Before every LLM call | `LLMCallHookContext`                       |
-| `POST_MODEL_CALL` | After every LLM call  | `LLMCallHookContext` (with `response` set) |
+| Point | When | Hook receives |
+| - | - | - |
+| `PRE_MODEL_CALL` | Before every LLM call | `LLMCallHookContext` |
+| `POST_MODEL_CALL` | After every LLM call | `LLMCallHookContext` (with `response` set) |
 
 Write them with the [`@on` decorator](/edge/en/learn/execution-hooks). The
 [legacy `@before_llm_call` / `@after_llm_call` decorators](#legacy-decorators)

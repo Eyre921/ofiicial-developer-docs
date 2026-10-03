@@ -46,9 +46,9 @@ tool = CSVSearchTool()
 
 The following parameters can be used to customize the `CSVSearchTool`'s behavior:
 
-| Argument | Type     | Description                                                                                                                                                               |
-| :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **csv**  | `string` | *Optional*. The path to the CSV file you want to search. This is a mandatory argument if the tool was initialized without a specific CSV file; otherwise, it is optional. |
+| Argument | Type | Description |
+| :- | :- | :- |
+| **csv** | `string` | *Optional*. The path to the CSV file you want to search. This is a mandatory argument if the tool was initialized without a specific CSV file; otherwise, it is optional. |
 
 ## Custom model and embeddings
 

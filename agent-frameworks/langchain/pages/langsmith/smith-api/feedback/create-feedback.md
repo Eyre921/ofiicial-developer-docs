@@ -8,6 +8,6 @@ path: langsmith/smith-api/feedback/create-feedback
 Create a new feedback.
 
 `session_id` identifies the tracing project the feedback belongs to. It is
-required unless the feedback is addressed by `agent_id` and
+required unless the feedback is addressed by `address`, or by `agent_id` and
 `agent_environment`, which name that project through an Agent environment
 that already exists.

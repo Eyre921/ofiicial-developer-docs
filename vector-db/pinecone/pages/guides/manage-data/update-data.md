@@ -100,6 +100,7 @@ For the full request and response schema, see [Update documents](/reference/api/
 
 * **By-ID requests**: Each request can patch up to 1,000 documents. See [Update limits](/reference/api/database-limits/operation-limits#update-limits).
 * **By-filter requests**: `set_fields` and `remove_fields` both accept metadata fields only, and reject a field declared in the schema with a `400`. A by-filter update applies one value to every matched document, which would leave vector and full-text-searchable fields identical across the whole match set. To change a schema-declared field, patch each document by ID.
+* **Text-match filters**: A by-filter update rejects [text-match operators](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) with a `400`. To update documents by text match, [search](/guides/search/full-text-search) for them first and patch the IDs the search returns.
 
 <Warning>
   This operation ignores the `dry_run` parameter that [Update by metadata](#update-by-metadata) supports. A `dry_run` request returns `202` with a `matched_records` count, exactly like the preview you expect, and the update is applied anyway. It also accepts unrecognized parameters rather than rejecting them, so check the parameter names before you send a request you can't undo.

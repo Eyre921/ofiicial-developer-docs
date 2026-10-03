@@ -78,16 +78,16 @@ result = crew.kickoff()
 
 ## Arguments
 
-| Argument  | Type    | Required | Description                                                                  |
-| :-------- | :------ | :------- | :--------------------------------------------------------------------------- |
-| `seconds` | `float` | ✅        | How many seconds to wait. Must be zero or greater.                           |
-| `reason`  | `str`   | ❌        | Optional note on what is being waited for. Echoed back in the tool's result. |
+| Argument | Type | Required | Description |
+| :- | :- | :- | :- |
+| `seconds` | `float` | ✅ | How many seconds to wait. Must be zero or greater. |
+| `reason` | `str` | ❌ | Optional note on what is being waited for. Echoed back in the tool's result. |
 
 ## Initialization Parameters
 
-| Parameter     | Type    | Default | Description                                                                            |
-| :------------ | :------ | :------ | :------------------------------------------------------------------------------------- |
-| `max_seconds` | `float` | `300`   | Upper bound for a single wait. Longer requests are capped to this value, not rejected. |
+| Parameter | Type | Default | Description |
+| :- | :- | :- | :- |
+| `max_seconds` | `float` | `300` | Upper bound for a single wait. Longer requests are capped to this value, not rejected. |
 
 ## Capping Long Waits
 

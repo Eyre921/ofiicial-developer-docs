@@ -112,17 +112,17 @@ To use a different LLM with your CrewAI agents, you have several options:
 
 When configuring an LLM for your agent, you have access to a wide range of parameters:
 
-| Parameter              |        Type        | Description                                                      |
-| :--------------------- | :----------------: | :--------------------------------------------------------------- |
-| **model**              |        `str`       | The name of the model to use (e.g., "gpt-4", "claude-2")         |
-| **temperature**        |       `float`      | Controls randomness in output (0.0 to 1.0)                       |
-| **max\_tokens**        |        `int`       | Maximum number of tokens to generate                             |
-| **top\_p**             |       `float`      | Controls diversity of output (0.0 to 1.0)                        |
-| **frequency\_penalty** |       `float`      | Penalizes new tokens based on their frequency in the text so far |
-| **presence\_penalty**  |       `float`      | Penalizes new tokens based on their presence in the text so far  |
-| **stop**               | `str`, `List[str]` | Sequence(s) to stop generation                                   |
-| **base\_url**          |        `str`       | The base URL for the API endpoint                                |
-| **api\_key**           |        `str`       | Your API key for authentication                                  |
+| Parameter | Type | Description |
+| :- | :-: | :- |
+| **model** | `str` | The name of the model to use (e.g., "gpt-4", "claude-2") |
+| **temperature** | `float` | Controls randomness in output (0.0 to 1.0) |
+| **max\_tokens** | `int` | Maximum number of tokens to generate |
+| **top\_p** | `float` | Controls diversity of output (0.0 to 1.0) |
+| **frequency\_penalty** | `float` | Penalizes new tokens based on their frequency in the text so far |
+| **presence\_penalty** | `float` | Penalizes new tokens based on their presence in the text so far |
+| **stop** | `str`, `List[str]` | Sequence(s) to stop generation |
+| **base\_url** | `str` | The base URL for the API endpoint |
+| **api\_key** | `str` | Your API key for authentication |
 
 For a complete list of parameters and their descriptions, refer to the LLM class documentation.
 

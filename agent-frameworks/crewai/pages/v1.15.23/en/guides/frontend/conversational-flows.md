@@ -10,11 +10,11 @@ Serve native, session-aware CrewAI Flows over AG-UI with managed conversation st
 
 Behind the AG-UI bridge, a CrewAI backend can take one of three shapes. Knowing which one you are serving decides how you author the backend, not how you build the frontend.
 
-| Shape                    | What it is                                                                                       | How it is entered                      |
-| ------------------------ | ------------------------------------------------------------------------------------------------ | -------------------------------------- |
-| **Regular Flows**        | Author-controlled `@start`/`@listen`/`@router` graphs. The default used throughout these guides. | `kickoff` / `astream`                  |
-| **Conversational Flows** | Native, session-aware, turn-based Flows with managed conversation state.                         | `stream_turn(message, session_id=...)` |
-| **Crews**                | Closed autonomous task/agent loops. Basic chat only, a separate compatibility path.              | Not the focus here.                    |
+| Shape | What it is | How it is entered |
+| - | - | - |
+| **Regular Flows** | Author-controlled `@start`/`@listen`/`@router` graphs. The default used throughout these guides. | `kickoff` / `astream` |
+| **Conversational Flows** | Native, session-aware, turn-based Flows with managed conversation state. | `stream_turn(message, session_id=...)` |
+| **Crews** | Closed autonomous task/agent loops. Basic chat only, a separate compatibility path. | Not the focus here. |
 
 Conversational Flows are a newer CrewAI capability, and an important thing to be clear about up front: **they are Flows, not Crews.** They now run at full regular-Flow feature parity. This page introduces them and shows how they fit the rest of the frontend guides.
 

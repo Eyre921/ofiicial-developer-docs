@@ -676,13 +676,13 @@ The tables below show a representative sample of current top-performing models a
   <Tab title="Reasoning & Planning">
     **Best for Manager LLMs and Complex Analysis**
 
-    | Model                      | Intelligence Score | Cost (\$/M tokens) | Speed    | Best Use in CrewAI                                  |
-    | :------------------------- | :----------------- | :----------------- | :------- | :-------------------------------------------------- |
-    | **o3**                     | 70                 | \$17.50            | Fast     | Manager LLM for complex multi-agent coordination    |
-    | **Gemini 2.5 Pro**         | 69                 | \$3.44             | Fast     | Strategic planning agents, research coordination    |
-    | **DeepSeek R1**            | 68                 | \$0.96             | Moderate | Cost-effective reasoning for budget-conscious crews |
-    | **Claude 4 Sonnet**        | 53                 | \$6.00             | Fast     | Analysis agents requiring nuanced understanding     |
-    | **Qwen3 235B (Reasoning)** | 62                 | \$2.63             | Moderate | Open-source alternative for reasoning tasks         |
+    | Model | Intelligence Score | Cost (\$/M tokens) | Speed | Best Use in CrewAI |
+    | :- | :- | :- | :- | :- |
+    | **o3** | 70 | \$17.50 | Fast | Manager LLM for complex multi-agent coordination |
+    | **Gemini 2.5 Pro** | 69 | \$3.44 | Fast | Strategic planning agents, research coordination |
+    | **DeepSeek R1** | 68 | \$0.96 | Moderate | Cost-effective reasoning for budget-conscious crews |
+    | **Claude 4 Sonnet** | 53 | \$6.00 | Fast | Analysis agents requiring nuanced understanding |
+    | **Qwen3 235B (Reasoning)** | 62 | \$2.63 | Moderate | Open-source alternative for reasoning tasks |
 
     These models excel at multi-step reasoning and are ideal for agents that need to develop strategies, coordinate other agents, or analyze complex information.
   </Tab>
@@ -690,13 +690,13 @@ The tables below show a representative sample of current top-performing models a
   <Tab title="Coding & Technical">
     **Best for Development and Tool-Heavy Workflows**
 
-    | Model                 | Coding Performance | Tool Use Score | Cost (\$/M tokens) | Best Use in CrewAI                            |
-    | :-------------------- | :----------------- | :------------- | :----------------- | :-------------------------------------------- |
-    | **Claude 4 Sonnet**   | Excellent          | 72.7%          | \$6.00             | Primary coding agent, technical documentation |
-    | **Claude 4 Opus**     | Excellent          | 72.5%          | \$30.00            | Complex software architecture, code review    |
-    | **DeepSeek V3**       | Very Good          | High           | \$0.48             | Cost-effective coding for routine development |
-    | **Qwen2.5 Coder 32B** | Very Good          | Medium         | \$0.15             | Budget-friendly coding agent                  |
-    | **Llama 3.1 405B**    | Good               | 81.1%          | \$3.50             | Function calling LLM for tool-heavy workflows |
+    | Model | Coding Performance | Tool Use Score | Cost (\$/M tokens) | Best Use in CrewAI |
+    | :- | :- | :- | :- | :- |
+    | **Claude 4 Sonnet** | Excellent | 72.7% | \$6.00 | Primary coding agent, technical documentation |
+    | **Claude 4 Opus** | Excellent | 72.5% | \$30.00 | Complex software architecture, code review |
+    | **DeepSeek V3** | Very Good | High | \$0.48 | Cost-effective coding for routine development |
+    | **Qwen2.5 Coder 32B** | Very Good | Medium | \$0.15 | Budget-friendly coding agent |
+    | **Llama 3.1 405B** | Good | 81.1% | \$3.50 | Function calling LLM for tool-heavy workflows |
 
     These models are optimized for code generation, debugging, and technical problem-solving, making them ideal for development-focused crews.
   </Tab>
@@ -704,13 +704,13 @@ The tables below show a representative sample of current top-performing models a
   <Tab title="Speed & Efficiency">
     **Best for High-Throughput and Real-Time Applications**
 
-    | Model                   | Speed (tokens/s) | Latency (TTFT) | Cost (\$/M tokens) | Best Use in CrewAI                   |
-    | :---------------------- | :--------------- | :------------- | :----------------- | :----------------------------------- |
-    | **Llama 4 Scout**       | 2,600            | 0.33s          | \$0.27             | High-volume processing agents        |
-    | **Gemini 2.5 Flash**    | 376              | 0.30s          | \$0.26             | Real-time response agents            |
-    | **DeepSeek R1 Distill** | 383              | Variable       | \$0.04             | Cost-optimized high-speed processing |
-    | **Llama 3.3 70B**       | 2,500            | 0.52s          | \$0.60             | Balanced speed and capability        |
-    | **Nova Micro**          | High             | 0.30s          | \$0.04             | Simple, fast task execution          |
+    | Model | Speed (tokens/s) | Latency (TTFT) | Cost (\$/M tokens) | Best Use in CrewAI |
+    | :- | :- | :- | :- | :- |
+    | **Llama 4 Scout** | 2,600 | 0.33s | \$0.27 | High-volume processing agents |
+    | **Gemini 2.5 Flash** | 376 | 0.30s | \$0.26 | Real-time response agents |
+    | **DeepSeek R1 Distill** | 383 | Variable | \$0.04 | Cost-optimized high-speed processing |
+    | **Llama 3.3 70B** | 2,500 | 0.52s | \$0.60 | Balanced speed and capability |
+    | **Nova Micro** | High | 0.30s | \$0.04 | Simple, fast task execution |
 
     These models prioritize speed and efficiency, perfect for agents handling routine operations or requiring quick responses. **Pro tip**: Pairing these models with fast inference providers like Groq can achieve even better performance, especially for open-source models like Llama.
   </Tab>
@@ -718,13 +718,13 @@ The tables below show a representative sample of current top-performing models a
   <Tab title="Balanced Performance">
     **Best All-Around Models for General Crews**
 
-    | Model                 | Overall Score | Versatility | Cost (\$/M tokens) | Best Use in CrewAI                |
-    | :-------------------- | :------------ | :---------- | :----------------- | :-------------------------------- |
-    | **GPT-4.1**           | 53            | Excellent   | \$3.50             | General-purpose crew LLM          |
-    | **Claude 3.7 Sonnet** | 48            | Very Good   | \$6.00             | Balanced reasoning and creativity |
-    | **Gemini 2.0 Flash**  | 48            | Good        | \$0.17             | Cost-effective general use        |
-    | **Llama 4 Maverick**  | 51            | Good        | \$0.37             | Open-source general purpose       |
-    | **Qwen3 32B**         | 44            | Good        | \$1.23             | Budget-friendly versatility       |
+    | Model | Overall Score | Versatility | Cost (\$/M tokens) | Best Use in CrewAI |
+    | :- | :- | :- | :- | :- |
+    | **GPT-4.1** | 53 | Excellent | \$3.50 | General-purpose crew LLM |
+    | **Claude 3.7 Sonnet** | 48 | Very Good | \$6.00 | Balanced reasoning and creativity |
+    | **Gemini 2.0 Flash** | 48 | Good | \$0.17 | Cost-effective general use |
+    | **Llama 4 Maverick** | 51 | Good | \$0.37 | Open-source general purpose |
+    | **Qwen3 32B** | 44 | Good | \$1.23 | Budget-friendly versatility |
 
     These models offer good performance across multiple dimensions, suitable for crews with diverse task requirements.
   </Tab>

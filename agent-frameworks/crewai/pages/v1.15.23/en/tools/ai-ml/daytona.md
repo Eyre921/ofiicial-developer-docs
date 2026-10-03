@@ -38,11 +38,11 @@ export DAYTONA_API_KEY="your-api-key"
 
 All three tools inherit lifecycle controls from `DaytonaBaseTool`:
 
-| Mode                    | How to enable                | Sandbox created                         | Sandbox deleted                                                |
-| ----------------------- | ---------------------------- | --------------------------------------- | -------------------------------------------------------------- |
-| **Ephemeral** (default) | `persistent=False` (default) | On every `_run` call                    | At the end of that same call                                   |
-| **Persistent**          | `persistent=True`            | Lazily on first use                     | At process exit (via `atexit`), or manually via `tool.close()` |
-| **Attach**              | `sandbox_id="<id>"`          | Never — attaches to an existing sandbox | Never — the tool will not delete a sandbox it did not create   |
+| Mode | How to enable | Sandbox created | Sandbox deleted |
+| - | - | - | - |
+| **Ephemeral** (default) | `persistent=False` (default) | On every `_run` call | At the end of that same call |
+| **Persistent** | `persistent=True` | Lazily on first use | At process exit (via `atexit`), or manually via `tool.close()` |
+| **Attach** | `sandbox_id="<id>"` | Never — attaches to an existing sandbox | Never — the tool will not delete a sandbox it did not create |
 
 Ephemeral mode is the safe default: nothing leaks if the agent forgets to clean up. Use persistent mode when you want filesystem state or installed packages to carry across multiple tool calls — this is typical when pairing `DaytonaFileTool` with `DaytonaExecTool`.
 
@@ -177,50 +177,50 @@ result = crew.kickoff()
 
 All three tools accept these parameters at initialization:
 
-| Parameter         | Type           | Default            | Description                                                                                          |
-| ----------------- | -------------- | ------------------ | ---------------------------------------------------------------------------------------------------- |
-| `api_key`         | `str \| None`  | `$DAYTONA_API_KEY` | Daytona API key. Falls back to the `DAYTONA_API_KEY` env var.                                        |
-| `api_url`         | `str \| None`  | `$DAYTONA_API_URL` | Daytona API URL override.                                                                            |
-| `target`          | `str \| None`  | `$DAYTONA_TARGET`  | Daytona target region.                                                                               |
-| `persistent`      | `bool`         | `False`            | Reuse one sandbox across all calls and delete it at process exit.                                    |
-| `sandbox_id`      | `str \| None`  | `None`             | Attach to an existing sandbox by id or name.                                                         |
-| `create_params`   | `dict \| None` | `None`             | Extra kwargs forwarded to `CreateSandboxFromSnapshotParams` (e.g. `language`, `env_vars`, `labels`). |
-| `sandbox_timeout` | `float`        | `60.0`             | Timeout in seconds for sandbox create/delete operations.                                             |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `api_key` | `str \| None` | `$DAYTONA_API_KEY` | Daytona API key. Falls back to the `DAYTONA_API_KEY` env var. |
+| `api_url` | `str \| None` | `$DAYTONA_API_URL` | Daytona API URL override. |
+| `target` | `str \| None` | `$DAYTONA_TARGET` | Daytona target region. |
+| `persistent` | `bool` | `False` | Reuse one sandbox across all calls and delete it at process exit. |
+| `sandbox_id` | `str \| None` | `None` | Attach to an existing sandbox by id or name. |
+| `create_params` | `dict \| None` | `None` | Extra kwargs forwarded to `CreateSandboxFromSnapshotParams` (e.g. `language`, `env_vars`, `labels`). |
+| `sandbox_timeout` | `float` | `60.0` | Timeout in seconds for sandbox create/delete operations. |
 
 ### `DaytonaExecTool`
 
-| Parameter | Type                     | Required | Description                                   |
-| --------- | ------------------------ | -------- | --------------------------------------------- |
-| `command` | `str`                    | ✓        | Shell command to execute.                     |
-| `cwd`     | `str \| None`            |          | Working directory inside the sandbox.         |
-| `env`     | `dict[str, str] \| None` |          | Extra environment variables for this command. |
-| `timeout` | `int \| None`            |          | Maximum seconds to wait for the command.      |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `command` | `str` | ✓ | Shell command to execute. |
+| `cwd` | `str \| None` | | Working directory inside the sandbox. |
+| `env` | `dict[str, str] \| None` | | Extra environment variables for this command. |
+| `timeout` | `int \| None` | | Maximum seconds to wait for the command. |
 
 ### `DaytonaPythonTool`
 
-| Parameter | Type                     | Required | Description                                          |
-| --------- | ------------------------ | -------- | ---------------------------------------------------- |
-| `code`    | `str`                    | ✓        | Python source code to execute.                       |
-| `argv`    | `list[str] \| None`      |          | Argument vector forwarded via `CodeRunParams`.       |
-| `env`     | `dict[str, str] \| None` |          | Environment variables forwarded via `CodeRunParams`. |
-| `timeout` | `int \| None`            |          | Maximum seconds to wait for execution.               |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `code` | `str` | ✓ | Python source code to execute. |
+| `argv` | `list[str] \| None` | | Argument vector forwarded via `CodeRunParams`. |
+| `env` | `dict[str, str] \| None` | | Environment variables forwarded via `CodeRunParams`. |
+| `timeout` | `int \| None` | | Maximum seconds to wait for execution. |
 
 ### `DaytonaFileTool`
 
-| Parameter     | Type                | Required                           | Description                                                                                                                                                    |
-| ------------- | ------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `action`      | `str`               | ✓                                  | One of: `read`, `write`, `append`, `list`, `delete`, `mkdir`, `info`, `exists`, `move`, `find`, `search`, `chmod`, `replace`.                                  |
-| `path`        | `str \| None`       | ✓ for all actions except `replace` | Absolute path inside the sandbox.                                                                                                                              |
-| `content`     | `str \| None`       | ✓ for `append`                     | Content to write or append.                                                                                                                                    |
-| `binary`      | `bool`              |                                    | If `True`, `content` is base64 on write; returns base64 on read.                                                                                               |
-| `recursive`   | `bool`              |                                    | For `delete`: remove directories recursively.                                                                                                                  |
-| `mode`        | `str \| None`       |                                    | For `mkdir`: octal permissions for the new directory (defaults to `"0755"`). For `chmod`: octal permissions to apply to the target.                            |
-| `destination` | `str \| None`       | ✓ for `move`                       | Destination path for `move`.                                                                                                                                   |
-| `pattern`     | `str \| None`       | ✓ for `find`, `search`, `replace`  | For `find`: substring matched against file CONTENTS. For `search`: glob matched against file NAMES (e.g. `*.py`). For `replace`: text to replace inside files. |
-| `replacement` | `str \| None`       | ✓ for `replace`                    | Replacement text for `pattern`.                                                                                                                                |
-| `paths`       | `list[str] \| None` | ✓ for `replace`                    | List of file paths in which to replace text.                                                                                                                   |
-| `owner`       | `str \| None`       |                                    | For `chmod`: new file owner.                                                                                                                                   |
-| `group`       | `str \| None`       |                                    | For `chmod`: new file group.                                                                                                                                   |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `action` | `str` | ✓ | One of: `read`, `write`, `append`, `list`, `delete`, `mkdir`, `info`, `exists`, `move`, `find`, `search`, `chmod`, `replace`. |
+| `path` | `str \| None` | ✓ for all actions except `replace` | Absolute path inside the sandbox. |
+| `content` | `str \| None` | ✓ for `append` | Content to write or append. |
+| `binary` | `bool` | | If `True`, `content` is base64 on write; returns base64 on read. |
+| `recursive` | `bool` | | For `delete`: remove directories recursively. |
+| `mode` | `str \| None` | | For `mkdir`: octal permissions for the new directory (defaults to `"0755"`). For `chmod`: octal permissions to apply to the target. |
+| `destination` | `str \| None` | ✓ for `move` | Destination path for `move`. |
+| `pattern` | `str \| None` | ✓ for `find`, `search`, `replace` | For `find`: substring matched against file CONTENTS. For `search`: glob matched against file NAMES (e.g. `*.py`). For `replace`: text to replace inside files. |
+| `replacement` | `str \| None` | ✓ for `replace` | Replacement text for `pattern`. |
+| `paths` | `list[str] \| None` | ✓ for `replace` | List of file paths in which to replace text. |
+| `owner` | `str \| None` | | For `chmod`: new file owner. |
+| `group` | `str \| None` | | For `chmod`: new file group. |
 
 <Note>
   For `chmod`, pass at least one of `mode`, `owner`, or `group` — any field left as `None` is left unchanged on the target.

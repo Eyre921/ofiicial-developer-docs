@@ -22,15 +22,15 @@ CrewAI Flows asks you to think in **events**: methods that start things, methods
 
 Here's the core mapping:
 
-| LangGraph Concept                        | CrewAI Flows Equivalent                      |
-| ---------------------------------------- | -------------------------------------------- |
-| `StateGraph` class                       | `Flow` class                                 |
-| `add_node()`                             | Methods decorated with `@start`, `@listen`   |
-| `add_edge()` / `add_conditional_edges()` | `@listen()` / `@router()` decorators         |
-| `TypedDict` state                        | Pydantic `BaseModel` state                   |
-| `START` / `END` constants                | `@start()` decorator / natural method return |
-| `graph.compile()`                        | `flow.kickoff()`                             |
-| Checkpointer / persistence               | Built-in memory (LanceDB-backed)             |
+| LangGraph Concept | CrewAI Flows Equivalent |
+| - | - |
+| `StateGraph` class | `Flow` class |
+| `add_node()` | Methods decorated with `@start`, `@listen` |
+| `add_edge()` / `add_conditional_edges()` | `@listen()` / `@router()` decorators |
+| `TypedDict` state | Pydantic `BaseModel` state |
+| `START` / `END` constants | `@start()` decorator / natural method return |
+| `graph.compile()` | `flow.kickoff()` |
+| Checkpointer / persistence | Built-in memory (LanceDB-backed) |
 
 Let's see what this looks like in practice.
 

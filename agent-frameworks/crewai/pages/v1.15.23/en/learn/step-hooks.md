@@ -15,17 +15,17 @@ touching the level of individual LLM or tool calls.
 
 Two interception points cover steps:
 
-| Point       | When                              | `ctx.payload`           |
-| ----------- | --------------------------------- | ----------------------- |
-| `PRE_STEP`  | Before a task or flow method runs | step input (see below)  |
-| `POST_STEP` | After a task or flow method runs  | step output (see below) |
+| Point | When | `ctx.payload` |
+| - | - | - |
+| `PRE_STEP` | Before a task or flow method runs | step input (see below) |
+| `POST_STEP` | After a task or flow method runs | step output (see below) |
 
 What the payload holds depends on `ctx.kind`:
 
-| `ctx.kind`      | `PRE_STEP` payload                     | `POST_STEP` payload       |
-| --------------- | -------------------------------------- | ------------------------- |
-| `"task"`        | The context string passed to the agent | The `TaskOutput` object   |
-| `"flow_method"` | The method's parameters as a `dict`    | The method's return value |
+| `ctx.kind` | `PRE_STEP` payload | `POST_STEP` payload |
+| - | - | - |
+| `"task"` | The context string passed to the agent | The `TaskOutput` object |
+| `"flow_method"` | The method's parameters as a `dict` | The method's return value |
 
 For flow methods, positional arguments appear in the params dict under `_0`,
 `_1`, ... keys and keyword arguments under their own names; edits and

@@ -18606,6 +18606,7 @@ For the full request and response schema, see [Update documents](/reference/api/
 
 * **By-ID requests**: Each request can patch up to 1,000 documents. See [Update limits](/reference/api/database-limits/operation-limits#update-limits).
 * **By-filter requests**: `set_fields` and `remove_fields` both accept metadata fields only, and reject a field declared in the schema with a `400`. A by-filter update applies one value to every matched document, which would leave vector and full-text-searchable fields identical across the whole match set. To change a schema-declared field, patch each document by ID.
+* **Text-match filters**: A by-filter update rejects [text-match operators](/guides/search/filter-by-metadata#text-match-filters) (`$match_phrase`, `$match_all`, `$match_any`) with a `400`. To update documents by text match, [search](/guides/search/full-text-search) for them first and patch the IDs the search returns.
 
 <Warning>
   This operation ignores the `dry_run` parameter that [Update by metadata](#update-by-metadata) supports. A `dry_run` request returns `202` with a `matched_records` count, exactly like the preview you expect, and the update is applied anyway. It also accepts unrecognized parameters rather than rejecting them, so check the parameter names before you send a request you can't undo.
@@ -36650,15 +36651,7 @@ To create an index from a backup, use [Create index from backup](https://docs.pi
 
 For guidance and examples, see [Create an index](https://docs.pinecone.io/guides/index-data/create-an-index).
 
-Creates a new schema-defined index. The schema declares each field and its type — dense vector, sparse vector, or [full-text search](/guides/search/full-text-search). The index initializes asynchronously; poll the [Describe an index](/reference/api/2026-07/control-plane/describe_index) operation until `status.ready: true` (and, for `Dedicated` read capacity, `read_capacity.status.state: "Ready"`) before performing data plane operations.
-
-<Note>
-  To create a classic vector index (read and written through the Vectors API), use the reserved `_values` (dense) and/or `_sparse_values` (sparse) schema fields. These replace the top-level `dimension`, `metric`, and `vector_type` of earlier API versions.
-</Note>
-
-<Note>
-  Document schemas do not support `semantic_text` fields. To combine semantic ranking with full-text search, declare a `dense_vector` field and provide vector values when you upsert documents. For integrated embedding indexes that use the Records API, see [Create an index](/guides/index-data/create-an-index).
-</Note>
+The index initializes asynchronously. Before sending data plane requests, poll [Describe an index](/reference/api/2026-07/control-plane/describe_index) until `status.ready` is `true` (and, for `Dedicated` read capacity, until `read_capacity.status.state` is `"Ready"`). The response shows each `full_text_search` field's resolved analyzer settings (`language`, `stemming`, and `stop_words`), including any defaults applied at creation.
 
 ## Cloud regions
 
@@ -36925,10 +36918,6 @@ For BYOC indexes, set `deployment.environment` to the environment ID provisioned
     }'
   ```
 </RequestExample>
-
-<Note>
-  Responses show each `full_text_search` field's resolved analyzer config: `language`, `stemming`, and `stop_words` reflect your request settings or the defaults applied at index creation.
-</Note>
 
 
 # Create an index from a backup
@@ -38399,24 +38388,7 @@ Search for documents in a namespace using one or more scoring methods (dense vec
 
 Returns the top-k most similar documents along with their scores and requested fields.
 
-A request includes a `score_by` array selecting one of the following scoring types:
-
-* **`type: "text"`**, BM25 token matching over one or more text fields named in `fields`; naming several scores the query against all of them. Multi-word queries use OR-style matching (case-insensitive). For exact-phrase ranking, use `query_string` with quoted terms.
-* **`type: "query_string"`**, Lucene query syntax. Supports boolean operators, phrase prefix matching, boosting, fuzzy matching (`term~`, `term~N`), and cross-field queries. See the [query syntax reference](/guides/search/full-text-search/query-syntax). **Does not accept a `field` or `fields` parameter.** Target specific fields using Lucene field qualifiers in the query string itself: `fieldname:value` or `title:(alpha) OR body:(beta)`.
-* **`type: "dense_vector"`**, dense vector similarity ranking against a `dense_vector` field.
-* **`type: "sparse_vector"`**, sparse vector similarity ranking against a `sparse_vector` field.
-
-Any scoring method can be combined with metadata filters (including text match operators `$match_phrase` / `$match_all` / `$match_any` and logical operators `$and` / `$or` / `$not`). Filters are applied **before** scoring: the search only considers documents that match the filter. Scoring-only operators are available in `query_string` scoring but cannot be used inside `filter`: phrase slop (`"phrase"~N`), term boosting (`^N`), and phrase prefix (`"phrase pre"*`).
-
-`include_fields` defaults to `[]` (returns only `_id` and `_score`); use `["*"]` to return all stored fields.
-
-<Note>
-  A single search request ranks by one scoring type. Multi-field BM25 is supported: name several fields in one `text` clause's `fields` array, or pass multiple `text` clauses, which the server combines into one ranking; a `query_string` clause can also target several fields. Every contributing field weighs equally in `2026-07`; there is no per-field weight parameter. To combine BM25 ranking with `dense_vector` or `sparse_vector` ranking, restrict the dense (or sparse) search with a text-match filter (`$match_phrase`, `$match_all`, `$match_any`) on the full-text field, or run separate searches and merge the results client-side.
-</Note>
-
-<Warning>
-  Text-match operators (`$match_phrase`, `$match_all`, `$match_any`) are supported on this endpoint and on [fetch](/reference/api/2026-07/data-plane/fetch_documents). A filtered [update](/reference/api/2026-07/data-plane/update_documents) or [delete](/reference/api/2026-07/data-plane/delete_documents) rejects them with a `400` and accepts plain metadata filters only. To update or delete by text match, search or fetch for the matching IDs first, then act on those IDs.
-</Warning>
+Filters apply before scoring, so only documents that match the `filter` are ranked. For how each scoring type works and how to combine them, see [Full-text search](/guides/search/full-text-search) and the [query syntax reference](/guides/search/full-text-search/query-syntax).
 
 <RequestExample>
   ```python Python theme={null}
@@ -39095,19 +39067,7 @@ provided alongside them.
 Any metadata field you provide that is not declared in the schema is stored on the document, returned via include_fields, and
 automatically indexed for filtering.
 
-If a document with the same `_id` already exists, it is completely replaced. Documents become searchable within approximately one minute. The `namespace` is auto-created on first upsert; use `"__default__"` if you don't need partitioning.
-
-<Note>
-  Upsert replaces the whole document. For partial changes to specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents), which patches fields per ID or in bulk by metadata filter.
-</Note>
-
-<Note>
-  Each document in the `documents` array is validated against your index schema. If any document fails validation, **the entire request fails** and nothing is upserted. Field names starting with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators) are rejected.
-</Note>
-
-<Note>
-  To ingest many documents, use the Python SDK's `index.documents.batch_upsert(documents=..., batch_size=..., max_workers=..., show_progress=...)`, a client-side convenience that splits a large list into batches and issues concurrent `POST /namespaces/{namespace}/documents/upsert` requests in the background. It's a wrapper around this endpoint, not a separate API.
-</Note>
+Upsert fully replaces any document with the same `_id`, so fields you omit are removed. To change specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents). If any document fails schema validation, the whole request fails and nothing is written. The namespace is created on first upsert (use `__default__` if you don't need partitioning), and documents become searchable within about a minute.
 
 <RequestExample>
   ```python Python theme={null}
@@ -39126,6 +39086,8 @@ If a document with the same `_id` already exists, it is completely replaced. Doc
       {"_id": "doc3", "title": "Quantum computing", "body": "Quantum computers leverage superposition for faster computation", "category": "science", "year": 2024},
   ]
 
+  # For large ingests, index.documents.batch_upsert(...) splits documents into
+  # concurrent requests to this endpoint.
   index.documents.upsert(
       namespace=NAMESPACE,
       documents=docs,

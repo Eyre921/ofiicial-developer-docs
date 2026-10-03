@@ -22,7 +22,7 @@ It uses a **Microsoft Graph real-time media bot** (the Cloud Communications call
 
 ## How it works
 
-![A Teams user calls the bot by name; Teams routes the call to the media bot on a Windows VM, which bridges raw PCM 16k audio to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f411ec0b44d4c5ca1a61598fbd1e6162e46a1c74179eebb4b673ee1428823e84/assets/images/conversational-ai/teams-media-bot-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233152Z&X-Amz-Expires=604800&X-Amz-Signature=d4d0819a5210b48e9b7771124c942aa8640de937182a304b3390cf495a50ec43&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![A Teams user calls the bot by name; Teams routes the call to the media bot on a Windows VM, which bridges raw PCM 16k audio to the ElevenLabs agent over a WebSocket](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f411ec0b44d4c5ca1a61598fbd1e6162e46a1c74179eebb4b673ee1428823e84/assets/images/conversational-ai/teams-media-bot-architecture.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113249Z&X-Amz-Expires=604800&X-Amz-Signature=92472f6bccef7635e3ae5e74ca4344ac3157fe78f53b862952cd6a5ceadb76c4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 The bot answers with **application-hosted media**, receives 50 audio frames/sec (20 ms PCM 16 kHz), bridges them to the ElevenLabs agent over a WebSocket, and streams the agent's audio back into the call.
 
@@ -98,7 +98,7 @@ az rest --method GET \
 In the portal, verify in the [Entra admin center](https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/RegisteredAppsListBlade) under **App registrations → your app → API permissions**: both permissions should show **Granted** with green checks.
 
 ![The app registration API permissions blade showing Calls.AccessMedia.All and Calls.Initiate.All
-granted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4abc1e220d3fc03845594aa4f835656425cc1c39448dae30dace98e672fd8fb1/assets/images/conversational-ai/teams-graph-api-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233152Z&X-Amz-Expires=604800&X-Amz-Signature=c53bd22447f77beeaabf6b3a025d5e6a134bf8be45d4194e32ff73087521f193&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+granted](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4abc1e220d3fc03845594aa4f835656425cc1c39448dae30dace98e672fd8fb1/assets/images/conversational-ai/teams-graph-api-permissions.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113249Z&X-Amz-Expires=604800&X-Amz-Signature=a2d83fdae544973f6a0633e7733b7407dbd24178d81719f8d6cf5a8ace580c1f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Step 2 — Provision the Windows VM, cert and ports
 
@@ -267,17 +267,17 @@ Both sides are PCM 16 kHz mono, so it's a base64 passthrough — set the agent t
    In the portal this lives at your Azure Bot resource → **Channels** → **Microsoft Teams** → **Calling** tab:
 
    ![The Azure Bot Channels blade listing the Microsoft Teams channel as
-   healthy](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01115d26ab645dd6ec6569a36a918cd4de0214c79dcb0070d7a3c3a5e544c93b/assets/images/conversational-ai/teams-graph-bot-channels.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233152Z&X-Amz-Expires=604800&X-Amz-Signature=08d136cf4b657a6a2dbfabb2a99edebb8801bfdb94b0aaa6260e09a85bac22d5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   healthy](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/01115d26ab645dd6ec6569a36a918cd4de0214c79dcb0070d7a3c3a5e544c93b/assets/images/conversational-ai/teams-graph-bot-channels.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113249Z&X-Amz-Expires=604800&X-Amz-Signature=2871246bbc0be90c49c6bd3e7a3ce75626d63eb285fba0d2da81152f19d90ede&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
    ![The Teams channel Calling tab with Enable calling checked and the calling webhook
-   set](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c4819f64878bfb152661adc948c1170f9efd48ba3d68401c4a4d4ba075951b0/assets/images/conversational-ai/teams-graph-calling-channel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233152Z&X-Amz-Expires=604800&X-Amz-Signature=d452aa3b09e64869db8a87791dc6458d23f643859b154ba80f0d10d4fa1c29db&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+   set](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c4819f64878bfb152661adc948c1170f9efd48ba3d68401c4a4d4ba075951b0/assets/images/conversational-ai/teams-graph-calling-channel.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113249Z&X-Amz-Expires=604800&X-Amz-Signature=b8c2a08a019a02b48d06691f78d94de98174ad3cc7d43b51db806edd2b813ff0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 2. Build a **Teams app manifest** with `bots[0].supportsCalling: true` and the bot's app ID, then sideload it (**Apps → Manage your apps → Upload a custom app**), or publish it org-wide without the UI: `New-TeamsApp -DistributionMethod organization -Path ./bot-app.zip` (MicrosoftTeams PowerShell module).
 
 Search the app by name in Teams and call it — the bot answers and the ElevenLabs agent speaks.
 
 ![An active Teams call with the ElevenLabs agent
-bot](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0f1fad08a091bcd20ffbbf5c3949b5503f423d8eb6298f464a870b3a0a254726/assets/images/conversational-ai/teams-graph-call-by-name.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233152Z&X-Amz-Expires=604800&X-Amz-Signature=57f615978bab7791a29522bdf99ee91f1a1d3916e0eb5db068fbedb2a2065800&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+bot](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0f1fad08a091bcd20ffbbf5c3949b5503f423d8eb6298f464a870b3a0a254726/assets/images/conversational-ai/teams-graph-call-by-name.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113249Z&X-Amz-Expires=604800&X-Amz-Signature=116bc7ecb69d7662846e0481045249dc743558b5a516104cf8a52cabaa38cff1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >
@@ -289,7 +289,7 @@ bot](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.do
 The same Azure Bot can also answer **text** in Teams — so users can either call the agent or chat with it. Calling and messaging are independent channels on the bot: the calling webhook handles voice, and a Bot Framework **messaging endpoint** (`/api/messages`) handles chat.
 
 ![A Teams chat with the ElevenLabs agent bot answering text
-messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fb75ae17848916790d29c1c0a703051946902893e46ed62884742db36be453b2/assets/images/conversational-ai/teams-graph-text-chat.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T233152Z&X-Amz-Expires=604800&X-Amz-Signature=ae1e6713f490e3f7f9f1c8f1ccc48002dfe54be71b70db8695fd865fec5e133a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+messages](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/fb75ae17848916790d29c1c0a703051946902893e46ed62884742db36be453b2/assets/images/conversational-ai/teams-graph-text-chat.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T113249Z&X-Amz-Expires=604800&X-Amz-Signature=0c6d5f000898c9c47bbb8fe008e940c3c71bac58567862a624f4f00fc60cd01e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Point the bot's messaging endpoint at whichever host serves it (the media bot, or any other service — it doesn't have to be the Windows VM):
 

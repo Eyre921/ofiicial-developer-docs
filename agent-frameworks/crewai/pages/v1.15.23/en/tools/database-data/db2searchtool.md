@@ -111,17 +111,17 @@ print(result)
 
 ## Tool Parameters
 
-| Parameter             | Type                                   | Default                    | Description                                                                                   |
-| --------------------- | -------------------------------------- | -------------------------- | --------------------------------------------------------------------------------------------- |
-| `connection_string`   | `str`                                  | required                   | Db2 connection string. Format: `DATABASE=x;HOSTNAME=x;PORT=50000;PROTOCOL=TCPIP;UID=x;PWD=x;` |
-| `table_name`          | `str`                                  | `"documents"`              | Table to search. Supports `schema.table` notation.                                            |
-| `vector_column`       | `str`                                  | `"embedding"`              | Column storing the vector embeddings.                                                         |
-| `embedding_model`     | `str`                                  | `"text-embedding-3-large"` | OpenAI model used when no custom embedding function is provided.                              |
-| `return_columns`      | `list[str]`                            | `["content"]`              | Columns to include in each result. Must contain at least one entry.                           |
-| `limit`               | `int`                                  | `3`                        | Maximum number of results (1–100).                                                            |
-| `distance_metric`     | `str`                                  | `"COSINE"`                 | Db2 distance metric. See supported values below.                                              |
-| `max_distance`        | `float \| None`                        | `None`                     | Drop results whose distance exceeds this value.                                               |
-| `custom_embedding_fn` | `Callable[[str], list[float]] \| None` | `None`                     | Custom embedding function. Overrides OpenAI when provided.                                    |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `connection_string` | `str` | required | Db2 connection string. Format: `DATABASE=x;HOSTNAME=x;PORT=50000;PROTOCOL=TCPIP;UID=x;PWD=x;` |
+| `table_name` | `str` | `"documents"` | Table to search. Supports `schema.table` notation. |
+| `vector_column` | `str` | `"embedding"` | Column storing the vector embeddings. |
+| `embedding_model` | `str` | `"text-embedding-3-large"` | OpenAI model used when no custom embedding function is provided. |
+| `return_columns` | `list[str]` | `["content"]` | Columns to include in each result. Must contain at least one entry. |
+| `limit` | `int` | `3` | Maximum number of results (1–100). |
+| `distance_metric` | `str` | `"COSINE"` | Db2 distance metric. See supported values below. |
+| `max_distance` | `float \| None` | `None` | Drop results whose distance exceeds this value. |
+| `custom_embedding_fn` | `Callable[[str], list[float]] \| None` | `None` | Custom embedding function. Overrides OpenAI when provided. |
 
 ## Supported Distance Metrics
 
@@ -138,11 +138,11 @@ Reference: [IBM Db2 VECTOR\_DISTANCE documentation](https://www.ibm.com/docs/en/
 
 ## Schema Parameters (per query)
 
-| Parameter      | Type          | Required | Description                                                             |
-| -------------- | ------------- | -------- | ----------------------------------------------------------------------- |
-| `query`        | `str`         | ✅        | The search query.                                                       |
-| `filter_by`    | `str \| None` | ❌        | Column name for metadata filtering. Must be paired with `filter_value`. |
-| `filter_value` | `Any \| None` | ❌        | Value to filter on. Must be paired with `filter_by`.                    |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `query` | `str` | ✅ | The search query. |
+| `filter_by` | `str \| None` | ❌ | Column name for metadata filtering. Must be paired with `filter_value`. |
+| `filter_value` | `Any \| None` | ❌ | Value to filter on. Must be paired with `filter_by`. |
 
 ## Return Format
 

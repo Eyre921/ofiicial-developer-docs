@@ -123,7 +123,7 @@ Go to the [Phone Numbers section](https://elevenlabs.io/app/agents/phone-numbers
 
 Click the "Import number" button, then select "From SIP Trunk" to open the configuration dialog.
 
-![Import number menu with the From SIP Trunk option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5c6e4969f3ae086d4876674a1399e3f1f2b964d15b955d5f46ad95da655829fb/assets/images/conversational-ai/sip-trunk-import-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T161407Z&X-Amz-Expires=604800&X-Amz-Signature=ba210ab42e635a7d59d3113a62c62e427c02bf0ee71ef821dec5bec1fe358f6a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Import number menu with the From SIP Trunk option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/5c6e4969f3ae086d4876674a1399e3f1f2b964d15b955d5f46ad95da655829fb/assets/images/conversational-ai/sip-trunk-import-number.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T091338Z&X-Amz-Expires=604800&X-Amz-Signature=d18b4295b24432422a91835a1e2089128517d50ec18212750d687bc3a4a7b6cd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Enter basic configuration
 
@@ -132,7 +132,7 @@ Complete the basic configuration with the following information:
 * **Label**: A descriptive name for the phone number
 * **Phone Number**: The E.164 formatted phone number to connect (e.g., +15551234567)
 
-![SIP trunk basic configuration with Label and Phone number fields](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/682cc9b519dc50553e4849c528837ae3f6ff9ebeef005464004474d201cccb95/assets/images/conversational-ai/sip-trunk-basic-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T161407Z&X-Amz-Expires=604800&X-Amz-Signature=63be6a1f5451c9c4f18aff59304f9223dfa140aaa9ff4aa660959fb332550099&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![SIP trunk basic configuration with Label and Phone number fields](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/682cc9b519dc50553e4849c528837ae3f6ff9ebeef005464004474d201cccb95/assets/images/conversational-ai/sip-trunk-basic-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T091338Z&X-Amz-Expires=604800&X-Amz-Signature=67e78e1c9e3fe86d057326f8ba40e1afc21970cf9e0d499f291045b75e8e94ee&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure inbound settings
 
@@ -149,7 +149,7 @@ Configure how ElevenLabs handles calls arriving at your SIP trunk, including med
   * **SIP Trunk Username**: Username for SIP digest authentication
   * **SIP Trunk Password**: Password for SIP digest authentication
 
-![Inbound configuration settings, including media encryption, allowed numbers, allowed source IP addresses, remote domains, and authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/83a3ee6dd135f8f0206c08703ade8324d7993d88cc0572eaa1f65246313ccf90/assets/images/conversational-ai/sip-trunk-inbound-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T161407Z&X-Amz-Expires=604800&X-Amz-Signature=b2f3c2bf12f7227eda2801d0f19291f083de4abbf51c9077d9197f17b8456ee9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Inbound configuration settings, including media encryption, allowed numbers, allowed source IP addresses, remote domains, and authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/83a3ee6dd135f8f0206c08703ade8324d7993d88cc0572eaa1f65246313ccf90/assets/images/conversational-ai/sip-trunk-inbound-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T091338Z&X-Amz-Expires=604800&X-Amz-Signature=93cb881d7150a9af072461421c9f7bf05412c560ffef1c46308e2860d6409df0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure outbound settings
 
@@ -173,7 +173,7 @@ Configure where ElevenLabs should send calls for your phone number:
 
   If left empty, Access Control List (ACL) authentication will be used, which requires you to allowlist ElevenLabs IP addresses in your provider's settings.
 
-![Outbound configuration settings, including address, transport type, media encryption, enabled codecs, custom headers, and authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/91e0283cb11362220b862856c2365c56fb47388f1b618007c1902d4515390253/assets/images/conversational-ai/sip-trunk-outbound-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T161407Z&X-Amz-Expires=604800&X-Amz-Signature=2fa99e45bcdeb651fbe8f1a3f277a49ba000488068352c8f71e4acf152cbbbc2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Outbound configuration settings, including address, transport type, media encryption, enabled codecs, custom headers, and authentication](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/91e0283cb11362220b862856c2365c56fb47388f1b618007c1902d4515390253/assets/images/conversational-ai/sip-trunk-outbound-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T091338Z&X-Amz-Expires=604800&X-Amz-Signature=9ff93582dcfef15dabfaa4c4856758515616a228ef9077ace794eee1ea254004&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Tip**
 >

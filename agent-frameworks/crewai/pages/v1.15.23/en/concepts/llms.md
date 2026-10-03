@@ -914,8 +914,8 @@ In this section, you'll find detailed examples that help you select, configure, 
 
     **Model details:**
 
-    | Model                                            | Context Window  | Best For                                                                                                                    |
-    | ------------------------------------------------ | --------------- | --------------------------------------------------------------------------------------------------------------------------- |
+    | Model | Context Window | Best For |
+    | - | - | - |
     | `nvidia/NVIDIA-Nemotron-3-Ultra-550B-A55B-NVFP4` | Up to 1M tokens | Frontier reasoning, complex agentic workflows, long-context analysis, tool use, multilingual reasoning, and high-stakes RAG |
 
     **Supported languages:** English, French, Spanish, Italian, German, Japanese, Korean, Hindi, Brazilian Portuguese, and Chinese.

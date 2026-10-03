@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1354 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1351 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -393,7 +393,6 @@
 - `docs/api-reference/workspace/update` — [Update settings](pages/docs/api-reference/workspace/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/update.md)
 - `docs/changelog/llms.txt` — [Changelog](pages/docs/changelog/llms.txt.md) · [原文](https://elevenlabs.io/docs/changelog/llms.txt)
 - `docs/eleven-agents/api-reference/agents/branches/create` — [Create agent branch](pages/docs/eleven-agents/api-reference/agents/branches/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md)
-- `docs/eleven-agents/api-reference/agents/branches/get` — [Get agent branch](pages/docs/eleven-agents/api-reference/agents/branches/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md)
 - `docs/eleven-agents/api-reference/agents/branches/list` — [List agent branches](pages/docs/eleven-agents/api-reference/agents/branches/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list.md)
 - `docs/eleven-agents/api-reference/agents/branches/merge` — [Merge agent branch](pages/docs/eleven-agents/api-reference/agents/branches/merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/merge.md)
 - `docs/eleven-agents/api-reference/agents/branches/preview-merge` — [Preview merged configuration](pages/docs/eleven-agents/api-reference/agents/branches/preview-merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/preview-merge.md)
@@ -574,7 +573,6 @@
 - `docs/eleven-agents/api-reference/workspace/secrets/create` — [Create secret](pages/docs/eleven-agents/api-reference/workspace/secrets/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/create.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/delete` — [Delete secret](pages/docs/eleven-agents/api-reference/workspace/secrets/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/delete.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/get` — [Get secret](pages/docs/eleven-agents/api-reference/workspace/secrets/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get.md)
-- `docs/eleven-agents/api-reference/workspace/secrets/get-dependencies` — [Get secret dependencies](pages/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/get-dependencies.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/list` — [Get secrets](pages/docs/eleven-agents/api-reference/workspace/secrets/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/list.md)
 - `docs/eleven-agents/api-reference/workspace/secrets/update` — [Update secret](pages/docs/eleven-agents/api-reference/workspace/secrets/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/secrets/update.md)
 - `docs/eleven-agents/api-reference/workspace/update` — [Update settings](pages/docs/eleven-agents/api-reference/workspace/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/workspace/update.md)
@@ -945,7 +943,6 @@
 - `docs/help-center/other/how-can-i-find-out-about-the-latest-news-from-eleven-labs` — [How can I find out about the latest news from ElevenLabs?](pages/docs/help-center/other/how-can-i-find-out-about-the-latest-news-from-eleven-labs.md) · [原文](https://elevenlabs.io/docs/help-center/other/how-can-i-find-out-about-the-latest-news-from-eleven-labs.md)
 - `docs/help-center/other/how-can-i-submit-feedback-suggestions-or-a-bug-report` — [How can I submit feedback, suggestions or a bug report?](pages/docs/help-center/other/how-can-i-submit-feedback-suggestions-or-a-bug-report.md) · [原文](https://elevenlabs.io/docs/help-center/other/how-can-i-submit-feedback-suggestions-or-a-bug-report.md)
 - `docs/help-center/other/is-there-a-community-for-eleven-labs` — [Is there a community for ElevenLabs?](pages/docs/help-center/other/is-there-a-community-for-eleven-labs.md) · [原文](https://elevenlabs.io/docs/help-center/other/is-there-a-community-for-eleven-labs.md)
-- `docs/help-center/other/what-is-eleven-labs` — [What is ElevenLabs?](pages/docs/help-center/other/what-is-eleven-labs.md) · [原文](https://elevenlabs.io/docs/help-center/other/what-is-eleven-labs.md)
 - `docs/help-center/other/what-languages-do-you-support` — [What languages do you support?](pages/docs/help-center/other/what-languages-do-you-support.md) · [原文](https://elevenlabs.io/docs/help-center/other/what-languages-do-you-support.md)
 - `docs/help-center/partnerships` — [Partnerships and Affiliates FAQ](pages/docs/help-center/partnerships.md) · [原文](https://elevenlabs.io/docs/help-center/partnerships.md)
 - `docs/help-center/partnerships/can-i-customize-my-affiliate-referral-link` — [Can I customize my Affiliate referral link?](pages/docs/help-center/partnerships/can-i-customize-my-affiliate-referral-link.md) · [原文](https://elevenlabs.io/docs/help-center/partnerships/can-i-customize-my-affiliate-referral-link.md)

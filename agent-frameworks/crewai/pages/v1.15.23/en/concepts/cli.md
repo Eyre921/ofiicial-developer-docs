@@ -96,11 +96,11 @@ Use `--output-dir` to override the output folder name (defaults to the template 
 
 These older commands still work but print a yellow deprecation warning. Prefer the `crewai create <type>` forms above.
 
-| Deprecated                    | Use instead                     |
-| :---------------------------- | :------------------------------ |
-| `crewai tool create <handle>` | `crewai create tool <handle>`   |
-| `crewai skill create <name>`  | `crewai create skill <name>`    |
-| `crewai template add <name>`  | `crewai create template <name>` |
+| Deprecated | Use instead |
+| :- | :- |
+| `crewai tool create <handle>` | `crewai create tool <handle>` |
+| `crewai skill create <name>` | `crewai create skill <name>` |
+| `crewai template add <name>` | `crewai create template <name>` |
 
 Lifecycle commands are unchanged — for example `crewai tool install`, `crewai skill publish`, and `crewai template list` stay under their resource groups.
 
@@ -108,11 +108,11 @@ Lifecycle commands are unchanged — for example `crewai tool install`, `crewai 
 
 These older snake\_case flags still work but are hidden from `--help`. Prefer the kebab-case forms documented in each command section below.
 
-| Deprecated                                          | Use instead       |
-| :-------------------------------------------------- | :---------------- |
-| `--skip_provider` (on `crewai create crew`)         | `--skip-provider` |
-| `--n_iterations` (on `crewai train`, `crewai test`) | `--n-iterations`  |
-| `--task_id` (on `crewai replay`)                    | `--task-id`       |
+| Deprecated | Use instead |
+| :- | :- |
+| `--skip_provider` (on `crewai create crew`) | `--skip-provider` |
+| `--n_iterations` (on `crewai train`, `crewai test`) | `--n-iterations` |
+| `--task_id` (on `crewai replay`) | `--task-id` |
 
 ### 2. Version
 
@@ -477,15 +477,15 @@ crewai config list
 
 Example output:
 
-| Setting               | Value                                            | Description                                  |
-| :-------------------- | :----------------------------------------------- | :------------------------------------------- |
-| enterprise\_base\_url | [https://app.crewai.com](https://app.crewai.com) | Base URL of the CrewAI AMP instance          |
-| org\_name             | Not set                                          | Name of the currently active organization    |
-| org\_uuid             | Not set                                          | UUID of the currently active organization    |
-| oauth2\_provider      | workos                                           | OAuth2 provider (e.g., workos, okta, auth0)  |
-| oauth2\_audience      | client\_01YYY                                    | Audience identifying the target API/resource |
-| oauth2\_client\_id    | client\_01XXX                                    | OAuth2 client ID issued by the provider      |
-| oauth2\_domain        | login.crewai.com                                 | Provider domain (e.g., your-org.auth0.com)   |
+| Setting | Value | Description |
+| :- | :- | :- |
+| enterprise\_base\_url | [https://app.crewai.com](https://app.crewai.com) | Base URL of the CrewAI AMP instance |
+| org\_name | Not set | Name of the currently active organization |
+| org\_uuid | Not set | UUID of the currently active organization |
+| oauth2\_provider | workos | OAuth2 provider (e.g., workos, okta, auth0) |
+| oauth2\_audience | client\_01YYY | Audience identifying the target API/resource |
+| oauth2\_client\_id | client\_01XXX | OAuth2 client ID issued by the provider |
+| oauth2\_domain | login.crewai.com | Provider domain (e.g., your-org.auth0.com) |
 
 Set the enterprise base URL:
 

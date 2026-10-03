@@ -12,19 +12,7 @@ provided alongside them.
 Any metadata field you provide that is not declared in the schema is stored on the document, returned via include_fields, and
 automatically indexed for filtering.
 
-If a document with the same `_id` already exists, it is completely replaced. Documents become searchable within approximately one minute. The `namespace` is auto-created on first upsert; use `"__default__"` if you don't need partitioning.
-
-<Note>
-  Upsert replaces the whole document. For partial changes to specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents), which patches fields per ID or in bulk by metadata filter.
-</Note>
-
-<Note>
-  Each document in the `documents` array is validated against your index schema. If any document fails validation, **the entire request fails** and nothing is upserted. Field names starting with `_` (reserved for system-managed fields like `_id` and `_score`) or `$` (reserved for filter operators) are rejected.
-</Note>
-
-<Note>
-  To ingest many documents, use the Python SDK's `index.documents.batch_upsert(documents=..., batch_size=..., max_workers=..., show_progress=...)`, a client-side convenience that splits a large list into batches and issues concurrent `POST /namespaces/{namespace}/documents/upsert` requests in the background. It's a wrapper around this endpoint, not a separate API.
-</Note>
+Upsert fully replaces any document with the same `_id`, so fields you omit are removed. To change specific fields, use [Update documents](/reference/api/2026-07/data-plane/update_documents). If any document fails schema validation, the whole request fails and nothing is written. The namespace is created on first upsert (use `__default__` if you don't need partitioning), and documents become searchable within about a minute.
 
 <RequestExample>
   ```python Python theme={null}
@@ -43,6 +31,8 @@ If a document with the same `_id` already exists, it is completely replaced. Doc
       {"_id": "doc3", "title": "Quantum computing", "body": "Quantum computers leverage superposition for faster computation", "category": "science", "year": 2024},
   ]
 
+  # For large ingests, index.documents.batch_upsert(...) splits documents into
+  # concurrent requests to this endpoint.
   index.documents.upsert(
       namespace=NAMESPACE,
       documents=docs,

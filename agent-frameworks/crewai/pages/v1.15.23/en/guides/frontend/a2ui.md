@@ -39,10 +39,10 @@ The catalog is your set of React components keyed by a catalog id — a `FlightC
 
 A2UI backends come in two shapes. In **dynamic** mode the agent designs the surface; in **fixed-schema** mode you pre-author the layout and the agent only fills in data.
 
-| Mode                              | Who designs the layout           | Backend                          | Predictability                 |
-| --------------------------------- | -------------------------------- | -------------------------------- | ------------------------------ |
-| **[Dynamic](#dynamic)**           | The agent, from the conversation | No A2UI tool — auto-injected     | Novel layouts, LLM layout step |
-| **[Fixed-schema](#fixed-schema)** | You, up front                    | Backend tools return an envelope | Deterministic, no layout step  |
+| Mode | Who designs the layout | Backend | Predictability |
+| - | - | - | - |
+| **[Dynamic](#dynamic)** | The agent, from the conversation | No A2UI tool — auto-injected | Novel layouts, LLM layout step |
+| **[Fixed-schema](#fixed-schema)** | You, up front | Backend tools return an envelope | Deterministic, no layout step |
 
 ### Dynamic
 

@@ -15,12 +15,12 @@ place for run-level policy checks, input rewriting, and output sanitization.
 
 Four interception points cover the boundaries:
 
-| Point             | When                                            | `ctx.payload`                           |
-| ----------------- | ----------------------------------------------- | --------------------------------------- |
-| `EXECUTION_START` | A crew or flow is about to begin                | inputs `dict`                           |
-| `INPUT`           | Resolved inputs for the execution               | inputs `dict`                           |
-| `OUTPUT`          | The final result is ready                       | the output object                       |
-| `EXECUTION_END`   | The execution has finished (success or failure) | the output object, or `None` on failure |
+| Point | When | `ctx.payload` |
+| - | - | - |
+| `EXECUTION_START` | A crew or flow is about to begin | inputs `dict` |
+| `INPUT` | Resolved inputs for the execution | inputs `dict` |
+| `OUTPUT` | The final result is ready | the output object |
+| `EXECUTION_END` | The execution has finished (success or failure) | the output object, or `None` on failure |
 
 For a crew, the output payload is a `CrewOutput`. For a flow, it is the final
 flow-method result.

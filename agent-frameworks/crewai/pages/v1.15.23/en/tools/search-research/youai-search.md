@@ -10,10 +10,10 @@ You.com provides a remote MCP server at `https://api.you.com/mcp` with two searc
 
 ## Available Tools
 
-| Tool           | Description                                                                      | Use when                                                       |
-| -------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| `you-search`   | Web and news search with advanced filtering, operators, freshness, geo-targeting | You need current search results, news, or raw links            |
-| `you-research` | Multi-source research that synthesizes a cited Markdown answer                   | You need a comprehensive, cited answer rather than raw results |
+| Tool | Description | Use when |
+| - | - | - |
+| `you-search` | Web and news search with advanced filtering, operators, freshness, geo-targeting | You need current search results, news, or raw links |
+| `you-research` | Multi-source research that synthesizes a cited Markdown answer | You need a comprehensive, cited answer rather than raw results |
 
 ## Installation
 
@@ -29,11 +29,11 @@ pip install "crewai-tools[mcp]>=0.1"
 
 Three options for connecting to the You.com MCP server:
 
-| Option        | URL                                    | Available tools   | Setup                        |
-| ------------- | -------------------------------------- | ----------------- | ---------------------------- |
-| **Free tier** | `https://api.you.com/mcp?profile=free` | `you-search` only | No credentials needed        |
-| **API key**   | `https://api.you.com/mcp`              | All tools         | Set `YDC_API_KEY` env var    |
-| **OAuth 2.1** | `https://api.you.com/mcp`              | All tools         | MCP client handles auth flow |
+| Option | URL | Available tools | Setup |
+| - | - | - | - |
+| **Free tier** | `https://api.you.com/mcp?profile=free` | `you-search` only | No credentials needed |
+| **API key** | `https://api.you.com/mcp` | All tools | Set `YDC_API_KEY` env var |
+| **OAuth 2.1** | `https://api.you.com/mcp` | All tools | MCP client handles auth flow |
 
 Get an API key at [https://you.com/platform/api-keys](https://you.com/platform/api-keys).
 
@@ -118,43 +118,43 @@ researcher = Agent(
 
 ## you-search Parameters
 
-| Parameter           | Required | Type      | Description                                                           |
-| ------------------- | -------- | --------- | --------------------------------------------------------------------- |
-| `query`             | Yes      | `string`  | Search query with operator support                                    |
-| `count`             | No       | `integer` | Max results per section (1–100)                                       |
-| `freshness`         | No       | `string`  | `"day"`, `"week"`, `"month"`, `"year"`, or `"YYYY-MM-DDtoYYYY-MM-DD"` |
-| `offset`            | No       | `integer` | Pagination offset (0–9)                                               |
-| `country`           | No       | `string`  | Country code for geo-targeting (e.g., `"US"`, `"GB"`, `"DE"`)         |
-| `safesearch`        | No       | `string`  | `"off"`, `"moderate"`, `"strict"`                                     |
-| `livecrawl`         | No       | `string`  | Live-crawl sections: `"web"`, `"news"`, `"all"`                       |
-| `livecrawl_formats` | No       | `string`  | Crawled content format: `"html"`, `"markdown"`                        |
+| Parameter | Required | Type | Description |
+| - | - | - | - |
+| `query` | Yes | `string` | Search query with operator support |
+| `count` | No | `integer` | Max results per section (1–100) |
+| `freshness` | No | `string` | `"day"`, `"week"`, `"month"`, `"year"`, or `"YYYY-MM-DDtoYYYY-MM-DD"` |
+| `offset` | No | `integer` | Pagination offset (0–9) |
+| `country` | No | `string` | Country code for geo-targeting (e.g., `"US"`, `"GB"`, `"DE"`) |
+| `safesearch` | No | `string` | `"off"`, `"moderate"`, `"strict"` |
+| `livecrawl` | No | `string` | Live-crawl sections: `"web"`, `"news"`, `"all"` |
+| `livecrawl_formats` | No | `string` | Crawled content format: `"html"`, `"markdown"` |
 
 ### Query Operators
 
-| Operator     | Example            | Effect                        |
-| ------------ | ------------------ | ----------------------------- |
-| `site:`      | `site:github.com`  | Restrict to a specific domain |
-| `filetype:`  | `filetype:pdf`     | Filter by file type           |
-| `+`          | `+Python`          | Require term to appear        |
-| `-`          | `-TensorFlow`      | Exclude term from results     |
-| `AND/OR/NOT` | `(Python OR Rust)` | Boolean logic                 |
-| `lang:`      | `lang:en`          | Filter by language            |
+| Operator | Example | Effect |
+| - | - | - |
+| `site:` | `site:github.com` | Restrict to a specific domain |
+| `filetype:` | `filetype:pdf` | Filter by file type |
+| `+` | `+Python` | Require term to appear |
+| `-` | `-TensorFlow` | Exclude term from results |
+| `AND/OR/NOT` | `(Python OR Rust)` | Boolean logic |
+| `lang:` | `lang:en` | Filter by language |
 
 ## you-research Parameters
 
-| Parameter         | Required | Type     | Description                               |
-| ----------------- | -------- | -------- | ----------------------------------------- |
-| `input`           | Yes      | `string` | Research question or topic                |
-| `research_effort` | No       | `string` | Depth of research (default: `"standard"`) |
+| Parameter | Required | Type | Description |
+| - | - | - | - |
+| `input` | Yes | `string` | Research question or topic |
+| `research_effort` | No | `string` | Depth of research (default: `"standard"`) |
 
 ### Research Effort Levels
 
-| Level        | Speed    | Detail             | Use when                                   |
-| ------------ | -------- | ------------------ | ------------------------------------------ |
-| `lite`       | Fastest  | Brief overview     | Quick fact-checking                        |
-| `standard`   | Balanced | Moderate depth     | General research questions                 |
-| `deep`       | Slower   | Thorough analysis  | Complex topics requiring depth             |
-| `exhaustive` | Slowest  | Most comprehensive | Critical research needing maximum coverage |
+| Level | Speed | Detail | Use when |
+| - | - | - | - |
+| `lite` | Fastest | Brief overview | Quick fact-checking |
+| `standard` | Balanced | Moderate depth | General research questions |
+| `deep` | Slower | Thorough analysis | Complex topics requiring depth |
+| `exhaustive` | Slowest | Most comprehensive | Critical research needing maximum coverage |
 
 ### Return Format
 

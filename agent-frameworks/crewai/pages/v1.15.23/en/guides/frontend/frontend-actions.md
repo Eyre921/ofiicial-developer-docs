@@ -92,10 +92,10 @@ The example below lets the agent switch the app into dark mode on request.
 
 `useFrontendTool` covers both ends of a spectrum, and you pick per tool:
 
-| You provide   | What it does                                 |
-| ------------- | -------------------------------------------- |
+| You provide | What it does |
+| - | - |
 | **`handler`** | Runs code in the browser (a frontend action) |
-| **`render`**  | Draws UI for the tool call (generative UI)   |
+| **`render`** | Draws UI for the tool call (generative UI) |
 
 You can supply either one, or both. A `handler` with a `render` alongside it performs the action and draws UI while it runs. For render-only tools that just display the result of an agent action, see [Tool-Based Generative UI](/edge/en/guides/frontend/tool-based-generative-ui).
 

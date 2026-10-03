@@ -357,10 +357,10 @@ class SelectivePersistFlow(Flow):
 
 `@persist` supports two distinct hydration modes on `kickoff` / `kickoff_async`. Use **resume** (`inputs["id"]`) to continue the same lineage; use **fork** (`restore_from_state_id`) to start a new lineage seeded from a snapshot:
 
-|                                | `state.id` after kickoff              | `@persist` writes land under  |
-| ------------------------------ | ------------------------------------- | ----------------------------- |
-| `inputs["id"]` (resume)        | supplied id                           | supplied id (extends history) |
-| `restore_from_state_id` (fork) | fresh id, or `inputs["id"]` if pinned | new id (source preserved)     |
+| | `state.id` after kickoff | `@persist` writes land under |
+| - | - | - |
+| `inputs["id"]` (resume) | supplied id | supplied id (extends history) |
+| `restore_from_state_id` (fork) | fresh id, or `inputs["id"]` if pinned | new id (source preserved) |
 
 ```python theme={null}
 from crewai.flow.flow import Flow, start

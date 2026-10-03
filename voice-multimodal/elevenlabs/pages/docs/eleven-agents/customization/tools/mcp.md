@@ -96,7 +96,7 @@ In this example, we'll use [Zapier MCP](https://zapier.com/mcp), which lets you 
 
 Navigate to the [MCP server integrations dashboard](https://elevenlabs.io/app/agents/integrations) and click **Add Custom MCP Server**.
 
-![Creating your first MCP server](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/335d1d8fced3cd82eed4ed43ba0058d3a8dbc431f81cdb387bf3d5964e5ead80/assets/images/conversational-ai/mcp-create.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T162710Z&X-Amz-Expires=604800&X-Amz-Signature=d3f69722bc7f7332f092f75d0948ce6bb795cc54e0247a0c8ca0b5d3cb085a9c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Creating your first MCP server](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/335d1d8fced3cd82eed4ed43ba0058d3a8dbc431f81cdb387bf3d5964e5ead80/assets/images/conversational-ai/mcp-create.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T064534Z&X-Amz-Expires=604800&X-Amz-Signature=bef5f065d66e5bec2f2fec2b739840756222e94e2db5994e0bc05d939f03279a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure the MCP server
 
@@ -112,13 +112,13 @@ Enter the following details:
 
 Click **Add Integration** to save the integration and test the connection to list available tools.
 
-![Zapier example tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c9d83baedd0e2dc74014d4a690159333bbef0eec37c36fa9ee0fd6cd455df0e/assets/images/conversational-ai/mcp-zapier.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T162710Z&X-Amz-Expires=604800&X-Amz-Signature=133d8f09d024df04e5b3cd965c91e1623fdc13af7323351e8266982fdb7355b1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Zapier example tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7c9d83baedd0e2dc74014d4a690159333bbef0eec37c36fa9ee0fd6cd455df0e/assets/images/conversational-ai/mcp-zapier.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T064534Z&X-Amz-Expires=604800&X-Amz-Signature=0d22788071eb616d3d457988f39b25c296939a5d23168388fa14d7643862d8f5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Attach the server to an agent
 
 The MCP server is now available to add to your agents. MCP support is available for both public and private agents.
 
-![Adding the MCP server to an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b18756710b4466a5fa462080d6f3b237d84f76f898d5c94d4583f31d2fa0395b/assets/images/conversational-ai/mcp-add.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T162710Z&X-Amz-Expires=604800&X-Amz-Signature=3ced4c2b7f3e5283cf063dde282d973386433386b0b91a62231cc404aa21795c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Adding the MCP server to an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b18756710b4466a5fa462080d6f3b237d84f76f898d5c94d4583f31d2fa0395b/assets/images/conversational-ai/mcp-add.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T064534Z&X-Amz-Expires=604800&X-Amz-Signature=f1cce6c2358c0630d4c1aa796e9b5e693a6dfc3b5593b9f1dffce84c9b184dba&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Add via the API
 
@@ -171,7 +171,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 
 ElevenLabs provides flexible approval controls to manage how agents request permission to use tools from MCP servers. You can configure approval settings at both the MCP server level and individual tool level for maximum security control.
 
-![Tool approval mode settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3/assets/images/conversational-ai/mcp-approval.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T162710Z&X-Amz-Expires=604800&X-Amz-Signature=37916de8e069a2d6a9708b10d653c0bdbeb6dfd4ad6506adff3215bef8dc9146&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool approval mode settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9f4c208459131622478de5010e2234d3af8a03dc9bc5b7ec2fcab48a7be3bde3/assets/images/conversational-ai/mcp-approval.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T064534Z&X-Amz-Expires=604800&X-Amz-Signature=01658da2f95dba2c94c91352c962123af8064eef828ea300bc04e9c71bfc93f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Available approval modes
 
@@ -184,7 +184,7 @@ ElevenLabs provides flexible approval controls to manage how agents request perm
 The Fine-Grained Tool Approval mode allows you to configure individual tools with different approval requirements, giving you precise control over which tools can run automatically and which require explicit permission.
 
 ![Fine-grained tool approval
-settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24/assets/images/conversational-ai/mcp-finegrained-approvals.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261002%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261002T162710Z&X-Amz-Expires=604800&X-Amz-Signature=2ac2625574c14e546455814204cbf9035f7640f2aa72ad2a9420856db37a6881&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/041cad753319ed92189ee8d4f70a9d3ed07177303bf71777ce36a90270a5dd24/assets/images/conversational-ai/mcp-finegrained-approvals.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T064534Z&X-Amz-Expires=604800&X-Amz-Signature=720c9bf5df06524bb2b0a36435f02ec999f52a8cfcf5b7ef2714e59fa556f2af&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 For each tool, you can set:
 

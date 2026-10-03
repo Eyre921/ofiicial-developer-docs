@@ -12,11 +12,11 @@ Generative UI means the agent's work shows up as real interface, not just text. 
 
 CopilotKit renders generative UI along a **spectrum**, from fully author-controlled (you decide every pixel) to agent-invented (the agent assembles the surface):
 
-| Tier                            | Who decides the UI                                            | CrewAI mechanism                       |
-| ------------------------------- | ------------------------------------------------------------- | -------------------------------------- |
-| **[Controlled](#controlled)**   | You — a fixed set of components the agent picks from          | `useRenderTool`, `useAgent`, reasoning |
-| **[Declarative](#declarative)** | The agent — assembles a surface from *your* component catalog | [A2UI](/edge/en/guides/frontend/a2ui)  |
-| **[Open-ended](#open-ended)**   | An external tool/server invents the surface                   | MCP tools                              |
+| Tier | Who decides the UI | CrewAI mechanism |
+| - | - | - |
+| **[Controlled](#controlled)** | You — a fixed set of components the agent picks from | `useRenderTool`, `useAgent`, reasoning |
+| **[Declarative](#declarative)** | The agent — assembles a surface from *your* component catalog | [A2UI](/edge/en/guides/frontend/a2ui) |
+| **[Open-ended](#open-ended)** | An external tool/server invents the surface | MCP tools |
 
 The tiers compose freely; a single app usually mixes them.
 

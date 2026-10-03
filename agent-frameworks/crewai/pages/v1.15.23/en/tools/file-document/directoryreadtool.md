@@ -50,6 +50,6 @@ tool = DirectoryReadTool(directory='/path/to/your/directory')
 
 The following parameters can be used to customize the `DirectoryReadTool`'s behavior:
 
-| Argument      | Type     | Description                                                                                                                                                                                                   |
-| :------------ | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Argument | Type | Description |
+| :- | :- | :- |
 | **directory** | `string` | *Optional*. An argument that specifies the path to the directory whose contents you wish to list. It accepts both absolute and relative paths, guiding the tool to the desired directory for content listing. |
