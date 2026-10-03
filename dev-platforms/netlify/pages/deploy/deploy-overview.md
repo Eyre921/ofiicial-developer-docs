@@ -100,7 +100,7 @@ This summary indicates how many files have been uploaded to our CDN. It also ind
 
 When you have [branch deploys](/deploy/deploy-overview#branch-deploy-controls) enabled, the summary will inform you if the files to upload have already been uploaded by a previous deploy with the same commits. Netlify's deployment infrastructure knows how to avoid uploading the same file twice, even between different deploys, so we get your changes ready without duplicating content. You can read more about how this works in this article about our [deploying and routing infrastructure](https://medium.com/netlify/how-netlifys-deploying-and-routing-infrastructure-works-c90adbde3b8d).
 
-If the summary continually indicates that many more files were uploaded than you were expecting, your site may be taking longer to deploy than it needs to. Visit our Forums for a verified Support Guide on [making the most of Netlify's CDN cache](https://answers.netlify.com/t/common-issue-making-the-most-of-netlifys-cdn-cache/127) to learn about why this might be happening and get advice about what you can do to reduce the number of files uploaded each time in order to speed up your deploys.
+If the summary continually indicates that many more files were uploaded than you were expecting, your site may be taking longer to deploy than it needs to. Check out our Support Guide on [making the most of Netlify's CDN cache](https://answers.netlify.com/t/common-issue-making-the-most-of-netlifys-cdn-cache/127) to learn about why this might be happening and get advice about what you can do to reduce the number of files uploaded each time in order to speed up your deploys.
 
 ## Deploy log
 
@@ -121,7 +121,7 @@ Learn more about Netlify's AI capabilities to [give solutions for failed deploys
 
 Getting a diagnosis and suggested solution with **Why did it fail?** doesn't consume any credits. Selecting **Fix with agent** starts an [agent run](/build/build-with-ai/agent-runners/overview), which does consume credits from your team's balance. Learn more about [credit usage for fixing a failed deploy](/resources/troubleshooting/fix-a-failed-deploy#credit-usage-for-fixing-a-failed-deploy).
 
-For additional troubleshooting help, check out our Forums for a verified Support Guide on [using the log to debug your build process](https://answers.netlify.com/t/support-guide-debugging-failed-builds-101-or-build-failed-with-non-zero-exit-code/118545).
+For additional troubleshooting help, check out our Support Guide on [using the log to debug your build process](https://answers.netlify.com/t/support-guide-debugging-failed-builds-101-or-build-failed-with-non-zero-exit-code/118545).
 
 Note that Netlify deletes failed and canceled deploys that are 6 months old. Learn more about [automated cleanup for failed deploys](/deploy/manage-deploys/manage-deploys-overview#automated-cleanup-for-failed-and-canceled-deploys).
 

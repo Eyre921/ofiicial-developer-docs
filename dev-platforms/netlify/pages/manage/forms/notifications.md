@@ -133,7 +133,7 @@ To remove the `[Netlify]` prefix from your subject line and keep using the HTML 
 </form>
 ```
 
-In this example, your email subject line is `Sales inquiry from mysitename.netlify.app`. This removes `[Netlify]` from your new form notification emails. Learn more about this update in this [support Forums post](https://answers.netlify.com/t/customize-the-email-subject-line-for-form-submission-notifications/91534).
+In this example, your email subject line is `Sales inquiry from mysitename.netlify.app`. This removes `[Netlify]` from your new form notification emails. Learn more about this setup from [this example post](https://answers.netlify.com/t/customize-the-email-subject-line-for-form-submission-notifications/91534).
 
 Note that if you have an HTML form with a different email subject specified, that subject will take precedence over any updates you make to the email subject line in the Netlify UI.
 

@@ -26,7 +26,7 @@ Reference examples of common patterns:
 - [Transform responses with content includes](https://edge-functions-examples.netlify.app/example/include)
 - [Set custom HTTP request headers](https://edge-functions-examples.netlify.app/example/set-request-header)
 - [Localize content with geolocation](https://edge-functions-examples.netlify.app/example/localized-content)
-- [Rewrite responses from another URL](https://answers.netlify.com/t/new-syntax-for-rewrites-in-edge-functions/88257)
+- [Rewrite responses from another URL](/build/edge-functions/api#return-a-rewrite)
 - [A/B tests using cookies](https://edge-functions-examples.netlify.app/example/abtest)
 - [Calculate responses with WebAssembly](https://edge-functions-examples.netlify.app/example/wasm)
 
@@ -62,5 +62,5 @@ To learn how to create your own edge functions, check out the documentation.
 
 ## Feedback
 
-We welcome your feedback on this feature. Visit our [Forums](https://answers.netlify.com/categories) to join the conversation about Edge Functions.
+We welcome your feedback on this feature. To share feedback or get help, [contact Netlify Support](https://www.netlify.com/support/).
 

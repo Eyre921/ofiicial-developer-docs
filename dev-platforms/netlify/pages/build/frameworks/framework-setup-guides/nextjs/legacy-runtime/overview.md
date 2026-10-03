@@ -74,7 +74,7 @@ Learn more about using [pnpm on Netlify](/build/configure-builds/manage-dependen
 
 ## Troubleshooting
 
-If you run into issues running a Next.js app on Netlify, check out our [troubleshooting page](/build/frameworks/framework-setup-guides/nextjs/legacy-runtime/troubleshooting/). You can also visit the [Netlify Support Forums](https://answers.netlify.com/categories/) to see if others have encountered similar issues.
+If you run into issues running a Next.js app on Netlify, check out our [troubleshooting page](/build/frameworks/framework-setup-guides/nextjs/legacy-runtime/troubleshooting/). If you need more help, [contact Netlify Support](https://www.netlify.com/support/).
 
 ## More resources
 

@@ -233,5 +233,4 @@ By default, the list displays all of the functions, including background functio
 - [Function logs](/build/functions/logs)
 - [Functions usage and billing](/build/functions/usage-and-billing)
 - Function metrics in [Observability](/manage/monitoring/observability/overview) (credit-based plans) or [Function Metrics](/manage/monitoring/function-metrics) (legacy plans)
-- Visit our [Forums](https://answers.netlify.com/categories) to join the conversation about Functions
 

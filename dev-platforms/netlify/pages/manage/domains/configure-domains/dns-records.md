@@ -13,9 +13,9 @@ description: "Learn about DNS records, supported DNS record types, and adding DN
 
 DNS records are rules that tell domain name servers how to handle traffic to your domains and subdomains. 
 
-For domains managed by Netlify, we will automatically create "NETLIFY" records that point to our servers when you assign a domain or subdomain for your site. To learn more, visit our Forums for a verified support guide on [this type of DNS record](https://answers.netlify.com/t/support-guide-what-are-the-netlify-and-netlifyv6-type-dns-records-how-do-i-delete-these-records/17430).
+For domains managed by Netlify, we will automatically create "NETLIFY" records that point to our servers when you assign a domain or subdomain for your site. To learn more, check out our support guide on [this type of DNS record](https://answers.netlify.com/t/support-guide-what-are-the-netlify-and-netlifyv6-type-dns-records-how-do-i-delete-these-records/17430).
 
-You can also add your own DNS records to point to other services, such as an email provider. Visit our Forums for a verified Support Guide on [how to receive emails on your domain](https://answers.netlify.com/t/support-guide-how-can-i-receive-emails-on-my-domain/178).
+You can also add your own DNS records to point to other services, such as an email provider. Check out our Support Guide on [how to receive emails on your domain](https://answers.netlify.com/t/support-guide-how-can-i-receive-emails-on-my-domain/178).
 
 ## Supported record types
 

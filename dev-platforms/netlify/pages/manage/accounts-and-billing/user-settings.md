@@ -127,7 +127,7 @@ Under the **Applications** section of your user settings are controls for three 
 
 Applications > Personal access tokens
  to get started.
-* **Authorized applications** - When you use your Netlify user account to log in with another application, such as Netlify CLI, Netlify Support Forums, or Zapier, the application is added to this list. You can revoke authorization by selecting 
+* **Authorized applications** - When you use your Netlify user account to log in with another application, such as Netlify CLI or Zapier or the [Netlify forum](https://answers.netlify.com/), the application is added to this list. You can revoke authorization by selecting 
 ### NavigationPath Component:
 
 Options > Revoke access

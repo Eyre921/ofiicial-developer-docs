@@ -141,7 +141,7 @@ We recommend you start using environment variables at Netlify by taking the foll
 - [Build environment variables](/build/configure-builds/environment-variables)
 - [Environment variables and serverless functions](/build/functions/environment-variables)
 - [Environment variables and edge functions](/build/edge-functions/environment-variables)
-- Verified Support Guide on [how to use build environment variables](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267)
+- Support Guide on [how to use build environment variables](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267)
 - [Injecting environment variable values in your `netlify.toml` file](/build/configure-builds/file-based-configuration#inject-environment-variable-values)
 - [Environment variables for different deploy contexts](/deploy/deploy-overview#deploy-contexts)
 - [Configure your deploy environment](/deploy/manage-deploys/manage-deploys-overview#configure-your-deploy-environment)

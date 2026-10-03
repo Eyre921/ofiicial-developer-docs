@@ -30,7 +30,7 @@ Things to note when constructing an `ignore` command:
 - All paths in your `ignore` command should be absolute paths relative to the [base directory](/build/configure-builds/overview#definitions), which is the root by default (`/`).
 
 ### `ignore` examples
-Want to customize the default ignore behavior? Check out the examples of custom `ignore` commands below. For more `ignore` examples, head over to our verified Support Guide on [using the `ignore` command](https://answers.netlify.com/t/support-guide-how-to-use-the-ignore-command/37517).
+Want to customize the default ignore behavior? Check out the examples of custom `ignore` commands below. For more `ignore` examples, head over to our Support Guide on [using the `ignore` command](https://answers.netlify.com/t/support-guide-how-to-use-the-ignore-command/37517).
 
 #### Mimic default behavior
 The Bash example below is an `ignore` command that roughly approximates the default ignore builds behavior. You can add to or adjust it to update the default check. The commands use read-only [environment variables for Git metadata](/build/configure-builds/environment-variables#git-metadata) as well as the `CI` and `NETLIFY` [build environment variables](/build/configure-builds/environment-variables).

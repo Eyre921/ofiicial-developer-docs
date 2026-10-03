@@ -61,7 +61,7 @@ You can customize your npm use with the following [environment variables](/build
 
 - **`NPM_VERSION`:** variable that defaults to the version preinstalled with your version of Node.js. Accepts any released version number.
 - **`NPM_FLAGS`:** used to indicate the flags to pass to the `npm install` command. For example, you could pass the `--global` flag to make installed packages available outside your working directory. Learn more about npm flags in the [npm docs](https://docs.npmjs.com/cli/v8/using-npm/config#command-line-flags).
-- **`NPM_TOKEN`:** used for authentication when installing private npm modules. Visit our Forums for a verified Support Guide on configuration details when [using private npm modules on Netlify](https://answers.netlify.com/t/common-issue-using-private-npm-modules-on-netlify/795).
+- **`NPM_TOKEN`:** used for authentication when installing private npm modules. Check out our Support Guide on configuration details when [using private npm modules on Netlify](https://answers.netlify.com/t/common-issue-using-private-npm-modules-on-netlify/795).
 
 #### pnpm
 

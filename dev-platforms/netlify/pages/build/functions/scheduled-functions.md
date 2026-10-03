@@ -168,5 +168,5 @@ Select the scheduled function to access the function's schedule and logs.
 
 ## Feedback
 
-We'd love to hear your thoughts on how we can make Scheduled Functions better. Please visit our [Forums](https://answers.netlify.com/categories) to join the conversation.
+We'd love to hear your thoughts on how we can make Scheduled Functions better. To share feedback, [contact Netlify Support](https://www.netlify.com/support/).
 

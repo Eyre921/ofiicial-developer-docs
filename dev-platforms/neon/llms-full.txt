@@ -32,7 +32,7 @@ NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aw
 
 This endpoint accepts Anthropic models only. See the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models) for the full list. Supported models:
 
-- `claude-opus-5`, `claude-sonnet-5`, `claude-fable-5`
+- `claude-opus-5-5`, `claude-opus-5`, `claude-sonnet-5`, `claude-fable-5`, `claude-fable-5-1`
 - `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`, `claude-opus-4-1`
 - `claude-sonnet-4-6`, `claude-sonnet-4-5`
 - `claude-haiku-4-5`
@@ -57,7 +57,9 @@ const message = await client.messages.create({
   messages: [{ role: 'user', content: 'What is Neon?' }],
 });
 
-console.log(message.content[0].text);
+for (const block of message.content) {
+  if (block.type === 'text') console.log(block.text);
+}
 ```
 
 **Python (Anthropic SDK)**
@@ -152,16 +154,16 @@ The gateway forwards the `thinking` parameter to Anthropic unchanged. Set `budge
 
 **Important:**
 
-The Claude 5 models — `claude-opus-5`, `claude-sonnet-5`, and `claude-fable-5` — do not accept `thinking.type: "enabled"`. They return `400` with:
+`claude-opus-5-5`, `claude-opus-5`, `claude-sonnet-5`, `claude-fable-5`, `claude-fable-5-1`, `claude-opus-4-8`, and `claude-opus-4-7` do not accept `thinking.type: "enabled"`. They return `400` with:
 
 ```
 "thinking.type.enabled" is not supported for this model.
 Use "thinking.type.adaptive" and "output_config.effort" to control thinking.
 ```
 
-Use `thinking: { type: 'adaptive' }` with `output_config: { effort: 'low' | 'medium' | 'high' | 'xhigh' | 'max' }` instead. `claude-fable-5` also rejects `thinking.type: "disabled"` — it always thinks adaptively.
+Use `thinking: { type: 'adaptive' }` with `output_config: { effort: 'low' | 'medium' | 'high' | 'xhigh' | 'max' }` instead. `claude-opus-5-5`, `claude-fable-5`, and `claude-fable-5-1` also reject `thinking.type: "disabled"` — they always think adaptively.
 
-The Claude 4.x models accept the `enabled` + `budget_tokens` form shown below.
+`claude-opus-4-6`, `claude-opus-4-5`, `claude-opus-4-1`, `claude-sonnet-4-6`, `claude-sonnet-4-5`, and `claude-haiku-4-5` accept the `enabled` + `budget_tokens` form shown below.
 
 **TypeScript (Anthropic SDK)**
 
@@ -335,12 +337,13 @@ Append the dialect path for the endpoint you need:
 ```
 NEON_AI_GATEWAY_BASE_URL + /v1            → chat completions (all providers)
 NEON_AI_GATEWAY_BASE_URL + /openai/v1     → OpenAI Responses API
+NEON_AI_GATEWAY_BASE_URL + /anthropic     → Anthropic Messages API
 NEON_AI_GATEWAY_BASE_URL + /gemini        → Gemini generateContent API
 ```
 
-The Gemini value is an SDK base URL: google-genai appends `/v1beta/models/...`, so don't add that segment yourself. Calling the endpoint directly takes the full path, `/gemini/v1beta/models/<model>:<action>`.
+The Anthropic and Gemini values are SDK base URLs: the Anthropic SDK appends `/v1/messages` and google-genai appends `/v1beta/models/...`, so don't add those segments yourself. Calling either endpoint directly takes the full path, `/anthropic/v1/messages` or `/gemini/v1beta/models/<model>:<action>`.
 
-Each inference dialect is also reachable at a longer `/ai-gateway/<dialect>/v1` path (e.g. `/ai-gateway/mlflow/v1` for chat completions, `/ai-gateway/openai/v1` for Responses, `/ai-gateway/gemini` for Gemini). Both forms behave identically and neither is deprecated, but the shorter paths are what the docs and SDKs use. The model list is the exception: it has only `GET /v1/models`, with no `/ai-gateway/...` form. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths) for the full mapping.
+Each inference dialect is also reachable at a longer `/ai-gateway/<dialect>/v1` path (e.g. `/ai-gateway/mlflow/v1` for chat completions, `/ai-gateway/openai/v1` for Responses, `/ai-gateway/anthropic/v1` for Anthropic Messages, `/ai-gateway/gemini` for Gemini). Both forms behave identically and neither is deprecated, but the shorter paths are what the docs and SDKs use. The model list is the exception: it has only `GET /v1/models`, with no `/ai-gateway/...` form. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-paths) for the full mapping.
 
 To use an OpenAI SDK, set its `apiKey` and `baseURL` from these variables (see the examples below).
 
@@ -1284,6 +1287,24 @@ Browse the full catalog below. Switch between the **Text**, **Image**, and **Emb
 
 ### Text models
 
+#### Anthropic
+
+| Model                                                                                      | Model ID            | Inputs           | Context | Released | Reasoning | Input /M | Output /M | Endpoints                             | License |
+| ------------------------------------------------------------------------------------------ | ------------------- | ---------------- | ------- | -------- | --------- | -------- | --------- | ------------------------------------- | ------- |
+| [Claude Opus 5.5](https://neon.com/docs/ai-gateway/models/claude-opus-5-5.md)              | `claude-opus-5-5`   | text, image, pdf | 1M      | Sep 2026 | Yes       | $4       | $20       | chat/completions · anthropic/messages | —       |
+| [Claude Fable 5.1](https://neon.com/docs/ai-gateway/models/claude-fable-5-1.md)            | `claude-fable-5-1`  | text, image, pdf | 1M      | Sep 2026 | Yes       | $10      | $50       | chat/completions · anthropic/messages | —       |
+| [Claude Opus 5](https://neon.com/docs/ai-gateway/models/claude-opus-5.md)                  | `claude-opus-5`     | text, image, pdf | 1M      | Jul 2026 | Yes       | $5       | $25       | chat/completions · anthropic/messages | —       |
+| [Claude Sonnet 5](https://neon.com/docs/ai-gateway/models/claude-sonnet-5.md)              | `claude-sonnet-5`   | text, image, pdf | 1M      | Jun 2026 | Yes       | $2       | $10       | chat/completions · anthropic/messages | —       |
+| [Claude Fable 5](https://neon.com/docs/ai-gateway/models/claude-fable-5.md)                | `claude-fable-5`    | text, image, pdf | 1M      | Jun 2026 | Yes       | $10      | $50       | chat/completions · anthropic/messages | —       |
+| [Claude Opus 4.8](https://neon.com/docs/ai-gateway/models/claude-opus-4-8.md)              | `claude-opus-4-8`   | text, image, pdf | 1M      | May 2026 | Yes       | $5       | $25       | chat/completions · anthropic/messages | —       |
+| [Claude Opus 4.7](https://neon.com/docs/ai-gateway/models/claude-opus-4-7.md)              | `claude-opus-4-7`   | text, image, pdf | 1M      | Apr 2026 | Yes       | $5       | $25       | chat/completions · anthropic/messages | —       |
+| [Claude Sonnet 4.6](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-6.md)          | `claude-sonnet-4-6` | text, image, pdf | 1M      | Feb 2026 | Yes       | $3       | $15       | chat/completions · anthropic/messages | —       |
+| [Claude Opus 4.6](https://neon.com/docs/ai-gateway/models/claude-opus-4-6.md)              | `claude-opus-4-6`   | text, image, pdf | 1M      | Feb 2026 | Yes       | $5       | $25       | chat/completions · anthropic/messages | —       |
+| [Claude Opus 4.5 (latest)](https://neon.com/docs/ai-gateway/models/claude-opus-4-5.md)     | `claude-opus-4-5`   | text, image, pdf | 200K    | Nov 2025 | Yes       | $5       | $25       | chat/completions · anthropic/messages | —       |
+| [Claude Haiku 4.5 (latest)](https://neon.com/docs/ai-gateway/models/claude-haiku-4-5.md)   | `claude-haiku-4-5`  | text, image, pdf | 200K    | Oct 2025 | Yes       | $1       | $5        | chat/completions · anthropic/messages | —       |
+| [Claude Sonnet 4.5 (latest)](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-5.md) | `claude-sonnet-4-5` | text, image, pdf | 200K    | Sep 2025 | Yes       | $3       | $15       | chat/completions · anthropic/messages | —       |
+| [Claude Opus 4.1 (latest)](https://neon.com/docs/ai-gateway/models/claude-opus-4-1.md)     | `claude-opus-4-1`   | text, image, pdf | 200K    | Aug 2025 | Yes       | $15      | $75       | chat/completions · anthropic/messages | —       |
+
 #### OpenAI
 
 | Model                                                                     | Model ID        | Inputs           | Context | Released | Reasoning | Input /M | Output /M | Endpoints                           | License      |
@@ -1429,21 +1450,37 @@ Most models work with the [Chat completions](https://neon.com/docs/ai-gateway/ch
 
 All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GATEWAY_BASE_URL`).
 
-| Provider                                       | Recommended endpoint   | Notes                                                                         |
-| ---------------------------------------------- | ---------------------- | ----------------------------------------------------------------------------- |
-| OpenAI (most models)                           | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                         |
-| OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)        | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions   |
-| Google Gemini                                  | `/v1/chat/completions` | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK |
-| Google Gemma 3 12B                             | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                |
-| Meta, Zhipu AI, Thinking Machines, Moonshot AI | `/v1/chat/completions` | Chat completions only                                                         |
-| Alibaba (chat models)                          | `/v1/chat/completions` | Chat completions only                                                         |
-| Alibaba (embedding models)                     | `/v1/embeddings`       | No chat completions — returns a vector, not text                              |
+| Provider                                       | Recommended endpoint   | Notes                                                                                        |
+| ---------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------- |
+| OpenAI (most models)                           | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                                        |
+| OpenAI (`gpt-5-3-codex`, `gpt-5-5-pro`)        | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions                  |
+| Anthropic Claude                               | `/v1/chat/completions` | Use `/anthropic/v1/messages` with the Anthropic SDK for extended thinking and prompt caching |
+| Google Gemini                                  | `/v1/chat/completions` | Use `/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK                |
+| Google Gemma 3 12B                             | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                               |
+| Meta, Zhipu AI, Thinking Machines, Moonshot AI | `/v1/chat/completions` | Chat completions only                                                                        |
+| Alibaba (chat models)                          | `/v1/chat/completions` | Chat completions only                                                                        |
+| Alibaba (embedding models)                     | `/v1/embeddings`       | No chat completions — returns a vector, not text                                             |
+
+**Warning: Content shape varies by model**
+
+For most models, `message.content` in a chat completions response is a plain string. For `claude-opus-5-5`, it's an array of typed content blocks once the model reasons (`{ type: 'reasoning', ... }`, `{ type: 'text', text: ... }`); a trivial prompt still returns a string. A low `max_tokens` value can also cut a response off before the `text` block appears, leaving only a `reasoning` block. Handle both shapes:
+
+```typescript
+// The OpenAI SDK types content as string | null, so read it as unknown.
+const content: unknown = response.choices[0].message.content;
+const text =
+  typeof content === 'string'
+    ? content
+    : Array.isArray(content)
+      ? (content.find((block) => block?.type === 'text')?.text ?? '')
+      : '';
+```
 
 ## Shorter paths
 
 Each inference dialect is reachable at two equivalent paths: a shorter top-level path (recommended, and what most examples and the `@neon/ai-sdk-provider` use) and a longer `/ai-gateway/<dialect>/v1` path. Both forms behave identically, using the same branch host, bearer token, request body, response body, model routing, rate limits, and quota, and **neither is deprecated**. The longer `/ai-gateway/...` paths keep working indefinitely.
 
-The shorter form isn't a uniform `/v1/<dialect>` rule. The unified chat completions endpoint is a bare `/v1/chat/completions`, matching the OpenAI and OpenRouter convention. The native dialects are prefixed by provider instead, and each keeps its own upstream version segment so the path matches what that provider's SDK expects: `/openai/v1/...` and `/gemini/v1beta/...`.
+The shorter form isn't a uniform `/v1/<dialect>` rule. The unified chat completions endpoint is a bare `/v1/chat/completions`, matching the OpenAI and OpenRouter convention. The native dialects are prefixed by provider instead, and each keeps its own upstream version segment so the path matches what that provider's SDK expects: `/openai/v1/...`, `/anthropic/v1/...`, and `/gemini/v1beta/...`.
 
 Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-gateway/...` paths when a framework or existing Neon example expects the older dialect-specific route.
 
@@ -1451,6 +1488,7 @@ Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-g
 | ---------------------------------------------------- | ---------------------------------------------------------- |
 | `POST /v1/chat/completions`                          | `/ai-gateway/mlflow/v1/chat/completions`                   |
 | `POST /openai/v1/responses`                          | `/ai-gateway/openai/v1/responses`                          |
+| `POST /anthropic/v1/messages`                        | `/ai-gateway/anthropic/v1/messages`                        |
 | `POST /gemini/v1beta/models/{model}:generateContent` | `/ai-gateway/gemini/v1beta/models/{model}:generateContent` |
 
 ### List available models
@@ -1521,6 +1559,2002 @@ Models are hosted by Databricks and served through Neon AI Gateway. You are resp
 | Google Gemini | [Google Cloud Acceptable Use Policy](https://cloud.google.com/terms/aup) · [Google Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy) |
 | Google Gemma  | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) · [Gemma Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy)                                          |
 | Meta          | Terms differ by Llama version. See the Notes column in the [Meta models table](https://neon.com/docs/ai-gateway/models#meta).                                                       |
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-fable-5-1.md) ---
+
+# Claude Fable 5.1
+
+## About
+
+Neon AI Gateway provides Claude Fable 5.1 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-fable-5-1"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-fable-5-1",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-fable-5-1",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-fable-5-1",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-fable-5-1",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-fable-5-1
+
+## Provider
+
+Anthropic provides Claude Fable 5.1. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Sep 2026
+
+## Input /M
+
+$10
+
+## Output /M
+
+$50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-fable-5.md) ---
+
+# Claude Fable 5
+
+## About
+
+Neon AI Gateway provides Claude Fable 5 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-fable-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-fable-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-fable-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-fable-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-fable-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-fable-5
+
+## Provider
+
+Anthropic provides Claude Fable 5. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Jun 2026
+
+## Input /M
+
+$10
+
+## Output /M
+
+$50
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-haiku-4-5.md) ---
+
+# Claude Haiku 4.5 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Haiku 4.5 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-haiku-4-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-haiku-4-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-haiku-4-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-haiku-4-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-haiku-4-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-haiku-4-5
+
+## Provider
+
+Anthropic provides Claude Haiku 4.5 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Oct 2025
+
+## Input /M
+
+$1
+
+## Output /M
+
+$5
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-1.md) ---
+
+# Claude Opus 4.1 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.1 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-1"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-1",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-1",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-1",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-1",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-1
+
+## Provider
+
+Anthropic provides Claude Opus 4.1 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Aug 2025
+
+## Input /M
+
+$15
+
+## Output /M
+
+$75
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-5.md) ---
+
+# Claude Opus 4.5 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.5 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-5
+
+## Provider
+
+Anthropic provides Claude Opus 4.5 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Nov 2025
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-6.md) ---
+
+# Claude Opus 4.6
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.6 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-6"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-6",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-6",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-6",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-6",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-6
+
+## Provider
+
+Anthropic provides Claude Opus 4.6. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Feb 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-7.md) ---
+
+# Claude Opus 4.7
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.7 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-7"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-7",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-7",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-7",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-7",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-7
+
+## Provider
+
+Anthropic provides Claude Opus 4.7. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Apr 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-4-8.md) ---
+
+# Claude Opus 4.8
+
+## About
+
+Neon AI Gateway provides Claude Opus 4.8 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-4-8"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-4-8",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-4-8",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-4-8",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-4-8",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-4-8
+
+## Provider
+
+Anthropic provides Claude Opus 4.8. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+May 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-5-5.md) ---
+
+# Claude Opus 5.5
+
+## About
+
+Neon AI Gateway provides Claude Opus 5.5 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-5-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: neon("claude-opus-5-5"),
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/anthropic/v1/messages" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-5-5",
+    "max_tokens": 1024,
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-5-5
+
+## Provider
+
+Anthropic provides Claude Opus 5.5. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Sep 2026
+
+## Input /M
+
+$4
+
+## Output /M
+
+$20
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-opus-5.md) ---
+
+# Claude Opus 5
+
+## About
+
+Neon AI Gateway provides Claude Opus 5 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-opus-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-opus-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-opus-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-opus-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-opus-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-opus-5
+
+## Provider
+
+Anthropic provides Claude Opus 5. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Jul 2026
+
+## Input /M
+
+$5
+
+## Output /M
+
+$25
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-5.md) ---
+
+# Claude Sonnet 4.5 (latest)
+
+## About
+
+Neon AI Gateway provides Claude Sonnet 4.5 (latest) by Anthropic. The model supports text, image, pdf inputs and a 200K context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-sonnet-4-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-sonnet-4-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-sonnet-4-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-sonnet-4-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-sonnet-4-5
+
+## Provider
+
+Anthropic provides Claude Sonnet 4.5 (latest). Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+200K
+
+## Released
+
+Sep 2025
+
+## Input /M
+
+$3
+
+## Output /M
+
+$15
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-sonnet-4-6.md) ---
+
+# Claude Sonnet 4.6
+
+## About
+
+Neon AI Gateway provides Claude Sonnet 4.6 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-sonnet-4-6"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-sonnet-4-6",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-sonnet-4-6",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-sonnet-4-6",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-6",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-sonnet-4-6
+
+## Provider
+
+Anthropic provides Claude Sonnet 4.6. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Feb 2026
+
+## Input /M
+
+$3
+
+## Output /M
+
+$15
+
+--- [Document source](https://neon.com/docs/ai-gateway/models/claude-sonnet-5.md) ---
+
+# Claude Sonnet 5
+
+## About
+
+Neon AI Gateway provides Claude Sonnet 5 by Anthropic. The model supports text, image, pdf inputs and a 1M context window.
+
+## Command
+
+### Text generation
+
+#### AI SDK
+
+Install:
+
+```bash
+npm i ai @neondatabase/ai-sdk-provider
+```
+
+```typescript
+import { generateText } from "ai";
+import { neon } from "@neondatabase/ai-sdk-provider";
+
+const { text } = await generateText({
+  model: neon("claude-sonnet-5"),
+  prompt: "Explain Serverless Postgres.",
+});
+
+console.log(text);
+```
+
+#### Mastra
+
+Install:
+
+```bash
+npm i @mastra/core
+```
+
+```typescript
+import { Agent } from "@mastra/core/agent";
+
+const agent = new Agent({
+  id: "neon-demo",
+  name: "neon-demo",
+  instructions: "You are a helpful assistant.",
+  model: "neon/claude-sonnet-5",
+});
+
+const { text } = await agent.generate("Explain Serverless Postgres.");
+console.log(text);
+```
+
+#### TypeScript
+
+Install:
+
+```bash
+npm i openai
+```
+
+```typescript
+import OpenAI from "openai";
+
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/v1`,
+});
+
+const resp = await client.chat.completions.create({
+  model: "claude-sonnet-5",
+  messages: [{ role: "user", content: "Explain Serverless Postgres." }],
+});
+console.log(resp.choices[0].message.content);
+```
+
+#### Python
+
+Install:
+
+```bash
+pip install openai
+```
+
+```python
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEON_AI_GATEWAY_TOKEN"],
+    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/v1",
+)
+
+resp = client.chat.completions.create(
+    model="claude-sonnet-5",
+    messages=[{"role": "user", "content": "Explain Serverless Postgres."}],
+)
+print(resp.choices[0].message.content)
+```
+
+#### cURL
+
+```bash
+curl "${NEON_AI_GATEWAY_BASE_URL}/v1/chat/completions" \
+  -H "Authorization: Bearer ${NEON_AI_GATEWAY_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-5",
+    "messages": [{"role": "user", "content": "Explain Serverless Postgres."}]
+  }'
+```
+
+**Environment variables**
+
+```bash
+# Injected by `neon env pull` when AI Gateway is enabled on the branch (neon.ts preview.aiGateway).
+# Neon injects ONLY the NEON_AI_GATEWAY_* vars (not OPENAI_*). Build the OpenAI SDK / curl
+# apiKey + baseURL from them: apiKey = NEON_AI_GATEWAY_TOKEN (the bearer, nt_live_...).
+#
+# NEON_AI_GATEWAY_BASE_URL is the bare gateway host (no path). Append the route you need:
+#   - `/v1`        - unified Chat Completions and `/v1/embeddings`
+#   - `/openai/v1` - OpenAI Responses API
+# @neondatabase/ai-sdk-provider and Mastra route requests automatically.
+
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://<branch-id>-api.ai.<cell>.<region>.<cloud>.neon.tech
+```
+
+## Model ID
+
+claude-sonnet-5
+
+## Provider
+
+Anthropic provides Claude Sonnet 5. Access the model through the Neon AI Gateway using chat/completions and anthropic/messages.
+
+## Inputs
+
+Text, image, pdf
+
+## Context
+
+1M
+
+## Released
+
+Jun 2026
+
+## Input /M
+
+$2
+
+## Output /M
+
+$10
 
 --- [Document source](https://neon.com/docs/ai-gateway/models/gemini-3-1-flash-lite.md) ---
 
@@ -20485,6 +22519,12 @@ Manage a branch's Neon env variables locally.
 | --------------- | ---------------------------------------------------------- |
 | `neon env pull` | Write the branch's Neon env variables to a local .env file |
 
+### feedback
+
+Send feedback to Neon.
+
+Usage: `neon feedback [options]`
+
 ### functions (alias: `function`)
 
 Manage Neon Functions.
@@ -21070,7 +23110,7 @@ neon api /projects -Q org_id=org-cool-darkness-12345678 -o yaml
 
 Ask the Neon assistant a question from the terminal
 
-The `ask` command sends a question to the Neon assistant and prints the answer to your terminal: `neon ask --prompt "<question>"`. The assistant answers from Neon's documentation, so keep questions scoped to Neon and Lakebase Postgres rather than general chat. No login is required, and it doesn't touch your projects or account.
+The `ask` command sends a question to the Neon assistant and prints the answer to your terminal: `neon ask --prompt "<question>"`. The assistant answers from Neon's documentation, so keep questions scoped to Neon and Lakebase Postgres rather than general chat. No login is required, and it doesn't touch your projects or account. To send feedback to the Neon team instead, use [`neon feedback`](https://neon.com/docs/cli/feedback).
 
 The answer is natural-language text, not structured data. By default it streams as markdown, use `--output json` to get the answer back as a single `text` field you can parse.
 
@@ -22100,7 +24140,7 @@ neon claim create [options]
 
 | Option       | Description                                                                                                                                                                                                                                  | Type    | Default | Required |
 | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--config`   | Path to neon.ts for registration and the bundled env pull. Defaults to walking up from the current directory                                                                                                                                 | string  | —       |    No    |
+| `--config`   | Path to neon.ts for registration and the bundled env pull. Defaults to the neon.ts in the project directory (next to .neon, or cwd without one)                                                                                              | string  | —       |    No    |
 | `--env-pull` | Write the same Neon env vars `env pull` would                                                                                                                                                                                                | boolean | `true`  |    No    |
 | `--file`     | Target dotenv file. Defaults to an existing .env, otherwise .env.local                                                                                                                                                                       | string  | —       |    No    |
 | `--service`  | Services to request for the claimable project: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Postgres is always included. Services unavailable before claim are recorded and reported. | array   | —       |    No    |
@@ -22351,7 +24391,7 @@ Subcommands: [ai-gateway](https://neon.com/docs/cli/config#add-ai-gateway), [aut
 
 `config add` runs entirely locally: it edits files, and never authenticates or resolves a project. Provisioning stays a separate [`neon config apply`](https://neon.com/docs/cli/config#apply) step.
 
-It finds your config by walking up from the current directory, stopping at a `.git` directory or your home directory. When it finds none, it creates `neon.ts` in the current directory and installs the `@neon/config` and `@neon/env` packages; pass `--no-install` to print the install command instead. Editing an existing file never installs packages. Pass `--config <path>` to target a specific file; a path that doesn't exist is an error.
+It looks for your config in the project directory: the directory holding the nearest `.neon` file (found by searching up from the current directory), or the current directory when there's no `.neon`. A `neon.ts` in a parent directory no longer applies. When it finds none, it creates `neon.ts` there and installs the `@neon/config` and `@neon/env` packages; pass `--no-install` to print the install command instead. Editing an existing file never installs packages. Pass `--config <path>` to target a specific file; a path that doesn't exist is an error.
 
 It edits the file in place, keeping your comments and formatting. It refuses edits it can't make safely, such as a service declared under the deprecated `preview` block, and prints the lines to add by hand instead. Re-adding an already-enabled service exits `0` with "nothing to change"; a duplicate function slug or bucket name exits `1`; a bare `neon config add` exits `1` and lists what you can add.
 
@@ -22363,12 +24403,12 @@ Enables Neon Auth by setting `auth: true`.
 neon config add auth [options]
 ```
 
-| Option         | Description                                                                                                          | Type    | Default | Required |
-| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--config`     | Path to the neon.ts to edit (defaults to walking up from cwd; created in cwd when there is none)                     | string  | —       |    No    |
-| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command. | boolean | `true`  |    No    |
-| `--branch`     | Branch ID or name                                                                                                    | string  | —       |    No    |
-| `--project-id` | Project ID                                                                                                           | string  | —       |    No    |
+| Option         | Description                                                                                                            | Type    | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`     | Path to the neon.ts to edit (defaults to the neon.ts next to .neon, or in cwd without one; created there when missing) | string  | —       |    No    |
+| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command.   | boolean | `true`  |    No    |
+| `--branch`     | Branch ID or name                                                                                                      | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                             | string  | —       |    No    |
 
 ```bash
 neon config add auth
@@ -22382,12 +24422,12 @@ Enables the Data API by setting `dataApi: true`, and enables Neon Auth, which th
 neon config add data-api [options]
 ```
 
-| Option         | Description                                                                                                          | Type    | Default | Required |
-| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--config`     | Path to the neon.ts to edit (defaults to walking up from cwd; created in cwd when there is none)                     | string  | —       |    No    |
-| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command. | boolean | `true`  |    No    |
-| `--branch`     | Branch ID or name                                                                                                    | string  | —       |    No    |
-| `--project-id` | Project ID                                                                                                           | string  | —       |    No    |
+| Option         | Description                                                                                                            | Type    | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`     | Path to the neon.ts to edit (defaults to the neon.ts next to .neon, or in cwd without one; created there when missing) | string  | —       |    No    |
+| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command.   | boolean | `true`  |    No    |
+| `--branch`     | Branch ID or name                                                                                                      | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                             | string  | —       |    No    |
 
 ```bash
 neon config add data-api
@@ -22401,12 +24441,12 @@ Enables the AI Gateway by setting `aiGateway: true`.
 neon config add ai-gateway [options]
 ```
 
-| Option         | Description                                                                                                          | Type    | Default | Required |
-| -------------- | -------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--config`     | Path to the neon.ts to edit (defaults to walking up from cwd; created in cwd when there is none)                     | string  | —       |    No    |
-| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command. | boolean | `true`  |    No    |
-| `--branch`     | Branch ID or name                                                                                                    | string  | —       |    No    |
-| `--project-id` | Project ID                                                                                                           | string  | —       |    No    |
+| Option         | Description                                                                                                            | Type    | Default | Required |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`     | Path to the neon.ts to edit (defaults to the neon.ts next to .neon, or in cwd without one; created there when missing) | string  | —       |    No    |
+| `--install`    | Install @neon/config and @neon/env when creating neon.ts. On by default; use --no-install to just print the command.   | boolean | `true`  |    No    |
+| `--branch`     | Branch ID or name                                                                                                      | string  | —       |    No    |
+| `--project-id` | Project ID                                                                                                             | string  | —       |    No    |
 
 ```bash
 neon config add ai-gateway
@@ -22533,7 +24573,7 @@ neon config plan [options]
 
 | Option         | Description                                                                                                                                                                                                                                     | Type   | Default | Required |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--config`     | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                                                      | string | —       |    No    |
+| `--config`     | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                         | string | —       |    No    |
 | `--env`        | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string | —       |    No    |
 | `--branch`     | Branch ID or name                                                                                                                                                                                                                               | string | —       |    No    |
 | `--project-id` | Project ID                                                                                                                                                                                                                                      | string | —       |    No    |
@@ -22553,7 +24593,7 @@ neon config apply [options]
 | Option              | Description                                                                                                                                                                                                                                     | Type    | Default | Required |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
 | `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                                                      | boolean | `false` |    No    |
-| `--config`          | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                                                      | string  | —       |    No    |
+| `--config`          | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                         | string  | —       |    No    |
 | `--env`             | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string  | —       |    No    |
 | `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`).                                  | boolean | `true`  |    No    |
 | `--update-existing` | Auto-confirm overriding existing remote settings on the branch                                                                                                                                                                                  | boolean | `false` |    No    |
@@ -23007,13 +25047,16 @@ neon databases list [options]
 | `--project-id` | Project ID        | string | —       |    No    |
 
 ```bash
-neon databases list --branch br-autumn-dust-190886
+neon databases list
 ```
 
 ```text filename="Output"
+Databases on main
 Name    Owner Name    Created At
 neondb  neondb_owner  2026-06-19T18:27:19Z
 ```
+
+The table is titled with the branch the databases belong to. Pass `--branch <id-or-name>` to list another branch's databases.
 
 ## neon databases create
 
@@ -23035,8 +25078,10 @@ neon databases create --name mynewdb --owner-name alex
 ```
 
 ```text filename="Output"
-Name     Owner Name  Created At
-mynewdb  alex        2026-06-19T23:45:45Z
+Database created on main
+Name        mynewdb
+Owner Name  alex
+Created At  2026-06-19T23:45:45Z
 ```
 
 ## neon databases delete
@@ -23057,8 +25102,10 @@ neon databases delete mydb
 ```
 
 ```text filename="Output"
-Name  Owner Name    Created At
-mydb  neondb_owner  2026-06-19T23:45:45Z
+Database deleted from main
+Name        mydb
+Owner Name  neondb_owner
+Created At  2026-06-19T23:45:45Z
 ```
 
 --- [Document source](https://neon.com/docs/cli/deploy.md) ---
@@ -23079,7 +25126,7 @@ neon deploy [options]
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
 | `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                                                      | boolean | `false` |    No    |
 | `--branch`          | Branch ID or name                                                                                                                                                                                                                               | string  | —       |    No    |
-| `--config`          | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                                                      | string  | —       |    No    |
+| `--config`          | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                         | string  | —       |    No    |
 | `--env`             | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string  | —       |    No    |
 | `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`).                                  | boolean | `true`  |    No    |
 | `--project-id`      | Project ID                                                                                                                                                                                                                                      | string  | —       |    No    |
@@ -23251,14 +25298,14 @@ Unset function env vars don't block a pull. If a declared function reads a `proc
 neon env pull [options]
 ```
 
-| Option         | Description                                                                                                                                                                                               | Type   | Default | Required |
-| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--config`     | Path to a neon.ts policy (defaults to walking up from cwd)                                                                                                                                                | string | —       |    No    |
-| `--env`, `-e`  |                                                                                                                                                                                                           | array  | —       |    No    |
-| `--file`       | Target .env file to write. Defaults to an existing .env, otherwise .env.local. Only Neon variables are updated; other lines are preserved.                                                                | string | —       |    No    |
-| `--service`    | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. | array  | —       |    No    |
-| `--branch`     | Branch ID or name                                                                                                                                                                                         | string | —       |    No    |
-| `--project-id` | Project ID                                                                                                                                                                                                | string | —       |    No    |
+| Option         | Description                                                                                                                                                                                                               | Type   | Default | Required |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--config`     | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                   | string | —       |    No    |
+| `--env`, `-e`  |                                                                                                                                                                                                                           | array  | —       |    No    |
+| `--file`       | Target .env file to write, relative to cwd. Defaults to an existing .env, otherwise .env.local, in the project directory (next to .neon, or cwd without one). Only Neon variables are updated; other lines are preserved. | string | —       |    No    |
+| `--service`    | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name.                 | array  | —       |    No    |
+| `--branch`     | Branch ID or name                                                                                                                                                                                                         | string | —       |    No    |
+| `--project-id` | Project ID                                                                                                                                                                                                                | string | —       |    No    |
 
 Write the linked branch's Neon variables into `.env.local` (or `.env` if present):
 
@@ -23278,10 +25325,46 @@ Pull only the variables for the services you name, ignoring `neon.ts`. Repeat `-
 neon env pull --service ai-gateway --service postgres
 ```
 
-Use a specific `neon.ts` policy instead of the one found by walking up from the current directory:
+Use a specific `neon.ts` policy instead of the one in the project directory (next to the nearest `.neon`, or the current directory when there's no `.neon`):
 
 ```bash
 neon env pull --config ./config/neon.ts
+```
+
+--- [Document source](https://neon.com/docs/cli/feedback.md) ---
+
+> Summary: The Neon CLI `feedback` command sends a short message to the Neon team without leaving your terminal. Pass your note with `--message`. It needs no login and doesn't touch your projects or account. Don't include passwords, API keys, connection strings, or other personal information.
+
+# Neon CLI command: feedback
+
+Send feedback about the Neon CLI and docs to the Neon team
+
+The `feedback` command sends a short message to the Neon team from the terminal: `neon feedback --message "<your feedback>"`. Use it to report a confusing command, a docs gap, or anything else about the CLI you'd like the team to see. To ask the Neon assistant a question instead, use [`neon ask`](https://neon.com/docs/cli/ask).
+
+No login is required, and the command doesn't read or change your projects or account. Don't put passwords, API keys, connection strings, or other personal information in the message.
+
+## Usage
+
+```bash
+neon feedback --message <feedback>
+```
+
+Pass your note with `--message`. It's the only required option.
+
+## Options
+
+| Option      | Description                                                                     | Type   | Default | Required |
+| ----------- | ------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--message` | The feedback to send. Do not include passwords, API keys, or connection strings | string | —       |    Yes   |
+
+## Examples
+
+```bash
+neon feedback --message "The branch docs were unclear about default branch names"
+```
+
+```text filename="Output"
+Feedback received. Thank you!
 ```
 
 --- [Document source](https://neon.com/docs/cli/functions.md) ---
@@ -24794,13 +26877,13 @@ neon mcp --project-id cold-grass-40154007
 
 --- [Document source](https://neon.com/docs/cli/me.md) ---
 
-> Summary: The `neon me` CLI command prints the authenticated user's login, email, name, and projects limit in the default table output. Use it to confirm which account is active after authentication. JSON output (`-o json`) exposes additional account and quota fields, including plan type, branches limit, max autoscaling limit, billing_account, and auth_accounts.
+> Summary: The `neon me` CLI command prints the authenticated user's login, email, name, and credential source in the default table output. Use it to confirm which account is active and how it's authenticated. JSON output (`-o json`) exposes additional fields, such as the account id, plan, and linked auth accounts.
 
 # Neon CLI command: me
 
-View current user info, login details, and project limits
+View the authenticated user and login details
 
-The `me` command shows information about the authenticated Neon CLI user: login, email, name, and projects limit.
+The `me` command shows information about the authenticated Neon CLI user: login, email, name, and how you're authenticated (the credential source, such as `OAuth` or an API key, and the profile in use).
 
 ## Usage
 
@@ -24822,7 +26905,7 @@ neon me
 Login           sally
 Email           sally@example.com
 Name            Sally Smith
-Projects Limit  1
+Authentication  OAuth (profile DEFAULT)
 ```
 
 Show details with `--output json`, which includes data omitted from the `table` output:
@@ -24837,52 +26920,32 @@ neon me -o json
 
 ```json
 {
-  "active_seconds_limit": 360000,
-  "billing_account": {
-    "payment_source": {
-      "type": ""
-    },
-    "subscription_type": "free",
-    "quota_reset_at_last": "2026-07-01T00:00:00Z",
-    "email": "sally@example.com",
-    "address_city": "",
-    "address_country": "",
-    "address_line1": "",
-    "address_line2": "",
-    "address_postal_code": "",
-    "address_state": ""
-  },
+  "active_seconds_limit": 0,
   "auth_accounts": [
-    {
-      "email": "sally@example.com",
-      "image": "https://lh3.googleusercontent.com/a/AItbvml5rjEQkmt-h_abcdef-MwVtfpek7Aa_xk3cIS_=s96-c",
-      "login": "sally",
-      "name": "Sally Smith",
-      "provider": "google"
-    },
     {
       "email": "sally@example.com",
       "image": "",
       "login": "sally",
-      "name": "sally@example.com",
-      "provider": "hasura"
+      "name": "Sally Smith",
+      "provider": "google"
     }
   ],
   "email": "sally@example.com",
   "id": "8a9f604e-d04e-1234-baf7-e78909a5d123",
-  "image": "https://lh3.googleusercontent.com/a/AItbvml5rjEQkmt-h_abcdef-MwVtfpek7Aa_xk3cIS_=s96-c",
+  "image": "",
   "login": "sally",
   "name": "Sally Smith",
-  "projects_limit": 10,
-  "branches_limit": 10,
-  "max_autoscaling_limit": 0.25,
+  "last_name": "",
+  "projects_limit": 0,
+  "branches_limit": 0,
+  "max_autoscaling_limit": 0,
   "plan": "free"
 }
 ```
 
 </details>
 
-In JSON output, `max_autoscaling_limit` is a numeric value in compute units. A value of `0` means no autoscaling limit is configured.
+The `active_seconds_limit`, `projects_limit`, `branches_limit`, and `max_autoscaling_limit` fields report `0`. These are account-level limits from before Neon moved to organizations; project and branch quotas are now governed by your organization, not your user account.
 
 --- [Document source](https://neon.com/docs/cli/neon-auth.md) ---
 
@@ -25712,7 +27775,7 @@ neon me --profile work
 Login           alex
 Email           alex@domain.com
 Name            Alex Lopez
-Projects Limit  0
+Authentication  OAuth (profile work)
 ```
 
 Naming a profile that doesn't exist is an error, not a silent fall back to `DEFAULT`.
@@ -25905,6 +27968,8 @@ neon projects list [options]
   Id                 Name  Region Id         Created At
   noisy-fire-212121  API   aws-eu-central-1  2026-04-22T18:41:13Z
   ```
+
+  In the default table, your currently linked project (the one recorded in `.neon`) is marked `[current]` next to its name.
 
 List all projects belonging to a specific organization:
 
@@ -26167,11 +28232,19 @@ neon projects get muddy-wood-123456
 ```
 
 ```text filename="Output"
-Id          muddy-wood-123456
-Name        dev_project_1
-Region Id   aws-us-west-2
-Created At  2026-07-09T17:04:29Z
+Project
+Name               dev_project_1
+Id                 muddy-wood-123456
+Region Id          aws-us-west-2
+Postgres Version   18
+Organization       org-xxxxxxxx-xxxx
+Default Compute    0.25 CU
+History Retention  6 hours
+Created At         2026-07-09T17:04:29Z
+Updated At         2026-07-09T17:04:29Z
 ```
+
+The table shows a detail view: Postgres version, organization, default compute range, and history retention alongside the identifiers. For the complete project record, including all settings and quotas, use `--output json`.
 
 --- [Document source](https://neon.com/docs/cli/psql.md) ---
 
@@ -26498,9 +28571,12 @@ neon roles list
 ```
 
 ```text filename="Output"
+Roles on main
 Name          Created At
 neondb_owner  2026-06-19T18:27:19Z
 ```
+
+The table is titled with the branch the roles belong to, so you can tell at a glance which branch you're looking at.
 
 List roles with the `--output` format set to `json`:
 
@@ -26546,9 +28622,13 @@ neon roles create --name sally
 ```
 
 ```text filename="Output"
-Name   Created At
-sally  2026-06-20T00:43:17Z
+Role created on main
+Name        sally
+Password    npg_aBcDeFgH1234
+Created At  2026-06-20T00:43:17Z
 ```
+
+The create output includes the password Neon generated for the new role. Neon returns it only once, so copy it now. A `--no-login` role has no password, so no `Password` row appears.
 
 ## neon roles delete
 
@@ -26568,8 +28648,9 @@ neon roles delete sally
 ```
 
 ```text filename="Output"
-Name   Created At
-sally  2026-06-20T00:43:17Z
+Role deleted from main
+Name        sally
+Created At  2026-06-20T00:43:17Z
 ```
 
 --- [Document source](https://neon.com/docs/cli/set-context.md) ---
@@ -31329,15 +33410,15 @@ If your project has a [`neon.ts`](https://neon.com/docs/reference/neon-ts) confi
 neon deploy
 ```
 
-| Flag                | Default           | Description                                                                                          |
-| ------------------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
-| `--config`          | walks up from cwd | Path to the `neon.ts` policy                                                                         |
-| `--env`             | (none)            | Path to a `.env` file loaded before `neon.ts` is evaluated, so function `env` values resolve from it |
-| `--env-pull`        | `true`            | Pull the branch's env vars into a local `.env` after a successful apply (`--no-env-pull` to skip)    |
-| `--branch`          | linked branch     | Target branch ID or name                                                                             |
-| `--project-id`      | linked project    | Project ID                                                                                           |
-| `--update-existing` | `false`           | Auto-confirm overriding existing remote settings on the branch                                       |
-| `--allow-protected` | `false`           | Auto-confirm applying to a branch marked protected on Neon                                           |
+| Flag                | Default                   | Description                                                                                          |
+| ------------------- | ------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `--config`          | next to `.neon`, else cwd | Path to the `neon.ts` policy                                                                         |
+| `--env`             | (none)                    | Path to a `.env` file loaded before `neon.ts` is evaluated, so function `env` values resolve from it |
+| `--env-pull`        | `true`                    | Pull the branch's env vars into a local `.env` after a successful apply (`--no-env-pull` to skip)    |
+| `--branch`          | linked branch             | Target branch ID or name                                                                             |
+| `--project-id`      | linked project            | Project ID                                                                                           |
+| `--update-existing` | `false`                   | Auto-confirm overriding existing remote settings on the branch                                       |
+| `--allow-protected` | `false`                   | Auto-confirm applying to a branch marked protected on Neon                                           |
 
 `neon deploy` is an alias for `neon config apply`. To preview what a deploy would change without applying it, run `neon config plan`.
 
@@ -120724,6 +122805,7 @@ neon databases list
 ```
 
 ```text filename="Output"
+Databases on main
 Name    Owner Name  Created At
 neondb  casey       2026-06-19T18:27:19Z
 mydb    casey       2026-06-19T18:27:19Z
@@ -123783,6 +125865,7 @@ neon roles list
 ```
 
 ```text filename="Output"
+Roles on main
 Name          Created At
 neondb_owner  2026-06-19T18:27:19Z
 alex          2026-07-13T06:42:55Z

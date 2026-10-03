@@ -17,7 +17,7 @@ Use the Netlify REST API to manage atomic deploys of your sites and apps, manage
 
 This document covers the basics for interacting with the Netlify API, plus instructions for [deploying sites](/api-and-cli-guides/api-guides/get-started-with-api#deploy-with-the-api) and notes on some [commonly used endpoints](/api-and-cli-guides/api-guides/get-started-with-api#commonly-used-endpoints).
 
-You can browse the [OpenAPI reference for the Netlify API](https://open-api.netlify.com) to explore available endpoints. Visit our Forums for more tips and conversation about [understanding and using Netlify's API](https://answers.netlify.com/t/common-issue-understanding-and-using-netlifys-api/160).
+You can browse the [OpenAPI reference for the Netlify API](https://open-api.netlify.com) to explore available endpoints. Check out our Support Guide on [understanding and using Netlify's API](https://answers.netlify.com/t/common-issue-understanding-and-using-netlifys-api/160).
 
 > **Note - Project ID, site_id, and NETLIFY_SITE_ID are the same value:** The Netlify UI labels this identifier **Project ID**, but the API, CLI, and environment variables still use `site`. Every project has exactly one identifier, and all of the following names refer to the same value:
 
@@ -311,7 +311,7 @@ This section describes usage for some popular endpoints.
 
 We also have an [OpenAPI reference for the Netlify API](https://open-api.netlify.com) that you can explore.
 
-Visit our Forums for more tips and conversation about [understanding and using Netlify's API](https://answers.netlify.com/t/common-issue-understanding-and-using-netlifys-api/160).
+Check out our Support Guide on [understanding and using Netlify's API](https://answers.netlify.com/t/common-issue-understanding-and-using-netlifys-api/160).
 
 ### Sites
 
@@ -393,7 +393,7 @@ When creating a site, you can set the following properties:
     "html": { "pretty_urls": true }
   }
   ```
-- `repo`: configures continuous deployment. It's a bit complicated to create a `repo` object so please visit our Forums for a verified Support Guide on [linking a repository using the API](https://answers.netlify.com/t/common-issue-linking-a-repository-via-api/121).
+- `repo`: configures continuous deployment. It's a bit complicated to create a `repo` object so please check out our Support Guide on [linking a repository using the API](https://answers.netlify.com/t/common-issue-linking-a-repository-via-api/121).
 
 #### Create site in team
 

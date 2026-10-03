@@ -5314,6 +5314,10 @@ let color = type === 'danger' ? 'red' : 'green';
 
 `$inspect.trace` is a debugging tool for reactivity. If something is not updating properly or running more than it should you can add `$inspect.trace(label)` as the first line of an `$effect` or `$derived.by` (or any function they call) to trace their dependencies and discover which one triggered an update.
 
+## `#key` block
+
+While the `#key` block is useful when you want transitions/animations to run when a certain expression changes, it can be very expensive — it unmounts every element/component inside each time, so should be used sparingly. Instead of using `#key` to cause expressions in a child component's `<script>` block to re-run, for example, consider wrapping those expressions in `$derived`.
+
 ## Events
 
 Any element attribute starting with `on` is treated as an event listener:
@@ -5411,7 +5415,7 @@ Use `createContext` rather than `setContext` and `getContext`, as it provides ty
 
 ## Async Svelte
 
-If using version 5.36 or higher, you can use [await expressions](await-expressions) and [hydratable](hydratable) to use promises directly inside components. Note that these require the `experimental.async` option to be enabled in `svelte.config.js` as they are not yet considered fully stable.
+If using version 5.36 or higher, you can use [await expressions](await-expressions) and [hydratable](hydratable) to use promises directly inside components. Note that these require the `experimental.async` option to be enabled in the plugin options in `vite.config.js` or in the `svelte.config.js` as they are not yet considered fully stable.
 
 ## Avoid legacy features
 
@@ -10015,7 +10019,7 @@ If `true`, exposes the Svelte major version in the browser by adding it to a `Se
 <div class="ts-block-property">
 
 ```dts
-compatibility?: {/*…*/}
+compatibility?: {/*…*/};
 ```
 
 <div class="ts-block-property-details">
@@ -10160,7 +10164,7 @@ interface CompileResult {/*…*/}
 <div class="ts-block-property">
 
 ```dts
-js: {/*…*/}
+js: {/*…*/};
 ```
 
 <div class="ts-block-property-details">
@@ -10198,19 +10202,49 @@ A source map
 <div class="ts-block-property">
 
 ```dts
-css: null | {
-	/** The generated code */
-	code: string;
-	/** A source map */
-	map: SourceMap;
-	/** Whether or not the CSS includes global rules */
-	hasGlobal: boolean;
-};
+css: null | {/*…*/};
 ```
 
 <div class="ts-block-property-details">
 
 The compiled CSS
+
+<div class="ts-block-property-children"><div class="ts-block-property">
+
+```dts
+code: string;
+```
+
+<div class="ts-block-property-details">
+
+The generated code
+
+</div>
+</div>
+<div class="ts-block-property">
+
+```dts
+map: SourceMap;
+```
+
+<div class="ts-block-property-details">
+
+A source map
+
+</div>
+</div>
+<div class="ts-block-property">
+
+```dts
+hasGlobal: boolean;
+```
+
+<div class="ts-block-property-details">
+
+Whether or not the CSS includes global rules
+
+</div>
+</div></div>
 
 </div>
 </div>
@@ -10234,7 +10268,7 @@ An array of warning objects that were generated during compilation. Each warning
 <div class="ts-block-property">
 
 ```dts
-metadata: {/*…*/}
+metadata: {/*…*/};
 ```
 
 <div class="ts-block-property-details">
@@ -10389,7 +10423,7 @@ Use this to filter out warnings. Return `true` to keep the warning, `false` to d
 <div class="ts-block-property">
 
 ```dts
-experimental?: {/*…*/}
+experimental?: {/*…*/};
 ```
 
 <div class="ts-block-property-details">
@@ -38928,6 +38962,10 @@ let color = type === 'danger' ? 'red' : 'green';
 
 `$inspect.trace` is a debugging tool for reactivity. If something is not updating properly or running more than it should you can add `$inspect.trace(label)` as the first line of an `$effect` or `$derived.by` (or any function they call) to trace their dependencies and discover which one triggered an update.
 
+## `#key` block
+
+While the `#key` block is useful when you want transitions/animations to run when a certain expression changes, it can be very expensive — it unmounts every element/component inside each time, so should be used sparingly. Instead of using `#key` to cause expressions in a child component's `<script>` block to re-run, for example, consider wrapping those expressions in `$derived`.
+
 ## Events
 
 Any element attribute starting with `on` is treated as an event listener:
@@ -39025,7 +39063,7 @@ Use `createContext` rather than `setContext` and `getContext`, as it provides ty
 
 ## Async Svelte
 
-If using version 5.36 or higher, you can use [await expressions](references/await-expressions.md) and [hydratable](references/hydratable.md) to use promises directly inside components. Note that these require the `experimental.async` option to be enabled in `svelte.config.js` as they are not yet considered fully stable.
+If using version 5.36 or higher, you can use [await expressions](references/await-expressions.md) and [hydratable](references/hydratable.md) to use promises directly inside components. Note that these require the `experimental.async` option to be enabled in the plugin options in `vite.config.js` or in the `svelte.config.js` as they are not yet considered fully stable.
 
 ## Avoid legacy features
 

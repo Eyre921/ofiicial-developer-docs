@@ -19,7 +19,7 @@ Start a conversation
 
 Ask Netlify AI is built-in to docs search and offers answers based on the following sources: 
 - product documentation
-- Support Forums
+- Support Guides
 - blog
 - CLI documentation
 - API documentation
@@ -59,7 +59,7 @@ You can submit a follow-up query after your initial prompt to gather additional 
 
 ## How it works
 
-We use all of the content from this [docs site](/), our [CLI reference](https://cli.netlify.com/), [tutorials](https://www.netlify.com/blog/tutorials), other recent content from our blog, and selected posts from our [Support Forums](https://answers.netlify.com/). We then make requests to the OpenAI API with this context so the answers are limited to Netlify topics.
+We use all of the content from this [docs site](/), our [CLI reference](https://cli.netlify.com/), [tutorials](https://www.netlify.com/blog/tutorials), other recent content from our blog, and selected [Support Guides](https://answers.netlify.com/c/netlify-support/support-guides/52). We then make requests to the OpenAI API with this context so the answers are limited to Netlify topics.
 
 ### User information
 
@@ -77,11 +77,11 @@ Sensitive personal data should not be submitted to Ask Netlify. This includes te
 
 ## Provide feedback
 
-We welcome your feedback or additional questions about this feature. You can share your thoughts in the form at the end of this page or by posting to our [Support Forums](https://answers.netlify.com/).
+We welcome your feedback or additional questions about this feature. You can share your thoughts in the form at the end of this page or by contacting [Netlify Support](https://www.netlify.com/support/).
 
 ## Ask a human 
 
-Sometimes you just need to ask a human. You can reach out to our [Netlify Support](https://www.netlify.com/support) team for specific help. 
+Sometimes you just need to ask a human. You can reach out to our [Netlify Support](https://www.netlify.com/support/) team for specific help. Support is available on all plans, including Free.
 
 Common issues that require human assistance include:
 - issues with logging in 

@@ -44,7 +44,7 @@ Note that by default the build system looks for the configuration file in your s
 
 If your site unexpectedly serves a 404 page error, there can be several reasons why. For instance, if your geographic area or IP address is blocked from a site, then you will only see a Netlify-branded 404 page. Learn more about [Firewall traffic rules](/manage/security/secure-access-to-sites/traffic-rules).
 
-For more possibilities and troubleshooting help, check out our verified [Support Forums guide on unexpected 404 page errors](https://answers.netlify.com/t/support-guide-i-ve-deployed-my-site-but-i-still-see-page-not-found/125).
+For more possibilities and troubleshooting help, check out our [Support Guide on unexpected 404 page errors](https://answers.netlify.com/t/support-guide-i-ve-deployed-my-site-but-i-still-see-page-not-found/125).
 
 ## Build command named `build`
 
@@ -120,7 +120,7 @@ Netlify will load your project's _production branch cache_ as a starting point i
 
 ## Enqueued builds
 
-Builds may be enqueued for any of the three reasons described below. Visit our Forums for a verified Support Guide on reducing build queueing by [optimizing _what_ you build](https://answers.netlify.com/t/common-issue-how-can-i-optimize-my-netlify-build-time/3907).
+Builds may be enqueued for any of the three reasons described below. Check out our Support Guide on reducing build queueing by [optimizing _what_ you build](https://answers.netlify.com/t/common-issue-how-can-i-optimize-my-netlify-build-time/3907).
 
 - **System queue.** Builds enter a system queue when the number of builds across all customers exceeds the current capacity on the build network. This triggers an increase in system capacity, so enqueued builds may start building as capacity increases as well as when other builds complete. To learn how to reduce your team's exposure to system build queues, [contact sales](https://www.netlify.com/contact/).
 - **Team queue.** Builds enter your team queue when the number of concurrent builds across all sites on your team exceeds your team's build capacity. (If you have a legacy plan, learn more about [builds usage](/manage/accounts-and-billing/billing/billing-for-legacy-plans/billing-for-legacy-plans/#builds-usage).) Such builds appear in your team's [**Builds** page](/manage/monitoring/monitor-builds) with the label: **Enqueued: Awaiting Capacity**. You can select the **Manage build capacity** button on that page to increase team build capacity. If you have a build that you'd like to build right away, you can [prioritize](/manage/monitoring/monitor-builds#prioritize-a-build) it. _(This feature is available on Enterprise [plans](https://www.netlify.com/pricing/).)_ You can also [cancel](/deploy/manage-deploys/manage-deploys-overview#cancel-a-deploy) unneeded team builds to move other builds up in the queue.
@@ -159,7 +159,7 @@ For more troubleshooting help, check out our [official Support Guide for the `Pa
 
 ## More resources
 
-If your issue doesn't seem to be addressed above, you can visit our [Support Forums](https://answers.netlify.com/categories) to browse posts about common issues or start a new discussion. You can also visit our [compilation of verified Support Guides on builds and deploys](https://answers.netlify.com/t/support-guide-compiled-build-and-deploy-resources-start-here/50679).
+If your issue doesn't seem to be addressed above, [contact Netlify Support](https://www.netlify.com/support/). Support is available on all plans, including Free. You can also visit our [compilation of Support Guides on builds and deploys](https://answers.netlify.com/t/support-guide-compiled-build-and-deploy-resources-start-here/50679).
 
 Many questions about specific build scenarios have also been [asked and answered on StackOverflow](https://stackoverflow.com/questions/tagged/netlify).
 

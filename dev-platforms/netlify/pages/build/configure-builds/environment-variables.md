@@ -134,7 +134,7 @@ If you don't want to use the Netlify CLI or Netlify Dev, you need to set the var
 
 There are a few different ways to do this, including declaring variables directly in the command line or using a `.env` file and [dotenv](https://www.npmjs.com/package/dotenv). Just remember not to commit any sensitive values to your repository.
 
-Visit our Forums for a verified Support Guide on [how to access environment variables during your site build](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267) for more tips.
+Check out our Support Guide on [how to access environment variables during your site build](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267) for more tips.
 
 ### Use variables during the build
 
@@ -234,11 +234,11 @@ If you want to use environment variable values in a site after it's built, you n
 
 If you inject values into the site using a build script or snippet injection, make sure to only include non-sensitive values.
 
-More details are available in our verified Support Guide on [how to access environment variables](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
+More details are available in our Support Guide on [how to access environment variables](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
 
 ## More environment variables resources
 - [Overview of environment variables](/build/environment-variables/overview) at Netlify
-- Verified Support Guide on [how to use environment variables](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267)
+- Support Guide on [how to use environment variables](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267)
 - [Injecting environment variable values in your `netlify.toml` file](/build/configure-builds/file-based-configuration#inject-environment-variable-values)
 - [Environment variables for different deploy contexts](/deploy/deploy-overview#deploy-contexts)
 - [Hugo version environment variable](/build/frameworks/framework-setup-guides/hugo#hugo-version)

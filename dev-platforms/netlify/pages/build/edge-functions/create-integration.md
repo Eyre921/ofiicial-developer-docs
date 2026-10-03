@@ -122,5 +122,5 @@ export const config: IntegrationsConfig = {
 
 If you'd like to create an Edge Functions integration for a framework or other developer tool, we encourage you to let us know by reaching out through our [technology partner program](https://www.netlify.com/partners/technology/) so we can help you.
 
-We welcome your feedback on building integrations with this feature. Visit our [Forums](https://answers.netlify.com/categories) to join the conversation about Edge Functions.
+We welcome your feedback on building integrations with this feature. To share feedback or get help, [contact Netlify Support](https://www.netlify.com/support/).
 

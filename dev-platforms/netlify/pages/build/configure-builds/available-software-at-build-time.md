@@ -69,11 +69,11 @@ Dependency management
 
 We love hearing from you and using your input to help us build a better web! Let us know about any missing tools and languages. 
 
-You can reach us by opening a new request on [our Forums](https://answers.netlify.com/c/features/50).
+To request a tool or language, [contact Netlify Support](https://www.netlify.com/support/).
 
 ## Report a bug
 
-If you find an issue, let our support team know by opening a [support request](https://answers.netlify.com/c/netlify-support/48) in our Forums.
+If you find an issue, [contact Netlify Support](https://www.netlify.com/support/).
 
 For anything else,  you can use the Docs feedback form on the bottom of this docs page as well to provide us feedback and tell us how we can improve!
 

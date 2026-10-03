@@ -404,7 +404,7 @@ Plugins can access [build environment variables](/build/configure-builds/environ
 - [`process.env`](https://nodejs.org/api/process.html#processenv): includes all Netlify build environment variables and any variables you declare using the Netlify UI or TOML. We recommend you use this when you only need to **get** values during the build process.
 - [`netlifyConfig.build.environment`](#netlifyconfig): includes only the variables you declare using the Netlify UI or TOML. We recommend you use this when you need to **modify** values during the build process.
 
-Visit our Forums for a verified Support Guide on [how to access environment variables during your site build](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
+Check out our Support Guide on [how to access environment variables during your site build](https://answers.netlify.com/t/support-guide-using-environment-variables-on-netlify-correctly/267).
 
 ## Plugin methods
 

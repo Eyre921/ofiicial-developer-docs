@@ -581,6 +581,6 @@ This also works for sub-commands.
 netlify help sites:create
 ```
 
-If you have additional questions or ideas for new features, you can [start an issue](https://github.com/netlify/cli/issues) on Netlify CLI's open source repository. You can also visit our [Support Forums](https://answers.netlify.com/categories) to start or join a conversation. We'd love to hear from you!
+If you have additional questions or ideas for new features, you can [start an issue](https://github.com/netlify/cli/issues) on Netlify CLI's open source repository. If you need help, [contact Netlify Support](https://www.netlify.com/support/). We'd love to hear from you!
 
 

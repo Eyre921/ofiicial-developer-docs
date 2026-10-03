@@ -53,7 +53,7 @@ In rare circumstances, there can be problems when provisioning a certificate for
 Domain management > HTTPS
 .
 
-If you're having trouble with the automatic provisioning, visit [Troubleshoot SSL and HTTPS](/manage/domains/troubleshooting/troubleshoot-ssl-and-https) or the [troubleshooting page](/manage/domains/troubleshooting-tips) for an error message guide and other tips. You can also visit our Forums for a verified Support Guide on [SSL / TLS certificate provisioning](https://answers.netlify.com/t/support-guide-ssl-tls-certificate-provisioning/1300). 
+If you're having trouble with the automatic provisioning, visit [Troubleshoot SSL and HTTPS](/manage/domains/troubleshooting/troubleshoot-ssl-and-https) or the [troubleshooting page](/manage/domains/troubleshooting-tips) for an error message guide and other tips. You can also check out our Support Guide on [SSL / TLS certificate provisioning](https://answers.netlify.com/t/support-guide-ssl-tls-certificate-provisioning/1300). 
 
 #### Domain aliases
 
@@ -77,7 +77,7 @@ In
 ### NavigationPath Component:
 
 Domain management > HTTPS
-, select **Set Custom Certificate**, then enter the information above. For tips on specific formatting and the contents of the certificate, visit our Forums for a verified support guide on [custom SSL certificates](https://answers.netlify.com/t/support-guide-tips-for-bringing-your-own-custom-ssl-certificates-to-netlify/53633).
+, select **Set Custom Certificate**, then enter the information above. For tips on specific formatting and the contents of the certificate, check out our support guide on [custom SSL certificates](https://answers.netlify.com/t/support-guide-tips-for-bringing-your-own-custom-ssl-certificates-to-netlify/53633).
 
 ### Caution - Renewal is not automatic
 

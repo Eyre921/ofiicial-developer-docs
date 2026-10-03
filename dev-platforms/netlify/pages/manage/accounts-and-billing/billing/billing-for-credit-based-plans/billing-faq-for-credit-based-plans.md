@@ -373,5 +373,5 @@ We do not have a free trial but you can test out Netlify on the free plan.
 
 ### How do I cancel? 
 
-To learn how to delete a team or delete your Netlify user, and the impact of either action, visit our Forums for a verified Support Guide on [how to cancel an account](https://answers.netlify.com/t/support-guide-how-to-cancel-an-account/10856).
+To learn how to delete a team or delete your Netlify user, and the impact of either action, check out our Support Guide on [how to cancel an account](https://answers.netlify.com/t/support-guide-how-to-cancel-an-account/10856).
 

@@ -44,7 +44,7 @@ If your domain is registered with another provider, you can still take advantage
 
 If you have any existing records on your current DNS provider, such as MX records for email service, make sure to copy them to Netlify DNS first. This will ensure continuous service as you change providers.
 
-Visit the [DNS records](/manage/domains/configure-domains/dns-records) page or the verified Support Guide in our Forums on [migrating a domain to Netlify-managed DNS](https://answers.netlify.com/t/support-guide-how-do-i-migrate-a-domain-to-netlify-managed-dns-with-zero-downtime/3397) for details.
+Visit the [DNS records](/manage/domains/configure-domains/dns-records) page or the Support Guide on [migrating a domain to Netlify-managed DNS](https://answers.netlify.com/t/support-guide-how-do-i-migrate-a-domain-to-netlify-managed-dns-with-zero-downtime/3397) for details.
 
 Assuming you have copied existing DNS records from your current provider, the final step to making your DNS records live is to update your domain registrar with the name servers that will be authoritative for your domain.
 
@@ -63,7 +63,7 @@ DNS
 2. Select your domain.
 3. Make note of the four name servers listed in the **Name servers** panel.
 4. Log in to the account you have with your domain registrar and find their instructions for updating name servers.
-5. Replace the name servers with the name servers for your Netlify DNS zone. If your registrar requires name server IP addresses, visit our Forums for a verified Support Guide on [finding the IP addresses for Netlify's name servers](/manage/domains/configure-domains/netlify-name-servers/).
+5. Replace the name servers with the name servers for your Netlify DNS zone. If your registrar requires name server IP addresses, learn how to [find the IP addresses for Netlify's name servers](/manage/domains/configure-domains/netlify-name-servers/).
 
 It may take up to a day for the changes to propagate to the public internet.
 

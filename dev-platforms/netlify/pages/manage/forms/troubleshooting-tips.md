@@ -11,7 +11,7 @@ description: "Refer to troubleshooting tips for setting up a form on our platfor
 
 > For the complete documentation index for AI agents, see [llms.txt](https://docs.netlify.com/llms.txt). Markdown versions of any documentation page are available by appending `.md` to its docs.netlify.com URL.
 
-This document provides troubleshooting tips for setting up a form. If you have questions that aren't answered here, visit our Support Forums to get more advice about [how to debug your form](https://answers.netlify.com/t/common-issue-how-to-debug-your-form/92).
+This document provides troubleshooting tips for setting up a form. If you have questions that aren't answered here, check out our Support Guide on [how to debug your form](https://answers.netlify.com/t/common-issue-how-to-debug-your-form/92).
 
 ## Custom success page
 

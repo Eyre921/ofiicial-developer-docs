@@ -21,7 +21,7 @@ NS1, the DNS provider backing Netlify DNS, has a great series of articles on [us
 
 ### Inactive Netlify DNS zone
 
-A common DNS configuration issue is an inactive Netlify DNS zone. This prevents our service from creating or updating the automatic Let's Encrypt SSL certificates for your custom domain. This can cause problems for branch subdomains. For more information, visit our Forums for a verified Support Guide on [how to detect and fix inactive Netlify DNS zones](https://answers.netlify.com/t/support-guide-how-to-detect-and-fix-inactive-netlify-dns-zones/21742).
+A common DNS configuration issue is an inactive Netlify DNS zone. This prevents our service from creating or updating the automatic Let's Encrypt SSL certificates for your custom domain. This can cause problems for branch subdomains. For more information, check out our Support Guide on [how to detect and fix inactive Netlify DNS zones](https://answers.netlify.com/t/support-guide-how-to-detect-and-fix-inactive-netlify-dns-zones/21742).
 
 ## Custom certificate not working for automatic deploy subdomain
 
@@ -43,7 +43,7 @@ There are many reasons why adding a Netlify certificate or uploading a custom ce
 
 4. It is possible that the name servers we use have some old cached values for your domain name. You can attempt to **accelerate cache expiration** for your domains using the [Flush Cache tool](https://developers.google.com/speed/public-dns/cache) provided by Google Public DNS.
 
-5. It is possible that we will get a certificate for one name (for example, `petsofnetlify.com`) and not for another (for example, `www.petsofnetlify.com` or some domain alias). In this case selecting **Renew certificate** should resolve the issue. If it doesn't, please post in the [Netlify Support Forums](https://answers.netlify.com/categories) so our support engineers can repair the certificate.
+5. It is possible that we will get a certificate for one name (for example, `petsofnetlify.com`) and not for another (for example, `www.petsofnetlify.com` or some domain alias). In this case selecting **Renew certificate** should resolve the issue. If it doesn't, [contact Netlify Support](https://www.netlify.com/support/) so our support engineers can repair the certificate.
 
 ### HTTPS error messages
 
