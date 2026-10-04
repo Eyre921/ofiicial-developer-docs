@@ -12,7 +12,7 @@ Our Default voices are being replaced with new voices that you will be able to u
 
 If your account has access to Default voices, they will be available to select from the voice selection menu. They do not need to be added to My Voices. You can use the Type: **Default** filter in [My Voices](https://elevenlabs.io/app/voice-lab) to view all Default Voices.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3820ea620f00142a64b1ca58de599dee9c7fabad93a4dce4184f10ca1801103d/assets/images/help-center/product/voices/my-voices/how-do-i-access-elevenlabs-default-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T230306Z&X-Amz-Expires=604800&X-Amz-Signature=9242ac0e7cb61e6d247bb96ce5610f6aafec9fd0ea0af4f9567370e974f5819c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3820ea620f00142a64b1ca58de599dee9c7fabad93a4dce4184f10ca1801103d/assets/images/help-center/product/voices/my-voices/how-do-i-access-elevenlabs-default-voices.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T113559Z&X-Amz-Expires=604800&X-Amz-Signature=41bf8665ee1bb51356df0f36cdd568c51d02458f87be3bcc5c2e71737b6dd408&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Default voices will appear at the end of the voice selection menu. You can also search for a specific voice by typing the name in the search box.
 

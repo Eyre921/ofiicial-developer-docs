@@ -19,7 +19,7 @@ The number of custom voices you can have saved in [My Voices](https://elevenlabs
 
 You can free up voice slots by removing voices from [My Voices](https://elevenlabs.io/app/voice-lab). Find the voice you want to delete in your list of voices, click the **More actions** (three dots) button, then select **Delete voice**.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586/assets/images/help-center/account/general/how-many-voice-slots-do-i-get-per-tier-and-how-can-i-increase-it.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261003%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261003T231759Z&X-Amz-Expires=604800&X-Amz-Signature=b2e763f8ee5971608f952605c3ff210ec3faa0cbf31572a0fe075bccec03ac07&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ee3031105ec93f8664704768ad3802973e91cba07922c854dda7ccf1c87a5586/assets/images/help-center/account/general/how-many-voice-slots-do-i-get-per-tier-and-how-can-i-increase-it.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T095050Z&X-Amz-Expires=604800&X-Amz-Signature=4df03303007d24fd8d4976be9f31b39eae79bb5c01385d2fd858097bcab5d270&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Deleting a voice cannot be undone, and you will be asked to confirm the deletion.
 

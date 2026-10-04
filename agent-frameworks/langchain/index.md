@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1665 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1675 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -82,6 +82,7 @@
 - `langsmith/admin` — [Account](pages/langsmith/admin.md) · [原文](https://docs.langchain.com/langsmith/admin)
 - `langsmith/administration-overview` — [Overview](pages/langsmith/administration-overview.md) · [原文](https://docs.langchain.com/langsmith/administration-overview)
 - `langsmith/agent-auth` — [Set up Agent Auth](pages/langsmith/agent-auth.md) · [原文](https://docs.langchain.com/langsmith/agent-auth)
+- `langsmith/agent-environments` — [Agent environments](pages/langsmith/agent-environments.md) · [原文](https://docs.langchain.com/langsmith/agent-environments)
 - `langsmith/agent-server` — [Agent Server](pages/langsmith/agent-server.md) · [原文](https://docs.langchain.com/langsmith/agent-server)
 - `langsmith/agent-server-api/a2a/a2a-json-rpc` — [A2A JSON-RPC](pages/langsmith/agent-server-api/a2a/a2a-json-rpc.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/a2a/a2a-json-rpc)
 - `langsmith/agent-server-api/assistants/count-assistants` — [Count Assistants](pages/langsmith/agent-server-api/assistants/count-assistants.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/assistants/count-assistants)
@@ -153,6 +154,7 @@
 - `langsmith/agent-server-feedback` — [How to collect user feedback for Agent Server runs](pages/langsmith/agent-server-feedback.md) · [原文](https://docs.langchain.com/langsmith/agent-server-feedback)
 - `langsmith/agent-server-overview` — [Agent Server](pages/langsmith/agent-server-overview.md) · [原文](https://docs.langchain.com/langsmith/agent-server-overview)
 - `langsmith/agent-server-scale` — [Configure Agent Server for scale](pages/langsmith/agent-server-scale.md) · [原文](https://docs.langchain.com/langsmith/agent-server-scale)
+- `langsmith/agents` — [Agents](pages/langsmith/agents.md) · [原文](https://docs.langchain.com/langsmith/agents)
 - `langsmith/alerts` — [Alerts in LangSmith](pages/langsmith/alerts.md) · [原文](https://docs.langchain.com/langsmith/alerts)
 - `langsmith/analyze-an-experiment` — [Analyze an experiment](pages/langsmith/analyze-an-experiment.md) · [原文](https://docs.langchain.com/langsmith/analyze-an-experiment)
 - `langsmith/annotate-code` — [Custom instrumentation](pages/langsmith/annotate-code.md) · [原文](https://docs.langchain.com/langsmith/annotate-code)
@@ -175,6 +177,7 @@
 - `langsmith/billing` — [Manage billing in your account](pages/langsmith/billing.md) · [原文](https://docs.langchain.com/langsmith/billing)
 - `langsmith/bind-evaluator-to-dataset` — [Automatically run evaluators on experiments](pages/langsmith/bind-evaluator-to-dataset.md) · [原文](https://docs.langchain.com/langsmith/bind-evaluator-to-dataset)
 - `langsmith/bind-evaluator-to-dataset-link` — [Automatically run evaluators on experiments](pages/langsmith/bind-evaluator-to-dataset-link.md) · [原文](https://docs.langchain.com/langsmith/bind-evaluator-to-dataset-link)
+- `langsmith/build-an-agent` — [Build an agent in the UI](pages/langsmith/build-an-agent.md) · [原文](https://docs.langchain.com/langsmith/build-an-agent)
 - `langsmith/byoc` — [Bring Your Own Cloud (BYOC)](pages/langsmith/byoc.md) · [原文](https://docs.langchain.com/langsmith/byoc)
 - `langsmith/byoc-architecture` — [BYOC architecture](pages/langsmith/byoc-architecture.md) · [原文](https://docs.langchain.com/langsmith/byoc-architecture)
 - `langsmith/byoc-billing` — [BYOC billing](pages/langsmith/byoc-billing.md) · [原文](https://docs.langchain.com/langsmith/byoc-billing)
@@ -219,6 +222,7 @@
 - `langsmith/cost-tracking` — [Cost tracking](pages/langsmith/cost-tracking.md) · [原文](https://docs.langchain.com/langsmith/cost-tracking)
 - `langsmith/create-a-prompt` — [Create a prompt](pages/langsmith/create-a-prompt.md) · [原文](https://docs.langchain.com/langsmith/create-a-prompt)
 - `langsmith/create-account-api-key` — [Create an account and API key](pages/langsmith/create-account-api-key.md) · [原文](https://docs.langchain.com/langsmith/create-account-api-key)
+- `langsmith/create-an-agent` — [Create an agent](pages/langsmith/create-an-agent.md) · [原文](https://docs.langchain.com/langsmith/create-an-agent)
 - `langsmith/create-few-shot-evaluators` — [How to improve your evaluator with few-shot examples](pages/langsmith/create-few-shot-evaluators.md) · [原文](https://docs.langchain.com/langsmith/create-few-shot-evaluators)
 - `langsmith/cron-jobs` — [Use cron jobs](pages/langsmith/cron-jobs.md) · [原文](https://docs.langchain.com/langsmith/cron-jobs)
 - `langsmith/custom-apps` — [Custom Apps](pages/langsmith/custom-apps.md) · [原文](https://docs.langchain.com/langsmith/custom-apps)
@@ -255,6 +259,7 @@
 - `langsmith/deploy-self-hosted-full-platform` — [Enable additional LangSmith features](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
 - `langsmith/deploy-standalone-server` — [Self-host standalone servers](pages/langsmith/deploy-standalone-server.md) · [原文](https://docs.langchain.com/langsmith/deploy-standalone-server)
 - `langsmith/deploy-sveltekit` — [Deploy with SvelteKit](pages/langsmith/deploy-sveltekit.md) · [原文](https://docs.langchain.com/langsmith/deploy-sveltekit)
+- `langsmith/deploy-to-agent-environment` — [Deploy to an agent environment](pages/langsmith/deploy-to-agent-environment.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-agent-environment)
 - `langsmith/deploy-to-cloud` — [Create a deployment](pages/langsmith/deploy-to-cloud.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-cloud)
 - `langsmith/deploy-to-cloud-overview` — [Deploy to Cloud](pages/langsmith/deploy-to-cloud-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-cloud-overview)
 - `langsmith/deploy-to-self-hosted-overview` — [Deploy to self-hosted](pages/langsmith/deploy-to-self-hosted-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-self-hosted-overview)
@@ -386,6 +391,7 @@
 - `langsmith/langsmith-managed-clickhouse` — [LangSmith-managed ClickHouse](pages/langsmith/langsmith-managed-clickhouse.md) · [原文](https://docs.langchain.com/langsmith/langsmith-managed-clickhouse)
 - `langsmith/langsmith-mcp-server` — [LangSmith MCP Server](pages/langsmith/langsmith-mcp-server.md) · [原文](https://docs.langchain.com/langsmith/langsmith-mcp-server)
 - `langsmith/langsmith-remote-mcp` — [LangSmith Remote MCP](pages/langsmith/langsmith-remote-mcp.md) · [原文](https://docs.langchain.com/langsmith/langsmith-remote-mcp)
+- `langsmith/langsmith-setup-overview` — [LangSmith setup](pages/langsmith/langsmith-setup-overview.md) · [原文](https://docs.langchain.com/langsmith/langsmith-setup-overview)
 - `langsmith/llm-as-judge` — [How to define an LLM-as-a-judge evaluator](pages/langsmith/llm-as-judge.md) · [原文](https://docs.langchain.com/langsmith/llm-as-judge)
 - `langsmith/llm-as-judge-sdk` — [How to define an LLM-as-a-judge evaluator](pages/langsmith/llm-as-judge-sdk.md) · [原文](https://docs.langchain.com/langsmith/llm-as-judge-sdk)
 - `langsmith/llm-auth-proxy-self-hosted` — [Set up the LLM auth proxy](pages/langsmith/llm-auth-proxy-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/llm-auth-proxy-self-hosted)
@@ -411,6 +417,7 @@
 - `langsmith/log-llm-trace` — [Log LLM calls](pages/langsmith/log-llm-trace.md) · [原文](https://docs.langchain.com/langsmith/log-llm-trace)
 - `langsmith/log-multimodal-traces` — [Log multimodal traces](pages/langsmith/log-multimodal-traces.md) · [原文](https://docs.langchain.com/langsmith/log-multimodal-traces)
 - `langsmith/log-retriever-trace` — [Log retriever traces](pages/langsmith/log-retriever-trace.md) · [原文](https://docs.langchain.com/langsmith/log-retriever-trace)
+- `langsmith/log-traces-to-agent` — [Log traces to an agent](pages/langsmith/log-traces-to-agent.md) · [原文](https://docs.langchain.com/langsmith/log-traces-to-agent)
 - `langsmith/log-traces-to-project` — [Log traces to a specific project](pages/langsmith/log-traces-to-project.md) · [原文](https://docs.langchain.com/langsmith/log-traces-to-project)
 - `langsmith/ls-metadata-parameters` — [Metadata parameters reference](pages/langsmith/ls-metadata-parameters.md) · [原文](https://docs.langchain.com/langsmith/ls-metadata-parameters)
 - `langsmith/manage-contexts-sdk` — [Manage contexts with the SDK](pages/langsmith/manage-contexts-sdk.md) · [原文](https://docs.langchain.com/langsmith/manage-contexts-sdk)
@@ -427,6 +434,7 @@
 - `langsmith/managing-model-configurations` — [Configure prompt settings](pages/langsmith/managing-model-configurations.md) · [原文](https://docs.langchain.com/langsmith/managing-model-configurations)
 - `langsmith/mask-inputs-outputs` — [Prevent logging of sensitive data in traces](pages/langsmith/mask-inputs-outputs.md) · [原文](https://docs.langchain.com/langsmith/mask-inputs-outputs)
 - `langsmith/metric-type` — [How to return categorical vs numerical metrics](pages/langsmith/metric-type.md) · [原文](https://docs.langchain.com/langsmith/metric-type)
+- `langsmith/migrate-to-agent-based-workspaces` — [How agent-based workspaces differ](pages/langsmith/migrate-to-agent-based-workspaces.md) · [原文](https://docs.langchain.com/langsmith/migrate-to-agent-based-workspaces)
 - `langsmith/model-configurations` — [Manage model configurations](pages/langsmith/model-configurations.md) · [原文](https://docs.langchain.com/langsmith/model-configurations)
 - `langsmith/monitor-deployment` — [Monitor a deployment](pages/langsmith/monitor-deployment.md) · [原文](https://docs.langchain.com/langsmith/monitor-deployment)
 - `langsmith/monorepo-support` — [Monorepo support](pages/langsmith/monorepo-support.md) · [原文](https://docs.langchain.com/langsmith/monorepo-support)
@@ -434,6 +442,7 @@
 - `langsmith/multimodal-content` — [Include multimodal content in a prompt](pages/langsmith/multimodal-content.md) · [原文](https://docs.langchain.com/langsmith/multimodal-content)
 - `langsmith/multiple-messages` — [Test multi-turn conversations](pages/langsmith/multiple-messages.md) · [原文](https://docs.langchain.com/langsmith/multiple-messages)
 - `langsmith/multiple-scores` — [How to return multiple scores in one evaluator](pages/langsmith/multiple-scores.md) · [原文](https://docs.langchain.com/langsmith/multiple-scores)
+- `langsmith/navigate-agents` — [Navigate agents](pages/langsmith/navigate-agents.md) · [原文](https://docs.langchain.com/langsmith/navigate-agents)
 - `langsmith/nest-traces` — [Troubleshoot trace nesting](pages/langsmith/nest-traces.md) · [原文](https://docs.langchain.com/langsmith/nest-traces)
 - `langsmith/observability` — [LangSmith Observability](pages/langsmith/observability.md) · [原文](https://docs.langchain.com/langsmith/observability)
 - `langsmith/observability-concepts` — [Observability concepts](pages/langsmith/observability-concepts.md) · [原文](https://docs.langchain.com/langsmith/observability-concepts)
@@ -1191,6 +1200,7 @@
 - `langsmith/trace-openai` — [Trace OpenAI applications](pages/langsmith/trace-openai.md) · [原文](https://docs.langchain.com/langsmith/trace-openai)
 - `langsmith/trace-openai-realtime` — [Trace OpenAI Realtime applications](pages/langsmith/trace-openai-realtime.md) · [原文](https://docs.langchain.com/langsmith/trace-openai-realtime)
 - `langsmith/trace-query-syntax` — [Trace query syntax](pages/langsmith/trace-query-syntax.md) · [原文](https://docs.langchain.com/langsmith/trace-query-syntax)
+- `langsmith/trace-replicas` — [Write traces to multiple destinations with replicas](pages/langsmith/trace-replicas.md) · [原文](https://docs.langchain.com/langsmith/trace-replicas)
 - `langsmith/trace-voice-fundamentals` — [Voice tracing fundamentals](pages/langsmith/trace-voice-fundamentals.md) · [原文](https://docs.langchain.com/langsmith/trace-voice-fundamentals)
 - `langsmith/trace-with-api` — [Trace with API](pages/langsmith/trace-with-api.md) · [原文](https://docs.langchain.com/langsmith/trace-with-api)
 - `langsmith/trace-with-autogen` — [Trace AutoGen applications](pages/langsmith/trace-with-autogen.md) · [原文](https://docs.langchain.com/langsmith/trace-with-autogen)

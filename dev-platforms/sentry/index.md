@@ -1,12 +1,7 @@
 # dev-platforms/sentry 文档索引
 
-> 共 118 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 99 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
-
-## (根目录)
-
-- `changelog` — [Documentation Changelog](pages/changelog.md) · [原文](https://docs.sentry.io/changelog.md)
-- `contributing` — [Contributing to Docs](pages/contributing.md) · [原文](https://docs.sentry.io/contributing.md)
 
 ## account
 
@@ -38,14 +33,8 @@
 - `api/projects` — [Projects](pages/api/projects.md) · [原文](https://docs.sentry.io/api/projects.md)
 - `api/ratelimits` — [Rate Limits](pages/api/ratelimits.md) · [原文](https://docs.sentry.io/api/ratelimits.md)
 - `api/releases` — [Releases](pages/api/releases.md) · [原文](https://docs.sentry.io/api/releases.md)
-- `api/replays` — [Replays](pages/api/replays.md) · [原文](https://docs.sentry.io/api/replays.md)
 - `api/requests` — [Requests](pages/api/requests.md) · [原文](https://docs.sentry.io/api/requests.md)
-- `api/scim` — [SCIM](pages/api/scim.md) · [原文](https://docs.sentry.io/api/scim.md)
-- `api/seer` — [Seer](pages/api/seer.md) · [原文](https://docs.sentry.io/api/seer.md)
-- `api/snapshots` — [Snapshots](pages/api/snapshots.md) · [原文](https://docs.sentry.io/api/snapshots.md)
 - `api/spike-protection` — [Spike Protection Notifications](pages/api/spike-protection.md) · [原文](https://docs.sentry.io/api/spike-protection.md)
-- `api/teams` — [Teams](pages/api/teams.md) · [原文](https://docs.sentry.io/api/teams.md)
-- `api/users` — [Users](pages/api/users.md) · [原文](https://docs.sentry.io/api/users.md)
 
 ## cli
 
@@ -61,11 +50,7 @@
 
 ## concepts
 
-- `concepts/data-management` — [Data Management](pages/concepts/data-management.md) · [原文](https://docs.sentry.io/concepts/data-management.md)
-- `concepts/key-terms` — [Concepts](pages/concepts/key-terms.md) · [原文](https://docs.sentry.io/concepts/key-terms.md)
 - `concepts/migration` — [Moving to SaaS](pages/concepts/migration.md) · [原文](https://docs.sentry.io/concepts/migration.md)
-- `concepts/otlp` — [OpenTelemetry Protocol (OTLP)](pages/concepts/otlp.md) · [原文](https://docs.sentry.io/concepts/otlp.md)
-- `concepts/search` — [Search](pages/concepts/search.md) · [原文](https://docs.sentry.io/concepts/search.md)
 
 ## get-started
 
@@ -74,19 +59,13 @@
 
 ## integrations
 
-- `integrations/cloud-monitoring` — [Cloud Monitoring](pages/integrations/cloud-monitoring.md) · [原文](https://docs.sentry.io/integrations/cloud-monitoring.md)
-- `integrations/coding-agents` — [Coding Agents](pages/integrations/coding-agents.md) · [原文](https://docs.sentry.io/integrations/coding-agents.md)
 - `integrations/compliance` — [Compliance](pages/integrations/compliance.md) · [原文](https://docs.sentry.io/integrations/compliance.md)
-- `integrations/data-forwarding` — [Data Forwarding](pages/integrations/data-forwarding.md) · [原文](https://docs.sentry.io/integrations/data-forwarding.md)
 - `integrations/debugging` — [Debugging](pages/integrations/debugging.md) · [原文](https://docs.sentry.io/integrations/debugging.md)
 - `integrations/deployment` — [Deployment](pages/integrations/deployment.md) · [原文](https://docs.sentry.io/integrations/deployment.md)
 - `integrations/feature-flag` — [Feature Flags](pages/integrations/feature-flag.md) · [原文](https://docs.sentry.io/integrations/feature-flag.md)
-- `integrations/integration-platform` — [Integration Platform](pages/integrations/integration-platform.md) · [原文](https://docs.sentry.io/integrations/integration-platform.md)
-- `integrations/issue-tracking` — [Issue Tracking](pages/integrations/issue-tracking.md) · [原文](https://docs.sentry.io/integrations/issue-tracking.md)
 - `integrations/notification-incidents` — [Notification & Incidents](pages/integrations/notification-incidents.md) · [原文](https://docs.sentry.io/integrations/notification-incidents.md)
 - `integrations/session-replay` — [Third-party Session Replay Integrations](pages/integrations/session-replay.md) · [原文](https://docs.sentry.io/integrations/session-replay.md)
 - `integrations/source-code-mgmt` — [Source Code Management](pages/integrations/source-code-mgmt.md) · [原文](https://docs.sentry.io/integrations/source-code-mgmt.md)
-- `integrations/third-party-integrations` — [Third-Party Integrations](pages/integrations/third-party-integrations.md) · [原文](https://docs.sentry.io/integrations/third-party-integrations.md)
 - `integrations/troubleshooting` — [Troubleshooting Integrations](pages/integrations/troubleshooting.md) · [原文](https://docs.sentry.io/integrations/troubleshooting.md)
 
 ## organization
@@ -158,4 +137,3 @@
 ## security-legal-pii
 
 - `security-legal-pii/scrubbing` — [Data Scrubbing](pages/security-legal-pii/scrubbing.md) · [原文](https://docs.sentry.io/security-legal-pii/scrubbing.md)
-- `security-legal-pii/security` — [Security & Legal](pages/security-legal-pii/security.md) · [原文](https://docs.sentry.io/security-legal-pii/security.md)

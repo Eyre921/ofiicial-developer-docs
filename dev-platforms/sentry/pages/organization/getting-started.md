@@ -79,7 +79,7 @@ If you're using a different SCM provider or don't want Sentry to connect to your
 
 Enabling an integration with your issue tracking solution allows you to create a new issue from within the **Issue Details** page in [sentry.io](https://sentry.io), or link to an existing one. GitHub, GitLab, and Bitbucket issues are associated with their respective SCM integrations. Sentry also integrates with [Azure DevOps](https://docs.sentry.io/integrations/source-code-mgmt/azure-devops.md), [Shortcut](https://docs.sentry.io/integrations/issue-tracking/shortcut.md), [Jira](https://docs.sentry.io/integrations/issue-tracking/jira.md), and others.
 
-For a list of all supported integrations, check out out our [full Integrations documentation](https://docs.sentry.io/integrations.md).
+For a list of all supported integrations, check out our [full Integrations documentation](https://docs.sentry.io/integrations.md).
 
 You can set up automated issue management when you create alerts that route to [Azure DevOps](https://docs.sentry.io/integrations/source-code-mgmt/azure-devops.md#automatically) and [Jira](https://docs.sentry.io/integrations/issue-tracking/jira.md#automatically). External issues will be created for new Sentry issues on your behalf, and these issues will use the configured fields in your Azure DevOps or Jira workspace. For other issue tracking solutions, you can manually link Sentry issues.
 
