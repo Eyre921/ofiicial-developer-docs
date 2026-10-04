@@ -321,40 +321,23 @@ components:
     ObservabilityDestination:
       discriminator:
         mapping:
-          arize:
-            $ref: '#/components/schemas/ObservabilityArizeDestination'
-          braintrust:
-            $ref: '#/components/schemas/ObservabilityBraintrustDestination'
-          clickhouse:
-            $ref: '#/components/schemas/ObservabilityClickhouseDestination'
-          datadog:
-            $ref: '#/components/schemas/ObservabilityDatadogDestination'
-          grafana:
-            $ref: '#/components/schemas/ObservabilityGrafanaDestination'
-          langfuse:
-            $ref: '#/components/schemas/ObservabilityLangfuseDestination'
-          langsmith:
-            $ref: '#/components/schemas/ObservabilityLangsmithDestination'
-          newrelic:
-            $ref: '#/components/schemas/ObservabilityNewrelicDestination'
-          opik:
-            $ref: '#/components/schemas/ObservabilityOpikDestination'
-          otel-collector:
-            $ref: '#/components/schemas/ObservabilityOtelCollectorDestination'
-          posthog:
-            $ref: '#/components/schemas/ObservabilityPosthogDestination'
-          ramp:
-            $ref: '#/components/schemas/ObservabilityRampDestination'
-          s3:
-            $ref: '#/components/schemas/ObservabilityS3Destination'
-          sentry:
-            $ref: '#/components/schemas/ObservabilitySentryDestination'
-          snowflake:
-            $ref: '#/components/schemas/ObservabilitySnowflakeDestination'
-          weave:
-            $ref: '#/components/schemas/ObservabilityWeaveDestination'
-          webhook:
-            $ref: '#/components/schemas/ObservabilityWebhookDestination'
+          arize: '#/components/schemas/ObservabilityArizeDestination'
+          braintrust: '#/components/schemas/ObservabilityBraintrustDestination'
+          clickhouse: '#/components/schemas/ObservabilityClickhouseDestination'
+          datadog: '#/components/schemas/ObservabilityDatadogDestination'
+          grafana: '#/components/schemas/ObservabilityGrafanaDestination'
+          langfuse: '#/components/schemas/ObservabilityLangfuseDestination'
+          langsmith: '#/components/schemas/ObservabilityLangsmithDestination'
+          newrelic: '#/components/schemas/ObservabilityNewrelicDestination'
+          opik: '#/components/schemas/ObservabilityOpikDestination'
+          otel-collector: '#/components/schemas/ObservabilityOtelCollectorDestination'
+          posthog: '#/components/schemas/ObservabilityPosthogDestination'
+          ramp: '#/components/schemas/ObservabilityRampDestination'
+          s3: '#/components/schemas/ObservabilityS3Destination'
+          sentry: '#/components/schemas/ObservabilitySentryDestination'
+          snowflake: '#/components/schemas/ObservabilitySnowflakeDestination'
+          weave: '#/components/schemas/ObservabilityWeaveDestination'
+          webhook: '#/components/schemas/ObservabilityWebhookDestination'
         propertyName: type
       example:
         api_key_hashes: null

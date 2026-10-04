@@ -1776,38 +1776,22 @@ components:
     ORAnthropicContentBlock:
       discriminator:
         mapping:
-          advisor_tool_result:
-            $ref: '#/components/schemas/AnthropicAdvisorToolResult'
-          bash_code_execution_tool_result:
-            $ref: '#/components/schemas/AnthropicBashCodeExecutionToolResult'
-          code_execution_tool_result:
-            $ref: '#/components/schemas/AnthropicCodeExecutionToolResult'
-          compaction:
-            $ref: '#/components/schemas/AnthropicCompactionBlock'
-          container_upload:
-            $ref: '#/components/schemas/AnthropicContainerUpload'
-          openrouter_bash_tool_result:
-            $ref: '#/components/schemas/ORAnthropicBashToolResult'
-          openrouter_shell_tool_result:
-            $ref: '#/components/schemas/ORAnthropicShellToolResult'
-          redacted_thinking:
-            $ref: '#/components/schemas/AnthropicRedactedThinkingBlock'
-          server_tool_use:
-            $ref: '#/components/schemas/ORAnthropicServerToolUseBlock'
-          text:
-            $ref: '#/components/schemas/AnthropicTextBlock'
-          text_editor_code_execution_tool_result:
-            $ref: '#/components/schemas/AnthropicTextEditorCodeExecutionToolResult'
-          thinking:
-            $ref: '#/components/schemas/AnthropicThinkingBlock'
-          tool_search_tool_result:
-            $ref: '#/components/schemas/AnthropicToolSearchToolResult'
-          tool_use:
-            $ref: '#/components/schemas/AnthropicToolUseBlock'
-          web_fetch_tool_result:
-            $ref: '#/components/schemas/AnthropicWebFetchToolResult'
-          web_search_tool_result:
-            $ref: '#/components/schemas/AnthropicWebSearchToolResult'
+          advisor_tool_result: '#/components/schemas/AnthropicAdvisorToolResult'
+          bash_code_execution_tool_result: '#/components/schemas/AnthropicBashCodeExecutionToolResult'
+          code_execution_tool_result: '#/components/schemas/AnthropicCodeExecutionToolResult'
+          compaction: '#/components/schemas/AnthropicCompactionBlock'
+          container_upload: '#/components/schemas/AnthropicContainerUpload'
+          openrouter_bash_tool_result: '#/components/schemas/ORAnthropicBashToolResult'
+          openrouter_shell_tool_result: '#/components/schemas/ORAnthropicShellToolResult'
+          redacted_thinking: '#/components/schemas/AnthropicRedactedThinkingBlock'
+          server_tool_use: '#/components/schemas/ORAnthropicServerToolUseBlock'
+          text: '#/components/schemas/AnthropicTextBlock'
+          text_editor_code_execution_tool_result: '#/components/schemas/AnthropicTextEditorCodeExecutionToolResult'
+          thinking: '#/components/schemas/AnthropicThinkingBlock'
+          tool_search_tool_result: '#/components/schemas/AnthropicToolSearchToolResult'
+          tool_use: '#/components/schemas/AnthropicToolUseBlock'
+          web_fetch_tool_result: '#/components/schemas/AnthropicWebFetchToolResult'
+          web_search_tool_result: '#/components/schemas/AnthropicWebSearchToolResult'
         propertyName: type
       example:
         citations: null
@@ -2020,12 +2004,9 @@ components:
     AlignmentCallRecord:
       discriminator:
         mapping:
-          allowed:
-            $ref: '#/components/schemas/AlignmentAllowedCallRecord'
-          blocked:
-            $ref: '#/components/schemas/AlignmentBlockedCallRecord'
-          unavailable:
-            $ref: '#/components/schemas/AlignmentUnavailableCallRecord'
+          allowed: '#/components/schemas/AlignmentAllowedCallRecord'
+          blocked: '#/components/schemas/AlignmentBlockedCallRecord'
+          unavailable: '#/components/schemas/AlignmentUnavailableCallRecord'
         propertyName: outcome
       oneOf:
         - $ref: '#/components/schemas/AlignmentAllowedCallRecord'
@@ -2210,24 +2191,15 @@ components:
           items:
             discriminator:
               mapping:
-                apply_patch_call:
-                  $ref: '#/components/schemas/OutputItemApplyPatchCall'
-                code_interpreter_call:
-                  $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
-                custom_tool_call:
-                  $ref: '#/components/schemas/OutputItemCustomToolCall'
-                file_search_call:
-                  $ref: '#/components/schemas/OutputItemFileSearchCall'
-                function_call:
-                  $ref: '#/components/schemas/OutputItemFunctionCall'
-                image_generation_call:
-                  $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                message:
-                  $ref: '#/components/schemas/OutputMessage'
-                reasoning:
-                  $ref: '#/components/schemas/OutputItemReasoning'
-                web_search_call:
-                  $ref: '#/components/schemas/OutputItemWebSearchCall'
+                apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
+                code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+                custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
+                file_search_call: '#/components/schemas/OutputItemFileSearchCall'
+                function_call: '#/components/schemas/OutputItemFunctionCall'
+                image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+                message: '#/components/schemas/OutputMessage'
+                reasoning: '#/components/schemas/OutputItemReasoning'
+                web_search_call: '#/components/schemas/OutputItemWebSearchCall'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/OutputMessage'
@@ -2428,68 +2400,37 @@ components:
       description: An output item from the response
       discriminator:
         mapping:
-          apply_patch_call:
-            $ref: '#/components/schemas/OutputApplyPatchCallItem'
-          code_interpreter_call:
-            $ref: '#/components/schemas/OutputCodeInterpreterCallItem'
-          computer_call:
-            $ref: '#/components/schemas/OutputComputerCallItem'
-          custom_tool_call:
-            $ref: '#/components/schemas/OutputCustomToolCallItem'
-          file_search_call:
-            $ref: '#/components/schemas/OutputFileSearchCallItem'
-          function_call:
-            $ref: '#/components/schemas/OutputFunctionCallItem'
-          image_generation_call:
-            $ref: '#/components/schemas/OutputImageGenerationCallItem'
-          message:
-            $ref: '#/components/schemas/OutputMessageItem'
-          openrouter:advisor:
-            $ref: '#/components/schemas/OutputAdvisorServerToolItem'
-          openrouter:apply_patch:
-            $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
-          openrouter:bash:
-            $ref: '#/components/schemas/OutputBashServerToolItem'
-          openrouter:browser_use:
-            $ref: '#/components/schemas/OutputBrowserUseServerToolItem'
-          openrouter:code_interpreter:
-            $ref: '#/components/schemas/OutputCodeInterpreterServerToolItem'
-          openrouter:datetime:
-            $ref: '#/components/schemas/OutputDatetimeItem'
-          openrouter:experimental__search_models:
-            $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
-          openrouter:file_search:
-            $ref: '#/components/schemas/OutputFileSearchServerToolItem'
-          openrouter:files:
-            $ref: '#/components/schemas/OutputFilesServerToolItem'
-          openrouter:fusion:
-            $ref: '#/components/schemas/OutputFusionServerToolItem'
-          openrouter:image_generation:
-            $ref: '#/components/schemas/OutputImageGenerationServerToolItem'
-          openrouter:mcp:
-            $ref: '#/components/schemas/OutputMcpServerToolItem'
-          openrouter:memory:
-            $ref: '#/components/schemas/OutputMemoryServerToolItem'
-          openrouter:shell:
-            $ref: '#/components/schemas/OutputShellServerToolItem'
-          openrouter:subagent:
-            $ref: '#/components/schemas/OutputSubagentServerToolItem'
-          openrouter:text_editor:
-            $ref: '#/components/schemas/OutputTextEditorServerToolItem'
-          openrouter:tool_search:
-            $ref: '#/components/schemas/OutputToolSearchServerToolItem'
-          openrouter:web_fetch:
-            $ref: '#/components/schemas/OutputWebFetchServerToolItem'
-          openrouter:web_search:
-            $ref: '#/components/schemas/OutputWebSearchServerToolItem'
-          reasoning:
-            $ref: '#/components/schemas/OutputReasoningItem'
-          shell_call:
-            $ref: '#/components/schemas/OutputShellCallItem'
-          shell_call_output:
-            $ref: '#/components/schemas/OutputShellCallOutputItem'
-          web_search_call:
-            $ref: '#/components/schemas/OutputWebSearchCallItem'
+          apply_patch_call: '#/components/schemas/OutputApplyPatchCallItem'
+          code_interpreter_call: '#/components/schemas/OutputCodeInterpreterCallItem'
+          computer_call: '#/components/schemas/OutputComputerCallItem'
+          custom_tool_call: '#/components/schemas/OutputCustomToolCallItem'
+          file_search_call: '#/components/schemas/OutputFileSearchCallItem'
+          function_call: '#/components/schemas/OutputFunctionCallItem'
+          image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
+          message: '#/components/schemas/OutputMessageItem'
+          openrouter:advisor: '#/components/schemas/OutputAdvisorServerToolItem'
+          openrouter:apply_patch: '#/components/schemas/OutputApplyPatchServerToolItem'
+          openrouter:bash: '#/components/schemas/OutputBashServerToolItem'
+          openrouter:browser_use: '#/components/schemas/OutputBrowserUseServerToolItem'
+          openrouter:code_interpreter: '#/components/schemas/OutputCodeInterpreterServerToolItem'
+          openrouter:datetime: '#/components/schemas/OutputDatetimeItem'
+          openrouter:experimental__search_models: '#/components/schemas/OutputSearchModelsServerToolItem'
+          openrouter:file_search: '#/components/schemas/OutputFileSearchServerToolItem'
+          openrouter:files: '#/components/schemas/OutputFilesServerToolItem'
+          openrouter:fusion: '#/components/schemas/OutputFusionServerToolItem'
+          openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
+          openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
+          openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
+          openrouter:shell: '#/components/schemas/OutputShellServerToolItem'
+          openrouter:subagent: '#/components/schemas/OutputSubagentServerToolItem'
+          openrouter:text_editor: '#/components/schemas/OutputTextEditorServerToolItem'
+          openrouter:tool_search: '#/components/schemas/OutputToolSearchServerToolItem'
+          openrouter:web_fetch: '#/components/schemas/OutputWebFetchServerToolItem'
+          openrouter:web_search: '#/components/schemas/OutputWebSearchServerToolItem'
+          reasoning: '#/components/schemas/OutputReasoningItem'
+          shell_call: '#/components/schemas/OutputShellCallItem'
+          shell_call_output: '#/components/schemas/OutputShellCallOutputItem'
+          web_search_call: '#/components/schemas/OutputWebSearchCallItem'
         propertyName: type
       example:
         content:
@@ -3371,14 +3312,10 @@ components:
                       - items:
                           discriminator:
                             mapping:
-                              input_audio:
-                                $ref: '#/components/schemas/InputAudio'
-                              input_file:
-                                $ref: '#/components/schemas/InputFile'
-                              input_image:
-                                $ref: '#/components/schemas/InputImage'
-                              input_text:
-                                $ref: '#/components/schemas/InputText'
+                              input_audio: '#/components/schemas/InputAudio'
+                              input_file: '#/components/schemas/InputFile'
+                              input_image: '#/components/schemas/InputImage'
+                              input_text: '#/components/schemas/InputText'
                             propertyName: type
                           oneOf:
                             - $ref: '#/components/schemas/InputText'
@@ -3470,12 +3407,9 @@ components:
         operation:
           discriminator:
             mapping:
-              create_file:
-                $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
-              delete_file:
-                $ref: '#/components/schemas/ApplyPatchDeleteFileOperation'
-              update_file:
-                $ref: '#/components/schemas/ApplyPatchUpdateFileOperation'
+              create_file: '#/components/schemas/ApplyPatchCreateFileOperation'
+              delete_file: '#/components/schemas/ApplyPatchDeleteFileOperation'
+              update_file: '#/components/schemas/ApplyPatchUpdateFileOperation'
             propertyName: type
           oneOf:
             - $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
@@ -3521,12 +3455,9 @@ components:
           items:
             discriminator:
               mapping:
-                file:
-                  $ref: '#/components/schemas/CodeInterpreterFileOutput'
-                image:
-                  $ref: '#/components/schemas/CodeInterpreterImageOutput'
-                logs:
-                  $ref: '#/components/schemas/CodeInterpreterLogsOutput'
+                file: '#/components/schemas/CodeInterpreterFileOutput'
+                image: '#/components/schemas/CodeInterpreterImageOutput'
+                logs: '#/components/schemas/CodeInterpreterLogsOutput'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/CodeInterpreterLogsOutput'
@@ -6025,10 +5956,8 @@ components:
     AnthropicBashCodeExecutionContent:
       discriminator:
         mapping:
-          bash_code_execution_result:
-            $ref: '#/components/schemas/AnthropicBashCodeExecutionResult'
-          bash_code_execution_tool_result_error:
-            $ref: '#/components/schemas/AnthropicBashCodeExecutionToolResultError'
+          bash_code_execution_result: '#/components/schemas/AnthropicBashCodeExecutionResult'
+          bash_code_execution_tool_result_error: '#/components/schemas/AnthropicBashCodeExecutionToolResultError'
         propertyName: type
       example:
         content: []
@@ -6042,12 +5971,9 @@ components:
     AnthropicCodeExecutionContent:
       discriminator:
         mapping:
-          code_execution_result:
-            $ref: '#/components/schemas/AnthropicCodeExecutionResult'
-          code_execution_tool_result_error:
-            $ref: '#/components/schemas/AnthropicCodeExecutionToolResultError'
-          encrypted_code_execution_result:
-            $ref: '#/components/schemas/AnthropicEncryptedCodeExecutionResult'
+          code_execution_result: '#/components/schemas/AnthropicCodeExecutionResult'
+          code_execution_tool_result_error: '#/components/schemas/AnthropicCodeExecutionToolResultError'
+          encrypted_code_execution_result: '#/components/schemas/AnthropicEncryptedCodeExecutionResult'
         propertyName: type
       example:
         content: []
@@ -6062,12 +5988,9 @@ components:
     ORAnthropicNullableCaller:
       discriminator:
         mapping:
-          code_execution_20250825:
-            $ref: '#/components/schemas/AnthropicCodeExecution20250825Caller'
-          code_execution_20260120:
-            $ref: '#/components/schemas/AnthropicCodeExecution20260120Caller'
-          direct:
-            $ref: '#/components/schemas/AnthropicDirectCaller'
+          code_execution_20250825: '#/components/schemas/AnthropicCodeExecution20250825Caller'
+          code_execution_20260120: '#/components/schemas/AnthropicCodeExecution20260120Caller'
+          direct: '#/components/schemas/AnthropicDirectCaller'
         propertyName: type
       example:
         type: direct
@@ -6079,16 +6002,11 @@ components:
     AnthropicTextCitation:
       discriminator:
         mapping:
-          char_location:
-            $ref: '#/components/schemas/AnthropicCitationCharLocation'
-          content_block_location:
-            $ref: '#/components/schemas/AnthropicCitationContentBlockLocation'
-          page_location:
-            $ref: '#/components/schemas/AnthropicCitationPageLocation'
-          search_result_location:
-            $ref: '#/components/schemas/AnthropicCitationSearchResultLocation'
-          web_search_result_location:
-            $ref: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
+          char_location: '#/components/schemas/AnthropicCitationCharLocation'
+          content_block_location: '#/components/schemas/AnthropicCitationContentBlockLocation'
+          page_location: '#/components/schemas/AnthropicCitationPageLocation'
+          search_result_location: '#/components/schemas/AnthropicCitationSearchResultLocation'
+          web_search_result_location: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
         propertyName: type
       example:
         cited_text: Example text
@@ -6107,16 +6025,11 @@ components:
     AnthropicTextEditorCodeExecutionContent:
       discriminator:
         mapping:
-          text_editor_code_execution_create_result:
-            $ref: '#/components/schemas/AnthropicTextEditorCodeExecutionCreateResult'
-          text_editor_code_execution_str_replace_result:
-            $ref: >-
-              #/components/schemas/AnthropicTextEditorCodeExecutionStrReplaceResult
-          text_editor_code_execution_tool_result_error:
-            $ref: >-
-              #/components/schemas/AnthropicTextEditorCodeExecutionToolResultError
-          text_editor_code_execution_view_result:
-            $ref: '#/components/schemas/AnthropicTextEditorCodeExecutionViewResult'
+          text_editor_code_execution_create_result: '#/components/schemas/AnthropicTextEditorCodeExecutionCreateResult'
+          text_editor_code_execution_str_replace_result: >-
+            #/components/schemas/AnthropicTextEditorCodeExecutionStrReplaceResult
+          text_editor_code_execution_tool_result_error: '#/components/schemas/AnthropicTextEditorCodeExecutionToolResultError'
+          text_editor_code_execution_view_result: '#/components/schemas/AnthropicTextEditorCodeExecutionViewResult'
         propertyName: type
       example:
         content: file content
@@ -6134,10 +6047,8 @@ components:
     AnthropicToolSearchContent:
       discriminator:
         mapping:
-          tool_search_tool_result_error:
-            $ref: '#/components/schemas/AnthropicToolSearchResultError'
-          tool_search_tool_search_result:
-            $ref: '#/components/schemas/AnthropicToolSearchResult'
+          tool_search_tool_result_error: '#/components/schemas/AnthropicToolSearchResultError'
+          tool_search_tool_search_result: '#/components/schemas/AnthropicToolSearchResult'
         propertyName: type
       example:
         tool_references:
@@ -6150,12 +6061,9 @@ components:
     AnthropicCaller:
       discriminator:
         mapping:
-          code_execution_20250825:
-            $ref: '#/components/schemas/AnthropicCodeExecution20250825Caller'
-          code_execution_20260120:
-            $ref: '#/components/schemas/AnthropicCodeExecution20260120Caller'
-          direct:
-            $ref: '#/components/schemas/AnthropicDirectCaller'
+          code_execution_20250825: '#/components/schemas/AnthropicCodeExecution20250825Caller'
+          code_execution_20260120: '#/components/schemas/AnthropicCodeExecution20260120Caller'
+          direct: '#/components/schemas/AnthropicDirectCaller'
         propertyName: type
       example:
         type: direct
@@ -6166,10 +6074,8 @@ components:
     AnthropicWebFetchContent:
       discriminator:
         mapping:
-          web_fetch_result:
-            $ref: '#/components/schemas/AnthropicWebFetchBlock'
-          web_fetch_tool_result_error:
-            $ref: '#/components/schemas/AnthropicWebFetchToolResultError'
+          web_fetch_result: '#/components/schemas/AnthropicWebFetchBlock'
+          web_fetch_tool_result_error: '#/components/schemas/AnthropicWebFetchToolResultError'
         propertyName: type
       example:
         content:
@@ -6386,14 +6292,10 @@ components:
           items:
             discriminator:
               mapping:
-                input_audio:
-                  $ref: '#/components/schemas/InputAudio'
-                input_file:
-                  $ref: '#/components/schemas/InputFile'
-                input_image:
-                  $ref: '#/components/schemas/InputImage'
-                input_text:
-                  $ref: '#/components/schemas/InputText'
+                input_audio: '#/components/schemas/InputAudio'
+                input_file: '#/components/schemas/InputFile'
+                input_image: '#/components/schemas/InputImage'
+                input_text: '#/components/schemas/InputText'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/InputText'
@@ -6441,12 +6343,9 @@ components:
             - items:
                 discriminator:
                   mapping:
-                    input_file:
-                      $ref: '#/components/schemas/InputFile'
-                    input_image:
-                      $ref: '#/components/schemas/InputImage'
-                    input_text:
-                      $ref: '#/components/schemas/InputText'
+                    input_file: '#/components/schemas/InputFile'
+                    input_image: '#/components/schemas/InputImage'
+                    input_text: '#/components/schemas/InputText'
                   propertyName: type
                 oneOf:
                   - $ref: '#/components/schemas/InputText'
@@ -6591,12 +6490,9 @@ components:
             - items:
                 discriminator:
                   mapping:
-                    input_file:
-                      $ref: '#/components/schemas/InputFile'
-                    input_image:
-                      $ref: '#/components/schemas/InputImage'
-                    input_text:
-                      $ref: '#/components/schemas/InputText'
+                    input_file: '#/components/schemas/InputFile'
+                    input_image: '#/components/schemas/InputImage'
+                    input_text: '#/components/schemas/InputText'
                   propertyName: type
                 oneOf:
                   - $ref: '#/components/schemas/InputText'
@@ -7360,12 +7256,9 @@ components:
         and `update_file` carry a V4A diff; `delete_file` omits it.
       discriminator:
         mapping:
-          create_file:
-            $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
-          delete_file:
-            $ref: '#/components/schemas/ApplyPatchDeleteFileOperation'
-          update_file:
-            $ref: '#/components/schemas/ApplyPatchUpdateFileOperation'
+          create_file: '#/components/schemas/ApplyPatchCreateFileOperation'
+          delete_file: '#/components/schemas/ApplyPatchDeleteFileOperation'
+          update_file: '#/components/schemas/ApplyPatchUpdateFileOperation'
         propertyName: type
       example:
         diff: |-
@@ -8324,24 +8217,15 @@ components:
       items:
         discriminator:
           mapping:
-            apply_patch_call:
-              $ref: '#/components/schemas/OutputItemApplyPatchCall'
-            code_interpreter_call:
-              $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
-            custom_tool_call:
-              $ref: '#/components/schemas/OutputItemCustomToolCall'
-            file_search_call:
-              $ref: '#/components/schemas/OutputItemFileSearchCall'
-            function_call:
-              $ref: '#/components/schemas/OutputItemFunctionCall'
-            image_generation_call:
-              $ref: '#/components/schemas/OutputItemImageGenerationCall'
-            message:
-              $ref: '#/components/schemas/OutputMessage'
-            reasoning:
-              $ref: '#/components/schemas/OutputItemReasoning'
-            web_search_call:
-              $ref: '#/components/schemas/OutputItemWebSearchCall'
+            apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
+            code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+            custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
+            file_search_call: '#/components/schemas/OutputItemFileSearchCall'
+            function_call: '#/components/schemas/OutputItemFunctionCall'
+            image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+            message: '#/components/schemas/OutputMessage'
+            reasoning: '#/components/schemas/OutputItemReasoning'
+            web_search_call: '#/components/schemas/OutputItemWebSearchCall'
           propertyName: type
         oneOf:
           - $ref: '#/components/schemas/OutputMessage'

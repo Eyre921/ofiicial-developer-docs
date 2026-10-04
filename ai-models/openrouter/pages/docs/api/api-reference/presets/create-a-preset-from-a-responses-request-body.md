@@ -360,32 +360,19 @@ components:
           items:
             discriminator:
               mapping:
-                alignment:
-                  $ref: '#/components/schemas/AlignmentPlugin'
-                auto-beta-router:
-                  $ref: '#/components/schemas/AutoBetaRouterPlugin'
-                auto-router:
-                  $ref: '#/components/schemas/AutoRouterPlugin'
-                context-compression:
-                  $ref: '#/components/schemas/ContextCompressionPlugin'
-                file-parser:
-                  $ref: '#/components/schemas/FileParserPlugin'
-                fusion:
-                  $ref: '#/components/schemas/FusionPlugin'
-                jev-router:
-                  $ref: '#/components/schemas/JevRouterPlugin'
-                moderation:
-                  $ref: '#/components/schemas/ModerationPlugin'
-                pareto-router:
-                  $ref: '#/components/schemas/ParetoRouterPlugin'
-                response-healing:
-                  $ref: '#/components/schemas/ResponseHealingPlugin'
-                switchyard-router:
-                  $ref: '#/components/schemas/SwitchyardRouterPlugin'
-                web:
-                  $ref: '#/components/schemas/WebSearchPlugin'
-                web-fetch:
-                  $ref: '#/components/schemas/WebFetchPlugin'
+                alignment: '#/components/schemas/AlignmentPlugin'
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
+                auto-router: '#/components/schemas/AutoRouterPlugin'
+                context-compression: '#/components/schemas/ContextCompressionPlugin'
+                file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
+                moderation: '#/components/schemas/ModerationPlugin'
+                pareto-router: '#/components/schemas/ParetoRouterPlugin'
+                response-healing: '#/components/schemas/ResponseHealingPlugin'
+                switchyard-router: '#/components/schemas/SwitchyardRouterPlugin'
+                web: '#/components/schemas/WebSearchPlugin'
+                web-fetch: '#/components/schemas/WebFetchPlugin'
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
@@ -6005,16 +5992,11 @@ components:
       description: A single condition that, when met, halts the server-tool agent loop.
       discriminator:
         mapping:
-          finish_reason_is:
-            $ref: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
-          has_tool_call:
-            $ref: '#/components/schemas/StopServerToolsWhenHasToolCall'
-          max_cost:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxCost'
-          max_tokens_used:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
-          step_count_is:
-            $ref: '#/components/schemas/StopServerToolsWhenStepCountIs'
+          finish_reason_is: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
+          has_tool_call: '#/components/schemas/StopServerToolsWhenHasToolCall'
+          max_cost: '#/components/schemas/StopServerToolsWhenMaxCost'
+          max_tokens_used: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
+          step_count_is: '#/components/schemas/StopServerToolsWhenStepCountIs'
         propertyName: type
       example:
         step_count: 5
@@ -6971,12 +6953,9 @@ components:
             - items:
                 discriminator:
                   mapping:
-                    input_file:
-                      $ref: '#/components/schemas/InputFile'
-                    input_image:
-                      $ref: '#/components/schemas/InputImage'
-                    input_text:
-                      $ref: '#/components/schemas/InputText'
+                    input_file: '#/components/schemas/InputFile'
+                    input_image: '#/components/schemas/InputImage'
+                    input_text: '#/components/schemas/InputText'
                   propertyName: type
                 oneOf:
                   - $ref: '#/components/schemas/InputText'
@@ -7002,12 +6981,9 @@ components:
         and `update_file` carry a V4A diff; `delete_file` omits it.
       discriminator:
         mapping:
-          create_file:
-            $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
-          delete_file:
-            $ref: '#/components/schemas/ApplyPatchDeleteFileOperation'
-          update_file:
-            $ref: '#/components/schemas/ApplyPatchUpdateFileOperation'
+          create_file: '#/components/schemas/ApplyPatchCreateFileOperation'
+          delete_file: '#/components/schemas/ApplyPatchDeleteFileOperation'
+          update_file: '#/components/schemas/ApplyPatchUpdateFileOperation'
         propertyName: type
       example:
         diff: |-
@@ -7421,12 +7397,9 @@ components:
             - items:
                 discriminator:
                   mapping:
-                    input_file:
-                      $ref: '#/components/schemas/InputFile'
-                    input_image:
-                      $ref: '#/components/schemas/InputImage'
-                    input_text:
-                      $ref: '#/components/schemas/InputText'
+                    input_file: '#/components/schemas/InputFile'
+                    input_image: '#/components/schemas/InputImage'
+                    input_text: '#/components/schemas/InputText'
                   propertyName: type
                 oneOf:
                   - $ref: '#/components/schemas/InputText'
@@ -7867,10 +7840,8 @@ components:
       description: Execution environment for the bash server tool.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto
@@ -7894,10 +7865,8 @@ components:
         container-backed environments are supported; "local" shells are not.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto
@@ -8108,12 +8077,9 @@ components:
           items:
             discriminator:
               mapping:
-                file:
-                  $ref: '#/components/schemas/CodeInterpreterFileOutput'
-                image:
-                  $ref: '#/components/schemas/CodeInterpreterImageOutput'
-                logs:
-                  $ref: '#/components/schemas/CodeInterpreterLogsOutput'
+                file: '#/components/schemas/CodeInterpreterFileOutput'
+                image: '#/components/schemas/CodeInterpreterImageOutput'
+                logs: '#/components/schemas/CodeInterpreterLogsOutput'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/CodeInterpreterLogsOutput'

@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 959 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 960 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -48,6 +48,7 @@
 - `docs/blob/uploads/upload-client` — [Upload Client](pages/docs/blob/uploads/upload-client.md) · [原文](https://upstash.com/docs/blob/uploads/upload-client)
 - `docs/blob/uploads/upload-handler` — [Upload Handler](pages/docs/blob/uploads/upload-handler.md) · [原文](https://upstash.com/docs/blob/uploads/upload-handler)
 - `docs/box/guides/ai-sdk-setup` — [Vercel AI SDK Tools](pages/docs/box/guides/ai-sdk-setup.md) · [原文](https://upstash.com/docs/box/guides/ai-sdk-setup)
+- `docs/box/guides/browser-use` — [Scheduled Browser Use Agent](pages/docs/box/guides/browser-use.md) · [原文](https://upstash.com/docs/box/guides/browser-use)
 - `docs/box/guides/claude-managed-agents` — [Claude Managed Agents](pages/docs/box/guides/claude-managed-agents.md) · [原文](https://upstash.com/docs/box/guides/claude-managed-agents)
 - `docs/box/guides/code-review-agent` — [Build a Code Review Agent](pages/docs/box/guides/code-review-agent.md) · [原文](https://upstash.com/docs/box/guides/code-review-agent)
 - `docs/box/guides/eve-setup` — [Vercel Eve Sandboxes](pages/docs/box/guides/eve-setup.md) · [原文](https://upstash.com/docs/box/guides/eve-setup)

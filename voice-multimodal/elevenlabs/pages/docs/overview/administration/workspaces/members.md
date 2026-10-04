@@ -238,7 +238,7 @@ Workspace admins can assign and manage seat types from Settings → [Members](ht
 
 When inviting new users to your workspace, you can select their seat type during the invite flow.
 
-![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T113103Z&X-Amz-Expires=604800&X-Amz-Signature=52fa424c46a594cf89c2bb34ab1343c3b87abdde3380fa474b34fc8bc4a0a9f3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T230533Z&X-Amz-Expires=604800&X-Amz-Signature=1d2f7d3a511366bf484c4ee7cd96a6687ebe3561523af9b60b66fbc2dbbbab7e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Adding more seats
 

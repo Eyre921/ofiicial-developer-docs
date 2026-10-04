@@ -15,7 +15,7 @@ To do this, click **My Account** and select **Payouts** to go to your Payouts pa
 You will see a section for W-8/W-9 certification, which will be marked **Incomplete**. Click **Update** to open the form\
 
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T113824Z&X-Amz-Expires=604800&X-Amz-Signature=ad23a50347d3389055b36f50c2d3379d168924b4a47d935fdc609824eab57df5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/c86670b2a62775500db5c36908f55acad2dbf83e38440dc52c89d4a1d5348508/assets/images/help-center/product/monetization-business/payouts/how-do-i-complete-my-w-8w-9-certification.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233510Z&X-Amz-Expires=604800&X-Amz-Signature=a5d67f3d1c341207c5577c3de91aad0433ccf3f40e8207e58c66a5feff5777a3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Answer the questions on screen. The first question, "Are you considered a U.S. person for Federal Tax Purpose?", will determine whether you complete Form W-9 or Form W-8.
 

@@ -676,12 +676,9 @@ components:
       description: Reference content part for stateless voice cloning or voice design
       discriminator:
         mapping:
-          image_url:
-            $ref: '#/components/schemas/SpeechInputReferenceImage'
-          input_audio:
-            $ref: '#/components/schemas/SpeechInputReferenceAudio'
-          text:
-            $ref: '#/components/schemas/SpeechInputReferenceText'
+          image_url: '#/components/schemas/SpeechInputReferenceImage'
+          input_audio: '#/components/schemas/SpeechInputReferenceAudio'
+          text: '#/components/schemas/SpeechInputReferenceText'
         propertyName: type
       oneOf:
         - $ref: '#/components/schemas/SpeechInputReferenceAudio'

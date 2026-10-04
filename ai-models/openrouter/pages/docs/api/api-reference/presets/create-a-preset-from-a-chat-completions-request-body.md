@@ -394,32 +394,19 @@ components:
           items:
             discriminator:
               mapping:
-                alignment:
-                  $ref: '#/components/schemas/AlignmentPlugin'
-                auto-beta-router:
-                  $ref: '#/components/schemas/AutoBetaRouterPlugin'
-                auto-router:
-                  $ref: '#/components/schemas/AutoRouterPlugin'
-                context-compression:
-                  $ref: '#/components/schemas/ContextCompressionPlugin'
-                file-parser:
-                  $ref: '#/components/schemas/FileParserPlugin'
-                fusion:
-                  $ref: '#/components/schemas/FusionPlugin'
-                jev-router:
-                  $ref: '#/components/schemas/JevRouterPlugin'
-                moderation:
-                  $ref: '#/components/schemas/ModerationPlugin'
-                pareto-router:
-                  $ref: '#/components/schemas/ParetoRouterPlugin'
-                response-healing:
-                  $ref: '#/components/schemas/ResponseHealingPlugin'
-                switchyard-router:
-                  $ref: '#/components/schemas/SwitchyardRouterPlugin'
-                web:
-                  $ref: '#/components/schemas/WebSearchPlugin'
-                web-fetch:
-                  $ref: '#/components/schemas/WebFetchPlugin'
+                alignment: '#/components/schemas/AlignmentPlugin'
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
+                auto-router: '#/components/schemas/AutoRouterPlugin'
+                context-compression: '#/components/schemas/ContextCompressionPlugin'
+                file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
+                moderation: '#/components/schemas/ModerationPlugin'
+                pareto-router: '#/components/schemas/ParetoRouterPlugin'
+                response-healing: '#/components/schemas/ResponseHealingPlugin'
+                switchyard-router: '#/components/schemas/SwitchyardRouterPlugin'
+                web: '#/components/schemas/WebSearchPlugin'
+                web-fetch: '#/components/schemas/WebFetchPlugin'
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
@@ -510,16 +497,11 @@ components:
           description: Response format configuration
           discriminator:
             mapping:
-              grammar:
-                $ref: '#/components/schemas/ChatFormatGrammarConfig'
-              json_object:
-                $ref: '#/components/schemas/ChatFormatJsonObjectConfig'
-              json_schema:
-                $ref: '#/components/schemas/ChatFormatJsonSchemaConfig'
-              python:
-                $ref: '#/components/schemas/ChatFormatPythonConfig'
-              text:
-                $ref: '#/components/schemas/ChatFormatTextConfig'
+              grammar: '#/components/schemas/ChatFormatGrammarConfig'
+              json_object: '#/components/schemas/ChatFormatJsonObjectConfig'
+              json_schema: '#/components/schemas/ChatFormatJsonSchemaConfig'
+              python: '#/components/schemas/ChatFormatPythonConfig'
+              text: '#/components/schemas/ChatFormatTextConfig'
             propertyName: type
           example:
             type: json_object
@@ -863,16 +845,11 @@ components:
       description: Chat completion message with role-based discrimination
       discriminator:
         mapping:
-          assistant:
-            $ref: '#/components/schemas/ChatAssistantMessage'
-          developer:
-            $ref: '#/components/schemas/ChatDeveloperMessage'
-          system:
-            $ref: '#/components/schemas/ChatSystemMessage'
-          tool:
-            $ref: '#/components/schemas/ChatToolMessage'
-          user:
-            $ref: '#/components/schemas/ChatUserMessage'
+          assistant: '#/components/schemas/ChatAssistantMessage'
+          developer: '#/components/schemas/ChatDeveloperMessage'
+          system: '#/components/schemas/ChatSystemMessage'
+          tool: '#/components/schemas/ChatToolMessage'
+          user: '#/components/schemas/ChatUserMessage'
         propertyName: role
       example:
         content: What is the capital of France?
@@ -3250,16 +3227,11 @@ components:
       description: A single condition that, when met, halts the server-tool agent loop.
       discriminator:
         mapping:
-          finish_reason_is:
-            $ref: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
-          has_tool_call:
-            $ref: '#/components/schemas/StopServerToolsWhenHasToolCall'
-          max_cost:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxCost'
-          max_tokens_used:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
-          step_count_is:
-            $ref: '#/components/schemas/StopServerToolsWhenStepCountIs'
+          finish_reason_is: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
+          has_tool_call: '#/components/schemas/StopServerToolsWhenHasToolCall'
+          max_cost: '#/components/schemas/StopServerToolsWhenMaxCost'
+          max_tokens_used: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
+          step_count_is: '#/components/schemas/StopServerToolsWhenStepCountIs'
         propertyName: type
       example:
         step_count: 5
@@ -3749,18 +3721,12 @@ components:
       description: Content part for chat completion messages
       discriminator:
         mapping:
-          file:
-            $ref: '#/components/schemas/ChatContentFile'
-          image_url:
-            $ref: '#/components/schemas/ChatContentImage'
-          input_audio:
-            $ref: '#/components/schemas/ChatContentAudio'
-          input_video:
-            $ref: '#/components/schemas/Legacy_ChatContentVideo'
-          text:
-            $ref: '#/components/schemas/ChatContentText'
-          video_url:
-            $ref: '#/components/schemas/ChatContentVideo'
+          file: '#/components/schemas/ChatContentFile'
+          image_url: '#/components/schemas/ChatContentImage'
+          input_audio: '#/components/schemas/ChatContentAudio'
+          input_video: '#/components/schemas/Legacy_ChatContentVideo'
+          text: '#/components/schemas/ChatContentText'
+          video_url: '#/components/schemas/ChatContentVideo'
         propertyName: type
       example:
         text: Hello, world!
@@ -4680,14 +4646,10 @@ components:
       description: Reasoning detail union schema
       discriminator:
         mapping:
-          reasoning.encrypted:
-            $ref: '#/components/schemas/ReasoningDetailEncrypted'
-          reasoning.server_tool_call:
-            $ref: '#/components/schemas/ReasoningDetailServerToolCall'
-          reasoning.summary:
-            $ref: '#/components/schemas/ReasoningDetailSummary'
-          reasoning.text:
-            $ref: '#/components/schemas/ReasoningDetailText'
+          reasoning.encrypted: '#/components/schemas/ReasoningDetailEncrypted'
+          reasoning.server_tool_call: '#/components/schemas/ReasoningDetailServerToolCall'
+          reasoning.summary: '#/components/schemas/ReasoningDetailSummary'
+          reasoning.text: '#/components/schemas/ReasoningDetailText'
         propertyName: type
       example:
         summary: >-
@@ -4758,10 +4720,8 @@ components:
       description: Execution environment for the bash server tool.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto

@@ -10,7 +10,7 @@ path: docs/help-center/product/flows-image-video/image-video/what-is-image-video
 
 Image & Video enables you to create high-quality visual content from simple text descriptions and optional reference images.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e/assets/images/help-center/product/flows-image-video/image-video/video-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T110851Z&X-Amz-Expires=604800&X-Amz-Signature=61f855dd49b4b2b1d86aab0bf21b9f29839b1df44c07b56091f5967c173d8607&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ec6dc958c221fea880349a9807857e535832d80e0cbd2f3399c0f2ee4328d27e/assets/images/help-center/product/flows-image-video/image-video/video-overview.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233532Z&X-Amz-Expires=604800&X-Amz-Signature=c953b2376fd483118622b85252bed03764eb8556f0b96b57bc1c7ec40134ad3f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 You can choose from a range of different image and video generative models, depending on your use case. Your generated content can either be downloaded, or imported directly into Studio projects.
 

@@ -313,10 +313,8 @@ components:
                       trigger:
                         discriminator:
                           mapping:
-                            input_tokens:
-                              $ref: '#/components/schemas/AnthropicInputTokensTrigger'
-                            tool_uses:
-                              $ref: '#/components/schemas/AnthropicToolUsesTrigger'
+                            input_tokens: '#/components/schemas/AnthropicInputTokensTrigger'
+                            tool_uses: '#/components/schemas/AnthropicToolUsesTrigger'
                           propertyName: type
                         oneOf:
                           - $ref: '#/components/schemas/AnthropicInputTokensTrigger'
@@ -422,32 +420,19 @@ components:
           items:
             discriminator:
               mapping:
-                alignment:
-                  $ref: '#/components/schemas/AlignmentPlugin'
-                auto-beta-router:
-                  $ref: '#/components/schemas/AutoBetaRouterPlugin'
-                auto-router:
-                  $ref: '#/components/schemas/AutoRouterPlugin'
-                context-compression:
-                  $ref: '#/components/schemas/ContextCompressionPlugin'
-                file-parser:
-                  $ref: '#/components/schemas/FileParserPlugin'
-                fusion:
-                  $ref: '#/components/schemas/FusionPlugin'
-                jev-router:
-                  $ref: '#/components/schemas/JevRouterPlugin'
-                moderation:
-                  $ref: '#/components/schemas/ModerationPlugin'
-                pareto-router:
-                  $ref: '#/components/schemas/ParetoRouterPlugin'
-                response-healing:
-                  $ref: '#/components/schemas/ResponseHealingPlugin'
-                switchyard-router:
-                  $ref: '#/components/schemas/SwitchyardRouterPlugin'
-                web:
-                  $ref: '#/components/schemas/WebSearchPlugin'
-                web-fetch:
-                  $ref: '#/components/schemas/WebFetchPlugin'
+                alignment: '#/components/schemas/AlignmentPlugin'
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
+                auto-router: '#/components/schemas/AutoRouterPlugin'
+                context-compression: '#/components/schemas/ContextCompressionPlugin'
+                file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
+                moderation: '#/components/schemas/ModerationPlugin'
+                pareto-router: '#/components/schemas/ParetoRouterPlugin'
+                response-healing: '#/components/schemas/ResponseHealingPlugin'
+                switchyard-router: '#/components/schemas/SwitchyardRouterPlugin'
+                web: '#/components/schemas/WebSearchPlugin'
+                web-fetch: '#/components/schemas/WebFetchPlugin'
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
@@ -2255,19 +2240,14 @@ components:
           items:
             discriminator:
               mapping:
-                char_location:
-                  $ref: '#/components/schemas/AnthropicCitationCharLocationParam'
-                content_block_location:
-                  $ref: >-
-                    #/components/schemas/AnthropicCitationContentBlockLocationParam
-                page_location:
-                  $ref: '#/components/schemas/AnthropicCitationPageLocationParam'
-                search_result_location:
-                  $ref: >-
-                    #/components/schemas/AnthropicCitationSearchResultLocationParam
-                web_search_result_location:
-                  $ref: >-
-                    #/components/schemas/AnthropicCitationWebSearchResultLocationParam
+                char_location: '#/components/schemas/AnthropicCitationCharLocationParam'
+                content_block_location: >-
+                  #/components/schemas/AnthropicCitationContentBlockLocationParam
+                page_location: '#/components/schemas/AnthropicCitationPageLocationParam'
+                search_result_location: >-
+                  #/components/schemas/AnthropicCitationSearchResultLocationParam
+                web_search_result_location: >-
+                  #/components/schemas/AnthropicCitationWebSearchResultLocationParam
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/AnthropicCitationCharLocationParam'
@@ -2763,12 +2743,9 @@ components:
         source:
           discriminator:
             mapping:
-              base64:
-                $ref: '#/components/schemas/AnthropicBase64ImageSource'
-              file:
-                $ref: '#/components/schemas/AnthropicFileDocumentSource'
-              url:
-                $ref: '#/components/schemas/AnthropicUrlImageSource'
+              base64: '#/components/schemas/AnthropicBase64ImageSource'
+              file: '#/components/schemas/AnthropicFileDocumentSource'
+              url: '#/components/schemas/AnthropicUrlImageSource'
             propertyName: type
           oneOf:
             - $ref: '#/components/schemas/AnthropicBase64ImageSource'
@@ -2814,10 +2791,8 @@ components:
                     - items:
                         discriminator:
                           mapping:
-                            image:
-                              $ref: '#/components/schemas/AnthropicImageBlockParam'
-                            text:
-                              $ref: '#/components/schemas/AnthropicTextBlockParam'
+                            image: '#/components/schemas/AnthropicImageBlockParam'
+                            text: '#/components/schemas/AnthropicTextBlockParam'
                           propertyName: type
                         oneOf:
                           - $ref: '#/components/schemas/AnthropicTextBlockParam'
@@ -3972,16 +3947,11 @@ components:
       description: A single condition that, when met, halts the server-tool agent loop.
       discriminator:
         mapping:
-          finish_reason_is:
-            $ref: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
-          has_tool_call:
-            $ref: '#/components/schemas/StopServerToolsWhenHasToolCall'
-          max_cost:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxCost'
-          max_tokens_used:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
-          step_count_is:
-            $ref: '#/components/schemas/StopServerToolsWhenStepCountIs'
+          finish_reason_is: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
+          has_tool_call: '#/components/schemas/StopServerToolsWhenHasToolCall'
+          max_cost: '#/components/schemas/StopServerToolsWhenMaxCost'
+          max_tokens_used: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
+          step_count_is: '#/components/schemas/StopServerToolsWhenStepCountIs'
         propertyName: type
       example:
         step_count: 5
@@ -4741,10 +4711,8 @@ components:
       description: Execution environment for the bash server tool.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto
@@ -4847,10 +4815,8 @@ components:
         container-backed environments are supported; "local" shells are not.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto

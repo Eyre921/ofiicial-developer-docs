@@ -285,12 +285,9 @@ components:
         description.
       discriminator:
         mapping:
-          anthropic:
-            $ref: '#/components/schemas/AnthropicFile'
-          openai:
-            $ref: '#/components/schemas/OpenAIFile'
-          openrouter:
-            $ref: '#/components/schemas/OpenRouterFile'
+          anthropic: '#/components/schemas/AnthropicFile'
+          openai: '#/components/schemas/OpenAIFile'
+          openrouter: '#/components/schemas/OpenRouterFile'
         propertyName: _shape
       example:
         _shape: openrouter

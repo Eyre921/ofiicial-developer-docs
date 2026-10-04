@@ -367,12 +367,9 @@ components:
               evaluation.
             discriminator:
               mapping:
-                choice:
-                  $ref: '#/components/schemas/DecisionsChoiceQuestion'
-                noul:
-                  $ref: '#/components/schemas/DecisionsNoulQuestion'
-                score:
-                  $ref: '#/components/schemas/DecisionsScoreQuestion'
+                choice: '#/components/schemas/DecisionsChoiceQuestion'
+                noul: '#/components/schemas/DecisionsNoulQuestion'
+                score: '#/components/schemas/DecisionsScoreQuestion'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/DecisionsNoulQuestion'
@@ -416,12 +413,9 @@ components:
             description: A Decisions answer using a boolean, choice, or score evaluation.
             discriminator:
               mapping:
-                choice:
-                  $ref: '#/components/schemas/DecisionsChoiceAnswer'
-                noul:
-                  $ref: '#/components/schemas/DecisionsNoulAnswer'
-                score:
-                  $ref: '#/components/schemas/DecisionsScoreAnswer'
+                choice: '#/components/schemas/DecisionsChoiceAnswer'
+                noul: '#/components/schemas/DecisionsNoulAnswer'
+                score: '#/components/schemas/DecisionsScoreAnswer'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/DecisionsNoulAnswer'

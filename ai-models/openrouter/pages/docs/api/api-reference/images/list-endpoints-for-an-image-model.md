@@ -464,12 +464,9 @@ components:
       description: A typed descriptor for one supported request parameter.
       discriminator:
         mapping:
-          boolean:
-            $ref: '#/components/schemas/BooleanCapability'
-          enum:
-            $ref: '#/components/schemas/EnumCapability'
-          range:
-            $ref: '#/components/schemas/RangeCapability'
+          boolean: '#/components/schemas/BooleanCapability'
+          enum: '#/components/schemas/EnumCapability'
+          range: '#/components/schemas/RangeCapability'
         propertyName: type
       example:
         type: enum

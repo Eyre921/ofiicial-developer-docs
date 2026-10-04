@@ -651,12 +651,9 @@ components:
         and newer).
       discriminator:
         mapping:
-          audio_url:
-            $ref: '#/components/schemas/ContentPartAudio'
-          image_url:
-            $ref: '#/components/schemas/ContentPartImage'
-          video_url:
-            $ref: '#/components/schemas/ContentPartVideo'
+          audio_url: '#/components/schemas/ContentPartAudio'
+          image_url: '#/components/schemas/ContentPartImage'
+          video_url: '#/components/schemas/ContentPartVideo'
         propertyName: type
       example:
         image_url:

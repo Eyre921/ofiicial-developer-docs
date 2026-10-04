@@ -334,12 +334,9 @@ components:
       description: A page of files, in the negotiated shape.
       discriminator:
         mapping:
-          anthropic:
-            $ref: '#/components/schemas/AnthropicFileList'
-          openai:
-            $ref: '#/components/schemas/OpenAIFileList'
-          openrouter:
-            $ref: '#/components/schemas/OpenRouterFileList'
+          anthropic: '#/components/schemas/AnthropicFileList'
+          openai: '#/components/schemas/OpenAIFileList'
+          openrouter: '#/components/schemas/OpenRouterFileList'
         propertyName: _shape
       example:
         _shape: openrouter

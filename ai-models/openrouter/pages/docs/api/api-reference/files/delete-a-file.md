@@ -280,12 +280,9 @@ components:
       description: Confirmation that a file was deleted, in the negotiated shape.
       discriminator:
         mapping:
-          anthropic:
-            $ref: '#/components/schemas/AnthropicFileDeleted'
-          openai:
-            $ref: '#/components/schemas/OpenAIFileDeleted'
-          openrouter:
-            $ref: '#/components/schemas/OpenRouterFileDeleted'
+          anthropic: '#/components/schemas/AnthropicFileDeleted'
+          openai: '#/components/schemas/OpenAIFileDeleted'
+          openrouter: '#/components/schemas/OpenRouterFileDeleted'
         propertyName: _shape
       example:
         _shape: openrouter

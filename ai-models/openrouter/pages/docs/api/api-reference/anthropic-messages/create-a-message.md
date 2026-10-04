@@ -384,10 +384,8 @@ components:
                       trigger:
                         discriminator:
                           mapping:
-                            input_tokens:
-                              $ref: '#/components/schemas/AnthropicInputTokensTrigger'
-                            tool_uses:
-                              $ref: '#/components/schemas/AnthropicToolUsesTrigger'
+                            input_tokens: '#/components/schemas/AnthropicInputTokensTrigger'
+                            tool_uses: '#/components/schemas/AnthropicToolUsesTrigger'
                           propertyName: type
                         oneOf:
                           - $ref: '#/components/schemas/AnthropicInputTokensTrigger'
@@ -493,32 +491,19 @@ components:
           items:
             discriminator:
               mapping:
-                alignment:
-                  $ref: '#/components/schemas/AlignmentPlugin'
-                auto-beta-router:
-                  $ref: '#/components/schemas/AutoBetaRouterPlugin'
-                auto-router:
-                  $ref: '#/components/schemas/AutoRouterPlugin'
-                context-compression:
-                  $ref: '#/components/schemas/ContextCompressionPlugin'
-                file-parser:
-                  $ref: '#/components/schemas/FileParserPlugin'
-                fusion:
-                  $ref: '#/components/schemas/FusionPlugin'
-                jev-router:
-                  $ref: '#/components/schemas/JevRouterPlugin'
-                moderation:
-                  $ref: '#/components/schemas/ModerationPlugin'
-                pareto-router:
-                  $ref: '#/components/schemas/ParetoRouterPlugin'
-                response-healing:
-                  $ref: '#/components/schemas/ResponseHealingPlugin'
-                switchyard-router:
-                  $ref: '#/components/schemas/SwitchyardRouterPlugin'
-                web:
-                  $ref: '#/components/schemas/WebSearchPlugin'
-                web-fetch:
-                  $ref: '#/components/schemas/WebFetchPlugin'
+                alignment: '#/components/schemas/AlignmentPlugin'
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
+                auto-router: '#/components/schemas/AutoRouterPlugin'
+                context-compression: '#/components/schemas/ContextCompressionPlugin'
+                file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
+                moderation: '#/components/schemas/ModerationPlugin'
+                pareto-router: '#/components/schemas/ParetoRouterPlugin'
+                response-healing: '#/components/schemas/ResponseHealingPlugin'
+                switchyard-router: '#/components/schemas/SwitchyardRouterPlugin'
+                web: '#/components/schemas/WebSearchPlugin'
+                web-fetch: '#/components/schemas/WebFetchPlugin'
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
@@ -2333,19 +2318,14 @@ components:
           items:
             discriminator:
               mapping:
-                char_location:
-                  $ref: '#/components/schemas/AnthropicCitationCharLocationParam'
-                content_block_location:
-                  $ref: >-
-                    #/components/schemas/AnthropicCitationContentBlockLocationParam
-                page_location:
-                  $ref: '#/components/schemas/AnthropicCitationPageLocationParam'
-                search_result_location:
-                  $ref: >-
-                    #/components/schemas/AnthropicCitationSearchResultLocationParam
-                web_search_result_location:
-                  $ref: >-
-                    #/components/schemas/AnthropicCitationWebSearchResultLocationParam
+                char_location: '#/components/schemas/AnthropicCitationCharLocationParam'
+                content_block_location: >-
+                  #/components/schemas/AnthropicCitationContentBlockLocationParam
+                page_location: '#/components/schemas/AnthropicCitationPageLocationParam'
+                search_result_location: >-
+                  #/components/schemas/AnthropicCitationSearchResultLocationParam
+                web_search_result_location: >-
+                  #/components/schemas/AnthropicCitationWebSearchResultLocationParam
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/AnthropicCitationCharLocationParam'
@@ -3081,22 +3061,14 @@ components:
       description: Union of all possible streaming events
       discriminator:
         mapping:
-          content_block_delta:
-            $ref: '#/components/schemas/MessagesContentBlockDeltaEvent'
-          content_block_start:
-            $ref: '#/components/schemas/MessagesContentBlockStartEvent'
-          content_block_stop:
-            $ref: '#/components/schemas/MessagesContentBlockStopEvent'
-          error:
-            $ref: '#/components/schemas/MessagesErrorEvent'
-          message_delta:
-            $ref: '#/components/schemas/MessagesDeltaEvent'
-          message_start:
-            $ref: '#/components/schemas/MessagesStartEvent'
-          message_stop:
-            $ref: '#/components/schemas/MessagesStopEvent'
-          ping:
-            $ref: '#/components/schemas/MessagesPingEvent'
+          content_block_delta: '#/components/schemas/MessagesContentBlockDeltaEvent'
+          content_block_start: '#/components/schemas/MessagesContentBlockStartEvent'
+          content_block_stop: '#/components/schemas/MessagesContentBlockStopEvent'
+          error: '#/components/schemas/MessagesErrorEvent'
+          message_delta: '#/components/schemas/MessagesDeltaEvent'
+          message_start: '#/components/schemas/MessagesStartEvent'
+          message_stop: '#/components/schemas/MessagesStopEvent'
+          ping: '#/components/schemas/MessagesPingEvent'
         propertyName: type
       example:
         delta:
@@ -3173,12 +3145,9 @@ components:
         source:
           discriminator:
             mapping:
-              base64:
-                $ref: '#/components/schemas/AnthropicBase64ImageSource'
-              file:
-                $ref: '#/components/schemas/AnthropicFileDocumentSource'
-              url:
-                $ref: '#/components/schemas/AnthropicUrlImageSource'
+              base64: '#/components/schemas/AnthropicBase64ImageSource'
+              file: '#/components/schemas/AnthropicFileDocumentSource'
+              url: '#/components/schemas/AnthropicUrlImageSource'
             propertyName: type
           oneOf:
             - $ref: '#/components/schemas/AnthropicBase64ImageSource'
@@ -3224,10 +3193,8 @@ components:
                     - items:
                         discriminator:
                           mapping:
-                            image:
-                              $ref: '#/components/schemas/AnthropicImageBlockParam'
-                            text:
-                              $ref: '#/components/schemas/AnthropicTextBlockParam'
+                            image: '#/components/schemas/AnthropicImageBlockParam'
+                            text: '#/components/schemas/AnthropicTextBlockParam'
                           propertyName: type
                         oneOf:
                           - $ref: '#/components/schemas/AnthropicTextBlockParam'
@@ -4264,16 +4231,11 @@ components:
       description: A single condition that, when met, halts the server-tool agent loop.
       discriminator:
         mapping:
-          finish_reason_is:
-            $ref: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
-          has_tool_call:
-            $ref: '#/components/schemas/StopServerToolsWhenHasToolCall'
-          max_cost:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxCost'
-          max_tokens_used:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
-          step_count_is:
-            $ref: '#/components/schemas/StopServerToolsWhenStepCountIs'
+          finish_reason_is: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
+          has_tool_call: '#/components/schemas/StopServerToolsWhenHasToolCall'
+          max_cost: '#/components/schemas/StopServerToolsWhenMaxCost'
+          max_tokens_used: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
+          step_count_is: '#/components/schemas/StopServerToolsWhenStepCountIs'
         propertyName: type
       example:
         step_count: 5
@@ -4655,38 +4617,22 @@ components:
     ORAnthropicContentBlock:
       discriminator:
         mapping:
-          advisor_tool_result:
-            $ref: '#/components/schemas/AnthropicAdvisorToolResult'
-          bash_code_execution_tool_result:
-            $ref: '#/components/schemas/AnthropicBashCodeExecutionToolResult'
-          code_execution_tool_result:
-            $ref: '#/components/schemas/AnthropicCodeExecutionToolResult'
-          compaction:
-            $ref: '#/components/schemas/AnthropicCompactionBlock'
-          container_upload:
-            $ref: '#/components/schemas/AnthropicContainerUpload'
-          openrouter_bash_tool_result:
-            $ref: '#/components/schemas/ORAnthropicBashToolResult'
-          openrouter_shell_tool_result:
-            $ref: '#/components/schemas/ORAnthropicShellToolResult'
-          redacted_thinking:
-            $ref: '#/components/schemas/AnthropicRedactedThinkingBlock'
-          server_tool_use:
-            $ref: '#/components/schemas/ORAnthropicServerToolUseBlock'
-          text:
-            $ref: '#/components/schemas/AnthropicTextBlock'
-          text_editor_code_execution_tool_result:
-            $ref: '#/components/schemas/AnthropicTextEditorCodeExecutionToolResult'
-          thinking:
-            $ref: '#/components/schemas/AnthropicThinkingBlock'
-          tool_search_tool_result:
-            $ref: '#/components/schemas/AnthropicToolSearchToolResult'
-          tool_use:
-            $ref: '#/components/schemas/AnthropicToolUseBlock'
-          web_fetch_tool_result:
-            $ref: '#/components/schemas/AnthropicWebFetchToolResult'
-          web_search_tool_result:
-            $ref: '#/components/schemas/AnthropicWebSearchToolResult'
+          advisor_tool_result: '#/components/schemas/AnthropicAdvisorToolResult'
+          bash_code_execution_tool_result: '#/components/schemas/AnthropicBashCodeExecutionToolResult'
+          code_execution_tool_result: '#/components/schemas/AnthropicCodeExecutionToolResult'
+          compaction: '#/components/schemas/AnthropicCompactionBlock'
+          container_upload: '#/components/schemas/AnthropicContainerUpload'
+          openrouter_bash_tool_result: '#/components/schemas/ORAnthropicBashToolResult'
+          openrouter_shell_tool_result: '#/components/schemas/ORAnthropicShellToolResult'
+          redacted_thinking: '#/components/schemas/AnthropicRedactedThinkingBlock'
+          server_tool_use: '#/components/schemas/ORAnthropicServerToolUseBlock'
+          text: '#/components/schemas/AnthropicTextBlock'
+          text_editor_code_execution_tool_result: '#/components/schemas/AnthropicTextEditorCodeExecutionToolResult'
+          thinking: '#/components/schemas/AnthropicThinkingBlock'
+          tool_search_tool_result: '#/components/schemas/AnthropicToolSearchToolResult'
+          tool_use: '#/components/schemas/AnthropicToolUseBlock'
+          web_fetch_tool_result: '#/components/schemas/AnthropicWebFetchToolResult'
+          web_search_tool_result: '#/components/schemas/AnthropicWebSearchToolResult'
         propertyName: type
       example:
         citations: null
@@ -5062,19 +5008,14 @@ components:
                 citation:
                   discriminator:
                     mapping:
-                      char_location:
-                        $ref: '#/components/schemas/AnthropicCitationCharLocation'
-                      content_block_location:
-                        $ref: >-
-                          #/components/schemas/AnthropicCitationContentBlockLocation
-                      page_location:
-                        $ref: '#/components/schemas/AnthropicCitationPageLocation'
-                      search_result_location:
-                        $ref: >-
-                          #/components/schemas/AnthropicCitationSearchResultLocation
-                      web_search_result_location:
-                        $ref: >-
-                          #/components/schemas/AnthropicCitationWebSearchResultLocation
+                      char_location: '#/components/schemas/AnthropicCitationCharLocation'
+                      content_block_location: >-
+                        #/components/schemas/AnthropicCitationContentBlockLocation
+                      page_location: '#/components/schemas/AnthropicCitationPageLocation'
+                      search_result_location: >-
+                        #/components/schemas/AnthropicCitationSearchResultLocation
+                      web_search_result_location: >-
+                        #/components/schemas/AnthropicCitationWebSearchResultLocation
                     propertyName: type
                   oneOf:
                     - $ref: '#/components/schemas/AnthropicCitationCharLocation'
@@ -5874,10 +5815,8 @@ components:
       description: Execution environment for the bash server tool.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto
@@ -5980,10 +5919,8 @@ components:
         container-backed environments are supported; "local" shells are not.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto
@@ -6763,10 +6700,8 @@ components:
     AnthropicBashCodeExecutionContent:
       discriminator:
         mapping:
-          bash_code_execution_result:
-            $ref: '#/components/schemas/AnthropicBashCodeExecutionResult'
-          bash_code_execution_tool_result_error:
-            $ref: '#/components/schemas/AnthropicBashCodeExecutionToolResultError'
+          bash_code_execution_result: '#/components/schemas/AnthropicBashCodeExecutionResult'
+          bash_code_execution_tool_result_error: '#/components/schemas/AnthropicBashCodeExecutionToolResultError'
         propertyName: type
       example:
         content: []
@@ -6780,12 +6715,9 @@ components:
     AnthropicCodeExecutionContent:
       discriminator:
         mapping:
-          code_execution_result:
-            $ref: '#/components/schemas/AnthropicCodeExecutionResult'
-          code_execution_tool_result_error:
-            $ref: '#/components/schemas/AnthropicCodeExecutionToolResultError'
-          encrypted_code_execution_result:
-            $ref: '#/components/schemas/AnthropicEncryptedCodeExecutionResult'
+          code_execution_result: '#/components/schemas/AnthropicCodeExecutionResult'
+          code_execution_tool_result_error: '#/components/schemas/AnthropicCodeExecutionToolResultError'
+          encrypted_code_execution_result: '#/components/schemas/AnthropicEncryptedCodeExecutionResult'
         propertyName: type
       example:
         content: []
@@ -6800,12 +6732,9 @@ components:
     ORAnthropicNullableCaller:
       discriminator:
         mapping:
-          code_execution_20250825:
-            $ref: '#/components/schemas/AnthropicCodeExecution20250825Caller'
-          code_execution_20260120:
-            $ref: '#/components/schemas/AnthropicCodeExecution20260120Caller'
-          direct:
-            $ref: '#/components/schemas/AnthropicDirectCaller'
+          code_execution_20250825: '#/components/schemas/AnthropicCodeExecution20250825Caller'
+          code_execution_20260120: '#/components/schemas/AnthropicCodeExecution20260120Caller'
+          direct: '#/components/schemas/AnthropicDirectCaller'
         propertyName: type
       example:
         type: direct
@@ -6817,16 +6746,11 @@ components:
     AnthropicTextCitation:
       discriminator:
         mapping:
-          char_location:
-            $ref: '#/components/schemas/AnthropicCitationCharLocation'
-          content_block_location:
-            $ref: '#/components/schemas/AnthropicCitationContentBlockLocation'
-          page_location:
-            $ref: '#/components/schemas/AnthropicCitationPageLocation'
-          search_result_location:
-            $ref: '#/components/schemas/AnthropicCitationSearchResultLocation'
-          web_search_result_location:
-            $ref: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
+          char_location: '#/components/schemas/AnthropicCitationCharLocation'
+          content_block_location: '#/components/schemas/AnthropicCitationContentBlockLocation'
+          page_location: '#/components/schemas/AnthropicCitationPageLocation'
+          search_result_location: '#/components/schemas/AnthropicCitationSearchResultLocation'
+          web_search_result_location: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
         propertyName: type
       example:
         cited_text: Example text
@@ -6845,16 +6769,11 @@ components:
     AnthropicTextEditorCodeExecutionContent:
       discriminator:
         mapping:
-          text_editor_code_execution_create_result:
-            $ref: '#/components/schemas/AnthropicTextEditorCodeExecutionCreateResult'
-          text_editor_code_execution_str_replace_result:
-            $ref: >-
-              #/components/schemas/AnthropicTextEditorCodeExecutionStrReplaceResult
-          text_editor_code_execution_tool_result_error:
-            $ref: >-
-              #/components/schemas/AnthropicTextEditorCodeExecutionToolResultError
-          text_editor_code_execution_view_result:
-            $ref: '#/components/schemas/AnthropicTextEditorCodeExecutionViewResult'
+          text_editor_code_execution_create_result: '#/components/schemas/AnthropicTextEditorCodeExecutionCreateResult'
+          text_editor_code_execution_str_replace_result: >-
+            #/components/schemas/AnthropicTextEditorCodeExecutionStrReplaceResult
+          text_editor_code_execution_tool_result_error: '#/components/schemas/AnthropicTextEditorCodeExecutionToolResultError'
+          text_editor_code_execution_view_result: '#/components/schemas/AnthropicTextEditorCodeExecutionViewResult'
         propertyName: type
       example:
         content: file content
@@ -6872,10 +6791,8 @@ components:
     AnthropicToolSearchContent:
       discriminator:
         mapping:
-          tool_search_tool_result_error:
-            $ref: '#/components/schemas/AnthropicToolSearchResultError'
-          tool_search_tool_search_result:
-            $ref: '#/components/schemas/AnthropicToolSearchResult'
+          tool_search_tool_result_error: '#/components/schemas/AnthropicToolSearchResultError'
+          tool_search_tool_search_result: '#/components/schemas/AnthropicToolSearchResult'
         propertyName: type
       example:
         tool_references:
@@ -6888,12 +6805,9 @@ components:
     AnthropicCaller:
       discriminator:
         mapping:
-          code_execution_20250825:
-            $ref: '#/components/schemas/AnthropicCodeExecution20250825Caller'
-          code_execution_20260120:
-            $ref: '#/components/schemas/AnthropicCodeExecution20260120Caller'
-          direct:
-            $ref: '#/components/schemas/AnthropicDirectCaller'
+          code_execution_20250825: '#/components/schemas/AnthropicCodeExecution20250825Caller'
+          code_execution_20260120: '#/components/schemas/AnthropicCodeExecution20260120Caller'
+          direct: '#/components/schemas/AnthropicDirectCaller'
         propertyName: type
       example:
         type: direct
@@ -6904,10 +6818,8 @@ components:
     AnthropicWebFetchContent:
       discriminator:
         mapping:
-          web_fetch_result:
-            $ref: '#/components/schemas/AnthropicWebFetchBlock'
-          web_fetch_tool_result_error:
-            $ref: '#/components/schemas/AnthropicWebFetchToolResultError'
+          web_fetch_result: '#/components/schemas/AnthropicWebFetchBlock'
+          web_fetch_tool_result_error: '#/components/schemas/AnthropicWebFetchToolResultError'
         propertyName: type
       example:
         content:

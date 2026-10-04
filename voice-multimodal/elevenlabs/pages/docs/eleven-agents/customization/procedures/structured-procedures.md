@@ -17,7 +17,7 @@ Use a structured procedure when specific steps must happen the same way on every
 Like every procedure, a structured procedure has a trigger that describes when it applies. When a conversation matches the trigger, the agent runs the procedure's steps in order, then returns to the rest of the conversation.
 
 ![Structured procedure
-editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T101953Z&X-Amz-Expires=604800&X-Amz-Signature=657216660d3013da6f1d8acd64cae1d99a20dbd393cd43cad781fa536d06585f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+editor](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bc996f67b2afad8f1de5abe8febcf8af3766b4f098627b0ae60e0456b3c2703b/assets/images/conversational-ai/procedures/structured-procedure-example.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233118Z&X-Amz-Expires=604800&X-Amz-Signature=38922abf880d9978e8a8c7bbb512ab3563ce94ae72e6e0a11c6285b0b7fea4fe&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## When to use a structured procedure
 
@@ -53,7 +53,7 @@ The procedure body is an ordered list of typed steps. There are multiple step ty
 | **Retry**         | Re-runs a Tool step's failure handler, tool call included, up to three times. Available only inside a Tool step's failure handler.                                                                                           |
 
 ![Structured procedure step type
-menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T101953Z&X-Amz-Expires=604800&X-Amz-Signature=76f12612ae92aca26e819b806c519f933dbc37c6b50e2a8bae1c02ded4516b0d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+menu](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/14976a6b9979d21fd7c77541a49e7475f8aa0764af4940746d3390804e7c4598/assets/images/conversational-ai/procedures/step_type_menu.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233118Z&X-Amz-Expires=604800&X-Amz-Signature=5eed876c25e6c3a0551a1d6070a4b8e3cb2bde2c2f6651bf050936e661847a30&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Not every step can appear everywhere. Inside an If arm, you can use any step except another If or a Retry. Inside a Tool step's failure handler, you can use any step except an If or another Tool.
 
@@ -450,10 +450,10 @@ The dashboard validates structured procedures as you edit. If a procedure breaks
 fixed. Select the error indicator to see which procedure and step is affected.
 
 ![Structured procedure editor with the Publish button in its error state and a 1 Error
-badge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e406c33fac3966fab26d5d07e10d364a475fc4a56fd75aad2e23edbb0d1940d5/assets/images/conversational-ai/procedures/structured-procedure-errors.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T101953Z&X-Amz-Expires=604800&X-Amz-Signature=0bb9d4ee6ff616691f97928c64947f35515507e864be5dc504f8f60f06756096&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+badge](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e406c33fac3966fab26d5d07e10d364a475fc4a56fd75aad2e23edbb0d1940d5/assets/images/conversational-ai/procedures/structured-procedure-errors.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233118Z&X-Amz-Expires=604800&X-Amz-Signature=52f814c40e41e559b082ac7a9346da3464f7683411d55bd9df080ee7964cff2a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ![Validation details dialog listing the failing procedure and the step that needs a
-message](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1cc889b2d0e68ce23725609b531938d0f7c417b1c6f4375103531eaae4ada63/assets/images/conversational-ai/procedures/structured-procedure-validation-errors.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T101953Z&X-Amz-Expires=604800&X-Amz-Signature=eeb8ae5b9308a162d74361547e841446bd42b5cddbdfd00be2371bd640569c40&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+message](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a1cc889b2d0e68ce23725609b531938d0f7c417b1c6f4375103531eaae4ada63/assets/images/conversational-ai/procedures/structured-procedure-validation-errors.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233118Z&X-Amz-Expires=604800&X-Amz-Signature=538b69dce916f8386f072de36df9ad35ca4956e11e13491ec1f868a16ac0c6a9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Manage via the CLI
 

@@ -654,16 +654,11 @@ components:
       description: One OpenAI-compatible chat message, discriminated by `role`.
       discriminator:
         mapping:
-          assistant:
-            $ref: '#/components/schemas/InternChatAssistantMessage'
-          developer:
-            $ref: '#/components/schemas/InternChatDeveloperMessage'
-          system:
-            $ref: '#/components/schemas/InternChatSystemMessage'
-          tool:
-            $ref: '#/components/schemas/InternChatToolMessage'
-          user:
-            $ref: '#/components/schemas/InternChatUserMessage'
+          assistant: '#/components/schemas/InternChatAssistantMessage'
+          developer: '#/components/schemas/InternChatDeveloperMessage'
+          system: '#/components/schemas/InternChatSystemMessage'
+          tool: '#/components/schemas/InternChatToolMessage'
+          user: '#/components/schemas/InternChatUserMessage'
         propertyName: role
       example:
         content: Summarize the open pull requests.

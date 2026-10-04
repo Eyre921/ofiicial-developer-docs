@@ -519,32 +519,19 @@ components:
           items:
             discriminator:
               mapping:
-                alignment:
-                  $ref: '#/components/schemas/AlignmentPlugin'
-                auto-beta-router:
-                  $ref: '#/components/schemas/AutoBetaRouterPlugin'
-                auto-router:
-                  $ref: '#/components/schemas/AutoRouterPlugin'
-                context-compression:
-                  $ref: '#/components/schemas/ContextCompressionPlugin'
-                file-parser:
-                  $ref: '#/components/schemas/FileParserPlugin'
-                fusion:
-                  $ref: '#/components/schemas/FusionPlugin'
-                jev-router:
-                  $ref: '#/components/schemas/JevRouterPlugin'
-                moderation:
-                  $ref: '#/components/schemas/ModerationPlugin'
-                pareto-router:
-                  $ref: '#/components/schemas/ParetoRouterPlugin'
-                response-healing:
-                  $ref: '#/components/schemas/ResponseHealingPlugin'
-                switchyard-router:
-                  $ref: '#/components/schemas/SwitchyardRouterPlugin'
-                web:
-                  $ref: '#/components/schemas/WebSearchPlugin'
-                web-fetch:
-                  $ref: '#/components/schemas/WebFetchPlugin'
+                alignment: '#/components/schemas/AlignmentPlugin'
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
+                auto-router: '#/components/schemas/AutoRouterPlugin'
+                context-compression: '#/components/schemas/ContextCompressionPlugin'
+                file-parser: '#/components/schemas/FileParserPlugin'
+                fusion: '#/components/schemas/FusionPlugin'
+                jev-router: '#/components/schemas/JevRouterPlugin'
+                moderation: '#/components/schemas/ModerationPlugin'
+                pareto-router: '#/components/schemas/ParetoRouterPlugin'
+                response-healing: '#/components/schemas/ResponseHealingPlugin'
+                switchyard-router: '#/components/schemas/SwitchyardRouterPlugin'
+                web: '#/components/schemas/WebSearchPlugin'
+                web-fetch: '#/components/schemas/WebFetchPlugin'
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
@@ -3280,24 +3267,15 @@ components:
           items:
             discriminator:
               mapping:
-                apply_patch_call:
-                  $ref: '#/components/schemas/OutputItemApplyPatchCall'
-                code_interpreter_call:
-                  $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
-                custom_tool_call:
-                  $ref: '#/components/schemas/OutputItemCustomToolCall'
-                file_search_call:
-                  $ref: '#/components/schemas/OutputItemFileSearchCall'
-                function_call:
-                  $ref: '#/components/schemas/OutputItemFunctionCall'
-                image_generation_call:
-                  $ref: '#/components/schemas/OutputItemImageGenerationCall'
-                message:
-                  $ref: '#/components/schemas/OutputMessage'
-                reasoning:
-                  $ref: '#/components/schemas/OutputItemReasoning'
-                web_search_call:
-                  $ref: '#/components/schemas/OutputItemWebSearchCall'
+                apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
+                code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+                custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
+                file_search_call: '#/components/schemas/OutputItemFileSearchCall'
+                function_call: '#/components/schemas/OutputItemFunctionCall'
+                image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+                message: '#/components/schemas/OutputMessage'
+                reasoning: '#/components/schemas/OutputItemReasoning'
+                web_search_call: '#/components/schemas/OutputItemWebSearchCall'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/OutputMessage'
@@ -3613,68 +3591,37 @@ components:
       description: An output item from the response
       discriminator:
         mapping:
-          apply_patch_call:
-            $ref: '#/components/schemas/OutputApplyPatchCallItem'
-          code_interpreter_call:
-            $ref: '#/components/schemas/OutputCodeInterpreterCallItem'
-          computer_call:
-            $ref: '#/components/schemas/OutputComputerCallItem'
-          custom_tool_call:
-            $ref: '#/components/schemas/OutputCustomToolCallItem'
-          file_search_call:
-            $ref: '#/components/schemas/OutputFileSearchCallItem'
-          function_call:
-            $ref: '#/components/schemas/OutputFunctionCallItem'
-          image_generation_call:
-            $ref: '#/components/schemas/OutputImageGenerationCallItem'
-          message:
-            $ref: '#/components/schemas/OutputMessageItem'
-          openrouter:advisor:
-            $ref: '#/components/schemas/OutputAdvisorServerToolItem'
-          openrouter:apply_patch:
-            $ref: '#/components/schemas/OutputApplyPatchServerToolItem'
-          openrouter:bash:
-            $ref: '#/components/schemas/OutputBashServerToolItem'
-          openrouter:browser_use:
-            $ref: '#/components/schemas/OutputBrowserUseServerToolItem'
-          openrouter:code_interpreter:
-            $ref: '#/components/schemas/OutputCodeInterpreterServerToolItem'
-          openrouter:datetime:
-            $ref: '#/components/schemas/OutputDatetimeItem'
-          openrouter:experimental__search_models:
-            $ref: '#/components/schemas/OutputSearchModelsServerToolItem'
-          openrouter:file_search:
-            $ref: '#/components/schemas/OutputFileSearchServerToolItem'
-          openrouter:files:
-            $ref: '#/components/schemas/OutputFilesServerToolItem'
-          openrouter:fusion:
-            $ref: '#/components/schemas/OutputFusionServerToolItem'
-          openrouter:image_generation:
-            $ref: '#/components/schemas/OutputImageGenerationServerToolItem'
-          openrouter:mcp:
-            $ref: '#/components/schemas/OutputMcpServerToolItem'
-          openrouter:memory:
-            $ref: '#/components/schemas/OutputMemoryServerToolItem'
-          openrouter:shell:
-            $ref: '#/components/schemas/OutputShellServerToolItem'
-          openrouter:subagent:
-            $ref: '#/components/schemas/OutputSubagentServerToolItem'
-          openrouter:text_editor:
-            $ref: '#/components/schemas/OutputTextEditorServerToolItem'
-          openrouter:tool_search:
-            $ref: '#/components/schemas/OutputToolSearchServerToolItem'
-          openrouter:web_fetch:
-            $ref: '#/components/schemas/OutputWebFetchServerToolItem'
-          openrouter:web_search:
-            $ref: '#/components/schemas/OutputWebSearchServerToolItem'
-          reasoning:
-            $ref: '#/components/schemas/OutputReasoningItem'
-          shell_call:
-            $ref: '#/components/schemas/OutputShellCallItem'
-          shell_call_output:
-            $ref: '#/components/schemas/OutputShellCallOutputItem'
-          web_search_call:
-            $ref: '#/components/schemas/OutputWebSearchCallItem'
+          apply_patch_call: '#/components/schemas/OutputApplyPatchCallItem'
+          code_interpreter_call: '#/components/schemas/OutputCodeInterpreterCallItem'
+          computer_call: '#/components/schemas/OutputComputerCallItem'
+          custom_tool_call: '#/components/schemas/OutputCustomToolCallItem'
+          file_search_call: '#/components/schemas/OutputFileSearchCallItem'
+          function_call: '#/components/schemas/OutputFunctionCallItem'
+          image_generation_call: '#/components/schemas/OutputImageGenerationCallItem'
+          message: '#/components/schemas/OutputMessageItem'
+          openrouter:advisor: '#/components/schemas/OutputAdvisorServerToolItem'
+          openrouter:apply_patch: '#/components/schemas/OutputApplyPatchServerToolItem'
+          openrouter:bash: '#/components/schemas/OutputBashServerToolItem'
+          openrouter:browser_use: '#/components/schemas/OutputBrowserUseServerToolItem'
+          openrouter:code_interpreter: '#/components/schemas/OutputCodeInterpreterServerToolItem'
+          openrouter:datetime: '#/components/schemas/OutputDatetimeItem'
+          openrouter:experimental__search_models: '#/components/schemas/OutputSearchModelsServerToolItem'
+          openrouter:file_search: '#/components/schemas/OutputFileSearchServerToolItem'
+          openrouter:files: '#/components/schemas/OutputFilesServerToolItem'
+          openrouter:fusion: '#/components/schemas/OutputFusionServerToolItem'
+          openrouter:image_generation: '#/components/schemas/OutputImageGenerationServerToolItem'
+          openrouter:mcp: '#/components/schemas/OutputMcpServerToolItem'
+          openrouter:memory: '#/components/schemas/OutputMemoryServerToolItem'
+          openrouter:shell: '#/components/schemas/OutputShellServerToolItem'
+          openrouter:subagent: '#/components/schemas/OutputSubagentServerToolItem'
+          openrouter:text_editor: '#/components/schemas/OutputTextEditorServerToolItem'
+          openrouter:tool_search: '#/components/schemas/OutputToolSearchServerToolItem'
+          openrouter:web_fetch: '#/components/schemas/OutputWebFetchServerToolItem'
+          openrouter:web_search: '#/components/schemas/OutputWebSearchServerToolItem'
+          reasoning: '#/components/schemas/OutputReasoningItem'
+          shell_call: '#/components/schemas/OutputShellCallItem'
+          shell_call_output: '#/components/schemas/OutputShellCallOutputItem'
+          web_search_call: '#/components/schemas/OutputWebSearchCallItem'
         propertyName: type
       example:
         content:
@@ -3782,104 +3729,55 @@ components:
       description: Union of all possible event types emitted during response streaming
       discriminator:
         mapping:
-          error:
-            $ref: '#/components/schemas/ErrorEvent'
-          response.apply_patch_call_operation_diff.delta:
-            $ref: '#/components/schemas/ApplyPatchCallOperationDiffDeltaEvent'
-          response.apply_patch_call_operation_diff.done:
-            $ref: '#/components/schemas/ApplyPatchCallOperationDiffDoneEvent'
-          response.code_interpreter_call_code.delta:
-            $ref: '#/components/schemas/CodeInterpreterCallCodeDeltaEvent'
-          response.code_interpreter_call_code.done:
-            $ref: '#/components/schemas/CodeInterpreterCallCodeDoneEvent'
-          response.code_interpreter_call.completed:
-            $ref: '#/components/schemas/CodeInterpreterCallCompletedEvent'
-          response.code_interpreter_call.in_progress:
-            $ref: '#/components/schemas/CodeInterpreterCallInProgressEvent'
-          response.code_interpreter_call.interpreting:
-            $ref: '#/components/schemas/CodeInterpreterCallInterpretingEvent'
-          response.completed:
-            $ref: '#/components/schemas/StreamEventsResponseCompleted'
-          response.content_part.added:
-            $ref: '#/components/schemas/ContentPartAddedEvent'
-          response.content_part.done:
-            $ref: '#/components/schemas/ContentPartDoneEvent'
-          response.created:
-            $ref: '#/components/schemas/OpenResponsesCreatedEvent'
-          response.custom_tool_call_input.delta:
-            $ref: '#/components/schemas/CustomToolCallInputDeltaEvent'
-          response.custom_tool_call_input.done:
-            $ref: '#/components/schemas/CustomToolCallInputDoneEvent'
-          response.debug:
-            $ref: '#/components/schemas/DebugEvent'
-          response.failed:
-            $ref: '#/components/schemas/StreamEventsResponseFailed'
-          response.function_call_arguments.delta:
-            $ref: '#/components/schemas/FunctionCallArgsDeltaEvent'
-          response.function_call_arguments.done:
-            $ref: '#/components/schemas/FunctionCallArgsDoneEvent'
-          response.fusion_call.analysis.completed:
-            $ref: '#/components/schemas/FusionCallAnalysisCompletedEvent'
-          response.fusion_call.analysis.in_progress:
-            $ref: '#/components/schemas/FusionCallAnalysisInProgressEvent'
-          response.fusion_call.completed:
-            $ref: '#/components/schemas/FusionCallCompletedEvent'
-          response.fusion_call.in_progress:
-            $ref: '#/components/schemas/FusionCallInProgressEvent'
-          response.fusion_call.panel.added:
-            $ref: '#/components/schemas/FusionCallPanelAddedEvent'
-          response.fusion_call.panel.completed:
-            $ref: '#/components/schemas/FusionCallPanelCompletedEvent'
-          response.fusion_call.panel.delta:
-            $ref: '#/components/schemas/FusionCallPanelDeltaEvent'
-          response.fusion_call.panel.failed:
-            $ref: '#/components/schemas/FusionCallPanelFailedEvent'
-          response.fusion_call.panel.reasoning.delta:
-            $ref: '#/components/schemas/FusionCallPanelReasoningDeltaEvent'
-          response.image_generation_call.completed:
-            $ref: '#/components/schemas/ImageGenCallCompletedEvent'
-          response.image_generation_call.generating:
-            $ref: '#/components/schemas/ImageGenCallGeneratingEvent'
-          response.image_generation_call.in_progress:
-            $ref: '#/components/schemas/ImageGenCallInProgressEvent'
-          response.image_generation_call.partial_image:
-            $ref: '#/components/schemas/ImageGenCallPartialImageEvent'
-          response.in_progress:
-            $ref: '#/components/schemas/OpenResponsesInProgressEvent'
-          response.incomplete:
-            $ref: '#/components/schemas/StreamEventsResponseIncomplete'
-          response.output_item.added:
-            $ref: '#/components/schemas/StreamEventsResponseOutputItemAdded'
-          response.output_item.done:
-            $ref: '#/components/schemas/StreamEventsResponseOutputItemDone'
-          response.output_text.annotation.added:
-            $ref: '#/components/schemas/AnnotationAddedEvent'
-          response.output_text.delta:
-            $ref: '#/components/schemas/TextDeltaEvent'
-          response.output_text.done:
-            $ref: '#/components/schemas/TextDoneEvent'
-          response.reasoning_summary_part.added:
-            $ref: '#/components/schemas/ReasoningSummaryPartAddedEvent'
-          response.reasoning_summary_part.done:
-            $ref: '#/components/schemas/ReasoningSummaryPartDoneEvent'
-          response.reasoning_summary_text.delta:
-            $ref: '#/components/schemas/ReasoningSummaryTextDeltaEvent'
-          response.reasoning_summary_text.done:
-            $ref: '#/components/schemas/ReasoningSummaryTextDoneEvent'
-          response.reasoning_text.delta:
-            $ref: '#/components/schemas/ReasoningDeltaEvent'
-          response.reasoning_text.done:
-            $ref: '#/components/schemas/ReasoningDoneEvent'
-          response.refusal.delta:
-            $ref: '#/components/schemas/RefusalDeltaEvent'
-          response.refusal.done:
-            $ref: '#/components/schemas/RefusalDoneEvent'
-          response.web_search_call.completed:
-            $ref: '#/components/schemas/WebSearchCallCompletedEvent'
-          response.web_search_call.in_progress:
-            $ref: '#/components/schemas/WebSearchCallInProgressEvent'
-          response.web_search_call.searching:
-            $ref: '#/components/schemas/WebSearchCallSearchingEvent'
+          error: '#/components/schemas/ErrorEvent'
+          response.apply_patch_call_operation_diff.delta: '#/components/schemas/ApplyPatchCallOperationDiffDeltaEvent'
+          response.apply_patch_call_operation_diff.done: '#/components/schemas/ApplyPatchCallOperationDiffDoneEvent'
+          response.code_interpreter_call_code.delta: '#/components/schemas/CodeInterpreterCallCodeDeltaEvent'
+          response.code_interpreter_call_code.done: '#/components/schemas/CodeInterpreterCallCodeDoneEvent'
+          response.code_interpreter_call.completed: '#/components/schemas/CodeInterpreterCallCompletedEvent'
+          response.code_interpreter_call.in_progress: '#/components/schemas/CodeInterpreterCallInProgressEvent'
+          response.code_interpreter_call.interpreting: '#/components/schemas/CodeInterpreterCallInterpretingEvent'
+          response.completed: '#/components/schemas/StreamEventsResponseCompleted'
+          response.content_part.added: '#/components/schemas/ContentPartAddedEvent'
+          response.content_part.done: '#/components/schemas/ContentPartDoneEvent'
+          response.created: '#/components/schemas/OpenResponsesCreatedEvent'
+          response.custom_tool_call_input.delta: '#/components/schemas/CustomToolCallInputDeltaEvent'
+          response.custom_tool_call_input.done: '#/components/schemas/CustomToolCallInputDoneEvent'
+          response.debug: '#/components/schemas/DebugEvent'
+          response.failed: '#/components/schemas/StreamEventsResponseFailed'
+          response.function_call_arguments.delta: '#/components/schemas/FunctionCallArgsDeltaEvent'
+          response.function_call_arguments.done: '#/components/schemas/FunctionCallArgsDoneEvent'
+          response.fusion_call.analysis.completed: '#/components/schemas/FusionCallAnalysisCompletedEvent'
+          response.fusion_call.analysis.in_progress: '#/components/schemas/FusionCallAnalysisInProgressEvent'
+          response.fusion_call.completed: '#/components/schemas/FusionCallCompletedEvent'
+          response.fusion_call.in_progress: '#/components/schemas/FusionCallInProgressEvent'
+          response.fusion_call.panel.added: '#/components/schemas/FusionCallPanelAddedEvent'
+          response.fusion_call.panel.completed: '#/components/schemas/FusionCallPanelCompletedEvent'
+          response.fusion_call.panel.delta: '#/components/schemas/FusionCallPanelDeltaEvent'
+          response.fusion_call.panel.failed: '#/components/schemas/FusionCallPanelFailedEvent'
+          response.fusion_call.panel.reasoning.delta: '#/components/schemas/FusionCallPanelReasoningDeltaEvent'
+          response.image_generation_call.completed: '#/components/schemas/ImageGenCallCompletedEvent'
+          response.image_generation_call.generating: '#/components/schemas/ImageGenCallGeneratingEvent'
+          response.image_generation_call.in_progress: '#/components/schemas/ImageGenCallInProgressEvent'
+          response.image_generation_call.partial_image: '#/components/schemas/ImageGenCallPartialImageEvent'
+          response.in_progress: '#/components/schemas/OpenResponsesInProgressEvent'
+          response.incomplete: '#/components/schemas/StreamEventsResponseIncomplete'
+          response.output_item.added: '#/components/schemas/StreamEventsResponseOutputItemAdded'
+          response.output_item.done: '#/components/schemas/StreamEventsResponseOutputItemDone'
+          response.output_text.annotation.added: '#/components/schemas/AnnotationAddedEvent'
+          response.output_text.delta: '#/components/schemas/TextDeltaEvent'
+          response.output_text.done: '#/components/schemas/TextDoneEvent'
+          response.reasoning_summary_part.added: '#/components/schemas/ReasoningSummaryPartAddedEvent'
+          response.reasoning_summary_part.done: '#/components/schemas/ReasoningSummaryPartDoneEvent'
+          response.reasoning_summary_text.delta: '#/components/schemas/ReasoningSummaryTextDeltaEvent'
+          response.reasoning_summary_text.done: '#/components/schemas/ReasoningSummaryTextDoneEvent'
+          response.reasoning_text.delta: '#/components/schemas/ReasoningDeltaEvent'
+          response.reasoning_text.done: '#/components/schemas/ReasoningDoneEvent'
+          response.refusal.delta: '#/components/schemas/RefusalDeltaEvent'
+          response.refusal.done: '#/components/schemas/RefusalDoneEvent'
+          response.web_search_call.completed: '#/components/schemas/WebSearchCallCompletedEvent'
+          response.web_search_call.in_progress: '#/components/schemas/WebSearchCallInProgressEvent'
+          response.web_search_call.searching: '#/components/schemas/WebSearchCallSearchingEvent'
         propertyName: type
       example:
         response:
@@ -7236,16 +7134,11 @@ components:
       description: A single condition that, when met, halts the server-tool agent loop.
       discriminator:
         mapping:
-          finish_reason_is:
-            $ref: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
-          has_tool_call:
-            $ref: '#/components/schemas/StopServerToolsWhenHasToolCall'
-          max_cost:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxCost'
-          max_tokens_used:
-            $ref: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
-          step_count_is:
-            $ref: '#/components/schemas/StopServerToolsWhenStepCountIs'
+          finish_reason_is: '#/components/schemas/StopServerToolsWhenFinishReasonIs'
+          has_tool_call: '#/components/schemas/StopServerToolsWhenHasToolCall'
+          max_cost: '#/components/schemas/StopServerToolsWhenMaxCost'
+          max_tokens_used: '#/components/schemas/StopServerToolsWhenMaxTokensUsed'
+          step_count_is: '#/components/schemas/StopServerToolsWhenStepCountIs'
         propertyName: type
       example:
         step_count: 5
@@ -8003,14 +7896,10 @@ components:
                       - items:
                           discriminator:
                             mapping:
-                              input_audio:
-                                $ref: '#/components/schemas/InputAudio'
-                              input_file:
-                                $ref: '#/components/schemas/InputFile'
-                              input_image:
-                                $ref: '#/components/schemas/InputImage'
-                              input_text:
-                                $ref: '#/components/schemas/InputText'
+                              input_audio: '#/components/schemas/InputAudio'
+                              input_file: '#/components/schemas/InputFile'
+                              input_image: '#/components/schemas/InputImage'
+                              input_text: '#/components/schemas/InputText'
                             propertyName: type
                           oneOf:
                             - $ref: '#/components/schemas/InputText'
@@ -8088,12 +7977,9 @@ components:
         operation:
           discriminator:
             mapping:
-              create_file:
-                $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
-              delete_file:
-                $ref: '#/components/schemas/ApplyPatchDeleteFileOperation'
-              update_file:
-                $ref: '#/components/schemas/ApplyPatchUpdateFileOperation'
+              create_file: '#/components/schemas/ApplyPatchCreateFileOperation'
+              delete_file: '#/components/schemas/ApplyPatchDeleteFileOperation'
+              update_file: '#/components/schemas/ApplyPatchUpdateFileOperation'
             propertyName: type
           oneOf:
             - $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
@@ -8139,12 +8025,9 @@ components:
           items:
             discriminator:
               mapping:
-                file:
-                  $ref: '#/components/schemas/CodeInterpreterFileOutput'
-                image:
-                  $ref: '#/components/schemas/CodeInterpreterImageOutput'
-                logs:
-                  $ref: '#/components/schemas/CodeInterpreterLogsOutput'
+                file: '#/components/schemas/CodeInterpreterFileOutput'
+                image: '#/components/schemas/CodeInterpreterImageOutput'
+                logs: '#/components/schemas/CodeInterpreterLogsOutput'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/CodeInterpreterLogsOutput'
@@ -8568,12 +8451,9 @@ components:
     AlignmentCallRecord:
       discriminator:
         mapping:
-          allowed:
-            $ref: '#/components/schemas/AlignmentAllowedCallRecord'
-          blocked:
-            $ref: '#/components/schemas/AlignmentBlockedCallRecord'
-          unavailable:
-            $ref: '#/components/schemas/AlignmentUnavailableCallRecord'
+          allowed: '#/components/schemas/AlignmentAllowedCallRecord'
+          blocked: '#/components/schemas/AlignmentBlockedCallRecord'
+          unavailable: '#/components/schemas/AlignmentUnavailableCallRecord'
         propertyName: outcome
       oneOf:
         - $ref: '#/components/schemas/AlignmentAllowedCallRecord'
@@ -10120,12 +10000,9 @@ components:
             - items:
                 discriminator:
                   mapping:
-                    input_file:
-                      $ref: '#/components/schemas/InputFile'
-                    input_image:
-                      $ref: '#/components/schemas/InputImage'
-                    input_text:
-                      $ref: '#/components/schemas/InputText'
+                    input_file: '#/components/schemas/InputFile'
+                    input_image: '#/components/schemas/InputImage'
+                    input_text: '#/components/schemas/InputText'
                   propertyName: type
                 oneOf:
                   - $ref: '#/components/schemas/InputText'
@@ -10151,12 +10028,9 @@ components:
         and `update_file` carry a V4A diff; `delete_file` omits it.
       discriminator:
         mapping:
-          create_file:
-            $ref: '#/components/schemas/ApplyPatchCreateFileOperation'
-          delete_file:
-            $ref: '#/components/schemas/ApplyPatchDeleteFileOperation'
-          update_file:
-            $ref: '#/components/schemas/ApplyPatchUpdateFileOperation'
+          create_file: '#/components/schemas/ApplyPatchCreateFileOperation'
+          delete_file: '#/components/schemas/ApplyPatchDeleteFileOperation'
+          update_file: '#/components/schemas/ApplyPatchUpdateFileOperation'
         propertyName: type
       example:
         diff: |-
@@ -10388,12 +10262,9 @@ components:
             - items:
                 discriminator:
                   mapping:
-                    input_file:
-                      $ref: '#/components/schemas/InputFile'
-                    input_image:
-                      $ref: '#/components/schemas/InputImage'
-                    input_text:
-                      $ref: '#/components/schemas/InputText'
+                    input_file: '#/components/schemas/InputFile'
+                    input_image: '#/components/schemas/InputImage'
+                    input_text: '#/components/schemas/InputText'
                   propertyName: type
                 oneOf:
                   - $ref: '#/components/schemas/InputText'
@@ -10834,10 +10705,8 @@ components:
       description: Execution environment for the bash server tool.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto
@@ -10861,10 +10730,8 @@ components:
         container-backed environments are supported; "local" shells are not.
       discriminator:
         mapping:
-          container_auto:
-            $ref: '#/components/schemas/ContainerAutoEnvironment'
-          container_reference:
-            $ref: '#/components/schemas/ContainerReferenceEnvironment'
+          container_auto: '#/components/schemas/ContainerAutoEnvironment'
+          container_reference: '#/components/schemas/ContainerReferenceEnvironment'
         propertyName: type
       example:
         type: container_auto
@@ -10884,14 +10751,10 @@ components:
           items:
             discriminator:
               mapping:
-                input_audio:
-                  $ref: '#/components/schemas/InputAudio'
-                input_file:
-                  $ref: '#/components/schemas/InputFile'
-                input_image:
-                  $ref: '#/components/schemas/InputImage'
-                input_text:
-                  $ref: '#/components/schemas/InputText'
+                input_audio: '#/components/schemas/InputAudio'
+                input_file: '#/components/schemas/InputFile'
+                input_image: '#/components/schemas/InputImage'
+                input_text: '#/components/schemas/InputText'
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/InputText'
@@ -11999,24 +11862,15 @@ components:
         item:
           discriminator:
             mapping:
-              apply_patch_call:
-                $ref: '#/components/schemas/OutputItemApplyPatchCall'
-              code_interpreter_call:
-                $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
-              custom_tool_call:
-                $ref: '#/components/schemas/OutputItemCustomToolCall'
-              file_search_call:
-                $ref: '#/components/schemas/OutputItemFileSearchCall'
-              function_call:
-                $ref: '#/components/schemas/OutputItemFunctionCall'
-              image_generation_call:
-                $ref: '#/components/schemas/OutputItemImageGenerationCall'
-              message:
-                $ref: '#/components/schemas/OutputMessage'
-              reasoning:
-                $ref: '#/components/schemas/OutputItemReasoning'
-              web_search_call:
-                $ref: '#/components/schemas/OutputItemWebSearchCall'
+              apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
+              code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+              custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
+              file_search_call: '#/components/schemas/OutputItemFileSearchCall'
+              function_call: '#/components/schemas/OutputItemFunctionCall'
+              image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+              message: '#/components/schemas/OutputMessage'
+              reasoning: '#/components/schemas/OutputItemReasoning'
+              web_search_call: '#/components/schemas/OutputItemWebSearchCall'
             propertyName: type
           oneOf:
             - $ref: '#/components/schemas/OutputMessage'
@@ -12061,24 +11915,15 @@ components:
         item:
           discriminator:
             mapping:
-              apply_patch_call:
-                $ref: '#/components/schemas/OutputItemApplyPatchCall'
-              code_interpreter_call:
-                $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
-              custom_tool_call:
-                $ref: '#/components/schemas/OutputItemCustomToolCall'
-              file_search_call:
-                $ref: '#/components/schemas/OutputItemFileSearchCall'
-              function_call:
-                $ref: '#/components/schemas/OutputItemFunctionCall'
-              image_generation_call:
-                $ref: '#/components/schemas/OutputItemImageGenerationCall'
-              message:
-                $ref: '#/components/schemas/OutputMessage'
-              reasoning:
-                $ref: '#/components/schemas/OutputItemReasoning'
-              web_search_call:
-                $ref: '#/components/schemas/OutputItemWebSearchCall'
+              apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
+              code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+              custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
+              file_search_call: '#/components/schemas/OutputItemFileSearchCall'
+              function_call: '#/components/schemas/OutputItemFunctionCall'
+              image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+              message: '#/components/schemas/OutputMessage'
+              reasoning: '#/components/schemas/OutputItemReasoning'
+              web_search_call: '#/components/schemas/OutputItemWebSearchCall'
             propertyName: type
           oneOf:
             - $ref: '#/components/schemas/OutputMessage'
@@ -12885,24 +12730,15 @@ components:
       items:
         discriminator:
           mapping:
-            apply_patch_call:
-              $ref: '#/components/schemas/OutputItemApplyPatchCall'
-            code_interpreter_call:
-              $ref: '#/components/schemas/OutputItemCodeInterpreterCall'
-            custom_tool_call:
-              $ref: '#/components/schemas/OutputItemCustomToolCall'
-            file_search_call:
-              $ref: '#/components/schemas/OutputItemFileSearchCall'
-            function_call:
-              $ref: '#/components/schemas/OutputItemFunctionCall'
-            image_generation_call:
-              $ref: '#/components/schemas/OutputItemImageGenerationCall'
-            message:
-              $ref: '#/components/schemas/OutputMessage'
-            reasoning:
-              $ref: '#/components/schemas/OutputItemReasoning'
-            web_search_call:
-              $ref: '#/components/schemas/OutputItemWebSearchCall'
+            apply_patch_call: '#/components/schemas/OutputItemApplyPatchCall'
+            code_interpreter_call: '#/components/schemas/OutputItemCodeInterpreterCall'
+            custom_tool_call: '#/components/schemas/OutputItemCustomToolCall'
+            file_search_call: '#/components/schemas/OutputItemFileSearchCall'
+            function_call: '#/components/schemas/OutputItemFunctionCall'
+            image_generation_call: '#/components/schemas/OutputItemImageGenerationCall'
+            message: '#/components/schemas/OutputMessage'
+            reasoning: '#/components/schemas/OutputItemReasoning'
+            web_search_call: '#/components/schemas/OutputItemWebSearchCall'
           propertyName: type
         oneOf:
           - $ref: '#/components/schemas/OutputMessage'

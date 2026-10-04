@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1353 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1354 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -752,6 +752,7 @@
 - `docs/eleven-api/concepts/voice-cloning` — [Voice cloning: how it works](pages/docs/eleven-api/concepts/voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-api/concepts/voice-cloning.md)
 - `docs/eleven-api/guides/cookbooks/dubbing` — [Dubbing quickstart](pages/docs/eleven-api/guides/cookbooks/dubbing.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/dubbing.md)
 - `docs/eleven-api/guides/cookbooks/forced-alignment` — [Forced Alignment quickstart](pages/docs/eleven-api/guides/cookbooks/forced-alignment.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/forced-alignment.md)
+- `docs/eleven-api/guides/cookbooks/image-and-video` — [Image & Video quickstart](pages/docs/eleven-api/guides/cookbooks/image-and-video.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/image-and-video.md)
 - `docs/eleven-api/guides/cookbooks/music` — [Music quickstart](pages/docs/eleven-api/guides/cookbooks/music.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/music.md)
 - `docs/eleven-api/guides/cookbooks/sound-effects` — [Sound Effects quickstart](pages/docs/eleven-api/guides/cookbooks/sound-effects.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/sound-effects.md)
 - `docs/eleven-api/guides/cookbooks/speech-engine` — [Speech Engine quickstart](pages/docs/eleven-api/guides/cookbooks/speech-engine.md) · [原文](https://elevenlabs.io/docs/eleven-api/guides/cookbooks/speech-engine.md)

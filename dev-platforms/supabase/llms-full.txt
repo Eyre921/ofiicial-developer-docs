@@ -92038,7 +92038,7 @@ pg\_graphql uses Postgres' `search_path` and permissions system to determine whi
 
 ### Remove a Table from the API
 
-To remove a table from the GraphQL API, you can revoke permission on that table from the the relevant role. For example, to remove table `foo` from the API for anonymous users you could run:
+To remove a table from the GraphQL API, you can revoke permission on that table from the relevant role. For example, to remove table `foo` from the API for anonymous users you could run:
 
 ```sql
 revoke all on table public.foo from anon;
@@ -95610,7 +95610,7 @@ The Query type's field listing is filtered the same way. `blogCollection` appear
 }
 ```
 
-Same for the the Mutation type's field listing, `Blog`'s mutation fields appear, `Account`'s are hidden:
+Same for the Mutation type's field listing, `Blog`'s mutation fields appear, `Account`'s are hidden:
 
 **Query**
 
