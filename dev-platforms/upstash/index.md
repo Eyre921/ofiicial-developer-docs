@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 960 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 961 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -60,6 +60,7 @@
 - `docs/box/guides/openclaw-setup` — [OpenClaw Setup](pages/docs/box/guides/openclaw-setup.md) · [原文](https://upstash.com/docs/box/guides/openclaw-setup)
 - `docs/box/guides/pi-setup` — [Pi Setup](pages/docs/box/guides/pi-setup.md) · [原文](https://upstash.com/docs/box/guides/pi-setup)
 - `docs/box/guides/remote-development` — [Remote Development](pages/docs/box/guides/remote-development.md) · [原文](https://upstash.com/docs/box/guides/remote-development)
+- `docs/box/guides/t3-code-setup` — [Host T3 Code in a Remote Sandbox](pages/docs/box/guides/t3-code-setup.md) · [原文](https://upstash.com/docs/box/guides/t3-code-setup)
 - `docs/box/guides/tanstack-setup` — [TanStack AI Coding Agents](pages/docs/box/guides/tanstack-setup.md) · [原文](https://upstash.com/docs/box/guides/tanstack-setup)
 - `docs/box/guides/web-scraping-playwright` — [Playwright Web Scraping](pages/docs/box/guides/web-scraping-playwright.md) · [原文](https://upstash.com/docs/box/guides/web-scraping-playwright)
 - `docs/box/overall/agent` — [Agent](pages/docs/box/overall/agent.md) · [原文](https://upstash.com/docs/box/overall/agent)

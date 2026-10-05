@@ -17,6 +17,43 @@ ElevenLabs provides officially supported libraries that are updated with the lat
 | Python            | [GitHub README](https://github.com/elevenlabs/elevenlabs-python) | [PyPI](https://pypi.org/project/elevenlabs/)                   |
 | Javascript (Node) | [GitHub README](https://github.com/elevenlabs/elevenlabs-js)     | [npm](https://www.npmjs.com/package/@elevenlabs/elevenlabs-js) |
 
+### Sending parameters the SDK doesn't define yet
+
+A field can be available in the API, for example as a beta feature, before your SDK version has a typed parameter for it. To send it anyway, pass it as an additional body parameter in the request options. The SDK merges these values into the JSON request body as given, without validating them.
+
+**`Python`**
+
+```python title="Python"
+audio = elevenlabs.text_to_speech.convert(
+    voice_id="JBFqnCBsd6RMkjVDRZzb",
+    text="The first move is what sets everything in motion.",
+    model_id="eleven_multilingual_v2",
+    request_options={"additional_body_parameters": {"new_field": "value"}},
+)
+```
+
+**`TypeScript`**
+
+```typescript title="TypeScript"
+const audio = await elevenlabs.textToSpeech.convert(
+  "JBFqnCBsd6RMkjVDRZzb",
+  {
+    text: "The first move is what sets everything in motion.",
+    modelId: "eleven_multilingual_v2",
+  },
+  { additionalBodyParameters: { new_field: "value" } }
+);
+```
+
+> **Note**
+>
+> Use the field names from the API reference (`snake_case`). Additional body parameters skip the
+> SDK's serialization, so TypeScript property names are not converted. In TypeScript, this option
+> requires `@elevenlabs/elevenlabs-js` v2.59.0 or later and applies only to JSON request bodies, not
+> file uploads. Switch to the typed parameter once your SDK version includes it.
+
+The same request options accept extra headers and query parameters: `additional_headers` and `additional_query_parameters` in Python, `headers` and `queryParams` in TypeScript.
+
 ## Command-line interface
 
 The [ElevenLabs CLI](/docs/eleven-agents/operate/cli) brings the REST API to your terminal. Homebrew (macOS) and Scoop (Windows) are the recommended install methods.

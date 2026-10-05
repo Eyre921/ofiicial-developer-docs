@@ -1,35 +1,57 @@
 ---
-title: "Architect"
+title: "ElevenAgents Architect"
 source: https://elevenlabs.io/docs/eleven-agents/operate/architect.md
 path: docs/eleven-agents/operate/architect
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Architect
+# ElevenAgents Architect
 
 ## Overview
 
-Architect is the AI assistant built into ElevenAgents. Instead of changing every setting field by field, you describe what you want and Architect makes the edit for you, using the same configuration, workflow, tools, tests, and knowledge base APIs available in the dashboard.
+ElevenAgents Architect is the AI assistant built into ElevenAgents. You describe what you want in plain language, and Architect reads your agent's configuration, conversations, and test results, makes the change, and validates it with tests before you decide whether to ship it.
 
-Architect is one assistant with two placements:
+Architect works with the same objects you edit by hand: the system prompt, procedures, workflow, tools, knowledge base, guardrails, tests, branches, and merge proposals. It has no separate hidden configuration. Every change it makes appears in the same draft, diff, and version history as a change you made yourself.
 
-* **Sidebar**: available across the whole ElevenLabs app from a floating button or sidebar. Use it to ask product questions, navigate the dashboard, and get help finding a setting.
-* **Architect tab**: a full-screen view inside a specific agent, opened from that agent's page or from "Discuss", "Improve", or "Make with Architect" buttons. Here, Architect additionally reads and edits that agent's configuration, workflow, tools, tests, and knowledge base.
+![Architect tab home screen](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ed0d216d50539bce021442606fa5a8b82bd29b1596707571e2247081c399546d/assets/images/agents/architect-landing-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230232Z&X-Amz-Expires=604800&X-Amz-Signature=0a55ade82bcbafe514f3fba0553c284543e6337fd248c35ac2ed634b527a62dc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
-![Architect tab home screen](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ed0d216d50539bce021442606fa5a8b82bd29b1596707571e2247081c399546d/assets/images/agents/architect-landing-page.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T112507Z&X-Amz-Expires=604800&X-Amz-Signature=058f98b86be0374569fa8755d0fbd247946584444e9fcddf16e840faf8f1867d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+## What ElevenAgents Architect is for
 
-## What Architect is specialized for
+Architect is most useful for improving an agent you have already deployed. It is built around this loop:
 
-Architect's primary job is helping you iterate on an agent you have already built: reviewing how it performed on real conversations, understanding what went wrong, and turning that into a concrete change to its prompt, workflow, tools, tests, or knowledge base. See [Triage](/docs/eleven-agents/operate/triage) for how this review loop works.
+1. **Investigate.** Read real conversations, Spotlight insights, alerts, triage tickets, and failing tests to find what is going wrong and why.
+2. **Change.** Edit the prompt, a procedure, a tool, the knowledge base, or guardrails. Agent configuration changes are staged as an unpublished draft, never applied to live callers directly.
+3. **Validate.** Write tests and simulations for the change and run them inside the same conversation, before you are asked to ship anything.
+4. **Propose.** Hand the change to you for review: you publish the draft, and Architect can open a [merge proposal](/docs/eleven-agents/operate/architect/proposals) for a teammate to approve and suggest a small traffic split to try it on live calls.
 
-![Architect running an agent's test suite](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e3f2c99d7b123f8ef399f7a68ad326b96285a581dfe70fa1653784b8fb19b83d/assets/images/agents/architect-running-test.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T112507Z&X-Amz-Expires=604800&X-Amz-Signature=6007f49c4a49c0cc92af9dc2e3f804e9f7d0ebc01b2d138aed534fb937ef2f17&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Architect also builds new agents from a description, answers product questions, and walks you through the dashboard.
 
-Outside of a specific agent, Architect in the sidebar also answers general product questions and helps you navigate the dashboard.
+See [How Architect works](/docs/eleven-agents/operate/architect/how-it-works) for a full worked example of this loop, showing each tool Architect calls.
 
-## Pricing
+## ElevenAgents Architect and Spotlight
 
-Architect is available now in alpha and is free to use during the alpha period, which will run through October 2026. During the alpha, usage does not count against your workspace's agent minutes or LLM cost. Check the [pricing page](https://elevenlabs.io/pricing) for terms after the alpha ends.
+[Spotlight](/docs/eleven-agents/dashboard/spotlight) and Architect do different jobs.
+
+| Product   | Role                  | What it does                                                                                                                                                   |
+| --------- | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Spotlight | Observe and recommend | Monitors an agent's conversations and surfaces a weekly summary, suggested investigations, real-time alerts, and configuration recommendations.                |
+| Architect | Build and fix         | Investigates a question or a Spotlight finding against the underlying data, changes the agent, writes and runs tests, and prepares the change for your review. |
+
+Spotlight cards hand off to Architect with buttons such as **Analyze with Architect** and **Investigate with Architect**. See [Starting a conversation](/docs/eleven-agents/operate/architect/entry-points#spotlight) for what each hand-off passes in.
+
+## Availability
+
+Architect is in alpha. Some surfaces, such as the per-agent Architect tab and the triage queue, are being rolled out gradually and may not appear in every workspace yet. Architect is free to use during the alpha period, which runs through October 2026. During the alpha, Architect conversations do not count against your workspace's agent minutes or LLM cost. Check the [pricing page](https://elevenlabs.io/pricing) for terms after the alpha ends.
+
+Some limits apply:
+
+* Architect is not available in every isolated [data residency](/docs/overview/administration/data-residency) environment yet.
+* Attaching files in the composer requires a Creator plan or higher.
+* An idle Architect session ends after 5 minutes, or 15 minutes on Enterprise plans. You can continue the conversation from chat history.
+* Conversation analysis is limited to 100 analyzed conversations per user per minute.
+
+See [Limitations and FAQ](/docs/eleven-agents/operate/architect/faq) for what Architect does not do today.
 
 ## Privacy and data retention
 
@@ -38,34 +60,38 @@ Architect is available now in alpha and is free to use during the alpha period, 
 > Architect conversations are not covered by Zero Retention Mode (ZRM). Avoid sharing personal or
 > sensitive information in messages to Architect.
 
-For details on what ZRM does cover, see [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm).
+Your Architect chats are private to you. Teammates cannot open them, even when a chat was started from a shared triage ticket. For details on what ZRM does cover, see [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm).
 
 ## Learn more
 
-#### [How Architect works](/docs/eleven-agents/operate/architect/how-it-works)
+#### [Starting a conversation](/docs/eleven-agents/operate/architect/entry-points)
 
-What Architect can see, the tools it can use, and how it applies changes.
+Every place you can open Architect, and the context each one passes in.
 
-#### [Triage](/docs/eleven-agents/operate/triage)
+#### [How ElevenAgents Architect works](/docs/eleven-agents/operate/architect/how-it-works)
 
-Review conversation issues flagged for follow-up.
+What Architect knows, how it investigates, and a worked example of the improvement loop.
 
-#### [Merge proposals](/docs/eleven-agents/operate/merge-proposals)
+#### [What ElevenAgents Architect can change](/docs/eleven-agents/operate/architect/capabilities)
 
-Ask for a branch's changes to be reviewed before they reach another branch.
+The full list of what Architect can read and edit, and what needs your approval.
 
-#### [Flag issue for review](/docs/eleven-agents/customization/tools/system-tools/flag-issue-for-review)
+#### [Proposals and validation](/docs/eleven-agents/operate/architect/proposals)
 
-Let a live agent raise a ticket for a problem it can't resolve.
+How Architect's changes are tested, reviewed, and rolled out.
 
-#### [Customizing Architect](/docs/eleven-agents/operate/architect/customization)
-
-Give Architect durable context and reusable prompts.
-
-#### [Authentication, approvals, and drafts](/docs/eleven-agents/operate/architect/authentication)
+#### [Permissions, approvals, and drafts](/docs/eleven-agents/operate/architect/authentication)
 
 How Architect acts on your behalf and stages changes safely.
+
+#### [Customizing ElevenAgents Architect](/docs/eleven-agents/operate/architect/customization)
+
+Give Architect durable context about your agent and how you work.
 
 #### [Claude, Cursor, and other AI assistants](/docs/eleven-agents/operate/architect/external-assistants)
 
 Manage agents from outside the ElevenLabs dashboard.
+
+#### [Limitations and FAQ](/docs/eleven-agents/operate/architect/faq)
+
+What Architect does not do yet, and common questions.

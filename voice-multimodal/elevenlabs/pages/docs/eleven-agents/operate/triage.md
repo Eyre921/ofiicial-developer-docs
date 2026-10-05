@@ -10,14 +10,14 @@ path: docs/eleven-agents/operate/triage
 
 ## Overview
 
-Triage tickets collect problems with an agent's real conversations so you can review and fix them in one place. Each ticket points at the underlying issue and the conversation it came from. Architect surfaces the ticket queue for whichever agent you have open, and can read, comment on, and update tickets when you ask it to.
+Triage tickets collect problems with an agent's real conversations so you can review and fix them in one place. Each ticket points at the underlying issue and the conversation it came from. ElevenAgents Architect surfaces the ticket queue for whichever agent you have open, and can read, comment on, and update tickets when you ask it to.
 
 > **Note**
 >
 > Triage tickets are about an agent's own performance. They are separate from support tickets that
 > an agent opens on behalf of an end user during a conversation.
 
-![Triage queue for an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fe035e0f67b9c462de2e0260d9f93adfaef42303666b28e4e28e372f4185430/assets/images/agents/triage-queue.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T112507Z&X-Amz-Expires=604800&X-Amz-Signature=0bcf5fbf6a8c881fb6d9840bc33bb9d261dd460b74dd66d1ed55f04b426b2462&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Triage queue for an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9fe035e0f67b9c462de2e0260d9f93adfaef42303666b28e4e28e372f4185430/assets/images/agents/triage-queue.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230229Z&X-Amz-Expires=604800&X-Amz-Signature=d349c0a2e89de200b825a7f354ec3f4660f1f920c157093266831827d4f52959&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Where tickets come from
 
@@ -26,7 +26,7 @@ Triage tickets collect problems with an agent's real conversations so you can re
 * **Conversation review**: you or a teammate open a ticket while reviewing a transcript.
 * **Architect review (coming soon)**: Architect opens a ticket after spotting a recurring pattern across recent conversations.
 
-![Flag issue button on a conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ddb939cbd0cb690f643ad7051ae29dee94a33f5696f6ff4fe554e9e714afcac/assets/images/agents/triage-manual-flag.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T112507Z&X-Amz-Expires=604800&X-Amz-Signature=632839f621b05b2f49ecc6d034f89aecf1f916b4cb23f08f9077fb88166a7db4&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Flag issue button on a conversation](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7ddb939cbd0cb690f643ad7051ae29dee94a33f5696f6ff4fe554e9e714afcac/assets/images/agents/triage-manual-flag.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230229Z&X-Amz-Expires=604800&X-Amz-Signature=0baa14f4d690e49400b27034bb0cf81185969f4185e33216b056811e2fc3a316&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Ticket statuses
 
@@ -37,7 +37,7 @@ Triage tickets collect problems with an agent's real conversations so you can re
 | Resolved    | The underlying issue has been addressed.                          |
 | Merged      | Grouped with another ticket covering the same underlying problem. |
 
-## Working through the queue with Architect
+## Working through the queue with ElevenAgents Architect
 
 Ask Architect to help you triage in plain language, for example:
 

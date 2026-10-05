@@ -12,13 +12,9 @@ path: docs/agent-sdk/usage-for-agents
 
 > Add OpenRouter Agent SDK skills to your AI coding assistant
 
-Give your AI coding assistant the knowledge to work with the OpenRouter Agent SDK
-by installing our official `openrouter-typescript-sdk` skill from the
-[OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills) repository.
+Give your AI coding assistant the knowledge to work with the OpenRouter Agent SDK by installing our official `openrouter-typescript-sdk` skill from the [OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills) repository.
 
-The skill covers both the Agent SDK (`@openrouter/agent`) and the Client SDKs (`@openrouter/sdk`).
-When working with the Agent SDK, your AI assistant will focus on the **agent features**:
-`callModel`, `tool()` definitions, stop conditions, streaming, and multi-turn conversations.
+The skill covers both the Agent SDK (`@openrouter/agent`) and the Client SDKs (`@openrouter/sdk`). When working with the Agent SDK, your AI assistant will focus on the **agent features**: `callModel`, `tool()` definitions, stop conditions, streaming, and multi-turn conversations.
 
 ## Quick Start
 
@@ -60,8 +56,7 @@ The skill works with any AI coding assistant that supports the [Agent Skills](ht
 
 Once installed, your AI coding assistant will have knowledge of:
 
-* **callModel API** - The recommended approach for making AI model calls with
-  full type safety and streaming support
+* **callModel API** - The recommended approach for making AI model calls with full type safety and streaming support
 * **Tool Definitions** - Creating tools with the `tool()` helper and Zod schemas
 * **Stop Conditions** - Controlling agent loop termination with `stepCountIs`, `maxCost`, and more
 * **Streaming** - Real-time token output within agent steps
@@ -123,8 +118,7 @@ const text = await result.getText();
 
 ## Repository
 
-The skill source is available at:
-[github.com/OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills)
+The skill source is available at: [github.com/OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills)
 
 Contributions and feedback are welcome.
 

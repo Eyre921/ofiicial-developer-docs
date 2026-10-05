@@ -3,7 +3,7 @@
     "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (7) for https://docs.mistral.ai/llms-full.txt: curl: (7) Failed to connect to docs.mistral.ai port 443 after 11 ms: Could not connect to server\n"
   },
   "ai-models/cohere": {
     "pages": 2,
@@ -97,7 +97,7 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 409,
+    "pages": 410,
     "status": "ok"
   },
   "ai-models/google-gemini": {
@@ -120,7 +120,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 960,
+    "pages": 961,
     "status": "ok"
   },
   "dev-platforms/expo": {
@@ -186,7 +186,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 93,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -194,7 +194,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 505,
+    "pages": 506,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -202,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1342,
+    "pages": 1363,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-05T11:30:26Z"
+  "_last_crawl": "2026-10-05T23:30:29Z"
 }

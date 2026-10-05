@@ -12,11 +12,9 @@ path: docs/cookbook/video-generation/reference-to-video
 
 > Use reference images to influence video subject, style, or identity without exact frame control
 
-Use this guide when you need to add reference-to-video generation where images
-influence the output without forcing exact first or last frames.
+Use this guide when you need to add reference-to-video generation where images influence the output without forcing exact first or last frames.
 
-By the end, your implementation should submit a reference-to-video job with
-`input_references`.
+By the end, your implementation should submit a reference-to-video job with `input_references`.
 
 <Tip>
   For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
@@ -29,14 +27,10 @@ You need:
 * An OpenRouter API key available as `OPENROUTER_API_KEY`
 * Node.js 20 or newer
 * One or more public HTTPS image URLs, starting with `REFERENCE_IMAGE_URL`
-* A model that supports reference-to-video, confirmed from the current
-  OpenRouter video docs or model description
+* A model that supports reference-to-video, confirmed from the current OpenRouter video docs or model description
 
 <Tip>
-  If you haven't chosen a model yet, read
-  [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model)
-  first. It helps you pick one based on clip duration, output shape, input
-  type, audio, provider controls, and cost.
+  If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 </Tip>
 
 Use the API reference pages as the source of truth for exact fields:
@@ -50,13 +44,10 @@ Use `input_references` for visual guidance. Use `frame_images` only when you nee
 Use stable, directly downloadable image URLs. Some providers cannot fetch image URLs that require cookies, redirects through HTML pages, bot checks, or unusual headers.
 
 <Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may
-  spend OpenRouter credits.
+  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
 </Warning>
 
-The video models endpoint doesn't expose a dedicated structured reference-image
-field for every provider. Confirm reference support from the model description
-or current docs before you submit:
+The video models endpoint doesn't expose a dedicated structured reference-image field for every provider. Confirm reference support from the model description or current docs before you submit:
 
 ```bash lines theme={null}
 curl https://openrouter.ai/api/v1/videos/models
@@ -94,9 +85,7 @@ Example model output excerpt:
 }
 ```
 
-For `bytedance/seedance-2.0-fast`, the model list can confirm the example
-`duration`, `resolution`, and `aspect_ratio`; reference-image support may still
-need confirmation from the model description or docs.
+For `bytedance/seedance-2.0-fast`, the model list can confirm the example `duration`, `resolution`, and `aspect_ratio`; reference-image support may still need confirmation from the model description or docs.
 
 ## Step 1: Write a prompt that tells the model how to use the references
 
@@ -111,9 +100,7 @@ Use a slow orbiting camera move and realistic lighting.
 
 ## Step 2: Submit the reference-to-video job
 
-Build the video request with `input_references` when the images should guide
-subject, identity, or style. Unlike `frame_images`, reference images are not
-exact frame anchors.
+Build the video request with `input_references` when the images should guide subject, identity, or style. Unlike `frame_images`, reference images are not exact frame anchors.
 
 Example request shape:
 
@@ -164,8 +151,7 @@ const job = await response.json();
 console.log(job);
 ```
 
-The submit call returns the job fields immediately. In the QA run, the submitted
-job later completed and downloaded with this final summary:
+The submit call returns the job fields immediately. In the QA run, the submitted job later completed and downloaded with this final summary:
 
 ```json lines theme={null}
 {
@@ -179,9 +165,7 @@ job later completed and downloaded with this final summary:
 
 ## Step 3: Add more references when consistency matters
 
-Some models can use multiple reference images. Before doing this in production,
-check the current docs or model description for the selected model. Start
-with the smallest number of references that gives you enough consistency.
+Some models can use multiple reference images. Before doing this in production, check the current docs or model description for the selected model. Start with the smallest number of references that gives you enough consistency.
 
 ```js expandable lines theme={null}
 const characterSideUrl = process.env.CHARACTER_SIDE_URL;
@@ -230,9 +214,7 @@ Request shape for the optional multi-reference path:
 
 ## Step 4: Poll and download
 
-After submission, poll from a server route, worker, or job runner instead of
-the browser. Poll with a limit, stop on terminal failure, then download the
-completed video.
+After submission, poll from a server route, worker, or job runner instead of the browser. Poll with a limit, stop on terminal failure, then download the completed video.
 
 Example polling and download helper:
 
@@ -310,7 +292,5 @@ Saved reference-video.mp4
 
 ## Check your work
 
-The output should borrow subject, style, or identity cues from the reference
-images while still following the generated scene described in the prompt. The
-implementation should produce a playable MP4 from the completed job.
+The output should borrow subject, style, or identity cues from the reference images while still following the generated scene described in the prompt. The implementation should produce a playable MP4 from the completed job.
 

@@ -70,11 +70,7 @@ OpenRouter supports video generation from text prompts (and optional reference i
 </Accordion>
 
 <Tip>
-  Adding video generation to an app? The
-  [Video Generation Cookbook](/docs/cookbook/video-generation/choose-video-model)
-  breaks this workflow into step-by-step recipes for choosing a model,
-  submitting text-to-video jobs, using images, passing provider options, and
-  handling webhooks.
+  Adding video generation to an app? The [Video Generation Cookbook](/docs/cookbook/video-generation/choose-video-model) breaks this workflow into step-by-step recipes for choosing a model, submitting text-to-video jobs, using images, passing provider options, and handling webhooks.
 
   For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
 </Tip>
@@ -130,10 +126,7 @@ The response returns a `data` array where each model includes:
 Use this endpoint to check which resolutions, aspect ratios, and passthrough parameters are supported by each model before submitting a generation request.
 
 <Tip>
-  Validate `duration`, `resolution`, and `aspect_ratio` against the selected
-  model's `supported_durations`, `supported_resolutions`, and
-  `supported_aspect_ratios` from [the video models API](/docs/api/api-reference/video-generation/list-all-video-generation-models).
-  Requests with unsupported values return a 400 that lists the supported values.
+  Validate `duration`, `resolution`, and `aspect_ratio` against the selected model's `supported_durations`, `supported_resolutions`, and `supported_aspect_ratios` from [the video models API](/docs/api/api-reference/video-generation/list-all-video-generation-models). Requests with unsupported values return a 400 that lists the supported values.
 </Tip>
 
 ### Via the Models API
@@ -328,21 +321,12 @@ MODEL: 'google/veo-3.1'
 
 ### Using Images
 
-There are two ways to provide images, each
-triggering a different generation mode:
+There are two ways to provide images, each triggering a different generation mode:
 
-* **`frame_images`**: Specifies first or last frame
-  images for **image-to-video** generation. Each entry
-  must include a `frame_type` of `first_frame` or
-  `last_frame`.
-* **`input_references`**: Provides style or content
-  reference images for **reference-to-video**
-  generation. The model uses these as visual guidance
-  rather than exact frames.
+* **`frame_images`**: Specifies first or last frame images for **image-to-video** generation. Each entry must include a `frame_type` of `first_frame` or `last_frame`.
+* **`input_references`**: Provides style or content reference images for **reference-to-video** generation. The model uses these as visual guidance rather than exact frames.
 
-If both fields are provided, `frame_images` takes
-precedence and the request is treated as
-image-to-video.
+If both fields are provided, `frame_images` takes precedence and the request is treated as image-to-video.
 
 #### Image-to-Video (frame\_images)
 
@@ -468,10 +452,7 @@ Instead of polling for job status, you can receive a webhook notification when a
 
 ### Webhook Payload
 
-When a job reaches a terminal state, OpenRouter sends a POST request to the callback
-URL with an event envelope. Each delivery also carries an
-`X-OpenRouter-Idempotency-Key` header of the form `<job_id>-<status>` for
-safe retry deduplication.
+When a job reaches a terminal state, OpenRouter sends a POST request to the callback URL with an event envelope. Each delivery also carries an `X-OpenRouter-Idempotency-Key` header of the form `<job_id>-<status>` for safe retry deduplication.
 
 `video.generation.completed`:
 
@@ -543,8 +524,7 @@ safe retry deduplication.
 }
 ```
 
-`generation_id` and `model` in `data` may be `null` when a job fails before
-those values are assigned (e.g. an early validation failure).
+`generation_id` and `model` in `data` may be `null` when a job fails before those values are assigned (e.g. an early validation failure).
 
 ### Signing Secret
 

@@ -45,16 +45,14 @@ Click **Test Connection** to verify the setup. The configuration only saves if t
 
 ## Step 5: Send a test trace
 
-Make an API request through OpenRouter and view the trace in Sentry's
-Performance or Traces view.
+Make an API request through OpenRouter and view the trace in Sentry's Performance or Traces view.
 
 <Frame>
   <img src="https://mintcdn.com/openrouter-d02e98a0/m_oPr-TUQwWwWLn0/assets/guides/features/broadcast/sentry/broadcast-sentry-trace.png?fit=max&auto=format&n=m_oPr-TUQwWwWLn0&q=85&s=3d1d844f2800f7a766a1d774e04caad9" alt="Sentry Trace View" width="2940" height="1984" data-path="assets/guides/features/broadcast/sentry/broadcast-sentry-trace.png" />
 </Frame>
 
 <Tip>
-  Sentry uses OpenTelemetry for trace ingestion. The OTLP endpoint and DSN
-  are both required for proper authentication and trace routing.
+  Sentry uses OpenTelemetry for trace ingestion. The OTLP endpoint and DSN are both required for proper authentication and trace routing.
 </Tip>
 
 ## Custom Metadata

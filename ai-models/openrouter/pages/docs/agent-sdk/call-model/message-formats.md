@@ -219,8 +219,7 @@ const claudeMessages = [
 
 ### Limitations
 
-Some Claude features are not preserved in conversion.
-e.g. `is_error` flag on tool\_result blocks
+Some Claude features are not preserved in conversion. e.g. `is_error` flag on tool\_result blocks
 
 These features are Claude-specific and not supported by OpenRouter.
 

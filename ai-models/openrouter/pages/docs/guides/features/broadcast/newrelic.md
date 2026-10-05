@@ -43,8 +43,7 @@ Click **Test Connection** to verify the setup. The configuration only saves if t
 
 ## Step 5: Send a test trace
 
-Make an API request through OpenRouter and view the trace in New Relic's
-distributed tracing view.
+Make an API request through OpenRouter and view the trace in New Relic's distributed tracing view.
 
 <Frame>
   <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/guides/features/broadcast/newrelic/broadcast-newrelic-trace.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=81ce45c7222705e5cd135e2e482c1922" alt="New Relic Trace View" width="3366" height="2064" data-path="assets/guides/features/broadcast/newrelic/broadcast-newrelic-trace.png" />

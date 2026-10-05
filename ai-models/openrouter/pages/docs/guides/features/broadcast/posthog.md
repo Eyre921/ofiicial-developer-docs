@@ -43,8 +43,7 @@ Click **Test Connection** to verify the setup. The configuration only saves if t
 
 ## Step 5: Send a test trace
 
-Make an API request through OpenRouter and view the LLM analytics in your
-PostHog dashboard.
+Make an API request through OpenRouter and view the LLM analytics in your PostHog dashboard.
 
 <Frame>
   <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/guides/features/broadcast/posthog/broadcast-posthog-analytics.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=0f08977fcb4041defda4348eb26b3ac8" alt="PostHog LLM Analytics" width="3156" height="2064" data-path="assets/guides/features/broadcast/posthog/broadcast-posthog-analytics.png" />
@@ -56,8 +55,7 @@ PostHog receives LLM analytics events with custom metadata included as event pro
 
 ### Supported Metadata Keys
 
-OpenRouter maps the reserved `trace` fields below to PostHog's native `$ai_*` properties,
-which power PostHog's built-in LLM analytics dashboards.
+OpenRouter maps the reserved `trace` fields below to PostHog's native `$ai_*` properties, which power PostHog's built-in LLM analytics dashboards.
 
 | Key | PostHog Property | Description |
 | - | - | - |
@@ -66,16 +64,11 @@ which power PostHog's built-in LLM analytics dashboards.
 
 ### Custom property pass-through
 
-`trace_name` is forwarded as a plain custom property `trace_name` (not as `$ai_trace_name`),
-so you can filter events by trace name in PostHog without knowing PostHog's `$ai_*` naming
-convention.
+`trace_name` is forwarded as a plain custom property `trace_name` (not as `$ai_trace_name`), so you can filter events by trace name in PostHog without knowing PostHog's `$ai_*` naming convention.
 
-Every other key inside `trace` that is not in the table above is forwarded as
-`metadata_<key>` (e.g. `feature` → `metadata_feature`).
+Every other key inside `trace` that is not in the table above is forwarded as `metadata_<key>` (e.g. `feature` → `metadata_feature`).
 
-> **Depth cap:** Custom property values are limited to 3 levels of nesting. Values nested
-> deeper than 3 levels are replaced with `'[truncated]'`. This keeps event payloads compact
-> and PostHog parse latency low.
+> **Depth cap:** Custom property values are limited to 3 levels of nesting. Values nested deeper than 3 levels are replaced with `'[truncated]'`. This keeps event payloads compact and PostHog parse latency low.
 
 ### Example
 

@@ -231,10 +231,7 @@ For SSE (Server-Sent Events) streams, OpenRouter occasionally sends comments to 
 Comment payload can be safely ignored per the [SSE specs](https://html.spec.whatwg.org/multipage/server-sent-events.html#event-stream-interpretation). However, you can use it to improve UX as needed, e.g. by showing a dynamic loading indicator.
 
 <Warning>
-  If you parse the stream by hand, skip lines that start with `:` before
-  calling `JSON.parse`. Passing a comment line like `: OPENROUTER PROCESSING`
-  to `JSON.parse` throws, and unhandled it will crash your stream loop. The
-  snippets above handle this.
+  If you parse the stream by hand, skip lines that start with `:` before calling `JSON.parse`. Passing a comment line like `: OPENROUTER PROCESSING` to `JSON.parse` throws, and unhandled it will crash your stream loop. The snippets above handle this.
 </Warning>
 
 A spec-compliant parser such as [eventsource-parser](https://github.com/rexxars/eventsource-parser) handles comments, multi-line `data:` fields, and buffering for you:
@@ -457,9 +454,7 @@ MODEL: Model.GPT_4_Omni
 </Template>
 
 <Warning>
-  Cancellation only works for streaming requests with supported providers. For
-  non-streaming requests or unsupported providers, the model will continue
-  processing and you will be billed for the complete response.
+  Cancellation only works for streaming requests with supported providers. For non-streaming requests or unsupported providers, the model will continue processing and you will be billed for the complete response.
 </Warning>
 
 ### Handling errors during streaming

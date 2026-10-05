@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 505 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 506 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -401,6 +401,7 @@
 - `docs/guides/features/broadcast/braintrust` — [Braintrust](pages/docs/guides/features/broadcast/braintrust.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/braintrust.md)
 - `docs/guides/features/broadcast/clickhouse` — [ClickHouse](pages/docs/guides/features/broadcast/clickhouse.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/clickhouse.md)
 - `docs/guides/features/broadcast/datadog` — [Datadog](pages/docs/guides/features/broadcast/datadog.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/datadog.md)
+- `docs/guides/features/broadcast/elastic` — [Elastic Observability](pages/docs/guides/features/broadcast/elastic.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/elastic.md)
 - `docs/guides/features/broadcast/grafana` — [Grafana Cloud](pages/docs/guides/features/broadcast/grafana.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/grafana.md)
 - `docs/guides/features/broadcast/langfuse` — [Langfuse](pages/docs/guides/features/broadcast/langfuse.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/langfuse.md)
 - `docs/guides/features/broadcast/langsmith` — [LangSmith](pages/docs/guides/features/broadcast/langsmith.md) · [原文](https://openrouter.ai/docs/guides/features/broadcast/langsmith.md)

@@ -27,12 +27,9 @@ export const CopyPromptButton = ({prompt, buttonLabel = "Copy prompt"}) => {
     </div>;
 };
 
-Use this guide when you need to add video model selection based on the clip
-your app needs to generate.
+Use this guide when you need to add video model selection based on the clip your app needs to generate.
 
-By the end, your implementation should have a small model-selection helper that
-filters models by capability and scores them by priority before submitting a
-video job.
+By the end, your implementation should have a small model-selection helper that filters models by capability and scores them by priority before submitting a video job.
 
 <Tip>
   Not sure what model to use? Copy this prompt to run a model-selection process.
@@ -77,10 +74,8 @@ After I answer, run this model-selection process:
 You need:
 
 * Node.js 20 or newer
-* An OpenRouter API key available as `OPENROUTER_API_KEY` only if you submit
-  the optional generation request
-* A stable, directly downloadable image URL if you test an image-to-video
-  request
+* An OpenRouter API key available as `OPENROUTER_API_KEY` only if you submit the optional generation request
+* A stable, directly downloadable image URL if you test an image-to-video request
 
 Use the API reference pages as the source of truth for exact fields:
 
@@ -89,9 +84,7 @@ Use the API reference pages as the source of truth for exact fields:
 * [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README)
 
 <Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may
-  spend OpenRouter credits. Use the model-selection and request-preview steps
-  first, then submit only when the request is ready.
+  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits. Use the model-selection and request-preview steps first, then submit only when the request is ready.
 </Warning>
 
 ## Step 1: Fetch the video model list
@@ -131,23 +124,13 @@ Actual output from the model-list call:
 ]
 ```
 
-Each model includes the values you need for routing decisions. Use the
-[List video generation models API
-reference](/docs/api/api-reference/video-generation/list-all-video-generation-models) as the
-source of truth for the endpoint response and model metadata fields. If your app
-uses the TypeScript SDK, see the generated [`listVideosModels` SDK
-reference](/docs/client-sdks/typescript/sdks/videogeneration/README#listvideosmodels)
-for the SDK method shape.
+Each model includes the values you need for routing decisions. Use the [List video generation models API reference](/docs/api/api-reference/video-generation/list-all-video-generation-models) as the source of truth for the endpoint response and model metadata fields. If your app uses the TypeScript SDK, see the generated [`listVideosModels` SDK reference](/docs/client-sdks/typescript/sdks/videogeneration/README#listvideosmodels) for the SDK method shape.
 
 ## Step 2: Filter by the job you want to run
 
-Start by translating the product request into model requirements: clip length,
-output shape, generation mode, audio, deterministic retries, provider-specific
-controls, and cost. Use the API reference above for the exact metadata fields to
-inspect before filtering.
+Start by translating the product request into model requirements: clip length, output shape, generation mode, audio, deterministic retries, provider-specific controls, and cost. Use the API reference above for the exact metadata fields to inspect before filtering.
 
-For example, this helper finds models that can generate a 720p, vertical,
-image-to-video clip with first-frame support:
+For example, this helper finds models that can generate a 720p, vertical, image-to-video clip with first-frame support:
 
 ```js expandable lines theme={null}
 function findVideoModels(models) {
@@ -229,14 +212,11 @@ Example output:
 ]
 ```
 
-At this point, you have models that satisfy the hard requirements. Score the
-matching set before selecting one.
+At this point, you have models that satisfy the hard requirements. Score the matching set before selecting one.
 
 ## Step 3: Score the matching models by priority
 
-Use weighted priorities to make the final choice. For example, a draft workflow
-might prioritize speed and cost, while a production render might prioritize
-quality and cost:
+Use weighted priorities to make the final choice. For example, a draft workflow might prioritize speed and cost, while a production render might prioritize quality and cost:
 
 ```js expandable lines theme={null}
 const priorityProfiles = {
@@ -438,18 +418,11 @@ Actual output from the scoring helper:
 Use bytedance/seedance-2.0-fast
 ```
 
-Pick the model that best fits your product needs after capability matching.
-For example, you might prefer the lowest compatible price, audio support, seed
-support, provider-specific controls, a specific provider, or a known latency
-profile. The speed score is a slug-based heuristic, and the quality score uses
-resolution support as a proxy. Pricing SKU units can differ by provider, so
-treat the helper as a quick starting point and inspect the matching model's
-`pricing_skus` before routing production traffic.
+Pick the model that best fits your product needs after capability matching. For example, you might prefer the lowest compatible price, audio support, seed support, provider-specific controls, a specific provider, or a known latency profile. The speed score is a slug-based heuristic, and the quality score uses resolution support as a proxy. Pricing SKU units can differ by provider, so treat the helper as a quick starting point and inspect the matching model's `pricing_skus` before routing production traffic.
 
 ## Step 4: Preview the generation request
 
-Before submitting, have the implementation build the exact request body it will
-send. This makes capability mismatches visible before starting a paid job:
+Before submitting, have the implementation build the exact request body it will send. This makes capability mismatches visible before starting a paid job:
 
 ```js expandable lines theme={null}
 const firstFrameUrl = process.env.FIRST_FRAME_URL;
@@ -479,8 +452,7 @@ const requestBody = {
 console.log(JSON.stringify(requestBody, null, 2));
 ```
 
-Before submitting, check that your image URL returns `200` with an image
-content type:
+Before submitting, check that your image URL returns `200` with an image content type:
 
 ```bash lines theme={null}
 curl -I "$FIRST_FRAME_URL"
@@ -518,8 +490,7 @@ if (!generation.ok) {
 console.log(await generation.json());
 ```
 
-The submission response contains the job `id`, `polling_url`, and an initial
-status. In a completed run, that submitted job later reached this final state:
+The submission response contains the job `id`, `polling_url`, and an initial status. In a completed run, that submitted job later reached this final state:
 
 ```json lines theme={null}
 {
@@ -532,9 +503,5 @@ status. In a completed run, that submitted job later reached this final state:
 
 ## Check your work
 
-Before submission, you should see a request body whose model supports every
-capability you filtered for. If you submit the request, you should see a
-response with a video job `id`, a `polling_url`, and an initial status such as
-`pending`. To wait for the playable MP4, use the polling and download helper
-from [Generate and Download a Video from Text](/docs/cookbook/video-generation/text-to-video).
+Before submission, you should see a request body whose model supports every capability you filtered for. If you submit the request, you should see a response with a video job `id`, a `polling_url`, and an initial status such as `pending`. To wait for the playable MP4, use the polling and download helper from [Generate and Download a Video from Text](/docs/cookbook/video-generation/text-to-video).
 

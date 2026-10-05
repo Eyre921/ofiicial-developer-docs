@@ -14,8 +14,7 @@ path: docs/cookbook/video-generation/text-to-video
 
 Use this guide when you need to add text-to-video generation to an app with OpenRouter.
 
-By the end, your implementation should submit a video job, poll for completion,
-and download the generated MP4.
+By the end, your implementation should submit a video job, poll for completion, and download the generated MP4.
 
 <Tip>
   For reusable agent knowledge across projects, install the [openrouter-video skill](https://github.com/OpenRouterTeam/skills/tree/main/skills/openrouter-video).
@@ -30,10 +29,7 @@ You need:
 * A video model slug, such as `google/veo-3.1-lite`
 
 <Tip>
-  If you haven't chosen a model yet, read
-  [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model)
-  first. It helps you pick one based on clip duration, output shape, input
-  type, audio, provider controls, and cost.
+  If you haven't chosen a model yet, read [Choose a Video Generation Model](/docs/cookbook/video-generation/choose-video-model) first. It helps you pick one based on clip duration, output shape, input type, audio, provider controls, and cost.
 </Tip>
 
 Use the API reference pages as the source of truth for exact fields:
@@ -42,9 +38,7 @@ Use the API reference pages as the source of truth for exact fields:
 * [List video generation models](/docs/api/api-reference/video-generation/list-all-video-generation-models)
 * [TypeScript SDK video generation reference](/docs/client-sdks/typescript/sdks/videogeneration/README)
 
-Before wiring the submit path, confirm that the selected model supports the
-duration, resolution, and aspect ratio you plan to send. For example, the model
-used below returned this metadata during QA:
+Before wiring the submit path, confirm that the selected model supports the duration, resolution, and aspect ratio you plan to send. For example, the model used below returned this metadata during QA:
 
 ```bash lines theme={null}
 node --input-type=module <<'EOF'
@@ -78,21 +72,14 @@ Model metadata output:
 ```
 
 <Warning>
-  Submitting `POST /api/v1/videos` starts a real video generation job and may
-  spend OpenRouter credits.
+  Submitting `POST /api/v1/videos` starts a real video generation job and may spend OpenRouter credits.
 </Warning>
 
 ## Step 1: Submit the video job
 
-Add a server-side submit step that sends `POST /api/v1/videos` with the chosen
-model, prompt, duration, resolution, and aspect ratio. Store the returned job
-object because the next step needs its `id`, `status`, and `polling_url`.
-Validate those values against the selected model's supported fields from the
-[video models API](/docs/api/api-reference/video-generation/list-all-video-generation-models)
-before submitting. Unsupported values return a 400 with the supported values.
+Add a server-side submit step that sends `POST /api/v1/videos` with the chosen model, prompt, duration, resolution, and aspect ratio. Store the returned job object because the next step needs its `id`, `status`, and `polling_url`. Validate those values against the selected model's supported fields from the [video models API](/docs/api/api-reference/video-generation/list-all-video-generation-models) before submitting. Unsupported values return a 400 with the supported values.
 
-Adapt this submit shape in the server route, queue, or worker that owns video
-generation:
+Adapt this submit shape in the server route, queue, or worker that owns video generation:
 
 ```ts expandable lines theme={null}
 const apiKey = process.env.OPENROUTER_API_KEY;
@@ -143,9 +130,7 @@ Submitted video job: y34x1YREG4Pkdcj7f02v
 
 ## Step 2: Poll until the job finishes
 
-Add polling in a server route, queue worker, or background job. Treat
-`completed` as success. Treat `failed`, `cancelled`, and `expired` as terminal
-errors, and keep a bounded retry limit so the worker can't run forever.
+Add polling in a server route, queue worker, or background job. Treat `completed` as success. Treat `failed`, `cancelled`, and `expired` as terminal errors, and keep a bounded retry limit so the worker can't run forever.
 
 Polling logic:
 
@@ -197,13 +182,9 @@ Status: completed
 
 ## Step 3: Download the video
 
-When polling returns `completed`, download the first generated asset. The
-content endpoint is the most direct path; if you use a URL from
-`unsigned_urls`, include the bearer token when the URL points back to the
-OpenRouter API.
+When polling returns `completed`, download the first generated asset. The content endpoint is the most direct path; if you use a URL from `unsigned_urls`, include the bearer token when the URL points back to the OpenRouter API.
 
-In Node.js, import `writeFile` from `node:fs/promises` or replace the file write
-with the storage layer your app uses.
+In Node.js, import `writeFile` from `node:fs/promises` or replace the file write with the storage layer your app uses.
 
 ```ts lines theme={null}
 const videoResponse = await fetch(
@@ -229,8 +210,7 @@ The QA run saved the finished video after polling completed:
 Saved greenhouse.mp4
 ```
 
-If your completed job includes `unsigned_urls`, this is the adaptable download
-shape:
+If your completed job includes `unsigned_urls`, this is the adaptable download shape:
 
 ```ts lines theme={null}
 const videoUrl = status.unsigned_urls?.[0];
@@ -256,9 +236,7 @@ console.log("Saved greenhouse.mp4");
 
 ## Step 4: Put the sequence in your app
 
-Keep the submit, poll, and download steps in the part of your app that owns
-long-running work. This complete example keeps the pieces together so you can
-adapt the sequence into a server route, queue, or worker:
+Keep the submit, poll, and download steps in the part of your app that owns long-running work. This complete example keeps the pieces together so you can adapt the sequence into a server route, queue, or worker:
 
 ```ts expandable lines theme={null}
 import { writeFile } from "node:fs/promises";
@@ -358,6 +336,5 @@ console.log("Saved greenhouse.mp4");
 
 ## Check your work
 
-The job should move from `pending` or `in_progress` to `completed`, and the
-implementation should produce a playable MP4 from the completed job.
+The job should move from `pending` or `in_progress` to `completed`, and the implementation should produce a playable MP4 from the completed job.
 

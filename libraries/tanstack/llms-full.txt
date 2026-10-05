@@ -28,7 +28,7 @@ This file routes agents to the smallest useful TanStack docs source. Fetch the l
 ## Performance docs
 
 - [TanStack Virtual](https://tanstack.com/virtual/latest/llms.txt): Headless UI for Virtualizing Large Element Lists. Frameworks: React, Solid, Vue, Svelte, Lit, Angular, Marko. Packages: @tanstack/virtual-core, react-virtual. GitHub: https://github.com/tanstack/virtual.
-- [TanStack Pacer](https://tanstack.com/pacer/latest/llms.txt): Framework agnostic debouncing, throttling, rate limiting, queuing, and batching utilities. Frameworks: React, Preact, Solid, Angular, Vanilla. Packages: @tanstack/pacer, @tanstack/pacer-lite. GitHub: https://github.com/tanstack/pacer.
+- [TanStack Pacer](https://tanstack.com/pacer/latest/llms.txt): Framework agnostic debouncing, throttling, rate limiting, queuing, and batching utilities. Frameworks: React, Preact, Solid, Angular, Vue, Svelte, Lit, Alpine, Ember, Octane, Vanilla. Packages: @tanstack/pacer, @tanstack/pacer-lite. GitHub: https://github.com/tanstack/pacer.
 
 ## Tooling docs
 

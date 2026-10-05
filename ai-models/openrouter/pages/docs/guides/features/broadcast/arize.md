@@ -46,8 +46,7 @@ Click **Test Connection** to verify the setup. The configuration only saves if t
 
 ## Step 5: Send a test trace
 
-Make an API request through OpenRouter and view the trace in your Arize AX
-dashboard under the specified project.
+Make an API request through OpenRouter and view the trace in your Arize AX dashboard under the specified project.
 
 <Frame>
   <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/guides/features/broadcast/arize/broadcast-arize-trace.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=ee2f7a77436f592e546a33590c5a1c22" alt="Arize Trace View" width="3372" height="2064" data-path="assets/guides/features/broadcast/arize/broadcast-arize-trace.png" />

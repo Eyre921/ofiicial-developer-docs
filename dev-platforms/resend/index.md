@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 409 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 410 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -234,6 +234,7 @@
 - `docs/email-best-practices-skill` — [Email Best Practices Skill](pages/docs/email-best-practices-skill.md) · [原文](https://resend.com/docs/email-best-practices-skill)
 - `docs/email-types` — [Sending emails with Resend](pages/docs/email-types.md) · [原文](https://resend.com/docs/email-types)
 - `docs/examples` — [Examples](pages/docs/examples.md) · [原文](https://resend.com/docs/examples)
+- `docs/guides/attio-integration` — [Send emails with Attio and Resend](pages/docs/guides/attio-integration.md) · [原文](https://resend.com/docs/guides/attio-integration)
 - `docs/guides/building-a-resend-oauth-client` — [Building an OAuth client for Resend](pages/docs/guides/building-a-resend-oauth-client.md) · [原文](https://resend.com/docs/guides/building-a-resend-oauth-client)
 - `docs/guides/devin` — [Send emails with Devin and Resend](pages/docs/guides/devin.md) · [原文](https://resend.com/docs/guides/devin)
 - `docs/guides/paper` — [Turn Paper designs into Resend emails](pages/docs/guides/paper.md) · [原文](https://resend.com/docs/guides/paper)

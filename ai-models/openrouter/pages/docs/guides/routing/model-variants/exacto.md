@@ -88,8 +88,7 @@ Add `:exacto` to the end of any supported model slug. This is a shortcut for set
 </CodeGroup>
 
 <Tip>
-  You can still supply fallback models with the `models` array. Any model that
-  carries the `:exacto` suffix will request Exacto sorting when it is selected.
+  You can still supply fallback models with the `models` array. Any model that carries the `:exacto` suffix will request Exacto sorting when it is selected.
 </Tip>
 
 ## What is the Exacto variant?
@@ -136,7 +135,6 @@ In practice, Exacto is most useful on models that:
 * Show meaningful provider variance in tool-use reliability
 
 <Note>
-  If you have feedback on the Exacto variant, please fill out this form:
-  [https://openrouter.notion.site/2932fd57c4dc8097ba74ffb6d27f39d1?pvs=105](https://openrouter.notion.site/2932fd57c4dc8097ba74ffb6d27f39d1?pvs=105)
+  If you have feedback on the Exacto variant, please fill out this form: [https://openrouter.notion.site/2932fd57c4dc8097ba74ffb6d27f39d1?pvs=105](https://openrouter.notion.site/2932fd57c4dc8097ba74ffb6d27f39d1?pvs=105)
 </Note>
 

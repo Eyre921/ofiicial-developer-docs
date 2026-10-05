@@ -41,8 +41,7 @@ Each iteration yields a small chunk of text (typically a few characters or a wor
 
 ### getReasoningStream()
 
-For models that support reasoning (like o1 or Claude with thinking), stream the
-reasoning process:
+For models that support reasoning (like o1 or Claude with thinking), stream the reasoning process:
 
 ```typescript lines theme={null}
 const result = openrouter.callModel({
@@ -64,11 +63,7 @@ console.log(text);
 
 ### getItemsStream()
 
-Stream complete items as they update. This is the **recommended way** to handle
-streaming when you need structured access to all output types (messages, tool
-calls, reasoning, etc.). See
-[Working with Items](/docs/agent-sdk/call-model/items) for the full
-paradigm explanation.
+Stream complete items as they update. This is the **recommended way** to handle streaming when you need structured access to all output types (messages, tool calls, reasoning, etc.). See [Working with Items](/docs/agent-sdk/call-model/items) for the full paradigm explanation.
 
 ```typescript expandable lines theme={null}
 import type { StreamableOutputItem } from '@openrouter/agent';
@@ -97,8 +92,7 @@ for await (const item of result.getItemsStream()) {
 }
 ```
 
-**Key insight**: Each iteration yields a **complete item** with the same ID but
-updated content. Replace items by ID rather than accumulating deltas.
+**Key insight**: Each iteration yields a **complete item** with the same ID but updated content. Replace items by ID rather than accumulating deltas.
 
 This stream yields all item types:
 
@@ -117,8 +111,7 @@ This stream yields all item types:
 ### getNewMessagesStream()
 
 <Warning>
-  `getNewMessagesStream()` is deprecated. Use `getItemsStream()` instead, which
-  includes all item types and follows the items-based paradigm.
+  `getNewMessagesStream()` is deprecated. Use `getItemsStream()` instead, which includes all item types and follows the items-based paradigm.
 </Warning>
 
 Stream cumulative message snapshots in the OpenResponses format:
@@ -143,8 +136,7 @@ for await (const message of result.getNewMessagesStream()) {
 This stream yields:
 
 * `ResponsesOutputMessage` - Assistant text/content updates
-* `OpenResponsesFunctionCallOutput` - Tool execution results (after tools
-  complete)
+* `OpenResponsesFunctionCallOutput` - Tool execution results (after tools complete)
 
 ## Full Event Streaming
 
@@ -380,8 +372,6 @@ app.get('/stream', (c) => {
 
 ## Next Steps
 
-* **[Working with Items](/docs/agent-sdk/call-model/items)** - Understand
-  the items-based streaming paradigm
-* **[Tools](/docs/agent-sdk/call-model/tools)** - Create tools and
-  multi-turn streaming with tools
+* **[Working with Items](/docs/agent-sdk/call-model/items)** - Understand the items-based streaming paradigm
+* **[Tools](/docs/agent-sdk/call-model/tools)** - Create tools and multi-turn streaming with tools
 

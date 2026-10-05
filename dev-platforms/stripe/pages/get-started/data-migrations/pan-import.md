@@ -90,7 +90,7 @@ Update your site’s process for handling updates to saved payments to prevent e
 2. Attach the payment method to the `Customer` object.
 3. If necessary, [migrate subscriptions](https://docs.stripe.com/billing/subscriptions/import-subscriptions-toolkit.md).
 
-After migration completes, Stripe [automatically handles card-triggered updates](https://stripe.com/blog/smarter-saved-cards), such as expiration date changes.
+After migration completes, Stripe [automatically handles card-triggered updates](https://docs.stripe.com/payments/cards/overview.md#automatic-card-updates), such as expiration date changes.
 
 ## Test your Stripe integration
 

@@ -59,10 +59,7 @@ export const API_KEY_REF = '<OPENROUTER_API_KEY>';
 
   Server tools are currently in beta. The API and behavior may change.
 
-  The shell tool is available on the global endpoint (`openrouter.ai`) only.
-  Requests through the
-  [in-region endpoints](/docs/guides/features/in-region-routing)
-  (`eu.openrouter.ai`, `us.openrouter.ai`) are rejected.
+  The shell tool is available on the global endpoint (`openrouter.ai`) only. Requests through the [in-region endpoints](/docs/guides/features/in-region-routing) (`eu.openrouter.ai`, `us.openrouter.ai`) are rejected.
 </Note>
 
 <Warning>

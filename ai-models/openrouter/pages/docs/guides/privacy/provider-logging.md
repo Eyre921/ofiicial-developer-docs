@@ -81,8 +81,7 @@ Wherever possible, OpenRouter works with providers to ensure that prompts will n
 <Tip>
   **Data Policy Filtering**
 
-  You can [restrict individual requests](/docs/guides/routing/provider-selection#requiring-providers-to-comply-with-data-policies)
-  to only use providers with a certain data policy.
+  You can [restrict individual requests](/docs/guides/routing/provider-selection#requiring-providers-to-comply-with-data-policies) to only use providers with a certain data policy.
 
   This is also available as an account-wide setting in [your privacy settings](https://openrouter.ai/settings/privacy).
 </Tip>

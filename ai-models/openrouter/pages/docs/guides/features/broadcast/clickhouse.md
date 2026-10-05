@@ -155,8 +155,7 @@ ORDER BY total_cost DESC;
 
 ### Accessing JSON columns
 
-ClickHouse stores JSON data as strings. Use `JSONExtract` functions to query
-nested fields:
+ClickHouse stores JSON data as strings. Use `JSONExtract` functions to query nested fields:
 
 ```sql lines theme={null}
 SELECT

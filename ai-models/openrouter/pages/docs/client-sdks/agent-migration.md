@@ -12,28 +12,20 @@ path: docs/client-sdks/agent-migration
 
 > Move agent toolkit imports from @openrouter/sdk to the standalone @openrouter/agent package
 
-The agent toolkit (`callModel`, `tool`, stop conditions, etc.)
-has moved from `@openrouter/sdk` to a standalone
-**`@openrouter/agent`** package. The agent package includes
-its own `OpenRouter` client class, so you no longer need
-`@openrouter/sdk` as a dependency for agent workflows.
+The agent toolkit (`callModel`, `tool`, stop conditions, etc.) has moved from `@openrouter/sdk` to a standalone **`@openrouter/agent`** package. The agent package includes its own `OpenRouter` client class, so you no longer need `@openrouter/sdk` as a dependency for agent workflows.
 
 ## Who needs to migrate?
 
-You need to migrate if your code imports any of the following
-from `@openrouter/sdk`:
+You need to migrate if your code imports any of the following from `@openrouter/sdk`:
 
 * `callModel` / `ModelResult`
 * `tool` / `Tool` / tool type guards
 * Stop conditions (`stepCountIs`, `hasToolCall`, etc.)
 * Async parameters (`CallModelInput`, `resolveAsyncFunctions`)
 * Conversation state helpers
-* Message format converters (`fromClaudeMessages`,
-  `fromChatMessages`, etc.)
+* Message format converters (`fromClaudeMessages`, `fromChatMessages`, etc.)
 
-If you only use the REST API client for non-agent features
-(`client.chat.send(...)`, `client.models.list()`, etc.),
-**no changes are needed**.
+If you only use the REST API client for non-agent features (`client.chat.send(...)`, `client.models.list()`, etc.), **no changes are needed**.
 
 ## Step 1: Install the new package
 
@@ -61,14 +53,11 @@ If you only use the REST API client for non-agent features
 
 ## Step 2: Update imports
 
-Replace `@openrouter/sdk` subpath imports with
-the equivalent `@openrouter/agent` subpath.
+Replace `@openrouter/sdk` subpath imports with the equivalent `@openrouter/agent` subpath.
 
 ### Client class
 
-`@openrouter/agent` ships its own `OpenRouter` client, so
-you can drop the `@openrouter/sdk` dependency entirely if
-you only use agent features:
+`@openrouter/agent` ships its own `OpenRouter` client, so you can drop the `@openrouter/sdk` dependency entirely if you only use agent features:
 
 ```diff lines theme={null}
 - import OpenRouter from '@openrouter/sdk';
@@ -149,8 +138,7 @@ import { OpenRouter } from '@openrouter/agent/openrouter';
 
 ### Conversation state and message formats
 
-Conversation helpers and message format converters are
-available from the package barrel:
+Conversation helpers and message format converters are available from the package barrel:
 
 ```diff lines theme={null}
 - import {
@@ -169,8 +157,7 @@ available from the package barrel:
 
 ## Step 3: Verify your build
 
-Run your type checker and tests to confirm everything
-resolves correctly:
+Run your type checker and tests to confirm everything resolves correctly:
 
 ```bash lines theme={null}
 npx tsc --noEmit
@@ -192,14 +179,7 @@ npm test
 
 ## Automated migration
 
-The script below handles **subpath imports** automatically.
-Barrel imports (`from '@openrouter/sdk'`) and client class
-imports (`import OpenRouter from '@openrouter/sdk'`) must
-be updated **manually**. A blanket replacement on the bare
-package name would also match subpath imports and break
-your code. See the [Client class](#client-class) and
-[Conversation state](#conversation-state-and-message-formats)
-sections above for the correct replacements.
+The script below handles **subpath imports** automatically. Barrel imports (`from '@openrouter/sdk'`) and client class imports (`import OpenRouter from '@openrouter/sdk'`) must be updated **manually**. A blanket replacement on the bare package name would also match subpath imports and break your code. See the [Client class](#client-class) and [Conversation state](#conversation-state-and-message-formats) sections above for the correct replacements.
 
 ```bash lines theme={null}
 # Using sed (macOS)
@@ -224,28 +204,18 @@ find src -name '*.ts' -o -name '*.tsx' | xargs sed -i \
 ```
 
 <Note>
-  The `tool-types` replacement runs before `tool` to avoid
-  partial matches. After running the script, search your
-  codebase for any remaining `from '@openrouter/sdk'` (without
-  a `/` subpath) to find barrel and client imports that need
-  manual updates.
+  The `tool-types` replacement runs before `tool` to avoid partial matches. After running the script, search your codebase for any remaining `from '@openrouter/sdk'` (without a `/` subpath) to find barrel and client imports that need manual updates.
 </Note>
 
 ## FAQ
 
 ### Do I still need `@openrouter/sdk`?
 
-Only if you use non-agent REST API features like
-`client.models.list()`, `client.credits.get()`, or
-`client.chat.send()`. If your code only uses `callModel`,
-tools, and the agent client, you can remove
-`@openrouter/sdk` entirely.
+Only if you use non-agent REST API features like `client.models.list()`, `client.credits.get()`, or `client.chat.send()`. If your code only uses `callModel`, tools, and the agent client, you can remove `@openrouter/sdk` entirely.
 
 ### Can I use both packages together?
 
-Yes. They are designed to work side by side. Use
-`@openrouter/sdk` for REST API features and
-`@openrouter/agent` for the agent toolkit:
+Yes. They are designed to work side by side. Use `@openrouter/sdk` for REST API features and `@openrouter/agent` for the agent toolkit:
 
 ```typescript lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -255,12 +225,9 @@ import { tool } from '@openrouter/agent/tool';
 
 ### Will the old imports keep working?
 
-The agent exports will be removed from `@openrouter/sdk`
-in a future major version. Update your imports now to
-avoid a breaking change later.
+The agent exports will be removed from `@openrouter/sdk` in a future major version. Update your imports now to avoid a breaking change later.
 
 ### Do I need to change my API key or configuration?
 
-No. `@openrouter/agent` uses the same API key and
-endpoints. No server-side changes are required.
+No. `@openrouter/agent` uses the same API key and endpoints. No server-side changes are required.
 

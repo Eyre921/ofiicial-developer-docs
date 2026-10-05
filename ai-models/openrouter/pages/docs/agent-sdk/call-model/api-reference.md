@@ -57,8 +57,7 @@ Creates a response using the OpenResponses API with multiple consumption pattern
 | `context` | `ContextInput<ToolContextMap>` | No | Tool context keyed by tool name |
 | `hooks` | `InlineHookConfig \| HooksManager` | No | Agent lifecycle hooks |
 
-See [Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks) for hook payloads,
-results, and manager APIs.
+See [Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks) for hook payloads, results, and manager APIs.
 
 \*Either `model` or `models` is required.
 
@@ -173,8 +172,7 @@ Stream tool deltas and preliminary results.
 getContextUpdates(): AsyncGenerator<ToolContextMap<TTools>>
 ```
 
-Stream context snapshots whenever a tool calls
-`setContext()`. Completes when tool execution finishes.
+Stream context snapshots whenever a tool calls `setContext()`. Completes when tool execution finishes.
 
 #### cancel()
 
@@ -355,8 +353,7 @@ interface TurnContext {
 
 ### ToolExecuteContext
 
-Flat context passed to tool execute functions.
-Merges `TurnContext` fields with tool-specific context:
+Flat context passed to tool execute functions. Merges `TurnContext` fields with tool-specific context:
 
 ```typescript lines theme={null}
 type ToolExecuteContext<TName, TContext> =
@@ -370,8 +367,7 @@ type ToolExecuteContext<TName, TContext> =
 
 ### ToolContextMap
 
-Context map for `callModel`'s `context` option,
-keyed by tool name:
+Context map for `callModel`'s `context` option, keyed by tool name:
 
 ```typescript lines theme={null}
 type ToolContextMap<T extends readonly Tool[]> = {
@@ -382,8 +378,7 @@ type ToolContextMap<T extends readonly Tool[]> = {
 
 ### ContextInput
 
-Context can be static, a sync function,
-or an async function:
+Context can be static, a sync function, or an async function:
 
 ```typescript lines theme={null}
 type ContextInput<T> =

@@ -27,11 +27,9 @@ export const CopyPromptButton = ({prompt, buttonLabel = "Copy prompt"}) => {
     </div>;
 };
 
-**Goal:** Learn the fundamentals of OpenRouter by building a TypeScript chat
-app that sends messages and streams responses through OpenRouter.
+**Goal:** Learn the fundamentals of OpenRouter by building a TypeScript chat app that sends messages and streams responses through OpenRouter.
 
-**Outcome:** A working multi-turn conversation loop that can talk to any of the
-600+ models available on the platform by changing a single string.
+**Outcome:** A working multi-turn conversation loop that can talk to any of the 600+ models available on the platform by changing a single string.
 
 <Tip>
   Want to get started faster? Copy this prompt into your coding agent.
@@ -143,15 +141,11 @@ chatRequest wrapper, streaming delta chunks, and camelCase usage fields.`}
 ## Prerequisites
 
 * **Node.js 18+** installed
-* An **OpenRouter API key**. Create one at
-  [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) or set up
-  a new [Stripe project](/docs/guides/overview/stripe-projects)
+* An **OpenRouter API key**. Create one at [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) or set up a new [Stripe project](/docs/guides/overview/stripe-projects)
 
 ## 1. Create a project and install the SDK
 
-Set up a new Node.js project and add the OpenRouter client SDK. The SDK is
-ESM-only, so set the package type to `module`. Install `tsx` so you can run the
-TypeScript examples directly.
+Set up a new Node.js project and add the OpenRouter client SDK. The SDK is ESM-only, so set the package type to `module`. Install `tsx` so you can run the TypeScript examples directly.
 
 ```bash lines theme={null}
 mkdir openrouter-chat && cd openrouter-chat
@@ -163,8 +157,7 @@ npm install --save-dev tsx
 
 ## 2. Send your first message
 
-Create `chat.ts` with a client instance and a single chat completion request.
-The `apiKey` reads from the environment so you never hard-code credentials.
+Create `chat.ts` with a client instance and a single chat completion request. The `apiKey` reads from the environment so you never hard-code credentials.
 
 ```typescript lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -195,17 +188,11 @@ Run it with your API key:
 OPENROUTER_API_KEY=sk-or-v1-... npx tsx chat.ts
 ```
 
-You should see a single text response printed to the console. The SDK returns
-token usage in camelCase fields such as `promptTokens` and
-`completionTokens`. The
-`completion.choices` array follows the same shape as the
-[Chat Completions response](/docs/api/api-reference/chat/create-a-chat-completion).
+You should see a single text response printed to the console. The SDK returns token usage in camelCase fields such as `promptTokens` and `completionTokens`. The `completion.choices` array follows the same shape as the [Chat Completions response](/docs/api/api-reference/chat/create-a-chat-completion).
 
 ## 3. Stream the response
 
-Streaming returns text as it is generated instead of waiting for the full
-response. Pass `stream: true` and iterate over the returned async iterable.
-Each chunk contains a `delta` with the new text fragment.
+Streaming returns text as it is generated instead of waiting for the full response. Pass `stream: true` and iterate over the returned async iterable. Each chunk contains a `delta` with the new text fragment.
 
 ```typescript expandable lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -231,14 +218,11 @@ for await (const chunk of stream) {
 console.log();
 ```
 
-Text now prints incrementally. See the [Streaming reference](/docs/api_reference/streaming)
-for the full SSE event format.
+Text now prints incrementally. See the [Streaming reference](/docs/api_reference/streaming) for the full SSE event format.
 
 ## 4. Add multi-turn conversation
 
-Multi-turn works by sending the full message history with each request. The
-model uses all previous messages as context. Append each user input and
-assistant response to a `messages` array before the next call.
+Multi-turn works by sending the full message history with each request. The model uses all previous messages as context. Append each user input and assistant response to a `messages` array before the next call.
 
 ```typescript expandable lines theme={null}
 import { OpenRouter } from '@openrouter/sdk';
@@ -291,13 +275,11 @@ function ask(): void {
 ask();
 ```
 
-Run the file and type messages. The model remembers prior turns because the
-full `messages` array is sent with each request. Type `exit` to quit.
+Run the file and type messages. The model remembers prior turns because the full `messages` array is sent with each request. Type `exit` to quit.
 
 ## 5. Swap models
 
-OpenRouter gives you access to hundreds of models through one API. Change the
-`model` string to switch providers, no other code changes needed.
+OpenRouter gives you access to hundreds of models through one API. Change the `model` string to switch providers, no other code changes needed.
 
 ```typescript lines theme={null}
 // Use OpenAI's latest chat model
@@ -310,25 +292,17 @@ model: '~anthropic/claude-sonnet-latest',
 model: 'openrouter/free',
 ```
 
-Browse all available models at [openrouter.ai/models](https://openrouter.ai/models)
-or query the [Models API](/docs/api/api-reference/models/list-all-models-and-their-properties)
-programmatically.
+Browse all available models at [openrouter.ai/models](https://openrouter.ai/models) or query the [Models API](/docs/api/api-reference/models/list-all-models-and-their-properties) programmatically.
 
 ## Check your work
 
 * `npx tsx chat.ts` prints a streamed response to the console
-* A multi-turn conversation maintains context across turns (ask a follow-up
-  that references a previous answer)
-* Changing the `model` string switches to a different provider with no other
-  code changes
-* The non-streaming response includes a `usage` object with `promptTokens`
-  and `completionTokens`
+* A multi-turn conversation maintains context across turns (ask a follow-up that references a previous answer)
+* Changing the `model` string switches to a different provider with no other code changes
+* The non-streaming response includes a `usage` object with `promptTokens` and `completionTokens`
 
 ## Next steps
 
-* Connect a
-  [coding agent](/docs/cookbook/coding-agents/claude-code-integration) to
-  OpenRouter
-* Explore the [Agent SDK](/docs/agent-sdk/overview) for built-in multi-turn
-  loops and tool execution
+* Connect a [coding agent](/docs/cookbook/coding-agents/claude-code-integration) to OpenRouter
+* Explore the [Agent SDK](/docs/agent-sdk/overview) for built-in multi-turn loops and tool execution
 

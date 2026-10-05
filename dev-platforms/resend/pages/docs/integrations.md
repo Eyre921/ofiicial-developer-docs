@@ -176,6 +176,10 @@ Integrate Resend with the tools you already use.
   <Card title="Softr" href="https://docs.softr.io/workflows/integrations/resend" icon={<SoftrIcon />}>
     Send emails from Softr apps and workflows
   </Card>
+
+  <Card title="Attio" href="/docs/guides/attio-integration" icon={<AttioIcon />}>
+    Send emails and add contacts to segments from Attio
+  </Card>
 </CardGroup>
 
 ## Notifications
@@ -299,6 +303,10 @@ Integrate Resend with the tools you already use.
 
   <Card title="Playrunner" href="https://playrunner.dev/docs/integration-packages/resend/" icon={<PlayrunnerIcon />}>
     Send and receive email in Playrunner workflows
+  </Card>
+
+  <Card title="Appwrite" href="https://appwrite.io/docs/products/messaging/resend" icon={<AppwriteIcon />}>
+    Send emails using Appwrite Messaging
   </Card>
 </CardGroup>
 

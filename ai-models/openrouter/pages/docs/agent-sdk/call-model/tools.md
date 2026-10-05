@@ -306,9 +306,7 @@ for await (const toolCall of result.getToolCallsStream()) {
 
 ## Execute Context
 
-Tool execute functions receive a flat context object as
-their second argument. It merges `TurnContext` fields
-with a `tools` map and a `setContext()` method:
+Tool execute functions receive a flat context object as their second argument. It merges `TurnContext` fields with a `tools` map and a `setContext()` method:
 
 ```typescript lines theme={null}
 const contextAwareTool = tool({
@@ -342,9 +340,7 @@ const contextAwareTool = tool({
 
 ## Tool Context
 
-Tools can declare a `contextSchema` to receive typed,
-persistent context data from the caller. Context is
-keyed by tool name and persists across turns.
+Tools can declare a `contextSchema` to receive typed, persistent context data from the caller. Context is keyed by tool name and persists across turns.
 
 ### Declaring contextSchema
 
@@ -397,8 +393,7 @@ const result = openrouter.callModel({
 
 ### Dynamic Context
 
-Use an async function for one-time initialization
-that needs to fetch data:
+Use an async function for one-time initialization that needs to fetch data:
 
 ```typescript lines theme={null}
 const result = openrouter.callModel({
@@ -417,17 +412,12 @@ const result = openrouter.callModel({
 ```
 
 <Note>
-  `resolveContext` runs once at turn 0 to seed the
-  context store. For per-turn mutations, use
-  `setContext()` inside your tool's `execute` function.
+  `resolveContext` runs once at turn 0 to seed the context store. For per-turn mutations, use `setContext()` inside your tool's `execute` function.
 </Note>
 
 ### Mutating Context with setContext
 
-Tools can update their own context using `setContext()`.
-Changes persist across turns via the shared store and
-are visible immediately. `context.local` is a live
-getter that always reads the latest values:
+Tools can update their own context using `setContext()`. Changes persist across turns via the shared store and are visible immediately. `context.local` is a live getter that always reads the latest values:
 
 ```typescript expandable lines theme={null}
 const authTool = tool({
@@ -457,8 +447,7 @@ const authTool = tool({
 
 ### Observing Context Changes
 
-Use `getContextUpdates()` on `ModelResult` to observe
-context mutations in real time:
+Use `getContextUpdates()` on `ModelResult` to observe context mutations in real time:
 
 ```typescript lines theme={null}
 const result = openrouter.callModel({
@@ -478,8 +467,7 @@ for await (const snapshot of result.getContextUpdates()) {
 
 ### Shared Context
 
-Use `sharedSchema` on `tool()` and `sharedContextSchema`
-on `callModel` to share typed state across tools:
+Use `sharedSchema` on `tool()` and `sharedContextSchema` on `callModel` to share typed state across tools:
 
 ```typescript expandable lines theme={null}
 const SharedContextSchema = z.object({
@@ -513,11 +501,7 @@ const result = openrouter.callModel({
 ```
 
 <Note>
-  `context.local` is scoped to one tool.
-  `context.shared` is visible to all tools and persists
-  across turns. Pass the same `sharedSchema` to each tool
-  for typed access, and `sharedContextSchema` to
-  `callModel` for runtime validation.
+  `context.local` is scoped to one tool. `context.shared` is visible to all tools and persists across turns. Pass the same `sharedSchema` to each tool for typed access, and `sharedContextSchema` to `callModel` for runtime validation.
 </Note>
 
 ## Tool Execution
@@ -993,10 +977,8 @@ const longRunningTool = tool({
 
 ## Next Steps
 
-* **[Async Tools](/docs/agent-sdk/call-model/async-tools)** - Background and deferred
-  execution, task check-ins, steering, and subagent tools
-* **[Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks)** - Observe or
-  control tool execution, approvals, prompts, and sessions
+* **[Async Tools](/docs/agent-sdk/call-model/async-tools)** - Background and deferred execution, task check-ins, steering, and subagent tools
+* **[Lifecycle Hooks](/docs/agent-sdk/call-model/lifecycle-hooks)** - Observe or control tool execution, approvals, prompts, and sessions
 * **[Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state)** - Human-in-the-loop approval and conversation persistence
 * **[nextTurnParams](/docs/agent-sdk/call-model/next-turn-params)** - Tool-driven context injection
 * **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions)** - Advanced execution control

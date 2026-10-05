@@ -1367,11 +1367,25 @@ components:
       type: object
     BatchProviderPreferences:
       additionalProperties: false
-      description: Batch provider routing preferences. Only `provider.only` is supported.
+      description: >-
+        Batch provider routing preferences. Only `provider.only` and
+        `provider.allow_fallbacks` are supported.
       example:
         only:
           - google-vertex
       properties:
+        allow_fallbacks:
+          description: >
+            Whether to allow backup providers to serve requests
+
+            - true: (default) when the primary provider (or your custom
+            providers in "order") is unavailable, use the next best provider.
+
+            - false: use only the primary/custom provider, and return the
+            upstream error if it's unavailable.
+          type:
+            - boolean
+            - 'null'
         only:
           description: >-
             List of provider slugs to allow. If provided, this list is merged

@@ -146,9 +146,7 @@ Then use it to make an API call to `https://openrouter.ai/api/v1/auth/keys` to e
 
 ### Deep-link to the user's key
 
-Once you have the API key, you can create links to the user's OpenRouter
-activity and key settings pages by hashing the key with SHA-256. Use the
-lowercase hexadecimal digest in both URLs:
+Once you have the API key, you can create links to the user's OpenRouter activity and key settings pages by hashing the key with SHA-256. Use the lowercase hexadecimal digest in both URLs:
 
 <CodeGroup>
   ```typescript title="Create Key Links" lines theme={null}
@@ -166,9 +164,7 @@ lowercase hexadecimal digest in both URLs:
   ```
 </CodeGroup>
 
-The links only work for the signed-in owner of the API key. If the hash does
-not resolve for the viewer, the page returns a `404` rather than showing
-unfiltered data.
+The links only work for the signed-in owner of the API key. If the hash does not resolve for the viewer, the page returns a `404` rather than showing unfiltered data.
 
 And that's it for the PKCE flow!
 

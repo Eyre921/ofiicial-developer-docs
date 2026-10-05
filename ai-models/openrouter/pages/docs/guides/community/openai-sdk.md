@@ -19,10 +19,7 @@ export const API_KEY_REF = '<OPENROUTER_API_KEY>';
 * Using `pip install openai`: [github](https://github.com/OpenRouterTeam/openrouter-examples-python/blob/main/src/openai_test.py).
 * Using `npm i openai`: [github](https://github.com/OpenRouterTeam/openrouter-examples/tree/main/typescript).
   <Tip>
-    You can also use
-    [Grit](https://app.grit.io/studio?key=RKC0n7ikOiTGTNVkI8uRS) to
-    automatically migrate your code. Simply run `npx @getgrit/launcher
-        openrouter`.
+    You can also use [Grit](https://app.grit.io/studio?key=RKC0n7ikOiTGTNVkI8uRS) to automatically migrate your code. Simply run `npx @getgrit/launcher openrouter`.
   </Tip>
 
 <CodeGroup>

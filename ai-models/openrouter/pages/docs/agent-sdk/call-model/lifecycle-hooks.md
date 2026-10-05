@@ -12,8 +12,7 @@ path: docs/agent-sdk/call-model/lifecycle-hooks
 
 > Observe and control the agent loop with typed lifecycle hooks.
 
-Lifecycle hooks let you observe and control specific points in the
-`callModel` agent loop. Use them to:
+Lifecycle hooks let you observe and control specific points in the `callModel` agent loop. Use them to:
 
 * Inspect, modify, or block tool calls before execution
 * Record successful and failed tool executions
@@ -23,9 +22,7 @@ Lifecycle hooks let you observe and control specific points in the
 * Track sessions, model calls, token usage, latency, and cost
 * Run custom, type-safe application events
 
-Lifecycle hooks are different from transport hooks such as `SDKHooks` and
-`BeforeRequestHook`. Transport hooks intercept HTTP requests. Lifecycle hooks
-fire on events within the agent loop.
+Lifecycle hooks are different from transport hooks such as `SDKHooks` and `BeforeRequestHook`. Transport hooks intercept HTTP requests. Lifecycle hooks fire on events within the agent loop.
 
 ## Quick start
 
@@ -79,9 +76,7 @@ const result = openrouter.callModel({
 console.log(await result.getText());
 ```
 
-Inline configuration supports all built-in hooks. Use a `HooksManager` when
-you need custom hooks, dynamic registration, programmatic emission, or
-explicit lifecycle control.
+Inline configuration supports all built-in hooks. Use a `HooksManager` when you need custom hooks, dynamic registration, programmatic emission, or explicit lifecycle control.
 
 ## HooksManager
 
@@ -122,8 +117,7 @@ await result.getText();
 unsubscribe();
 ```
 
-`HooksManager` is available from `@openrouter/agent` and from the focused
-`@openrouter/agent/hooks-manager` subpath.
+`HooksManager` is available from `@openrouter/agent` and from the focused `@openrouter/agent/hooks-manager` subpath.
 
 Every handler receives a validated `payload` and a context object:
 
@@ -135,9 +129,7 @@ interface LifecycleHookContext {
 }
 ```
 
-The SDK supplies the current run's session ID for each lifecycle event. A
-single manager can therefore be shared by concurrent `callModel` runs without
-mixing their session IDs.
+The SDK supplies the current run's session ID for each lifecycle event. A single manager can therefore be shared by concurrent `callModel` runs without mixing their session IDs.
 
 ## Built-in hooks
 
@@ -155,8 +147,7 @@ mixing their session IDs.
 
 ### SessionStart
 
-`SessionStart` fires once before the initial model request. Its optional
-`config` summarizes the run without exposing the full request:
+`SessionStart` fires once before the initial model request. Its optional `config` summarizes the run without exposing the full request:
 
 The exported payload type allows an extensible config record:
 
@@ -176,8 +167,7 @@ The agent loop currently emits this config:
 }
 ```
 
-Use it to initialize tracing, audit records, or session-scoped resources.
-Handlers are observational and do not return a result.
+Use it to initialize tracing, audit records, or session-scoped resources. Handlers are observational and do not return a result.
 
 ### UserPromptSubmit
 
@@ -194,11 +184,9 @@ type UserPromptSubmitResult = {
 };
 ```
 
-`mutatedPrompt` replaces the prompt. `reject: true` aborts with a default
-error, while a non-empty string becomes the rejection reason.
+`mutatedPrompt` replaces the prompt. `reject: true` aborts with a default error, while a non-empty string becomes the rejection reason.
 
-For structured input, the SDK uses the latest user-role text. If it cannot
-extract user text, it skips this hook.
+For structured input, the SDK uses the latest user-role text. If it cannot extract user text, it skips this hook.
 
 ```typescript lines theme={null}
 hooks.on('UserPromptSubmit', {
@@ -243,10 +231,7 @@ type ModelCallUsage = {
 };
 ```
 
-`responseId` is the OpenRouter generation ID. `durationMs` measures from
-request dispatch until the full response is materialized, including stream
-consumption. The hook is observational and is suitable for one tracing span
-per model call.
+`responseId` is the OpenRouter generation ID. `durationMs` measures from request dispatch until the full response is materialized, including stream consumption. The hook is observational and is suitable for one tracing span per model call.
 
 ```typescript lines theme={null}
 hooks.on('PostModelCall', {
@@ -262,19 +247,13 @@ hooks.on('PostModelCall', {
 });
 ```
 
-A failed stream that never produces a complete response does not emit
-`PostModelCall`. A materialized `response.incomplete` response does emit it.
-`usage` is omitted when the server does not report usage, and `usage.cost` is
-only present when server-side usage accounting reports cost.
+A failed stream that never produces a complete response does not emit `PostModelCall`. A materialized `response.incomplete` response does emit it. `usage` is omitted when the server does not report usage, and `usage.cost` is only present when server-side usage accounting reports cost.
 
-On a no-tools streaming path, the response becomes complete only after stream
-consumption. The hook therefore fires during session teardown, immediately
-before `SessionEnd`.
+On a no-tools streaming path, the response becomes complete only after stream consumption. The hook therefore fires during session teardown, immediately before `SessionEnd`.
 
 ### PermissionRequest
 
-`PermissionRequest` fires when a tool requires approval, before the SDK
-pauses for a user decision:
+`PermissionRequest` fires when a tool requires approval, before the SDK pauses for a user decision:
 
 ```typescript lines theme={null}
 type PermissionRequestPayload = {
@@ -293,9 +272,7 @@ type PermissionRequestResult = {
 * `deny` does not run the tool and sends a rejected result to the model.
 * `ask_user` continues into the normal approval flow.
 
-When multiple handlers return decisions, the last returned decision wins.
-The SDK derives `riskLevel` from the approval rule: callback-based rules are
-`high`, blanket `true` rules are `medium`, and other cases are `low`.
+When multiple handlers return decisions, the last returned decision wins. The SDK derives `riskLevel` from the approval rule: callback-based rules are `high`, blanket `true` rules are `medium`, and other cases are `low`.
 
 ```typescript lines theme={null}
 hooks.on('PermissionRequest', {
@@ -315,8 +292,7 @@ hooks.on('PermissionRequest', {
 
 ### PreToolUse
 
-`PreToolUse` fires before client tool execution, including normal tool rounds
-and resumed approval flows:
+`PreToolUse` fires before client tool execution, including normal tool rounds and resumed approval flows:
 
 ```typescript lines theme={null}
 type PreToolUsePayload = {
@@ -330,12 +306,9 @@ type PreToolUseResult = {
 };
 ```
 
-`mutatedInput` replaces the arguments before schema validation and execution.
-`block: true` skips execution with a default reason. A non-empty string skips
-execution and is sent to the model as the reason.
+`mutatedInput` replaces the arguments before schema validation and execution. `block: true` skips execution with a default reason. A non-empty string skips execution and is sent to the model as the reason.
 
-If the model supplied invalid JSON arguments, the SDK produces a parse error
-without emitting the tool hooks because no valid tool input exists.
+If the model supplied invalid JSON arguments, the SDK produces a parse error without emitting the tool hooks because no valid tool input exists.
 
 ```typescript lines theme={null}
 hooks.on('PreToolUse', {
@@ -362,13 +335,11 @@ type PostToolUsePayload = {
 };
 ```
 
-It is observational and has no result. `toolInput` contains the effective
-arguments after any `PreToolUse` mutation.
+It is observational and has no result. `toolInput` contains the effective arguments after any `PreToolUse` mutation.
 
 ### PostToolUseFailure
 
-`PostToolUseFailure` fires when a tool executes and throws or returns an
-error:
+`PostToolUseFailure` fires when a tool executes and throws or returns an error:
 
 ```typescript lines theme={null}
 type PostToolUseFailurePayload = {
@@ -378,11 +349,7 @@ type PostToolUseFailurePayload = {
 };
 ```
 
-It does not fire when the tool never ran, including a `PermissionRequest`
-denial, user rejection, `PreToolUse` block, invalid JSON arguments, or an HITL
-tool pausing for later input. Observe those outcomes in the corresponding
-gating hook. The post-use hook fires after a paused HITL tool is resumed and
-successfully completes.
+It does not fire when the tool never ran, including a `PermissionRequest` denial, user rejection, `PreToolUse` block, invalid JSON arguments, or an HITL tool pausing for later input. Observe those outcomes in the corresponding gating hook. The post-use hook fires after a paused HITL tool is resumed and successfully completes.
 
 ### Stop
 
@@ -399,16 +366,9 @@ type StopResult = {
 };
 ```
 
-`appendPrompt` injects a user message, but does not by itself continue the
-tool loop. Prompts from multiple handlers are joined with newlines. If any
-handler returns `forceResume: true`, the loop continues, subject to a limit of
-three consecutive overrides without progress.
+`appendPrompt` injects a user message, but does not by itself continue the tool loop. Prompts from multiple handlers are joined with newlines. If any handler returns `forceResume: true`, the loop continues, subject to a limit of three consecutive overrides without progress.
 
-A tool output or a fresh model response resets that counter. Blocked and
-denied tool outputs also count as progress because the model receives the
-feedback. A bare `forceResume` normally triggers the same stop condition again
-and uses the override limit. Pair it with `appendPrompt` or a stop condition
-whose external state can change.
+A tool output or a fresh model response resets that counter. Blocked and denied tool outputs also count as progress because the model receives the feedback. A bare `forceResume` normally triggers the same stop condition again and uses the override limit. Pair it with `appendPrompt` or a stop condition whose external state can change.
 
 ```typescript lines theme={null}
 hooks.on('Stop', {
@@ -438,17 +398,11 @@ type SessionUsageTotals = ModelCallUsage & {
 };
 ```
 
-`totalUsage` is present when at least one model response completed. Token
-fields are summed across calls. `cost` is included when at least one response
-reported it.
+`totalUsage` is present when at least one model response completed. Token fields are summed across calls. `cost` is included when at least one response reported it.
 
-When `SessionStart` succeeds, `SessionEnd` fires exactly once for that run on
-completion, approval pause, interruption, error, and no-tools streaming
-teardown. An approval pause currently ends with `reason: 'complete'`.
+When `SessionStart` succeeds, `SessionEnd` fires exactly once for that run on completion, approval pause, interruption, error, and no-tools streaming teardown. An approval pause currently ends with `reason: 'complete'`.
 
-Approval and HITL resume calls skip `SessionStart` and `SessionEnd`, but tool
-hooks still fire and detached work is still drained. A teardown error is
-logged and never replaces the run's original error.
+Approval and HITL resume calls skip `SessionStart` and `SessionEnd`, but tool hooks still fire and detached work is still drained. A teardown error is logged and never replaces the run's original error.
 
 ## Matchers and filters
 
@@ -471,12 +425,9 @@ hooks.on('PreToolUse', {
 });
 ```
 
-A string matches exactly. A regular expression or predicate can match a set
-of tools. A matcher-scoped handler is skipped when an event has no tool name.
-`filter` receives the hook payload and can add any further condition.
+A string matches exactly. A regular expression or predicate can match a set of tools. A matcher-scoped handler is skipped when an event has no tool name. `filter` receives the hook payload and can add any further condition.
 
-Matchers are intended for tool-scoped hooks. Use `filter` by itself for
-session, prompt, model-call, and stop hooks.
+Matchers are intended for tool-scoped hooks. Use `filter` by itself for session, prompt, model-call, and stop hooks.
 
 ## Handler chain behavior
 
@@ -508,12 +459,9 @@ hooks.on('PreToolUse', {
 });
 ```
 
-A blocking handler's mutation is still applied before the chain stops. Empty
-strings do not block or reject. Return `mutatedInput` or `mutatedPrompt`
-instead of mutating nested payload values in place.
+A blocking handler's mutation is still applied before the chain stops. Empty strings do not block or reject. Return `mutatedInput` or `mutatedPrompt` instead of mutating nested payload values in place.
 
-By default, a throwing handler, matcher, or filter is logged and skipped. Use
-strict mode to propagate these failures, which is useful in tests:
+By default, a throwing handler, matcher, or filter is logged and skipped. Use strict mode to propagate these failures, which is useful in tests:
 
 ```typescript lines theme={null}
 const hooks = new HooksManager(undefined, {
@@ -525,8 +473,7 @@ Payload and result schema failures follow the same error policy.
 
 ## Asynchronous handlers
 
-Handlers may return a promise. The chain waits for a normal asynchronous
-handler before running the next handler:
+Handlers may return a promise. The chain waits for a normal asynchronous handler before running the next handler:
 
 ```typescript lines theme={null}
 hooks.on('PreToolUse', {
@@ -536,8 +483,7 @@ hooks.on('PreToolUse', {
 });
 ```
 
-To detach telemetry or audit work without delaying the loop, return an
-`AsyncOutput` signal:
+To detach telemetry or audit work without delaying the loop, return an `AsyncOutput` signal:
 
 ```typescript lines theme={null}
 hooks.on('PostToolUse', {
@@ -561,9 +507,7 @@ interface AsyncOutput {
 }
 ```
 
-The default timeout is 30 seconds. On timeout, the handler context's signal is
-aborted and the timeout is logged. JavaScript promises cannot be forcibly
-cancelled, so background work should observe `context.signal`.
+The default timeout is 30 seconds. On timeout, the handler context's signal is aborted and the timeout is logged. JavaScript promises cannot be forcibly cancelled, so background work should observe `context.signal`.
 
 The manager tracks detached work. Use its lifecycle methods during shutdown:
 
@@ -572,13 +516,9 @@ hooks.abortInflight('Application shutting down');
 await hooks.drain();
 ```
 
-`abortInflight()` aborts the signals for active handler work. `drain()` waits
-for all detached work to settle. The agent loop also drains pending hook work
-when a run ends.
+`abortInflight()` aborts the signals for active handler work. `drain()` waits for all detached work to settle. The agent loop also drains pending hook work when a run ends.
 
-Use the exported `isAsyncOutput(value)` type guard when handling hook return
-values yourself. Objects with extra fields are not asynchronous signals, so a
-mutation cannot be accidentally discarded.
+Use the exported `isAsyncOutput(value)` type guard when handling hook return values yourself. Objects with extra fields are not asynchronous signals, so a mutation cannot be accidentally discarded.
 
 ## Custom hooks
 
@@ -620,16 +560,11 @@ const { results } = await hooks.emit('DeploymentGate', {
 console.log(results[0]?.approved);
 ```
 
-Payloads and non-void results are validated on every `emit()`. Zod transforms,
-defaults, and coercion are applied before handlers run, so handlers receive
-the schema output type.
+Payloads and non-void results are validated on every `emit()`. Zod transforms, defaults, and coercion are applied before handlers run, so handlers receive the schema output type.
 
-Custom hook names must be non-empty and cannot collide with built-in names.
-Custom hooks do not inherit built-in mutation or blocking behavior. Inline
-configuration only supports built-in hooks.
+Custom hook names must be non-empty and cannot collide with built-in names. Custom hooks do not inherit built-in mutation or blocking behavior. Inline configuration only supports built-in hooks.
 
-When directly emitting from a manager shared by concurrent operations, pass a
-per-emit session ID:
+When directly emitting from a manager shared by concurrent operations, pass a per-emit session ID:
 
 ```typescript lines theme={null}
 await hooks.emit(
@@ -639,8 +574,7 @@ await hooks.emit(
 );
 ```
 
-`setSessionId()` sets a manager-wide default for direct emissions. It is
-last-writer-wins, so prefer the per-emit value when operations may overlap.
+`setSessionId()` sets a manager-wide default for direct emissions. It is last-writer-wins, so prefer the per-emit value when operations may overlap.
 
 ## HooksManager API
 
@@ -659,8 +593,7 @@ new HooksManager(customHooks?, options?)
 hooks.on(hookName, entry): () => void
 ```
 
-Registers a typed handler and returns an unsubscribe function. An entry has a
-`handler` and optional `matcher` and `filter`.
+Registers a typed handler and returns an unsubscribe function. An entry has a `handler` and optional `matcher` and `filter`.
 
 ### off
 
@@ -684,8 +617,7 @@ Removes handlers for one hook, or every handler when no name is supplied.
 hooks.setSessionId(sessionId): void
 ```
 
-Sets the default `context.sessionId` for direct `emit()` calls. This mutable
-default is last-writer-wins. Use the per-emit override for concurrent work.
+Sets the default `context.sessionId` for direct `emit()` calls. This mutable default is last-writer-wins. Use the per-emit override for concurrent work.
 
 ### emit
 
@@ -708,8 +640,7 @@ type EmitResult<Result, Payload> = {
 };
 ```
 
-`toolName` supplies the value used by matchers. `sessionId` overrides the
-manager default for this emission.
+`toolName` supplies the value used by matchers. `sessionId` overrides the manager default for this emission.
 
 ### hasHandlers
 
@@ -726,16 +657,12 @@ hooks.abortInflight(reason?): void
 await hooks.drain(): Promise<void>
 ```
 
-Abort active handler signals, then await detached work during graceful
-shutdown.
+Abort active handler signals, then await detached work during graceful shutdown.
 
 ## Next steps
 
 * **[Tools](/docs/agent-sdk/call-model/tools)** - Define and execute typed tools
-* **[Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state)** -
-  Pause and resume approval-gated tools
-* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions)** - Control when
-  the agent loop ends
-* **[API Reference](/docs/agent-sdk/call-model/api-reference)** - Review complete
-  `callModel` types and exports
+* **[Tool Approval & State](/docs/agent-sdk/call-model/tool-approval-state)** - Pause and resume approval-gated tools
+* **[Stop Conditions](/docs/agent-sdk/call-model/stop-conditions)** - Control when the agent loop ends
+* **[API Reference](/docs/agent-sdk/call-model/api-reference)** - Review complete `callModel` types and exports
 

@@ -37,6 +37,7 @@ The following destinations are currently available:
 * [ClickHouse](/docs/guides/features/broadcast/clickhouse)
 * [Comet Opik](/docs/guides/features/broadcast/opik)
 * [Datadog](/docs/guides/features/broadcast/datadog)
+* [Elastic Observability](/docs/guides/features/broadcast/elastic)
 * [Google BigQuery](/docs/guides/features/broadcast/bigquery)
 * [Grafana Cloud](/docs/guides/features/broadcast/grafana)
 * [Langfuse](/docs/guides/features/broadcast/langfuse)
@@ -177,7 +178,7 @@ See the [S3 field locations](/docs/guides/features/broadcast/s3#billing-quantiti
 
 ### Large Trace Values
 
-This applies to the OpenTelemetry-based destinations (Arize, Grafana, Langfuse, LangSmith, New Relic, OpenInference, OTel Collector, Phoenix, Ramp, Sentry, and Webhook). Other destinations are not bounded this way and emit no truncation markers.
+This applies to the OpenTelemetry-based destinations (Arize, Elastic, Grafana, Langfuse, LangSmith, New Relic, OpenInference, OTel Collector, Phoenix, Ramp, Sentry, and Webhook). Other destinations are not bounded this way and emit no truncation markers.
 
 Large agent transcripts are normal, so broadcast delivery keeps the rest of the trace when an individual trace or observation value exceeds the per-attribute character limit (currently 10,000,000 characters). The oversized value is shortened rather than causing the trace to be dropped, and a boolean `<key>.truncated` attribute is added alongside it.
 
@@ -318,6 +319,7 @@ Each observability platform may recognize different metadata keys. See the desti
 * [W\&B Weave](/docs/guides/features/broadcast/weave#custom-metadata) - Supports custom attributes in trace data
 * [Arize AX](/docs/guides/features/broadcast/arize#custom-metadata) - Supports OpenInference span attributes and metadata
 * [Comet Opik](/docs/guides/features/broadcast/opik#custom-metadata) - Supports trace/span metadata and cost tracking
+* [Elastic Observability](/docs/guides/features/broadcast/elastic#custom-metadata) - Supports OTLP span attributes searchable in Discover
 * [Grafana Cloud](/docs/guides/features/broadcast/grafana#custom-metadata) - Supports TraceQL-queryable span attributes
 * [New Relic](/docs/guides/features/broadcast/newrelic#custom-metadata) - Supports NRQL-queryable span attributes
 * [Sentry](/docs/guides/features/broadcast/sentry#custom-metadata) - Supports span attributes for performance monitoring
@@ -444,20 +446,11 @@ Some field names appear at both the top level of the trace and inside each `obse
     </Accordion>
 
     <Accordion title="Derived latency metrics">
-      These two keys are computed by OpenRouter from the `timeline` milestones rather than
-      being fields of the trace, so they are not listed in the tables above. Destinations
-      that receive a metadata bag get them as `openrouter_provider_time_to_first_token_ms`
-      and `openrouter_inter_token_latency_ms`; OTLP destinations get the same names dotted
-      (`openrouter.inter_token_latency_ms`).
+      These two keys are computed by OpenRouter from the `timeline` milestones rather than being fields of the trace, so they are not listed in the tables above. Destinations that receive a metadata bag get them as `openrouter_provider_time_to_first_token_ms` and `openrouter_inter_token_latency_ms`; OTLP destinations get the same names dotted (`openrouter.inter_token_latency_ms`).
 
-      Both are sent on the root generation only, and both are **omitted rather than zeroed**
-      when they cannot be measured: time to first token needs `providerRequestMs` and
-      `firstTokenMs`, and inter-token latency needs `firstTokenMs`, `providerBodyEndMs` and
-      at least two output tokens. A non-streamed response or a `max_tokens: 1` request
-      therefore carries the milestones but no inter-token latency.
+      Both are sent on the root generation only, and both are **omitted rather than zeroed** when they cannot be measured: time to first token needs `providerRequestMs` and `firstTokenMs`, and inter-token latency needs `firstTokenMs`, `providerBodyEndMs` and at least two output tokens. A non-streamed response or a `max_tokens: 1` request therefore carries the milestones but no inter-token latency.
 
-      Inter-token latency is the mean gap between output tokens, matching vLLM's
-      `request_time_per_output_token`: `(providerBodyEndMs - firstTokenMs) / (output_tokens - 1)`.
+      Inter-token latency is the mean gap between output tokens, matching vLLM's `request_time_per_output_token`: `(providerBodyEndMs - firstTokenMs) / (output_tokens - 1)`.
 
       | Destination | `provider_time_to_first_token_ms` | `inter_token_latency_ms` |
       | - | - | - |
@@ -782,6 +775,7 @@ Step-by-step guides for configuring specific observability destinations:
 * [ClickHouse](/docs/guides/features/broadcast/clickhouse) - Real-time analytics database
 * [Comet Opik](/docs/guides/features/broadcast/opik) - LLM evaluation and testing
 * [Datadog](/docs/guides/features/broadcast/datadog) - Full-stack monitoring and analytics
+* [Elastic Observability](/docs/guides/features/broadcast/elastic) - Search-powered observability for traces
 * [Google BigQuery](/docs/guides/features/broadcast/bigquery) - Serverless cloud data warehouse
 * [Grafana Cloud](/docs/guides/features/broadcast/grafana) - Observability and monitoring platform
 * [Langfuse](/docs/guides/features/broadcast/langfuse) - Open-source LLM engineering platform

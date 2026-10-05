@@ -110,6 +110,28 @@ Download any accounting report or statement you’re viewing by selecting **Down
 | **Line item event type** | Available in the debits and credits reports. Revenue recognition organized by line item and event type, including charges, refunds, and dispute IDs at the line item level. |
 | **QuickBooks format** | Available in the debits and credits report, import this CSV directly into QuickBooks Online. Stripe groups entries by accounting period and currency, and nets debit and credit amounts by account. See [Download in QuickBooks format](https://docs.stripe.com/revenue-recognition/reports/debits-and-credits.md#quickbooks-format). |
 
+#### Filter exported data 
+
+> Report filtering is currently available only to eligible accounts. If **Filter report by** doesn’t appear in the export dialog, the exported report includes data for all currencies and the following instructions don’t apply to your account.
+
+When you select **Download to system**, the export dialog prepopulates the **Currency** filter with the currency selected in the report you’re viewing. This applies to the trial balance, period summary, income statement, balance sheet, accounts receivable aging, debits and credits, and revenue waterfall reports.
+
+Before you download the report, you can:
+
+- Change the **Currency** filter to export data for a different currency.
+- Remove the **Currency** filter to export data for all currencies.
+- Select **Add filter** to filter the export by another available field.
+- Add multiple filters. We combine multiple filters with **AND**, so each exported row must match every filter.
+
+The filters available depend on the report. For example, you can filter:
+
+- Income statement and balance sheet exports by currency, account, account type, general ledger code, or external transaction source.
+- Debits and credits exports by currency, debit or credit account, debit or credit general ledger code, or external transaction source.
+- Period summary and revenue waterfall exports by currency or external transaction source.
+- Accounts receivable aging exports by currency or transaction model ID.
+
+For summary, custom, and metadata export formats, we include the selected filter fields in the CSV output so that you can identify the values applied to the report.
+
 #### Feedback and customization 
 
 The **Statements** tab lets you provide feedback on each report. Your feedback helps us improve the reports and develop tailored solutions based on your needs.

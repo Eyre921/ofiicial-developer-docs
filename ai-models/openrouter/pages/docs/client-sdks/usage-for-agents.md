@@ -12,13 +12,9 @@ path: docs/client-sdks/usage-for-agents
 
 > Add OpenRouter Client SDKs skills to your AI coding assistant
 
-Give your AI coding assistant the knowledge to work with the OpenRouter Client SDKs
-by installing our official `openrouter-typescript-sdk` skill from the
-[OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills) repository.
+Give your AI coding assistant the knowledge to work with the OpenRouter Client SDKs by installing our official `openrouter-typescript-sdk` skill from the [OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills) repository.
 
-The skill covers both the Client SDKs (`@openrouter/sdk`) and the Agent SDK (`@openrouter/agent`).
-When working with the Client SDKs, your AI assistant will focus on the **platform features**:
-model listing, chat completions, credits, OAuth, and API key management.
+The skill covers both the Client SDKs (`@openrouter/sdk`) and the Agent SDK (`@openrouter/agent`). When working with the Client SDKs, your AI assistant will focus on the **platform features**: model listing, chat completions, credits, OAuth, and API key management.
 
 ## Quick Start
 
@@ -60,8 +56,7 @@ The skill works with any AI coding assistant that supports the [Agent Skills](ht
 
 Once installed, your AI coding assistant will have knowledge of:
 
-* **SDK Installation & Setup** - How to install and configure `@openrouter/sdk`
-  in TypeScript projects
+* **SDK Installation & Setup** - How to install and configure `@openrouter/sdk` in TypeScript projects
 * **Chat Completions** - Working with the chat API for conversations
 * **Embeddings** - Generating embeddings for semantic search and RAG
 * **Error Handling** - Proper error handling patterns
@@ -125,8 +120,7 @@ for await (const chunk of stream) {
 
 ## Repository
 
-The skill source is available at:
-[github.com/OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills)
+The skill source is available at: [github.com/OpenRouterTeam/skills](https://github.com/OpenRouterTeam/skills)
 
 Contributions and feedback are welcome.
 

@@ -1,0 +1,217 @@
+---
+title: "Models"
+source: https://elevenlabs.io/docs/eleven-agents/customization/llm.md
+path: docs/eleven-agents/customization/llm
+---
+
+> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Models
+
+ElevenAgents provides a unified interface to connect your agent to multiple models and providers, offering flexibility, reliability, and cost optimization.
+
+## Key features
+
+* **Unified access**: Switch between providers and models with minimal code changes
+* **High reliability**: Automatically cascade from one provider to another if one fails
+* **Spend monitoring**: Monitor your spending across different models
+
+## Supported models
+
+Currently, the following models are natively supported and can be configured via the agent settings:
+
+| Provider       | Model                  |
+| -------------- | ---------------------- |
+| **ElevenLabs** | DeepSeek Flash 4.1     |
+|                | GLM 5.2                |
+|                | Qwen3.6-35B-A3B        |
+|                | Qwen3.5-397B-A17B      |
+| **Google**     | Gemini 3.8 Flash       |
+|                | Gemini 3.7 Flash       |
+|                | Gemini 3.6 Flash       |
+|                | Gemini 3.5 Flash       |
+|                | Gemini 3.5 Flash-Lite  |
+|                | Gemini 3.1 Pro Preview |
+|                | Gemini 3.1 Flash Lite  |
+|                | Gemini 3 Flash Preview |
+|                | Gemini 2.5 Flash       |
+|                | Gemini 2.5 Flash Lite  |
+| **OpenAI**     | GPT-6.1 Sol            |
+|                | GPT-6 Astra            |
+|                | GPT-6 Sol              |
+|                | GPT-6 Luna             |
+|                | GPT-5.6 Sol            |
+|                | GPT-5.6 Terra          |
+|                | GPT-5.6 Luna           |
+|                | GPT-5.5                |
+|                | GPT-5.4                |
+|                | GPT-5.4 Mini           |
+|                | GPT-5.4 Nano           |
+|                | GPT-5.2                |
+|                | GPT-5.1                |
+|                | GPT-5                  |
+|                | GPT-5 Mini             |
+|                | GPT-5 Nano             |
+|                | GPT-4.1                |
+|                | GPT-4.1 Mini           |
+|                | GPT-4.1 Nano           |
+|                | GPT-4o                 |
+|                | GPT-4o Mini            |
+| **Anthropic**  | Claude Opus 5.5        |
+|                | Claude Opus 5          |
+|                | Claude Opus 4.8        |
+|                | Claude Opus 4.7        |
+|                | Claude Sonnet 5.5      |
+|                | Claude Sonnet 5        |
+|                | Claude Sonnet 4.6      |
+|                | Claude Sonnet 4.5      |
+|                | Claude Haiku 4.5       |
+
+> **Note**
+>
+> Pricing is typically denoted in USD per 1 million tokens unless specified otherwise. A token is a
+> fundamental unit of text data for LLMs, roughly equivalent to 4 characters on average.
+
+### Custom LLM
+
+Using your own custom LLM is supported by specifying the endpoint we should make requests to and providing credentials through our secure secret storage. Learn more about [custom LLM integration](/docs/eleven-agents/customization/llm/custom-llm).
+
+> **Note**
+>
+> Some models are unavailable when EU data residency is enabled. See [GDPR and data residency](/docs/overview/administration/data-residency) for availability details.
+
+## Choosing a model
+
+Selecting the most suitable LLM for your application involves considering several factors:
+
+* **Task complexity**: Evaluate models against representative tasks from your application
+* **Latency requirements**: For live voice conversations, choose a low-latency model and measure response time with your prompts and tools
+* **Context window size**: If your application needs to process, understand, or recall information from long conversations or extensive documents, select models with larger context windows
+* **Cost-effectiveness**: Balance the desired performance and features against your budget. LLM prices can vary significantly, so analyze the pricing structure (input, output, and cache tokens) in relation to your expected usage patterns
+* **HIPAA compliance**: If your application involves Protected Health Information (PHI), it is crucial to use an LLM that is designated as HIPAA compliant and ensure your entire data handling process meets regulatory standards
+
+> **Note**
+>
+> The maximum system prompt size is 2MB, which includes your agent's instructions, knowledge base
+> content, and other system-level context.
+
+## Model configuration
+
+### Temperature
+
+Temperature controls the randomness of model responses. Lower values produce more consistent, focused outputs while higher values increase creativity and variation.
+
+* **Low (0.0-0.3)**: Deterministic, consistent responses for structured interactions
+* **Medium (0.4-0.7)**: Balanced creativity and consistency
+* **High (0.8-1.0)**: Creative, varied responses for dynamic conversations
+
+### Backup LLM configuration
+
+Configure backup LLMs to ensure conversation continuity when the primary LLM fails or becomes unavailable.
+
+**Configuration options:**
+
+* **Default**: Uses ElevenLabs' recommended fallback sequence
+* **Custom**: Define your own cascading sequence of backup models
+* **Disabled**: No fallback (strongly discouraged for production)
+
+> **Warning**
+>
+> Disabling backup LLMs means conversations will end abruptly if your primary LLM fails or becomes
+> unavailable. This is strongly discouraged for production use.
+
+Learn more about [LLM cascading](/docs/eleven-agents/customization/llm/llm-cascading).
+
+## Reasoning
+
+Reasoning helps agents handle complex decisions, such as choosing between tools, applying policies, or completing multi-step workflows. Depending on the model, you control how much reasoning it performs with either a thinking budget or a reasoning effort level.
+
+### Thinking budget
+
+Set the maximum number of reasoning tokens with the numeric slider. Larger budgets can increase response time. Set the budget to `0` to disable thinking when the model allows it.
+
+### Reasoning effort
+
+Reasoning effort controls how much reasoning the model performs before answering. Available levels depend on the selected model.
+
+> **Tip**
+>
+> Start with a lower budget or effort for live voice agents because extra thinking can delay
+> turn-taking. Increase it for workflow steps that require more complex decisions.
+
+### Reasoning summary
+
+Enable Reasoning summary to capture the model's returned reasoning when debugging responses, tool calls, or workflow paths. Turn on **Reasoning summary** in the agent's LLM settings, or set `enable_reasoning_summary` via the API. The setting is off by default.
+
+For custom endpoints, see [how ElevenLabs requests and stores reasoning](/docs/eleven-agents/customization/llm/custom-llm#reasoning-summary).
+
+Reasoning content is subject to retention and PII redaction settings. You can access it through the following channels:
+
+| Destination                                                             | Availability                                                                 |
+| ----------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Conversation history                                                    | Available under the **Reasoning** badge                                      |
+| [Get conversation API](/docs/api-reference/conversations/get)           | Returned in the transcript item's `reasoning` field                          |
+| [OpenTelemetry](/docs/eleven-agents/customization/opentelemetry-traces) | Included in post-call agent-response spans as `elevenlabs.reasoning_content` |
+| [Client events](/docs/eleven-agents/customization/events/client-events) | Available as `agent_reasoning_response_part` in text conversations only      |
+
+> **Note**
+>
+> With [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm), ElevenLabs **does not
+> store reasoning content**. It is delivered only to chat clients and post-call webhooks.
+
+#### Limitations
+
+* Requesting a reasoning summary can increase response latency. Test it before enabling it on latency-sensitive voice agents.
+* Providers may return a summary, thought text, raw reasoning deltas, or no displayable content.
+
+## Understanding pricing
+
+* **Tokens**: LLM usage is typically billed based on the number of tokens processed. As a general guideline for English text, 100 tokens is approximately equivalent to 75 words
+* **Input vs. output pricing**: Providers often differentiate pricing for input tokens (the data you send to the model) and output tokens (the data the model generates in response)
+* **Cache pricing**:
+  * `input_cache_read`: This refers to the cost associated with retrieving previously processed input data from a cache. Utilizing cached data can lead to cost savings if identical inputs are processed multiple times
+  * `input_cache_write`: This is the cost associated with storing input data into a cache. Some LLM providers may charge for this operation
+* The prices listed in this document are per 1 million tokens and are based on the information available at the time of writing. These prices are subject to change by the LLM providers
+* **Pass-through pricing**: ElevenLabs passes through third-party LLM costs at the provider's published rate, with no markup. Select Gemini and Claude models are aligned with Vertex AI regional (non-global) pricing, which is what US and EU traffic is billed at — a 10% increase on input, output, and cache tokens, matching Vertex regional rates
+
+For current model capabilities, pricing, and terms of service, consult the provider's documentation.
+
+## HIPAA compliance
+
+Certain LLMs available on our platform may be suitable for use in environments requiring HIPAA compliance, please see the [HIPAA compliance docs](/docs/eleven-agents/legal/hipaa) for more details.
+
+## Related resources
+
+* [Custom LLM integration](/docs/eleven-agents/customization/llm/custom-llm)
+* [LLM cascading](/docs/eleven-agents/customization/llm/llm-cascading)
+* [Optimizing costs](/docs/eleven-agents/customization/llm/optimizing-costs)
+
+## Models Hosted by ElevenLabs
+
+ElevenLabs offers access to a variety of AI models, including select third-party models that are hosted by ElevenLabs.
+
+When a model is designated as “Hosted by ElevenLabs”, the model is deployed and operated on infrastructure managed by ElevenLabs. These models are currently hosted in the United States, or in the region of your enterprise deployment.
+
+#### How to identify models Hosted by ElevenLabs
+
+Models hosted by ElevenLabs are clearly labeled in the ElevenLabs interface. Look for the “Hosted by ElevenLabs” designation when browsing or selecting models.
+
+#### How your data is handled
+
+For models hosted by ElevenLabs, requests are processed within ElevenLabs-managed infrastructure. This means that the original model provider does not receive, access, or process the inputs and outputs submitted through ElevenLabs.
+
+By hosting these models, ElevenLabs can provide a consistent experience while maintaining control over the infrastructure used to serve model requests.
+
+## Frequently asked questions
+
+#### Where are self-hosted models hosted?
+
+Models hosted by ElevenLabs are currently hosted on infrastructure located in the United States, or in the region of your enterprise deployment.
+
+#### Does the original model provider access my data or metadata of my usage?
+
+For models hosted by ElevenLabs, the model’s original developer never receives your inputs or outputs and has no access to the data about the deployment that processes them.
+
+#### How do I know whether a model is Hosted by ElevenLabs?
+
+Models hosted by ElevenLabs are clearly identified in the ElevenLabs interface with a “Hosted by ElevenLabs” designation.
