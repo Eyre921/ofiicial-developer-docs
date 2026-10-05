@@ -10,7 +10,7 @@ path: docs/api-reference/triage-tickets/list
 
 GET https://api.elevenlabs.io/v1/convai/agents/{agent_id}/triage-tickets
 
-List an agent's conversation triage tickets, ordered by most recently created first. These are tickets about the agent's own performance on a conversation (for triage with Architect), not tickets an agent opens for end users.
+List an agent's conversation triage tickets, ordered by most recently created first unless sorted by priority. These are tickets about the agent's own performance on a conversation (for triage with Architect), not tickets an agent opens for end users.
 
 Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/list
 
@@ -33,9 +33,13 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/list
 - `page_size` (integer, optional, default: 100) — How many agent conversation tickets to return. Can not exceed 100.
 - `conversation_id` (string, optional, nullable) — Filter tickets by conversation id.
 - `status` (enum, optional, nullable) — Filter tickets by status.
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
 - `sources` (list of enum, optional, nullable) — Filter tickets by how they were raised (qa, agent, manual). Repeat the parameter to filter by multiple sources.
   - Allowed values: `qa`, `agent`, `manual`
+- `priorities` (list of enum, optional, nullable) — Filter tickets by priority. Repeat the parameter to filter by multiple priorities.
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `sort_by` (enum, optional) — Order by most recently created, or by priority (most urgent first, then most recently created).
+  - Allowed values: `created_at`, `priority`
 - `owner_user_id` (string, optional, nullable) — Filter tickets by creator. Use 'agent' for agent-raised tickets.
 - `assignee_user_id` (string, optional, nullable) — Filter tickets by assignee. Use 'unassigned' for tickets with no assignee.
 - `issue_type` (enum, optional, nullable) — Filter clusters by issue type.
@@ -70,6 +74,7 @@ Validation Error
 - `owner_user_id` (string, required)
 - `agent_id` (string, required)
 - `needs_clustering` (boolean, required)
+- `title` (string, required, nullable) — One-line headline for the ticket. None only on tickets created before titles existed.
 - `issue_type` (enum, required, nullable)
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `labels` (list of string, required)
@@ -80,7 +85,10 @@ Validation Error
 - `ticket_comments` (list of TicketCommentResponseModel, required)
 - `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `priority_changes` (list of TicketPriorityChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `assignee_user_id` (string, required, nullable)
@@ -106,6 +114,13 @@ Validation Error
 - `created_at_unix_secs` (integer, required)
 - `owner_user_id` (string, required, nullable)
 
+### TicketPriorityChangeResponseModel
+
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `changed_by_user_id` (string, required)
+- `changed_at_unix_secs` (integer, required)
+
 ### ValidationErrorLocItems
 
 ## Examples
@@ -121,6 +136,7 @@ Validation Error
       "owner_user_id": "string",
       "agent_id": "string",
       "needs_clustering": true,
+      "title": "string",
       "issue_type": "knowledge_gap",
       "labels": [
         "string"
@@ -147,6 +163,14 @@ Validation Error
         }
       ],
       "status": "open",
+      "priority": "low",
+      "priority_changes": [
+        {
+          "priority": "low",
+          "changed_by_user_id": "string",
+          "changed_at_unix_secs": 1
+        }
+      ],
       "source": "qa",
       "assignee_user_id": "string",
       "created_at_unix_secs": 1,

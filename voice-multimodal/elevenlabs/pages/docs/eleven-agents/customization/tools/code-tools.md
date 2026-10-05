@@ -64,21 +64,21 @@ The value you return becomes the tool's result. It's passed back to the agent, s
 
 Parameters are the values the agent supplies when it calls the tool, and they arrive in `ctx.args`. Define them in the **Parameters** section of the tool configuration form, or in the code editor under the **Params** tab, in the **Define Params** sub-tab. Each parameter takes a data type, an identifier, and a description that the agent uses to determine the correct value from the conversation. Your code reads that value under the identifier, such as `ctx.args.appointment_datetime` below.
 
-![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233127Z&X-Amz-Expires=604800&X-Amz-Signature=1cd5bf364192310e6d58dca36ab1628db23ae9fce4d33a89c642c12a5748da3d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T113249Z&X-Amz-Expires=604800&X-Amz-Signature=8a098f766c7c8c265b7b03eb5a0d1a44063ab977692d583159630708ea95b592&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configuring the context object
 
 Add secrets, config values, and auth connections in the tool's **Context object** section. Each entry takes a type and a name. The panel shows the exact accessor for each entry, such as `ctx.secrets.DEMO_KEY` below.
 
-![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233127Z&X-Amz-Expires=604800&X-Amz-Signature=127c647bd228ea8ddd260d0ddd70bf4d4c37fb3980e7a2d900b1affd5f862b69&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T113249Z&X-Amz-Expires=604800&X-Amz-Signature=7f87f866004d76c61abe2d5508060470c6bb9797032828eabbbfb40fbf540a4b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Network access
 
-Code running in the sandbox can only reach domains your workspace has explicitly allowed. Add the domains your code needs to call in your workspace's **General Settings**, under **Code tool allowed domains**. A request to any other domain fails.
+Code running in the sandbox can only reach domains your workspace has explicitly allowed. Add the domains your code needs to call in your **ElevenAgents Settings**, under **Code Tool Network Access**. A request to any other domain fails.
 
 > **Warning**
 >
-> Editing the **Code tool allowed domains** list requires Workspace admin permissions.
+> Editing **Code Tool Network Access** requires Workspace admin permissions.
 
 ### Execution limits
 
@@ -176,7 +176,7 @@ export default async (ctx) => {
 };
 ```
 
-Map `EXAMPLE_API_KEY` to a workspace secret in the tool's **Context object** section, then add `api.example.com` to **Code tool allowed domains** so the request is allowed to egress. The value you reference is a placeholder: the real secret is substituted into the header on egress, and is never visible to your code.
+Map `EXAMPLE_API_KEY` to a workspace secret in the tool's **Context object** section, then add `api.example.com` to **Code Tool Network Access** so the request is allowed to egress. The value you reference is a placeholder: the real secret is substituted into the header on egress, and is never visible to your code.
 
 **Calling an API with an OAuth auth connection**
 
@@ -230,7 +230,6 @@ Before scheduling a meeting with `schedule_meeting`, check the user's calendar f
 
 > **Warning**
 >
-> When using tools, we recommend picking high intelligence models like GPT 5.2, Gemini-2.5-Flash, or
-> Claude Sonnet 4.5 and avoiding Gemini-2.0-Flash.
+> When using tools, we recommend picking high intelligence models like GPT 6 or Claude Sonnet 5.5.
 
 It's important to note that the choice of LLM matters to the success of function calls. Some LLMs can struggle with extracting the relevant parameters from the conversation.

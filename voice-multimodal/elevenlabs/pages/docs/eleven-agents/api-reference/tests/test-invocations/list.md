@@ -61,6 +61,7 @@ Validation Error
 - `passed_count` (integer, required) — Number of test runs that passed
 - `failed_count` (integer, required) — Number of test runs that failed
 - `pending_count` (integer, required) — Number of test runs that are pending
+- `cancelled_count` (integer, required) — Number of test runs that were cancelled
 - `title` (string, required) — Title of the test invocation - the folder name for folder runs, otherwise the single test name or count of tests
 - `agent_id` (string, optional) — The ID of the agent this test invocation belongs to
 - `branch_id` (string, optional) — The ID of the branch this test invocation was run on
@@ -69,6 +70,7 @@ Validation Error
 - `runs_diverged_from_version` (boolean, optional, default: false) — Whether the test runs in this invocation did not all execute against the same version, which happens when a subset of runs was resubmitted after the original run. When true, version_id describes the most recent resubmit rather than every run.
 - `access_info` (ResourceAccessInfo, optional) — The access information of the test invocation
 - `repeat_count` (integer, optional, default: 1) — Number of times each test was repeated in this invocation
+- `cancelled` (boolean, optional, default: false) — Whether this test invocation was cancelled
 - `credits_used` (integer, optional) — Total credits billed across test runs in this invocation. None when no run has cost data.
 - `total_price` (double, optional) — Total USD price across test runs in this invocation. None when no run has price data.
 
@@ -112,6 +114,7 @@ Validation Error
       "passed_count": 1,
       "failed_count": 1,
       "pending_count": 1,
+      "cancelled_count": 1,
       "title": "title",
       "agent_id": "agent_id",
       "branch_id": "branch_id",
@@ -126,6 +129,7 @@ Validation Error
         "access_source": "creator"
       },
       "repeat_count": 1,
+      "cancelled": true,
       "credits_used": 1,
       "total_price": 1.1
     }

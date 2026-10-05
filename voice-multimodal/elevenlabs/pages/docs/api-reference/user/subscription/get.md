@@ -61,6 +61,7 @@ Successful Response
 - `pending_change` (ExtendedSubscriptionResponseModelPendingChange, optional, nullable) — The pending change for the user.
 - `has_used_starter_coupon_on_account` (boolean, optional, default: false) — True if any workspace owned by this user's auth account has redeemed the starter first-month discount coupon.
 - `has_used_creator_coupon_on_account` (boolean, optional, default: false) — True if any workspace owned by this user's auth account has redeemed the creator first-month discount coupon.
+- `is_eligible_for_starter_promo` (boolean, optional, default: false) — True if this user's auth account qualifies for the Starter first-month promo, using the same check as checkout. The starter_discount feature flag still decides whether the promo is offered.
 
 ## Errors
 
@@ -196,7 +197,8 @@ The pending change for the user.
     "tax_cents": 100
   },
   "has_used_starter_coupon_on_account": false,
-  "has_used_creator_coupon_on_account": false
+  "has_used_creator_coupon_on_account": false,
+  "is_eligible_for_starter_promo": false
 }
 ```
 

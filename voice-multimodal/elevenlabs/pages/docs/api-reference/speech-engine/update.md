@@ -90,14 +90,14 @@ Validation Error
 - `quality` (enum, optional, default: high) — The quality of the transcription
   - Allowed values: `high`
 - `provider` (enum, optional, default: scribe_realtime) — The provider of the transcription service
-  - Allowed values: `elevenlabs`, `scribe_realtime`
+  - Allowed values: `elevenlabs`, `scribe_realtime`, `scribe_v2_turbo`
 - `user_input_audio_format` (enum, optional, default: pcm_16000) — The format of the audio to be transcribed
   - Allowed values: `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, `pcm_48000`, `ulaw_8000`
 - `keywords` (list of string, optional) — Keywords to boost prediction probability for
 
 ### TTSConversationalConfig-Input
 
-- `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
+- `model_id` (enum, optional, default: eleven_v4_turbo) — The model to use for TTS
   - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`, `eleven_v4`, `eleven_v4_turbo`
 - `voice_id` (string, optional, default: cjVigY5qzO86Huf0OWal) — The voice ID to use for TTS
 - `supported_voices` (list of SupportedVoice, optional) — Additional supported voices for the agent
@@ -172,7 +172,7 @@ Validation Error
 
 ### TTSConversationalConfig-Output
 
-- `model_id` (enum, optional, default: eleven_flash_v2) — The model to use for TTS
+- `model_id` (enum, optional, default: eleven_v4_turbo) — The model to use for TTS
   - Allowed values: `eleven_turbo_v2`, `eleven_turbo_v2_5`, `eleven_flash_v2`, `eleven_flash_v2_5`, `eleven_multilingual_v2`, `eleven_v3_conversational`, `eleven_v4`, `eleven_v4_turbo`
 - `voice_id` (string, optional, default: cjVigY5qzO86Huf0OWal) — The voice ID to use for TTS
 - `supported_voices` (list of SupportedVoice, optional) — Additional supported voices for the agent
@@ -309,6 +309,7 @@ Configuration for DTMF (keypad) input collection during phone calls.
 - `enabled` (boolean, optional, default: false) — Whether conversation history redaction is enabled
 - `entities` (list of enum, optional) — The entities to redact from the conversation transcript, audio and analysis. Use top-level types like 'name', 'email_address', or dot notation for specific subtypes like 'name.full_name'.
   - Allowed values: `name`, `name.name_given`, `name.name_family`, `name.name_other`, `email_address`, `contact_number`, `dob`, `age`, `religious_belief`, `political_opinion`, `sexual_orientation`, `ethnicity_race`, `marital_status`, `occupation`, `physical_attribute`, `language`, `username`, `password`, `url`, `organization`, `financial_id`, `financial_id.payment_card`, `financial_id.payment_card.payment_card_number`, `financial_id.payment_card.payment_card_expiration_date`, `financial_id.payment_card.payment_card_cvv`, `financial_id.bank_account`, `financial_id.bank_account.bank_account_number`, `financial_id.bank_account.bank_routing_number`, `financial_id.bank_account.swift_bic_code`, `financial_id.financial_id_other`, `location`, `location.location_address`, `location.location_city`, `location.location_postal_code`, `location.location_coordinate`, `location.location_state`, `location.location_country`, `location.location_other`, `date`, `date_interval`, `unique_id`, `unique_id.government_issued_id`, `unique_id.account_number`, `unique_id.vehicle_id`, `unique_id.healthcare_number`, `unique_id.healthcare_number.medical_record_number`, `unique_id.healthcare_number.health_plan_beneficiary_number`, `unique_id.device_id`, `unique_id.unique_id_other`, `medical`, `medical.medical_condition`, `medical.medication`, `medical.medical_procedure`, `medical.medical_measurement`, `medical.medical_other`
+- `excluded_data_collection_ids` (list of string, optional) — Data collection item IDs whose extracted values are not redacted. Their rationales are still redacted.
 
 ### EffectsSpec-Output
 

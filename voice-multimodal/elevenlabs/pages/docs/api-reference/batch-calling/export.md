@@ -28,6 +28,10 @@ Reference: https://elevenlabs.io/docs/api-reference/batch-calling/export
 
 - `batch_id` (string, required)
 
+### Query parameters
+
+- `limit` (integer, optional, nullable) — Only export the first N recipients; used to preview the columns. Omit to export every recipient.
+
 ## Response
 
 ### 200
@@ -63,7 +67,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.batchCalls.export("batch_id");
+    await client.conversationalAi.batchCalls.export("batch_id", {});
 }
 main();
 

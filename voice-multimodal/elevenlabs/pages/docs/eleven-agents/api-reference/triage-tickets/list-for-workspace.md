@@ -28,7 +28,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 
 - `page_size` (integer, optional, default: 100) — How many agent conversation tickets to return. Can not exceed 100.
 - `status` (enum, optional) — Filter tickets by status.
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
 - `assignee_user_id` (string, optional) — Filter tickets by assignee. Use 'unassigned' for tickets with no assignee.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
@@ -64,16 +64,20 @@ Validation Error
 - `ticket_comments` (list of TicketCommentResponseModel, required)
 - `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `priority_changes` (list of TicketPriorityChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `created_at_unix_secs` (integer, required)
 - `updated_at_unix_secs` (integer, required)
+- `title` (string, optional) — One-line headline for the ticket. None only on tickets created before titles existed.
 - `issue_type` (enum, optional)
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `first_seen_unix_secs` (integer, optional)
 - `last_seen_unix_secs` (integer, optional)
 - `qa_comment` (string, optional)
+- `priority` (enum, optional)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 - `assignee_user_id` (string, optional)
 
 ### ValidationError
@@ -94,6 +98,13 @@ Validation Error
 - `comment` (string, required)
 - `created_at_unix_secs` (integer, required)
 - `owner_user_id` (string, optional)
+
+### TicketPriorityChangeResponseModel
+
+- `changed_by_user_id` (string, required)
+- `changed_at_unix_secs` (integer, required)
+- `priority` (enum, optional)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 
 ### ValidationErrorLocItem
 
@@ -132,13 +143,22 @@ Validation Error
         }
       ],
       "status": "open",
+      "priority_changes": [
+        {
+          "changed_by_user_id": "changed_by_user_id",
+          "changed_at_unix_secs": 1,
+          "priority": null
+        }
+      ],
       "source": "qa",
       "created_at_unix_secs": 1,
       "updated_at_unix_secs": 1,
+      "title": "title",
       "issue_type": "knowledge_gap",
       "first_seen_unix_secs": 1,
       "last_seen_unix_secs": 1,
       "qa_comment": "qa_comment",
+      "priority": "low",
       "assignee_user_id": "assignee_user_id"
     }
   ],

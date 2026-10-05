@@ -20,7 +20,7 @@ Point Claude Code, Cursor IDE, Codex, Copilot, and the rest at Fireworks with on
   <Card title="VS Code" icon="window-maximize" href="/nexus/harnesses#vs-code" />
 
   <Card title="More harnesses" icon="grid-2" href="/nexus/harnesses">
-    Pi, Copilot App and CLI, and DeepSeek Harness
+    Claude Desktop, Pi, Copilot App and CLI, and DeepSeek Harness
   </Card>
 </Columns>
 
@@ -108,7 +108,7 @@ See [FireRouter](/nexus/firerouter) for router behavior, [Open Models](/nexus/op
 
 ### Use closed models without an LLM gateway
 
-FireConnect does not require an LLM gateway. In Claude Code, routes with Claude models can use your Claude login. Some other harnesses accept a local Anthropic key. OpenAI models need an OpenAI key in [Provider Keys](/nexus/provider-keys). See [Harness Compatibility](/nexus/harness-compatibility) for each harness.
+FireConnect does not require an LLM gateway. In Claude Code, routes with Claude models can use your Claude login. Some other harnesses accept a local Anthropic or OpenAI key, which you can save once with `fireconnect configure --anthropic-api-key` or `--openai-api-key`. Both are optional. Harnesses that cannot send a local key use [Provider Keys](/nexus/provider-keys). See [Harness Compatibility](/nexus/harness-compatibility) for each harness.
 
 ## Web search
 

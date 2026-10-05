@@ -28,6 +28,10 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/batch-calling/
 
 - `batch_id` (string, required)
 
+### Query parameters
+
+- `limit` (integer, optional) — Only export the first N recipients; used to preview the columns. Omit to export every recipient.
+
 ## Response
 
 ### 200
@@ -65,7 +69,9 @@ async function main() {
     const client = new ElevenLabsClient({
         apiKey: "string",
     });
-    await client.conversationalAi.batchCalls.export(":batch_id");
+    await client.conversationalAi.batchCalls.export(":batch_id", {
+        limit: 0,
+    });
 }
 main();
 
@@ -80,6 +86,7 @@ client = ElevenLabs(
 
 client.conversational_ai.batch_calls.export(
     batch_id=":batch_id",
+    limit=0,
 )
 
 ```
@@ -95,7 +102,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export"
+	url := "https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export?limit=0"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -116,7 +123,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export")
+url = URI("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export?limit=0")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -132,7 +139,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export?limit=0")
   .header("xi-api-key", "string")
   .asString();
 ```
@@ -143,7 +150,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export?limit=0', [
   'headers' => [
     'xi-api-key' => 'string',
   ],
@@ -155,7 +162,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export?limit=0");
 var request = new RestRequest(Method.GET);
 request.AddHeader("xi-api-key", "string");
 IRestResponse response = client.Execute(request);
@@ -166,7 +173,7 @@ import Foundation
 
 let headers = ["xi-api-key": "string"]
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/batch-calling/%3Abatch_id/export?limit=0")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

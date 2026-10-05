@@ -63,6 +63,65 @@ Validation Error
 - `msg` (string, required)
 - `type` (string, required)
 
+### V> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Update secret
+
+PATCH https://api.elevenlabs.io/v1/convai/secrets/{secret_id}
+Content-Type: application/json
+
+Update an existing secret for the workspace
+
+Reference: https://elevenlabs.io/docs/api-reference/workspace/secrets/update
+
+## Servers
+
+- `https://api.elevenlabs.io` (Production, default)
+- `https://api.us.elevenlabs.io` (Production US)
+- `https://api.eu.residency.elevenlabs.io` (Production EU)
+- `https://api.in.residency.elevenlabs.io` (Production India)
+- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
+
+## Request
+
+### Path parameters
+
+- `secret_id` (string, required)
+
+### Body (application/json)
+
+This endpoint expects a PatchWorkspaceSecretRequest.
+
+- `type` ("update", required)
+- `name` (string, required)
+- `value` (string, required)
+
+## Response
+
+### 200
+
+Successful Response
+
+- `type` ("stored", required)
+- `secret_id` (string, required)
+- `name` (string, required)
+
+## Errors
+
+### 422 Unprocessable Entity Error
+
+Validation Error
+
+- `detail` (list of ValidationError, optional)
+
+## Types
+
+### ValidationError
+
+- `loc` (list of ValidationErrorLocItems, required)
+- `msg` (string, required)
+- `type` (string, required)
+
 ### ValidationErrorLocItems
 
 ## Examples

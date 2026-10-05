@@ -12,7 +12,7 @@ path: docs/eleven-agents/guides/call-queueing
 
 When an agent or workspace reaches its concurrency limit, new calls are normally rejected immediately. With call queueing enabled, callers who arrive while the agent is at capacity are held on the line with hold audio and connected automatically, in the order they arrived, as soon as a slot frees up.
 
-Call queueing is configured per agent and is turned off by default.
+Call queueing is configured per agent and defaults to it being turned on for new agents.
 
 > **Note**
 >
@@ -60,7 +60,7 @@ Call queueing is configured per agent in the **Limits** section of the agent's *
 
 | Setting                 | Description                                                                                                                                                                                         | Default                 |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
-| **Enable call queuing** | Hold callers in a queue when the agent is at its concurrency limit.                                                                                                                                 | Off                     |
+| **Enable call queuing** | Hold callers in a queue when the agent is at its concurrency limit.                                                                                                                                 | On                      |
 | **Max queue wait time** | How long a caller can wait before the call is disconnected, in seconds. Between 1 and 1,800 seconds (30 minutes).                                                                                   | 180 seconds (3 minutes) |
 | **Custom hold audio**   | An MP3 or WAV file played on a loop to queued callers. Up to 40 MB and 3 minutes long. When no file is uploaded, callers hear the default hold tone. Upload it in the dashboard or through the API. | Default hold tone       |
 
@@ -72,7 +72,7 @@ Open your agent in the dashboard, navigate to the **Security** tab, and scroll t
 
 #### Enable call queueing
 
-Toggle on **Enable call queuing** and set the **Max queue wait time**.
+Make sure **Enable call queuing** is on and set the **Max queue wait time**.
 
 #### Upload hold audio (optional)
 
@@ -150,6 +150,8 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
   },
 });
 ```
+
+New agents are created with `queueing_config.enabled` set to `true`. To create an agent with call queueing turned off, set `queueing_config.enabled` to `false` in the create request.
 
 ### Managing hold audio through the API
 

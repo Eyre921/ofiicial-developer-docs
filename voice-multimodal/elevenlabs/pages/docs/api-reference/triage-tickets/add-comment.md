@@ -46,6 +46,7 @@ Successful Response
 - `owner_user_id` (string, required)
 - `agent_id` (string, required)
 - `needs_clustering` (boolean, required)
+- `title` (string, required, nullable) — One-line headline for the ticket. None only on tickets created before titles existed.
 - `issue_type` (enum, required, nullable)
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `labels` (list of string, required)
@@ -56,7 +57,10 @@ Successful Response
 - `ticket_comments` (list of TicketCommentResponseModel, required)
 - `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `priority_changes` (list of TicketPriorityChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `assignee_user_id` (string, required, nullable)
@@ -86,6 +90,13 @@ Validation Error
 - `created_at_unix_secs` (integer, required)
 - `owner_user_id` (string, required, nullable)
 
+### TicketPriorityChangeResponseModel
+
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `changed_by_user_id` (string, required)
+- `changed_at_unix_secs` (integer, required)
+
 ### ValidationError
 
 - `loc` (list of ValidationErrorLocItems, required)
@@ -113,6 +124,7 @@ Validation Error
   "owner_user_id": "string",
   "agent_id": "string",
   "needs_clustering": true,
+  "title": "string",
   "issue_type": "knowledge_gap",
   "labels": [
     "string"
@@ -139,6 +151,14 @@ Validation Error
     }
   ],
   "status": "open",
+  "priority": "low",
+  "priority_changes": [
+    {
+      "priority": "low",
+      "changed_by_user_id": "string",
+      "changed_at_unix_secs": 1
+    }
+  ],
   "source": "qa",
   "assignee_user_id": "string",
   "created_at_unix_secs": 1,

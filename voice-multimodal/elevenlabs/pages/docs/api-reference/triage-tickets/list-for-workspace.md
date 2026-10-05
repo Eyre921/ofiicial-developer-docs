@@ -28,7 +28,7 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/list-for-work
 
 - `page_size` (integer, optional, default: 100) — How many agent conversation tickets to return. Can not exceed 100.
 - `status` (enum, optional, nullable) — Filter tickets by status.
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
 - `assignee_user_id` (string, optional, nullable) — Filter tickets by assignee. Use 'unassigned' for tickets with no assignee.
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 
@@ -59,6 +59,7 @@ Validation Error
 - `owner_user_id` (string, required)
 - `agent_id` (string, required)
 - `needs_clustering` (boolean, required)
+- `title` (string, required, nullable) — One-line headline for the ticket. None only on tickets created before titles existed.
 - `issue_type` (enum, required, nullable)
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `labels` (list of string, required)
@@ -69,7 +70,10 @@ Validation Error
 - `ticket_comments` (list of TicketCommentResponseModel, required)
 - `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `priority_changes` (list of TicketPriorityChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `assignee_user_id` (string, required, nullable)
@@ -95,6 +99,13 @@ Validation Error
 - `created_at_unix_secs` (integer, required)
 - `owner_user_id` (string, required, nullable)
 
+### TicketPriorityChangeResponseModel
+
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `changed_by_user_id` (string, required)
+- `changed_at_unix_secs` (integer, required)
+
 ### ValidationErrorLocItems
 
 ## Examples
@@ -110,6 +121,7 @@ Validation Error
       "owner_user_id": "string",
       "agent_id": "string",
       "needs_clustering": true,
+      "title": "string",
       "issue_type": "knowledge_gap",
       "labels": [
         "string"
@@ -136,6 +148,14 @@ Validation Error
         }
       ],
       "status": "open",
+      "priority": "low",
+      "priority_changes": [
+        {
+          "priority": "low",
+          "changed_by_user_id": "string",
+          "changed_at_unix_secs": 1
+        }
+      ],
       "source": "qa",
       "assignee_user_id": "string",
       "created_at_unix_secs": 1,

@@ -58,6 +58,7 @@ Validation Error
   - Allowed values: `transcript`, `audio`, `call_initiation_failure`, `answering_machine_detection`, `unredacted_transcript`, `unredacted_audio`
 - `transcript_format` (enum, optional, default: json) — Format for transcript webhooks.
   - Allowed values: `json`, `opentelemetry`
+- `exclude_transcript` (boolean, optional, default: false) — When true, JSON post-call transcription webhooks omit the turn-by-turn transcript. Analysis, metadata, and other conversation fields are still sent. Ignored for OpenTelemetry transcript format.
 - `send_audio` (boolean, optional, nullable, deprecated) — DEPRECATED: Use 'events' field instead. Whether to send audio data with post-call webhooks for ConvAI conversations
 
 ### ValidationError
@@ -94,6 +95,7 @@ Used to reference a secret from the agent's secret store.
       "transcript"
     ],
     "transcript_format": "json",
+    "exclude_transcript": false,
     "send_audio": true
   },
   "can_use_mcp_servers": false,

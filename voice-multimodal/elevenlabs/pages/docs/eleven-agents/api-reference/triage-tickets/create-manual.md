@@ -11,7 +11,7 @@ path: docs/eleven-agents/api-reference/triage-tickets/create-manual
 POST https://api.elevenlabs.io/v1/convai/agents/{agent_id}/triage-tickets
 Content-Type: application/json
 
-Manually raise a follow-up ticket against an agent, not tied to any conversation (for example a task like 'add the KB about X'). The comment is shown as the ticket title. Requires viewer access to the agent.
+Manually raise a follow-up ticket against an agent, not tied to any conversation (for example a task like 'add the KB about X'). Without a title, one is derived from the comment. Requires viewer access to the agent.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/create-manual
 
@@ -33,7 +33,10 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 
 This endpoint expects an object.
 
-- `qa_comment` (string, required) — What the ticket is about, e.g. a follow-up task for the agent. This is shown as the ticket title.
+- `qa_comment` (string, required) — What the ticket is about, e.g. a follow-up task for the agent.
+- `title` (string, optional) — One-line headline shown in the triage list. Defaults to one derived from qa_comment.
+- `priority` (enum, optional) — How urgently the ticket needs attention.
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 
 ## Response
 
@@ -51,16 +54,20 @@ Successful Response
 - `ticket_comments` (list of TicketCommentResponseModel, required)
 - `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `priority_changes` (list of TicketPriorityChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `created_at_unix_secs` (integer, required)
 - `updated_at_unix_secs` (integer, required)
+- `title` (string, optional) — One-line headline for the ticket. None only on tickets created before titles existed.
 - `issue_type` (enum, optional)
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `first_seen_unix_secs` (integer, optional)
 - `last_seen_unix_secs` (integer, optional)
 - `qa_comment` (string, optional)
+- `priority` (enum, optional)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 - `assignee_user_id` (string, optional)
 
 ## Errors
@@ -85,6 +92,13 @@ Validation Error
 - `comment` (string, required)
 - `created_at_unix_secs` (integer, required)
 - `owner_user_id` (string, optional)
+
+### TicketPriorityChangeResponseModel
+
+- `changed_by_user_id` (string, required)
+- `changed_at_unix_secs` (integer, required)
+- `priority` (enum, optional)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 
 ### ValidationError
 
@@ -135,13 +149,22 @@ Validation Error
     }
   ],
   "status": "open",
+  "priority_changes": [
+    {
+      "changed_by_user_id": "changed_by_user_id",
+      "changed_at_unix_secs": 1,
+      "priority": "low"
+    }
+  ],
   "source": "qa",
   "created_at_unix_secs": 1,
   "updated_at_unix_secs": 1,
+  "title": "title",
   "issue_type": "knowledge_gap",
   "first_seen_unix_secs": 1,
   "last_seen_unix_secs": 1,
   "qa_comment": "qa_comment",
+  "priority": "low",
   "assignee_user_id": "assignee_user_id"
 }
 ```

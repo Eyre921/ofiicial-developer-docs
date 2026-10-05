@@ -16,8 +16,8 @@ For model selection, see [Open Models](/nexus/open-models). For router behavior 
 fireconnect login        # Sign in: browser (creates a key) or paste a key you have
 fireconnect logout       # Clear stored Fireworks credentials
 fireconnect status       # Sign-in state, environment, storage, and harness key sources
-fireconnect configure    # Set the provider, Foundry endpoint, or Anthropic key
-fireconnect model list   # Browse the global Fireworks coding model catalog
+fireconnect configure    # Set the provider, Foundry endpoint, or Anthropic and OpenAI keys
+fireconnect model list   # Browse the global Fireworks coding model catalog (alias: fireconnect models)
 fireconnect claude demo  # Race two models in live Claude Code sessions
 fireconnect upgrade      # Update FireConnect (curl/git install only)
 fireconnect uninstall    # Disable all harnesses, restore configs, remove CLI
@@ -30,8 +30,10 @@ Global options for `model list`:
 ```bash wrap theme={null}
 fireconnect model list --search glm    # filter by name
 fireconnect model list --refresh       # bypass the 1-hour cache
-fireconnect model list --json            # machine-readable output
+fireconnect model list --json          # machine-readable output
 ```
+
+The list opens with the smart routers, which pick a model per user turn. `auto` balances cost and quality across open models. `auto-instant` is latency-first. If your account disables fast models, stay on `auto`.
 
 Run `fireconnect help` for the overview, or `fireconnect claude help` (and similarly for other harnesses) for harness-level options.
 
@@ -56,7 +58,7 @@ FireConnect may store an Anthropic or Azure key literally when you pass `--api-k
 
 ## Configure a provider
 
-`fireconnect configure` sets the default provider, Foundry endpoint, Azure key, or shared Anthropic key. It does not store your Fireworks API key. Use `fireconnect login` for that.
+`fireconnect configure` sets the default provider, Foundry endpoint, Azure key, or shared Anthropic and OpenAI keys for FireRouter. It does not store your Fireworks API key. Use `fireconnect login` for that.
 
 ```bash wrap theme={null}
 fireconnect configure \
@@ -65,6 +67,7 @@ fireconnect configure \
   --api-key $AZURE_API_KEY
 
 fireconnect configure --anthropic-api-key sk-ant-...
+fireconnect configure --openai-api-key sk-...
 fireconnect configure --provider fireworks
 ```
 
@@ -81,18 +84,25 @@ See [Foundry for Coding Harnesses](/nexus/microsoft-foundry#choose-a-path) for c
 
 ## Harness commands
 
-CLI harnesses support connect, `off`, `status`, and `help`. Claude Code also supports `usage`, `live`, and `demo`.
+CLI harnesses support connect, `off`, `status`, and `help`. Claude Code also supports `usage`, `live`, and `demo`. Claude Desktop (macOS) uses `fireconnect claude-desktop on`, `off`, and `status`, plus `mcp list`, `mcp add`, `mcp remove`, and `mcp sync` for connectors.
 
 IDE commands require you to quit the app before FireConnect writes settings. `status` is read-only. See [Coding Harnesses](/nexus/harnesses) for app-specific commands and restart rules.
 
 ## Choose a model or router
 
-Use `--model <id>` to add or select a model. In Claude Code, this adds one row to `/model`; native tiers remain unchanged.
+Use `--model <id>` to select a model. The rest of the catalog stays in the picker. In Claude Code, the model becomes your default and appears in `/model`; native tiers remain unchanged unless you pin them.
 
 ```bash wrap theme={null}
 fireconnect model list --search glm
 fireconnect claude --model glm-fast-latest
 fireconnect opencode --model glm-fast-latest
+```
+
+In Claude Code, pin a tier slot with `--opus`, `--sonnet`, `--haiku`, `--fable`, or `--subagent`. Pins persist when you run `fireconnect claude` again. Pass `native` to release a slot:
+
+```bash wrap theme={null}
+fireconnect claude --sonnet deepseek-flash-latest --subagent deepseek-flash-latest
+fireconnect claude --sonnet native
 ```
 
 On Microsoft Foundry, pass the Azure deployment name, such as `FW-GLM-5.2`.
@@ -101,7 +111,8 @@ When using a model router:
 
 * Pass any router ID with `--model`, such as `firerouter`, `firerouter/opus`, `firerouter/claude-opus-5-5`, or a custom route such as `firerouter/opus/glm-5p3`.
 * Pass `--anthropic-api-key sk-ant-...` when the route contains a Claude family alias or Anthropic model ID and the harness must forward a local key.
-* Pass `--routing-preference <level>` on supported harnesses. Claude Code accepts this flag only with bare `firerouter`.
+* Optional: pass `--openai-api-key sk-...`, or save it once with `fireconnect configure`, so FireRouter can reach GPT models. FireConnect sends it on bare `firerouter` and on routes that name a GPT model ID. Harnesses that cannot send a local key, such as Cursor IDE, reject the flag.
+* Pass `--routing-preference <level>` on supported harnesses. Claude Code accepts this flag when a Claude slot is set to bare `firerouter`.
 
 ## API key resolution
 

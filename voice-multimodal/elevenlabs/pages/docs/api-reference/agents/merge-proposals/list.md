@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/api-reference/agents/merge-proposals/list
 
 - `status` (enum, optional, nullable) — Only return proposals with this status.
   - Allowed values: `open`, `merged`, `closed`
+- `source_branch_id` (string, optional, nullable) — Only return proposals with this source branch.
+- `target_branch_id` (string, optional, nullable) — Only return proposals with this target branch.
 - `search` (string, optional, nullable) — Case-insensitive substring match over title and description.
 - `page_size` (integer, optional, default: 100) — How many results at most should be returned
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.

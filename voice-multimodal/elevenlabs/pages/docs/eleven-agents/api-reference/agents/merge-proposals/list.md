@@ -32,6 +32,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/merge-p
 
 - `status` (enum, optional) — Only return proposals with this status.
   - Allowed values: `open`, `merged`, `closed`
+- `source_branch_id` (string, optional) — Only return proposals with this source branch.
+- `target_branch_id` (string, optional) — Only return proposals with this target branch.
 - `search` (string, optional) — Case-insensitive substring match over title and description.
 - `page_size` (integer, optional, default: 100) — How many results at most should be returned
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
@@ -191,7 +193,9 @@ async function main() {
         cursor: "cursor",
         pageSize: 1,
         search: "search",
+        sourceBranchId: "source_branch_id",
         status: "open",
+        targetBranchId: "target_branch_id",
     });
 }
 main();
@@ -208,7 +212,9 @@ client.conversational_ai.agents.merge_proposals.list(
     cursor="cursor",
     page_size=1,
     search="search",
+    source_branch_id="source_branch_id",
     status="open",
+    target_branch_id="target_branch_id",
 )
 
 ```
@@ -224,7 +230,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&status=open"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&source_branch_id=source_branch_id&status=open&target_branch_id=target_branch_id"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -243,7 +249,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&status=open")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&source_branch_id=source_branch_id&status=open&target_branch_id=target_branch_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -258,7 +264,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&status=open")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&source_branch_id=source_branch_id&status=open&target_branch_id=target_branch_id")
   .asString();
 ```
 
@@ -268,7 +274,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&status=open');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&source_branch_id=source_branch_id&status=open&target_branch_id=target_branch_id');
 
 echo $response->getBody();
 ```
@@ -276,7 +282,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&status=open");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&source_branch_id=source_branch_id&status=open&target_branch_id=target_branch_id");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -284,7 +290,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&status=open")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals?cursor=cursor&page_size=1&search=search&source_branch_id=source_branch_id&status=open&target_branch_id=target_branch_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

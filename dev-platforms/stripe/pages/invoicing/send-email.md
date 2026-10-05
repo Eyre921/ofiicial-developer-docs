@@ -104,7 +104,8 @@ You can send email notifications to your customers by configuring your Dashboard
 
 - To send an email notification when a card payment fails, enable **Send emails when card payments fail**.
 - To send an email reminder for an unpaid one-time invoice, go to [Advanced invoicing features](https://dashboard.stripe.com/settings/billing/invoice).
-- To email finalized invoices, go to [Manage invoices sent to customers](https://dashboard.stripe.com/settings/billing/automatic) and select **Send finalized invoices and credit notes to customers**.
+- To email finalized invoices, go to [Manage invoices sent to customers](https://dashboard.stripe.com/settings/billing/automatic) and select **Send finalized invoices to customers**.
+- To email credit notes, go to [Manage invoices sent to customers](https://dashboard.stripe.com/settings/billing/automatic) and select **Send credit notes to customers**. This setting applies to credit notes for all invoices, including invoices that you don’t email.
 - To send an email notification with a receipt after a successful payment, go to your **Email settings**.
 
 > Learn more about how you can use customer emails to [recover revenue](https://docs.stripe.com/billing/revenue-recovery/customer-emails.md).

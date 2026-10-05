@@ -54,11 +54,19 @@ Every harness can use any FireRouter ID. The table shows which IDs accept FireCo
 
 | Harness | IDs that accept `--routing-preference` |
 | - | - |
-| Claude Code | Bare `firerouter` only |
+| Claude Code | Bare `firerouter`, as the main model or a pinned tier such as `--sonnet firerouter` |
 | OpenCode, Pi, VS Code | `firerouter` or any ID beginning with `firerouter/` |
 | Codex, Cursor IDE, Copilot App, Copilot CLI, DeepSeek Harness | None |
 
-FireConnect accepts values `1` to `5` or the corresponding level names. In Claude Code, `fireconnect claude --model firerouter/opus` works, but adding `--routing-preference` to that ID returns an error: `--routing-preference requires --model firerouter`.
+FireConnect accepts values `1` to `5` or the corresponding level names.
+
+In Claude Code, at least one slot must be bare `firerouter`. `fireconnect claude` selects `firerouter` by default, so `fireconnect claude --routing-preference 4` works. With another main model, route a tier through `firerouter` instead:
+
+```bash wrap theme={null}
+fireconnect claude --model glm-latest --sonnet firerouter --routing-preference 4
+```
+
+Otherwise, FireConnect stops with `--routing-preference requires a Claude slot set to firerouter`. For example, `fireconnect claude --model firerouter/opus --routing-preference 4` fails, but `fireconnect claude --model firerouter/opus` alone works.
 
 To set a preference where FireConnect does not support it, send the `x-routing-preference` header with [manual setup](/nexus/firerouter/setup#set-up-your-harness), for example in `ANTHROPIC_CUSTOM_HEADERS` for Claude Code or `http_headers` for Codex. Cursor IDE and the Copilot App cannot send extra headers. Cursor CLI is not supported.
 

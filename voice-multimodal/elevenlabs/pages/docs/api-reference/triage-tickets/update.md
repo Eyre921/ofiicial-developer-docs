@@ -11,7 +11,7 @@ path: docs/api-reference/triage-tickets/update
 PATCH https://api.elevenlabs.io/v1/convai/triage-tickets/{agentqa_ticket_id}
 Content-Type: application/json
 
-Update a ticket's comment, status, and/or assignee. Requires editor access to the ticket's agent.
+Update a ticket's title, comment, status, priority, and/or assignee. Requires editor access to the ticket's agent.
 
 Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/update
 
@@ -33,9 +33,12 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/update
 
 This endpoint expects a PatchAgentConversationTicketRequestModel.
 
+- `title` (string, optional, nullable) — If provided, updates the ticket title. Omit to leave unchanged.
 - `status` (enum, optional, nullable) — If provided, updates the ticket status. Omit to leave unchanged.
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
 - `assignee_user_id` (string, optional, nullable) — If provided, updates who is responsible for resolving this ticket. Must be a workspace member with at least viewer access to the agent. Pass null to unassign. Omit to leave unchanged.
+- `priority` (enum, optional, nullable) — If provided, updates how urgently the ticket needs attention. Pass null to clear it. Omit to leave unchanged.
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 
 ## Response
 
@@ -48,6 +51,7 @@ Successful Response
 - `owner_user_id` (string, required)
 - `agent_id` (string, required)
 - `needs_clustering` (boolean, required)
+- `title` (string, required, nullable) — One-line headline for the ticket. None only on tickets created before titles existed.
 - `issue_type` (enum, required, nullable)
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `labels` (list of string, required)
@@ -58,7 +62,10 @@ Successful Response
 - `ticket_comments` (list of TicketCommentResponseModel, required)
 - `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `priority_changes` (list of TicketPriorityChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `assignee_user_id` (string, required, nullable)
@@ -88,6 +95,13 @@ Validation Error
 - `created_at_unix_secs` (integer, required)
 - `owner_user_id` (string, required, nullable)
 
+### TicketPriorityChangeResponseModel
+
+- `priority` (enum, required, nullable)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `changed_by_user_id` (string, required)
+- `changed_at_unix_secs` (integer, required)
+
 ### ValidationError
 
 - `loc` (list of ValidationErrorLocItems, required)
@@ -113,6 +127,7 @@ Validation Error
   "owner_user_id": "string",
   "agent_id": "string",
   "needs_clustering": true,
+  "title": "string",
   "issue_type": "knowledge_gap",
   "labels": [
     "string"
@@ -139,6 +154,14 @@ Validation Error
     }
   ],
   "status": "open",
+  "priority": "low",
+  "priority_changes": [
+    {
+      "priority": "low",
+      "changed_by_user_id": "string",
+      "changed_at_unix_secs": 1
+    }
+  ],
   "source": "qa",
   "assignee_user_id": "string",
   "created_at_unix_secs": 1,

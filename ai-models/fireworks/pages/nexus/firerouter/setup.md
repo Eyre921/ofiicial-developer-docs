@@ -68,12 +68,16 @@ Pick your harness, a model or router ID, and a setup method. Start with `auto` t
 
 | Harness | FireConnect with Claude routes | FireConnect with GPT routes | Manual setup |
 | - | - | - | - |
-| Claude Code | Your Claude login, or `--anthropic-api-key` | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
-| Codex CLI, Codex app, ChatGPT desktop, OpenCode, Pi, VS Code | `--anthropic-api-key`, or an Anthropic Provider Key | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
-| Copilot CLI, DeepSeek Harness | Not supported yet | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
-| Cursor IDE, Copilot App | Not supported | OpenAI Provider Key | Provider Keys only; these apps cannot send extra headers |
+| Claude Code | Your Claude login, or `--anthropic-api-key` | `--openai-api-key`, or an OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Codex CLI, Codex app, ChatGPT desktop, OpenCode, Pi, VS Code | `--anthropic-api-key`, or an Anthropic Provider Key | `--openai-api-key`, or an OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Copilot CLI, DeepSeek Harness | Anthropic Provider Key | OpenAI Provider Key | Sends `x-anthropic-api-key` and `x-openai-api-key` |
+| Cursor IDE, Copilot App | Anthropic Provider Key | OpenAI Provider Key | Provider Keys only; these apps cannot send extra headers |
 
-FireConnect has no local OpenAI key option yet, so GPT routes such as `firerouter/astra` and `firerouter/sol` need an OpenAI [Provider Key](/nexus/provider-keys) when you connect with FireConnect. To send your own OpenAI key, use manual setup. For every harness's files and restore behavior, see [Coding Harnesses](/nexus/harnesses) and [Harness Compatibility](/nexus/harness-compatibility).
+* **Save a key once:** `fireconnect configure --anthropic-api-key sk-ant-...` or `fireconnect configure --openai-api-key sk-...`. Both are optional; FireConnect connects without them.
+* **Where the OpenAI key goes:** bare `firerouter`, and routes that name a GPT model ID, such as `firerouter/gpt-5.6-sol`. Family routes such as `firerouter/sol` and `firerouter/astra` need an OpenAI [Provider Key](/nexus/provider-keys) or manual setup.
+* **No key, no problem:** every harness accepts every FireRouter ID. When no closed-model key reaches FireRouter, it serves the turn with open models.
+
+For every harness's files and restore behavior, see [Coding Harnesses](/nexus/harnesses) and [Harness Compatibility](/nexus/harness-compatibility).
 
 ## LLM gateway
 

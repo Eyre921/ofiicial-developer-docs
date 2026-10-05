@@ -238,7 +238,7 @@ Workspace admins can assign and manage seat types from Settings → [Members](ht
 
 When inviting new users to your workspace, you can select their seat type during the invite flow.
 
-![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T230533Z&X-Amz-Expires=604800&X-Amz-Signature=1d2f7d3a511366bf484c4ee7cd96a6687ebe3561523af9b60b66fbc2dbbbab7e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Inviting a new member to workspace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T113058Z&X-Amz-Expires=604800&X-Amz-Signature=e6482db73416cfe4d445e3b72e10b2f634b67a964cbfeed56061e1b56360a372&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Adding more seats
 
@@ -264,11 +264,6 @@ Grants the ability to invite and remove workspace members, and manage group memb
 * Invite new members to the workspace
 * Remove members from the workspace
 * Add and remove members from groups
-
-> **Warning**
->
-> User Manager permissions require the member to be on a **Full Seat**. Assigning this role to a
-> Basic Seat member will not grant those permissions. Upgrade the member to a Full Seat first.
 
 **Resource Manager**
 
@@ -301,8 +296,7 @@ Select **User Manager**, **Resource Manager**, or both, then click **Save Change
 
 > **Note**
 >
-> Roles cannot be assigned to workspace admins — admins already have all permissions. A workspace
-> admin cannot modify their own roles.
+> Roles cannot be assigned to workspace admins — admins already have all permissions.
 
 ## FAQ
 

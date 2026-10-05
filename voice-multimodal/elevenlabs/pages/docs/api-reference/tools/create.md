@@ -269,6 +269,7 @@ Configuration for extracting values from tool responses and assigning them to dy
   - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
   - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
 - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+  - `wait_timeout_secs` (double, optional, default: -1) — Seconds to wait after skip_turn before the agent generates a contextual check-in. The "End conversation after silence" timer is paused during the wait. -1 disables the wait: after skip_turn the agent stays silent until the caller speaks, and that timer keeps running. Applies to voice conversations only.
 - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
   - `procedures` (map from string to ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingStartProcedureProcedures, optional)
 - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
@@ -326,6 +327,7 @@ Configuration for extracting values from tool responses and assigning them to dy
   - `suppress_turn_after_dtmf` (boolean, optional, default: false) — If true, the agent will not generate further speech after playing DTMF tones. This prevents the agent's speech from interfering with IVR systems.
   - `use_out_of_band_dtmf` (boolean, optional, default: true) — Send DTMF tones as out-of-band RTP events (RFC 4733) instead of in-band audio. Only effective for SIP trunk imported numbers.
 - `system_tool_type`: `skip_turn` (SkipTurnToolConfig)
+  - `wait_timeout_secs` (double, optional, default: -1) — Seconds to wait after skip_turn before the agent generates a contextual check-in. The "End conversation after silence" timer is paused during the wait. -1 disables the wait: after skip_turn the agent stays silent until the caller speaks, and that timer keeps running. Applies to voice conversations only.
 - `system_tool_type`: `start_procedure` (StartProcedureToolConfig)
   - `procedures` (map from string to ToolResponseModelToolConfigDiscriminatorMappingSystemParamsDiscriminatorMappingStartProcedureProcedures, optional)
 - `system_tool_type`: `transfer_to_agent` (TransferToAgentToolConfig)
@@ -377,6 +379,7 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 - `enable_transferred_agent_first_message` (boolean, optional, default: false)
 - `is_workflow_node_transfer` (boolean, optional, default: false)
 - `preserve_client_tts_overrides` (boolean, optional, default: false) — Defines whether TTS client overrides should be carried over to the transferred agent.
+- `preserve_voice_settings` (boolean, optional, default: false) — Defines whether the base voice, TTS model and voice settings should be carried over to the transferred agent.
 
 ### PhoneNumberTransfer
 
@@ -446,6 +449,7 @@ Optional auth connection to use for authentication with this webhook
 - `enable_transferred_agent_first_message` (boolean, optional, default: false)
 - `is_workflow_node_transfer` (boolean, optional, default: false)
 - `preserve_client_tts_overrides` (boolean, optional, default: false) — Defines whether TTS client overrides should be carried over to the transferred agent.
+- `preserve_voice_settings` (boolean, optional, default: false) — Defines whether the base voice, TTS model and voice settings should be carried over to the transferred agent.
 
 ### WebhookToolApiSchemaConfigOutputRequestHeaders
 

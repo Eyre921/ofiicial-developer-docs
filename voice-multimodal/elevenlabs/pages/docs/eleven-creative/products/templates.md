@@ -8,7 +8,7 @@ path: docs/eleven-creative/products/templates
 
 # Templates
 
-![Templates overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6641490d2a827898ae4f13bce061b74199e026d879c8b2f1857fcf3d719ffb1c/assets/images/product-guides/workflows/templates-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233102Z&X-Amz-Expires=604800&X-Amz-Signature=986c6eefcea63c1802145f3f24f7b8b479fb8a30c96574a674f0ff2d30f4b18e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Templates overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6641490d2a827898ae4f13bce061b74199e026d879c8b2f1857fcf3d719ffb1c/assets/images/product-guides/workflows/templates-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T113110Z&X-Amz-Expires=604800&X-Amz-Signature=10b348c0c67b9ce47ec5d21c8ac4999f5e696ae8f412289b5d2e00bc3a3afd85&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Overview
 
@@ -54,7 +54,200 @@ After the template completes, review your generated assets. Templates can return
 
 ## How Templates work
 
-![Templates detail](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5837081ea8a6c1f0b627d67e6948e4bdb54a9a55da2e0a07fad2cb7215dd341/assets/images/product-guides/workflows/templates-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261004%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261004T233102Z&X-Amz-Expires=604800&X-Amz-Signature=5c212ad6828a24e9f807a98cbe8a53e94454a89260a627bf41ba7620628d4596&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Templates detail](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5837081ea8a6c1f0b627d67e6948e4bdb54a9a55da2e0a07fad2cb7215dd341/assets/images/product-guides/workflows/templates-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T113110Z&X-Amz-Expires=604800&X-Amz-Signature=62133289b26a92bf14b2a4adff09f1ddcad6d8e8c08a07e902bd171cb2524ad3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+Templates are curated pipelines built on the same multi-model infrastructure as ElevenCreative Flows. Each template defines its inputs (images, video, text, audio) and outputs (generated assets), so you know exactly what to provide and what you get back.
+
+When you run a template, it executes a pre-built flow that chains together the necessary models and processing steps. The template handles all configuration and file transfers between steps automatically.
+
+Templates support:
+
+* Multiple input types (images, video, audio, text fields)
+* Multiple output assets per template
+* One-click execution without manual configuration
+* Access via web and mobile app
+
+## Featured templates
+
+The template gallery spans product photography, mockups, video editing, style transfers, and more. [Browse the full gallery](https://elevenlabs.io/app/templates) to discover templates for your use case.
+
+#### Product Photography
+
+Transform product images with professional lighting, backgrounds, and composition.
+
+#### Mockups
+
+Place designs onto device screens, packaging, or physical products.
+
+#### Video Editing
+
+Apply effects, transitions, and enhancements to video content.
+
+#### Style Transfers
+
+Apply artistic styles from reference images to your content.
+
+## Create your own template
+
+You can create your own templates in two ways:
+
+* **From an existing flow**: Open any flow in [ElevenCreative Flows](https://elevenlabs.io/app/flows) and click the **Create Template** button to convert it into a template
+* **From scratch**: Click the **+ New Template** button to start building a new template from scratch
+
+When creating a template, you can choose from various sharing options:
+
+When saving your template, choose who can access it:
+
+* **Just me**: the template can only be used by you.
+* **Workspace**: the template can be used by anyone in your workspace.
+* **Link only**: the template can be used by anyone with the link.
+* **Explore**: the template will be submitted for review. Once approved, it will be visible to everyone in the [Templates](https://elevenlabs.io/app/templates) **Explore** tab.
+
+## Key features
+
+#### Powered by ElevenCreative Flows
+
+Each template is built using ElevenCreative Flows. The optimal models, settings, and connections
+between steps are all preselected and preconfigured for you.
+
+#### One-click execution
+
+Upload your image, video, or text, run the template, and get the output. Templates require no
+specialized configuration or manual model selection. Prompt engineering is built into each
+template to optimize results.
+
+#### Create and share
+
+Anyone can turn a flow into a template and share it with the community. Build a workflow in
+ElevenCreative Flows, define its inputs and outputs, and publish it as a template.
+
+#### Multi-input and multi-output
+
+Templates can accept multiple files, text fields, and selections. They can also return multiple
+generated assets depending on their design.
+
+#### Available on web and mobile
+
+Templates work the same way on web and the ElevenLabs mobile app. Browse the gallery and run
+templates from any device.
+
+## Billing and pricing
+
+Templates consume credits from your existing plan at the same rate as running the same models manually. There is no additional markup for using Templates.
+
+Credit cost depends on the models used in the template. You can preview the estimated cost before running.
+
+Credit usage is calculated based on:
+
+* Model used for each step
+* Duration or size of the output
+* Number of outputs generated
+
+## FAQ
+
+<tbody>
+  <tr>
+    <td>
+      #### What are Templates?
+
+      Templates are pre-built creative workflows that let you combine ElevenLabs' image, video,
+      voice, music, and sound effect models into a single automated pipeline. Select a template,
+      provide your inputs, and get polished outputs, with no manual configuration required.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### How do I use a template?
+
+      Browse the template gallery, select one, upload the required inputs, and run. The template
+      processes your inputs and delivers the finished outputs directly in your workspace.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I create my own templates?
+
+      Yes. Build a workflow in [ElevenCreative Flows](https://elevenlabs.io/app/flows), define
+      its inputs and outputs, and publish it as a template. You can keep your templates private
+      for personal use or share them with the community for others to browse and run.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Can I share templates?
+
+      Yes. Published templates are shareable with the community. Anyone can run a shared
+      template from the gallery.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### What inputs can templates accept?
+
+      Templates can accept images, video files, audio files, and free text depending on the
+      specific template. Each template lists exactly what it needs before you run it.
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      #### Do templates cost extra?
+
+      No. Templates consume credits from your existing plan. Credit cost depends > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Templates
+
+![Templates overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6641490d2a827898ae4f13bce061b74199e026d879c8b2f1857fcf3d719ffb1c/assets/images/product-guides/workflows/templates-hero.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T113110Z&X-Amz-Expires=604800&X-Amz-Signature=10b348c0c67b9ce47ec5d21c8ac4999f5e696ae8f412289b5d2e00bc3a3afd85&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+
+## Overview
+
+Templates are ready-made creative workflows inside ElevenCreative. Each template chains together image, video, voice, music, and sound effect models into a single pipeline. You provide the inputs and the template handles the rest.
+
+Templates are built on [ElevenCreative Flows](https://elevenlabs.io/app/flows), our node-based visual workspace combining image, video, voice, music, and sound effects. Anyone can create a template by building a flow, defining its inputs and outputs, and publishing it. You can keep your templates private for personal use or share them with the community for others to browse and run.
+
+> **Warning**
+>
+> Templates are available for all plans, including free, but video generation is only available on
+> paid subscriptions.
+
+> **Note**
+>
+> This feature is currently in beta.
+
+## Guide
+
+### Browse the gallery
+
+Navigate to the **Explore** tab to view available templates. Each template shows what inputs it requires and what outputs it produces.
+
+### Select a template
+
+Choose a template that matches your goal. Click on it to view the full details.
+
+### Upload inputs
+
+Provide the required inputs based on what the template needs. Templates can accept images, video files, audio files, and text fields.
+
+### Run the template
+
+Click run and the template processes your inputs through its workflow. The template automatically handles all model selection and configuration.
+
+### Review outputs
+
+After the template completes, review your generated assets. Templates can return multiple outputs depending on their design.
+
+> **Note**
+>
+> Any content generated by templates is available in the specific product history (e.g., Music,
+> Image & Video) so you can continue iterating outside of Templates.
+
+## How Templates work
+
+![Templates detail](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f5837081ea8a6c1f0b627d67e6948e4bdb54a9a55da2e0a07fad2cb7215dd341/assets/images/product-guides/workflows/templates-detail.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T113110Z&X-Amz-Expires=604800&X-Amz-Signature=62133289b26a92bf14b2a4adff09f1ddcad6d8e8c08a07e902bd171cb2524ad3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Templates are curated pipelines built on the same multi-model infrastructure as ElevenCreative Flows. Each template defines its inputs (images, video, text, audio) and outputs (generated assets), so you know exactly what to provide and what you get back.
 

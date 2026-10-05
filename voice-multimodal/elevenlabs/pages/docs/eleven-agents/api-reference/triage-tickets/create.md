@@ -30,8 +30,11 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 This endpoint expects an object.
 
 - `conversation_id` (string, required) — Conversation this ticket is about.
+- `title` (string, optional) — One-line headline shown in the triage list. Defaults to one derived from the comments, falling back to the conversation's summary title. Ignored when the comment is added to the conversation's open ticket.
 - `qa_comment` (string, optional) — The issue this ticket is about, covering the whole conversation rather than a single turn.
 - `turn_comments` (list of TurnCommentRequestModel, optional) — Optional turn-level comments on what went wrong.
+- `priority` (enum, optional) — How urgently the ticket needs attention. If the conversation already has an open ticket, it is raised to this priority when lower.
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 
 ## Response
 
@@ -49,16 +52,20 @@ Successful Response
 - `ticket_comments` (list of TicketCommentResponseModel, required)
 - `turn_comments` (list of TurnCommentResponseModel, required)
 - `status` (enum, required)
-  - Allowed values: `open`, `in_progress`, `resolved`, `merged`
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `priority_changes` (list of TicketPriorityChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `created_at_unix_secs` (integer, required)
 - `updated_at_unix_secs` (integer, required)
+- `title` (string, optional) — One-line headline for the ticket. None only on tickets created before titles existed.
 - `issue_type` (enum, optional)
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `first_seen_unix_secs` (integer, optional)
 - `last_seen_unix_secs` (integer, optional)
 - `qa_comment` (string, optional)
+- `priority` (enum, optional)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 - `assignee_user_id` (string, optional)
 
 ## Errors
@@ -88,6 +95,13 @@ Validation Error
 - `comment` (string, required)
 - `created_at_unix_secs` (integer, required)
 - `owner_user_id` (string, optional)
+
+### TicketPriorityChangeResponseModel
+
+- `changed_by_user_id` (string, required)
+- `changed_at_unix_secs` (integer, required)
+- `priority` (enum, optional)
+  - Allowed values: `low`, `medium`, `high`, `urgent`
 
 ### ValidationError
 
@@ -138,13 +152,22 @@ Validation Error
     }
   ],
   "status": "open",
+  "priority_changes": [
+    {
+      "changed_by_user_id": "changed_by_user_id",
+      "changed_at_unix_secs": 1,
+      "priority": "low"
+    }
+  ],
   "source": "qa",
   "created_at_unix_secs": 1,
   "updated_at_unix_secs": 1,
+  "title": "title",
   "issue_type": "knowledge_gap",
   "first_seen_unix_secs": 1,
   "last_seen_unix_secs": 1,
   "qa_comment": "qa_comment",
+  "priority": "low",
   "assignee_user_id": "assignee_user_id"
 }
 ```
