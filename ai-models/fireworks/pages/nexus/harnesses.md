@@ -236,13 +236,12 @@ FireConnect runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It
   <Tab title="FireConnect" icon="bolt">
     ```bash wrap theme={null}
     fireconnect claude-desktop on
-    fireconnect claude-desktop mcp sync
     fireconnect claude-desktop status
     ```
 
     Reopen Claude Desktop. The picker starts on `auto`, followed by the Fireworks models, in place of your claude.ai subscription models.
 
-    After each `on`, run `mcp sync` to bring your connectors along. `off` puts your previous setup back, including your claude.ai models.
+    `on` brings your connectors along automatically. Each one asks you to sign in once the first time you use it. `off` puts your previous setup back, including your claude.ai models.
 
     <Frame>
       <img alt="Claude Desktop model picker in Cowork showing Auto selected, then Kimi K3 Fast, Kimi K3, MiniMax M3, GLM 5.3 Fast, GLM 5.3, and DeepSeek V4.1 Flash" />
@@ -250,18 +249,31 @@ FireConnect runs Claude Desktop's Chat, Cowork, and Code on Fireworks models. It
 
     <Accordion title="See what FireConnect writes">
       * `on` writes a third-party inference provider profile, Claude Desktop's own supported mechanism. The profile points at a small local gateway that FireConnect runs as a launchd service. It starts at login and restarts after a crash.
-      * `on` copies your skills and plugin assets into third-party mode. It never overwrites them. Conversations stay in the mode they were made in.
+      * `on` does not copy custom skills or plugins into third-party mode. Conversations stay in the mode they were made in.
       * Connector OAuth clients you register are saved in `~/.fireconnect/claude-desktop/oauth-clients.json`, readable only by you. They survive `off` and `on`.
       * `off` restores your previous provider profile and the device settings FireConnect changed, then removes the local gateway service. Nothing of yours is deleted.
     </Accordion>
   </Tab>
 </Tabs>
 
+**What moves with you**
+
+* Connectors move automatically with `on`. Sign in to each one once the first time you use it.
+* Connector OAuth clients you register are saved and survive `off` and `on`.
+* Conversations, custom skills, and plugins stay where they are. Third-party mode does not show your claude.ai sessions, and your subscription does not show sessions you start while connected. Nothing is deleted.
+* MCPs that need an OAuth client ID and secret do not move. Create your own client, such as a **Desktop app** client in Google Cloud for the Google-hosted connectors. If you need one of these connectors, [reach out to the team](https://fireworks.ai/contact).
+
+Run `fireconnect claude-desktop mcp sync` when you add a connector later and want it in third-party mode too.
+
 <AccordionGroup>
+  <Accordion title="Where did my previous conversations go?">
+    Your conversations are still there. Conversations stay in the mode they were made in. Claude Desktop's third-party mode does not show conversations from your claude.ai subscription, and your subscription does not show conversations you start while connected. Nothing is deleted. Run `fireconnect claude-desktop off` and reopen Claude Desktop to see your previous conversations again.
+  </Accordion>
+
   <Accordion title="Connectors">
     Claude Desktop's third-party mode hides the in-app connector browser. Manage connectors with FireConnect instead:
 
-    * `fireconnect claude-desktop mcp sync` imports the connectors you already use, from Desktop session history, your previous Desktop config, and your claude.ai organization when the Claude Code CLI is installed and signed in.
+    * `on` imports the connectors you already use, from Desktop session history, your previous Desktop config, and your claude.ai organization when the Claude Code CLI is installed and signed in.
     * `fireconnect claude-desktop mcp add <name> <url>` and `mcp remove <name>` manage entries by hand. Removals stick across syncs.
     * Each connector asks you to sign in once the first time you use it after `on`.
 

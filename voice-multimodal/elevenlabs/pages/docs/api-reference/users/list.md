@@ -105,47 +105,53 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "users": [
     {
-      "user_id": "string",
-      "last_contact_unix_secs": 1,
-      "first_contact_unix_secs": 1,
-      "conversation_count": 1,
-      "last_contact_conversation_id": "string",
+      "user_id": "user_9f8b7c6d5e4a3b2c1d0e",
+      "last_contact_unix_secs": 1685404800,
+      "first_contact_unix_secs": 1677628800,
+      "conversation_count": 42,
+      "last_contact_conversation_id": "conv_5a3f9b8c7d6e4f2a1b0c",
       "sentiment": {
-        "scored_conversation_count": 1,
-        "positive_count": 1,
-        "neutral_count": 1,
-        "negative_count": 1,
-        "average_sentiment_score": 1.1,
-        "average_frustration_score": 1.1,
-        "recent_scored_conversation_count": 1,
-        "recent_positive_count": 1,
-        "recent_neutral_count": 1,
+        "scored_conversation_count": 40,
+        "positive_count": 25,
+        "neutral_count": 10,
+        "negative_count": 5,
+        "average_sentiment_score": 0.75,
+        "average_frustration_score": 0.2,
+        "recent_scored_conversation_count": 10,
+        "recent_positive_count": 6,
+        "recent_neutral_count": 3,
         "recent_negative_count": 1,
-        "recent_average_sentiment_score": 1.1,
-        "recent_average_frustration_score": 1.1
+        "recent_average_sentiment_score": 0.8,
+        "recent_average_frustration_score": 0.15
       },
-      "last_contact_agent_id": "string",
-      "last_contact_agent_name": "string",
+      "last_contact_agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+      "last_contact_agent_name": "SupportBot Alpha",
       "most_frustrated_conversations": [
         {
-          "conversation_id": "string",
-          "agent_id": "string",
-          "start_time_unix_secs": 1,
-          "overall_label": "positive",
-          "overall_sentiment_score": 1.1,
-          "overall_frustration_score": 1.1
+          "conversation_id": "conv_7e4d3c2b1a0f9e8d7c6b",
+          "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+          "start_time_unix_secs": 1685318400,
+          "overall_label": "negative",
+          "overall_sentiment_score": -0.6,
+          "overall_frustration_score": 0.9
         }
       ]
     }
   ],
   "has_more": true,
-  "next_cursor": "string"
+  "next_cursor": "cursor_eyJwYWdlIjoxfQ=="
 }
 ```
 
@@ -180,6 +186,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -188,7 +195,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/users?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -211,6 +222,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -221,6 +234,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -230,7 +245,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/users?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/users?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -240,16 +260,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/users?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -161,7 +161,7 @@ Add the dependency to your build and import the library. Alternatively, if youâ€
 Make sure to initialize with Go Modules:
 
 ```bash
-go get -u github.com/stripe/stripe-go/v86
+go get -u github.com/stripe/stripe-go/v87
 ```
 
 #### GitHub
@@ -747,7 +747,7 @@ app.post(
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "stripe": "^22.6.0"
+    "stripe": "^23.0.0"
   }
 }
 {
@@ -760,7 +760,7 @@ app.post(
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
-    "stripe": "22.6.0"
+    "stripe": "23.0.0"
   },
   "devDependencies": {
     "concurrently": "4.1.2"
@@ -1022,7 +1022,7 @@ itsdangerous==2.2.0
 Jinja2==3.1.6
 MarkupSafe==3.0.3
 requests==2.32.5
-stripe==15.6.0
+stripe==16.0.0
 toml==0.10.2
 Werkzeug==3.1.5
   $session = $stripe->billingPortal->sessions->create([
@@ -1251,8 +1251,8 @@ $stripe = new \Stripe\StripeClient($stripeSecretKey);
                 return BadRequest();
             }
         }
-    "github.com/stripe/stripe-go/v86"
-    "github.com/stripe/stripe-go/v86/webhook"
+    "github.com/stripe/stripe-go/v87"
+    "github.com/stripe/stripe-go/v87/webhook"
     // This is a public sample test API key.
     // Don't submit any personally identifiable information in requests made with this key.
     // Sign in to see your own test API key embedded in code samples.
@@ -1412,7 +1412,7 @@ func handleWebhook(w http.ResponseWriter, req *http.Request) {
     }
     w.WriteHeader(http.StatusOK)
   }
-require github.com/stripe/stripe-go/v86 v86.4.0
+require github.com/stripe/stripe-go/v87 v87.0.0
     // This is a public sample test API key.
     // Don't submit any personally identifiable information in requests made with this key.
     // Sign in to see your own test API key embedded in code samples.

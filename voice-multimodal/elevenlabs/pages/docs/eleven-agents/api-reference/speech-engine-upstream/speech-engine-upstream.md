@@ -326,15 +326,23 @@ channels:
     publish:
       operationId: subpackage_speechEngineUpstream.speechEngineUpstream-publish
       summary: Server message
+      description: Defines the message types ElevenLabs sends to your speech engine server
       message:
         name: subscribe
+        description: >-
+          Defines the message types ElevenLabs sends to your speech engine
+          server
         payload:
           $ref: '#/components/schemas/speechEngineUpstream_receiveUpstreamMessage'
     subscribe:
       operationId: subpackage_speechEngineUpstream.speechEngineUpstream-subscribe
       summary: Client message
+      description: Defines the message types your speech engine server sends to ElevenLabs
       message:
         name: publish
+        description: >-
+          Defines the message types your speech engine server sends to
+          ElevenLabs
         payload:
           $ref: '#/components/schemas/speechEngineUpstream_sendUpstreamMessage'
 servers:

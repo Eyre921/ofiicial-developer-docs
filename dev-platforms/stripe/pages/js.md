@@ -5052,7 +5052,17 @@ This method creates an instance of an embedded form. Call [initCheckoutFormSdk](
       - `phone`
         The phone number of the contact.
     - `features`
-      Configuration for client-side features of the embedded form. Use this to disable default features of the Checkout Session that you prefer to implement in your own UI instead.
+      Configuration for client-side features of the embedded form, such as amount summary expansion and promotion code collection.
+      - `amountSummary`
+        Configuration for the amount summary in the embedded form.
+        - `expanded`
+          Controls whether the amount summary can be collapsed in the embedded form.
+
+By default (`'auto'`), the amount summary starts collapsed when it has expandable content, and the customer can expand or collapse it.
+
+Set to `'always'` to keep the amount summary expanded and prevent it from being collapsed.
+
+If there are no additional details to display, the summary shows only the total and doesn't expand, regardless of this setting.
       - `promotionCodeCollection`
         Controls whether to show promotion code input in the embedded form. Defaults to `'auto'`.
 
@@ -8559,7 +8569,17 @@ target the Element for styling or testing.
       - `phone`
         The phone number of the contact.
     - `features`
-      Configuration for client-side features of the embedded form. Use this to disable default features of the Checkout Session that you prefer to implement in your own UI instead.
+      Configuration for client-side features of the embedded form, such as amount summary expansion and promotion code collection.
+      - `amountSummary`
+        Configuration for the amount summary in the embedded form.
+        - `expanded`
+          Controls whether the amount summary can be collapsed in the embedded form.
+
+By default (`'auto'`), the amount summary starts collapsed when it has expandable content, and the customer can expand or collapse it.
+
+Set to `'always'` to keep the amount summary expanded and prevent it from being collapsed.
+
+If there are no additional details to display, the summary shows only the total and doesn't expand, regardless of this setting.
       - `promotionCodeCollection`
         Controls whether to show promotion code input in the embedded form. Defaults to `'auto'`.
 

@@ -598,6 +598,7 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | Clerk | Authentication |
 | ClickHouse | Database, analytics |
 | Cloudflare | Hosting, database, storage, domains, cache, queues, browser |
+| Cloudinary | Media |
 | Composio | AI |
 | CreateOS | Compute |
 | Customer.io | Messaging, email |

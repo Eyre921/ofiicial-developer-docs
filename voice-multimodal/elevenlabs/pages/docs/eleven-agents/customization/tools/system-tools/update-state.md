@@ -14,9 +14,11 @@ The **Update state** tool lets your agent set one or more [dynamic variables](/d
 
 Use it to record information as a call unfolds, for example flagging that a conversation should be escalated, storing a value the user provided, or computing a value derived from other dynamic variables.
 
+To apply state updates at a fixed point in a [workflow](/docs/eleven-agents/customization/agent-workflows) rather than whenever the LLM calls a tool, use an [update state node](/docs/eleven-agents/customization/agent-workflows#update-state-node). It accepts the same state updates.
+
 ## Functionality
 
-* **Multiple updates per call**: A single tool call can assign up to 10 dynamic variables at once.
+* **Multiple updates per call**: A single tool call can assign up to 50 dynamic variables at once.
 * **Expression-based values**: Each value is the result of an expression, which can combine constants, existing dynamic variables, values the LLM extracts from the conversation, and operators.
 * **LLM extraction only when needed**: The tool only asks the LLM to extract parameters for the updates that require it. Updates built entirely from constants and/or existing dynamic variables don't add any parameters to the function call.
 * **Immediate availability**: Once the tool runs, the updated dynamic variables are available to the rest of the conversation — later prompts, other tool calls, and overrides can all reference them, the same way as any other dynamic variable.
@@ -63,8 +65,70 @@ For each state update, provide:
 
 * **Variable name**: The dynamic variable to assign.
 * **Expression**: The value to assign, built from the value and operator types described above. Values can be nested to build more complex expressions.
+* **Required**: When disabled, the LLM may omit the> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-You can define up to 10 state updates for a single tool.
+# Update state
+
+## Overview
+
+The **Update state** tool lets your agent set one or more [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) while a conversation is in progress. Like other [system tools](/docs/eleven-agents/customization/tools/system-tools), it only changes the internal state of the conversation — it never calls an external API or a client-side function.
+
+Use it to record information as a call unfolds, for example flagging that a conversation should be escalated, storing a value the user provided, or computing a value derived from other dynamic variables.
+
+To apply state updates at a fixed point in a [workflow](/docs/eleven-agents/customization/agent-workflows) rather than whenever the LLM calls a tool, use an [update state node](/docs/eleven-agents/customization/agent-workflows#update-state-node). It accepts the same state updates.
+
+## Functionality
+
+* **Multiple updates per call**: A single tool call can assign up to 50 dynamic variables at once.
+* **Expression-based values**: Each value is the result of an expression, which can combine constants, existing dynamic variables, values the LLM extracts from the conversation, and operators.
+* **LLM extraction only when needed**: The tool only asks the LLM to extract parameters for the updates that require it. Updates built entirely from constants and/or existing dynamic variables don't add any parameters to the function call.
+* **Immediate availability**: Once the tool runs, the updated dynamic variables are available to the rest of the conversation — later prompts, other tool calls, and overrides can all reference them, the same way as any other dynamic variable.
+
+## How it works
+
+Each state update assigns the result of an expression to a dynamic variable:
+
+```text
+variable_name = expression
+```
+
+An expression is one of the following types, and expressions can be nested inside each other to build more complex logic:
+
+| Type                | Description                                                                                            |
+| ------------------- | ------------------------------------------------------------------------------------------------------ |
+| Constant            | A fixed string, number, boolean, or null value.                                                        |
+| Dynamic variable    | The current value of another dynamic variable.                                                         |
+| LLM-extracted value | A value the LLM infers from the conversation, matching a type you define (string, number, or boolean). |
+| Logical operator    | `and`, `or`, or a conditional (`if` / `then` / `else`) expression combining other expressions.         |
+| Comparison operator | `=`, `≠`, `>`, `<`, `≥`, `≤`, comparing two expressions.                                               |
+| Arithmetic operator | `+`, `-`, `×`, `÷`, combining two numeric (or, for `+`, string) expressions.                           |
+
+For example, the following state update sets `should_escalate` to `true` if the LLM judges the user is frustrated, or if a `retry_count` dynamic variable is already greater than 3:
+
+```text
+should_escalate = (llm: "User sounds frustrated with the conversation") OR (retry_count > 3)
+```
+
+> **Note**
+>
+> If a state update fails to evaluate — for example, a division by zero — the tool call returns an
+> error and none of the updates in that call are applied.
+
+## Configuration
+
+### Step 1: Add the tool
+
+Navigate to your agent's configuration page. In the **Tools** section, click **Add tool** and choose **Update state**.
+
+### Step 2: Define state updates
+
+For each state update, provide:
+
+* **Variable name**: The dynamic variable to assign.
+* **Expression**: The value to assign, built from the value and operator types described above. Values can be nested to build more complex expressions.
+* **Required**: When disabled, the LLM may omit the values this update relies on. The update is then skipped and the variable keeps its current value.
+
+You can define up to 50 state updates for a single tool.
 
 ### Step 3: Configure the description (optional)
 

@@ -950,6 +950,11 @@ Here's a complete class that ties all the steps together:
     * `temporarily_unavailable` or network errors → retry with backoff
     * Refresh 5–10 minutes before expiry to avoid races
     * Cache access tokens with accurate expiry
+
+    If your client exchanges an ID-JAG from an identity provider instead of a
+    refresh token, `invalid_grant` means Notion rejected the assertion. See
+    [Enterprise-managed authorization](/guides/mcp/enterprise-managed-authorization)
+    for the claims Notion checks and the common causes.
   </Accordion>
 </AccordionGroup>
 

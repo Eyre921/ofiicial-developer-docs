@@ -15,6 +15,12 @@ You can view all disputes filed against your platform and connected accounts in 
 
 This guide describes how Stripe processes disputes for each charge type and how you can handle them.
 
+| Behavior | Direct charges | Indirect charges |
+| --- | --- | --- |
+| Account to use when responding through the API | Connected account. Use its ID in the [`Stripe-Account` header](https://docs.stripe.com/connect/authentication.md#stripe-account-header). | Platform account. |
+| Balance debited for the disputed amount | Connected account’s balance. | Platform’s balance, with or without `on_behalf_of`. |
+| Account debited for dispute-related fees | Depends on the connected account’s [fee configuration](https://docs.stripe.com/connect/direct-charges-fee-payer-behavior.md). | Platform account. |
+
 ## Direct charges
 
 For connected accounts that use [direct charges](https://docs.stripe.com/connect/direct-charges.md), Stripe always attempts to debit disputed amounts from the connected account’s balance. However, if Stripe can’t debit the amount, ultimate responsibility depends on whether Stripe or the platform is [responsible for negative balances](https://docs.stripe.com/connect/risk-management.md#identify-negative-balance-responsibility).
@@ -47,6 +53,8 @@ If the connected account has a negative balance, Stripe attempts to [debit its e
 If you challenge the dispute and win, you can transfer the funds that you previously reversed back to the connected account. If your platform has an insufficient balance, the transfer fails. Prevent insufficient balance errors by [adding funds to your Stripe balance](https://docs.stripe.com/get-started/account/add-funds.md).
 
 > Retransferring a previous reversal is subject to [cross-border transfer restrictions](https://docs.stripe.com/connect/account-capabilities.md#transfers-cross-border), meaning you might have no means to repay your connected account. Instead, wait to recover disputed cross-border payment transfers for destination charges with `on_behalf_of` until after a dispute is lost.
+
+If Stripe is responsible for the connected account’s negative balances, a transfer reversal can fail when the account has insufficient available funds. Handle reversal failures by retrying when sufficient funds become available.
 
 To automate dispute management and handle chargebacks, browse [Fraud Stripe Apps](https://marketplace.stripe.com/categories/fraud) on the App Marketplace.
 

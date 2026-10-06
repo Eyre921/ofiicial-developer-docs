@@ -105,16 +105,16 @@ Validation Error
 
 ```json
 {
-  "label": "DATABASE_URL",
-  "created_at_unix_secs": 1685600000,
-  "updated_at_unix_secs": 1688201600,
+  "label": "label",
+  "created_at_unix_secs": 1,
+  "updated_at_unix_secs": 1,
   "type": "string",
-  "id": "envvar_123abc456def",
-  "workspace_id": "workspace_789xyz123",
+  "id": "id",
+  "workspace_id": "workspace_id",
   "values": {
-    "key": "postgres://user:password@db.example.com:5432/mydatabase"
+    "key": "value"
   },
-  "created_by_user_id": "user_987654321"
+  "created_by_user_id": "created_by_user_id"
 }
 ```
 

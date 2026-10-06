@@ -107,7 +107,7 @@ container.appendChild(capitalFinancingPromotion);
 | `setOnEligibleFinancingOfferLoaded` | `({productType: standard | refill | none}) => void` | The connected account’s financing offer has been loaded. The `productType` field corresponds to the `product_type` field on the [Financing Offer](https://docs.stripe.com/api/capital/connect_financing_object.md#financing_offer_object-product_type) object. |  |
 | `setPrivacyPolicyUrl` | `string` | Absolute URL of a page containing your privacy policy. | `https://stripe.com/privacy` |
 | `setHowCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-capital-for-platforms-works` |
-| `setEligibilityCriteriaUrl` | `string` | Absolute URL of a page with information about eligibility criteria for the Capital program. | `https://docs.stripe.com/capital/how-capital-for-platforms-works` |
+| `setEligibilityCriteriaUrl` | `string` | Absolute URL of a page with information about eligibility criteria for the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works#eligibility` |
 
 #### React
 
@@ -121,7 +121,7 @@ container.appendChild(capitalFinancingPromotion);
 | `onEligibleFinancingOfferLoaded` | `({productType: "standard" | "refill" | "none"}) => void` | The connected account’s financing offer has been loaded. The `productType` field corresponds to the `product_type` field on the [Financing Offer](https://docs.stripe.com/api/capital/connect_financing_object.md#financing_offer_object-product_type) object. |  | optional |
 | `privacyPolicyUrl` | `string` | Absolute URL of a page containing your privacy policy. | `https://stripe.com/privacy` | optional |
 | `howCapitalWorksUrl` | `string` | Absolute URL of a page with information about the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works` | optional |
-| `eligibilityCriteriaUrl` | `string` | Absolute URL of a page with information about eligibility criteria for the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works` | optional |
+| `eligibilityCriteriaUrl` | `string` | Absolute URL of a page with information about eligibility criteria for the Capital program. | `https://docs.stripe.com/capital/how-stripe-capital-works#eligibility` | optional |
 
 ## Style and customize the component
 

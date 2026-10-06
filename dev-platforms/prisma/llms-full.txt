@@ -11218,6 +11218,272 @@ Send something early even when the real payload is not ready, and keep data flow
 - [`Deploy on push`](https://www.prisma.io/docs/compute/deploy-on-push): Graduate a Composer app from manual deploys to a Git workflow, with production deploys on push and an isolated preview environment per branch.
 - [`Deployments`](https://www.prisma.io/docs/compute/deployments): How deploys create service versions on Prisma Compute, and how to inspect, promote, roll back, start, and stop them.
 
+# Concepts (/docs/console/concepts)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+Location: Console > Concepts
+
+The Console workflows are based on five main concepts:
+
+* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
+* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
+* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
+* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
+* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
+
+Here is a visual illustration of how these concepts relate to each other:
+
+![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
+
+## User account [#user-account]
+
+A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
+
+If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+
+## Workspace [#workspace]
+
+You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
+
+In each workspace, you can:
+
+* view and manage all projects (and their resources) in that workspace.
+* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
+* view the usage of your enabled Prisma products across all projects in that workspace.
+* invite other users to collaborate in the workspace.
+* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
+
+## Project [#project]
+
+In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
+
+In each project, you can:
+
+* view and manage all resources (like databases) in that project.
+
+The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
+
+## Branch [#branch]
+
+For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
+
+```text
+workspace → project → branch → { apps, databases }
+```
+
+A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
+
+* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
+* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
+* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
+
+Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
+
+## Resources [#resources]
+
+Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
+
+* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
+* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
+* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
+
+In each project, you can:
+
+* Create and manage multiple resources (databases or environments)
+* Generate connection strings specific to each resource
+* Configure product-specific settings:
+  * **For Prisma Postgres databases**:
+    * View database metrics and performance
+    * Configure connection settings
+    * Manage database users and permissions
+  * **For Accelerate resources**:
+    * Set your database connection string
+    * Configure the region for connection pooling
+    * Adjust connection pool size and performance settings
+    * Set query duration and response size limits
+    * Enable static IP for secure connections
+
+The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
+
+## Related pages
+
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+
+# Getting Started (/docs/console/getting-started)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Quick start guide for setting up and using the Prisma Console
+
+Location: Console > Getting Started
+
+This guide walks you through setting up your Console account and creating your first project.
+
+## Prerequisites [#prerequisites]
+
+* A GitHub account (for authentication)
+* A Prisma project (optional, but recommended)
+
+## Step 1: Create your account [#step-1-create-your-account]
+
+1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
+2. Click **Sign in with GitHub**
+3. Authorize Prisma Console to access your GitHub account
+
+You now have a Console account with a default workspace.
+
+## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
+
+When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
+
+### Create a workspace (optional) [#create-a-workspace-optional]
+
+To create an additional workspace:
+
+1. Click the workspace dropdown in the top navigation
+2. Click **Create Workspace**
+3. Enter a name for your workspace
+4. Click **Create**
+
+## Step 3: Create a project [#step-3-create-a-project]
+
+Projects organize your databases and environments within a workspace.
+
+### Using the Console web interface [#using-the-console-web-interface]
+
+1. Navigate to your workspace
+2. Click **Create Project**
+3. Enter a project name
+4. Click **Create**
+
+## Step 4: Create a resource [#step-4-create-a-resource]
+
+Resources are the actual databases or environments within your project.
+
+### For Prisma Postgres [#for-prisma-postgres]
+
+1. Navigate to your project
+2. Click **Create Database**
+3. Enter a database name
+4. Select a region
+5. Click **Create**
+
+### For Accelerate [#for-accelerate]
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
+> 
+> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+
+1. Navigate to your project
+2. Click **Create Environment**
+3. Enter an environment name (e.g., "production")
+4. Click **Create**
+
+## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
+
+Connection strings authenticate your application's requests to Prisma products.
+
+### Using the Console web interface [#using-the-console-web-interface-1]
+
+1. Navigate to your resource (database or environment)
+2. Click **Connection Strings** tab
+3. Click **Create Connection String**
+4. Enter a name for the connection string
+5. Copy the connection string and store it securely
+6. Click **Done**
+
+## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
+
+Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
+
+```bash
+# Application traffic over pooled TCP
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
+
+# Prisma CLI commands and administrative tooling
+DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
+```
+
+In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
+> 
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+
+## Next steps [#next-steps]
+
+* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
+* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
+* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+# Console (/docs/console)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use the Console to manage and integrate Prisma products into your application.
+
+Location: Console
+
+## Overview [#overview]
+
+The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
+
+* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
+* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
+* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
+
+## Getting started [#getting-started]
+
+To start using Prisma products, you'll need to:
+
+1. Create a Console account
+2. Set up a workspace for your team
+3. Create a project for your application
+4. Generate connection strings for your resources
+
+Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
+
+## Core concepts [#core-concepts]
+
+The Console is organized around four main concepts:
+
+* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
+* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
+* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
+* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
+
+Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
+
+## Console CLI [#console-cli]
+
+In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
+
+Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+
 # Overview (/docs/guides)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -12703,272 +12969,6 @@ The SDK requires a `region`; S3-compatible endpoints ignore it, so `"auto"` is f
 - [`Local app`](https://www.prisma.io/docs/local-development/app-development): Run your app locally on the runtime Prisma Compute deploys, wire it to a local database, and bring up the whole app with Composer.
 - [`Local Postgres`](https://www.prisma.io/docs/local-development/postgres): Set up and use Prisma Postgres for local development
 
-# Concepts (/docs/console/concepts)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-Location: Console > Concepts
-
-The Console workflows are based on five main concepts:
-
-* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
-* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
-* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
-* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
-* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
-
-Here is a visual illustration of how these concepts relate to each other:
-
-![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
-
-## User account [#user-account]
-
-A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
-
-If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-
-## Workspace [#workspace]
-
-You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
-
-In each workspace, you can:
-
-* view and manage all projects (and their resources) in that workspace.
-* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
-* view the usage of your enabled Prisma products across all projects in that workspace.
-* invite other users to collaborate in the workspace.
-* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
-
-## Project [#project]
-
-In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
-
-In each project, you can:
-
-* view and manage all resources (like databases) in that project.
-
-The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
-
-## Branch [#branch]
-
-For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
-
-```text
-workspace → project → branch → { apps, databases }
-```
-
-A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
-
-* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
-* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
-* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
-
-Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
-
-## Resources [#resources]
-
-Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
-
-* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
-* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
-* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
-
-In each project, you can:
-
-* Create and manage multiple resources (databases or environments)
-* Generate connection strings specific to each resource
-* Configure product-specific settings:
-  * **For Prisma Postgres databases**:
-    * View database metrics and performance
-    * Configure connection settings
-    * Manage database users and permissions
-  * **For Accelerate resources**:
-    * Set your database connection string
-    * Configure the region for connection pooling
-    * Adjust connection pool size and performance settings
-    * Set query duration and response size limits
-    * Enable static IP for secure connections
-
-The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
-
-## Related pages
-
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
-
-# Getting Started (/docs/console/getting-started)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Quick start guide for setting up and using the Prisma Console
-
-Location: Console > Getting Started
-
-This guide walks you through setting up your Console account and creating your first project.
-
-## Prerequisites [#prerequisites]
-
-* A GitHub account (for authentication)
-* A Prisma project (optional, but recommended)
-
-## Step 1: Create your account [#step-1-create-your-account]
-
-1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
-2. Click **Sign in with GitHub**
-3. Authorize Prisma Console to access your GitHub account
-
-You now have a Console account with a default workspace.
-
-## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
-
-When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
-
-### Create a workspace (optional) [#create-a-workspace-optional]
-
-To create an additional workspace:
-
-1. Click the workspace dropdown in the top navigation
-2. Click **Create Workspace**
-3. Enter a name for your workspace
-4. Click **Create**
-
-## Step 3: Create a project [#step-3-create-a-project]
-
-Projects organize your databases and environments within a workspace.
-
-### Using the Console web interface [#using-the-console-web-interface]
-
-1. Navigate to your workspace
-2. Click **Create Project**
-3. Enter a project name
-4. Click **Create**
-
-## Step 4: Create a resource [#step-4-create-a-resource]
-
-Resources are the actual databases or environments within your project.
-
-### For Prisma Postgres [#for-prisma-postgres]
-
-1. Navigate to your project
-2. Click **Create Database**
-3. Enter a database name
-4. Select a region
-5. Click **Create**
-
-### For Accelerate [#for-accelerate]
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
-> 
-> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-
-1. Navigate to your project
-2. Click **Create Environment**
-3. Enter an environment name (e.g., "production")
-4. Click **Create**
-
-## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
-
-Connection strings authenticate your application's requests to Prisma products.
-
-### Using the Console web interface [#using-the-console-web-interface-1]
-
-1. Navigate to your resource (database or environment)
-2. Click **Connection Strings** tab
-3. Click **Create Connection String**
-4. Enter a name for the connection string
-5. Copy the connection string and store it securely
-6. Click **Done**
-
-## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
-
-Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
-
-```bash
-# Application traffic over pooled TCP
-DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
-
-# Prisma CLI commands and administrative tooling
-DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
-```
-
-In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
-> 
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-
-## Next steps [#next-steps]
-
-* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
-* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
-* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-# Console (/docs/console)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use the Console to manage and integrate Prisma products into your application.
-
-Location: Console
-
-## Overview [#overview]
-
-The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
-
-* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
-* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
-* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
-
-## Getting started [#getting-started]
-
-To start using Prisma products, you'll need to:
-
-1. Create a Console account
-2. Set up a workspace for your team
-3. Create a project for your application
-4. Generate connection strings for your resources
-
-Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
-
-## Core concepts [#core-concepts]
-
-The Console is organized around four main concepts:
-
-* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
-* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
-* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
-* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
-
-Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
-
-## Console CLI [#console-cli]
-
-In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
-
-Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
-
 # Coming from Prisma ORM 7 (/docs/orm/coming-from-prisma-orm-7)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -14278,7 +14278,7 @@ Or provision from the [Prisma Console](https://console.prisma.io/?utm_source=doc
 - [`create-db`](https://www.prisma.io/docs/postgres/npx-create-db): Learn how to provision temporary Prisma Postgres databases with create-db
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
-- [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+- [`Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 - [`Migrate from Early Access`](https://www.prisma.io/docs/postgres/migrate-from-ea-to-ga): Move your Prisma Postgres Early Access database to a new PostgreSQL 17 database with dump and restore.
 
 # Error reference (/docs/postgres/error-reference)
@@ -14414,7 +14414,7 @@ Certain processes, such as bulk data imports, ETL operations, or extended CRON j
 - [`Best Postgres for AI apps`](https://www.prisma.io/docs/postgres/best-postgres-for-ai-apps): Why Prisma Postgres works well for AI and LLM workloads: built-in pooling, edge connectivity, pgvector, and MCP support.
 - [`create-db`](https://www.prisma.io/docs/postgres/npx-create-db): Learn how to provision temporary Prisma Postgres databases with create-db
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
-- [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+- [`Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 - [`Migrate from Early Access`](https://www.prisma.io/docs/postgres/migrate-from-ea-to-ga): Move your Prisma Postgres Early Access database to a new PostgreSQL 17 database with dump and restore.
 
 # Prisma Postgres FAQ (/docs/postgres/faq)
@@ -14732,34 +14732,89 @@ Query Insights is designed primarily for development and debugging. Running it i
 - [`create-db`](https://www.prisma.io/docs/postgres/npx-create-db): Learn how to provision temporary Prisma Postgres databases with create-db
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
-- [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+- [`Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 
-# Import from existing database (/docs/postgres/import-from-existing-database)
+# Migrate a local Postgres database to a managed Postgres service (Prisma Postgres) (/docs/postgres/import-from-existing-database)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
 
-Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 
-Location: Postgres > Import from existing database
+Location: Postgres > Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)
 
-Use this page to choose the right import path for moving an existing database into Prisma Postgres.
+Prisma Postgres takes a PostgreSQL database from your laptop in three commands: create the target, `pg_dump` the source, `pg_restore` the file. It is not the right target if the database uses PostGIS or TimescaleDB, which are not on its supported extensions list. Prisma makes Prisma ORM, Prisma Postgres and Prisma Compute.
 
-## Choose your source database [#choose-your-source-database]
+```bash title="Terminal"
+npx prisma postgres create mydb
+pg_dump -Fc -d mydb -f mydb.dump
+pg_restore --no-owner --no-privileges -d 'postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require' mydb.dump
+```
 
-* [Import from PostgreSQL](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
-* [Import from MySQL](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-mysql)
+Set `DATABASE_URL` and every Postgres client keeps working: Prisma ORM and Drizzle on the pooled string, `psql` and pgAdmin on the direct one. Free plan, no credit card, PostgreSQL 17, connection pooling included.
 
-## Before you start [#before-you-start]
+What each command does:
 
-* Create a Prisma Postgres database first.
-* Gather the connection details for your existing database.
-* Use a [direct connection](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) when importing data into Prisma Postgres.
+1. `npx prisma postgres create mydb` creates the database and prints its connection string once, so copy it. Sign in first with `npx prisma auth login`. Databases live in a project: pass `--project <name>`, or run the command in a directory linked with `npx prisma project create my-app`. `--region` picks the region. Every Prisma Postgres database has two connection strings with the same credentials and a different host: `pooled.db.prisma.io` for the application and `db.prisma.io` for `pg_restore`, `psql` and migrations. You can also create the database in the [Prisma Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=postgres), where **Connect to your database** shows both strings.
+2. `pg_dump -Fc -d mydb -f mydb.dump` writes a compressed archive of the local database `mydb`. Add `-h`, `-p` and `-U` if it does not run on the default socket.
+3. `pg_restore` loads the archive over the direct connection, so the string you pass it has `db.prisma.io` as its host; if the one you copied says `pooled.db.prisma.io`, swap the host and keep the rest. `--no-owner` and `--no-privileges` skip the ownership and grant statements that name roles from your laptop, which do not exist in Prisma Postgres. Your application keeps the pooled string; see [Connecting to your database](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) for why the two differ.
+
+> [!NOTE]
+> Check before you migrate
+> 
+> * **PostgreSQL 17 tools.** Prisma Postgres runs PostgreSQL 17, so `pg_dump --version` and `pg_restore --version` must report `17.x`. A PostgreSQL 17 `pg_dump` reads older servers. It cannot dump a PostgreSQL 18 server, and the [full import guide](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql#prerequisites) states that moving from 18 needs a separate downgrade-compatible process, which this page does not cover.
+> * **Extensions.** Compare `SELECT extname FROM pg_extension;` on the source with the [supported extensions](https://www.prisma.io/docs/postgres/database/postgres-extensions#supported-extensions). PostGIS and TimescaleDB are not on the list.
+> * **Roles and policies.** `pg_dump` does not copy roles, so a row-level security policy that names a local role fails on restore. Record those policies before you dump and recreate them afterwards; the full guide's [export step](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql#3-stop-source-writes-and-export-the-final-snapshot) and [restore step](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql#4-restore-into-prisma-postgres) show how to omit them from the restore.
+
+## The one-line import [#the-one-line-import]
+
+For a small database, pipe the dump straight into the restore and skip the file:
+
+```bash title="Terminal"
+pg_dump -Fc -d mydb | pg_restore --no-owner --no-privileges -d 'postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require'
+```
+
+The file version above is the better choice when the database is large or a restore fails halfway, because `pg_restore --list mydb.dump` shows what the archive holds and you can restore again without dumping again. `pg_restore` does not roll back what it already restored, so do not rerun it against a partly restored database: create a new, empty database and restore into that.
+
+## Verify the import [#verify-the-import]
+
+Refresh the planner statistics and spot-check a table over the direct connection:
+
+```bash title="Terminal"
+psql 'postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require' \
+  -c 'ANALYZE;' \
+  -c 'SELECT count(*) FROM "User";'
+```
+
+Run the same count against the local database. The [full import guide](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql#5-verify-the-imported-data) has a query that counts every table in both databases and diffs the two results.
+
+## Moving from Neon or Supabase? [#moving-from-neon-or-supabase]
+
+The same dump and restore works from a hosted database. The [Neon guide](https://www.prisma.io/docs/guides/switch-to-prisma-postgres/from-neon) covers selecting the branch and the unpooled endpoint, and the [Supabase guide](https://www.prisma.io/docs/guides/switch-to-prisma-postgres/from-supabase) lists what does not move with the data: Auth users, Storage objects and Edge Functions.
+
+The dump is a snapshot of the source at the moment `pg_dump` runs, so stop or drain writes to the source before the final dump and keep them stopped until you have verified the import and switched the application over, as the [full guide's export step](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql#3-stop-source-writes-and-export-the-final-snapshot) spells out. If you cannot pause writes for that long, this snapshot process is not the right fit: you need a separately tested process that captures and replays every write made after the snapshot.
+
+## Put the app online too [#put-the-app-online-too]
+
+[Prisma Compute](https://www.prisma.io/docs/compute) hosts TypeScript apps (Node.js, Bun or Next.js) next to Prisma Postgres on one plan. An existing repository adds a [Prisma Composer](https://www.prisma.io/docs/composer) declaration, a `service.ts` and a `module.ts`; the [porting page](https://www.prisma.io/docs/composer/porting-an-app) has a prompt your coding agent can write them from. Then run your build, and `npx prisma deploy module.ts` provisions the service. To deploy on push, connect the repository and add the `prisma/cloud-deploy-action` workflow as shown in [Deploy on push](https://www.prisma.io/docs/compute/deploy-on-push). From then on a push to the default branch updates production, and every other branch gets a preview with its own database, built from your migrations. The [Compute FAQ](https://www.prisma.io/docs/compute/faq#where-it-has-trade-offs) lists what Compute does not do yet.
+
+## Do I need to change my ORM? [#do-i-need-to-change-my-orm]
+
+No, because Prisma Postgres is standard PostgreSQL behind a connection string: Prisma ORM 8, Prisma ORM 7, Drizzle, Kysely, TypeORM, `node-postgres` and `psql` connect as before. Give the application the pooled string and the CLI tools the direct one; [Connecting to your database](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) shows the setup for each runtime.
+
+## Does it cost anything? [#does-it-cost-anything]
+
+The Free plan includes 200k operations a month, 500 MB of storage and 50 databases, with no credit card and no usage billing. Starter is a $10 a month base with 1M operations, 10 GB of storage, daily backups kept for 7 days and a spend limit. See [pricing](https://www.prisma.io/pricing).
+
+## Can I try it without an account? [#can-i-try-it-without-an-account]
+
+Yes, with `npx create-db@latest`, which creates a temporary database with no sign-up and deletes it after 24 hours unless you claim it. Use it to rehearse the restore with throwaway data, never for the real copy. See [create-db](https://www.prisma.io/docs/postgres/npx-create-db).
 
 ## Related pages [#related-pages]
 
+* [Import from PostgreSQL](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql): the full eight-step guide, with the production cutover, the restore manifest and the row-count diff
+* [Import from MySQL](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-mysql)
 * [Connecting to your database](https://www.prisma.io/docs/postgres/database/connecting-to-your-database)
-* [Prisma Postgres overview](https://www.prisma.io/docs/postgres)
-* [Create a database with `create-db`](https://www.prisma.io/docs/postgres/npx-create-db)
+* [Backups](https://www.prisma.io/docs/postgres/database/backups)
 
 ## Related pages
 
@@ -14821,7 +14876,7 @@ yarn dlx create-db@latest
 npx create-db@latest
 ```
 
-`create-db` creates a temporary Prisma Postgres database and prints a connection string plus a claim URL. Open the claim URL to keep the database in your workspace. See [create-db](https://www.prisma.io/docs/postgres/npx-create-db) for details. You can also create databases in the [Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=postgres) or with the [Prisma CLI](https://www.prisma.io/docs/cli/postgres) (`npx prisma postgres create`).
+`create-db` creates a temporary Prisma Postgres database and prints a connection string plus a claim URL. Open the claim URL to keep the database in your workspace. See [create-db](https://www.prisma.io/docs/postgres/npx-create-db) for details. You can also create databases in the [Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=postgres) or with the [Prisma CLI](https://www.prisma.io/docs/cli/postgres) (`npx prisma postgres create`). If your data already lives in a PostgreSQL database on your laptop or another host, [migrate it to Prisma Postgres](https://www.prisma.io/docs/postgres/import-from-existing-database) with `pg_dump` and `pg_restore` in three commands.
 
 ### 2. Copy the connection string [#2-copy-the-connection-string]
 
@@ -15037,7 +15092,7 @@ We'll help you work out the next steps. The shutdown date still applies unless w
 - [`create-db`](https://www.prisma.io/docs/postgres/npx-create-db): Learn how to provision temporary Prisma Postgres databases with create-db
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
-- [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+- [`Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 
 # create-db (/docs/postgres/npx-create-db)
 
@@ -15333,7 +15388,7 @@ Options:
 - [`Best Postgres for AI apps`](https://www.prisma.io/docs/postgres/best-postgres-for-ai-apps): Why Prisma Postgres works well for AI and LLM workloads: built-in pooling, edge connectivity, pgvector, and MCP support.
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
-- [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+- [`Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 - [`Migrate from Early Access`](https://www.prisma.io/docs/postgres/migrate-from-ea-to-ga): Move your Prisma Postgres Early Access database to a new PostgreSQL 17 database with dump and restore.
 
 # Troubleshooting (/docs/postgres/troubleshooting)
@@ -15471,7 +15526,7 @@ To resolve this issue, consider the following options:
 - [`create-db`](https://www.prisma.io/docs/postgres/npx-create-db): Learn how to provision temporary Prisma Postgres databases with create-db
 - [`Database`](https://www.prisma.io/docs/postgres/database): Overview of Prisma Postgres database operations, connections, pooling, backups, and query analysis.
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
-- [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+- [`Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 
 # Query Insights (/docs/query-insights)
 
@@ -16988,6 +17043,102 @@ type Project = components["schemas"]["Project"];
 - [`Partner Integration`](https://www.prisma.io/docs/rest-api/partner-integration): Build partner integrations that provision and transfer Prisma Postgres databases to users
 - [`Using API Clients`](https://www.prisma.io/docs/rest-api/api-clients): Use the REST API with popular API clients like Postman, Insomnia, and Yaak
 
+# Storage (/docs/storage)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+S3-compatible object-store buckets that live inside your Prisma project.
+
+Location: Storage
+
+Object Store buckets are S3-compatible file storage that lives inside a Prisma project, next to its Prisma Postgres databases and Compute apps. You manage buckets from the [Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=storage), the [CLI](https://www.prisma.io/docs/cli/bucket), or the [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets); your app reads and writes objects with any S3 client or SDK.
+
+A bucket belongs to a project. At creation you can associate it with a branch (by branch ID or git branch name); omit both and it attaches to the project's default branch. Projects start with no buckets.
+
+## Names [#names]
+
+A bucket has two names:
+
+1. A display name you choose (1-100 characters, auto-generated when omitted). It appears in the Console, CLI, and API.
+2. A provider-assigned S3 bucket name, returned as `providerName` by the API and as `bucketName` with new access keys. This is the value S3 clients use. It is opaque and never derived from the display name.
+
+There is no rename: the API has no update endpoint for buckets.
+
+## Access keys [#access-keys]
+
+Access is through bucket-scoped access keys. A key has a role, `read` or `read_write`; a write with a `read` key fails with `AccessDenied`. Keys are scoped to their bucket only: a leaked key cannot reach any other bucket.
+
+Creating a key returns everything an S3 client needs: `accessKeyId`, `secretAccessKey`, `endpoint`, and `bucketName`. The `secretAccessKey` is returned exactly once and never stored; copy it immediately. If you lose it, revoke the key and create a new one. Deleting a key revokes it immediately.
+
+Use the `endpoint` value returned with the key rather than hardcoding a host.
+
+## Using a bucket from your app [#using-a-bucket-from-your-app]
+
+Any S3 client or SDK works. On [Prisma Compute](https://www.prisma.io/docs/compute), Bun's built-in S3 client reads `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, and `S3_SECRET_ACCESS_KEY` from the environment, so uploads and presigned GET URLs work with no explicit client configuration. See [Object storage on Compute](https://www.prisma.io/docs/compute/object-storage) for a worked example, and [Object storage in Composer](https://www.prisma.io/docs/composer/object-storage) for the declarative `bucket()` resource with local stand-in buckets in `dev`. For using buckets during development, see [Local storage](https://www.prisma.io/docs/local-development/storage).
+
+## Managing buckets [#managing-buckets]
+
+From the CLI (see the [`bucket` reference](https://www.prisma.io/docs/cli/bucket) for details):
+
+  
+
+#### bun
+
+```bash
+bunx prisma bucket create --name my-bucket
+bunx prisma bucket key create <bucket-id>
+```
+
+#### pnpm
+
+```bash
+pnpm prisma bucket create --name my-bucket
+pnpm prisma bucket key create <bucket-id>
+```
+
+#### yarn
+
+```bash
+yarn prisma bucket create --name my-bucket
+yarn prisma bucket key create <bucket-id>
+```
+
+#### npm
+
+```bash
+npx prisma bucket create --name my-bucket
+npx prisma bucket key create <bucket-id>
+```
+
+| Command                                  | Purpose                                                 |
+| ---------------------------------------- | ------------------------------------------------------- |
+| `bucket list`                            | List object-store buckets                               |
+| `bucket create`                          | Create a bucket (`--name` sets the display name)        |
+| `bucket delete <bucket-id>`              | Delete a bucket and all its access keys                 |
+| `bucket key list <bucket-id>`            | List access keys for a bucket                           |
+| `bucket key create <bucket-id>`          | Create an access key and print its one-time credentials |
+| `bucket key delete <bucket-id> <key-id>` | Revoke and delete an access key                         |
+
+The [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets) exposes the same operations: list, create, get, and delete buckets, and list, create, and delete access keys. Bucket creation is synchronous; the response comes back with `"status": "ready"`. The Prisma MCP server also carries bucket tools (`list_object_store_buckets`, `create_object_store_bucket`, `delete_object_store_bucket`, `create_object_store_bucket_key`, `delete_object_store_bucket_key`) for AI agents.
+
+In the Console, each bucket has a file browser with upload, download, and per-object delete, a keys page with a reveal-once credentials dialog, and a settings page for deletion with type-the-name confirmation.
+
+## Deleting a bucket [#deleting-a-bucket]
+
+Deleting a bucket permanently removes the bucket, all objects stored in it, and all its access keys in one call. It succeeds on a non-empty bucket and cannot be undone.
+
+## Pricing [#pricing]
+
+Bucket pricing and plan limits are not published yet.
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+
 # Getting Started (/docs/studio/getting-started)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -17597,102 +17748,6 @@ The stable Prisma CLI bundles the Migrations view since 7.9 (`@prisma/studio-cor
 ## Related pages
 
 - [`Getting Started`](https://www.prisma.io/docs/studio/getting-started): Learn how to set up and use Prisma Studio to manage your database
-
-# Storage (/docs/storage)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-S3-compatible object-store buckets that live inside your Prisma project.
-
-Location: Storage
-
-Object Store buckets are S3-compatible file storage that lives inside a Prisma project, next to its Prisma Postgres databases and Compute apps. You manage buckets from the [Console](https://console.prisma.io/?utm_source=docs\&utm_medium=content\&utm_content=storage), the [CLI](https://www.prisma.io/docs/cli/bucket), or the [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets); your app reads and writes objects with any S3 client or SDK.
-
-A bucket belongs to a project. At creation you can associate it with a branch (by branch ID or git branch name); omit both and it attaches to the project's default branch. Projects start with no buckets.
-
-## Names [#names]
-
-A bucket has two names:
-
-1. A display name you choose (1-100 characters, auto-generated when omitted). It appears in the Console, CLI, and API.
-2. A provider-assigned S3 bucket name, returned as `providerName` by the API and as `bucketName` with new access keys. This is the value S3 clients use. It is opaque and never derived from the display name.
-
-There is no rename: the API has no update endpoint for buckets.
-
-## Access keys [#access-keys]
-
-Access is through bucket-scoped access keys. A key has a role, `read` or `read_write`; a write with a `read` key fails with `AccessDenied`. Keys are scoped to their bucket only: a leaked key cannot reach any other bucket.
-
-Creating a key returns everything an S3 client needs: `accessKeyId`, `secretAccessKey`, `endpoint`, and `bucketName`. The `secretAccessKey` is returned exactly once and never stored; copy it immediately. If you lose it, revoke the key and create a new one. Deleting a key revokes it immediately.
-
-Use the `endpoint` value returned with the key rather than hardcoding a host.
-
-## Using a bucket from your app [#using-a-bucket-from-your-app]
-
-Any S3 client or SDK works. On [Prisma Compute](https://www.prisma.io/docs/compute), Bun's built-in S3 client reads `S3_ENDPOINT`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, and `S3_SECRET_ACCESS_KEY` from the environment, so uploads and presigned GET URLs work with no explicit client configuration. See [Object storage on Compute](https://www.prisma.io/docs/compute/object-storage) for a worked example, and [Object storage in Composer](https://www.prisma.io/docs/composer/object-storage) for the declarative `bucket()` resource with local stand-in buckets in `dev`. For using buckets during development, see [Local storage](https://www.prisma.io/docs/local-development/storage).
-
-## Managing buckets [#managing-buckets]
-
-From the CLI (see the [`bucket` reference](https://www.prisma.io/docs/cli/bucket) for details):
-
-  
-
-#### bun
-
-```bash
-bunx prisma bucket create --name my-bucket
-bunx prisma bucket key create <bucket-id>
-```
-
-#### pnpm
-
-```bash
-pnpm prisma bucket create --name my-bucket
-pnpm prisma bucket key create <bucket-id>
-```
-
-#### yarn
-
-```bash
-yarn prisma bucket create --name my-bucket
-yarn prisma bucket key create <bucket-id>
-```
-
-#### npm
-
-```bash
-npx prisma bucket create --name my-bucket
-npx prisma bucket key create <bucket-id>
-```
-
-| Command                                  | Purpose                                                 |
-| ---------------------------------------- | ------------------------------------------------------- |
-| `bucket list`                            | List object-store buckets                               |
-| `bucket create`                          | Create a bucket (`--name` sets the display name)        |
-| `bucket delete <bucket-id>`              | Delete a bucket and all its access keys                 |
-| `bucket key list <bucket-id>`            | List access keys for a bucket                           |
-| `bucket key create <bucket-id>`          | Create an access key and print its one-time credentials |
-| `bucket key delete <bucket-id> <key-id>` | Revoke and delete an access key                         |
-
-The [REST API](https://www.prisma.io/docs/rest-api/endpoints/buckets/get-buckets) exposes the same operations: list, create, get, and delete buckets, and list, create, and delete access keys. Bucket creation is synchronous; the response comes back with `"status": "ready"`. The Prisma MCP server also carries bucket tools (`list_object_store_buckets`, `create_object_store_bucket`, `delete_object_store_bucket`, `create_object_store_bucket_key`, `delete_object_store_bucket_key`) for AI agents.
-
-In the Console, each bucket has a file browser with upload, download, and per-object delete, a keys page with a reveal-once credentials dialog, and a settings page for deletion with type-the-name confirmation.
-
-## Deleting a bucket [#deleting-a-bucket]
-
-Deleting a bucket permanently removes the bucket, all objects stored in it, and all its access keys in one call. It succeeds on a non-empty bucket and cannot be undone.
-
-## Pricing [#pricing]
-
-Bucket pricing and plan limits are not published yet.
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Deploy the full Prisma stack`](https://www.prisma.io/docs/full-stack-tutorial): A single tutorial from empty directory to live URL, with Prisma Composer, Prisma ORM, and Prisma Postgres.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
 
 # Enroll your agent (/docs/prisma-compute/agent-enrollment)
 
@@ -28558,6 +28613,128 @@ Output:
 - [`dev`](https://www.prisma.io/docs/cli/v7/dev): Start a local Prisma Postgres server for development
 - [`format`](https://www.prisma.io/docs/cli/v7/format): Format and validate your Prisma schema file with consistent structure
 - [`generate`](https://www.prisma.io/docs/cli/v7/generate): Generate artifacts like Prisma Client based on your Prisma schema
+
+# Database Metrics (/docs/console/features/metrics)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Monitor your database performance with Console metrics
+
+Location: Console > Features > Database Metrics
+
+You can have a single workspace that hosts several databases. Within each database, you can view detailed reports on how your database is performing, with various metrics like:
+
+* Average response size
+* Average query duration
+* Total egress
+* Total operations
+* Cache utilization
+
+## Databases [#databases]
+
+For Prisma Postgres projects, the **Database** tab in the project view lets you configure and manage your databases. This interface provides tools to monitor and maintain your database resources. The **Connections** section displays a table with the following columns:
+
+| Column Name   | Description                                                                      |
+| ------------- | -------------------------------------------------------------------------------- |
+| **Hint**      | Provides the URL structure for the database in use.                              |
+| **Static IP** | Indicates whether static IP is enabled for the database and associated products. |
+| **Products**  | Lists the products that are enabled using the database URL.                      |
+| **Action**    | Allows you to disable all active products and remove the connection.             |
+
+# Feature Maturity (/docs/console/more/feature-maturity)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand Early Access, Preview, and Public Beta feature stages in the Console
+
+Location: Console > More > Feature Maturity
+
+Prisma releases updates to Console multiple times per week, as opposed to the Prisma ORM that we release on a set schedule every few weeks. This is why we consider the lifecycle and process for maturing features in Console differently.
+
+You can [check out the releases and maturity process for the Prisma ORM](https://www.prisma.io/docs/orm/v7/more/releases) for further details.
+
+You can find information about releases across *all* Prisma tools and products in the [changelog](https://www.prisma.io/changelog).
+
+## Early Access [#early-access]
+
+If a feature on the Console is labeled as **Early Access**:
+
+* It is ready to try out and represents the cutting edge of what we are building.
+* It can still evolve based on feedback from our users, and its API surface won't change drastically as it matures.
+* We reserve ourselves the right to throttle or remove access to a feature in Early Access to preserve the stability of the platform, or enforce its use to stay within the scope defined in our [Terms of Service](https://pris.ly/terms).
+
+Your feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text) shapes the design of the features. This will help us ensure that they can solve your problems in the best way possible.
+
+## Preview [#preview]
+
+If a feature on the Console is labeled as **Preview**:
+
+* We have refined the software based on the valuable feedback we obtained during the Early Access phase.
+* We developed the feature further, bringing it closer to the final version, and it is close to being ready for production usage.
+* We have lifted the invite gate, so users no longer need an invitation to access the feature. Users just need to sign up to gain access.
+* We have increased the stability of the software compared to the Early Access phase. While there might still be some issues, they should be less frequent and less critical.
+* We use the Preview phase as a final stress test to ensure the product is ready for heavy production workloads.
+
+We recommend testing the product in a staging environment and welcome any feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text). This will assist us in improving the product for its final release.
+
+## Public Beta [#public-beta]
+
+If a product or feature is labeled as **Public Beta**:
+
+* It is open for anyone to try. No invite or waitlist is required.
+* The core model is stable, and the documented happy paths work end to end. It is a good fit for evaluation, dogfooding, staging environments, internal tools, and low-risk apps.
+* Behavior should stay stable unless the documentation or release notes call out an exception.
+* Details can still change before general availability: exact limits, pricing, retention policies, runtime guardrails, supported frameworks and build behavior, some CLI and API details, Console UX, naming, and advanced workflows.
+* We don't recommend it yet for mission-critical or heavy production workloads.
+
+Public Beta is the final stress-test phase before general availability. Expect some rough edges, and tell us about them in [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text); your feedback directly shapes the release.
+
+## Related pages
+
+- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
+
+# Support (/docs/console/more/support)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Find the right support for any Console question
+
+Location: Console > More > Support
+
+Share your experiences with us on [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=intro_text).
+
+## Support [#support]
+
+Your support options are based on your workspace's active plan. For more details, take a look at our [pricing page](https://www.prisma.io/pricing).
+
+### Community support [#community-support]
+
+Reach out to us in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text).
+
+### Standard support [#standard-support]
+
+* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
+* 2 business days, Mon-Fri, 9am-5pm CET
+
+### Premium support [#premium-support]
+
+* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
+* 1 business hour, Mon-Fri, 9am-5pm CET
+
+### Dedicated support [#dedicated-support]
+
+Dedicated contact person.
+
+## Deleting your PDP account [#deleting-your-pdp-account]
+
+If you want to delete your PDP account, &#x2A;*email us at [support@prisma.io](mailto\:support@prisma.io)** specifying the email id or GitHub handle with which you signed up.
+
+To ensure that you're not accidentally disabling any infrastructure powering one of your applications, we require that you **disable Accelerate in *all* environments of *all* your projects** that live in the account to be deleted.
+Additionally there should be no active subscriptions in the account to be deleted. Please cancel any active subscriptions before requesting account deletion.
+
+## Related pages
+
+- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
 
 # Expand-and-contract migrations (/docs/guides/database/data-migration)
 
@@ -52551,128 +52728,6 @@ Pick your framework and options from the prompts. To skip prompts use `--yes`, t
 
 - [`Writing guides`](https://www.prisma.io/docs/guides/making-guides): How to write, validate, and file a Prisma ORM guide for the Prisma documentation.
 
-# Database Metrics (/docs/console/features/metrics)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Monitor your database performance with Console metrics
-
-Location: Console > Features > Database Metrics
-
-You can have a single workspace that hosts several databases. Within each database, you can view detailed reports on how your database is performing, with various metrics like:
-
-* Average response size
-* Average query duration
-* Total egress
-* Total operations
-* Cache utilization
-
-## Databases [#databases]
-
-For Prisma Postgres projects, the **Database** tab in the project view lets you configure and manage your databases. This interface provides tools to monitor and maintain your database resources. The **Connections** section displays a table with the following columns:
-
-| Column Name   | Description                                                                      |
-| ------------- | -------------------------------------------------------------------------------- |
-| **Hint**      | Provides the URL structure for the database in use.                              |
-| **Static IP** | Indicates whether static IP is enabled for the database and associated products. |
-| **Products**  | Lists the products that are enabled using the database URL.                      |
-| **Action**    | Allows you to disable all active products and remove the connection.             |
-
-# Feature Maturity (/docs/console/more/feature-maturity)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand Early Access, Preview, and Public Beta feature stages in the Console
-
-Location: Console > More > Feature Maturity
-
-Prisma releases updates to Console multiple times per week, as opposed to the Prisma ORM that we release on a set schedule every few weeks. This is why we consider the lifecycle and process for maturing features in Console differently.
-
-You can [check out the releases and maturity process for the Prisma ORM](https://www.prisma.io/docs/orm/v7/more/releases) for further details.
-
-You can find information about releases across *all* Prisma tools and products in the [changelog](https://www.prisma.io/changelog).
-
-## Early Access [#early-access]
-
-If a feature on the Console is labeled as **Early Access**:
-
-* It is ready to try out and represents the cutting edge of what we are building.
-* It can still evolve based on feedback from our users, and its API surface won't change drastically as it matures.
-* We reserve ourselves the right to throttle or remove access to a feature in Early Access to preserve the stability of the platform, or enforce its use to stay within the scope defined in our [Terms of Service](https://pris.ly/terms).
-
-Your feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text) shapes the design of the features. This will help us ensure that they can solve your problems in the best way possible.
-
-## Preview [#preview]
-
-If a feature on the Console is labeled as **Preview**:
-
-* We have refined the software based on the valuable feedback we obtained during the Early Access phase.
-* We developed the feature further, bringing it closer to the final version, and it is close to being ready for production usage.
-* We have lifted the invite gate, so users no longer need an invitation to access the feature. Users just need to sign up to gain access.
-* We have increased the stability of the software compared to the Early Access phase. While there might still be some issues, they should be less frequent and less critical.
-* We use the Preview phase as a final stress test to ensure the product is ready for heavy production workloads.
-
-We recommend testing the product in a staging environment and welcome any feedback in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text). This will assist us in improving the product for its final release.
-
-## Public Beta [#public-beta]
-
-If a product or feature is labeled as **Public Beta**:
-
-* It is open for anyone to try. No invite or waitlist is required.
-* The core model is stable, and the documented happy paths work end to end. It is a good fit for evaluation, dogfooding, staging environments, internal tools, and low-risk apps.
-* Behavior should stay stable unless the documentation or release notes call out an exception.
-* Details can still change before general availability: exact limits, pricing, retention policies, runtime guardrails, supported frameworks and build behavior, some CLI and API details, Console UX, naming, and advanced workflows.
-* We don't recommend it yet for mission-critical or heavy production workloads.
-
-Public Beta is the final stress-test phase before general availability. Expect some rough edges, and tell us about them in [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text); your feedback directly shapes the release.
-
-## Related pages
-
-- [`Support`](https://www.prisma.io/docs/console/more/support): Find the right support for any Console question
-
-# Support (/docs/console/more/support)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Find the right support for any Console question
-
-Location: Console > More > Support
-
-Share your experiences with us on [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=intro_text).
-
-## Support [#support]
-
-Your support options are based on your workspace's active plan. For more details, take a look at our [pricing page](https://www.prisma.io/pricing).
-
-### Community support [#community-support]
-
-Reach out to us in our [Discord](https://pris.ly/discord?utm_source=docs\&utm_medium=inline_text).
-
-### Standard support [#standard-support]
-
-* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
-* 2 business days, Mon-Fri, 9am-5pm CET
-
-### Premium support [#premium-support]
-
-* Email support, [support@prisma.io](mailto\:support@prisma.io), or reach out via the Console
-* 1 business hour, Mon-Fri, 9am-5pm CET
-
-### Dedicated support [#dedicated-support]
-
-Dedicated contact person.
-
-## Deleting your PDP account [#deleting-your-pdp-account]
-
-If you want to delete your PDP account, &#x2A;*email us at [support@prisma.io](mailto\:support@prisma.io)** specifying the email id or GitHub handle with which you signed up.
-
-To ensure that you're not accidentally disabling any infrastructure powering one of your applications, we require that you **disable Accelerate in *all* environments of *all* your projects** that live in the account to be deleted.
-Additionally there should be no active subscriptions in the account to be deleted. Please cancel any active subscriptions before requesting account deletion.
-
-## Related pages
-
-- [`Feature Maturity`](https://www.prisma.io/docs/console/more/feature-maturity): Understand Early Access, Preview, and Public Beta feature stages in the Console
-
 # Supported database features (/docs/orm/contract-authoring/capabilities)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -61119,7 +61174,7 @@ A driver-level failure occurred while reading the contract marker table: connect
 
 ### CONTRACT.MARKER_REQUIRED [#CONTRACT.MARKER_REQUIRED]
 
-A command that requires a pre-signed database (marker present) as a precondition found none; also the default failure code stamped onto a non-ok verify result when no more specific code applies, which is how `db verify --strict` reports a database holding elements no contract declares. On `db verify` it is an `error` diagnostic on a completed run that exits `4`; everywhere else it is a precondition failure at exit `2`. Those are two unrelated jobs for one code: "sign the database first" and "strict mode found elements no contract declares", and splitting them would let the exit code follow from the code alone. Fix path: run `prisma db init` first, or declare the extra elements in a contract. Payload: none notable.
+A command that requires a pre-signed database (marker present) as a precondition found none. It is a precondition failure at exit `2`. Fix path: run `prisma db init` or `prisma db sign` first. Payload: none notable.
 
 ### CONTRACT.MARKER_ROW_CORRUPT [#CONTRACT.MARKER_ROW_CORRUPT]
 
@@ -61211,7 +61266,7 @@ A role entity is declared more than once in the entities list, or a role name is
 
 ### CONTRACT.SCHEMA_VERIFICATION_FAILED [#CONTRACT.SCHEMA_VERIFICATION_FAILED]
 
-Schema verification found that the live database schema does not satisfy the contract: missing/extra/mismatched tables, columns, or other elements. `db verify` and `db sign` both report it as an `error` diagnostic on a completed run that exits `4`: for `db verify` that is the drift verdict, and for `db sign` it is the reason no signature was written. `db verify` raises one such diagnostic per contract space whose schema failed. Fix path: `prisma db update` or adjust the contract. Payload: `space` (the contract space, on `db verify`), `issues` (the drifted element paths); the underlying operation result also carries `verificationResult`.
+Schema verification found that the live database schema does not satisfy the contract: missing/extra/mismatched tables, columns, or other elements. `db verify` and `db sign` both report it as an `error` diagnostic on a completed run that exits `4`: for `db verify` that is the drift verdict, and for `db sign` it is the reason no signature was written. `db verify` raises one such diagnostic per contract space whose schema failed, and `db verify --strict` raises it once when the database holds elements no contract declares (the result's `unclaimed` list names them). It is also the code a failing verify result carries when nothing more specific applies. Fix path: `prisma db update` or adjust the contract; for unclaimed elements, declare them in a contract or drop them from the database. Payload: `space` (the contract space, on `db verify`), `issues` (the drifted element paths); the underlying operation result also carries `verificationResult`. The strict-mode unclaimed diagnostic carries no `space` and an empty `issues` list; the names are in the result's `unclaimed` list.
 
 ### CONTRACT.SOURCE_IMPORT_DISALLOWED [#CONTRACT.SOURCE_IMPORT_DISALLOWED]
 
@@ -69430,6 +69485,8 @@ Use the **direct** connection string with `psql`, `pg_dump`, `pg_restore`, and G
 psql "postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
 ```
 
+The same direct string is where `pg_restore` loads an existing database; see [Migrate a local Postgres database to Prisma Postgres](https://www.prisma.io/docs/postgres/import-from-existing-database) for the three commands.
+
 For non-Prisma ORMs, see the getting-started guides for [Drizzle](https://www.prisma.io/docs/prisma-postgres/quickstart/drizzle-orm), [Kysely](https://www.prisma.io/docs/prisma-postgres/quickstart/kysely), or [TypeORM](https://www.prisma.io/docs/prisma-postgres/quickstart/typeorm).
 
 ## Troubleshooting [#troubleshooting]
@@ -69574,7 +69631,7 @@ This section covers the operational side of Prisma Postgres: how to connect, how
 - [`Best Postgres for AI apps`](https://www.prisma.io/docs/postgres/best-postgres-for-ai-apps): Why Prisma Postgres works well for AI and LLM workloads: built-in pooling, edge connectivity, pgvector, and MCP support.
 - [`create-db`](https://www.prisma.io/docs/postgres/npx-create-db): Learn how to provision temporary Prisma Postgres databases with create-db
 - [`Error reference`](https://www.prisma.io/docs/postgres/error-reference): Error reference documentation for Prisma Postgres
-- [`Import from existing database`](https://www.prisma.io/docs/postgres/import-from-existing-database): Choose the right path to import data from PostgreSQL or MySQL into Prisma Postgres.
+- [`Migrate a local Postgres database to a managed Postgres service (Prisma Postgres)`](https://www.prisma.io/docs/postgres/import-from-existing-database): Copy a PostgreSQL database from your laptop into Prisma Postgres with three commands, then keep every Postgres client you already use.
 - [`Migrate from Early Access`](https://www.prisma.io/docs/postgres/migrate-from-ea-to-ga): Move your Prisma Postgres Early Access database to a new PostgreSQL 17 database with dump and restore.
 
 # Extensions (/docs/postgres/database/postgres-extensions)
@@ -114311,36 +114368,6 @@ Location: REST API > Endpoints > Databases Connections > Create database connect
 
 - [`Get list of database connections`](https://www.prisma.io/docs/rest-api/endpoints/databases-connections/get-databases-by-database-id-connections): Returns all connections for the given database.
 
-# Get current authenticated principal (/docs/rest-api/endpoints/misc/get-me)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Returns the user, workspace, and credential represented by the current token.
-
-Location: REST API > Endpoints > Misc > Get current authenticated principal
-
-
-
-## Related pages
-
-- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
-- [`Get Prisma Postgres regions`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-regions-postgres): Returns all available regions for Prisma Postgres.
-
-# Get Prisma Postgres regions (/docs/rest-api/endpoints/misc/get-regions-postgres)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Returns all available regions for Prisma Postgres.
-
-Location: REST API > Endpoints > Misc > Get Prisma Postgres regions
-
-
-
-## Related pages
-
-- [`Get current authenticated principal`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-me): Returns the user, workspace, and credential represented by the current token.
-- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
-
 # Delete integration (/docs/rest-api/endpoints/integrations/delete-integrations-by-id)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -114425,6 +114452,36 @@ Location: REST API > Endpoints > Integrations > Get list of integrations
 - [`Get integration by ID`](https://www.prisma.io/docs/rest-api/endpoints/integrations/get-integrations-by-id): Returns a single integration by its ID.
 - [`Get list of integrations`](https://www.prisma.io/docs/rest-api/endpoints/integrations/get-integrations): Returns integrations filtered by workspace ID.
 - [`Revoke integration tokens`](https://www.prisma.io/docs/rest-api/endpoints/integrations/delete-workspaces-by-workspace-id-integrations-by-client-id): Revokes the integration tokens with the given client ID.
+
+# Get current authenticated principal (/docs/rest-api/endpoints/misc/get-me)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Returns the user, workspace, and credential represented by the current token.
+
+Location: REST API > Endpoints > Misc > Get current authenticated principal
+
+
+
+## Related pages
+
+- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
+- [`Get Prisma Postgres regions`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-regions-postgres): Returns all available regions for Prisma Postgres.
+
+# Get Prisma Postgres regions (/docs/rest-api/endpoints/misc/get-regions-postgres)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Returns all available regions for Prisma Postgres.
+
+Location: REST API > Endpoints > Misc > Get Prisma Postgres regions
+
+
+
+## Related pages
+
+- [`Get current authenticated principal`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-me): Returns the user, workspace, and credential represented by the current token.
+- [`Get Prisma Accelerate regions`](https://www.prisma.io/docs/rest-api/endpoints/misc/get-regions-accelerate): Returns all available regions for Prisma Accelerate.
 
 # Delete project (/docs/rest-api/endpoints/projects/delete-projects-by-id)
 
@@ -153030,395 +153087,6 @@ If you want to deploy an app using Turso, you can follow the instructions in [Us
 - [`Deploy to Deno Deploy`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/edge/deploy-to-deno-deploy)
 - [`Deploy to Vercel Edge Functions & Middleware`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/edge/deploy-to-vercel): Learn the things you need to know in order to deploy an Edge function that uses Prisma Client for talking to a database
 
-# Deploy to AWS Lambda (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to AWS Lambda
-
-> [!NOTE]
-> Quick summary
-> 
-> This guide explains how to avoid common issues when deploying a project using Prisma ORM to [AWS Lambda](https://aws.amazon.com/lambda/).
-
-**Questions answered in this page**
-
-* How to deploy Prisma to AWS Lambda?
-* Which binaryTargets should I configure?
-* How to handle connection pooling on Lambda?
-
-While a deployment framework is not required to deploy to AWS Lambda, this guide covers deploying with:
-
-* [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework from AWS that can be used in the creation of serverless applications. AWS SAM includes the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli), which you can use to build, test, and deploy your application.
-
-* [Serverless Framework](https://www.serverless.com/framework) provides a CLI that helps with workflow automation and AWS resource provisioning. Prisma ORM works with the Serverless Framework without extra configuration, but a few changes to your project improve deployment and performance. There is also additional configuration that is needed if you are using the [`serverless-webpack`](https://www.npmjs.com/package/serverless-webpack) or [`serverless-bundle`](https://www.npmjs.com/package/serverless-bundle) libraries.
-
-* [SST](https://sst.dev/) provides tools to define, test, debug, and deploy applications. Prisma ORM works well with SST but must be configured so that your schema is correctly packaged by SST.
-
-## General considerations when deploying to AWS Lambda [#general-considerations-when-deploying-to-aws-lambda]
-
-This section covers changes you will need to make to your application, regardless of framework. After following these steps, follow the steps for your framework.
-
-* [Deploying with AWS SAM](#deploying-with-aws-sam)
-* [Deploying with the Serverless Framework](#deploying-with-the-serverless-framework)
-* [Deploying with SST](#deploying-with-sst)
-
-### Connection pooling [#connection-pooling]
-
-In a Function as a Service (FaaS) environment, each function invocation typically creates a new database connection. Unlike a continuously running Node.js server, these connections aren't maintained between executions. For better performance in serverless environments, implement connection pooling to reuse existing database connections rather than creating new ones for each function call.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to solve this issue. For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Deploying with AWS SAM [#deploying-with-aws-sam]
-
-### Loading environment variables [#loading-environment-variables]
-
-AWS SAM does not directly support loading values from a `.env` file. You will have to use one of AWS's services to store and retrieve these parameters. [The practical guide to surviving AWS SAM](https://medium.com/bip-xtech/a-practical-guide-to-surviving-aws-sam-d8ab141b3d25) describes your options and how to store and retrieve values in Parameters, SSM, Secrets Manager, and more.
-
-## Deploying with the Serverless Framework [#deploying-with-the-serverless-framework]
-
-### Loading environment variables via a `.env` file [#loading-environment-variables-via-a-env-file]
-
-Your functions will need the `DATABASE_URL` environment variable to access the database. The `serverless-dotenv-plugin` will allow you to use your `.env` file in your deployments.
-
-First, make sure that the plugin is installed:
-
-  
-
-#### bun
-
-```bash
-bun add --dev serverless-dotenv-plugin
-```
-
-#### pnpm
-
-```bash
-pnpm add -D serverless-dotenv-plugin
-```
-
-#### yarn
-
-```bash
-yarn add --dev serverless-dotenv-plugin
-```
-
-#### npm
-
-```bash
-npm install -D serverless-dotenv-plugin
-```
-
-Then, add `serverless-dotenv-plugin` to your list of plugins in `serverless.yml`:
-
-```yaml title="serverless.yml"
-plugins:
-  - serverless-dotenv-plugin
-```
-
-The environment variables in your `.env` file will now be automatically loaded on package or deployment.
-
-```bash
-serverless package
-```
-
-```bash
-Running "serverless" from node_modules
-DOTENV: Loading environment variables from .env:
-         - DATABASE_URL
-
-Packaging deployment-example-sls for stage dev (us-east-1)
-.
-```
-
-## Deploying with SST [#deploying-with-sst]
-
-### Working with environment variables [#working-with-environment-variables]
-
-While SST supports `.env` files, [it is not recommended](https://v2.sst.dev/config#should-i-use-configsecret-or-env-for-secrets). SST recommends using `Config` to access these environment variables in a secure way.
-
-The SST guide [available here](https://v2.sst.dev/config#overview) is a step-by-step guide to get started with `Config`. Assuming you have created a new secret called `DATABASE_URL` and have [bound that secret to your app](https://v2.sst.dev/config#bind-the-config), you can set up `PrismaClient` with the following:
-
-```ts title="prisma.ts" showLineNumbers
-import { PrismaClient } from "./generated/client";
-import { Config } from "sst/node/config";
-import { PrismaPg } from "@prisma/adapter-pg";
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
-
-const adapter = new PrismaPg({ connectionString });
-
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({ adapter });
-
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
-
-export default prisma;
-```
-
-## Related pages
-
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Azure Functions (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Azure Functions
-
-This guide explains how to avoid common issues when deploying a Node.js-based function app to Azure using [Azure Functions](https://azure.microsoft.com/en-us/products/functions/).
-
-Azure Functions is a serverless deployment platform. You do not need to maintain infrastructure to deploy your code. With Azure Functions, the fundamental building block is the [function app](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob\&pivots=programming-language-typescript). A function app provides an execution context in Azure in which your functions run. It is comprised of one or more individual functions that Azure manages, deploys, and scales together. You can organize and collectively manage multiple functions as a single logical unit.
-
-## Prerequisites [#prerequisites]
-
-* An existing function app project with Prisma ORM
-
-## Things to know [#things-to-know]
-
-While Prisma ORM works well with Azure functions, there are a few things to take note of before deploying your application.
-
-### Connection pooling [#connection-pooling]
-
-Generally, when you use a FaaS (Function as a Service) environment to interact with a database, every function invocation can result in a new connection to the database. This is not a problem with a constantly running Node.js server. Therefore, it is beneficial to pool DB connections to get better performance. To solve this issue, you can use [Prisma Postgres](https://www.prisma.io/docs/postgres). For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Summary [#summary]
-
-For more insight into Prisma Client's API, explore the function handlers and check out the [Prisma Client API Reference](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference)
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Netlify (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Netlify
-
-This guide covers the steps you will need to take in order to deploy your application that uses Prisma ORM to [Netlify](https://www.netlify.com/).
-
-Netlify is a cloud platform for continuous deployment, static sites, and serverless functions. Netlify integrates with GitHub for automatic deployments upon commits. When you follow the steps below, you will use that approach to create a CI/CD pipeline that deploys your application from a GitHub repository.
-
-## Prerequisites [#prerequisites]
-
-Before you can follow this guide, you will need to set up your application to begin deploying to Netlify. We recommend the ["Get started with Netlify"](https://docs.netlify.com/get-started/) guide for a quick overview and ["Deploy functions"](https://docs.netlify.com/functions/deploy/?fn-language=ts) for an in-depth look at your deployment options.
-
-## Store environment variables in Netlify [#store-environment-variables-in-netlify]
-
-We recommend keeping `.env` files in your `.gitignore` in order to prevent leakage of sensitive connection strings. Instead, you can use the Netlify CLI to [import values into netlify directly](https://docs.netlify.com/environment-variables/get-started/#import-variables-with-the-netlify-cli).
-
-Assuming you have a file like the following:
-
-```text title=".env"
-# Connect to DB
-DATABASE_URL="postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__"
-```
-
-You can upload the file as environment variables using the `env:import` command:
-
-```bash no-break-terminal
-netlify env:import .env
-```
-
-```bash
-site: my-very-very-cool-site
----------------------------------------------------------------------------------.
-                         Imported environment variables                          |
----------------------------------------------------------------------------------|
-     Key      |                              Value                               |
---------------|------------------------------------------------------------------|
- DATABASE_URL | postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__ |
----------------------------------------------------------------------------------'
-```
-
-**If you are not using an `.env` file**
-
-If you are storing your database connection string and other environment variables in a different method, you will need to manually upload your environment variables to Netlify. These options are [discussed in Netlify's documentation](https://docs.netlify.com/environment-variables/get-started/) and one method, uploading via the UI, is described below.
-
-1. Open the Netlify admin UI for the site. You can use Netlify CLI as follows:
-   ```bash
-   netlify open --admin
-   ```
-2. Click **Site settings**:
-   ![Netlify admin UI](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-06-deploy-to-netlify-site-settings.png)
-3. Navigate to **Build & deploy** in the sidebar on the left and select **Environment**.
-4. Click **Edit variables** and create a variable with the key `DATABASE_URL` and set its value to your database connection string.
-   ![Netlify environment variables](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-07-deploy-to-netlify-environment-variables-settings.png)
-5. Click **Save**.
-
-Now start a new Netlify build and deployment so that the new build can use the newly uploaded environment variables.
-
-```bash
-netlify deploy
-```
-
-You can now test the deployed application.
-
-## Connection pooling [#connection-pooling]
-
-When you use a Function-as-a-Service provider, like Netlify, it is beneficial to pool database connections for performance reasons. This is because every function invocation may result in a new connection to your database which can quickly run out of open connections.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
-
-For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-# Deploy to Vercel (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to deploy a Next.js application based on Prisma Client to Vercel
-
-Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Vercel
-
-This guide takes you through the steps to set up and deploy a serverless application that uses Prisma to [Vercel](https://vercel.com/).
-
-Vercel is a cloud platform that hosts static sites, serverless, and edge functions. You can integrate a Vercel project with a GitHub repository to allow you to deploy automatically when you make new commits.
-
-We created an [example application](https://github.com/prisma/deployment-example-vercel) using Next.js you can use as a reference when deploying an application using Prisma to Vercel.
-
-While our examples use Next.js, you can deploy other applications to Vercel. See [Using Express with Vercel](https://vercel.com/guides/using-express-with-vercel) and [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt) as examples of other options.
-
-## Build configuration [#build-configuration]
-
-### Updating Prisma Client during Vercel builds [#updating-prisma-client-during-vercel-builds]
-
-Vercel will automatically cache dependencies on deployment. For most applications, this will not cause any issues. However, for Prisma ORM, it may result in an outdated version of Prisma Client on a change in your Prisma schema. To avoid this issue, add `prisma generate` to the `postinstall` script of your application:
-
-```json title="package.json" showLineNumbers
-{
-  ...
-  "scripts": {
-    "postinstall": "prisma generate" // [!code ++]
-  }
-  ...
-}
-```
-
-This will re-generate Prisma Client at build time so that your deployment always has an up-to-date client. Another option to avoid an outdated Prisma Client is to check your client into version control. This way each deployment is guaranteed to include the correct Prisma Client.
-
-> [!NOTE]
-> If you see `prisma: command not found` errors during your deployment to Vercel, you are missing `prisma` in your dependencies. By default, `prisma` is a dev dependency and may need to be moved to be a standard dependency.
-
-### CI/CD workflows [#cicd-workflows]
-
-In a more sophisticated CI/CD environment, you may additionally want to update the database schema with any migrations you have performed during local development. You can do this using the [`prisma migrate deploy`](https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference#migrate-deploy) command.
-
-In that case, you could create a custom build command in your `package.json` (e.g. called `vercel-build`) that looks as follows:
-
-```json title="package.json"
-{
-  ...
-  "scripts" {
-    "vercel-build": "prisma generate && prisma migrate deploy && next build", // [!code ++]
-  }
-  ...
-}
-```
-
-You can invoke this script inside your CI/CD pipeline using the following command:
-
-  
-
-#### bun
-
-```bash
-bun run vercel-build
-```
-
-#### pnpm
-
-```bash
-pnpm run vercel-build
-```
-
-#### yarn
-
-```bash
-yarn vercel-build
-```
-
-#### npm
-
-```bash
-npm run vercel-build
-```
-
-## Add a separate database for preview deployments [#add-a-separate-database-for-preview-deployments]
-
-By default, your application will have a single *production* environment associated with the `main` git branch of your repository. If you open a pull request to change your application, Vercel creates a new *preview* environment.
-
-Vercel uses the `DATABASE_URL` environment variable you define when you import the project for both the production and preview environments. This causes problems if you create a pull request with a database schema migration because the pull request will change the schema of the production database.
-
-To prevent this, use a *second* hosted database to handle preview deployments. Once you have that connection string, you can add a `DATABASE_URL` for your preview environment using the Vercel dashboard:
-
-1. Click the **Settings** tab of your Vercel project.
-
-2. Click **Environment variables**.
-
-3. Add an environment variable with a key of `DATABASE_URL` and select only the **Preview** environment option:
-
-   ![Add an environment variable for the preview environment](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/300-60-deploy-to-vercel-preview-environment-variable.png)
-
-4. Set the value to the connection string of your second database:
-
-   ```bash
-   postgresql://dbUsername:dbPassword@myhost:5432/mydb
-   ```
-
-5. Click **Save**.
-
-## Connection pooling [#connection-pooling]
-
-When you use a Function-as-a-Service provider, like Vercel Serverless functions, every invocation may result in a new connection to your database. This can cause your database to quickly run out of open connections and cause your application to stall. For this reason, pooling connections to your database is essential.
-
-You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
-
-For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
-
-## Using Prisma ORM with Vercel Fluid [#using-prisma-orm-with-vercel-fluid]
-
-[Fluid compute](https://vercel.com/fluid) is Vercel's compute model for dynamic workloads such as streaming data and AI APIs. Vercel's Fluid compute [supports both edge and Node.js runtimes](https://vercel.com/docs/fluid-compute#available-runtime-support). A common challenge in traditional serverless platforms is leaked database connections when functions are suspended and pools can't close idle connections. Fluid provides [`attachDatabasePool`](https://vercel.com/blog/the-real-serverless-compute-to-database-connection-problem-solved) to ensure idle connections are released before a function is suspended.
-
-Use `attachDatabasePool` together with [Prisma's driver adapters](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) to safely manage connections in Fluid:
-
-```ts
-import { Pool } from "pg";
-import { attachDatabasePool } from "@vercel/functions";
-import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "./generated/client";
-
-const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
-
-attachDatabasePool(pool);
-
-export const prisma = new PrismaClient({
-  adapter: new PrismaPg(pool),
-});
-```
-
-## Related pages
-
-- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
-- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
-- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
-
 # Deploy to Fly.io (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-flyio)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -154400,6 +154068,395 @@ You have deployed a Node.js application using Prisma ORM to Sevalla, with the ap
 - [`Deploy to Koyeb`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-koyeb): Learn how to deploy a Node.js server that uses Prisma ORM to Koyeb Serverless Platform
 - [`Deploy to Railway`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-railway): Learn how to deploy an app that uses Prisma ORM and Prisma Postgres to Railway
 - [`Deploy to Render`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/traditional/deploy-to-render): Learn how to deploy a Node.js server that uses Prisma ORM to Render
+
+# Deploy to AWS Lambda (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to AWS Lambda
+
+> [!NOTE]
+> Quick summary
+> 
+> This guide explains how to avoid common issues when deploying a project using Prisma ORM to [AWS Lambda](https://aws.amazon.com/lambda/).
+
+**Questions answered in this page**
+
+* How to deploy Prisma to AWS Lambda?
+* Which binaryTargets should I configure?
+* How to handle connection pooling on Lambda?
+
+While a deployment framework is not required to deploy to AWS Lambda, this guide covers deploying with:
+
+* [AWS Serverless Application Model (SAM)](https://aws.amazon.com/serverless/sam/) is an open-source framework from AWS that can be used in the creation of serverless applications. AWS SAM includes the [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-reference.html#serverless-sam-cli), which you can use to build, test, and deploy your application.
+
+* [Serverless Framework](https://www.serverless.com/framework) provides a CLI that helps with workflow automation and AWS resource provisioning. Prisma ORM works with the Serverless Framework without extra configuration, but a few changes to your project improve deployment and performance. There is also additional configuration that is needed if you are using the [`serverless-webpack`](https://www.npmjs.com/package/serverless-webpack) or [`serverless-bundle`](https://www.npmjs.com/package/serverless-bundle) libraries.
+
+* [SST](https://sst.dev/) provides tools to define, test, debug, and deploy applications. Prisma ORM works well with SST but must be configured so that your schema is correctly packaged by SST.
+
+## General considerations when deploying to AWS Lambda [#general-considerations-when-deploying-to-aws-lambda]
+
+This section covers changes you will need to make to your application, regardless of framework. After following these steps, follow the steps for your framework.
+
+* [Deploying with AWS SAM](#deploying-with-aws-sam)
+* [Deploying with the Serverless Framework](#deploying-with-the-serverless-framework)
+* [Deploying with SST](#deploying-with-sst)
+
+### Connection pooling [#connection-pooling]
+
+In a Function as a Service (FaaS) environment, each function invocation typically creates a new database connection. Unlike a continuously running Node.js server, these connections aren't maintained between executions. For better performance in serverless environments, implement connection pooling to reuse existing database connections rather than creating new ones for each function call.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to solve this issue. For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Deploying with AWS SAM [#deploying-with-aws-sam]
+
+### Loading environment variables [#loading-environment-variables]
+
+AWS SAM does not directly support loading values from a `.env` file. You will have to use one of AWS's services to store and retrieve these parameters. [The practical guide to surviving AWS SAM](https://medium.com/bip-xtech/a-practical-guide-to-surviving-aws-sam-d8ab141b3d25) describes your options and how to store and retrieve values in Parameters, SSM, Secrets Manager, and more.
+
+## Deploying with the Serverless Framework [#deploying-with-the-serverless-framework]
+
+### Loading environment variables via a `.env` file [#loading-environment-variables-via-a-env-file]
+
+Your functions will need the `DATABASE_URL` environment variable to access the database. The `serverless-dotenv-plugin` will allow you to use your `.env` file in your deployments.
+
+First, make sure that the plugin is installed:
+
+  
+
+#### bun
+
+```bash
+bun add --dev serverless-dotenv-plugin
+```
+
+#### pnpm
+
+```bash
+pnpm add -D serverless-dotenv-plugin
+```
+
+#### yarn
+
+```bash
+yarn add --dev serverless-dotenv-plugin
+```
+
+#### npm
+
+```bash
+npm install -D serverless-dotenv-plugin
+```
+
+Then, add `serverless-dotenv-plugin` to your list of plugins in `serverless.yml`:
+
+```yaml title="serverless.yml"
+plugins:
+  - serverless-dotenv-plugin
+```
+
+The environment variables in your `.env` file will now be automatically loaded on package or deployment.
+
+```bash
+serverless package
+```
+
+```bash
+Running "serverless" from node_modules
+DOTENV: Loading environment variables from .env:
+         - DATABASE_URL
+
+Packaging deployment-example-sls for stage dev (us-east-1)
+.
+```
+
+## Deploying with SST [#deploying-with-sst]
+
+### Working with environment variables [#working-with-environment-variables]
+
+While SST supports `.env` files, [it is not recommended](https://v2.sst.dev/config#should-i-use-configsecret-or-env-for-secrets). SST recommends using `Config` to access these environment variables in a secure way.
+
+The SST guide [available here](https://v2.sst.dev/config#overview) is a step-by-step guide to get started with `Config`. Assuming you have created a new secret called `DATABASE_URL` and have [bound that secret to your app](https://v2.sst.dev/config#bind-the-config), you can set up `PrismaClient` with the following:
+
+```ts title="prisma.ts" showLineNumbers
+import { PrismaClient } from "./generated/client";
+import { Config } from "sst/node/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+
+const adapter = new PrismaPg({ connectionString });
+
+export const prisma =
+  globalForPrisma.prisma ||
+  new PrismaClient({ adapter });
+
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+
+export default prisma;
+```
+
+## Related pages
+
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Azure Functions (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Azure Functions
+
+This guide explains how to avoid common issues when deploying a Node.js-based function app to Azure using [Azure Functions](https://azure.microsoft.com/en-us/products/functions/).
+
+Azure Functions is a serverless deployment platform. You do not need to maintain infrastructure to deploy your code. With Azure Functions, the fundamental building block is the [function app](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference?tabs=blob\&pivots=programming-language-typescript). A function app provides an execution context in Azure in which your functions run. It is comprised of one or more individual functions that Azure manages, deploys, and scales together. You can organize and collectively manage multiple functions as a single logical unit.
+
+## Prerequisites [#prerequisites]
+
+* An existing function app project with Prisma ORM
+
+## Things to know [#things-to-know]
+
+While Prisma ORM works well with Azure functions, there are a few things to take note of before deploying your application.
+
+### Connection pooling [#connection-pooling]
+
+Generally, when you use a FaaS (Function as a Service) environment to interact with a database, every function invocation can result in a new connection to the database. This is not a problem with a constantly running Node.js server. Therefore, it is beneficial to pool DB connections to get better performance. To solve this issue, you can use [Prisma Postgres](https://www.prisma.io/docs/postgres). For other solutions, see the [connection management guide for serverless environments](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Summary [#summary]
+
+For more insight into Prisma Client's API, explore the function handlers and check out the [Prisma Client API Reference](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference)
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Netlify (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Netlify
+
+This guide covers the steps you will need to take in order to deploy your application that uses Prisma ORM to [Netlify](https://www.netlify.com/).
+
+Netlify is a cloud platform for continuous deployment, static sites, and serverless functions. Netlify integrates with GitHub for automatic deployments upon commits. When you follow the steps below, you will use that approach to create a CI/CD pipeline that deploys your application from a GitHub repository.
+
+## Prerequisites [#prerequisites]
+
+Before you can follow this guide, you will need to set up your application to begin deploying to Netlify. We recommend the ["Get started with Netlify"](https://docs.netlify.com/get-started/) guide for a quick overview and ["Deploy functions"](https://docs.netlify.com/functions/deploy/?fn-language=ts) for an in-depth look at your deployment options.
+
+## Store environment variables in Netlify [#store-environment-variables-in-netlify]
+
+We recommend keeping `.env` files in your `.gitignore` in order to prevent leakage of sensitive connection strings. Instead, you can use the Netlify CLI to [import values into netlify directly](https://docs.netlify.com/environment-variables/get-started/#import-variables-with-the-netlify-cli).
+
+Assuming you have a file like the following:
+
+```text title=".env"
+# Connect to DB
+DATABASE_URL="postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__"
+```
+
+You can upload the file as environment variables using the `env:import` command:
+
+```bash no-break-terminal
+netlify env:import .env
+```
+
+```bash
+site: my-very-very-cool-site
+---------------------------------------------------------------------------------.
+                         Imported environment variables                          |
+---------------------------------------------------------------------------------|
+     Key      |                              Value                               |
+--------------|------------------------------------------------------------------|
+ DATABASE_URL | postgresql://postgres:__PASSWORD__@__HOST__:__PORT__/__DB_NAME__ |
+---------------------------------------------------------------------------------'
+```
+
+**If you are not using an `.env` file**
+
+If you are storing your database connection string and other environment variables in a different method, you will need to manually upload your environment variables to Netlify. These options are [discussed in Netlify's documentation](https://docs.netlify.com/environment-variables/get-started/) and one method, uploading via the UI, is described below.
+
+1. Open the Netlify admin UI for the site. You can use Netlify CLI as follows:
+   ```bash
+   netlify open --admin
+   ```
+2. Click **Site settings**:
+   ![Netlify admin UI](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-06-deploy-to-netlify-site-settings.png)
+3. Navigate to **Build & deploy** in the sidebar on the left and select **Environment**.
+4. Click **Edit variables** and create a variable with the key `DATABASE_URL` and set its value to your database connection string.
+   ![Netlify environment variables](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/500-07-deploy-to-netlify-environment-variables-settings.png)
+5. Click **Save**.
+
+Now start a new Netlify build and deployment so that the new build can use the newly uploaded environment variables.
+
+```bash
+netlify deploy
+```
+
+You can now test the deployed application.
+
+## Connection pooling [#connection-pooling]
+
+When you use a Function-as-a-Service provider, like Netlify, it is beneficial to pool database connections for performance reasons. This is because every function invocation may result in a new connection to your database which can quickly run out of open connections.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
+
+For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Vercel`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel): Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+# Deploy to Vercel (Prisma ORM v7) (/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-vercel)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to deploy a Next.js application based on Prisma Client to Vercel
+
+Location: ORM > v7 > Prisma Client > Deployment > Serverless > Deploy to Vercel
+
+This guide takes you through the steps to set up and deploy a serverless application that uses Prisma to [Vercel](https://vercel.com/).
+
+Vercel is a cloud platform that hosts static sites, serverless, and edge functions. You can integrate a Vercel project with a GitHub repository to allow you to deploy automatically when you make new commits.
+
+We created an [example application](https://github.com/prisma/deployment-example-vercel) using Next.js you can use as a reference when deploying an application using Prisma to Vercel.
+
+While our examples use Next.js, you can deploy other applications to Vercel. See [Using Express with Vercel](https://vercel.com/guides/using-express-with-vercel) and [Nuxt on Vercel](https://vercel.com/docs/frameworks/nuxt) as examples of other options.
+
+## Build configuration [#build-configuration]
+
+### Updating Prisma Client during Vercel builds [#updating-prisma-client-during-vercel-builds]
+
+Vercel will automatically cache dependencies on deployment. For most applications, this will not cause any issues. However, for Prisma ORM, it may result in an outdated version of Prisma Client on a change in your Prisma schema. To avoid this issue, add `prisma generate` to the `postinstall` script of your application:
+
+```json title="package.json" showLineNumbers
+{
+  ...
+  "scripts": {
+    "postinstall": "prisma generate" // [!code ++]
+  }
+  ...
+}
+```
+
+This will re-generate Prisma Client at build time so that your deployment always has an up-to-date client. Another option to avoid an outdated Prisma Client is to check your client into version control. This way each deployment is guaranteed to include the correct Prisma Client.
+
+> [!NOTE]
+> If you see `prisma: command not found` errors during your deployment to Vercel, you are missing `prisma` in your dependencies. By default, `prisma` is a dev dependency and may need to be moved to be a standard dependency.
+
+### CI/CD workflows [#cicd-workflows]
+
+In a more sophisticated CI/CD environment, you may additionally want to update the database schema with any migrations you have performed during local development. You can do this using the [`prisma migrate deploy`](https://www.prisma.io/docs/orm/v7/reference/prisma-cli-reference#migrate-deploy) command.
+
+In that case, you could create a custom build command in your `package.json` (e.g. called `vercel-build`) that looks as follows:
+
+```json title="package.json"
+{
+  ...
+  "scripts" {
+    "vercel-build": "prisma generate && prisma migrate deploy && next build", // [!code ++]
+  }
+  ...
+}
+```
+
+You can invoke this script inside your CI/CD pipeline using the following command:
+
+  
+
+#### bun
+
+```bash
+bun run vercel-build
+```
+
+#### pnpm
+
+```bash
+pnpm run vercel-build
+```
+
+#### yarn
+
+```bash
+yarn vercel-build
+```
+
+#### npm
+
+```bash
+npm run vercel-build
+```
+
+## Add a separate database for preview deployments [#add-a-separate-database-for-preview-deployments]
+
+By default, your application will have a single *production* environment associated with the `main` git branch of your repository. If you open a pull request to change your application, Vercel creates a new *preview* environment.
+
+Vercel uses the `DATABASE_URL` environment variable you define when you import the project for both the production and preview environments. This causes problems if you create a pull request with a database schema migration because the pull request will change the schema of the production database.
+
+To prevent this, use a *second* hosted database to handle preview deployments. Once you have that connection string, you can add a `DATABASE_URL` for your preview environment using the Vercel dashboard:
+
+1. Click the **Settings** tab of your Vercel project.
+
+2. Click **Environment variables**.
+
+3. Add an environment variable with a key of `DATABASE_URL` and select only the **Preview** environment option:
+
+   ![Add an environment variable for the preview environment](https://www.prisma.io/img/orm/prisma-client/deployment/serverless/images/300-60-deploy-to-vercel-preview-environment-variable.png)
+
+4. Set the value to the connection string of your second database:
+
+   ```bash
+   postgresql://dbUsername:dbPassword@myhost:5432/mydb
+   ```
+
+5. Click **Save**.
+
+## Connection pooling [#connection-pooling]
+
+When you use a Function-as-a-Service provider, like Vercel Serverless functions, every invocation may result in a new connection to your database. This can cause your database to quickly run out of open connections and cause your application to stall. For this reason, pooling connections to your database is essential.
+
+You can use [Prisma Postgres](https://www.prisma.io/docs/postgres), which has built-in connection pooling, to reduce your Prisma Client bundle size, and to avoid cold starts.
+
+For more information on connection management for serverless environments, refer to our [connection management guide](https://www.prisma.io/docs/orm/v7/prisma-client/setup-and-configuration/databases-connections#serverless-environments-faas).
+
+## Using Prisma ORM with Vercel Fluid [#using-prisma-orm-with-vercel-fluid]
+
+[Fluid compute](https://vercel.com/fluid) is Vercel's compute model for dynamic workloads such as streaming data and AI APIs. Vercel's Fluid compute [supports both edge and Node.js runtimes](https://vercel.com/docs/fluid-compute#available-runtime-support). A common challenge in traditional serverless platforms is leaked database connections when functions are suspended and pools can't close idle connections. Fluid provides [`attachDatabasePool`](https://vercel.com/blog/the-real-serverless-compute-to-database-connection-problem-solved) to ensure idle connections are released before a function is suspended.
+
+Use `attachDatabasePool` together with [Prisma's driver adapters](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/database-drivers) to safely manage connections in Fluid:
+
+```ts
+import { Pool } from "pg";
+import { attachDatabasePool } from "@vercel/functions";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/client";
+
+const pool = new Pool({ connectionString: process.env.POSTGRES_URL });
+
+attachDatabasePool(pool);
+
+export const prisma = new PrismaClient({
+  adapter: new PrismaPg(pool),
+});
+```
+
+## Related pages
+
+- [`Deploy to AWS Lambda`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-aws-lambda): Learn how to deploy your Prisma ORM-backed applications to AWS Lambda with AWS SAM, Serverless Framework, or SST
+- [`Deploy to Azure Functions`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-azure-functions): Learn how to deploy a Prisma Client based REST API to Azure Functions and connect to an Azure SQL database
+- [`Deploy to Netlify`](https://www.prisma.io/docs/orm/v7/prisma-client/deployment/serverless/deploy-to-netlify): Learn how to deploy Node.js and TypeScript applications that are using Prisma Client to Netlify
 
 # Query optimization (Prisma ORM v7) (/docs/orm/v7/prisma-client/queries/advanced/query-optimization-performance)
 

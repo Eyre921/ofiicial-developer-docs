@@ -10,7 +10,7 @@ path: docs/eleven-agents/operate/architect/faq
 
 ## Known limitations
 
-* **No scheduled or background work yet.** Architect only works while you're in a conversation with it. It doesn't yet scan agents on a schedule, send reports, or open proposals on its own. Scheduled automations are coming soon. See [Proactive proposals](/docs/eleven-agents/operate/architect/proposals#proactive-proposals) for the current path from Spotlight to a proposal.
+* **No scheduled or background work yet.** ElevenAgents Architect only works while you're in a conversation with it. It doesn't yet scan agents on a schedule, send reports, or open proposals on its own. Scheduled automations are coming soon. See [Proactive proposals](/docs/eleven-agents/operate/architect/proposals#proactive-proposals) for the current path from Spotlight to a proposal.
 * **It can't review merge proposals.** Architect can open a proposal and suggest reviewers, but approving, commenting, merging, and closing are done by people.
 * **Some resources are read-only to Architect.** It can't manage MCP servers, secrets, integrations, channels, alerts, or phone number assignments. See [What Architect can't do](/docs/eleven-agents/operate/architect/capabilities#what-architect-cannot-do).
 * **Dashboards aren't saved.** A dashboard built in the chat keeps its data only in the browser tab where it was built.

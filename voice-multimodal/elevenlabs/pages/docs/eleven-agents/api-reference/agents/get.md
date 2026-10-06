@@ -519,6 +519,22 @@ SIP Trunk configuration details for a phone number
   - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
   - `position` (PositionOutput, required) — Position of the node in the workflow.
   - `tools` (list of WorkflowToolLocator, required) — List of tools to execute in parallel. The entire node is considered successful if all tools are executed successfully.
+- `type`: `say`
+  - `additional_knowledge_base` (list of KnowledgeBaseLocator, required) — Knowledge base documents available to the LLM while this node generates its message, in addition to the agent's documents.
+  - `additional_prompt` (string, required) — Accepted for consistency with subagent nodes but not used. Describe the message in `message.prompt`, or replace the system prompt with `conversation_config.agent.prompt.prompt`.
+  - `additional_tool_ids` (list of string, required) — Accepted for consistency with subagent nodes but not used. A say node cannot call tools.
+  - `conversation_config` (ConversationalConfigApiModelWorkflowOverrideOutput, required) — Configuration overrides applied while this node speaks, such as the voice or, for prompt messages, the LLM and system prompt.
+  - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+  - `label` (string, required) — Human-readable label for the node used throughout the UI.
+  - `message` (WorkflowSayNodeModelOutputMessage, required) — Message spoken by this node. Use `literal` for exact text or `prompt` to have the LLM generate the message from a description.
+  - `position` (PositionOutput, required) — Position of the node in the workflow.
+  - `wait_for_speech_completion` (boolean, required, default: false) — When true, the workflow only moves to the next node after the message has been fully spoken.
+  - `wait_for_user_response` (boolean, required, default: false) — When true, the node speaks its message and then waits for the user to reply before evaluating outgoing edges, so edges can branch on the reply. If the user stays silent, the workflow advances after the turn timeout.
+- `type`: `update_state`
+  - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+  - `label` (string, required) — Human-readable label for the node used throughout the UI.
+  - `position` (PositionOutput, required) — Position of the node in the workflow.
+  - `updates` (list of WorkflowStateUpdateOutput, required) — State updates applied when the workflow reaches this node. A node accepts at most 50 updates.
 
 ### ValidationErrorLocItem
 
@@ -983,6 +999,23 @@ User-to-User Information envelope for SIP REFER transfers (RFC 7433). Outbound p
 - `tool_id` (string, required)
 - `schema_overrides` (map from string to WorkflowToolLocatorSchemaOverridesValue, optional) — Per-node parameter overrides applied on top of the tool's own configuration. Keys are dotted parameter paths (webhook tools prefix keys with path_params./query_params./request_body.). These take precedence over any overrides already defined on the tool itself.
 
+### WorkflowSayNodeModelOutputMessage
+
+Message spoken by this node. Use `literal` for exact text or `prompt` to have the LLM generate the message from a description.
+
+- `type`: `literal`
+  - `text` (string, required) — Exact text spoken by the agent. Supports `{{variable_name}}` dynamic variable placeholders.
+  - `text_translations` (map from string to TranslatedString, required) — Translations of `text`, keyed by language code. When the conversation language has an entry, its value is spoken instead of `text`.
+- `type`: `prompt`
+  - `prompt` (string, required) — Description of the message the LLM should generate. It is appended to the agent's system prompt while this node is active.
+
+### WorkflowStateUpdateOutput
+
+- `type` ("dynamic_variable", required)
+- `variable_name` (string, required) — Name of the dynamic variable to assign.
+- `expression` (AstNodeOutput, required) — Expression whose result is assigned to the variable. It can combine constants, other dynamic variables, LLM-extracted values and operators.
+- `required` (boolean, required, default: true) — When false, the LLM may omit the values this update relies on. The update is then skipped and the variable keeps its current value.
+
 ### AsrConversationalConfigOverride
 
 - `keywords` (list of string, optional) — Keywords to boost prediction probability for
@@ -1100,7 +1133,7 @@ The type of tool
   - `parameters` (ObjectJsonSchemaPropertyOutput, optional) — Schema for any parameters to pass to the client
   - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
     - Allowed values: `auto`, `force`, `off`
-  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive).
+  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive), or -1 to wait for the client's response indefinitely (requires expects_response).
   - `tool_call_sound` (enum, optional) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
     - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
   - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
@@ -1356,6 +1389,10 @@ Config container for custom guardrails list
 - `source`: `llm`
   - `prompt` (string, optional) — Prompt override for the LLM. If not provided, the original schema description is used.
 - `source`: `omit`
+
+### TranslatedString
+
+- `value` (string, required)
 
 ### SoftTimeoutConfigOverride
 
@@ -1775,7 +1812,7 @@ The type of tool
   - `parameters` (ObjectJsonSchemaPropertyOutput, optional) — Schema for any parameters to pass to the client
   - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
     - Allowed values: `auto`, `force`, `off`
-  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive).
+  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive), or -1 to wait for the client's response indefinitely (requires expects_response).
   - `tool_call_sound` (enum, optional) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
     - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
   - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.

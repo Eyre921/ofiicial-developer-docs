@@ -188,9 +188,13 @@ components:
       enum:
         - manual
         - vad
+        - turn_prediction
       description: >-
         Commit strategy for speech segmentation. 'manual' requires explicit
-        commits, 'vad' automatically segments speech using silence detection.
+        commits, 'vad' automatically segments speech using silence detection,
+        'turn_prediction' additionally commits as soon as the model predicts the
+        speaker has finished their turn (only for models that predict turns,
+        where it is the default).
       title: /v1/speech-to-text/realtime_commit_strategy
     _v1_speech-to-text_realtime_entity_detection:
       oneOf:

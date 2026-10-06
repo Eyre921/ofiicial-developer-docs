@@ -12,11 +12,11 @@ path: docs/eleven-agents/customization/agent-workflows
 
 Agent Workflows provide a powerful visual interface for designing complex conversation flows in ElevenAgents. Instead of relying on linear conversation paths, workflows enable you to create sophisticated, branching conversation graphs that adapt dynamically to user needs.
 
-![Workflow Overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0b5b2cf9754c67ef469c08af5d13786f70ca8e0018d10e92595861abb4ed32cb/assets/images/conversational-ai/workflow-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=719a4d7eb21c30cabd7bf62e3f763c19d81d7d459610f0f7849fb71dab52c3f5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Workflow Overview](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/0b5b2cf9754c67ef469c08af5d13786f70ca8e0018d10e92595861abb4ed32cb/assets/images/conversational-ai/workflow-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=5d21623a75f1c5dcd304f217b3a50d9cca1ad62dae1b5b256be4e2dac31509c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Building workflows
 
-The dashboard is the recommended way to design workflows because of the visual graph editor. Workflows are stored as part of the agent's `conversation_config.workflow`, so you can also pull, edit, and push the JSON via the CLI or update it via the SDK — useful for version control and CI/CD.
+The dashboard is the recommended way to design workflows because of the visual graph editor. Workflows are stored in the agent's top-level `workflow` field, so you can also pull, edit, and push the JSON via the CLI or update it via the SDK — useful for version control and CI/CD.
 
 #### Build via the dashboard
 
@@ -32,40 +32,38 @@ elevenlabs agents pull --agent "<agent-name>"
 
 #### Edit \`agent\_configs/\<agent-name>.json\`
 
-The workflow graph lives under `conversation_config.workflow`. `nodes` and `edges` are objects keyed by ID. Below is a minimal three-node workflow that routes the start node into a support subagent and then to an end node:
+The workflow graph lives under the top-level `workflow` key. `nodes` and `edges` are objects keyed by ID. Below is a minimal three-node workflow that routes the start node into a support subagent and then to an end node:
 
 ```json
 {
-  "conversation_config": {
-    "workflow": {
-      "nodes": {
-        "start_node": {
-          "type": "start",
-          "edge_order": ["start_to_support"]
-        },
-        "support_agent": {
-          "type": "override_agent",
-          "label": "Support agent",
-          "additional_prompt": "Help the user with their support request, then transition to the end node when resolved.",
-          "edge_order": ["support_to_end"]
-        },
-        "end_node": {
-          "type": "end"
-        }
+  "workflow": {
+    "nodes": {
+      "start_node": {
+        "type": "start",
+        "edge_order": ["start_to_support"]
       },
-      "edges": {
-        "start_to_support": {
-          "source": "start_node",
-          "target": "support_agent",
-          "forward_condition": { "type": "unconditional" }
-        },
-        "support_to_end": {
-          "source": "support_agent",
-          "target": "end_node",
-          "forward_condition": {
-            "type": "llm",
-            "condition": "The support request has been resolved."
-          }
+      "support_agent": {
+        "type": "override_agent",
+        "label": "Support agent",
+        "additional_prompt": "Help the user with their support request, then transition to the end node when resolved.",
+        "edge_order": ["support_to_end"]
+      },
+      "end_node": {
+        "type": "end"
+      }
+    },
+    "edges": {
+      "start_to_support": {
+        "source": "start_node",
+        "target": "support_agent",
+        "forward_condition": { "type": "unconditional" }
+      },
+      "support_to_end": {
+        "source": "support_agent",
+        "target": "end_node",
+        "forward_condition": {
+          "type": "llm",
+          "condition": "The support request has been resolved."
         }
       }
     }
@@ -90,34 +88,32 @@ elevenlabs = ElevenLabs()
 
 elevenlabs.conversational_ai.agents.update(
     agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
-    conversation_config={
-        "workflow": {
-            "nodes": {
-                "start_node": {
-                    "type": "start",
-                    "edge_order": ["start_to_support"],
-                },
-                "support_agent": {
-                    "type": "override_agent",
-                    "label": "Support agent",
-                    "additional_prompt": "Help the user with their support request, then transition to the end node when resolved.",
-                    "edge_order": ["support_to_end"],
-                },
-                "end_node": {"type": "end"},
+    workflow={
+        "nodes": {
+            "start_node": {
+                "type": "start",
+                "edge_order": ["start_to_support"],
             },
-            "edges": {
-                "start_to_support": {
-                    "source": "start_node",
-                    "target": "support_agent",
-                    "forward_condition": {"type": "unconditional"},
-                },
-                "support_to_end": {
-                    "source": "support_agent",
-                    "target": "end_node",
-                    "forward_condition": {
-                        "type": "llm",
-                        "condition": "The support request has been resolved.",
-                    },
+            "support_agent": {
+                "type": "override_agent",
+                "label": "Support agent",
+                "additional_prompt": "Help the user with their support request, then transition to the end node when resolved.",
+                "edge_order": ["support_to_end"],
+            },
+            "end_node": {"type": "end"},
+        },
+        "edges": {
+            "start_to_support": {
+                "source": "start_node",
+                "target": "support_agent",
+                "forward_condition": {"type": "unconditional"},
+            },
+            "support_to_end": {
+                "source": "support_agent",
+                "target": "end_node",
+                "forward_condition": {
+                    "type": "llm",
+                    "condition": "The support request has been resolved.",
                 },
             },
         },
@@ -131,35 +127,33 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 const elevenlabs = new ElevenLabsClient();
 
 await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd98n6", {
-  conversationConfig: {
-    workflow: {
-      nodes: {
-        start_node: {
-          type: "start",
-          edgeOrder: ["start_to_support"],
-        },
-        support_agent: {
-          type: "override_agent",
-          label: "Support agent",
-          additionalPrompt:
-            "Help the user with their support request, then transition to the end node when resolved.",
-          edgeOrder: ["support_to_end"],
-        },
-        end_node: { type: "end" },
+  workflow: {
+    nodes: {
+      start_node: {
+        type: "start",
+        edgeOrder: ["start_to_support"],
       },
-      edges: {
-        start_to_support: {
-          source: "start_node",
-          target: "support_agent",
-          forwardCondition: { type: "unconditional" },
-        },
-        support_to_end: {
-          source: "support_agent",
-          target: "end_node",
-          forwardCondition: {
-            type: "llm",
-            condition: "The support request has been resolved.",
-          },
+      support_agent: {
+        type: "override_agent",
+        label: "Support agent",
+        additionalPrompt:
+          "Help the user with their support request, then transition to the end node when resolved.",
+        edgeOrder: ["support_to_end"],
+      },
+      end_node: { type: "end" },
+    },
+    edges: {
+      start_to_support: {
+        source: "start_node",
+        target: "support_agent",
+        forwardCondition: { type: "unconditional" },
+      },
+      support_to_end: {
+        source: "support_agent",
+        target: "end_node",
+        forwardCondition: {
+          type: "llm",
+          condition: "The support request has been resolved.",
         },
       },
     },
@@ -171,7 +165,7 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 
 Workflows are composed of different node types, each serving a specific purpose in your conversation flow.
 
-![Node Types](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d638a84e1a6dc584a812be436f5da5e665b103b6cb5b6c53840705723bbb5a8f/assets/images/conversational-ai/workflow-node-types.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=64eb832cde896d3aab3a37814f08ae86025685a73f326c6816634f71f8edf4f3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Node Types](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b169065e0f229623a4cd57861802fa30ecd463a142599f5fd60f6fc1b8a6223e/assets/images/conversational-ai/workflow-node-types.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=dc19bb673bcb04bc992ed0a968f55ed78405cdc248aec1df9d200bfdb7665844&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Subagent nodes
 
@@ -180,7 +174,7 @@ Any of an agent's configuration, tools available, and attached knowledge base it
 
 #### General
 
-![Subagent Extra Agent Config](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ca72df8768a03adc0064281c906ab0f5710153249d17f7e7d51f465da7e9e94/assets/images/conversational-ai/workflow-subagent-extra-agent-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=ee8f11a5c3a6c909d0b9cf652b37298250115586b0b78007dde5f8430e4f7409&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Subagent Extra Agent Config](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8ca72df8768a03adc0064281c906ab0f5710153249d17f7e7d51f465da7e9e94/assets/images/conversational-ai/workflow-subagent-extra-agent-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=2ae2107184f18ed0b0ee20ba569385eacf0cb941ba9259ac22ba5f96a30f3728&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Modify core agent settings for this specific node:
 
@@ -197,7 +191,7 @@ Modify core agent settings for this specific node:
 
 #### Knowledge Base
 
-![Subagent Extra Knowledge Base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/168a56fc316596983275999c53bbbe391c4c30a05abedc17cb6a4566eff7773f/assets/images/conversational-ai/workflow-subagent-node-extra-kb.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=e5b16515f04932ad467296673649e2be6cae57c9d240559c1602210a15231be6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Subagent Extra Knowledge Base](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/168a56fc316596983275999c53bbbe391c4c30a05abedc17cb6a4566eff7773f/assets/images/conversational-ai/workflow-subagent-node-extra-kb.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=7b9140a30364f6cee8393365f687b72e49371bdcdd021598a1a2fb9faa2e7217&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Add node-specific knowledge without affecting the global knowledge base:
 
@@ -214,7 +208,7 @@ Add node-specific knowledge without affecting the global knowledge base:
 
 #### Tools
 
-![Subagent Extra Tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9af53c3227661fd88bec57cb21197eb289760d33a874b56152d507373e51bac1/assets/images/conversational-ai/workflow-sub-agent-config-extra-tools.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=a8e3733444ec04d729f62c6a710125abbe6c31b05fabac1998f383b57399909a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Subagent Extra Tools](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9af53c3227661fd88bec57cb21197eb289760d33a874b56152d507373e51bac1/assets/images/conversational-ai/workflow-sub-agent-config-extra-tools.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=b0528b3ad114f1fd2c66f72fb23bbc3c9b0191298e91b614e8a19e206580d59e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Manage which tools are available to the agent at this node:
 
@@ -230,11 +224,20 @@ Manage which tools are available to the agent at this node:
 * Add scheduling tools for appointment booking phases
 * Include webhook tools for specific actions like booking meetings
 
+### Say node
+
+A say node makes the agent speak one message at a specific point in the workflow, then moves on along its outgoing edges. Use it when the wording of a message matters and should not be left to a subagent, for example a greeting, a legal disclosure, or a confirmation read back to the user.
+
+Each say node sends its message in one of two modes:
+
+* **Literal**: the agent speaks the exact text you enter, with an optional translation per configured language.
+* **Prompt**: the LLM generates the message from a description you write.
+
 ### Dispatch tool node
 
 Tool nodes execute a specific tool call during conversation flow. Unlike tools within subagents, tool nodes are dedicated execution points that guarantee the tool is called.
 
-![Tool Node Result Edges](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b60603e56dfb25e89cdfe4223826f635af874e034af8936d74d3b428611e17b/assets/images/conversational-ai/workflow-tool-node-result-edges.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=80ab4273905da0f90d80dcc13adafb0f87039454a81dd941c1b64a08324cf951&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Tool Node Result Edges](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/6b60603e56dfb25e89cdfe4223826f635af874e034af8936d74d3b428611e17b/assets/images/conversational-ai/workflow-tool-node-result-edges.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=d813afbc2a4f7d8f7209886f0c495b05458f57f04d9f17652563d5497ff6c692&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Special Edge Configuration:**
 Tool nodes have a unique edge type that allows routing to a new node based on the tool execution result. You can define:
@@ -243,6 +246,12 @@ Tool nodes have a unique edge type that allows routing to a new node based on th
 * **Failure path**: Where to route when the tool fails or returns an error
 
 In future, futher branching conditions will be provided.
+
+### Update state node
+
+An update state node assigns one or more [dynamic variables](/docs/eleven-agents/customization/personalization/dynamic-variables) every time the workflow passes through it, using the same expressions as the Update state tool. Unlike the tool, which runs when the LLM decides to call it, the node always applies its updates at that point in the graph and then continues along its outgoing edges.
+
+Learn more [here](/docs/eleven-agents/customization/tools/system-tools/update-state).
 
 ### Agent transfer node
 
@@ -260,19 +269,19 @@ End call nodes terminate the conversation flow gracefully, learn more [here](/do
 
 Edges define how conversations flow between nodes in your workflow. They support sophisticated routing logic that enables dynamic, context-aware conversation paths.
 
-![Workflow Edges](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/02d664c9211bb8cf5452b80ab865f26b8d0b723a6acff75141ea1e9c43f7dbab/assets/images/conversational-ai/workflow-edges.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=e61b932cc3483ad23daf7f7aab27f0227aafc53cb96df3adfd8a8bcf85b4ee7d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Workflow Edges](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/02d664c9211bb8cf5452b80ab865f26b8d0b723a6acff75141ea1e9c43f7dbab/assets/images/conversational-ai/workflow-edges.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=89aa0c8eb26777287a943beca96c83da15e4b1be850f94aa35efba51b7406508&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Forward Edges
 
 Forward edges move the conversation to subsequent nodes in the workflow. They represent the primary flow of your conversation.
 
-![Forward Edge Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2400c66bf6f60b0d4262ecd828dea93847197f7cc00d9c8964e6486419bc90be/assets/images/conversational-ai/workflow-edge-forward.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=5195f5972dafa620d2cbd2b9ec8bfde0b94a881d9395bcd2b586dea616414e65&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Forward Edge Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/2400c66bf6f60b0d4262ecd828dea93847197f7cc00d9c8964e6486419bc90be/assets/images/conversational-ai/workflow-edge-forward.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=0b1fc85363db20a0fb860db0ba49f5b66c66f5c0bbe6661882dac42a91bce587&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Backward Edges
 
 Backward edges allow conversations to loop back to previous nodes, enabling iterative interactions and retry logic.
 
-![Backward Edge Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e211da75e56c826fd763ae4d8149604a866d3ec63271c572e177d52bb9a80e14/assets/images/conversational-ai/workflow-edge-backward.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=62fa2f30a7d7fa7355715018eb15e2e870344087aa56cc5efd5d9f67456991f8&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Backward Edge Configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e211da75e56c826fd763ae4d8149604a866d3ec63271c572e177d52bb9a80e14/assets/images/conversational-ai/workflow-edge-backward.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=479974c2dbc9cfb36e6e0a4ab5017464d634691337f83b21caf6f9ebffc360b9&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Use Cases:**
 
@@ -285,7 +294,7 @@ Backward edges allow conversations to loop back to previous nodes, enabling iter
 
 Use LLM conditions to create dynamic conversation flows based on natural language evaluation. The LLM evaluates conditions in real-time to determine the appropriate path.
 
-![LLM Condition Agent Transfer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/507885879d781f291ab35b7dda84e760767a5544ffb6bf7b455e7a1cc19b78b7/assets/images/conversational-ai/workflow-agent-transfer-llm-condition.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=23af1c2578f1a472e881541f0394c0342173310be9160bc7ae927cf171c4fc1f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![LLM Condition Agent Transfer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/507885879d781f291ab35b7dda84e760767a5544ffb6bf7b455e7a1cc19b78b7/assets/images/conversational-ai/workflow-agent-transfer-llm-condition.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=128bc4b299d9d97b6cbeea13b96ded3086450f1297ff62697b938e03b321c2af&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Configuration Options:**
 
@@ -296,7 +305,7 @@ Use LLM conditions to create dynamic conversation flows based on natural languag
 
 Use expressions to create conditional logic based on variables and structured data.
 
-![Expression Agent Transfer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/712fc40d707906a7c6ccb4b0a76f0fd3857278176606d441bfb5245f5f6e0ffe/assets/images/conversational-ai/workflow-agent-transfer-expression.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=af7f91a262c8e2090e1ed4f70ab3b842120baed978d65f6f179da03c51c6dfc2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Expression Agent Transfer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/712fc40d707906a7c6ccb4b0a76f0fd3857278176606d441bfb5245f5f6e0ffe/assets/images/conversational-ai/workflow-agent-transfer-expression.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=38b2f837ab62192797787d8e10da8c6ab6d3ac87307b832e3c98516818ee9a6f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Configuration Options:**
 
@@ -307,7 +316,7 @@ Use expressions to create conditional logic based on variables and structured da
 
 Unconditional transitions automatically move the conversation to the next node without any conditions.
 
-![Unconditional Agent Transfer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/73b70ce7c783277e64ba533f6d69c84e2ed3120f1fd03dbdebcd4d4f5358eb5b/assets/images/conversational-ai/workflow-agent-transfer-none.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=de3f77422c53db20c48e09b40d9d5aa1879646977197893940ac33d8961d3ba5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Unconditional Agent Transfer](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/73b70ce7c783277e64ba533f6d69c84e2ed3120f1fd03dbdebcd4d4f5358eb5b/assets/images/conversational-ai/workflow-agent-transfer-none.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=ae55e5553382d005224e921dad35dd7c6a27116795fda752a20d0fd42241f1e0&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 **Use Cases:**
 
@@ -318,6 +327,6 @@ Unconditional transitions automatically move the conversation to the next node w
 ## Analytics
 
 ![Workflow analytics tab showing per-node entries, durations, terminations, and edge flow overlaid
-on the workflow graph](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a758029a005f0327c1e6319708577efd617399c72cec63d5c342d3af2f0db2a3/assets/images/conversational-ai/workflow-analytics.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T195545Z&X-Amz-Expires=604800&X-Amz-Signature=d1db318eb716711148a1f763b7e4a10f39c3879e1c6c21482130ff68553c92c5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+on the workflow graph](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a758029a005f0327c1e6319708577efd617399c72cec63d5c342d3af2f0db2a3/assets/images/conversational-ai/workflow-analytics.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T085832Z&X-Amz-Expires=604800&X-Amz-Signature=978e92ac07b70032787bc255657705d1042f662f7f560690fdc5298d3b86b2ef&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 Once a workflow is live, the **Workflow** tab in the [analytics dashboard](/docs/eleven-agents/dashboard#workflow-analytics) overlays usage data on the graph: per-node entries, average time spent, and terminations, plus the incoming and outgoing edge distribution for each node. From the node inspector you can also jump straight to the matching conversations in history via the **Node entered** filter.

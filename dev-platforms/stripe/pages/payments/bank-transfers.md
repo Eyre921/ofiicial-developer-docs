@@ -13,52 +13,17 @@ Bank transfers provide a safe way for customers to send money over bank rails. W
 > #### Turn on bank transfers
 > 
 > To turn on bank transfer payments, go to your [Payment methods settings](https://dashboard.stripe.com/settings/payment_methods).
+Payment method family: Bank Transfers
+Usability: Reusable
+Access type: Instant provisional access
+Payment confirmation timing: Delayed
+Settlement timing: Standard payout schedule
+Pricing: https://stripe.com/undefined/pricing/local-payment-methods#bank-transfers
+Bank transfers support IBAN localization for DE, FR, IE, and NL. They also support recurring payments, but they require customer action to make sure there are always enough funds to pay for subscriptions.
 
-#### Payment method properties
+## Eligibility and availability 
 
-- **Customer locations**
-
-  [Varies by merchant country](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations#business-locations)
-
-- **Presentment currency**
-
-  EUR1, GBP, JPY, MXN, USD
-
-- **Payment confirmation**
-
-  No
-
-- **Payment method family**
-
-  Bank transfer
-
-- **Recurring payments**
-
-  Yes2
-
-- **Payout timing**
-
-  [Standard payout timing](https://docs.stripe.com/payouts.md#payout-speed) applies
-
-- **Connect support**
-
-  [Yes](https://docs.stripe.com/payments/bank-transfers.md#connect)
-
-- **Dispute support**
-
-  [US only](https://docs.stripe.com/payments/bank-transfers.md#disputes)
-
-- **Manual capture support**
-
-  No
-
-- **Refunds / Partial refunds**
-
-  [Yes / Yes](https://docs.stripe.com/payments/bank-transfers.md#refunds)
-
-1 Bank transfers support IBAN localization for DE, FR, IE and NL.2 Bank transfers support recurring payments, but they require customer action to make sure there are always enough funds to pay for the subscriptions.
-
-#### Business locations
+### Account eligibility 
 
 Stripe accounts in the following countries can accept bank transfer payments:
 
@@ -139,16 +104,14 @@ Stripe accounts in the following countries can accept bank transfer payments:
 | JPY | - JP |
 | MXN | - MX |
 
-#### Product support
+### Payment support
 
-- Connect
-- Checkout1,2
-
-- Subscriptions
-- Invoicing
-- Elements
-
-1Not supported when using Checkout in subscription mode.2Not supported when using Checkout in setup mode.
+| Feature | Support |
+| --- | --- |
+| Customer locations | [Varies by merchant country](https://docs.stripe.com/payments/bank-transfers.md#business-locations) |
+| Presentment currencies | EUR, GBP, JPY, MXN, and USD |
+| Cross-border payments | [Supported](https://docs.stripe.com/payments/bank-transfers.md#cross-border-payments) |
+| Transaction limits | Bank transfers don’t have additional payment-method-specific amount limits. Stripe’s [currency-specific minimum and maximum charge amounts](https://docs.stripe.com/currencies.md#minimum-and-maximum-charge-amounts) still apply. |
 
 Please [contact us](https://support.stripe.com/contact) to request another bank transfer method. Learn more about [country and currency support](https://docs.stripe.com/payments/payment-methods/payment-method-support.md#country-currency-support).
 
@@ -218,7 +181,16 @@ To accept cross-border payments, create an additional bank transfers account und
 4. Choose which country to present the specified currency to the customer.
 5. Click **Add**.
 
-## Refunds 
+## Capabilities 
+
+| Capability | Support |
+| --- | --- |
+| Recurring payments | Supported. Customers must make sure that their customer balance has enough funds to pay each invoice. |
+| Manual capture | Not supported |
+| Refunds | [Full and partial refunds are supported](https://docs.stripe.com/payments/bank-transfers.md#refunds) |
+| Disputes | [Supported for USD transactions only](https://docs.stripe.com/payments/bank-transfers.md#disputes) |
+
+### Refunds 
 
 You can refund customer balance payments:
 
@@ -228,6 +200,18 @@ You can refund customer balance payments:
 To refund to the customer’s bank account, Stripe requires the customer’s bank account details. In some cases, Stripe receives these details when the customer transfers funds. When these details aren’t available, Stripe sends an email to the customer to collect bank account details and initiate a transfer when we receive those details.
 
 If your customer has excess funds in their customer balance, you can initiate a return of funds through the Dashboard or the API. For more information, see [Refund bank transfer payments](https://docs.stripe.com/payments/customer-balance/refunding.md).
+
+### Disputes 
+
+Bank transfer payments can’t be reversed except for USD and CAD transactions.
+
+#### USD disputes
+
+USD bank transfers that go through the ACH network in the US can be reversed. After you push a transfer, you can request that your bank reverse it. You must provide the bank with evidence as to why they should reverse the transfer. The remitting bank then sends a reversal to the beneficiary bank. A reversal must be sent no later than 5 days after the payment.
+
+#### CAD disputes
+
+CAD bank transfers that go through ACH reversals are always initiated by the remitting bank, and the beneficiary bank must honor them.
 
 ## Funding instructions 
 
@@ -348,7 +332,7 @@ An incoming transfer transaction’s [type attribute](https://docs.stripe.com/ap
 
 #### MX
 
-Example of a `funded` ccsbtxn for eu_bank_transfer:
+Example of a `funded` ccsbtxn for mx_bank_transfer:
 
 ```json
 {
@@ -403,18 +387,6 @@ Example of a `funded` ccsbtxn for eu_bank_transfer:
 
 If the `network` attribute is `ach`, the incoming transfer was completed through an ACH transfer. If the `network` attribute is `domestic_wire_us`, the incoming transfer was completed through a domestic wire.
 
-## Disputes
-
-Bank transfer payments can’t be reversed except for USD and CAD transactions.
-
-### USD disputes
-
-USD bank transfers that go through the ACH network in the US can be reversed. After you push a transfer, you can request that your bank reverse it. You must provide the bank with evidence as to why they should reverse the transfer. The remitting bank then sends a reversal to the beneficiary bank. A reversal must be sent no later than 5 days after the payment.
-
-### CAD disputes
-
-CAD bank transfers that go through ACH reversals are always initiated by the remitting bank, and the beneficiary bank must honor them.
-
 ## Connect 
 
 [Stripe Connect](https://docs.stripe.com/connect/how-connect-works.md) can be used with bank transfers to process payments on behalf of connected accounts. *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) platforms can use bank transfers with [any type of charges](https://docs.stripe.com/connect/charges.md#types).
@@ -429,15 +401,35 @@ The [on_behalf_of attribute](https://docs.stripe.com/api/payment_intents/object.
 
 The process varies by country, but in general for bank transfer payments, the [required information](https://docs.stripe.com/connect/required-verification-information.md) is the same as what’s necessary to activate a Stripe account for payments. If the account doesn’t fulfill all the required information, the capability remains `inactive` with any issues highlighted on the [capability object](https://docs.stripe.com/api/capabilities/object.md) in the `requirements.currently_due` and `requirements.disabled_reason` fields until these issues have been addressed. After all the highlighted issues are resolved, the capability’s `status` changes to `active`, unless there are issues activating the account in general, in which case Stripe sends the Connect platform owner an email.
 
-## Product support
+## Stripe product support 
+Checkout UIs:
+  ✓ Full page (Recommended)
+  ✗ Payment Links
+  ✓ Embedded form
+  ✓ Payment Element
+  ✗ Express Checkout Element
+  ✗ In-app payments
 
-| Payment method | [Connect](https://docs.stripe.com/connect.md) | [Checkout](https://docs.stripe.com/payments/checkout.md) | [Payment Links](https://docs.stripe.com/payment-links.md) | [Payment Element](https://docs.stripe.com/payments/payment-element.md) | [Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element.md) | [Mobile Payment Element](https://docs.stripe.com/payments/mobile.md) | [Subscriptions](https://docs.stripe.com/subscriptions.md) | [Invoicing](https://docs.stripe.com/invoicing.md) | [Customer Portal](https://docs.stripe.com/customer-management.md) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Bank transfers | ✓ Supported | ✓ Supported 1,2 | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | ✓ Supported 3 | ✓ Supported 3 | - Unsupported |
+Products:
+  ✗ Managed Payments
+  ✓ Billing
+  ✓ Invoicing
+  ✗ Adaptive Pricing
+  ✗ Customer Portal
+  ✗ Radar
+  ✗ Terminal
+  ✓ Connect
 
-1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
+APIs:
+  ✓ Checkout Sessions (Recommended)
+  ✓ Payment Intents
+  ✗ Payment Intents with setup_future_usage
+  ✗ Setup Intents
 
-## API support
+1. Only supports send_invoice collection method.
+Checkout doesn’t support bank transfers in subscription or setup mode. Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
+
+### API support 
 
 | Payment method | API enum | [PaymentIntents](https://docs.stripe.com/payments/payment-intents.md) | [SetupIntents](https://docs.stripe.com/payments/setup-intents.md) | [Manual capture](https://docs.stripe.com/payments/place-a-hold-on-a-payment-method.md) | [Setup future usage](https://docs.stripe.com/payments/save-during-payment.md?platform=web&ui=elements)1 | Requires redirect2 |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -456,4 +448,28 @@ Stripe can’t accept payments for certain types of businesses. In addition to t
 ## Unsupported products and features 
 
 Bank transfers don’t support Payment Links.
+
+## Customer experience 
+
+#### 1. Select bank transfer
+
+The customer selects bank transfer at checkout.
+
+#### 2. Receive transfer instructions
+
+Stripe provides the customer with virtual bank account details and a transfer reference.
+
+#### 3. Send the transfer
+
+The customer initiates the transfer from their bank using the provided details.
+
+#### 4. Payment complete
+
+Stripe reconciles the funds and notifies the customer that the payment is complete.
+
+## Enable bank transfers 
+
+If you use our front-end products, you can enable bank transfers directly from your [payment method settings](https://dashboard.stripe.com/settings/payment_methods). Stripe then automatically determines when to display bank transfers to your customers.
+
+If your integration requires manually listing payment methods, learn how to [manually configure bank transfers as a payment method](https://docs.stripe.com/payments/bank-transfers/accept-a-payment.md).
 

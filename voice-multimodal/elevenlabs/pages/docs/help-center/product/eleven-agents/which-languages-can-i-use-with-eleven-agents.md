@@ -8,6 +8,6 @@ path: docs/help-center/product/eleven-agents/which-languages-can-i-use-with-elev
 
 # Which languages can I use with ElevenAgents?
 
-All the languages supported by our v3 Conversational and Flash v2.5 models can be used with ElevenAgents. For a full list of supported languages, please see [What languages do you support?](/docs/help-center/other/what-languages-do-you-support)
+ElevenAgents can use every language supported by the text to speech model your agent uses. New agents use [Eleven v4 Turbo](/docs/overview/capabilities/text-to-speech/eleven-v4) by default. For languages supported by models, see [What languages do you support?](/docs/help-center/other/what-languages-do-you-support)
 
 For more information on ElevenAgents, please see our [documentation](/docs/agents-platform/overview).

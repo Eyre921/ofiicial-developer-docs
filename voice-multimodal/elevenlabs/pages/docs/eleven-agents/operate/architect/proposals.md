@@ -62,7 +62,7 @@ Open the agent, then go to **Version Control** > **Proposals**. The list can be 
 
 Architect also returns a link to the proposal in the conversation as soon as it creates it.
 
-![Proposals list on the Branches page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0/assets/images/agents/architect-proposals-list.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230228Z&X-Amz-Expires=604800&X-Amz-Signature=279c420265d75325f04e98c144a08a3f81e73b1d720c6e2552439814239413f1&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Proposals list on the Branches page](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bfdb23ad1edb31c89c2ff2a137fa3028bf3f9fbcf31e236de142e207b5d54cd0/assets/images/agents/architect-proposals-list.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T095016Z&X-Amz-Expires=604800&X-Amz-Signature=d8e0f3a15e544352869b6da16f4aa935df1a51afbf2a52f14f98c45d1b83bdf5&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Anatomy of a proposal
 
@@ -74,7 +74,7 @@ The description, an activity timeline of commits on the source branch, reviews, 
 
 A description Architect writes always has three sections: **Summary** (each meaningful change and why), **Testing** (which tests were run and their results, or a statement that none were run), and **How to review** (what to focus on, and a test to run or conversation to try).
 
-![Overview tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/569eccd1750f90cd5ec8121411e8effd3a38e924e0f03f06f6216a9fcc160e08/assets/images/agents/architect-proposal-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230228Z&X-Amz-Expires=604800&X-Amz-Signature=9eb7865fac428f3926ad3b736cf5a7cfe329f68c0eff7c463442d5adb10c3e55&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Overview tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/569eccd1750f90cd5ec8121411e8effd3a38e924e0f03f06f6216a9fcc160e08/assets/images/agents/architect-proposal-overview.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T095016Z&X-Amz-Expires=604800&X-Amz-Signature=3b26ecb6b79b4a8a3c932d125c21e1ffdc571e2dd7192b25d9cfb077c333e5c6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Changes
 
@@ -82,7 +82,7 @@ The configuration diff: what the target branch will look like after the merge, c
 
 After the proposal is merged, this tab shows the target branch before and after the merge.
 
-![Changes tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd06c0f93240d7c973101b896599542290437a6dcbfa6d288a25db0c1bfcd566/assets/images/agents/architect-proposal-changes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230228Z&X-Amz-Expires=604800&X-Amz-Signature=b1d4bed05888d2bd136fdee8bffcfda15c94feed2b1b0c39d20512e657395e3b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Changes tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cd06c0f93240d7c973101b896599542290437a6dcbfa6d288a25db0c1bfcd566/assets/images/agents/architect-proposal-changes.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T095016Z&X-Amz-Expires=604800&X-Amz-Signature=229ae54f85b73af33e1ba1e6cfa4cc88f5b3e28ac48562eb5139b082d5564426&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Test runs
 
@@ -90,13 +90,13 @@ The pass rate and test run history for the source branch, including the runs Arc
 
 Test runs are linked to the branch, not to the proposal. Merging does not require tests to pass. Reviewers decide based on what the tab shows.
 
-![Test runs tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/58e28b31cb3408fe5bf8e9193f4a4edb5e716e6023c56f29d5a4f924c70a0f7a/assets/images/agents/architect-proposal-test-runs.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230228Z&X-Amz-Expires=604800&X-Amz-Signature=84dd77f12d540229338cc2ade49add3ba00556e299962192f8bbe5f778972002&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Test runs tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/58e28b31cb3408fe5bf8e9193f4a4edb5e716e6023c56f29d5a4f924c70a0f7a/assets/images/agents/architect-proposal-test-runs.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T095016Z&X-Amz-Expires=604800&X-Amz-Signature=0a2af409f1333afb07b196cd9f64f5550a1c2fe47ed9def42fc2b70a421fe74d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Conversations
 
 Every conversation that ran on the source branch, including live traffic sent there by a traffic split. Select a conversation to open its transcript. While a branch is on a gradual rollout, this is where you watch real callers use the change.
 
-![Conversations tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f6345ff5beaee9a22732c7322995a7e889245cda7901682ab390790ef3849690/assets/images/agents/architect-proposal-conversations.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230228Z&X-Amz-Expires=604800&X-Amz-Signature=07399d4a321ed2fddc795b7e01378a590d61a94af82833846732686899098cdc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Conversations tab of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/f6345ff5beaee9a22732c7322995a7e889245cda7901682ab390790ef3849690/assets/images/agents/architect-proposal-conversations.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T095016Z&X-Amz-Expires=604800&X-Amz-Signature=36eb04fb579c05aaf11864a6cc2cede1b81d4d9a5059afb7a71415e90d9ea83c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Reviewing and merging
 
@@ -114,7 +114,7 @@ While a proposal is open, each reviewer's latest review is either **Approved** o
 
 Reviews and comments appear in the activity timeline on the **Overview** tab, alongside each new version committed to the source branch.
 
-![Activity timeline of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/522012341d0089ff418032a34bae6653d2b883934b64a0b6a12de887646b2f5f/assets/images/agents/architect-proposal-activity.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261005T230228Z&X-Amz-Expires=604800&X-Amz-Signature=0e7b5282941ef1fb66d8254e3755398953e65d1d393475a6a06900748d3fbc33&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Activity timeline of a merge proposal](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/522012341d0089ff418032a34bae6653d2b883934b64a0b6a12de887646b2f5f/assets/images/agents/architect-proposal-activity.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T095016Z&X-Amz-Expires=604800&X-Amz-Signature=d3bbbab9061cff7f8865bfe97746fa3c1da3b81658215d6cfdc3c3d5b5f0a214&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ### Who can approve and merge
 

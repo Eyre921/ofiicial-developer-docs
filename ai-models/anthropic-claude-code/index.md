@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 220 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 221 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -71,6 +71,7 @@
 - `goal` — [Keep Claude working toward a goal](pages/goal.md) · [原文](https://code.claude.com/docs/en/goal)
 - `google-vertex-ai` — [Claude Code on Google Cloud's Agent Platform](pages/google-vertex-ai.md) · [原文](https://code.claude.com/docs/en/google-vertex-ai)
 - `headless` — [Run Claude Code programmatically](pages/headless.md) · [原文](https://code.claude.com/docs/en/headless)
+- `hipaa-setup` — [Set up Claude Code (local mode) for a HIPAA-ready organization](pages/hipaa-setup.md) · [原文](https://code.claude.com/docs/en/hipaa-setup)
 - `hooks` — [Hooks reference](pages/hooks.md) · [原文](https://code.claude.com/docs/en/hooks)
 - `hooks-guide` — [Automate actions with hooks](pages/hooks-guide.md) · [原文](https://code.claude.com/docs/en/hooks-guide)
 - `how-claude-code-works` — [How Claude Code works](pages/how-claude-code-works.md) · [原文](https://code.claude.com/docs/en/how-claude-code-works)

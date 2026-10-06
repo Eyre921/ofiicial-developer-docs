@@ -5,6 +5,10 @@ path: page/changelog
 ---
 
 <Update label="September 30, 2026">
+  ### Custom blocks in markdown
+
+  The markdown content API and Notion MCP now read custom blocks with inherited bindings as `<custom-block definition-id="…" url="…" />` instead of `<unknown>`. You can place existing definitions and preserve unchanged instances during page edits; see [Working with markdown content](/guides/data-apis/working-with-markdown-content#custom-blocks). Definition creation remains in private alpha.
+
   ### New SIEM event for the AI meeting notes consent setting
 
   The SIEM and DLP event stream now sends `workspace.settings.meeting_notes_consent_setting_updated` when an admin changes whether a workspace requires consent before AI meeting notes transcription. The payload carries the final state, either `enabled` or `disabled`. See [SIEM events](/compliance/siem-events).

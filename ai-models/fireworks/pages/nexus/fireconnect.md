@@ -4,24 +4,40 @@ source: https://docs.fireworks.ai/nexus/fireconnect
 path: nexus/fireconnect
 ---
 
-Point Claude Code, Cursor IDE, Codex, Copilot, and the rest at Fireworks with one FireConnect command
+Point Claude Code, Claude Desktop, Codex, ChatGPT, OpenCode, Cursor IDE, VS Code, and Copilot at Fireworks with one FireConnect command
 
 [FireConnect](https://github.com/fw-ai/fireconnect) is the easiest way to use Fireworks models in the coding harness you already use. It is an open-source CLI that rewrites your harness settings to call Fireworks, adds Fireworks models and FireRouter to the model picker, and restores your original settings when you turn it off. You do not need to host a service or edit config files by hand.
+
+**Command line**
 
 <Columns>
   <Card title="Claude Code" icon="asterisk" href="/nexus/harnesses#claude-code" />
 
-  <Card title="Codex CLI, Codex app, and ChatGPT" icon="square-terminal" href="/nexus/harnesses#codex" />
+  <Card title="Codex CLI" icon="square-terminal" href="/nexus/harnesses#codex" />
 
   <Card title="OpenCode" icon="code" href="/nexus/harnesses#opencode" />
+
+  <Card title="Pi" icon="terminal" href="/nexus/harnesses#pi" />
+
+  <Card title="Copilot CLI" icon="github" href="/nexus/harnesses#copilot-cli" />
+
+  <Card title="DeepSeek" icon="fish" href="/nexus/harnesses#deepseek-harness" />
+</Columns>
+
+**Desktop and IDE apps**
+
+<Columns>
+  <Card title="Claude Desktop" icon="desktop" href="/nexus/harnesses#claude-desktop" />
+
+  <Card title="Codex app" icon="command" href="/nexus/harnesses#codex" />
+
+  <Card title="ChatGPT app" icon="sparkles" href="/nexus/harnesses#codex" />
 
   <Card title="Cursor IDE" icon="arrow-pointer" href="/nexus/harnesses#cursor-ide" />
 
   <Card title="VS Code" icon="window-maximize" href="/nexus/harnesses#vs-code" />
 
-  <Card title="More harnesses" icon="grid-2" href="/nexus/harnesses">
-    Claude Desktop, Pi, Copilot App and CLI, and DeepSeek Harness
-  </Card>
+  <Card title="Copilot App" icon="github" href="/nexus/harnesses#copilot-app" />
 </Columns>
 
 ## Quick start
@@ -56,7 +72,7 @@ Point Claude Code, Cursor IDE, Codex, Copilot, and the rest at Fireworks with on
     fireconnect claude
     ```
 
-    Replace `claude` with any harness from [Coding Harnesses](/nexus/harnesses). `cursor` means **Cursor IDE** only; Cursor CLI is not supported.
+    Replace `claude` with any harness from [Coding Harnesses](/nexus/harnesses). For Claude Desktop, run `fireconnect claude-desktop on`. One `fireconnect codex` covers the Codex CLI, the Codex app, and ChatGPT desktop. `cursor` means **Cursor IDE** only; Cursor CLI is not supported.
   </Step>
 
   <Step title="Restart and check" icon="circle-check">

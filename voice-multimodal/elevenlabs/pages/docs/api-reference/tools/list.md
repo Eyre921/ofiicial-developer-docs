@@ -36,6 +36,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tools/list
   - Allowed values: `asc`, `desc`
 - `sort_by` (enum, optional, nullable) — The field to sort the results by
   - Allowed values: `name`, `created_at`
+- `used_by_agent_id` (string, optional, nullable) — Filter to tools referenced by this agent's main branch: tools attached to the agent, tools on authored workflow nodes, and tools referenced by procedures.
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -89,7 +90,7 @@ The type of tool
   - `parameters` (ObjectJsonSchemaProperty-Output, optional, nullable) — Schema for any parameters to pass to the client
   - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
     - Allowed values: `auto`, `force`, `off`
-  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive).
+  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive), or -1 to wait for the client's response indefinitely (requires expects_response).
   - `tool_call_sound` (enum, optional, nullable) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
     - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
   - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.

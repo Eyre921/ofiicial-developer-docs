@@ -36,6 +36,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tools/list
   - Allowed values: `asc`, `desc`
 - `sort_by` (enum, optional) — The field to sort the results by
   - Allowed values: `name`, `created_at`
+- `used_by_agent_id` (string, optional) — Filter to tools referenced by this agent's main branch: tools attached to the agent, tools on authored workflow nodes, and tools referenced by procedures.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -89,7 +90,7 @@ The type of tool
   - `parameters` (ObjectJsonSchemaPropertyOutput, optional) — Schema for any parameters to pass to the client
   - `pre_tool_speech` (enum, optional, default: auto) — Controls whether the agent speaks before this tool is called. 'auto' (default) decides based on recent tool latency, 'force' always asks the agent to speak, 'off' fully opts out regardless of latency.
     - Allowed values: `auto`, `force`, `off`
-  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive).
+  - `response_timeout_secs` (integer, optional, default: 20) — The maximum time in seconds to wait for the tool call to complete. Must be between 1 and 120 seconds (inclusive), or -1 to wait for the client's response indefinitely (requires expects_response).
   - `tool_call_sound` (enum, optional) — Predefined tool call sound type to play during tool execution. If not specified, no tool call sound will be played.
     - Allowed values: `typing`, `elevator1`, `elevator2`, `elevator3`, `elevator4`
   - `tool_call_sound_behavior` (enum, optional, default: auto) — Determines when the tool call sound should play. 'auto' only plays when there's pre-tool speech, 'always' plays for every tool call.
@@ -494,6 +495,7 @@ async function main() {
         types: [
             "webhook",
         ],
+        usedByAgentId: "used_by_agent_id",
     });
 }
 main();
@@ -516,6 +518,7 @@ client.conversational_ai.tools.list(
     types=[
         "webhook"
     ],
+    used_by_agent_id="used_by_agent_id",
 )
 
 ```
@@ -531,7 +534,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D&used_by_agent_id=used_by_agent_id"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -550,7 +553,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D&used_by_agent_id=used_by_agent_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -565,7 +568,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D&used_by_agent_id=used_by_agent_id")
   .asString();
 ```
 
@@ -575,7 +578,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D&used_by_agent_id=used_by_agent_id');
 
 echo $response->getBody();
 ```
@@ -583,7 +586,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D&used_by_agent_id=used_by_agent_id");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -591,7 +594,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D&used_by_agent_id=used_by_agent_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

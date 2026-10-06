@@ -201,7 +201,7 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 `satispay_payments` | No, see [prohibited businesses](https://docs.stripe.com/payments/satispay.md#prohibited-and-restricted-business-categories). | The capability must be activated on the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/satispay.md?pm-info=business-locations). | Yes |
 | [SEPA Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
-`sepa_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
+`sepa_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md#business-locations). | Yes |
 | [SEPA Debit](https://docs.stripe.com/payments/sepa-debit.md)
 
 `sepa_debit_payments` | Yes | Yes | Yes | Connected account must be in a [supported business location](https://docs.stripe.com/payments/sepa-debit.md?pm-info=business-locations). | Yes |
@@ -216,10 +216,10 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 `twint_payments` | No. See [onboarding requirements](https://docs.stripe.com/payments/twint.md#scheme-onboarding-requirements). | Activate the payment method in the Dashboard settings page. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/twint.md?pm-info=business-locations). | Yes |
 | [UK Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
-`gb_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
+`gb_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md#business-locations). | Yes |
 | [USD Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
-`us_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
+`us_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md#business-locations). | Yes |
 | [WeChat Pay](https://docs.stripe.com/payments/wechat-pay.md)
 
 `wechat_pay_payments` | No, see [prohibited businesses](https://pay.weixin.qq.com/index.php/public/wechatpay_en/proper_rule). | The payment method must be activated on the Dashboard settings page. Also, request [an invite](https://docs.stripe.com/payments/wechat-pay.md) to create charges on behalf of other accounts. | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/wechat-pay.md?pm-info=business-locations). | No |
@@ -316,7 +316,7 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 `promptpay_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/promptpay.md?pm-info=business-locations). | Yes |
 | [SEPA Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
-`sepa_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
+`sepa_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md#business-locations). | Yes |
 | [SEPA Debit](https://docs.stripe.com/payments/sepa-debit.md)
 
 `sepa_debit_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/sepa-debit.md?pm-info=business-locations). | Yes |
@@ -331,10 +331,10 @@ Available with `card_payments` | Yes | Yes | No | Connected account must be in a
 `twint_payments` | Yes | No. See [onboarding requirements](https://docs.stripe.com/payments/twint.md#scheme-onboarding-requirements). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/twint.md?pm-info=business-locations). | Yes |
 | [UK Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
-`gb_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
+`gb_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md#business-locations). | Yes |
 | [USD Bank Transfers](https://docs.stripe.com/payments/bank-transfers.md)
 
-`us_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md?pm-info=business-locations). | Yes |
+`us_bank_transfer_payments` | Yes | Yes | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/bank-transfers.md#business-locations). | Yes |
 | [WeChat Pay](https://docs.stripe.com/payments/wechat-pay.md)
 
 `wechat_pay_payments` | No, request [an invite](https://docs.stripe.com/payments/wechat-pay.md) to create charges on behalf of other accounts. | No, see [prohibited businesses](https://pay.weixin.qq.com/index.php/public/wechatpay_en/proper_rule). | No | Connected account must be in a [supported business location](https://docs.stripe.com/payments/wechat-pay.md?pm-info=business-locations). | No |

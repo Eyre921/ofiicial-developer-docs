@@ -104,6 +104,16 @@ You can add a custom voice preview during the sharing process, or afterwards.
 
 In [My Voices](https://elevenlabs.io/app/voice-lab), find your voice, click **More actions** (three dots), then select **Edit in Library**. Click **Manage your voice**. In the **Custom voice preview** section, select an eligible generation from the drop-down selector. Any generations you’ve made of 70–150 characters will be available. For more details, see [How do I add a custom preview for my shared voice?](/docs/help-center/product/voices/voice-library/how-do-i-add-a-custom-preview-for-my-shared-voice).
 
+### Excluding free-tier users
+
+You can prevent free-tier users from adding your shared voice to their account.
+
+In [My Voices](https://elevenlabs.io/app/voice-lab), find your voice, click **More actions** (three dots), then select **Edit in Library**. Click **Manage your voice**. Enable the **Exclude free users** option.
+
+Once enabled, free-tier users will not be able to add your voice to their account. Users who have already added your voice are unaffected — the restriction applies only to new additions.
+
+Keep in mind that limiting access to free-tier users will likely reduce your voice's overall usage, which may in turn lower its visibility on trending lists in the Voice Library.
+
 ## Sharing your voice privately
 
 You can share a voice with members of your workspace. Professional Voice Clones can also be shared externally with anyone who has the link. Instant Voice Clones and voices created with [Voice Design](/docs/product-guides/voices/voice-design) can only be shared within your workspace.

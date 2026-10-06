@@ -122,64 +122,47 @@ Validation Error
 
 ## Examples
 
+**Request**
+
+```json
+{}
+```
+
 **Response**
 
 ```json
 {
   "secrets": [
     {
-      "type": "string",
-      "secret_id": "string",
-      "name": "string",
+      "type": "stored",
+      "secret_id": "sec_9f8b7c6d5e4a3b2c1d0e",
+      "name": "PaymentGatewayAPIKey",
       "used_by": {
         "tools": [
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1,
-            "id": "string",
-            "name": "string"
+            "created_at_unix_secs": 1685000000,
+            "id": "tool_123abc456def",
+            "name": "Stripe Integration"
           }
         ],
         "agents": [
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1,
-            "id": "string",
-            "name": "string",
-            "referenced_resource_ids": [
-              "string"
-            ]
+            "created_at_unix_secs": 1685100000,
+            "id": "agent_789xyz012uvw",
+            "name": "Billing Agent"
           }
         ],
         "others": [
           "conversation_initiation_webhook"
-        ],
-        "tools_has_more": false,
-        "agents_has_more": false,
-        "phone_numbers": [
-          {
-            "phone_number_id": "string",
-            "phone_number": "string",
-            "label": "string",
-            "provider": "twilio"
-          }
-        ],
-        "phone_numbers_has_more": false,
-        "mcp_servers": [
-          {
-            "type": "available",
-            "access_level": "admin",
-            "created_at_unix_secs": 1,
-            "id": "string",
-            "name": "string"
-          }
         ]
       }
     }
   ],
-  "next_cursor": "string"
+  "next_cursor": "cursor_eyJwYWdlIjoxfQ=="
 }
 ```
 
@@ -210,6 +193,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"io"
 )
@@ -218,7 +202,11 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/secrets"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -241,6 +229,8 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
 
 response = http.request(request)
 puts response.read_body
@@ -251,6 +241,8 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/secrets")
+  .header("Content-Type", "application/json")
+  .body("{}")
   .asString();
 ```
 
@@ -260,7 +252,12 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/secrets');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/secrets', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
 
 echo $response->getBody();
 ```
@@ -270,16 +267,25 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/secrets");
 var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
 let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/secrets")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

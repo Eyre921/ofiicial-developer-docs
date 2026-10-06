@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 961 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 963 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -75,6 +75,8 @@
 - `docs/box/overall/browser/tabs` — [Tabs & Navigation](pages/docs/box/overall/browser/tabs.md) · [原文](https://upstash.com/docs/box/overall/browser/tabs)
 - `docs/box/overall/custom-agent` — [How to Add a Custom Agent](pages/docs/box/overall/custom-agent.md) · [原文](https://upstash.com/docs/box/overall/custom-agent)
 - `docs/box/overall/custom-harness/aider` — [Aider](pages/docs/box/overall/custom-harness/aider.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/aider)
+- `docs/box/overall/custom-harness/amp` — [Amp](pages/docs/box/overall/custom-harness/amp.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/amp)
+- `docs/box/overall/custom-harness/copilot` — [Copilot CLI](pages/docs/box/overall/custom-harness/copilot.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/copilot)
 - `docs/box/overall/custom-harness/crewai` — [CrewAI](pages/docs/box/overall/custom-harness/crewai.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/crewai)
 - `docs/box/overall/custom-harness/gemini` — [Gemini](pages/docs/box/overall/custom-harness/gemini.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/gemini)
 - `docs/box/overall/custom-harness/goose` — [Goose](pages/docs/box/overall/custom-harness/goose.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/goose)

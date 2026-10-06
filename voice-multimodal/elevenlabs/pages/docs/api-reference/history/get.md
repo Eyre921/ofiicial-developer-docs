@@ -50,7 +50,7 @@ Successful Response
 - `settings` (map from string to any, optional, nullable) — The settings of the history item.
 - `share_link_id` (string, optional, nullable) — The ID of the share link.
 - `source` (enum, optional, nullable) — The source of the history item. Either TTS (text to speech), STS (speech to text), AN (audio native), Projects, Dubbing, PlayAPI, PD (pronunciation dictionary) or ConvAI (Agents Platform).
-  - Allowed values: `TTS`, `STS`, `Projects`, `PD`, `AN`, `Dubbing`, `PlayAPI`, `ConvAI`, `VoiceGeneration`, `InVPC`, `Flows`
+  - Allowed values: `TTS`, `STS`, `Projects`, `PD`, `AN`, `Dubbing`, `PlayAPI`, `ConvAI`, `VoiceGeneration`, `InVPC`, `Flows`, `VoicePreview`
 - `alignments` (HistoryAlignmentsResponseModel, optional, nullable) — The alignments of the history item.
 - `dialogue` (list of DialogueInputResponseModel, optional, nullable) — The dialogue (voice and text pairs) used to generate the audio item. If this is set then the top level `text` and `voice_id` fields will be empty.
 - `output_format` (string, optional, nullable) — The output format the audio was originally generated in.
