@@ -6,7 +6,7 @@ path: docs/workflow/steps/notify
 
 `context.notify()` notifies workflows that are waiting for a specific event, passing along an optional payload.
 
-It is typically used in combination with [`context.waitForEvent`](/docs/workflow/basics/context#context-waitforevent).
+It is typically used in combination with [`context.waitForEvent`](/docs/workflow/steps/waitForEvent).
 
 ## Arguments
 
@@ -32,10 +32,19 @@ It is typically used in combination with [`context.waitForEvent`](/docs/workflow
 
 ## Response
 
-`context.notify()` returns a list of waiters describing the workflows that were notified.
+`context.notify()` returns an object containing the notified event and the list of workflows that were notified.
+
+<ResponseField name="eventId" type="string">
+    The event ID that was notified.
+</ResponseField>
+
+<ResponseField name="eventData" type="any">
+    The event data sent with the notification.
+</ResponseField>
 
 <ResponseField name="notifyResponse" type="NotifyResponse[]">
-    A list of `NotifyResponse` objects describing each workflow that was waiting on the event.
+    A list of `NotifyResponse` objects, one for each workflow that was waiting on the event.
+    An empty list means no workflow was waiting.
 
     <Expandable defaultOpen>
         <ResponseField name="messageId" type="string">
@@ -43,12 +52,8 @@ It is typically used in combination with [`context.waitForEvent`](/docs/workflow
             This is unique to every notification.
         </ResponseField>
 
-        <ResponseField name="workflowRunId" type="string">
-            The unique identifier of the workflow run that was notified.
-        </ResponseField>
-
-        <ResponseField name="workflowCreatedAt" type="number">
-            Unix timestamp (in milliseconds) representing when the workflow was created.
+        <ResponseField name="error" type="string">
+            Error message if delivering the notification to this waiter failed.
         </ResponseField>
 
         <ResponseField name="Waiter" type="object">

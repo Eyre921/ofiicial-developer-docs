@@ -47,7 +47,7 @@ If a connected account holder isn’t seeing expected funds, they need to contac
 
 ### Track payouts with webhooks 
 
-You can track all payout activity on connected accounts by creating an [event destination](https://docs.stripe.com/event-destinations.md) and listening for these events:
+You can track all payout activity on connected accounts by creating an [event destination](https://docs.stripe.com/events/set-up-events.md) and listening for these events:
 
 - `payout.created`: Sent when a payout is created (status: `pending`).
 - `payout.updated`: Sent when payout details change, such as the estimated arrival date.

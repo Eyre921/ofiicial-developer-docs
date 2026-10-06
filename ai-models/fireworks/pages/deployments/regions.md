@@ -28,7 +28,7 @@ Supported multi-regions: `GLOBAL`, `US`, `CANADA`, `EUROPE`, `APAC`.
 
 ## Single region availability
 
-Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, contact [Fireworks](mailto:sales@fireworks.ai) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
+Single regions are concrete locations (e.g. `US_IOWA_1`, `EU_FRANKFURT_1`) where your deployment can run. We have the single regions listed below available; we recommend multi-region for most users because of its advantages (elastic scaling, higher reliability). If you have a specific need for a single region, [contact us](https://fireworks.ai/contact) to request it. The table below shows which **Fireworks-managed** single regions are available and what hardware is offered in each.
 
 | **Region** | **Accelerator Type(s)** |
 | - | - |
@@ -83,4 +83,4 @@ To view your current quotas, run:
 firectl quota list
 ```
 
-To use single regions that are not generally available (see the table above), or to request quota for additional placements (multi-region or single region), contact [sales@fireworks.ai](mailto:sales@fireworks.ai). To discuss Bring Your Own Cluster (BYOC) deployments, see the [BYOC overview](/ecosystem/integrations/byoc/overview).
+To use single regions that are not generally available (see the table above), or to request quota for additional placements (multi-region or single region), [contact us](https://fireworks.ai/contact). To discuss Bring Your Own Cluster (BYOC) deployments, see the [BYOC overview](/ecosystem/integrations/byoc/overview).

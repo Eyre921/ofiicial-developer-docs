@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -282,6 +282,7 @@
 
 - `nexus/apis-and-sdks` — [APIs and SDKs](pages/nexus/apis-and-sdks.md) · [原文](https://docs.fireworks.ai/nexus/apis-and-sdks)
 - `nexus/cli-reference` — [CLI Reference](pages/nexus/cli-reference.md) · [原文](https://docs.fireworks.ai/nexus/cli-reference)
+- `nexus/estimated-savings` — [Estimated Savings](pages/nexus/estimated-savings.md) · [原文](https://docs.fireworks.ai/nexus/estimated-savings)
 - `nexus/fireconnect` — [FireConnect](pages/nexus/fireconnect.md) · [原文](https://docs.fireworks.ai/nexus/fireconnect)
 - `nexus/firerouter` — [FireRouter](pages/nexus/firerouter.md) · [原文](https://docs.fireworks.ai/nexus/firerouter)
 - `nexus/firerouter/setup` — [FireRouter Setup](pages/nexus/firerouter/setup.md) · [原文](https://docs.fireworks.ai/nexus/firerouter/setup)

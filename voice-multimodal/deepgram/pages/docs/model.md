@@ -51,7 +51,7 @@ Nova-3 represents a significant leap forward in speech AI technology, featuring 
 > Nova-3 has the following model options which can be called by using the following syntax: `model=nova-3-{option}`
 
 * `general`: Optimized for everyday audio processing.
-* `medical`: Optimized for audio with medical oriented vocabulary.
+* `medical`: Optimized for audio with medical oriented vocabulary. Available in English and multilingual (`language=multi`).
 * `pharma`: Optimized for audio with pharmaceutical vocabulary, such as drug names, dosages, and medication terminology.
 
 ### Nova-2

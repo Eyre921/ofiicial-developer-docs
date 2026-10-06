@@ -1,67 +1,42 @@
 # dev-platforms/notion 文档索引
 
-> 共 275 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 250 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
 
 - `cli/get-started/authentication` — [Authentication](pages/cli/get-started/authentication.md) · [原文](https://developers.notion.com/cli/get-started/authentication)
 - `cli/get-started/installation` — [Installation](pages/cli/get-started/installation.md) · [原文](https://developers.notion.com/cli/get-started/installation)
-- `cli/get-started/installation` — [Installation](pages/cli/get-started/installation-2.md) · [原文](https://developers.notion.com/cli/get-started/installation)
 - `cli/get-started/overview` — [Notion CLI](pages/cli/get-started/overview.md) · [原文](https://developers.notion.com/cli/get-started/overview)
-- `cli/get-started/overview` — [Notion CLI](pages/cli/get-started/overview-2.md) · [原文](https://developers.notion.com/cli/get-started/overview)
 - `cli/guides/api-requests` — [API requests](pages/cli/guides/api-requests.md) · [原文](https://developers.notion.com/cli/guides/api-requests)
-- `cli/guides/api-requests` — [API requests](pages/cli/guides/api-requests-2.md) · [原文](https://developers.notion.com/cli/guides/api-requests)
 - `cli/guides/data-sources` — [Data sources](pages/cli/guides/data-sources.md) · [原文](https://developers.notion.com/cli/guides/data-sources)
-- `cli/guides/data-sources` — [Data sources](pages/cli/guides/data-sources-2.md) · [原文](https://developers.notion.com/cli/guides/data-sources)
 - `cli/guides/file-uploads` — [File uploads](pages/cli/guides/file-uploads.md) · [原文](https://developers.notion.com/cli/guides/file-uploads)
-- `cli/guides/file-uploads` — [File uploads](pages/cli/guides/file-uploads-2.md) · [原文](https://developers.notion.com/cli/guides/file-uploads)
 - `cli/reference/commands` — [Command reference](pages/cli/reference/commands.md) · [原文](https://developers.notion.com/cli/reference/commands)
-- `cli/reference/commands` — [Command reference](pages/cli/reference/commands-2.md) · [原文](https://developers.notion.com/cli/reference/commands)
 
 ## compliance
 
 - `compliance/audit-log-events` — [Audit log events](pages/compliance/audit-log-events.md) · [原文](https://developers.notion.com/compliance/audit-log-events)
-- `compliance/audit-log-events` — [Audit log events](pages/compliance/audit-log-events-2.md) · [原文](https://developers.notion.com/compliance/audit-log-events)
 - `compliance/overview` — [Overview](pages/compliance/overview.md) · [原文](https://developers.notion.com/compliance/overview)
-- `compliance/overview` — [Overview](pages/compliance/overview-2.md) · [原文](https://developers.notion.com/compliance/overview)
 - `compliance/siem-events` — [SIEM events](pages/compliance/siem-events.md) · [原文](https://developers.notion.com/compliance/siem-events)
-- `compliance/siem-events` — [SIEM events](pages/compliance/siem-events-2.md) · [原文](https://developers.notion.com/compliance/siem-events)
 
 ## guides
 
 - `guides/agent-skills/overview` — [Agent Skills API](pages/guides/agent-skills/overview.md) · [原文](https://developers.notion.com/guides/agent-skills/overview)
-- `guides/agent-skills/overview` — [Agent Skills API](pages/guides/agent-skills/overview-2.md) · [原文](https://developers.notion.com/guides/agent-skills/overview)
 - `guides/data-apis/create-pages-in-a-data-source` — [Create a page in a data source](pages/guides/data-apis/create-pages-in-a-data-source.md) · [原文](https://developers.notion.com/guides/data-apis/create-pages-in-a-data-source)
-- `guides/data-apis/create-pages-in-a-data-source` — [Create a page in a data source](pages/guides/data-apis/create-pages-in-a-data-source-2.md) · [原文](https://developers.notion.com/guides/data-apis/create-pages-in-a-data-source)
 - `guides/data-apis/creating-pages-from-templates` — [Creating pages from templates](pages/guides/data-apis/creating-pages-from-templates.md) · [原文](https://developers.notion.com/guides/data-apis/creating-pages-from-templates)
-- `guides/data-apis/creating-pages-from-templates` — [Creating pages from templates](pages/guides/data-apis/creating-pages-from-templates-2.md) · [原文](https://developers.notion.com/guides/data-apis/creating-pages-from-templates)
 - `guides/data-apis/enhanced-markdown` — [Enhanced markdown format](pages/guides/data-apis/enhanced-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/enhanced-markdown)
-- `guides/data-apis/enhanced-markdown` — [Enhanced markdown format](pages/guides/data-apis/enhanced-markdown-2.md) · [原文](https://developers.notion.com/guides/data-apis/enhanced-markdown)
 - `guides/data-apis/importing-external-files` — [Importing external files](pages/guides/data-apis/importing-external-files.md) · [原文](https://developers.notion.com/guides/data-apis/importing-external-files)
-- `guides/data-apis/importing-external-files` — [Importing external files](pages/guides/data-apis/importing-external-files-2.md) · [原文](https://developers.notion.com/guides/data-apis/importing-external-files)
 - `guides/data-apis/query-large-data-sources` — [Query large data sources](pages/guides/data-apis/query-large-data-sources.md) · [原文](https://developers.notion.com/guides/data-apis/query-large-data-sources)
-- `guides/data-apis/query-large-data-sources` — [Query large data sources](pages/guides/data-apis/query-large-data-sources-2.md) · [原文](https://developers.notion.com/guides/data-apis/query-large-data-sources)
 - `guides/data-apis/read-page-property-values` — [Read every item in a page property](pages/guides/data-apis/read-page-property-values.md) · [原文](https://developers.notion.com/guides/data-apis/read-page-property-values)
-- `guides/data-apis/read-page-property-values` — [Read every item in a page property](pages/guides/data-apis/read-page-property-values-2.md) · [原文](https://developers.notion.com/guides/data-apis/read-page-property-values)
 - `guides/data-apis/retrieving-files` — [Retrieving existing files](pages/guides/data-apis/retrieving-files.md) · [原文](https://developers.notion.com/guides/data-apis/retrieving-files)
-- `guides/data-apis/retrieving-files` — [Retrieving existing files](pages/guides/data-apis/retrieving-files-2.md) · [原文](https://developers.notion.com/guides/data-apis/retrieving-files)
 - `guides/data-apis/sending-larger-files` — [Uploading larger files](pages/guides/data-apis/sending-larger-files.md) · [原文](https://developers.notion.com/guides/data-apis/sending-larger-files)
-- `guides/data-apis/sending-larger-files` — [Uploading larger files](pages/guides/data-apis/sending-larger-files-2.md) · [原文](https://developers.notion.com/guides/data-apis/sending-larger-files)
 - `guides/data-apis/uploading-small-files` — [Uploading small files](pages/guides/data-apis/uploading-small-files.md) · [原文](https://developers.notion.com/guides/data-apis/uploading-small-files)
-- `guides/data-apis/uploading-small-files` — [Uploading small files](pages/guides/data-apis/uploading-small-files-2.md) · [原文](https://developers.notion.com/guides/data-apis/uploading-small-files)
 - `guides/data-apis/working-with-comments` — [Working with comments](pages/guides/data-apis/working-with-comments.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-comments)
-- `guides/data-apis/working-with-comments` — [Working with comments](pages/guides/data-apis/working-with-comments-2.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-comments)
 - `guides/data-apis/working-with-databases` — [Working with databases](pages/guides/data-apis/working-with-databases.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-databases)
-- `guides/data-apis/working-with-databases` — [Working with databases](pages/guides/data-apis/working-with-databases-2.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-databases)
 - `guides/data-apis/working-with-files-and-media` — [Working with files and media](pages/guides/data-apis/working-with-files-and-media.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-files-and-media)
-- `guides/data-apis/working-with-files-and-media` — [Working with files and media](pages/guides/data-apis/working-with-files-and-media-2.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-files-and-media)
 - `guides/data-apis/working-with-markdown-content` — [Working with markdown content](pages/guides/data-apis/working-with-markdown-content.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-markdown-content)
-- `guides/data-apis/working-with-markdown-content` — [Working with markdown content](pages/guides/data-apis/working-with-markdown-content-2.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-markdown-content)
 - `guides/data-apis/working-with-page-content` — [Working with page content](pages/guides/data-apis/working-with-page-content.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-page-content)
-- `guides/data-apis/working-with-page-content` — [Working with page content](pages/guides/data-apis/working-with-page-content-2.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-page-content)
 - `guides/data-apis/working-with-views` — [Working with views](pages/guides/data-apis/working-with-views.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-views)
-- `guides/data-apis/working-with-views` — [Working with views](pages/guides/data-apis/working-with-views-2.md) · [原文](https://developers.notion.com/guides/data-apis/working-with-views)
 - `guides/get-started/authorization` — [Authorization](pages/guides/get-started/authorization.md) · [原文](https://developers.notion.com/guides/get-started/authorization)
 - `guides/get-started/handling-api-keys` — [Secure API credentials](pages/guides/get-started/handling-api-keys.md) · [原文](https://developers.notion.com/guides/get-started/handling-api-keys)
 - `guides/get-started/internal-connections` — [Internal connections](pages/guides/get-started/internal-connections.md) · [原文](https://developers.notion.com/guides/get-started/internal-connections)

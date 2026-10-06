@@ -51,7 +51,7 @@ Single-use payment methods (for example, some kinds of bank transfers) can’t b
 
 ## Use webhooks to track payment status 
 
-Configure webhooks by creating a [webhook endpoint or other type of event destination](https://docs.stripe.com/event-destinations.md) for payment methods that either require customer action or when payment notification is delayed. Stripe sends the following events when the `PaymentIntent` status is updated:
+Configure webhooks by creating an [event destination](https://docs.stripe.com/events/set-up-events.md) for payment methods that either require customer action or when payment notification is delayed. Stripe sends the following events when the `PaymentIntent` status is updated:
 
 | Event | Description | Next steps |
 | --- | --- | --- |

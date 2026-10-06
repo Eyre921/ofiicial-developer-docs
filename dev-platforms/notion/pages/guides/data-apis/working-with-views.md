@@ -900,129 +900,730 @@ Charts support two data modes: **grouped data** (aggregate values by grouping on
 | - | - | - |
 | `x_axis` | object \| null | X-axis grouping configuration for column/bar/line/donut charts using grouped data. Uses the same [group-by configuration](#group-by-configuration) shape. Null when using results mode. Pass `null` to clear. |
 | `y_axis` | object \| null | Y-axis [aggregation](#chart-aggregation) for column/bar/line/donut charts using grouped data. Null when using results mode. Pass `null` to clear. |
-| `x_axis_property_id` | string \# Authentication
-Source: https://developers.notion.com/cli/get-started/authentication
+| `x_axis_property_id` | string \| null | Property ID for x-axis name values when using results (raw property values) mode. Pass `null` to clear. |
+| `y_axis_property_id` | string \| null | Property ID for y-axis numeric values when using results mode. Pass `null` to clear. |
+| `value` | object \| null | [Aggregation](#chart-aggregation) configuration for number charts (single value display). Pass `null` to clear. |
+| `stack_by` | object \| null | Stack-by grouping configuration for stacked/grouped charts (column/bar/line only). Uses the same [group-by configuration](#group-by-configuration) shape. Pass `null` to clear. |
 
-Log in to your Notion workspace and manage CLI credentials.
+**Format fields (all optional, all nullable):**
 
-## Log in
+| Field | Type | Description |
+| - | - | - |
+| `sort` | `"manual"` \| `"x_ascending"` \| `"x_descending"` \| `"y_ascending"` \| `"y_descending"` | Sort order for chart data. |
+| `color_theme` | `"gray"` \| `"blue"` \| `"yellow"` \| `"green"` \| `"purple"` \| `"teal"` \| `"orange"` \| `"pink"` \| `"red"` \| `"auto"` \| `"colorful"` | Color theme. |
+| `height` | `"small"` \| `"medium"` \| `"large"` \| `"extra_large"` | Chart height. |
+| `hide_empty_groups` | boolean | Whether to hide groups with no data on the x-axis. |
+| `legend_position` | `"off"` \| `"bottom"` \| `"side"` | Legend display position. `"off"` hides the legend. |
+| `show_data_labels` | boolean | Whether to show data value labels on chart elements. |
+| `color_by_value` | boolean | Whether to apply gradient coloring to chart elements based on their numeric value. Higher values appear in a darker shade and lower values in a lighter shade. |
+| `axis_labels` | `"none"` \| `"x_axis"` \| `"y_axis"` \| `"both"` | Which axis labels to display. |
+| `grid_lines` | `"none"` \| `"horizontal"` \| `"vertical"` \| `"both"` | Which grid lines to display. |
+| `y_axis_min` | number \| null | Custom minimum value for the y-axis. |
+| `y_axis_max` | number \| null | Custom maximum value for the y-axis. |
+| `reference_lines` | array \| null | [Reference lines](#chart-reference-lines) drawn on the chart. |
+| `caption` | string \| null | Text caption displayed below the chart. |
 
-Authenticate with your Notion workspace:
+**Line-specific fields:**
 
-```bash theme={null}
-ntn login
+| Field | Type | Description |
+| - | - | - |
+| `cumulative` | boolean | Whether to show cumulative values. |
+| `smooth_line` | boolean | Whether to use smooth curves. |
+| `hide_line_fill_area` | boolean | Whether to hide the shaded area under the line. |
+
+**Bar/column-specific fields:**
+
+| Field | Type | Description |
+| - | - | - |
+| `group_style` | `"normal"` \| `"percent"` \| `"side_by_side"` | How grouped/stacked bars are displayed. `"normal"` stacks values, `"percent"` normalizes to 100%, `"side_by_side"` places bars next to each other. |
+
+**Donut-specific fields:**
+
+| Field | Type | Description |
+| - | - | - |
+| `donut_labels` | `"none"` \| `"value"` \| `"name"` \| `"name_and_value"` | What to display on donut chart slices. |
+
+**Number-specific fields:**
+
+| Field | Type | Description |
+| - | - | - |
+| `hide_title` | boolean | Whether to hide the title label. |
+
+#### Chart aggregation
+
+The `y_axis` and `value` fields use an aggregation object:
+
+```json theme={null}
+{
+  "aggregator": "sum",
+  "property_id": "AMOUNT_PROP_ID"
+}
 ```
 
-This opens your browser to an authorization page. Confirm that the code in the browser matches the code printed in your terminal before approving. This prevents another page from completing the login in your name.
+| Field | Type | Description |
+| - | - | - |
+| `aggregator` | enum | **Required.** The aggregation operator. `"count"` counts all rows and does not require a `property_id`. All other operators require a `property_id`. |
+| `property_id` | string | The property to aggregate on. Required for all operators except `"count"`. |
 
-Your workspace-scoped token will be stored securely in your system's keychain.
+**Supported aggregation operators:** `count`, `count_values`, `sum`, `average`, `median`, `min`, `max`, `range`, `unique`, `empty`, `not_empty`, `percent_empty`, `percent_not_empty`, `checked`, `unchecked`, `percent_checked`, `percent_unchecked`, `earliest_date`, `latest_date`, `date_range`.
 
-If you've already logged in to one or more workspaces, you can pick existing workspace to switch the default, or pick **Authenticate with new workspace** to start a fresh browser flow and add another workspace.
+#### Chart reference lines
+
+Reference lines are horizontal lines drawn at specific y-axis values for visual comparison:
+
+```json theme={null}
+{
+  "id": "ref-line-1",
+  "value": 100,
+  "label": "Target",
+  "color": "red",
+  "dash_style": "dash"
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | Unique identifier for the reference line. Auto-generated if omitted when creating. |
+| `value` | number | **Required.** The y-axis value where the reference line is drawn. |
+| `label` | string | **Required.** Label displayed alongside the reference line. |
+| `color` | enum | **Required.** Color of the reference line. One of: `"gray"`, `"lightgray"`, `"brown"`, `"yellow"`, `"orange"`, `"green"`, `"blue"`, `"purple"`, `"pink"`, `"red"`. |
+| `dash_style` | `"solid"` \| `"dash"` | **Required.** Line style: `"solid"` for a continuous line, `"dash"` for a dashed line. |
+
+### Dashboard configuration
+
+```json theme={null}
+{
+  "type": "dashboard",
+  "rows": [
+    {
+      "id": "row-id-1",
+      "widgets": [
+        { "id": "widget-id-1", "view_id": "VIEW_ID_1", "width": 6, "row_index": 0 },
+        { "id": "widget-id-2", "view_id": "VIEW_ID_2", "width": 6, "row_index": 0 }
+      ],
+      "height": 400
+    }
+  ]
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `type` | `"dashboard"` | **Required.** Must be `"dashboard"`. |
+| `rows` | array | **Required.** The rows that make up the dashboard layout. Each row contains one or more widget modules. |
+
+**Dashboard row object:**
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The ID of this row module. |
+| `widgets` | array | The widget modules within this row. |
+| `height` | integer | Fixed height of the row in pixels. |
+
+**Dashboard widget object:**
+
+| Field | Type | Description |
+| - | - | - |
+| `id` | string | The ID of this widget module. |
+| `view_id` | string | The ID of the collection view rendered by this widget. |
+| `width` | integer | Width of the widget in a 12-column grid (1–12). `12` means full width. |
+| `row_index` | integer | The 0-based index of the row this widget belongs to. Widgets in the same row share the same `row_index`. |
+
+<Info>
+  Dashboard configuration is **read-only** — it is returned when retrieving a dashboard view but cannot be set directly when creating or updating a view. The layout structure is managed by creating and deleting widget views via the `view_id` parameter on the create endpoint.
+</Info>
+
+### Property configuration
+
+The `properties` array controls which database properties are visible in the view and how they are displayed. Each entry targets a single property by its ID or name.
+
+```json theme={null}
+{
+  "property_id": "abc1",
+  "visible": true,
+  "width": 200,
+  "wrap": true,
+  "date_format": "relative",
+  "time_format": "12_hour"
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `property_id` | string | **Required.** The property ID or property name. When a name is provided, the API resolves it to the corresponding property ID. If the string matches both a property ID and a different property's name, the ID match takes priority. |
+| `visible` | boolean | Whether the property is visible in this view. |
+| `width` | integer (>= 0) | Column width in pixels (table views only). |
+| `wrap` | boolean | Whether to wrap content in this property cell or card. |
+| `status_show_as` | `"select"` \| `"checkbox"` | How to display status properties. |
+| `card_property_width_mode` | `"full_line"` \| `"inline"` | Property width mode in compact card layouts (board/gallery). |
+| `date_format` | enum | Display format for date properties. One of: `"full"`, `"short"`, `"month_day_year"`, `"day_month_year"`, `"year_month_day"`, `"relative"`. |
+| `time_format` | enum | Time display format for date properties. One of: `"12_hour"`, `"24_hour"`, `"hidden"`. |
+
+### Group-by configuration
+
+Group-by lets you organize rows or cards into sections based on a property's values. The shape varies by property type, forming a discriminated union on the `type` field.
+
+All group-by variants share these fields:
+
+| Field | Type | Description |
+| - | - | - |
+| `type` | string | **Required.** The property type being grouped. Determines which additional fields are available. |
+| `property_id` | string | **Required.** The property ID to group by. |
+| `sort` | object | **Required.** Sort order for the groups. An object with `type`: `"manual"`, `"ascending"`, or `"descending"`. |
+| `hide_empty_groups` | boolean | Whether to hide groups with no items. |
+
+The following table shows which `type` values are supported and what extra fields each variant accepts:
+
+| `type` value(s) | Extra required fields | Extra optional fields |
+| - | - | - |
+| `select`, `multi_select` | — | — |
+| `status` | `group_by`: `"group"` (by status group: To Do/In Progress/Done) or `"option"` (by individual option) | — |
+| `person`, `created_by`, `last_edited_by` | — | — |
+| `relation` | — | — |
+| `date`, `created_time`, `last_edited_time` | `group_by`: `"relative"` \| `"day"` \| `"week"` \| `"month"` \| `"year"` | `start_day_of_week`: `0` (Sunday) or `1` (Monday) |
+| `text`, `title`, `url`, `email`, `phone_number` | `group_by`: `"exact"` or `"alphabet_prefix"` (first letter) | — |
+| `number` | — | `range_start`, `range_end`, `range_size` (>= 1) for bucket grouping |
+| `checkbox` | — | — |
+| `formula` | `group_by`: a nested sub-group-by object (see below) | — |
+
+**Formula group-by** uses a nested `group_by` object that describes how to group the formula's result type. The nested object does not include `property_id` (it inherits from the parent). Supported formula result types:
+
+| Result type | Nested `group_by` fields |
+| - | - |
+| `date` | `type`, `group_by` (`"relative"` \| `"day"` \| `"week"` \| `"month"` \| `"year"`), `sort`, optionally `start_day_of_week` |
+| `text` | `type`, `group_by` (`"exact"` \| `"alphabet_prefix"`), `sort` |
+| `number` | `type`, `sort`, optionally `range_start`, `range_end`, `range_size` |
+| `checkbox` | `type`, `sort` |
+
+<CodeGroup>
+  ```json Group by select example theme={null}
+  {
+    "type": "select",
+    "property_id": "PRIORITY_PROPERTY_ID",
+    "sort": { "type": "manual" },
+    "hide_empty_groups": true
+  }
+  ```
+
+  ```json Group by status example theme={null}
+  {
+    "type": "status",
+    "property_id": "STATUS_PROPERTY_ID",
+    "group_by": "group",
+    "sort": { "type": "ascending" }
+  }
+  ```
+
+  ```json Group by date example theme={null}
+  {
+    "type": "date",
+    "property_id": "DUE_DATE_PROPERTY_ID",
+    "group_by": "week",
+    "sort": { "type": "ascending" },
+    "start_day_of_week": 1
+  }
+  ```
+
+  ```json Group by formula example theme={null}
+  {
+    "type": "formula",
+    "property_id": "FORMULA_PROPERTY_ID",
+    "group_by": {
+      "type": "number",
+      "sort": { "type": "ascending" },
+      "range_start": 0,
+      "range_end": 100,
+      "range_size": 10
+    }
+  }
+  ```
+</CodeGroup>
+
+### Subtask configuration
+
+Subtask (sub-item) configuration controls how parent-child relationships are displayed in table views. This uses a self-referencing relation property to establish hierarchy.
+
+```json theme={null}
+{
+  "property_id": "RELATION_PROPERTY_ID",
+  "display_mode": "show",
+  "filter_scope": "parents_and_subitems",
+  "toggle_column_id": "title"
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `property_id` | string | Relation property ID used for parent-child nesting. |
+| `display_mode` | enum | How sub-items are displayed. One of: `"show"` (hierarchical with toggles), `"hidden"` (parents with a count), `"flattened"` (sub-items with a parent indicator), `"disabled"` (no sub-item rendering). |
+| `filter_scope` | enum | Which items are included when filtering. One of: `"parents"` (parent items only), `"parents_and_subitems"` (both), `"subitems"` (sub-items only). |
+| `toggle_column_id` | string | Property ID of the column showing the expand/collapse toggle. |
+
+### Cover configuration
+
+Cover configuration controls the image displayed at the top of each card in board and gallery views.
+
+```json theme={null}
+{
+  "type": "page_cover",
+}
+```
+
+| Field | Type | Description |
+| - | - | - |
+| `type` | enum | **Required.** Source of the cover image. One of: `"page_cover"` (the page's cover image), `"page_content"` (first image in page content), `"property"` (an image from a file property). |
+| `property_id` | string | Property ID to use as the cover image source. Only used when `type` is `"property"`. |
+
+### Clearing configuration with null
+
+When updating a view, you can pass `null` for any nullable configuration field to remove that setting. Only include the fields you want to change — omitted fields are left unchanged.
+
+Here are common scenarios:
+
+<CodeGroup>
+  ```javascript Remove grouping from a table expandable theme={null}
+  // A table view currently has group_by set.
+  // Pass null to remove grouping and return to a flat table.
+  const updated = await notion.views.update({
+    view_id: "VIEW_ID",
+    configuration: {
+      type: "table",
+      group_by: null,
+    },
+  });
+  ```
+
+  ```javascript Remove cover images from a board expandable theme={null}
+  // A board view currently shows cover images.
+  // Pass null for cover-related fields to remove them.
+  const updated = await notion.views.update({
+    view_id: "VIEW_ID",
+    configuration: {
+      type: "board",
+      group_by: {
+        type: "status",
+        property_id: "STATUS_PROP_ID",
+        group_by: "group",
+        sort: { type: "manual" },
+      },
+      cover: null,
+      cover_size: null,
+      cover_aspect: null,
+    },
+  });
+  ```
+
+  ```javascript Disable subtasks on a table expandable theme={null}
+  // Explicitly disable subtask rendering on a table view.
+  // Note: passing subtasks: null resets to defaults (which may
+  // still show subtasks). Use display_mode: "disabled" instead.
+  const updated = await notion.views.update({
+    view_id: "VIEW_ID",
+    configuration: {
+      type: "table",
+      subtasks: { display_mode: "disabled" },
+    },
+  });
+  ```
+
+  ```javascript Remove dependency arrows from a timeline expandable theme={null}
+  // A timeline view currently shows dependency arrows.
+  // Pass null for arrows_by to remove them.
+  const updated = await notion.views.update({
+    view_id: "VIEW_ID",
+    configuration: {
+      type: "timeline",
+      date_property_id: "START_DATE_PROP_ID",
+      arrows_by: null,
+    },
+  });
+  ```
+
+  ```javascript Clear a view's filter and sorts expandable theme={null}
+  // Clear the top-level filter and sorts (not inside configuration).
+  const updated = await notion.views.update({
+    view_id: "VIEW_ID",
+    filter: null,
+    sorts: null,
+  });
+  ```
+</CodeGroup>
+
+<Info>
+  Configuration updates use **shallow merge** — only the fields you include are changed, and omitted optional fields are preserved. The `configuration` field itself is optional (omit it to leave config unchanged). When present, you must include `type` and any fields marked as required for that view type (e.g., board views always require `group_by`, calendar/timeline views always require `date_property_id`). See [Feature support by view type](#feature-support-by-view-type) for which fields are required vs optional per view type.
+</Info>
+
+## Quick filters
+
+Quick filters appear in the view's filter bar and let users quickly toggle property-level filters without opening the full filter panel. In the API, `quick_filters` is a map where keys are property names or IDs, and values are filter conditions using the same shape as [property filters](/reference/filter-data-source-entries) but without the `property` field.
+
+People filters accept `"me"` as a value for `contains` and `does_not_contain` to match the current user, so you can create filters like "assigned to me" without hardcoding a user ID.
+
+### Adding quick filters on create
+
+<CodeGroup>
+  ```javascript JavaScript expandable theme={null}
+  const view = await notion.views.create({
+    database_id: "DATABASE_ID",
+    data_source_id: "DATA_SOURCE_ID",
+    name: "Active tasks",
+    type: "table",
+    quick_filters: {
+      "Status": {
+        status: { equals: "In progress" },
+      },
+      "Priority": {
+        select: { equals: "High" },
+      },
+    },
+  });
+  ```
+</CodeGroup>
+
+### Adding or updating a quick filter
+
+To add a new quick filter or update an existing one, include the property key with the new filter condition. Other existing quick filters are preserved.
+
+<CodeGroup>
+  ```javascript JavaScript expandable theme={null}
+  const view = await notion.views.update({
+    view_id: "VIEW_ID",
+    quick_filters: {
+      "Assignee": {
+        people: { contains: "me" },
+      },
+    },
+  });
+  ```
+</CodeGroup>
+
+### Adding a quick filter without criteria
+
+Pass an empty object to add a property to the filter bar without choosing a value. People who open the view pick the value themselves. This matches picking a property from **+ Filter** in Notion. If the property already has a quick filter, an empty object leaves it as it is. When you retrieve the view, any quick filter without a value comes back as an empty object.
+
+A quick filter without criteria doesn't change which pages the view shows. Files and place properties can't have an empty quick filter, so pass a condition for those. Some rollups that show original values need one too, such as a rollup whose related data source your integration can't read. Otherwise the request returns a `validation_error`.
+
+<CodeGroup>
+  ```javascript JavaScript expandable theme={null}
+  const view = await notion.views.update({
+    view_id: "VIEW_ID",
+    quick_filters: {
+      "Status": {},
+      "Assignee": {},
+    },
+  });
+  ```
+</CodeGroup>
+
+### Removing a quick filter
+
+Set a specific quick filter to `null` to remove it from the filter bar. Other quick filters are preserved.
+
+<CodeGroup>
+  ```javascript JavaScript expandable theme={null}
+  const view = await notion.views.update({
+    view_id: "VIEW_ID",
+    quick_filters: {
+      "Status": null,
+    },
+  });
+  ```
+</CodeGroup>
+
+### Clearing all quick filters
+
+Set the entire `quick_filters` field to `null` to remove all quick filters from the view.
+
+<CodeGroup>
+  ```javascript JavaScript expandable theme={null}
+  const view = await notion.views.update({
+    view_id: "VIEW_ID",
+    quick_filters: null,
+  });
+  ```
+</CodeGroup>
+
+## Dashboard views
+
+Dashboard views let you arrange multiple widget views in a grid layout on a single database. Each widget is itself a view (table, board, list, etc.) that can reference a different data source.
+
+### Creating a dashboard
+
+Create a dashboard view the same way as any other view — pass `type: "dashboard"` with a `database_id`:
+
+<CodeGroup>
+  ```bash cURL expandable theme={null}
+  curl -X POST https://api.notion.com/v1/views \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Content-Type: application/json" \
+    -H "Notion-Version: 2025-09-03" \
+    --data '{
+      "database_id": "DATABASE_ID",
+      "data_source_id": "DATA_SOURCE_ID",
+      "name": "Project overview",
+      "type": "dashboard"
+    }'
+  ```
+
+  ```javascript JavaScript expandable theme={null}
+  const dashboard = await notion.views.create({
+    database_id: "DATABASE_ID",
+    data_source_id: "DATA_SOURCE_ID",
+    name: "Project overview",
+    type: "dashboard",
+  });
+
+  console.log(dashboard.id); // The dashboard view's ID
+  ```
+</CodeGroup>
+
+### Adding widget views
+
+To add a widget to a dashboard, create a view with `view_id` set to the dashboard's ID instead of `database_id`. Each widget can use a different `data_source_id`. Dashboards support all view types as widgets except for other dashboards (no nested dashboards).
+
+<CodeGroup>
+  ```bash cURL expandable theme={null}
+  curl -X POST https://api.notion.com/v1/views \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Content-Type: application/json" \
+    -H "Notion-Version: 2025-09-03" \
+    --data '{
+      "view_id": "DASHBOARD_VIEW_ID",
+      "data_source_id": "DATA_SOURCE_ID",
+      "name": "Tasks by status",
+      "type": "board",
+      "configuration": {
+        "type": "board",
+        "group_by": {
+          "type": "status",
+          "property_id": "STATUS_PROPERTY_ID",
+          "group_by": "group",
+          "sort": { "type": "manual" }
+        }
+      }
+    }'
+  ```
+
+  ```javascript JavaScript expandable theme={null}
+  const widget = await notion.views.create({
+    view_id: "DASHBOARD_VIEW_ID",
+    data_source_id: "DATA_SOURCE_ID",
+    name: "Tasks by status",
+    type: "board",
+    configuration: {
+      type: "board",
+      group_by: {
+        type: "status",
+        property_id: "STATUS_PROPERTY_ID",
+        group_by: "group",
+        sort: { type: "manual" },
+      },
+    },
+  });
+
+  console.log(widget.id);                 // The widget view's ID
+  console.log(widget.dashboard_view_id);  // The parent dashboard's ID
+  ```
+</CodeGroup>
+
+### Widget placement
+
+When adding a widget to a dashboard, you can control where it appears in the layout using the `placement` parameter. This is a discriminated union on the `type` field:
+
+| Variant | Fields | Description |
+| - | - | - |
+| `new_row` | `type`, optional `row_index` | Creates a new row containing the widget. If `row_index` is omitted, the new row is appended at the end. If provided, the new row is inserted at that 0-based position. |
+| `existing_row` | `type`, `row_index` (required) | Adds the widget side-by-side to an existing row at the specified 0-based index. Column widths are automatically redistributed. |
+
+<CodeGroup>
+  ```json Append a new row (default) theme={null}
+  {
+    "placement": { "type": "new_row" }
+  }
+  ```
+
+  ```json Insert a new row at the top theme={null}
+  {
+    "placement": { "type": "new_row", "row_index": 0 }
+  }
+  ```
+
+  ```json Add to an existing row theme={null}
+  {
+    "placement": { "type": "existing_row", "row_index": 2 }
+  }
+  ```
+</CodeGroup>
 
 <Note>
-  `ntn login` requires full workspace membership. [Guests](https://www.notion.com/help/whos-who-in-a-workspace) and [restricted members](https://www.notion.com/help/whos-who-in-a-workspace) cannot log in with the Notion CLI. If you need CLI access, ask a workspace admin to upgrade your role. See [Personal access tokens](/guides/get-started/personal-access-tokens) for more on who can create tokens.
+  The `placement` parameter is only valid when `view_id` is provided (dashboard widget creation). It cannot be used with `database_id`. Each dashboard row supports a maximum of 4 widgets.
 </Note>
 
-## Log in without a browser
+### Retrieving a dashboard
 
-On a remote machine, container, or CI runner that can't open a browser, use `--no-browser` to get a two-step login flow:
+When you retrieve a dashboard view, its `configuration` contains the full layout structure — rows of widgets with their positions and sizes:
 
-1. Run `ntn login --no-browser`. It prints a URL, a verification code, and a `ntn login poll` command.
-2. Open the URL in any browser, sign in, and confirm the verification code.
-3. Run `ntn login poll` on the original machine to redeem the token.
-
-`ntn login` also falls back to this flow automatically when it detects there is no terminal (e.g. piped input).
-
-Login sessions expire after a short window. If polling fails because the session expired, run `ntn login` again to start over.
-
-For unattended use (CI, scripts, bots), prefer a [personal access token](#use-a-personal-access-token) instead.
-
-## Target a specific workspace
-
-To run a single command against a non-default workspace without switching defaults, set `NOTION_WORKSPACE_ID`:
-
-```bash theme={null}
-NOTION_WORKSPACE_ID=<workspace-id> ntn api v1/users/me
+```json theme={null}
+{
+  "object": "view",
+  "id": "DASHBOARD_VIEW_ID",
+  "type": "dashboard",
+  "configuration": {
+    "type": "dashboard",
+    "rows": [
+      {
+        "id": "row-1",
+        "widgets": [
+          { "id": "widget-1", "view_id": "VIEW_ID_1", "width": 6, "row_index": 0 },
+          { "id": "widget-2", "view_id": "VIEW_ID_2", "width": 6, "row_index": 0 }
+        ]
+      }
+    ]
+  }
+}
 ```
 
-Workspace IDs are listed in the output of `ntn debug`.
+Widget views include a `dashboard_view_id` field that references their parent dashboard. Their `parent.database_id` always resolves to the underlying database, even though they are positioned inside a dashboard layout.
 
-## Use a personal access token
+### Deleting widget views
 
-For unattended use, authenticate with a [personal access token](/guides/get-started/personal-access-tokens) (PAT) by exporting it as `NOTION_API_TOKEN`:
+Delete a widget view using the standard delete endpoint. This also removes the widget from the dashboard's layout structure.
 
-```bash theme={null}
-export NOTION_API_TOKEN=ntn_xxx...
-ntn api v1/users/me
+<Note>
+  Dashboard views cannot be nested — you cannot create a dashboard widget inside another dashboard.
+</Note>
+
+## Querying a view
+
+Use a view query to fetch pages using the view's saved filter and sort configuration. This lets connections reproduce what a user sees in the Notion UI for a particular view, without needing to manually reconstruct the filter/sort logic.
+
+View queries use a three-step pattern:
+
+1. **Create a query** — executes the view's filters/sorts and returns the first page of results along with a `query_id`.
+2. **Paginate results** — use the `query_id` to fetch additional pages from the cached result set.
+3. **Delete the query** (recommended) — free the cached result set when you're done paginating.
+
+### Step 1: Create a view query
+
+<CodeGroup>
+  ```bash cURL theme={null}
+  curl -X POST https://api.notion.com/v1/views/VIEW_ID/queries \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Content-Type: application/json" \
+    -H "Notion-Version: 2026-03-11" \
+    --data '{
+      "page_size": 50
+    }'
+  ```
+
+  ```javascript JavaScript theme={null}
+  const query = await notion.views.queries.create({
+    view_id: "VIEW_ID",
+    page_size: 50,
+  });
+
+  console.log(query.id);          // Query ID for pagination
+  console.log(query.total_count); // Total matching pages
+  console.log(query.results);     // First page of results
+  console.log(query.has_more);    // Whether more pages exist
+  ```
+</CodeGroup>
+
+The response includes the first page of results inline:
+
+```json theme={null}
+{
+  "object": "view_query",
+  "id": "query-id-here",
+  "view_id": "VIEW_ID",
+  "expires_at": "2026-01-20T14:37:00.000Z",
+  "total_count": 128,
+  "results": [
+    { "object": "page", "id": "..." }
+  ],
+  "next_cursor": "cursor-string",
+  "has_more": true
+}
 ```
 
-`NOTION_API_TOKEN` takes precedence over anything stored in the keychain, so the same shell can mix `ntn login`-based commands and PAT-based commands depending on what's exported.
+### Step 2: Paginate results
 
-## Inspect your session
+<CodeGroup>
+  ```bash cURL theme={null}
+  curl -X GET "https://api.notion.com/v1/views/VIEW_ID/queries/QUERY_ID?start_cursor=CURSOR&page_size=50" \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Notion-Version: 2026-03-11"
+  ```
 
-```bash theme={null}
-ntn doctor
+  ```javascript JavaScript theme={null}
+  const nextPage = await notion.views.queries.results({
+    view_id: "VIEW_ID",
+    query_id: "QUERY_ID",
+    start_cursor: "CURSOR",
+    page_size: 50,
+  });
+  ```
+</CodeGroup>
+
+### Step 3: Delete the query (recommended)
+
+Once you've finished paginating, delete the query to free the cached result set. This is optional — queries expire automatically after approximately 15 minutes — but recommended as good practice, especially if your connection runs queries frequently.
+
+<CodeGroup>
+  ```bash cURL theme={null}
+  curl -X DELETE "https://api.notion.com/v1/views/VIEW_ID/queries/QUERY_ID" \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Notion-Version: 2026-03-11"
+  ```
+
+  ```javascript JavaScript theme={null}
+  await notion.views.queries.delete({
+    view_id: "VIEW_ID",
+    query_id: "QUERY_ID",
+  });
+  ```
+</CodeGroup>
+
+The response confirms deletion:
+
+```json theme={null}
+{
+  "object": "view_query",
+  "id": "QUERY_ID",
+  "deleted": true
+}
 ```
 
-## Log out
+This endpoint is idempotent — calling it on an already-deleted or expired query still returns success.
 
-```bash theme={null}
-ntn logout
-```
+<Info>
+  **Query expiration**
 
-This forgets every cached workspace, deletes each one's token from the keychain, and clears the default workspace. The `config.json` and `workspaces.json` files themselves stay in place — run `ntn login` to repopulate them.
+  Cached query results expire after a short TTL (approximately 15 minutes). If a query expires, create a new one. This caching approach provides stable pagination — results won't shift between pages due to concurrent data changes.
+</Info>
 
-## Where credentials are stored
+<Note>
+  View queries do not support stacking additional filters or sorts on top of the saved view definition. If you need different filter/sort criteria, create a new view (or update an existing one) and query that instead.
+</Note>
 
-Tokens live in your OS credential store (Keychain on macOS, Secret Service on Linux) under the service name `notion-cli`, with the workspace ID as the account.
+## Permissions
 
-Two files sit alongside them in the CLI config directory:
+View endpoints reuse existing database [connection capabilities](/reference/capabilities):
 
-* `config.json` — CLI version, default workspace per, and the optional `keyring` toggle.
-* `workspaces.json` — cached workspace IDs and names for the interactive picker.
+| Operation | Required capability |
+| - | - |
+| List views | `read_content` or `read_property` |
+| Retrieve a view | `read_content` or `read_property` |
+| Create a view | `insert_content`, `insert_property`, `update_content`, or `update_property` |
+| Update a view | `update_content` or `update_property` |
+| Delete a view | `update_content` or `update_property` |
+| Query a view (create, paginate, delete) | `read_content` or `read_property` |
 
-The config directory is `NOTION_HOME` if set, otherwise `$XDG_CONFIG_HOME/notion`, `$HOME/.config/notion`, or `$HOME/.notion` as fallbacks.
-
-### Opt out of the OS keychain
-
-On systems without a usable keychain, `ntn login` fails with a keychain error. Common examples include Docker containers, CI runners, SSH sessions to a Linux server, etc.
-
-Set `NOTION_KEYRING=0` to store tokens in plain JSON at `auth.json` in the config directory instead. Treat that file like any other secret.
-
-```bash theme={null}
-NOTION_KEYRING=0 ntn login
-```
-
-To make it permanent, set `"keyring": false` in `config.json`. The env var always wins.
-
-## Environment variables
-
-| Variable | Purpose |
-| :- | :- |
-| `NOTION_API_TOKEN` | When this is set, it'll take precedence over `ntn login`'s keychain entry. Handy for scripts and CI. |
-| `NOTION_WORKSPACE_ID` | Override the default workspace for a single command. |
-| `NOTION_KEYRING` | Set to `0` to use file-based storage instead of the OS keychain. |
-| `NOTION_HOME` | Override the config directory. |
-| `NOTION_ENV` | Same as `--env`. Rarely needed. |
-
-Run `ntn login --help` for the full list.
+The connection must also have access to the parent database. If it doesn't, the API returns a `404` rather than a `403`.
 
 ## Next steps
 
-<CardGroup>
-  <Card title="Workers quickstart" icon="rocket" href="/workers/get-started/quickstart">
-    Create and deploy your first Notion Worker.
-  </Card>
-
-  <Card title="API requests" icon="terminal" href="/cli/guides/api-requests">
-    Make Notion API requests from the terminal.
-  </Card>
-
-  <Card title="Command reference" icon="book-open" href="/cli/reference/commands">
-    Full reference for every ntn command.
-  </Card>
-
-  <Card title="Personal access tokens" icon="key" href="/guides/get-started/personal-access-tokens">
-    Create tokens for scripts and CI.
-  </Card>
-</CardGroup>
+* Explore the [database object](/reference/database) and [data source object](/reference/data-source) reference docs for the parent resources that views live under.
+* Learn about [filters](/reference/filter-data-source-entries) and [sorts](/reference/sort-data-source-entries) — these shapes are shared between data source queries and view configuration.
+* Review [Working with databases](/guides/data-apis/working-with-databases) for a broader overview of database concepts.
+* See [Preparing your connection for users](/guides/get-started/preparing-for-users) to learn how to set up databases, views, and pages automatically when users install your connection.

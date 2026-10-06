@@ -12,11 +12,11 @@ Our users trust Stripe with their sensitive data and rely on us to be good custo
 
 ## Standards and regulations compliance 
 
-Stripe uses best-in-class security practices to maintain a high level of security.
+Stripe maintains its security practices with the following standards and regulations.
 
 ### PCI-certified 
 
-A PCI-certified auditor evaluated Stripe and certified us to [PCI Service Provider Level 1](https://usa.visa.com/splisting/splistinglearnmore.html). This is the most stringent level of certification available in the payments industry. This audit includes both Stripe’s Card Data Vault (CDV) and the secure software development of our integration code.
+A PCI-certified auditor evaluated Stripe and certified us to [PCI Service Provider Level 1](https://www.visa.com/splisting/LearnMore.html). This is the most stringent level of certification available in the payments industry. This audit includes both the Stripe Card Data Vault (CDV) and the secure software development of our integration code.
 
 We provide our users with features to automate some aspects of PCI compliance.
 
@@ -28,7 +28,7 @@ We provide our users with features to automate some aspects of PCI compliance.
 
 Stripe’s systems, processes, and controls are regularly audited as part of our SOC 1 and SOC 2 compliance programs. SOC 1 and SOC 2 Type II reports are produced annually and can be provided upon request.
 
-The Auditing Standards Board of the American Institute of Certified Public Accountants’ ([AICPA](https://www.aicpa.org/)) Trust Service Criteria (TSC) developed the SOC 3 report. Stripe’s SOC 3 is a public report of internal controls over security, availability, and confidentiality. View our [recent SOC 3 report](https://docs.stripecdn.com/ebe9bebbdc5210a59ca18de4917ff3b152961a83fa3a98fbb81c758792472389.pdf).
+The Auditing Standards Board of the American Institute of Certified Public Accountants ([AICPA](https://www.aicpa.org/)) developed the SOC 3 report, which is based on the AICPA Trust Services Criteria (TSC). Stripe’s SOC 3 is a public report of internal controls over security, availability, and confidentiality. View our [recent SOC 3 report](https://docs.stripecdn.com/ebe9bebbdc5210a59ca18de4917ff3b152961a83fa3a98fbb81c758792472389.pdf).
 
 ### EMVCo standard for card terminals 
 
@@ -40,12 +40,12 @@ Stripe’s suite of information security policies and their overarching design a
 
 ### Privacy and data protection 
 
-The Stripe privacy practices comply with CBPR and PRP systems as evidenced by the CBPR and PRP certifications Stripe has obtained. See the status of our [CBPR](https://privacy.trustarc.com/privacy-seal/validation?rid=31b93f92-8732-402c-9768-f15aabc763f4) and [PRP](https://privacy.trustarc.com/privacy-seal/validation?rid=712f8b7a-6d3c-4484-9522-3bf21d56818a) certifications. Stripe also complies with the US Data Privacy Framework (“EU-US DPF”), the UK Extension to the EU-US DPF, and the Swiss-US Data Privacy Framework as set forth by the US Department of Commerce. See our [certifications](https://www.dataprivacyframework.gov/s/participant-search/participant-detail?id=a2zt0000000TQOUAA4&status=Active).
+The Stripe privacy practices comply with CBPR and PRP systems as evidenced by the CBPR and PRP certifications Stripe has obtained. See the status of our [CBPR](https://privacy.trustarc.com/privacy-seal/validation?rid=31b93f92-8732-402c-9768-f15aabc763f4) and [PRP](https://privacy.trustarc.com/privacy-seal/validation?rid=712f8b7a-6d3c-4484-9522-3bf21d56818a) certifications. Stripe also complies with the EU-US Data Privacy Framework (EU-US DPF), the UK Extension to the EU-US DPF, and the Swiss-US Data Privacy Framework as set forth by the US Department of Commerce. See our [certifications](https://www.dataprivacyframework.gov/s/participant-search/participant-detail?id=a2zt0000000TQOUAA4&status=Active).
 
 We continuously implement evolving privacy and data protection processes, procedures, and best practices under all applicable privacy and data protection regimes. For more information, see the following Stripe resources:
 
 - [Privacy Policy](https://stripe.com/privacy)
-- [Privacy Center](https://stripe.com/en-ca/legal/privacy-center)
+- [Privacy Center](https://stripe.com/legal/privacy-center)
 - [Data Processing Agreement](https://stripe.com/legal/dpa)
 
 ## Stripe product security 
@@ -56,7 +56,7 @@ Security is one of Stripe’s guiding principles for all our product design and 
 
 The Stripe Dashboard supports several forms of [multi-factor authentication](https://support.stripe.com/questions/enable-two-step-authentication) (MFA) including [passkeys](https://support.stripe.com/questions/sign-in-using-a-passkey), [hardware security keys](https://support.stripe.com/questions/set-up-a-hardware-security-key-for-two-step-authentication), [time-based one-time password algorithm](https://support.stripe.com/questions/enable-two-step-authentication-using-a-mobile-app) (TOTP), and [SMS](https://support.stripe.com/questions/enable-two-step-authentication-via-text-messaging). We recommend passkeys or hardware security keys because they’re resistant to phishing. SMS-based MFA is vulnerable to SIM-swapping and interception, so use it only as a last resort. We also support [single sign-on](https://docs.stripe.com/get-started/account/sso.md) through Security Assertion Markup Language (SAML) 2.0, allowing you to mandate sign-in requirements, configure access control, and instantly onboard team members through just-in-time (JIT) account provisioning. If you use SSO with SCIM, you can enforce authentication policies centrally through your identity provider.
 
-You must authenticate user support requests by sending them from the Dashboard after login, or by verifying account access before we offer a support response. By requiring authentication, we minimize the risk of providing any information to non-authorized people.
+Stripe authenticates support requests. Send support requests from the Dashboard after you log in. Otherwise, we verify that you have access to the account before we respond. Requiring authentication minimizes the risk of sharing information with unauthorized people.
 
 ### Access restriction and auditing 
 
@@ -72,25 +72,25 @@ Users can export historical information from the logs. For time-sensitive activi
 
 ### HTTPS and HSTS for secure connections 
 
-We mandate the use of HTTPS for all services using *TLS* (TLS refers to the process of securely transmitting data between the client—the app or browser that your customer is using—and your server. This was originally performed using the SSL (Secure Sockets Layer) protocol) (SSL), including our public website and the [Dashboard](https://dashboard.stripe.com/dashboard). We regularly audit the details of our implementation, including the certificates we serve, the certificate authorities we use, and the ciphers we support. We use [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) to make sure that browsers interact with Stripe only over HTTPS. Stripe is also on the HSTS preloaded lists for all modern major browsers. Our systems automatically block requests made using older, less secure versions of TLS, [requiring use of at least TLS 1.2](https://stripe.com/blog/completing-tls-upgrade).
+We mandate the use of HTTPS for all services using *TLS* (TLS refers to the process of securely transmitting data between the client—the app or browser that your customer is using—and your server. This was originally performed using the SSL (Secure Sockets Layer) protocol) (SSL), including our public website and the [Dashboard](https://dashboard.stripe.com). We regularly audit the details of our implementation, including the certificates we serve, the certificate authorities we use, and the ciphers we support. We use [HSTS](https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security) to make sure that browsers interact with Stripe only over HTTPS. Stripe is also on the HSTS preloaded lists for all modern major browsers. Our systems automatically block requests made using older, less secure versions of TLS, [requiring use of at least TLS 1.2](https://stripe.com/blog/completing-tls-upgrade).
 
 All Stripe internal server-to-server communication is encrypted using mutual transport layer security (mTLS). Stripe has dedicated [PGP keys](https://docs.stripe.com/security/python-client-pgp-key.md) for you to encrypt email communications with Stripe, or verify signed messages you receive from us.
 
-The [stripe.com](https://stripe.com) domain, including the Dashboard and API subdomains, are on the [top domains](https://chromium-review.googlesource.com/c/chromium/src/+/605062) list for Chrome, providing extra protection against homoglyph attacks. This makes it harder to create fake pages that look like stripe.com in Chrome (for example, [strípe.com](https://xn--strpe-1sa.com)), which renders as punycode ([xn–strpe-1sa.com](https://xn--strpe-1sa.com)), in turn making it harder for Stripe credentials to be phished.
+The [stripe.com](https://stripe.com) domain, including the Dashboard and API subdomains, is on the [top domains](https://chromium-review.googlesource.com/c/chromium/src/+/605062) list for Chrome, providing extra protection against homoglyph attacks. This makes it harder to create fake pages that look like stripe.com in Chrome (for example, `strípe.com`, which renders as the punycode `xn--strpe-1sa.com`), in turn making it harder for Stripe credentials to be phished.
 
 ### Proactive internet monitoring 
 
-We proactively scan the internet for our merchants’ API keys. If we find a compromised key, we take appropriate action, advising the user to roll their API key. We use the GitHub Token Scanner to alert us when a user’s API keys have been leaked on GitHub. If we find external phishing pages that might catch our users, we work proactively with our vendors to take those down and report them to Google Safe Browsing.
+We proactively scan the internet for our merchants’ API keys. If we find a compromised key, we take appropriate action, advising the user to roll their API key. We use GitHub secret scanning to alert us when a user’s API keys have been leaked on GitHub. If we find external phishing pages that might catch our users, we work proactively with our vendors to take those down and report them to Google Safe Browsing.
 
 ## Infrastructure safeguards 
 
-Our security teams test our infrastructure regularly by scanning for vulnerabilities and conducting penetration tests and red team exercises. We hire industry-leading security companies to perform third-party scans of our systems, and we immediately address their findings. Our servers are frequently and automatically replaced to maintain server health and discard stale connections or resources. Server operating systems are upgraded well in advance of their security end of life (EOL) date.
+Our security teams test our infrastructure regularly by scanning for vulnerabilities and conducting penetration tests and red team exercises. We hire third-party security companies to scan our systems, and immediately address their findings. Our servers are frequently and automatically replaced to maintain server health and discard stale connections or resources. Server operating systems are upgraded well in advance of their security end of life (EOL) date.
 
 ### Dedicated card technology 
 
-Stripe encrypts sensitive data both in transit and at rest. The Stripe infrastructure for storing, decrypting, and transmitting primary account numbers (PANs), such as credit card numbers, runs in a separate hosting infrastructure and doesn’t share any credentials with the rest of our services. A dedicated team manages our CDV in an isolated Amazon Web Services (AWS) environment that’s separate from the rest of the Stripe infrastructure. Access to this separate environment is restricted to a small number of specially trained engineers and access is reviewed quarterly.
+Stripe encrypts sensitive data both in transit and at rest. The Stripe infrastructure for storing, decrypting, and transmitting primary account numbers (PANs), such as credit card numbers, runs in a separate hosting infrastructure and doesn’t share any credentials with the rest of our services, including our API and website. A dedicated team manages our CDV in an isolated Amazon Web Services (AWS) environment that’s separate from the rest of the Stripe infrastructure. We restrict access to this separate environment to a small number of specially trained engineers and review access quarterly.
 
-All card numbers are encrypted at rest with AES-256. Decryption keys are stored on separate machines. We tokenize PANs internally, isolating raw numbers from the rest of our infrastructure. None of the Stripe internal servers and daemons can obtain plain text card numbers, but they can request that cards are sent to a service provider on a static allowlist. The Stripe infrastructure for storing, decrypting, and transmitting card numbers runs in a separate hosting environment, and doesn’t share any credentials with primary Stripe services, including our API and website. We treat other sensitive data, such as bank account information, similarly to how we tokenize PANs.
+All card numbers are encrypted at rest with AES-256. Decryption keys are stored on separate machines. We tokenize PANs internally, isolating raw numbers from the rest of our infrastructure. None of the Stripe internal servers and daemons can obtain plaintext card numbers, but they can request that cards are sent to a service provider on a static allowlist. We treat other sensitive data, such as bank account information, similarly to how we tokenize PANs.
 
 ### Corporate technology 
 
@@ -118,13 +118,11 @@ We have a formal process for granting access to systems and information, and we 
 
 ### Vulnerability disclosure and reward program 
 
-We maintain a vulnerability disclosure and reward (“bug bounty”) program that compensates independent security researchers who help us keep our users safe. By submitting a security bug or vulnerability to Stripe through [HackerOne](https://hackerone.com/stripe), you acknowledge that you’ve read and agreed to the [program terms and conditions](https://hackerone.com/stripe). Refer to our policy on HackerOne for more information about how to participate in our bug bounty program.
+We maintain a vulnerability disclosure and reward (“bug bounty”) program that compensates independent security researchers who help us keep our users safe. By submitting a security bug or vulnerability to Stripe through [HackerOne](https://hackerone.com/stripe), you acknowledge that you’ve read and agreed to the program terms and conditions. Refer to our policy on HackerOne for more information about how to participate in our bug bounty program.
 
 ## See also
 
 - [Integration security guide](https://docs.stripe.com/security/guide.md)
 - [Single sign-on (SSO)](https://docs.stripe.com/get-started/account/sso.md)
-- [Fighting fraud](https://docs.stripe.com/disputes/prevention.md)
-- [Verify webhook events](https://docs.stripe.com/webhooks.md#verify-events)
 - [Stripe IP addresses](https://docs.stripe.com/ips.md)
 

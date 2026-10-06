@@ -120,7 +120,7 @@ You can add the following types of fields:
 
 After your customer completes the payment, you can view the fields on the payment details page in the Dashboard.
 
-The custom fields are also sent in the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event after payment completion. Register an [event destination](https://docs.stripe.com/event-destinations.md) to receive the event at your endpoint.
+The custom fields are also sent in the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event after payment completion. Set up an [event destination](https://docs.stripe.com/events/set-up-events.md) to receive the event at your endpoint.
 
 ### Present local currencies  (Optional)
 
@@ -256,7 +256,7 @@ When a customer purchases a subscription, you’ll see it on the [subscriptions 
 
 ### Handle fulfillment with the Stripe API
 
-The pricing table component uses Stripe Checkout to render a prebuilt, hosted payment page. When a payment is completed using Checkout, Stripe sends the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event. Register an [event destination](https://docs.stripe.com/event-destinations.md) to receive the event at your endpoint to process fulfillment and reconciliation. See the [Checkout fulfillment guide](https://docs.stripe.com/checkout/fulfillment.md) for more details.
+The pricing table component uses Stripe Checkout to render a prebuilt, hosted payment page. When a payment is completed using Checkout, Stripe sends the [checkout.session.completed](https://docs.stripe.com/api/events/types.md#event_types-checkout.session.completed) event. Set up an [event destination](https://docs.stripe.com/events/set-up-events.md) to receive the event at your endpoint to process fulfillment and reconciliation. See the [Checkout fulfillment guide](https://docs.stripe.com/checkout/fulfillment.md) for more details.
 
 The `<stripe-pricing-table>` web component supports setting the `client-reference-id` property. When the property is set, the pricing table passes it to the Checkout Session’s [client_reference_id](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-client_reference_id) attribute to help you reconcile the Checkout Session with your internal system. This can be an authenticated user ID or a similar string. `client-reference-id` can be composed of alphanumeric characters, dashes, or underscores, and be any value up to 200 characters. Invalid values are silently dropped and your pricing table will continue to work as expected.
 

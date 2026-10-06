@@ -73,7 +73,7 @@ In the ElevenAgents Dashboard, create a workspace webhook with your HTTPS URL an
 
 Open [Agents settings](https://elevenlabs.io/app/agents/settings), assign the webhook as the post-call webhook, enable the **Transcript** event, and turn on **OpenTelemetry transcript payloads**.
 
-![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T113442Z&X-Amz-Expires=604800&X-Amz-Signature=5d6bcba9d9f8b9f95c2822c91dc7e848e2d1af6b5e2a03693aa03947ad7bcbcd&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T233205Z&X-Amz-Expires=604800&X-Amz-Signature=4293ac3d90b9de50eb904dd480c992a581cda5ad5f3cba9c6ec9d9ef83062c4e&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 #### Configure via the CLI
 
@@ -161,20 +161,20 @@ For a single agent, pass the same `webhooks` object under `platform_settings.wor
 >
 > Return **2xx** for success. **4xx** and **5xx** count as failures.
 >
-> Retries apply to transcript webhooks (including OpenTelemetry) only when **Enable retries** is on
-> for the workspace webhook. Transient errors (**5xx**, **429**, **408**) retry up to 5 times; **4xx**
-> does not. Audio webhooks are never retried. Repeated failures can auto-disable the webhook. See
+> Retries apply to transcript (including OpenTelemetry) and audio webhooks only when **Enable
+> retries** is on for the workspace webhook. Transient errors (**5xx**, **429**, **408**) retry up to
+> 5 times; **4xx** does not. Repeated failures can auto-disable the webhook. See
 > [Post-call webhooks](/docs/eleven-agents/workflows/post-call-webhooks) for details and HIPAA
 > exceptions.
 
 ### Delivery
 
-| Topic   | Detail                                                                                  |
-| ------- | --------------------------------------------------------------------------------------- |
-| Method  | `POST` with JSON body                                                                   |
-| Auth    | `ElevenLabs-Signature: t={unix},v0={hmac}` over `{timestamp}.{body}`                    |
-| Retries | Transcript webhooks only; requires **Enable retries** on the webhook; see warning above |
-| Size    | Long tool parameters and results truncate at 4 KB per span attribute                    |
+| Topic   | Detail                                                               |
+| ------- | -------------------------------------------------------------------- |
+| Method  | `POST` with JSON body                                                |
+| Auth    | `ElevenLabs-Signature: t={unix},v0={hmac}` over `{timestamp}.{body}` |
+| Retries | Requires **Enable retries** on the webhook; see warning above        |
+| Size    | Long tool parameters and results truncate at 4 KB per span attribute |
 
 ### Trace shape
 

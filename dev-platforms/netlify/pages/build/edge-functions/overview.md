@@ -26,7 +26,7 @@ Reference examples of common patterns:
 - [Transform responses with content includes](https://edge-functions-examples.netlify.app/example/include)
 - [Set custom HTTP request headers](https://edge-functions-examples.netlify.app/example/set-request-header)
 - [Localize content with geolocation](https://edge-functions-examples.netlify.app/example/localized-content)
-- [Rewrite responses from another URL](/build/edge-functions/api#return-a-rewrite)
+- [Rewrite requests to a same-site URL](/build/edge-functions/api#return-a-rewrite)
 - [A/B tests using cookies](https://edge-functions-examples.netlify.app/example/abtest)
 - [Calculate responses with WebAssembly](https://edge-functions-examples.netlify.app/example/wasm)
 

@@ -43,7 +43,7 @@ In text only calls you're charged for each text message - for costs, see [Eleven
 
 LLM costs are passed through separately - you can access estimated costs for each agent, based on its past behaviour and knowledge base, from the **Detailed costs** button in the **Primary LLM** selector in your agents settings.
 
-![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/968b67118fb42eb565f35169576761ffc1131c589509a9ae38c4ad6af46a963e/assets/images/help-center/product/eleven-agents/detailedcosts.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T092718Z&X-Amz-Expires=604800&X-Amz-Signature=c1560a1a75f5fb6d091c5a33990f459283e4f75f797971c4a437be989a316747&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/968b67118fb42eb565f35169576761ffc1131c589509a9ae38c4ad6af46a963e/assets/images/help-center/product/eleven-agents/detailedcosts.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T182701Z&X-Amz-Expires=604800&X-Amz-Signature=2fcf34ee4d3ab70d6359a3fefb4b1e255224cf0c2aada9674fc5020fdc871a16&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 
 

@@ -18,7 +18,7 @@ The Multilingual Codeswitching feature in Deepgram's API allows you to transcrib
 
 > **Info**
 >
-> Multilingual Code Switching is available on Nova-2, Nova-3, and Flux Multilingual (`flux-general-multi`). See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
+> Multilingual Code Switching is available on Nova-2, Nova-3, Nova-3 Medical (`nova-3-medical`), and Flux Multilingual (`flux-general-multi`). See [the list of supported languages](/docs/models-languages-overview) for each multilingual model.
 
 ## 1. Enable Feature
 
@@ -27,6 +27,8 @@ The Multilingual Codeswitching feature in Deepgram's API allows you to transcrib
 To enable Multilingual Codeswitching on Nova-2 or Nova-3, use the following language parameter in the query string when you call Deepgram's `/listen` endpoint:
 
 `language=multi`
+
+The same `language=multi` parameter works with `model=nova-3-medical` for multilingual transcription of medical audio.
 
 ### Pre-Recorded Audio
 

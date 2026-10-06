@@ -9,7 +9,7 @@ Understand the high-level onboarding flow for Bring Your Own Cluster.
 This page describes the high-level setup flow for Enterprise customers onboarding to Bring Your Own Cluster (BYOC).
 
 <Note>
-  Bring Your Own Cluster is in Private Preview for Enterprise customers. Contact [sales@fireworks.ai](mailto:sales@fireworks.ai) to participate in the preview and confirm the onboarding path for your environment.
+  Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to participate in the preview and confirm the onboarding path for your environment.
 </Note>
 
 ## Prerequisites

@@ -94,19 +94,13 @@ Stripe automatically enables the fraudulent non-card payments control by default
 
 You can monitor performance and review information about blocked payments on the [risk controls page](https://dashboard.stripe.com/settings/radar/risk-controls) in the Dashboard. You can also simulate how this risk control would have affected past payments to better understand the impact on conversion and fraud prevention.
 
-## Abuse controls (Private preview)
-
-### Refund abuse 
-
-Refund abuse happens when customers request refunds for goods or services they’ve already received and plan to keep. When you enable this control, Radar automatically blocks payments from customers who are likely refund abusers.
-
-You can monitor performance and review affected payments on the [risk controls](https://dashboard.stripe.com/settings/radar/risk-controls) page in the Dashboard.
-
-> Risk control applies to card payments only.
+For information about refund abuse controls, see [Refund abuse prevention](https://docs.stripe.com/radar/refund-abuse.md). 
 
 ## Radar scores
 
 Radar scores are numerical signals that represent the likelihood of fraud or abuse for a payment. You can use scores to write custom [Radar rules](https://docs.stripe.com/radar/rules.md) or to understand why a payment was blocked. Some scores also contribute to an [overall risk level](https://docs.stripe.com/radar/risk-settings.md#risk-levels), which summarizes risk as a single signal.
+
+For information about bot scores, see [Bot abuse prevention](https://docs.stripe.com/radar/bot-abuse.md). 
 
 ### Risk levels 
 
@@ -145,12 +139,6 @@ Stripe Radar assigns each payment a numerical early fraud warning score between 
 > Early fraud warning scores apply to card payments only.
 
 If you want to block payments based on the early fraud warning score, you can write custom rules on `:early_fraud_warning_score:`.
-
-### Bot score (Private preview)
-
-Stripe Radar assigns a numerical bot score to payments made through [Stripe Checkout](https://docs.stripe.com/payments/checkout.md), [Custom Checkout](https://docs.stripe.com/payments/quickstart.md), [Radar Sessions](https://docs.stripe.com/radar/radar-session.md), or [web Elements](https://docs.stripe.com/payments/elements.md). The score ranges between 0 and 99, where 0 is the lowest likelihood and 99 is the highest likelihood that a bot made the payment.
-
-You can write custom rules on `:bot_score:` to block payments that exceed a threshold you define. For early access, see [Bot abuse prevention](https://docs.stripe.com/radar/bot-abuse.md).
 
 ### Risk score (Classic risk) 
 

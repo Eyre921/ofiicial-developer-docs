@@ -297,7 +297,7 @@ This guide covers migration between different versions of Upstash Workflow.
 
     ### Updating `context.call`
 
-    If you were using [`context.call` method](/docs/workflow/basics/context#context-call) in your workflow, you will need to change
+    If you were using [`context.call` method](/docs/workflow/steps/call) in your workflow, you will need to change
     how it's called and what it returns. Here is what the change looks like:
 
     ```javascript

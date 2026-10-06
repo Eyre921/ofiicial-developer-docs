@@ -288,7 +288,7 @@ A PaymentIntent can’t be canceled after it has succeeded. When a PaymentIntent
 
 Stripe triggers [events](https://docs.stripe.com/api/events.md#events) every time a refund is created or changed. Some other actions, like reviews closing, also trigger events that are relevant to refunds.
 
-Make sure that your integration is set up to [handle events](https://docs.stripe.com/webhooks/handling-payment-events.md) and that you [verify webhook signatures](https://docs.stripe.com/webhooks.md#verify-events) to confirm that incoming events are from Stripe. You must also build internal logic for notifying customers or your team about the state of the refund process. At a minimum, Stripe recommends that you listen for the `refund.created` event.
+Make sure that your integration is set up to [handle events](https://docs.stripe.com/events/set-up-events.md) and that you [verify webhook signatures](https://docs.stripe.com/webhooks.md#verify-events) to confirm that incoming events are from Stripe. You must also build internal logic for notifying customers or your team about the state of the refund process. At a minimum, Stripe recommends that you listen for the `refund.created` event.
 
 The following table describes the most common events related to refunds.
 

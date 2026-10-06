@@ -71,7 +71,7 @@ If you enable Close account, connected accounts can close their own account from
 To receive notifications when a connected account closes its own account, set up a webhook to listen for the appropriate event based on the API version you use:
 
 - **Accounts v1**: Listen for the `account.application.deauthorized` event using a [Connect webhook](https://docs.stripe.com/connect/webhooks.md).
-- **Accounts v2**: Listen for the `v2.core.account.closed` event using an [Account webhook](https://docs.stripe.com/event-destinations.md).
+- **Accounts v2**: Listen for the `v2.core.account.closed` event using an [event destination](https://docs.stripe.com/events/how-events-work.md#event-destinations).
 
 ### Activity Hub
 

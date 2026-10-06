@@ -9,7 +9,7 @@ Learn how Fireworks operates Bring Your Own Cluster environments day to day.
 Bring Your Own Cluster (BYOC) is designed so your team keeps ownership of the cloud or hardware environment while Fireworks operates the model serving stack inside it.
 
 <Note>
-  Bring Your Own Cluster is in Private Preview for Enterprise customers. Contact [sales@fireworks.ai](mailto:sales@fireworks.ai) to participate in the preview and confirm operational support terms for your deployment.
+  Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to participate in the preview and confirm operational support terms for your deployment.
 </Note>
 
 ## Responsibilities

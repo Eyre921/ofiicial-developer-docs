@@ -1995,8 +1995,6 @@ Buckets are backed by Cloudflare R2 and are S3-compatible. `bucket.s3()` returns
 Do not presign URLs with this client. A presigned URL carries the credential, which reads and writes the whole bucket until it expires. Use [`signedReadUrl`](/docs/blob/bucket/reading#signedreadurl) and [`signedUploadUrl`](/docs/blob/bucket/writing#signed-upload-urls), which Upstash signs for one object; see [Who signs a URL](/docs/blob/reference/signing#who-signs-a-url).
 </Warning>
 
-An error message that mentions R2 is talking about the storage layer.
-
 ***
 
 ## Next steps
@@ -3056,7 +3054,7 @@ A hint is appended to the message in parentheses, so printing `message` alone is
 
 | Code | Built-in hint |
 | ---- | ------------- |
-| `signature_mismatch` | a 403 from R2 usually means the body length or type differs from the signature |
+| `signature_mismatch` | the upload did not match what was authorized, usually a different size or content type |
 | `length_required` | pass `{ size }` or `{ maxSize }` so the length is known before the first byte |
 
 ***
@@ -3135,10 +3133,10 @@ Storage is Cloudflare R2. Its errors are normalized before they leave the SDK, f
 | 401 | `unauthorized` |
 | 403 with `ExpiredToken`, `InvalidAccessKeyId` or `TokenRefreshRequired` | `unauthorized`, "storage refused the temporary credential", hinting that it expired mid-request and the SDK re-mints and retries once |
 | any other 403 | `signature_mismatch` |
-| 429, or `SlowDown` / `TooManyRequests` | `rate_limited`, "R2 rate limited the request" |
+| 429, or `SlowDown` / `TooManyRequests` | `rate_limited`, "storage rate limited the request" |
 | 503 | `not_ready` |
 | 413, or `EntityTooLarge` | `too_large` |
-| anything else | `request_failed`, message `R2 responded <status> <Code>: <Message>` |
+| anything else | `request_failed`, message `storage responded <status> <Code>`, with storage's own `<Message>` on `e.cause` |
 
 For that last row the status is passed through, except that a 5xx becomes 502, since the failure is upstream of your app rather than in it.
 
@@ -10403,6 +10401,8 @@ A box retains its full state between runs (files, installed packages, git histor
 
 When you create a box, Upstash provisions a new isolated container with its own filesystem, shell, and network stack. You can start from a fresh box or restore from a snapshot. Once provisioning finishes, the box is ready to receive commands.
 
+If the box has an [init command](/docs/box/overall/quickstart#init-command), the box runs it once after the container starts, on create, on resume, and after a snapshot restore.
+
 ### 2. Running
 
 The box automatically enters Running state after creation. Your agent can run bash commands, read and write files, interact with git, and make outbound network requests. `stdout` and `stderr` stream back in real-time.
@@ -10563,6 +10563,8 @@ box.resume()
 
 Paused boxes do not accrue active CPU charges. Pause/resume is not available when `keepAlive` is enabled.
 
+Resuming reruns the box's [init command](/docs/box/overall/quickstart#init-command), so a server started that way comes back with the box.
+
 ### Snapshot and restore
 
 Snapshots are the best way to turn a prepared environment into a reusable starting point, especially installing dependencies.
@@ -10715,7 +10717,7 @@ If you do not need the box to remain continuously available, keep `keepAlive` di
 
 ## Init command
 
-Boxes with `keepAlive` enabled can run a startup command whenever the box starts.
+A keep-alive box can run an init command, a startup script the box runs once each time its container starts.
 
 <CodeGroup>
 ```typescript box.ts
@@ -10735,36 +10737,7 @@ box = Box.create(
 ```
 </CodeGroup>
 
-This is useful for:
-
-* starting a web server
-* launching a background process
-* preparing a long-running agent environment
-* restoring a development workflow automatically after the box starts
-
-You can also manage the init command after creation:
-
-<CodeGroup>
-```typescript box.ts
-await box.setInitCommand("npm run dev")
-
-const command = await box.getInitCommand()
-await box.deleteInitCommand()
-
-console.log(box.keepAlive) // true
-```
-
-```python box.py
-box.set_init_command("npm run dev")
-
-command = box.get_init_command()
-box.delete_init_command()
-
-print(box.keep_alive)  # True
-```
-</CodeGroup>
-
-Init command management is only available when `keepAlive` is enabled.
+Init commands are not a keep-alive feature. Every box can have one, and get, set, and delete work on any box, including a paused one. See [Create a Box](/docs/box/overall/quickstart#init-command).
 
 ***
 
@@ -10774,7 +10747,7 @@ In the Upstash Console you can:
 
 * enable **Keep alive** while creating a box
 * choose the box **Size**
-* manage the **Init Command** later from the box settings page
+* manage the **Init Command** later from the box settings page (available on every box, not only keep-alive ones)
 
 ***
 
@@ -11618,8 +11591,10 @@ const { publicURLs } = await box.listPublicURLs()
 
 console.log(publicURLs)
 // [
-//   { url: "https://{BOX_ID}-3000.preview.box.upstash.com", port: 3000 },
-//   { url: "https://{BOX_ID}-8080.preview.box.upstash.com", port: 8080 },
+//   { id: "{BOX_ID}-3000", port: 3000, url: "https://{BOX_ID}-3000.preview.box.upstash.com",
+//     created_at: 1789990404, basic_auth: false, bearer_token: false },
+//   { id: "{BOX_ID}-8080", port: 8080, url: "https://{BOX_ID}-8080.preview.box.upstash.com",
+//     created_at: 1789990512, basic_auth: false, bearer_token: true },
 // ]
 ```
 
@@ -11682,9 +11657,44 @@ public_url2 = box.get_public_url(3000, bearer_token=True)
 
 ### Public URL Lifecycle
 
-Public URLs expire automatically when:
-* The box is paused
-* The box is deleted
+A public URL outlives a pause. While the box is paused, a request to the URL resumes it. See [Waking a Paused Box](#waking-a-paused-box).
+
+Public URLs are removed when the box is deleted.
+
+### Waking a Paused Box
+
+An incoming HTTP request to a public URL resumes its box if the box is paused. The request is held while the box comes back and until the app's port is listening, so the caller gets the app's real response instead of an error. If the public URL requires authentication, the credentials are checked before the box is woken.
+
+After container resume and configuration finish, the proxy waits up to 30 additional seconds for the app to become ready. The total HTTP request can take longer than 30 seconds. If the app is still not ready when that wait expires, the request returns `503` with a `Retry-After: 5` header: a browser gets a page that refreshes itself, and any other client gets a plain `503` to retry. The box is already resumed, and the app can continue starting in the background. Move slow dependency installation, such as a cold `npm install`, into the image or a snapshot so the [init command](/docs/box/overall/quickstart#init-command) only needs to start the app.
+
+Set a client timeout that allows for both container resume and the app readiness wait. Both examples below use 90 seconds; increase it if your environment needs more time. Some clients, including httpx, default to a shorter timeout than a cold start takes.
+
+<CodeGroup>
+```typescript box.ts
+const publicUrl = await box.getPublicURL(3000)
+
+await box.pause()
+
+// This request resumes the box and returns the app's response
+const response = await fetch(publicUrl.url, { signal: AbortSignal.timeout(90_000) })
+console.log(response.status) // 200, or 503 if the app is still starting
+```
+
+```python box.py
+import httpx
+
+public_url = box.get_public_url(3000)
+
+box.pause()
+
+# This request resumes the box and returns the app's response.
+# httpx defaults to a 5 second timeout, which a cold start can outlast.
+response = httpx.get(public_url.url, timeout=90.0)
+print(response.status_code)  # 200, or 503 if the app is still starting
+```
+</CodeGroup>
+
+For the app to answer on its own after a resume, the box needs to start its server again. An [init command](/docs/box/overall/quickstart#init-command) does that: the box runs it once every time the container starts, including after a resume.
 
 ### Auto-Resume
 
@@ -12066,8 +12076,32 @@ box = Box.create(runtime="node")
 Your box is ready to use! You can already use it as a standalone, secure, isolated sandbox with full shell access, git, and filesystem operations.
 
 <Tip>
-  You can also create a keep-alive box by setting `keepAlive: true`. Keep-alive boxes stay on between sessions and can run an `initCommand` at startup. See [Keep Alive](/docs/box/overall/keep-alive).
+  You can also create a keep-alive box by setting `keepAlive: true`. Keep-alive boxes stay on between sessions instead of auto-pausing. See [Keep Alive](/docs/box/overall/keep-alive).
 </Tip>
+
+#### Init command
+
+Pass `initCommand` to run a startup script each time the box starts. It runs once per container start, on create, on resume, and after a snapshot restore, so it is the place to start a server that should come back with the box.
+
+<CodeGroup>
+```typescript box.ts
+const box = await Box.create({
+  runtime: "node",
+  initCommand: `node -e 'require("http").createServer((_, res) => res.end("Hello from Box!")).listen(3000)'`,
+})
+```
+
+```python box.py
+box = Box.create(
+    runtime="node",
+    init_command="""node -e 'require("http").createServer((_, res) => res.end("Hello from Box!")).listen(3000)'""",
+)
+```
+</CodeGroup>
+
+This example uses Node.js's built-in HTTP server, so it works in a fresh box without installing packages. The command runs from `/workspace/home`. For an existing app, prepare its project files and dependencies before setting its startup command.
+
+You can read, change, or remove the command later with `getInitCommand`, `setInitCommand`, and `deleteInitCommand` (`get_init_command`, `set_init_command`, `delete_init_command` in Python), on any box including a paused one. A box restored from a snapshot does not inherit the snapshot's init command, so pass it again on the restore.
 
 ***
 
@@ -109001,7 +109035,7 @@ const wikiTool = new WikipediaQueryRun({
 
 For available toolkits, you can explore the [LangChain Toolkits](https://js.langchain.com/v0.1/docs/modules/agents/tools/toolkits/) or other AI SDK-compatible toolkits like [Agentic](https://agentic.so/sdks/ai-sdk).
 
-By default, the Workflow SDK will wrap the execute/invoke methods of the tools you pass with [`context.run`](/docs/workflow/basics/context#context-run) to run them as a Workflow step. This means, you can't use steps like context.call, context.notify etc in execute/invoke right away. If you want to define steps in invoke/execute, you can use the `executeAsStep` option:
+By default, the Workflow SDK will wrap the execute/invoke methods of the tools you pass with [`context.run`](/docs/workflow/steps/run) to run them as a Workflow step. This means, you can't use steps like context.call, context.notify etc in execute/invoke right away. If you want to define steps in invoke/execute, you can use the `executeAsStep` option:
 
 ```ts {12}
 import { WorkflowTool } from '@upstash/workflow'
@@ -109055,7 +109089,7 @@ export const { POST } = serve(async (context) => {
 The parameters for defining an agent are as follows:
 
 * **`model`**: The LLM model that the agent will use.
-* **`name`**: The name of the agent. This name will be used when naming the [context.call steps](/docs/workflow/basics/context#context-call) for this agent. `context.call` is used when calling the LLM provider (such as OpenAI).
+* **`name`**: The name of the agent. This name will be used when naming the [context.call steps](/docs/workflow/steps/call) for this agent. `context.call` is used when calling the LLM provider (such as OpenAI).
 * **`maxSteps`**: The maximum number of times this agent can call the LLM provider (e.g., OpenAI).
 * **`tools`**: The list of tools available to the agent for completing tasks.
 * **`background`**: A description of the agent, which is used as a system prompt to provide context for the agent's behavior.
@@ -111595,9 +111629,21 @@ Workflows paused at a [`context.waitForEvent`](/docs/workflow/basics/context/wai
 
 ## Response
 
-Returns a list of `Waiter` objects representing the workflows that were notified:
+<ResponseField name="response" type="NotifyResponse[]">
+    A list of `NotifyResponse` objects, one for each workflow that was waiting on the event.
+    An empty list means no workflow was waiting.
 
-<ResponseField name="Waiter" type="object">
+    <Expandable defaultOpen>
+        <ResponseField name="messageId" type="string">
+            The ID of the notification message delivered to the workflow.
+            This is unique to every notification.
+        </ResponseField>
+
+        <ResponseField name="error" type="string">
+            Error message if delivering the notification to this waiter failed.
+        </ResponseField>
+
+        <ResponseField name="Waiter" type="object">
   <Expandable>
    	<ResponseField name="url" type="string" required>
       URL to call upon notify
@@ -111618,6 +111664,8 @@ Returns a list of `Waiter` objects representing the workflows that were notified
       Headers sent in case of time out
     </ResponseField>
   </Expandable>
+</ResponseField>
+    </Expandable>
 </ResponseField>
 
 ## Usage
@@ -112500,9 +112548,9 @@ Source: https://upstash.com/docs/workflow/changelog
 
 <Update label="August 2025">
 * **TypeScript SDK (`workflow-js`):**
-    * Added `retryDelay` option to dynamicaly program the retry duration. It can be configured on
-    [trigger](/docs/workflow/basics/client#trigger-workflow) , [context.call](/docs/workflow/basics/context#context-call)
-    or [serve](/docs/workflow/basics/serve#retrydelay)
+    * Added `retryDelay` option to dynamically program the retry duration. It can be configured on
+    [trigger](/docs/workflow/basics/client/trigger#body-retrydelay), [context.call](/docs/workflow/steps/call)
+    or `serve` (later moved to `client.trigger`, see the [migration guide](/docs/workflow/howto/migrations#configuration-moved-from-serve-to-trigger))
     * Added ability to detect if a given url is a workflow or not. Starting with `0.2.17` trigger made via the sdk can fail (instead of hanging),
     if there is no workflow serve on the given url.
 * **Console:**
@@ -112513,7 +112561,7 @@ Source: https://upstash.com/docs/workflow/changelog
 <Update label="July 2025">
 * **TypeScript SDK (`workflow-js`):**
     * Restart/Resume for DLQ is added to allow more options to handle failed runs. See [here](/docs/workflow/howto/failures#manually-handling-failed-workflow-runs)
-    * Added `WorkflowNonRetryableError` to fail a workflow without causing any retries. See [here](/docs/workflow/basics/context#error-handling-and-retries)
+    * Added `WorkflowNonRetryableError` to fail a workflow without causing any retries. See [here](/docs/workflow/features/retries/prevent-retries)
     * For additional bug fixes, see the full changelog [here](https://github.com/upstash/workflow-js/compare/v0.2.14...v0.2.16).
 </Update>
 
@@ -112595,8 +112643,8 @@ Source: https://upstash.com/docs/workflow/changelog
 
 <Update label="December 2024">
 * **TypeScript SDK (`workflow-js`):**
-    * Introduced third-party integrations, starting with Anthropic, Resend, and OpenAI. These integrations are automatically offloaded to workflows, ensuring long-running calls do not consume user environment time. See the related documentation [here](/docs/workflow/basics/context#context-api).
-    * Added a `timeout` parameter to `context.call`. Learn more in the [documentation](/docs/workflow/basics/context#context-call).
+    * Introduced third-party integrations, starting with Anthropic, Resend, and OpenAI. These integrations are automatically offloaded to workflows, ensuring long-running calls do not consume user environment time. See the related documentation [here](/docs/workflow/steps/api).
+    * Added a `timeout` parameter to `context.call`. Learn more in the [documentation](/docs/workflow/steps/call).
     * Improved support for workflows in Express and SvelteKit by adding the `useJSONContent` option.
     * Resolved loop detection issues on Cloudflare and Render.
     * Full changelog, including all fixes, is available [here](https://github.com/upstash/workflow-js/compare/v0.2.0...v0.2.3).
@@ -112614,10 +112662,10 @@ Source: https://upstash.com/docs/workflow/changelog
 * **TypeScript SDK (workflow-js):**
     * Added support for string durations (e.g., `1d`, `30s`) in `context.sleep` and `context.waitForEvent`.
     * Introduced integrations for [Astro](/docs/workflow/quickstarts/astro) and [Express](/docs/workflow/quickstarts/express).
-    * Added `client.trigger`, enabling workflows to start and return the workflow run ID. See the [documentation](/docs/workflow/basics/client#trigger-workflow).
-    * Added a retry option for `context.call`. See the [documentation](/docs/workflow/basics/context#context-call).
+    * Added `client.trigger`, enabling workflows to start and return the workflow run ID. See the [documentation](/docs/workflow/basics/client/trigger).
+    * Added a retry option for `context.call`. See the [documentation](/docs/workflow/steps/call).
     * Introduced a lazy fetch feature to support longer and larger workflows on resource-limited platforms.
-    * Added `context.cancel` to cancel the current workflow. See the [documentation](/docs/workflow/basics/context#context-cancel).
+    * Added `context.cancel` to cancel the current workflow. See the [documentation](/docs/workflow/steps/cancel).
     * Full changelog, including fixes, is available [here](https://github.com/upstash/workflow-js/compare/v0.1.2...v0.2.0).
 * **Workflow Server:**
     * Added bulk cancel functionality for workflow runs. See the [REST API](/docs/workflow/api-reference/runs/bulk-cancel-workflow-runs).
@@ -113339,7 +113387,7 @@ This way, you can invoke a workflow simply by passing the object to `context.inv
 # Notify
 Source: https://upstash.com/docs/workflow/features/notify
 
-You can notify all the workflow runs waitingi for a specific event ID.
+You can notify all the workflow runs waiting for a specific event ID.
 There are two ways to send a notify request.
 
 ## Notify within Workflow
@@ -113371,45 +113419,6 @@ export const { POST } = serve<string>(async (context) => {
 });
 ```
 
-```python Python
-from fastapi import FastAPI
-from upstash_workflow.fastapi import Serve
-from upstash_workflow import AsyncWorkflowContext
-from datetime import datetime
-
-app = FastAPI()
-serve = Serve(app)
-
-@serve.post("/api/order-processor")
-async def order_processor(context: AsyncWorkflowContext[str]) -> None:
-    order_id = context.request_payload["order_id"]
-    processing_result = context.request_payload["processing_result"]
-
-    # Process the order
-    async def _process_order():
-        return await process_order(order_id)
-
-    result = await context.run("process-order", _process_order)
-
-    # Notify waiting workflows that processing is complete
-    notify_response = await context.notify(
-        "notify-processing-complete",
-        f"order-{order_id}",
-        {
-            "order_id": order_id,
-            "status": "completed",
-            "result": processing_result,
-            "completed_at": datetime.utcnow().isoformat()
-        }
-    )
-
-    # Log notification results
-    async def _log_notification():
-        print(f"Notified {len(notify_response)} waiting workflows")
-        return notify_response
-
-    await context.run("log-notification", _log_notification)
-```
 </CodeGroup>
 
 ## External Notification
@@ -113433,22 +113442,6 @@ await client.notify({
 });
 ```
 
-```python Python
-from upstash_workflow import Client
-
-client = Client("<WORKFLOW_TOKEN>")
-
-# Notify workflows waiting for a specific event
-await client.notify(
-    event_id="order-completed-123",
-    event_data={
-        "order_id": "123",
-        "status": "completed",
-        "delivery_time": "2 days",
-        "tracking_number": "TRK123456"
-    }
-)
-```
 </CodeGroup>
 
 ## Lookback Functionality
@@ -113482,27 +113475,9 @@ await client.notify({
 });
 ```
 
-```python Python
-from upstash_workflow import Client
-
-client = Client("<WORKFLOW_TOKEN>")
-
-# Trigger a workflow and get its run ID
-workflow_run = await client.trigger(
-    url="https://your-app.com/api/process-order",
-    body={"order_id": "123"}
-)
-
-# Immediately notify it with lookback enabled
-await client.notify(
-    event_id="payment-verified",
-    event_data={"verified": True, "amount": 100},
-    workflow_run_id=workflow_run.workflow_run_id  # Enables lookback
-)
-```
 </CodeGroup>
 
-The same also applies to `context.notify`
+The same also applies to `context.notify` by passing the `workflowRunId` as the fourth argument:
 
 <CodeGroup>
 ```typescript TypeScript
@@ -113522,9 +113497,9 @@ export const { POST } = serve<string>(async (context) => {
       orderId,
       status: "completed",
       result: processingResult,
-      completedAt: new Date().toISOString(),
-      workflowRunId: "targetWorkflowRunId"  // Enables lookback
-    }
+      completedAt: new Date().toISOString()
+    },
+    "targetWorkflowRunId" // Enables lookback
   );
 
 });
@@ -113823,46 +113798,6 @@ export const { POST } = serve<string>(async (context) => {
 });
 ```
 
-```python Python
-from fastapi import FastAPI
-from upstash_workflow.fastapi import Serve
-from upstash_workflow import AsyncWorkflowContext
-
-app = FastAPI()
-serve = Serve(app)
-
-@serve.post("/api/order-processing")
-async def order_processing(context: AsyncWorkflowContext[str]) -> None:
-    order_id = context.request_payload["order_id"]
-    user_email = context.request_payload["user_email"]
-
-    # Send order processing request
-    async def _request_order_processing():
-        return await request_order_processing(order_id)
-
-    await context.run("request-order-processing", _request_order_processing)
-
-    # Wait for order processing completion
-    result = await context.wait_for_event(
-        "wait-for-order-processing",
-        f"order-{order_id}",
-        timeout="10m"  # 10 minutes timeout
-    )
-
-    if result["timeout"]:
-        # Handle timeout scenario
-        async def _handle_timeout():
-            return await handle_order_timeout(order_id, user_email)
-
-        await context.run("handle-timeout", _handle_timeout)
-        return
-
-    # Process the completed order
-    async def _process_completed_order():
-        return await process_completed_order(order_id, result["event_data"])
-
-    await context.run("process-completed-order", _process_completed_order)
-```
 </CodeGroup>
 
 # Overview
@@ -113939,24 +113874,24 @@ import { Client } from "@upstash/workflow";
 const client = new Client({ token: "<WORKFLOW_TOKEN>" });
 
 const result = await client.notify({
-    eventId,
-    eventData
+  eventId,
+  eventData,
 });
 
-// Check if any workflows were notified
-if (result.waiters && result.waiters.length > 0) {
-    console.log(`Notified ${result.waiters.length} workflows`);
-    return result;
+// `result` is a list with one entry per notified workflow
+if (result.length > 0) {
+  console.log(`Notified ${result.length} workflows`);
+} else {
+  // If no workflows were waiting, wait and retry once
+  console.log("No workflows waiting, retrying in 5 seconds...");
+  await new Promise((resolve) => setTimeout(resolve, 5000));
+
+  const retryResult = await client.notify({
+    eventId,
+    eventData,
+  });
+  console.log(`Retry notified ${retryResult.length} workflows`);
 }
-
-// If no workflows were waiting, wait and retry once
-console.log("No workflows waiting, retrying in 5 seconds...");
-await new Promise(resolve => setTimeout(resolve, 5000));
-
-return await client.notify({
-    eventId,
-    eventData
-});
 ```
 </CodeGroup>
 
@@ -114068,10 +114003,10 @@ Webhooks and [Wait for Event](/docs/workflow/features/wait-for-event) serve simi
 | **Trigger** | External HTTP call to unique URL | Notify via Upstash Workflow Client |
 | **Setup** | Create webhook, pass URL to external service | Share event ID with external service |
 | **Integration** | Easy with callback-based APIs | Requires Workflow Client integration |
-| **Lookback** | ✅ Yes - safe against race conditions | ❌ No - notify before wait will be lost |
+| **Lookback** | ✅ Yes - safe against race conditions | ⚠️ Only when notifying a specific run with `workflowRunId`; otherwise notify before wait is lost |
 | **Best For** | Third-party API callbacks | Internal event notifications |
 
-Choose webhooks when integrating with external services that support callback URLs, or when you need protection against race conditions. Choose Wait for Event when you have control over the notification mechanism and can use the Workflow Client.
+Choose webhooks when integrating with external services that support callback URLs, or when you need protection against race conditions without knowing the target workflow run. Choose Wait for Event when you have control over the notification mechanism and can use the Workflow Client. If you know the workflow run ID, pass it as `workflowRunId` to `notify` to enable [lookback](/docs/workflow/features/wait-for-event#option-1-lookback-with-workflowrunid).
 
 ## API Reference
 
@@ -115345,7 +115280,7 @@ This guide covers migration between different versions of Upstash Workflow.
 
     ### Updating `context.call`
 
-    If you were using [`context.call` method](/docs/workflow/basics/context#context-call) in your workflow, you will need to change
+    If you were using [`context.call` method](/docs/workflow/steps/call) in your workflow, you will need to change
     how it's called and what it returns. Here is what the change looks like:
 
     ```javascript
@@ -116360,22 +116295,6 @@ const { workflowRunId } = await client.trigger({
 });
 ```
 
-```python Python
-from upstash_workflow import Client
-
-client = Client("<QSTASH_TOKEN>")
-client.trigger(
-    url="https://my-app.com/api/workflow",
-    body={
-        "hello": "world",
-    },
-    redact={
-        "body": True,
-        "header": ["Authorization"] // or `header: True` to redact all headers
-    },
-)
-```
-
 ```bash cURL
 curl -XPOST \
     -H 'Authorization: Bearer XXX' \
@@ -117306,7 +117225,7 @@ execute: ({ location }) => context.run("weather tool", () => {
 # Anthropic
 Source: https://upstash.com/docs/workflow/integrations/anthropic
 
-The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/basics/context#context-call).
+The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/steps/call).
 
 However, if you need to call the Anthropic endpoint for text generation ([`/v1/messages`](https://docs.anthropic.com/en/api/messages)), you can leverage the type-safe method `context.api.anthropic.call` method:
 
@@ -117425,7 +117344,7 @@ Source: https://upstash.com/docs/workflow/integrations/openai
 
 ### Calling OpenAI
 
-The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/basics/context#context-call).
+The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/steps/call).
 
 However, if you need to call the OpenAI endpoint for text generation ([`/v1/chat/completions`](https://platform.openai.com/docs/api-reference/chat)), you can leverage the type-safe method `context.api.openai.call` method:
 
@@ -117572,7 +117491,7 @@ If you encounter issues, contact support.
 # Resend
 Source: https://upstash.com/docs/workflow/integrations/resend
 
-The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/basics/context#context-call).
+The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/steps/call).
 
 However, if you need to call the Resend endpoint to send emails ([`/emails`](https://resend.com/docs/api-reference/emails/send-email) or [`/emails/batch`](https://resend.com/docs/api-reference/emails/send-batch-emails)), you can leverage the type-safe method `context.api.resend.call` method:
 
@@ -117669,10 +117588,10 @@ For detailed pricing information based on different plans, visit our [Workflow p
 
 ### Message Usage per Workflow Run
 
-* [context.run](/docs/workflow/basics/context#context-run), [context.sleep](/docs/workflow/basics/context#context-sleep), [context.sleepUntil](/docs/workflow/basics/context#context-sleepuntil), or [context.waitForEvent](/docs/workflow/basics/context#context-waitforevent) commands generate a single message.
-* The [context.call](/docs/workflow/basics/context#context-call) command generates two messages.
+* [context.run](/docs/workflow/steps/run), [context.sleep](/docs/workflow/steps/sleep), [context.sleepUntil](/docs/workflow/steps/sleepUntil), or [context.waitForEvent](/docs/workflow/steps/waitForEvent) commands generate a single message.
+* The [context.call](/docs/workflow/steps/call) command generates two messages.
 * Each step in a [parallel run](/docs/workflow/howto/parallel-runs) costs 1 extra message.
-* If the workflow endpoint or URL in [context.call](/docs/workflow/basics/context#context-call) returns an error or is unreachable, the workflow SDK will retry the call (up to 3 times by default). Each retry counts as a new message.
+* If the workflow endpoint or URL in [context.call](/docs/workflow/steps/call) returns an error or is unreachable, the workflow SDK will retry the call (up to 3 times by default). Each retry counts as a new message.
 
 - [Astro](https://upstash.com/docs/workflow/quickstarts/astro.md)
 - [Cloudflare Workers](https://upstash.com/docs/workflow/quickstarts/cloudflare-workers.md)
@@ -118030,7 +117949,7 @@ async def example(context: AsyncWorkflowContext[Request]) -> None:
 
 <Tip>
     We provide integrations for **OpenAI, Anthropic, and Resend**, allowing you to call their APIs with strongly typed request bodies using `context.call`.
-    See [`context.api`](/docs/workflow/basics/context#context-api) for details.
+    See [`context.api`](/docs/workflow/steps/api) for details.
 </Tip>
 
 <Info>
@@ -118208,7 +118127,7 @@ Source: https://upstash.com/docs/workflow/steps/notify
 
 `context.notify()` notifies workflows that are waiting for a specific event, passing along an optional payload.
 
-It is typically used in combination with [`context.waitForEvent`](/docs/workflow/basics/context#context-waitforevent).
+It is typically used in combination with [`context.waitForEvent`](/docs/workflow/steps/waitForEvent).
 
 ## Arguments
 
@@ -118234,10 +118153,19 @@ It is typically used in combination with [`context.waitForEvent`](/docs/workflow
 
 ## Response
 
-`context.notify()` returns a list of waiters describing the workflows that were notified.
+`context.notify()` returns an object containing the notified event and the list of workflows that were notified.
+
+<ResponseField name="eventId" type="string">
+    The event ID that was notified.
+</ResponseField>
+
+<ResponseField name="eventData" type="any">
+    The event data sent with the notification.
+</ResponseField>
 
 <ResponseField name="notifyResponse" type="NotifyResponse[]">
-    A list of `NotifyResponse` objects describing each workflow that was waiting on the event.
+    A list of `NotifyResponse` objects, one for each workflow that was waiting on the event.
+    An empty list means no workflow was waiting.
 
     <Expandable defaultOpen>
         <ResponseField name="messageId" type="string">
@@ -118245,12 +118173,8 @@ It is typically used in combination with [`context.waitForEvent`](/docs/workflow
             This is unique to every notification.
         </ResponseField>
 
-        <ResponseField name="workflowRunId" type="string">
-            The unique identifier of the workflow run that was notified.
-        </ResponseField>
-
-        <ResponseField name="workflowCreatedAt" type="number">
-            Unix timestamp (in milliseconds) representing when the workflow was created.
+        <ResponseField name="error" type="string">
+            Error message if delivering the notification to this waiter failed.
         </ResponseField>
 
         <ResponseField name="Waiter" type="object">
@@ -118646,19 +118570,24 @@ Default timeout value is 7 days.
     A unique identifier for the event to wait on.
 </ParamField>
 
-<ParamField body="timeout" type="number|string">
-    The maximum time to wait before continuing execution.
+<ParamField body="options" type="object">
+    <Expandable defaultOpen>
+        <ParamField body="timeout" type="number|string">
+            The maximum time to wait before continuing execution.
 
-    * **String format**: Human‑readable duration (e.g., `"10s"`, `"2h"`, `"1d"`).
-    * **Number format**: Duration in seconds (e.g., `60`, `3600`).
+            * **String format**: Human‑readable duration (e.g., `"10s"`, `"2h"`, `"1d"`).
+            * **Number format**: Duration in seconds (e.g., `60`, `3600`).
 
-    Defaults to `7d` (7 days).
+            Defaults to `7d` (7 days).
+        </ParamField>
+    </Expandable>
 </ParamField>
 
 ## Response
 
-<ResponseField name="eventData" type="string|object">
+<ResponseField name="eventData" type="TEventData">
     The data passed in when the event is triggered via `notify()`.
+    Its type can be set with the generic parameter, e.g. `context.waitForEvent<{ approved: boolean }>(...)`. Defaults to `unknown`.
 </ResponseField>
 
 <ResponseField name="timeout" type="boolean">
@@ -118898,7 +118827,7 @@ You can find an example of this usage in [our documentation on usage with AI SDK
 
 ## Verification Failed Scenarios
 
-When [QStash signature verification](/docs/workflow/howto/security#using-qstashs-built-in-request-verification-recommended) is enabled, you might encounter an error like:
+When [QStash signature verification](/docs/workflow/howto/security#built-in-request-verification-recommended) is enabled, you might encounter an error like:
 
 ```
 Failed to verify that the Workflow request comes from QStash: some-error
@@ -118989,7 +118918,7 @@ Retry settings can be configured in two locations:
 1. [**Workflow Start** (client.trigger)](/docs/workflow/howto/start): For the triggered workflow run
    * Default retries: 3
 
-2. [**Context Call**](/docs/workflow/basics/context#context-call): For third party requests
+2. [**Context Call**](/docs/workflow/steps/call): For third party requests
    * Default retries: 0
 
 ## Verbose Mode Diagnostics
@@ -119001,7 +118930,7 @@ Retry settings can be configured in two locations:
   [Changelog](/docs/workflow/changelog) for updates.
 </Note>
 
-Use [verbose mode](/docs/workflow/basics/serve#verbose) to diagnose workflow issues.
+Use [verbose mode](/docs/workflow/basics/serve/advanced#path-verbose) to diagnose workflow issues.
 
 The logs in this section should be seen very rarely. If you observe these logs consistently, you can reach out to our support.
 
@@ -119016,9 +118945,9 @@ localhost. Received: ...
 This error indicates that the workflow URL has localhost. Publish requests will fail and workflow won't be able to run.
 
 **Potential Solutions:**
-* Verify [baseUrl](/docs/workflow/basics/serve#baseurl)
+* Verify [baseUrl](/docs/workflow/basics/serve/advanced#path-baseurl)
 * Check UPSTASH_WORKFLOW_URL
-* Explicitly pass the full [url](/docs/workflow/basics/serve#url)
+* Explicitly pass the full [url](/docs/workflow/basics/serve/advanced#path-url)
 
 ### Deduplication Log
 Since QStash has at least once delivery guarantee, there is a very small chance that a step will run twice. This is why we suggest [idempotancy](/docs/workflow/basics/caveats#ensure-idempotency-in-context-run). When this happens, the duplicate step should print the following log and terminate:
@@ -119070,7 +118999,7 @@ If it appears like the initial step has failed:
 * Verify that you're using the latest SDK version both in the workflow endpoint definition and in the code that calls `client.trigger`.
 
 If it appears like the initial step has completed but the workflow is still stuck:
-* Workflow SDK could be unable to correctly infer the workflow URL due to a proxy or an issue in the request object. To check if this is the issue, try passing the [`baseUrl` parameter to the `serve` method](/docs/workflow/basics/serve/advanced#param-base-url). This will override the automatic URL inference and use the provided base URL instead.
+* Workflow SDK could be unable to correctly infer the workflow URL due to a proxy or an issue in the request object. To check if this is the issue, try passing the [`baseUrl` parameter to the `serve` method](/docs/workflow/basics/serve/advanced#path-baseurl). This will override the automatic URL inference and use the provided base URL instead.
 
 ## Non-workflow Destination Error
 

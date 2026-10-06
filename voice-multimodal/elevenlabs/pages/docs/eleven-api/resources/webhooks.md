@@ -23,7 +23,7 @@ Certain events within ElevenLabs can be configured to trigger webhooks, allowing
 
 Webhooks can be created, disabled and deleted from the general settings page. For users within [Workspaces](/docs/overview/administration/workspaces/overview), only the workspace admins can configure the webhooks for the workspace.
 
-![HMAC webhook configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6/assets/images/product-guides/administration/hmacwebhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T113616Z&X-Amz-Expires=604800&X-Amz-Signature=dcf113a8e55b23d5d0ccd9e45e221d09c1c3c0004560ad8ab414a894ee9e452a&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![HMAC webhook configuration](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/9ea298daac1c64eb43c802a12f7824e83accca44ba2edd1d01a39bcd62c0b9d6/assets/images/product-guides/administration/hmacwebhook.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T175949Z&X-Amz-Expires=604800&X-Amz-Signature=fd4558c0e14b3fe4e507cc5cf60a05a770e4d41e8f1d28629302df2a8a9513e6&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 After creation, the webhook can be selected to listen for events within product settings such as [Agents Platform](/docs/eleven-agents/workflows/post-call-webhooks).
 
@@ -35,7 +35,9 @@ Webhook retries can be enabled per webhook to automatically reattempt delivery w
 
 > **Note**
 >
-> Retries are currently only supported for `post_call_transcription` webhooks.
+> Retries are supported for ElevenAgents [post-call webhooks](/docs/eleven-agents/workflows/post-call-webhooks), including transcription
+> (`post_call_transcription`), audio (`post_call_audio`), and call initiation failure
+> (`call_initiation_failure`) events.
 
 ### Retry schedule
 
@@ -53,17 +55,20 @@ A small random jitter (up to 10% of the delay) is added to each retry to distrib
 
 ### Retryable errors
 
-Not all failures trigger a retry. Only the following HTTP status codes are considered retryable:
+Not all failures trigger a retry. Only the following failures are considered retryable:
 
 * `5xx` status codes (server errors such as 500, 502, 503, 504).
 * `429` (Too Many Requests).
 * `408` (Request Timeout).
+* Connection errors and request timeouts.
 
 Request errors in the `4xx` range (such as 400, 401, 403, 404) are **not** retried, since they typically indicate a configuration issue that requires manual correction.
 
 ### Per-webhook queue limits
 
 Each webhook is limited to 100 pending retry jobs. If a webhook accumulates more than 100 queued retries, additional jobs are dropped until existing retries are processed. This prevents a single misconfigured webhook from consuming excessive resources.
+
+Audio webhooks have two additional limits. An audio payload larger than 50 MiB is delivered once and not retried, and the queued audio retries for a single webhook cannot exceed 400 MiB in total.
 
 ### Auto-disable behavior
 

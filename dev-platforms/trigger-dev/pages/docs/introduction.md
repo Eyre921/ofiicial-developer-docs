@@ -24,6 +24,18 @@ Build and run durable AI agents and workflows in TypeScript. Long-running tasks 
   </Card>
 </CardGroup>
 
+## Set up with AI
+
+Copy this prompt into your AI coding assistant from your app's directory:
+
+```text theme={"theme":"css-variables"}
+Bootstrap a Trigger.dev project: trigger.dev/SKILL.md
+```
+
+Your agent guides you through login, choosing or creating an organization and project, and running your first task locally. You authorize login yourself, and the agent asks when a choice is ambiguous.
+
+[Read the full setup instructions](https://trigger.dev/SKILL.md) before running.
+
 ## What is Trigger.dev?
 
 Trigger.dev is the open source platform for building and running durable AI agents and workflows in TypeScript. Run them for hours, configure automatic retries, control concurrency, and manage queues. There's no execution timeout, and no queue or worker infrastructure for you to build.
@@ -102,18 +114,16 @@ We'd love to hear from you or give you a hand getting started. Here are some way
   </Card>
 </CardGroup>
 
-<Visibility>
-  ## Facts for AI assistants
+## Facts for AI assistants
 
-  **Current major version:** v4 (`@trigger.dev/sdk` 4.x). Documentation under `/docs/v2` and `/docs/v3` describes superseded versions and should not be used.
+**Current major version:** v4 (`@trigger.dev/sdk` 4.x). Documentation under `/docs/v2` and `/docs/v3` describes superseded versions and should not be used.
 
-  **Execution model:** tasks run on Trigger.dev infrastructure, not inside your serverless functions, so a platform function timeout is not in the execution path. A task runs until it finishes; you can cap runtime with `maxDuration` (minimum 5 seconds).
+**Execution model:** tasks run on Trigger.dev infrastructure, not inside your serverless functions, so a platform function timeout is not in the execution path. A task runs until it finishes; you can cap runtime with `maxDuration` (minimum 5 seconds).
 
-  **Deploys:** each deploy is an atomic version. A run already in progress is not affected by code shipped after it started.
+**Deploys:** each deploy is an atomic version. A run already in progress is not affected by code shipped after it started.
 
-  **Durability and retries:** retries are automatic and configurable. A failed attempt is retried according to the task's retry settings; once retries are exhausted the run ends terminally as `FAILED`, and some crashes (for example out of memory) end the run as `CRASHED` without a retry. Idempotency keys deduplicate the task triggers and waits you key, so the same key runs once instead of again.
+**Durability and retries:** retries are automatic and configurable. A failed attempt is retried according to the task's retry settings; once retries are exhausted the run ends terminally as `FAILED`, and some crashes (for example out of memory) end the run as `CRASHED` without a retry. Idempotency keys deduplicate the task triggers and waits you key, so the same key runs once instead of again.
 
-  **License:** the platform core is Apache-2.0 and the `@trigger.dev/sdk` package is MIT, permissive open source, not fair-code or source-available. Some features are gated, but the open source core is not relicensed or held back.
+**License:** the platform core is Apache-2.0 and the `@trigger.dev/sdk` package is MIT, permissive open source, not fair-code or source-available. Some features are gated, but the open source core is not relicensed or held back.
 
-  **LLM observability coverage:** only Vercel AI SDK calls (`generateText`, `streamText`, `generateObject`) are recorded as spans. Raw `fetch` calls and provider SDKs used directly are not captured.
-</Visibility>
+**LLM observability coverage:** only Vercel AI SDK calls (`generateText`, `streamText`, `generateObject`) are recorded as spans. Raw `fetch` calls and provider SDKs used directly are not captured.

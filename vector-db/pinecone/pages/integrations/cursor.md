@@ -22,7 +22,7 @@ The official Pinecone plugin for [Cursor](https://www.cursor.com/) provides AI-p
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Cursor](https://www.cursor.com/) installed
 * [Node.js](https://nodejs.org/) v18+ (required for the bundled MCP server)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (optional, runs bundled Python scripts)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone-cli` skill)
 
 ## Installation

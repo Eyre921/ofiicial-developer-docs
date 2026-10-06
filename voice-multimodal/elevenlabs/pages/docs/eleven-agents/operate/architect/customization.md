@@ -20,14 +20,14 @@ ElevenAgents Architect's own instructions are fixed, but you control the context
 
 To open them, go to the agent's **Settings** > **Architect** tab, or to **Workspace Settings** > **Architect**. You can also select **Customization** on the Architect tab home page. The workspace page also lists the agent context for each of your agents.
 
-![Customization on the Architect tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b374ed85570a53cde1f0617a3e537af3f7a4c92c83c02d63eb59f528d2668c5b/assets/images/agents/architect-customization-entry.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T113414Z&X-Amz-Expires=604800&X-Amz-Signature=cee022e22b84ec79c10fe8f416b0833b3f9d7835728762c6cdd2daef2b674a2f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Customization on the Architect tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b374ed85570a53cde1f0617a3e537af3f7a4c92c83c02d63eb59f528d2668c5b/assets/images/agents/architect-customization-entry.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T233146Z&X-Amz-Expires=604800&X-Amz-Signature=e0e3def650768b1f31f029e4992234d32b16d02d332452b736a0989d3de8f144&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Note**
 >
 > These documents only guide how Architect helps you build. They don't change the agent's runtime
 > behavior or the system prompt it uses with callers.
 
-![Architect settings for an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d12588d007d18de1de31d047da07e5da57cce7f9fca6203becc7449c3ab1e809/assets/images/agents/architect-customization.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T113414Z&X-Amz-Expires=604800&X-Amz-Signature=a90f1a4df42856cfa15e6846c6694130ea95e634d1990729d6a6480f1ba5651d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Architect settings for an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d12588d007d18de1de31d047da07e5da57cce7f9fca6203becc7449c3ab1e809/assets/images/agents/architect-customization.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T233146Z&X-Amz-Expires=604800&X-Amz-Signature=08ffd5fc52472b0d4e5babd6b8e5a580ec22ce09ce8634cf5d48f4c3e302e1af&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 ## Defining the standards ElevenAgents Architect follows
 

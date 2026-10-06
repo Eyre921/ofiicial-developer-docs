@@ -37,22 +37,6 @@ const { workflowRunId } = await client.trigger({
 });
 ```
 
-```python Python
-from upstash_workflow import Client
-
-client = Client("<QSTASH_TOKEN>")
-client.trigger(
-    url="https://my-app.com/api/workflow",
-    body={
-        "hello": "world",
-    },
-    redact={
-        "body": True,
-        "header": ["Authorization"] // or `header: True` to redact all headers
-    },
-)
-```
-
 ```bash cURL
 curl -XPOST \
     -H 'Authorization: Bearer XXX' \

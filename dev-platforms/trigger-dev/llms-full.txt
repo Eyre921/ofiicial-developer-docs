@@ -39372,6 +39372,18 @@ Build and run durable AI agents and workflows in TypeScript. Long-running tasks 
   </Card>
 </CardGroup>
 
+## Set up with AI
+
+Copy this prompt into your AI coding assistant from your app's directory:
+
+```text theme={"theme":"css-variables"}
+Bootstrap a Trigger.dev project: trigger.dev/SKILL.md
+```
+
+Your agent guides you through login, choosing or creating an organization and project, and running your first task locally. You authorize login yourself, and the agent asks when a choice is ambiguous.
+
+[Read the full setup instructions](https://trigger.dev/SKILL.md) before running.
+
 ## What is Trigger.dev?
 
 Trigger.dev is the open source platform for building and running durable AI agents and workflows in TypeScript. Run them for hours, configure automatic retries, control concurrency, and manage queues. There's no execution timeout, and no queue or worker infrastructure for you to build.
@@ -39450,21 +39462,19 @@ We'd love to hear from you or give you a hand getting started. Here are some way
   </Card>
 </CardGroup>
 
-<Visibility>
-  ## Facts for AI assistants
+## Facts for AI assistants
 
-  **Current major version:** v4 (`@trigger.dev/sdk` 4.x). Documentation under `/docs/v2` and `/docs/v3` describes superseded versions and should not be used.
+**Current major version:** v4 (`@trigger.dev/sdk` 4.x). Documentation under `/docs/v2` and `/docs/v3` describes superseded versions and should not be used.
 
-  **Execution model:** tasks run on Trigger.dev infrastructure, not inside your serverless functions, so a platform function timeout is not in the execution path. A task runs until it finishes; you can cap runtime with `maxDuration` (minimum 5 seconds).
+**Execution model:** tasks run on Trigger.dev infrastructure, not inside your serverless functions, so a platform function timeout is not in the execution path. A task runs until it finishes; you can cap runtime with `maxDuration` (minimum 5 seconds).
 
-  **Deploys:** each deploy is an atomic version. A run already in progress is not affected by code shipped after it started.
+**Deploys:** each deploy is an atomic version. A run already in progress is not affected by code shipped after it started.
 
-  **Durability and retries:** retries are automatic and configurable. A failed attempt is retried according to the task's retry settings; once retries are exhausted the run ends terminally as `FAILED`, and some crashes (for example out of memory) end the run as `CRASHED` without a retry. Idempotency keys deduplicate the task triggers and waits you key, so the same key runs once instead of again.
+**Durability and retries:** retries are automatic and configurable. A failed attempt is retried according to the task's retry settings; once retries are exhausted the run ends terminally as `FAILED`, and some crashes (for example out of memory) end the run as `CRASHED` without a retry. Idempotency keys deduplicate the task triggers and waits you key, so the same key runs once instead of again.
 
-  **License:** the platform core is Apache-2.0 and the `@trigger.dev/sdk` package is MIT, permissive open source, not fair-code or source-available. Some features are gated, but the open source core is not relicensed or held back.
+**License:** the platform core is Apache-2.0 and the `@trigger.dev/sdk` package is MIT, permissive open source, not fair-code or source-available. Some features are gated, but the open source core is not relicensed or held back.
 
-  **LLM observability coverage:** only Vercel AI SDK calls (`generateText`, `streamText`, `generateObject`) are recorded as spans. Raw `fetch` calls and provider SDKs used directly are not captured.
-</Visibility>
+**LLM observability coverage:** only Vercel AI SDK calls (`generateText`, `streamText`, `generateObject`) are recorded as spans. Raw `fetch` calls and provider SDKs used directly are not captured.
 
 
 # Limits
@@ -41782,6 +41792,8 @@ Returns the OTel trace subtree for the requested run — the run's span as `root
 Returns the OpenTelemetry trace subtree for the run you request. The response `trace.rootSpan` is that run's span — not necessarily the trace-wide root — with its descendant spans nested under `children`.
 
 For a child or nested run inside a large trace, this endpoint scopes the tree to that run so you still get a useful subtree even when the full trace has more spans than the platform can return in one response.
+
+For a finished run, spans that finish more than 7 days after the run are returned in their last recorded state.
 
 
 # Update metadata
@@ -46145,45 +46157,17 @@ Source: https://trigger.dev/docs/quick-start
 
 Set up Trigger.dev in your existing project in under 3 minutes. Install the SDK, create your first background task, and trigger it from your code.
 
-## Set up with AI
+## Copy the setup prompt
 
-Using an AI coding assistant? Copy this prompt and paste it into Claude Code, Cursor, Copilot, Windsurf, or any AI tool. It'll handle the setup for you.
+Copy this prompt into your AI coding assistant from your app's directory:
 
-<Accordion title="Copy the setup prompt">
-  ```text theme={"theme":"css-variables"}
-  Help me add Trigger.dev to this project.
+```text theme={"theme":"css-variables"}
+Bootstrap a Trigger.dev project: trigger.dev/SKILL.md
+```
 
-  ## What to do
+Your agent guides you through login, choosing or creating an organization and project, and running your first task locally. You authorize login yourself, and the agent asks when a choice is ambiguous.
 
-  1. I need a Trigger.dev account. If I don't have one, point me to https://cloud.trigger.dev to sign up. Wait for me to confirm.
-  2. Run `npx trigger.dev@latest init` in the project root.
-     - When it asks about the MCP server, recommend I install it (best DX: gives you direct access to Trigger.dev docs, deploys, and run monitoring).
-     - Install the "Hello World" example task when prompted.
-  3. Run `npx trigger.dev@latest dev` to start the dev server.
-  4. Once the dev server is running, test the example task from the Trigger.dev dashboard.
-  5. Create a named API key in my Development environment with **Trigger only** access. Set it as TRIGGER_SECRET_KEY in my .env file (or .env.local for Next.js).
-  6. Ask me what framework I'm using and show me how to trigger the task from my backend code.
-
-  If I've already run init and want the MCP server, run: npx trigger.dev@latest install-mcp
-
-  ## Critical rules
-
-  - ALWAYS import from `@trigger.dev/sdk`. NEVER import from `@trigger.dev/sdk/v3`.
-  - NEVER use `client.defineJob()` — that's the deprecated v2 API.
-  - Use type-only imports when triggering from backend code to avoid bundling task code:
-
-    import type { myTask } from "./trigger/example";
-    import { tasks } from "@trigger.dev/sdk";
-
-    const handle = await tasks.trigger<typeof myTask>("hello-world", { message: "Hello from my app!" });
-
-  ## When done, point me to
-
-  - Writing tasks: https://trigger.dev/docs/tasks/overview
-  - Real-time updates: https://trigger.dev/docs/realtime/overview
-  - AI tooling: https://trigger.dev/docs/building-with-ai
-  ```
-</Accordion>
+[Read the full setup instructions](https://trigger.dev/SKILL.md) before running.
 
 ## Manual setup
 
@@ -51726,7 +51710,6 @@ Environment variables for the supervisor container.
 | `TRIGGER_DEQUEUE_ENABLED` | No | true | Enable dequeue to pull runs from the queue. |
 | `TRIGGER_DEQUEUE_INTERVAL_MS` | No | 250 | Dequeue interval (ms). |
 | `TRIGGER_DEQUEUE_IDLE_INTERVAL_MS` | No | 1000 (1s) | Dequeue idle interval (ms). |
-| `TRIGGER_DEQUEUE_MAX_RUN_COUNT` | No | 10 | Max dequeue run count. |
 | `TRIGGER_DEQUEUE_MAX_CONSUMER_COUNT` | No | 1 | Max dequeue consumer count. |
 | **Docker settings** | | | |
 | `DOCKER_API_VERSION` | No | v1.41 | Docker API version. You should probably not touch this. |
@@ -51759,6 +51742,7 @@ Environment variables for the supervisor container.
 | **Failed pod handler** | | | |
 | `FAILED_POD_HANDLER_ENABLED` | No | true | Enable failed pod handler. |
 | `FAILED_POD_HANDLER_RECONNECT_INTERVAL_MS` | No | 1000 (1s) | Failed pod handler reconnect interval (ms). |
+| `FAILED_POD_HANDLER_WATCH_TIMEOUT_SECONDS` | No | 300 (5m) | How long the server keeps each failed pod watch open (s). |
 | **Debug** | | | |
 | `DEBUG` | No | false | Enable debug logs. |
 | `SEND_RUN_DEBUG_LOGS` | No | false | Send run debug logs to the platform. |
@@ -51813,6 +51797,7 @@ Environment variables for the webapp container.
 | `REDIS_TLS_DISABLED` | No | — | Disable Redis TLS. |
 | **Auth** | | | |
 | `WHITELISTED_EMAILS` | No | — | Whitelisted emails regex. |
+| `BLOCKED_EMAIL_DOMAINS` | No | — | Comma-separated email domains that can't sign in or sign up, including their subdomains. |
 | `LOGIN_RATE_LIMITS_ENABLED` | No | true | Enable rate limiting on magic-link login. |
 | `AUTH_GITHUB_CLIENT_ID` | No | — | GitHub client ID. |
 | `AUTH_GITHUB_CLIENT_SECRET` | No | — | GitHub client secret. |

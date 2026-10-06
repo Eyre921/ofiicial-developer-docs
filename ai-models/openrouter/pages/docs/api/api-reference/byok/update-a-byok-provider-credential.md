@@ -186,6 +186,7 @@ paths:
                   allowed_models: null
                   allowed_user_ids: null
                   created_at: '2025-08-24T10:30:00Z'
+                  declared_region: null
                   declared_zdr: null
                   disabled: false
                   id: 11111111-2222-3333-4444-555555555555
@@ -240,6 +241,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFoundResponse'
           description: Not Found - Resource does not exist
+        '409':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 409
+                  message: Resource conflict. Please try again later.
+              schema:
+                $ref: '#/components/schemas/ConflictResponse'
+          description: Conflict - Resource conflict or concurrent modification
         '500':
           content:
             application/json:
@@ -294,6 +305,32 @@ components:
           maxItems: 100
           type:
             - array
+            - 'null'
+        declared_region:
+          description: >-
+            Your declaration of the data region in which the upstream provider
+            account behind this credential processes requests, used for routing
+            eligibility on OpenRouter's regional hosts. `null` means undeclared
+            and `global` is behaviorally identical: the credential follows the
+            region OpenRouter records for the endpoint. `europe` or `us` lets
+            requests to `eu.openrouter.ai` or `us.openrouter.ai` use this
+            credential for that provider (private endpoints, endpoints pinned to
+            another cloud region, cross-region inference profiles and video
+            models are excluded). Self-declared and not verified by OpenRouter.
+            For OpenAI and Fireworks the region comes from the key material (a
+            `{"api_key": ..., "region": ...}` key), so the value must match the
+            key's region. Among other providers, only Azure accepts `europe` or
+            `us`. Omit to leave the stored value unchanged (rotating an OpenAI
+            or Fireworks `key` re-derives it from the new key); `null` clears
+            the declaration.
+          enum:
+            - global
+            - europe
+            - us
+            - null
+          example: null
+          type:
+            - string
             - 'null'
         declared_zdr:
           description: >-
@@ -362,6 +399,7 @@ components:
           allowed_models: null
           allowed_user_ids: null
           created_at: '2025-08-24T10:30:00Z'
+          declared_region: null
           declared_zdr: null
           disabled: false
           id: 11111111-2222-3333-4444-555555555555
@@ -465,6 +503,27 @@ components:
       required:
         - error
       type: object
+    ConflictResponse:
+      description: Conflict - Resource conflict or concurrent modification
+      example:
+        error:
+          code: 409
+          message: Resource conflict. Please try again later.
+      properties:
+        error:
+          $ref: '#/components/schemas/ConflictResponseErrorData'
+        openrouter_metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+        user_id:
+          type:
+            - string
+            - 'null'
+      required:
+        - error
+      type: object
     InternalServerResponse:
       description: Internal Server Error - Unexpected server error
       example:
@@ -492,6 +551,7 @@ components:
         allowed_models: null
         allowed_user_ids: null
         created_at: '2025-08-24T10:30:00Z'
+        declared_region: null
         declared_zdr: null
         disabled: false
         id: 11111111-2222-3333-4444-555555555555
@@ -542,6 +602,30 @@ components:
           description: ISO timestamp of when the credential was created.
           example: '2025-08-24T10:30:00Z'
           type: string
+        declared_region:
+          description: >-
+            Your declaration of the data region in which the upstream provider
+            account behind this credential processes requests, used for routing
+            eligibility on OpenRouter's regional hosts. `null` means undeclared
+            and `global` is behaviorally identical: the credential follows the
+            region OpenRouter records for the endpoint. `europe` or `us` lets
+            requests to `eu.openrouter.ai` or `us.openrouter.ai` use this
+            credential for that provider (private endpoints, endpoints pinned to
+            another cloud region, cross-region inference profiles and video
+            models are excluded). Self-declared and not verified by OpenRouter.
+            For OpenAI and Fireworks the region comes from the key material (a
+            `{"api_key": ..., "region": ...}` key), so the value must match the
+            key's region. Among other providers, only Azure accepts `europe` or
+            `us`.
+          enum:
+            - global
+            - europe
+            - us
+            - null
+          example: null
+          type:
+            - string
+            - 'null'
         declared_zdr:
           description: >-
             Your declaration of whether the upstream provider account behind
@@ -629,6 +713,7 @@ components:
         - is_required
         - is_byok_only
         - declared_zdr
+        - declared_region
         - allowed_models
         - allowed_api_key_hashes
         - allowed_user_ids
@@ -697,6 +782,25 @@ components:
       example:
         code: 404
         message: Resource not found
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        metadata:
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
+      required:
+        - code
+        - message
+      type: object
+    ConflictResponseErrorData:
+      description: Error data for ConflictResponse
+      example:
+        code: 409
+        message: Resource conflict. Please try again later.
       properties:
         code:
           type: integer

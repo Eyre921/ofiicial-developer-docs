@@ -18,7 +18,7 @@ You author a manifest through the [Nexus API](/reference/api/nexus/authenticatio
 * [Design your own manifest](/guides/nexus/design-your-own-manifest) by defining artifact and edge types directly.
 * Configure [artifact formats](/guides/nexus/configure-artifact-formats) to write a type as prose or as a queryable SQLite table.
 
-Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate. The console can seed a context from a template for a quick start, but the full manifest surface is available only through the API.
+Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate, or edit it on the context's **Manifest** tab in the console, including SQLite table formats. These guides use the API.
 
 ## Knowledge layers
 

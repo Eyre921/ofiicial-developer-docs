@@ -101,8 +101,6 @@ Buckets are backed by Cloudflare R2 and are S3-compatible. `bucket.s3()` returns
 Do not presign URLs with this client. A presigned URL carries the credential, which reads and writes the whole bucket until it expires. Use [`signedReadUrl`](/docs/blob/bucket/reading#signedreadurl) and [`signedUploadUrl`](/docs/blob/bucket/writing#signed-upload-urls), which Upstash signs for one object; see [Who signs a URL](/docs/blob/reference/signing#who-signs-a-url).
 </Warning>
 
-An error message that mentions R2 is talking about the storage layer.
-
 ***
 
 ## Next steps

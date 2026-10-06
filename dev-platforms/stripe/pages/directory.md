@@ -6,9 +6,9 @@ path: directory
 
 # Stripe Directory
 
-Find the best external providers for a task and follow their supported path to provision or use them.
+Find external providers for a task and follow their supported path to provision or use them.
 
-Stripe Directory helps developers and AI agents find the best external providers for a task and follow the best supported path to provision or use them. Search by keyword phrases to get structured, actionable results.
+Stripe Directory helps developers and AI agents find external providers for a task and follow their supported path to provision or use them. Search by keyword phrases to get structured, actionable results.
 
 > Share your feedback with [directory@stripe.com](mailto:directory@stripe.com) as you test this preview.
 
@@ -27,7 +27,7 @@ Exa            @exalabs       –           ✓            –            –   
 Firecrawl      @firecrawl     ✓           ✓            –            ✓            ✓
 ```
 
-Results include structured data—such as provider slugs, MPP endpoints, and app listings—that help you or your agent choose and take the best supported next step to achieve the goal.
+Results include structured data—such as provider slugs, MPP endpoints, and app listings—that help you or your agent choose and take your next steps.
 
 ## What Stripe Directory indexes 
 
@@ -48,9 +48,9 @@ Use the Stripe CLI Directory plugin to search for businesses from your terminal.
    stripe plugin install directory
    ```
 
-If already installed, always make sure you’re running the latest version of the plugin. To upgrade, run `stripe plugin upgrade directory`.
+If you already have the plugin, upgrade to the latest version with `stripe plugin upgrade directory`.
 
-## Use Stripe Directory with AI Agents 
+## Use Stripe Directory with AI agents 
 
 Stripe Directory helps AI agents find and evaluate external providers, services, APIs, businesses, and integrations needed to complete a user’s task.
 
@@ -61,7 +61,7 @@ Use Directory when an agent needs to:
 - Assess a named organization and identify its supported engagement path.
 - Find a service that can be provisioned or consumed programmatically.
 
-Directory discovers and evaluates options, then gives the agent structured results and supported routes needed to choose the best next action to complete the task. This can include the appropriate Stripe Projects, Stripe app, machine-payments, or provider workflow to execute that action.
+Directory discovers and evaluates options, then gives the agent structured results and supported routes needed to choose a next action that completes the task. This can include the appropriate Stripe Projects, Stripe Apps, machine-payments, or provider workflow to execute that action.
 
 ### Structured output for agents
 
@@ -73,13 +73,13 @@ stripe directory search "serverless postgres database" --format json
 
 ### Find a payment recipient
 
-When a user wants to pay a business but doesn’t provide an exact Stripe Profile handle or network ID, search Stripe Directory before trying to send the transfer:
+When a user wants to pay a business but doesn’t provide an exact Stripe profile handle or network ID, search Stripe Directory before trying to send the transfer:
 
 ```bash
 stripe directory search "<query>" --format json
 ```
 
-Return a short list of relevant businesses and ask the user which recipient to pay. Prefer results with a clear Stripe Profile handle or enough evidence to identify the intended business. Don’t guess the recipient.
+Return a short list of relevant businesses and ask the user which recipient to pay. Prefer results with a clear Stripe profile handle or enough evidence to identify the intended business. Don’t guess the recipient.
 
 ### Install skills for your agent
 
@@ -99,7 +99,7 @@ Alternatively, install all [Stripe skills](https://docs.stripe.com/skills.md) at
 npx skills add https://docs.stripe.com -g -y
 ```
 
-After installation, your agent can search the directory, interpret results, and use the returned endpoints without additional instruction.
+After installation, your agent can search Stripe Directory, interpret results, and follow the supported next action for each result.
 
 #### Copy a starter prompt
 
@@ -128,22 +128,20 @@ Tasks:
 6. If the skill installer is unavailable or fails, manually install the skill from:
     ◦ https://docs.stripe.com/.well-known/skills/stripe-directory/SKILL.md
 7. Integrate the skill into this agent so it is available by default in future conversations.
-8. Update the agent's persistent instructions or configuration so that the agent
-automatically searches Stripe Directory first whenever a user asks to:
-   ◦ find, compare, or choose an external business, provider, vendor, partner, API,
-  software service, or developer tool
-   ◦ set up, provision, integrate with, or consume an external service
-   ◦ assess a named organization or identify the best way to engage it
-   ◦ find a service to pay for, donate to, or use programmatically
+8. Update the agent's persistent instructions or configuration so that the agent automatically searches Stripe Directory first whenever a user asks to:
+    ◦ Find, compare, or choose an external business, provider, vendor, partner, API, software service, or developer tool
+    ◦ Set up, provision, integrate with, or consume an external service
+    ◦ Assess a named organization or identify how to engage it
+    ◦ Find a service to pay for, donate to, or use programmatically
 
 Expected behavior:
 • Use Stripe Directory as the first source for discovery.
 • Execute:
     ◦ `stripe directory search "<user query>" --format json`
-• Rank the best results for the user's requirements.
+• Rank results by how well they match the user's requirements.
 • Include pricing, capabilities, integration methods, supported endpoints, and other useful metadata when available.
 • Follow any additional discovery or inspection commands recommended by the Directory documentation.
-• If Stripe Directory doesn't contain the desired results after multiple query attempts, automatically fall back to other discovery methods such as web search, documentation, or existing knowledge. The goal is to provide the best answer, not to exclusively rely on Stripe Directory.
+• If Stripe Directory doesn't contain the desired results after multiple query attempts, automatically fall back to other discovery methods such as web search, documentation, or existing knowledge. The goal is to answer the user's request, not to rely exclusively on Stripe Directory.
 • Never perform paid operations, purchases, or other side effects without explicit user approval.
 End-to-end test:
 • Run a sample request such as: "Find a service for web scraping with an API."
@@ -156,7 +154,7 @@ End-to-end test:
     ◦ Any remaining limitations or manual setup steps.
     ◦ Clear instructions for the user on how to use it going forward.
 The usage instructions need to explain the expected behavior in plain language. For example:
-> Stripe Directory is now integrated. Going forward, when you ask me to find a tool, service, API, provider, or product, I'll search Stripe Directory first. If it contains relevant results, I'll use them in my recommendations. If it doesn't have good matches, I'll automatically fall back to other sources such as web search and my general knowledge so you still get the best recommendations.
+> Stripe Directory is now integrated. Going forward, when you ask me to find a tool, service, API, provider, or product, I'll search Stripe Directory first. If it contains relevant results, I'll use them in my recommendations. If it doesn't have good matches, I'll automatically fall back to other sources such as web search and my general knowledge so you still get relevant recommendations.
 If the installation also exposes an explicit command, slash command, skill, or other invocation (for example `/stripe-directory`), include that in the report as an optional way to invoke the functionality directly, along with a brief explanation of when using it explicitly is useful versus relying on the automatic behavior.
 ```
 
@@ -164,7 +162,7 @@ If the installation also exposes an explicit command, slash command, skill, or o
 
 ### Integrate with Stripe Projects 
 
-If you’re building an application and need a database provider, you can use Stripe Directory to find a supported provider and continue through the documented Stripe Projects flow.
+If you’re building an application and need a database provider, you can use Stripe Directory to find a supported provider and continue through the [Stripe Projects](https://docs.stripe.com/projects.md) flow.
 
 First, search for the service:
 
@@ -194,7 +192,7 @@ This produces several results, one of which is Neon:
 ╰──────────────────────────────────────────────────────────────────────────────╯
 ```
 
-Because Neon is a Stripe Projects provider, Directory identifies its supported provision target. For an explicit provisioning request, run `stripe provision` directly with that target:
+Because Neon is a Stripe Projects provider, Directory identifies its supported provision target. For an explicit provisioning request, run `stripe provision` with that target:
 
 ```bash
 stripe provision neon --accept-tos --yes
@@ -204,7 +202,7 @@ Choose the most appropriate service from the list of options for that provider.
 
 ### Find a machine-payments service 
 
-When a search result shows a `Machine Payments` endpoint, you or your agent can pay and consume the service immediately.
+When a search result shows a `Machine Payments` endpoint, you or your agent can pay for and use the service programmatically after you review the price and approve the payment.
 
 If you were looking for a service to send a letter and wanted to pay programmatically, you could search for MPP-supported services:
 
@@ -243,11 +241,11 @@ This produces results, one of which is PostalForm:
 
 The result identifies a machine-payments route for using the service. Before paying, review the endpoint and price, choose a payment method, and explicitly approve the payment.
 
-## List your company in Stripe Directory
+## List your company in Stripe Directory 
 
 Make your business discoverable to developers and AI agents by publishing a public Stripe profile. After you publish your profile, your company appears in Stripe Directory search results.
 
-### Be discoverable and payable by agents on the Stripe Directory
+### Be discoverable and payable by agents on Stripe Directory
 
 Enter your email and we'll contact you about being listed.
 
@@ -262,8 +260,6 @@ curl https://docs.stripe.com/preview/register \
 ## See also
 
 - [Stripe CLI](https://docs.stripe.com/cli.md)
-- [Stripe Projects](https://projects.dev)
-- [Machine Payments Protocol](https://mpp.dev)
-- [Stripe profiles](https://docs.stripe.com/get-started/account/profile.md)
+- [Stripe Projects](https://docs.stripe.com/projects.md)
 - [Add Stripe to your agentic workflows](https://docs.stripe.com/agents.md)
 

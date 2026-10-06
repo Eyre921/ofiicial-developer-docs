@@ -22,7 +22,7 @@ ElevenLabs supports three types of post-call webhooks:
 
 Post-call webhooks can be enabled for all agents in your workspace through the ElevenAgents [settings page](https://elevenlabs.io/app/agents/settings).
 
-![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T102403Z&X-Amz-Expires=604800&X-Amz-Signature=23f4d2e1acd25bde5c5d836976b9ed1452e3aa7a75bcdf615ced35e82a6aa582&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Post-call webhook settings](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261006%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261006T175948Z&X-Amz-Expires=604800&X-Amz-Signature=5dacca4880f22454c552a8cecfc6b9dc2d2fa3729ad1d3785225d134c73b7e37&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
 
 > **Warning**
 >
@@ -493,7 +493,11 @@ Audio webhooks are delivered separately from transcription webhooks and contain 
 
 ### Streaming delivery
 
-Audio webhooks are delivered as streaming HTTP requests with the `transfer-encoding: chunked` header to handle large audio files efficiently.
+Audio webhooks are delivered as streaming HTTP requests with the `transfer-encoding: chunked` header to handle large audio files efficiently. Each request times out after 5 minutes.
+
+### Retries
+
+When retries are enabled on the webhook, failed audio deliveries are retried on the same schedule as transcription webhooks. A retry resends the full audio payload, so deduplicate by `conversation_id`. See [webhook retries](/docs/eleven-api/resources/webhooks#retries) for the schedule, retryable errors, and audio size limits.
 
 ### Processing audio webhooks
 

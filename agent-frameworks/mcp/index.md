@@ -1,6 +1,6 @@
 # agent-frameworks/mcp 文档索引
 
-> 共 152 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 154 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -71,6 +71,7 @@
 - `docs/2026-07-28/tools/inspector/tui` — [TUI client](pages/docs/2026-07-28/tools/inspector/tui.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/tui)
 - `docs/2026-07-28/tools/inspector/web` — [Web client](pages/docs/2026-07-28/tools/inspector/web.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tools/inspector/web)
 - `docs/2026-07-28/tutorials/security/authorization` — [Understanding Authorization in MCP](pages/docs/2026-07-28/tutorials/security/authorization.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/authorization)
+- `docs/2026-07-28/tutorials/security/local-server-security` — [Local Server Security](pages/docs/2026-07-28/tutorials/security/local-server-security.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/local-server-security)
 - `docs/2026-07-28/tutorials/security/security_best_practices` — [Security Best Practices](pages/docs/2026-07-28/tutorials/security/security_best_practices.md) · [原文](https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices)
 
 ## extensions
@@ -118,6 +119,7 @@
 - `seps/1865-mcp-apps-interactive-user-interfaces-for-mcp` — [SEP-1865: MCP Apps - Interactive User Interfaces for MCP](pages/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp.md) · [原文](https://modelcontextprotocol.io/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp)
 - `seps/2085-governance-succession-and-amendment` — [SEP-2085: Governance Succession and Amendment Procedures](pages/seps/2085-governance-succession-and-amendment.md) · [原文](https://modelcontextprotocol.io/seps/2085-governance-succession-and-amendment)
 - `seps/2106-json-schema-2020-12` — [SEP-2106: Tools `inputSchema` & `outputSchema` Conform to JSON Schema 2020-12](pages/seps/2106-json-schema-2020-12.md) · [原文](https://modelcontextprotocol.io/seps/2106-json-schema-2020-12)
+- `seps/2127-mcp-server-cards` — [SEP-2127: MCP Server Cards - HTTP Server Discovery](pages/seps/2127-mcp-server-cards.md) · [原文](https://modelcontextprotocol.io/seps/2127-mcp-server-cards)
 - `seps/2133-extensions` — [SEP-2133: Extensions](pages/seps/2133-extensions.md) · [原文](https://modelcontextprotocol.io/seps/2133-extensions)
 - `seps/2148-contributor-ladder` — [SEP-2148: MCP Contributor Ladder](pages/seps/2148-contributor-ladder.md) · [原文](https://modelcontextprotocol.io/seps/2148-contributor-ladder)
 - `seps/2149-working-group-charter-template` — [SEP-2149: MCP Group Governance and Charter Template](pages/seps/2149-working-group-charter-template.md) · [原文](https://modelcontextprotocol.io/seps/2149-working-group-charter-template)

@@ -916,7 +916,7 @@ Use the test cards in this section to simulate successful in-person payments whe
 
 ## Test a webhook or event destination 
 
-To test your webhook endpoint or [event destination](https://docs.stripe.com/event-destinations.md), choose one of these two options:
+To test your webhook endpoint or [event destination](https://docs.stripe.com/events/how-events-work.md), choose one of these two options:
 
 1. Perform actions in a sandbox that trigger real events to your event destination. For example, to trigger the [charge.succeeded](https://docs.stripe.com/api.md#event_types-charge.succeeded) event, you can use a [test card that produces a successful charge](https://docs.stripe.com/testing.md#cards).
 2. [Trigger events using the Stripe CLI](https://docs.stripe.com/webhooks.md#test-webhook) or [using Stripe for Visual Studio Code](https://docs.stripe.com/stripe-vscode.md#webhooks).

@@ -13,6 +13,8 @@ Stripe Reader M2 is a small reader that you can use with mobile applications. It
 
 This reader is compatible with our iOS, Android, and React Native SDKs. To view the reader’s parts and features, see the [Stripe Reader M2 product sheet](https://stripe.com/m2/manual).
 
+> This reader isn’t supported by [standalone mode or the Stripe Terminal app](https://docs.stripe.com/terminal/payments/ready-made-apps.md). To use Stripe Reader M2, build a custom integration with the [Terminal SDK](https://docs.stripe.com/terminal/payments/setup-integration.md).
+
 > Stripe readers aren’t liquid-proof and we recommend that users make appropriate efforts to make sure their devices remain dry. If your device has experienced liquid ingress, we recommend that you stop using the device and let it dry thoroughly before attempting to re-use or charge the device. If your device doesn’t properly operate or charge properly after drying, you need to replace it.
 
 ## Availability

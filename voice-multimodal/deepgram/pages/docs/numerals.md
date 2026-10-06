@@ -41,7 +41,7 @@ Supported languages include:
 
 > **Info**
 >
-> When using Nova-3 Multilingual (`model=nova-3`, `language=multi`), numeral formatting is supported for: English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
+> When using Nova-3 Multilingual (`model=nova-3`, `language=multi`) or Nova-3 Medical multilingual (`model=nova-3-medical`, `language=multi`), numeral formatting is supported for: English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
 
 ### Flux support
 

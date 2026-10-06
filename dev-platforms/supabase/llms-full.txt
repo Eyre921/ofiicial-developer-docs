@@ -71112,7 +71112,7 @@ You can use Supabase to store and process Protected Health Information (PHI). Yo
 - [Marking specific projects as HIPAA projects](https://supabase.com/docs/guides/platform/hipaa-projects) and addressing security issues raised by the advisor.
 - Ensuring [MFA is enabled](https://supabase.com/docs/guides/platform/multi-factor-authentication) on all Supabase accounts.
   - [Enforce MFA](https://supabase.com/docs/guides/platform/mfa/org-mfa-enforcement) as a requirement to access the organization
-- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) which requires at least a [small compute add-on](https://supabase.com/docs/guides/platform/compute-and-disk).
+- Enabling [Point in Time Recovery](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery).
 - Turning on [SSL Enforcement](https://supabase.com/docs/guides/platform/ssl-enforcement).
 - Enabling [Network Restrictions](https://supabase.com/docs/guides/platform/network-restrictions).
 - Keeping [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging) enabled. Supabase sets `log_connections` to off by default for new projects. Projects that need HIPAA compliance should keep connection logging on for audit trails, and the Security Advisor warns if it is disabled.
@@ -97241,7 +97241,7 @@ There are a couple common patterns you can consider adding to your integration t
 
 ### Store API keys in env variables
 
-Some integrations, e.g. like [Cloudflare Workers](https://supabase.com/partners/integrations/cloudflare-workers) provide convenient access to the API URL and API keys to allow user to speed up development.
+Some integrations, e.g. like [Cloudflare Workers](https://supabase.com/partners/catalog/cloudflare) provide convenient access to the API URL and API keys to allow user to speed up development.
 
 Using the management API, you can retrieve a project's API credentials using the [`/projects/{ref}/api-keys` endpoint](https://api.supabase.com/api/v1#/projects/getProjectApiKeys).
 
@@ -118992,6 +118992,746 @@ If this returns no rows, your project is unaffected.
 
 ---
 
+# Platform Webhooks
+
+Receive HTTP notifications when events occur in your Supabase organization or project.
+
+Platform Webhooks send an HTTP request to a URL you control when something happens on your organization or one of its projects. For example, a project pausing and a member joining both raise events. Use them to build event-driven integrations without polling the Management API.
+
+Note: Platform Webhooks is available to organizations on an early access allowlist. The API rejects a request from an organization outside the allowlist with `403` and the error code `access_disabled`.
+
+For the complete API reference, see [Organization Webhooks](https://supabase.com/docs/reference/api/v2-organizations-slug-webhooks-endpoints-get) and [Project Webhooks](https://supabase.com/docs/reference/api/v2-projects-ref-webhooks-endpoints-get) in the Management API reference.
+
+- [Set up an endpoint](#set-up-an-endpoint) creates the configuration that receives events.
+- [Verify webhook signature](#verify-webhook-signature) has the check your listener needs before it trusts a delivery.
+- [Send a test event](#send-a-test-event) triggers a test event to be sent to your listener.
+- [Delivery behavior](#delivery-behavior) covers retries and history retention.
+- [Idempotency and ordering](#idempotency-and-ordering) covers idempotency, duplicates, and arrival order.
+- [Best practices](#best-practices) covers best practices for writing a reliable, resilient webhook listener.
+
+## Concepts
+
+### Endpoints
+
+An *endpoint* is a configuration for where and how to deliver events. It has a URL, a signing secret, the event types it subscribes to, and optional custom headers.
+
+You register an endpoint against an organization or a specific project within an organization. Each endpoint subscribes to one or more event types, or to `*` to receive all events.
+
+An endpoint is scoped to either an organization or a single project:
+
+- An **organization-scoped** endpoint receives every organization event and every project event across the organization.
+- A **project-scoped** endpoint receives events for that project only.
+
+Endpoint URLs must be publicly reachable and must resolve to a non-reserved IP address.
+
+### Events
+
+An *event* represents something that happened in your organization or project. Each event has an ID, a type string such as `v1.project.paused`, a timestamp, and a payload.
+
+Each event type starts with a version, for example `v1`, that represents the specific `payload` shape. Different versions of the same event can have different payload shapes.
+
+A project event is delivered to both a matching project-scoped endpoint and any organization-scoped endpoints in the same organization. Each endpoint gets its own copy of the event, with its own `id`.
+
+For the full list of event types and their payloads, see [Platform Webhook Events](https://supabase.com/docs/guides/platform/webhooks/events).
+
+### Deliveries
+
+A *delivery* is one HTTP `POST` attempt for a specific event to a specific endpoint. Supabase records every delivery attempt along with its outcome, response status, and response body.
+
+### Envelope and payload
+
+Every delivery sends a JSON body with the following structure regardless of the type:
+
+```json
+{
+  "id": "<event UUID>",
+  "type": "<event-type>",
+  "timestamp": "<ISO 8601 UTC>",
+  "payload": {
+    "organization_slug": "<org-slug>",
+    "project_ref": "<project-ref>"
+    // event-specific fields
+  }
+}
+```
+
+For example:
+
+```json
+{
+  "id": "01941e0e-e04e-7e43-b8e5-c4d79862b8df",
+  "type": "v1.project.paused",
+  "timestamp": "2025-01-01T12:00:00.000Z",
+  "payload": {
+    "organization_slug": "my-org",
+    "project_ref": "abcdefghijklmnoprstu",
+    "reason": "inactivity",
+    "actor": null
+  }
+}
+```
+
+The `payload` object is event-specific. For organization-scoped events, `project_ref` is always `null`. For details on each event's payload fields, see [Platform Webhook Events](https://supabase.com/docs/guides/platform/webhooks/events).
+
+### Versioning
+
+Each event type embeds a version prefix that identifies the payload schema. The `v1` in `v1.project.paused` means the payload follows the version 1 shape for that event. A new version is introduced when the payload changes in a breaking way — fields are removed, renamed, or given a different type.
+
+When Supabase introduces a new version, both versions are emitted simultaneously for a transition period. A handler built for `v1` keeps receiving `v1` events uninterrupted while you add support for `v2`. The transition window is finite, so treat an unrecognized version as a signal to upgrade your handler.
+
+New fields can be added to an existing version without a version bump. Design your handler to ignore fields it does not recognize so that it stays forward compatible within a version.
+
+## Set up an endpoint
+
+Create an endpoint through the Management API:
+
+- To create an organization-scoped endpoint: `POST https://api.supabase.com/v2/organizations/{organization_slug}/webhooks/endpoints`
+- To create a project-scoped endpoint: `POST https://api.supabase.com/v2/projects/{project_ref}/webhooks/endpoints`
+
+An endpoint takes these attributes:
+
+| Attribute        | Required | Notes                                                                                                                                                                                               |
+| ---------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`            | Yes      | Must use a domain that resolves to a non-reserved IP address. The API rejects a URL that resolves to a reserved range.                                                                              |
+| `event_types`    | Yes      | At least one type. An endpoint receives only the types you list. Use `*` to receive every event.                                                                                                    |
+| `signing_secret` | Yes      | 8 to 64 characters. Every delivery is signed with it.                                                                                                                                               |
+| `custom_headers` | No       | Extra request headers. Keys and values are strings, and each has to be a valid HTTP header.                                                                                                         |
+| `description`    | No       | Free text to identify the endpoint.                                                                                                                                                                 |
+| `enabled`        | No       | Defaults to `true`. When disabled, events already enqueued get a delivery record with `skipped` status but nothing is sent; events that arrive after disabling are dropped with no delivery record. |
+
+**Organization scoped endpoint**
+
+```bash
+curl -X POST 'https://api.supabase.com/v2/organizations/{your-org-slug}/webhooks/endpoints' \
+  -H 'Authorization: Bearer <personal-access-token>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "data": {
+      "type": "endpoint",
+      "attributes": {
+        "url": "https://your-domain.com/webhooks/supabase",
+        "signing_secret": "your-signing-secret",
+        "description": "Track pause and restore events for all projects",
+        "event_types": [
+          { "type": "v1.project.paused" },
+          { "type": "v1.project.restored" }
+        ]
+      }
+    }
+  }'
+```
+
+**Project scoped endpoint**
+
+```bash
+curl -X POST 'https://api.supabase.com/v2/projects/{your-project-ref}/webhooks/endpoints' \
+  -H 'Authorization: Bearer <personal-access-token>' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "data": {
+      "type": "endpoint",
+      "attributes": {
+        "url": "https://your-domain.com/webhooks/supabase",
+        "signing_secret": "your-signing-secret",
+        "description": "Track pause and restore events for project <your-project-ref>",
+        "event_types": [
+          { "type": "v1.project.paused" },
+          { "type": "v1.project.restored" }
+        ]
+      }
+    }
+  }'
+```
+
+To receive all event types, set `event_types` to `[{ "type": "*" }]`. Using `*` also covers event types added in the future, so design your handler to handle unrecognized types gracefully — see [Versioning](#versioning).
+
+A successful request returns `201` with the endpoint's ID, which you can use to send test events, list deliveries, and update or delete the endpoint.
+
+For the full set of operations, see the **Project webhooks** and **Organization webhooks** sections of the [Management API reference](https://supabase.com/docs/reference/api/introduction). Every operation exists at both scopes.
+
+## Verify webhook signature
+
+Every delivery follows the [Standard Webhooks](https://www.standardwebhooks.com/) specification and carries these headers:
+
+| Header              | Description                                                                                             |
+| ------------------- | ------------------------------------------------------------------------------------------------------- |
+| `webhook-id`        | The event ID. It's the same across every retry of the same event.                                       |
+| `webhook-timestamp` | The Unix timestamp, in seconds, of when the delivery attempt was signed.                                |
+| `webhook-signature` | An HMAC-SHA256 signature over `{webhook-id}.{webhook-timestamp}.{raw body}`, in the form `v1,<base64>`. |
+
+Verify against the **raw request body** before you parse it as JSON:
+
+**Base64 secret**
+
+If your `signing_secret` is a base64-encoded value prefixed with `whsec_`:
+
+```js
+import { Webhook } from 'standardwebhooks'
+
+const webhook = new Webhook(process.env.WEBHOOK_SECRET)
+
+try {
+  const event = webhook.verify(rawBody, {
+    'webhook-id': req.headers['webhook-id'],
+    'webhook-timestamp': req.headers['webhook-timestamp'],
+    'webhook-signature': req.headers['webhook-signature'],
+  })
+  // event is the verified, event.payload can be used
+} catch {
+  return res.status(400).send('Invalid signature')
+}
+```
+
+**Plain string secret**
+
+If your `signing_secret` is a plain string:
+
+```js
+import { Webhook } from 'standardwebhooks'
+
+const webhook = new Webhook(process.env.WEBHOOK_SECRET, { format: 'raw' })
+
+try {
+  const event = webhook.verify(rawBody, {
+    'webhook-id': req.headers['webhook-id'],
+    'webhook-timestamp': req.headers['webhook-timestamp'],
+    'webhook-signature': req.headers['webhook-signature'],
+  })
+  // event is the verified, event.payload can be used
+} catch {
+  return res.status(400).send('Invalid signature')
+}
+```
+
+For verification libraries in other languages, see the [Standard Webhooks documentation](https://www.standardwebhooks.com/).
+
+To rotate a signing secret without missing deliveries:
+
+1. Add the new secret to your listener, and accept signatures made with either the old or the new secret.
+2. Update the endpoint to use the new secret.
+3. Remove the old secret from your listener.
+
+## Send a test event
+
+Use a test event to verify connectivity end to end. It goes through the same pipeline as a real event and is stored in delivery history, except that automatic retries are disabled.
+
+**For organization scoped endpoint**
+
+```bash
+curl -X POST https://api.supabase.com/v2/organizations/{your-org-slug}/webhooks/endpoints/{your-endpoint-id}/test \
+  -H 'Authorization: Bearer <personal-access-token>' \
+  -H 'Content-Type: application/json' \
+  --data '{
+    "data": {
+      "type": "event",
+      "attributes": { "type": "v1.project.paused" }
+    }
+  }'
+```
+
+**For project scoped endpoint**
+
+```bash
+curl -X POST https://api.supabase.com/v2/projects/{your-project-ref}/webhooks/endpoints/{your-endpoint-id}/test \
+  -H 'Authorization: Bearer <personal-access-token>' \
+  -H 'Content-Type: application/json' \
+  --data '{
+    "data": {
+      "type": "event",
+      "attributes": { "type": "v1.project.paused" }
+    }
+  }'
+```
+
+The event type in the body is optional. Without one, the API uses a type the endpoint subscribes to.
+
+A test event's payload includes `"is_test": true`, so check that field before you trigger any side effect.
+
+## Delivery behavior
+
+Supabase considers a delivery successful when your endpoint returns a `2xx` response within 20 seconds. A non-`2xx` response or a timeout counts as a failure and triggers a retry with exponential backoff:
+
+| Attempt   | Wait after the previous failure | Approximate time since the event |
+| --------- | ------------------------------- | -------------------------------- |
+| 1         | Not applicable                  | Immediately                      |
+| 2         | 10 seconds                      | \~10 seconds                     |
+| 3         | 30 seconds                      | \~40 seconds                     |
+| 4         | 1 minute 30 seconds             | \~2 minutes 10 seconds           |
+| 5 (final) | 4 minutes 30 seconds            | \~6 minutes 40 seconds           |
+
+After five failed attempts, the delivery is marked as failed with no further retries. Supabase does not notify you when this happens — check delivery history to find permanently failed deliveries.
+
+You can retry a delivery manually. A manual retry is a single attempt: if it fails, no automatic retries follow.
+
+Delivery history is retained for 14 days. An expired delivery is no longer listed and can't be retried.
+
+## Idempotency and ordering
+
+Deliveries are at-least-once: Supabase retries failed deliveries, so your endpoint may receive the same event more than once. Use the `id` field in the request body as a deduplication key. The same `id` always represents the same event.
+
+Deliveries and events may also arrive out of order due to network delays or hiccups. You need to design your webhook listener to account for duplicates and out-of-order events.
+
+## Best practices
+
+Best practices for consuming webhook events and building a reliable, production-grade webhook listener:
+
+- Always verify the webhook signature before processing an event.
+- Check the event type version prefix before processing a payload. For unsupported versions, return `2xx` without processing and log or alert on the unrecognized version — the transition window is finite, so upgrade your handler promptly.
+- Respond to a webhook immediately and process each event asynchronously, for example, on a job queue.
+- Keep track of already processed events in persistent storage to deduplicate them, for example, in a database.
+- Keep track of the last processed event's timestamp and discard stale events of the same type. Do not rely on the order of events.
+- Treat webhook events as a trigger for an action, rather than the state of a resource.
+- Use the webhook's automatic retries as a safeguard against network partitions or timeouts, not as a fallback for listener logic errors.
+- Periodically check delivery history for permanently failed deliveries. Supabase does not notify you when all retries are exhausted.
+
+
+---
+
+# Platform Webhook Events
+
+Event types and payload schemas for Platform Webhooks.
+
+Webhook events are categorized into two scopes:
+
+- **project events** related to a specific project
+- **organization events** related to the organization itself
+
+For an overview of Platform Webhooks including delivery behavior and signing, see [Platform Webhooks](https://supabase.com/docs/guides/platform/webhooks).
+
+Note: Platform Webhooks is available to organizations on an early access allowlist. The API rejects a request from an organization outside the allowlist with `403` and the error code `access_disabled`.
+
+## Event envelope
+
+Every event arrives in the same envelope regardless of type:
+
+```json
+{
+  "id": "<event UUID>",
+  "type": "<event-type>",
+  "timestamp": "<ISO 8601 UTC>",
+  "payload": {
+    "organization_slug": "<org-slug>",
+    "project_ref": "<project-ref>"
+    // event-specific fields
+  }
+}
+```
+
+For example:
+
+```json
+{
+  "id": "019f3c9c-c758-766d-acb2-94eb089b3f69",
+  "type": "v1.project.paused",
+  "timestamp": "2026-07-07T12:45:35.449Z",
+  "payload": {
+    "project_ref": "your-project-ref",
+    "organization_slug": "your-org-slug",
+    "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+  }
+}
+```
+
+Organization scoped events always have `project_ref` set to `null` because they do not relate to a specific project.
+
+The version prefix in the `type` field, such as `v1`, identifies the payload schema. For how versions change over time and how to handle an unrecognized version, see [Versioning](https://supabase.com/docs/guides/platform/webhooks#versioning).
+
+New fields can be added to an existing version without a version bump. Design your handler to ignore fields it does not recognize.
+
+## Common payload fields
+
+### `actor`
+
+Represents a user who performed or triggered an action.
+
+Present on all events. `null` when the event was triggered by an automated system process rather than a user.
+
+```json
+"actor": {
+  "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e"
+}
+```
+
+### `is_test`
+
+Present only on test events sent through the [Send a test event](https://supabase.com/docs/guides/platform/webhooks#send-a-test-event) endpoint. Always `true`. Check this field before triggering any side effect.
+
+## Project events
+
+Project events fire when a change occurs or an action is taken in a specific project. The payload always includes both non-nullable `organization_slug` and `project_ref`.
+
+| Event                                                  | Fires when                                       |
+| ------------------------------------------------------ | ------------------------------------------------ |
+| [`v1.project.created`](#v1projectcreated)              | A project is created                             |
+| [`v1.project.paused`](#v1projectpaused)                | A project is paused                              |
+| [`v1.project.restored`](#v1projectrestored)            | A paused project is restored                     |
+| [`v1.project.restarted`](#v1projectrestarted)          | A project is restarted                           |
+| [`v1.project.removed`](#v1projectremoved)              | A project is deleted                             |
+| [`v1.project.transferred`](#v1projecttransferred)      | A project is transferred to another organization |
+| [`v1.project.status.changed`](#v1projectstatuschanged) | A project's status transitions                   |
+| [`v1.project.backup.started`](#v1projectbackupstarted) | A project backup begins                          |
+| [`v1.project.branch.created`](#v1projectbranchcreated) | A preview branch is created                      |
+| [`v1.project.branch.updated`](#v1projectbranchupdated) | A preview branch is updated                      |
+| [`v1.project.branch.removed`](#v1projectbranchremoved) | A preview branch is deleted                      |
+
+### v1.project.created
+
+Fires when a project is created and begins initial setup. When receiving this event, a project might not be healthy yet.
+
+```json
+{
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" },
+  "source": null
+}
+```
+
+`source` is `null` for projects created from scratch. When a project is cloned, `source` carries the origin:
+
+```json
+"source": {
+  "type": "clone",
+  "project_ref": "abcdefghijklmnoprstu"
+}
+```
+
+### v1.project.paused
+
+Fires when a project is paused.
+
+```json
+{
+  "reason": "inactivity",
+  "actor": null
+}
+```
+
+`reason` is one of the following:
+
+| Value         | Description                                                             |
+| ------------- | ----------------------------------------------------------------------- |
+| `api_request` | Paused by a user via the API or dashboard. `actor` carries the user ID. |
+| `inactivity`  | Paused automatically due to inactivity. `actor` is `null`.              |
+| `other`       | Paused for another system reason. `actor` is `null`.                    |
+
+### v1.project.restored
+
+Fires when a paused project is restored. When receiving this event, a project might not be healthy yet.
+
+```json
+{
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+### v1.project.restarted
+
+Fires when a project is restarted.
+
+```json
+{
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+### v1.project.removed
+
+Fires when a project is deleted.
+
+```json
+{
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+### v1.project.transferred
+
+Fires when a project is transferred to another organization. A corresponding event is emitted for both the source and the target organizations.
+
+Use `source` and `target` to determine whether the transfer is outgoing or incoming from the perspective of the receiving organization.
+
+```json
+{
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" },
+  "source": { "organization_slug": "from-org" },
+  "target": { "organization_slug": "to-org" }
+}
+```
+
+### v1.project.status.changed
+
+Fires when a project's status transitions.
+
+```json
+{
+  "previous_status": "RESTARTING",
+  "current_status": "ACTIVE_HEALTHY",
+  "actor": null
+}
+```
+
+`previous_status` and `current_status` are one of:
+
+| Value              | Description                          |
+| ------------------ | ------------------------------------ |
+| `ACTIVE_HEALTHY`   | Project is running normally          |
+| `ACTIVE_UNHEALTHY` | Project is running but has issues    |
+| `COMING_UP`        | Project is starting                  |
+| `RESTARTING`       | Project is restarting                |
+| `RESTORING`        | Project is being restored from pause |
+| `RESTORE_FAILED`   | Restore operation failed             |
+| `PAUSING`          | Project is in the process of pausing |
+| `PAUSE_FAILED`     | Pause operation failed               |
+| `UPGRADING`        | Project is being upgraded            |
+| `RESIZING`         | Project is being resized             |
+| `GOING_DOWN`       | Project is shutting down             |
+| `INIT_FAILED`      | Initialization failed                |
+| `INACTIVE`         | Project is inactive                  |
+| `REMOVED`          | Project has been removed             |
+| `UNKNOWN`          | Status cannot be determined          |
+
+`actor` is `null` for system-initiated transitions. This event fires during normal project operations such as restarts, upgrades, and scaling.
+
+### v1.project.backup.started
+
+Fires when a project backup begins.
+
+```json
+{
+  "actor": null
+}
+```
+
+`actor` is `null` for scheduled backups and carries a `user_id` when the backup is triggered manually.
+
+### v1.project.branch.created
+
+Fires when a preview branch is created.
+
+```json
+{
+  "branch": {
+    "ref": "abcdefghijklmnoprstu",
+    "name": "feature/login",
+    "git_branch": "feature/login",
+    "is_default": false
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`git_branch` is `null` when the branch is not connected to a Git branch.
+
+### v1.project.branch.updated
+
+Fires when a preview branch is updated.
+
+```json
+{
+  "branch": {
+    "ref": "abcdefghijklmnoprstu",
+    "name": "feature/login",
+    "git_branch": "feature/login",
+    "is_default": false
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`git_branch` is `null` when the branch is not connected to a Git branch.
+
+### v1.project.branch.removed
+
+Fires when a preview branch is deleted.
+
+```json
+{
+  "branch": {
+    "ref": "abcdefghijklmnoprstu",
+    "name": "feature/login",
+    "git_branch": "feature/login",
+    "is_default": false
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`git_branch` is `null` when the branch is not connected to a Git branch.
+
+## Organization events
+
+Organization events fire when something changes at the organization level. The payload always includes `organization_slug` and `project_ref` is always `null`.
+
+| Event                                                                                   | Fires after                               |
+| --------------------------------------------------------------------------------------- | ----------------------------------------- |
+| [`v1.organization.member.invitation.created`](#v1organizationmemberinvitationcreated)   | A member is invited to the organization   |
+| [`v1.organization.member.invitation.canceled`](#v1organizationmemberinvitationcanceled) | A pending invitation is canceled          |
+| [`v1.organization.member.added`](#v1organizationmemberadded)                            | A member joins the organization           |
+| [`v1.organization.member.removed`](#v1organizationmemberremoved)                        | A member is removed from the organization |
+| [`v1.organization.member.role.assigned`](#v1organizationmemberroleassigned)             | A role is assigned to a member            |
+| [`v1.organization.member.role.updated`](#v1organizationmemberroleupdated)               | An existing role assignment is updated    |
+| [`v1.organization.member.role.removed`](#v1organizationmemberroleremoved)               | A role is removed from a member           |
+| [`v1.organization.billing.plan.upgraded`](#v1organizationbillingplanupgraded)           | The billing plan is upgraded              |
+| [`v1.organization.billing.plan.downgraded`](#v1organizationbillingplandowngraded)       | The billing plan is downgraded            |
+
+### v1.organization.member.invitation.created
+
+Fires when a member is invited to the organization.
+
+```json
+{
+  "member": {
+    "invitation": {
+      "email": "user@example.com",
+      "role": {
+        "name": "Developer",
+        "projects": [{ "ref": "abcdefghijklmnoprstu" }]
+      }
+    }
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`role.projects` is `null` for organization-wide roles that apply to all projects.
+
+### v1.organization.member.invitation.canceled
+
+Fires when a pending invitation is canceled.
+
+```json
+{
+  "member": {
+    "invitation": {
+      "email": "user@example.com"
+    }
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+### v1.organization.member.added
+
+Fires when a member joins the organization by accepting an invitation.
+
+```json
+{
+  "member": {
+    "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e",
+    "primary_email": "user@example.com",
+    "role": {
+      "name": "Developer",
+      "projects": [{ "ref": "abcdefghijklmnoprstu" }]
+    }
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`role.projects` is `null` for organization-wide roles that apply to all projects.
+
+### v1.organization.member.removed
+
+Fires when a member is removed from the organization.
+
+```json
+{
+  "member": {
+    "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e",
+    "primary_email": "user@example.com"
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+### v1.organization.member.role.assigned
+
+Fires when a role is assigned to a member.
+
+```json
+{
+  "member": {
+    "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e",
+    "primary_email": "user@example.com",
+    "role": {
+      "name": "Developer",
+      "projects": [{ "ref": "abcdefghijklmnoprstu" }]
+    }
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`role.projects` is `null` for organization-wide roles that apply to all projects.
+
+### v1.organization.member.role.updated
+
+Fires when an existing role assignment is updated.
+
+```json
+{
+  "member": {
+    "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e",
+    "primary_email": "user@example.com",
+    "role": {
+      "name": "Admin",
+      "projects": null
+    }
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`role.projects` is `null` for organization-wide roles that apply to all projects.
+
+### v1.organization.member.role.removed
+
+Fires when a role is removed from a member.
+
+```json
+{
+  "member": {
+    "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e",
+    "primary_email": "user@example.com",
+    "role": {
+      "name": "Developer",
+      "projects": [{ "ref": "abcdefghijklmnoprstu" }]
+    }
+  },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`role.projects` is `null` for organization-wide roles that apply to all projects.
+
+### v1.organization.billing.plan.upgraded
+
+Fires when the organization's billing plan is upgraded.
+
+```json
+{
+  "billing": { "plan": "pro" },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`plan` is one of `free`, `pro`, `team`, or `enterprise`.
+
+### v1.organization.billing.plan.downgraded
+
+Fires when the organization's billing plan is downgraded.
+
+```json
+{
+  "billing": { "plan": "free" },
+  "actor": { "user_id": "6cf38595-f5ff-43ca-ba0f-84617bbe192e" }
+}
+```
+
+`plan` is one of `free`, `pro`, `team`, or `enterprise`.
+
+
+---
+
 # Your monthly invoice
 
 ## Billing cycle
@@ -140117,11 +140857,13 @@ results = index.query(
 - ['Cloudflare Origin Error 1016' on Custom Domain](https://supabase.com/docs/guides/troubleshooting/cloudflare-origin-error-1016-on-custom-domain-a57af4)
 - [Converted GitHub account to organization / GitHub Account was deleted - Lost Supabase account access](https://supabase.com/docs/guides/troubleshooting/converted-github-account-to-organisation---lost-supabase-account-access-5wsE_1)
 - [Cost confirmations do not appear in your MCP client](https://supabase.com/docs/guides/troubleshooting/cost-confirmations-do-not-appear-in-your-mcp-client-mVq3Lp)
+- [Custom role inherits privileges that were not explicitly granted](https://supabase.com/docs/guides/troubleshooting/custom-role-inherits-privileges-that-were-not-explicitly-granted-ddaa1c)
 - [Customizing Emails by Language](https://supabase.com/docs/guides/troubleshooting/customizing-emails-by-language-KZ_38Q)
 - [Errors when creating / updating / deleting users](https://supabase.com/docs/guides/troubleshooting/dashboard-errors-when-managing-users-N1ls4A)
 - [Database API 42501 errors](https://supabase.com/docs/guides/troubleshooting/database-api-42501-errors)
 - [Database Error: remaining connection slots are reserved for non-replication superuser connections](https://supabase.com/docs/guides/troubleshooting/database-error-remaining-connection-slots-are-reserved-for-non-replication-superuser-connections-3V3nIb)
 - [Database error saving new user](https://supabase.com/docs/guides/troubleshooting/database-error-saving-new-user-RU_EwB)
+- [Database roles can read request headers queued by pg_net](https://supabase.com/docs/guides/troubleshooting/database-roles-can-read-request-headers-queued-by-pg_net-ad6357)
 - [Deprecated RLS features](https://supabase.com/docs/guides/troubleshooting/deprecated-rls-features-Pm77Zs)
 - [Disabling Prepared statements](https://supabase.com/docs/guides/troubleshooting/disabling-prepared-statements-qL8lEL)
 - [Discovering and Interpreting API Errors in the Logs](https://supabase.com/docs/guides/troubleshooting/discovering-and-interpreting-api-errors-in-the-logs-7xREI9)
@@ -140226,6 +140968,7 @@ results = index.query(
 - [Performing administration tasks on the server side with a secret key](https://supabase.com/docs/guides/troubleshooting/performing-administration-tasks-on-the-server-side-with-the-servicerole-secret-BYM4Fa)
 - ['Permission denied' when deleting the 'cli_login_postgres' role](https://supabase.com/docs/guides/troubleshooting/permission-denied-when-deleting-the-cli_login_postgres-role-808bae)
 - [`pg_cron launcher crashes with 'duplicate key value violates unique constraint'`](https://supabase.com/docs/guides/troubleshooting/pg_cron-launcher-crashes-with-duplicate-key-value-violates-unique-constraint-cc6472)
+- [pg_dump fails with 'query would be affected by row-level security policy'](https://supabase.com/docs/guides/troubleshooting/pg_dump-fails-with-query-would-be-affected-by-row-level-security-policy-1d5783)
 - [pg_cron debugging guide](https://supabase.com/docs/guides/troubleshooting/pgcron-debugging-guide-n1KTaz)
 - [PGRST106: "The schema must be one of the following..." error when querying an exposed schema](https://supabase.com/docs/guides/troubleshooting/pgrst106-the-schema-must-be-one-of-the-following-error-when-querying-an-exposed-schema)
 - [PKCE Flow errors: 'cannot parse response' or '#ZgotmplZ' in magic link emails](https://supabase.com/docs/guides/troubleshooting/pkce-flow-errors-cannot-parse-response-or-zgotmplz-in-magic-link-emails-433665)
@@ -140260,6 +141003,7 @@ results = index.query(
 - [Resolving database hostname and managing your IP address](https://supabase.com/docs/guides/troubleshooting/resolving-database-hostname-and-managing-your-ip-address-pVlwE0)
 - [Resolving 'permission denied for database postgres' during migrations](https://supabase.com/docs/guides/troubleshooting/resolving-permission-denied-for-database-postgres-during-migrations-78f33a)
 - [How To Restore a Project Paused for More Than 1 Year](https://supabase.com/docs/guides/troubleshooting/restore-project-after-90-days-pause)
+- [Revoking access to pg_net objects has no effect: no privileges could be revoked](https://supabase.com/docs/guides/troubleshooting/revoking-access-to-pg_net-objects-has-no-effect-0bbc16)
 - [RLS Performance and Best Practices](https://supabase.com/docs/guides/troubleshooting/rls-performance-and-best-practices-Z5Jjwv)
 - [RLS Simplified](https://supabase.com/docs/guides/troubleshooting/rls-simplified-BJTcS8)
 - [Rotating Anon, Service, and JWT Secrets](https://supabase.com/docs/guides/troubleshooting/rotating-anon-service-and-jwt-secrets-1Jq6yd)
@@ -140959,6 +141703,187 @@ If none of these explain what you're seeing, open an issue on the [Supabase MCP 
 
 ---
 
+# Custom role inherits privileges that were not explicitly granted
+
+A role you create can use objects without an explicit grant. For example, it can read tables in the `net` schema, create temporary tables, or create large objects. Privilege checks such as `has_table_privilege` return `true` for these objects. When you run some revokes as `postgres`, they print `WARNING: no privileges could be revoked` and change nothing.
+
+The role receives these privileges from `PUBLIC`, which stands for every role in the database, including roles you create later.
+
+A role you create to limit a service or a person can therefore do more than you intended. When pg\_net is enabled, any role that can connect to your database can read the request headers that pg\_net queues, including API keys. It can also queue HTTP requests of its own. Any role can use disk space by creating temporary tables and large objects.
+
+## Find privileges you didn't grant
+
+To find privileges you didn't grant, list what the role can access and compare it with your own grants. The following queries check schema `usage` and the table and sequence privileges they name. They don't check column-level grants or `execute` on functions. To list the schemas a role can use, replace `app_svc` and run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql
+select nspname as schema
+from pg_namespace
+where
+  has_schema_privilege('app_svc', oid, 'usage')
+  and nspname not in ('pg_catalog', 'information_schema')
+  and nspname not like 'pg\_%'
+order by 1;
+```
+
+To list the tables, views, and sequences the role can read or change in those schemas, run:
+
+```sql
+select
+  n.nspname as schema,
+  c.relname as object,
+  string_agg(p.privilege, ', ' order by p.privilege) as privileges
+from pg_class c
+join pg_namespace n on n.oid = c.relnamespace
+cross join unnest(
+  array['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'USAGE']
+) as p(privilege)
+where c.relkind in ('r', 'p', 'v', 'm', 'f', 'S')
+  and n.nspname not in ('pg_catalog', 'information_schema')
+  and has_schema_privilege('app_svc', n.oid, 'usage')
+  and case
+    when c.relkind = 'S' then
+      case
+        when p.privilege in ('USAGE', 'SELECT', 'UPDATE')
+          then has_sequence_privilege('app_svc', c.oid, p.privilege)
+        else false
+      end
+    else
+      case
+        when p.privilege = 'USAGE' then false
+        else has_table_privilege('app_svc', c.oid, p.privilege)
+      end
+  end
+group by 1, 2
+order by 1, 2;
+```
+
+The results are the role's effective privileges. Access you didn't grant directly can come from `PUBLIC`, from a role it's a member of, or from owning the object. To see who holds privileges on an object, check its access control list:
+
+```sql
+select relacl from pg_class where oid = 'net.http_request_queue'::regclass;
+```
+
+An entry that starts with `=`, such as `=arwdDxtm/supabase_admin`, is a grant to `PUBLIC`.
+
+## What every role receives from PUBLIC
+
+A role holds everything granted to `PUBLIC` in addition to its own grants. The `noinherit` attribute doesn't affect privileges granted to `PUBLIC`, because `PUBLIC` isn't a role membership.
+
+On a Supabase project, a role you create can use the `public` schema, the system catalogs, and the `net` schema when the pg\_net extension is enabled. Other Supabase schemas, such as `auth`, `storage`, `extensions`, `vault`, and `cron`, don't grant `usage` to `PUBLIC`.
+
+The following table lists what `PUBLIC` holds and whether the `postgres` role can revoke it.
+
+| Object                                           | What `PUBLIC` holds                                                                                                                        | Can `postgres` revoke it |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------ |
+| `postgres` database                              | `connect` and `temporary`                                                                                                                  | Yes                      |
+| `template1` database                             | `connect`. The database holds none of your data.                                                                                           | No                       |
+| `public` schema                                  | `usage`, and `execute` on functions you create there                                                                                       | Yes                      |
+| `net` schema                                     | `usage`, all privileges on `net.http_request_queue` and `net._http_response`, and on most projects `execute` on the `net.http_*` functions | No                       |
+| Functions in `cron` and `extensions`             | `execute`, which a role can't use without `usage` on the schema                                                                            | Not needed               |
+| Large-object functions such as `lo_create`       | `execute`. A role can create large objects in the database.                                                                                | No                       |
+| System catalogs such as `pg_class` and `pg_proc` | Read access to the names and definitions of database objects                                                                               | No                       |
+
+The `postgres` role owns the `postgres` database, and through it the `public` schema, so it can revoke the `PUBLIC` grants on those. Supabase roles own the other objects, so a revoke on them prints the `no privileges could be revoked` warning. For the pg\_net grants, see [Revoking access to pg\_net objects has no effect](https://supabase.com/docs/guides/troubleshooting/revoking-access-to-pg_net-objects-has-no-effect-0bbc16).
+
+Extensions you enable can grant more privileges to `PUBLIC`. After you enable an extension, check the role again.
+
+## Revoke PUBLIC privileges on objects you own
+
+You can revoke the `PUBLIC` grants on the `public` schema, on the `postgres` database, and on functions you create.
+
+Danger: Revoking `connect` on the `postgres` database from `PUBLIC` disconnects the Data API, Auth, Storage, and other Supabase services, because their roles connect through that grant. Leave `connect` granted to `PUBLIC`.
+
+### Functions you create
+
+To stop `PUBLIC` from running functions that `postgres` creates after the change, update the default privileges without naming a schema:
+
+```sql
+alter default privileges for role postgres
+  revoke execute on functions from public;
+```
+
+A default privilege set with `in schema` can't remove the `PUBLIC` default for functions, because Postgres adds schema defaults to the global ones.
+
+The Supabase defaults also grant `execute` to `anon`, `authenticated`, and `service_role` on functions that `postgres` creates in `public`. Those roles keep their access. If you changed those defaults, or create functions as another role, grant `execute` to the API roles that need it.
+
+To check the default privileges for functions, run:
+
+```sql
+select defaclrole::regrole as owner, defaclnamespace::regnamespace as schema, defaclacl
+from pg_default_acl
+where defaclobjtype = 'f';
+```
+
+Functions in other schemas don't get those grants. If a Row Level Security policy calls a helper function outside `public`, grant `execute` on it to the roles the policy applies to:
+
+```sql
+grant execute on function private.is_admin() to authenticated;
+```
+
+To revoke `execute` from `PUBLIC` on a function that already exists, run:
+
+```sql
+revoke execute on function public.my_function() from public;
+```
+
+### The public schema
+
+To stop roles you create from using the `public` schema without a grant, run:
+
+```sql
+revoke usage on schema public from public;
+```
+
+The `postgres`, `anon`, `authenticated`, and `service_role` roles keep their own `usage` grants, so the Data API keeps working. Other roles lose access to the schema unless they have their own grant, so grant `usage` to each role you create that needs it. Test the change on a [preview branch](https://supabase.com/docs/guides/deployment/branching) before you apply it to production.
+
+### Temporary tables
+
+To allow temporary tables only for roles that you grant `temporary` to, run:
+
+```sql
+revoke temporary on database postgres from public;
+```
+
+Grant `temporary` back to each role that needs it. If your Data API functions create temporary tables, also grant it to `authenticated`. Test this change on a preview branch too.
+
+### Confirm the change
+
+To confirm that the role lost the privileges you revoked, replace `app_svc` and `public.my_function()` and run:
+
+```sql
+select
+  has_schema_privilege('app_svc', 'public', 'usage') as can_use_public_schema,
+  has_database_privilege('app_svc', 'postgres', 'temporary') as can_create_temp_tables,
+  has_function_privilege('app_svc', 'public.my_function()', 'execute') as can_run_my_function;
+```
+
+Each column returns `false` unless the role still receives the privilege from its own grant or from a role it's a member of.
+
+## Grant only what a service needs
+
+Give each service its own role, and grant only the schemas and tables it uses. The following example creates a role that can read and add orders in an `app` schema:
+
+```sql
+create role app_svc login password '<strong-password>';
+grant usage on schema app to app_svc;
+grant select, insert on app.orders to app_svc;
+grant usage on sequence app.orders_id_seq to app_svc;
+```
+
+A role you create is subject to Row Level Security on tables it doesn't own, unless you give it the `bypassrls` attribute. A table's owner bypasses its policies unless you run `alter table <table_name> force row level security`.
+
+Don't grant the role membership in `postgres` or in other Supabase roles, because a member role inherits all of their privileges. For more information about roles, see [Postgres Roles](https://supabase.com/docs/guides/database/postgres/roles).
+
+## Settings that don't restrict a role
+
+Some settings look like restrictions, but a session can change them. Use grants to restrict a role.
+
+- `default_transaction_read_only`: a session can run `set default_transaction_read_only = off` and then write. Use it to prevent accidental writes only.
+- `search_path`: a session can set its own search path or use schema-qualified names.
+
+
+---
+
 # Customizing Emails by Language
 
 When you register a user, you can create meta-data about them.
@@ -141292,6 +142217,44 @@ A trigger on `auth.users` is calling a function (in this case `handle_new_user`)
 1. Check whether the missing table should exist in your `public` schema. If it should, create the table for the trigger to succeed and the error should resolve.
 
 2. If the table is not needed, review the function definition and update or remove the reference. You can view and edit your database functions from the [Database Functions](https://supabase.com/dashboard/project/_/database/functions) page in the dashboard.
+
+
+---
+
+# Database roles can read request headers queued by pg_net
+
+When you call `net.http_get`, `net.http_post`, or `net.http_delete`, pg\_net stores the request as a row in `net.http_request_queue`. The row holds the URL, headers, and body until the pg\_net worker sends the request. Any role that can use pg\_net can read the row while it waits, including an `Authorization` or `apikey` header. For which roles can use pg\_net, see [Revoking access to pg\_net objects has no effect](https://supabase.com/docs/guides/troubleshooting/revoking-access-to-pg_net-objects-has-no-effect-0bbc16#which-roles-can-use-pg_net).
+
+## Check what your requests expose
+
+To see the requests waiting to be sent, run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql
+select id, url, headers
+from net.http_request_queue
+order by id;
+```
+
+The worker deletes a row from the queue when it picks up the request, so most rows exist for a short time. Rows stay in the queue for longer when the worker falls behind or stops.
+
+To see the stored responses, run:
+
+```sql
+select id, status_code, headers, content, created
+from net._http_response
+order by created desc
+limit 20;
+```
+
+`net._http_response` keeps the status code, response headers, and response body for at least the time set by `pg_net.ttl`, which is 6 hours by default. The worker deletes expired responses while it processes requests, so responses can stay longer when no requests are being sent. It doesn't store request headers. Check the response bodies too, because an API can return sensitive data of its own.
+
+## Credentials in request headers
+
+Treat any credential you send through pg\_net as readable by every role that can connect to your database. Reading a credential from [Vault](https://supabase.com/docs/guides/database/vault) keeps it encrypted at rest, but the decrypted value is written to the `headers` column like any other header.
+
+## Row Level Security on the queue
+
+You can't add Row Level Security policies to `net.http_request_queue` or `net._http_response`. The `supabase_admin` role owns both tables, and only a table's owner can enable Row Level Security on it. Supabase doesn't support changing the grants or policies on these tables for individual projects, so treat them as a platform constraint.
 
 
 ---
@@ -147725,6 +148688,110 @@ Execute the following SQL command via the [SQL editor](https://supabase.com/dash
 
 ---
 
+# pg_dump fails with 'query would be affected by row-level security policy'
+
+When you run `pg_dump` as a role you created, the export stops at the first table that uses Row Level Security:
+
+```text
+pg_dump: error: query would be affected by row-level security policy for table "orders"
+```
+
+`pg_dump` turns off row security for its session, so it exports every row of a table or none. A role without the `bypassrls` attribute can't read every row, so the export fails. For more information, see the Postgres documentation on [`pg_dump`](https://www.postgresql.org/docs/current/app-pgdump.html).
+
+## Create a backup role
+
+Create a dedicated role that can read every table without the `postgres` password. Run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql
+create role backup_reader login password '<strong-password>' bypassrls;
+grant pg_read_all_data to backup_reader;
+alter role backup_reader set default_transaction_read_only = on;
+```
+
+Each statement does one job:
+
+- `bypassrls` lets `pg_dump` read every row.
+- `pg_read_all_data` is a predefined Postgres role. It lets `backup_reader` read every table, view, and sequence in every schema, including `auth` and `storage`.
+- `default_transaction_read_only` makes the role's sessions read-only by default, which prevents accidental writes.
+
+`pg_read_all_data` doesn't cover large objects. If your database has large objects, a full export fails with `permission denied for large object`.
+
+To export without large objects, add `--no-large-objects` to the `pg_dump` command. In `pg_dump` 15 and earlier, the option is `--no-blobs`.
+
+To include large objects, grant `select` on each one to `backup_reader`. Only a large object's owner, or a role that holds `select` on it with the grant option, can grant access to it.
+
+1. List the roles that own large objects:
+
+   ```sql
+   select distinct lomowner::regrole as owner from pg_largeobject_metadata;
+   ```
+
+2. Run the following block once as each of those roles:
+
+   ```sql
+   do $$
+   declare
+     r record;
+   begin
+     for r in
+       select oid from pg_largeobject_metadata
+       where lomowner = current_user::regrole
+     loop
+       execute format('grant select on large object %s to backup_reader', r.oid);
+     end loop;
+   end
+   $$;
+   ```
+
+To give another role you created the same access, run `alter role <role_name> bypassrls;` and `grant pg_read_all_data to <role_name>;`.
+
+## Run the export
+
+1. Open the [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true) and copy the session pooler or direct connection string.
+2. Change the username in the connection string, and remove the password from it. For the shared pooler, change `postgres.<project-ref>` to `backup_reader.<project-ref>`. For a direct connection, change `postgres` to `backup_reader`.
+3. Run `pg_dump` with the connection string. Use `pg_dump` from the same major Postgres version as your project, or a later one.
+
+   ```bash
+   pg_dump "postgresql://backup_reader.<project-ref>@<pooler-host>:5432/postgres" \
+     --password \
+     --file backup.sql
+   ```
+
+   `--password` prompts for the password. For a scheduled export, leave out `--password` and store the password in a password file. For the file format, see the Postgres documentation on [the password file](https://www.postgresql.org/docs/current/libpq-pgpass.html).
+
+To export specific schemas, add a `--schema` option for each one, for example `--schema=public --schema=auth --schema=storage`. An export with `--schema` leaves out large objects. To include them, also add `--large-objects`, which is `--blobs` in `pg_dump` 15 and earlier.
+
+Run `pg_dump` directly rather than `supabase db dump`. The Supabase CLI command switches to the `postgres` role during the export, so it fails for `backup_reader` with `permission denied to set role "postgres"`.
+
+The export contains [Vault](https://supabase.com/docs/guides/database/vault) secrets in encrypted form only, because `backup_reader` can't decrypt them. The export doesn't include role passwords.
+
+If your project has a [Read Replica](https://supabase.com/docs/guides/platform/read-replicas), you can export from the replica to keep the load off your Primary database. To find the replica's connection string, set **Source** to the replica in the **Connect** panel. A Read Replica is a copy of the Primary, including its roles, so `backup_reader` can also connect to the Primary with the same password.
+
+## What the backup role can still do
+
+A session as `backup_reader` can still write in these ways:
+
+- The session can run `set default_transaction_read_only = off`, because the setting is a default.
+- If the pg\_net extension is enabled, the session can add rows to `net.http_request_queue`, which pg\_net sends as HTTP requests. The role receives this privilege from `PUBLIC`.
+- The session can create large objects with functions such as `lo_create`, which `PUBLIC` can run.
+
+For the full list of privileges every role receives, see [Custom role inherits privileges that were not explicitly granted](https://supabase.com/docs/guides/troubleshooting/custom-role-inherits-privileges-that-were-not-explicitly-granted-ddaa1c#what-every-role-receives-from-public).
+
+## Rotate the password
+
+Store the role's password only in the system that runs the export. If that system is compromised, change the password:
+
+```sql
+alter role backup_reader password '<new-strong-password>';
+```
+
+Connections through the shared pooler can fail for about 15 seconds after the change, until the pooler picks up the new password.
+
+Supabase backs up Pro, Team, and Enterprise Plan projects daily without any credentials. For more information about those backups, see [Database Backups](https://supabase.com/docs/guides/platform/backups).
+
+
+---
+
 # pg_cron debugging guide
 
 This is a general guide for debugging pg\_cron. Below lists issues and how to debug them
@@ -150500,6 +151567,110 @@ The script saves both source and target configs to a local `config_sync_<timesta
 - [Migrating within Supabase](https://supabase.com/docs/guides/platform/migrating-within-supabase)
 - [Restore Dashboard backup](https://supabase.com/docs/guides/platform/migrating-within-supabase/dashboard-restore)
 - [Backup and Restore using the CLI](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore)
+
+
+---
+
+# Revoking access to pg_net objects has no effect: no privileges could be revoked
+
+When you run `revoke` on the `net` schema or its objects as the `postgres` role, the statement completes but access stays the same. Postgres prints a warning instead of an error:
+
+```text
+WARNING:  no privileges could be revoked for "net"
+```
+
+The same warning appears for `http_request_queue`, `_http_response`, and the `net.http_*` functions. A `grant` on these objects prints `no privileges were granted`. The SQL Editor doesn't display warnings, so the statement looks successful there.
+
+## Check which roles have access
+
+To list the privileges on the `net` schema and its tables, and the role that granted each one, run the following in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new):
+
+```sql
+select
+  'schema net' as object,
+  case acl.grantee when 0 then 'PUBLIC' else acl.grantee::regrole::text end as grantee,
+  acl.grantor::regrole as grantor,
+  acl.privilege_type
+from pg_namespace n
+cross join lateral aclexplode(n.nspacl) as acl
+where n.nspname = 'net'
+union all
+select
+  c.relname,
+  case acl.grantee when 0 then 'PUBLIC' else acl.grantee::regrole::text end,
+  acl.grantor::regrole,
+  acl.privilege_type
+from pg_class c
+cross join lateral aclexplode(c.relacl) as acl
+where c.relnamespace = 'net'::regnamespace
+order by 1, 2, 4;
+```
+
+Every row has `supabase_admin` as the grantor. To check what one role can do, replace `my_role` and run:
+
+```sql
+select
+  has_schema_privilege('my_role', 'net', 'usage') as schema_usage,
+  has_table_privilege('my_role', 'net.http_request_queue', 'select') as read_queue,
+  has_function_privilege(
+    'my_role',
+    'net.http_post(text, jsonb, jsonb, jsonb, integer)',
+    'execute'
+  ) as call_http_post;
+```
+
+## Why the revoke has no effect
+
+Supabase creates the pg\_net extension as the `supabase_admin` role, so `supabase_admin` owns the `net` schema and everything in it. In Postgres, a role can revoke only the privileges that it granted. For more information, see the Postgres documentation on [`REVOKE`](https://www.postgresql.org/docs/current/sql-revoke.html).
+
+The extension grants `usage` on the schema and all privileges on its tables and sequences to `PUBLIC`. On most projects, its functions are also executable by `PUBLIC`, which is the Postgres default for functions. For the projects where they aren't, see [Which roles can use pg\_net](#which-roles-can-use-pg_net). When the extension is created, Supabase also grants `usage` on `net` to `postgres`, `anon`, `authenticated`, and `service_role`.
+
+The `postgres` role made none of these grants, so its `revoke` finds nothing to remove. It holds the privileges without the grant option, so its `grant` to another role does nothing either, and Postgres reports `no privileges were granted`.
+
+A grant to `PUBLIC` applies to every role, including roles you create later. Postgres has no way to exclude a single role from a `PUBLIC` grant.
+
+## Which roles can use pg\_net
+
+The following table shows how each kind of role can reach the `net` schema.
+
+| Role                                            | Can use pg\_net | Reason                                                                                                                          |
+| ----------------------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `anon`, `authenticated`, `service_role`         | No, by default  | These roles can't connect to the database directly, and the Data API doesn't expose `net` by default.                           |
+| `postgres` and any role you create with `login` | Yes             | The role can read and change rows in `net.http_request_queue` and `net._http_response`. The worker sends each row in the queue. |
+
+On some projects, only `postgres`, `anon`, `authenticated`, `service_role`, and `supabase_functions_admin` can call `net.http_get` and `net.http_post`. For the events that revoke `execute` from `PUBLIC`, see [When the default grants are applied](#when-the-default-grants-are-applied). A role you create can still add rows to the queue, and the worker sends them. To check a role, run the `has_function_privilege` query from [Check which roles have access](#check-which-roles-have-access).
+
+A row in `net.http_request_queue` holds the request's URL, headers, and body until the pg\_net worker sends it. To check what a queued request exposes, see [Database roles can read request headers queued by pg\_net](https://supabase.com/docs/guides/troubleshooting/database-roles-can-read-request-headers-queued-by-pg_net-ad6357).
+
+## Limit pg\_net access on your project
+
+Supabase doesn't support changing the grants on pg\_net objects for individual projects, so treat the default grants as a platform constraint.
+
+Removing the `PUBLIC` grants on the `net` tables breaks pg\_net, because the `postgres` role reaches those tables only through them. Without the grants, a request function called as `postgres` fails with `permission denied for table http_request_queue`, which also breaks pg\_cron jobs that call pg\_net.
+
+To reduce what pg\_net exposes:
+
+- Give the `login` attribute only to roles for services that you trust to send HTTP requests from your database.
+- Treat any credential you send in request headers as readable by every role that can connect to your database.
+- Keep `net` out of the exposed schemas in your [API settings](https://supabase.com/dashboard/project/_/settings/api). If you expose it, `anon` and `authenticated` can read `net.http_request_queue` through the `PUBLIC` grants, including queued credentials.
+- If your project doesn't use pg\_net, drop the extension. Dropping it removes the `net` schema and all of its grants.
+
+Danger: Dropping pg\_net deletes unsent requests and stored responses, and stops Database Webhooks, which send their requests through pg\_net. Before you drop it, check that `net.http_request_queue` is empty and that your project has no Database Webhooks.
+
+To drop the extension, run:
+
+```sql
+drop extension pg_net;
+```
+
+## When the default grants are applied
+
+Dropping and re-creating the extension doesn't remove the grants, because `create extension pg_net` applies all of them again. Two other events grant `usage` on `net` to `anon`, `authenticated`, and `service_role` again:
+
+- A major Postgres version upgrade.
+- Turning on Database Webhooks.
+
+A major Postgres version upgrade also revokes `execute` on `net.http_get` and `net.http_post` from `PUBLIC`, and grants it to `postgres`, `anon`, `authenticated`, `service_role`, and `supabase_functions_admin`. The same happens when pg\_net 0.11 or earlier is enabled on a project.
 
 
 ---

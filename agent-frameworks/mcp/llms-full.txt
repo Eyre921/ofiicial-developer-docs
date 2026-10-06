@@ -10590,6 +10590,448 @@ For additional details, refer to:
 Understanding these standards will help you implement authorization correctly and troubleshoot issues when they arise.
 
 
+# Local Server Security
+Source: https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/local-server-security
+
+Practical defaults for running MCP servers safely on your own machine.
+
+Most MCP security documentation covers the protocol threat model: OAuth flows,
+token handling, session hijacking, and confused deputy attacks. For those, see
+[Authorization](/docs/2026-07-28/tutorials/security/authorization) and
+[Security Best Practices](/docs/2026-07-28/tutorials/security/security_best_practices).
+
+This guide covers a different threat model: **your machine**. When you run an
+MCP server locally, you download code from the internet and run it as a child
+process of your user account. That process inherits your environment
+variables, can read anything your account can read — SSH keys, cloud
+credentials, browser profiles, your home directory — and can open outbound
+network connections to anywhere. None of that is governed by the protocol.
+It is governed by how you run the process.
+
+<Note>
+  **Scope**: this guide is about servers running on a machine you (or your
+  organization's users) control — a laptop or workstation, typically launched
+  over stdio. Deploying and hardening remote or hosted servers is a different
+  topic with different controls.
+</Note>
+
+<Tip>
+  **If you do one thing after reading this**: open your client's MCP
+  configuration, remove the servers you no longer use, and make sure you know
+  where each remaining one comes from and that its version is pinned. Everything
+  else in this guide builds on knowing what you are actually running.
+</Tip>
+
+## What a Local Server Can Touch
+
+A local MCP server is not a plugin running inside a sandbox the protocol
+provides. It is an ordinary operating system process, launched by your host
+application, with all the access that implies:
+
+```mermaid theme={null}
+flowchart LR
+    Host["Host application<br/>(MCP client)"] -->|launches| Server["Local MCP server<br/>(ordinary child process)"]
+    Server --> Env["Environment variables<br/>(tokens, API keys)"]
+    Server --> FS["Files your account<br/>can read and write"]
+    Server --> Net["Unrestricted outbound<br/>network access"]
+    Server --> Deps["Its full dependency tree,<br/>fetched at install time"]
+```
+
+Clients that offer one-click installation are required to show you the exact
+command before it runs
+([SEP-1024](/seps/1024-mcp-client-security-requirements-for-local-server-)),
+but a consent dialog only helps if you know what to look for. That is what
+the rest of this guide is about.
+
+### The stdio Trust Model
+
+Most local servers use the stdio transport: your client spawns the server as
+a subprocess, and the two communicate over stdin and stdout. That design
+carries an important assumption: **the client and a stdio server share one
+trust domain.** They run side by side with the same privileges, and neither
+the protocol nor the SDKs defend one against the other — a server already
+has code execution on your machine by virtue of being launched, so there is
+no boundary between the two processes for a transport to enforce. This is by
+design: the SDKs assume full trust between stdio peers, and any isolation or
+security fencing around a local server is the responsibility of the host
+application and of whoever operates the machine.
+
+Two practical consequences:
+
+* Your real security decisions happen **before launch**: what you install
+  (provenance) and how you run it (isolation). The stdio transport is not a
+  sandbox.
+* If you run a server at reduced privilege, that boundary is yours to
+  enforce — a container, sandbox, or VM, as described below.
+
+The trust domain is also cumulative. Every server you configure shares the
+same model context, so a malicious server can influence how the agent uses
+the tools of every other server. Each install extends the surface all the
+others are exposed to.
+
+### Threats This Guide Addresses
+
+1. **A malicious server.** Typosquatted package names, lookalike
+   repositories, or an abandoned project taken over by a new publisher. The
+   "server" works as advertised while also exfiltrating your environment or
+   files.
+2. **An overcollecting server.** A legitimate server that collects more than
+   its job requires: environment variables, files, or network traffic it has
+   no reason to touch. Prompt injection in untrusted content can steer an
+   honest server into the same overreach, using whatever access it was
+   given.
+3. **A compromised dependency.** The server author is honest, but one of the
+   packages in its dependency tree was compromised in a supply chain attack.
+4. **A poisoned tool catalog.** Tool names and descriptions are instructions
+   your model reads. A server can hide directives in them that steer the
+   agent — including how it uses *other* servers' tools — without the
+   poisoned tool ever being invoked (often called tool poisoning, or tool
+   shadowing when it targets another server's tools). Definitions are not
+   fixed at install time either: a server can quietly change them after you
+   approved it (a rug pull), so a one-time consent dialog and package
+   pinning do not cover this surface.
+5. **A vulnerable server or bridge.** A legitimate, unmodified component can
+   still be the way in. Local bridges that connect stdio clients to remote
+   servers have had critical flaws triggered by nothing more than connecting
+   to a malicious endpoint, and local developer tools listening on a port
+   have been exploited directly from a web page.
+
+Out of scope: attackers with physical access to your machine, targeted
+nation-state attacks, and protocol-level attacks (see the linked documents
+above).
+
+Before the mitigations, one fact that shapes them all: **no check proves
+what a server will do.** The protocol cannot guarantee that a server is
+what it claims or does only what it promises. Provenance signals — a
+readable repository, signatures, an SBOM, a curated listing — tell you who
+you are trusting, not that the trust is warranted, and short of auditing
+and building every release yourself, you cannot verify behavior in advance.
+
+The mitigations below therefore follow one principle: **treat a third-party
+local server as untrusted code with exactly the privileges you hand it —
+and hand it as few as possible.** Vetting reduces the odds of a bad trust
+decision; containment decides what a bad one costs. Each section gives a
+baseline, an optional "going further" step, and a default if you are
+unsure.
+
+## Ask Whether It Needs to Run Locally
+
+The cheapest way to shrink a blast radius is not to create one. Before you
+install a server as a local process, ask what it actually needs from your
+machine. Reading your working tree, driving a local tool, or reaching
+hardware are reasons to run locally. Wrapping a remote API is not: a server
+that only talks to a service on the internet gains nothing from running on
+your laptop, while you take on everything else in this guide for no benefit.
+
+* **Prefer the remote version where one exists.** A server offered over
+  [Streamable HTTP](/specification/2026-07-28/basic/transports/streamable-http)
+  runs no code on your machine, uses the protocol's authorization flow
+  instead of a token in a local config file, and is patched in one place.
+  The protocol threat model (linked above) applies to it instead of this
+  one.
+* **Treat an unnecessary local install as a signal.** When a third-party
+  server needs no local access yet ships only as a stdio process, ask why.
+  It may just be the author's path of least resistance, but it is also
+  exactly how a malicious or overcollecting server gets onto your machine.
+* **Keep the genuine exceptions.** Some capabilities only exist as a local
+  process. For those, the rest of this guide applies in full.
+
+**If unsure**: when a server needs none of your files, local tools, or local
+network, use its remote version and skip the local install entirely.
+
+## Check Provenance Before You Install
+
+A listing on a registry is not an endorsement. Docker Hub, ghcr.io, npm,
+PyPI, and NuGet will host almost anything, and a package being popular or
+well-named guarantees neither that it is safe nor that it is current. Even
+curated MCP catalogs describe their own vetting as best-effort: curation
+reduces risk, it does not take on accountability for what you run.
+
+Before installing a server:
+
+* **Identify the publisher.** Can you tie the package to a source repository
+  and a real maintainer or organization? Does the repository show recent,
+  plausible activity?
+* **Verify the exact package name.** Typosquatting is the cheapest attack
+  available. Confirm you are installing the package the documentation
+  actually refers to, not a lookalike.
+* **Pin the version.** Install a specific version rather than `latest`, so
+  a compromised future release does not walk onto your machine through an
+  auto-update. Pair the pin with a deliberate update habit: when a security
+  advisory lands for something you pinned, the pin is what keeps you
+  vulnerable.
+* **Know what the pin covers.** Pinning a package version with a launcher
+  such as `npx` or `uvx` fixes only the top-level package; its transitive
+  dependencies are typically resolved fresh at install time, which is
+  exactly where a compromised dependency arrives. Pinning a container image
+  by digest (`image@sha256:...`) freezes the entire dependency tree.
+* **Prefer artifacts with provenance metadata.** Signed artifacts, build
+  attestations, and SBOMs (software bills of materials) let you verify who
+  built the artifact and what is inside it — including which MCP SDK and
+  version it uses, which matters when a vulnerability is announced in one.
+
+**Going further**: verify signatures and attestations rather than just
+noting their presence (for example with Sigstore tooling or your registry's
+attestation verification), and generate your own SBOM from the artifact (for
+example with Syft or Trivy) instead of trusting the published one. Some
+registries and runtimes can verify signatures at launch time rather than
+only at install, turning provenance from a one-time check into a standing
+one.
+
+**If unsure**: only install servers whose source code you can read and whose
+publisher you can identify, and pin the exact version.
+
+## Treat Tool Definitions as Untrusted Input
+
+Installing a server is not the last trust decision. At runtime, the server
+sends your client its tool names and descriptions, and the model reads them
+as instructions — an injection surface that install-time review does not
+cover.
+
+* **Read the tool list before you rely on a server.** Most clients can show
+  each tool's description, and the
+  [MCP Inspector](/docs/2026-07-28/tools/inspector) lists every tool a
+  server exposes without a model in the loop. If a description contains
+  instructions that have nothing to do with the tool's job, remove the
+  server.
+* **Prefer clients that pin tool definitions.** Some clients record tool
+  definitions when you first approve a server and ask again when they
+  change. The protocol does not require this, so it is a property worth
+  choosing a client for.
+* **Keep the roster small.** Because all configured servers share the
+  model's context, every server you add extends the surface the others are
+  exposed to.
+
+**If unsure**: install a few servers, skim their tool descriptions once, and
+favor a client that re-prompts when a tool definition changes.
+
+## Run Servers in an Isolated Environment
+
+Process isolation is the single highest-leverage mitigation in this guide.
+It turns "this server can read my SSH keys" into "this server can read an
+empty directory", and it protects you even when provenance checks fail —
+against all the threats above at once.
+
+* **Baseline**: run third-party servers inside a container (for example with
+  Docker or Podman) with no volume mounts beyond what the server needs.
+  Stdio transport works unchanged: the client talks to the container's stdin
+  and stdout exactly as it would to a bare process.
+* **Alternatives**: a lightweight virtual machine dedicated to development
+  work, or your operating system's process-sandboxing facilities. Some
+  MCP-focused runtimes and client integrations will wrap servers in
+  containers for you; the pattern matters more than the tool.
+
+A container is not an impenetrable boundary, but it removes the default
+access to your environment, your files, and your keychain — which is what
+the common attacks rely on.
+
+**Going further**: harden the container itself — a seccomp profile limits
+the system calls it can make, and a Linux security module such as AppArmor
+or SELinux limits what it can reach, often by doing no more than enabling
+your distribution's defaults. Beyond that, run servers under a microVM or in
+a separate user account, and combine isolation with the network controls
+below so the sandbox also cannot exfiltrate what little it can see.
+
+**If unsure**: run every third-party server in a container with nothing
+mounted except the directory it is meant to work on.
+
+## Isolate Credentials
+
+A locally launched server may inherit the environment of whatever launched
+it. If your shell profile exports cloud credentials and API tokens globally,
+every server you run can potentially read all of them.
+
+* **Pass secrets per server, not globally.** Use the per-server environment
+  configuration in your client's config file rather than exporting secrets
+  in your shell profile, so each server sees only its own credentials.
+* **Scope tokens narrowly.** Issue each server its own token with the
+  smallest scope that works (for example a fine-grained access token limited
+  to one repository, not your account-wide token), so a leak is contained
+  and revocable.
+* **Keep long-lived secrets out of plaintext config.** Client configuration
+  files are a known, predictable location on disk. Prefer your operating
+  system's secret store (such as macOS Keychain, Windows Credential Manager,
+  or the freedesktop Secret Service on Linux) where your client supports
+  referencing it.
+* **Remember files count too.** `~/.ssh`, `~/.aws`, and similar directories
+  are credentials on disk. Process isolation (above) is what actually keeps
+  them out of a server's reach.
+
+**Going further**: use short-lived credentials issued at launch time by a
+secrets manager or broker instead of static tokens, and rotate anything a
+server held if you decide to remove that server.
+
+**If unsure**: give each server its own narrowly scoped token via its
+per-server config, and never reuse a personal broad-scope token across
+servers.
+
+## Limit Filesystem Access
+
+Many useful servers legitimately need file access. The question is how much.
+
+* **Grant the narrowest root that works.** Configure filesystem-oriented
+  servers with a specific project directory, passed explicitly through the
+  server's configuration or tool parameters — never your home directory.
+* **Prefer read-only.** If the server's job is to read code or documents,
+  mount or grant the directory read-only.
+* **Be suspicious of breadth.** A server that asks for a broad root
+  directory to do a narrow job is overreaching. Grant a narrower directory,
+  or pick a different server.
+
+<Warning>
+  Configuration-level allowlists are **cooperative boundaries**: a well-behaved
+  server respects them, but nothing in the protocol stops a malicious or
+  compromised one from reading whatever the process can reach. Treat them as
+  guardrails for honest servers. Enforcement comes from the isolation layer
+  above — a sandbox or container where the allowed directory is the only
+  filesystem that exists.
+</Warning>
+
+**Going further**: combine allowlists with isolation, so the only filesystem
+the server can even see is the mount you chose.
+
+**If unsure**: grant access to a single project directory, read-only.
+
+## Control Network Egress
+
+Exfiltration needs an exit. A local process normally has unrestricted
+outbound access, which turns any overcollection or compromise into data
+loss.
+
+* **Know where a server should be talking.** A server that wraps one API has
+  a short, predictable set of destinations. Traffic anywhere else is a
+  signal worth investigating.
+* **Deny network where none is needed.** Servers that operate purely on
+  local files or tools need no network at all — with containers this is one
+  flag (`--network=none`).
+* **Filter what remains.** For servers that do need egress, an
+  outbound-filtering firewall or an egress proxy with a domain allowlist
+  restricts them to their expected destinations and logs the attempts that
+  fall outside it.
+
+<Note>
+  Egress is not the only network concern. Local MCP plumbing that listens on a
+  port — bridges to remote servers, development tools, locally hosted HTTP
+  servers — is reachable by other local processes and, through your browser, by
+  websites. Binding to 127.0.0.1 is not an authentication boundary: such
+  components need real authentication and origin validation, and they need
+  prompt updates when advisories land.
+</Note>
+
+**Going further**: give each server its own egress allowlist via a proxy,
+and alert on destinations outside it — unexpected egress is often the first
+observable sign that something on this page has gone wrong.
+
+**If unsure**: run servers with no network access unless they demonstrably
+need it, and know which destinations the rest are expected to reach.
+
+## Managing Local Servers Across an Organization
+
+If you are an IT, security, or platform administrator, the sections above
+are your building blocks, but your problem is different: many machines, many
+users, servers installed without your involvement. Two facts shape
+everything:
+
+1. **Local MCP servers are ordinary software installed by your users.** The
+   protocol cannot inventory, patch, or contain processes on machines it
+   does not manage. This is endpoint and software governance — your existing
+   responsibility, with a new package type.
+2. **You will not be asked first.** Assume users install servers the same
+   way they install editor extensions.
+
+A workable starting posture:
+
+* **Define approved sources.** Publish a short allowlist of vetted servers
+  (with pinned versions) and the criteria a new server must meet to join it:
+  identifiable publisher, readable source, provenance metadata, an SBOM.
+  Make the approved path easier than the unapproved one.
+* **Set a default runtime posture.** Decide and document how servers run on
+  managed machines — for example, "third-party servers run in containers
+  with no home-directory mounts" — rather than leaving isolation to each
+  user's initiative.
+* **Deploy centrally where local access is not required.** The question
+  from the top of this guide applies fleet-wide: a server that only wraps a
+  SaaS API does not need to run on every laptop. A centrally managed remote
+  deployment gives you one instance to patch, audit, and control instead of
+  hundreds.
+* **Inventory continuously.** Client configuration files live in known
+  locations on each platform. Your endpoint management tooling can collect
+  them, giving you a live answer to "who is running what, at which version,
+  from which source."
+* **Keep an audit trail.** Where your tooling supports it, log MCP activity
+  on managed machines — which server, which tool, when — so an incident
+  review can reconstruct what a compromised or overreaching server actually
+  did instead of guessing from its permissions.
+* **Plan for the fleet incident.** When a widely used local server (or the
+  SDK inside it) turns out to be vulnerable, you need to: find every
+  instance (the inventory above), block its egress at the proxy or firewall
+  while you respond, rotate every credential those configs passed to it, and
+  push the fixed, pinned version through your approved channel. SBOMs are
+  what let you answer "which of our machines run something built on the
+  affected SDK version" in minutes instead of days.
+* **Mind your regulatory context.** Software supply chain regulation (for
+  example the EU Cyber Resilience Act) increasingly expects exactly these
+  practices — SBOMs, update processes, and vulnerability handling — so the
+  work above often does double duty.
+
+**If unsure**: start with an inventory of client configurations across your
+fleet plus a short allowlist of approved servers, and treat everything
+outside both as you would any unapproved software.
+
+## Checklist
+
+For your own machine:
+
+* I know every server in my client's configuration, and I removed the
+  ones I don't use.
+* Servers that need nothing from my machine run remotely, not as a local
+  process.
+* Each server came from an identifiable publisher, and its version is
+  pinned.
+* Third-party servers run isolated (container, sandbox, or VM), not as
+  bare processes.
+* Each server gets only its own narrowly scoped credentials via
+  per-server config — nothing inherited from my shell, nothing reused.
+* Filesystem access is limited to specific directories, read-only where
+  possible.
+* Servers without a network need run with egress disabled; the rest have
+  a known list of destinations.
+* I have skimmed each server's tool descriptions, and my client re-prompts
+  when a tool definition changes.
+
+For a fleet:
+
+* We maintain an allowlist of approved servers with published acceptance
+  criteria.
+* We continuously inventory MCP client configurations on managed
+  machines.
+* We have a documented default isolation posture for local servers.
+* We keep audit logs of MCP activity on managed machines.
+* We can block a specific server's egress and rotate its credentials
+  across the fleet.
+
+## Next Steps
+
+<CardGroup>
+  <Card title="Security Best Practices" icon="shield" href="/docs/2026-07-28/tutorials/security/security_best_practices">
+    The protocol threat model: confused deputy, token passthrough, and session
+    hijacking
+  </Card>
+
+  <Card title="Authorization" icon="key" href="/docs/2026-07-28/tutorials/security/authorization">
+    How OAuth-based authorization works for remote MCP servers
+  </Card>
+
+  <Card title="SEP-1024" icon="file-shield" href="/seps/1024-mcp-client-security-requirements-for-local-server-">
+    Client security requirements for local server installation consent
+  </Card>
+
+  <Card title="Connect to local servers" icon="plug" href="/docs/2026-07-28/develop/connect-local-servers">
+    Set up local servers in your client — the workflow this guide secures
+  </Card>
+</CardGroup>
+
+
 # Security Best Practices
 Source: https://modelcontextprotocol.io/docs/2026-07-28/tutorials/security/security_best_practices
 
@@ -28260,357 +28702,6 @@ This hierarchical model would support sophisticated server-controlled workflows 
 </details>
 
 
-# SEP-1699: Support SSE polling via server-side disconnect
-Source: https://modelcontextprotocol.io/seps/1699-support-sse-polling-via-server-side-disconnect
-
-Support SSE polling via server-side disconnect
-
-<div>
-  <Badge>
-    Final
-  </Badge>
-
-  <Badge>
-    Standards Track
-  </Badge>
-</div>
-
-<Note>
-  This SEP has reached Final status and is preserved as a historical record of
-  the design as accepted. Changes made to the protocol after finalization are
-  not reflected here. Refer to the [current
-  specification](/specification/latest) and its changelog for authoritative
-  requirements.
-</Note>
-
-| Field | Value |
-| - | - |
-| **SEP** | 1699 |
-| **Title** | Support SSE polling via server-side disconnect |
-| **Status** | Final |
-| **Type** | Standards Track |
-| **Created** | 2025-10-22 |
-| **Author(s)** | Jonathan Hefner ([@jonathanhefner](https://github.com/jonathanhefner)) |
-| **Sponsor** | None |
-| **PR** | [#1699](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1699) |
-
-***
-
-## Abstract
-
-This SEP proposes changes to the Streamable HTTP transport in order to mitigate issues regarding long-running connections and resumability.
-
-## Motivation
-
-The Streamable HTTP transport spec [does not allow](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/04c6e1f0ea6544c7df307fb2d7c637efe34f58d3/docs/specification/draft/basic/transports.mdx?plain=1#L109-L111) servers to close a connection while computing a result. In other words, barring client-side disconnection, servers must maintain potentially long-running connections.
-
-## Specification
-
-When a server starts an SSE stream, it MUST immediately send an SSE event consisting of an [`id`](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=field%20name%20is%20%22id%22) and an empty [`data`](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=field%20name%20is%20%22data%22) string in order to prime the client to reconnect with that event ID as the `Last-Event-ID`.
-
-Note that the SSE standard explicitly [permits setting `data` to an empty string](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=data%20buffer%20is%20an%20empty%20string), and says that the appropriate client-side handling is to record the `id` for `Last-Event-ID` but otherwise ignore the event (i.e., not call the event handler callback).
-
-At any point after the server has sent an event ID to the client, the server MAY disconnect at will. Specifically, [this part of the MCP spec](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/04c6e1f0ea6544c7df307fb2d7c637efe34f58d3/docs/specification/draft/basic/transports.mdx?plain=1#L109-L111) will be changed from:
-
-> The server **SHOULD NOT** close the SSE stream before sending the JSON-RPC *response* for the received JSON-RPC *request*
-
-To:
-
-> The server **MAY** close the connection before sending the JSON-RPC *response* if it has sent an SSE event with an event ID to the client
-
-If a server disconnects, the client will interpret the disconnection the same as a network failure, and will attempt to reconnect. In order to prevent clients from reconnecting / polling excessively, the server SHOULD send an SSE event with a [`retry`](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=field%20name%20is%20%22retry%22) field indicating how long the client should wait before reconnecting. Clients MUST respect the `retry` field.
-
-## Rationale
-
-Servers may disconnect at will, avoiding long-running connections. Sending a `retry` field will prevent the client from hammering the server with inappropriate reconnection attempts.
-
-## Backward Compatibility
-
-* **New Client + Old Server**: No changes. No backward incompatibility.
-* **Old Client + New Server**: Client should interpret an at-will disconnect the same as a network failure. `retry` field is part of the SSE standard. No backward incompatibility if client already implements proper SSE resuming logic.
-
-## Additional Information
-
-This SEP supersedes (in part) [SEP-1335](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1335).
-
-
-# SEP-1730: SDKs Tiering System
-Source: https://modelcontextprotocol.io/seps/1730-sdks-tiering-system
-
-SDKs Tiering System
-
-<div>
-  <Badge>
-    Final
-  </Badge>
-
-  <Badge>
-    Standards Track
-  </Badge>
-</div>
-
-<Note>
-  This SEP has reached Final status and is preserved as a historical record of
-  the design as accepted. Changes made to the protocol after finalization are
-  not reflected here. Refer to the [current
-  specification](/specification/latest) and its changelog for authoritative
-  requirements.
-</Note>
-
-| Field | Value |
-| - | - |
-| **SEP** | 1730 |
-| **Title** | SDKs Tiering System |
-| **Status** | Final |
-| **Type** | Standards Track |
-| **Created** | 2025-10-29 |
-| **Author(s)** | Inna Harper, Felix Weinberger |
-| **Sponsor** | None |
-| **PR** | [#1730](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1730) |
-
-***
-
-## Abstract
-
-This SEP proposes a tiering system for Model Context Protocol (MCP) SDKs to establish clear expectations for feature support, maintenance commitments, and quality standards. The system defines three tiers of SDK support with objective, measurable criteria for classification.
-
-## Motivation
-
-The MCP ecosystem needs SDK harmonization to help users make informed decisions. Users currently face challenges:
-
-* **Feature Support Uncertainty**: No standardized way to know which SDKs support specific MCP features (OAuth, client/server/system features, like sampling, transports)
-* **Maintenance Expectations**: Unclear commitment levels for bug fixes, security patches, and feature updates
-* **Implementation Timelines**: No visibility into when SDKs will support new protocol versions and features
-
-## Specification
-
-### Tier Definitions
-
-#### Tier 1: fully supported
-
-SDKs in this tier provides full protocol implementation and is well supported
-
-**Requirements:**
-
-* **Feature complete and full support of the protocol**
-  * All conformance tests pass
-  * New protocol features before the new spec version release. (There is two week window between Release Candidate and the new protocol version release)
-* **SDK maintenance**
-  * Acknowledge and triage issues within two business days
-  * Resolve security and critical bugs within seven days
-  * Stable release and SDK versioning clearly documented
-* **Documentation**
-  * Comprehensive documentation with examples for all features
-  * Published dependency update policy
-
-#### Tier 2: commitment to be fully supported
-
-SDKs with established implementations actively working toward full protocol support.
-
-**Requirements:**
-
-* **Feature complete and full support of the protocol**
-  * 80% of conformance tests pass
-  * New protocol features implemented within six months
-* **SDK maintenance**
-  * Active issue tracking and management
-  * At least one stable release
-* **Documentation**
-  * Basic documentation covering core features
-  * Published dependency update policy
-* **Commitment to move to Tier1**
-  * Published roadmap showing intent to achieve Tier 1 or, if SDK will remain in Tier 2 indefinitely, a transparent roadmap about the direction of the SDK and reasons for not being feature complete
-
-#### Tier 3: Experimental
-
-Early-stage or specialized SDKs exploring the protocol space.
-
-**Characteristics:**
-
-* No feature completeness guarantees
-* No stable release requirement
-* May focus on specific use cases or experimental features
-* No timeline commitments for updates
-* Suitable for niche implementations that may remain at this tier
-
-### Conformance Testing
-
-All SDKs must undergo conformance testing using protocol trace validation: for details see [Conformance Testing RFC (forthcoming)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1627). This SEP is not focusing on Conformance testing. For the initial version of tiering, we will go with the simplified version where we would have an Example server for each SDK and run simplified conformance tests against those.
-
-```mermaid theme={null}
-sequenceDiagram
-    participant SDK
-    participant Test Suite
-    participant Validator
-
-    Test Suite->>SDK: Execute test scenario
-    SDK->>Test Suite: Protocol messages
-    Test Suite->>Validator: Submit trace
-    Validator->>Test Suite: Compliance report
-    Test Suite->>SDK: Pass/Fail result
-```
-
-**Compliance Scoring:**
-
-* SDKs receive a percentage score based on test results
-* Scores can be displayed as badges (e.g., "90% MCP Compliant")
-* Tier 1: 100% compliance required
-* Tier 2: 80% compliance required
-* Tier 3: No minimum requirement
-
-### Tier Advancement Process
-
-1. **Self-Assessment:** Maintainers evaluate their SDK against tier criteria
-2. **Application:** Submit tier advancement request with evidence
-3. **Review:** Community review period (2 weeks)
-4. **Validation:** Automated conformance testing, github stats on issues
-5. **Decision:** Tier assignment by MCP maintainers
-
-### Tier Relegation Process
-
-1. **Auto validation:**
-   1. compliance tests continuously not passing for four week for Tier 1
-   2. 20% of compliance tests continuously not passing for four week for Tier 2
-2. Issues:
-   1. Issues are not addressed within two months
-
-### Requirements matrix
-
-| Feature | SDK A | SDK B | SDK C |
-| :- | :- | :- | :- |
-| **Protocol Features support (Conformance tests)** | 85% | 60%% | 100% |
-| **GitHub support stats** | 10 days | 100 days | 5 days |
-| **Documentation (self reported)** | Good | Minimal | Good |
-| **Tier (computed from above)** | Tier 2 | Tier 3 | Tier 1 |
-
-## Rationale
-
-### Why Three Tiers?
-
-* **Tier 1** ensures users have well supported, fully-featured SDK
-* **Tier 2** provides a clear pathway for improving SDKs
-* **Tier 3** allows experimentation without creating barriers to entry
-
-### Why Time-Based Commitments?
-
-While the community raised concerns about rigid timelines, they provide:
-
-* Clear expectations for users
-* Measurable goals for maintainers
-* Flexibility through tier progression
-
-### Why Not Just Feature Matrices?
-
-Feature matrices alone don't communicate:
-
-* Maintenance commitment
-* Quality standards
-* Support expectations
-
-The tiering system combines feature support with quality guarantees.
-
-## Alternatives Considered
-
-### 1. Feature Matrix Only
-
-**Rejected because:** Doesn't communicate maintenance commitments or quality standards
-
-### 2. Percentage-Based Scoring
-
-**Rejected because:** Too granular and doesn't capture qualitative aspects like support
-
-### 3. Properties-Based System
-
-**Rejected because:** Multiple overlapping properties could confuse users
-
-### 4. Latest Version Listing Only
-
-**Rejected because:** Simply listing "supports MCP date" fails to capture critical information:
-
-* Version support may be incomplete (e.g., supports \<date> except OAuth)
-* No indication of maintenance commitment or issue response times
-* Lacks information about security patch timelines
-* Doesn't communicate dependency update policies
-* Version numbers alone don't indicate production readiness
-
-### 5. No Formal System
-
-**Rejected because:** Current ad-hoc approach creates uncertainty for users
-
-## Backward Compatibility
-
-This proposal introduces a new classification system with no breaking changes:
-
-* Existing SDKs continue to function
-* Classification is opt-in initially
-* Grace period for existing SDKs to achieve tier status
-
-## Security Implications
-
-* Tier 1 SDKs must address security issues within 7 days
-* All tiers encouraged to follow security best practices
-* Conformance tests include security validation
-
-## Implementation Plan
-
-* [ ] Finalize simplified conformance test suite - Nov 4, 2025
-* [ ] SDK maintainers self-assess and apply for tiers - Nov 14, 2025
-* [ ] Initial tier assignments - before the November spec release
-* [ ] Implement full compliance tests
-* [ ] Implement automatic issue tracking analysis for SDKs
-
-## Community Impact
-
-### SDK Maintainers
-
-* Clear goals for improvement
-* Recognition for quality implementations
-* Structured pathway for advancement
-
-### SDK Users
-
-* Informed selection of SDKs
-* Clear expectations for support
-* Confidence in tier 1 implementations
-
-### Ecosystem
-
-* Improved overall SDK quality
-* Standardized feature support
-* Healthy competition between implementations
-
-## References
-
-* [SDK Maintainer Meeting Notes (#1648)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1648)
-* [SDK Harmonization Goals (#1444)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1444)
-* [Conformance Testing SEP (DRAFT)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1627)
-
-## Appendix
-
-### Simplified conformance tests
-
-While we are working on a [comprehensive proposal for conformance testing](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1627) which will take some time to implement, we want to move forward with at least some automated way to check if SDK has a full set of features. We will start from Servers features set, as we have many more servers than clients and the vast majority of developers using SDKs are Server implementers.
-
-The most straightforward approach is to have an Example Server for each SDK, similar to to [Everything Server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything). Then we will have Conformance Test Client with all the test cases we want to be able to test, for example:
-
-* execute “hello world” tool
-* Get prompt
-* Get completion
-* Get resource template
-* Receive notifications
-
-**What is needed form SDKs maintainers:** implement everything server based on a spec. Spec will look like:
-
-* Tool “say\_hello” to return simple text
-* Tool “show\_image” to return and image
-* Tool “tool\_with\_logging” to return structured output in a format \<> and log three events: start, process, end
-* Tool "tool\_with\_notifications" to return structured output in a format \<> and have two notifications \<>
-
-Given well defined spec for the server and SDK documentation, it should be easy to implement it with the help of any coding agent. We want to check it into each SDKs repo as it will serve as an example for server implementers.
-
-Once each SDK has an Everything server, we will run the Conformance Test Client against it.
-
-
 # SEP-414: Document OpenTelemetry Trace Context Propagation Conventions
 Source: https://modelcontextprotocol.io/seps/414-request-meta
 
@@ -29805,6 +29896,7 @@ Each SEP is reachable by number at `/seps/<number>` (for example, [/seps/1850](/
 | [SEP-2149](/seps/2149-working-group-charter-template) | MCP Group Governance and Charter Template | <Badge>Final</Badge> | Process | 2025-01-15 |
 | [SEP-2148](/seps/2148-contributor-ladder) | MCP Contributor Ladder | <Badge>Final</Badge> | Process | 2026-01-15 |
 | [SEP-2133](/seps/2133-extensions) | Extensions | <Badge>Final</Badge> | Standards Track | 2025-01-21 |
+| [SEP-2127](/seps/2127-mcp-server-cards) | MCP Server Cards - HTTP Server Discovery | <Badge>Final</Badge> | Extensions Track | 2026-01-21 |
 | [SEP-2106](/seps/2106-json-schema-2020-12) | Tools `inputSchema` & `outputSchema` Conform to JSON Schema 2020-12 | <Badge>Final</Badge> | Standards Track | 2026-01-06 |
 | [SEP-2085](/seps/2085-governance-succession-and-amendment) | Governance Succession and Amendment Procedures | <Badge>Final</Badge> | Process | 2025-12-05 |
 | [SEP-1865](/seps/1865-mcp-apps-interactive-user-interfaces-for-mcp) | MCP Apps - Interactive User Interfaces for MCP | <Badge>Final</Badge> | Extensions Track | 2025-11-21 |
@@ -34649,6 +34741,357 @@ Every priority area above has a Working Group behind it or forming around it, an
 * **Contribute directly**: the [contributing guide](/community/contributing) covers the specification, SDKs, and tooling.
 
 
+# SEP-1699: Support SSE polling via server-side disconnect
+Source: https://modelcontextprotocol.io/seps/1699-support-sse-polling-via-server-side-disconnect
+
+Support SSE polling via server-side disconnect
+
+<div>
+  <Badge>
+    Final
+  </Badge>
+
+  <Badge>
+    Standards Track
+  </Badge>
+</div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
+| Field | Value |
+| - | - |
+| **SEP** | 1699 |
+| **Title** | Support SSE polling via server-side disconnect |
+| **Status** | Final |
+| **Type** | Standards Track |
+| **Created** | 2025-10-22 |
+| **Author(s)** | Jonathan Hefner ([@jonathanhefner](https://github.com/jonathanhefner)) |
+| **Sponsor** | None |
+| **PR** | [#1699](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1699) |
+
+***
+
+## Abstract
+
+This SEP proposes changes to the Streamable HTTP transport in order to mitigate issues regarding long-running connections and resumability.
+
+## Motivation
+
+The Streamable HTTP transport spec [does not allow](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/04c6e1f0ea6544c7df307fb2d7c637efe34f58d3/docs/specification/draft/basic/transports.mdx?plain=1#L109-L111) servers to close a connection while computing a result. In other words, barring client-side disconnection, servers must maintain potentially long-running connections.
+
+## Specification
+
+When a server starts an SSE stream, it MUST immediately send an SSE event consisting of an [`id`](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=field%20name%20is%20%22id%22) and an empty [`data`](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=field%20name%20is%20%22data%22) string in order to prime the client to reconnect with that event ID as the `Last-Event-ID`.
+
+Note that the SSE standard explicitly [permits setting `data` to an empty string](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=data%20buffer%20is%20an%20empty%20string), and says that the appropriate client-side handling is to record the `id` for `Last-Event-ID` but otherwise ignore the event (i.e., not call the event handler callback).
+
+At any point after the server has sent an event ID to the client, the server MAY disconnect at will. Specifically, [this part of the MCP spec](https://github.com/modelcontextprotocol/modelcontextprotocol/blob/04c6e1f0ea6544c7df307fb2d7c637efe34f58d3/docs/specification/draft/basic/transports.mdx?plain=1#L109-L111) will be changed from:
+
+> The server **SHOULD NOT** close the SSE stream before sending the JSON-RPC *response* for the received JSON-RPC *request*
+
+To:
+
+> The server **MAY** close the connection before sending the JSON-RPC *response* if it has sent an SSE event with an event ID to the client
+
+If a server disconnects, the client will interpret the disconnection the same as a network failure, and will attempt to reconnect. In order to prevent clients from reconnecting / polling excessively, the server SHOULD send an SSE event with a [`retry`](https://html.spec.whatwg.org/multipage/server-sent-events.html#:~:text=field%20name%20is%20%22retry%22) field indicating how long the client should wait before reconnecting. Clients MUST respect the `retry` field.
+
+## Rationale
+
+Servers may disconnect at will, avoiding long-running connections. Sending a `retry` field will prevent the client from hammering the server with inappropriate reconnection attempts.
+
+## Backward Compatibility
+
+* **New Client + Old Server**: No changes. No backward incompatibility.
+* **Old Client + New Server**: Client should interpret an at-will disconnect the same as a network failure. `retry` field is part of the SSE standard. No backward incompatibility if client already implements proper SSE resuming logic.
+
+## Additional Information
+
+This SEP supersedes (in part) [SEP-1335](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1335).
+
+
+# SEP-1730: SDKs Tiering System
+Source: https://modelcontextprotocol.io/seps/1730-sdks-tiering-system
+
+SDKs Tiering System
+
+<div>
+  <Badge>
+    Final
+  </Badge>
+
+  <Badge>
+    Standards Track
+  </Badge>
+</div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
+| Field | Value |
+| - | - |
+| **SEP** | 1730 |
+| **Title** | SDKs Tiering System |
+| **Status** | Final |
+| **Type** | Standards Track |
+| **Created** | 2025-10-29 |
+| **Author(s)** | Inna Harper, Felix Weinberger |
+| **Sponsor** | None |
+| **PR** | [#1730](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/1730) |
+
+***
+
+## Abstract
+
+This SEP proposes a tiering system for Model Context Protocol (MCP) SDKs to establish clear expectations for feature support, maintenance commitments, and quality standards. The system defines three tiers of SDK support with objective, measurable criteria for classification.
+
+## Motivation
+
+The MCP ecosystem needs SDK harmonization to help users make informed decisions. Users currently face challenges:
+
+* **Feature Support Uncertainty**: No standardized way to know which SDKs support specific MCP features (OAuth, client/server/system features, like sampling, transports)
+* **Maintenance Expectations**: Unclear commitment levels for bug fixes, security patches, and feature updates
+* **Implementation Timelines**: No visibility into when SDKs will support new protocol versions and features
+
+## Specification
+
+### Tier Definitions
+
+#### Tier 1: fully supported
+
+SDKs in this tier provides full protocol implementation and is well supported
+
+**Requirements:**
+
+* **Feature complete and full support of the protocol**
+  * All conformance tests pass
+  * New protocol features before the new spec version release. (There is two week window between Release Candidate and the new protocol version release)
+* **SDK maintenance**
+  * Acknowledge and triage issues within two business days
+  * Resolve security and critical bugs within seven days
+  * Stable release and SDK versioning clearly documented
+* **Documentation**
+  * Comprehensive documentation with examples for all features
+  * Published dependency update policy
+
+#### Tier 2: commitment to be fully supported
+
+SDKs with established implementations actively working toward full protocol support.
+
+**Requirements:**
+
+* **Feature complete and full support of the protocol**
+  * 80% of conformance tests pass
+  * New protocol features implemented within six months
+* **SDK maintenance**
+  * Active issue tracking and management
+  * At least one stable release
+* **Documentation**
+  * Basic documentation covering core features
+  * Published dependency update policy
+* **Commitment to move to Tier1**
+  * Published roadmap showing intent to achieve Tier 1 or, if SDK will remain in Tier 2 indefinitely, a transparent roadmap about the direction of the SDK and reasons for not being feature complete
+
+#### Tier 3: Experimental
+
+Early-stage or specialized SDKs exploring the protocol space.
+
+**Characteristics:**
+
+* No feature completeness guarantees
+* No stable release requirement
+* May focus on specific use cases or experimental features
+* No timeline commitments for updates
+* Suitable for niche implementations that may remain at this tier
+
+### Conformance Testing
+
+All SDKs must undergo conformance testing using protocol trace validation: for details see [Conformance Testing RFC (forthcoming)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1627). This SEP is not focusing on Conformance testing. For the initial version of tiering, we will go with the simplified version where we would have an Example server for each SDK and run simplified conformance tests against those.
+
+```mermaid theme={null}
+sequenceDiagram
+    participant SDK
+    participant Test Suite
+    participant Validator
+
+    Test Suite->>SDK: Execute test scenario
+    SDK->>Test Suite: Protocol messages
+    Test Suite->>Validator: Submit trace
+    Validator->>Test Suite: Compliance report
+    Test Suite->>SDK: Pass/Fail result
+```
+
+**Compliance Scoring:**
+
+* SDKs receive a percentage score based on test results
+* Scores can be displayed as badges (e.g., "90% MCP Compliant")
+* Tier 1: 100% compliance required
+* Tier 2: 80% compliance required
+* Tier 3: No minimum requirement
+
+### Tier Advancement Process
+
+1. **Self-Assessment:** Maintainers evaluate their SDK against tier criteria
+2. **Application:** Submit tier advancement request with evidence
+3. **Review:** Community review period (2 weeks)
+4. **Validation:** Automated conformance testing, github stats on issues
+5. **Decision:** Tier assignment by MCP maintainers
+
+### Tier Relegation Process
+
+1. **Auto validation:**
+   1. compliance tests continuously not passing for four week for Tier 1
+   2. 20% of compliance tests continuously not passing for four week for Tier 2
+2. Issues:
+   1. Issues are not addressed within two months
+
+### Requirements matrix
+
+| Feature | SDK A | SDK B | SDK C |
+| :- | :- | :- | :- |
+| **Protocol Features support (Conformance tests)** | 85% | 60%% | 100% |
+| **GitHub support stats** | 10 days | 100 days | 5 days |
+| **Documentation (self reported)** | Good | Minimal | Good |
+| **Tier (computed from above)** | Tier 2 | Tier 3 | Tier 1 |
+
+## Rationale
+
+### Why Three Tiers?
+
+* **Tier 1** ensures users have well supported, fully-featured SDK
+* **Tier 2** provides a clear pathway for improving SDKs
+* **Tier 3** allows experimentation without creating barriers to entry
+
+### Why Time-Based Commitments?
+
+While the community raised concerns about rigid timelines, they provide:
+
+* Clear expectations for users
+* Measurable goals for maintainers
+* Flexibility through tier progression
+
+### Why Not Just Feature Matrices?
+
+Feature matrices alone don't communicate:
+
+* Maintenance commitment
+* Quality standards
+* Support expectations
+
+The tiering system combines feature support with quality guarantees.
+
+## Alternatives Considered
+
+### 1. Feature Matrix Only
+
+**Rejected because:** Doesn't communicate maintenance commitments or quality standards
+
+### 2. Percentage-Based Scoring
+
+**Rejected because:** Too granular and doesn't capture qualitative aspects like support
+
+### 3. Properties-Based System
+
+**Rejected because:** Multiple overlapping properties could confuse users
+
+### 4. Latest Version Listing Only
+
+**Rejected because:** Simply listing "supports MCP date" fails to capture critical information:
+
+* Version support may be incomplete (e.g., supports \<date> except OAuth)
+* No indication of maintenance commitment or issue response times
+* Lacks information about security patch timelines
+* Doesn't communicate dependency update policies
+* Version numbers alone don't indicate production readiness
+
+### 5. No Formal System
+
+**Rejected because:** Current ad-hoc approach creates uncertainty for users
+
+## Backward Compatibility
+
+This proposal introduces a new classification system with no breaking changes:
+
+* Existing SDKs continue to function
+* Classification is opt-in initially
+* Grace period for existing SDKs to achieve tier status
+
+## Security Implications
+
+* Tier 1 SDKs must address security issues within 7 days
+* All tiers encouraged to follow security best practices
+* Conformance tests include security validation
+
+## Implementation Plan
+
+* [ ] Finalize simplified conformance test suite - Nov 4, 2025
+* [ ] SDK maintainers self-assess and apply for tiers - Nov 14, 2025
+* [ ] Initial tier assignments - before the November spec release
+* [ ] Implement full compliance tests
+* [ ] Implement automatic issue tracking analysis for SDKs
+
+## Community Impact
+
+### SDK Maintainers
+
+* Clear goals for improvement
+* Recognition for quality implementations
+* Structured pathway for advancement
+
+### SDK Users
+
+* Informed selection of SDKs
+* Clear expectations for support
+* Confidence in tier 1 implementations
+
+### Ecosystem
+
+* Improved overall SDK quality
+* Standardized feature support
+* Healthy competition between implementations
+
+## References
+
+* [SDK Maintainer Meeting Notes (#1648)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1648)
+* [SDK Harmonization Goals (#1444)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1444)
+* [Conformance Testing SEP (DRAFT)](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1627)
+
+## Appendix
+
+### Simplified conformance tests
+
+While we are working on a [comprehensive proposal for conformance testing](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1627) which will take some time to implement, we want to move forward with at least some automated way to check if SDK has a full set of features. We will start from Servers features set, as we have many more servers than clients and the vast majority of developers using SDKs are Server implementers.
+
+The most straightforward approach is to have an Example Server for each SDK, similar to to [Everything Server](https://github.com/modelcontextprotocol/servers/tree/main/src/everything). Then we will have Conformance Test Client with all the test cases we want to be able to test, for example:
+
+* execute “hello world” tool
+* Get prompt
+* Get completion
+* Get resource template
+* Receive notifications
+
+**What is needed form SDKs maintainers:** implement everything server based on a spec. Spec will look like:
+
+* Tool “say\_hello” to return simple text
+* Tool “show\_image” to return and image
+* Tool “tool\_with\_logging” to return structured output in a format \<> and log three events: start, process, end
+* Tool "tool\_with\_notifications" to return structured output in a format \<> and have two notifications \<>
+
+Given well defined spec for the server and SDK documentation, it should be easy to implement it with the help of any coding agent. We want to check it into each SDKs repo as it will serve as an example for server implementers.
+
+Once each SDK has an Everything server, we will run the Conformance Test Client against it.
+
+
 # SEP-1850: PR-Based SEP Workflow
 Source: https://modelcontextprotocol.io/seps/1850-pr-based-sep-workflow
 
@@ -35587,6 +36030,211 @@ SDK implementations will need to:
 ## Acknowledgments
 
 This proposal builds on discussions in GitHub issue #834 and incorporates feedback from the MCP community.
+
+
+# SEP-2127: MCP Server Cards - HTTP Server Discovery
+Source: https://modelcontextprotocol.io/seps/2127-mcp-server-cards
+
+MCP Server Cards - HTTP Server Discovery
+
+<div>
+  <Badge>
+    Final
+  </Badge>
+
+  <Badge>
+    Extensions Track
+  </Badge>
+</div>
+
+<Note>
+  This SEP has reached Final status and is preserved as a historical record of
+  the design as accepted. Changes made to the protocol after finalization are
+  not reflected here. Refer to the [current
+  specification](/specification/latest) and its changelog for authoritative
+  requirements.
+</Note>
+
+| Field | Value |
+| - | - |
+| **SEP** | 2127 |
+| **Title** | MCP Server Cards - HTTP Server Discovery |
+| **Status** | Final |
+| **Type** | Extensions Track |
+| **Created** | 2026-01-21 |
+| **Author(s)** | David Soria Parra ([@dsp-ant](https://github.com/dsp-ant)), Sam Morrow ([@SamMorrowDrums](https://github.com/SamMorrowDrums)), Tadas Antanavicius ([@tadasant](https://github.com/tadasant)); on behalf of the Server Card Working Group |
+| **Sponsor** | David Soria Parra ([@dsp-ant](https://github.com/dsp-ant)) |
+| **PR** | [#2127](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127) |
+
+***
+
+## Abstract
+
+This SEP proposes adding a standardized, self-contained format to describe MCP servers for pre-connection discovery. This enables clients to automatically discover available transports, protocol versions, and connection guidance before establishing a connection.
+
+As an Extensions Track SEP (per [SEP-2133](./2133-extensions.md)), this document charters the **Server Card** extension and names its Working Group and maintainers. The detailed, normative wire format — the Server Card schema, field definitions, the discovery mechanics, and the full security analysis — is maintained in the [experimental-ext-server-card](https://github.com/modelcontextprotocol/experimental-ext-server-card) repository rather than inline here, following the precedent set by [SEP-1865 (MCP Apps)](./1865-mcp-apps-interactive-user-interfaces-for-mcp.md).
+
+## Motivation
+
+MCP clients need an out-of-band way to discover remote servers before choosing or opening a transport. Runtime mechanisms such as `server/discover` become available only after a client already knows where to connect. This creates friction for discovery, integration, and optimization scenarios.
+
+### Current Pain Points
+
+* **Manual Endpoint Configuration**: Users must manually configure transport URLs for each server, with no standardized discovery mechanism.
+* **No Domain-Level Discovery**: Clients cannot automatically discover available MCP servers on a domain. This prevents automated integration scenarios, such as registry crawling or service auto-detection.
+* **No Out-of-Band Metadata**: Runtime discovery still requires a configured transport and a live connection, so it cannot support domain crawling, indexing, or pre-connection configuration.
+
+### Proposed Solution
+
+This SEP introduces **MCP Server Cards** – structured metadata documents that servers expose through standardized mechanisms. For domain-level discovery, an AI Catalog can link to or embed the relevant Server Cards. Cards themselves can be hosted at any unreserved URI, with `<streamable-http-url>/server-card` reserved as the recommended location. These documents provide static server information without requiring connection establishment.
+
+### Enabled Use Cases
+
+* **Autoconfiguration**: IDE extensions can automatically configure themselves when pointed at a domain, eliminating manual setup.
+* **Automated Discovery**: Clients and registries can crawl domains to discover available MCP servers, enabling ecosystem-wide server indexes.
+* **Reduced Latency:** Display server information and metadata without opening each advertised endpoint.
+
+### Relationship to `server/discover`
+
+Server Cards provide out-of-band, HTTP-oriented discovery: public, cacheable, and indexable metadata that can tell a client where to connect. The [`server/discover`](https://modelcontextprotocol.io/specification/draft/server/discover) RPC provides live, in-protocol discovery consistently across transports once an endpoint is known and reachable. The mechanisms overlap in identity, endpoint, and protocol-version metadata and SHOULD remain aligned. If they disagree, clients SHOULD prefer the live `server/discover` values.
+
+### Discovery
+
+#### Relationship to AI Catalog
+
+The [AI Catalog](https://github.com/Agent-Card/ai-catalog) provides a decentralized, protocol-agnostic mechanism for identifying AI artifacts. An AI Catalog entry can link to or embed an MCP Server Card, leaving the catalog responsible for domain-level discovery and the Server Card responsible for MCP-specific identity and connection details.
+
+#### MCP Connection Details
+
+MCP Server Cards provide a richer, MCP-specific definition that can be used by MCP clients to actually connect and start performing MCP operations. The canonical discovery path and the relationship to the broader [AI Catalog](https://github.com/Agent-Card/ai-catalog) are specified in the extension repository's [`docs/discovery.md`](https://github.com/modelcontextprotocol/experimental-ext-server-card/blob/main/docs/discovery.md).
+
+Example:
+
+* "Restaurant A" works with platform "Restaurant Reservations SaaS" to provide MCP-powered bookings for their restaurant
+* Restaurant A also works with platform "Jobs SaaS" to provide MCP-powered job listings to prospective job seekers
+* Restaurant A would advertise the two relevant Server Cards in an AI Catalog at `restaurant-a.com/.well-known/ai-catalog.json`
+* Restaurant Reservations SaaS would expose a Server Card per restaurant it hosts (one for Restaurant A, one for Restaurant B, etc.)
+* Jobs SaaS would expose a Server Card per entity it hosts (one for Restaurant A, one for Coffee Shop B, etc.)
+
+We can develop and iterate on MCP Server Cards independently from AI Catalog, as long as catalog entries can identify Server Cards hosted and maintained elsewhere.
+
+### Relationship to the MCP Registry's `server.json`
+
+MCP Server Cards describe *remote* MCP connectivity only. The MCP Registry's [`server.json`](https://github.com/modelcontextprotocol/registry/blob/main/docs/reference/server-json/generic-server-json.md) separately describes registry entries, including locally installable packages and their runtime configuration. The Registry owns that schema; the Server Card extension does not define a `Server` superset or package-installation types.
+
+Where the formats cover the same concepts, such as identity, documentation, and remote endpoints, they use compatible metadata where practical. A Registry entry can reference or embed a card's remote information, while vendors that need to attach installation hints directly to a card can use namespaced `_meta`.
+
+## Specification
+
+The full specification is maintained in the
+[experimental-ext-server-card](https://github.com/modelcontextprotocol/experimental-ext-server-card)
+repository. The TypeScript file [`schema.ts`](https://github.com/modelcontextprotocol/experimental-ext-server-card/blob/main/schema.ts)
+is the single source of truth; the generated [`schema.json`](https://github.com/modelcontextprotocol/experimental-ext-server-card/blob/main/schema.json)
+and the discovery mechanics in [`docs/discovery.md`](https://github.com/modelcontextprotocol/experimental-ext-server-card/blob/main/docs/discovery.md)
+are derived from it.
+
+For purposes of SEP review, [extension repository snapshot `526201bb`](https://github.com/modelcontextprotocol/experimental-ext-server-card/tree/526201bbc80231daa40ffcdecfc9da4e54e5dc93) captures the contract considered by this proposal. After acceptance, implementers should follow the current, versioned extension specification rather than this historical snapshot. As defined by [SEP-2133](./2133-extensions.md#iteration), extension maintainers may evolve the specification independently while preserving backward compatibility; breaking changes require a new extension identifier.
+
+At a high level, the Server Card extension introduces:
+
+* **Server Card document**: A static metadata document describing a *remote* MCP server — its identity (`name`, `version`, `description`, optional `title` / `icons` / `repository` / `websiteUrl`), its remote transport endpoints (URLs, headers, variable templates, supported protocol versions), and optional namespaced `_meta` data. `_meta` is not used to advertise MCP capabilities or negotiated extension support. The precise field set is defined in the extension repository's [`schema.ts`](https://github.com/modelcontextprotocol/experimental-ext-server-card/blob/main/schema.ts).
+* **Discovery**: An AI Catalog can link to or embed multiple cards. Cards can be hosted at any unreserved URI, with `<streamable-http-url>/server-card` reserved as the recommended location. The media types, catalog format, and browser-oriented CORS and caching guidance are specified in [`docs/discovery.md`](https://github.com/modelcontextprotocol/experimental-ext-server-card/blob/main/docs/discovery.md).
+
+As an extension, MCP Server Cards are **optional** and additive: servers that do not publish a card continue to work normally through standard MCP connections and runtime discovery (see [Backward Compatibility](#backward-compatibility)).
+
+## Rationale
+
+### Why Use `.well-known` for AI Catalog?
+
+For automated domain-level discovery, an AI Catalog can be published at `/.well-known/ai-catalog.json`. The `.well-known` URI pattern is an established IETF standard (RFC 8615) used by many protocols for service discovery, including OAuth 2.0 Authorization Server Metadata (RFC 8414). This approach:
+
+* Provides a predictable, standardized location for discovery
+* Requires no prior knowledge of server configuration
+* Works with standard HTTP infrastructure (caches, CDNs, load balancers)
+* Is already familiar to developers working with web services
+
+### Why Align with Registry Metadata?
+
+MCP Server Cards aim to provide a static representation of server identity and connection details so that clients can discover and connect to them without prior knowledge of their existence.
+
+The MCP Registry and Server Cards serve different consumers but share concepts such as server identity and remote endpoints. Reusing compatible field names where those concepts overlap reduces needless translation while allowing each owner to evolve its schema independently.
+
+### Why Exclude Primitives?
+
+This specification intentionally omits primitive definitions (tools, resources, and prompts) from server cards. MCP servers are inherently dynamic: the primitives a server exposes can vary by authenticated user, session, configuration, feature flags, deployment state, and more. A static document cannot reliably represent this surface, and there is currently no viable substitute for runtime listing via the protocol's standard operations (`tools/list`, `resources/list`, `prompts/list`) with the logged-in user's identity. Including primitives prematurely risks disadvantaging dynamic servers and encouraging clients to rely on information that may be incorrect. A follow-on SEP should address the prerequisites, such as variant enumeration and clear consumer contracts, before primitive advertisement is added.
+
+For the same reason, the initial Server Card format does not advertise MCP capabilities or extension support. `supportedProtocolVersions` lets a client determine whether it can attempt a connection; capabilities and extensions describe negotiated runtime behavior and can depend on the client, identity, configuration, and deployment state. They remain available through live protocol negotiation. Namespaced `_meta` is for non-standard metadata and is not a substitute for standardized capability or extension fields. A future revision can add those fields once it defines how static claims relate to runtime variants.
+
+### Why Not Wait for Primitives?
+
+The debate around primitives should not delay server card adoption. Discovery (knowing that a server exists, where to connect, and what transports and protocol versions it supports) is enormously valuable on its own. It is the information an end user or IDE needs to install and configure a server, and it is the information a registry needs to index one. None of this depends on knowing the server's tool list in advance.
+
+Server cards without primitives already enable the core use cases that motivate this SEP: autoconfiguration, domain-level discovery, reduced-latency metadata retrieval, and registry integration. Primitives can be added in a future revision once the ecosystem has the right mechanisms to advertise them safely. Shipping discovery now, and shipping it correctly, is more important than shipping a larger surface that risks being wrong.
+
+### Other Considered Discovery Mechanisms
+
+**DNS-based discovery**: We considered using DNS TXT records for discovery, similar to DKIM or SPF. However, this approach would be limited to domain-level discovery and wouldn't work for path-based or port-based MCP servers, making it too restrictive.
+
+**Header-based discovery**: We considered using HTTP headers (similar to Link headers) to advertise server card locations. While this could work, it requires an HTTP request to the main endpoint first, eliminating many of the benefits of pre-connection discovery.
+
+## Backward Compatibility
+
+This SEP is fully backward compatible with existing MCP implementations:
+
+* Server cards are **optional**. Servers that don't implement them continue to work normally through standard MCP connections and runtime discovery.
+* Clients that don't support server cards can ignore them and connect using configured endpoints.
+* No changes to core MCP protocol messages or connection flows are required.
+
+### Migration Path
+
+1. **Phase 1** (Optional): Servers can begin exposing server cards without requiring client support
+2. **Phase 2** (Recommended): Clients can implement server card fetching for enhanced discovery and pre-connection validation
+3. **Phase 3** (Future): The ecosystem can develop tooling around server cards for registries, security scanning, and automated discovery
+
+## Security Implications
+
+Server Cards are publicly accessible, read-only metadata documents served over HTTP, and the extension's security posture follows from that:
+
+* **Information disclosure**: Cards are public by design; servers MUST NOT include credentials, internal network topology, proprietary logic, or user/session-specific data.
+* **Primitive exclusion as a safety property**: Cards deliberately exclude primitive definitions (tools, resources, prompts) so clients cannot trust a static manifest for access-control or safety decisions; primitives are always validated at runtime via standard list operations.
+* **CORS**: Wide-open CORS (`Access-Control-Allow-Origin: *`) is acceptable because cards carry only public, read-only metadata.
+* **Transport security and MITM**: Cards SHOULD be served over HTTPS with certificate validation; because cards are advisory and clients verify their claims against live runtime metadata, a compromised card primarily affects discoverability rather than security.
+* **Denial of service**: Servers SHOULD rate-limit discovery endpoints and clients SHOULD respect cache headers.
+
+The full threat model and the normative CORS/caching/transport requirements are maintained in the extension repository's [`docs/discovery.md`](https://github.com/modelcontextprotocol/experimental-ext-server-card/blob/main/docs/discovery.md).
+
+## Reference Implementation
+
+The Server Card extension is incubated in the
+[experimental-ext-server-card](https://github.com/modelcontextprotocol/experimental-ext-server-card)
+repository, which holds the TypeScript schema source of truth, the generated JSON Schema,
+discovery documentation, and valid/invalid example documents exercised by a validation script.
+
+[python-sdk#2951](https://github.com/modelcontextprotocol/python-sdk/pull/2951) is an experimental
+Server Cards implementation for the Python SDK by @dsp-ant: server-side card construction and
+serving, client-side fetch and validation, and Pydantic models for the `ServerCard` shape, with tests
+that round-trip the conformance examples.
+
+[go-sdk#1024](https://github.com/modelcontextprotocol/go-sdk/pull/1024) provides an experimental
+Go SDK server-side reference implementation for constructing and serving Server Cards.
+
+[tadasant/goose#1](https://github.com/tadasant/goose/pull/1) demonstrates Server Card discovery and
+installation in the Goose CLI and Desktop client.
+
+## Working Group and Maintainers
+
+* **Working Group**: Server Card Working Group (see the [Server Card WG discussion #2563](https://github.com/modelcontextprotocol/modelcontextprotocol/discussions/2563)).
+* **Extension Maintainers**: David Soria Parra (@dsp-ant), Sam Morrow (@SamMorrowDrums), Tadas Antanavicius (@tadasant).
+* **Extension repository**: [modelcontextprotocol/experimental-ext-server-card](https://github.com/modelcontextprotocol/experimental-ext-server-card) (graduating to `ext-server-card` on acceptance).
+
+## References
+
+* [SEP-1865: MCP Apps (Extensions Track precedent)](./1865-mcp-apps-interactive-user-interfaces-for-mcp.md)
+* [SEP-2133: Extensions](./2133-extensions.md)
+* [RFC 8414: OAuth 2.0 Authorization Server Metadata](https://datatracker.ietf.org/doc/html/rfc8414)
+* [RFC 8615: Well-Known URIs](https://datatracker.ietf.org/doc/html/rfc8615)
+* [MCP Protocol Specification](https://modelcontextprotocol.io/specification)
+* [Original GitHub Issue #1649](https://github.com/modelcontextprotocol/modelcontextprotocol/issues/1649)
 
 
 # SEP-2133: Extensions

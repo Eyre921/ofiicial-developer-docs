@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 410 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 412 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -88,6 +88,7 @@
 - `docs/api-reference/inboxes/delete-label` — [Delete Label](pages/docs/api-reference/inboxes/delete-label.md) · [原文](https://resend.com/docs/api-reference/inboxes/delete-label)
 - `docs/api-reference/inboxes/delete-thread` — [Delete Thread](pages/docs/api-reference/inboxes/delete-thread.md) · [原文](https://resend.com/docs/api-reference/inboxes/delete-thread)
 - `docs/api-reference/inboxes/forward-thread-email` — [Forward Thread Email](pages/docs/api-reference/inboxes/forward-thread-email.md) · [原文](https://resend.com/docs/api-reference/inboxes/forward-thread-email)
+- `docs/api-reference/inboxes/get-agent` — [Retrieve Agent Settings](pages/docs/api-reference/inboxes/get-agent.md) · [原文](https://resend.com/docs/api-reference/inboxes/get-agent)
 - `docs/api-reference/inboxes/get-draft` — [Retrieve Draft](pages/docs/api-reference/inboxes/get-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/get-draft)
 - `docs/api-reference/inboxes/get-inbox` — [Retrieve Inbox](pages/docs/api-reference/inboxes/get-inbox.md) · [原文](https://resend.com/docs/api-reference/inboxes/get-inbox)
 - `docs/api-reference/inboxes/get-thread` — [Retrieve Thread](pages/docs/api-reference/inboxes/get-thread.md) · [原文](https://resend.com/docs/api-reference/inboxes/get-thread)
@@ -99,6 +100,7 @@
 - `docs/api-reference/inboxes/list-threads` — [List Threads](pages/docs/api-reference/inboxes/list-threads.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-threads)
 - `docs/api-reference/inboxes/reply-thread-email` — [Reply to Thread Email](pages/docs/api-reference/inboxes/reply-thread-email.md) · [原文](https://resend.com/docs/api-reference/inboxes/reply-thread-email)
 - `docs/api-reference/inboxes/send-draft` — [Send Draft](pages/docs/api-reference/inboxes/send-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/send-draft)
+- `docs/api-reference/inboxes/update-agent` — [Update Agent Settings](pages/docs/api-reference/inboxes/update-agent.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-agent)
 - `docs/api-reference/inboxes/update-draft` — [Update Draft](pages/docs/api-reference/inboxes/update-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-draft)
 - `docs/api-reference/inboxes/update-inbox` — [Update Inbox](pages/docs/api-reference/inboxes/update-inbox.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-inbox)
 - `docs/api-reference/inboxes/update-label` — [Update Label](pages/docs/api-reference/inboxes/update-label.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-label)

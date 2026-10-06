@@ -20,7 +20,7 @@ The official Pinecone extension for [Gemini CLI](https://github.com/google-gemin
 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Gemini CLI](https://github.com/google-gemini/gemini-cli) installed
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for skill scripts)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, for advanced operations)
 
 ## Installation

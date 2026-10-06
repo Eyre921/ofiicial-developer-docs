@@ -86,6 +86,8 @@ A box retains its full state between runs (files, installed packages, git histor
 
 When you create a box, Upstash provisions a new isolated container with its own filesystem, shell, and network stack. You can start from a fresh box or restore from a snapshot. Once provisioning finishes, the box is ready to receive commands.
 
+If the box has an [init command](/docs/box/overall/quickstart#init-command), the box runs it once after the container starts, on create, on resume, and after a snapshot restore.
+
 ### 2. Running
 
 The box automatically enters Running state after creation. Your agent can run bash commands, read and write files, interact with git, and make outbound network requests. `stdout` and `stderr` stream back in real-time.
@@ -245,6 +247,8 @@ box.resume()
 </CodeGroup>
 
 Paused boxes do not accrue active CPU charges. Pause/resume is not available when `keepAlive` is enabled.
+
+Resuming reruns the box's [init command](/docs/box/overall/quickstart#init-command), so a server started that way comes back with the box.
 
 ### Snapshot and restore
 

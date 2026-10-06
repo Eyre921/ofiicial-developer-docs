@@ -58,6 +58,7 @@ Here are some practical examples of log searches you can use:
 * `order.id:order_123` - Find logs related to a specific order
 * `severity:warn OR severity:error` - Find warnings or errors
 * `database:"users" query.duration_ms:>1000` - Find slow database queries on the users database
+* `message://^Timeout after \d+ms//` - Find logs whose message matches a [regular expression](https://docs.sentry.io/concepts/search.md#regular-expressions-logs-only)
 
 Learn more about [search syntax](https://docs.sentry.io/concepts/search.md) for advanced querying.
 

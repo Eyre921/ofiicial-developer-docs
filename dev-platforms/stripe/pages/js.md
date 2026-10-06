@@ -2863,8 +2863,6 @@ for tax reporting and compliance purposes.
 
 This method creates an instance of the Tax ID Element.
 
-> This feature requires the `elements_tax_id_1` beta. To use it, pass `betas: ['elements_tax_id_1']` when initializing Stripe.js.
-
 - `type`
   The type of Element being created, which is `taxId` in this case.
 
@@ -4798,8 +4796,6 @@ Create a Currency Selector Element
 `checkout.createTaxIdElement(options?: object)`
 
 This method creates an instance of a Tax ID Element.
-
-> This feature requires the `custom_checkout_tax_id_1` beta. To use it, pass `betas: ['custom_checkout_tax_id_1']` when initializing Stripe.js.
 
 - `options`
   Tax ID Element initialization options.
@@ -7364,8 +7360,6 @@ Use the `TaxIdElement` from `@stripe/react-stripe-js/checkout` to collect tax ID
 from your customers, including business name and tax identification number.
 
 The component must be rendered inside a [CheckoutElementsProvider](https://docs.stripe.com/js/react_stripe_js/checkout/checkout_provider.md).
-
-> This feature requires the `custom_checkout_tax_id_1` beta. To use it, pass `betas: ['custom_checkout_tax_id_1']` when initializing Stripe.js via `loadStripe`.
 
 ### Props
 

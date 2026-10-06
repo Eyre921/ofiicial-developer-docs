@@ -33,9 +33,9 @@ path: docs/workflow/changelog
 
 <Update label="August 2025">
 * **TypeScript SDK (`workflow-js`):**
-    * Added `retryDelay` option to dynamicaly program the retry duration. It can be configured on
-    [trigger](/docs/workflow/basics/client#trigger-workflow) , [context.call](/docs/workflow/basics/context#context-call)
-    or [serve](/docs/workflow/basics/serve#retrydelay)
+    * Added `retryDelay` option to dynamically program the retry duration. It can be configured on
+    [trigger](/docs/workflow/basics/client/trigger#body-retrydelay), [context.call](/docs/workflow/steps/call)
+    or `serve` (later moved to `client.trigger`, see the [migration guide](/docs/workflow/howto/migrations#configuration-moved-from-serve-to-trigger))
     * Added ability to detect if a given url is a workflow or not. Starting with `0.2.17` trigger made via the sdk can fail (instead of hanging),
     if there is no workflow serve on the given url.
 * **Console:**
@@ -46,7 +46,7 @@ path: docs/workflow/changelog
 <Update label="July 2025">
 * **TypeScript SDK (`workflow-js`):**
     * Restart/Resume for DLQ is added to allow more options to handle failed runs. See [here](/docs/workflow/howto/failures#manually-handling-failed-workflow-runs)
-    * Added `WorkflowNonRetryableError` to fail a workflow without causing any retries. See [here](/docs/workflow/basics/context#error-handling-and-retries)
+    * Added `WorkflowNonRetryableError` to fail a workflow without causing any retries. See [here](/docs/workflow/features/retries/prevent-retries)
     * For additional bug fixes, see the full changelog [here](https://github.com/upstash/workflow-js/compare/v0.2.14...v0.2.16).
 </Update>
 
@@ -128,8 +128,8 @@ path: docs/workflow/changelog
 
 <Update label="December 2024">
 * **TypeScript SDK (`workflow-js`):**
-    * Introduced third-party integrations, starting with Anthropic, Resend, and OpenAI. These integrations are automatically offloaded to workflows, ensuring long-running calls do not consume user environment time. See the related documentation [here](/docs/workflow/basics/context#context-api).
-    * Added a `timeout` parameter to `context.call`. Learn more in the [documentation](/docs/workflow/basics/context#context-call).
+    * Introduced third-party integrations, starting with Anthropic, Resend, and OpenAI. These integrations are automatically offloaded to workflows, ensuring long-running calls do not consume user environment time. See the related documentation [here](/docs/workflow/steps/api).
+    * Added a `timeout` parameter to `context.call`. Learn more in the [documentation](/docs/workflow/steps/call).
     * Improved support for workflows in Express and SvelteKit by adding the `useJSONContent` option.
     * Resolved loop detection issues on Cloudflare and Render.
     * Full changelog, including all fixes, is available [here](https://github.com/upstash/workflow-js/compare/v0.2.0...v0.2.3).
@@ -147,10 +147,10 @@ path: docs/workflow/changelog
 * **TypeScript SDK (workflow-js):**
     * Added support for string durations (e.g., `1d`, `30s`) in `context.sleep` and `context.waitForEvent`.
     * Introduced integrations for [Astro](/docs/workflow/quickstarts/astro) and [Express](/docs/workflow/quickstarts/express).
-    * Added `client.trigger`, enabling workflows to start and return the workflow run ID. See the [documentation](/docs/workflow/basics/client#trigger-workflow).
-    * Added a retry option for `context.call`. See the [documentation](/docs/workflow/basics/context#context-call).
+    * Added `client.trigger`, enabling workflows to start and return the workflow run ID. See the [documentation](/docs/workflow/basics/client/trigger).
+    * Added a retry option for `context.call`. See the [documentation](/docs/workflow/steps/call).
     * Introduced a lazy fetch feature to support longer and larger workflows on resource-limited platforms.
-    * Added `context.cancel` to cancel the current workflow. See the [documentation](/docs/workflow/basics/context#context-cancel).
+    * Added `context.cancel` to cancel the current workflow. See the [documentation](/docs/workflow/steps/cancel).
     * Full changelog, including fixes, is available [here](https://github.com/upstash/workflow-js/compare/v0.1.2...v0.2.0).
 * **Workflow Server:**
     * Added bulk cancel functionality for workflow runs. See the [REST API](/docs/workflow/api-reference/runs/bulk-cancel-workflow-runs).

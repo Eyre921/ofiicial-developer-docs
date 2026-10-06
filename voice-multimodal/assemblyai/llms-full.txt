@@ -126,6 +126,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Universal-3.6 Pro on LiveKit](#universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx)
 - [Universal-3.6 Pro on Pipecat](#universal-3-6-pro-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx)
 - [Universal-3.6 Pro on Vapi](#universal-3-6-pro-on-vapi-docs-voice-agents-vapi-mdx)
+- [Universal-3.6 Pro on Bolna](#universal-3-6-pro-on-bolna-docs-voice-agents-bolna-mdx)
 - [Streaming Migration Guide: Universal Streaming to Universal-3.6 Pro Streaming](#streaming-migration-guide-universal-streaming-to-universal-3-6-pro-streaming-docs-streaming-migration-guides-universal-to-universal-3-5-pro-streaming-mdx)
 - [Streaming Migration Guide: Deepgram to AssemblyAI](#streaming-migration-guide-deepgram-to-assemblyai-docs-streaming-migration-guides-dg-to-aai-streaming-mdx)
 - [Migration guide: Speechmatics to AssemblyAI](#migration-guide-speechmatics-to-assemblyai-docs-streaming-migration-guides-speechmatics-to-aai-streaming-mdx)
@@ -1404,6 +1405,9 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
   
   
     Use AssemblyAI as the transcriber for Vapi voice assistants.
+  
+  
+    Use AssemblyAI as the transcriber in Bolna voice agents.
   
 
 ## Model gateways
@@ -29774,6 +29778,316 @@ Migrating a production deployment? [Talk to our team](https://www.assemblyai.com
 - [Vapi Create assistant API reference](https://docs.vapi.ai/api-reference/assistants/create)
 - [Vapi speech configuration](https://docs.vapi.ai/customization/speech-configuration)
 - [Vapi voice pipeline configuration](https://docs.vapi.ai/customization/voice-pipeline-configuration)
+- [AssemblyAI turn detection](/streaming/turn-detection)
+- [AssemblyAI prompting and key terms](/streaming/prompting-and-keyterms)
+
+---
+
+<a id="universal-3-6-pro-on-bolna-docs-voice-agents-bolna-mdx"></a>
+
+# Universal-3.6 Pro on Bolna
+
+URL: https://www.assemblyai.com/docs/voice-agents/bolna
+Source: docs/voice-agents/bolna.mdx
+Navigation: Real-time STT > Integrations
+Description: Use AssemblyAI's Universal-3.6 Pro speech-to-text model as the transcriber in a Bolna voice agent
+
+## Overview
+
+This guide covers using AssemblyAI's **Universal-3.6 Pro** speech-to-text model as the transcriber in a [Bolna](https://www.bolna.ai/) voice agent.
+
+Bolna is a voice AI platform for building and running phone and web voice agents. Each agent is a pipeline of a transcriber (speech-to-text), an LLM, and a synthesizer (text-to-speech). Bolna handles the orchestration, including telephony, turn-taking, and interruptions. You configure agents in the Bolna dashboard or through the [Bolna API](https://www.bolna.ai/docs/quickstarts/api).
+
+  **Universal-3.6 Pro is our flagship next-generation streaming model for voice agents** — [multilingual](/streaming/multilingual-transcription) and [promptable](/streaming/prompting-and-keyterms).
+
+  Available on Bolna: set the transcriber `provider` to `"assembly"` and `model` to `"universal-3-6-pro"`.
+
+AssemblyAI provides the speech-to-text and the turn detection in your Bolna agent:
+
+```mermaid
+flowchart LR
+  U["Caller audio<br/>phone or web call"] --> STT
+  subgraph Bolna["Bolna voice agent"]
+    STT["AssemblyAI STT<br/>Universal-3.6 Pro"] --> TD["Turn detection<br/>AssemblyAI end of turn"]
+    TD --> LLM["LLM"]
+    LLM --> TTS["TTS"]
+  end
+  TTS --> U
+```
+
+Once you have an agent running, tune it for what matters most to your use case:
+
+  
+    How Bolna uses AssemblyAI's end-of-turn signal to decide when the caller is done.
+  
+  
+    Prompting and key terms for names, brands, and jargon.
+  
+  
+    How Bolna steers Universal-3.6 Pro to your agent's language.
+  
+  
+    Web calls, phone calls, and the audio format Bolna uses for each.
+  
+
+  View Bolna's AssemblyAI transcriber reference.
+
+  For a standalone voice agent without Bolna, see the [AssemblyAI Voice Agent API](/voice-agents/voice-agent-api), which handles STT, LLM routing, and TTS in a single WebSocket connection.
+
+## Quickstart
+
+Get a working, talking agent in a few minutes, then optimize from there.
+
+Sign up or sign in at [platform.bolna.ai](https://platform.bolna.ai).
+
+  To use the API, generate a Bolna API key. In the left sidebar, expand **Developers** and select **API Keys**. Every API request goes to `https://api.bolna.ai` with an `Authorization: Bearer <key>` header.
+
+1. Open **Build** → **Agent Studio**, then select an agent or click **New Agent**.
+2. Open the **Languages** tab and go to **Transcription**.
+3. Set **Provider** to **AssemblyAI** and **Model** to `universal-3-6-pro`.
+4. Optionally, fill in **Keywords** and **Context**. See [Accuracy](#accuracy).
+5. Click **Save agent**.
+
+Create an agent with `tools_config.transcriber.provider` set to `"assembly"`:
+
+```bash expandable
+curl https://api.bolna.ai/v2/agent \
+  -H "Authorization: Bearer $BOLNA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_config": {
+      "agent_name": "AssemblyAI Agent",
+      "agent_welcome_message": "Hi! Thanks for calling. How can I help you today?",
+      "tasks": [
+        {
+          "task_type": "conversation",
+          "toolchain": {
+            "execution": "sequential",
+            "pipelines": [["transcriber", "llm", "synthesizer"]]
+          },
+          "tools_config": {
+            "transcriber": {
+              "provider": "assembly",
+              "model": "universal-3-6-pro",
+              "language": "en",
+              "stream": true,
+              "keywords": "Bolna, Plivo, Exotel",
+              "context": "Inbound support line for a voice AI platform. Callers ask about telephony setup and billing."
+            },
+            "llm_agent": {
+              "agent_type": "simple_llm_agent",
+              "agent_flow_type": "streaming",
+              "llm_config": {
+                "provider": "openai",
+                "model": "gpt-4.1-mini",
+                "max_tokens": 150,
+                "temperature": 0.2
+              }
+            },
+            "synthesizer": {
+              "provider": "elevenlabs",
+              "provider_config": {
+                "voice": "Nila",
+                "voice_id": "V9LCAAi4tTlqe9JadbCo",
+                "model": "eleven_turbo_v2_5"
+              },
+              "stream": true,
+              "buffer_size": 250,
+              "audio_format": "wav"
+            },
+            "input": { "provider": "plivo", "format": "wav" },
+            "output": { "provider": "plivo", "format": "wav" }
+          },
+          "task_config": {
+            "call_terminate": 90,
+            "hangup_after_silence": 10
+          }
+        }
+      ]
+    },
+    "agent_prompts": {
+      "task_1": {
+        "system_prompt": "You are a helpful voice assistant. Keep replies brief and speakable."
+      }
+    }
+  }'
+```
+
+The response is `201 Created` with the new `agent_id`:
+
+```json
+{ "agent_id": "123e4567-e89b-12d3-a456-426655440000", "state": "created" }
+```
+
+See Bolna's [Create Agent API](https://www.bolna.ai/docs/api-reference/agent/v2/create) reference for the full schema.
+
+  The provider value is `"assembly"`, not `"assemblyai"`. The Bolna API rejects any other value.
+
+Open the **Test options** dropdown next to **Get a call from agent**. Choose **Web Call (Beta)** to talk to the agent in your browser, or **Get a call from agent** to receive a phone call.
+
+Place a call with the `agent_id`. Leave out `from_phone_number` to use your account's default number.
+
+```bash
+curl https://api.bolna.ai/call \
+  -H "Authorization: Bearer $BOLNA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "agent_id": "123e4567-e89b-12d3-a456-426655440000",
+    "recipient_phone_number": "+15551234567"
+  }'
+```
+
+Speak after you hear the greeting. Phone calls use Bolna wallet credits.
+
+## Parameters reference
+
+Set these fields on `tools_config.transcriber` in the Bolna agent config. In the dashboard, they are in the **Transcription** section of the **Languages** tab.
+
+  Must be `"assembly"`.
+
+  The streaming model, passed to AssemblyAI as `speech_model`.
+  `"universal-3-6-pro"` is the recommended flagship model. `"universal-3-5-pro"`
+  is also supported. If you leave it out, Bolna falls back to a Deepgram model
+  and the request fails language validation, so always set it. See [Speech
+  model comparison](#speech-model-comparison).
+
+  The caller's language as an ISO 639-1 code, such as `en`, `es`, or `hi`. See
+  [Languages](#languages).
+
+  Comma-separated terms to boost. Sent to AssemblyAI as
+  [`keyterms_prompt`](/streaming/prompting-and-keyterms). Up to 100 terms; Bolna
+  rejects an agent with more.
+
+  A short, plain description of the call. Sent to AssemblyAI as
+  [`prompt`](/streaming/prompting-and-keyterms). Up to 1,750 characters; Bolna
+  rejects an agent with a longer context.
+
+  Keep `true` for real-time transcription.
+
+You don't set `sampling_rate` or `encoding`. Bolna sets them from the call channel. See [Running your agent](#running-your-agent).
+
+## Turn detection
+
+Bolna uses **AssemblyAI's built-in turn detection**:
+
+- While the caller speaks, AssemblyAI streams partial transcripts. Bolna treats them as interim.
+- When AssemblyAI sends a `Turn` message with `end_of_turn: true`, Bolna treats that transcript as final and sends it to the LLM.
+
+There are no AssemblyAI turn-silence settings to tune on Bolna: Bolna doesn't send `min_turn_silence` or `max_turn_silence`, so AssemblyAI's default timing applies. In the dashboard, the **Endpointing** slider under **Engine** → **Response Latency** is hidden for AssemblyAI for this reason.
+
+**Linear Delay** (`task_config.incremental_delay`, `900` ms on new agents) still applies. After the first exchanges, Bolna holds the agent's reply until that long has passed since the caller stopped speaking, and cancels the reply if the caller keeps talking within that window. Lower it for snappier replies; raise it if callers pause mid-thought and the agent talks over them.
+
+For how AssemblyAI decides that a turn has ended, see [Turn detection](/streaming/turn-detection).
+
+## Accuracy
+
+### Prompting
+
+Describe the call in `context`. Bolna sends it to AssemblyAI as `prompt`:
+
+```json
+"context": "Inbound support line for a voice AI platform. Callers ask about telephony setup, call routing and billing."
+```
+
+Keep it to a sentence or two about the domain and what callers usually ask. It is not a prompt for the LLM. See [Prompting](/streaming/prompting-and-keyterms) for how the model uses context.
+
+### Key terms
+
+List proper nouns, product names, and SKUs in `keywords`. Bolna sends them to AssemblyAI as `keyterms_prompt`:
+
+```json
+"keywords": "Bolna, Plivo, Exotel, Twilio"
+```
+
+In the dashboard, use the **Context** and **Keywords** fields in the **Transcription** section. For writing tips, see Bolna's [Keywords and context](https://www.bolna.ai/docs/customizations/asr-keywords-and-context) guide.
+
+## Languages
+
+Bolna steers Universal-3.6 Pro to the agent's language. It takes the base code of `language` (for example, `en` from `en-IN`) and sends it as a single-element [`language_codes`](/streaming/multilingual-transcription) list, which makes each session monolingual: the model transcribes in the agent's language instead of code-switching. If the code is not one AssemblyAI supports, Bolna leaves out `language_codes` and the model detects the language itself.
+
+Codes Bolna sends as `language_codes`:
+
+| Language  | Code  | Language          | Code |
+| --------- | ----- | ----------------- | ---- |
+| Afrikaans | `af`  | Korean            | `ko` |
+| Arabic    | `ar`  | Mandarin          | `zh` |
+| Cantonese | `yue` | Marathi           | `mr` |
+| Catalan   | `ca`  | Norwegian         | `no` |
+| Danish    | `da`  | Norwegian Nynorsk | `nn` |
+| Dutch     | `nl`  | Persian           | `fa` |
+| English   | `en`  | Portuguese        | `pt` |
+| Estonian  | `et`  | Romanian          | `ro` |
+| Finnish   | `fi`  | Russian           | `ru` |
+| French    | `fr`  | Spanish           | `es` |
+| Galician  | `gl`  | Swedish           | `sv` |
+| German    | `de`  | Turkish           | `tr` |
+| Hebrew    | `he`  | Urdu              | `ur` |
+| Hindi     | `hi`  | Vietnamese        | `vi` |
+| Italian   | `it`  | Xhosa             | `xh` |
+| Japanese  | `ja`  | Zulu              | `zu` |
+
+When you configure an agent, the Bolna dashboard shows the languages available for each model. For multilingual agents, set the transcriber separately for each language on the **Languages** tab. See Bolna's [Multilingual config reference](https://www.bolna.ai/docs/customizations/multilingual-config-reference) for the API equivalent.
+
+## Running your agent
+
+### Web calls
+
+Test in the browser with **Web Call (Beta)** in the dashboard. Bolna streams 16 kHz `linear16` audio to AssemblyAI.
+
+### Phone calls
+
+Phone audio is 8 kHz. Its encoding depends on the telephony provider:
+
+| Telephony provider   | Sample rate | Call audio encoding |
+| -------------------- | ----------- | ------------------- |
+| Twilio, SIP trunk    | 8 kHz       | `mulaw`             |
+| Plivo, Exotel, Vobiz | 8 kHz       | `linear16`          |
+
+Bolna converts `mulaw` audio to 16-bit PCM before sending it, so AssemblyAI always receives 16-bit PCM at the call's sample rate.
+
+## Troubleshooting
+
+| Issue                                                                | Cause                                                        | Solution                                                  |
+| -------------------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------------------- |
+| `400 Invalid value for provider:'assemblyai' provided`               | Wrong provider value                                         | Use `"provider": "assembly"`                              |
+| `400 Provided language: <language> is not available for the model: <model>` | Language not available for the model, or `model` left out (Bolna falls back to a Deepgram model such as `nova-2`) | Set `model`, and pick a language listed for the model in the dashboard |
+| `400 Transcriber context is too long`                                | `context` over 1,750 characters                              | Shorten `context` to 1,750 characters or fewer            |
+| `400 Too many keywords`                                              | More than 100 terms in `keywords`                            | Keep the 100 most important terms                         |
+| Context has no effect                                                | Agent is on the legacy `universal` model                     | Switch to `universal-3-6-pro`                             |
+| Poor accuracy for non-English callers                                | Agent is on the legacy `universal` model, which is English-only | Switch to `universal-3-6-pro` and set `language`       |
+| Misheard names, brands, or jargon                                    | No vocabulary hints                                          | Add `keywords`, and describe the call in `context`        |
+
+## Migrating from another STT provider
+
+On Bolna, switching to AssemblyAI only changes the transcriber. The LLM, voice, prompts, and telephony stay the same.
+
+| What you set today                          | AssemblyAI equivalent                                           |
+| ------------------------------------------- | --------------------------------------------------------------- |
+| `provider` (for example `deepgram`)         | `"provider": "assembly"`                                        |
+| `model` (for example `nova-3`)              | `"model": "universal-3-6-pro"` (recommended flagship)           |
+| Custom vocabulary / `keywords`              | `keywords`, up to 100 terms, no weights                         |
+| Domain description                          | `context`, up to 1,750 characters                               |
+| `endpointing` / silence thresholds          | Not needed. AssemblyAI's end-of-turn signal decides             |
+| `sampling_rate` / `encoding`                | Not needed. Set by Bolna from the call channel                  |
+
+Migrating a production deployment? [Talk to our team](https://www.assemblyai.com/contact/sales).
+
+## Speech model comparison
+
+| Feature                              | U3 Pro family <br/>(`universal-3-6-pro`, `universal-3-5-pro`) | `universal` (legacy)          |
+| ------------------------------------ | ------------------------------------------------------------- | ----------------------------- |
+| AssemblyAI model                     | `universal-3-6-pro` / `universal-3-5-pro`                     | `universal-streaming-english` |
+| Key terms (`keywords`)               | ✅                                                            | ✅                            |
+| Prompting (`context`)                | ✅                                                            | ❌                            |
+| Language steering (`language_codes`) | ✅                                                            | ❌ (English only)             |
+
+  **The U3 Pro family is recommended** for all new Bolna agents. The legacy `universal` model is kept for existing agents.
+
+## Resources
+
+- [Bolna AssemblyAI transcriber docs](https://www.bolna.ai/docs/assemblyai)
+- [Bolna keywords and context guide](https://www.bolna.ai/docs/customizations/asr-keywords-and-context)
+- [Bolna Create Agent API reference](https://www.bolna.ai/docs/api-reference/agent/v2/create)
 - [AssemblyAI turn detection](/streaming/turn-detection)
 - [AssemblyAI prompting and key terms](/streaming/prompting-and-keyterms)
 

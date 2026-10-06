@@ -28,7 +28,7 @@ Create or select *Products* (Products represent what your business sells—wheth
 
 Create features, such as an annual birthday gift, and associate them with your subscription to [entitle](https://docs.stripe.com/billing/entitlements.md) new subscribers to them.
 
-Listen to the [active entitlements summary events](https://docs.stripe.com/billing/entitlements.md#webhooks) for your [event destination](https://docs.stripe.com/event-destinations.md), and use the [list active entitlements API](https://docs.stripe.com/api/entitlements/active-entitlement/list.md) for a given customer to fulfill your customer’s entitlements.
+Listen to the [active entitlements summary events](https://docs.stripe.com/billing/entitlements.md#webhooks) for your [event destination](https://docs.stripe.com/events/how-events-work.md#event-destinations), and use the [list active entitlements API](https://docs.stripe.com/api/entitlements/active-entitlement/list.md) for a given customer to fulfill your customer’s entitlements.
 
 ### (Optional) Enable additional payment methods
 

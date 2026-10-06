@@ -9,7 +9,7 @@ path: terminal/readers/bbpos-wisepad3
 Learn about the BBPOS WisePad 3 reader.
 Available in: CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP, BG, HR, CY, EE, HU, LV, LI, LT, MT, RO, SK, SI![](https://b.stripecdn.com/docs-statics-srv/assets/wisepad-floating-thumb.d6e3015116e0b4295b0106e770b9843e.png)
 
-The [BBPOS WisePad 3](https://docs.stripe.com/terminal/payments/setup-reader/bbpos-wisepad3.md) is a handheld reader for use with mobile applications. It uses [Bluetooth Low Energy (LE)](https://docs.stripe.com/terminal/payments/connect-reader.md?reader-type=bluetooth) or [USB](https://docs.stripe.com/terminal/payments/connect-reader.md?terminal-sdk-platform=android&reader-type=usb) (Android only) to connect to the Stripe Terminal SDK on a mobile device. The WisePad 3 features a display and PIN pad, which facilitates usage in countries where PIN-authenticated transactions are more common.
+The [BBPOS WisePad 3](https://docs.stripe.com/terminal/payments/setup-reader/bbpos-wisepad3.md) is a handheld reader for use with mobile applications. It uses [Bluetooth Low Energy (BLE)](https://docs.stripe.com/terminal/payments/connect-reader.md?reader-type=bluetooth) or [USB](https://docs.stripe.com/terminal/payments/connect-reader.md?terminal-sdk-platform=android&reader-type=usb) (Android only) to connect to the Stripe Terminal SDK on a mobile device. The WisePad 3 has a display and PIN pad, which facilitates use in countries where PIN-authenticated transactions are common.
 
 This reader is compatible with our iOS, Android, and React Native SDKs. To view the reader’s parts and features, see the [BBPOS WisePad 3 product sheet](https://docs.stripecdn.com/wp3-product-sheet.pdf).
 
@@ -18,9 +18,9 @@ This reader is compatible with our iOS, Android, and React Native SDKs. To view 
 - [deviceSoftwareVersion (iOS)](https://stripe.dev/stripe-terminal-ios/docs/Classes/SCPReader.html#/c:objc\(cs\)SCPReader\(py\)deviceSoftwareVersion)
 - [softwareVersion (Android)](https://stripe.dev/stripe-terminal-android/external/com.stripe.stripeterminal.external.models/-reader/software-version.html)
 
-The software on the BBPOS Wisepad 3 consists of a firmware version, configuration name, and key identifier. The reader **software version** joins these three components with underscores into a single string.
+The software on the BBPOS WisePad 3 consists of a firmware version, configuration name, and key identifier. The reader **software version** joins these three components with underscores into a single string.
 
-| Countries | Latest Version |
+| Countries | Latest version |
 | --- | --- |
 | AUMYNZ | `4.01.07.00_Prod_APAC1_on_v28_491001` |
 | SG | `4.01.07.00_Prod_APAC1_off_v17_491001` |
@@ -48,7 +48,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 > 
 > Specifically, a PCI firmware ID `ABCDD` maps to firmware version `AA.BB.CC.DD`. For example, `WPC3x.01-41041` maps to firmware version `4.01.00.41`.
 
-| Version | Release Date | Description |
+| Version | Release date | Description |
 | --- | --- | --- |
 | `4.01.07.00` | 9/8/2026 | - General bug fixes and code improvements. |
 | `4.01.06.00` | 8/3/2026 | - General bug fixes and code improvements. |
@@ -91,30 +91,31 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 - Updated the YiChip Bluetooth library to fix the Bluetooth response to an empty packet causing a timeout and disconnection issue.
 - Modified the JCB CDA Signature Verification requirement according to EMV Bulletin No. 290.
 - Increased the temperature to stop or resume charging from 40℃ to 42℃. |
-| `4.01.00.33.SZZZ.01` | 1/16/2024 | Contains fix for an edge case scenario that resulted reader battery level decreasing. |
-| `4.01.00.33` | 12/3/2023 | Routine firmware maintenance updates and security updates. |
-| `4.01.00.32` | 4/10/2023 | Routine firmware maintenance updates and security updates. |
-| `4.01.00.28` | 10/19/2022 | Routine firmware maintenance updates and security updates. |
-| `4.01.00.27` | 8/30/2022 | Routine firmware maintenance updates and security updates. |
-| `4.01.00.25.SZZZ.01` | 7/27/2022 | Improves transaction processing time.Routine firmware maintenance updates and security updates. |
-| `4.01.00.24` | 4/27/2022 | Routine firmware maintenance updates and security updates. |
-| `4.01.00.23.szzz.01` | 2022-04-05 | Routine firmware maintenance updates. |
-| `4.01.00.18.szzz.02` | 2022-02-08 | Fix for missing payments data that resulted in failed collection. |
-| `4.01.00.18` | 2022-01-18 | Routine firmware maintenance updates. |
-| `4.01.00.17.SZZZ.01` | 2021-09-15 | Contains an additional fix for an edge case scenario that resulted in slower reader response time during PIN entry. |
-| `4.01.00.16` | 2021-08-05 | Contains a fix for an edge case scenario that resulted in slower reader response time during PIN entry. |
-| `4.01.00.15.beta4` | 2021-05-25 | Contains a fix for an edge case scenario that resulted in readers freezing during card presentment. |
-| `4.01.00.13` | 2021-04-21 | Routine firmware maintenance updates. |
-| `4.01.00.12.beta5` | 2021-02-22 | Contains fixes for Interac payments. |
-| `4.01.00.11` | 2021-01-27 | Routine firmware maintenance updates. |
-| `4.01.00.08.beta2` | 2020-10-14 | Improves reliability of transaction processing. |
-| `4.01.00.07` | 2020-09-02 | Allows language to be selected in the settings menu. |
-| `4.01.00.07.beta5` | 2020-08-31 | Improves reliability of reader events. |
-| `4.01.00.06.beta10` | 2020-06-30 | The initial firmware version available for this device. |
+| `4.01.00.33.SZZZ.01` | 1/16/2024 | - Contains a fix for an edge case that caused the reader battery level to decrease. |
+| `4.01.00.33` | 12/3/2023 | - Routine firmware maintenance updates and security updates. |
+| `4.01.00.32` | 4/10/2023 | - Routine firmware maintenance updates and security updates. |
+| `4.01.00.28` | 10/19/2022 | - Routine firmware maintenance updates and security updates. |
+| `4.01.00.27` | 8/30/2022 | - Routine firmware maintenance updates and security updates. |
+| `4.01.00.25.SZZZ.01` | 7/27/2022 | - Improves transaction processing time.
+- Routine firmware maintenance updates and security updates. |
+| `4.01.00.24` | 4/27/2022 | - Routine firmware maintenance updates and security updates. |
+| `4.01.00.23.szzz.01` | 4/5/2022 | - Routine firmware maintenance updates. |
+| `4.01.00.18.szzz.02` | 2/8/2022 | - Fix for missing payments data that resulted in failed collection. |
+| `4.01.00.18` | 1/18/2022 | - Routine firmware maintenance updates. |
+| `4.01.00.17.SZZZ.01` | 9/15/2021 | - Contains an additional fix for an edge case scenario that resulted in slower reader response time during PIN entry. |
+| `4.01.00.16` | 8/5/2021 | - Contains a fix for an edge case scenario that resulted in slower reader response time during PIN entry. |
+| `4.01.00.15.beta4` | 5/25/2021 | - Contains a fix for an edge case scenario that resulted in readers freezing during card presentment. |
+| `4.01.00.13` | 4/21/2021 | - Routine firmware maintenance updates. |
+| `4.01.00.12.beta5` | 2/22/2021 | - Contains fixes for Interac payments. |
+| `4.01.00.11` | 1/27/2021 | - Routine firmware maintenance updates. |
+| `4.01.00.08.beta2` | 10/14/2020 | - Improves reliability of transaction processing. |
+| `4.01.00.07` | 9/2/2020 | - Allows language to be selected in the settings menu. |
+| `4.01.00.07.beta5` | 8/31/2020 | - Improves reliability of reader events. |
+| `4.01.00.06.beta10` | 6/30/2020 | - The initial firmware version available for this device. |
 
 #### Configurations 
 
-| Region (PIN type) | Name | Release Date | Description |
+| Region (PIN type) | Name | Release date | Description |
 | --- | --- | --- | --- |
 | **APAC (Online PIN)** AUMYNZ | `Prod_APAC1_on_v23` | 2024-04-16 | Updated config for Online PIN Asia Pacific countries. |
 | `Prod_APAC1_on_v21` | 2023-05-16 | Updated config for Online PIN Asia Pacific countries. |
@@ -167,7 +168,7 @@ The software on the BBPOS Wisepad 3 consists of a firmware version, configuratio
 
 ## Accessories for the reader 
 
-You can design your own accessories for the BBPOS WisePad 3. To download the BBPOS WisePad 3 mechanical design files (.STP), you must first review and accept our [Terminal Design File License Agreement](https://stripe.com/legal/terminal-design). By downloading the file below, you agree to the terms outlined in the license.
+You can design your own accessories for the BBPOS WisePad 3. To download the BBPOS WisePad 3 mechanical design files (.STP), you must first review and accept our [Terminal Design File License Agreement](https://stripe.com/legal/terminal-design). By downloading the design files, you agree to the terms outlined in the license.
 
 [Download Stripe design files](https://d37ugbyn3rpeym.cloudfront.net/terminal/bbpos_wp3_mechanical_design_files_and_guidelines.zip)
 
@@ -176,7 +177,6 @@ You can design your own accessories for the BBPOS WisePad 3. To download the BBP
 - [Set up BBPOS WisePad 3](https://docs.stripe.com/terminal/payments/setup-reader/bbpos-wisepad3.md)
 - [Set up your integration](https://docs.stripe.com/terminal/payments/setup-integration.md)
 - [Connect to a reader](https://docs.stripe.com/terminal/payments/connect-reader.md)
-- [Collect payments](https://docs.stripe.com/terminal/payments/collect-card-payment.md)
 
 The BBPOS and Chipper™ name and logo are trademarks or registered trademarks of BBPOS Limited in the United States or other countries. The Verifone® name and logo are either trademarks or registered trademarks of Verifone in the United States and/or other countries. Use of the trademarks doesn’t imply any endorsement by BBPOS or Verifone.
 

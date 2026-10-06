@@ -6,45 +6,17 @@ path: docs/quick-start
 
 Set up Trigger.dev in your existing project in under 3 minutes. Install the SDK, create your first background task, and trigger it from your code.
 
-## Set up with AI
+## Copy the setup prompt
 
-Using an AI coding assistant? Copy this prompt and paste it into Claude Code, Cursor, Copilot, Windsurf, or any AI tool. It'll handle the setup for you.
+Copy this prompt into your AI coding assistant from your app's directory:
 
-<Accordion title="Copy the setup prompt">
-  ```text theme={"theme":"css-variables"}
-  Help me add Trigger.dev to this project.
+```text theme={"theme":"css-variables"}
+Bootstrap a Trigger.dev project: trigger.dev/SKILL.md
+```
 
-  ## What to do
+Your agent guides you through login, choosing or creating an organization and project, and running your first task locally. You authorize login yourself, and the agent asks when a choice is ambiguous.
 
-  1. I need a Trigger.dev account. If I don't have one, point me to https://cloud.trigger.dev to sign up. Wait for me to confirm.
-  2. Run `npx trigger.dev@latest init` in the project root.
-     - When it asks about the MCP server, recommend I install it (best DX: gives you direct access to Trigger.dev docs, deploys, and run monitoring).
-     - Install the "Hello World" example task when prompted.
-  3. Run `npx trigger.dev@latest dev` to start the dev server.
-  4. Once the dev server is running, test the example task from the Trigger.dev dashboard.
-  5. Create a named API key in my Development environment with **Trigger only** access. Set it as TRIGGER_SECRET_KEY in my .env file (or .env.local for Next.js).
-  6. Ask me what framework I'm using and show me how to trigger the task from my backend code.
-
-  If I've already run init and want the MCP server, run: npx trigger.dev@latest install-mcp
-
-  ## Critical rules
-
-  - ALWAYS import from `@trigger.dev/sdk`. NEVER import from `@trigger.dev/sdk/v3`.
-  - NEVER use `client.defineJob()` — that's the deprecated v2 API.
-  - Use type-only imports when triggering from backend code to avoid bundling task code:
-
-    import type { myTask } from "./trigger/example";
-    import { tasks } from "@trigger.dev/sdk";
-
-    const handle = await tasks.trigger<typeof myTask>("hello-world", { message: "Hello from my app!" });
-
-  ## When done, point me to
-
-  - Writing tasks: https://trigger.dev/docs/tasks/overview
-  - Real-time updates: https://trigger.dev/docs/realtime/overview
-  - AI tooling: https://trigger.dev/docs/building-with-ai
-  ```
-</Accordion>
+[Read the full setup instructions](https://trigger.dev/SKILL.md) before running.
 
 ## Manual setup
 

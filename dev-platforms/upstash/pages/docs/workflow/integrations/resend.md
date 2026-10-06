@@ -4,7 +4,7 @@ source: https://upstash.com/docs/workflow/integrations/resend
 path: docs/workflow/integrations/resend
 ---
 
-The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/basics/context#context-call).
+The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/steps/call).
 
 However, if you need to call the Resend endpoint to send emails ([`/emails`](https://resend.com/docs/api-reference/emails/send-email) or [`/emails/batch`](https://resend.com/docs/api-reference/emails/send-batch-emails)), you can leverage the type-safe method `context.api.resend.call` method:
 

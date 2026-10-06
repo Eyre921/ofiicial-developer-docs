@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 506 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 507 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -461,6 +461,7 @@
 - `docs/guides/features/zdr` — [Zero Data Retention](pages/docs/guides/features/zdr.md) · [原文](https://openrouter.ai/docs/guides/features/zdr.md)
 - `docs/guides/features/zero-completion-insurance` — [Zero Completion Insurance](pages/docs/guides/features/zero-completion-insurance.md) · [原文](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md)
 - `docs/guides/ori/changelog` — [Changelog](pages/docs/guides/ori/changelog.md) · [原文](https://openrouter.ai/docs/guides/ori/changelog.md)
+- `docs/guides/ori/codex` — [Ori Codex](pages/docs/guides/ori/codex.md) · [原文](https://openrouter.ai/docs/guides/ori/codex.md)
 - `docs/guides/ori/configuration` — [Ori Configuration](pages/docs/guides/ori/configuration.md) · [原文](https://openrouter.ai/docs/guides/ori/configuration.md)
 - `docs/guides/ori/eval` — [Ori Eval](pages/docs/guides/ori/eval.md) · [原文](https://openrouter.ai/docs/guides/ori/eval.md)
 - `docs/guides/ori/files` — [File Writing](pages/docs/guides/ori/files.md) · [原文](https://openrouter.ai/docs/guides/ori/files.md)

@@ -27,9 +27,21 @@ Workflows paused at a [`context.waitForEvent`](/docs/workflow/basics/context/wai
 
 ## Response
 
-Returns a list of `Waiter` objects representing the workflows that were notified:
+<ResponseField name="response" type="NotifyResponse[]">
+    A list of `NotifyResponse` objects, one for each workflow that was waiting on the event.
+    An empty list means no workflow was waiting.
 
-<ResponseField name="Waiter" type="object">
+    <Expandable defaultOpen>
+        <ResponseField name="messageId" type="string">
+            The ID of the notification message delivered to the workflow.
+            This is unique to every notification.
+        </ResponseField>
+
+        <ResponseField name="error" type="string">
+            Error message if delivering the notification to this waiter failed.
+        </ResponseField>
+
+        <ResponseField name="Waiter" type="object">
   <Expandable>
    	<ResponseField name="url" type="string" required>
       URL to call upon notify
@@ -50,6 +62,8 @@ Returns a list of `Waiter` objects representing the workflows that were notified
       Headers sent in case of time out
     </ResponseField>
   </Expandable>
+</ResponseField>
+    </Expandable>
 </ResponseField>
 
 ## Usage

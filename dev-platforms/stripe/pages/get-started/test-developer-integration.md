@@ -12,7 +12,7 @@ Use the Stripe developer tools to integrate new features without interrupting yo
 
 - Test changes without affecting your live system using [Sandboxes](https://docs.stripe.com/sandboxes.md).
 - Build and manage your integration with [Workbench](https://docs.stripe.com/workbench.md).
-- Listen to key activities in your Stripe account to automate business processes with [event destinations](https://docs.stripe.com/event-destinations.md).
+- Listen to key activities in your Stripe account to automate business processes with [event destinations](https://docs.stripe.com/events/how-events-work.md#event-destinations).
 
 Imagine you’re a developer at Kavholm, a furniture company ready to introduce a [new payment method](https://docs.stripe.com/payments/payment-methods/integration-options.md). This payment method aims to position Kavholm as a market leader and improve customer satisfaction.
 
@@ -94,7 +94,7 @@ Use the following views to manage the payment method feature:
 At Kavholm, use event destinations to make sure all payment method features function as intended without affecting your live systems. Use event destinations to track real-time activities in your Stripe account, and to respond to critical events such as payment confirmations or subscription updates. You can:
 
 - Send events to AWS through [Amazon EventBridge](https://docs.stripe.com/event-destinations/eventbridge.md), to Azure through [Azure Event Grid](https://docs.stripe.com/event-destinations/eventgrid.md), or to an [HTTPS endpoint through webhooks](https://docs.stripe.com/webhooks.md).
-- Access real-time data using [thin or snapshot events](https://docs.stripe.com/event-destinations.md#events-overview).
+- Access real-time data using [thin or snapshot events](https://docs.stripe.com/events/how-events-work.md#event-formats).
 
 ### Testing
 
@@ -107,22 +107,22 @@ To simulate real-world conditions and evaluate the payment method’s performanc
 
 To track key events and maintain oversight of the payment method feature’s ongoing functionality:
 
-- Configure event destinations to [aggregate and alert you on events](https://docs.stripe.com/event-destinations.md#event-permissions) such as `payment_intent.succeeded`. Event destinations support receiving alerts at a webhook endpoint, Amazon EventBridge, or Azure Event Grid.
-- View payment event history to troubleshoot payment method processes and [track event deliveries](https://docs.stripe.com/event-destinations.md#event-retention). Use logs for debugging, especially when your focus is on event logs rather than API request logs.
+- Configure event destinations to [aggregate and alert you on events](https://docs.stripe.com/events/how-events-work.md#event-permissions) such as `payment_intent.succeeded`. Event destinations support receiving alerts at a webhook endpoint, Amazon EventBridge, or Azure Event Grid.
+- View payment event history to troubleshoot payment method processes and [track event deliveries](https://docs.stripe.com/events/how-events-work.md#event-retention). Use logs for debugging, especially when your focus is on event logs rather than API request logs.
 
 ### Debugging
 
 To identify and resolve issues through real-time event analysis and ensure uninterrupted service for Kavholm’s customers:
 
 - Quickly identify billing or payment method issues to alert your customers with specific event notifications.
-- Use [thin events for real-time analysis](https://docs.stripe.com/event-destinations.md#thin-events) of payment method processing.
+- Use [thin events for real-time analysis](https://docs.stripe.com/events/how-events-work.md#thin-events) of payment method processing.
 
 With event destinations, Kavholm tests, monitors, and debugs its new payment method while minimizing disruptions.
 
 ## See also
 
 - [Sandboxes](https://docs.stripe.com/sandboxes.md)
-- [Event Destinations](https://docs.stripe.com/event-destinations.md)
+- [event destinations](https://docs.stripe.com/events/how-events-work.md#event-destinations)
 - [Workbench](https://docs.stripe.com/workbench.md)
 - [Workbench use cases](https://docs.stripe.com/workbench/guides.md)
 

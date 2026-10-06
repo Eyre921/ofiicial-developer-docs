@@ -9,7 +9,7 @@ Run Fireworks inference in your own Kubernetes cluster, cloud account or data ce
 Bring Your Own Cluster (BYOC) lets Enterprise customers run Fireworks inference inside their own Kubernetes cluster. Your inference compute runs in your cloud account or data center boundary, while Fireworks installs and operates the serving stack for you.
 
 <Warning>
-  Bring Your Own Cluster is in Private Preview for Enterprise customers. Contact [sales@fireworks.ai](mailto:sales@fireworks.ai) to discuss whether BYOC is a fit and to participate in the preview.
+  Bring Your Own Cluster is in Private Preview for Enterprise customers. [Contact us](https://fireworks.ai/contact) to discuss whether BYOC is a fit and to participate in the preview.
 </Warning>
 
 ## What BYOC provides
@@ -84,7 +84,7 @@ Hybrid operation can help when:
 
 ## Known gaps during Private Preview
 
-Training is not supported in BYOC during Private Preview. If you need training and BYOC together, contact [sales@fireworks.ai](mailto:sales@fireworks.ai) so the team can review your requirements and roadmap fit.
+Training is not supported in BYOC during Private Preview. If you need training and BYOC together, [contact us](https://fireworks.ai/contact) so the team can review your requirements and roadmap fit.
 
 ## Supported environments
 
@@ -98,7 +98,7 @@ At a high level, BYOC requires:
 
 ## Next steps
 
-If BYOC may be a fit, contact [sales@fireworks.ai](mailto:sales@fireworks.ai) to review your requirements and preview eligibility.
+If BYOC may be a fit, [contact us](https://fireworks.ai/contact) to review your requirements and preview eligibility.
 
 <CardGroup>
   <Card title="How setup works" icon="diagram-project" href="/ecosystem/integrations/byoc/how-setup-works">

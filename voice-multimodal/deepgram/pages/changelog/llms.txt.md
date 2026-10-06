@@ -12,6 +12,7 @@ path: changelog/llms.txt
 
 ## Entries
 
+- [October 6, 2026](https://developers.deepgram.com/changelog/2026/10/6.md)
 - [October 5, 2026](https://developers.deepgram.com/changelog/2026/10/5.md)
 - [October 2, 2026](https://developers.deepgram.com/changelog/2026/10/2.md)
 - [October 1, 2026](https://developers.deepgram.com/changelog/2026/10/1.md): Deepgram Self-Hosted release 261001 adds watermarking to Flux TTS audio, removes Whisper support, brings the FIPS Engine metric and certificate surface in line with the standard images, and improves Japanese and German formatting.

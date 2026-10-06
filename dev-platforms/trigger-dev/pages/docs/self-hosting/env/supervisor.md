@@ -32,7 +32,6 @@ Environment variables for the supervisor container.
 | `TRIGGER_DEQUEUE_ENABLED` | No | true | Enable dequeue to pull runs from the queue. |
 | `TRIGGER_DEQUEUE_INTERVAL_MS` | No | 250 | Dequeue interval (ms). |
 | `TRIGGER_DEQUEUE_IDLE_INTERVAL_MS` | No | 1000 (1s) | Dequeue idle interval (ms). |
-| `TRIGGER_DEQUEUE_MAX_RUN_COUNT` | No | 10 | Max dequeue run count. |
 | `TRIGGER_DEQUEUE_MAX_CONSUMER_COUNT` | No | 1 | Max dequeue consumer count. |
 | **Docker settings** | | | |
 | `DOCKER_API_VERSION` | No | v1.41 | Docker API version. You should probably not touch this. |
@@ -65,6 +64,7 @@ Environment variables for the supervisor container.
 | **Failed pod handler** | | | |
 | `FAILED_POD_HANDLER_ENABLED` | No | true | Enable failed pod handler. |
 | `FAILED_POD_HANDLER_RECONNECT_INTERVAL_MS` | No | 1000 (1s) | Failed pod handler reconnect interval (ms). |
+| `FAILED_POD_HANDLER_WATCH_TIMEOUT_SECONDS` | No | 300 (5m) | How long the server keeps each failed pod watch open (s). |
 | **Debug** | | | |
 | `DEBUG` | No | false | Enable debug logs. |
 | `SEND_RUN_DEBUG_LOGS` | No | false | Send run debug logs to the platform. |

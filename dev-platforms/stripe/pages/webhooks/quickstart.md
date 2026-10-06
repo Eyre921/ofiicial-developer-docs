@@ -852,15 +852,15 @@ require github.com/stripe/stripe-go/v87 v87.0.0
             return "";
 ## Next steps
 
-#### [Secure your webhooks](https://docs.stripe.com/webhooks.md#verify-events)
+#### [Secure your webhooks](https://docs.stripe.com/events/set-up-events.md#signature-checking)
 
 Secure your webhook endpoint by allowing only verified events from Stripe.
 
-#### [Going live](https://docs.stripe.com/webhooks.md#register-webhook)
+#### [Going live](https://docs.stripe.com/events/set-up-events.md#deploy-event-handler)
 
 Learn how to deploy your webhook endpoint to production and handle events at scale by only sending the specific events you need.
 
-#### [Best practices](https://docs.stripe.com/webhooks.md#best-practices)
+#### [Best practices](https://docs.stripe.com/events/manage-webhook-endpoints.md#best-practices)
 
 Understand best practices for maintaining your endpoint, such as managing retries or duplicate events.
 

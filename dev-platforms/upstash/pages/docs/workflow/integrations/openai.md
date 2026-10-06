@@ -6,7 +6,7 @@ path: docs/workflow/integrations/openai
 
 ### Calling OpenAI
 
-The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/basics/context#context-call).
+The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/steps/call).
 
 However, if you need to call the OpenAI endpoint for text generation ([`/v1/chat/completions`](https://platform.openai.com/docs/api-reference/chat)), you can leverage the type-safe method `context.api.openai.call` method:
 

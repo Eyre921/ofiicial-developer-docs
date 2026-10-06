@@ -134,7 +134,7 @@ The queries later in this quickstart draw on these files. You can build the cont
       <Step title="Design your context">
         On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
 
-        Pick a template that fits, such as **General knowledge base**. If none fit, [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
+        Pick a template that fits, such as **General knowledge base**. If none fit, pick the closest one and adjust its artifact and edge types later on the context's **Manifest** tab, or [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
 
         Click **Review**.
       </Step>

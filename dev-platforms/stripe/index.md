@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 469 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -13,7 +13,6 @@
 - `currencies` — [Supported currencies](pages/currencies.md) · [原文](https://docs.stripe.com/currencies.md)
 - `declines` — [Declines](pages/declines.md) · [原文](https://docs.stripe.com/declines.md)
 - `directory` — [Stripe Directory](pages/directory.md) · [原文](https://docs.stripe.com/directory.md)
-- `event-destinations` — [Integrate with events](pages/event-destinations.md) · [原文](https://docs.stripe.com/event-destinations.md)
 - `js` — [Stripe.js](pages/js.md) · [原文](https://docs.stripe.com/js.md)
 - `payouts` — [Receive payouts](pages/payouts.md) · [原文](https://docs.stripe.com/payouts.md)
 - `projects` — [Stripe Projects CLI](pages/projects.md) · [原文](https://docs.stripe.com/projects.md)
@@ -217,6 +216,11 @@
 - `elements/appearance-api/mobile` — [Customize appearance](pages/elements/appearance-api/mobile.md) · [原文](https://docs.stripe.com/elements/appearance-api/mobile.md)
 - `elements/express-checkout-element` — [Express Checkout Element](pages/elements/express-checkout-element.md) · [原文](https://docs.stripe.com/elements/express-checkout-element.md)
 
+## events
+
+- `events/manage-webhook-endpoints` — [Resolve webhook signature verification errors](pages/events/manage-webhook-endpoints.md) · [原文](https://docs.stripe.com/events/manage-webhook-endpoints.md)
+- `events/set-up-events` — [Integrate with events](pages/events/set-up-events.md) · [原文](https://docs.stripe.com/events/set-up-events.md)
+
 ## financial-connections
 
 - `financial-connections/ach-direct-debit-payments` — [Collect a bank account to use ACH Direct Debit payments with account data](pages/financial-connections/ach-direct-debit-payments.md) · [原文](https://docs.stripe.com/financial-connections/ach-direct-debit-payments.md)
@@ -286,6 +290,7 @@
 
 - `issuing/3d-secure` — [Cardholder authentication using 3D Secure](pages/issuing/3d-secure.md) · [原文](https://docs.stripe.com/issuing/3d-secure.md)
 - `issuing/adding-funds-to-your-card-program` — [Add funds to your card program](pages/issuing/adding-funds-to-your-card-program.md) · [原文](https://docs.stripe.com/issuing/adding-funds-to-your-card-program.md)
+- `issuing/cards/choose-bundle` — [Choose your physical bundle](pages/issuing/cards/choose-bundle.md) · [原文](https://docs.stripe.com/issuing/cards/choose-bundle.md)
 - `issuing/cards/digital-wallets` — [Use digital wallets with Issuing](pages/issuing/cards/digital-wallets.md) · [原文](https://docs.stripe.com/issuing/cards/digital-wallets.md)
 - `issuing/cards/physical` — [Physical cards](pages/issuing/cards/physical.md) · [原文](https://docs.stripe.com/issuing/cards/physical.md)
 - `issuing/cards/physical/card-bundle-selections` — [Customize card bundle](pages/issuing/cards/physical/card-bundle-selections.md) · [原文](https://docs.stripe.com/issuing/cards/physical/card-bundle-selections.md)
@@ -578,4 +583,3 @@
 ## webhooks
 
 - `webhooks/quickstart` — [Set up and deploy a webhook](pages/webhooks/quickstart.md) · [原文](https://docs.stripe.com/webhooks/quickstart.md)
-- `webhooks/signature` — [Resolve webhook signature verification errors](pages/webhooks/signature.md) · [原文](https://docs.stripe.com/webhooks/signature.md)

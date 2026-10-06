@@ -49,6 +49,8 @@ The app is available in 14 languages, and automatically defaults to the device l
 - Add a card on file (iOS only)
 - Send an email |
 | [Review financial account](https://docs.stripe.com/dashboard/mobile.md#review-financial-account) | - View your balances
+- Transfer funds between your balances
+- Convert currencies within your balances ([where available](https://docs.stripe.com/treasury/convert-funds.md#availability))
 - View your transaction history
 - View your financial account details
 - View card details for your existing cards |
@@ -200,6 +202,8 @@ To manage existing customers:
 You can access your [financial account](https://docs.stripe.com/treasury.md) in the Dashboard mobile app. In the app, you can:
 
 - View your balances
+- Transfer funds between your balances
+- Convert currencies within your balances ([where available](https://docs.stripe.com/treasury/convert-funds.md#availability))
 - View your transaction history
 - View your financial account details
 - View card details for your existing cards

@@ -21,7 +21,7 @@ The official Pinecone plugin for [Codex](https://developers.openai.com/codex) ad
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * The [Codex](https://developers.openai.com/codex) desktop app or CLI installed. The plugin runs locally, so it doesn't work in Codex cloud tasks.
 * [Node.js](https://nodejs.org/) installed and on your `PATH` (required for the bundled MCP server)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for the assistant and full-text search ingestion skills)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone:cli` skill)
 
 ## Install the plugin
@@ -157,7 +157,7 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
     The `pinecone:query` skill works only with integrated indexes, which use a Pinecone-hosted embedding model. For indexes that use external embeddings, use the `pinecone:cli` skill or the MCP tools directly.
   </Accordion>
 
-  <Accordion title="Assistant or full-text search skill errors">
+  <Accordion title="Skill script errors">
     Run `uv --version` to confirm `uv` is installed. If it's missing, install it and restart your terminal.
   </Accordion>
 </AccordionGroup>

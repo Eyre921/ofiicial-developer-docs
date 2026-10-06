@@ -77,7 +77,7 @@ Deepgram’s profanity filtering feature masks offensive language in transcripts
 
 > **Info**
 >
-> Profanity filtering is supported for all multilingual models: Nova-2 multi, Nova-3 multi, and Flux multi (`language=multi`).
+> Profanity filtering is supported for all multilingual models: Nova-2 multi, Nova-3 multi, Nova-3 Medical multi, and Flux multi (`language=multi`).
 
 ## Enable Feature
 

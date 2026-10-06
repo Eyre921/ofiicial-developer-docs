@@ -326,7 +326,7 @@ The steps below use Claude Code. Using Cursor, Codex, Gemini CLI, or another age
 
 <Steps>
   <Step title="Set your API key and install the plugin">
-    The plugin needs [Node.js](https://nodejs.org/) installed (and [uv](https://docs.astral.sh/uv/getting-started/installation/) for assistant commands).
+    The plugin needs [Node.js](https://nodejs.org/) and [uv](https://docs.astral.sh/uv/getting-started/installation/) installed. The quickstart skill uses uv to run its bundled Python scripts.
 
     <Note>
       Installing the plugin requires access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace). Claude Code adds this access automatically the first time you start it. If the install fails with a `Marketplace "claude-plugins-official" not found` error, your network or your organization's Claude Code setup is probably blocking it.
@@ -63352,7 +63352,7 @@ Compatible with [GitHub Copilot](https://github.com/features/copilot) and other 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Node.js](https://nodejs.org/) installed (for `npx`)
 * [Pinecone MCP server](/guides/operations/mcp-server) configured in your IDE (optional, enables the `query` skill)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (optional, runs bundled Python scripts)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `cli` skill)
 
 ## Set up Agent Skills
@@ -63792,7 +63792,7 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Claude Code](https://claude.ai/code) installed with access to the [official Anthropic marketplace](https://code.claude.com/docs/en/discover-plugins#official-anthropic-marketplace)
 * [Node.js](https://nodejs.org/) installed (`npx` must be on your `PATH`)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for assistant commands)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, for advanced operations)
 
 ## Installation
@@ -63905,7 +63905,7 @@ The official Pinecone plugin for [Codex](https://developers.openai.com/codex) ad
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * The [Codex](https://developers.openai.com/codex) desktop app or CLI installed. The plugin runs locally, so it doesn't work in Codex cloud tasks.
 * [Node.js](https://nodejs.org/) installed and on your `PATH` (required for the bundled MCP server)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for the assistant and full-text search ingestion skills)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone:cli` skill)
 
 ## Install the plugin
@@ -64041,7 +64041,7 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
     The `pinecone:query` skill works only with integrated indexes, which use a Pinecone-hosted embedding model. For indexes that use external embeddings, use the `pinecone:cli` skill or the MCP tools directly.
   </Accordion>
 
-  <Accordion title="Assistant or full-text search skill errors">
+  <Accordion title="Skill script errors">
     Run `uv --version` to confirm `uv` is installed. If it's missing, install it and restart your terminal.
   </Accordion>
 </AccordionGroup>
@@ -64101,7 +64101,7 @@ The official Pinecone plugin for [Cursor](https://www.cursor.com/) provides AI-p
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Cursor](https://www.cursor.com/) installed
 * [Node.js](https://nodejs.org/) v18+ (required for the bundled MCP server)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (optional, runs bundled Python scripts)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone-cli` skill)
 
 ## Installation
@@ -64474,7 +64474,7 @@ The official Pinecone extension for [Gemini CLI](https://github.com/google-gemin
 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Gemini CLI](https://github.com/google-gemini/gemini-cli) installed
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required for skill scripts)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, for advanced operations)
 
 ## Installation
@@ -84630,7 +84630,7 @@ You author a manifest through the [Nexus API](/reference/api/nexus/authenticatio
 * [Design your own manifest](/guides/nexus/design-your-own-manifest) by defining artifact and edge types directly.
 * Configure [artifact formats](/guides/nexus/configure-artifact-formats) to write a type as prose or as a queryable SQLite table.
 
-Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate. The console can seed a context from a template for a quick start, but the full manifest surface is available only through the API.
+Curation executes the manifest against the sources. To change a context later, send a new manifest with `PUT /contexts/{slug}` and re-curate, or edit it on the context's **Manifest** tab in the console, including SQLite table formats. These guides use the API.
 
 ## Knowledge layers
 
@@ -85358,7 +85358,7 @@ The queries later in this quickstart draw on these files. You can build the cont
       <Step title="Design your context">
         On the **Design your context** step, Nexus scans your sources and suggests [manifest](/guides/nexus/context-design) templates that match. Each template describes the artifacts and edges it'll build.
 
-        Pick a template that fits, such as **General knowledge base**. If none fit, [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
+        Pick a template that fits, such as **General knowledge base**. If none fit, pick the closest one and adjust its artifact and edge types later on the context's **Manifest** tab, or [design your own manifest](/guides/nexus/design-your-own-manifest) through the API.
 
         Click **Review**.
       </Step>

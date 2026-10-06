@@ -32,7 +32,7 @@ Compatible with [GitHub Copilot](https://github.com/features/copilot) and other 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
 * [Node.js](https://nodejs.org/) installed (for `npx`)
 * [Pinecone MCP server](/guides/operations/mcp-server) configured in your IDE (optional, enables the `query` skill)
-* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (optional, runs bundled Python scripts)
+* [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `cli` skill)
 
 ## Set up Agent Skills

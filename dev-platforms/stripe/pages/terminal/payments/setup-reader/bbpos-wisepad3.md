@@ -33,7 +33,7 @@ The [BBPOS WisePad 3](https://docs.stripe.com/terminal/readers/bbpos-wisepad3.md
 
 ## Accessories for the reader 
 
-You can design your own accessories for the BBPOS WisePad 3. To download the BBPOS WisePad 3 mechanical design files (.STP), you must first review and accept our [Terminal Design File License Agreement](https://stripe.com/legal/terminal-design). By downloading the file below, you agree to the terms outlined in the license.
+You can design your own accessories for the BBPOS WisePad 3. To download the BBPOS WisePad 3 mechanical design files (.STP), you must first review and accept our [Terminal Design File License Agreement](https://stripe.com/legal/terminal-design). By downloading the design files, you agree to the terms outlined in the license.
 
 [Download Stripe design files](https://d37ugbyn3rpeym.cloudfront.net/terminal/bbpos_wp3_mechanical_design_files_and_guidelines.zip)
 

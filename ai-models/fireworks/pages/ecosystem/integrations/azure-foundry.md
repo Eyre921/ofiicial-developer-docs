@@ -34,7 +34,7 @@ Fireworks on Foundry supports three deployment modes.
 | **PTU** | Provisioned Throughput | Per PTU-hour, ACD + MACC eligible | Global | Production workloads with consistent traffic |
 | **Custom Models** | Bring Your Own Model | PTU pricing | Global (PTU regions) | Trained model deployment |
 
-PTU deployments can be created directly in the Azure portal. For help with PTU sizing on Fireworks models, contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
+PTU deployments can be created directly in the Azure portal. For help with PTU sizing on Fireworks models, [contact us](https://fireworks.ai/contact).
 
 ## Available models
 
@@ -46,7 +46,7 @@ Chat completions only. Embeddings, image generation, and audio modalities are no
 
 PayGo (Data Zone Standard) is available in: East US, East US 2, Central US, North Central US, West US, West US 3.
 
-The throughput limit for PayGo deployments is **500,000 tokens per minute (TPM)**. For higher limits, submit a limit increase request on [aka.ms/fireworks-quota](https://aka.ms/fireworks-quota) and contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
+The throughput limit for PayGo deployments is **500,000 tokens per minute (TPM)**. For higher limits, submit a limit increase request on [aka.ms/fireworks-quota](https://aka.ms/fireworks-quota) and [contact us](https://fireworks.ai/contact).
 
 ### Make your first request
 
@@ -80,7 +80,7 @@ PTU deployments provide dedicated GPU capacity reserved for your workload, with 
 
 You can create a PTU deployment directly in the Azure portal. For more on provisioned throughput, see the [Microsoft Learn guide](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/concepts/provisioned-throughput).
 
-For help with PTU sizing on Fireworks models, contact [sales@fireworks.ai](mailto:sales@fireworks.ai).
+For help with PTU sizing on Fireworks models, [contact us](https://fireworks.ai/contact).
 
 ## Custom Models
 
@@ -110,7 +110,7 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 | Access denied on deployment | Verify you have the **Azure AI Developer** role on the project |
 | Opt-in not propagating | Allow up to 30 minutes after registering `Fireworks.EnableDeploy` |
 | Custom Model deployment failing | Confirm weights are full-weight (not LoRA adapters) and the architecture is in the [supported list](https://learn.microsoft.com/en-us/azure/foundry/how-to/fireworks/enable-fireworks-models#supported-model-architectures) |
-| PTU provisioning questions | Contact [sales@fireworks.ai](mailto:sales@fireworks.ai) |
+| PTU provisioning questions | [Contact us](https://fireworks.ai/contact) |
 
 ## Coding harnesses
 
@@ -129,4 +129,4 @@ This page covers enabling and operating Fireworks models in Foundry itself.
 * [Microsoft Foundry portal](https://ai.azure.com/)
 * [Fireworks training docs](/fine-tuning/finetuning-intro)
 * [Fireworks Trust Center](https://fireworks.ai/trust)
-* [sales@fireworks.ai](mailto:sales@fireworks.ai) for PTU provisioning and Custom Model support
+* [Contact us](https://fireworks.ai/contact) for PTU provisioning and Custom Model support
