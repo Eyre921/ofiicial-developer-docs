@@ -84,27 +84,30 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.voices.pvc.samples.update("21m00Tcm4TlvDq8ikWAM", "VW7YKqPnjY4h39yTbx2L", {});
-}
-main();
+url = "https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L"
 
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/voices/pvc/21m00Tcm4TlvDq8ikWAM/samples/VW7YKqPnjY4h39yTbx2L';
+const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
-client = ElevenLabs()
-
-client.voices.pvc.samples.update(
-    voice_id="21m00Tcm4TlvDq8ikWAM",
-    sample_id="VW7YKqPnjY4h39yTbx2L",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

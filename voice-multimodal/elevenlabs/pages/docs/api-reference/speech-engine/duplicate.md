@@ -352,27 +352,30 @@ Used to reference a dynamic variable.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.speechEngine.duplicate("seng_3701k3ttaq12ewp8b7qv5rfyszkz", {});
-}
-main();
+url = "https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz/duplicate"
 
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, DuplicateSpeechEngineRequest
+```javascript
+const url = 'https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz/duplicate';
+const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
-client = ElevenLabs()
-
-client.speech_engine.duplicate(
-    speech_engine_id="seng_3701k3ttaq12ewp8b7qv5rfyszkz",
-    request=DuplicateSpeechEngineRequest(),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

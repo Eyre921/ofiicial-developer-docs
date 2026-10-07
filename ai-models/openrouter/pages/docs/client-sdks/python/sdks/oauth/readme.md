@@ -52,13 +52,13 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `code` | *str* | :heavy\_check\_mark: | The authorization code received from the OAuth redirect | auth\_code\_abc123def456 |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `code_challenge_method` | [OptionalNullable\[operations.ExchangeAuthCodeForAPIKeyCodeChallengeMethod\]](../../operations/exchangeauthcodeforapikeycodechallengemethod.mdx) | :heavy\_minus\_sign: | The method used to generate the code challenge | S256 |
-| `code_verifier` | *Optional\[str]* | :heavy\_minus\_sign: | The code verifier if code\_challenge was used in the authorization request | dBjftJeZ4CVP-mB92K27uhbUJU1p1r\_wW1gFWFOEjXk |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `code` | *str* | ✅ | The authorization code received from the OAuth redirect | auth\_code\_abc123def456 |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `code_challenge_method` | [OptionalNullable\[operations.ExchangeAuthCodeForAPIKeyCodeChallengeMethod\]](../../operations/exchangeauthcodeforapikeycodechallengemethod.mdx) | ➖ | The method used to generate the code challenge | S256 |
+| `code_verifier` | *Optional\[str]* | ➖ | The code verifier if code\_challenge was used in the authorization request | dBjftJeZ4CVP-mB92K27uhbUJU1p1r\_wW1gFWFOEjXk |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -102,18 +102,18 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `callback_url` | *str* | :heavy\_check\_mark: | The callback URL to redirect to after authorization. Supports https URLs and localhost/127.0.0.1 URLs on any port for local CLI tools. | [https://myapp.com/auth/callback](https://myapp.com/auth/callback) |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `code_challenge` | *Optional\[str]* | :heavy\_minus\_sign: | PKCE code challenge for enhanced security | E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM |
-| `code_challenge_method` | [Optional\[operations.CreateAuthKeysCodeCodeChallengeMethod\]](../../operations/createauthkeyscodecodechallengemethod.mdx) | :heavy\_minus\_sign: | The method used to generate the code challenge | S256 |
-| `expires_at` | [date](https://docs.python.org/3/library/datetime.html#date-objects) | :heavy\_minus\_sign: | Optional ISO 8601 UTC expiration timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected. | 2027-12-31T23:59:59Z |
-| `key_label` | *Optional\[str]* | :heavy\_minus\_sign: | Optional custom label for the API key. Defaults to the app name if not provided. | My Custom Key |
-| `limit` | *Optional\[float]* | :heavy\_minus\_sign: | Credit limit for the API key to be created | 100 |
-| `usage_limit_type` | [Optional\[operations.UsageLimitType\]](../../operations/usagelimittype.mdx) | :heavy\_minus\_sign: | Optional credit limit reset interval. When set, the credit limit resets on this interval. | monthly |
-| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Optional workspace ID to associate the API key with | |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `callback_url` | *str* | ✅ | The callback URL to redirect to after authorization. Supports https URLs and localhost/127.0.0.1 URLs on any port for local CLI tools. | [https://myapp.com/auth/callback](https://myapp.com/auth/callback) |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `code_challenge` | *Optional\[str]* | ➖ | PKCE code challenge for enhanced security | E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM |
+| `code_challenge_method` | [Optional\[operations.CreateAuthKeysCodeCodeChallengeMethod\]](../../operations/createauthkeyscodecodechallengemethod.mdx) | ➖ | The method used to generate the code challenge | S256 |
+| `expires_at` | [date](https://docs.python.org/3/library/datetime.html#date-objects) | ➖ | Optional ISO 8601 UTC expiration timestamp. Must include seconds (YYYY-MM-DDTHH:MM:SSZ; fractional seconds allowed); minute-precision timestamps are rejected. | 2027-12-31T23:59:59Z |
+| `key_label` | *Optional\[str]* | ➖ | Optional custom label for the API key. Defaults to the app name if not provided. | My Custom Key |
+| `limit` | *Optional\[float]* | ➖ | Credit limit for the API key to be created | 100 |
+| `usage_limit_type` | [Optional\[operations.UsageLimitType\]](../../operations/usagelimittype.mdx) | ➖ | Optional credit limit reset interval. When set, the credit limit resets on this interval. | monthly |
+| `workspace_id` | *Optional\[str]* | ➖ | Optional workspace ID to associate the API key with | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -159,10 +159,10 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
@@ -204,16 +204,16 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `federation_policy_id` | *str* | :heavy\_check\_mark: | The federation policy to evaluate, from Settings → Workload identity. Binds the exchange to one organization. | 4b2f7d1e-8c3a-4e5f-9a6b-1c2d3e4f5a6b |
-| `grant_type` | [components.GrantType](../../components/granttype.mdx) | :heavy\_check\_mark: | Must be `urn:ietf:params:oauth:grant-type:token-exchange`. | urn:ietf:params:oauth:grant-type:token-exchange |
-| `subject_token` | *str* | :heavy\_check\_mark: | The JWT issued by your identity provider. | \<jwt from your identity provider> |
-| `subject_token_type` | [components.SubjectTokenType](../../components/subjecttokentype.mdx) | :heavy\_check\_mark: | Must be `urn:ietf:params:oauth:token-type:jwt`. | urn:ietf:params:oauth:token-type:jwt |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `requested_token_type` | [Optional\[components.RequestedTokenType\]](../../components/requestedtokentype.mdx) | :heavy\_minus\_sign: | Optional; when present must be `urn:ietf:params:oauth:token-type:access_token`. | urn:ietf:params:oauth:token-type:access\_token |
-| `scope` | [Optional\[components.TokenExchangeRequestScope\]](../../components/tokenexchangerequestscope.mdx) | :heavy\_minus\_sign: | Optional; only `inference` is available. | inference |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `federation_policy_id` | *str* | ✅ | The federation policy to evaluate, from Settings → Workload identity. Binds the exchange to one organization. | 4b2f7d1e-8c3a-4e5f-9a6b-1c2d3e4f5a6b |
+| `grant_type` | [components.GrantType](../../components/granttype.mdx) | ✅ | Must be `urn:ietf:params:oauth:grant-type:token-exchange`. | urn:ietf:params:oauth:grant-type:token-exchange |
+| `subject_token` | *str* | ✅ | The JWT issued by your identity provider. | \<jwt from your identity provider> |
+| `subject_token_type` | [components.SubjectTokenType](../../components/subjecttokentype.mdx) | ✅ | Must be `urn:ietf:params:oauth:token-type:jwt`. | urn:ietf:params:oauth:token-type:jwt |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `requested_token_type` | [Optional\[components.RequestedTokenType\]](../../components/requestedtokentype.mdx) | ➖ | Optional; when present must be `urn:ietf:params:oauth:token-type:access_token`. | urn:ietf:params:oauth:token-type:access\_token |
+| `scope` | [Optional\[components.TokenExchangeRequestScope\]](../../components/tokenexchangerequestscope.mdx) | ➖ | Optional; only `inference` is available. | inference |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 

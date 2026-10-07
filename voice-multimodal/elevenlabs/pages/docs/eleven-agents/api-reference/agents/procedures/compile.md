@@ -1066,27 +1066,27 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.procedures.compile("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/compile"
 
+response = requests.post(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/compile';
+const options = {method: 'POST'};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.procedures.compile(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

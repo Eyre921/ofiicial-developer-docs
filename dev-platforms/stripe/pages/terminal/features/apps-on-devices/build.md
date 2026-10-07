@@ -56,14 +56,23 @@ Add the following dependencies to your project’s Gradle build script. Apps on 
 
 ```kotlin
 dependencies {
-   implementation("com.stripe:stripeterminal-core:5.8.2")
-   implementation("com.stripe:stripeterminal-appsondevices:5.8.2")
+   implementation("com.stripe:stripeterminal-core:6.0.0")
+   implementation("com.stripe:stripeterminal-appsondevices:6.0.0")
 }
 ```
 
-Make sure that you aren’t using any other Stripe Terminal SDK dependencies. For example, if you previously integrated the Terminal Android SDK, don’t use the top-level `com.stripe:stripeterminal` dependency (for example, `com.stripe:stripeterminal:5.8.2`).
+Make sure that you aren’t using any other Stripe Terminal SDK dependencies. For example, if you previously integrated the Terminal Android SDK, don’t use the top-level `com.stripe:stripeterminal` dependency (for example, `com.stripe:stripeterminal:6.0.0`).
 
 See an example of [including dependencies in your app’s build script](https://github.com/stripe-samples/terminal-apps-on-devices/blob/718c2de38c7b8003fcf58c536c266bb990ad43a7/app/build.gradle.kts#L66).
+
+Terminal Android SDK `6.0.0` and later require your app to set `compileSdk` to 35 (Android 15) or higher:
+
+```kotlin
+android {
+  compileSdk = 35
+  // ...
+}
+```
 
 ### Configure your application
 
@@ -156,7 +165,7 @@ Follow the guidance below for Apps on Devices integrations.
 
 #### Android
 
-> In version `5.0.0` of the Android SDK, you can use the `easyConnect` method to combine reader discovery and connection into a single API call to simplify integration. See the [SDK migration guide](https://docs.stripe.com/terminal/references/sdk-migration-guide.md?terminal-sdk-platform=android#update-your-reader-connection-usage) for details.
+> As of version `5.0.0` of the Android SDK, you can use the `easyConnect` method to combine reader discovery and connection into a single API call to simplify integration. See the [SDK migration guide](https://docs.stripe.com/terminal/references/sdk-v5-migration-guide.md?terminal-sdk-platform=android#update-your-reader-connection-usage) for details.
 
 You must register a new Stripe device to your account as a new [Reader object](https://docs.stripe.com/api/terminal/readers/object.md). Use the pairing code provided in the device’s admin settings to [create the Reader object](https://docs.stripe.com/api/terminal/readers/create.md). Your app uses the Stripe Terminal Android SDK to discover and connect to your device:
 

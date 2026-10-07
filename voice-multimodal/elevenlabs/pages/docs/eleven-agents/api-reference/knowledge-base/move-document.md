@@ -71,29 +71,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.move("21m00Tcm4TlvDq8ikWAM", {
-        moveTo: "project_documents/marketing_campaigns",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move"
 
+payload = { "move_to": "project_documents/marketing_campaigns" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/move';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"move_to":"project_documents/marketing_campaigns"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.documents.move(
-    document_id="21m00Tcm4TlvDq8ikWAM",
-    move_to="project_documents/marketing_campaigns",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

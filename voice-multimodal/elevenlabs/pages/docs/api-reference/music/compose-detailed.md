@@ -195,34 +195,40 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "xi-api-key",
-    });
-    await client.music.composeDetailed({
-        prompt: "A prompt for music generation",
-        musicLengthMs: 10000,
-    });
+url = "https://api.elevenlabs.io/v1/music/detailed"
+
+payload = {
+    "prompt": "A prompt for music generation",
+    "music_length_ms": 10000
 }
-main();
+headers = {
+    "xi-api-key": "xi-api-key",
+    "Content-Type": "application/json"
+}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/music/detailed';
+const options = {
+  method: 'POST',
+  headers: {'xi-api-key': 'xi-api-key', 'Content-Type': 'application/json'},
+  body: '{"prompt":"A prompt for music generation","music_length_ms":10000}'
+};
 
-client = ElevenLabs(
-    api_key="xi-api-key",
-)
-
-client.music.compose_detailed(
-    prompt="A prompt for music generation",
-    music_length_ms=10000,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -129,38 +129,38 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.environmentVariables.create({
-        type: "string",
-        label: "API_ENDPOINT_URL",
-        values: {
-            key: "https://api.production.example.com",
-        },
-    });
+url = "https://api.elevenlabs.io/v1/convai/environment-variables"
+
+payload = {
+    "type": "string",
+    "label": "API_ENDPOINT_URL",
+    "values": { "key": "https://api.production.example.com" }
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
-from elevenlabs.environment_variables import EnvironmentVariablesCreateRequestBody_String
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/environment-variables';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"type":"string","label":"API_ENDPOINT_URL","values":{"key":"https://api.production.example.com"}}'
+};
 
-client = ElevenLabs()
-
-client.environment_variables.create(
-    request=EnvironmentVariablesCreateRequestBody_String(
-        label="API_ENDPOINT_URL",
-        values={
-            "key": "https://api.production.example.com"
-        },
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -120,26 +120,30 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.environmentVariables.update("env_var_id", {});
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/environment-variables/env_var_id"
 
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/environment-variables/env_var_id';
+const options = {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
-client = ElevenLabs()
-
-client.environment_variables.update(
-    env_var_id="env_var_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

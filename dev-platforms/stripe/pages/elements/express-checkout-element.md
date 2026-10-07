@@ -319,7 +319,7 @@ But you can customize payment method behavior in various ways, such as:
 
 Listen for the `availablepaymentmethodschange` event to check which wallets are available for the Express Checkout Element to display. If no wallets are available, provide another option for your customer to pay.
 
-```js
+```jsx
 () => {
   const [eceActive, setEceActive] = useState(false);
 
@@ -344,7 +344,7 @@ Listen for the `availablepaymentmethodschange` event to check which wallets are 
 
 Alternatively, hide the entire Express Checkout Element until you know the element has methods to display.
 
-```js
+```jsx
 () => {
   const [eceActive, setEceActive] = useState(false);
 

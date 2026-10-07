@@ -85,28 +85,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.audioNative.updateContentFromUrl({
-        url: "https://elevenlabs.io/blog/the_first_ai_that_can_laugh/",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/audio-native/content"
 
+payload = { "url": "https://elevenlabs.io/blog/the_first_ai_that_can_laugh/" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/audio-native/content';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"url":"https://elevenlabs.io/blog/the_first_ai_that_can_laugh/"}'
+};
 
-client = ElevenLabs()
-
-client.audio_native.update_content_from_url(
-    url="https://elevenlabs.io/blog/the_first_ai_that_can_laugh/",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

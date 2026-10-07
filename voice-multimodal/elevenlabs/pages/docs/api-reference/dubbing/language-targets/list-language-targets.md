@@ -127,29 +127,29 @@ Signed, time-limited download URLs for a language target's outputs.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.dubbing.project.language.list("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", {
-        pageSize: 20,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/language"
 
+querystring = {"page_size":"20"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/language?page_size=20';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.dubbing.project.language.list(
-    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
-    page_size=20,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

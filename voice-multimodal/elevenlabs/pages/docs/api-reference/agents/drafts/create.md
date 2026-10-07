@@ -1166,105 +1166,122 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.drafts.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        branchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-        workflow: {
-            edges: {
-                entry_to_tool_a: {
-                    source: "entry_node",
-                    target: "tool_node_a",
-                },
-                start_to_entry: {
-                    source: "start_node",
-                    target: "entry_node",
-                },
-                tool_a_to_failure: {
-                    source: "tool_node_a",
-                    target: "failure_node",
-                },
-                tool_a_to_tool_b: {
-                    source: "tool_node_a",
-                    target: "tool_node_b",
-                },
-                tool_b_to_agent_transfer: {
-                    source: "tool_node_b",
-                    target: "success_transfer",
-                },
-                tool_b_to_conversation: {
-                    source: "tool_node_b",
-                    target: "success_conversation",
-                },
-                tool_b_to_end: {
-                    source: "tool_node_b",
-                    target: "success_end",
-                },
-                tool_b_to_phone: {
-                    source: "tool_node_b",
-                    target: "success_phone",
-                },
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts"
+
+querystring = {"branch_id":"agtbrch_8901k4t9z5defmb8vh3e9361y7nj"}
+
+payload = {
+    "workflow": {
+        "edges": {
+            "entry_to_tool_a": {
+                "source": "entry_node",
+                "target": "tool_node_a",
+                "forward_condition": { "condition": "Tool A condition" }
             },
-            nodes: {},
+            "start_to_entry": {
+                "source": "start_node",
+                "target": "entry_node",
+                "forward_condition": {}
+            },
+            "tool_a_to_failure": {
+                "source": "tool_node_a",
+                "target": "failure_node",
+                "forward_condition": { "successful": False }
+            },
+            "tool_a_to_tool_b": {
+                "source": "tool_node_a",
+                "target": "tool_node_b",
+                "forward_condition": { "successful": True }
+            },
+            "tool_b_to_agent_transfer": {
+                "source": "tool_node_b",
+                "target": "success_transfer",
+                "forward_condition": {}
+            },
+            "tool_b_to_conversation": {
+                "source": "tool_node_b",
+                "target": "success_conversation",
+                "forward_condition": { "condition": "Conversation condition" }
+            },
+            "tool_b_to_end": {
+                "source": "tool_node_b",
+                "target": "success_end",
+                "forward_condition": { "condition": "End condition" }
+            },
+            "tool_b_to_phone": {
+                "source": "tool_node_b",
+                "target": "success_phone",
+                "forward_condition": { "expression": { "children": [
+                            { "name": "force_phone_transfer" },
+                            {
+                                "prompt": "Phone condition",
+                                "value_schema": {
+                                    "description": "Phone condition",
+                                    "type": "boolean"
+                                }
+                            },
+                            {
+                                "left": { "name": "mode" },
+                                "right": { "value": "dev" }
+                            }
+                        ] } }
+            }
         },
-        name: "string",
-    });
+        "nodes": {
+            "entry_node": {
+                "conversation_config": {},
+                "edge_order": ["entry_to_tool_a"],
+                "label": "Entry"
+            },
+            "failure_node": {
+                "conversation_config": {},
+                "label": "Failure"
+            },
+            "start_node": { "edge_order": ["start_to_entry"] },
+            "success_conversation": {
+                "conversation_config": {},
+                "label": "Success A"
+            },
+            "success_end": {},
+            "success_phone": { "transfer_destination": { "phone_number": "+1234567890" } },
+            "success_transfer": { "agent_id": "success_transfer_agent" },
+            "tool_node_a": {
+                "edge_order": ["tool_a_to_failure", "tool_a_to_tool_b"],
+                "tools": [{ "tool_id": "tool_a" }, { "tool_id": "tool_b" }]
+            },
+            "tool_node_b": {
+                "edge_order": ["tool_b_to_conversation", "tool_b_to_end", "tool_b_to_phone", "tool_b_to_agent_transfer"],
+                "tools": [{ "tool_id": "tool_a" }]
+            }
+        }
+    },
+    "name": "string"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, AgentWorkflowRequestModel, WorkflowEdgeModelInput
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"workflow":{"edges":{"entry_to_tool_a":{"source":"entry_node","target":"tool_node_a","forward_condition":{"condition":"Tool A condition"}},"start_to_entry":{"source":"start_node","target":"entry_node","forward_condition":{}},"tool_a_to_failure":{"source":"tool_node_a","target":"failure_node","forward_condition":{"successful":false}},"tool_a_to_tool_b":{"source":"tool_node_a","target":"tool_node_b","forward_condition":{"successful":true}},"tool_b_to_agent_transfer":{"source":"tool_node_b","target":"success_transfer","forward_condition":{}},"tool_b_to_conversation":{"source":"tool_node_b","target":"success_conversation","forward_condition":{"condition":"Conversation condition"}},"tool_b_to_end":{"source":"tool_node_b","target":"success_end","forward_condition":{"condition":"End condition"}},"tool_b_to_phone":{"source":"tool_node_b","target":"success_phone","forward_condition":{"expression":{"children":[{"name":"force_phone_transfer"},{"prompt":"Phone condition","value_schema":{"description":"Phone condition","type":"boolean"}},{"left":{"name":"mode"},"right":{"value":"dev"}}]}}}},"nodes":{"entry_node":{"conversation_config":{},"edge_order":["entry_to_tool_a"],"label":"Entry"},"failure_node":{"conversation_config":{},"label":"Failure"},"start_node":{"edge_order":["start_to_entry"]},"success_conversation":{"conversation_config":{},"label":"Success A"},"success_end":{},"success_phone":{"transfer_destination":{"phone_number":"+1234567890"}},"success_transfer":{"agent_id":"success_transfer_agent"},"tool_node_a":{"edge_order":["tool_a_to_failure","tool_a_to_tool_b"],"tools":[{"tool_id":"tool_a"},{"tool_id":"tool_b"}]},"tool_node_b":{"edge_order":["tool_b_to_conversation","tool_b_to_end","tool_b_to_phone","tool_b_to_agent_transfer"],"tools":[{"tool_id":"tool_a"}]}}},"name":"string"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.drafts.create(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-    workflow=AgentWorkflowRequestModel(
-        edges={
-            "entry_to_tool_a": WorkflowEdgeModelInput(
-                source="entry_node",
-                target="tool_node_a",
-            ),
-            "start_to_entry": WorkflowEdgeModelInput(
-                source="start_node",
-                target="entry_node",
-            ),
-            "tool_a_to_failure": WorkflowEdgeModelInput(
-                source="tool_node_a",
-                target="failure_node",
-            ),
-            "tool_a_to_tool_b": WorkflowEdgeModelInput(
-                source="tool_node_a",
-                target="tool_node_b",
-            ),
-            "tool_b_to_agent_transfer": WorkflowEdgeModelInput(
-                source="tool_node_b",
-                target="success_transfer",
-            ),
-            "tool_b_to_conversation": WorkflowEdgeModelInput(
-                source="tool_node_b",
-                target="success_conversation",
-            ),
-            "tool_b_to_end": WorkflowEdgeModelInput(
-                source="tool_node_b",
-                target="success_end",
-            ),
-            "tool_b_to_phone": WorkflowEdgeModelInput(
-                source="tool_node_b",
-                target="success_phone",
-            )
-        },
-        nodes={},
-    ),
-    name="string",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

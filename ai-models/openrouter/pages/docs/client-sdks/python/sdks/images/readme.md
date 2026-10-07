@@ -53,27 +53,27 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `model` | *str* | :heavy\_check\_mark: | The image generation model to use | bytedance-seed/seedream-4.5 |
-| `prompt` | *str* | :heavy\_check\_mark: | Text description of the desired image | a red panda astronaut floating in space, studio lighting |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `aspect_ratio` | [Optional\[components.ImageGenerationRequestAspectRatio\]](../../components/imagegenerationrequestaspectratio.mdx) | :heavy\_minus\_sign: | Normalized aspect ratio of the generated image. Providers clamp to their supported subset. | 16:9 |
-| `background` | [Optional\[components.ImageGenerationRequestBackground\]](../../components/imagegenerationrequestbackground.mdx) | :heavy\_minus\_sign: | Background treatment. `transparent` requires an output\_format that supports alpha (png or webp). | auto |
-| `input_references` | List\[[components.ContentPartImage](../../components/contentpartimage.mdx)] | :heavy\_minus\_sign: | Reference images to guide image-to-image generation, as base64 data URLs or HTTP(S) URLs. | |
-| `n` | *Optional\[int]* | :heavy\_minus\_sign: | Upper bound on the number of images to generate (1-10). Providers may return fewer images, and providers that only support single-image generation reject n > 1. | 1 |
-| `output_compression` | *Optional\[int]* | :heavy\_minus\_sign: | Compression level (0-100) for webp/jpeg output. Ignored for png and by providers without a compression knob. | 100 |
-| `output_format` | [Optional\[components.ImageGenerationRequestOutputFormat\]](../../components/imagegenerationrequestoutputformat.mdx) | :heavy\_minus\_sign: | Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`. | png |
-| `provider` | [Optional\[components.ImageGenerationProviderPreferences\]](../../components/imagegenerationproviderpreferences.mdx) | :heavy\_minus\_sign: | Provider routing preferences and provider-specific passthrough configuration. | \{<br />"allow\_fallbacks": false,<br />"only": \[<br />"google-ai-studio"<br />]<br />} |
-| `quality` | [Optional\[components.ImageGenerationRequestQuality\]](../../components/imagegenerationrequestquality.mdx) | :heavy\_minus\_sign: | Rendering quality. Providers without a quality knob ignore this. | high |
-| `resolution` | [Optional\[components.ImageGenerationRequestResolution\]](../../components/imagegenerationrequestresolution.mdx) | :heavy\_minus\_sign: | Normalized resolution tier of the generated image. Concrete pixel dimensions are derived per-provider. | 2K |
-| `seed` | *Optional\[int]* | :heavy\_minus\_sign: | If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers. | |
-| `session_id` | *Optional\[str]* | :heavy\_minus\_sign: | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | session-1234 |
-| `size` | *Optional\[str]* | :heavy\_minus\_sign: | Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400. | 2K |
-| `stream` | *Optional\[bool]* | :heavy\_minus\_sign: | If true, partial images are streamed as SSE events as they become available. Only supported by providers with native streaming (currently OpenAI). Non-streaming providers ignore this flag and return a buffered response. | |
-| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | :heavy\_minus\_sign: | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{<br />"trace\_id": "trace-abc123",<br />"trace\_name": "my-app-trace"<br />} |
-| `user` | *Optional\[str]* | :heavy\_minus\_sign: | A stable identifier for your end-users. Used to help detect and prevent abuse. Never sent to providers verbatim: for providers whose data policy requires user IDs, it is folded into a hashed, per-account upstream user identifier. | end-user-abc123 |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `model` | *str* | ✅ | The image generation model to use | bytedance-seed/seedream-4.5 |
+| `prompt` | *str* | ✅ | Text description of the desired image | a red panda astronaut floating in space, studio lighting |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `aspect_ratio` | [Optional\[components.ImageGenerationRequestAspectRatio\]](../../components/imagegenerationrequestaspectratio.mdx) | ➖ | Normalized aspect ratio of the generated image. Providers clamp to their supported subset. | 16:9 |
+| `background` | [Optional\[components.ImageGenerationRequestBackground\]](../../components/imagegenerationrequestbackground.mdx) | ➖ | Background treatment. `transparent` requires an output\_format that supports alpha (png or webp). | auto |
+| `input_references` | List\[[components.ContentPartImage](../../components/contentpartimage.mdx)] | ➖ | Reference images to guide image-to-image generation, as base64 data URLs or HTTP(S) URLs. | |
+| `n` | *Optional\[int]* | ➖ | Upper bound on the number of images to generate (1-10). Providers may return fewer images, and providers that only support single-image generation reject n > 1. | 1 |
+| `output_compression` | *Optional\[int]* | ➖ | Compression level (0-100) for webp/jpeg output. Ignored for png and by providers without a compression knob. | 100 |
+| `output_format` | [Optional\[components.ImageGenerationRequestOutputFormat\]](../../components/imagegenerationrequestoutputformat.mdx) | ➖ | Encoding of the returned image bytes. Most models produce raster formats (png, jpeg, webp). SVG is supported by vectorization models (e.g. Quiver) — the SVG markup is UTF-8 base64-encoded in `b64_json`. | png |
+| `provider` | [Optional\[components.ImageGenerationProviderPreferences\]](../../components/imagegenerationproviderpreferences.mdx) | ➖ | Provider routing preferences and provider-specific passthrough configuration. | \{<br />"allow\_fallbacks": false,<br />"only": \[<br />"google-ai-studio"<br />]<br />} |
+| `quality` | [Optional\[components.ImageGenerationRequestQuality\]](../../components/imagegenerationrequestquality.mdx) | ➖ | Rendering quality. Providers without a quality knob ignore this. | high |
+| `resolution` | [Optional\[components.ImageGenerationRequestResolution\]](../../components/imagegenerationrequestresolution.mdx) | ➖ | Normalized resolution tier of the generated image. Concrete pixel dimensions are derived per-provider. | 2K |
+| `seed` | *Optional\[int]* | ➖ | If specified, the generation will sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed for all providers. | |
+| `session_id` | *Optional\[str]* | ➖ | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | session-1234 |
+| `size` | *Optional\[str]* | ➖ | Optional. A convenience shorthand for output dimensions — pass a tier ("2K", "4K") or explicit pixels ("2048x2048") and we normalize it to the right dimensions for the chosen provider. A tier size is equivalent to setting `resolution` and combines with `aspect_ratio`. An explicit pixel size is authoritative: a mismatched `resolution` or `aspect_ratio` alongside it is rejected with a 400. | 2K |
+| `stream` | *Optional\[bool]* | ➖ | If true, partial images are streamed as SSE events as they become available. Only supported by providers with native streaming (currently OpenAI). Non-streaming providers ignore this flag and return a buffered response. | |
+| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{<br />"trace\_id": "trace-abc123",<br />"trace\_name": "my-app-trace"<br />} |
+| `user` | *Optional\[str]* | ➖ | A stable identifier for your end-users. Used to help detect and prevent abuse. Never sent to providers verbatim: for providers whose data policy requires user IDs, it is folded into a hashed, per-account upstream user identifier. | end-user-abc123 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -125,10 +125,10 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. |
 
 ### Response
 
@@ -170,12 +170,12 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `author` | *str* | :heavy\_check\_mark: | Model author/organization | bytedance-seed |
-| `slug` | *str* | :heavy\_check\_mark: | Model slug | seedream-4.5 |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `author` | *str* | ✅ | Model author/organization | bytedance-seed |
+| `slug` | *str* | ✅ | Model slug | seedream-4.5 |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 

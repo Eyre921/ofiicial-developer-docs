@@ -76,30 +76,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.chunk.get("21m00Tcm4TlvDq8ikWAM", "1", {
-        embeddingModel: "e5_mistral_7b_instruct",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/chunk/1"
 
+querystring = {"embedding_model":"e5_mistral_7b_instruct"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/chunk/1?embedding_model=e5_mistral_7b_instruct';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.documents.chunk.get(
-    documentation_id="21m00Tcm4TlvDq8ikWAM",
-    chunk_id="1",
-    embedding_model="e5_mistral_7b_instruct",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -205,32 +205,38 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.twilio.outboundCall({
-        agentId: "agent_id",
-        agentPhoneNumberId: "agent_phone_number_id",
-        toNumber: "to_number",
-    });
+url = "https://api.elevenlabs.io/v1/convai/twilio/outbound-call"
+
+payload = {
+    "agent_id": "agent_id",
+    "agent_phone_number_id": "agent_phone_number_id",
+    "to_number": "to_number"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/twilio/outbound-call';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"agent_id":"agent_id","agent_phone_number_id":"agent_phone_number_id","to_number":"to_number"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.twilio.outbound_call(
-    agent_id="agent_id",
-    agent_phone_number_id="agent_phone_number_id",
-    to_number="to_number",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

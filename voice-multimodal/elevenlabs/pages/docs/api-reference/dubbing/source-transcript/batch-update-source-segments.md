@@ -125,43 +125,37 @@ One segment of a source transcript.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.dubbing.project.transcript.updateSegments("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", {
-        segments: {
-            "0199a3f0-1c2d-7abc-8def-0123456789ab": {
-                text: "Welcome to our latest product demo.",
-            },
-            "0199a3f0-3e4f-7abc-8def-0123456789cd": {
-                speakerId: "narrator",
-            },
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segments"
 
+payload = { "segments": {
+        "0199a3f0-1c2d-7abc-8def-0123456789ab": { "text": "Welcome to our latest product demo." },
+        "0199a3f0-3e4f-7abc-8def-0123456789cd": { "speaker_id": "narrator" }
+    } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, DubbingSegmentUpdateRequest
+```javascript
+const url = 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segments';
+const options = {
+  method: 'PATCH',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"segments":{"0199a3f0-1c2d-7abc-8def-0123456789ab":{"text":"Welcome to our latest product demo."},"0199a3f0-3e4f-7abc-8def-0123456789cd":{"speaker_id":"narrator"}}}'
+};
 
-client = ElevenLabs()
-
-client.dubbing.project.transcript.update_segments(
-    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
-    segments={
-        "0199a3f0-1c2d-7abc-8def-0123456789ab": DubbingSegmentUpdateRequest(
-            text="Welcome to our latest product demo.",
-        ),
-        "0199a3f0-3e4f-7abc-8def-0123456789cd": DubbingSegmentUpdateRequest(
-            speaker_id="narrator",
-        )
-    },
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

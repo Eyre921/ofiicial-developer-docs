@@ -324,6 +324,22 @@ An object containing Netlify site metadata with the following properties:
 - **`name`:** name of the site, its Netlify subdomain; for example, `petsof`.
 - **`url`:** URL representing the main address to your site. It can be either a Netlify subdomain or your own custom domain if you set one; for example, `https://petsof.netlify.app` or `https://www.petsofnetlify.com`.
 
+### `user`
+An object containing the Netlify user who logged in to access the project, when the project is [private](/manage/security/secure-access-to-sites/project-visibility) or uses [team login protection](/manage/security/secure-access-to-sites/password-protection#basic-password-protection-versus-team-login-protection). It has the following properties:
+
+- **`id`:** unique ID of the Netlify user.
+- **`email`:** email address of the Netlify user, or `undefined` if Netlify doesn't have one for the login.
+- **`expiresAt`:** a `Date` for when the user's access to the project expires.
+
+`user` is `undefined` when visitors don't log in with Netlify to access the project, including on public projects and projects with basic password protection.
+
+`user` identifies the Netlify account that logged in to access the project, not a [Netlify Identity](/manage/security/secure-access-to-sites/identity/overview) user. To get an Identity user, use [`getUser()`](/manage/security/secure-access-to-sites/identity/use-identity-in-functions#verify-the-current-user) from `@netlify/identity`.
+
+Netlify verifies the login before the request reaches your edge function, so you can rely on `user` to identify who made the request. Request headers sent by the client can't change `user`.
+
+Usage notes:
+- `user` isn't available when running locally with Netlify CLI.
+
 ### `waitUntil`
 `context.waitUntil()` is a function that implements the [`ExtendableEvent.waitUntil` standard](https://developer.mozilla.org/en-US/docs/Web/API/ExtendableEvent/waitUntil). It allows you to extend the edge function's execution until the given Promise it completed, **without blocking the response to the client** from being sent.
 

@@ -62,29 +62,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.drafts.delete("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        branchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts"
 
+querystring = {"branch_id":"agtbrch_8901k4t9z5defmb8vh3e9361y7nj"}
+
+response = requests.delete(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/drafts?branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj';
+const options = {method: 'DELETE'};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.drafts.delete(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

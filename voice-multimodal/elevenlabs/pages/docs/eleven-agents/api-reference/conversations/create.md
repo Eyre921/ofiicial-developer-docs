@@ -82,29 +82,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.feedback.create("21m00Tcm4TlvDq8ikWAM", {
-        feedback: "like",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback"
 
+payload = { "feedback": "like" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM/feedback';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"feedback":"like"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.feedback.create(
-    conversation_id="21m00Tcm4TlvDq8ikWAM",
-    feedback="like",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -3004,37 +3004,34 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.runTests("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        tests: [
-            {
-                testId: "string",
-            },
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/run-tests"
 
+payload = { "tests": [{ "test_id": "string" }] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, SingleTestRunRequestModel
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/run-tests';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"tests":[{"test_id":"string"}]}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.run_tests(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    tests=[
-        SingleTestRunRequestModel(
-            test_id="string",
-        )
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

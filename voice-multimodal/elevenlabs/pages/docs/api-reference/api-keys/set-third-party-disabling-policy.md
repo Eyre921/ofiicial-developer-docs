@@ -75,28 +75,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.workspace.setThirdPartyDisablingPolicy({
-        thirdPartyDisableAllowed: true,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling"
 
+payload = { "third_party_disable_allowed": True }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/workspaces/api-keys/third-party-disabling';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"third_party_disable_allowed":true}'
+};
 
-client = ElevenLabs()
-
-client.workspace.set_third_party_disabling_policy(
-    third_party_disable_allowed=True,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

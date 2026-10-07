@@ -56,26 +56,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.speechEngine.delete("seng_3701k3ttaq12ewp8b7qv5rfyszkz");
-}
-main();
+url = "https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz"
 
+response = requests.delete(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/speech-engine/seng_3701k3ttaq12ewp8b7qv5rfyszkz';
+const options = {method: 'DELETE'};
 
-client = ElevenLabs()
-
-client.speech_engine.delete(
-    speech_engine_id="seng_3701k3ttaq12ewp8b7qv5rfyszkz",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

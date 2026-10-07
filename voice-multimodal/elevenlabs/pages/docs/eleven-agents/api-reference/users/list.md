@@ -151,44 +151,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.users.list({
-        agentId: "agent_id",
-        branchId: "branch_id",
-        callStartAfterUnix: 1,
-        callStartBeforeUnix: 1,
-        cursor: "cursor",
-        pageSize: 1,
-        search: "search",
-        sortBy: "last_contact_unix_secs",
-        sortDirection: "asc",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/users"
 
+querystring = {"agent_id":"agent_id","branch_id":"branch_id","call_start_after_unix":"1","call_start_before_unix":"1","cursor":"cursor","page_size":"1","search":"search","sort_by":"last_contact_unix_secs","sort_direction":"asc"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs&sort_direction=asc';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.users.list(
-    agent_id="agent_id",
-    branch_id="branch_id",
-    call_start_after_unix=1,
-    call_start_before_unix=1,
-    cursor="cursor",
-    page_size=1,
-    search="search",
-    sort_by="last_contact_unix_secs",
-    sort_direction="asc",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

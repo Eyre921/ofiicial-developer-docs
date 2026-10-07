@@ -87,33 +87,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.pronunciationDictionaries.rules.remove("21m00Tcm4TlvDq8ikWAM", {
-        ruleStrings: [
-            "['a', 'b']",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/remove-rules"
 
+payload = { "rule_strings": ["['a', 'b']"] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/pronunciation-dictionaries/21m00Tcm4TlvDq8ikWAM/remove-rules';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"rule_strings":["[\'a\', \'b\']"]}'
+};
 
-client = ElevenLabs()
-
-client.pronunciation_dictionaries.rules.remove(
-    pronunciation_dictionary_id="21m00Tcm4TlvDq8ikWAM",
-    rule_strings=[
-        "[\'a\', \'b\']"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

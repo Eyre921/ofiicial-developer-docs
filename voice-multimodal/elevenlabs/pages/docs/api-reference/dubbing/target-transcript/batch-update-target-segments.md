@@ -125,44 +125,37 @@ One segment of a target transcript: a source segment plus its translation.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.dubbing.project.language.transcript.updateSegments("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", "lang_1001kwkyxp0je6ktn4knsfrasx5s", {
-        segments: {
-            "0199a3f0-1c2d-7abc-8def-0123456789ab": {
-                translation: "Bienvenido a nuestra última demostración de producto.",
-            },
-            "0199a3f0-3e4f-7abc-8def-0123456789cd": {
-                translation: "Empecemos.",
-            },
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/language/lang_1001kwkyxp0je6ktn4knsfrasx5s/transcript/segments"
 
+payload = { "segments": {
+        "0199a3f0-1c2d-7abc-8def-0123456789ab": { "translation": "Bienvenido a nuestra última demostración de producto." },
+        "0199a3f0-3e4f-7abc-8def-0123456789cd": { "translation": "Empecemos." }
+    } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, DubbingTargetSegmentUpdateRequest
+```javascript
+const url = 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/language/lang_1001kwkyxp0je6ktn4knsfrasx5s/transcript/segments';
+const options = {
+  method: 'PATCH',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"segments":{"0199a3f0-1c2d-7abc-8def-0123456789ab":{"translation":"Bienvenido a nuestra última demostración de producto."},"0199a3f0-3e4f-7abc-8def-0123456789cd":{"translation":"Empecemos."}}}'
+};
 
-client = ElevenLabs()
-
-client.dubbing.project.language.transcript.update_segments(
-    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
-    language_id="lang_1001kwkyxp0je6ktn4knsfrasx5s",
-    segments={
-        "0199a3f0-1c2d-7abc-8def-0123456789ab": DubbingTargetSegmentUpdateRequest(
-            translation="Bienvenido a nuestra última demostración de producto.",
-        ),
-        "0199a3f0-3e4f-7abc-8def-0123456789cd": DubbingTargetSegmentUpdateRequest(
-            translation="Empecemos.",
-        )
-    },
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -100,10 +100,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"input": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user",<br />"type": "message"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7,<br />"tools": \[<br />\{<br />"description": "Get the current weather in a given location",<br />"name": "get\_current\_weather",<br />"parameters": \{<br />"properties": \{<br />"location": \{<br />"type": "string"<br />}<br />},<br />"type": "object"<br />},<br />"type": "function"<br />}<br />],<br />"top\_p": 0.9<br />} |
-| `xOpenRouterMetadata` | [\*components.MetadataLevel](../../models/components/metadatalevel.mdx) | :heavy\_minus\_sign: | Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility. | enabled |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | ✅ | N/A | \{<br />"input": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user",<br />"type": "message"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7,<br />"tools": \[<br />\{<br />"description": "Get the current weather in a given location",<br />"name": "get\_current\_weather",<br />"parameters": \{<br />"properties": \{<br />"location": \{<br />"type": "string"<br />}<br />},<br />"type": "object"<br />},<br />"type": "function"<br />}<br />],<br />"top\_p": 0.9<br />} |
+| `xOpenRouterMetadata` | [\*components.MetadataLevel](../../models/components/metadatalevel.mdx) | ➖ | Opt-in to surface routing metadata on the response under `openrouter_metadata`. Defaults to `disabled`. The legacy header `X-OpenRouter-Experimental-Metadata` is also accepted for backward compatibility. | enabled |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

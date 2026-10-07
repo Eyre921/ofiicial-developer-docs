@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 963 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 965 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -51,6 +51,7 @@
 - `docs/box/guides/browser-use` — [Scheduled Browser Use Agent](pages/docs/box/guides/browser-use.md) · [原文](https://upstash.com/docs/box/guides/browser-use)
 - `docs/box/guides/claude-managed-agents` — [Claude Managed Agents](pages/docs/box/guides/claude-managed-agents.md) · [原文](https://upstash.com/docs/box/guides/claude-managed-agents)
 - `docs/box/guides/code-review-agent` — [Build a Code Review Agent](pages/docs/box/guides/code-review-agent.md) · [原文](https://upstash.com/docs/box/guides/code-review-agent)
+- `docs/box/guides/copilotkit` — [In-App Coding Agent with CopilotKit](pages/docs/box/guides/copilotkit.md) · [原文](https://upstash.com/docs/box/guides/copilotkit)
 - `docs/box/guides/eve-setup` — [Vercel Eve Sandboxes](pages/docs/box/guides/eve-setup.md) · [原文](https://upstash.com/docs/box/guides/eve-setup)
 - `docs/box/guides/herdr-setup` — [Herdr Plugin Setup](pages/docs/box/guides/herdr-setup.md) · [原文](https://upstash.com/docs/box/guides/herdr-setup)
 - `docs/box/guides/hermes-setup` — [Hermes Setup](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
@@ -941,6 +942,7 @@
 - `docs/workflow/howto/retry-now` — [Run a Step Now](pages/docs/workflow/howto/retry-now.md) · [原文](https://upstash.com/docs/workflow/howto/retry-now)
 - `docs/workflow/howto/schedule` — [Schedule a Workflow](pages/docs/workflow/howto/schedule.md) · [原文](https://upstash.com/docs/workflow/howto/schedule)
 - `docs/workflow/howto/security` — [Secure a Workflow](pages/docs/workflow/howto/security.md) · [原文](https://upstash.com/docs/workflow/howto/security)
+- `docs/workflow/howto/singleton` — [Singleton Workflows](pages/docs/workflow/howto/singleton.md) · [原文](https://upstash.com/docs/workflow/howto/singleton)
 - `docs/workflow/howto/start` — [Start a Run](pages/docs/workflow/howto/start.md) · [原文](https://upstash.com/docs/workflow/howto/start)
 - `docs/workflow/howto/use-webhooks` — [Webhooks](pages/docs/workflow/howto/use-webhooks.md) · [原文](https://upstash.com/docs/workflow/howto/use-webhooks)
 - `docs/workflow/integrations/aisdk` — [Vercel AI SDK](pages/docs/workflow/integrations/aisdk.md) · [原文](https://upstash.com/docs/workflow/integrations/aisdk)

@@ -5,7 +5,7 @@ path: docs/api-reference/inboxes/list-threads
 ---
 
 GET /inboxes/:inbox_id/threads
-Retrieve the threads in one folder of an inbox.
+Retrieve the threads in an inbox, filtered by folder, label, and read status.
 
 <Warning>
   Inboxes are currently in private beta and only available to a limited
@@ -21,11 +21,11 @@ Retrieve the threads in one folder of an inbox.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.2
+    npm install resend@6.32.1-preview-inboxes.4
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.4
+    npm install -g resend-cli@2.22.0-preview-inboxes.6
     ```
   </CodeGroup>
 </Warning>
@@ -41,16 +41,21 @@ A thread is a conversation within an inbox, made up of one or more messages.
 ## Query Parameters
 
 <ParamField type="string">
-  The folder to list: `inbox`, `archive`, `spam`, `sent`, or `trash`.
+  Comma-separated folders to list: `inbox`, `archive`, `spam`, `sent`, or
+  `trash`. A thread is returned when any of its emails is in one of them, so a
+  thread in `inbox` with an email you sent matches both `inbox` and `sent`.
+  Defaults to `inbox`, or `inbox,archive,sent` when `labels` is set. `spam` and
+  `trash` are only included when you name them.
 </ParamField>
 
 <ParamField type="string">
-  Case-insensitive substring matched against the thread subject and its label
-  names. Max length is `256` characters.
+  Comma-separated label IDs. Returns threads with any of these labels. Up to
+  `50` IDs. An ID that doesn't exist in the inbox returns a `404`.
 </ParamField>
 
-<ParamField type="string[]">
-  Label IDs to filter by.
+<ParamField type="boolean">
+  `true` returns threads where every email is read. `false` returns threads with
+  at least one unread email.
 </ParamField>
 
 <ParamField type="number">
@@ -60,12 +65,18 @@ A thread is a conversation within an inbox, made up of one or more messages.
 
 <ParamField type="string">
   The ID of the last thread on the current page. Returns the next, older page.
+  Must be a thread ID. To filter by date, use [Search
+  Threads](/docs/api-reference/inboxes/search-threads) with `start_date`.
 </ParamField>
 
 <ParamField type="string">
   The ID of the first thread on the current page. Returns the previous, newer
-  page. Cannot be combined with `after`.
+  page. Cannot be combined with `after`. Must be a thread ID. To filter by date,
+  use [Search Threads](/docs/api-reference/inboxes/search-threads) with `end_date`.
 </ParamField>
+
+To find threads by text, sender, recipient, attachment, or date, use [Search
+Threads](/docs/api-reference/inboxes/search-threads).
 
 ## Folders
 
@@ -94,7 +105,7 @@ assigned automatically.
 </ParamField>
 
 <ParamField type="array">
-  The threads in the folder, most recently active first.
+  The matching threads, most recently active first.
 
   <Expandable title="properties">
     <ParamField type="string">
@@ -145,6 +156,11 @@ assigned automatically.
     <ParamField type="string">
       ISO 8601 timestamp when the thread was last active.
     </ParamField>
+
+    <ParamField type="string">
+      The folder the thread lives in. One of `inbox`, `archive`, `spam`,
+      `sent`, or `trash`.
+    </ParamField>
   </Expandable>
 </ParamField>
 
@@ -193,7 +209,8 @@ assigned automatically.
         "has_attachment": true,
         "has_draft": false,
         "read": false,
-        "received_at": "2026-08-05T14:03:11.229Z"
+        "received_at": "2026-08-05T14:03:11.229Z",
+        "folder": "inbox"
       }
     ]
   }

@@ -73,38 +73,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.getWebrtcToken({
-        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        branchId: "branch_id",
-        debugEventsRequest: true,
-        environment: "environment",
-        participantName: "participant_name",
-        versionId: "version_id",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversation/token"
 
+querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","branch_id":"branch_id","debug_events_request":"true","environment":"environment","participant_name":"participant_name","version_id":"version_id"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversation/token?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&participant_name=participant_name&version_id=version_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.get_webrtc_token(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="branch_id",
-    debug_events_request=True,
-    environment="environment",
-    participant_name="participant_name",
-    version_id="version_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

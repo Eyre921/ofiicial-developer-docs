@@ -2273,30 +2273,29 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.branches.previewMerge("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbrch_8901k4t9z5defmb8vh3e9361y7nj", {
-        targetBranchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview"
 
+querystring = {"target_branch_id":"agtbrch_8901k4t9z5defmb8vh3e9361y7nj"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbrch_8901k4t9z5defmb8vh3e9361y7nj/merge-preview?target_branch_id=agtbrch_8901k4t9z5defmb8vh3e9361y7nj';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.branches.preview_merge(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    source_branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-    target_branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -92,39 +92,39 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.studio.projects.pronunciationDictionaries.create("21m00Tcm4TlvDq8ikWAM", {
-        pronunciationDictionaryLocators: [
-            {
-                pronunciationDictionaryId: "string",
-                versionId: "string",
-            },
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries"
 
+payload = { "pronunciation_dictionary_locators": [
+        {
+            "pronunciation_dictionary_id": "string",
+            "version_id": "string"
+        }
+    ] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, PronunciationDictionaryVersionLocator
+```javascript
+const url = 'https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/pronunciation-dictionaries';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"pronunciation_dictionary_locators":[{"pronunciation_dictionary_id":"string","version_id":"string"}]}'
+};
 
-client = ElevenLabs()
-
-client.studio.projects.pronunciation_dictionaries.create(
-    project_id="21m00Tcm4TlvDq8ikWAM",
-    pronunciation_dictionary_locators=[
-        PronunciationDictionaryVersionLocator(
-            pronunciation_dictionary_id="string",
-            version_id="string",
-        )
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

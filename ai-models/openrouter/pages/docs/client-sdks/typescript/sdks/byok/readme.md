@@ -87,10 +87,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListBYOKKeysRequest](../../models/operations/listbyokkeysrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListBYOKKeysRequest](../../models/operations/listbyokkeysrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -176,10 +176,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateBYOKKeyRequest](../../models/operations/createbyokkeyrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.CreateBYOKKeyRequest](../../models/operations/createbyokkeyrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -258,10 +258,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteBYOKKeyRequest](../../models/operations/deletebyokkeyrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.DeleteBYOKKeyRequest](../../models/operations/deletebyokkeyrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -339,10 +339,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetBYOKKeyRequest](../../models/operations/getbyokkeyrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.GetBYOKKeyRequest](../../models/operations/getbyokkeyrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -428,10 +428,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UpdateBYOKKeyRequest](../../models/operations/updatebyokkeyrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.UpdateBYOKKeyRequest](../../models/operations/updatebyokkeyrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 

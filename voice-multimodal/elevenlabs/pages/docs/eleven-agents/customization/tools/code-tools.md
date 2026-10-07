@@ -64,13 +64,13 @@ The value you return becomes the tool's result. It's passed back to the agent, s
 
 Parameters are the values the agent supplies when it calls the tool, and they arrive in `ctx.args`. Define them in the **Parameters** section of the tool configuration form, or in the code editor under the **Params** tab, in the **Define Params** sub-tab. Each parameter takes a data type, an identifier, and a description that the agent uses to determine the correct value from the conversation. Your code reads that value under the identifier, such as `ctx.args.appointment_datetime` below.
 
-![Defining a code tool parameter](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7/assets/images/conversational-ai/code-tool-parameters.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113142Z&X-Amz-Expires=604800&X-Amz-Signature=67e18500120f7463b8f0c1342061e884a6c52419109a63dc25153a35e2de667c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Defining a code tool parameter](/docs/_fern-img/d492e864ae15f3a355251faae3b719544e1ab56b703c02740b51be6c6769ccf7.webp)
 
 #### Configuring the context object
 
 Add secrets, config values, and auth connections in the tool's **Context object** section. Each entry takes a type and a name. The panel shows the exact accessor for each entry, such as `ctx.secrets.DEMO_KEY` below.
 
-![Mapping a workspace secret into a code tool's context object](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438/assets/images/conversational-ai/code-tool-context-object.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113142Z&X-Amz-Expires=604800&X-Amz-Signature=bbcb533d51f6634eff6116015aaee6fe990c70e86eb6578718939870bb63ea93&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Mapping a workspace secret into a code tool's context object](/docs/_fern-img/ad58ee53f3591f447b108191aff760f1134350911933b968b06798fa6d42f438.webp)
 
 ### Network access
 

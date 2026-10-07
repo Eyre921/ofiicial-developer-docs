@@ -120,28 +120,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.dubbing.list({
-        filterByCreator: "all",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/dubbing"
 
+querystring = {"filter_by_creator":"all"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/dubbing?filter_by_creator=all';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.dubbing.list(
-    filter_by_creator="all",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

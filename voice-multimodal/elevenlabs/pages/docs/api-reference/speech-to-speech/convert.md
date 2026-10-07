@@ -86,34 +86,49 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "xi-api-key",
-    });
-    await client.speechToSpeech.convert("JBFqnCBsd6RMkjVDRZzb", {
-        outputFormat: "mp3_44100_128",
-    });
+url = "https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb"
+
+querystring = {"output_format":"mp3_44100_128"}
+
+files = { "audio": "open('<file1>', 'rb')" }
+payload = {
+    "file_format": ,
+    "model_id": "eleven_multilingual_sts_v2",
+    "remove_background_noise": ,
+    "seed": ,
+    "voice_settings": 
 }
-main();
+headers = {"xi-api-key": "xi-api-key"}
 
+response = requests.post(url, data=payload, files=files, headers=headers, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb?output_format=mp3_44100_128';
+const form = new FormData();
+form.append('audio', '<file1>');
+form.append('file_format', '');
+form.append('model_id', 'eleven_multilingual_sts_v2');
+form.append('remove_background_noise', '');
+form.append('seed', '');
+form.append('voice_settings', '');
 
-client = ElevenLabs(
-    api_key="xi-api-key",
-)
+const options = {method: 'POST', headers: {'xi-api-key': 'xi-api-key'}};
 
-client.speech_to_speech.convert(
-    voice_id="JBFqnCBsd6RMkjVDRZzb",
-    output_format="mp3_44100_128",
-    audio="example_audio",
-)
+options.body = form;
 
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go
@@ -135,7 +150,6 @@ func main() {
 	req, _ := http.NewRequest("POST", url, payload)
 
 	req.Header.Add("xi-api-key", "xi-api-key")
-	req.Header.Add("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -159,7 +173,6 @@ http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
 request["xi-api-key"] = 'xi-api-key'
-request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
 request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"audio\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\neleven_multilingual_sts_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"voice_settings\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
@@ -172,7 +185,6 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb?output_format=mp3_44100_128")
   .header("xi-api-key", "xi-api-key")
-  .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"audio\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\neleven_multilingual_sts_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"voice_settings\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
@@ -209,17 +221,14 @@ using RestSharp;
 var client = new RestClient("https://api.elevenlabs.io/v1/speech-to-speech/JBFqnCBsd6RMkjVDRZzb?output_format=mp3_44100_128");
 var request = new RestRequest(Method.POST);
 request.AddHeader("xi-api-key", "xi-api-key");
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"audio\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\neleven_multilingual_sts_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"voice_settings\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"audio\"; filename=\"<file1>\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file_format\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"model_id\"\r\n\r\neleven_multilingual_sts_v2\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"remove_background_noise\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"seed\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"voice_settings\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "xi-api-key",
-  "Content-Type": "multipart/form-data; boundary=---011000010111000001101001"
-]
+let headers = ["xi-api-key": "xi-api-key"]
 let parameters = [
   [
     "name": "audio",

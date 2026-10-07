@@ -139,24 +139,30 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.music.compose({});
-}
-main();
+url = "https://api.elevenlabs.io/v1/music"
 
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/music';
+const options = {method: 'POST', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
-client = ElevenLabs()
-
-client.music.compose()
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

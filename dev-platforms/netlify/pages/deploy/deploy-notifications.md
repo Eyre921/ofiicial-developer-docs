@@ -316,6 +316,10 @@ This type of notification adds a comment to your Cursor Origin pull requests wit
 
 For monorepos or setups where one repository builds multiple applications, you can manage the amount of commit status and commit check notifications for sites linked from GitHub or GitLab. This team-level setting works in tandem with deploy notifications configured individually for each site. Check out our [monorepo docs](/build/configure-builds/monorepos#commit-status-notifications) to learn more.
 
+## ChatGPT automations
+
+You can subscribe to deploy events from ChatGPT and set up automations that respond to them, like explaining why a build failed or summarizing what changed in a successful production deploy. Check out our [ChatGPT setup guide](/build/build-with-ai/agent-setup-guides/use-netlify-with-chatgpt/#subscribe-to-netlify-events) to get started.
+
 ## Zapier integrations
 
 Netlify is available on Zapier, where you can connect Netlify with over 1,000 other applications. You can use Zapier "Zaps" to trigger an action in another service on every successful deploy or when a deploy does not complete. You can [find out more on our blog](https://www.netlify.com/blog/2018/11/07/automate-your-netlify-sites-with-zapier/), or use one of the templates below to get started:

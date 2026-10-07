@@ -79,32 +79,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.history.download({
-        historyItemIds: [
-            "string",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/history/download"
 
+payload = { "history_item_ids": ["string"] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/history/download';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"history_item_ids":["string"]}'
+};
 
-client = ElevenLabs()
-
-client.history.download(
-    history_item_ids=[
-        "string"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

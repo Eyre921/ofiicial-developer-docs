@@ -155,32 +155,29 @@ transcript_index: index of the message in the conversation transcript chunk_text
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.messages.textSearch({
-        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        callSuccessful: "success",
-        textQuery: "refund policy",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search"
 
+querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","call_successful":"success","text_query":"refund policy"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&call_successful=success&text_query=refund+policy';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.messages.text_search(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    call_successful="success",
-    text_query="refund policy",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -178,46 +178,43 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.textToDialogue.streamWithTimestamps({
-        inputs: [
-            {
-                text: "Hello, how are you?",
-                voiceId: "bYTqZQo3Jz7LQtmGTgwi",
-            },
-            {
-                text: "I'm doing well, thank you!",
-                voiceId: "6lCwbsX1yVjD49QmpkTR",
-            },
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/text-to-dialogue/stream/with-timestamps"
 
+payload = { "inputs": [
+        {
+            "text": "Hello, how are you?",
+            "voice_id": "bYTqZQo3Jz7LQtmGTgwi"
+        },
+        {
+            "text": "I'm doing well, thank you!",
+            "voice_id": "6lCwbsX1yVjD49QmpkTR"
+        }
+    ] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, DialogueInput
+```javascript
+const url = 'https://api.elevenlabs.io/v1/text-to-dialogue/stream/with-timestamps';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"inputs":[{"text":"Hello, how are you?","voice_id":"bYTqZQo3Jz7LQtmGTgwi"},{"text":"I\'m doing well, thank you!","voice_id":"6lCwbsX1yVjD49QmpkTR"}]}'
+};
 
-client = ElevenLabs()
-
-client.text_to_dialogue.stream_with_timestamps(
-    inputs=[
-        DialogueInput(
-            text="Hello, how are you?",
-            voice_id="bYTqZQo3Jz7LQtmGTgwi",
-        ),
-        DialogueInput(
-            text="I\'m doing well, thank you!",
-            voice_id="6lCwbsX1yVjD49QmpkTR",
-        )
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

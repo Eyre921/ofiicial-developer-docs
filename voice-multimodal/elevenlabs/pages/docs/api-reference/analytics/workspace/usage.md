@@ -113,30 +113,37 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.workspace.usage.getUsageByProductOverTime({
-        startTime: 1,
-        endTime: 1,
-    });
+url = "https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time"
+
+payload = {
+    "start_time": 1,
+    "end_time": 1
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/workspace/analytics/query/usage-by-product-over-time';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"start_time":1,"end_time":1}'
+};
 
-client = ElevenLabs()
-
-client.workspace.usage.get_usage_by_product_over_time(
-    start_time=1,
-    end_time=1,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

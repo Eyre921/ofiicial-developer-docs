@@ -77,29 +77,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.workspace.resources.unshare("resource_id", {
-        resourceType: "voice",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/workspace/resources/resource_id/unshare"
 
+payload = { "resource_type": "voice" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/workspace/resources/resource_id/unshare';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"resource_type":"voice"}'
+};
 
-client = ElevenLabs()
-
-client.workspace.resources.unshare(
-    resource_id="resource_id",
-    resource_type="voice",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

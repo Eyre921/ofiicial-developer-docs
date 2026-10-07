@@ -111,50 +111,46 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "xi-api-key",
-    });
-    await client.textToDialogue.stream({
-        inputs: [
-            {
-                text: "[giggling] Knock knock",
-                voiceId: "JBFqnCBsd6RMkjVDRZzb",
-            },
-            {
-                text: "[curious] Who is there?",
-                voiceId: "Aw4FAjKCGjjNkVhN1Xmq",
-            },
-        ],
-    });
+url = "https://api.elevenlabs.io/v1/text-to-dialogue/stream"
+
+payload = { "inputs": [
+        {
+            "text": "[giggling] Knock knock",
+            "voice_id": "JBFqnCBsd6RMkjVDRZzb"
+        },
+        {
+            "text": "[curious] Who is there?",
+            "voice_id": "Aw4FAjKCGjjNkVhN1Xmq"
+        }
+    ] }
+headers = {
+    "xi-api-key": "xi-api-key",
+    "Content-Type": "application/json"
 }
-main();
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, DialogueInput
+```javascript
+const url = 'https://api.elevenlabs.io/v1/text-to-dialogue/stream';
+const options = {
+  method: 'POST',
+  headers: {'xi-api-key': 'xi-api-key', 'Content-Type': 'application/json'},
+  body: '{"inputs":[{"text":"[giggling] Knock knock","voice_id":"JBFqnCBsd6RMkjVDRZzb"},{"text":"[curious] Who is there?","voice_id":"Aw4FAjKCGjjNkVhN1Xmq"}]}'
+};
 
-client = ElevenLabs(
-    api_key="xi-api-key",
-)
-
-client.text_to_dialogue.stream(
-    inputs=[
-        DialogueInput(
-            text="[giggling] Knock knock",
-            voice_id="JBFqnCBsd6RMkjVDRZzb",
-        ),
-        DialogueInput(
-            text="[curious] Who is there?",
-            voice_id="Aw4FAjKCGjjNkVhN1Xmq",
-        )
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

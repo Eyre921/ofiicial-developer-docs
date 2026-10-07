@@ -80,26 +80,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.flows.textToSpeech.get("generation_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/flows/text-to-speech/generation_id"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/flows/text-to-speech/generation_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.flows.text_to_speech.get(
-    generation_id="generation_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

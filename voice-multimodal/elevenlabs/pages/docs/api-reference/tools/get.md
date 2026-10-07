@@ -461,26 +461,27 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.get("tool_id", {});
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/tools/tool_id"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/tools/tool_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.tools.get(
-    tool_id="tool_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

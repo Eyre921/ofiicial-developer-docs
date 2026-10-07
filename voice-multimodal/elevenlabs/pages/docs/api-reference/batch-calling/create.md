@@ -278,36 +278,38 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.batchCalls.create({
-        callName: "string",
-        agentId: "string",
-        recipients: [
-            {},
-        ],
-    });
+url = "https://api.elevenlabs.io/v1/convai/batch-calling/submit"
+
+payload = {
+    "call_name": "string",
+    "agent_id": "string",
+    "recipients": [{}]
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, OutboundCallRecipient
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/batch-calling/submit';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"call_name":"string","agent_id":"string","recipients":[{}]}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.batch_calls.create(
-    call_name="string",
-    agent_id="string",
-    recipients=[
-        OutboundCallRecipient()
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

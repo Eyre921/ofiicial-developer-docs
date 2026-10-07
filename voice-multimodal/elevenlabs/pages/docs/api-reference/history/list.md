@@ -144,38 +144,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.history.list({
-        dateAfterUnix: 1640995200,
-        dateBeforeUnix: 1640995200,
-        modelId: "eleven_turbo_v2",
-        search: "In the land far far away",
-        sortDirection: "desc",
-        source: "TTS",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/history"
 
+querystring = {"date_after_unix":"1640995200","date_before_unix":"1640995200","model_id":"eleven_turbo_v2","search":"In the land far far away","sort_direction":"desc","source":"TTS"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/history?date_after_unix=1640995200&date_before_unix=1640995200&model_id=eleven_turbo_v2&search=In+the+land+far+far+away&sort_direction=desc&source=TTS';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.history.list(
-    date_after_unix=1640995200,
-    date_before_unix=1640995200,
-    model_id="eleven_turbo_v2",
-    search="In the land far far away",
-    sort_direction="desc",
-    source="TTS",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

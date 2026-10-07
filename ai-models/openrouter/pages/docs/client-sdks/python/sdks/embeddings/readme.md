@@ -50,19 +50,19 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `input` | [operations.InputUnion](../../operations/inputunion.mdx) | :heavy\_check\_mark: | Text, token, or multimodal input(s) to embed | The quick brown fox jumps over the lazy dog |
-| `model` | *str* | :heavy\_check\_mark: | The model to use for embeddings | openai/text-embedding-3-small |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `dimensions` | *Optional\[int]* | :heavy\_minus\_sign: | The number of dimensions for the output embeddings | 1536 |
-| `encoding_format` | [Optional\[operations.EncodingFormat\]](../../operations/encodingformat.mdx) | :heavy\_minus\_sign: | The format of the output embeddings | float |
-| `input_type` | *Optional\[str]* | :heavy\_minus\_sign: | The type of input (e.g. search\_query, search\_document) | search\_query |
-| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | :heavy\_minus\_sign: | N/A | \{<br />"allow\_fallbacks": true<br />} |
-| `session_id` | *Optional\[str]* | :heavy\_minus\_sign: | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | session-1234 |
-| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | :heavy\_minus\_sign: | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{<br />"trace\_id": "trace-abc123",<br />"trace\_name": "my-app-trace"<br />} |
-| `user` | *Optional\[str]* | :heavy\_minus\_sign: | A unique identifier for the end-user | user-1234 |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `input` | [operations.InputUnion](../../operations/inputunion.mdx) | ✅ | Text, token, or multimodal input(s) to embed | The quick brown fox jumps over the lazy dog |
+| `model` | *str* | ✅ | The model to use for embeddings | openai/text-embedding-3-small |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `dimensions` | *Optional\[int]* | ➖ | The number of dimensions for the output embeddings | 1536 |
+| `encoding_format` | [Optional\[operations.EncodingFormat\]](../../operations/encodingformat.mdx) | ➖ | The format of the output embeddings | float |
+| `input_type` | *Optional\[str]* | ➖ | The type of input (e.g. search\_query, search\_document) | search\_query |
+| `provider` | [OptionalNullable\[components.ProviderPreferences\]](../../components/providerpreferences.mdx) | ➖ | N/A | \{<br />"allow\_fallbacks": true<br />} |
+| `session_id` | *Optional\[str]* | ➖ | A unique identifier for grouping related requests (e.g., a conversation or agent workflow). Used for observability grouping in Broadcast and private logging; never sent to the provider. If provided in both the request body and the x-session-id header, the body value takes precedence. Maximum of 256 characters. | session-1234 |
+| `trace` | [Optional\[components.TraceConfig\]](../../components/traceconfig.mdx) | ➖ | Metadata for observability and tracing. Known keys (trace\_id, trace\_name, span\_name, generation\_name, parent\_span\_id) have special handling. Additional keys are passed through as custom metadata to configured broadcast destinations. | \{<br />"trace\_id": "trace-abc123",<br />"trace\_name": "my-app-trace"<br />} |
+| `user` | *Optional\[str]* | ➖ | A unique identifier for the end-user | user-1234 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -119,12 +119,12 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `offset` | *OptionalNullable\[int]* | :heavy\_minus\_sign: | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
-| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned | 500 |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `offset` | *OptionalNullable\[int]* | ➖ | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
+| `limit` | *Optional\[int]* | ➖ | Maximum number of records to return (max 1000). When both offset and limit are omitted, the full list is returned | 500 |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 

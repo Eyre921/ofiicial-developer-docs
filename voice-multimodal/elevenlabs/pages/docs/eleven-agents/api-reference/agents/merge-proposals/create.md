@@ -88,33 +88,38 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.mergeProposals.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        sourceBranchId: "source_branch_id",
-        targetBranchId: "target_branch_id",
-        title: "title",
-    });
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals"
+
+payload = {
+    "source_branch_id": "source_branch_id",
+    "target_branch_id": "target_branch_id",
+    "title": "title"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/merge-proposals';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"source_branch_id":"source_branch_id","target_branch_id":"target_branch_id","title":"title"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.merge_proposals.create(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    source_branch_id="source_branch_id",
-    target_branch_id="target_branch_id",
-    title="title",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

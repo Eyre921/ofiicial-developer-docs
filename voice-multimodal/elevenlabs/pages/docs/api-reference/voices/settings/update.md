@@ -89,39 +89,40 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.voices.settings.update("21m00Tcm4TlvDq8ikWAM", {
-        stability: 1,
-        useSpeakerBoost: true,
-        similarityBoost: 1,
-        style: 0,
-        speed: 1,
-    });
+url = "https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit"
+
+payload = {
+    "stability": 1,
+    "use_speaker_boost": True,
+    "similarity_boost": 1,
+    "style": 0,
+    "speed": 1
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, VoiceSettings
+```javascript
+const url = 'https://api.elevenlabs.io/v1/voices/21m00Tcm4TlvDq8ikWAM/settings/edit';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"stability":1,"use_speaker_boost":true,"similarity_boost":1,"style":0,"speed":1}'
+};
 
-client = ElevenLabs()
-
-client.voices.settings.update(
-    voice_id="21m00Tcm4TlvDq8ikWAM",
-    request=VoiceSettings(
-        stability=1,
-        use_speaker_boost=True,
-        similarity_boost=1,
-        style=0,
-        speed=1,
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

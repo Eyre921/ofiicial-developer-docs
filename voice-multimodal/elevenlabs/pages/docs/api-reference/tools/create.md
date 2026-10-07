@@ -647,41 +647,39 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.create({
-        toolConfig: {
-            type: "system",
-            name: "end_call",
-            description: "",
-            params: {
-                systemToolType: "end_call",
-            },
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/tools"
 
+payload = { "tool_config": {
+        "type": "system",
+        "name": "end_call",
+        "params": { "system_tool_type": "end_call" },
+        "description": ""
+    } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, ToolRequestModel, ToolRequestModelToolConfig_System, SystemToolConfigInputParams_EndCall
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/tools';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"tool_config":{"type":"system","name":"end_call","params":{"system_tool_type":"end_call"},"description":""}}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.tools.create(
-    request=ToolRequestModel(
-        tool_config=ToolRequestModelToolConfig_System(
-            name="end_call",
-            description="",
-            params=SystemToolConfigInputParams_EndCall(),
-        ),
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

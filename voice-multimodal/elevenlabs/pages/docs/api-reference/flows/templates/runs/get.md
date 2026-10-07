@@ -177,27 +177,27 @@ One output of a template run, discriminated on `type`: the `type` of the port's 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.flows.templates.runs.get("template_id", "run_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/flows/templates/template_id/runs/run_id"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/flows/templates/template_id/runs/run_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.flows.templates.runs.get(
-    template_id="template_id",
-    run_id="run_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

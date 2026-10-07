@@ -81,30 +81,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.voices.accents.get({
-        language: "en",
-        modelId: "eleven_v3",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/voices/accents"
 
+querystring = {"language":"en","model_id":"eleven_v3"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/voices/accents?language=en&model_id=eleven_v3';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.voices.accents.get(
-    language="en",
-    model_id="eleven_v3",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

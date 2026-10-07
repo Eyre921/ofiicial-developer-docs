@@ -115,18 +115,21 @@ Example with `redact=pci&redact=pii`:
 
 Redaction language coverage differs by kind and deployment:
 
-| Environment                                | Number redaction                     | Entity redaction |
-| ------------------------------------------ | ------------------------------------ | ---------------- |
-| Hosted API — pre-recorded                  | All available languages              | English only     |
-| Hosted API — Nova streaming (`/v1/listen`) | 12 languages (see below)             | English only     |
-| Hosted API — Flux streaming (`/v2/listen`) | `numbers`, `aggressive_numbers` only | Not supported    |
-| Self-hosted — pre-recorded and streaming   | English only                         | English only     |
+| Environment                                | Number redaction                                                                                                                                                                                    | Entity redaction |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
+| Hosted API — pre-recorded                  | All available languages                                                                                                                                                                             | English only     |
+| Hosted API — Nova streaming (`/v1/listen`) | 12 languages (see below)                                                                                                                                                                            | English only     |
+| Hosted API — Flux streaming (`/v2/listen`) | `numbers`, `aggressive_numbers` only                                                                                                                                                                | Not supported    |
+| Self-hosted — pre-recorded                 | Bulgarian, Cantonese, Chinese, Danish, Dutch, English, French, German, German (Swiss), Hebrew, Italian, Japanese, Korean, Malay, Norwegian, Polish, Portuguese, Romanian, Russian, Spanish, Swedish | English only     |
+| Self-hosted — streaming                    | All loaded Nova-3 languages (see note below)                                                                                                                                                        | English only     |
 
-Pre-recorded (batch) number redaction is available for all supported languages. In streaming, it is limited to:
+On the hosted API, pre-recorded (batch) number redaction is available for all supported languages. In hosted streaming, it is limited to:
 
 Danish, Dutch, English, French, German, German (Swiss), Italian, Norwegian, Polish, Portuguese, Spanish, and Swedish.
 
-On multilingual models (`language=multi`), each word is redacted using its detected language's number rules, so a single transcript can mix languages. In streaming, detected languages outside the set above fall back to English number rules.
+On multilingual models (`language=multi`), each word is redacted using its detected language's number rules, so a single transcript can mix languages. In hosted streaming, detected languages outside the set above fall back to English number rules.
+
+Self-hosted number redaction requires release 260430 or later; Bulgarian, Chinese, and Cantonese require 260611 or later, Malay 260714, Korean 260728, and Japanese 261001 (`language=multi` requires 260611 or later). Pre-recorded requests support the languages listed in the table; a pre-recorded request in any other language returns an error. Streaming requests accept every loaded Nova-3 language; outside the pre-recorded list, spelled-out numbers use English number rules, and digits are redacted in every language.
 
 > **Info**
 >

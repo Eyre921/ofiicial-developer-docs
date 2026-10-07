@@ -159,48 +159,29 @@ SIP Trunk configuration details for a phone number
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.phoneNumbers.listV2({
-        agentId: "agent_id",
-        branchId: "branch_id",
-        cursor: "cursor",
-        label: "label",
-        pageSize: 1,
-        phoneNumber: "phone_number",
-        provider: "twilio",
-        search: "search",
-        sortBy: "label",
-        sortDirection: "asc",
-        supportsOutbound: true,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/v2/phone-numbers"
 
+querystring = {"agent_id":"agent_id","branch_id":"branch_id","cursor":"cursor","label":"label","page_size":"1","phone_number":"phone_number","provider":"twilio","search":"search","sort_by":"label","sort_direction":"asc","supports_outbound":"true"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/v2/phone-numbers?agent_id=agent_id&branch_id=branch_id&cursor=cursor&label=label&page_size=1&phone_number=phone_number&provider=twilio&search=search&sort_by=label&sort_direction=asc&supports_outbound=true';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.phone_numbers.list_v_2(
-    agent_id="agent_id",
-    branch_id="branch_id",
-    cursor="cursor",
-    label="label",
-    page_size=1,
-    phone_number="phone_number",
-    provider="twilio",
-    search="search",
-    sort_by="label",
-    sort_direction="asc",
-    supports_outbound=True,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -86,10 +86,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListBatchesRequest](../../models/operations/listbatchesrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListBatchesRequest](../../models/operations/listbatchesrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -479,10 +479,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateBatchesRequest](../../models/operations/createbatchesrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.CreateBatchesRequest](../../models/operations/createbatchesrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -559,10 +559,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteBatchRequest](../../models/operations/deletebatchrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.DeleteBatchRequest](../../models/operations/deletebatchrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -639,10 +639,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetBatchesRequest](../../models/operations/getbatchesrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.GetBatchesRequest](../../models/operations/getbatchesrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 

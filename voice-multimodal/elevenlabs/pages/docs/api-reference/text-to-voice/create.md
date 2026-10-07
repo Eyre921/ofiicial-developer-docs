@@ -419,32 +419,38 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.textToVoice.create({
-        voiceName: "Sassy squeaky mouse",
-        voiceDescription: "A sassy squeaky mouse",
-        generatedVoiceId: "37HceQefKmEi3bGovXjL",
-    });
+url = "https://api.elevenlabs.io/v1/text-to-voice"
+
+payload = {
+    "voice_name": "Sassy squeaky mouse",
+    "voice_description": "A sassy squeaky mouse",
+    "generated_voice_id": "37HceQefKmEi3bGovXjL"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/text-to-voice';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"voice_name":"Sassy squeaky mouse","voice_description":"A sassy squeaky mouse","generated_voice_id":"37HceQefKmEi3bGovXjL"}'
+};
 
-client = ElevenLabs()
-
-client.text_to_voice.create(
-    voice_name="Sassy squeaky mouse",
-    voice_description="A sassy squeaky mouse",
-    generated_voice_id="37HceQefKmEi3bGovXjL",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

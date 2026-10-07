@@ -4281,6 +4281,18 @@ If you are opted out of model training, we offer zero data retention of audio an
 
 The model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
 
+### Sync STT production environment
+
+If you are opted out of model training, we offer zero data retention of audio and transcripts for our Sync STT product. Certain metadata about the transcript is stored and maintained for logging and billing purposes.
+
+The model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
+
+### Dictation production environment
+
+If you are opted out of model training, we offer zero data retention of audio and transcripts for our Dictation product. Certain metadata about the transcript is stored and maintained for logging and billing purposes.
+
+The model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
+
 ### Asynchronous production environment
 
 | Artifact Type\*                                                                                                       | Time-To-Live Configured                                                                                                                                                                   | BAA Executed                                                                                                                                                                                   | No TTL or BAA                                                         | Customer-Initiated Deletion Request               |
@@ -44256,9 +44268,10 @@ try {
 }
 ```
 
-  Calling the Sync API repeatedly? `warm()` opens the connection ahead of time
-  so your next `transcribe()` doesn't pay the DNS, TCP, and TLS handshake on the
-  critical path. See [Connection pre-warming](/sync-stt/connection-pre-warming).
+  `warm()` only pays off while the connection is still fresh. Clients evict
+  idle connections after seconds to minutes. See
+  [Connection pre-warming](/sync-stt/connection-pre-warming) for how the
+  handshake works, pool-expiry tuning, and when to re-warm.
 
 ## What you get back
 
@@ -44299,10 +44312,17 @@ If you prefer to call the Sync API over HTTP without an SDK, post the audio to `
 
 The Sync API accepts `multipart/form-data` with an `audio` part. For WAV files, set the part's Content-Type to `audio/wav`. Authenticate with your key in the `Authorization` header (no `Bearer` prefix), and send the `X-AAI-Model: universal-3-5-pro` header — it is required on every request.
 
+For the lowest latency, send an unauthenticated `GET /v1/warm` request (with the same `X-AAI-Model` header) through the same HTTP client as soon as you know audio is coming. The `/transcribe` request then reuses the already-open connection instead of paying for DNS, TCP, and TLS setup first.
+
 Replace `<YOUR_API_KEY>` in the request header:
 
 ```bash
-curl -X POST https://sync.assemblyai.com/v1/transcribe \
+# Each curl process opens its own connection, so chain the warm-up and the
+# transcription in one invocation with --next to share the connection:
+curl https://sync.assemblyai.com/v1/warm \
+  -H 'X-AAI-Model: universal-3-5-pro' \
+  --next \
+  -X POST https://sync.assemblyai.com/v1/transcribe \
   -H 'Authorization: <YOUR_API_KEY>' \
   -H 'X-AAI-Model: universal-3-5-pro' \
   -F 'audio=@sample.wav;type=audio/wav'
@@ -44329,10 +44349,23 @@ Send the audio file and parse the response:
 ```python expandable
 import requests
 
+# Create the Session once and reuse it. The warmed connection lives
+# in its connection pool.
+session = requests.Session()
+
+# Call as soon as you know audio is coming (e.g. recording starts),
+# not right before transcribe.
+session.get(
+    "https://sync.assemblyai.com/v1/warm",
+    headers={"X-AAI-Model": "universal-3-5-pro"},
+    timeout=10,
+)
+
 with open("sample.wav", "rb") as f:
     audio = f.read()
 
-response = requests.post(
+# Same session -> reuses the warmed connection; no handshake here.
+response = session.post(
     "https://sync.assemblyai.com/v1/transcribe",
     headers={
         "Authorization": "<YOUR_API_KEY>",
@@ -44352,10 +44385,17 @@ print(result["session_id"])
 ```javascript expandable
 import { readFileSync } from "fs";
 
+// Call as soon as you know audio is coming (e.g. recording starts),
+// not right before transcribe. Node's fetch pools the connection by default.
+await fetch("https://sync.assemblyai.com/v1/warm", {
+  headers: { "X-AAI-Model": "universal-3-5-pro" },
+});
+
 const audio = readFileSync("sample.wav");
 const form = new FormData();
 form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
 
+// Same process -> reuses the warmed connection; no handshake here.
 const response = await fetch("https://sync.assemblyai.com/v1/transcribe", {
   method: "POST",
   headers: {
@@ -45980,6 +46020,8 @@ curl https://sync.assemblyai.com/v1/warm \
 ```
 
 The SDKs expose this directly — `SyncTranscriber.warm()` in Python, `client.sync.warm()` in JavaScript. Call it when recording starts, then call `transcribe()` as usual on the same transcriber or client.
+
+**Related:** the same connection-reuse principle applies to LLM Gateway calls. See [Improve latency with keep-alive connections](/llm-gateway/improve-latency).
 
 ---
 
@@ -63796,6 +63838,8 @@ Write the code in Python using httpx.
 ```
 
 You can replace the last line's `Python` and `httpx` with your applicable language/library.
+
+**Related:** calling the Sync API? [Connection pre-warming](/sync-stt/connection-pre-warming) takes the same handshake off the critical path with the `/warm` endpoint.
 
 ### Simple examples
 

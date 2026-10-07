@@ -70,29 +70,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.delete("tool_id", {
-        force: true,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/tools/tool_id"
 
+querystring = {"force":"true"}
+
+response = requests.delete(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/tools/tool_id?force=true';
+const options = {method: 'DELETE'};
 
-client = ElevenLabs()
-
-client.conversational_ai.tools.delete(
-    tool_id="tool_id",
-    force=True,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

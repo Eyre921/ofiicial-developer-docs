@@ -205,32 +205,38 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.exotel.outboundCall({
-        agentId: "string",
-        agentPhoneNumberId: "string",
-        toNumber: "string",
-    });
+url = "https://api.elevenlabs.io/v1/convai/exotel/outbound-call"
+
+payload = {
+    "agent_id": "string",
+    "agent_phone_number_id": "string",
+    "to_number": "string"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/exotel/outbound-call';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"agent_id":"string","agent_phone_number_id":"string","to_number":"string"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.exotel.outbound_call(
-    agent_id="string",
-    agent_phone_number_id="string",
-    to_number="string",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

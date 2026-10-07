@@ -30,6 +30,10 @@ Sentry provides self-serve access to various documentation and tools to help you
 
   Learn how Sentry's SaaS product uses SSL protocols and cipher suites for security and compatibility.
 
+* #### [Token and Credential Formats](https://docs.sentry.io/security-legal-pii/security/token-formats.md)
+
+  What Sentry credentials look like, the strings that appear near them, and the patterns that cause false positives in secret scanning.
+
 * #### [Service Data Usage](https://docs.sentry.io/security-legal-pii/security/service-data-usage.md)
 
   Learn about Sentry's approach to your data
@@ -59,6 +63,7 @@ If you have any additional inquiries, please see our [options for contacting sup
 - [SOC2 Report & ISO 27001 Certificate](https://docs.sentry.io/security-legal-pii/security/soc2.md)
 - [IP Ranges](https://docs.sentry.io/security-legal-pii/security/ip-ranges.md)
 - [SSL Protocols and Cipher Suites](https://docs.sentry.io/security-legal-pii/security/ssl.md)
+- [Token and Credential Formats](https://docs.sentry.io/security-legal-pii/security/token-formats.md)
 - [Service Data Usage](https://docs.sentry.io/security-legal-pii/security/service-data-usage.md)
 - [Data Retention Periods](https://docs.sentry.io/security-legal-pii/security/data-retention-periods.md)
 - [Data Privacy for Mobile](https://docs.sentry.io/security-legal-pii/security/mobile-privacy.md)

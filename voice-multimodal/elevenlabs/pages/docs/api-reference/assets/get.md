@@ -74,26 +74,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.assets.get("5xM2KqOnZyce22SPZ9d4");
-}
-main();
+url = "https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/assets/5xM2KqOnZyce22SPZ9d4';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.assets.get(
-    asset_id="5xM2KqOnZyce22SPZ9d4",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

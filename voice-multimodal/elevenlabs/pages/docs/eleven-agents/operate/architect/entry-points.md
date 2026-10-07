@@ -33,9 +33,9 @@ These open Architect without specific context beyond the page you are on.
 | Chat history         | The history list in the sidebar                                                                                                       | Reopens a previous chat with its message history.                                                                                                 |
 | **Troubleshoot**     | The button on an error notification                                                                                                   | The error message, with a request to help resolve it.                                                                                             |
 
-![Architect header button](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d60a7dc0778e4b7743c84904e51ab0395a39508bf4cc2d5231e51a1605e0832e/assets/images/agents/architect-entry-header-button.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=72cdcade108afdd039cc08b368a0b48f5313dfbfd5dac10b64e795802e3b577c&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Architect header button](/docs/_fern-img/d60a7dc0778e4b7743c84904e51ab0395a39508bf4cc2d5231e51a1605e0832e.webp)
 
-![Command palette](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/1e799dfc1c1600d78a2465dd6265cd2905d646f7b2b2dd7c5c9d81bb4195eea0/assets/images/agents/architect-entry-command-palette.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=a74c88f0aafd8c01ee9edab1c7d6be572e26a4bf724f37e29ae8d07bb5782910&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Command palette](/docs/_fern-img/1e799dfc1c1600d78a2465dd6265cd2905d646f7b2b2dd7c5c9d81bb4195eea0.webp)
 
 ## Entry points with context
 
@@ -52,7 +52,7 @@ When a test run has failures, **Fix with Architect** appears on the test run det
 Architect receives the test run's invocation ID and the names of the failing tests. It reads the failure details, transcripts, and evaluation results itself with its test tools, so the answer reflects the full run.
 
 ![Failed test with Fix with
-Architect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/4233cb4faf8238cca926fbfdae052013e229777e693a2c8067751f7cca431f57/assets/images/agents/architect-entry-fix-with-architect.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=e5332335f10edf63595d0cc65579bd9dc9d520b649cd4b52f3e4c6a125575d4d&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Architect](/docs/_fern-img/4233cb4faf8238cca926fbfdae052013e229777e693a2c8067751f7cca431f57.webp)
 
 ### Spotlight
 
@@ -68,10 +68,10 @@ Architect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenl
 
 Charts and metric tiles on Spotlight don't have their own Architect button. To ask about a specific chart, open Architect from the page header: in the sidebar, Architect can read the values on screen.
 
-![Weekly summary](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e59d75a18fcad464fcbf92afc711eee6ef832ea86477190b6870d89cc0197aeb/assets/images/agents/architect-entry-spotlight-weekly-summary.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=d0a9559f94d9ca4c145531aeda77b8adf080297b9c50796a6355a2d1305f3802&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Weekly summary](/docs/_fern-img/e59d75a18fcad464fcbf92afc711eee6ef832ea86477190b6870d89cc0197aeb.webp)
 
 ![Alert card with Investigate with
-Architect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/e71b18a2ac615b122870d69257575462ab416b154bc9d6d4bfd3d0864e1b81e9/assets/images/agents/architect-entry-spotlight-alert.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=b4a663a187483d8766577314301dac68bf218b224a9efd5aca2519c0cf5059d3&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+Architect](/docs/_fern-img/e71b18a2ac615b122870d69257575462ab416b154bc9d6d4bfd3d0864e1b81e9.webp)
 
 ### Triage tickets
 
@@ -79,15 +79,15 @@ In a [triage ticket](/docs/eleven-agents/operate/triage), select **Discuss with 
 
 A ticket records every Architect chat started from it. Once you have started one, the button changes to **Continue in Architect** and **New Architect chat**. Chats stay private to the person who started them. In the triage list, a ticket with an Architect chat shows who dispatched Architect.
 
-![Triage ticket with Architect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/7327710426954b013a17073554ce183de64a322eeab78e458e30d9da6c0b470f/assets/images/agents/architect-entry-triage-ticket.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=e90aa42e5aca8845059e860f356432a66b5d579a1ac1084be1015a4120aed0a2&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Triage ticket with Architect](/docs/_fern-img/7327710426954b013a17073554ce183de64a322eeab78e458e30d9da6c0b470f.webp)
 
-![Triage list with Architect](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b4dccefa125d457ab5f5deedabd8be75255ce1ec2206607c172673a46492205a/assets/images/agents/architect-entry-triage-list.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=e73ba63e9d324dd9e21bed12937eb29b13129879635a45d0d63fea1cb3cb0933&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Triage list with Architect](/docs/_fern-img/b4dccefa125d457ab5f5deedabd8be75255ce1ec2206607c172673a46492205a.webp)
 
 ### Conversation transcripts
 
 In a conversation's transcript, select **Analyze** on an agent message, or the **Analyze with Architect** icon in the history view. Architect receives the conversation ID and the text of that message, and explains why the agent responded the way it did.
 
-![Analyze on an agent message](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/3ba13985b69854baaa770393be1c2d654ad02a1c1e8001b73a46ecad04cb7b62/assets/images/agents/architect-entry-transcript-analyze.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113201Z&X-Amz-Expires=604800&X-Amz-Signature=aa89ab60adb934bba4c79c7829131a22c02ee40d4a4d4d947030bbede6875429&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Analyze on an agent message](/docs/_fern-img/3ba13985b69854baaa770393be1c2d654ad02a1c1e8001b73a46ecad04cb7b62.webp)
 
 ### Building an agent
 

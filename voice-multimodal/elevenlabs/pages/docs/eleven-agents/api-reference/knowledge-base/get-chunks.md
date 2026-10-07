@@ -87,33 +87,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.chunks.list("21m00Tcm4TlvDq8ikWAM", {
-        cursor: "cursor",
-        embeddingModel: "e5_mistral_7b_instruct",
-        pageSize: 1,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/chunks"
 
+querystring = {"cursor":"cursor","embedding_model":"e5_mistral_7b_instruct","page_size":"1"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/chunks?cursor=cursor&embedding_model=e5_mistral_7b_instruct&page_size=1';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.documents.chunks.list(
-    documentation_id="21m00Tcm4TlvDq8ikWAM",
-    cursor="cursor",
-    embedding_model="e5_mistral_7b_instruct",
-    page_size=1,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

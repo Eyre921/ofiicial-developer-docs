@@ -79,32 +79,37 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "xi-api-key",
-    });
-    await client.textToSoundEffects.convert({
-        text: "Spacious braam suitable for high-impact movie trailer moments",
-    });
+url = "https://api.elevenlabs.io/v1/sound-generation"
+
+payload = { "text": "Spacious braam suitable for high-impact movie trailer moments" }
+headers = {
+    "xi-api-key": "xi-api-key",
+    "Content-Type": "application/json"
 }
-main();
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/sound-generation';
+const options = {
+  method: 'POST',
+  headers: {'xi-api-key': 'xi-api-key', 'Content-Type': 'application/json'},
+  body: '{"text":"Spacious braam suitable for high-impact movie trailer moments"}'
+};
 
-client = ElevenLabs(
-    api_key="xi-api-key",
-)
-
-client.text_to_sound_effects.convert(
-    text="Spacious braam suitable for high-impact movie trailer moments",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

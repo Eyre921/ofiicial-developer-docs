@@ -59,27 +59,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.serviceAccounts.apiKeys.delete("service_account_user_id", "api_key_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys/api_key_id"
 
+response = requests.delete(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys/api_key_id';
+const options = {method: 'DELETE'};
 
-client = ElevenLabs()
-
-client.service_accounts.api_keys.delete(
-    service_account_user_id="service_account_user_id",
-    api_key_id="api_key_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

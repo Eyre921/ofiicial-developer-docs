@@ -53,9 +53,9 @@ Fireworks sets the following on Serverless inference responses:
 | - | - |
 | `fireworks-prompt-tokens` | Input tokens for the request. |
 | `fireworks-cached-prompt-tokens` | Cached portion of the input. See [Prompt caching](/guides/prompt-caching#monitoring). |
-| `X-Ratelimit-Limit-Tokens-Prompt` | Your current Total Prompt Tokens per Second Limit. |
-| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Your current Total Uncached Prompt Tokens per Second Limit. |
-| `X-Ratelimit-Limit-Tokens-Generated` | Your current Total Generated Tokens per Second Limit. |
+| `X-Ratelimit-Limit-Tokens-Prompt` | Your current Total Prompt TPM (tokens per minute) limit. |
+| `X-Ratelimit-Limit-Tokens-Cache-Adjusted-Prompt` | Your current Uncached Prompt TPM limit. |
+| `X-Ratelimit-Limit-Tokens-Generated` | Your current Generated TPM limit. |
 
 <Tip>
   Streaming responses don't carry per-request perf headers. To get the same metrics in the streaming response body, set the `perf_metrics_in_response` parameter on the request. See [Querying text models](/guides/querying-text-models#usage--performance-tracking).

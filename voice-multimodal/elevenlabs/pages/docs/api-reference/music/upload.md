@@ -146,26 +146,42 @@ Composition plan for the `music_v2` and `music_v2_5` models. Using this field wi
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.music.upload({});
+url = "https://api.elevenlabs.io/v1/music/upload"
+
+files = { "file": "open('string', 'rb')" }
+payload = {
+    "extract_composition_plan": ,
+    "with_timestamps": ,
+    "with_waveform_visual": 
 }
-main();
 
+response = requests.post(url, data=payload, files=files)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/music/upload';
+const form = new FormData();
+form.append('extract_composition_plan', '');
+form.append('file', 'string');
+form.append('with_timestamps', '');
+form.append('with_waveform_visual', '');
 
-client = ElevenLabs()
+const options = {method: 'POST'};
 
-client.music.upload(
-    file="example_file",
-)
+options.body = form;
 
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go
@@ -185,8 +201,6 @@ func main() {
 	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -209,7 +223,6 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
-request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
 request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
@@ -221,7 +234,6 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/music/upload")
-  .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
   .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
@@ -250,14 +262,12 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/music/upload");
 var request = new RestRequest(Method.POST);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"extract_composition_plan\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"string\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_timestamps\"\r\n\r\n\r\n-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"with_waveform_visual\"\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
-
-let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000001101001"]
 let parameters = [
   [
     "name": "extract_composition_plan",
@@ -303,7 +313,6 @@ let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "POST"
-request.allHTTPHeaderFields = headers
 request.httpBody = postData as Data
 
 let session = URLSession.shared

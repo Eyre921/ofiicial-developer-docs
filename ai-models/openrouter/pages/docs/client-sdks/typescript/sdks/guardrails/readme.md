@@ -95,10 +95,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListGuardrailsRequest](../../models/operations/listguardrailsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListGuardrailsRequest](../../models/operations/listguardrailsrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -218,10 +218,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.CreateGuardrailRequest](../../models/operations/createguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.CreateGuardrailRequest](../../models/operations/createguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -300,10 +300,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DeleteGuardrailRequest](../../models/operations/deleteguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.DeleteGuardrailRequest](../../models/operations/deleteguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -381,10 +381,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetGuardrailRequest](../../models/operations/getguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.GetGuardrailRequest](../../models/operations/getguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -474,10 +474,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.UpdateGuardrailRequest](../../models/operations/updateguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.UpdateGuardrailRequest](../../models/operations/updateguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -562,10 +562,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListGuardrailKeyAssignmentsRequest](../../models/operations/listguardrailkeyassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListGuardrailKeyAssignmentsRequest](../../models/operations/listguardrailkeyassignmentsrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -653,10 +653,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.BulkAssignKeysToGuardrailRequest](../../models/operations/bulkassignkeystoguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.BulkAssignKeysToGuardrailRequest](../../models/operations/bulkassignkeystoguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -746,10 +746,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.BulkUnassignKeysFromGuardrailRequest](../../models/operations/bulkunassignkeysfromguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.BulkUnassignKeysFromGuardrailRequest](../../models/operations/bulkunassignkeysfromguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -832,10 +832,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListGuardrailMemberAssignmentsRequest](../../models/operations/listguardrailmemberassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListGuardrailMemberAssignmentsRequest](../../models/operations/listguardrailmemberassignmentsrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -925,10 +925,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.BulkAssignMembersToGuardrailRequest](../../models/operations/bulkassignmemberstoguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.BulkAssignMembersToGuardrailRequest](../../models/operations/bulkassignmemberstoguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -1019,10 +1019,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.BulkUnassignMembersFromGuardrailRequest](../../models/operations/bulkunassignmembersfromguardrailrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.BulkUnassignMembersFromGuardrailRequest](../../models/operations/bulkunassignmembersfromguardrailrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -1101,10 +1101,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListKeyAssignmentsRequest](../../models/operations/listkeyassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListKeyAssignmentsRequest](../../models/operations/listkeyassignmentsrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -1181,10 +1181,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListMemberAssignmentsRequest](../../models/operations/listmemberassignmentsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListMemberAssignmentsRequest](../../models/operations/listmemberassignmentsrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 

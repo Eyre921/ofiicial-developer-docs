@@ -66,26 +66,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.webhooks.delete("G007vmtq9uWYl7SUW9zGS8GZZa1K");
-}
-main();
+url = "https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K"
 
+response = requests.delete(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K';
+const options = {method: 'DELETE'};
 
-client = ElevenLabs()
-
-client.webhooks.delete(
-    webhook_id="G007vmtq9uWYl7SUW9zGS8GZZa1K",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

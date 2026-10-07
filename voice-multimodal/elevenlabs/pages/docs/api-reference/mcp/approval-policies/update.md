@@ -370,29 +370,34 @@ The constant value to use
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.approvalPolicy.update("mcp_server_id", {
-        approvalPolicy: "require_approval_all",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/approval-policy"
 
+payload = { "approval_policy": "require_approval_all" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/approval-policy';
+const options = {
+  method: 'PATCH',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"approval_policy":"require_approval_all"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.mcp_servers.approval_policy.update(
-    mcp_server_id="mcp_server_id",
-    approval_policy="require_approval_all",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

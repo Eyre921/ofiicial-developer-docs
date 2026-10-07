@@ -111,40 +111,40 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.getOrCreateRagIndexes({
-        items: [
-            {
-                documentId: "string",
-                createIfMissing: true,
-                model: "e5_mistral_7b_instruct",
-            },
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/rag-index"
 
+payload = { "items": [
+        {
+            "document_id": "string",
+            "create_if_missing": True,
+            "model": "e5_mistral_7b_instruct"
+        }
+    ] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, GetOrCreateRagIndexRequestModel
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/rag-index';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"items":[{"document_id":"string","create_if_missing":true,"model":"e5_mistral_7b_instruct"}]}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.get_or_create_rag_indexes(
-    items=[
-        GetOrCreateRagIndexRequestModel(
-            document_id="string",
-            create_if_missing=True,
-            model="e5_mistral_7b_instruct",
-        )
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

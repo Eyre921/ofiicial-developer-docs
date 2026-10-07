@@ -187,34 +187,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.triageTickets.listForWorkspace({
-        assigneeUserId: "assignee_user_id",
-        cursor: "cursor",
-        pageSize: 1,
-        status: "open",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/triage-tickets"
 
+querystring = {"assignee_user_id":"assignee_user_id","cursor":"cursor","page_size":"1","status":"open"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.triage_tickets.list_for_workspace(
-    assignee_user_id="assignee_user_id",
-    cursor="cursor",
-    page_size=1,
-    status="open",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

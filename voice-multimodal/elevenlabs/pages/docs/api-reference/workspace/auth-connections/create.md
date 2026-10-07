@@ -415,24 +415,40 @@ Identifier for an integration connection that depends on an auth connection
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.workspace.authConnections.create();
+url = "https://api.elevenlabs.io/v1/workspace/auth-connections"
+
+payload = {
+    "client_id": "string",
+    "client_secret": "string",
+    "name": "string",
+    "provider": "string",
+    "token_url": "string"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/workspace/auth-connections';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"client_id":"string","client_secret":"string","name":"string","provider":"string","token_url":"string"}'
+};
 
-client = ElevenLabs()
-
-client.workspace.auth_connections.create()
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

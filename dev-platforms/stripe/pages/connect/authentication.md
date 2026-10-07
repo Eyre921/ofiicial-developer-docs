@@ -141,7 +141,7 @@ class MyActivity: Activity() {
 
 #### React Native
 
-```javascript
+```jsx
 import {StripeProvider} from '@stripe/stripe-react-native';
 
 function App() {

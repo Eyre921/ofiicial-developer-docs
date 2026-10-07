@@ -120,28 +120,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.textToVoice.design({
-        voiceDescription: "A sassy squeaky mouse",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/text-to-voice/design"
 
+payload = { "voice_description": "A sassy squeaky mouse" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/text-to-voice/design';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"voice_description":"A sassy squeaky mouse"}'
+};
 
-client = ElevenLabs()
-
-client.text_to_voice.design(
-    voice_description="A sassy squeaky mouse",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

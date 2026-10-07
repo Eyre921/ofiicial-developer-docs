@@ -66,26 +66,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.whatsappAccounts.delete("phone_number_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id"
 
+response = requests.delete(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/whatsapp-accounts/phone_number_id';
+const options = {method: 'DELETE'};
 
-client = ElevenLabs()
-
-client.conversational_ai.whatsapp_accounts.delete(
-    phone_number_id="phone_number_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

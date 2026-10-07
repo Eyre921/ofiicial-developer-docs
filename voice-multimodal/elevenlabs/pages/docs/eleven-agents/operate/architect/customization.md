@@ -20,14 +20,14 @@ ElevenAgents Architect's own instructions are fixed, but you control the context
 
 To open them, go to the agent's **Settings** > **Architect** tab, or to **Workspace Settings** > **Architect**. You can also select **Customization** on the Architect tab home page. The workspace page also lists the agent context for each of your agents.
 
-![Customization on the Architect tab](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/b374ed85570a53cde1f0617a3e537af3f7a4c92c83c02d63eb59f528d2668c5b/assets/images/agents/architect-customization-entry.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113203Z&X-Amz-Expires=604800&X-Amz-Signature=60aef79582db1c9b2d44c8d30e03ba5a2a56255e54eba255f90bff4637c205cb&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Customization on the Architect tab](/docs/_fern-img/b374ed85570a53cde1f0617a3e537af3f7a4c92c83c02d63eb59f528d2668c5b.webp)
 
 > **Note**
 >
 > These documents only guide how Architect helps you build. They don't change the agent's runtime
 > behavior or the system prompt it uses with callers.
 
-![Architect settings for an agent](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/d12588d007d18de1de31d047da07e5da57cce7f9fca6203becc7449c3ab1e809/assets/images/agents/architect-customization.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113203Z&X-Amz-Expires=604800&X-Amz-Signature=5156c5986879a036a3755835f184d57dc5f4fc8c878ce5fe8cedc86efb684803&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Architect settings for an agent](/docs/_fern-img/d12588d007d18de1de31d047da07e5da57cce7f9fca6203becc7449c3ab1e809.webp)
 
 ## Defining the standards ElevenAgents Architect follows
 

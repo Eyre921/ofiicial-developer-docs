@@ -55,18 +55,18 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `limit` | *Optional\[int]* | :heavy\_minus\_sign: | Maximum number of files to return (1–1000). | 100 |
-| `cursor` | *Optional\[str]* | :heavy\_minus\_sign: | Opaque pagination cursor from a previous response. | eyJjdXJzb3IiOiJvcl9maWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9 |
-| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `after` | *Optional\[str]* | :heavy\_minus\_sign: | OpenAI-style forward cursor: the id to list after. | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `after_id` | *Optional\[str]* | :heavy\_minus\_sign: | Anthropic-style forward cursor: the id to list after. | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `before_id` | *Optional\[str]* | :heavy\_minus\_sign: | Anthropic-style reverse cursor. Not supported by OpenRouter storage. | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `order` | [Optional\[operations.Order\]](../../operations/order.mdx) | :heavy\_minus\_sign: | Sort direction. Only `asc` is supported by OpenRouter storage. | asc |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `limit` | *Optional\[int]* | ➖ | Maximum number of files to return (1–1000). | 100 |
+| `cursor` | *Optional\[str]* | ➖ | Opaque pagination cursor from a previous response. | eyJjdXJzb3IiOiJvcl9maWxlXzAxMUNOaGE4aUNKY1Uxd1hOUjZxNFY4dyJ9 |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `after` | *Optional\[str]* | ➖ | OpenAI-style forward cursor: the id to list after. | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `after_id` | *Optional\[str]* | ➖ | Anthropic-style forward cursor: the id to list after. | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `before_id` | *Optional\[str]* | ➖ | Anthropic-style reverse cursor. Not supported by OpenRouter storage. | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `order` | [Optional\[operations.Order\]](../../operations/order.mdx) | ➖ | Sort direction. Only `asc` is supported by OpenRouter storage. | asc |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -117,13 +117,13 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `file` | [operations.UploadFileFile](../../operations/uploadfilefile.mdx) | :heavy\_check\_mark: | N/A | |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `file` | [operations.UploadFileFile](../../operations/uploadfilefile.mdx) | ✅ | N/A | |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -172,13 +172,13 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `file_id` | *str* | :heavy\_check\_mark: | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `file_id` | *str* | ✅ | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -226,13 +226,13 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `file_id` | *str* | :heavy\_check\_mark: | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `file_id` | *str* | ✅ | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 
@@ -280,13 +280,13 @@ with OpenRouter(
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `file_id` | *str* | :heavy\_check\_mark: | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `http_referer` | *Optional\[str]* | :heavy\_minus\_sign: | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
-| `x_open_router_title` | *Optional\[str]* | :heavy\_minus\_sign: | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
-| `x_open_router_categories` | *Optional\[str]* | :heavy\_minus\_sign: | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
-| `workspace_id` | *Optional\[str]* | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Configuration to override the default retry behavior of the client. | |
+| `file_id` | *str* | ✅ | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `http_referer` | *Optional\[str]* | ➖ | The app identifier should be your app's URL and is used as the primary identifier for rankings.<br />This is used to track API usage per application.<br /> | |
+| `x_open_router_title` | *Optional\[str]* | ➖ | The app display name allows you to customize how your app appears in OpenRouter's dashboard.<br /> | |
+| `x_open_router_categories` | *Optional\[str]* | ➖ | Comma-separated list of app categories (e.g. "cli-agent,cloud-agent"). Used for marketplace rankings.<br /> | |
+| `workspace_id` | *Optional\[str]* | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [Optional\[components.FileProvider\]](../../components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `retries` | [Optional\[utils.RetryConfig\]](../../models/utils/retryconfig.mdx) | ➖ | Configuration to override the default retry behavior of the client. | |
 
 ### Response
 

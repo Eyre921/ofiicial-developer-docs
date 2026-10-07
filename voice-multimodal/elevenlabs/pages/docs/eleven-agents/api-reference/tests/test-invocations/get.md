@@ -774,26 +774,27 @@ A common model for workflow tool responses.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.invocations.get("test_invocation_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/test-invocations/test_invocation_id"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/test-invocations/test_invocation_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.tests.invocations.get(
-    test_invocation_id="test_invocation_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -1275,30 +1275,29 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.resolve({
-        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        reference: "https://your-domain.zendesk.com/agent/tickets/12345",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/resolve"
 
+querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","reference":"https://your-domain.zendesk.com/agent/tickets/12345"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/resolve?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&reference=https%3A%2F%2Fyour-domain.zendesk.com%2Fagent%2Ftickets%2F12345';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.resolve(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    reference="https://your-domain.zendesk.com/agent/tickets/12345",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

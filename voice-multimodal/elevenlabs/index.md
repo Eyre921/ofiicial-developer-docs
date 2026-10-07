@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1361 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1368 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -49,6 +49,7 @@
 - `docs/api-reference/analytics/get` — [Get live count](pages/docs/api-reference/analytics/get.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/get.md)
 - `docs/api-reference/analytics/workspace/requests` — [List API requests](pages/docs/api-reference/analytics/workspace/requests.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/requests.md)
 - `docs/api-reference/analytics/workspace/usage` — [Get workspace usage](pages/docs/api-reference/analytics/workspace/usage.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/usage.md)
+- `docs/api-reference/api-keys/disable` — [Disable API key](pages/docs/api-reference/api-keys/disable.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/disable.md)
 - `docs/api-reference/api-keys/set-third-party-disabling-policy` — [Set workspace third-party disabling policy](pages/docs/api-reference/api-keys/set-third-party-disabling-policy.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-disabling-policy.md)
 - `docs/api-reference/assets/create` — [Upload Asset](pages/docs/api-reference/assets/create.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/create.md)
 - `docs/api-reference/assets/delete` — [Delete Asset](pages/docs/api-reference/assets/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/delete.md)
@@ -235,6 +236,7 @@
 - `docs/api-reference/service-accounts/api-keys/create` — [Create API key](pages/docs/api-reference/service-accounts/api-keys/create.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/create.md)
 - `docs/api-reference/service-accounts/api-keys/delete` — [Delete API key](pages/docs/api-reference/service-accounts/api-keys/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/delete.md)
 - `docs/api-reference/service-accounts/api-keys/list` — [Get API keys](pages/docs/api-reference/service-accounts/api-keys/list.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/list.md)
+- `docs/api-reference/service-accounts/api-keys/update` — [Update API key](pages/docs/api-reference/service-accounts/api-keys/update.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/update.md)
 - `docs/api-reference/service-accounts/create` — [Create Service Account](pages/docs/api-reference/service-accounts/create.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/create.md)
 - `docs/api-reference/service-accounts/list` — [Get service accounts](pages/docs/api-reference/service-accounts/list.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/list.md)
 - `docs/api-reference/sip-trunk/outbound-call` — [Outbound call via SIP trunk](pages/docs/api-reference/sip-trunk/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/sip-trunk/outbound-call.md)
@@ -393,7 +395,8 @@
 - `docs/api-reference/workspace/secrets/list` — [Get secrets](pages/docs/api-reference/workspace/secrets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/list.md)
 - `docs/api-reference/workspace/secrets/update` — [Update secret](pages/docs/api-reference/workspace/secrets/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/update.md)
 - `docs/api-reference/workspace/update` — [Update settings](pages/docs/api-reference/workspace/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/update.md)
-- `docs/changelog/llms.txt` — [Changelog](pages/docs/changelog/llms.txt.md) · [原文](https://elevenlabs.io/docs/changelog/llms.txt)
+- `docs/asyncapi.json` — [AsyncAPI JSON](pages/docs/asyncapi.json.md) · [原文](https://elevenlabs.io/docs/asyncapi.json.md)
+- `docs/asyncapi.yaml` — [AsyncAPI YAML](pages/docs/asyncapi.yaml.md) · [原文](https://elevenlabs.io/docs/asyncapi.yaml.md)
 - `docs/eleven-agents/api-reference/agents/branches/create` — [Create agent branch](pages/docs/eleven-agents/api-reference/agents/branches/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md)
 - `docs/eleven-agents/api-reference/agents/branches/get` — [Get agent branch](pages/docs/eleven-agents/api-reference/agents/branches/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md)
 - `docs/eleven-agents/api-reference/agents/branches/list` — [List agent branches](pages/docs/eleven-agents/api-reference/agents/branches/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list.md)
@@ -1182,8 +1185,10 @@
 - `docs/help-center/product/studio/audiobooks/what-if-my-manuscript-fails-during-processing` — [What if my manuscript fails during processing?](pages/docs/help-center/product/studio/audiobooks/what-if-my-manuscript-fails-during-processing.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/audiobooks/what-if-my-manuscript-fails-during-processing.md)
 - `docs/help-center/product/studio/audiobooks/what-is-character-casting` — [What is Character Casting?](pages/docs/help-center/product/studio/audiobooks/what-is-character-casting.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/audiobooks/what-is-character-casting.md)
 - `docs/help-center/product/studio/audiobooks/what-is-the-difference-between-original-audio-and-dynamic-narration` — [What is the difference between original audio and dynamic narration?](pages/docs/help-center/product/studio/audiobooks/what-is-the-difference-between-original-audio-and-dynamic-narration.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/audiobooks/what-is-the-difference-between-original-audio-and-dynamic-narration.md)
+- `docs/help-center/product/studio/studio` — [Studio FAQ](pages/docs/help-center/product/studio/studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio.md)
 - `docs/help-center/product/studio/studio/are-there-any-limitations-to-the-size-of-a-project-in-studio` — [Are there any limitations to the size of a project in Studio?](pages/docs/help-center/product/studio/studio/are-there-any-limitations-to-the-size-of-a-project-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/are-there-any-limitations-to-the-size-of-a-project-in-studio.md)
 - `docs/help-center/product/studio/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio` — [Can I assign more than one voice to a paragraph in Studio?](pages/docs/help-center/product/studio/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio.md)
+- `docs/help-center/product/studio/studio/can-i-regenerate-individual-words-in-studio` — [Can I regenerate individual words in Studio?](pages/docs/help-center/product/studio/studio/can-i-regenerate-individual-words-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/can-i-regenerate-individual-words-in-studio.md)
 - `docs/help-center/product/studio/studio/does-it-cost-credits-to-regenerate-in-studio` — [Does it cost credits to regenerate in Studio?](pages/docs/help-center/product/studio/studio/does-it-cost-credits-to-regenerate-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/does-it-cost-credits-to-regenerate-in-studio.md)
 - `docs/help-center/product/studio/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio` — [How can I change the voice and settings across multiple paragraphs in Studio?](pages/docs/help-center/product/studio/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio.md)
 - `docs/help-center/product/studio/studio/how-can-i-create-a-voiceover-for-my-video-using-studio` — [How can I create a voiceover for my video using Studio?](pages/docs/help-center/product/studio/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.md)
@@ -1283,6 +1288,8 @@
 - `docs/help-center/website/website-problems-with-safari-ios-iphone-macos-mac` — [Website problems with Safari, iOS (iPhone), macOS (Mac)](pages/docs/help-center/website/website-problems-with-safari-ios-iphone-macos-mac.md) · [原文](https://elevenlabs.io/docs/help-center/website/website-problems-with-safari-ios-iphone-macos-mac.md)
 - `docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error` — [When using the website, why am I getting a client-side error?](pages/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md) · [原文](https://elevenlabs.io/docs/help-center/website/when-using-the-website-why-am-i-getting-a-client-side-error.md)
 - `docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out` — [Why is the website refreshing and logging me out?](pages/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md) · [原文](https://elevenlabs.io/docs/help-center/website/why-is-the-website-refreshing-and-logging-me-out.md)
+- `docs/openapi.json` — [OpenAPI JSON](pages/docs/openapi.json.md) · [原文](https://elevenlabs.io/docs/openapi.json.md)
+- `docs/openapi.yaml` — [OpenAPI YAML](pages/docs/openapi.yaml.md) · [原文](https://elevenlabs.io/docs/openapi.yaml.md)
 - `docs/overview/administration/account` — [Account](pages/docs/overview/administration/account.md) · [原文](https://elevenlabs.io/docs/overview/administration/account.md)
 - `docs/overview/administration/assets` — [Assets](pages/docs/overview/administration/assets.md) · [原文](https://elevenlabs.io/docs/overview/administration/assets.md)
 - `docs/overview/administration/billing` — [Billing](pages/docs/overview/administration/billing.md) · [原文](https://elevenlabs.io/docs/overview/administration/billing.md)

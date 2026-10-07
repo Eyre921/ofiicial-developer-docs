@@ -12,6 +12,7 @@ path: changelog/llms.txt
 
 ## Entries
 
+- [October 7, 2026](https://developers.deepgram.com/changelog/2026/10/7.md)
 - [October 6, 2026](https://developers.deepgram.com/changelog/2026/10/6.md)
 - [October 5, 2026](https://developers.deepgram.com/changelog/2026/10/5.md)
 - [October 2, 2026](https://developers.deepgram.com/changelog/2026/10/2.md)

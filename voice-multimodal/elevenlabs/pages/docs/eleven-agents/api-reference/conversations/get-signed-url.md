@@ -71,38 +71,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.getSignedUrl({
-        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        branchId: "branch_id",
-        debugEventsRequest: true,
-        environment: "environment",
-        includeConversationId: true,
-        versionId: "version_id",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversation/get-signed-url"
 
+querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","branch_id":"branch_id","debug_events_request":"true","environment":"environment","include_conversation_id":"true","version_id":"version_id"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_id&debug_events_request=true&environment=environment&include_conversation_id=true&version_id=version_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.get_signed_url(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="branch_id",
-    debug_events_request=True,
-    environment="environment",
-    include_conversation_id=True,
-    version_id="version_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

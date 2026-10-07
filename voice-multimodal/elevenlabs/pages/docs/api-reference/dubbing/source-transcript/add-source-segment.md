@@ -106,35 +106,39 @@ One segment of a source transcript.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.dubbing.project.transcript.createSegment("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", {
-        text: "Thanks for watching.",
-        speakerId: "default_speaker",
-        startS: 42,
-        endS: 44,
-    });
+url = "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment"
+
+payload = {
+    "text": "Thanks for watching.",
+    "speaker_id": "default_speaker",
+    "start_s": 42,
+    "end_s": 44
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"text":"Thanks for watching.","speaker_id":"default_speaker","start_s":42,"end_s":44}'
+};
 
-client = ElevenLabs()
-
-client.dubbing.project.transcript.create_segment(
-    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
-    text="Thanks for watching.",
-    speaker_id="default_speaker",
-    start_s=42,
-    end_s=44,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

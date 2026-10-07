@@ -168,29 +168,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.textToSpeech.convertWithTimestamps("21m00Tcm4TlvDq8ikWAM", {
-        text: "This is a test for the API of ElevenLabs.",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps"
 
+payload = { "text": "This is a test for the API of ElevenLabs." }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM/with-timestamps';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"text":"This is a test for the API of ElevenLabs."}'
+};
 
-client = ElevenLabs()
-
-client.text_to_speech.convert_with_timestamps(
-    voice_id="21m00Tcm4TlvDq8ikWAM",
-    text="This is a test for the API of ElevenLabs.",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -87,31 +87,37 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.webhooks.update("G007vmtq9uWYl7SUW9zGS8GZZa1K", {
-        isDisabled: true,
-        name: "My Callback Webhook",
-    });
+url = "https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K"
+
+payload = {
+    "is_disabled": True,
+    "name": "My Callback Webhook"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/workspace/webhooks/G007vmtq9uWYl7SUW9zGS8GZZa1K';
+const options = {
+  method: 'PATCH',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"is_disabled":true,"name":"My Callback Webhook"}'
+};
 
-client = ElevenLabs()
-
-client.webhooks.update(
-    webhook_id="G007vmtq9uWYl7SUW9zGS8GZZa1K",
-    is_disabled=True,
-    name="My Callback Webhook",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -204,61 +204,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.triageTickets.list("agent_id", {
-        assigneeUserId: "assignee_user_id",
-        conversationId: "conversation_id",
-        cursor: "cursor",
-        issueType: "knowledge_gap",
-        label: "label",
-        mergedIntoTicketId: "merged_into_ticket_id",
-        ownerUserId: "owner_user_id",
-        pageSize: 1,
-        priorities: [
-            "low",
-        ],
-        search: "search",
-        sortBy: "created_at",
-        sources: [
-            "qa",
-        ],
-        status: "open",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets"
 
+querystring = {"assignee_user_id":"assignee_user_id","conversation_id":"conversation_id","cursor":"cursor","issue_type":"knowledge_gap","label":"label","merged_into_ticket_id":"merged_into_ticket_id","owner_user_id":"owner_user_id","page_size":"1","priorities":"[\"low\"]","search":"search","sort_by":"created_at","sources":"[\"qa\"]","status":"open"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.triage_tickets.list(
-    agent_id="agent_id",
-    assignee_user_id="assignee_user_id",
-    conversation_id="conversation_id",
-    cursor="cursor",
-    issue_type="knowledge_gap",
-    label="label",
-    merged_into_ticket_id="merged_into_ticket_id",
-    owner_user_id="owner_user_id",
-    page_size=1,
-    priorities=[
-        "low"
-    ],
-    search="search",
-    sort_by="created_at",
-    sources=[
-        "qa"
-    ],
-    status="open",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

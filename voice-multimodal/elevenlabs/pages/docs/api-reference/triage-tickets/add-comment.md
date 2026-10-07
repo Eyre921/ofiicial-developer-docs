@@ -187,29 +187,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.triageTickets.addComment("agentqa_ticket_id", {
-        comment: "string",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/comments"
 
+payload = { "comment": "string" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/comments';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"comment":"string"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.triage_tickets.add_comment(
-    agentqa_ticket_id="agentqa_ticket_id",
-    comment="string",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -104,28 +104,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.webhooks.list({
-        includeUsages: false,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/workspace/webhooks"
 
+querystring = {"include_usages":"false"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/workspace/webhooks?include_usages=false';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.webhooks.list(
-    include_usages=False,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

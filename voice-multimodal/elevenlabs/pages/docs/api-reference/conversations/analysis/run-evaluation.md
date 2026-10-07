@@ -969,29 +969,34 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.analysis.runEvaluation("conversation_id", {
-        evaluationId: "string",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/analysis/evaluations/run"
 
+payload = { "evaluation_id": "string" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/analysis/evaluations/run';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"evaluation_id":"string"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.analysis.run_evaluation(
-    conversation_id="conversation_id",
-    evaluation_id="string",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

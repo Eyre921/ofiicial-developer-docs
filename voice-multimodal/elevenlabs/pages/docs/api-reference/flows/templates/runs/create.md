@@ -213,46 +213,44 @@ One output of a template run, discriminated on `type`: the `type` of the port's 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.flows.templates.runs.create("template_id", {
-        inputs: {
-            prompt: "a corgi on a surfboard",
-            reference: {
-                type: "asset",
-                assetId: "5xM2KqOnZyce22SPZ9d4",
-            },
-        },
-        versionId: "latest",
-        webhook: {
-            type: "all",
-        },
-    });
+url = "https://api.elevenlabs.io/v1/flows/templates/template_id/runs"
+
+payload = {
+    "inputs": {
+        "prompt": "a corgi on a surfboard",
+        "reference": {
+            "asset_id": "5xM2KqOnZyce22SPZ9d4",
+            "type": "asset"
+        }
+    },
+    "version_id": "latest",
+    "webhook": { "type": "all" }
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, TemplateInputReference_Asset, WebhookTarget_All
+```javascript
+const url = 'https://api.elevenlabs.io/v1/flows/templates/template_id/runs';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"inputs":{"prompt":"a corgi on a surfboard","reference":{"asset_id":"5xM2KqOnZyce22SPZ9d4","type":"asset"}},"version_id":"latest","webhook":{"type":"all"}}'
+};
 
-client = ElevenLabs()
-
-client.flows.templates.runs.create(
-    template_id="template_id",
-    inputs={
-        "prompt": "a corgi on a surfboard",
-        "reference": TemplateInputReference_Asset(
-            asset_id="5xM2KqOnZyce22SPZ9d4",
-        )
-    },
-    version_id="latest",
-    webhook=WebhookTarget_All(),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -85,33 +85,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.procedures.get("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t", "agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3", {
-        agentVersionId: "agtvrsn_8901k4t9z5defmb8vh3e9361y7nj",
-        versionId: "agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3"
 
+querystring = {"agent_version_id":"agtvrsn_8901k4t9z5defmb8vh3e9361y7nj","version_id":"agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3?agent_version_id=agtvrsn_8901k4t9z5defmb8vh3e9361y7nj&version_id=agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.procedures.get(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-    procedure_id="agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3",
-    agent_version_id="agtvrsn_8901k4t9z5defmb8vh3e9361y7nj",
-    version_id="agtprcv_7rbqxer9o12cyxi55ckw6sgz1dl4",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

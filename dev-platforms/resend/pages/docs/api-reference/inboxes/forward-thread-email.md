@@ -21,11 +21,11 @@ Forward a message in an inbox thread to new recipients.
 
   <CodeGroup>
     ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.2
+    npm install resend@6.32.1-preview-inboxes.4
     ```
 
     ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.4
+    npm install -g resend-cli@2.22.0-preview-inboxes.6
     ```
   </CodeGroup>
 </Warning>
@@ -76,6 +76,18 @@ quoted under a forwarded-message banner.
 <ParamField type="string">
   The subject of the forward. When omitted, the thread subject is used, prefixed
   with `Fwd:` if it isn't already. Max 2000 characters.
+</ParamField>
+
+## Headers
+
+<ParamField type="string">
+  Add an idempotency key to prevent duplicated emails.
+
+  * Should be **unique per API request**
+  * Idempotency keys expire after **24 hours**
+  * Have a maximum length of **256 characters**
+
+  [Learn more](/docs/dashboard/emails/idempotency-keys)
 </ParamField>
 
 ## Response Fields

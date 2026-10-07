@@ -100,35 +100,38 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.procedures.drafts.update("agent_3701k3ttaq12ewp8b7qv5rfyszkz", "agtbranch_0901k4aafjxxfxt93gd841r7tv5t", "agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3", {
-        name: "name",
-        content: "content",
-        type: "free_form",
-    });
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3/draft"
+
+payload = {
+    "name": "name",
+    "content": "content",
+    "type": "free_form"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches/agtbranch_0901k4aafjxxfxt93gd841r7tv5t/procedures/agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3/draft';
+const options = {
+  method: 'PATCH',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"name":"name","content":"content","type":"free_form"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.procedures.drafts.update(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-    procedure_id="agtprc_6qbpwdq8n01bxhk44bgjy6f10ck3",
-    name="name",
-    content="content",
-    type="free_form",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

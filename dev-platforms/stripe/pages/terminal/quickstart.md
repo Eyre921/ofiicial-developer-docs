@@ -889,7 +889,7 @@ dependencies {
     // ...
 
     // Stripe Terminal SDK
-    implementation 'com.stripe:stripeterminal:5.8.2'
+    implementation 'com.stripe:stripeterminal:6.0.0'
 }
 ```
 
@@ -910,8 +910,8 @@ dependencies {
     // ...
 
     // Stripe Tap to Pay SDK
-    implementation 'com.stripe:stripeterminal-taptopay:5.8.2'
-    implementation 'com.stripe:stripeterminal-core:5.8.2'
+    implementation 'com.stripe:stripeterminal-taptopay:6.0.0'
+    implementation 'com.stripe:stripeterminal-core:6.0.0'
 }
 ```
 
@@ -2694,7 +2694,7 @@ func handleCreate(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
     Amount: stripe.Int64(amount),
     Currency: stripe.String(string(stripe.Currency{{TERMINAL_CURRENCY}})),
     PaymentMethodTypes: stripe.StringSlice([]string{
-      "{{TERMINAL_PAYMENT_METHODS}}"
+      "{{TERMINAL_PAYMENT_METHODS}}",
     }),
     CaptureMethod: stripe.String("automatic"),
     PaymentMethodOptions: &stripe.PaymentIntentCreatePaymentMethodOptionsParams{
@@ -4056,9 +4056,9 @@ import com.stripe.example.ServerPaymentIntent
         @Field("amount") amount: Int,
         @Field("currency") currency: String
     ): Call<ServerPaymentIntent>
-  implementation "com.stripe:stripeterminal:5.8.2"
-  implementation("com.stripe:stripeterminal-taptopay:5.8.2")
-  implementation("com.stripe:stripeterminal-core:5.8.2")
+  implementation "com.stripe:stripeterminal:6.0.0"
+  implementation("com.stripe:stripeterminal-taptopay:6.0.0")
+  implementation("com.stripe:stripeterminal-core:6.0.0")
                     .setAmount(500)
     private final DiscoveryConfiguration discoveryConfig =
             new DiscoveryConfiguration.InternetDiscoveryConfiguration(0, null, true, DiscoveryFilter.None.INSTANCE);
@@ -4219,9 +4219,9 @@ import com.stripe.stripeterminal.external.callable.TapToPayReaderListener;
         @Field("amount") Integer amount,
         @Field("currency") String currency
     );
-  implementation 'com.stripe:stripeterminal:5.8.2'
-  implementation 'com.stripe:stripeterminal-taptopay:5.8.2'
-  implementation 'com.stripe:stripeterminal-core:5.8.2'
+  implementation 'com.stripe:stripeterminal:6.0.0'
+  implementation 'com.stripe:stripeterminal-taptopay:6.0.0'
+  implementation 'com.stripe:stripeterminal-core:6.0.0'
 1. Build the server
 
 ~~~

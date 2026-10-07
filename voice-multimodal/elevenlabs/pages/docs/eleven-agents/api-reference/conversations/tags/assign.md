@@ -67,33 +67,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.tags.assign("conversation_id", {
-        tagIds: [
-            "tag_ids",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags"
 
+payload = { "tag_ids": ["tag_ids"] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"tag_ids":["tag_ids"]}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.tags.assign(
-    conversation_id="conversation_id",
-    tag_ids=[
-        "tag_ids"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

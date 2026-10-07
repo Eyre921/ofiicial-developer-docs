@@ -6,6 +6,22 @@ path: updates/changelog
 
 <ChangelogSearch />
 
+<Update label="2026-10-07">
+  <Badge>Inference</Badge>
+
+  # Doubled serverless rate limits for Small models
+
+  We doubled the adaptive rate-limit ceilings for **Small** serverless models (less than **600B** total parameters).
+
+  The Small tier now has these ceilings:
+
+  * **Total Prompt TPM:** 216M
+  * **Uncached Prompt TPM:** 54M
+  * **Generated TPM:** 2.16M
+
+  Medium and Large model ceilings are unchanged. [Serverless rate limits](/serverless/rate-limits) now also lists which tier each Serverless model falls in.
+</Update>
+
 <Update label="2026-10-02">
   <Badge>Inference</Badge>
 

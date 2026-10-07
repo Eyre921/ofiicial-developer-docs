@@ -195,29 +195,29 @@ Snapshot of the MCP tool definition that was approved.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.tools.list("mcp_server_id", {
-        environment: "environment",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tools"
 
+querystring = {"environment":"environment"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tools?environment=environment';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.mcp_servers.tools.list(
-    mcp_server_id="mcp_server_id",
-    environment="environment",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

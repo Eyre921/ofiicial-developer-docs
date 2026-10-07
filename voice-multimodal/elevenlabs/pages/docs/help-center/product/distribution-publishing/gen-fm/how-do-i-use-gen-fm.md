@@ -18,7 +18,7 @@ Click **Workflows**.
 
 Click **Generate a podcast**.
 
-![Audio and Workflows in Studio](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/60b09d5f32158709cc6a7ee47eb5358b33a1d0be8814be12c1695b76b973ac94/assets/images/help-center/product/genfm-steps.webp?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T113444Z&X-Amz-Expires=604800&X-Amz-Signature=886bb324f3cedf2200f175d860f80457e59d0ba98a3158298161a319e47df95b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Audio and Workflows in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/60b09d5f32158709cc6a7ee47eb5358b33a1d0be8814be12c1695b76b973ac94/assets/images/help-center/product/genfm-steps.webp)
 
 You can then select options for your podcast.
 

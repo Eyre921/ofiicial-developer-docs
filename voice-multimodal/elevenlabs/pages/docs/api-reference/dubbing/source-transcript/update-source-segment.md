@@ -104,32 +104,34 @@ One segment of a source transcript.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.dubbing.project.transcript.updateSegment("proj_1601kwkyxp0hfzvtmyxwqxx6mcy3", "0199a3f0-1c2d-7abc-8def-0123456789ab", {
-        text: "Welcome to our latest product demo.",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab"
 
+payload = { "text": "Welcome to our latest product demo." }
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, DubbingSegmentUpdateRequest
+```javascript
+const url = 'https://api.elevenlabs.io/v1/dubbing/project/proj_1601kwkyxp0hfzvtmyxwqxx6mcy3/transcript/segment/0199a3f0-1c2d-7abc-8def-0123456789ab';
+const options = {
+  method: 'PATCH',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"text":"Welcome to our latest product demo."}'
+};
 
-client = ElevenLabs()
-
-client.dubbing.project.transcript.update_segment(
-    project_id="proj_1601kwkyxp0hfzvtmyxwqxx6mcy3",
-    segment_id="0199a3f0-1c2d-7abc-8def-0123456789ab",
-    request=DubbingSegmentUpdateRequest(
-        text="Welcome to our latest product demo.",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -235,6 +235,16 @@ curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
   -d "automatic_tax[enabled]=true"
 ```
 
+### Display tax in the filing currency 
+
+Some jurisdictions require invoices to show tax in the tax authority’s local filing currency when it differs from the invoice currency.
+
+When you enable automatic tax, Stripe Tax determines the filing currency and converts the tax amount using an available exchange rate at the time of the transaction. If the filing currency differs from the invoice currency and the filing tax amount is greater than zero, Stripe-generated invoice PDFs automatically display the tax amount in both currencies. You don’t need to enable a separate feature or set a filing currency. You can also find the filing currency, exchange rate, and converted amounts in your [Stripe Tax reports](https://docs.stripe.com/tax/reports.md#itemized-exports).
+
+> #### Review local invoice requirements
+> 
+> Stripe-generated invoices display the converted tax amount, but don’t display the taxable amount in the filing currency or the exchange rate used for the conversion. Some jurisdictions require one or both of these values on an invoice. In addition, Stripe Tax uses [exchange rates provided by Stripe](https://docs.stripe.com/payments/currencies/localize-prices.md#exchange-rate), which can differ from an exchange rate prescribed by a tax authority. Consult your tax advisor to determine whether a Stripe-generated invoice meets your local requirements.
+
 ## See also
 
 - [Determine customer locations](https://docs.stripe.com/tax/customer-locations.md)

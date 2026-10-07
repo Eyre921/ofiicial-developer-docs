@@ -67,166 +67,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.tokens.singleUse.create("realtime_scribe");
-}
-main();
-
-```
-
 ```python
-from elevenlabs import ElevenLabs
+import requests
 
-client = ElevenLabs()
+url = "https://api.elevenlabs.io/v1/single-use-token/realtime_scribe"
 
-client.tokens.single_use.create(
-    token_type="realtime_scribe",
-)
+response = requests.post(url)
 
+print(response.json())
 ```
 
-```go
-package main
+```javascript
+const url = 'https://api.elevenlabs.io/v1/single-use-token/realtime_scribe';
+const options = {method: 'POST'};
 
-import (
-	"fmt"
-	"net/http"
-	"io"
-)
-
-func main() {
-
-	url := "https://api.elevenlabs.io/v1/single-use-token/realtime_scribe"
-
-	req, _ := http.NewRequest("POST", url, nil)
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
 }
-```
-
-```ruby
-require 'uri'
-require 'net/http'
-
-url = URI("https://api.elevenlabs.io/v1/single-use-token/realtime_scribe")
-
-http = Net::HTTP.new(url.host, url.port)
-http.use_ssl = true
-
-request = Net::HTTP::Post.new(url)
-
-response = http.request(request)
-puts response.read_body
-```
-
-```java
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.Unirest;
-
-HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/single-use-token/realtime_scribe")
-  .asString();
-```
-
-```php
-<?php
-require_once('vendor/autoload.php');
-
-$client = new \GuzzleHttp\Client();
-
-$response = $client->request('POST',> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
-
-# Create Single Use Token
-
-POST https://api.elevenlabs.io/v1/single-use-token/{token_type}
-
-Generate a time limited single-use token with embedded authentication for frontend clients.
-
-Reference: https://elevenlabs.io/docs/api-reference/tokens/create
-
-## Servers
-
-- `https://api.elevenlabs.io` (Production, default)
-- `https://api.us.elevenlabs.io` (Production US)
-- `https://api.eu.residency.elevenlabs.io` (Production EU)
-- `https://api.in.residency.elevenlabs.io` (Production India)
-- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
-
-## Request
-
-### Path parameters
-
-- `token_type` (enum, required)
-  - Allowed values: `realtime_scribe`, `batch_scribe`, `tts_websocket`
-
-## Response
-
-### 200
-
-Successful Response
-
-- `token` (string, required) — A time bound single use token that expires after 15 minutes. Will be consumed on use.
-
-## Errors
-
-### 422 Unprocessable Entity Error
-
-Validation Error
-
-- `detail` (list of ValidationError, optional)
-
-## Types
-
-### ValidationError
-
-- `loc` (list of ValidationErrorLocItems, required)
-- `msg` (string, required)
-- `type` (string, required)
-
-### ValidationErrorLocItems
-
-## Examples
-
-**Response**
-
-```json
-{
-  "token": "sutkn_1234567890"
-}
-```
-
-**SDK Code**
-
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.tokens.singleUse.create("realtime_scribe");
-}
-main();
-
-```
-
-```python
-from elevenlabs import ElevenLabs
-
-client = ElevenLabs()
-
-client.tokens.single_use.create(
-    token_type="realtime_scribe",
-)
-
 ```
 
 ```go

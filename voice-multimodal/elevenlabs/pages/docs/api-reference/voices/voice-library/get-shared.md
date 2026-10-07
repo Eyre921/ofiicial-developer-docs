@@ -167,66 +167,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.voices.getShared({
-        accent: "american",
-        age: "young",
-        category: "professional",
-        descriptives: [
-            "tiktok",
-        ],
-        featured: true,
-        gender: "male",
-        includeCustomRates: true,
-        includeLiveModerated: true,
-        language: "en",
-        locale: "en-US",
-        minNoticePeriodDays: 30,
-        ownerId: "7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532",
-        readerAppEnabled: true,
-        search: "tiktok",
-        sort: "created_date",
-        useCases: [
-            "audiobook",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/shared-voices"
 
+querystring = {"accent":"american","age":"young","category":"professional","descriptives":"[\"tiktok\"]","featured":"true","gender":"male","include_custom_rates":"true","include_live_moderated":"true","language":"en","locale":"en-US","min_notice_period_days":"30","owner_id":"7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532","reader_app_enabled":"true","search":"tiktok","sort":"created_date","use_cases":"[\"audiobook\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/shared-voices?accent=american&age=young&category=professional&descriptives=%5B%22tiktok%22%5D&featured=true&gender=male&include_custom_rates=true&include_live_moderated=true&language=en&locale=en-US&min_notice_period_days=30&owner_id=7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532&reader_app_enabled=true&search=tiktok&sort=created_date&use_cases=%5B%22audiobook%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.voices.get_shared(
-    accent="american",
-    age="young",
-    category="professional",
-    descriptives=[
-        "tiktok"
-    ],
-    featured=True,
-    gender="male",
-    include_custom_rates=True,
-    include_live_moderated=True,
-    language="en",
-    locale="en-US",
-    min_notice_period_days=30,
-    owner_id="7c9fab611d9a0e1fb2e7448a0c294a8804efc2bcc324b0a366a5d5232b7d1532",
-    reader_app_enabled=True,
-    search="tiktok",
-    sort="created_date",
-    use_cases=[
-        "audiobook"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

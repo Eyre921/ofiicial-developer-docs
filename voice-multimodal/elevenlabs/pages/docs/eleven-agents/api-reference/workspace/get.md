@@ -107,24 +107,27 @@ Used to reference a secret from the agent's secret store.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.settings.get();
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/settings"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/settings';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.settings.get()
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

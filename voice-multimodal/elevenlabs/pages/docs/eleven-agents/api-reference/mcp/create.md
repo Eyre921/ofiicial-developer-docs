@@ -431,34 +431,37 @@ The constant value to use
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.create({
-        config: {
-            url: "url",
-            name: "name",
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/mcp-servers"
 
+payload = { "config": {
+        "url": "url",
+        "name": "name"
+    } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, McpServerConfigInput
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/mcp-servers';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"config":{"url":"url","name":"name"}}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.mcp_servers.create(
-    config=McpServerConfigInput(
-        url="url",
-        name="name",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

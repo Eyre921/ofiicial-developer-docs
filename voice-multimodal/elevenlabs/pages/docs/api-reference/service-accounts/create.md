@@ -84,150 +84,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.serviceAccounts.create({
-        name: "analytics-service-account",
-    });
-}
-main();
-
-```
-
 ```python
-from elevenlabs import ElevenLabs
+import requests
 
-client = ElevenLabs()
+url = "https://api.elevenlabs.io/v1/service-accounts"
 
-client.service_accounts.create(
-    name="analytics-service-account",
-)
+payload = { "name": "analytics-service-account" }
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```go
-package main
+```javascript
+const url = 'https://api.elevenlabs.io/v1/service-accounts';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"name":"analytics-service-account"}'
+};
 
-import (
-	"fmt"
-	"strings"
-	"net/http"
-	"io"
-)
-
-func main() {
-
-	url := "https://api.elevenlabs.io/v1/service-accounts"
-
-	payload := strings.NewReader("{\n  \"name\": \"analytics-service-account\"\n}")
-
-	req, _ := http.NewRequest("POST", url, payload)
-
-	req.Header.Add("Co> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
-
-# Create Service Account
-
-POST https://api.elevenlabs.io/v1/service-accounts
-Content-Type: application/json
-
-Create a new service account in the workspace. By default, a workspace can have up to 20 service accounts. Enterprise customers may request an increase to this limit, up to 100.
-
-Reference: https://elevenlabs.io/docs/api-reference/service-accounts/create
-
-## Servers
-
-- `https://api.elevenlabs.io` (Production, default)
-- `https://api.us.elevenlabs.io` (Production US)
-- `https://api.eu.residency.elevenlabs.io` (Production EU)
-- `https://api.in.residency.elevenlabs.io` (Production India)
-- `https://api.sg.residency.elevenlabs.io` (Production Singapore)
-
-## Request
-
-### Body (application/json)
-
-This endpoint expects a Body_create_service_account_v1_service_accounts_post.
-
-- `name` (string, required)
-- `default_sharing_groups` (list of DefaultSharingGroupConfig, optional, nullable) — List of groups with their permission levels to share with by default. Each entry should specify a group_id and a permission_level (admin, editor, or viewer).
-
-## Response
-
-### 200
-
-Successful Response
-
-- `service-account-user-id` (string, required)
-
-## Errors
-
-### 422 Unprocessable Entity Error
-
-Validation Error
-
-- `detail` (list of ValidationError, optional)
-
-## Types
-
-### DefaultSharingGroupConfig
-
-- `group_id` (string, required) — The ID of the group to share with
-- `permission_level` (enum, required) — The permission level to grant to the group
-  - Allowed values: `admin`, `editor`, `viewer`
-
-### ValidationError
-
-- `loc` (list of ValidationErrorLocItems, required)
-- `msg` (string, required)
-- `type` (string, required)
-
-### ValidationErrorLocItems
-
-## Examples
-
-**Request**
-
-```json
-{
-  "name": "analytics-service-account"
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
 }
-```
-
-**Response**
-
-```json
-{
-  "service-account-user-id": "svc-123e4567-e89b-12d3-a456-426614174000"
-}
-```
-
-**SDK Code**
-
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
-
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.serviceAccounts.create({
-        name: "analytics-service-account",
-    });
-}
-main();
-
-```
-
-```python
-from elevenlabs import ElevenLabs
-
-client = ElevenLabs()
-
-client.service_accounts.create(
-    name="analytics-service-account",
-)
-
 ```
 
 ```go

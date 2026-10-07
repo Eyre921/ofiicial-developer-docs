@@ -985,41 +985,38 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.simulateConversationStream("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        simulationSpecification: {
-            simulatedUserConfig: {
-                firstMessage: "Hello, how can I help you today?",
-                language: "en",
-                disableFirstMessageInterruptions: false,
-            },
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream"
 
+payload = { "simulation_specification": { "simulated_user_config": {
+            "first_message": "Hello, how can I help you today?",
+            "language": "en",
+            "disable_first_message_interruptions": False
+        } } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, ConversationSimulationSpecification, AgentConfig
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/simulate-conversation/stream';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"simulation_specification":{"simulated_user_config":{"first_message":"Hello, how can I help you today?","language":"en","disable_first_message_interruptions":false}}}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.simulate_conversation_stream(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    simulation_specification=ConversationSimulationSpecification(
-        simulated_user_config=AgentConfig(
-            first_message="Hello, how can I help you today?",
-            language="en",
-            disable_first_message_interruptions=False,
-        ),
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

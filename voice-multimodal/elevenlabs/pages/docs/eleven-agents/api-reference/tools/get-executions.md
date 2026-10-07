@@ -159,41 +159,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.executions.get("tool_id", {
-        agentId: "agent_id",
-        branchId: "branch_id",
-        cursor: "cursor",
-        endTime: 1.1,
-        isError: true,
-        pageSize: 1,
-        startTime: 1.1,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/tools/tool_id/executions"
 
+querystring = {"agent_id":"agent_id","branch_id":"branch_id","cursor":"cursor","end_time":"1.1","is_error":"true","page_size":"1","start_time":"1.1"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/tools/tool_id/executions?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1.1&is_error=true&page_size=1&start_time=1.1';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.tools.executions.get(
-    tool_id="tool_id",
-    agent_id="agent_id",
-    branch_id="branch_id",
-    cursor="cursor",
-    end_time=1.1,
-    is_error=True,
-    page_size=1,
-    start_time=1.1,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

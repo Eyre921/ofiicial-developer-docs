@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 412 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 413 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -99,6 +99,7 @@
 - `docs/api-reference/inboxes/list-thread-emails` — [List Thread Emails](pages/docs/api-reference/inboxes/list-thread-emails.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-thread-emails)
 - `docs/api-reference/inboxes/list-threads` — [List Threads](pages/docs/api-reference/inboxes/list-threads.md) · [原文](https://resend.com/docs/api-reference/inboxes/list-threads)
 - `docs/api-reference/inboxes/reply-thread-email` — [Reply to Thread Email](pages/docs/api-reference/inboxes/reply-thread-email.md) · [原文](https://resend.com/docs/api-reference/inboxes/reply-thread-email)
+- `docs/api-reference/inboxes/search-threads` — [Search Threads](pages/docs/api-reference/inboxes/search-threads.md) · [原文](https://resend.com/docs/api-reference/inboxes/search-threads)
 - `docs/api-reference/inboxes/send-draft` — [Send Draft](pages/docs/api-reference/inboxes/send-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/send-draft)
 - `docs/api-reference/inboxes/update-agent` — [Update Agent Settings](pages/docs/api-reference/inboxes/update-agent.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-agent)
 - `docs/api-reference/inboxes/update-draft` — [Update Draft](pages/docs/api-reference/inboxes/update-draft.md) · [原文](https://resend.com/docs/api-reference/inboxes/update-draft)

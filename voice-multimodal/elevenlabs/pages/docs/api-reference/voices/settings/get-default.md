@@ -50,24 +50,27 @@ Successful Response
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.voices.settings.getDefault();
-}
-main();
+url = "https://api.elevenlabs.io/v1/voices/settings/default"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/voices/settings/default';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.voices.settings.get_default()
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

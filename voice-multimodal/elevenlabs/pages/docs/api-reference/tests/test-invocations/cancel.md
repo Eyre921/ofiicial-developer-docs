@@ -56,26 +56,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.invocations.cancel("test_invocation_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/test-invocations/test_invocation_id/cancel"
 
+response = requests.post(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/test-invocations/test_invocation_id/cancel';
+const options = {method: 'POST'};
 
-client = ElevenLabs()
-
-client.conversational_ai.tests.invocations.cancel(
-    test_invocation_id="test_invocation_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

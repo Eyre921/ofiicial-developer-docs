@@ -234,7 +234,7 @@ For existing Credit Pro teams, seat charges for existing members are removed at 
 
 The unlimited seats change applies only to the Credit Pro plan. If you are on the Legacy Pro plan, team member seats are still billed at $19/team member/month.
 
-With any plan, you can add unlimited free [Reviewer roles](/manage/accounts-and-billing/team-management/roles-and-permissions#reviewer) to your team to give people a Netlify login that they can use to review your team's web projects and share feedback. This allows you to protect your projects with a password and still allow select people to review your projects and share feedback.
+With any plan, you can add unlimited free [Reviewer roles](/manage/accounts-and-billing/team-management/roles-and-permissions#reviewer) to your team to give people a Netlify login that they can use to review your team's web projects and share feedback. This allows you to keep your projects private (or, on Credit Pro plans, password protected) and still allow select people to review your projects and share feedback.
 
 Learn more about [how roles and permissions work](/manage/accounts-and-billing/team-management/roles-and-permissions), [password protection](/manage/security/secure-access-to-sites/password-protection), and our [Reviewer role Quickstart](/deploy/review-deploys/netlify-drawer-for-feedback/netlify-reviewer-quickstart).
 

@@ -138,46 +138,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.list({
-        cursor: "cursor",
-        includeFolders: true,
-        pageSize: 1,
-        parentFolderId: "parent_folder_id",
-        search: "search",
-        sharingMode: "all",
-        sortMode: "default",
-        types: [
-            "llm",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agent-testing"
 
+querystring = {"cursor":"cursor","include_folders":"true","page_size":"1","parent_folder_id":"parent_folder_id","search":"search","sharing_mode":"all","sort_mode":"default","types":"[\"llm\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.tests.list(
-    cursor="cursor",
-    include_folders=True,
-    page_size=1,
-    parent_folder_id="parent_folder_id",
-    search="search",
-    sharing_mode="all",
-    sort_mode="default",
-    types=[
-        "llm"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

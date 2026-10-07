@@ -249,29 +249,29 @@ Metadata for a KB folder that mirrors an external source folder.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.get("21m00Tcm4TlvDq8ikWAM", {
-        agentId: "agent_id",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM"
 
+querystring = {"agent_id":"agent_id"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM?agent_id=agent_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.documents.get(
-    documentation_id="21m00Tcm4TlvDq8ikWAM",
-    agent_id="agent_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

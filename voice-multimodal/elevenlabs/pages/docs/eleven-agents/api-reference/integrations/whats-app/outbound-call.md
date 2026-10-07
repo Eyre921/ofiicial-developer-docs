@@ -192,36 +192,40 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.whatsapp.outboundCall({
-        whatsappPhoneNumberId: "whatsapp_phone_number_id",
-        whatsappUserId: "whatsapp_user_id",
-        whatsappCallPermissionRequestTemplateName: "whatsapp_call_permission_request_template_name",
-        whatsappCallPermissionRequestTemplateLanguageCode: "whatsapp_call_permission_request_template_language_code",
-        agentId: "agent_id",
-    });
+url = "https://api.elevenlabs.io/v1/convai/whatsapp/outbound-call"
+
+payload = {
+    "whatsapp_phone_number_id": "whatsapp_phone_number_id",
+    "whatsapp_user_id": "whatsapp_user_id",
+    "whatsapp_call_permission_request_template_name": "whatsapp_call_permission_request_template_name",
+    "whatsapp_call_permission_request_template_language_code": "whatsapp_call_permission_request_template_language_code",
+    "agent_id": "agent_id"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/whatsapp/outbound-call';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"whatsapp_phone_number_id":"whatsapp_phone_number_id","whatsapp_user_id":"whatsapp_user_id","whatsapp_call_permission_request_template_name":"whatsapp_call_permission_request_template_name","whatsapp_call_permission_request_template_language_code":"whatsapp_call_permission_request_template_language_code","agent_id":"agent_id"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.whatsapp.outbound_call(
-    whatsapp_phone_number_id="whatsapp_phone_number_id",
-    whatsapp_user_id="whatsapp_user_id",
-    whatsapp_call_permission_request_template_name="whatsapp_call_permission_request_template_name",
-    whatsapp_call_permission_request_template_language_code="whatsapp_call_permission_request_template_language_code",
-    agent_id="agent_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

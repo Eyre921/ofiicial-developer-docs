@@ -5586,6 +5586,277 @@ if (result.verdict === "changes_requested") {
 
 This gives you an automated gate similar to CodeRabbit or Greptile, running inside an isolated, durable Box.
 
+# In-App Coding Agent with CopilotKit
+Source: https://upstash.com/docs/box/guides/copilotkit
+
+Put a [CopilotKit](https://www.copilotkit.ai) chat in your Next.js app where each user talks to a coding agent running in their own Upstash Box.
+
+Upstash Box combines the agent and its sandbox: the agent runs inside the box, next to the shell and files it works on. CopilotKit is the UI. A small adapter in your app connects the two.
+
+```mermaid
+flowchart LR
+  UI["CopilotKit chat<br/>in the browser"]
+  APP["BoxAgent adapter<br/>in your Next.js app"]
+  BOX["Upstash Box<br/>agent + sandbox<br/>one per user"]
+  UI <-->|"AG-UI events"| APP
+  APP <-->|"prompt and stream"| BOX
+```
+
+Each user gets one box and one continuing conversation with the agent. The box keeps the agent's files and memory between visits.
+
+***
+
+## 1. Set up
+
+* A **Box API key** from the [Upstash Console](https://console.upstash.com/box).
+* An **Anthropic API key** from [API keys](https://platform.claude.com/settings/keys).
+
+```bash title=".env.local"
+UPSTASH_BOX_API_KEY=box_xxxxxxxxxxxxxxxxxxxxxxxx
+ANTHROPIC_API_KEY=sk-ant-xxxxxxxxxxxxxxxx
+```
+
+In a Next.js app:
+
+```bash
+npm install @upstash/box@0.7.7 @copilotkit/react-core@1.75.1 @copilotkit/runtime@1.75.1 @ag-ui/client@0.0.59 rxjs@7.8.1
+```
+
+<Note>
+  These versions were tested together. If you upgrade CopilotKit, match `@ag-ui/client` to the version it depends on: `npm ls @ag-ui/client`.
+</Note>
+
+***
+
+## 2. Add the agent
+
+CopilotKit talks to agents over [AG-UI](https://docs.ag-ui.com). This class sends the user's message to the agent in the box and turns the box's stream into AG-UI events.
+
+```typescript title="lib/box-agent.ts"
+import { AbstractAgent, EventType, type BaseEvent, type RunAgentInput } from "@ag-ui/client";
+import type { Box } from "@upstash/box";
+import { Observable } from "rxjs";
+
+export class BoxAgent extends AbstractAgent {
+  constructor(private getBox: () => Promise<Box>) {
+    super();
+  }
+
+  private stop?: () => void;
+
+  clone() {
+    return new BoxAgent(this.getBox) as this;
+  }
+
+  abortRun() {
+    this.stop?.();
+  }
+
+  run(input: RunAgentInput) {
+    const { threadId, runId } = input;
+    const content = input.messages.findLast((m) => m.role === "user")?.content;
+    const prompt = typeof content === "string" ? content : "";
+
+    return new Observable<BaseEvent>((subscriber) => {
+      const emit = (event: object) => subscriber.next(event as BaseEvent);
+      let stream: Awaited<ReturnType<Box["agent"]["stream"]>> | undefined;
+      let cancelled = false;
+      let stopped = false;
+      let messageId: string | undefined;
+
+      const endMessage = () => {
+        if (messageId) emit({ type: EventType.TEXT_MESSAGE_END, messageId });
+        messageId = undefined;
+      };
+
+      const forward = async () => {
+        emit({ type: EventType.RUN_STARTED, threadId, runId });
+        if (!prompt) throw new Error("Send a text message.");
+        const box = await this.getBox();
+        stream = await box.agent.stream({ prompt });
+        if (cancelled) return stream.cancel();
+        this.stop = () => {
+          stopped = true;
+          stream?.cancel();
+        };
+
+        for await (const chunk of stream) {
+          if (chunk.type === "text-delta") {
+            if (!messageId) {
+              messageId = crypto.randomUUID();
+              emit({ type: EventType.TEXT_MESSAGE_START, messageId, role: "assistant" });
+            }
+            emit({ type: EventType.TEXT_MESSAGE_CONTENT, messageId, delta: chunk.text });
+          }
+          if (chunk.type === "tool-call") {
+            endMessage();
+            const toolCallId = chunk.toolCallId;
+            const args = JSON.stringify(chunk.input);
+            emit({ type: EventType.TOOL_CALL_START, toolCallId, toolCallName: chunk.toolName });
+            emit({ type: EventType.TOOL_CALL_ARGS, toolCallId, delta: args });
+            emit({ type: EventType.TOOL_CALL_END, toolCallId });
+          }
+          if (chunk.type === "tool-result") {
+            const output = chunk.output;
+            const content = typeof output === "string" ? output : JSON.stringify(output);
+            emit({
+              type: EventType.TOOL_CALL_RESULT,
+              messageId: crypto.randomUUID(),
+              toolCallId: chunk.toolCallId,
+              content,
+            });
+          }
+        }
+
+        endMessage();
+        emit({ type: EventType.RUN_FINISHED, threadId, runId });
+      };
+
+      forward()
+        .catch((error) => {
+          endMessage();
+          if (stopped) emit({ type: EventType.RUN_FINISHED, threadId, runId });
+          else emit({ type: EventType.RUN_ERROR, message: String(error) });
+        })
+        .finally(() => subscriber.complete());
+
+      return () => {
+        cancelled = true;
+        stream?.cancel();
+      };
+    });
+  }
+}
+```
+
+***
+
+## 3. Add the runtime route
+
+Each user gets one box, found by name or created on the first message.
+
+```typescript title="app/api/copilotkit/[[...slug]]/route.ts"
+import { CopilotRuntime, InMemoryAgentRunner, createCopilotRuntimeHandler } from "@copilotkit/runtime/v2";
+import { Agent, Box, BoxError } from "@upstash/box";
+import { BoxAgent } from "@/lib/box-agent";
+
+const getUserId = async (request: Request) => "demo-user";
+
+const isNotFound = (error: unknown) => error instanceof BoxError && error.statusCode === 404;
+const isNameTaken = (error: unknown) => error instanceof BoxError && /already in use/.test(error.message);
+
+async function getBox(userId: string) {
+  const name = `copilot-${userId}`;
+  try {
+    return await Box.getByName(name);
+  } catch (error) {
+    if (!isNotFound(error)) throw error;
+  }
+  try {
+    return await Box.create({
+      name,
+      agent: {
+        harness: Agent.ClaudeCode,
+        model: "anthropic/claude-sonnet-5",
+        apiKey: process.env.ANTHROPIC_API_KEY,
+      },
+    });
+  } catch (error) {
+    if (isNameTaken(error)) return Box.getByName(name);
+    throw error;
+  }
+}
+
+const runtime = new CopilotRuntime({
+  agents: async ({ request }) => {
+    const userId = await getUserId(request);
+    return { default: new BoxAgent(() => getBox(userId)) };
+  },
+  runner: new InMemoryAgentRunner(),
+});
+
+const handler = createCopilotRuntimeHandler({ runtime, basePath: "/api/copilotkit" });
+
+export { handler as GET, handler as POST };
+```
+
+***
+
+## 4. Add the chat
+
+`useDefaultRenderTool` shows each tool call the agent makes, such as `Bash` and `Write`, as a card in the chat.
+
+```tsx title="app/page.tsx"
+"use client";
+
+import { CopilotChat, CopilotKitProvider, useDefaultRenderTool } from "@copilotkit/react-core/v2";
+import "@copilotkit/react-core/v2/styles.css";
+
+function Chat() {
+  useDefaultRenderTool();
+  return <CopilotChat />;
+}
+
+export default function Page() {
+  return (
+    <CopilotKitProvider runtimeUrl="/api/copilotkit" enableInspector={false}>
+      <main style={{ height: "100vh", padding: 24, boxSizing: "border-box" }}>
+        <Chat />
+      </main>
+    </CopilotKitProvider>
+  );
+}
+```
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000` and try:
+
+1. `Create squares.py that prints the first 10 squares, then run it.`
+2. Reload the page, then: `Change it to print cubes instead and run it again.`
+
+The chat is empty after the reload, but the agent finds the script and edits it.
+
+***
+
+## Customize
+
+Change the harness and model in `getBox`; see [Agent](/docs/box/overall/agent) for the options.
+
+To cap a run or give the agent standing instructions, pass options with the prompt:
+
+```typescript title="lib/box-agent.ts"
+stream = await box.agent.stream({
+  prompt,
+  timeout: 5 * 60 * 1000,
+  options: { maxBudgetUsd: 1, systemPrompt: "Keep replies short." },
+});
+```
+
+The system prompt is set when the conversation starts and stays for the rest of it.
+
+***
+
+## Before production
+
+* **Identify users from your auth session.** Replace `getUserId`, and never read the user from the request body: the box name decides whose files the agent can reach.
+* **Protect the thread routes.** `InMemoryAgentRunner` records no owner for a thread, so `/api/copilotkit/threads` lists every user's threads. Require authentication, scope thread listings to the signed-in user, and verify that a requested thread belongs to them.
+* **Persist chat history.** Store messages outside the server's memory and restore the returning user's thread ID. [Realtime history](/docs/realtime/features/history) and [durable LLM streams](https://upstash.com/blog/resumable-llm-streams) show how to keep messages in Redis Streams and replay them after a reload.
+* **One conversation per user.** The thread ID is not sent to the box, so every chat from a user continues the same agent session.
+
+***
+
+## Troubleshooting
+
+* **`BoxAgent` is not assignable to `AbstractAgent`**: your `@ag-ui/client` version differs from the one `@copilotkit/runtime` uses.
+* **Permission denied writing files**: the agent can only write under `/workspace/home`.
+* **The chat is empty after a reload**: this example keeps visible messages in memory. The agent in the box still has the earlier conversation and files.
+* **`Box cannot start a run in its current state`**: a box runs one prompt at a time. The user sent a message, for example from a second tab, while the agent was still working.
+* **No tool cards with OpenCode**: the OpenCode harness streams only text, so the chat shows the reply without the tool calls.
+* **Box limit reached**: the error comes from `Box.create`. Delete unused boxes in the console or upgrade your plan.
+
 # Vercel Eve Sandboxes
 Source: https://upstash.com/docs/box/guides/eve-setup
 
@@ -116590,6 +116861,141 @@ You can use them to pass your custom authentication token to verify the requests
     If you implement custom authorization in your workflow route, you should also include the same authorization check in the failure function.
 
     The failure function executes independently of the route function, so without this check, unauthorized requests could trigger the failure function
+</Warning>
+
+# Singleton Workflows
+Source: https://upstash.com/docs/workflow/howto/singleton
+
+A singleton workflow has at most one run in progress at a time. A nightly sync,
+a per-user onboarding flow or a cache rebuild are typical examples: starting a
+second copy while the first one is still running would do the same work twice.
+
+You get this behavior by starting every run with the **same `workflowRunId`**.
+A run ID is reserved while its run is in progress, and released once the run
+finishes, fails or is cancelled.
+
+<Note>
+  Singleton workflows require `@upstash/workflow` **1.4.0** or later.
+
+  With older versions, a run started again with the same `workflowRunId` and the
+  same body within 10 minutes of the previous one is deduplicated by QStash: it
+  either doesn't start or gets stuck on its first step.
+</Note>
+
+There are two ways to handle a new trigger while a run is in progress:
+
+| Pattern | When a run is already in progress |
+| --- | --- |
+| [Keep the running one](#keep-the-running-one) | The new trigger is rejected. The existing run continues. |
+| [Replace the running one](#replace-the-running-one) | The running run is cancelled and a new one starts. |
+
+In both patterns, a trigger after the previous run has ended starts a new run,
+even with exactly the same body.
+
+## Keep the running one
+
+Trigger the workflow with a fixed `workflowRunId`. If a run with that ID is
+still in progress, `client.trigger` throws and no new run is started.
+
+```ts
+import { Client } from "@upstash/workflow";
+import { QstashError } from "@upstash/qstash";
+
+const client = new Client({ token: "<QSTASH_TOKEN>" });
+
+try {
+  const { workflowRunId } = await client.trigger({
+    url: "https://<YOUR_WORKFLOW_ENDPOINT>/nightly-sync",
+    workflowRunId: "nightly-sync",
+    body: { source: "crm" },
+  });
+  console.log(`started ${workflowRunId}`); // started wfr_nightly-sync
+} catch (error) {
+  if (!(error instanceof QstashError) || error.status !== 400) {
+    throw error;
+  }
+
+  // a 400 can also mean an invalid request, so check that a run is in progress
+  const { runs } = await client.logs({
+    filter: { workflowRunId: "wfr_nightly-sync", state: "RUN_STARTED" },
+  });
+  if (runs.length === 0) {
+    throw error;
+  }
+  console.log("nightly-sync is already running, skipping");
+}
+```
+
+What `client.trigger` returns:
+
+* **No run in progress:** a new run starts and the call resolves to
+  `{ workflowRunId: "wfr_nightly-sync" }`.
+* **A run is in progress:** the call throws a `QstashError` with `status: 400`.
+  The running run is not affected.
+
+QStash returns `400` for other invalid trigger requests too, such as a malformed
+URL, so `status` alone doesn't tell you that the ID is taken. The example checks
+with [`client.logs`](/docs/workflow/basics/client/logs) that a run with the ID is in
+progress before skipping. If that run ends between the two calls, `runs` is
+empty and the error is rethrown, so you can retry the trigger.
+
+<Note>
+  `QstashError` comes from `@upstash/qstash`, which `@upstash/workflow` depends
+  on. If your package manager doesn't let you import a dependency of a
+  dependency, add `@upstash/qstash` to your own dependencies. Keep it on the
+  version `@upstash/workflow` uses: with two copies of the package,
+  `instanceof QstashError` doesn't match.
+</Note>
+
+<Tip>
+  The ID you pass is prefixed with `wfr_`. `nightly-sync` becomes
+  `wfr_nightly-sync`, which is the ID you see in the logs and pass to
+  `client.cancel`.
+</Tip>
+
+## Replace the running one
+
+To always run the latest request, first cancel the existing run by its
+prefixed run ID (for example, `wfr_rebuild-cache`), then start a new one with
+the unprefixed `workflowRunId` (for example, `rebuild-cache`). If the previous
+run hasn't finished yet, it is stopped and the new run takes its place.
+
+```ts
+import { Client } from "@upstash/workflow";
+
+const client = new Client({ token: "<QSTASH_TOKEN>" });
+
+const { cancelled } = await client.cancel("wfr_rebuild-cache");
+console.log(`cancelled ${cancelled} run(s)`);
+
+const { workflowRunId } = await client.trigger({
+  url: "https://<YOUR_WORKFLOW_ENDPOINT>/rebuild-cache",
+  workflowRunId: "rebuild-cache",
+  body: { reason: "settings changed" },
+});
+console.log(`started ${workflowRunId}`); // started wfr_rebuild-cache
+```
+
+What each call returns:
+
+* `client.cancel` resolves to `{ cancelled: 1 }` when a run was in progress and
+  got cancelled, and to `{ cancelled: 0 }` when there was nothing to cancel. It
+  doesn't throw in either case, so you can call it unconditionally.
+* `client.trigger` resolves to `{ workflowRunId: "wfr_rebuild-cache" }`. The
+  cancel is completed before `client.cancel` returns, so the ID is free when you
+  trigger the new run.
+
+The cancelled run stops right away. If one of its steps is executing on your
+endpoint at that moment, that code runs to the end, but its result is
+discarded. Steps, waits and `context.call` results of the cancelled run are
+never added to the new run, even though both runs share the same ID.
+
+<Warning>
+  If two callers cancel and trigger the same ID at the same time, both cancels
+  can complete before either trigger. Then the first trigger starts a run, and
+  the second one throws the `400` error described in
+  [Keep the running one](#keep-the-running-one). Catch it and retry the cancel
+  and trigger if the latest request must win.
 </Warning>
 
 # Start a Run

@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15004 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 221,
@@ -97,11 +97,11 @@
     "status": "ok"
   },
   "dev-platforms/resend": {
-    "pages": 412,
+    "pages": 413,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -120,7 +120,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 963,
+    "pages": 965,
     "status": "ok"
   },
   "dev-platforms/expo": {
@@ -186,24 +186,24 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 95,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 470,
+    "pages": 471,
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 507,
+    "pages": 197,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 390,
+    "pages": 385,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1361,
+    "pages": 1368,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-07T11:30:36Z"
+  "_last_crawl": "2026-10-07T23:30:39Z"
 }

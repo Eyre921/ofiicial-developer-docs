@@ -74,12 +74,12 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
-| `workspaceID` | `*string` | :heavy\_minus\_sign: | Optional workspace ID to filter by. When omitted, resolves to the account’s default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. | 550e8400-e29b-41d4-a716-446655440000 |
-| `provider` | [\*operations.Provider](../../models/operations/provider.mdx) | :heavy\_minus\_sign: | Optional provider slug to filter by (e.g. `openai`, `anthropic`, `amazon-bedrock`). | openai |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `workspaceID` | `*string` | ➖ | Optional workspace ID to filter by. When omitted, resolves to the account’s default workspace; if that default has been deleted, the request returns a 400 and you must pass `workspace_id` explicitly. | 550e8400-e29b-41d4-a716-446655440000 |
+| `provider` | [\*operations.Provider](../../models/operations/provider.mdx) | ➖ | Optional provider slug to filter by (e.g. `openai`, `anthropic`, `amazon-bedrock`). | openai |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -137,9 +137,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [components.CreateBYOKKeyRequest](../../models/components/createbyokkeyrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [components.CreateBYOKKeyRequest](../../models/components/createbyokkeyrequest.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -192,9 +192,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -246,9 +246,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -305,10 +305,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
-| `updateBYOKKeyRequest` | [components.UpdateBYOKKeyRequest](../../models/components/updatebyokkeyrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"disabled": false,<br />"name": "Updated OpenAI Key"<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The BYOK credential ID (UUID). | 11111111-2222-3333-4444-555555555555 |
+| `updateBYOKKeyRequest` | [components.UpdateBYOKKeyRequest](../../models/components/updatebyokkeyrequest.mdx) | ✅ | N/A | \{<br />"disabled": false,<br />"name": "Updated OpenAI Key"<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

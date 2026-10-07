@@ -247,26 +247,27 @@ Metadata for a KB folder that mirrors an external source folder.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.document.refresh("21m00Tcm4TlvDq8ikWAM");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/refresh"
 
+response = requests.post(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM/refresh';
+const options = {method: 'POST'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.document.refresh(
-    documentation_id="21m00Tcm4TlvDq8ikWAM",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -107,37 +107,42 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "xi-api-key",
-    });
-    await client.textToSpeech.convert("JBFqnCBsd6RMkjVDRZzb", {
-        outputFormat: "mp3_44100_128",
-        text: "The first move is what sets everything in motion.",
-        modelId: "eleven_multilingual_v2",
-    });
+url = "https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb"
+
+querystring = {"output_format":"mp3_44100_128"}
+
+payload = {
+    "text": "The first move is what sets everything in motion.",
+    "model_id": "eleven_multilingual_v2"
 }
-main();
+headers = {
+    "xi-api-key": "xi-api-key",
+    "Content-Type": "application/json"
+}
 
+response = requests.post(url, json=payload, headers=headers, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb?output_format=mp3_44100_128';
+const options = {
+  method: 'POST',
+  headers: {'xi-api-key': 'xi-api-key', 'Content-Type': 'application/json'},
+  body: '{"text":"The first move is what sets everything in motion.","model_id":"eleven_multilingual_v2"}'
+};
 
-client = ElevenLabs(
-    api_key="xi-api-key",
-)
-
-client.text_to_speech.convert(
-    voice_id="JBFqnCBsd6RMkjVDRZzb",
-    output_format="mp3_44100_128",
-    text="The first move is what sets everything in motion.",
-    model_id="eleven_multilingual_v2",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

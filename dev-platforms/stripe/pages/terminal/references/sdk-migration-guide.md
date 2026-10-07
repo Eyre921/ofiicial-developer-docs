@@ -6,7 +6,7 @@ path: terminal/references/sdk-migration-guide
 
 # Terminal SDK migration guide
 
-Learn how to migrate to version 5.0.0 of the Stripe Terminal SDK.
+Learn how to migrate to version 6.0.0 of the Stripe Terminal SDK.
 
 ## Index
 

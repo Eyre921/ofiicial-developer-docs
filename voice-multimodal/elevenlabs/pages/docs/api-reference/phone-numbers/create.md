@@ -161,44 +161,43 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.phoneNumbers.create({
-        provider: "exotel",
-        phoneNumber: "+919999999999",
-        label: "Exotel Outbound",
-        accountSid: "your-account-sid",
-        apiKey: "your-api-key",
-        apiToken: "********",
-        apiSubdomain: "api.in.exotel.com",
-        appId: "12345",
-    });
+url = "https://api.elevenlabs.io/v1/convai/phone-numbers"
+
+payload = {
+    "account_sid": "your-account-sid",
+    "api_key": "your-api-key",
+    "api_subdomain": "api.in.exotel.com",
+    "api_token": "********",
+    "app_id": "12345",
+    "label": "Exotel Outbound",
+    "phone_number": "+919999999999",
+    "provider": "exotel"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
-from elevenlabs.conversational_ai.phone_numbers import PhoneNumbersCreateRequestBody_Exotel
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/phone-numbers';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"account_sid":"your-account-sid","api_key":"your-api-key","api_subdomain":"api.in.exotel.com","api_token":"********","app_id":"12345","label":"Exotel Outbound","phone_number":"+919999999999","provider":"exotel"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.phone_numbers.create(
-    request=PhoneNumbersCreateRequestBody_Exotel(
-        phone_number="+919999999999",
-        label="Exotel Outbound",
-        account_sid="your-account-sid",
-        api_key="your-api-key",
-        api_token="********",
-        api_subdomain="api.in.exotel.com",
-        app_id="12345",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

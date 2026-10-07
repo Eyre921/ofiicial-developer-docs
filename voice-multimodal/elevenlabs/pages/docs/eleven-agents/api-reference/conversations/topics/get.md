@@ -139,41 +139,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.topics.get("agent_id", {
-        cursor: "cursor",
-        fromUnixSecs: 1,
-        includeEvaluationCriteria: true,
-        pageSize: 1,
-        sortBy: "conversations",
-        sortDirection: "asc",
-        toUnixSecs: 1,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_id/topics"
 
+querystring = {"cursor":"cursor","from_unix_secs":"1","include_evaluation_criteria":"true","page_size":"1","sort_by":"conversations","sort_direction":"asc","to_unix_secs":"1"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_id/topics?cursor=cursor&from_unix_secs=1&include_evaluation_criteria=true&page_size=1&sort_by=conversations&sort_direction=asc&to_unix_secs=1';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.topics.get(
-    agent_id="agent_id",
-    cursor="cursor",
-    from_unix_secs=1,
-    include_evaluation_criteria=True,
-    page_size=1,
-    sort_by="conversations",
-    sort_direction="asc",
-    to_unix_secs=1,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

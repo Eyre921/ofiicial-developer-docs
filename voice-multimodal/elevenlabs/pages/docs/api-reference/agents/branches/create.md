@@ -1041,33 +1041,38 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.branches.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        parentVersionId: "string",
-        name: "string",
-        description: "string",
-    });
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches"
+
+payload = {
+    "parent_version_id": "string",
+    "name": "string",
+    "description": "string"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/branches';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"parent_version_id":"string","name":"string","description":"string"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.branches.create(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    parent_version_id="string",
-    name="string",
-    description="string",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

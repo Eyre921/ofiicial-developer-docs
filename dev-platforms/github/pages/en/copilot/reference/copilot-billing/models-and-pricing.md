@@ -83,33 +83,39 @@ GPT-5.6 Sol, GPT-5.6 Terra, GPT-5.6 Luna, GPT-6 Astra, GPT-6 Luna, GPT-6 Sol, an
 
 ### Anthropic
 
+> \[!NOTE] Models with a **Long context** tier, offer extended capabilities and longer context windows. See [Supported AI models in GitHub Copilot](/en/copilot/reference/ai-models/supported-models#models-with-extended-capabilities)
+
 Anthropic models include a cache write cost in addition to cached input.
 
-| Model                                 | Release status | Category  |  Input | Cached input | Cache write | Output |
-| ------------------------------------- | -------------- | --------- | -----: | -----------: | ----------: | -----: |
-|                                       |                |           |        |              |             |        |
-| Claude Haiku 4.5                      | GA             | Versatile |  $1.00 |        $0.10 |       $1.25 |  $5.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Sonnet 4                       | GA             | Versatile |  $3.00 |        $0.30 |       $3.75 | $15.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Sonnet 4.6                     | GA             | Versatile |  $3.00 |        $0.30 |       $3.75 | $15.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Opus 4.8                       | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Opus 5                         | GA             | Powerful  |  $5.00 |        $0.50 |       $6.25 | $25.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Opus 5.5                       | GA             | Powerful  |  $4.00 |        $0.20 |       $5.00 | $20.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Sonnet 5                       | GA             | Versatile |  $2.00 |        $0.20 |       $2.50 | $10.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Sonnet 5.5                     | GA             | Versatile |  $2.00 |        $0.20 |       $2.50 | $10.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Opus 4.8 (fast mode) (preview) | GA             | Powerful  | $10.00 |        $1.00 |      $12.50 | $50.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Fable 5                        | GA             | Powerful  | $10.00 |        $1.00 |      $12.50 | $50.00 |
-|                                       |                |           |        |              |             |        |
-| Claude Fable 5.1                      | GA             | Powerful  | $10.00 |        $0.25 |      $12.50 | $50.00 |
-|                                       |                |           |        |              |             |        |
+| Model                                 | Release status | Category    | Tier         | Threshold (input tokens) |  Input | Cached input | Cache write | Output |
+| ------------------------------------- | -------------- | ----------- | ------------ | ------------------------ | -----: | -----------: | ----------: | -----: |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Haiku 4.5                      | GA             | Versatile   | Default      | Not applicable           |  $1.00 |        $0.10 |       $1.25 |  $5.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Haiku 5.5                      | GA             | Lightweight | Default      | ≤ 100K                   |  $0.10 |        $0.01 |      $0.125 |  $0.50 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Haiku 5.5                      | GA             | Lightweight | Long context | > 100K                   |  $0.50 |        $0.05 |      $0.625 |  $2.50 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Sonnet 4                       | GA             | Versatile   | Default      | Not applicable           |  $3.00 |        $0.30 |       $3.75 | $15.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Sonnet 4.6                     | GA             | Versatile   | Default      | Not applicable           |  $3.00 |        $0.30 |       $3.75 | $15.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Opus 4.8                       | GA             | Powerful    | Default      | Not applicable           |  $5.00 |        $0.50 |       $6.25 | $25.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Opus 5                         | GA             | Powerful    | Default      | Not applicable           |  $5.00 |        $0.50 |       $6.25 | $25.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Opus 5.5                       | GA             | Powerful    | Default      | Not applicable           |  $4.00 |        $0.20 |       $5.00 | $20.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Sonnet 5                       | GA             | Versatile   | Default      | Not applicable           |  $2.00 |        $0.20 |       $2.50 | $10.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Sonnet 5.5                     | GA             | Versatile   | Default      | Not applicable           |  $2.00 |        $0.10 |       $2.50 | $10.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Opus 4.8 (fast mode) (preview) | GA             | Powerful    | Default      | Not applicable           | $10.00 |        $1.00 |      $12.50 | $50.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Fable 5                        | GA             | Powerful    | Default      | Not applicable           | $10.00 |        $1.00 |      $12.50 | $50.00 |
+|                                       |                |             |              |                          |        |              |             |        |
+| Claude Fable 5.1                      | GA             | Powerful    | Default      | Not applicable           | $10.00 |        $0.25 |      $12.50 | $50.00 |
+|                                       |                |             |              |                          |        |              |             |        |
 
 ### Google
 

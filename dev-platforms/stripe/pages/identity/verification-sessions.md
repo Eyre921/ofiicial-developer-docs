@@ -125,7 +125,7 @@ If any of the verification checks fail, the session will have a `requires_input`
   "created": 1610744321,
   "last_error": {
     "code": "document_expired",
-    "reason": "The document is expired.",
+    "reason": "The document is expired."
   },
   "last_verification_report": "vr_orWziM4j7CiRL8J4vQmXgW2w",
   "livemode": true,
@@ -134,7 +134,7 @@ If any of the verification checks fail, the session will have a `requires_input`
   "status": "requires_input",
   "type": "document",
   "redaction": null,
-  "url": null,
+  "url": null
 }
 ```
 

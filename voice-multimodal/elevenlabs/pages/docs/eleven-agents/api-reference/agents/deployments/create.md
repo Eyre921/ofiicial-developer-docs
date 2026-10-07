@@ -107,49 +107,42 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.deployments.create("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        deploymentRequest: {
-            requests: [
-                {
-                    branchId: "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-                    deploymentStrategy: {
-                        type: "percentage",
-                        trafficPercentage: 0.5,
-                    },
-                },
-            ],
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments"
 
+payload = { "deployment_request": { "requests": [
+            {
+                "branch_id": "agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
+                "deployment_strategy": {
+                    "traffic_percentage": 0.5,
+                    "type": "percentage"
+                }
+            }
+        ] } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, AgentDeploymentRequest, AgentDeploymentRequestItem, AgentDeploymentPercentageStrategy
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz/deployments';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"deployment_request":{"requests":[{"branch_id":"agtbrch_8901k4t9z5defmb8vh3e9361y7nj","deployment_strategy":{"traffic_percentage":0.5,"type":"percentage"}}]}}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.deployments.create(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    deployment_request=AgentDeploymentRequest(
-        requests=[
-            AgentDeploymentRequestItem(
-                branch_id="agtbrch_8901k4t9z5defmb8vh3e9361y7nj",
-                deployment_strategy=AgentDeploymentPercentageStrategy(
-                    type="percentage",
-                    traffic_percentage=0.5,
-                ),
-            )
-        ],
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -20,19 +20,21 @@ Send a reply to a message in an inbox thread.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install resend@6.32.1-preview-inboxes.2
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.32.1-preview-inboxes.4
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli@2.22.0-preview-inboxes.4
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install -g resend-cli@2.22.0-preview-inboxes.6
     ```
   </CodeGroup>
 </Warning>
 
-Replies from the inbox address. `to` is taken from the message you reply to.
-Add more recipients with `cc` and `bcc`. The total number of recipients can't
-exceed 50.
+Replies from the inbox address. `to` is taken from the message you reply to:
+its author, or its `Reply-To` address if it has one. When the inbox sent that
+message, the reply goes to the message's original `to` recipients. Add more
+recipients with `cc` and `bcc`. The total number of recipients can't exceed 50,
+counted after `reply_all` adds everyone on the message.
 
 At least one of `html` or `text` is required.
 
@@ -55,7 +57,8 @@ At least one of `html` or `text` is required.
 
 <ParamField type="string | string[]">
   CC recipient email address. For multiple addresses, send as an array of
-  strings. Not copied from the message you reply to.
+  strings. Not copied from the message you reply to unless `reply_all` is
+  `true`, which merges these addresses with the copied ones, without duplicates.
 </ParamField>
 
 <ParamField type="string | string[]">
@@ -74,6 +77,25 @@ At least one of `html` or `text` is required.
 <ParamField type="string">
   The subject of the reply. When omitted, the thread subject is used, prefixed
   with `Re:` if it isn't already. Max 2000 characters.
+</ParamField>
+
+<ParamField type="boolean">
+  Reply to everyone on the original message, not only its author. The reply goes
+  to the author, or its `Reply-To` address if it has one, and to the message's
+  `to` and `cc` recipients, excluding the inbox's own address. `bcc` recipients
+  are never copied.
+</ParamField>
+
+## Headers
+
+<ParamField type="string">
+  Add an idempotency key to prevent duplicated emails.
+
+  * Should be **unique per API request**
+  * Idempotency keys expire after **24 hours**
+  * Have a maximum length of **256 characters**
+
+  [Learn more](/docs/dashboard/emails/idempotency-keys)
 </ParamField>
 
 ## Response Fields

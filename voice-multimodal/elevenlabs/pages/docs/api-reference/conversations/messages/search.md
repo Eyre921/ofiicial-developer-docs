@@ -120,30 +120,29 @@ transcript_index: index of the message in the conversation transcript chunk_text
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.messages.search({
-        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        textQuery: "Customer asking to cancel and get money back",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search"
 
+querystring = {"agent_id":"agent_3701k3ttaq12ewp8b7qv5rfyszkz","text_query":"Customer asking to cancel and get money back"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/messages/smart-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&text_query=Customer+asking+to+cancel+and+get+money+back';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.messages.search(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    text_query="Customer asking to cancel and get money back",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

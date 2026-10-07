@@ -66,26 +66,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.textToVoice.preview.stream("37HceQefKmEi3bGovXjL");
-}
-main();
+url = "https://api.elevenlabs.io/v1/text-to-voice/37HceQefKmEi3bGovXjL/stream"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/text-to-voice/37HceQefKmEi3bGovXjL/stream';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.text_to_voice.preview.stream(
-    generated_voice_id="37HceQefKmEi3bGovXjL",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

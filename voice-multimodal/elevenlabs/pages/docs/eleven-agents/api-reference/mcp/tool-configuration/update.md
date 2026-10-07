@@ -390,30 +390,32 @@ Overrides the server's tool_call_sound setting for this tool. A sound name plays
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.toolConfigs.update("mcp_server_id", "tool_name", {
-        environment: "environment",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name"
 
+querystring = {"environment":"environment"}
+
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name?environment=environment';
+const options = {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
-client = ElevenLabs()
-
-client.conversational_ai.mcp_servers.tool_configs.update(
-    mcp_server_id="mcp_server_id",
-    tool_name="tool_name",
-    environment="environment",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

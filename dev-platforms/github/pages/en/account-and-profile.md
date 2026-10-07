@@ -12,7 +12,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Account](/en/account-and-profile/get-started/account)
 
-  Get started with your GitHub account.
+  <p>Get started with your GitHub account.</p>
 
 * [Profile](/en/account-and-profile/get-started/profile)
 
@@ -36,7 +36,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
-  <p>You can add a README to your GitHub profile to tell other people about yourself.</p>
+  You can add a README to your GitHub profile to tell other people about yourself.
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 

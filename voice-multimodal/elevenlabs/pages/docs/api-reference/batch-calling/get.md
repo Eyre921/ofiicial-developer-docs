@@ -354,26 +354,27 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.batchCalls.get("batch_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/batch-calling/batch_id"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/batch-calling/batch_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.batch_calls.get(
-    batch_id="batch_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

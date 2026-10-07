@@ -86,10 +86,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.ListContainerFilesRequest](../../models/operations/listcontainerfilesrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.ListContainerFilesRequest](../../models/operations/listcontainerfilesrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -172,10 +172,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.GetContainerFileRequest](../../models/operations/getcontainerfilerequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.GetContainerFileRequest](../../models/operations/getcontainerfilerequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -259,10 +259,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.DownloadContainerFileContentRequest](../../models/operations/downloadcontainerfilecontentrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.DownloadContainerFileContentRequest](../../models/operations/downloadcontainerfilecontentrequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 
@@ -346,10 +346,10 @@ run();
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `request` | [operations.PromoteContainerFileRequest](../../models/operations/promotecontainerfilerequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `options` | RequestOptions | :heavy\_minus\_sign: | Used to set various options for making HTTP requests. |
-| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | :heavy\_minus\_sign: | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | :heavy\_minus\_sign: | Enables retrying HTTP requests under certain failure conditions. |
+| `request` | [operations.PromoteContainerFileRequest](../../models/operations/promotecontainerfilerequest.mdx) | ✅ | The request object to use for the request. |
+| `options` | RequestOptions | ➖ | Used to set various options for making HTTP requests. |
+| `options.fetchOptions` | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options) | ➖ | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries` | [RetryConfig](../../lib/utils/retryconfig.mdx) | ➖ | Enables retrying HTTP requests under certain failure conditions. |
 
 ### Response
 

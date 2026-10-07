@@ -83,30 +83,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.voices.share("63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca", "21m00Tcm4TlvDq8ikWAM", {
-        newName: "John Smith",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM"
 
+payload = { "new_name": "John Smith" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/voices/add/63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca/21m00Tcm4TlvDq8ikWAM';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"new_name":"John Smith"}'
+};
 
-client = ElevenLabs()
-
-client.voices.share(
-    public_user_id="63e06b7e7cafdc46be4d2e0b3f045940231ae058d508589653d74d1265a574ca",
-    voice_id="21m00Tcm4TlvDq8ikWAM",
-    new_name="John Smith",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

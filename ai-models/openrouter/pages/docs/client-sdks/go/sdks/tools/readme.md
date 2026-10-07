@@ -60,12 +60,12 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `security` | [operations.ListToolsSecurity](../../models/operations/listtoolssecurity.mdx) | :heavy\_check\_mark: | The security requirements to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned | 50 |
-| `apiFormat` | [\*operations.APIFormat](../../models/operations/apiformat.mdx) | :heavy\_minus\_sign: | Only tools usable on this API format | responses |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `security` | [operations.ListToolsSecurity](../../models/operations/listtoolssecurity.mdx) | ✅ | The security requirements to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination. When both offset and limit are omitted, the full list is returned | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100). When both offset and limit are omitted, the full list is returned | 50 |
+| `apiFormat` | [\*operations.APIFormat](../../models/operations/apiformat.mdx) | ➖ | Only tools usable on this API format | responses |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -119,10 +119,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `security` | [operations.GetToolSecurity](../../models/operations/gettoolsecurity.mdx) | :heavy\_check\_mark: | The security requirements to use for the request. | |
-| `name` | `string` | :heavy\_check\_mark: | Canonical `openrouter:*` name or any accepted `tools[].type` alias | openrouter:web\_search |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `security` | [operations.GetToolSecurity](../../models/operations/gettoolsecurity.mdx) | ✅ | The security requirements to use for the request. | |
+| `name` | `string` | ✅ | Canonical `openrouter:*` name or any accepted `tools[].type` alias | openrouter:web\_search |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

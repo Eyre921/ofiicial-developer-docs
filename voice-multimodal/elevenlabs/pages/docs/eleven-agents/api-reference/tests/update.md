@@ -1027,33 +1027,37 @@ A common model for workflow tool responses.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.update("TeaqRRdTcIfIu2i7BYfT", {
-        type: "llm",
-        name: "name",
-    });
+url = "https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT"
+
+payload = {
+    "type": "llm",
+    "name": "name"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.put(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
-from elevenlabs.conversational_ai.tests import TestsUpdateRequestBody_Llm
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agent-testing/TeaqRRdTcIfIu2i7BYfT';
+const options = {
+  method: 'PUT',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"type":"llm","name":"name"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.tests.update(
-    test_id="TeaqRRdTcIfIu2i7BYfT",
-    request=TestsUpdateRequestBody_Llm(
-        name="name",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

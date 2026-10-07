@@ -138,28 +138,29 @@ Metadata about the project's source media.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.dubbing.project.list({
-        pageSize: 20,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/dubbing/project"
 
+querystring = {"page_size":"20"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/dubbing/project?page_size=20';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.dubbing.project.list(
-    page_size=20,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

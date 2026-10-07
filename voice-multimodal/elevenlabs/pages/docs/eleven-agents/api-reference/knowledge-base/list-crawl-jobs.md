@@ -106,36 +106,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.crawlJobs.list({
-        cursor: "cursor",
-        includeJobIds: [
-            "include_job_ids",
-        ],
-        pageSize: 1,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl"
 
+querystring = {"cursor":"cursor","include_job_ids":"[\"include_job_ids\"]","page_size":"1"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl?cursor=cursor&include_job_ids=%5B%22include_job_ids%22%5D&page_size=1';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.crawl_jobs.list(
-    cursor="cursor",
-    include_job_ids=[
-        "include_job_ids"
-    ],
-    page_size=1,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

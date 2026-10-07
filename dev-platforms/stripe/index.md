@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 470 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -493,6 +493,7 @@
 - `tax/customer-locations` — [Collect customer locations](pages/tax/customer-locations.md) · [原文](https://docs.stripe.com/tax/customer-locations.md)
 - `tax/digital-products` — [Tax for digital products](pages/tax/digital-products.md) · [原文](https://docs.stripe.com/tax/digital-products.md)
 - `tax/file-with-stripe` — [File US sales tax with Stripe](pages/tax/file-with-stripe.md) · [原文](https://docs.stripe.com/tax/file-with-stripe.md)
+- `tax/file-with-stripe-outside-us` — [File taxes outside the US](pages/tax/file-with-stripe-outside-us.md) · [原文](https://docs.stripe.com/tax/file-with-stripe-outside-us.md)
 - `tax/file-with-taxually` — [File tax with Taxually](pages/tax/file-with-taxually.md) · [原文](https://docs.stripe.com/tax/file-with-taxually.md)
 - `tax/filing` — [File and remit tax](pages/tax/filing.md) · [原文](https://docs.stripe.com/tax/filing.md)
 - `tax/how-tax-works` — [How Stripe Tax works](pages/tax/how-tax-works.md) · [原文](https://docs.stripe.com/tax/how-tax-works.md)

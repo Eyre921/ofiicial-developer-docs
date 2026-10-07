@@ -123,48 +123,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.list({
-        archived: true,
-        createdByUserId: "created_by_user_id",
-        cursor: "cursor",
-        pageSize: 1,
-        search: "search",
-        showOnlyOwnedAgents: true,
-        sortBy: "name",
-        sortDirection: "asc",
-        tags: [
-            "tags",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents"
 
+querystring = {"archived":"true","created_by_user_id":"created_by_user_id","cursor":"cursor","page_size":"1","search":"search","show_only_owned_agents":"true","sort_by":"name","sort_direction":"asc","tags":"[\"tags\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents?archived=true&created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_agents=true&sort_by=name&sort_direction=asc&tags=%5B%22tags%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.list(
-    archived=True,
-    created_by_user_id="created_by_user_id",
-    cursor="cursor",
-    page_size=1,
-    search="search",
-    show_only_owned_agents=True,
-    sort_by="name",
-    sort_direction="asc",
-    tags=[
-        "tags"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

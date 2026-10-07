@@ -149,38 +149,40 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.phoneNumbers.create({
-        provider: "twilio",
-        phoneNumber: "phone_number",
-        label: "label",
-        sid: "sid",
-        token: "token",
-    });
+url = "https://api.elevenlabs.io/v1/convai/phone-numbers"
+
+payload = {
+    "provider": "twilio",
+    "label": "label",
+    "phone_number": "phone_number",
+    "sid": "sid",
+    "token": "token"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
-from elevenlabs.conversational_ai.phone_numbers import PhoneNumbersCreateRequestBody_Twilio
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/phone-numbers';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"provider":"twilio","label":"label","phone_number":"phone_number","sid":"sid","token":"token"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.phone_numbers.create(
-    request=PhoneNumbersCreateRequestBody_Twilio(
-        phone_number="phone_number",
-        label="label",
-        sid="sid",
-        token="token",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

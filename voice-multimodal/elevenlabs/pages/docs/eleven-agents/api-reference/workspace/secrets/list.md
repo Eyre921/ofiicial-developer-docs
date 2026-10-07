@@ -161,34 +161,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.secrets.list({
-        cursor: "cursor",
-        dependencyLimit: 1,
-        pageSize: 1,
-        search: "search",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/secrets"
 
+querystring = {"cursor":"cursor","dependency_limit":"1","page_size":"1","search":"search"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/secrets?cursor=cursor&dependency_limit=1&page_size=1&search=search';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.secrets.list(
-    cursor="cursor",
-    dependency_limit=1,
-    page_size=1,
-    search="search",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

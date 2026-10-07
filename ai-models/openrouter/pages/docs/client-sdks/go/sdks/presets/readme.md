@@ -76,10 +76,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -131,9 +131,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. | my-preset |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -209,10 +209,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"max\_tokens": 150,<br />"messages": \[<br />\{<br />"content": "You are a helpful assistant.",<br />"role": "system"<br />},<br />\{<br />"content": "What is the capital of France?",<br />"role": "user"<br />}<br />],<br />"model": "openai/gpt-4",<br />"temperature": 0.7<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `chatRequest` | [components.ChatRequest](../../models/components/chatrequest.mdx) | ✅ | N/A | \{<br />"max\_tokens": 150,<br />"messages": \[<br />\{<br />"content": "You are a helpful assistant.",<br />"role": "system"<br />},<br />\{<br />"content": "What is the capital of France?",<br />"role": "user"<br />}<br />],<br />"model": "openai/gpt-4",<br />"temperature": 0.7<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -282,10 +282,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `messagesRequest` | [components.MessagesRequest](../../models/components/messagesrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"max\_tokens": 1024,<br />"messages": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `messagesRequest` | [components.MessagesRequest](../../models/components/messagesrequest.mdx) | ✅ | N/A | \{<br />"max\_tokens": 1024,<br />"messages": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -348,10 +348,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
-| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"input": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user",<br />"type": "message"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7,<br />"tools": \[<br />\{<br />"description": "Get the current weather in a given location",<br />"name": "get\_current\_weather",<br />"parameters": \{<br />"properties": \{<br />"location": \{<br />"type": "string"<br />}<br />},<br />"type": "object"<br />},<br />"type": "function"<br />}<br />],<br />"top\_p": 0.9<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. Created if it does not exist. | my-preset |
+| `responsesRequest` | [components.ResponsesRequest](../../models/components/responsesrequest.mdx) | ✅ | N/A | \{<br />"input": \[<br />\{<br />"content": "Hello, how are you?",<br />"role": "user",<br />"type": "message"<br />}<br />],<br />"model": "anthropic/claude-4.5-sonnet-20250929",<br />"temperature": 0.7,<br />"tools": \[<br />\{<br />"description": "Get the current weather in a given location",<br />"name": "get\_current\_weather",<br />"parameters": \{<br />"properties": \{<br />"location": \{<br />"type": "string"<br />}<br />},<br />"type": "object"<br />},<br />"type": "function"<br />}<br />],<br />"top\_p": 0.9<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -419,11 +419,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. | my-preset |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -476,10 +476,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `slug` | `string` | :heavy\_check\_mark: | URL-safe slug identifying the preset. | my-preset |
-| `version` | `string` | :heavy\_check\_mark: | Version number of the preset. | 1 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `slug` | `string` | ✅ | URL-safe slug identifying the preset. | my-preset |
+| `version` | `string` | ✅ | Version number of the preset. | 1 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

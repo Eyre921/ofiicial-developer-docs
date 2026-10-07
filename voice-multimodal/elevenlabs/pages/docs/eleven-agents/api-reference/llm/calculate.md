@@ -94,32 +94,38 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.llmUsage.calculate({
-        promptLength: 1,
-        numberOfPages: 1,
-        ragEnabled: true,
-    });
+url = "https://api.elevenlabs.io/v1/convai/llm-usage/calculate"
+
+payload = {
+    "prompt_length": 1,
+    "number_of_pages": 1,
+    "rag_enabled": True
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/llm-usage/calculate';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"prompt_length":1,"number_of_pages":1,"rag_enabled":true}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.llm_usage.calculate(
-    prompt_length=1,
-    number_of_pages=1,
-    rag_enabled=True,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

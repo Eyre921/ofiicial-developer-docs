@@ -85,30 +85,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.usage.get({
-        endUnix: 1688165999,
-        startUnix: 1685574000,
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/usage/character-stats"
 
+querystring = {"end_unix":"1688165999","start_unix":"1685574000"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/usage/character-stats?end_unix=1688165999&start_unix=1685574000';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.usage.get(
-    end_unix=1688165999,
-    start_unix=1685574000,
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

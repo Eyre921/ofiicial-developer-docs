@@ -189,33 +189,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.triageTickets.merge("agentqa_ticket_id", {
-        sourceTicketIds: [
-            "source_ticket_ids",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/merge"
 
+payload = { "source_ticket_ids": ["source_ticket_ids"] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets/agentqa_ticket_id/merge';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"source_ticket_ids":["source_ticket_ids"]}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.triage_tickets.merge(
-    agentqa_ticket_id="agentqa_ticket_id",
-    source_ticket_ids=[
-        "source_ticket_ids"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -244,56 +244,46 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.whatsapp.outboundMessage({
-        whatsappPhoneNumberId: "whatsapp_phone_number_id",
-        whatsappUserId: "whatsapp_user_id",
-        templateName: "template_name",
-        templateLanguageCode: "template_language_code",
-        templateParams: [
-            {
-                type: "body",
-                parameters: [
-                    {
-                        text: "text",
-                    },
-                ],
-            },
-        ],
-        agentId: "agent_id",
-    });
+url = "https://api.elevenlabs.io/v1/convai/whatsapp/outbound-message"
+
+payload = {
+    "whatsapp_phone_number_id": "whatsapp_phone_number_id",
+    "whatsapp_user_id": "whatsapp_user_id",
+    "template_name": "template_name",
+    "template_language_code": "template_language_code",
+    "template_params": [
+        {
+            "type": "body",
+            "parameters": [{ "text": "text" }]
+        }
+    ],
+    "agent_id": "agent_id"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, WhatsAppTemplateTextParam
-from elevenlabs.conversational_ai.whatsapp import BodySendAnOutboundMessageViaWhatsAppV1ConvaiWhatsappOutboundMessagePostTemplateParamsItem_Body
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/whatsapp/outbound-message';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"whatsapp_phone_number_id":"whatsapp_phone_number_id","whatsapp_user_id":"whatsapp_user_id","template_name":"template_name","template_language_code":"template_language_code","template_params":[{"type":"body","parameters":[{"text":"text"}]}],"agent_id":"agent_id"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.whatsapp.outbound_message(
-    whatsapp_phone_number_id="whatsapp_phone_number_id",
-    whatsapp_user_id="whatsapp_user_id",
-    template_name="template_name",
-    template_language_code="template_language_code",
-    template_params=[
-        BodySendAnOutboundMessageViaWhatsAppV1ConvaiWhatsappOutboundMessagePostTemplateParamsItem_Body(
-            parameters=[
-                WhatsAppTemplateTextParam(
-                    text="text",
-                )
-            ],
-        )
-    ],
-    agent_id="agent_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

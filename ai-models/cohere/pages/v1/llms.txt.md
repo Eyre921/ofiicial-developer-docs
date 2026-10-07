@@ -5,7 +5,7 @@ path: v1/llms.txt
 ---
 
 > For clean Markdown of any page, append .md to the page URL.
-> For a complete documentation index, see https://docs.cohere.com/llms.txt.
+> For a complete documentation index, see https://docs.cohere.com/v1/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://docs.cohere.com/_mcp/server.
 
 # v1 API
@@ -122,7 +122,7 @@ path: v1/llms.txt
 - [An Amazon SageMaker Setup Guide](https://docs.cohere.com/docs/amazon-sagemaker-setup-guide.md): This document will guide you through enabling development teams to access Cohere’s offerings on Amazon SageMaker.
 - [Deploy Finetuned Command Models from AWS Marketplace](https://docs.cohere.com/docs/bring-your-finetuned-models-to-sagemaker.md): This document provides a guide for bringing your own finetuned models to Amazon SageMaker.
 - [Cohere on the Microsoft Azure Platform](https://docs.cohere.com/docs/cohere-on-microsoft-azure.md): This page describes how to work with Cohere models on Microsoft Azure.
-- [Cohere on Oracle Cloud Infrastructure (OCI)](https://docs.cohere.com/docs/oracle-cloud-infrastructure-oci.md): Use Cohere models on OCI Generative AI with the native Cohere Python SDK
+- [Cohere on Oracle Cloud Infrastructure (OCI)](https://docs.cohere.com/docs/oracle-cloud-infrastructure-oci)
 - [Cohere Cookbooks: AI Agents, RAG, Search, and More](https://docs.cohere.com/docs/cookbooks.md): Get started with Cohere's cookbooks to build agents, QA bots, perform searches, and more, all organized by category.
 - [Welcome to LLM University!](https://docs.cohere.com/docs/llmu-2.md): LLM University (LLMU) offers in-depth, practical NLP and LLM training. Ideal for all skill levels. Learn, build, and deploy Language AI with Cohere.
 - [Build an Onboarding Assistant with Cohere!](https://docs.cohere.com/docs/build-things-with-cohere.md): This page describes how to build an onboarding assistant with Cohere's large language models.
@@ -238,14 +238,14 @@ path: v1/llms.txt
 ## OpenAPI Specification
 
 The raw OpenAPI 3.1 specification for this API is available at:
-- [OpenAPI JSON](https://docs.cohere.com/openapi.json)
-- [OpenAPI YAML](https://docs.cohere.com/openapi.yaml)
+- [OpenAPI JSON](https://docs.cohere.com/v1/openapi.json)
+- [OpenAPI YAML](https://docs.cohere.com/v1/openapi.yaml)
 
 
 > **Note:** This page contains both a page directory (above) and the landing page content (below). The page directory is generated for agent use and does not appear on the landing page.
 
 > For clean Markdown of any page, append .md to the page URL.
-> For a complete documentation index, see https://docs.cohere.com/llms.txt.
+> For a complete documentation index, see https://docs.cohere.com/v1/llms.txt.
 > For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://docs.cohere.com/_mcp/server.
 
 > Cohere's API documentation helps developers easily integrate natural language processing and generation into their products.

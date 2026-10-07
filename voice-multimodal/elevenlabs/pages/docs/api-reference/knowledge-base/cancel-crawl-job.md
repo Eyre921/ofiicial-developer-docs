@@ -58,26 +58,27 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.crawlJobs.cancel("crawl_job_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id/cancel"
 
+response = requests.post(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/crawl/crawl_job_id/cancel';
+const options = {method: 'POST'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.crawl_jobs.cancel(
-    crawl_job_id="crawl_job_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

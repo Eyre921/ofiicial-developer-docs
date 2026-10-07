@@ -99,32 +99,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.pronunciationDictionaries.list({
-        includeArchived: false,
-        sort: "creation_time_unix",
-        sortDirection: "descending",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/pronunciation-dictionaries"
 
+querystring = {"include_archived":"false","sort":"creation_time_unix","sort_direction":"descending"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/pronunciation-dictionaries?include_archived=false&sort=creation_time_unix&sort_direction=descending';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.pronunciation_dictionaries.list(
-    include_archived=False,
-    sort="creation_time_unix",
-    sort_direction="descending",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

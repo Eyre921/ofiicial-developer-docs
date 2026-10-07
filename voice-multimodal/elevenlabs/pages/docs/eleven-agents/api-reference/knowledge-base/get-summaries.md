@@ -292,34 +292,29 @@ Metadata for a KB folder that mirrors an external source folder.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.documents.summaries.get({
-        documentIds: [
-            "21m00Tcm4TlvDq8ikWAM",
-            "31n11Udm5UmwEr9jkXBN",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/summaries"
 
+querystring = {"document_ids":"[\"21m00Tcm4TlvDq8ikWAM\",\"31n11Udm5UmwEr9jkXBN\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/summaries?document_ids=%5B%2221m00Tcm4TlvDq8ikWAM%22%2C%2231n11Udm5UmwEr9jkXBN%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.documents.summaries.get(
-    document_ids=[
-        "21m00Tcm4TlvDq8ikWAM",
-        "31n11Udm5UmwEr9jkXBN"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

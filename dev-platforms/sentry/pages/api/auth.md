@@ -15,6 +15,8 @@ url: https://docs.sentry.io/api/auth/
 
 Authentication tokens are passed using an auth header, and are used to authenticate as a user or organization account with the API. In our documentation, we have several placeholders that appear between curly braces or chevrons, such as `{API_KEY}` or `<auth_token>`, which you will need to replace with one of your authentication tokens in order to use the API call effectively.
 
+For the string format of auth tokens, organization tokens, DSNs, and legacy API keys, see [Token and Credential Formats](https://docs.sentry.io/security-legal-pii/security/token-formats.md).
+
 For example, when the documentation says:
 
 ```bash

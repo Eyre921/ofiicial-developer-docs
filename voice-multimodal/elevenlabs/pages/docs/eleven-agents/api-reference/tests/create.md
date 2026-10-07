@@ -570,32 +570,37 @@ A common model for workflow tool responses.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.create({
-        type: "llm",
-        name: "name",
-    });
+url = "https://api.elevenlabs.io/v1/convai/agent-testing/create"
+
+payload = {
+    "type": "llm",
+    "name": "name"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
-from elevenlabs.conversational_ai.tests import TestsCreateRequestBody_Llm
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agent-testing/create';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"type":"llm","name":"name"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.tests.create(
-    request=TestsCreateRequestBody_Llm(
-        name="name",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

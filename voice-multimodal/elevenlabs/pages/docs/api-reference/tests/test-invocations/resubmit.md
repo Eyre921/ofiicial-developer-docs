@@ -1847,35 +1847,37 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tests.invocations.resubmit("test_invocation_id", {
-        testRunIds: [
-            "string",
-        ],
-        agentId: "string",
-    });
+url = "https://api.elevenlabs.io/v1/convai/test-invocations/test_invocation_id/resubmit"
+
+payload = {
+    "test_run_ids": ["string"],
+    "agent_id": "string"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/test-invocations/test_invocation_id/resubmit';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"test_run_ids":["string"],"agent_id":"string"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.tests.invocations.resubmit(
-    test_invocation_id="test_invocation_id",
-    test_run_ids=[
-        "string"
-    ],
-    agent_id="string",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

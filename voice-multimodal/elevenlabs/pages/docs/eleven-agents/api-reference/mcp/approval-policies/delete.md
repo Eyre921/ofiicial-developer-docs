@@ -333,27 +333,27 @@ The constant value to use
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.toolApprovals.delete("mcp_server_id", "tool_name");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-approvals/tool_name"
 
+response = requests.delete(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-approvals/tool_name';
+const options = {method: 'DELETE'};
 
-client = ElevenLabs()
-
-client.conversational_ai.mcp_servers.tool_approvals.delete(
-    mcp_server_id="mcp_server_id",
-    tool_name="tool_name",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

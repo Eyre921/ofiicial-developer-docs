@@ -77,9 +77,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [operations.ListFilesRequest](../../models/operations/listfilesrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [operations.ListFilesRequest](../../models/operations/listfilesrequest.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -157,11 +157,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `requestBody` | [operations.UploadFileRequestBody](../../models/operations/uploadfilerequestbody.mdx) | :heavy\_check\_mark: | N/A | |
-| `workspaceID` | `*string` | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `requestBody` | [operations.UploadFileRequestBody](../../models/operations/uploadfilerequestbody.mdx) | ✅ | N/A | |
+| `workspaceID` | `*string` | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -229,11 +229,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `fileID` | `string` | :heavy\_check\_mark: | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `workspaceID` | `*string` | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `fileID` | `string` | ✅ | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `workspaceID` | `*string` | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -300,11 +300,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `fileID` | `string` | :heavy\_check\_mark: | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `workspaceID` | `*string` | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `fileID` | `string` | ✅ | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `workspaceID` | `*string` | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -361,11 +361,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `fileID` | `string` | :heavy\_check\_mark: | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
-| `workspaceID` | `*string` | :heavy\_minus\_sign: | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
-| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | :heavy\_minus\_sign: | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `fileID` | `string` | ✅ | N/A | or\_file\_011CNha8iCJcU1wXNR6q4V8w |
+| `workspaceID` | `*string` | ➖ | Workspace to scope the request to. Defaults to the caller’s default workspace. | a103d8b6-42f0-4e50-9a3c-bf41e2c3c1a7 |
+| `provider` | [\*components.FileProvider](../../models/components/fileprovider.mdx) | ➖ | Store or read this file on the named provider using your own API key for it. Omit to use OpenRouter storage. | openai |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

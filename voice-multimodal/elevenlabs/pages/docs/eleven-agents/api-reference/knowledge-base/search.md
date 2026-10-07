@@ -293,38 +293,29 @@ Metadata for a KB folder that mirrors an external source folder.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.search({
-        cursor: "cursor",
-        pageSize: 1,
-        query: "query",
-        types: [
-            "file",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base/search"
 
+querystring = {"cursor":"cursor","page_size":"1","query":"query","types":"[\"file\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base/search?cursor=cursor&page_size=1&query=query&types=%5B%22file%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.search(
-    cursor="cursor",
-    page_size=1,
-    query="query",
-    types=[
-        "file"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

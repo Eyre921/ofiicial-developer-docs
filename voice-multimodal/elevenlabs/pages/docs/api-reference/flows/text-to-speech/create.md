@@ -144,24 +144,38 @@ Overrides for the voice's saved settings, applied to one generation.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.flows.textToSpeech.create();
+url = "https://api.elevenlabs.io/v1/flows/text-to-speech"
+
+payload = {
+    "model_id": "string",
+    "text": "The first move is what sets everything in motion.",
+    "voice": "JBFqnCBsd6RMkjVDRZzb"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/flows/text-to-speech';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"model_id":"string","text":"The first move is what sets everything in motion.","voice":"JBFqnCBsd6RMkjVDRZzb"}'
+};
 
-client = ElevenLabs()
-
-client.flows.text_to_speech.create()
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -3269,29 +3269,32 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.agents.update("agent_3701k3ttaq12ewp8b7qv5rfyszkz", {
-        branchId: "agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz"
 
+querystring = {"branch_id":"agtbranch_0901k4aafjxxfxt93gd841r7tv5t"}
+
+payload = {}
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/agents/agent_3701k3ttaq12ewp8b7qv5rfyszkz?branch_id=agtbranch_0901k4aafjxxfxt93gd841r7tv5t';
+const options = {method: 'PATCH', headers: {'Content-Type': 'application/json'}, body: '{}'};
 
-client = ElevenLabs()
-
-client.conversational_ai.agents.update(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="agtbranch_0901k4aafjxxfxt93gd841r7tv5t",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

@@ -299,52 +299,29 @@ Metadata for a KB folder that mirrors an external source folder.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.knowledgeBase.list({
-        ancestorFolderId: "ancestor_folder_id",
-        createdByUserId: "created_by_user_id",
-        cursor: "cursor",
-        foldersFirst: true,
-        pageSize: 1,
-        parentFolderId: "parent_folder_id",
-        search: "search",
-        showOnlyOwnedDocuments: true,
-        sortBy: "name",
-        sortDirection: "asc",
-        types: [
-            "file",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/knowledge-base"
 
+querystring = {"ancestor_folder_id":"ancestor_folder_id","created_by_user_id":"created_by_user_id","cursor":"cursor","folders_first":"true","page_size":"1","parent_folder_id":"parent_folder_id","search":"search","show_only_owned_documents":"true","sort_by":"name","sort_direction":"asc","types":"[\"file\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/knowledge-base?ancestor_folder_id=ancestor_folder_id&created_by_user_id=created_by_user_id&cursor=cursor&folders_first=true&page_size=1&parent_folder_id=parent_folder_id&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22file%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.knowledge_base.list(
-    ancestor_folder_id="ancestor_folder_id",
-    created_by_user_id="created_by_user_id",
-    cursor="cursor",
-    folders_first=True,
-    page_size=1,
-    parent_folder_id="parent_folder_id",
-    search="search",
-    show_only_owned_documents=True,
-    sort_by="name",
-    sort_direction="asc",
-    types=[
-        "file"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

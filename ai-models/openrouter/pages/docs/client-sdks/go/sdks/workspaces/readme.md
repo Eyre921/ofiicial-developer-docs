@@ -81,10 +81,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -144,9 +144,9 @@ func main() {
 
 | Parameter | Type | Required | Description |
 | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. |
-| `request` | [components.CreateWorkspaceRequest](../../models/components/createworkspacerequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. |
+| `request` | [components.CreateWorkspaceRequest](../../models/components/createworkspacerequest.mdx) | ✅ | The request object to use for the request. |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. |
 
 ### Response
 
@@ -199,10 +199,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `confirmDefaultWorkspaceDeletion` | `*bool` | :heavy\_minus\_sign: | Required to delete the default workspace. Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces. | false |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `confirmDefaultWorkspaceDeletion` | `*bool` | ➖ | Required to delete the default workspace. Deleting it permanently disables the account’s unscoped inference API keys (management/provisioning keys are retained) and its budgets, guardrails, classifiers, and broadcast destinations. Ignored for non-default workspaces. | false |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -256,9 +256,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -314,10 +314,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `updateWorkspaceRequest` | [components.UpdateWorkspaceRequest](../../models/components/updateworkspacerequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"name": "Updated Workspace",<br />"slug": "updated-workspace"<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `updateWorkspaceRequest` | [components.UpdateWorkspaceRequest](../../models/components/updateworkspacerequest.mdx) | ✅ | N/A | \{<br />"name": "Updated Workspace",<br />"slug": "updated-workspace"<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -384,11 +384,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `offset` | optionalnullable.OptionalNullable\[`int64`] | :heavy\_minus\_sign: | Number of records to skip for pagination | 0 |
-| `limit` | `*int64` | :heavy\_minus\_sign: | Maximum number of records to return (max 100) | 50 |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `offset` | optionalnullable.OptionalNullable\[`int64`] | ➖ | Number of records to skip for pagination | 0 |
+| `limit` | `*int64` | ➖ | Maximum number of records to return (max 100) | 50 |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -447,10 +447,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `bulkAddWorkspaceMembersRequest` | [components.BulkAddWorkspaceMembersRequest](../../models/components/bulkaddworkspacemembersrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"user\_ids": \[<br />"user\_abc123",<br />"user\_def456"<br />]<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `bulkAddWorkspaceMembersRequest` | [components.BulkAddWorkspaceMembersRequest](../../models/components/bulkaddworkspacemembersrequest.mdx) | ✅ | N/A | \{<br />"user\_ids": \[<br />"user\_abc123",<br />"user\_def456"<br />]<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -510,10 +510,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `id` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `bulkRemoveWorkspaceMembersRequest` | [components.BulkRemoveWorkspaceMembersRequest](../../models/components/bulkremoveworkspacemembersrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"user\_ids": \[<br />"user\_abc123",<br />"user\_def456"<br />]<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `id` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `bulkRemoveWorkspaceMembersRequest` | [components.BulkRemoveWorkspaceMembersRequest](../../models/components/bulkremoveworkspacemembersrequest.mdx) | ✅ | N/A | \{<br />"user\_ids": \[<br />"user\_abc123",<br />"user\_def456"<br />]<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -567,9 +567,9 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `workspaceRef` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `workspaceRef` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -622,10 +622,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `workspaceRef` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `interval` | [components.WorkspaceBudgetInterval](../../models/components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `workspaceRef` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../models/components/workspacebudgetinterval.mdx) | ✅ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -679,10 +679,10 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `workspaceRef` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `interval` | [components.WorkspaceBudgetInterval](../../models/components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `workspaceRef` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../models/components/workspacebudgetinterval.mdx) | ✅ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 
@@ -739,11 +739,11 @@ func main() {
 
 | Parameter | Type | Required | Description | Example |
 | - | - | - | - | - |
-| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | :heavy\_check\_mark: | The context to use for the request. | |
-| `workspaceRef` | `string` | :heavy\_check\_mark: | The workspace ID (UUID) or slug | production |
-| `interval` | [components.WorkspaceBudgetInterval](../../models/components/workspacebudgetinterval.mdx) | :heavy\_check\_mark: | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
-| `upsertWorkspaceBudgetRequest` | [components.UpsertWorkspaceBudgetRequest](../../models/components/upsertworkspacebudgetrequest.mdx) | :heavy\_check\_mark: | N/A | \{<br />"include\_byok\_in\_budgets": true,<br />"limit\_usd": 100<br />} |
-| `opts` | \[][operations.Option](../../models/operations/option.mdx) | :heavy\_minus\_sign: | The options for this request. | |
+| `ctx` | [context.Context](https://pkg.go.dev/context#Context) | ✅ | The context to use for the request. | |
+| `workspaceRef` | `string` | ✅ | The workspace ID (UUID) or slug | production |
+| `interval` | [components.WorkspaceBudgetInterval](../../models/components/workspacebudgetinterval.mdx) | ✅ | Budget reset interval. Use "lifetime" for a one-time budget that never resets. | monthly |
+| `upsertWorkspaceBudgetRequest` | [components.UpsertWorkspaceBudgetRequest](../../models/components/upsertworkspacebudgetrequest.mdx) | ✅ | N/A | \{<br />"include\_byok\_in\_budgets": true,<br />"limit\_usd": 100<br />} |
+| `opts` | \[][operations.Option](../../models/operations/option.mdx) | ➖ | The options for this request. | |
 
 ### Response
 

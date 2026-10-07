@@ -354,26 +354,27 @@ The constant value to use
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.get("mcp_server_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.mcp_servers.get(
-    mcp_server_id="mcp_server_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

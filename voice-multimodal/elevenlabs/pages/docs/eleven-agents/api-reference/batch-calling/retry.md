@@ -137,26 +137,27 @@ How to run Twilio's carrier-level answering machine detection (AMD) on a call.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.batchCalls.retry("batch_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/retry"
 
+response = requests.post(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/batch-calling/batch_id/retry';
+const options = {method: 'POST'};
 
-client = ElevenLabs()
-
-client.conversational_ai.batch_calls.retry(
-    batch_id="batch_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

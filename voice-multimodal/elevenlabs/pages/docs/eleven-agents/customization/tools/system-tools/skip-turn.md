@@ -106,16 +106,16 @@ You can also configure the Skip Turn tool directly within the Agent's UI, in the
 
 Navigate to your agent's configuration page. In the "Tools" section, click on "Add tool", the `Skip Turn` option will already be available.
 
-![Add Skip Turn Tool Option](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/8b95051da94ada3dae7e42121148ad4509b49413e73bd16351142372ca26a68d/assets/images/conversational-ai/skip-turn-option.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T100028Z&X-Amz-Expires=604800&X-Amz-Signature=9ea624b4162ca998972fe4d6da2c30f7c30b7aa92b8e39fa132315745c98bc06&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Add Skip Turn Tool Option](/docs/_fern-img/8b95051da94ada3dae7e42121148ad4509b49413e73bd16351142372ca26a68d.webp)
 
 ### Step 2: Configure the tool
 
 You can optionally provide a description to customize when the LLM should trigger this tool, or leave it blank to use the default behavior.
 
-![Configure Skip Turn Tool](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/cbb419db630beb4feefc390ef3f3576f7a6dc2df098faec4fbd2d1d5e703364f/assets/images/conversational-ai/skip-turn-config.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T100028Z&X-Amz-Expires=604800&X-Amz-Signature=bcf77972e82653a94512526ce39dd3ff5cd9b81db1eb62dc59ce7bd875db70bc&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Configure Skip Turn Tool](/docs/_fern-img/cbb419db630beb4feefc390ef3f3576f7a6dc2df098faec4fbd2d1d5e703364f.webp)
 
 ### Step 3: Enable the tool
 
 Once configured, the `Skip Turn` tool will appear in your agent's list of enabled tools and the agent will be able to skip turns. .
 
-![Skip Turn Tool Enabled](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/bdb738dc85ff91107cafa5899aad116420aabe9fe794b648bc1f0751729ba5af/assets/images/conversational-ai/skip-turn-enabled.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T100028Z&X-Amz-Expires=604800&X-Amz-Signature=dcc61e6cf4ffa15e9d0e2cf57ecb5c6413cd03d3a71bc0c4e3f44116ad63593f&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Skip Turn Tool Enabled](/docs/_fern-img/bdb738dc85ff91107cafa5899aad116420aabe9fe794b648bc1f0751729ba5af.webp)

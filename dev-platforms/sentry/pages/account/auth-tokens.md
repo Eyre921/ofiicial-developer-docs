@@ -22,6 +22,8 @@ Each auth token is created with a certain set of permissions and scopes which ar
 
 We recommend using a separate auth token for each use case. For example, you would use a different auth token to upload source maps than the one you use with Sentry CLI. This has the benefit that if an auth token is compromised, you can revoke that auth token without impacting the rest of your workflow.
 
+To match tokens and DSNs in logs or secret scanners, see [Token and Credential Formats](https://docs.sentry.io/security-legal-pii/security/token-formats.md).
+
 ## [Types of Auth Tokens](https://docs.sentry.io/account/auth-tokens.md#types-of-auth-tokens)
 
 There are three key types of auth tokens in Sentry:

@@ -97,35 +97,37 @@ The permissions of the XI API.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.serviceAccounts.apiKeys.create("service_account_user_id", {
-        name: "string",
-        permissions: [
-            "text_to_speech",
-        ],
-    });
+url = "https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys"
+
+payload = {
+    "name": "string",
+    "permissions": ["text_to_speech"]
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/service-accounts/service_account_user_id/api-keys';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"name":"string","permissions":["text_to_speech"]}'
+};
 
-client = ElevenLabs()
-
-client.service_accounts.api_keys.create(
-    service_account_user_id="service_account_user_id",
-    name="string",
-    permissions=[
-        "text_to_speech"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

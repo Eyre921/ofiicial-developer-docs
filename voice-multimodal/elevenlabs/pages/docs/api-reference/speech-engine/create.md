@@ -420,32 +420,34 @@ Used to reference a dynamic variable.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.speechEngine.create({
-        speechEngine: {
-            wsUrl: "string",
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/speech-engine"
 
+payload = { "speech_engine": { "ws_url": "string" } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, SpeechEngineConfig
+```javascript
+const url = 'https://api.elevenlabs.io/v1/speech-engine';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"speech_engine":{"ws_url":"string"}}'
+};
 
-client = ElevenLabs()
-
-client.speech_engine.create(
-    speech_engine=SpeechEngineConfig(
-        ws_url="string",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

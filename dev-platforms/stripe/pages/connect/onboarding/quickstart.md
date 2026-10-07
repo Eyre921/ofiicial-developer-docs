@@ -827,9 +827,10 @@ import com.stripe.param.v2.core.AccountUpdateParams;
       Account connectedAccount = client.v2().core().accounts().update(connectedAccountId,
         AccountUpdateParams.builder()
         .setIdentity(
-          AccountUpdateParams.Identity.builder().
+          AccountUpdateParams.Identity.builder()
             .setEntityType(AccountUpdateParams.Identity.EntityType.INDIVIDUAL)
-        ).build()
+            .build()
+        )
         .setBusinessType(AccountUpdateParams.Identity.EntityType.INDIVIDUAL)
         .build()
       );

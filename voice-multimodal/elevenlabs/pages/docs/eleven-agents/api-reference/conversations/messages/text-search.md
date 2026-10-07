@@ -155,146 +155,29 @@ transcript_index: index of the message in the conversation transcript chunk_text
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.messages.textSearch({
-        agentId: "agent_id",
-        branchId: "branch_id",
-        callDurationMaxSecs: 1,
-        callDurationMinSecs: 1,
-        callStartAfterUnix: 1,
-        callStartBeforeUnix: 1,
-        callSuccessful: "success",
-        conversationInitiationSource: "unknown",
-        conversationProductType: "agents",
-        cursor: "cursor",
-        dataCollectionParams: [
-            "data_collection_params",
-        ],
-        dynamicVariableParams: [
-            "dynamic_variable_params",
-        ],
-        evaluationParams: [
-            "evaluation_params",
-        ],
-        excludeStatuses: [
-            "initiated",
-        ],
-        hasFeedbackComment: true,
-        includeInvalidToolCalls: true,
-        mainLanguages: [
-            "main_languages",
-        ],
-        pageSize: 1,
-        ratingMax: 1,
-        ratingMin: 1,
-        sortBy: "search_score",
-        summaryMode: "exclude",
-        terminationReasons: [
-            "termination_reasons",
-        ],
-        textOnly: true,
-        textQuery: "refund policy",
-        toolNames: [
-            "tool_names",
-        ],
-        toolNamesErrored: [
-            "tool_names_errored",
-        ],
-        toolNamesSuccessful: [
-            "tool_names_successful",
-        ],
-        topicIds: [
-            "topic_ids",
-        ],
-        triggeredProcedureIds: [
-            "triggered_procedure_ids",
-        ],
-        userId: "user_id",
-        versionId: "version_id",
-        visitedAgentBranchIds: [
-            "visited_agent_branch_ids",
-        ],
-        visitedAgentIds: [
-            "visited_agent_ids",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search"
 
+querystring = {"agent_id":"agent_id","branch_id":"branch_id","call_duration_max_secs":"1","call_duration_min_secs":"1","call_start_after_unix":"1","call_start_before_unix":"1","call_successful":"success","conversation_initiation_source":"unknown","conversation_product_type":"agents","cursor":"cursor","data_collection_params":"[\"data_collection_params\"]","dynamic_variable_params":"[\"dynamic_variable_params\"]","evaluation_params":"[\"evaluation_params\"]","exclude_statuses":"[\"initiated\"]","has_feedback_comment":"true","include_invalid_tool_calls":"true","main_languages":"[\"main_languages\"]","page_size":"1","rating_max":"1","rating_min":"1","sort_by":"search_score","summary_mode":"exclude","termination_reasons":"[\"termination_reasons\"]","text_only":"true","text_query":"refund policy","tool_names":"[\"tool_names\"]","tool_names_errored":"[\"tool_names_errored\"]","tool_names_successful":"[\"tool_names_successful\"]","topic_ids":"[\"topic_ids\"]","triggered_procedure_ids":"[\"triggered_procedure_ids\"]","user_id":"user_id","version_id":"version_id","visited_agent_branch_ids":"[\"visited_agent_branch_ids\"]","visited_agent_ids":"[\"visited_agent_ids\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_params=%5B%22data_collection_params%22%5D&dynamic_variable_params=%5B%22dynamic_variable_params%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&exclude_statuses=%5B%22initiated%22%5D&has_feedback_comment=true&include_invalid_tool_calls=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&sort_by=search_score&summary_mode=exclude&termination_reasons=%5B%22termination_reasons%22%5D&text_only=true&text_query=refund+policy&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&triggered_procedure_ids=%5B%22triggered_procedure_ids%22%5D&user_id=user_id&version_id=version_id&visited_agent_branch_ids=%5B%22visited_agent_branch_ids%22%5D&visited_agent_ids=%5B%22visited_agent_ids%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.messages.text_search(
-    agent_id="agent_id",
-    branch_id="branch_id",
-    call_duration_max_secs=1,
-    call_duration_min_secs=1,
-    call_start_after_unix=1,
-    call_start_before_unix=1,
-    call_successful="success",
-    conversation_initiation_source="unknown",
-    conversation_product_type="agents",
-    cursor="cursor",
-    data_collection_params=[
-        "data_collection_params"
-    ],
-    dynamic_variable_params=[
-        "dynamic_variable_params"
-    ],
-    evaluation_params=[
-        "evaluation_params"
-    ],
-    exclude_statuses=[
-        "initiated"
-    ],
-    has_feedback_comment=True,
-    include_invalid_tool_calls=True,
-    main_languages=[
-        "main_languages"
-    ],
-    page_size=1,
-    rating_max=1,
-    rating_min=1,
-    sort_by="search_score",
-    summary_mode="exclude",
-    termination_reasons=[
-        "termination_reasons"
-    ],
-    text_only=True,
-    text_query="refund policy",
-    tool_names=[
-        "tool_names"
-    ],
-    tool_names_errored=[
-        "tool_names_errored"
-    ],
-    tool_names_successful=[
-        "tool_names_successful"
-    ],
-    topic_ids=[
-        "topic_ids"
-    ],
-    triggered_procedure_ids=[
-        "triggered_procedure_ids"
-    ],
-    user_id="user_id",
-    version_id="version_id",
-    visited_agent_branch_ids=[
-        "visited_agent_branch_ids"
-    ],
-    visited_agent_ids=[
-        "visited_agent_ids"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

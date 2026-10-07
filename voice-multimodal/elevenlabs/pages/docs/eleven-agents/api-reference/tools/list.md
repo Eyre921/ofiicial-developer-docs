@@ -480,48 +480,29 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.list({
-        createdByUserId: "created_by_user_id",
-        cursor: "cursor",
-        pageSize: 1,
-        search: "search",
-        showOnlyOwnedDocuments: true,
-        sortBy: "name",
-        sortDirection: "asc",
-        types: [
-            "webhook",
-        ],
-        usedByAgentId: "used_by_agent_id",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/tools"
 
+querystring = {"created_by_user_id":"created_by_user_id","cursor":"cursor","page_size":"1","search":"search","show_only_owned_documents":"true","sort_by":"name","sort_direction":"asc","types":"[\"webhook\"]","used_by_agent_id":"used_by_agent_id"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/tools?created_by_user_id=created_by_user_id&cursor=cursor&page_size=1&search=search&show_only_owned_documents=true&sort_by=name&sort_direction=asc&types=%5B%22webhook%22%5D&used_by_agent_id=used_by_agent_id';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.tools.list(
-    created_by_user_id="created_by_user_id",
-    cursor="cursor",
-    page_size=1,
-    search="search",
-    show_only_owned_documents=True,
-    sort_by="name",
-    sort_direction="asc",
-    types=[
-        "webhook"
-    ],
-    used_by_agent_id="used_by_agent_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

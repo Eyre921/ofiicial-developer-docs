@@ -155,29 +155,34 @@ Not used. Make sure you anticipate new types in the future.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.studio.projects.chapters.create("21m00Tcm4TlvDq8ikWAM", {
-        name: "Chapter 1",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters"
 
+payload = { "name": "Chapter 1" }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/studio/projects/21m00Tcm4TlvDq8ikWAM/chapters';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"name":"Chapter 1"}'
+};
 
-client = ElevenLabs()
-
-client.studio.projects.chapters.create(
-    project_id="21m00Tcm4TlvDq8ikWAM",
-    name="Chapter 1",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

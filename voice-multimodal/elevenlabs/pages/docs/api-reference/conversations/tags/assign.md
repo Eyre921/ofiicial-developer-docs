@@ -79,33 +79,34 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.tags.assign("conversation_id", {
-        tagIds: [
-            "tag_9f8b7c6d5e4a3b2c1d0e",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags"
 
+payload = { "tag_ids": ["tag_9f8b7c6d5e4a3b2c1d0e"] }
+headers = {"Content-Type": "application/json"}
+
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/tags';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"tag_ids":["tag_9f8b7c6d5e4a3b2c1d0e"]}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.conversations.tags.assign(
-    conversation_id="conversation_id",
-    tag_ids=[
-        "tag_9f8b7c6d5e4a3b2c1d0e"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

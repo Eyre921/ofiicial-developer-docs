@@ -58,30 +58,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "string",
-    });
-    await client.conversationalAi.conversations.audio.get(":conversation_id");
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio"
 
+headers = {"xi-api-key": "string"}
+
+response = requests.get(url, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/conversations/%3Aconversation_id/audio';
+const options = {method: 'GET', headers: {'xi-api-key': 'string'}};
 
-client = ElevenLabs(
-    api_key="string",
-)
-
-client.conversational_ai.conversations.audio.get(
-    conversation_id=":conversation_id",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

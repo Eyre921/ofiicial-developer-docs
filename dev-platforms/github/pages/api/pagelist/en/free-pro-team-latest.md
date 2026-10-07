@@ -1874,7 +1874,6 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/github-copilot-app/customize-github-copilot-app
 /en/copilot/how-tos/github-copilot-app/agent-sessions
 /en/copilot/how-tos/github-copilot-app/computer-use
-/en/copilot/how-tos/github-copilot-app/configure-local-sandboxing
 /en/copilot/how-tos/github-copilot-app/working-with-canvas-extensions
 /en/copilot/how-tos/github-copilot-app/managing-issues-and-pull-requests
 /en/copilot/how-tos/github-copilot-app/using-automations

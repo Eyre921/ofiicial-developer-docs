@@ -447,64 +447,29 @@ Validation Error
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.voices.search({
-        accent: "american",
-        age: "young",
-        gender: "male",
-        highQuality: true,
-        includeCustomRates: true,
-        includeLiveModerated: true,
-        includeTotalCount: true,
-        language: [
-            "en",
-            "es",
-        ],
-        minNoticePeriodDays: 30,
-        nextPageToken: "0",
-        sort: "created_at_unix",
-        sortDirection: "desc",
-        useCases: [
-            "conversational",
-            "narrative_story",
-        ],
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v2/voices"
 
+querystring = {"accent":"american","age":"young","gender":"male","high_quality":"true","include_custom_rates":"true","include_live_moderated":"true","include_total_count":"true","language":"[\"en\",\"es\"]","min_notice_period_days":"30","next_page_token":"0","sort":"created_at_unix","sort_direction":"desc","use_cases":"[\"conversational\",\"narrative_story\"]"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v2/voices?accent=american&age=young&gender=male&high_quality=true&include_custom_rates=true&include_live_moderated=true&include_total_count=true&language=%5B%22en%22%2C%22es%22%5D&min_notice_period_days=30&next_page_token=0&sort=created_at_unix&sort_direction=desc&use_cases=%5B%22conversational%22%2C%22narrative_story%22%5D';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.voices.search(
-    accent="american",
-    age="young",
-    gender="male",
-    high_quality=True,
-    include_custom_rates=True,
-    include_live_moderated=True,
-    include_total_count=True,
-    language=[
-        "en",
-        "es"
-    ],
-    min_notice_period_days=30,
-    next_page_token="0",
-    sort="created_at_unix",
-    sort_direction="desc",
-    use_cases=[
-        "conversational",
-        "narrative_story"
-    ],
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

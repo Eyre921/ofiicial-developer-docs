@@ -145,32 +145,29 @@ SIP Trunk configuration details for a phone number
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.phoneNumbers.list({
-        agentId: "agent_id",
-        branchId: "branch_id",
-        provider: "twilio",
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/phone-numbers"
 
+querystring = {"agent_id":"agent_id","branch_id":"branch_id","provider":"twilio"}
+
+response = requests.get(url, params=querystring)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/phone-numbers?agent_id=agent_id&branch_id=branch_id&provider=twilio';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.conversational_ai.phone_numbers.list(
-    agent_id="agent_id",
-    branch_id="branch_id",
-    provider="twilio",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

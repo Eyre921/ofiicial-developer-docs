@@ -686,40 +686,39 @@ Schema for array elements.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.update("tool_id", {
-        toolConfig: {
-            type: "client",
-            name: "name",
-            description: "description",
-            expectsResponse: false,
-        },
-    });
-}
-main();
+url = "https://api.elevenlabs.io/v1/convai/tools/tool_id"
 
+payload = { "tool_config": {
+        "type": "client",
+        "description": "description",
+        "name": "name",
+        "expects_response": False
+    } }
+headers = {"Content-Type": "application/json"}
+
+response = requests.patch(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, ToolRequestModel, ToolRequestModelToolConfig_Client
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/tools/tool_id';
+const options = {
+  method: 'PATCH',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"tool_config":{"type":"client","description":"description","name":"name","expects_response":false}}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.tools.update(
-    tool_id="tool_id",
-    request=ToolRequestModel(
-        tool_config=ToolRequestModelToolConfig_Client(
-            name="name",
-            description="description",
-            expects_response=False,
-        ),
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

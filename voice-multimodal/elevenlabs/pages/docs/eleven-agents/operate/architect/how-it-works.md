@@ -130,7 +130,7 @@ Validation happens inside the conversation, before you are asked to publish or r
 > every change. To make sure it does, ask for it directly, for example "Show me the new tests
 > failing on main and passing on the branch."
 
-![Architect work trace](https://fdr-prod-docs-files-public.s3.us-east-1.amazonaws.com/elevenlabs.docs.buildwithfern.com/a0ac226f441713105d638105f3ca8fd93ad672556b6ae0ae48847d1de8c7ba8d/assets/images/agents/architect-worked-example-trace.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIA6KXJSKKNFOCF7G4B%2F20261007%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261007T100025Z&X-Amz-Expires=604800&X-Amz-Signature=a6d2b7ef6308c24c5e52f7753bf1d809295c05c09598b0546f104cb1b9eac715&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject)
+![Architect work trace](/docs/_fern-img/a0ac226f441713105d638105f3ca8fd93ad672556b6ae0ae48847d1de8c7ba8d.webp)
 
 ## Slash commands
 

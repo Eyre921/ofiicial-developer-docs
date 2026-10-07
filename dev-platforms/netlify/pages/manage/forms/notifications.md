@@ -137,6 +137,10 @@ In this example, your email subject line is `Sales inquiry from mysitename.netli
 
 Note that if you have an HTML form with a different email subject specified, that subject will take precedence over any updates you make to the email subject line in the Netlify UI.
 
+## ChatGPT automations
+
+You can subscribe to form submission events from ChatGPT and set up automations that respond to them, like reviewing new submissions and flagging the ones that need a follow-up. Check out our [ChatGPT setup guide](/build/build-with-ai/agent-setup-guides/use-netlify-with-chatgpt/#subscribe-to-netlify-events) to get started.
+
 ## Zapier integrations
 
 Netlify is available on Zapier, where you can connect Netlify with over 1,000 other applications. You can set up a "Zap" action to be triggered when there is a verified form submission on your website. You can [find out more on our blog](https://www.netlify.com/blog/2018/11/07/automate-your-netlify-sites-with-zapier/), or use one of the templates below to get started:

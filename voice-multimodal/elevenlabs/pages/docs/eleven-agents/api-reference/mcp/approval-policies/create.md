@@ -352,31 +352,37 @@ The constant value to use
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.toolApprovals.create("mcp_server_id", {
-        toolName: "tool_name",
-        toolDescription: "tool_description",
-    });
+url = "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-approvals"
+
+payload = {
+    "tool_name": "tool_name",
+    "tool_description": "tool_description"
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-approvals';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"tool_name":"tool_name","tool_description":"tool_description"}'
+};
 
-client = ElevenLabs()
-
-client.conversational_ai.mcp_servers.tool_approvals.create(
-    mcp_server_id="mcp_server_id",
-    tool_name="tool_name",
-    tool_description="tool_description",
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

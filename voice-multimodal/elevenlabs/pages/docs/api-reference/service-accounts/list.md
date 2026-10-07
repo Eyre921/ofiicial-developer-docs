@@ -215,24 +215,27 @@ Platform limit with usage computed externally. Example: PVCs use the count_owned
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.serviceAccounts.list();
-}
-main();
+url = "https://api.elevenlabs.io/v1/service-accounts"
 
+response = requests.get(url)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs
+```javascript
+const url = 'https://api.elevenlabs.io/v1/service-accounts';
+const options = {method: 'GET'};
 
-client = ElevenLabs()
-
-client.service_accounts.list()
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go

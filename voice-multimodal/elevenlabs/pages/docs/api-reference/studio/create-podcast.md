@@ -338,50 +338,47 @@ The source content for the Podcast.
 
 **SDK Code**
 
-```typescript
-import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+```python
+import requests
 
-async function main() {
-    const client = new ElevenLabsClient();
-    await client.studio.createPodcast({
-        modelId: "eleven_multilingual_v2",
-        mode: {
-            type: "conversation",
-            conversation: {
-                hostVoiceId: "6lCwbsX1yVjD49QmpkTR",
-                guestVoiceId: "bYTqZQo3Jz7LQtmGTgwi",
-            },
+url = "https://api.elevenlabs.io/v1/studio/podcasts"
+
+payload = {
+    "model_id": "eleven_multilingual_v2",
+    "mode": {
+        "conversation": {
+            "guest_voice_id": "bYTqZQo3Jz7LQtmGTgwi",
+            "host_voice_id": "6lCwbsX1yVjD49QmpkTR"
         },
-        source: {
-            type: "url",
-            url: "https://en.wikipedia.org/wiki/Cognitive_science",
-        },
-    });
+        "type": "conversation"
+    },
+    "source": {
+        "type": "url",
+        "url": "https://en.wikipedia.org/wiki/Cognitive_science"
+    }
 }
-main();
+headers = {"Content-Type": "application/json"}
 
+response = requests.post(url, json=payload, headers=headers)
+
+print(response.json())
 ```
 
-```python
-from elevenlabs import ElevenLabs, PodcastConversationModeData, PodcastUrlSource
-from elevenlabs.studio import BodyCreatePodcastV1StudioPodcastsPostMode_Conversation
+```javascript
+const url = 'https://api.elevenlabs.io/v1/studio/podcasts';
+const options = {
+  method: 'POST',
+  headers: {'Content-Type': 'application/json'},
+  body: '{"model_id":"eleven_multilingual_v2","mode":{"conversation":{"guest_voice_id":"bYTqZQo3Jz7LQtmGTgwi","host_voice_id":"6lCwbsX1yVjD49QmpkTR"},"type":"conversation"},"source":{"type":"url","url":"https://en.wikipedia.org/wiki/Cognitive_science"}}'
+};
 
-client = ElevenLabs()
-
-client.studio.create_podcast(
-    model_id="eleven_multilingual_v2",
-    mode=BodyCreatePodcastV1StudioPodcastsPostMode_Conversation(
-        conversation=PodcastConversationModeData(
-            host_voice_id="6lCwbsX1yVjD49QmpkTR",
-            guest_voice_id="bYTqZQo3Jz7LQtmGTgwi",
-        ),
-    ),
-    source=PodcastUrlSource(
-        type="url",
-        url="https://en.wikipedia.org/wiki/Cognitive_science",
-    ),
-)
-
+try {
+  const response = await fetch(url, options);
+  const data = await response.json();
+  console.log(data);
+} catch (error) {
+  console.error(error);
+}
 ```
 
 ```go
