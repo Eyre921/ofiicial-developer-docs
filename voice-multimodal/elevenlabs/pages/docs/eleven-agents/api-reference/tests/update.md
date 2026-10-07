@@ -839,6 +839,8 @@ A common model for workflow tool responses.
 
 ### TransferToAgentToolResultSuccessModelInputBranchInfo
 
+- `branch_reason`: `configured`
+  - `branch_id` (string, required)
 - `branch_reason`: `defaulting_to_main`
   - `branch_id` (string, required)
 - `branch_reason`: `traffic_split`
@@ -863,6 +865,8 @@ A common model for workflow tool responses.
 
 ### TransferToAgentToolResultSuccessModelOutputBranchInfo
 
+- `branch_reason`: `configured`
+  - `branch_id` (string, required)
 - `branch_reason`: `defaulting_to_main`
   - `branch_id` (string, required)
 - `branch_reason`: `traffic_split`

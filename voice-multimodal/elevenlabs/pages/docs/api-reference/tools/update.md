@@ -377,6 +377,7 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 - `condition` (string, required)
 - `agent_id` (string, optional, nullable)
+- `branch_id` (string, optional, nullable)
 - `node_id` (string, optional, nullable)
 - `delay_ms` (integer, optional, default: 0)
 - `transfer_message` (string, optional, nullable)
@@ -447,6 +448,7 @@ Optional auth connection to use for authentication with this webhook
 
 - `condition` (string, required)
 - `agent_id` (string, optional, nullable)
+- `branch_id` (string, optional, nullable)
 - `node_id` (string, optional, nullable)
 - `delay_ms` (integer, optional, default: 0)
 - `transfer_message` (string, optional, nullable)

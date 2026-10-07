@@ -892,6 +892,8 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 ### TransferToAgentToolResultSuccessModelOutputBranchInfo
 
+- `branch_reason`: `configured` (TransferBranchInfoConfigured)
+  - `branch_id` (string, required)
 - `branch_reason`: `defaulting_to_main` (TransferBranchInfoDefaultingToMain)
   - `branch_id` (string, required)
 - `branch_reason`: `traffic_split` (TransferBranchInfoTrafficSplit)

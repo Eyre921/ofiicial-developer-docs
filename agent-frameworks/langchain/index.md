@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1675 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1676 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -183,6 +183,7 @@
 - `langsmith/byoc-billing` — [BYOC billing](pages/langsmith/byoc-billing.md) · [原文](https://docs.langchain.com/langsmith/byoc-billing)
 - `langsmith/byoc-byoiam` — [Bring your own IAM roles (AWS)](pages/langsmith/byoc-byoiam.md) · [原文](https://docs.langchain.com/langsmith/byoc-byoiam)
 - `langsmith/byoc-byovpc` — [Bring your own VPC on AWS](pages/langsmith/byoc-byovpc.md) · [原文](https://docs.langchain.com/langsmith/byoc-byovpc)
+- `langsmith/byoc-data-plane-cost` — [AWS data plane cost estimate](pages/langsmith/byoc-data-plane-cost.md) · [原文](https://docs.langchain.com/langsmith/byoc-data-plane-cost)
 - `langsmith/byoc-faq` — [BYOC FAQ](pages/langsmith/byoc-faq.md) · [原文](https://docs.langchain.com/langsmith/byoc-faq)
 - `langsmith/byoc-migration` — [Migrate to BYOC](pages/langsmith/byoc-migration.md) · [原文](https://docs.langchain.com/langsmith/byoc-migration)
 - `langsmith/byoc-onboarding` — [BYOC onboarding](pages/langsmith/byoc-onboarding.md) · [原文](https://docs.langchain.com/langsmith/byoc-onboarding)

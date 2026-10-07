@@ -224,7 +224,7 @@ Validation Error
 - `spelling_patience` (enum, optional, default: auto) — Controls if the agent should be more patient when user is spelling numbers and named entities. Auto = model based, Off = never wait extra
   - Allowed values: `auto`, `off`
 - `speculative_turn` (boolean, optional, default: false) — When enabled, starts generating LLM responses during silence before full turn confidence is reached, reducing perceived latency. May increase LLM costs.
-- `retranscribe_on_turn_timeout` (boolean, optional, default: false) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing for affected turns.
+- `retranscribe_on_turn_timeout` (boolean, optional, default: false) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing while enabled for the active agent or workflow node.
 - `turn_model` (enum, optional, default: turn_v3) — Version of the turn detection model to use.
   - Allowed values: `turn_v2`, `turn_v3`
 - `interruption_ignore_terms` (list of string, optional) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
@@ -523,6 +523,7 @@ SIP Trunk configuration details for a phone number
   - `preserve_client_tts_overrides` (boolean, required, default: false) — Defines whether TTS client overrides should be carried over to the transferred agent.
   - `preserve_voice_settings` (boolean, required, default: false) — Defines whether the base voice, TTS model and voice settings should be carried over to the transferred agent.
   - `agent_id` (string, optional) — The ID of the agent to transfer the conversation to. None means transfer within the current agent.
+  - `branch_id` (string, optional) — Optional branch ID for the target agent. None follows the target agent's traffic deployment, or uses its main branch when node_id is set.
   - `node_id` (string, optional) — Optional target node ID in the destination agent's workflow. When set, the transfer starts at this node instead of the default entry node.
   - `transfer_message` (string, optional) — Optional message sent to the user before the transfer is initiated.
 - `type`: `start`
@@ -1337,7 +1338,7 @@ Config container for custom guardrails list
 - `spelling_patience` (enum, optional, default: auto) — Controls if the agent should be more patient when user is spelling numbers and named entities. Auto = model based, Off = never wait extra
   - Allowed values: `auto`, `off`
 - `speculative_turn` (boolean, optional) — When enabled, starts generating LLM responses during silence before full turn confidence is reached, reducing perceived latency. May increase LLM costs.
-- `retranscribe_on_turn_timeout` (boolean, optional) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing for affected turns.
+- `retranscribe_on_turn_timeout` (boolean, optional) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing while enabled for the active agent or workflow node.
 - `turn_model` (enum, optional, default: turn_v3) — Version of the turn detection model to use.
   - Allowed values: `turn_v2`, `turn_v3`
 - `interruption_ignore_terms` (list of string, optional) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
@@ -1694,6 +1695,7 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 - `condition` (string, required)
 - `agent_id` (string, optional)
+- `branch_id` (string, optional)
 - `node_id` (string, optional)
 - `delay_ms` (integer, optional, default: 0)
 - `transfer_message` (string, optional)
@@ -3446,6 +3448,7 @@ Schema for array elements.
         "preserve_client_tts_overrides": true,
         "preserve_voice_settings": true,
         "agent_id": null,
+        "branch_id": null,
         "node_id": null,
         "transfer_message": null
       },

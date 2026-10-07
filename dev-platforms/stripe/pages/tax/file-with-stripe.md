@@ -4,7 +4,7 @@ source: https://docs.stripe.com/tax/file-with-stripe.md
 path: tax/file-with-stripe
 ---
 
-# File with Stripe
+# File with Stripe in the US
 
 Learn about filing with Stripe using TaxJar.
 

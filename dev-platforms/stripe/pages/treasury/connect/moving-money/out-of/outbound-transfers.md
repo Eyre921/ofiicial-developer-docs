@@ -69,7 +69,9 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_transfers \
 
 ## Move money from financial account to a bank account
 
-To create an outbound transfer to a bank account your connected account owns, first create a [FinancialAddress](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview) for the financial account:
+To create an outbound transfer to a bank account your connected account owns, you must create a [FinancialAddress](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview) and a [PayoutMethod](https://docs.stripe.com/api/v2/money-management/payout-methods/object.md?api-version=preview) for the financial account.
+
+### Create a financial address
 
 Create a financial address when you need to receive funds into a financial account or enable outbound payments to third parties. Specify the `type` corresponding to the country of the financial account to make sure we provision the correct [address credentials](https://docs.stripe.com/api/v2/money-management/financial-addresses/object.md?api-version=preview#v2_financial_address_object-credentials) (such as a US routing number, British sort code, or EU IBAN).
 
@@ -163,6 +165,8 @@ After you create a financial address, it starts in a `pending` status while Stri
 
 Outbound transfers require a financial address.
 
+### Add a payout method
+
 Add a payout method to the account that will receive the funds:
 
 #### GB bank account
@@ -249,9 +253,9 @@ curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANKACCOUNT
   }'
 ```
 
-#### OSI (50+ countries)
+#### Outbound Setup Intent
 
-Create a payout method globally with the [OutboundSetupIntents API](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents.md?api-version=preview). In this sample, the response shows required next steps to obtain payee confirmation and that the status requires action, because the country of the bank account requires it.
+Create a payout method for a bank account in any of more than 50 countries with the [OutboundSetupIntents API](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents.md?api-version=preview). In this sample, the response shows required next steps to obtain payee confirmation and that the status requires action, because the country of the bank account requires it.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
@@ -307,6 +311,8 @@ curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   "livemode": false
 }
 ```
+
+### Create the outbound transfer
 
 Make the outbound transfer from the financial account according to the region and currency.
 

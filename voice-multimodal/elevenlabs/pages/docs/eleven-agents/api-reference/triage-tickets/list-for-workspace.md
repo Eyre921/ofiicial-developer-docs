@@ -78,7 +78,9 @@ Validation Error
 - `qa_comment` (string, optional)
 - `priority` (enum, optional)
   - Allowed values: `low`, `medium`, `high`, `urgent`
+- `merged_into_ticket_id` (string, optional) — The ticket this one was merged into, set while its status is 'merged'.
 - `assignee_user_id` (string, optional)
+- `search_match` (TicketSearchMatchResponseModel, optional) — Where the list's `search` query matched. Set only on searched lists.
 
 ### ValidationError
 
@@ -105,6 +107,15 @@ Validation Error
 - `changed_at_unix_secs` (integer, required)
 - `priority` (enum, optional)
   - Allowed values: `low`, `medium`, `high`, `urgent`
+
+### TicketSearchMatchResponseModel
+
+- `field` (enum, required) — Which of the ticket's texts matched.
+  - Allowed values: `title`, `description`, `comment`, `turn_comment`
+- `snippet` (string, required) — Whitespace-collapsed excerpt around the match, with an ellipsis where it was cut.
+- `highlight_start` (integer, required) — Offset of the match in `snippet`.
+- `highlight_end` (integer, required) — Exclusive end offset of the match in `snippet`.
+- `turn_index` (integer, optional) — The commented turn, set when `field` is 'turn_comment'.
 
 ### ValidationErrorLocItem
 
@@ -159,7 +170,14 @@ Validation Error
       "last_seen_unix_secs": 1,
       "qa_comment": "qa_comment",
       "priority": "low",
-      "assignee_user_id": "assignee_user_id"
+      "merged_into_ticket_id": "merged_into_ticket_id",
+      "assignee_user_id": "assignee_user_id",
+      "search_match": {
+        "field": "title",
+        "snippet": "snippet",
+        "highlight_start": 1,
+        "highlight_end": 1
+      }
     }
   ],
   "has_more": true,

@@ -534,6 +534,8 @@ A common model for workflow tool responses.
 
 ### TransferToAgentToolResultSuccessModelOutputBranchInfo
 
+- `branch_reason`: `configured` (TransferBranchInfoConfigured)
+  - `branch_id` (string, required)
 - `branch_reason`: `defaulting_to_main` (TransferBranchInfoDefaultingToMain)
   - `branch_id` (string, required)
 - `branch_reason`: `traffic_split` (TransferBranchInfoTrafficSplit)

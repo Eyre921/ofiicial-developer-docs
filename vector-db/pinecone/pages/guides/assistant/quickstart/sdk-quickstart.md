@@ -187,7 +187,86 @@ The example above returns a response like the following:
   [`signed_url`](https://cloud.google.com/storage/docs/access-control/signed-urls) provides temporary, read-only access to the relevant file. Anyone with the link can access the file, so treat it as sensitive data. Expires in one hour.
 </Warning>
 
-## 6. Clean up
+## 6. Evaluate the answer (Standard and Enterprise plans)
+
+<Note>
+  Response evaluation is only available for [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
+</Note>
+
+To check the quality of the response, [evaluate it](/guides/assistant/evaluation-overview) against a ground truth answer. The evaluation scores the answer for correctness, completeness, and alignment, and lists the facts it checked.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # pip install requests
+  import requests
+
+  payload = {
+      "question": "Who is the CFO of Netflix?",
+      "answer": resp.message.content, # Answer from the assistant.
+      "ground_truth_answer": "Spencer Neumann" # Expected answer to evaluate the assistant's response against.
+  }
+
+  headers = {
+      "Api-Key": "{{YOUR_API_KEY}}",
+      "Content-Type": "application/json"
+  }
+
+  url = "https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment"
+
+  response = requests.post(url, json=payload, headers=headers)
+
+  print(response.text)
+  ```
+
+  ```javascript JavaScript theme={null}
+  const evalResp = await fetch(
+    'https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment',
+    {
+      method: 'POST',
+      headers: {
+        'Api-Key': '{{YOUR_API_KEY}}',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        question: 'Who is the CFO of Netflix?',
+        answer: chatResp.message.content, // Answer from the assistant.
+        ground_truth_answer: 'Spencer Neumann', // Expected answer to evaluate the assistant's response against.
+      }),
+    }
+  );
+
+  console.log(await evalResp.json());
+  ```
+</CodeGroup>
+
+The example above returns a response like the following:
+
+```json theme={null}
+{
+  "metrics": {
+    "correctness": 1.0,
+    "completeness": 1.0,
+    "alignment": 1.0
+  },
+  "reasoning": {
+    "evaluated_facts": [
+      {
+        "fact": {
+          "content": "Spencer Neumann is the CFO of Netflix."
+        },
+        "entailment": "entailed"
+      }
+    ]
+  },
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 24,
+    "total_tokens": 1245
+  }
+}
+```
+
+## 7. Clean up
 
 When you no longer need the `example-assistant`, [delete the assistant](/reference/api/latest/assistant/delete_assistant):
 
@@ -211,5 +290,5 @@ When you no longer need the `example-assistant`, [delete the assistant](/referen
 
 * Learn more about [Pinecone Assistant](/guides/assistant/overview)
 * Learn about [additional assistant features](https://www.pinecone.io/learn/assistant-api-deep-dive/)
-* [Evaluate](/guides/assistant/evaluate-answers) the assistant's responses
+* See [Evaluate answers](/guides/assistant/evaluate-answers) for more evaluation options
 * View a [sample app](/examples/sample-apps/pinecone-assistant) that uses Pinecone Assistant

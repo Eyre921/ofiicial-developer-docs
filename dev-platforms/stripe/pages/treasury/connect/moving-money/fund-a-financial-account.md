@@ -14,8 +14,8 @@ You have the following options to fund a financial account:
 | --- | --- | --- |
 | [Send funds from a Stripe payments balance](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#payments-balance) | Instant | Stripe API |
 | [Send funds from your external bank account to a FinancialAddress](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#external-account) | 1 business day (7 days initially for the first 5000 GBP in funding) | From your bank |
-| [Use inbound transfers from a linked external bank account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#inbound-transfer) | 3–5 business days | Stripe API |
-| [Submit a check using remote capture](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#remote-capture) | 2–6 business days | Stripe API |
+| [Use inbound transfers from a linked external bank account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#inbound-transfer) | 3-5 business days | Stripe API |
+| [Submit a check using remote capture](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#remote-capture) | 2-6 business days | Stripe API |
 | [Send funds from an existing financial account](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#existing-financial-account) | Instant | Stripe API |
 | [Simulate a received credit](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#testingrc) (Sandbox only) | Instant | Stripe API |
 | [Use automatic transfer rules](https://docs.stripe.com/treasury/connect/moving-money/fund-a-financial-account.md#automatic-transfer-rules) | Instant (when rule triggers) | Stripe API |
@@ -185,17 +185,19 @@ In the US, connected accounts can fund USD financial accounts by sending ACH, RT
 
 | Funding method | Funds available | Where to initiate |
 | --- | --- | --- |
-| ACH | 0–2 business days | From your bank |
+| ACH | 0-2 business days | From your bank |
 | RTP | Typically within minutes | From your bank |
 | Wire | Same day | From your bank |
 
 > RTP funding is available only for financial accounts in the US. If your Stripe account is outside the US, you can fund your USD financial account using ACH or a wire.
 
 ## Use inbound transfers from a linked external bank account  (Private preview)
-Available in: US
-If you’re a platform in the US, you can use inbound transfers to debit your connected account’s linked external bank account to fund their Stripe financial account.
+Available in: US, GB
+You can use inbound transfers to fund your connected account’s Stripe financial account by debiting their linked external bank account.
 
-You embed a component in your platform where users link and verify their bank account for instant verification with no microdeposits or waiting period. Stripe:
+#### US
+
+Embed a component in your platform where users link and verify their bank account for instant verification with no microdeposits or waiting period. Stripe:
 
 - Verifies ownership and obtains proof that the account holder authorized the debit.
 - Secures a mandate for legal authorization to pull funds on an ongoing basis.
@@ -224,15 +226,101 @@ Alternatively, you can verify a US bank account using the API:
 
 After the `USBankAccount` verification status becomes `verified`, you can use the resulting `usba_*` credential for inbound transfers.
 
+#### UK
+
+To use Bacs debit inbound transfers, your connected account must have the `money_manager` configuration with the [business_storage.inbound.gbp](https://docs.stripe.com/api/v2/core/accounts/create.md?api-version=preview#v2_create_accounts-configuration-money_manager-capabilities-business_storage-inbound-gbp) capability active.
+
+### Attach a bank account
+
+Your connected account must have a valid GB bank account that supports Bacs debits. You can attach a bank account to your financial account by following the instructions to [add a payout method](https://docs.stripe.com/treasury/connect/moving-money/out-of/outbound-transfers.md#add-a-payout-method).
+
+### Collect consent
+
+Inbound transfers in the UK require a mandate that affirms the bank account owner’s consent to allow debits from the account. You must present the following Direct Debit Instructions (DDI) to your connected account, collect their acceptance, and record the following evidence:
+
+- `accepted_at`: A datestamp in the past indicating when the connected account consented to the DDI.
+- `ip_address`: The IP address used by the connected account when they consented.
+- `user_agent`: The browser or client user agent used by the connected account when they consented.
+
+I authorise Stripe Payments UK Limited, at the direction of , to (A) send instructions to my bank to debit my account and (B) my bank to debit my account in accordance with those instructions, for the purpose of funding my  Financial Account, subject to the safeguards assured by the Direct Debit Guarantee. I confirm that I am the only person required to authorise debits from this bank account. I agree to receive notice of each debit two days prior to the debit.
+
+### Create the Inbound Mandate
+
+After acceptance, create a mandate for the connected account’s GB Bank Account credential, specifying `type: "bacs"` and the online acceptance evidence. If you provide an optional Bacs reference prefix, it must be valid and 10 or fewer characters.
+
+```curl
+curl -X POST https://api.stripe.com/v2/money_management/inbound_transfer_mandates \
+  -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+  -H "Stripe-Version: 2026-09-30.preview" \
+  -H "Stripe-Context: {{CONTEXT_ID}}" \
+  --json '{
+    "credential": "gbba_…",
+    "type": "bacs",
+    "user_accepted_details": {
+        "accepted_at": "2026-08-24T12:00:00Z",
+        "type": "online",
+        "online": {
+            "ip_address": "203.0.113.1",
+            "user_agent": "Connected account client"
+        }
+    }
+  }'
+```
+
+Stripe validates that:
+
+- The credential is a GB Bank Account credential and belongs to the authenticated compartment
+- The acceptance evidence is complete
+
+If a pending or active mandate already exists for the same user and credential, Stripe returns that existing mandate rather than creating another one.
+
+The response includes the mandate ID, its Bacs reference, the acceptance details, and its lifecycle status.
+
+```json
+{
+  "id": "{{INBOUND_TRANSFER_MANDATE_ID}}",
+  "object": "v2.money_management.inbound_transfer_mandate",
+  "livemode": true,
+  "credential": "gbba_…",
+  "created": "2026-08-24T12:00:01Z",
+  "type": "bacs",
+  "bacs": {
+    "reference": "STRIPE/ITM_9823427"
+  },
+  "user_accepted_details": {
+    "accepted_at": "2026-08-24T12:00:00Z",
+    "online": {
+      "ip_address": "203.0.113.1",
+      "user_agent": "Connected account client"
+    }
+  },
+  "status": "pending",
+  "status_transitions": {}
+}
+```
+
+#### Account name verification
+
+Upon mandate creation, Stripe verifies that the name on file for the financial account matches the name on the bank account. Failure returns an error requiring the user to provide a bank account that matches the account held in their name.
+
+#### Mandate activation
+
+Advise your connected accounts that DDI acceptance can take up to 3 business days. During this period:
+
+- Indicate that authorization is in progress.
+- Prevent new inbound transfers from using this credential
+
+Successful activation sends the `v2.money_management.inbound_transfer_mandate.activated` webhook event and changes `inbound_transfer_mandate` status from `pending` to `active`.
+
 ### Create an inbound transfer
 
 You or your connected account can initiate an inbound transfer to move funds into their financial account from their linked external account.
 
-#### Embedded component
+#### USD Embedded component
 
 You can render the [financial_accounts](https://docs.stripe.com/treasury/connect/prebuilt-embedded-finance.md#available-components) embedded component to allow your connected account to transfer money from their linked external account to their financial account using the **Move money** user interface.
 
-#### API
+#### USD API
 
 1. Look up the credential created from the external account authorization session.
    ```curl
@@ -264,6 +352,40 @@ Make sure the `usage_status.transfers` parameter for the credential is `eligible
      }'
    ```
 
+#### GBP API
+
+You must have an active mandate in place before requesting an inbound transfer using a Bacs debit. Otherwise, the request returns an error.
+
+1. Look up the credential created from the external account authorization session.
+   ```curl
+   curl https://api.stripe.com/v2/money_management/payout_methods \
+     -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+     -H "Stripe-Version: 2026-06-24.preview" \
+     -H "Stripe-Context: {{CONTEXT_ID}}"
+   ```
+Make sure the `usage_status.transfers` parameter for the credential is `eligible`.
+2. Provide the `gbba_*` credential ID as the value of the `from` parameter in the `InboundTransfer` request.
+   ```curl
+   curl -X POST https://api.stripe.com/v2/money_management/inbound_transfers \
+     -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
+     -H "Stripe-Version: 2026-06-24.preview" \
+     -H "Stripe-Context: {{CONTEXT_ID}}" \
+     --json '{
+       "from": {
+           "payment_method": "gbba_123456"
+       },
+       "to": {
+           "financial_account": "{{FINANCIALACCOUNTID_ID}}",
+           "currency": "gbp"
+       },
+       "amount": {
+           "value": 1000,
+           "currency": "gbp"
+       },
+       "description": "Funding transfer from external account"
+     }'
+   ```
+
 ### Transfer lifecycle
 
 After creation, an inbound transfer moves through various states. Listen for and handle the following `v2.money_management.inbound_transfer` webhook events at each stage:
@@ -271,7 +393,7 @@ After creation, an inbound transfer moves through various states. Listen for and
 | Event | Description |
 | --- | --- |
 | `bank_debit_queued` | Transfer created, waiting to send to the bank network. |
-| `bank_debit_processing` | Debit submitted to ACH, awaiting settlement. |
+| `bank_debit_processing` | Debit submitted, awaiting settlement. |
 | `bank_debit_succeeded` | Bank confirmed the debit. |
 | `available` | Funds available in the financial account. |
 | `bank_debit_failed` | Debit failed, possibly because of insufficient funds or an invalid account. |
@@ -334,6 +456,8 @@ curl https://api.stripe.com/v2/money_management/received_credits \
 ### Get a received credit
 
 [Retrieve a received credit](https://docs.stripe.com/api/v2/money-management/received-credits/retrieve.md?api-version=preview) by its ID to review details such as the `amount`, `status`, and `type` of transfer.
+
+> US platforms using ACH transfers can also obtain the private preview `bank_transfer.network_details.ach` resource, which provides additional information like `addenda` and originator and receiver details. [Contact sales](https://stripe.com/contact/embedded-finance) for access.
 
 ```curl
 curl https://api.stripe.com/v2/money_management/received_credits/{{RECEIVED_CREDIT_ID}} \

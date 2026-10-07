@@ -799,6 +799,7 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 - `condition` (string, required)
 - `agent_id` (string, optional)
+- `branch_id` (string, optional)
 - `node_id` (string, optional)
 - `delay_ms` (integer, optional, default: 0)
 - `transfer_message` (string, optional)
@@ -861,6 +862,8 @@ Optional auth connection to use for authentication with this webhook
 
 ### TransferToAgentToolResultSuccessModelInputBranchInfo
 
+- `branch_reason`: `configured`
+  - `branch_id` (string, required)
 - `branch_reason`: `defaulting_to_main`
   - `branch_id` (string, required)
 - `branch_reason`: `traffic_split`

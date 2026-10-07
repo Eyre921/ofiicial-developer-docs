@@ -45,6 +45,8 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 - `issue_type` (enum, optional) — Filter clusters by issue type.
   - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
 - `label` (string, optional) — Filter tickets by an exact label.
+- `merged_into_ticket_id` (string, optional) — Filter tickets merged into this ticket.
+- `search` (string, optional) — Case-insensitive free-text search across the ticket's title, description, comments, and turn comments.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -93,7 +95,9 @@ Validation Error
 - `qa_comment` (string, optional)
 - `priority` (enum, optional)
   - Allowed values: `low`, `medium`, `high`, `urgent`
+- `merged_into_ticket_id` (string, optional) — The ticket this one was merged into, set while its status is 'merged'.
 - `assignee_user_id` (string, optional)
+- `search_match` (TicketSearchMatchResponseModel, optional) — Where the list's `search` query matched. Set only on searched lists.
 
 ### ValidationError
 
@@ -120,6 +124,15 @@ Validation Error
 - `changed_at_unix_secs` (integer, required)
 - `priority` (enum, optional)
   - Allowed values: `low`, `medium`, `high`, `urgent`
+
+### TicketSearchMatchResponseModel
+
+- `field` (enum, required) — Which of the ticket's texts matched.
+  - Allowed values: `title`, `description`, `comment`, `turn_comment`
+- `snippet` (string, required) — Whitespace-collapsed excerpt around the match, with an ellipsis where it was cut.
+- `highlight_start` (integer, required) — Offset of the match in `snippet`.
+- `highlight_end` (integer, required) — Exclusive end offset of the match in `snippet`.
+- `turn_index` (integer, optional) — The commented turn, set when `field` is 'turn_comment'.
 
 ### ValidationErrorLocItem
 
@@ -174,7 +187,14 @@ Validation Error
       "last_seen_unix_secs": 1,
       "qa_comment": "qa_comment",
       "priority": "low",
-      "assignee_user_id": "assignee_user_id"
+      "merged_into_ticket_id": "merged_into_ticket_id",
+      "assignee_user_id": "assignee_user_id",
+      "search_match": {
+        "field": "title",
+        "snippet": "snippet",
+        "highlight_start": 1,
+        "highlight_end": 1
+      }
     }
   ],
   "has_more": true,
@@ -195,11 +215,13 @@ async function main() {
         cursor: "cursor",
         issueType: "knowledge_gap",
         label: "label",
+        mergedIntoTicketId: "merged_into_ticket_id",
         ownerUserId: "owner_user_id",
         pageSize: 1,
         priorities: [
             "low",
         ],
+        search: "search",
         sortBy: "created_at",
         sources: [
             "qa",
@@ -223,11 +245,13 @@ client.conversational_ai.triage_tickets.list(
     cursor="cursor",
     issue_type="knowledge_gap",
     label="label",
+    merged_into_ticket_id="merged_into_ticket_id",
     owner_user_id="owner_user_id",
     page_size=1,
     priorities=[
         "low"
     ],
+    search="search",
     sort_by="created_at",
     sources=[
         "qa"
@@ -248,7 +272,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&sort_by=created_at&sources=%5B%22qa%22%5D&status=open"
+	url := "https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -267,7 +291,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")
+url = URI("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -282,7 +306,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")
   .asString();
 ```
 
@@ -292,7 +316,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&sort_by=created_at&sources=%5B%22qa%22%5D&status=open');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open');
 
 echo $response->getBody();
 ```
@@ -300,7 +324,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&sort_by=created_at&sources=%5B%22qa%22%5D&status=open");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -308,7 +332,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/agent_id/triage-tickets?assignee_user_id=assignee_user_id&conversation_id=conversation_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

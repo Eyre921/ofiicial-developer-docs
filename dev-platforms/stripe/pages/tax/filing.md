@@ -18,15 +18,21 @@ Each local tax authority determines how often you must file your taxes and when 
 
 ## Filing with Stripe
 
-Stripe Tax offers [automated filing in the US](https://docs.stripe.com/tax/file-with-stripe.md) and works with filing partners that manage much of the tax filing process. Each partner focuses on different regions and types of businesses.
+Stripe Tax offers [automated filing in the US](https://docs.stripe.com/tax/file-with-stripe.md), as well as [automated filing for selected registrations in Ireland and Canada](https://docs.stripe.com/tax/file-with-stripe-outside-us.md). It also works with filing partners that manage much of the tax filing process. Each partner focuses on different regions and types of businesses.
 
 > Pricing varies by partner and filing location. The Stripe Tax subscription plan, [Tax Complete](https://stripe.com/tax/pricing), includes a certain number of filing entitlements (credits) you can use toward TaxJar and Taxually. Marosa and Hands-off Sales Tax have separate pricing. Check your plan in the Dashboard under [Stripe plans](https://dashboard.stripe.com/settings/plans/tax/choose).
 
 | Solution | Features | Target users | Pricing |
 | --- | --- | --- | --- |
-| [TaxJar](https://docs.stripe.com/tax/file-with-stripe.md), a Stripe company | - Automated US filing from your Stripe Dashboard
-- No-code Stripe integration
-- Customer support, connected with Stripe support | - Businesses selling in the US | [View pricing](https://stripe.com/tax/pricing) |
+| Stripe | - [Automated filing in the US](https://docs.stripe.com/tax/file-with-stripe.md)
+
+- [Automated filing in Ireland and Canada](https://docs.stripe.com/tax/file-with-stripe-outside-us.md). Available for non-Union OSS registrations in Ireland and simplified federal GST/HST registrations in Canada.
+
+- File directly from the Stripe Dashboard
+
+- No-code setup
+
+- Stripe customer support | - Businesses selling in the US and businesses selling digital goods and services into the EU and Canada. | [View pricing](https://stripe.com/tax/pricing) |
 | [Taxually](https://marketplace.stripe.com/apps/taxually) | - Automated filing in [supported countries](https://support.taxually.com/support/solutions/articles/80001171992-tax-registration-and-filing-coverage)
 - No-code Stripe integration | - Businesses that sell internationally or expect to expand into new locations in the future | [View pricing](https://stripe.com/tax/pricing) |
 | [Marosa](https://marketplace.stripe.com/apps/marosa) | - VAT filing
@@ -34,10 +40,10 @@ Stripe Tax offers [automated filing in the US](https://docs.stripe.com/tax/file-
 | [Hands-off Sales Tax](https://marketplace.stripe.com/apps/hands-off-sales-tax) | - US and Canada filing
 - No-code Stripe integration | - US and Canada filing | [View pricing](https://handsoffsalestax.com/stripe/#:~:text=Pricing%20starts%20at%20%2455/return%20and%20you%20only%20pay%20for%20what%20you%20need) |
 
-## Benefits of automated filing with our partners
+## Benefits of automated filing with Stripe
 
-- Minimize errors: Automatically sync tax calculation and transaction data between Stripe and the filing partner. This removes the need for manual data entry, imports, or exports.
-- File on time: Our partners keep track of all filing frequencies and deadlines.
+- Minimize errors: Use your Stripe Tax calculation and transaction data for filing without manual data entry, imports, or exports.
+- File on time: Stripe or your filing partner keeps track of filing frequencies and deadlines.
 
 ## See also
 

@@ -14314,7 +14314,7 @@ The following resources contribute to data plane costs in your account. AWS char
 | - | - | - |
 | **Amazon EKS** | The Kubernetes control plane for the data plane cluster | Per cluster-hour |
 | **Amazon EC2** | Nodes running in the EKS cluster | Per instance-hour |
-| **Amazon RDS** | Instances for relational workloads | Per instance-hour, including Multi-AZ, plus storage, backups, and snapshots |
+| **Amazon RDS** | Instances for relational workloads. SmithDB uses an Aurora PostgreSQL Serverless v2 metastore. | Per instance-hour, including Multi-AZ, plus storage, backups, and snapshots. Aurora is billed per ACU-hour, plus storage and I/O. |
 | **Amazon ElastiCache** | Redis instance for caching and queueing workloads | Per node-hour |
 | **Amazon S3** | Bucket for LangSmith workloads, ClickHouse backups and VPC flow logs | Storage, requests, and data transfer |
 | **Amazon EBS** | Node root disks, and the volumes for ClickHouse storage | Per GB-month, plus provisioned IOPS and throughput above the gp3 baseline |
@@ -14345,7 +14345,7 @@ AWS enforces default quotas per region and per account. Defaults are often too l
 * **Load balancers**: Capacity for 2 Network Load Balancers and their target groups.
 * **EKS**: Capacity for 1 EKS cluster.
 * **Storage**: EBS volume and storage capacity for ClickHouse, ZooKeeper, node disks, and other persistent workloads.
-* **Databases**: Capacity for 2 RDS instances and 3 ElastiCache replicas.
+* **Databases**: Capacity for 2 RDS instances, one Aurora cluster for the SmithDB metastore (writer and reader), and 3 ElastiCache replicas.
 * **PrivateLink and networking**: Capacity for 1 endpoint service and 1 regional NAT gateway.
 
 For current default values, see [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html).
@@ -14634,6 +14634,89 @@ Deleting a data plane removes LangChain-managed resources. Your VPC and other cu
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-byovpc.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# AWS data plane cost estimate
+Source: https://docs.langchain.com/langsmith/byoc-data-plane-cost
+
+Rough AWS cost of a LangSmith BYOC data plane, with a ClickHouse footprint and SmithDB node, metastore, and storage estimates.
+
+<Warning>
+  These are estimates, not a quote. AWS changes its prices without notice. Your bill depends on region, usage, and any discount agreement with AWS, such as an Enterprise Discount Program or a Savings Plan.
+</Warning>
+
+This is a rough monthly cost for a LangSmith data plane in your AWS account.
+
+<Note>
+  Scaling capacity for any resource can be lowered when required, as long as the deployment remains within safe operating limits. For cost-conscious or pre-production deployments, Multi-AZ can be turned off. That lowers monthly cost but reduces fault tolerance.
+</Note>
+
+<Tabs>
+  <Tab title="ClickHouse">
+    ClickHouse can also run as a single node instead of a replicated cluster. That lowers monthly cost but reduces fault tolerance.
+
+    | Area | Rough monthly estimate | Notes |
+    | - | - | - |
+    | RDS PostgreSQL | \$100–\$150 | `db.t4g.medium`, Multi-AZ, 50 GB starting storage. |
+    | ElastiCache Redis | \$140–\$280 | Lower end without read replicas. Higher end if read replicas are enabled. |
+    | EKS control plane | \~\$75 | One EKS cluster at standard hourly pricing. |
+    | System node group | \~\$210 | 3 `m6i.large` on-demand nodes. |
+    | Application, ClickHouse, and ZooKeeper worker nodes | \$1,000–\$1,500 | LangSmith pods and ClickHouse pods. |
+    | EBS volumes | \$200–\$350 | ClickHouse, ZooKeeper, node volumes, and gp3 performance settings. |
+    | Networking | \$150–\$300 | NAT gateways, load balancers, PrivateLink or VPC endpoints, and low-volume data processing. |
+    | S3, Secrets Manager, CloudWatch | \$50–\$200 | Low-volume baseline. Grows with trace payloads, logs, and retention. |
+
+    Estimated monthly total: **\$1,925–\$3,065**
+  </Tab>
+
+  <Tab title="SmithDB">
+    By default, SmithDB runs the Small tier from [Configure SmithDB for scale](/langsmith/self-host-smithdb-scale): about 10 runs per second and 10 queries per second. LangSmith increases that tier as tracing volume requires it.
+
+    <Warning>
+      After the SmithDB migration, ClickHouse and ZooKeeper are scaled down. If cost is a concern, ClickHouse can be turned off. That lowers monthly cost but reduces reliability, because there is no ClickHouse fallback.
+    </Warning>
+
+    | Area | Rough monthly estimate | Notes |
+    | - | - | - |
+    | RDS PostgreSQL | \$100–\$150 | `db.t4g.medium`, Multi-AZ, 50 GB starting storage. |
+    | ElastiCache Redis | \$140–\$280 | Lower end without read replicas. Higher end if read replicas are enabled. |
+    | EKS control plane | \~\$75 | One EKS cluster at standard hourly pricing. |
+    | System node group | \~\$210 | 3 `m6i.large` on-demand nodes. |
+    | Application, ClickHouse, and ZooKeeper worker nodes | \$650 | Scaled down ClickHouse costs. |
+    | EBS volumes | \$200–\$350 | ClickHouse, ZooKeeper, node volumes, and gp3 performance settings. Lower once those volumes shrink. |
+    | Networking | \$150–\$300 | NAT gateways, load balancers, PrivateLink or VPC endpoints, and low-volume data processing. |
+    | S3, Secrets Manager, CloudWatch | \$50–\$200 | Low-volume baseline. Grows with trace payloads, logs, and retention. |
+    | SmithDB compute | \$1,550 | 2 x `m7gd.4xlarge` across two availability zones, plus a 100 GiB gp3 boot volume on each node. |
+    | SmithDB metastore | \$210 | Aurora PostgreSQL 18 Serverless v2, writer and reader, 1 ACU minimum, 50 GB. |
+    | SmithDB bucket | \$5–\$120 | S3 storage costs, would largely be dictated by trace payload size and retention. |
+
+    Estimated monthly total: **\$3,340–\$4,095**
+
+    ### SmithDB object store pricing
+
+    | Stored size per trace | 14-day retention | 400-day retention |
+    | - | - | - |
+    | 10 KB | \$2 per year | \$74 per year |
+    | 50 KB | \$15 per year | \$368 per year |
+    | 200 KB | \$52 per year | \$1,472 per year |
+
+    A [ClickHouse backfill](/langsmith/self-host-smithdb-migrate) needs an extra `m7gd.4xlarge` for the migration job at about **\$24 per day**. That cost stops when the backfill finishes (Job finishes in a few days depending on tracing volume).
+
+    See [Prepare SmithDB supporting infrastructure](/langsmith/self-host-smithdb-infrastructure) for details of SmithDB infrastructure.
+  </Tab>
+</Tabs>
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/byoc-data-plane-cost.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -21353,7 +21436,7 @@ flowchart
 * [Python/JS SDK](/langsmith/reference): The Python/JS SDK provides a programmatic way to interact with deployed graphs and agents from your applications.
 * [RemoteGraph](/langsmith/use-remote-graph): Allows you to interact with a deployed graph as though it were running locally.
 * [Control Plane](/langsmith/control-plane): The UI and APIs for creating, updating, and managing Agent Server deployments.
-* [Data plane](/langsmith/data-plane): The runtime layer that executes your graphs, including Agent Servers, their backing services (PostgreSQL, Redis, etc.), and the listener that reconciles state from the control plane.
+* [Data Plane](/langsmith/data-plane): The runtime layer that executes your graphs, including Agent Servers, their backing services (PostgreSQL, Redis, etc.), and the listener that reconciles state from the control plane.
 
 ***
 
@@ -23663,7 +23746,7 @@ Source: https://docs.langchain.com/langsmith/control-plane
 
 The *control plane* is the part of LangSmith that manages deployments. It includes the control plane UI, where users create and update [Agent Servers](/langsmith/agent-server), and the control plane APIs, which support the UI and provide programmatic access.
 
-When you make an update through the control plane, the update is stored in the control plane state. The [data plane](/langsmith/data-plane) “listener” polls for these updates by calling the control plane APIs. The control plane never connects to the data plane directly.
+When you make an update through the control plane, the update is stored in the control plane state. The [data plane](/langsmith/data-plane) listener polls for these updates by calling the control plane APIs. The control plane never connects to the data plane directly.
 
 ## Control plane UI
 
@@ -23698,7 +23781,7 @@ A revision is an iteration of a deployment. When a new deployment is created, an
 
 ### Listeners
 
-A listener is an instance of a ["listener" application](/langsmith/data-plane#listener-application). A listener contains metadata about the application (e.g. version) and metadata about the compute infrastructure where it can deploy to (e.g. Kubernetes namespaces).
+A listener is an instance of a [listener application](/langsmith/data-plane#listener-application). A listener contains metadata about the application (e.g. version) and metadata about the compute infrastructure where it can deploy to (e.g. Kubernetes namespaces).
 
 ## Control plane features
 
@@ -23712,7 +23795,7 @@ Infrastructure for deployments and revisions are provisioned and deployed asynch
 * When a subsequent revision is created for a deployment, there is no database creation step. The deployment time for a subsequent revision is significantly faster compared to the deployment time of the initial revision.
 * The deployment process for each revision contains a build step, which can take up to a few minutes.
 
-The control plane and [data plane](/langsmith/data-plane) "listener" application coordinate to achieve asynchronous deployments.
+The control plane and [data plane](/langsmith/data-plane) listener application coordinate to achieve asynchronous deployments.
 
 ### Monitoring
 
@@ -28422,7 +28505,7 @@ Source: https://docs.langchain.com/langsmith/data-plane
 
 
 
-The *data plane* consists of your [Agent Servers](/langsmith/agent-server) (deployments), their supporting infrastructure, and the "listener" application that continuously polls for updates from the [LangSmith control plane](/langsmith/control-plane).
+The *data plane* consists of your [Agent Servers](/langsmith/agent-server) (deployments), their supporting infrastructure, and the listener application that continuously polls for updates from the [LangSmith control plane](/langsmith/control-plane).
 
 ## Server infrastructure
 
@@ -28433,15 +28516,15 @@ In addition to the [Agent Server](/langsmith/agent-server) itself, the following
 * **Secrets store**: secure management of environment secrets.
 * **Autoscalers**: scale server containers based on load.
 
-## "Listener" application
+## Listener application
 
-The data plane "listener" application periodically calls [control plane APIs](/langsmith/control-plane#control-plane-api) to:
+The data plane listener application periodically calls [control plane APIs](/langsmith/control-plane#control-plane-api) to:
 
 * Determine if new deployments should be created.
 * Determine if existing deployments should be updated (i.e. new revisions).
 * Determine if existing deployments should be deleted.
 
-In other words, the data plane "listener" reads the latest state of the control plane (desired state) and takes action to reconcile outstanding deployments (current state) to match the latest state.
+In other words, the data plane listener reads the latest state of the control plane (desired state) and takes action to reconcile outstanding deployments (current state) to match the latest state.
 
 ## PostgreSQL
 
@@ -33352,6 +33435,8 @@ After you authorize the `hosted-langserve` GitHub app, configure which repositor
 
 The repository list in the **Create New Deployment** panel reflects the updated access.
 
+If you rename or transfer a repository that a deployment uses, [change the deployment's repository](/langsmith/manage-deployment#change-the-repository).
+
 ## See also
 
 * [Revisions](/langsmith/deployment-revisions)
@@ -35450,7 +35535,7 @@ Once Engine is enabled, any user whose role can update tracing projects can set 
   </Step>
 
   <Step title="Connect a code repository (optional)">
-    Although optional, connecting a code repository is recommended. Engine reads your source code to locate the code path behind a failing trace, ground its proposed fixes in the actual implementation, and open pull requests directly from issues. Under **Connect your agent's code repository**, select a repository in the **GitHub Repository** field. Only repositories the GitHub app can access are shown. Click **Manage app access →** to update permissions. For GitHub App setup and organization approval, see [Connect Engine to GitHub](/langsmith/engine-github). To give Engine additional project context, select a repository in the **Context Hub repository** field.
+    Although optional, connecting a code repository is recommended. Engine reads your source code to locate the code path behind a failing trace, ground its proposed fixes in the actual implementation, and open pull requests directly from issues. Under **Connect your agent's code repository**, select the repositories Engine should use. Only repositories the GitHub App can access are shown. Click **Manage app access →** to update permissions. For GitHub App setup and organization approval, see [Connect Engine to GitHub](/langsmith/engine-github). To give Engine additional project context, select a repository in the **Context Hub repository** field.
   </Step>
 
   <Step title="Select preference categories (optional)">
@@ -35494,7 +35579,7 @@ To turn off Engine for the whole organization, see [Enable Engine for your organ
 
 On the **Engine** page, click the **Configure Engine** <Icon icon="settings" /> (gear) icon at the top of the issue list to open the **Engine settings** panel. Use it to give Engine context on your agent, tell it what to focus on, and connect Linear. The panel also holds settings covered elsewhere:
 
-* **Code repository** and **Context repository**: Connect or update the GitHub repository Engine reads when diagnosing issues, optionally with a **Subfolder** and a **Branch** (defaults to the repository default). A Context Hub repository lets Engine propose fixes to instructions, docs, and linked skills. See [Connect Engine to GitHub](/langsmith/engine-github).
+* **Code repository** and **Context repository**: Connect or update the GitHub repositories Engine reads when diagnosing issues. Each GitHub repository can have its own **Subfolder** and **Branch** (defaults to the repository default). A Context Hub repository lets Engine propose fixes to instructions, docs, and linked skills. See [Connect Engine to GitHub](/langsmith/engine-github).
 * **Notifications**: See [Engine notifications](/langsmith/engine-notifications).
 * **Preview deployments**: Set the baseline deployment Engine replays issue traces against, and turn on fix verification with preview deployments. See [Validate fixes by running your agent](#beta-validate-fixes-by-running-your-agent).
 * **Analysis level**: See [Set the analysis level](#set-the-analysis-level).
@@ -35540,16 +35625,16 @@ Under **Linear**, click **Connect**, select a team, optionally select a project 
 ### Understand LSU costs
 
 <Note>
-  On LangSmith Cloud, Engine uses **LangChain-managed inference** exclusively. Self-hosted installations can use their [own model providers](/langsmith/engine-self-hosted#your-own-model-providers), with API keys or cloud identity.
+  LangSmith Cloud uses LangChain-managed inference. Self-hosted deployments can also use [their own model providers](/langsmith/engine-self-hosted#your-own-model-providers), with API keys or cloud identity. With your own providers, you pay them for model calls and LangChain charges a lower LSU rate for Engine usage.
 </Note>
 
-Engine charges in **LangChain Standard Units (LSUs)**, a normalized unit of work combining compute, storage, memory, and LLM spend. LSU consumption scales with the number of traces analyzed, the number and complexity of the LLM calls Engine makes to diagnose and fix issues, and the size of any connected repository. LSUs cost **\$1 USD each**. For an estimate of your expected LSU usage, see the [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc).
+Engine charges in **LangChain Standard Units (LSUs)**, a normalized unit of work covering compute, storage, and memory, plus model inference when LangChain provides it. LSU consumption scales with the number of traces analyzed, the number and complexity of the LLM calls Engine makes to diagnose and fix issues, and the size of any connected repository. LSUs cost **\$1 USD each**. For an estimate of your expected LSU usage, see the [LangSmith Usage Calculator](https://www.langchain.com/pricing#pricing-calc).
 
 On initialization, Engine audits past traces, clusters and prioritizes issues by severity, and proposes fixes to your prompts or code (if a repository is connected). Recurring scans run on a dynamic schedule tuned to balance cost and performance, whether or not new issues are found, and surface new issues not previously detected.
 
 ### Set the analysis level
 
-The analysis level controls how many of your project's traces Engine analyzes, and so how many LSUs it uses. Choose it when you [turn on Engine for a project](#turn-on-engine-for-a-tracing-project), and change it later under **Analysis level** in the [**Engine settings**](#configure-engine) panel:
+The analysis level controls how many of your project's traces Engine analyzes, and so how many LSUs it uses. Choose it when you [turn on Engine for a project](#set-up-engine), and change it later under **Analysis level** in the [**Engine settings**](#configure-engine) panel:
 
 * **Reduced**: Monitors fewer traces at a lower cost.
 * **Standard** (default): Analyzes more of your eligible traces for fuller coverage.
@@ -35574,6 +35659,8 @@ The two levels default differently:
 To stop Engine entirely, use the **Enable Engine** toggle in **Settings > Engine**.
 
 To monitor usage, you can view your organization's monthly LSU spend on the **Engine** page in **Settings**, or view the spend for a tracing project or agent environment in its [**Engine settings**](#configure-engine) panel.
+
+For offline self-hosted deployments, spend reporting and limit enforcement differ. See [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations).
 
 ## Investigate and fix an issue
 
@@ -36117,7 +36204,7 @@ For how Engine handles your data more broadly, see [Engine security](/langsmith/
 ## See also
 
 * [Engine](/langsmith/engine-overview): Product overview and where Engine fits in the development lifecycle.
-* [Connect Engine to GitHub](/langsmith/engine-github): Connect repositories in LangSmith Cloud, or create and configure your own GitHub App for a self-hosted deployment.
+* [Connect Engine to GitHub](/langsmith/engine-github): Connect repositories, choose branches, and manage repository access.
 * [Engine notifications](/langsmith/engine-notifications): Slack and webhook destinations, event payload reference, and signing-secret verification.
 * [Engine security](/langsmith/engine-security): Review how Engine accesses your traces, deployments, and repositories.
 * [Preview builds](/langsmith/preview-builds): Create the preview deployments Engine verifies fixes against.
@@ -36142,165 +36229,421 @@ For how Engine handles your data more broadly, see [Engine security](/langsmith/
 # Connect LangSmith Engine to GitHub
 Source: https://docs.langchain.com/langsmith/engine-github
 
-Connect LangSmith Engine to GitHub in LangSmith Cloud, or create and configure your own GitHub App for a self-hosted deployment.
+Connect GitHub repositories to Engine, or configure a GitHub App for self-hosted LangSmith using GitHub.com, Enterprise Cloud with data residency, or Enterprise Server.
 
-Connecting a GitHub repository is optional. When connected, LangSmith Engine reads source code to diagnose issues and opens pull requests with proposed fixes. Engine uses a LangChain-managed GitHub App in LangSmith Cloud, while self-hosted operators create and manage their own GitHub App.
+Connecting GitHub lets LangSmith Engine read your source code when investigating traces and propose fixes as pull requests. A connection is optional for trace analysis.
 
-## LangSmith Cloud
+* **LangSmith Cloud**: Use the LangChain-managed GitHub App on GitHub.com. Start with [Connect repositories](#connect-repositories).
+* **Self-hosted LangSmith**: An operator first completes [Self-hosted configuration](#self-hosted-configuration) for your GitHub instance. Then, workspace users follow the same repository connection steps below.
 
-In LangSmith Cloud, Engine connects through a LangChain-managed GitHub App. You do not create or configure an app yourself.
+## Connect repositories
 
-To connect your repositories:
+These steps apply to LangSmith Cloud and to self-hosted deployments with a configured GitHub App.
 
-1. In the [LangSmith console](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-engine-github), open a tracing project, or an agent environment, and go to the **Engine** tab.
-2. Under **Connect your agent's code repository**, click **Connect GitHub** and authorize the LangChain-managed GitHub App.
-3. Install the app on the repositories Engine should access. Installing the app on a GitHub organization may require approval from a GitHub organization owner. If you are not an owner, GitHub sends the owner an installation request to approve before the app becomes available.
-4. Select the connected repository in the **GitHub Repository** field on the **Engine** tab.
+Enable [Engine](/langsmith/engine) for your tracing project or agent environment. You need permission to configure Engine in that project and to connect a GitHub integration in your LangSmith workspace. Ask a workspace administrator if those actions are unavailable.
 
-For the access and retention model of the managed app, see [Engine security](/langsmith/engine-security#github-integration).
-
-## Self-hosted
+On GitHub, you need permission to install the App on the repositories you want to connect, or access to an existing installation. Your GitHub organization or enterprise may require an administrator to approve the installation. Complete your organization's SSO sign-in when prompted.
 
 <Note>
-  Engine connects to `github.com` only. GitHub Enterprise Server is not supported: Engine's sandboxes reach `github.com` and `api.github.com`, and the sandbox auth proxy injects repository credentials for those hosts alone. A GitHub App created on a GitHub Enterprise Server instance cannot be used.
+  For Enterprise Managed Users, connect organization-owned repositories. GitHub does not allow this App to be installed on a managed user's personal account. See [Enterprise Managed Users](#enterprise-managed-users) for the requirements on GitHub.com and `ghe.com`.
 </Note>
 
-To create and configure a GitHub App for a self-hosted deployment:
+For fixes, the repository must permit Engine's branches and draft PRs. Review [Repository policies](#repository-policies) before testing a fix.
 
-### Create a GitHub App
+To connect repositories to an existing Engine project:
 
-<Steps>
-  <Step title="Create the app">
-    Go to [GitHub Settings > Developer settings > GitHub Apps](https://github.com/settings/apps) and click **New GitHub App**.
+1. Open the tracing project or agent environment. In its **Engine** tab, select **Configure Engine**.
+2. Under **Code repository**, select **Connect GitHub**. If your workspace already has a connection, the repository picker appears instead.
+3. In GitHub, authorize the App configured for your LangSmith deployment. Install it on the organization or account that owns your code and select the repositories it can access. If the App is already installed, LangSmith may ask you to select an existing installation.
+4. Complete any GitHub approval prompts and return to LangSmith. Authorizing the App and installing it are separate steps: authorization identifies your GitHub account; installation grants the App access to repositories.
+5. In the repository picker, search by account or repository name, select a repository, and click **Connect repository**.
+6. Repeat for additional repositories. Each repository can have its own branch and subfolder.
 
-    * **GitHub App name**: Any unique name, for example `acme-langsmith-engine`.
-    * **Homepage URL**: Your LangSmith deployment URL, for example `https://langsmith.example.com`.
-    * **Where can this GitHub App be installed?**: For most self-hosted deployments, select **Only on this account**. Select **Any account** only if you intend to distribute the app.
-  </Step>
+You can also connect repositories while first setting up Engine, under **Connect your agent's code repository**.
 
-  <Step title="Set the callback URL">
-    Add the following **Callback URL**, replacing `<langsmith-host>` with your LangSmith hostname:
+### Choose the branch and subfolder
 
-    ```
-    https://<langsmith-host>/api-host/v1/integrations/forge/github/callback
-    ```
-  </Step>
+For each connected repository:
 
-  <Step title="Set the webhook URL and secret">
-    Generate a random webhook secret of at least 32 bytes with your secret manager or another cryptographically secure generator. Store this value in your LangSmith secret store.
+* **Branch**: Select the branch Engine should read and use as the base for fixes. Leave it blank to use the repository's default branch.
+* **Subfolder**: Optionally focus Engine on the part of the repository that contains your agent. This setting does not restrict the GitHub App's repository access.
 
-    Under **Webhook**, select **Active** and set the **Webhook URL**, replacing `<langsmith-host>` with your LangSmith hostname:
+Engine creates fix branches in the connected repository and opens draft pull requests against the selected base branch. Review and merge those pull requests through your usual GitHub process. Engine does not merge them for you.
 
-    ```
-    https://<langsmith-host>/api-host/v1/integrations/forge/github/webhook
-    ```
+### Connect another organization or account
 
-    Enter the generated value in **Webhook secret**.
-  </Step>
+One GitHub App can have an installation in each of several organizations or accounts. Repositories from those installations can be connected to the same Engine project.
 
-  <Step title="Set repository permissions">
-    Under **Permissions > Repository permissions**, grant the following:
+In the repository picker, select **Install on another GitHub organization or repository...**. Complete the GitHub flow, return to LangSmith, and connect the additional repositories. On self-hosted LangSmith, the App's [ownership and visibility](#choose-who-owns-the-app) determine which accounts GitHub offers as installation targets.
 
-    * **Contents**: Read and write.
-    * **Pull requests**: Read and write.
-    * **Metadata**: Read-only (automatically selected).
+On self-hosted LangSmith, all connected repositories must belong to the same GitHub instance. Connecting to a different LangSmith workspace also requires connecting the appropriate installation in that workspace.
 
-    Under **Subscribe to events**, select no events. Engine does not require any event subscriptions.
-  </Step>
+### Manage repository access
 
-  <Step title="Create the app and gather its values">
-    Click **Create GitHub App**. GitHub supplies the following values on the app settings page:
+Installing an App on **Only select repositories** does not automatically include repositories created later. In the picker, select **Missing a repo? Manage repo access for ...** or **Manage app access →**. Add the repository in GitHub, save the installation settings, and reload the picker.
 
-    | Value | Where to find it | Environment variable |
-    | - | - | - |
-    | **App ID** | Numeric, at the top of the page | `FORGE_GITHUB_APP_ID` |
-    | **Public link** | For example, `https://github.com/apps/acme-langsmith-engine` | `FORGE_GITHUB_APP_PUBLIC_LINK` |
-    | **Client ID** | Under **About** | `FORGE_GITHUB_CLIENT_ID` |
-    | **Client secret** | Under **Client secrets**, click **Generate a new client secret** (shown once) | `FORGE_GITHUB_CLIENT_SECRET` |
-    | **Private key** | Under **Private keys**, click **Generate a private key** (downloads a `.pem` file) | `FORGE_GITHUB_APP_PEM` |
-  </Step>
+Removing a repository from an Engine project stops Engine from using it for that project. It does not uninstall the GitHub App or remove its access for other projects. Manage the App installation in GitHub to revoke repository access.
 
-  <Step title="Generate a state JWT secret">
-    LangSmith uses an HMAC key to sign short-lived OAuth state tokens and protect callback state. Generate a random secret of at least 32 bytes with your secret manager or another cryptographically secure generator. GitHub does not provide this value.
+### Verify the connection
 
-    This is `FORGE_GITHUB_STATE_JWT_SECRET`. Generate it separately, and do not reuse the webhook secret or any other credential.
-  </Step>
+Use a test repository and an Engine project with representative traces. On self-hosted LangSmith, ask your operator to [verify webhook delivery](#verify-webhook-delivery) during this test.
 
-  <Step title="Create a Kubernetes Secret">
-    <Warning>
-      The GitHub client secret, private key, state JWT secret, and webhook secret are credentials. Store them only in a Kubernetes Secret, never in Helm values or command-line arguments.
-    </Warning>
+To verify the connection:
 
-    Using your existing [secret-management workflow](/langsmith/self-host-using-an-existing-secret), create a Kubernetes Secret named `langsmith-forge-github` with these keys:
+1. Run an Engine analysis and confirm it can use the repository's source code.
+2. Generate a fix for an issue, inspect its diff, and click **Open PR**. Confirm that **View PR** opens a draft PR on the expected GitHub instance, repository, and base branch.
+3. Review and merge the test PR. Confirm the corresponding Engine issue becomes complete.
 
-    | Key | Value |
-    | - | - |
-    | `forge_github_client_secret` | GitHub client secret |
-    | `forge_github_state_jwt_secret` | Separately generated state JWT secret |
-    | `forge_github_app_pem` | Contents of the GitHub App private-key PEM |
-    | `forge_github_webhook_secret` | Webhook secret also configured in GitHub |
+To create PRs automatically, enable **Open a draft pull request for every fix** in **Code repository** settings.
 
-    For production deployments, use your existing secrets workflow, such as [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets) or [External Secrets Operator](https://external-secrets.io/).
-  </Step>
+### Repository policies
 
-  <Step title="Add the configuration to your langsmith_config.yaml">
-    Add the following to `hostBackend.deployment.extraEnv` in your [`langsmith_config.yaml`](/langsmith/kubernetes#configure-your-helm-charts). The App ID, public link, and client ID use literal `value` entries. Reference the client secret, state JWT secret, private key, and webhook secret with `secretKeyRef`; never set them through `commonEnv` or as inline values:
+Repositories must support draft PRs and allow Engine to push fix branches. Engine does not use a fork-based contribution workflow.
 
-    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    hostBackend:
-      deployment:
-        extraEnv:
-          - name: FORGE_GITHUB_APP_ID
-            value: "<app-id>"
-          - name: FORGE_GITHUB_APP_PUBLIC_LINK
-            value: "https://github.com/apps/<app-slug>"
-          - name: FORGE_GITHUB_CLIENT_ID
-            value: "<client-id>"
-          - name: FORGE_GITHUB_CLIENT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: langsmith-forge-github
-                key: forge_github_client_secret
-          - name: FORGE_GITHUB_STATE_JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: langsmith-forge-github
-                key: forge_github_state_jwt_secret
-          - name: FORGE_GITHUB_APP_PEM
-            valueFrom:
-              secretKeyRef:
-                name: langsmith-forge-github
-                key: forge_github_app_pem
-          - name: FORGE_GITHUB_WEBHOOK_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: langsmith-forge-github
-                key: forge_github_webhook_secret
-    ```
+Engine's Git commits are unsigned. Rules that require signed commits on the fix branch can reject pushes. Branch-name rules, push restrictions, and GHES pre-receive hooks can also reject a fix. In LangSmith v0.17, fix branches use the `issues-agent/` prefix.
 
-    Apply the Helm configuration:
+Review policies that apply to these branches and the App identity. Keep your normal review and merge requirements on the target branch. A requirement on the target branch may still need to be satisfied when a person merges; configuring the App does not bypass repository policy.
 
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    helm upgrade -i langsmith langchain/langsmith --values langsmith_config.yaml --version <version> -n <namespace> --wait --debug
-    ```
-  </Step>
+Engine does not fetch Git LFS file contents or initialize Git submodules.
 
-  <Step title="Install the app on repositories">
-    Once pods are healthy, install the GitHub App on the repositories Engine should access:
+### Troubleshoot repository selection
 
-    1. Open the app's public link (`FORGE_GITHUB_APP_PUBLIC_LINK`) and click **Install**, or open **Settings > Applications > GitHub Apps** in your GitHub organization.
-    2. Select the repositories Engine should access. If the installation does not grant access to all repositories, explicitly select each private repository Engine needs.
-    3. In LangSmith, open a tracing project or agent environment, go to the **Engine** tab, and select the repository in the **GitHub Repository** field.
+| Symptom | What to check |
+| - | - |
+| GitHub is not configured, or the connection fails before GitHub opens | On self-hosted LangSmith, ask your operator to check the [deployment configuration](#configure-langsmith). |
+| Your organization is not an installation target | Confirm your GitHub role, organization approval policy, and the App's visibility. A private App can only be installed on its owning account. |
+| Your managed-user account is not an installation target | Use an organization-owned repository. Personal managed-user repositories cannot use this integration. |
+| The App is installed, but LangSmith has no connection | Start **Connect GitHub** in LangSmith, including after an administrator approves installation or you install directly from GitHub. On self-hosted LangSmith, ask your operator to [check setup](#troubleshoot-setup) if authorization does not finish. |
+| An installation or repository is missing | Check which GitHub account you authorized, the App's selected repositories, and whether the installation was connected to this LangSmith workspace. Complete your organization's SSO authorization when prompted. |
+| Authorization succeeds, but the repository cannot be read | Check the App's repository access. On self-hosted LangSmith, also ask your operator to check [GitHub API and sandbox network access](#allow-network-access). Browser sign-in does not test those connections. |
+| A fix cannot be pushed | Check rules that apply to the new fix branch, including signed-commit requirements, branch restrictions, and pre-receive hooks. See [Repository policies](#repository-policies). |
 
-    The connected repository lets Engine use your source code for diagnosis and open pull requests with proposed fixes.
-  </Step>
-</Steps>
+## Self-hosted configuration
+
+An operator registers a GitHub App, configures LangSmith, and verifies the connection. Complete this setup once per LangSmith installation. Workspace users then [connect repositories](#connect-repositories) with that App.
+
+This configuration is separate from GitHub setup for LangSmith Deployments builds and previews.
+
+Use the LangSmith application images supplied with your Helm chart release.
+
+### Before you start
+
+You need:
+
+* **Engine and Sandboxes**: A working [self-hosted Engine deployment](/langsmith/engine-self-hosted) and permission to update its Helm values, secrets, and workloads.
+* **GitHub administration**: Permission to register and install an App on the target repositories. Enterprise or organization policies may require approval.
+* **Network access**: Browser, service, and sandbox connectivity, plus a webhook route reachable from GitHub. See [Allow network access](#allow-network-access).
+
+### Choose your GitHub environment
+
+Configure one GitHub instance and one App per LangSmith installation.
+
+Set `ENGINE_GITHUB_WEB_BASE_URL` to your GitHub instance's web address:
+
+| GitHub environment | Example web address |
+| - | - |
+| GitHub.com, including Enterprise Cloud | `https://github.com` |
+| Enterprise Cloud with data residency | `https://example.ghe.com` |
+| GitHub Enterprise Server (GHES) | `https://<ghes-hostname>` |
+
+Replace the example enterprise address or GHES hostname placeholder with your own. GHES uses the same configuration on cloud infrastructure and on premises.
+
+Use HTTPS on port 443 and a fully qualified hostname, without a path such as `/api/v3` or an organization name. LangSmith determines the API endpoints automatically. SSH Git URLs and custom GitHub ports are not supported.
+
+#### Allow network access
+
+All connections use HTTPS. Configure DNS, routing, and certificate trust for each source:
+
+| Source | Destination | Purpose |
+| - | - | - |
+| User's browser | GitHub web host and LangSmith authorization callback URL | Sign-in, App authorization, and installation. |
+| LangSmith services and Engine workers | GitHub web and API hosts | Authorization, repository information, branch and diff operations, PR creation/status, and App identity. |
+| Sandbox hosts | GitHub web host | Clone repositories and push fix branches. |
+| GitHub | LangSmith webhook URL | Link PRs to issues and complete issues after a merge. |
+
+For API access, allow the host for your GitHub environment:
+
+* **GitHub.com**: `api.github.com`.
+* **Enterprise Cloud with data residency**: `api.example.ghe.com` for a web address of `https://example.ghe.com`.
+* **GHES**: The same host as the web address, `<ghes-hostname>`.
+
+GitHub.com and `ghe.com` send webhooks from outside your network; GHES sends them from your GHES environment. The webhook URL must be reachable from that source. Browser access through a VPN does not establish webhook access.
+
+For GitHub IP allow lists, include the outbound addresses of LangSmith services and sandbox hosts, including any NAT gateway addresses.
+
+Sandbox Git traffic requires direct routing to GitHub. Mandatory upstream HTTP/HTTPS forward proxies are not supported; `HTTPS_PROXY` on LangSmith API pods does not configure sandbox Git access.
+
+For private IP addresses or a private CA, include the [private-GHES settings](#private-ghes-deployments) when configuring LangSmith below.
+
+### Register a GitHub App
+
+Register the App on the GitHub instance that hosts your repositories. An App registered on GitHub.com cannot be reused on GHES or a `ghe.com` enterprise.
+
+For `ghe.com`, sign in through your enterprise's identity provider. Use that site throughout registration and installation; your personal GitHub.com account and its Apps are separate.
+
+#### Choose who owns the App
+
+The App's **owner** manages its registration and credentials. An **installation** grants access to selected repositories in an organization or account.
+
+Choose ownership and visibility based on the repositories Engine needs:
+
+| Repositories to connect | App configuration |
+| - | - |
+| Repositories in one organization | Create the App in that organization. Select **Only on this account** if it does not need installations elsewhere. |
+| Repositories in several organizations within an enterprise | Create an enterprise-owned App and install it in each organization. This keeps installation limited to the enterprise. |
+| Repositories in multiple organizations, or a mix of organizations and personal accounts, without managed users | Create an organization-owned App with **Any account**, then install it in each target account. On GHES, **Any account** applies only within that server. |
+| Repositories owned by one personal account, without managed users | Create the App in the personal account and select **Only on this account**. |
+
+Public visibility allows other accounts to install the App. It does not make repositories public or grant access without installation.
+
+Enterprise-owned Apps have internal visibility and cannot be installed on personal accounts. Install in each organization; an enterprise-account installation does not grant repository access.
+
+<Accordion title="Enterprise visibility and managed users">
+  Only enterprise members can authorize an enterprise-owned App. If outside collaborators need to connect repositories, review their enterprise access before choosing that ownership type. See GitHub's [App visibility rules](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/making-a-github-app-public-or-private) or the [GHES equivalent](https://docs.github.com/en/enterprise-server@3.20/apps/creating-github-apps/registering-a-github-app/making-a-github-app-public-or-private), selecting your server's documentation version.
+
+  [GitHub Enterprise Cloud with data residency](https://docs.github.com/en/enterprise-cloud@latest/admin/data-residency/about-github-enterprise-cloud-with-data-residency) uses Enterprise Managed Users (EMU). Enterprise Cloud on GitHub.com can also use EMU; SSO alone does not mean an enterprise uses EMU.
+
+  For EMU, connect organization-owned repositories. A managed user can register an App, but this Engine App cannot be installed on a managed user's personal account. See GitHub's [managed-user restrictions](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises/abilities-and-restrictions-of-managed-user-accounts#github-apps).
+
+  In an EMU enterprise, GitHub can show **This enterprise** instead of **Any account**. **Only on this account** limits an organization-owned App to that organization. Each target organization needs its own installation.
+
+  An organization owner can install the App. Repository administrators in an EMU enterprise can install it only when it requests no organization permissions and enterprise policy permits installation.
+</Accordion>
+
+#### Open the registration form
+
+Choose the tab for the account that owns the App. These paths apply on the GitHub instance selected above:
+
+<Tabs>
+  <Tab title="Organization">
+    You must be an organization owner or have permission to manage its Apps.
+
+    To open the registration form:
+
+    1. Open your profile menu and select **Your organizations**.
+    2. Next to the organization that should own the App, select **Settings**.
+    3. Open **Developer settings** > **GitHub Apps** > **New GitHub App**.
+  </Tab>
+
+  <Tab title="Enterprise">
+    An enterprise owner completes these steps. On GHES, enterprise-owned Apps require version 3.17 or later. On older versions, use an organization-owned App with the visibility needed for your repositories.
+
+    To open the registration form:
+
+    1. Open your profile menu. With managed users, select **Your enterprise**. With personal accounts, select **Your enterprises**, then open the enterprise's **Settings**.
+    2. In the enterprise sidebar, under **Settings**, select **GitHub Apps**.
+    3. Select **New GitHub App**.
+
+    For GitHub's instructions, see [Create an App for your enterprise](https://docs.github.com/en/enterprise-cloud@latest/admin/managing-github-apps-for-your-enterprise/creating-github-apps-for-your-enterprise).
+  </Tab>
+
+  <Tab title="Personal account">
+    Use this option for a personal account without managed users.
+
+    Open your profile menu and select **Settings** > **Developer settings** > **GitHub Apps** > **New GitHub App**.
+  </Tab>
+</Tabs>
+
+#### Complete the registration form
+
+Use these settings for all GitHub environments and App owners. For field definitions, see [Register a GitHub App](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/registering-a-github-app/registering-a-github-app). Replace `https://langsmith.example.com` with the browser-facing URL of your LangSmith deployment.
+
+GitHub labels the authorization callback field **Callback URL** or **Redirect URI**. Both names refer to the URL where GitHub returns users after authorization.
+
+If LangSmith uses a base path, include it. For example, a deployment at `https://langsmith.example.com/langsmith` uses `https://langsmith.example.com/langsmith/api-host/v1/integrations/forge/github/callback` as its authorization callback URL.
+
+| GitHub setting | Value |
+| - | - |
+| **GitHub App name** | A unique name for your deployment, such as `acme-langsmith-engine`. |
+| **Homepage URL** | Your LangSmith URL, such as `https://langsmith.example.com`. |
+| **Callback URL** / **Redirect URI** | `https://langsmith.example.com/api-host/v1/integrations/forge/github/callback` |
+| **Allow wildcard matching** | Leave disabled, if shown. |
+| **Request user authorization (OAuth) during installation** | Enabled. Engine needs the authorization callback to finish connecting an installation. |
+| **Expire user authorization tokens** | Leave enabled, if shown. |
+| **Enable Device Flow** | Leave disabled. |
+| **Setup URL** | Leave unset. When OAuth during installation is enabled, GitHub uses the authorization callback URL and may disable this field. |
+| **Redirect on update** | Enabled. Returns users to LangSmith after they update an installation. |
+| **Webhook: Active** | Enabled. |
+| **Webhook URL** | `https://langsmith.example.com/api-host/v1/integrations/forge/github/webhook` |
+| **Webhook secret** | A separately generated random secret, also configured in LangSmith. |
+| **SSL verification** | Enabled. |
+| **Where can this GitHub App be installed?** | The visibility selected in [Choose who owns the App](#choose-who-owns-the-app). This field does not appear for enterprise-owned Apps. |
+
+For an existing App, manage token expiration under **Optional Features** > **User-to-server token expiration**. See [GitHub's token expiration settings](https://docs.github.com/en/enterprise-cloud@latest/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens#configuring-your-app-to-use-user-access-tokens-that-expire).
+
+Generate the webhook secret with a cryptographically secure generator or your secret manager, using at least 32 random bytes. Save it for the LangSmith configuration.
+
+Under **Permissions** > **Repository permissions**, configure:
+
+| Permission | Access | Purpose |
+| - | - | - |
+| **Contents** | Read and write | Read code and push Engine's fix branches. |
+| **Pull requests** | Read and write | Create draft PRs and read their status. |
+| **Metadata** | Read-only, selected automatically | Identify repositories. |
+
+Leave organization, account, and enterprise permissions unset. Engine's standard investigation and fix workflow does not require administration, workflow, or Checks permissions.
+
+Under **Subscribe to events**, select **Pull request**. These events let Engine link externally created PRs that include Engine's issue reference and mark issues complete after a merge.
+
+Select **Create GitHub App**.
+
+#### Save the App values
+
+After creating the App, open its settings and prepare the credentials:
+
+1. Under **Client secrets**, select **Generate a new client secret** and save it immediately.
+2. Under **Private keys**, select **Generate a private key**. Keep the downloaded PEM file; LangSmith needs its complete contents, including newlines.
+3. Generate a separate **OAuth state secret** of at least 32 random bytes with your secret manager or a cryptographically secure generator. Use it only in LangSmith; do not enter it into GitHub or reuse the webhook secret.
+
+Use this mapping when configuring LangSmith:
+
+| Value | LangSmith environment variable |
+| - | - |
+| GitHub instance's web address | `ENGINE_GITHUB_WEB_BASE_URL` |
+| **App ID** (numeric) | `ENGINE_GITHUB_APP_ID` |
+| **Public link** (full URL) | `ENGINE_GITHUB_APP_PUBLIC_LINK` |
+| **Client ID** | `ENGINE_GITHUB_APP_CLIENT_ID` |
+| **Client secret** | `ENGINE_GITHUB_APP_CLIENT_SECRET` |
+| **Private key** (PEM contents) | `ENGINE_GITHUB_APP_PRIVATE_KEY` |
+| **Callback URL** / **Redirect URI** | `ENGINE_GITHUB_OAUTH_REDIRECT_URI` |
+| **Webhook secret** | `ENGINE_GITHUB_APP_WEBHOOK_SECRET` |
+| **OAuth state secret** | `ENGINE_GITHUB_OAUTH_STATE_SECRET` |
+
+Copy the numeric **App ID**, not the Client ID or installation ID. Copy **Public link** exactly, including its full path; do not use the developer settings URL or an installation URL ending in `/installations/new`.
+
+Use the exact authorization callback URL and webhook secret entered in GitHub. Include any LangSmith base path in the callback URL. The GitHub web address is the one selected in [Choose your GitHub environment](#choose-your-github-environment).
+
+### Configure LangSmith
+
+#### Store credentials
+
+Using your [existing secret-management workflow](/langsmith/self-host-using-an-existing-secret), create a Kubernetes Secret in the LangSmith namespace for the Client secret, private key, webhook secret, and OAuth state secret. The Helm example references a Secret named `langsmith-engine-github`. You can choose a different Secret name and keys; update the `secretKeyRef` entries to match.
+
+Store credentials in Secrets, not in committed Helm values or command-line arguments. App IDs, Client IDs, and URLs can be included in Helm values.
+
+#### Set Helm values
+
+Enable `hostBackend` and place all `ENGINE_GITHUB_*` settings in `commonEnv`. Merge the following with your existing Helm values, preserving unrelated entries. Replace the placeholders and example URLs:
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: ENGINE_GITHUB_WEB_BASE_URL
+    value: "https://<ghes-hostname>"
+  - name: ENGINE_GITHUB_APP_ID
+    value: "<app-id>"
+  - name: ENGINE_GITHUB_APP_PUBLIC_LINK
+    value: "<public-link-copied-from-github>"
+  - name: ENGINE_GITHUB_APP_CLIENT_ID
+    value: "<client-id>"
+  - name: ENGINE_GITHUB_OAUTH_REDIRECT_URI
+    value: "https://langsmith.example.com/api-host/v1/integrations/forge/github/callback"
+  - name: ENGINE_GITHUB_APP_CLIENT_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: langsmith-engine-github
+        key: client_secret
+  - name: ENGINE_GITHUB_APP_PRIVATE_KEY
+    valueFrom:
+      secretKeyRef:
+        name: langsmith-engine-github
+        key: private_key
+  - name: ENGINE_GITHUB_OAUTH_STATE_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: langsmith-engine-github
+        key: oauth_state_secret
+  - name: ENGINE_GITHUB_APP_WEBHOOK_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: langsmith-engine-github
+        key: webhook_secret
+
+hostBackend:
+  enabled: true
+```
+
+Remove these variables from component-specific `extraEnv` lists, including `hostBackend.deployment.extraEnv`, to avoid duplicate definitions. The shared configuration supplies the same values to API and background workloads.
+
+The chart's `config.hostname`, `config.frontendHostname` if used, and `config.basePath` must also describe the URL users open in their browser.
+
+#### Private GHES deployments
+
+If GHES uses private IP addresses or a private CA, include the applicable settings below before applying the values file.
+
+**GHES on a private network**
+
+For a GHES hostname that resolves to private IP addresses, configure private DNS and network routing from LangSmith and the sandbox hosts. Also set the following environment variables through the listed Helm values:
+
+| Helm environment list | Variable | Value |
+| - | - | - |
+| `platformBackend.deployment.extraEnv` | `SSRF_ALLOW_PRIVATE_IPS_ENGINE` | `"true"` |
+| `ingestQueue.deployment.extraEnv` | `SSRF_ALLOW_PRIVATE_IPS_ENGINE` | `"true"` |
+| `sandboxes.sandboxHost.deployment.extraEnv` | `SSRF_ALLOW_PRIVATE_IPS_EGRESS` | `"true"` |
+
+These settings allow the respective components to reach private addresses; they do not create DNS records or network routes. They affect more than this GitHub hostname. Retain network restrictions for the destinations your deployment actually needs, and keep protections for metadata, loopback, and Kubernetes-internal addresses enabled.
+
+**GHES with a private certificate authority**
+
+LangSmith services and sandbox hosts must trust the CA that signed your GHES certificate. Configuring trust only in your browser or inside a sandbox is insufficient.
+
+Follow [Mount internal CAs for TLS](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls) to configure `config.customCa.secretName` and `config.customCa.secretKey`. Include your private CA and any public roots needed for other outbound connections in the bundle.
+
+Also set `REQUESTS_CA_BUNDLE` in `hostBackend.deployment.extraEnv` to `/etc/ssl/certs/custom-ca-certificates.crt`, the path where the chart mounts that bundle. This setting is required for the GitHub integration in addition to the chart's TLS configuration.
+
+Check that the bundle reaches the GitHub integration, platform API and workers, Engine execution workers, and sandbox hosts. Keep TLS verification enabled. The sandbox proxy's own CA is separate from the CA used to verify GHES.
+
+#### Apply the configuration
+
+Apply the complete values file through your normal deployment process, using a matching LangSmith image and chart release. For Helm upgrades, see [Upgrade a self-hosted deployment](/langsmith/self-host-upgrades).
+
+Wait for the affected API and worker rollouts to finish before connecting repositories. Updating a Secret in place does not reload environment variables in running containers; restart affected workloads after credential changes.
+
+### Verify webhook delivery
+
+After the rollout, [connect a test repository and verify the connection](#verify-the-connection). While creating and merging the test PR, check the App's webhook deliveries:
+
+1. In the GitHub App's settings, open **Advanced** > **Recent deliveries**.
+2. Confirm that **pull\_request** deliveries reach LangSmith successfully. LangSmith returns HTTP 202 when it accepts a valid signed delivery.
+
+A successful webhook response alone does not prove the event matched an Engine issue. Complete the merge check in [Verify the connection](#verify-the-connection).
+
+### Troubleshoot setup
+
+| Symptom | What to check |
+| - | - |
+| **GitHub is not configured** | Confirm the App ID, Client ID, Client secret, private key, state secret, and App's public link are set. Check the GitHub URL format and complete the rollout. This notice identifies missing configuration; it does not test whether credentials are valid. |
+| GitHub is temporarily unavailable after authorization | Confirm that the Client secret and private key belong to the configured App ID and Client ID. Check GitHub connectivity and certificate trust, then restart **Connect GitHub**. |
+| GitHub authorization opens on the wrong instance | Check `ENGINE_GITHUB_WEB_BASE_URL` in shared configuration and remove conflicting component overrides. |
+| The callback returns HTML or 404 | Check the `/api-host` route, LangSmith base path, and exact authorization callback URL. |
+| Installation does not return to LangSmith | Enable **Request user authorization (OAuth) during installation**. Check the exact authorization callback URL and confirm the Client ID and Client secret belong to this App. Then restart **Connect GitHub** in LangSmith. |
+| Repositories appear, but cloning or pushing fails | Check sandbox-host DNS, routing, private-IP settings, certificate trust, and GitHub IP/push policies. |
+| PR creation fails after a successful push | Check **Pull requests: Read and write**, draft PR availability, and the selected base branch. |
+| A merge does not complete an issue | Check **Pull request** event subscription, webhook reachability, the matching webhook secret, and **Recent deliveries**. Redeliver failed events after correcting the cause. |
+
+If GitHub cannot deliver webhooks, repository reads, fixes, and PR creation can still work. Webhook-driven PR linking and automatic issue completion after merges do not work. Restore delivery and redeliver missed events from GitHub's App settings.
+
+For PRs created with an external coding assistant, preserve the issue reference from **Copy Fix Context** in the PR description. This reference lets Engine link the PR to the issue.
+
+For missing organizations or repositories, see [Troubleshoot repository selection](#troubleshoot-repository-selection).
+
+When asking for help, include your LangSmith and Helm chart versions, GitHub environment and GHES version if applicable, App ownership type, and the step that fails. Do not include private keys, client secrets, webhook secrets, or access tokens.
+
+### Change or rotate configuration
+
+For a private-key rotation, add the new key in GitHub, update the deployment Secret, and restart affected workloads. Validate the connection before removing the old key. Follow the same overlap approach where GitHub supports multiple client secrets.
+
+For webhook-secret rotation, coordinate the GitHub and LangSmith values. Deliveries during a mismatch fail signature verification. Review **Recent deliveries** and redeliver failed events after both sides use the new secret.
+
+Replacing the App requires installing the replacement and reconnecting affected LangSmith workspaces. Plan for an interruption until repository access is restored. Transferring App ownership can also change where it can be installed and its public link; review GitHub's transfer behavior before making the change.
+
+Do not change `ENGINE_GITHUB_WEB_BASE_URL` on an existing connected deployment as a migration procedure. Changing the URL does not migrate repository connections or existing PR references. Plan a migration with LangChain support before switching GitHub instances.
 
 ## See also
 
-* [Find and fix your agent's issues](/langsmith/engine): Engine setup, costs, and the issue workflow.
-* [Engine on self-hosted](/langsmith/engine-self-hosted): Installation, architecture, and data handling.
-* [Engine security](/langsmith/engine-security): How Engine handles your data and GitHub access.
+* [Find and fix your agent's issues](/langsmith/engine)
+* [Engine on self-hosted LangSmith](/langsmith/engine-self-hosted)
+* [Engine security](/langsmith/engine-security)
+* [Configure self-hosted environment variables](/langsmith/self-host-environment-variables)
 
 ***
 
@@ -36763,7 +37106,11 @@ For each issue, Engine surfaces the contributing traces, proposes a fix, keeps t
 
 ## How Engine runs
 
-Engine scans each connected tracing project on a dynamic schedule tuned to balance cost and performance, clustering and prioritizing issues by severity. It uses LangChain-managed inference and charges in LangChain Standard Units (LSUs). For setup, costs, and the full issue workflow, see [Find and fix your agent's issues](/langsmith/engine). For how Engine handles your data, its GitHub and model subprocessor controls, and its compliance posture, see [Engine security](/langsmith/engine-security). For how Engine runs in a self-hosted deployment, see [Engine on self-hosted](/langsmith/engine-self-hosted). To test a deployment with synthetic requests before failures reach production, see [Proactively detect issues with Red Teaming](/langsmith/engine#beta-proactively-detect-issues-with-red-teaming).
+Engine scans each connected tracing project on a dynamic schedule tuned to balance cost and performance. It clusters and prioritizes issues by severity and charges in LangChain Standard Units (LSUs).
+
+LangSmith Cloud uses LangChain-managed inference. Self-hosted deployments can use LangSmith Intelligence or their own model providers. See [Engine on self-hosted](/langsmith/engine-self-hosted) for installation and model-provider options, and [Engine security](/langsmith/engine-security) for data handling and access controls.
+
+For setup, costs, and the issue workflow, see [Find and fix your agent's issues](/langsmith/engine). On LangSmith Cloud, [Red Teaming](/langsmith/engine#beta-proactively-detect-issues-with-red-teaming) can also test a deployment with synthetic requests before failures reach production.
 
 ## Get started
 
@@ -36803,7 +37150,7 @@ Engine is delivered as part of LangSmith and inherits LangSmith's security and c
 
 ## What data Engine uses
 
-Engine operates on data you have already chosen to share with LangChain: the trace data you send to LangSmith and, separately, the GitHub repository content you grant through the LangChain-managed GitHub App (see [GitHub integration](#github-integration)). Enabling Engine introduces no other customer data sources. The following table summarizes what Engine reads, where it lives, and what it enables.
+In LangSmith Cloud, Engine operates on data you have already chosen to share with LangChain: the trace data you send to LangSmith and, separately, the GitHub repository content you grant through the LangChain-managed GitHub App (see [GitHub integration](#github-integration)). Enabling Engine introduces no other customer data sources. The following table summarizes what Engine reads, where it lives, and what it enables.
 
 | **Data source** | **What Engine reads** | **Storage and persistence** | **Enables** |
 | - | - | - | - |
@@ -36821,7 +37168,7 @@ Engine outputs are advisory. It surfaces and tracks issues, proposes pull reques
 
 ## GitHub integration
 
-Engine connects to your source code through a LangChain-managed GitHub App. Only GitHub.com is supported. GitLab, Bitbucket, and other version control providers are not yet supported.
+In LangSmith Cloud, Engine connects to GitHub.com through a LangChain-managed GitHub App. Self-hosted deployments use an [operator-managed App for their GitHub environment](/langsmith/engine-github#self-hosted-configuration). GitLab, Bitbucket, and other version control providers are not yet supported.
 
 The App is scoped to:
 
@@ -36847,7 +37194,7 @@ See [Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how
 
 ## Key security controls
 
-Engine adds the following controls on top of LangSmith's baseline:
+In LangSmith Cloud, Engine adds the following controls on top of LangSmith's baseline:
 
 * **Explicit opt-in**: Engine is never on by default and can only be enabled by an Organization Admin.
 * **Advisory outputs, human at the helm**: Engine does not auto-merge, auto-deploy, or take destructive actions on your systems. Every proposed change is a pull request that follows your branch-protection, review, and merge policies. Proposed prompt changes are written to a separate proposal record in LangSmith and do not modify any prompt until an authorized user explicitly applies them. In both paths, a human decides what ships.
@@ -36913,14 +37260,18 @@ Set up LangSmith Engine on a self-hosted LangSmith instance, including model pro
 
 LangSmith Engine is an agent within LangSmith that monitors your production traces, clusters them into issues, diagnoses each issue against your source code, proposes a fix as a PR, and identifies ground truth evals to add to your datasets. For a product overview, see [Engine](/langsmith/engine-overview).
 
-In self-hosted LangSmith, Engine's orchestration, including its detect, fix, and verify loop, runs inside your VPC as part of LangSmith. An Organization Admin chooses where Engine's model calls run:
+In self-hosted LangSmith, Engine's analysis and fix workflow runs in your environment. An Organization Admin chooses where Engine's model calls run:
 
 * **LangSmith Intelligence (LSI):** a LangChain-managed zero data retention (ZDR) service that runs Engine's models for you.
 * **Your own model providers:** Anthropic, OpenAI, Amazon Bedrock, Google Vertex AI, or Azure AI Foundry, with credentials or cloud identity you control.
 
 Engine reports usage metadata to LangSmith Intelligence for billing, unless your installation is [air-gapped](#air-gapped-installations).
 
-This page covers what Engine depends on outside your environment, how to [choose how Engine runs its models](#choose-how-engine-runs-its-models), and how to [install Engine](#install-engine) on your instance. To connect Engine to your source code, create and configure your own GitHub App as described in [Connect Engine to GitHub](/langsmith/engine-github).
+This page covers model providers, data handling, and installation. To give Engine access to source code, also [configure a GitHub App](/langsmith/engine-github#self-hosted-configuration). GitHub is optional for trace analysis.
+
+<Note>
+  Red teaming and automatic issue validation are unavailable on self-hosted LangSmith. You can investigate issues, generate fixes, and open PRs without those features.
+</Note>
 
 Engine works with two kinds of data:
 
@@ -36968,6 +37319,8 @@ If the connection to LSI is unavailable, Engine stops and returns an error. The 
 
 Engine calls your providers directly from your cluster. Prompts and responses go only to your provider, under your agreement with that provider. LangChain doesn't receive them.
 
+Sandbox usage by Engine is included in Engine's LSU billing. The sandboxes Engine uses to diagnose issues, generate fixes, and write evaluators do not incur additional Sandboxes product charges.
+
 Engine supports Anthropic, OpenAI, Amazon Bedrock, Google Vertex AI, and Azure AI Foundry. It uses a mix of models from the providers you select, so for the best results, add credentials for every provider you have access to.
 
 Enable access to Anthropic's Claude models and OpenAI's GPT models in your provider accounts, where your provider offers them. On Azure, use an Azure AI Foundry resource. To confirm that Engine can reach the models it uses, run [**Test connection**](#test-a-provider).
@@ -36991,7 +37344,7 @@ LSI does not persist the content of prompts or model responses. It retains the f
 
 When Engine runs on your own model providers, this metadata is all LSI receives. Your self-hosted LangSmith records Engine's usage and reports it to the endpoint in [`engine.intelligenceBaseUrl`](#allow-egress-to-langsmith-intelligence) every hour, authenticated with your license.
 
-Engine's deployment-independent data handling, including zero data retention with every model provider LangChain uses and no use of customer data to train or fine-tune models, is described in [Engine security](/langsmith/engine-security).
+For LangChain-managed inference, the model-provider retention and training commitments are described in [Engine security](/langsmith/engine-security#model-subprocessors). When you use your own providers, their retention and training policies depend on your agreements with them.
 
 ## Install Engine
 
@@ -37052,7 +37405,9 @@ Engine also adds configuration to `platform-backend` and `ingest-queue`, which d
   <Step title="Verify your hostname is externally reachable">
     Engine's sandboxes call your LangSmith install using the `langsmith` CLI, so `config.hostname` must be reachable from the sandbox network. Helm validation rejects `localhost` and in-cluster `*.svc` addresses.
 
-    Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine does not require you to expose anything beyond the address your own users already reach. Sandbox egress is allowlisted to your LangSmith hostname, `github.com`, `api.github.com`, and the Python package registries. Per-run credentials are injected by a proxy outside the sandbox rather than being readable inside it.
+    Serve that hostname through your ingress with TLS, as described in [Set up an ingress](/langsmith/self-host-ingress). Engine's sandbox network policy permits access to your LangSmith hostname, the configured GitHub hosts, and the Python package registries. Per-run credentials are injected by a proxy outside the sandbox rather than being readable inside it.
+
+    For GitHub connections, also allow the [outbound requests and inbound webhooks](/langsmith/engine-github#allow-network-access) required by your GitHub environment. Browser access to LangSmith alone does not establish webhook connectivity from GitHub.
   </Step>
 
   <Step title="Generate Engine's keys">
@@ -37282,6 +37637,8 @@ Enabling Engine in Helm makes the feature available; it does not start any scans
 2. An Organization Admin [chooses how Engine runs its models](#choose-model-providers) under **Settings > Engine > Model providers**. Engine doesn't start any runs until this is saved.
 3. A user whose [role](/langsmith/rbac) can update tracing projects turns on Engine for a tracing project from its **Engine** tab. For more information, see [Set up Engine](/langsmith/engine#set-up-engine).
 
+To read source code and open pull requests, Engine also needs a GitHub connection. An operator [configures the GitHub App](/langsmith/engine-github#self-hosted-configuration), then workspace users [connect repositories](/langsmith/engine-github#connect-repositories).
+
 ### Choose model providers
 
 Under **Settings > Engine > Model providers**, an Organization Admin selects LangSmith Intelligence, one or more of your own providers, or both. Credentials are saved as organization secrets and apply to every workspace in the organization.
@@ -37290,15 +37647,7 @@ LangSmith Intelligence appears only when your installation's `engine.intelligenc
 
 When LangSmith Intelligence is available and selected, it takes priority over your selected providers. Leave it unselected to keep inference on your own providers.
 
-Engine selects models from the providers you enable. Model requirements follow the Engine image tag in `images.engineInsightsAgentImage.tag`, not the Helm chart version. For these images, grant access to the following models in each selected provider:
-
-| **Provider** | **Engine `0.17.29rc7`** | **Engine `0.17.29rc11`** |
-| - | - | - |
-| Anthropic | `claude-opus-5` | `claude-opus-5-5` |
-| Amazon Bedrock | `anthropic.claude-opus-5` | `anthropic.claude-opus-5-5` |
-| Google Vertex AI | `claude-opus-5` | `claude-opus-5-5` |
-| Azure AI Foundry | `claude-opus-5`, `gpt-5.6-sol` | `claude-opus-5-5`, `gpt-5.6-sol` |
-| OpenAI | `gpt-5.6-sol` | `gpt-5.6-sol` |
+Engine selects models from the providers you enable. Enable access to Claude 5.5-class models or GPT 5.6-class models in your provider accounts, depending on which models each provider offers. Model requirements follow the Engine image tag in `images.engineInsightsAgentImage.tag`, not the Helm chart version. Run [**Test connection**](#test-a-provider) to identify the required models and confirm access for your installed Engine image.
 
 To use your own providers:
 
@@ -37314,7 +37663,7 @@ To use your own providers:
       <Tab title="Amazon Bedrock">
         An AWS access key ID and secret access key, with an optional session token, or a Bedrock API key (bearer token). Optionally, an AWS region.
 
-        Engine uses the Bedrock Mantle API. Enable access to the listed Claude model in the selected AWS account and region. Grant the calling identity Mantle inference and model-subscription permissions; see [AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html) for the required actions.
+        Engine uses the Bedrock Mantle API. Enable access to the required models in the selected AWS account and region. Grant the calling identity Mantle inference and model-subscription permissions; see [AmazonBedrockMantleInferenceAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonBedrockMantleInferenceAccess.html) for the required actions.
 
         If no region is saved, Engine uses `us-east-1`, including with workload identity. It does not inherit the EKS cluster's region.
 
@@ -37324,15 +37673,15 @@ To use your own providers:
       <Tab title="Google Vertex AI">
         A service account key in JSON format. Engine uses the JSON's `project_id` as the inference project and calls the `global` location.
 
-        Enable the required Claude model through [Model Garden](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models) in that project. Grant the service account `roles/aiplatform.user` in the same project.
+        Enable the required models through [Model Garden](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/partner-models/use-partner-models) in that project. Grant the service account `roles/aiplatform.user` in the same project.
 
         To use the cloud identity of Engine's pods instead, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
       </Tab>
 
       <Tab title="Azure AI Foundry">
-        Confirm that your resource region has access and quota for both models listed for your Engine image. To configure Azure:
+        Confirm that your resource region has access and quota for the models required by your installed Engine image. To configure Azure:
 
-        1. Create both model deployments in the same Azure AI Foundry resource. Use the model IDs in the table as the exact deployment names. Engine uses Claude as its primary model and GPT as its fallback. Custom deployment aliases are not supported for either model family.
+        1. Create the required model deployments in the same Azure AI Foundry resource. Deployment names must exactly match the model names (model IDs). Engine uses Claude as its primary model and GPT as its fallback. Custom deployment aliases are not supported for either model family.
 
            Follow the [Claude deployment instructions](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry) and check [Azure OpenAI model availability](https://learn.microsoft.com/en-us/azure/ai-foundry/openai/how-to/responses). Accept the Azure Marketplace terms when creating your first Claude deployment.
         2. Enter an API key and the resource name, not its full URL. To use the cloud identity of Engine's pods instead of an API key, see [Use cloud identity for your model providers](#use-cloud-identity-for-your-model-providers).
@@ -37361,8 +37710,6 @@ If Engine runs fail after you save:
 * **No provider selected:** Engine doesn't start runs until at least one provider is selected and saved.
 * **Rejected credentials:** **Test connection** reports which provider rejected them. Update the credentials and test again.
 * **Model not available:** enable the model in your provider account, then test again.
-
-Connecting a GitHub repository is optional and improves Engine's diagnosis and fixes. Without one, Engine cannot read your source code or open pull requests. To create the GitHub App and configure `host-backend`, see [Connect Engine to GitHub](/langsmith/engine-github#self-hosted).
 
 ### Disable Engine
 
@@ -55507,19 +55854,19 @@ LangSmith API:
 ### Setup
 
 1. Provide your LangSmith organization ID to us. Your LangSmith organization will be configured to deploy the data plane in your cloud.
-2. Create a listener from the LangSmith UI. The `Listener` data model is configured for the actual ["listener" application](/langsmith/data-plane#listener-application).
+2. Create a listener from the LangSmith UI. The `Listener` data model is configured for the actual [listener application](/langsmith/data-plane#listener-application).
    1. In the left-hand navigation, select `Deployments` > `Listeners`.
    2. In the top-right of the page, select `+ Create Listener`.
    3. Enter a unique `Compute ID` for the listener. The `Compute ID` is a user-defined identifier that should be unique across all listeners in the current LangSmith workspace. The `Compute ID` is displayed to end users when they are creating a new deployment. Ensure that the `Compute ID` provides context to the end user about where their Agent Server deployments will be deployed to. For example, a `Compute ID` can be set to `k8s-cluster-name-dev-01`. In this example, the name of the Kubernetes cluster is `k8s-cluster-name`, `dev` denotes that the cluster is reserved for "development" workloads, and `01` is a numerical suffix to reduce naming collisions.
-   4. Enter one or more Kubernetes namespaces. Later, the "listener" application will be configured to deploy to each of these namespaces.
+   4. Enter one or more Kubernetes namespaces. Later, the listener application will be configured to deploy to each of these namespaces.
    5. In the top-right on the page, select `Submit`.
-   6. After the listener is created, copy the listener ID. You will use it later when installing the actual "listener" application in the Kubernetes cluster (step 5).
+   6. After the listener is created, copy the listener ID. You will use it later when installing the actual listener application in the Kubernetes cluster (step 5).
    <Info>
      **Important**
-     Creating a listener from the LangSmith UI does not install the "listener" application in the Kubernetes cluster.
+     Creating a listener from the LangSmith UI does not install the listener application in the Kubernetes cluster.
    </Info>
 3. A [Helm chart](https://github.com/langchain-ai/helm/tree/main/charts/langgraph-dataplane) is provided to install the necessary components in your Kubernetes cluster.
-   * `langgraph-dataplane-listener`: This is a service that listens to LangChain's [control plane](/langsmith/control-plane) for changes to your deployments and creates/updates downstream CRDs. This is the ["listener" application](/langsmith/data-plane#listener-application).
+   * `langgraph-dataplane-listener`: This is a service that listens to LangChain's [control plane](/langsmith/control-plane) for changes to your deployments and creates/updates downstream CRDs. This is the [listener application](/langsmith/data-plane#listener-application).
    * `LangGraphPlatform CRD`: A CRD for LangSmith Deployment. This contains the spec for managing an instance of a LangSmith Deployment.
    * `langgraph-dataplane-operator`: This operator handles changes to your LangSmith CRDs.
    * `langgraph-dataplane-redis`: A Redis instance is used by the `langgraph-dataplane-listener` to manage various tasks (mainly creating and deleting deployments).
@@ -55576,7 +55923,7 @@ To create a data plane in a different namespace in the same cluster, repeat the 
 
 ## Listeners
 
-In the hybrid option, one or more ["listener" applications](/langsmith/data-plane#listener-application) can run depending on how your LangSmith workspaces and Kubernetes clusters are organized.
+In the hybrid option, one or more [listener applications](/langsmith/data-plane#listener-application) can run depending on how your LangSmith workspaces and Kubernetes clusters are organized.
 
 ### Kubernetes cluster organization
 
@@ -63774,6 +64121,14 @@ The overall architecture looks like this:
 * To use private endpoints, ensure that your VPC is in a ClickHouse Cloud supported [region](https://clickhouse.com/docs/en/cloud/reference/supported-regions). Otherwise, you will need to use a public endpoint we will secure with firewall rules. Your VPC will need to have a NAT gateway to allow us to allowlist your traffic.
 * You must have a VPC that can connect to the LangSmith-managed ClickHouse service. You will need to work with our team to set up the necessary networking.
 * You must have a LangSmith self-hosted instance running. You can use our managed ClickHouse service with [Kubernetes](/langsmith/kubernetes) installations.
+
+## TLS certificates
+
+LangSmith-managed ClickHouse serves a certificate issued by Let's Encrypt. The chain is the server certificate, a Let's Encrypt intermediate, and the ISRG Root X1 root.
+
+If your LangSmith pods trust the system CA store, nothing to do. ISRG Root X1 is already in it.
+
+If you mount your own CA bundle with `config.customCa`, add ISRG Root X1 to that bundle. Trust the root, not the server certificate: the server certificate is reissued about every 90 days and the intermediate changes from time to time, while the root is valid until 2035. A bundle with only the server certificate or the intermediate stops working at the next rotation, and the first thing to fail is the ClickHouse migrations job during an upgrade. See [Configure custom TLS certificates](/langsmith/self-host-custom-tls-certificates#mount-internal-cas-for-tls).
 
 ## Data storage
 
@@ -72902,9 +73257,9 @@ You can also programmatically update multiple examples in a single request with 
 # Manage a deployment
 Source: https://docs.langchain.com/langsmith/manage-deployment
 
-Configure branch updates and delete a LangSmith Cloud deployment.
+Configure the repository, branch, and automatic updates for a LangSmith Cloud deployment, or delete it.
 
-Manage the branch and automatic update settings for a Cloud deployment. You can also delete a deployment when you no longer need it.
+Manage the repository, branch, and automatic update settings for a Cloud deployment. You can also delete a deployment when you no longer need it.
 
 ## Configure deployment settings
 
@@ -72912,12 +73267,21 @@ To configure deployment settings:
 
 1. From the **Deployments** view, select a deployment.
 2. In the top-right corner, select the gear icon (**Deployment Settings**).
-3. Update the **Git Branch** as needed.
-4. Enable or disable **Automatically update deployment on push to branch**.
+3. (Optional) To build from a different GitHub repository, select **Change repository** and choose the repository. For details, see [Change the repository](#change-the-repository).
+4. Update the **Git Branch** as needed.
+5. Enable or disable **Automatically update deployment on push to branch**.
 
 Branch and tag creation or deletion events do not trigger revisions. Only pushes to an existing branch trigger an update.
 
 When several pushes occur in quick succession, LangSmith queues the updates. After the current build completes, LangSmith builds the most recent commit and skips the other queued commits.
+
+### Change the repository
+
+Change the repository after you rename it, transfer it to another GitHub account, or move your agent to a different repository. LangSmith checks that the `hosted-langserve` GitHub app can access the repository and that the repository contains the deployment's configuration file on its Git branch. Saving does not create a revision; the next revision builds from the new repository.
+
+If you transferred the repository to another GitHub account, first [give the app access to it](/langsmith/deploy-to-cloud#manage-github-repository-access).
+
+To change the repository through the API, send `source_config.repo_url` in a `PATCH /v2/deployments/{deployment_id}` request. For more information, see the [Control plane API reference](/langsmith/api-ref-control-plane).
 
 ## Delete a deployment
 
@@ -76476,6 +76840,8 @@ Managing organization-wide providers requires the [Organization Admin](/langsmit
 
 <Note>
   Organization-scoped model configurations are available on LangSmith [Self-hosted](/langsmith/self-hosted) and [Cloud Enterprise](/langsmith/pricing-plans) only.
+
+  On self-hosted installations, organization-scoped model configurations require Helm chart version `0.17.0-rc.42` or later and application version `0.17.28rc1` or later.
 </Note>
 
 [Organization admins](/langsmith/rbac#organization-admin) can create model configurations at the organization level, so a single configuration is available across every [workspace](/langsmith/administration-overview#workspaces) in the organization without duplicating it per workspace.
@@ -94662,7 +95028,7 @@ The same `proxy_config` that injects credentials also controls which destination
 
 ### Default egress posture
 
-With no `access_control`, **every hostname is reachable on every TCP port**, unless your organization is on [restricted egress](#organization-level-restricted-egress). The only exception is hosts that resolve to private, loopback, or cloud-metadata addresses, which the proxy always refuses to dial. Add an `access_control` to restrict this.
+With no `access_control`, **every hostname is reachable on every TCP port**, unless your organization is on [restricted egress](#organization-level-restricted-egress). The only exception is hosts that resolve to private, loopback, or cloud-metadata addresses, which the proxy refuses to dial. For a sandbox created with `access_delegation`, your LangSmith API host is exempt from the private-address check, so a self-hosted install whose hostname resolves to a private address, such as an internal load balancer, can still serve delegated requests. No other private destination is opened, and loopback and cloud-metadata addresses stay blocked. Add an `access_control` to restrict this.
 
 To allow HTTP and HTTPS to any host while blocking every other port, use a port-qualified allow list. `*` matches every hostname:
 
@@ -99771,6 +100137,9 @@ This page covers:
 Use this approach to make internal/public CAs trusted system‑wide by LangSmith (Playground model calls and [database/external service connections](/langsmith/self-hosted#storage-services)).
 
 1. Create a file containing all CAs required for TLS with databases and external services. If your deployment is communicating directly to `beacon.langchain.com` without a proxy, make sure to include a public trusted CA. All certs should be concatenated in this file with an empty line in between.
+
+   Include every root your databases chain to, public ones as well. Once this bundle is mounted, the database migration jobs trust only this file and not the system CA store, so a missing public root fails upgrades even though the application keeps running. If you use [LangSmith-managed ClickHouse](/langsmith/langsmith-managed-clickhouse#tls-certificates), add ISRG Root X1.
+
    ```
    -----BEGIN CERTIFICATE-----
    <PUBLIC_CA>
@@ -100681,11 +101050,17 @@ Add this to the `commonEnv` section of your Helm configuration to permanently di
   Disabling usage telemetry does **not** affect billing or operational telemetry. License verification and subscription/usage reporting will continue to function normally.
 </Warning>
 
+## GitHub for Engine
+
+When you [connect GitHub to Engine](/langsmith/engine-github#self-hosted-configuration), allow outbound HTTPS from LangSmith services and sandbox hosts to your GitHub instance. GitHub must also reach LangSmith's webhook URL for automatic PR linking and issue completion after a merge.
+
+These connections are separate from model-provider access. For the required hosts, connection directions, and private-network configuration, see [Engine's GitHub network requirements](/langsmith/engine-github#allow-network-access).
+
 ## LangSmith Intelligence for Engine
 
-This section applies only if you enable [Engine](/langsmith/engine-self-hosted). LangSmith Intelligence is the LangChain-managed service that Engine reports its usage to and can optionally run its models on. Engine can run on your own model providers instead, and [air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) don't connect to it. No other LangSmith feature depends on it, and none requires egress beyond what this page already describes.
+[Engine](/langsmith/engine-self-hosted) reports usage to LangSmith Intelligence (LSI), which can also run its models. If you use your own model providers, LSI receives only usage metadata. [Air-gapped installations](/langsmith/engine-self-hosted#air-gapped-installations) do not connect to LSI.
 
-Engine runs its models either on LangSmith Intelligence or on your own model providers. See [Choose how Engine runs its models](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models). Allow outbound HTTPS to the endpoint in `engine.intelligenceBaseUrl`:
+Allow outbound HTTPS to the endpoint configured in `engine.intelligenceBaseUrl` for your [model-provider choice](/langsmith/engine-self-hosted#choose-how-engine-runs-its-models):
 
 * **LangSmith Intelligence:** `beacon.aws.langchain.com`. To keep this traffic on private networking, [connect with AWS PrivateLink](/langsmith/engine-self-hosted#connect-with-aws-privatelink).
 * **Your own model providers:** `beacon.langchain.com`, the same host this page already requires, for usage reporting. Also allow outbound HTTPS to each provider's API endpoint.
@@ -101021,6 +101396,8 @@ To enable TLS for ClickHouse connections:
 
 <Warning>
   Mount a custom CA only when your ClickHouse server uses an internal or private CA. Publicly trusted CAs do not require this configuration.
+
+  If you do set `config.customCa`, that bundle becomes the only trust store for the ClickHouse migrations job. The job checks ClickHouse with `curl`, which reads `SSL_CERT_FILE` and ignores the system CA store. The backend pods use Python, which trusts both. So a bundle missing a root can leave the application working while every upgrade fails with `Timeout reached. ClickHouse is not ready.` and no further detail. Include every root your ClickHouse server chains to, not only your internal ones. For LangSmith-managed ClickHouse, that means ISRG Root X1 (see [TLS certificates](/langsmith/langsmith-managed-clickhouse#tls-certificates)).
 </Warning>
 
 <CodeGroup>
@@ -122673,9 +123050,8 @@ Source: https://docs.langchain.com/langsmith/smith-api/feedback/create-feedback
 Create a new feedback.
 
 `session_id` identifies the tracing project the feedback belongs to. It is
-required unless the feedback is addressed by `address`, or by `agent_id` and
-`agent_environment`, which name that project through an Agent environment
-that already exists.
+required unless the feedback is addressed by `address`, which names that
+project through an Agent environment that already exists.
 
 
 
@@ -128639,31 +129015,31 @@ The SmithDB-backed method has a dedicated, higher rate limit than the method it 
   <Tab title="Python">
     | | Before (`client.list_runs()`) | After (`client.runs.query()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="TypeScript">
     | | Before (`client.listRuns()`) | After (`client.runs.query()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="Java">
     | | Before (`client.runs().query()`) | After (`client.runs().queryV2()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="Go">
     | | Before (`client.Runs.Query()`) | After (`client.Runs.QueryV2()`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 
   <Tab title="cURL">
     | | Before (`POST /api/v1/runs/query`) | After (`POST /api/v2/runs/query`) |
     | - | - | - |
-    | Limit | 15 requests per 10 seconds | 300 requests per 10 seconds |
+    | Limit | 10 requests per 10 seconds | 300 requests per 10 seconds |
   </Tab>
 </Tabs>
 
@@ -130385,10 +130761,10 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
 
 #### Complex boolean filters
 
+Nested `and()` / `or()` filter expressions still work. Keep `or()` operands on the same field kind: SmithDB rejects OR across run fields and feedback fields in one expression (for example mixing `status` with `feedback_key`).
+
 <Tabs>
   <Tab title="Python">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```python Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -130397,8 +130773,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         client = Client()
         filter_str = (
             'and(gt(start_time, "2023-07-15T12:34:56Z"),'
-            ' or(neq(status, "error"),'
-            '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+            ' or(eq(status, "error"), eq(run_type, "llm")))'
         )
         runs = client.list_runs(project_name="default", filter=filter_str)
         ```
@@ -130415,8 +130790,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
             client = Client()
             filter_str = (
                 'and(gt(start_time, "2023-07-15T12:34:56Z"),'
-                ' or(neq(status, "error"),'
-                '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+                ' or(eq(status, "error"), eq(run_type, "llm")))'
             )
             project = await client.aread_project(project_name="default")
             runs = client.runs.query(project_ids=[str(project.id)], filter=filter_str)
@@ -130429,8 +130803,6 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="TypeScript">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```ts Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -130439,8 +130811,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         const client = new Client();
         const filterStr =
           'and(gt(start_time, "2023-07-15T12:34:56Z"),' +
-          ' or(neq(status, "error"),' +
-          '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))';
+          ' or(eq(status, "error"), eq(run_type, "llm")))';
         const runs = client.listRuns({ projectName: "default", filter: filterStr });
         ```
       </Tab>
@@ -130452,8 +130823,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         const client = new Client();
         const filterStr =
           'and(gt(start_time, "2023-07-15T12:34:56Z"),' +
-          ' or(neq(status, "error"),' +
-          '    and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))';
+          ' or(eq(status, "error"), eq(run_type, "llm")))';
         const project = await client.readProject({ projectName: "default" });
         const runs = client.runs.query({
           project_ids: [project.id],
@@ -130465,8 +130835,6 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="Java">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```kotlin Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -130481,8 +130849,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
         val filterStr = "and(gt(start_time, \"2023-07-15T12:34:56Z\")," +
-            " or(neq(status, \"error\")," +
-            "    and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))"
+            " or(eq(status, \"error\"), eq(run_type, \"llm\")))"
         val runs = client.runs().query(
             RunQueryParams.builder().addSession(project.id()).filter(filterStr).build()
         ).items()
@@ -130502,8 +130869,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
             SessionListParams.builder().name("default").limit(1L).build()
         ).items().first()
         val filterStr = "and(gt(start_time, \"2023-07-15T12:34:56Z\")," +
-            " or(neq(status, \"error\")," +
-            "    and(eq(feedback_key, \"Correctness\"), eq(feedback_score, 0.0))))"
+            " or(eq(status, \"error\"), eq(run_type, \"llm\")))"
         val runs = client.runs().queryV2(
             RunQueryV2Params.builder().addProjectId(project.id()).filter(filterStr).build()
         ).items()
@@ -130513,8 +130879,6 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="Go">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```go Before theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -130535,7 +130899,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         })
         project := sessions.Items[0]
 
-        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))`
+        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))`
         runs, err := client.Runs.Query(ctx, langsmith.RunQueryParams{
         	Session: langsmith.F([]string{project.ID}),
         	Filter:  langsmith.F(filterStr),
@@ -130562,7 +130926,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         })
         project := sessions.Items[0]
 
-        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))`
+        filterStr := `and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))`
         runs, err := client.Runs.QueryV2(ctx, langsmith.RunQueryV2Params{
         	ProjectIDs: langsmith.F([]string{project.ID}),
         	Filter:     langsmith.F(filterStr),
@@ -130573,15 +130937,13 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
   </Tab>
 
   <Tab title="cURL">
-    Nested `and()` / `or()` filter expressions are unchanged.
-
     <Tabs>
       <Tab title="Before">
         ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
-        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))'
 
         curl -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
@@ -130595,7 +130957,7 @@ Requests that exceed a limit return `429 Too Many Requests`. For general rate li
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
-        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(neq(status, "error"), and(eq(feedback_key, "Correctness"), eq(feedback_score, 0.0))))'
+        FILTER='and(gt(start_time, "2023-07-15T12:34:56Z"), or(eq(status, "error"), eq(run_type, "llm")))'
 
         curl -X POST "https://api.smith.langchain.com/api/v2/runs/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
@@ -200548,8 +200910,8 @@ Connect LangGraph agents to front ends and observability platforms.
     Web search results from the Perplexity Search API.
   </Card>
 
-  <Card title="Pushary" href="https://github.com/Pushary/pushary-langgraph" icon="link">
-    Customer confirmation, choice and text input through an enrolled Pushary mobile app, exposed as a LangChain structured tool.
+  <Card title="Pushary" href="https://pushary.com/docs/agents/build/langgraph?utm_source=langchain&utm_medium=integration-directory&utm_campaign=pushary-langgraph-js" icon="link">
+    Phone approvals for LangGraph.js agents. An approval node built on pusharyInterrupt() asks your user on their phone, and the graph routes to the protected node only on Approve; with no answer it returns null, so the action does not run. createAskHumanTool() adds an optional ask\_human tool.
   </Card>
 
   <Card title="Serpex" href="https://serpex.dev/docs" icon="link">
@@ -202670,7 +203032,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`Jigsawstack`](/oss/javascript/integrations/tools/jigsawstack) | <span><a href="https://www.npmjs.com/package/@langchain/jigsawstack">  <img alt="Downloads per month" /></a></span> |
   | [`AtomicMailToolkit`](https://atomic-mail.github.io/atomic-mail-agentic/langchain) | <span><a href="https://www.npmjs.com/package/@atomicmail/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`Fidacy Action Firewall`](https://github.com/fidacy/fidacy-open) | <span><a href="https://www.npmjs.com/package/@fidacy/langchain">  <img alt="Downloads per month" /></a></span> |
-  | [`Pushary`](https://github.com/Pushary/pushary-langgraph) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph">  <img alt="Downloads per month" /></a></span> |
+  | [`Pushary`](https://pushary.com/docs/agents/build/langgraph?utm_source=langchain\&utm_medium=integration-directory\&utm_campaign=pushary-langgraph-js) | <span><a href="https://www.npmjs.com/package/@pushary/langgraph">  <img alt="Downloads per month" /></a></span> |
   | [`aiworker`](https://github.com/ai-worker227/aiworker-examples/tree/main/langchain) | <span><a href="https://www.npmjs.com/package/aiworker-langchain-tools">  <img alt="Downloads per month" /></a></span> |
   | [`You.com search tools`](https://you.com/docs/integrations/langchain) | <span><a href="https://www.npmjs.com/package/@youdotcom-oss/langchain">  <img alt="Downloads per month" /></a></span> |
   | [`Falkordb`](/oss/javascript/integrations/tools/falkordb) | <span><a href="https://www.npmjs.com/package/@falkordb/langchain-ts">  <img alt="Downloads per month" /></a></span> |
@@ -218211,7 +218573,7 @@ async function listServerTools(calendarUrl: string, filesServerPath: string) {
 
 `listToolsets()` groups tools by server name. `listTools()` returns one array; pass a server name or an array of names to select which tools it returns. Selection filters the result, but discovery still contacts every configured server. A failure on an unselected server can fail the call.
 
-The adapter prefixes tool names with their server name by default, such as `calendar__search` and `files__search`. Set `prefixToolNameWithServerName: false` to keep raw names. `listTools()` throws if its selected tools contain duplicate names.
+The adapter prefixes tool names with their server name by default, such as `calendar_search` and `files_search`. Set `prefixToolNameWithServerName: false` to keep raw names. `listTools()` throws if its selected tools contain duplicate names.
 
 OpenAI and Anthropic accept only letters, digits, `_`, and `-` in tool names (`^[a-zA-Z0-9_-]+$`), up to 64 characters for OpenAI and 128 for Anthropic. The adapter does not rename a prefixed name that breaks these limits, so keep server names short and free of dots and spaces.
 
@@ -218435,7 +218797,7 @@ await main();
   | `query_docs_filesystem_docs_by_lang_chain` | Read or search docs through a virtual filesystem (`rg`, `head`, `cat`, and related commands). |
   | `submit_feedback` | Report a problem with a documentation page. |
 
-  `MCPAdapter` exposes these tools with the server-name prefix, for example `docs__search_docs_by_lang_chain`.
+  `MCPAdapter` exposes these tools with the server-name prefix, for example `docs_search_docs_by_lang_chain`.
 </Accordion>
 
 ## Transports
@@ -218595,8 +218957,8 @@ async function accessMultimodalToolContent(serverUrl: string) {
           } else if (block.type === "image") { // [!code highlight]
             console.log(`Image MIME type: ${block.mimeType}`); // [!code highlight]
             console.log(`Image data: ${String(block.data).slice(0, 50)}...`); // [!code highlight]
-          }
-        }
+          } // [!code highlight]
+        } // [!code highlight]
       }
     }
   } finally {
@@ -218773,7 +219135,7 @@ async function gateDestructiveTools(serverUrl: string) {
 ```
 
 <Warning>
-  `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm__delete_file`). An unprefixed key never matches, so the tool runs without approval.
+  `interruptOn` keys must be the adapter's tool names, which include the server prefix (`crm_delete_file`). An unprefixed key never matches, so the tool runs without approval.
 </Warning>
 
 When the agent calls a tool that the predicate gates, the run pauses. Approve the call to run it, or reject it to skip the tool and tell the model:
@@ -256741,7 +257103,7 @@ Upgrade from @langchain/mcp-adapters 1.x to 2.0, covering renamed APIs, stricter
 
 ## Breaking changes
 
-* **Tool names are prefixed with the server name by default.** `MCPAdapter`, including the deprecated `MultiServerMCPClient`, names tools `{server}__{tool}` (for example `weather__get_forecast`), even with a single server, unless you set `prefixToolNameWithServerName`; 1.x defaulted it to `false`. Set `prefixToolNameWithServerName: false` to keep 1.x names. `loadMcpTools` still defaults to `false`. Update code, prompts, and saved examples that refer to tool names. Update `interruptOn` approval rules to the prefixed names; a rule for `delete_repo` no longer matches `github__delete_repo`. The adapter does not validate server names, and longer names can exceed a model provider's tool-name limit; see [Multiple servers](/oss/javascript/langchain/mcp/connections#multiple-servers).
+* **Tool names are prefixed with the server name by default.** `MCPAdapter`, including the deprecated `MultiServerMCPClient`, names tools `{server}_{tool}` (for example `weather_get_forecast`), even with a single server, unless you set `prefixToolNameWithServerName`; 1.x defaulted it to `false`. Set `prefixToolNameWithServerName: false` to keep 1.x names. `loadMcpTools` still defaults to `false`. Update code, prompts, and saved examples that refer to tool names. Update `interruptOn` approval rules to the prefixed names; a rule for `delete_repo` no longer matches `github_delete_repo`. The adapter does not validate server names, and longer names can exceed a model provider's tool-name limit; see [Multiple servers](/oss/javascript/langchain/mcp/connections#multiple-servers).
 * **Duplicate tool names throw.** With `prefixToolNameWithServerName: false`, `listTools()` and `getTools()` throw `MCPClientError` when two servers expose the same tool name, or when one server lists a name twice. 1.x returned every tool. Keep the prefix, or pick tools per server from `listToolsets()`.
 * **Elicitation pauses runs by default.** When a modern server asks for input during a tool call, the adapter raises a LangGraph [`interrupt`](https://reference.langchain.com/javascript/langchain-langgraph/index/interrupt) and the run stops until you resume it with `createMCPElicitationResume`. A checkpointer is needed only when a tool elicits. Set `elicitation: false` on a server to keep the 1.x behavior. See [Elicitation](#elicitation).
 * **Tool content is always standard content blocks.** 1.x defaulted `useStandardContentBlocks` to `false`. 2.0 removes the option, rejects it, and always returns standard blocks, so images carry `data` and `mimeType` instead of `image_url` data URLs, and audio uses `mimeType` instead of `mime_type`. See [Tool results](#tool-results).
@@ -288804,18 +289166,20 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
   ):
-      if namespace:
-          # Subagent event - namespace identifies the source
-          print(f"[subagent: {namespace}]")
-      else:
-          # Main agent event
-          print("[main agent]")
-      print(data)
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -288833,18 +289197,20 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
   ):
-      if namespace:
-          # Subagent event - namespace identifies the source
-          print(f"[subagent: {namespace}]")
-      else:
-          # Main agent event
-          print("[main agent]")
-      print(data)
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -288862,18 +289228,20 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
   ):
-      if namespace:
-          # Subagent event - namespace identifies the source
-          print(f"[subagent: {namespace}]")
-      else:
-          # Main agent event
-          print("[main agent]")
-      print(data)
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -288891,18 +289259,20 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
   ):
-      if namespace:
-          # Subagent event - namespace identifies the source
-          print(f"[subagent: {namespace}]")
-      else:
-          # Main agent event
-          print("[main agent]")
-      print(data)
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -288920,18 +289290,20 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
   ):
-      if namespace:
-          # Subagent event - namespace identifies the source
-          print(f"[subagent: {namespace}]")
-      else:
-          # Main agent event
-          print("[main agent]")
-      print(data)
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -288949,18 +289321,20 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
   ):
-      if namespace:
-          # Subagent event - namespace identifies the source
-          print(f"[subagent: {namespace}]")
-      else:
-          # Main agent event
-          print("[main agent]")
-      print(data)
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
   ```
 
   ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -288978,18 +289352,20 @@ Deep Agents use LangGraph's subgraph streaming to surface events from subagent e
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
       stream_mode="updates",
       subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
   ):
-      if namespace:
-          # Subagent event - namespace identifies the source
-          print(f"[subagent: {namespace}]")
-      else:
-          # Main agent event
-          print("[main agent]")
-      print(data)
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
   ```
 </CodeGroup>
 
@@ -289006,24 +289382,26 @@ When `subgraphs` is enabled, each streaming event includes a **namespace** that 
 Use namespaces to route events to the correct UI component:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-for namespace, data in agent.stream(
+for chunk in agent.stream(
     {"messages": [{"role": "user", "content": "Plan my vacation"}]},
     stream_mode="updates",
     subgraphs=True,
+    version="v2",
 ):
-    # Check if this event came from a subagent
-    is_subagent = any(
-        segment.startswith("tools:") for segment in namespace
-    )
-
-    if is_subagent:
-        # Extract the tool call ID from the namespace
-        tool_call_id = next(
-            s.split(":")[1] for s in namespace if s.startswith("tools:")
+    if chunk["type"] == "updates":
+        # Check if this event came from a subagent
+        is_subagent = any(
+            segment.startswith("tools:") for segment in chunk["ns"]
         )
-        print(f"Subagent {tool_call_id}: {data}")
-    else:
-        print(f"Main agent: {data}")
+
+        if is_subagent:
+            # Extract the tool call ID from the namespace
+            tool_call_id = next(
+                s.split(":")[1] for s in chunk["ns"] if s.startswith("tools:")
+            )
+            print(f"Subagent {tool_call_id}: {chunk['data']}")
+        else:
+            print(f"Main agent: {chunk['data']}")
 ```
 
 ## Subagent progress
@@ -289054,27 +289432,29 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
+      version="v2",
   ):
-      # Main agent updates (empty namespace)
-      if not namespace:
-          for node_name, data in data.items():
-              if node_name == "tools":
-                  # Subagent results returned to main agent
-                  for msg in data.get("messages", []):
-                      if msg.type == "tool":
-                          print(f"\nSubagent complete: {msg.name}")
-                          print(f"  Result: {str(msg.content)[:200]}...")
-              else:
-                  print(f"[main agent] step: {node_name}")
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-      # Subagent updates (non-empty namespace)
-      else:
-          for node_name, data in data.items():
-              print(f"  [{namespace[0]}] step: {node_name}")
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289100,27 +289480,29 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
+      version="v2",
   ):
-      # Main agent updates (empty namespace)
-      if not namespace:
-          for node_name, data in data.items():
-              if node_name == "tools":
-                  # Subagent results returned to main agent
-                  for msg in data.get("messages", []):
-                      if msg.type == "tool":
-                          print(f"\nSubagent complete: {msg.name}")
-                          print(f"  Result: {str(msg.content)[:200]}...")
-              else:
-                  print(f"[main agent] step: {node_name}")
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-      # Subagent updates (non-empty namespace)
-      else:
-          for node_name, data in data.items():
-              print(f"  [{namespace[0]}] step: {node_name}")
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289146,27 +289528,29 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
+      version="v2",
   ):
-      # Main agent updates (empty namespace)
-      if not namespace:
-          for node_name, data in data.items():
-              if node_name == "tools":
-                  # Subagent results returned to main agent
-                  for msg in data.get("messages", []):
-                      if msg.type == "tool":
-                          print(f"\nSubagent complete: {msg.name}")
-                          print(f"  Result: {str(msg.content)[:200]}...")
-              else:
-                  print(f"[main agent] step: {node_name}")
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-      # Subagent updates (non-empty namespace)
-      else:
-          for node_name, data in data.items():
-              print(f"  [{namespace[0]}] step: {node_name}")
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289192,27 +289576,29 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
+      version="v2",
   ):
-      # Main agent updates (empty namespace)
-      if not namespace:
-          for node_name, data in data.items():
-              if node_name == "tools":
-                  # Subagent results returned to main agent
-                  for msg in data.get("messages", []):
-                      if msg.type == "tool":
-                          print(f"\nSubagent complete: {msg.name}")
-                          print(f"  Result: {str(msg.content)[:200]}...")
-              else:
-                  print(f"[main agent] step: {node_name}")
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-      # Subagent updates (non-empty namespace)
-      else:
-          for node_name, data in data.items():
-              print(f"  [{namespace[0]}] step: {node_name}")
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289238,27 +289624,29 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
+      version="v2",
   ):
-      # Main agent updates (empty namespace)
-      if not namespace:
-          for node_name, data in data.items():
-              if node_name == "tools":
-                  # Subagent results returned to main agent
-                  for msg in data.get("messages", []):
-                      if msg.type == "tool":
-                          print(f"\nSubagent complete: {msg.name}")
-                          print(f"  Result: {str(msg.content)[:200]}...")
-              else:
-                  print(f"[main agent] step: {node_name}")
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-      # Subagent updates (non-empty namespace)
-      else:
-          for node_name, data in data.items():
-              print(f"  [{namespace[0]}] step: {node_name}")
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289284,27 +289672,29 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
+      version="v2",
   ):
-      # Main agent updates (empty namespace)
-      if not namespace:
-          for node_name, data in data.items():
-              if node_name == "tools":
-                  # Subagent results returned to main agent
-                  for msg in data.get("messages", []):
-                      if msg.type == "tool":
-                          print(f"\nSubagent complete: {msg.name}")
-                          print(f"  Result: {str(msg.content)[:200]}...")
-              else:
-                  print(f"[main agent] step: {node_name}")
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-      # Subagent updates (non-empty namespace)
-      else:
-          for node_name, data in data.items():
-              print(f"  [{namespace[0]}] step: {node_name}")
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
   ```
 
   ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289330,27 +289720,29 @@ Use `stream_mode="updates"` to track subagent progress as each step completes. T
       ],
   )
 
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
       stream_mode="updates",
       subgraphs=True,
+      version="v2",
   ):
-      # Main agent updates (empty namespace)
-      if not namespace:
-          for node_name, data in data.items():
-              if node_name == "tools":
-                  # Subagent results returned to main agent
-                  for msg in data.get("messages", []):
-                      if msg.type == "tool":
-                          print(f"\nSubagent complete: {msg.name}")
-                          print(f"  Result: {str(msg.content)[:200]}...")
-              else:
-                  print(f"[main agent] step: {node_name}")
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-      # Subagent updates (non-empty namespace)
-      else:
-          for node_name, data in data.items():
-              print(f"  [{namespace[0]}] step: {node_name}")
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
   ```
 </CodeGroup>
 
@@ -289372,31 +289764,33 @@ Use `stream_mode="messages"` to stream individual tokens from both the main agen
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 current_source = ""
 
-for namespace, data in agent.stream(
+for chunk in agent.stream(
     {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
     stream_mode="messages",
     subgraphs=True,
+    version="v2",
 ):
-    token, metadata = data
+    if chunk["type"] == "messages":
+        token, metadata = chunk["data"]
 
-    # Check if this event came from a subagent (namespace contains "tools:")
-    is_subagent = any(s.startswith("tools:") for s in namespace)
+        # Check if this event came from a subagent (namespace contains "tools:")
+        is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
 
-    if is_subagent:
-        # Token from a subagent
-        subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-        if subagent_ns != current_source:
-            print(f"\n\n--- [subagent: {subagent_ns}] ---")
-            current_source = subagent_ns
-        if token.content:
-            print(token.content, end="", flush=True)
-    else:
-        # Token from the main agent
-        if "main" != current_source:
-            print("\n\n--- [main agent] ---")
-            current_source = "main"
-        if token.content:
-            print(token.content, end="", flush=True)
+        if is_subagent:
+            # Token from a subagent
+            subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+            if subagent_ns != current_source:
+                print(f"\n\n--- [subagent: {subagent_ns}] ---")
+                current_source = subagent_ns
+            if token.content:
+                print(token.content, end="", flush=True)
+        else:
+            # Token from the main agent
+            if "main" != current_source:
+                print("\n\n--- [main agent] ---")
+                current_source = "main"
+            if token.content:
+                print(token.content, end="", flush=True)
 
 print()
 ```
@@ -289408,37 +289802,39 @@ When subagents use tools, you can stream tool call events to display what each s
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain.messages import AIMessageChunk, ToolMessage
 
-for namespace, data in agent.stream(
+for chunk in agent.stream(
     {"messages": [{"role": "user", "content": "Research recent quantum computing advances"}]},
     stream_mode="messages",
     subgraphs=True,
+    version="v2",
 ):
-    token, metadata = data
+    if chunk["type"] == "messages":
+        token, metadata = chunk["data"]
 
-    # Identify source: "main" or the subagent namespace segment
-    is_subagent = any(s.startswith("tools:") for s in namespace)
-    source = next((s for s in namespace if s.startswith("tools:")), "main") if is_subagent else "main"
+        # Identify source: "main" or the subagent namespace segment
+        is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+        source = next((s for s in chunk["ns"] if s.startswith("tools:")), "main") if is_subagent else "main"
 
-    # Tool call chunks (streaming tool invocations)
-    if isinstance(token, AIMessageChunk) and token.tool_call_chunks:
-        for tc in token.tool_call_chunks:
-            if tc.get("name"):
-                print(f"\n[{source}] Tool call: {tc['name']}")
-            # Args stream in chunks - write them incrementally
-            if tc.get("args"):
-                print(tc["args"], end="", flush=True)
+        # Tool call chunks (streaming tool invocations)
+        if isinstance(token, AIMessageChunk) and token.tool_call_chunks:
+            for tc in token.tool_call_chunks:
+                if tc.get("name"):
+                    print(f"\n[{source}] Tool call: {tc['name']}")
+                # Args stream in chunks - write them incrementally
+                if tc.get("args"):
+                    print(tc["args"], end="", flush=True)
 
-    # Tool results
-    if isinstance(token, ToolMessage):
-        print(f"\n[{source}] Tool result [{token.name}]: {str(token.content)[:150]}")
+        # Tool results
+        if isinstance(token, ToolMessage):
+            print(f"\n[{source}] Tool result [{token.name}]: {str(token.content)[:150]}")
 
-    # Regular AI content (skip tool call messages)
-    if (
-        isinstance(token, AIMessageChunk)
-        and token.content
-        and not token.tool_call_chunks
-    ):
-        print(token.content, end="", flush=True)
+        # Regular AI content (skip tool call messages)
+        if (
+            isinstance(token, AIMessageChunk)
+            and token.content
+            and not token.tool_call_chunks
+        ):
+            print(token.content, end="", flush=True)
 
 print()
 ```
@@ -289499,18 +289895,20 @@ Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/confi
   )
 
   custom_event_count = 0
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
+      version="v2",
   ):
-      custom_event_count += 1
-      is_subagent = any(s.startswith("tools:") for s in namespace)
-      if is_subagent:
-          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-          print(f"[{subagent_ns}]", data)
-      else:
-          print("[main]", data)
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289564,18 +289962,20 @@ Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/confi
   )
 
   custom_event_count = 0
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
+      version="v2",
   ):
-      custom_event_count += 1
-      is_subagent = any(s.startswith("tools:") for s in namespace)
-      if is_subagent:
-          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-          print(f"[{subagent_ns}]", data)
-      else:
-          print("[main]", data)
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289629,18 +290029,20 @@ Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/confi
   )
 
   custom_event_count = 0
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
+      version="v2",
   ):
-      custom_event_count += 1
-      is_subagent = any(s.startswith("tools:") for s in namespace)
-      if is_subagent:
-          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-          print(f"[{subagent_ns}]", data)
-      else:
-          print("[main]", data)
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289694,18 +290096,20 @@ Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/confi
   )
 
   custom_event_count = 0
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
+      version="v2",
   ):
-      custom_event_count += 1
-      is_subagent = any(s.startswith("tools:") for s in namespace)
-      if is_subagent:
-          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-          print(f"[{subagent_ns}]", data)
-      else:
-          print("[main]", data)
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289759,18 +290163,20 @@ Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/confi
   )
 
   custom_event_count = 0
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
+      version="v2",
   ):
-      custom_event_count += 1
-      is_subagent = any(s.startswith("tools:") for s in namespace)
-      if is_subagent:
-          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-          print(f"[{subagent_ns}]", data)
-      else:
-          print("[main]", data)
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289824,18 +290230,20 @@ Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/confi
   )
 
   custom_event_count = 0
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
+      version="v2",
   ):
-      custom_event_count += 1
-      is_subagent = any(s.startswith("tools:") for s in namespace)
-      if is_subagent:
-          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-          print(f"[{subagent_ns}]", data)
-      else:
-          print("[main]", data)
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
   ```
 
   ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -289889,18 +290297,20 @@ Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/confi
   )
 
   custom_event_count = 0
-  for namespace, data in agent.stream(
+  for chunk in agent.stream(
       {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
       stream_mode="custom",
       subgraphs=True,
+      version="v2",
   ):
-      custom_event_count += 1
-      is_subagent = any(s.startswith("tools:") for s in namespace)
-      if is_subagent:
-          subagent_ns = next(s for s in namespace if s.startswith("tools:"))
-          print(f"[{subagent_ns}]", data)
-      else:
-          print("[main]", data)
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
   ```
 </CodeGroup>
 
@@ -289921,16 +290331,17 @@ INTERESTING_NODES = {"model", "tools"}
 last_source = ""
 mid_line = False  # True when we've written tokens without a trailing newline
 
-for namespace, mode, data in agent.stream(
+for chunk in agent.stream(
     {"messages": [{"role": "user", "content": "Analyze the impact of remote work on team productivity"}]},
     stream_mode=["updates", "messages", "custom"],
     subgraphs=True,
+    version="v2",
 ):
-    is_subagent = any(s.startswith("tools:") for s in namespace)
+    is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
     source = "subagent" if is_subagent else "main"
 
-    if mode == "updates":
-        for node_name in data:
+    if chunk["type"] == "updates":
+        for node_name in chunk["data"]:
             if node_name not in INTERESTING_NODES:
                 continue
             if mid_line:
@@ -289938,8 +290349,8 @@ for namespace, mode, data in agent.stream(
                 mid_line = False
             print(f"[{source}] step: {node_name}")
 
-    elif mode == "messages":
-        token, metadata = data
+    elif chunk["type"] == "messages":
+        token, metadata = chunk["data"]
         if token.content:
             # Print a header when the source changes
             if source != last_source:
@@ -289951,11 +290362,11 @@ for namespace, mode, data in agent.stream(
             print(token.content, end="", flush=True)
             mid_line = True
 
-    elif mode == "custom":
+    elif chunk["type"] == "custom":
         if mid_line:
             print()
             mid_line = False
-        print(f"[{source}] custom event:", data)
+        print(f"[{source}] custom event:", chunk["data"])
 
 print()
 ```
@@ -289969,60 +290380,62 @@ Monitor when subagents start, run, and complete:
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 active_subagents = {}
 
-for namespace, data in agent.stream(
+for chunk in agent.stream(
     {"messages": [{"role": "user", "content": "Research the latest AI safety developments"}]},
     stream_mode="updates",
     subgraphs=True,
+    version="v2",
 ):
-    for node_name, data in data.items():
-        # ─── Phase 1: Detect subagent starting ────────────────────────
-        # When the main agent's model node contains task tool calls,
-        # a subagent has been spawned.
-        if not namespace and node_name == "model":
-            for msg in data.get("messages", []):
-                for tc in getattr(msg, "tool_calls", []):
-                    if tc["name"] == "task":
-                        active_subagents[tc["id"]] = {
-                            "type": tc["args"].get("subagent_type"),
-                            "description": tc["args"].get("description", "")[:80],
-                            "status": "pending",
-                        }
-                        print(
-                            f'[lifecycle] PENDING  → subagent "{tc["args"].get("subagent_type")}" '
-                            f'({tc["id"]})'
-                        )
+    if chunk["type"] == "updates":
+        for node_name, data in chunk["data"].items():
+            # ─── Phase 1: Detect subagent starting ────────────────────────
+            # When the main agent's model node contains task tool calls,
+            # a subagent has been spawned.
+            if not chunk["ns"] and node_name == "model":
+                for msg in data.get("messages", []):
+                    for tc in getattr(msg, "tool_calls", []):
+                        if tc["name"] == "task":
+                            active_subagents[tc["id"]] = {
+                                "type": tc["args"].get("subagent_type"),
+                                "description": tc["args"].get("description", "")[:80],
+                                "status": "pending",
+                            }
+                            print(
+                                f'[lifecycle] PENDING  → subagent "{tc["args"].get("subagent_type")}" '
+                                f'({tc["id"]})'
+                            )
 
-        # ─── Phase 2: Detect subagent running ─────────────────────────
-        # When we receive events from a tools:UUID namespace, that
-        # subagent is actively executing.
-        if namespace and namespace[0].startswith("tools:"):
-            pregel_id = namespace[0].split(":")[1]
-            # Check if any pending subagent needs to be marked running.
-            # Note: the pregel task ID differs from the tool_call_id,
-            # so we mark any pending subagent as running on first subagent event.
-            for sub_id, sub in active_subagents.items():
-                if sub["status"] == "pending":
-                    sub["status"] = "running"
-                    print(
-                        f'[lifecycle] RUNNING  → subagent "{sub["type"]}" '
-                        f"(pregel: {pregel_id})"
-                    )
-                    break
-
-        # ─── Phase 3: Detect subagent completing ──────────────────────
-        # When the main agent's tools node returns a tool message,
-        # the subagent has completed and returned its result.
-        if not namespace and node_name == "tools":
-            for msg in data.get("messages", []):
-                if msg.type == "tool":
-                    sub = active_subagents.get(msg.tool_call_id)
-                    if sub:
-                        sub["status"] = "complete"
+            # ─── Phase 2: Detect subagent running ─────────────────────────
+            # When we receive events from a tools:UUID namespace, that
+            # subagent is actively executing.
+            if chunk["ns"] and chunk["ns"][0].startswith("tools:"):
+                pregel_id = chunk["ns"][0].split(":")[1]
+                # Check if any pending subagent needs to be marked running.
+                # Note: the pregel task ID differs from the tool_call_id,
+                # so we mark any pending subagent as running on first subagent event.
+                for sub_id, sub in active_subagents.items():
+                    if sub["status"] == "pending":
+                        sub["status"] = "running"
                         print(
-                            f'[lifecycle] COMPLETE → subagent "{sub["type"]}" '
-                            f"({msg.tool_call_id})"
+                            f'[lifecycle] RUNNING  → subagent "{sub["type"]}" '
+                            f"(pregel: {pregel_id})"
                         )
-                        print(f"  Result preview: {str(msg.content)[:120]}...")
+                        break
+
+            # ─── Phase 3: Detect subagent completing ──────────────────────
+            # When the main agent's tools node returns a tool message,
+            # the subagent has completed and returned its result.
+            if not chunk["ns"] and node_name == "tools":
+                for msg in data.get("messages", []):
+                    if msg.type == "tool":
+                        sub = active_subagents.get(msg.tool_call_id)
+                        if sub:
+                            sub["status"] = "complete"
+                            print(
+                                f'[lifecycle] COMPLETE → subagent "{sub["type"]}" '
+                                f"({msg.tool_call_id})"
+                            )
+                            print(f"  Result preview: {str(msg.content)[:120]}...")
 
 # Print final state
 print("\n--- Final subagent states ---")
@@ -293783,6 +294196,7 @@ Certain model providers offer endpoints that are compatible with OpenAI's [Chat 
   | [`ChatDiffbot`](https://github.com/diffbot/langchain-diffbot) | <span>✅</span> | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-diffbot/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatOpenZoo`](https://github.com/staccDOTsol/langchain-openzoo) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-openzoo/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatPredictionGuard`](https://github.com/predictionguard/langchain-predictionguard) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-predictionguard/">  <img alt="Downloads per month" /></a></span> |
+  | [`ChatFlexAI`](https://docs.flex.ai/inference-api/agents/langchain) | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span>✅</span> | <span><a href="https://pypi.org/project/langchain-flexai/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatContextual`](https://docs.contextual.ai/) | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span>❌</span> | <span><a href="https://pypi.org/project/langchain-contextual/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatKinetica`](https://github.com/kineticadb/langchain-kinetica) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-kinetica/">  <img alt="Downloads per month" /></a></span> |
   | [`ChatBrainiall`](https://app.brainiall.com/docs) | <span /> | <span /> | <span /> | <span /> | <span><a href="https://pypi.org/project/langchain-brainiall/">  <img alt="Downloads per month" /></a></span> |
@@ -294735,6 +295149,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Multi-model database (graph, document, key-value, time-series, vector) with Cypher, SQL, and Gremlin support.
   </Card>
 
+  <Card title="Arcmira" href="https://github.com/arcmira/integrations/tree/master/packages/langchain-python" icon="link">
+    YouTube transcript search and entity resolution tools with timestamped evidence, speaker filters, and sponsored or organic passage classifications.
+  </Card>
+
   <Card title="ARO" href="https://github.com/joy7758/langchain-aro" icon="link">
     Export and verify portable execution integrity artifacts for LangChain runs.
   </Card>
@@ -295123,6 +295541,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Pre-flight spend authorization for LangChain agents.
   </Card>
 
+  <Card title="FlexAI" href="https://docs.flex.ai/inference-api/agents/langchain" icon="link">
+    FlexAI serves open-weight models behind an OpenAI-compatible API.
+  </Card>
+
   <Card title="FMP Data" href="https://github.com/MehdiZare/langchain-fmp-data" icon="link">
     Financial market data and analytics API.
   </Card>
@@ -295475,6 +295897,10 @@ Browse the complete collection of integrations available for Python. LangChain P
     Local-first, MCP-native memory layer for LangChain and LangGraph.
   </Card>
 
+  <Card title="Machine Library" href="https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary" icon="link">
+    Retriever for Machine Library full-text search over scholarly papers, books, patents, standards and Wikipedia, returning passages with canonical source URIs.
+  </Card>
+
   <Card title="MadeOnSol" href="https://madeonsol.com/api-docs" icon="link">
     Solana memecoin intelligence tools: KOL feeds, coordination signals, deployer reputation, and alerts.
   </Card>
@@ -295585,6 +296011,10 @@ Browse the complete collection of integrations available for Python. LangChain P
 
   <Card title="Nebius" href="https://docs.tokenfactory.nebius.com/quickstart" icon="link">
     AI cloud platform and infrastructure.
+  </Card>
+
+  <Card title="Ned Watch" href="https://ned.watch/integrations/langgraph" icon="link">
+    Callback handler for Ned Watch: a LangGraph or LangChain run checks in when it finishes and reports a failure if it raises, so a signed webhook fires when runs stop happening or overrun.
   </Card>
 
   <Card title="Neo4j" href="/oss/python/integrations/providers/neo4j" icon="link">
@@ -299272,6 +299702,7 @@ The below retrievers will search over an external index (e.g., constructed from 
   | [`DiffbotWebSearchRetriever`](https://github.com/diffbot/langchain-diffbot) | <span /> | <span /> | [`langchain-diffbot`](https://pypi.org/project/langchain-diffbot/) | <span><a href="https://pypi.org/project/langchain-diffbot/">  <img alt="Downloads per month" /></a></span> |
   | [`CoalentRetriever`](https://coalent.ai/docs) | <span>✅</span> | <span>❌</span> | [`langchain-coalent`](https://pypi.org/project/langchain-coalent/) | <span><a href="https://pypi.org/project/langchain-coalent/">  <img alt="Downloads per month" /></a></span> |
   | [`HighSNRDocumentCompressor`](https://www.high-snr.com/docs.html) | <span>❌</span> | <span>✅</span> | [`langchain-highsnr`](https://pypi.org/project/langchain-highsnr/) | <span><a href="https://pypi.org/project/langchain-highsnr/">  <img alt="Downloads per month" /></a></span> |
+  | [`MachineLibraryRetriever`](https://github.com/SpaceFrontiers/machinelibrary-integrations/tree/main/python/langchain-machinelibrary) | <span /> | <span /> | [`langchain-machinelibrary`](https://pypi.org/project/langchain-machinelibrary/) | <span><a href="https://pypi.org/project/langchain-machinelibrary/">  <img alt="Downloads per month" /></a></span> |
   | [`Permit`](https://docs.permit.io/) | <span /> | <span /> | [`langchain-permit`](https://pypi.org/project/langchain-permit/) | <span><a href="https://pypi.org/project/langchain-permit/">  <img alt="Downloads per month" /></a></span> |
   | [`Cognee`](https://docs.cognee.ai/) | <span /> | <span /> | [`langchain-cognee`](https://pypi.org/project/langchain-cognee/) | <span><a href="https://pypi.org/project/langchain-cognee/">  <img alt="Downloads per month" /></a></span> |
   | [`Galaxia`](https://smabbler.gitbook.io/smabbler/api-rag/smabblers-api-rag) | <span /> | <span /> | [`langchain-galaxia-retriever`](https://pypi.org/project/langchain-galaxia-retriever/) | <span><a href="https://pypi.org/project/langchain-galaxia-retriever/">  <img alt="Downloads per month" /></a></span> |
@@ -299899,6 +300330,7 @@ The following table shows tools that generate video, image, or audio assets:
   | [`GoodMemToolkit`](https://docs.goodmem.ai) | <span><a href="https://pypi.org/project/langchain-goodmem/">  <img alt="Downloads per month" /></a></span> |
   | [`ThorDataSearchTool`](https://github.com/Thordata/langchain-thordata) | <span><a href="https://pypi.org/project/langchain-thordata/">  <img alt="Downloads per month" /></a></span> |
   | [`Tilores`](https://github.com/tilotech/tilores-langchain) | <span><a href="https://pypi.org/project/tilores-langchain/">  <img alt="Downloads per month" /></a></span> |
+  | [`Arcmira`](https://github.com/arcmira/integrations/tree/master/packages/langchain-python) | <span><a href="https://pypi.org/project/langchain-arcmira/">  <img alt="Downloads per month" /></a></span> |
   | [`KeiroSearchTool`](https://github.com/Keirolabs-API/langchain-keiro) | <span><a href="https://pypi.org/project/langchain-keiro/">  <img alt="Downloads per month" /></a></span> |
   | [`UniRate`](https://unirateapi.com) | <span><a href="https://pypi.org/project/langchain-unirate/">  <img alt="Downloads per month" /></a></span> |
   | [`CambToolkit`](https://docs.camb.ai/introduction) | <span><a href="https://pypi.org/project/langchain-camb/">  <img alt="Downloads per month" /></a></span> |
@@ -315942,17 +316374,14 @@ Reading annotations lets you gate a tool based on what the server declares about
 Read the destructive hint from metadata once during tool discovery. Then give the human-in-the-loop configuration a `when` predicate that receives each pending tool call and returns whether the call needs approval:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.agents import create_agent
 from langchain.agents.middleware import HumanInTheLoopMiddleware
 from langchain.agents.middleware.human_in_the_loop import InterruptOnConfig
-from langchain.mcp import MCPAdapter
 from langchain.tools import BaseTool
 from langchain.tools.tool_node import ToolCallRequest
-from langgraph.checkpoint.memory import InMemorySaver
 
 
 def is_destructive(tool: BaseTool) -> bool:
-    """Read the MCP destructive hint from the adapter's tool metadata."""
+    """Read the MCP destructive hint off the adapter's tool metadata."""
     annotations = (
         (tool.metadata or {}).get("mcp", {}).get("tool", {}).get("annotations", {})
     )
@@ -315963,12 +316392,14 @@ async def gate_destructive_tools(server):
     async with MCPAdapter(server) as adapter:
         tools = await adapter.list_tools()
 
-        # Read the hint once, then apply the same predicate to every tool call.
+        # Read the destructive hint from metadata once, then let a callable
+        # decide per call. One config covers whatever destructive tools a
+        # server exposes, without hardcoding tool names.
         destructive = {tool.name for tool in tools if is_destructive(tool)}
-    
+
         def needs_approval(request: ToolCallRequest) -> bool:
             return request.tool_call["name"] in destructive
-    
+
         gate = InterruptOnConfig(
             allowed_decisions=["approve", "reject"], when=needs_approval
         )
@@ -316022,12 +316453,14 @@ from langgraph.types import Command
 
 
 async def book_with_elicitation(server) -> dict:
-    # When a server needs input mid-call, the adapter surfaces the question
-    # as a LangGraph interrupt.
+    # Elicitation is handled automatically: when a server needs input mid-call,
+    # the adapter surfaces the question as a LangGraph `interrupt()`, so the
+    # person already reviewing the agent's work answers it and the run resumes.
     async with MCPAdapter(server) as adapter:
         tools = await adapter.list_tools()
 
-        # A checkpointer saves the interrupted run so it can resume.
+        # Resuming a paused run needs persistence, so the interrupted run has
+        # somewhere to wait.
         agent = create_agent("claude-sonnet-5", tools, checkpointer=InMemorySaver())
         config: Any = {"configurable": {"thread_id": "booking-1"}}
 
@@ -316037,8 +316470,8 @@ async def book_with_elicitation(server) -> dict:
         [interrupt] = paused["__interrupt__"]
         [question] = interrupt.value["requests"]
 
-        # Answers are keyed by the server's own request key.
-        # Use `decline` or `cancel` to refuse the request.
+        # Answers are keyed by the server's own request key, so nothing has to
+        # be tracked across the pause. `decline` or `cancel` would refuse.
         answer = {"action": "accept", "content": {"date": "2026-09-14"}}
         return await agent.ainvoke(
             Command(resume={"responses": {question["key"]: answer}}), config

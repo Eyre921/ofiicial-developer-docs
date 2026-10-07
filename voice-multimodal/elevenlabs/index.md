@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1363 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1361 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -49,7 +49,6 @@
 - `docs/api-reference/analytics/get` — [Get live count](pages/docs/api-reference/analytics/get.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/get.md)
 - `docs/api-reference/analytics/workspace/requests` — [List API requests](pages/docs/api-reference/analytics/workspace/requests.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/requests.md)
 - `docs/api-reference/analytics/workspace/usage` — [Get workspace usage](pages/docs/api-reference/analytics/workspace/usage.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/usage.md)
-- `docs/api-reference/api-keys/disable` — [Disable API key](pages/docs/api-reference/api-keys/disable.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/disable.md)
 - `docs/api-reference/api-keys/set-third-party-disabling-policy` — [Set workspace third-party disabling policy](pages/docs/api-reference/api-keys/set-third-party-disabling-policy.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-disabling-policy.md)
 - `docs/api-reference/assets/create` — [Upload Asset](pages/docs/api-reference/assets/create.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/create.md)
 - `docs/api-reference/assets/delete` — [Delete Asset](pages/docs/api-reference/assets/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/delete.md)
@@ -236,7 +235,6 @@
 - `docs/api-reference/service-accounts/api-keys/create` — [Create API key](pages/docs/api-reference/service-accounts/api-keys/create.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/create.md)
 - `docs/api-reference/service-accounts/api-keys/delete` — [Delete API key](pages/docs/api-reference/service-accounts/api-keys/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/delete.md)
 - `docs/api-reference/service-accounts/api-keys/list` — [Get API keys](pages/docs/api-reference/service-accounts/api-keys/list.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/list.md)
-- `docs/api-reference/service-accounts/api-keys/update` — [Update API key](pages/docs/api-reference/service-accounts/api-keys/update.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/update.md)
 - `docs/api-reference/service-accounts/create` — [Create Service Account](pages/docs/api-reference/service-accounts/create.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/create.md)
 - `docs/api-reference/service-accounts/list` — [Get service accounts](pages/docs/api-reference/service-accounts/list.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/list.md)
 - `docs/api-reference/sip-trunk/outbound-call` — [Outbound call via SIP trunk](pages/docs/api-reference/sip-trunk/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/sip-trunk/outbound-call.md)
@@ -328,6 +326,7 @@
 - `docs/api-reference/triage-tickets/list` — [List tickets](pages/docs/api-reference/triage-tickets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/list.md)
 - `docs/api-reference/triage-tickets/list-assignable-users` — [List assignable users](pages/docs/api-reference/triage-tickets/list-assignable-users.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/list-assignable-users.md)
 - `docs/api-reference/triage-tickets/list-for-workspace` — [List workspace tickets](pages/docs/api-reference/triage-tickets/list-for-workspace.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/list-for-workspace.md)
+- `docs/api-reference/triage-tickets/merge` — [Merge tickets](pages/docs/api-reference/triage-tickets/merge.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/merge.md)
 - `docs/api-reference/triage-tickets/update` — [Update ticket](pages/docs/api-reference/triage-tickets/update.md) · [原文](https://elevenlabs.io/docs/api-reference/triage-tickets/update.md)
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
@@ -569,6 +568,7 @@
 - `docs/eleven-agents/api-reference/triage-tickets/list` — [List tickets](pages/docs/eleven-agents/api-reference/triage-tickets/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list.md)
 - `docs/eleven-agents/api-reference/triage-tickets/list-assignable-users` — [List assignable users](pages/docs/eleven-agents/api-reference/triage-tickets/list-assignable-users.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-assignable-users.md)
 - `docs/eleven-agents/api-reference/triage-tickets/list-for-workspace` — [List workspace tickets](pages/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace.md)
+- `docs/eleven-agents/api-reference/triage-tickets/merge` — [Merge tickets](pages/docs/eleven-agents/api-reference/triage-tickets/merge.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/merge.md)
 - `docs/eleven-agents/api-reference/triage-tickets/update` — [Update ticket](pages/docs/eleven-agents/api-reference/triage-tickets/update.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/update.md)
 - `docs/eleven-agents/api-reference/users/list` — [List users](pages/docs/eleven-agents/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/users/list.md)
 - `docs/eleven-agents/api-reference/widget/create` — [Create widget avatar](pages/docs/eleven-agents/api-reference/widget/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/widget/create.md)
@@ -1182,10 +1182,8 @@
 - `docs/help-center/product/studio/audiobooks/what-if-my-manuscript-fails-during-processing` — [What if my manuscript fails during processing?](pages/docs/help-center/product/studio/audiobooks/what-if-my-manuscript-fails-during-processing.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/audiobooks/what-if-my-manuscript-fails-during-processing.md)
 - `docs/help-center/product/studio/audiobooks/what-is-character-casting` — [What is Character Casting?](pages/docs/help-center/product/studio/audiobooks/what-is-character-casting.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/audiobooks/what-is-character-casting.md)
 - `docs/help-center/product/studio/audiobooks/what-is-the-difference-between-original-audio-and-dynamic-narration` — [What is the difference between original audio and dynamic narration?](pages/docs/help-center/product/studio/audiobooks/what-is-the-difference-between-original-audio-and-dynamic-narration.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/audiobooks/what-is-the-difference-between-original-audio-and-dynamic-narration.md)
-- `docs/help-center/product/studio/studio` — [Studio FAQ](pages/docs/help-center/product/studio/studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio.md)
 - `docs/help-center/product/studio/studio/are-there-any-limitations-to-the-size-of-a-project-in-studio` — [Are there any limitations to the size of a project in Studio?](pages/docs/help-center/product/studio/studio/are-there-any-limitations-to-the-size-of-a-project-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/are-there-any-limitations-to-the-size-of-a-project-in-studio.md)
 - `docs/help-center/product/studio/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio` — [Can I assign more than one voice to a paragraph in Studio?](pages/docs/help-center/product/studio/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/can-i-assign-more-than-one-voice-to-a-paragraph-in-studio.md)
-- `docs/help-center/product/studio/studio/can-i-regenerate-individual-words-in-studio` — [Can I regenerate individual words in Studio?](pages/docs/help-center/product/studio/studio/can-i-regenerate-individual-words-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/can-i-regenerate-individual-words-in-studio.md)
 - `docs/help-center/product/studio/studio/does-it-cost-credits-to-regenerate-in-studio` — [Does it cost credits to regenerate in Studio?](pages/docs/help-center/product/studio/studio/does-it-cost-credits-to-regenerate-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/does-it-cost-credits-to-regenerate-in-studio.md)
 - `docs/help-center/product/studio/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio` — [How can I change the voice and settings across multiple paragraphs in Studio?](pages/docs/help-center/product/studio/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/how-can-i-change-the-voice-and-settings-across-multiple-paragraphs-in-studio.md)
 - `docs/help-center/product/studio/studio/how-can-i-create-a-voiceover-for-my-video-using-studio` — [How can I create a voiceover for my video using Studio?](pages/docs/help-center/product/studio/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.md) · [原文](https://elevenlabs.io/docs/help-center/product/studio/studio/how-can-i-create-a-voiceover-for-my-video-using-studio.md)

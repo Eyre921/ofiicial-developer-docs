@@ -7895,780 +7895,6 @@ One habit pays for all of this. Ship each service's fake from its own package as
 - [`Databases`](https://www.prisma.io/docs/composer/databases): Give a service a Postgres database, either as a plain connection or typed by a Prisma ORM contract with managed migrations.
 - [`Deploying`](https://www.prisma.io/docs/composer/deploying): Deploy a Prisma App to production or an isolated stage, run it in CI, and tear environments down safely.
 
-# Concepts (/docs/console/concepts)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-Location: Console > Concepts
-
-The Console workflows are based on five main concepts:
-
-* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
-* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
-* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
-* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
-* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
-
-Here is a visual illustration of how these concepts relate to each other:
-
-![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
-
-## User account [#user-account]
-
-A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
-
-If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
-
-## Workspace [#workspace]
-
-You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
-
-In each workspace, you can:
-
-* view and manage all projects (and their resources) in that workspace.
-* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
-* view the usage of your enabled Prisma products across all projects in that workspace.
-* invite other users to collaborate in the workspace.
-* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
-
-## Project [#project]
-
-In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
-
-In each project, you can:
-
-* view and manage all resources (like databases) in that project.
-
-The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
-
-## Branch [#branch]
-
-For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
-
-```text
-workspace → project → branch → { apps, databases }
-```
-
-A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
-
-* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
-* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
-* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
-
-Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
-
-## Resources [#resources]
-
-Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
-
-* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
-* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
-* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
-
-In each project, you can:
-
-* Create and manage multiple resources (databases or environments)
-* Generate connection strings specific to each resource
-* Configure product-specific settings:
-  * **For Prisma Postgres databases**:
-    * View database metrics and performance
-    * Configure connection settings
-    * Manage database users and permissions
-  * **For Accelerate resources**:
-    * Set your database connection string
-    * Configure the region for connection pooling
-    * Adjust connection pool size and performance settings
-    * Set query duration and response size limits
-    * Enable static IP for secure connections
-
-The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
-
-## Related pages
-
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
-
-# Getting Started (/docs/console/getting-started)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Quick start guide for setting up and using the Prisma Console
-
-Location: Console > Getting Started
-
-This guide walks you through setting up your Console account and creating your first project.
-
-## Prerequisites [#prerequisites]
-
-* A GitHub account (for authentication)
-* A Prisma project (optional, but recommended)
-
-## Step 1: Create your account [#step-1-create-your-account]
-
-1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
-2. Click **Sign in with GitHub**
-3. Authorize Prisma Console to access your GitHub account
-
-You now have a Console account with a default workspace.
-
-## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
-
-When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
-
-### Create a workspace (optional) [#create-a-workspace-optional]
-
-To create an additional workspace:
-
-1. Click the workspace dropdown in the top navigation
-2. Click **Create Workspace**
-3. Enter a name for your workspace
-4. Click **Create**
-
-## Step 3: Create a project [#step-3-create-a-project]
-
-Projects organize your databases and environments within a workspace.
-
-### Using the Console web interface [#using-the-console-web-interface]
-
-1. Navigate to your workspace
-2. Click **Create Project**
-3. Enter a project name
-4. Click **Create**
-
-## Step 4: Create a resource [#step-4-create-a-resource]
-
-Resources are the actual databases or environments within your project.
-
-### For Prisma Postgres [#for-prisma-postgres]
-
-1. Navigate to your project
-2. Click **Create Database**
-3. Enter a database name
-4. Select a region
-5. Click **Create**
-
-### For Accelerate [#for-accelerate]
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
-> 
-> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-
-1. Navigate to your project
-2. Click **Create Environment**
-3. Enter an environment name (e.g., "production")
-4. Click **Create**
-
-## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
-
-Connection strings authenticate your application's requests to Prisma products.
-
-### Using the Console web interface [#using-the-console-web-interface-1]
-
-1. Navigate to your resource (database or environment)
-2. Click **Connection Strings** tab
-3. Click **Create Connection String**
-4. Enter a name for the connection string
-5. Copy the connection string and store it securely
-6. Click **Done**
-
-## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
-
-Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
-
-```bash
-# Application traffic over pooled TCP
-DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
-
-# Prisma CLI commands and administrative tooling
-DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
-```
-
-In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
-
-> [!WARNING]
-> Accelerate retirement
-> 
-> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
-> 
-> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
-> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
-
-## Next steps [#next-steps]
-
-* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
-* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
-* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-# Console (/docs/console)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Learn how to use the Console to manage and integrate Prisma products into your application.
-
-Location: Console
-
-## Overview [#overview]
-
-The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
-
-* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
-* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
-* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
-
-## Getting started [#getting-started]
-
-To start using Prisma products, you'll need to:
-
-1. Create a Console account
-2. Set up a workspace for your team
-3. Create a project for your application
-4. Generate connection strings for your resources
-
-Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
-
-## Core concepts [#core-concepts]
-
-The Console is organized around four main concepts:
-
-* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
-* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
-* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
-* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
-
-Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
-
-## Console CLI [#console-cli]
-
-In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
-
-Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
-- [`Overview`](https://www.prisma.io/docs/guides): Practical, step-by-step guides for building with Prisma ORM, each one run end to end before it ships.
-
-# Overview (/docs/guides)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Practical, step-by-step guides for building with Prisma ORM, each one run end to end before it ships.
-
-Location: Overview
-
-Practical, step-by-step guides for building with Prisma ORM. Every command in a published guide was run end to end against a live database before it landed here. The [Prisma ORM 7 guides](https://www.prisma.io/docs/guides/v7) remain available for Prisma ORM 7 projects.
-
-Use the version dropdown in the sidebar to switch between these guides and the Prisma ORM 7 guides.
-
-## Frameworks [#frameworks]
-
-Each framework guide scaffolds a working app with `create-prisma`, initializes the database, and ends with your data rendering:
-
-- [Next.js](https://www.prisma.io/docs/guides/frameworks/nextjs)
-
-- [Astro](https://www.prisma.io/docs/guides/frameworks/astro)
-
-- [Nuxt](https://www.prisma.io/docs/guides/frameworks/nuxt)
-
-- [SvelteKit](https://www.prisma.io/docs/guides/frameworks/sveltekit)
-
-- [TanStack Start](https://www.prisma.io/docs/guides/frameworks/tanstack-start)
-
-- [NestJS](https://www.prisma.io/docs/guides/frameworks/nestjs)
-
-- [Hono](https://www.prisma.io/docs/guides/frameworks/hono)
-
-- [Elysia](https://www.prisma.io/docs/guides/frameworks/elysia)
-
-## Runtimes [#runtimes]
-
-- [Bun](https://www.prisma.io/docs/guides/runtimes/bun)
-
-- [Deno](https://www.prisma.io/docs/guides/runtimes/deno)
-
-## Deployment [#deployment]
-
-- [Docker](https://www.prisma.io/docs/guides/deployment/docker)
-
-- [Cloudflare Workers](https://www.prisma.io/docs/guides/deployment/cloudflare-workers)
-
-- [Turborepo](https://www.prisma.io/docs/guides/deployment/turborepo)
-
-- [pnpm workspaces](https://www.prisma.io/docs/guides/deployment/pnpm-workspaces)
-
-- [Bun workspaces](https://www.prisma.io/docs/guides/deployment/bun-workspaces)
-
-## Database [#database]
-
-- [Multiple databases](https://www.prisma.io/docs/guides/database/multiple-databases)
-
-- [Expand-and-contract migrations](https://www.prisma.io/docs/guides/database/data-migration)
-
-- [Schema changes as a team](https://www.prisma.io/docs/guides/database/schema-changes)
-
-## Switch to Prisma ORM [#switch-to-prisma-orm]
-
-- [From Drizzle](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-drizzle)
-
-- [From Sequelize or TypeORM](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-sql-orms)
-
-- [From Mongoose](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-mongoose)
-
-## Integrations [#integrations]
-
-- [GitHub Actions](https://www.prisma.io/docs/guides/integrations/github-actions)
-
-- [AI SDK](https://www.prisma.io/docs/guides/integrations/ai-sdk)
-
-## Upgrading [#upgrading]
-
-- [Prisma ORM 7 to 8 on PostgreSQL](https://www.prisma.io/docs/guides/upgrade-prisma-orm/postgresql)
-
-- [Prisma ORM 7 to 8 on MongoDB](https://www.prisma.io/docs/guides/upgrade-prisma-orm/mongodb)
-
-## Still on Prisma ORM 7 [#still-on-prisma-orm-7]
-
-The authentication guides and the remaining integration and Prisma Postgres guides in the sidebar are written for Prisma ORM 7 and carry a note at the top saying so. Some wait on third-party adapters that still require Prisma Client; the rest land here as they are ported. Cloudflare D1 and the Accelerate integrations live under the [Prisma ORM 7 guides](https://www.prisma.io/docs/guides/v7) only.
-
-## Next steps [#next-steps]
-
-* [Create a new app with PostgreSQL](https://www.prisma.io/docs/prisma-orm/quickstart/postgresql) if you don't have a Prisma ORM project yet.
-* [Learn the fundamentals](https://www.prisma.io/docs/orm/fundamentals/reading-data): reading, writing, relations, transactions, and advanced queries.
-* [Read the Prisma ORM overview](https://www.prisma.io/docs/orm) for the concepts behind contracts, typed queries, and migrations.
-
-## Related pages
-
-- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
-- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
-- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
-
-# Writing guides (/docs/guides/making-guides)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-How to write, validate, and file a Prisma ORM guide for the Prisma documentation.
-
-Location: Guides > Writing guides
-
-## Introduction [#introduction]
-
-This page is for people writing guides in this section. It covers the required structure, the formatting conventions, the validation rule every guide must pass, and how a guide's Prisma ORM 7 twin is versioned.
-
-The short version: a guide is a walkthrough you ran end to end before publishing, written for Prisma ORM, with every command shown alongside the real output it produced.
-
-## Prerequisites [#prerequisites]
-
-* A clear understanding of the topic you are writing about
-* Access to the Prisma documentation repository
-* Familiarity with Markdown and MDX
-* Node.js 24 or later and a PostgreSQL database to validate against (a local server or `npx create-db@latest`)
-
-## The validation rule [#the-validation-rule]
-
-Every command, file, and code block in a published guide was run by its author against a live database before it landed. Outputs shown in the guide are pasted from that run, trimmed for noise. If a step could not be run (a platform account you do not have, a paid service), the guide says so in the step and does not show output for it.
-
-Two reference guides show the finished shape. Read them before writing:
-
-* [Hono](https://www.prisma.io/docs/guides/frameworks/hono): a new project scaffolded with `create-prisma`, deployed to Prisma Compute.
-* [Add Prisma ORM to an existing PostgreSQL database](https://www.prisma.io/docs/prisma-orm/add-to-existing-project/postgresql): the `orm init` and `contract infer` path for an app that already exists.
-
-## Guide structure [#guide-structure]
-
-### Required frontmatter [#required-frontmatter]
-
-```mdx
----
-title: '[Descriptive title]'
-description: '[One sentence: what the reader builds or accomplishes]'
-url: /guides/[category]/[slug]
-metaTitle: How to use Prisma ORM with [Topic]
-metaDescription: '[One sentence for search results]'
----
-```
-
-* `title`: a short, descriptive title in sentence case (for example "Docker", "Multiple databases", "GitHub Actions")
-* `description`: one sentence describing what the reader accomplishes
-* `url`: the page path under `content/docs` without the extension; the build derives the URL from the file path, and this field must match it
-* `metaTitle` and `metaDescription`: the title and description for search engines
-* `image`: a header image for social sharing, only if one exists at `/img/guides/`
-
-### Required sections [#required-sections]
-
-1. **Introduction** (`## Introduction`): what the guide builds, in two or three sentences, followed by the `Using Prisma ORM 7?` note (see [Versioning](#versioning-the-prisma-7-twin)).
-2. **Prerequisites** (`## Prerequisites`): Node.js 24 or later, a database connection string or `npx create-db@latest`, and any accounts the guide needs. Keep it to what is truly necessary.
-3. **Numbered steps** (`## 1. Scaffold the project`, `## 2. Initialize the database`, and so on): each step is one bounded action with its command, its real output in a `no-copy` block, and one or two sentences on what happened.
-4. **Common gotchas** (`## Common gotchas`): the failures you hit while validating, with the verbatim error text and the fix.
-5. **Use with your agent** (`## Use with your agent`): this section comes after the steps, so a reader sees the instructions for a person first. It has three parts, in this order. First, an `<AgentPrompt>` block with a numbered prompt a coding agent can follow to complete the guide. Reference the guide's own `.md` URL (`https://www.prisma.io/docs/guides/[category]/[slug].md`) so the agent can read it. Second, a pointer to `npx prisma@latest init` for the [Prisma ORM skills](https://www.prisma.io/docs/ai/tools/skills). Third, two or three follow-up prompts that map to the guide.
-6. **Next steps** (`## Next steps`): links to the fundamentals and the related Prisma ORM pages.
-
-## Writing style and voice [#writing-style-and-voice]
-
-* Write direct instructional prose: say what to do, show the command, show the output.
-* Use active voice and present tense, and address the reader as "you".
-* Keep sentences short. One idea per sentence.
-* Do not use em dashes anywhere, including code comments. Use a period, a comma, or a colon.
-* Explain a removed Prisma ORM 7 step in one sentence only where a reader coming from Prisma ORM 7 would look for it (for example, "There is no `prisma generate` step; the runtime reads the emitted contract.").
-* Do not describe Prisma ORM 8 as a preview or as not production ready, and do not mention release candidate numbers. Prisma ORM 8 is the current release; Prisma ORM 7 remains supported.
-
-### Code examples [#code-examples]
-
-* Every code block is complete and was run as shown.
-* Use `title=` on file blocks: ` ```ts title="src/prisma/db.ts" `.
-* Use ` ```npm ` for package manager commands (the UI converts them to pnpm, yarn, and bun).
-* Use ` ```bash ` for other shell commands and for `.env` files, so `# [!code ++]` and `# [!code --]` annotations render.
-* Use ` ```text no-copy ` and ` ```json no-copy ` for captured output.
-* Use ` ```prisma ` for contract files, ` ```typescript ` or ` ```ts ` for TypeScript, ` ```json ` for JSON.
-* Use `// [!code ++]`, `// [!code --]`, and `// [!code highlight]` to show changes inside a file.
-
-### Formatting conventions [#formatting-conventions]
-
-* Backticks for file names (`contract.prisma`), directories (`src/prisma/`), commands, and code elements (`db.orm.public.User`).
-* Admonitions for asides:
-  ```markdown
-  :::note
-  Important details to remember
-  :::
-
-  :::warning
-  A gotcha that breaks the flow if missed
-  :::
-
-  :::tip
-  A shortcut or best practice
-  :::
-  ```
-* Never skip heading levels.
-* Link Prisma ORM 8 pages with relative paths: `/orm/...`, `/cli/...`, `/prisma-orm/...`. Never link `/orm/v7/...` from a Prisma ORM 8 guide except in the `Using Prisma ORM 7?` note.
-
-## Prisma ORM patterns [#prisma-orm-patterns]
-
-### Versions in commands [#versions-in-commands]
-
-Commands that run before the project has Prisma installed use the `@latest` tag, never a pinned version:
-
-  
-
-#### bun
-
-```bash
-bunx create-prisma@latest my-app --template hono --provider postgres --no-deploy
-bunx prisma@latest orm init --target postgres
-bunx --bun prisma@latest init
-bunx create-db@latest
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@latest my-app --template hono --provider postgres --no-deploy
-pnpm dlx prisma@latest orm init --target postgres
-pnpm dlx prisma@latest init
-pnpm dlx create-db@latest
-```
-
-#### yarn
-
-```bash
-yarn dlx create-prisma@latest my-app --template hono --provider postgres --no-deploy
-yarn dlx prisma@latest orm init --target postgres
-yarn dlx prisma@latest init
-yarn dlx create-db@latest
-```
-
-#### npm
-
-```bash
-npx create-prisma@latest my-app --template hono --provider postgres --no-deploy
-npx prisma@latest orm init --target postgres
-npx prisma@latest init
-npx create-db@latest
-```
-
-Every other command is `npx prisma <command>`, which runs the version the project has installed. In CI that is the version from the lockfile, and a reader never sees a guide behave differently from their own checkout. The docs' command tabs render `npx prisma` as `pnpm prisma` and `yarn prisma` for the same reason.
-
-Package installs happen inside `create-prisma` and `orm init`; show their output rather than hand-written `npm install` lines with version numbers.
-
-### New project [#new-project]
-
-Scaffold with `create-prisma` and one of its templates (`minimal`, `hono`, `elysia`, `nest`, `next`, `svelte`, `astro`, `nuxt`, `tanstack-start`):
-
-  
-
-#### bun
-
-```bash
-bunx create-prisma@latest my-app --template next --provider postgres --no-deploy
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@latest my-app --template next --provider postgres --no-deploy
-```
-
-#### yarn
-
-```bash
-yarn dlx create-prisma@latest my-app --template next --provider postgres --no-deploy
-```
-
-#### npm
-
-```bash
-npx create-prisma@latest my-app --template next --provider postgres --no-deploy
-```
-
-The template ships the contract in `src/prisma/contract.prisma`, the runtime in `src/prisma/db.ts`, and package scripts for `contract:emit`, `db:init`, `db:update`, `migration:plan`, and `migrate`.
-
-### Existing project [#existing-project]
-
-Add Prisma ORM to an app that already exists:
-
-  
-
-#### bun
-
-```bash
-bunx prisma@latest orm init --target postgres
-```
-
-#### pnpm
-
-```bash
-pnpm dlx prisma@latest orm init --target postgres
-```
-
-#### yarn
-
-```bash
-yarn dlx prisma@latest orm init --target postgres
-```
-
-#### npm
-
-```bash
-npx prisma@latest orm init --target postgres
-```
-
-For a database that already has tables, follow with `npx prisma contract infer --output ./src/prisma/contract.prisma`, review the contract, then `contract emit` and `db sign`. Two things to check in the review: `orm init` keeps `"type": "commonjs"` if your `package.json` declares it and adds `"type": "module"` if there is no `"type"` field (a new project should use `"type": "module"`; an existing CommonJS app follows [In a CommonJS project](https://www.prisma.io/docs/cli/orm-init#in-a-commonjs-project)), and `contract infer` writes `Timestamptz` for timestamp columns while the runtime on Node.js needs `TimestamptzString`.
-
-### Runtime instantiation [#runtime-instantiation]
-
-Show the scaffolded `src/prisma/db.ts` rather than writing a client by hand:
-
-```ts title="src/prisma/db.ts"
-import "dotenv/config";
-import postgres from "@prisma/orm-postgres/runtime";
-import type { Contract } from "./contract.d";
-import contractJson from "./contract.json" with { type: "json" };
-
-export const db = postgres<Contract>({
-  contractJson,
-  url: process.env.DATABASE_URL!,
-});
-```
-
-Queries name the PostgreSQL schema (`db.orm.public.User.select("id", "email").all()`). Close the client once on process shutdown with `await db.close()`, never per request; in a per-request environment such as Cloudflare Workers, create the client inside the handler instead (see [Cloudflare Workers](https://www.prisma.io/docs/guides/deployment/cloudflare-workers)).
-
-### Database lifecycle [#database-lifecycle]
-
-| Task                                       | Command                                   |
-| ------------------------------------------ | ----------------------------------------- |
-| First apply and sign                       | `npx prisma db init`                      |
-| Check the database matches the contract    | `npx prisma db verify`                    |
-| Apply a contract change during development | `npx prisma db update`                    |
-| Plan a checked-in migration                | `npx prisma migration plan --name <name>` |
-| Apply checked-in migrations                | `npx prisma db migrate`                   |
-
-### Environment variables [#environment-variables]
-
-Show `.env` files with ` ```bash title=".env" `:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
-```
-
-The CLI loads `.env` through `prisma.config.ts`. Scaffolded `db.ts` files import `dotenv/config`; `create-prisma` templates read the environment variable only, so tell the reader to export it in the shell.
-
-## Versioning the Prisma ORM 7 twin [#versioning-the-prisma-7-twin]
-
-The unversioned tree under `guides/` is Prisma ORM 8. Prisma ORM 7 guides live under `guides/v7/` with the same subpath, and the sidebar version dropdown switches between them.
-
-When you port a Prisma ORM 7 guide:
-
-1. Copy the Prisma ORM 7 file to `guides/v7/<same subpath>` and change only its `url:` to the `/guides/v7/...` path. Keep its Prisma ORM 7 pins.
-2. Add the file to the matching `guides/v7/<category>/meta.json` and to the list on [/guides/v7](https://www.prisma.io/docs/guides/v7).
-3. Write the Prisma ORM 8 guide over the original path.
-4. Add this note right after the introduction of the Prisma ORM 8 guide:
-
-```markdown
-:::note[Using Prisma ORM 7?]
-
-Prisma ORM 8 is the current release. Prisma ORM 7 remains fully supported; the Prisma ORM 7 version of this guide is at [/guides/v7/[category]/[slug]](/guides/v7/[category]/[slug]).
-
-:::
-```
-
-If a topic cannot be ported because Prisma ORM 8 does not support it yet (for example Cloudflare D1, or a third-party adapter that requires Prisma Client), move the page under `guides/v7/`, change its `url:` frontmatter to the `/guides/v7/...` path (or re-run `npx tsx scripts/add-url-frontmatter.ts` in `apps/docs`; a stale `url:` fails silently and no linter catches it), add its filename to the matching `guides/v7/<category>/meta.json` and its link to `guides/v7/index.mdx` (a redirect alone leaves it out of the Prisma ORM 7 navigation), and add a redirect from the old URL in the live region of `redirects()` in `apps/docs/next.config.mjs`, near the `/llms/next.txt` entry (`apps/docs/vercel.json` holds the legacy redirects and the entries `pnpm generate:rest-api-docs` writes, not new page moves). Then run `pnpm run audit:redirects:strict` in `apps/docs`: it checks that every `vercel.json` destination still resolves, so it catches the legacy redirects whose destination just moved; it does not read `next.config.mjs`. Do not leave a Prisma ORM 7 page at a Prisma ORM 8 URL without a version marker.
-
-## Guide categories [#guide-categories]
-
-| Category            | Directory                      | Description                             | Examples                                                                                                                                                                        |
-| ------------------- | ------------------------------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Framework**       | `guides/frameworks/`           | Integrate Prisma ORM with frameworks    | [Next.js](https://www.prisma.io/docs/guides/frameworks/nextjs), [Hono](https://www.prisma.io/docs/guides/frameworks/hono), [React Router](https://www.prisma.io/docs/guides/frameworks/react-router-7)                                                        |
-| **Runtime**         | `guides/runtimes/`             | Run Prisma ORM on a runtime             | [Bun](https://www.prisma.io/docs/guides/runtimes/bun), [Deno](https://www.prisma.io/docs/guides/runtimes/deno)                                                                                                                      |
-| **Deployment**      | `guides/deployment/`           | Deploy apps and set up monorepos        | [Docker](https://www.prisma.io/docs/guides/deployment/docker), [Cloudflare Workers](https://www.prisma.io/docs/guides/deployment/cloudflare-workers), [Turborepo](https://www.prisma.io/docs/guides/deployment/turborepo)                                     |
-| **Integration**     | `guides/integrations/`         | Use Prisma ORM with platforms and tools | [GitHub Actions](https://www.prisma.io/docs/guides/integrations/github-actions), [AI SDK](https://www.prisma.io/docs/guides/integrations/ai-sdk)                                                                                    |
-| **Database**        | `guides/database/`             | Database patterns and migrations        | [Multiple databases](https://www.prisma.io/docs/guides/database/multiple-databases), [Expand-and-contract migrations](https://www.prisma.io/docs/guides/database/data-migration), [Schema changes](https://www.prisma.io/docs/guides/database/schema-changes) |
-| **Authentication**  | `guides/authentication/`       | Authentication patterns                 | [Clerk with Next.js](https://www.prisma.io/docs/guides/authentication/clerk/nextjs)                                                                                                                       |
-| **Prisma Postgres** | `guides/postgres/`             | Prisma Postgres features                | [Vercel](https://www.prisma.io/docs/guides/postgres/vercel), [Netlify](https://www.prisma.io/docs/guides/postgres/netlify), [Viewing data](https://www.prisma.io/docs/guides/postgres/viewing-data)                                                           |
-| **Migration**       | `guides/switch-to-prisma-orm/` | Switch from other ORMs                  | [From Drizzle](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-drizzle), [From Mongoose](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-mongoose)                                                          |
-| **Upgrade**         | `guides/upgrade-prisma-orm/`   | Move between Prisma versions            | [Prisma ORM 7 to 8 on PostgreSQL](https://www.prisma.io/docs/guides/upgrade-prisma-orm/postgresql)                                                                                                        |
-
-## Guide template [#guide-template]
-
-Copy this template for a new guide that adds Prisma ORM to an existing framework project. For a `create-prisma` template project, replace step 1 with the scaffold command and drop the `orm init` step.
-
-````markdown
----
-title: '[Your guide title]'
-description: '[One sentence: what the reader builds]'
-url: /guides/[category]/[slug]
-metaTitle: How to use Prisma ORM with [Topic]
-metaDescription: '[One sentence for search results]'
----
-
-## Introduction
-
-[What this guide builds and what the reader ends up with. Two or three sentences.]
-
-:::note[Using Prisma ORM 7?]
-
-Prisma ORM 8 is the current release. Prisma ORM 7 remains fully supported; the Prisma ORM 7 version of this guide is at [/guides/v7/[category]/[slug]](/guides/v7/[category]/[slug]).
-
-:::
-
-## Prerequisites
-
-- [Node.js](https://nodejs.org) 24 or later
-- A PostgreSQL connection string, or nothing at all: `npx create-db@latest` creates a [Prisma Postgres](/postgres) database for you
-
-## 1. Set up the project
-
-```npm
-[Framework scaffold command]
-```
-
-## 2. Add Prisma ORM
-
-```npm
-npx prisma@latest orm init --target postgres
-```
-
-```text no-copy
-[Trimmed real output]
-```
-
-Set the connection string:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
-```
-
-## 3. Define the contract
-
-```prisma title="src/prisma/contract.prisma"
-[Your models]
-```
-
-```npm
-npx prisma contract emit
-```
-
-## 4. Initialize the database
-
-```npm
-npx prisma db init
-```
-
-```text no-copy
-"summary": "Applied N operation(s) across 1 space(s), database signed"
-```
-
-## 5. [Integration-specific steps]
-
-[Framework or platform steps, each with its command and real output]
-
-## Common gotchas
-
-[Failures you hit while validating, with the verbatim error and the fix]
-
-## Use with your agent
-
-To delegate this guide to your coding agent, copy the prompt below and hand it over:
-
-<AgentPrompt>
-
-```text
-[Numbered instructions an agent can follow to complete this guide, referencing https://www.prisma.io/docs/guides/[category]/[slug].md]
-```
-
-</AgentPrompt>
-
-Run [`npx prisma@latest init`](/cli/init) once to install the [Prisma ORM skills](/ai/tools/skills#available-skills-for-prisma-8) for your coding agent. Prompts that map to this guide:
-
-- "[Prompt 1]"
-- "[Prompt 2]"
-
-## Next steps
-
-- [Learn the fundamentals](/orm/fundamentals/reading-data): filtering, sorting, pagination, and writes.
-- [Read the Prisma ORM overview](/orm) for the concepts behind contracts and typed queries.
-````
-
-## Adding guides to navigation [#adding-guides-to-navigation]
-
-Guides are organized by category in subdirectories. To add a guide to the navigation, update the category's `meta.json`:
-
-```json title="apps/docs/content/docs/guides/frameworks/meta.json"
-{
-  "title": "Frameworks",
-  "defaultOpen": true,
-  "pages": [
-    "nextjs",
-    "astro",
-    "nuxt",
-    "your-new-guide" // [!code ++]
-  ]
-}
-```
-
-The page name is the `.mdx` filename without the extension. The top-level `guides/meta.json` lists the categories, and `guides/v7/meta.json` plus `guides/v7/<category>/meta.json` do the same for the Prisma ORM 7 tree.
-
-## Next steps [#next-steps]
-
-* Read the [Hono](https://www.prisma.io/docs/guides/frameworks/hono) guide and match its shape.
-* Validate your guide end to end, then open a pull request with the sandbox commands you ran in the description.
-
-## Related pages
-
-- [`Guides`](https://www.prisma.io/docs/guides/v7): A collection of guides for various tasks and workflows
-
 # Alchemy (/docs/compute/alchemy)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -12061,6 +11287,780 @@ Send something early even when the real payload is not ready, and keep data flow
 - [`Deploy Button`](https://www.prisma.io/docs/compute/deploy-button): Add a Deploy with Prisma button that copies a public Composer repository and starts a Composer-managed deployment.
 - [`Deploy on push`](https://www.prisma.io/docs/compute/deploy-on-push): Graduate a Composer app from manual deploys to a Git workflow, with production deploys on push and an isolated preview environment per branch.
 - [`Deployments`](https://www.prisma.io/docs/compute/deployments): How deploys create service versions on Prisma Compute, and how to inspect, promote, roll back, start, and stop them.
+
+# Concepts (/docs/console/concepts)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+Location: Console > Concepts
+
+The Console workflows are based on five main concepts:
+
+* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
+* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
+* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
+* [**Branches**](#branch): For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
+* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
+
+Here is a visual illustration of how these concepts relate to each other:
+
+![How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other](https://www.prisma.io/img/platform/pdp-concepts.png)
+
+## User account [#user-account]
+
+A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
+
+If you need to delete your user account, go to [Deleting your PDP account](https://www.prisma.io/docs/console/more/support#deleting-your-pdp-account).
+
+## Workspace [#workspace]
+
+You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
+
+In each workspace, you can:
+
+* view and manage all projects (and their resources) in that workspace.
+* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
+* view the usage of your enabled Prisma products across all projects in that workspace.
+* invite other users to collaborate in the workspace.
+* access [Query Insights](https://www.prisma.io/docs/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
+
+## Project [#project]
+
+In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) per project.
+
+In each project, you can:
+
+* view and manage all resources (like databases) in that project.
+
+The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
+
+## Branch [#branch]
+
+For projects that use [Prisma Compute](https://www.prisma.io/docs/compute), a branch groups the resources for one line of work:
+
+```text
+workspace → project → branch → { apps, databases }
+```
+
+A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
+
+* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
+* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
+* [Environment variables](https://www.prisma.io/docs/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
+
+Learn more in [Branching](https://www.prisma.io/docs/compute/branching).
+
+## Resources [#resources]
+
+Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
+
+* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
+* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](https://www.prisma.io/docs/compute).
+* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
+
+In each project, you can:
+
+* Create and manage multiple resources (databases or environments)
+* Generate connection strings specific to each resource
+* Configure product-specific settings:
+  * **For Prisma Postgres databases**:
+    * View database metrics and performance
+    * Configure connection settings
+    * Manage database users and permissions
+  * **For Accelerate resources**:
+    * Set your database connection string
+    * Configure the region for connection pooling
+    * Adjust connection pool size and performance settings
+    * Set query duration and response size limits
+    * Enable static IP for secure connections
+
+The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
+
+## Related pages
+
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+
+# Getting Started (/docs/console/getting-started)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Quick start guide for setting up and using the Prisma Console
+
+Location: Console > Getting Started
+
+This guide walks you through setting up your Console account and creating your first project.
+
+## Prerequisites [#prerequisites]
+
+* A GitHub account (for authentication)
+* A Prisma project (optional, but recommended)
+
+## Step 1: Create your account [#step-1-create-your-account]
+
+1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
+2. Click **Sign in with GitHub**
+3. Authorize Prisma Console to access your GitHub account
+
+You now have a Console account with a default workspace.
+
+## Step 2: Set up a workspace [#step-2-set-up-a-workspace]
+
+When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
+
+### Create a workspace (optional) [#create-a-workspace-optional]
+
+To create an additional workspace:
+
+1. Click the workspace dropdown in the top navigation
+2. Click **Create Workspace**
+3. Enter a name for your workspace
+4. Click **Create**
+
+## Step 3: Create a project [#step-3-create-a-project]
+
+Projects organize your databases and environments within a workspace.
+
+### Using the Console web interface [#using-the-console-web-interface]
+
+1. Navigate to your workspace
+2. Click **Create Project**
+3. Enter a project name
+4. Click **Create**
+
+## Step 4: Create a resource [#step-4-create-a-resource]
+
+Resources are the actual databases or environments within your project.
+
+### For Prisma Postgres [#for-prisma-postgres]
+
+1. Navigate to your project
+2. Click **Create Database**
+3. Enter a database name
+4. Select a region
+5. Click **Create**
+
+### For Accelerate [#for-accelerate]
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026, so new Accelerate environments are not recommended. Create a Prisma Postgres database instead, as described above. If you already run Accelerate, choose the path that matches your setup:
+> 
+> * [Migrate a PostgreSQL database to Prisma Postgres](https://www.prisma.io/docs/prisma-postgres/import-from-existing-database-postgresql)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+
+1. Navigate to your project
+2. Click **Create Environment**
+3. Enter an environment name (e.g., "production")
+4. Click **Create**
+
+## Step 5: Generate a connection string [#step-5-generate-a-connection-string]
+
+Connection strings authenticate your application's requests to Prisma products.
+
+### Using the Console web interface [#using-the-console-web-interface-1]
+
+1. Navigate to your resource (database or environment)
+2. Click **Connection Strings** tab
+3. Click **Create Connection String**
+4. Enter a name for the connection string
+5. Copy the connection string and store it securely
+6. Click **Done**
+
+## Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
+
+Add the connection string to your `.env` file. For Prisma Postgres, use the pooled connection string for application queries and the direct connection string for migrations, introspection and Prisma Studio:
+
+```bash
+# Application traffic over pooled TCP
+DATABASE_URL="postgres://USER:PASSWORD@pooled.db.prisma.io:5432/postgres?sslmode=require"
+
+# Prisma CLI commands and administrative tooling
+DIRECT_URL="postgres://USER:PASSWORD@db.prisma.io:5432/postgres?sslmode=require"
+```
+
+In a Node.js runtime, pass the pooled connection string to Prisma Client through the [`@prisma/adapter-pg`](https://www.prisma.io/docs/postgres/database/connecting-to-your-database) driver adapter. In an edge or TCP-constrained runtime, use the [Prisma Postgres serverless driver](https://www.prisma.io/docs/postgres/database/serverless-driver) with the direct connection string instead.
+
+> [!WARNING]
+> Accelerate retirement
+> 
+> Prisma Accelerate will be retired on December 1, 2026. This covers both the Accelerate environments from Step 4, which use `prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY` connection strings, and hosted Accelerate connections for Prisma Postgres, which use `prisma+postgres://accelerate.prisma-data.net/?api_key=YOUR_API_KEY`. Choose the path that matches your setup:
+> 
+> * [Connect to Prisma Postgres without Accelerate](https://www.prisma.io/docs/postgres/database/switch-from-accelerate)
+> * [Keep your existing database and remove Accelerate](https://www.prisma.io/docs/accelerate/keep-your-database)
+
+## Next steps [#next-steps]
+
+* Learn more about [Console concepts](https://www.prisma.io/docs/console/concepts)
+* Explore [database metrics](https://www.prisma.io/docs/console/features/metrics)
+* Check out the [CLI reference](https://www.prisma.io/docs/cli/v7/console)
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+# Console (/docs/console)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Learn how to use the Console to manage and integrate Prisma products into your application.
+
+Location: Console
+
+## Overview [#overview]
+
+The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
+
+* [Query Insights](https://www.prisma.io/docs/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
+* [Prisma Postgres](https://www.prisma.io/docs/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
+* [Prisma Compute](https://www.prisma.io/docs/compute): Runs your app next to your Prisma Postgres database. Inspect projects, branches, apps, and deployments in the Console; deploy with the [Prisma CLI](https://www.prisma.io/docs/compute/getting-started).
+
+## Getting started [#getting-started]
+
+To start using Prisma products, you'll need to:
+
+1. Create a Console account
+2. Set up a workspace for your team
+3. Create a project for your application
+4. Generate connection strings for your resources
+
+Learn more in the [Getting Started](https://www.prisma.io/docs/console/getting-started) guide.
+
+## Core concepts [#core-concepts]
+
+The Console is organized around four main concepts:
+
+* **[User account](https://www.prisma.io/docs/console/concepts#user-account)**: Your personal account to manage workspaces and projects
+* **[Workspaces](https://www.prisma.io/docs/console/concepts#workspace)**: Team-level container where billing is managed
+* **[Projects](https://www.prisma.io/docs/console/concepts#project)**: Application-level container within a workspace
+* **[Resources](https://www.prisma.io/docs/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
+
+Read more about [Console concepts](https://www.prisma.io/docs/console/concepts).
+
+## Console CLI [#console-cli]
+
+In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
+
+Learn more about the [Console CLI commands](https://www.prisma.io/docs/cli/v7/console).
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+- [`Overview`](https://www.prisma.io/docs/guides): Practical, step-by-step guides for building with Prisma ORM, each one run end to end before it ships.
+
+# Overview (/docs/guides)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Practical, step-by-step guides for building with Prisma ORM, each one run end to end before it ships.
+
+Location: Overview
+
+Practical, step-by-step guides for building with Prisma ORM. Every command in a published guide was run end to end against a live database before it landed here. The [Prisma ORM 7 guides](https://www.prisma.io/docs/guides/v7) remain available for Prisma ORM 7 projects.
+
+Use the version dropdown in the sidebar to switch between these guides and the Prisma ORM 7 guides.
+
+## Frameworks [#frameworks]
+
+Each framework guide scaffolds a working app with `create-prisma`, initializes the database, and ends with your data rendering:
+
+- [Next.js](https://www.prisma.io/docs/guides/frameworks/nextjs)
+
+- [Astro](https://www.prisma.io/docs/guides/frameworks/astro)
+
+- [Nuxt](https://www.prisma.io/docs/guides/frameworks/nuxt)
+
+- [SvelteKit](https://www.prisma.io/docs/guides/frameworks/sveltekit)
+
+- [TanStack Start](https://www.prisma.io/docs/guides/frameworks/tanstack-start)
+
+- [NestJS](https://www.prisma.io/docs/guides/frameworks/nestjs)
+
+- [Hono](https://www.prisma.io/docs/guides/frameworks/hono)
+
+- [Elysia](https://www.prisma.io/docs/guides/frameworks/elysia)
+
+## Runtimes [#runtimes]
+
+- [Bun](https://www.prisma.io/docs/guides/runtimes/bun)
+
+- [Deno](https://www.prisma.io/docs/guides/runtimes/deno)
+
+## Deployment [#deployment]
+
+- [Docker](https://www.prisma.io/docs/guides/deployment/docker)
+
+- [Cloudflare Workers](https://www.prisma.io/docs/guides/deployment/cloudflare-workers)
+
+- [Turborepo](https://www.prisma.io/docs/guides/deployment/turborepo)
+
+- [pnpm workspaces](https://www.prisma.io/docs/guides/deployment/pnpm-workspaces)
+
+- [Bun workspaces](https://www.prisma.io/docs/guides/deployment/bun-workspaces)
+
+## Database [#database]
+
+- [Multiple databases](https://www.prisma.io/docs/guides/database/multiple-databases)
+
+- [Expand-and-contract migrations](https://www.prisma.io/docs/guides/database/data-migration)
+
+- [Schema changes as a team](https://www.prisma.io/docs/guides/database/schema-changes)
+
+## Switch to Prisma ORM [#switch-to-prisma-orm]
+
+- [From Drizzle](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-drizzle)
+
+- [From Sequelize or TypeORM](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-sql-orms)
+
+- [From Mongoose](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-mongoose)
+
+## Integrations [#integrations]
+
+- [GitHub Actions](https://www.prisma.io/docs/guides/integrations/github-actions)
+
+- [AI SDK](https://www.prisma.io/docs/guides/integrations/ai-sdk)
+
+## Upgrading [#upgrading]
+
+- [Prisma ORM 7 to 8 on PostgreSQL](https://www.prisma.io/docs/guides/upgrade-prisma-orm/postgresql)
+
+- [Prisma ORM 7 to 8 on MongoDB](https://www.prisma.io/docs/guides/upgrade-prisma-orm/mongodb)
+
+## Still on Prisma ORM 7 [#still-on-prisma-orm-7]
+
+The authentication guides and the remaining integration and Prisma Postgres guides in the sidebar are written for Prisma ORM 7 and carry a note at the top saying so. Some wait on third-party adapters that still require Prisma Client; the rest land here as they are ported. Cloudflare D1 and the Accelerate integrations live under the [Prisma ORM 7 guides](https://www.prisma.io/docs/guides/v7) only.
+
+## Next steps [#next-steps]
+
+* [Create a new app with PostgreSQL](https://www.prisma.io/docs/prisma-orm/quickstart/postgresql) if you don't have a Prisma ORM project yet.
+* [Learn the fundamentals](https://www.prisma.io/docs/orm/fundamentals/reading-data): reading, writing, relations, transactions, and advanced queries.
+* [Read the Prisma ORM overview](https://www.prisma.io/docs/orm) for the concepts behind contracts, typed queries, and migrations.
+
+## Related pages
+
+- [`Choose a Prisma ORM setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to try Prisma ORM in a new or existing project.
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Introduction to Prisma ORM`](https://www.prisma.io/docs/prisma-orm): Prisma ORM 8 is the current release.
+- [`Local development`](https://www.prisma.io/docs/local-development): Run the whole Prisma stack on your machine, with your app on Bun, a local Prisma Postgres database, and local object storage.
+- [`Overview`](https://www.prisma.io/docs/cli): Prisma CLI reference
+
+# Writing guides (/docs/guides/making-guides)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+How to write, validate, and file a Prisma ORM guide for the Prisma documentation.
+
+Location: Guides > Writing guides
+
+## Introduction [#introduction]
+
+This page is for people writing guides in this section. It covers the required structure, the formatting conventions, the validation rule every guide must pass, and how a guide's Prisma ORM 7 twin is versioned.
+
+The short version: a guide is a walkthrough you ran end to end before publishing, written for Prisma ORM, with every command shown alongside the real output it produced.
+
+## Prerequisites [#prerequisites]
+
+* A clear understanding of the topic you are writing about
+* Access to the Prisma documentation repository
+* Familiarity with Markdown and MDX
+* Node.js 24 or later and a PostgreSQL database to validate against (a local server or `npx create-db@latest`)
+
+## The validation rule [#the-validation-rule]
+
+Every command, file, and code block in a published guide was run by its author against a live database before it landed. Outputs shown in the guide are pasted from that run, trimmed for noise. If a step could not be run (a platform account you do not have, a paid service), the guide says so in the step and does not show output for it.
+
+Two reference guides show the finished shape. Read them before writing:
+
+* [Hono](https://www.prisma.io/docs/guides/frameworks/hono): a new project scaffolded with `create-prisma`, deployed to Prisma Compute.
+* [Add Prisma ORM to an existing PostgreSQL database](https://www.prisma.io/docs/prisma-orm/add-to-existing-project/postgresql): the `orm init` and `contract infer` path for an app that already exists.
+
+## Guide structure [#guide-structure]
+
+### Required frontmatter [#required-frontmatter]
+
+```mdx
+---
+title: '[Descriptive title]'
+description: '[One sentence: what the reader builds or accomplishes]'
+url: /guides/[category]/[slug]
+metaTitle: How to use Prisma ORM with [Topic]
+metaDescription: '[One sentence for search results]'
+---
+```
+
+* `title`: a short, descriptive title in sentence case (for example "Docker", "Multiple databases", "GitHub Actions")
+* `description`: one sentence describing what the reader accomplishes
+* `url`: the page path under `content/docs` without the extension; the build derives the URL from the file path, and this field must match it
+* `metaTitle` and `metaDescription`: the title and description for search engines
+* `image`: a header image for social sharing, only if one exists at `/img/guides/`
+
+### Required sections [#required-sections]
+
+1. **Introduction** (`## Introduction`): what the guide builds, in two or three sentences, followed by the `Using Prisma ORM 7?` note (see [Versioning](#versioning-the-prisma-7-twin)).
+2. **Prerequisites** (`## Prerequisites`): Node.js 24 or later, a database connection string or `npx create-db@latest`, and any accounts the guide needs. Keep it to what is truly necessary.
+3. **Numbered steps** (`## 1. Scaffold the project`, `## 2. Initialize the database`, and so on): each step is one bounded action with its command, its real output in a `no-copy` block, and one or two sentences on what happened.
+4. **Common gotchas** (`## Common gotchas`): the failures you hit while validating, with the verbatim error text and the fix.
+5. **Use with your agent** (`## Use with your agent`): this section comes after the steps, so a reader sees the instructions for a person first. It has three parts, in this order. First, an `<AgentPrompt>` block with a numbered prompt a coding agent can follow to complete the guide. Reference the guide's own `.md` URL (`https://www.prisma.io/docs/guides/[category]/[slug].md`) so the agent can read it. Second, a pointer to `npx prisma@latest init` for the [Prisma ORM skills](https://www.prisma.io/docs/ai/tools/skills). Third, two or three follow-up prompts that map to the guide.
+6. **Next steps** (`## Next steps`): links to the fundamentals and the related Prisma ORM pages.
+
+## Writing style and voice [#writing-style-and-voice]
+
+* Write direct instructional prose: say what to do, show the command, show the output.
+* Use active voice and present tense, and address the reader as "you".
+* Keep sentences short. One idea per sentence.
+* Do not use em dashes anywhere, including code comments. Use a period, a comma, or a colon.
+* Explain a removed Prisma ORM 7 step in one sentence only where a reader coming from Prisma ORM 7 would look for it (for example, "There is no `prisma generate` step; the runtime reads the emitted contract.").
+* Do not describe Prisma ORM 8 as a preview or as not production ready, and do not mention release candidate numbers. Prisma ORM 8 is the current release; Prisma ORM 7 remains supported.
+
+### Code examples [#code-examples]
+
+* Every code block is complete and was run as shown.
+* Use `title=` on file blocks: ` ```ts title="src/prisma/db.ts" `.
+* Use ` ```npm ` for package manager commands (the UI converts them to pnpm, yarn, and bun).
+* Use ` ```bash ` for other shell commands and for `.env` files, so `# [!code ++]` and `# [!code --]` annotations render.
+* Use ` ```text no-copy ` and ` ```json no-copy ` for captured output.
+* Use ` ```prisma ` for contract files, ` ```typescript ` or ` ```ts ` for TypeScript, ` ```json ` for JSON.
+* Use `// [!code ++]`, `// [!code --]`, and `// [!code highlight]` to show changes inside a file.
+
+### Formatting conventions [#formatting-conventions]
+
+* Backticks for file names (`contract.prisma`), directories (`src/prisma/`), commands, and code elements (`db.orm.public.User`).
+* Admonitions for asides:
+  ```markdown
+  :::note
+  Important details to remember
+  :::
+
+  :::warning
+  A gotcha that breaks the flow if missed
+  :::
+
+  :::tip
+  A shortcut or best practice
+  :::
+  ```
+* Never skip heading levels.
+* Link Prisma ORM 8 pages with relative paths: `/orm/...`, `/cli/...`, `/prisma-orm/...`. Never link `/orm/v7/...` from a Prisma ORM 8 guide except in the `Using Prisma ORM 7?` note.
+
+## Prisma ORM patterns [#prisma-orm-patterns]
+
+### Versions in commands [#versions-in-commands]
+
+Commands that run before the project has Prisma installed use the `@latest` tag, never a pinned version:
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@latest my-app --template hono --provider postgres --no-deploy
+bunx prisma@latest orm init --target postgres
+bunx --bun prisma@latest init
+bunx create-db@latest
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@latest my-app --template hono --provider postgres --no-deploy
+pnpm dlx prisma@latest orm init --target postgres
+pnpm dlx prisma@latest init
+pnpm dlx create-db@latest
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@latest my-app --template hono --provider postgres --no-deploy
+yarn dlx prisma@latest orm init --target postgres
+yarn dlx prisma@latest init
+yarn dlx create-db@latest
+```
+
+#### npm
+
+```bash
+npx create-prisma@latest my-app --template hono --provider postgres --no-deploy
+npx prisma@latest orm init --target postgres
+npx prisma@latest init
+npx create-db@latest
+```
+
+Every other command is `npx prisma <command>`, which runs the version the project has installed. In CI that is the version from the lockfile, and a reader never sees a guide behave differently from their own checkout. The docs' command tabs render `npx prisma` as `pnpm prisma` and `yarn prisma` for the same reason.
+
+Package installs happen inside `create-prisma` and `orm init`; show their output rather than hand-written `npm install` lines with version numbers.
+
+### New project [#new-project]
+
+Scaffold with `create-prisma` and one of its templates (`minimal`, `hono`, `elysia`, `nest`, `next`, `svelte`, `astro`, `nuxt`, `tanstack-start`):
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@latest my-app --template next --provider postgres --no-deploy
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@latest my-app --template next --provider postgres --no-deploy
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@latest my-app --template next --provider postgres --no-deploy
+```
+
+#### npm
+
+```bash
+npx create-prisma@latest my-app --template next --provider postgres --no-deploy
+```
+
+The template ships the contract in `src/prisma/contract.prisma`, the runtime in `src/prisma/db.ts`, and package scripts for `contract:emit`, `db:init`, `db:update`, `migration:plan`, and `migrate`.
+
+### Existing project [#existing-project]
+
+Add Prisma ORM to an app that already exists:
+
+  
+
+#### bun
+
+```bash
+bunx prisma@latest orm init --target postgres
+```
+
+#### pnpm
+
+```bash
+pnpm dlx prisma@latest orm init --target postgres
+```
+
+#### yarn
+
+```bash
+yarn dlx prisma@latest orm init --target postgres
+```
+
+#### npm
+
+```bash
+npx prisma@latest orm init --target postgres
+```
+
+For a database that already has tables, follow with `npx prisma contract infer --output ./src/prisma/contract.prisma`, review the contract, then `contract emit` and `db sign`. Two things to check in the review: `orm init` keeps `"type": "commonjs"` if your `package.json` declares it and adds `"type": "module"` if there is no `"type"` field (a new project should use `"type": "module"`; an existing CommonJS app follows [In a CommonJS project](https://www.prisma.io/docs/cli/orm-init#in-a-commonjs-project)), and `contract infer` writes `Timestamptz` for timestamp columns while the runtime on Node.js needs `TimestamptzString`.
+
+### Runtime instantiation [#runtime-instantiation]
+
+Show the scaffolded `src/prisma/db.ts` rather than writing a client by hand:
+
+```ts title="src/prisma/db.ts"
+import "dotenv/config";
+import postgres from "@prisma/orm-postgres/runtime";
+import type { Contract } from "./contract.d";
+import contractJson from "./contract.json" with { type: "json" };
+
+export const db = postgres<Contract>({
+  contractJson,
+  url: process.env.DATABASE_URL!,
+});
+```
+
+Queries name the PostgreSQL schema (`db.orm.public.User.select("id", "email").all()`). Close the client once on process shutdown with `await db.close()`, never per request; in a per-request environment such as Cloudflare Workers, create the client inside the handler instead (see [Cloudflare Workers](https://www.prisma.io/docs/guides/deployment/cloudflare-workers)).
+
+### Database lifecycle [#database-lifecycle]
+
+| Task                                       | Command                                   |
+| ------------------------------------------ | ----------------------------------------- |
+| First apply and sign                       | `npx prisma db init`                      |
+| Check the database matches the contract    | `npx prisma db verify`                    |
+| Apply a contract change during development | `npx prisma db update`                    |
+| Plan a checked-in migration                | `npx prisma migration plan --name <name>` |
+| Apply checked-in migrations                | `npx prisma db migrate`                   |
+
+### Environment variables [#environment-variables]
+
+Show `.env` files with ` ```bash title=".env" `:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
+```
+
+The CLI loads `.env` through `prisma.config.ts`. Scaffolded `db.ts` files import `dotenv/config`; `create-prisma` templates read the environment variable only, so tell the reader to export it in the shell.
+
+## Versioning the Prisma ORM 7 twin [#versioning-the-prisma-7-twin]
+
+The unversioned tree under `guides/` is Prisma ORM 8. Prisma ORM 7 guides live under `guides/v7/` with the same subpath, and the sidebar version dropdown switches between them.
+
+When you port a Prisma ORM 7 guide:
+
+1. Copy the Prisma ORM 7 file to `guides/v7/<same subpath>` and change only its `url:` to the `/guides/v7/...` path. Keep its Prisma ORM 7 pins.
+2. Add the file to the matching `guides/v7/<category>/meta.json` and to the list on [/guides/v7](https://www.prisma.io/docs/guides/v7).
+3. Write the Prisma ORM 8 guide over the original path.
+4. Add this note right after the introduction of the Prisma ORM 8 guide:
+
+```markdown
+:::note[Using Prisma ORM 7?]
+
+Prisma ORM 8 is the current release. Prisma ORM 7 remains fully supported; the Prisma ORM 7 version of this guide is at [/guides/v7/[category]/[slug]](/guides/v7/[category]/[slug]).
+
+:::
+```
+
+If a topic cannot be ported because Prisma ORM 8 does not support it yet (for example Cloudflare D1, or a third-party adapter that requires Prisma Client), move the page under `guides/v7/`, change its `url:` frontmatter to the `/guides/v7/...` path (or re-run `npx tsx scripts/add-url-frontmatter.ts` in `apps/docs`; a stale `url:` fails silently and no linter catches it), add its filename to the matching `guides/v7/<category>/meta.json` and its link to `guides/v7/index.mdx` (a redirect alone leaves it out of the Prisma ORM 7 navigation), and add a redirect from the old URL in the live region of `redirects()` in `apps/docs/next.config.mjs`, near the `/llms/next.txt` entry (`apps/docs/vercel.json` holds the legacy redirects and the entries `pnpm generate:rest-api-docs` writes, not new page moves). Then run `pnpm run audit:redirects:strict` in `apps/docs`: it checks that every `vercel.json` destination still resolves, so it catches the legacy redirects whose destination just moved; it does not read `next.config.mjs`. Do not leave a Prisma ORM 7 page at a Prisma ORM 8 URL without a version marker.
+
+## Guide categories [#guide-categories]
+
+| Category            | Directory                      | Description                             | Examples                                                                                                                                                                        |
+| ------------------- | ------------------------------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework**       | `guides/frameworks/`           | Integrate Prisma ORM with frameworks    | [Next.js](https://www.prisma.io/docs/guides/frameworks/nextjs), [Hono](https://www.prisma.io/docs/guides/frameworks/hono), [React Router](https://www.prisma.io/docs/guides/frameworks/react-router-7)                                                        |
+| **Runtime**         | `guides/runtimes/`             | Run Prisma ORM on a runtime             | [Bun](https://www.prisma.io/docs/guides/runtimes/bun), [Deno](https://www.prisma.io/docs/guides/runtimes/deno)                                                                                                                      |
+| **Deployment**      | `guides/deployment/`           | Deploy apps and set up monorepos        | [Docker](https://www.prisma.io/docs/guides/deployment/docker), [Cloudflare Workers](https://www.prisma.io/docs/guides/deployment/cloudflare-workers), [Turborepo](https://www.prisma.io/docs/guides/deployment/turborepo)                                     |
+| **Integration**     | `guides/integrations/`         | Use Prisma ORM with platforms and tools | [GitHub Actions](https://www.prisma.io/docs/guides/integrations/github-actions), [AI SDK](https://www.prisma.io/docs/guides/integrations/ai-sdk)                                                                                    |
+| **Database**        | `guides/database/`             | Database patterns and migrations        | [Multiple databases](https://www.prisma.io/docs/guides/database/multiple-databases), [Expand-and-contract migrations](https://www.prisma.io/docs/guides/database/data-migration), [Schema changes](https://www.prisma.io/docs/guides/database/schema-changes) |
+| **Authentication**  | `guides/authentication/`       | Authentication patterns                 | [Clerk with Next.js](https://www.prisma.io/docs/guides/authentication/clerk/nextjs)                                                                                                                       |
+| **Prisma Postgres** | `guides/postgres/`             | Prisma Postgres features                | [Vercel](https://www.prisma.io/docs/guides/postgres/vercel), [Netlify](https://www.prisma.io/docs/guides/postgres/netlify), [Viewing data](https://www.prisma.io/docs/guides/postgres/viewing-data)                                                           |
+| **Migration**       | `guides/switch-to-prisma-orm/` | Switch from other ORMs                  | [From Drizzle](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-drizzle), [From Mongoose](https://www.prisma.io/docs/guides/switch-to-prisma-orm/from-mongoose)                                                          |
+| **Upgrade**         | `guides/upgrade-prisma-orm/`   | Move between Prisma versions            | [Prisma ORM 7 to 8 on PostgreSQL](https://www.prisma.io/docs/guides/upgrade-prisma-orm/postgresql)                                                                                                        |
+
+## Guide template [#guide-template]
+
+Copy this template for a new guide that adds Prisma ORM to an existing framework project. For a `create-prisma` template project, replace step 1 with the scaffold command and drop the `orm init` step.
+
+````markdown
+---
+title: '[Your guide title]'
+description: '[One sentence: what the reader builds]'
+url: /guides/[category]/[slug]
+metaTitle: How to use Prisma ORM with [Topic]
+metaDescription: '[One sentence for search results]'
+---
+
+## Introduction
+
+[What this guide builds and what the reader ends up with. Two or three sentences.]
+
+:::note[Using Prisma ORM 7?]
+
+Prisma ORM 8 is the current release. Prisma ORM 7 remains fully supported; the Prisma ORM 7 version of this guide is at [/guides/v7/[category]/[slug]](/guides/v7/[category]/[slug]).
+
+:::
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org) 24 or later
+- A PostgreSQL connection string, or nothing at all: `npx create-db@latest` creates a [Prisma Postgres](/postgres) database for you
+
+## 1. Set up the project
+
+```npm
+[Framework scaffold command]
+```
+
+## 2. Add Prisma ORM
+
+```npm
+npx prisma@latest orm init --target postgres
+```
+
+```text no-copy
+[Trimmed real output]
+```
+
+Set the connection string:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
+```
+
+## 3. Define the contract
+
+```prisma title="src/prisma/contract.prisma"
+[Your models]
+```
+
+```npm
+npx prisma contract emit
+```
+
+## 4. Initialize the database
+
+```npm
+npx prisma db init
+```
+
+```text no-copy
+"summary": "Applied N operation(s) across 1 space(s), database signed"
+```
+
+## 5. [Integration-specific steps]
+
+[Framework or platform steps, each with its command and real output]
+
+## Common gotchas
+
+[Failures you hit while validating, with the verbatim error and the fix]
+
+## Use with your agent
+
+To delegate this guide to your coding agent, copy the prompt below and hand it over:
+
+<AgentPrompt>
+
+```text
+[Numbered instructions an agent can follow to complete this guide, referencing https://www.prisma.io/docs/guides/[category]/[slug].md]
+```
+
+</AgentPrompt>
+
+Run [`npx prisma@latest init`](/cli/init) once to install the [Prisma ORM skills](/ai/tools/skills#available-skills-for-prisma-8) for your coding agent. Prompts that map to this guide:
+
+- "[Prompt 1]"
+- "[Prompt 2]"
+
+## Next steps
+
+- [Learn the fundamentals](/orm/fundamentals/reading-data): filtering, sorting, pagination, and writes.
+- [Read the Prisma ORM overview](/orm) for the concepts behind contracts and typed queries.
+````
+
+## Adding guides to navigation [#adding-guides-to-navigation]
+
+Guides are organized by category in subdirectories. To add a guide to the navigation, update the category's `meta.json`:
+
+```json title="apps/docs/content/docs/guides/frameworks/meta.json"
+{
+  "title": "Frameworks",
+  "defaultOpen": true,
+  "pages": [
+    "nextjs",
+    "astro",
+    "nuxt",
+    "your-new-guide" // [!code ++]
+  ]
+}
+```
+
+The page name is the `.mdx` filename without the extension. The top-level `guides/meta.json` lists the categories, and `guides/v7/meta.json` plus `guides/v7/<category>/meta.json` do the same for the Prisma ORM 7 tree.
+
+## Next steps [#next-steps]
+
+* Read the [Hono](https://www.prisma.io/docs/guides/frameworks/hono) guide and match its shape.
+* Validate your guide end to end, then open a pull request with the sandbox commands you ran in the description.
+
+## Related pages
+
+- [`Guides`](https://www.prisma.io/docs/guides/v7): A collection of guides for various tasks and workflows
 
 # Local app (/docs/local-development/app-development)
 
@@ -61033,7 +61033,7 @@ The migration-file CLI (`prisma migration`) received a flag it does not recognis
 
 ### CONTRACT.ARGUMENT_INVALID [#CONTRACT.ARGUMENT_INVALID]
 
-A builder or helper on the contract-authoring surface is called with a bad argument: a composed authoring helper receives too many arguments or a malformed trailing options object, `field.sql({ id })` / `field.sql({ unique })` is used without a matching inline `.id(...)` / `.unique(...)` declaration, `model("Name", ...)` is called without a model definition, a nanoid ID generator is given a size outside 2–255, or an authored index combines its cross-field parameters invalidly (fields and an expression together or neither, an expression without `name:`/`map:`, or `map:` combined with `name:`). Also raised when a contract targets SQLite and declares an expression or partial index: SQLite's namespace construction rejects `expression:`/`where:` because the target does not support them. Also raised when a column with a literal default has type parameters that its codec does not accept (meta: `modelName`, `fieldName`, `codecId`, `reason: 'type-params-invalid'`; the codec's error is the `cause`). Raised while authoring/building the contract, before emit. Payload: varies per site.
+A builder or helper on the contract-authoring surface is called with a bad argument: a composed authoring helper receives too many arguments or a malformed trailing options object, `field.sql({ id })` / `field.sql({ unique })` is used without a matching inline `.id(...)` / `.unique(...)` declaration, `model("Name", ...)` is called without a model definition, a nanoid ID generator is given a size outside 2–255, a TypeScript `type.*` type constructor receives an argument its data type's parameter schema refuses (meta: `helperPath`, `argumentIndex`; see `CONTRACT.TYPE_PARAMS_INVALID` for how PSL and the contract build report the same bound), or an authored index combines its cross-field parameters invalidly (fields and an expression together or neither, an expression without `name:`/`map:`, or `map:` combined with `name:`). Also raised by the Mongo TypeScript builder when two variants of a polymorphic base declare the same discriminator value (meta: `modelName`, `value`, `variants`, `reason: 'duplicate-discriminator-value'`). Also raised when a contract targets SQLite and declares an expression or partial index: SQLite's namespace construction rejects `expression:`/`where:` because the target does not support them. Also raised when a column with a literal default has type parameters that its codec does not accept beyond its data type's parameters, which the build checks first with `CONTRACT.TYPE_PARAMS_INVALID` (meta: `modelName`, `fieldName`, `codecId`, `reason: 'type-params-invalid'`; the codec's error is the `cause`). Raised while authoring/building the contract, before emit. Payload: varies per site.
 
 ### CONTRACT.AGGREGATE_DESCRIPTOR_AMBIGUOUS [#CONTRACT.AGGREGATE_DESCRIPTOR_AMBIGUOUS]
 
@@ -61053,11 +61053,11 @@ The SQL emitter is asked to emit an aggregate result row whose declared result c
 
 ### CONTRACT.CODEC_DESCRIPTOR_MISSING [#CONTRACT.CODEC_DESCRIPTOR_MISSING]
 
-The control plane resolves a codec referenced by the contract (a `CodecRef.codecId`) against the contract's pack stack and finds no registered codec descriptor for that id. Hit during control-plane operations (emit, migration tooling) when a contract references a codec no composed pack provides. Payload: `codecId`.
+The control plane resolves a codec referenced by the contract (a `CodecRef.codecId`) against the contract's pack stack and finds no registered codec descriptor for that id. Hit during control-plane operations (emit, migration tooling) when a contract references a codec no composed pack provides. Payload: `codecId`. Also raised while a SQL contract is authored, when a column or storage type names a codec the contract's packs do not register, so its database type cannot be named from the codec's data type. A TypeScript `contract.ts` hits this when it uses an extension's codec without listing the extension in `defineContract({ extensions })`. List the pack that provides the codec. Payload (meta): `codecId`.
 
 ### CONTRACT.CAST_REFUSED [#CONTRACT.CAST_REFUSED]
 
-A value handed to a data type's cast, or to an authoring entry that reads written text, is not one that type takes: it is not in the shape the source type stores, its magnitude is outside the range the receiving type holds, the text is not a boolean, or the text is not a date or time the receiving type holds. A date or time text is refused when it has an offset its type does not hold or lacks one its type needs, has more fraction digits than its type holds (six, or three for `sqlite/datetime`, which holds milliseconds), names a date or time that does not exist, or is outside the range of years its type holds; the message shows text the type takes. The date and time codecs raise it from `encodeJson` for a value their type does not hold, such as a `Temporal` value with digits below one microsecond. Raised by a target's or extension's casts and authoring entries. A contract source reading a written value reports it to the author as the PSL diagnostic `PSL_INVALID_LITERAL` when a cast or an authoring entry raised it, and as `PSL_INVALID_DEFAULT_LITERAL` when a codec raised it for a column default. Payload: `why`, `fix`.
+A value handed to a data type's cast, or to an authoring entry that reads written text, is not one that type takes: it is not in the shape the source type stores, its magnitude is outside the range the receiving type holds, the text is not a boolean, or the text is not a date or time the receiving type holds. A date or time text is refused when it has an offset its type does not hold or lacks one its type needs, has more fraction digits than its type holds (six, or three for `sqlite/datetime@1`, which holds milliseconds), names a date or time that does not exist, or is outside the range of years its type holds; the message shows text the type takes. The date and time codecs raise it from `encodeJson` for a value their type does not hold, such as a `Temporal` value with digits below one microsecond. Raised by a target's or extension's casts and authoring entries. A contract source reading a written value reports it to the author as the PSL diagnostic `PSL_INVALID_LITERAL` when a cast, an authoring entry or a codec's canonical form raised it, and as `PSL_INVALID_DEFAULT_LITERAL` when a codec raised it for a column default. Payload: `why`, `fix`.
 
 ### CONTRACT.CHECK_NAME_RESERVED [#CONTRACT.CHECK_NAME_RESERVED]
 
@@ -61092,7 +61092,7 @@ A model declares an empty unique constraint (a unique with no fields), raised du
 `contract print` cannot write the loaded contract as Prisma ORM PSL that reads back as the same contract, so it writes nothing. The message names what it stopped on. Raised when the configured family cannot print a contract (no meta), or when the target's descriptor has no `buildPslContract` hook (meta: `targetId`). The Postgres printer raises it in each case below; each case is one function in its `psl-print/refusals.ts`, in this order. Every case is a contract that passes validation. The printer takes a validated contract and does not check its structure again.
 
 * Column types and defaults:
-  * no PSL type in the configured stack produces a column's codec, native type and type parameters, including a column that has no value for an argument its type constructor requires. Add the extension that contributes the type to the config (meta: `coordinate`, `nativeType`, `codecId`);
+  * no PSL type in the configured stack produces a column's codec, data type and type parameters, including a column that has no value for an argument its type constructor requires. Add the extension that contributes the type to the config (meta: `coordinate`, `dataType`, `codecId`);
   * a string type argument holds a quote, backslash or line break, which the PSL source reads back differently (meta: `coordinate`, `argument`);
   * a domain enum column defaults to a value that is not a member of the enum (meta: `coordinate`, `pslTypeName`);
   * a column's literal default has no PSL literal that reads back as the stored value, including when the column's codec has no data type in the stack (meta: `coordinate`, `pslTypeName`).
@@ -61165,6 +61165,10 @@ Two components in the composed stack register the same data type id, which has e
 
 Two components contribute an authoring entry under the same key, so the stack cannot tell which one reads that data type's written form. Raised while merging authoring contributions. Payload: `key`, `contributedBy`, `owner`.
 
+### CONTRACT.DATA_TYPE_ENTRY_KEY_INVALID [#CONTRACT.DATA_TYPE_ENTRY_KEY_INVALID]
+
+An authoring entry is filed under the wrong key for what it reads. An entry whose tag names the data type its body is (`type` on a tag form) must sit under `tagEntryKey(tag)`, and an entry under a `tag:` key must name that type; every other value entry sits under its data type's id and names none. Raised while checking the assembled data types. Payload: `key`, `contributedBy`.
+
 ### CONTRACT.DATA_TYPE_ID_INVALID [#CONTRACT.DATA_TYPE_ID_INVALID]
 
 A string given where a data type id belongs is not `owner/name` in lower case, or carries a version (a versioned id names a codec, not a data type). Raised by `dataTypeId()` while declaring a data type or a cast. Payload: `id`.
@@ -61175,7 +61179,7 @@ A data type declares a cast from a type no contract source can write, so the cas
 
 ### CONTRACT.DATA_TYPE_UNREGISTERED [#CONTRACT.DATA_TYPE_UNREGISTERED]
 
-Something names a data type that no component in the stack registers: a codec's `dataType`, an authoring entry's key, a type its number classifier returns, or a type a cast takes values of. Raised while checking the assembled data types. Payload: `dataType`, `contributedBy`.
+Something names a data type that no component in the stack registers: a codec's `dataType`, an authoring entry's key, a type its number classifier returns, or a type a cast takes values of. Raised while checking the assembled data types. Payload: `dataType`, `contributedBy`. Also raised while a SQL contract is authored, when a column's codec is registered but the data type it represents is not, so the column's database type cannot be named. List the pack that declares the data type, usually the pack that provides the codec. Payload (meta): `codecId`, `dataType`. Also raised when a PostgreSQL adapter is built with a codec whose data type is not passed beside it (`createPostgresAdapter` without the codec's type in `dataTypes`, or an extension that contributes codecs without their `dataTypes`), because a parameter of that codec could not be cast. Payload (meta): `codecId`, `dataType`.
 
 ### CONTRACT.DATA_TYPE_WRITTEN_FORM_DUPLICATE [#CONTRACT.DATA_TYPE_WRITTEN_FORM_DUPLICATE]
 
@@ -61327,10 +61331,6 @@ A model references a namespace that is not in the contract's declared `namespace
 
 Namespaces are declared (contract-level list or a model-level `namespace`) on a target that has no schema/namespace concept, i.e. SQLite. Raised by the SQL contract builder. Payload: `namespaces`, `modelKey`, `targetId`.
 
-### CONTRACT.NATIVE_TYPE_INVALID [#CONTRACT.NATIVE_TYPE_INVALID]
-
-A native type name in the contract fails the identifier-safety pattern required to render it into DDL. Raised by the Postgres and SQLite migration planners while building column DDL. Payload: `nativeType`.
-
 ### CONTRACT.PACK_CONTRIBUTION_INVALID [#CONTRACT.PACK_CONTRIBUTION_INVALID]
 
 A composed pack's contribution is malformed or collides with another contribution; this is the extension-author-facing bucket. Covers: entity types colliding with reserved helper keys, duplicate entity kinds or index-type registrations, a registered entity kind with no `lowerEntityHandles` lowering, an invalid `indexTypes` shape, entries-slot collisions between a model attribute and a block entry kind, a model attribute that lowers to a malformed index, bad authoring-helper paths, a codec registered with an entity-ref arg but no `columnFromEntity` hook, and print-time contribution mismatches (a block keyword with no PSL block descriptor, or a descriptor whose discriminator disagrees with the block's kind). Raised during contract authoring/lowering and PSL printing. Payload: `packId`, `contribution`, `reason`, `keyword`, `paramName`, `codecId`.
@@ -61365,7 +61365,7 @@ A role entity is declared more than once in the entities list, or a role name is
 
 ### CONTRACT.SCHEMA_VERIFICATION_FAILED [#CONTRACT.SCHEMA_VERIFICATION_FAILED]
 
-Schema verification found that the live database schema does not satisfy the contract: missing/extra/mismatched tables, columns, or other elements. `db verify` and `db sign` both report it as an `error` diagnostic on a completed run that exits `4`: for `db verify` that is the drift verdict, and for `db sign` it is the reason no signature was written. `db verify` raises one such diagnostic per contract space whose schema failed, and `db verify --strict` raises it once when the database holds elements no contract declares (the result's `unclaimed` list names them). It is also the code a failing verify result carries when nothing more specific applies. Fix path: `prisma db update` or adjust the contract; for unclaimed elements, declare them in a contract or drop them from the database. Payload: `space` (the contract space, on `db verify`), `issues` (the drifted element paths); the underlying operation result also carries `verificationResult`. The strict-mode unclaimed diagnostic carries no `space` and an empty `issues` list; the names are in the result's `unclaimed` list.
+Schema verification found that the live database schema does not satisfy the contract: missing/extra/mismatched tables, columns, or other elements. `db verify` and `db sign` both report it as an `error` diagnostic on a completed run that exits `4`: for `db verify` that is the drift verdict, and for `db sign` it is the reason that space's signature was not written. `db verify` and `db sign` raise one such diagnostic per contract space whose schema failed, and `db verify --strict` raises it once when the database holds elements no contract declares (the result's `unclaimed` list names them). It is also the code a failing verify result carries when nothing more specific applies. Fix path: `prisma db update` or adjust the contract; for unclaimed elements, declare them in a contract or drop them from the database. Payload: `space` (the contract space), `issues` (the drifted element paths); the underlying operation result also carries `verificationResult`. The strict-mode unclaimed diagnostic carries no `space` and an empty `issues` list; the names are in the result's `unclaimed` list.
 
 ### CONTRACT.SOURCE_IMPORT_DISALLOWED [#CONTRACT.SOURCE_IMPORT_DISALLOWED]
 
@@ -61390,6 +61390,12 @@ A foreign key or index references a table name that disagrees with the table the
 ### CONTRACT.TARGET_MISMATCH [#CONTRACT.TARGET_MISMATCH]
 
 The contract's target does not match the target configured in `prisma.config.ts` (e.g. a Postgres contract with a SQLite config). `db verify` reports it as an `error` diagnostic on a completed run that exits `4`. Payload: `expected`, `actual`.
+
+### CONTRACT.TYPE_PARAMS_INVALID [#CONTRACT.TYPE_PARAMS_INVALID]
+
+A column's type parameters do not fit its data type: a parameter fails the data type's schema (for example a `numeric` precision of 0 or an enum with no `typeName`), no written text of the data type takes that set of parameters (for example a `scale` with no `precision`), or no catalog text takes the parameters in their normal form. Raised by `renderSqlTypeName`, `renderSqlCatalogText`, `validateSqlTypeParams`, and `sqlBaseName` for a type that renders its own name, in `@internal/sql-contract/data-type`, when a type name is rendered. Also raised when a TypeScript contract is built and a column's `typeParams`, or those of the `storage.types` entry it references, fail its data type's schema; for example `varcharColumn(0)`, `numericColumn(2000)`, pgvector's `vector(0)` or PostGIS's `pgGeometryColumn({ srid: 0 })`. The column helpers check nothing themselves; the build does. A `storage.types` entry no column references is not checked. Payload: `dataType`, `parameters`, and, from the contract build, `modelName` and `fieldName`.
+
+A data type's `params` is the only place its bounds are written, and the code that reports a failure depends on where the parameters came from: a PSL type constructor argument is reported at the argument as the diagnostic `PSL_INVALID_ATTRIBUTE_ARGUMENT`; a TypeScript `type.*` constructor call raises `CONTRACT.ARGUMENT_INVALID` naming the argument; a column's parameters checked when a TypeScript contract is built, and a type name rendered from parameters, raise `CONTRACT.TYPE_PARAMS_INVALID`.
 
 ### CONTRACT.TYPE_UNKNOWN [#CONTRACT.TYPE_UNKNOWN]
 
@@ -61603,7 +61609,7 @@ A tagged literal uses a tag no pack in the stack registered: `Unknown literal ta
 
 ### PSL_DEPRECATED_SCALAR_NAME [#PSL_DEPRECATED_SCALAR_NAME]
 
-A warning, not an error: a Mongo schema types a field with a deprecated scalar name, `Int`, `Float`, `Boolean` or `DateTime`: `Scalar type "<old>" is deprecated and will be removed; use "<new>" (stored as BSON <bsonType>).` Reported at the type through the contract source's `reportWarning`; `prisma contract emit` prints it and still writes the contract, which is the same as the new name gives, and the language server shows it with warning severity. Rename the type to `Int32`, `Double`, `Bool` or `Date`.
+A warning, not an error: a Mongo schema types a field with a deprecated scalar name, `Int`, `Float`, `Boolean` or `DateTime`: `Scalar type "<old>" is deprecated and will be removed; use "<new>".` Reported at the type through the contract source's `reportWarning`; `prisma contract emit` prints it and still writes the contract, which is the same as the new name gives, and the language server shows it with warning severity. Rename the type to `Int32`, `Double`, `Bool` or `Date`.
 
 ### PSL_PRESET_WITHOUT_EFFECT [#PSL_PRESET_WITHOUT_EFFECT]
 
@@ -61664,6 +61670,10 @@ A list column declares `@default(autoincrement())`: `Field "<Model>.<field>" is 
 
 A ``@default(sql`...`)`` text fails the check `@default` runs on raw SQL: `Default SQL must not contain semicolons, SQL comment tokens, dollar-quoting, or subqueries.` (the rule the migration planners apply at DDL time, run at authoring time so it has a source span), or is exactly `now()` or `autoincrement()`: ``Write @default(now()) instead of sql`now()`; now() is a Prisma default function, not raw SQL.`` The tag is always `sql`. Only `@default` reports this code. Reported at the literal.
 
+### PSL_ENUM_TYPE_NEEDS_PARAMETERS [#PSL_ENUM_TYPE_NEEDS_PARAMETERS]
+
+An `enum` block's `@@type` names a codec whose data type requires a parameter, which an enum block has no way to give: `enum "<Enum>" @@type codec "<codecId>" represents data type "<dataType>", which requires the parameter "<parameter>"; an enum block gives it none`. Reported by the SQL PSL reader at the `@@type` attribute. Choose a codec whose data type takes no required parameter, such as the target's text or integer codec.
+
 ### PSL_UNSUPPORTED_ENUM_MEMBER_ATTRIBUTE [#PSL_UNSUPPORTED_ENUM_MEMBER_ATTRIBUTE]
 
 An enum member carries an attribute, as in `USER @map("user")`: `enum "<Enum>": member "<member>" carries @<attribute>, but an enum member takes no attributes`. Reported by the SQL and Mongo PSL readers, once per attribute, at the attribute. Remove the attribute. To store a value other than the member's name, write it as the member's value, as in `USER = "user"`.
@@ -61704,11 +61714,11 @@ An aggregate was invoked for an operation/input pair the composed target declare
 
 ### ORM.ARGUMENT_INVALID [#ORM.ARGUMENT_INVALID]
 
-A method argument on the ORM client, or on the `sql()` / Mongo query-builder DSLs, is malformed or missing a required part: a `null` where-arg, `upsert()` without conflict columns or without a create value for a conflict column, a custom collection registered as an instance / against a nonexistent model in `orm({ collections })`, invalid builder argument shapes, `$and`/`$or` with no expressions, a limit, offset or skip that is negative or not an integer, or malformed lookup/group/update specs. For SQL, the limit/offset check runs in relational-core when the `SelectAst` is constructed, so every SQL lane and target raises it before any SQL is rendered. That check also refuses integers above `Number.MAX_SAFE_INTEGER`, and does not check a limit or offset bound as a parameter. Payload: `method`, `argument` (`limit` or `offset` for the SQL limit/offset check), `model`, `column`, `key`.
+A method argument on the ORM client, or on the `sql()` / Mongo query-builder DSLs, is malformed or missing a required part: a `null` where-arg, `upsert()` without conflict columns or without a create value for a conflict column, a custom collection registered as an instance / against a nonexistent model in `orm({ collections })`, invalid builder argument shapes, `$and`/`$or` with no expressions, a limit, offset or skip that is negative or not an integer, malformed lookup/group/update specs, a row-locking method (`forUpdate()`, `forNoKeyUpdate()`, `forShare()`, `forKeyShare()`) given both `nowait` and `skipLocked`, or a `variant()` call whose value is not a declared discriminator value of the receiver model, or on a model with no discriminator (SQL and Mongo ORMs; the payload adds `value` and `declaredValues`). For SQL, the limit/offset check runs in relational-core when the `SelectAst` is constructed, so every SQL lane and target raises it before any SQL is rendered. That check also refuses integers above `Number.MAX_SAFE_INTEGER`, and does not check a limit or offset bound as a parameter. Payload: `method`, `argument` (`limit` or `offset` for the SQL limit/offset check), `model`, `column`, `key`.
 
 ### ORM.CAPABILITY_MISSING [#ORM.CAPABILITY_MISSING]
 
-The requested operation requires a contract capability the contract does not declare, currently the `returning` capability needed for mutations that read back the affected row. Raised by the ORM client and the `sql()` builder. Payload: `capability`, `action`.
+The requested operation requires a contract capability the contract does not declare: the `returning` capability needed for mutations that read back the affected row (payload `capability`, `action`); or, on the `sql()` builder, the flag a gated method or option needs, such as `postgres.distinctOn` for `distinctOn()`, `sql.forUpdate`, `sql.forShare`, `postgres.forNoKeyUpdate` or `postgres.forKeyShare` for the four row-locking methods, and `sql.lockOf`, `sql.lockNowait` or `sql.lockSkipLocked` for their `of`, `nowait` and `skipLocked` options (payload `method`, `capability`). Raised by the ORM client and the `sql()` builder.
 
 ### ORM.COLUMN_UNKNOWN [#ORM.COLUMN_UNKNOWN]
 
@@ -61746,6 +61756,10 @@ An `include()` usage is structurally invalid: the refinement callback returned s
 
 The include is well-formed but not supported in this position: scalar aggregations or `combine()` on a to-one relation (SQL), or including an embed relation / compound reference (Mongo; only reference relations can be included). Payload: `relation`, `kind`, `model`.
 
+### ORM.LOCK_INCOMPATIBLE [#ORM.LOCK_INCOMPATIBLE]
+
+A row-locking method (`forUpdate()`, `forNoKeyUpdate()`, `forShare()`, `forKeyShare()`) was combined with something Postgres refuses to lock. Raised by the SQL builder: at `build()` when the select also has `distinct`, `distinctOn`, `groupBy` or `having`, or an aggregate or window function in the projection; and when a locked select is turned into a subquery through `.as()` or passed where a subquery is expected. Payload: `conflict` (`distinct`, `distinctOn`, `groupBy`, `having`, `aggregate` or `subquery`).
+
 ### ORM.MODEL_UNKNOWN [#ORM.MODEL_UNKNOWN]
 
 The Mongo ORM client was asked to operate on a model name that is not in the contract (collection compile, or a raw-pipeline root bound to an unknown model). Payload: `model`, `root`.
@@ -61764,7 +61778,7 @@ A mutation that expected the database to return a row got none: `create()`/`upse
 
 ### ORM.OPERATION_UNSUPPORTED [#ORM.OPERATION_UNSUPPORTED]
 
-A valid ORM method was called in a configuration that does not support it: mutating an MTI variant collection with a method that requires `createAll()`, passing `onConflict: 'skip'` to `createAll()` on an MTI variant collection, Mongo `upsert()` with dot-path field operations, a Mongo `upsert()` whose `create` sets a field that has an update default and whose update pulls by a match document (that upsert runs as one update pipeline, which can pull only a single value), or a Mongo mutation carrying windowing (`orderBy`/`offset`/`limit`) or includes. Payload: `method`, `model`, `reason`, `field`.
+A valid ORM method was called in a configuration that does not support it: mutating an MTI variant collection with a method that requires `createAll()`, passing `onConflict: 'skip'` to `createAll()` on an MTI variant collection, Mongo `upsert()` with dot-path field operations, a Mongo `upsert()` whose `create` sets a field that has an update default and whose update pulls by a match document (that upsert runs as one update pipeline, which can pull only a single value), a Mongo mutation carrying windowing (`orderBy`/`offset`/`limit`) or includes, or `variant()` called on a collection that already has a variant selected (SQL and Mongo ORMs; call it on the base collection instead; `reason: 'variant-already-selected'`, with `variant` and `selectedValue` naming the selected variant model and its discriminator value). Payload: `method`, `model`, `reason`, `field`.
 
 ### ORM.RELATION_LINK_DUPLICATE [#ORM.RELATION_LINK_DUPLICATE]
 
@@ -61834,7 +61848,7 @@ A lowered SQL AST is structurally invalid: a subquery projecting other than one 
 
 ### RUNTIME.AST_UNSUPPORTED [#RUNTIME.AST_UNSUPPORTED]
 
-The authored SQL AST uses a feature this target cannot render, e.g. DEFAULT as a value in INSERT … VALUES, WITH ORDINALITY on function sources, or returned-column aliases on function sources, all on SQLite. Raised by the target adapters' renderers. Payload: `node` (INSERT DEFAULT site); `target`, `feature` (function-source sites).
+The authored SQL AST uses a feature this target cannot render, e.g. DEFAULT as a value in INSERT … VALUES, WITH ORDINALITY on function sources, or returned-column aliases on function sources, all on SQLite; a row-locking clause (`FOR UPDATE` and the like) on SQLite, which has no row locks and refuses the clause rather than drop it; or a row-locking clause whose strength or option (`of`, `nowait`, `skipLocked`) needs a capability the Postgres adapter did not report. Raised by the target adapters' renderers. Payload: `node` (INSERT DEFAULT site); `target`, `feature` (function-source sites, and locking-clause sites with `feature: 'locking-clause'`); on Postgres locking-clause sites also `capability`, the missing flag.
 
 ### RUNTIME.BINDING_INVALID [#RUNTIME.BINDING_INVALID]
 
@@ -61888,7 +61902,7 @@ At SQL context construction, the contract's target (e.g. `sqlite`) does not matc
 
 A codec's `decode` threw while converting a wire value into its output type during result decoding, surfaces per column (SQL), per document field (Mongo), or per included-relation column (ORM client), with the original error attached as `cause`. Also thrown when a returned row is missing an expected projection alias, or when the JSON array for an include alias fails to parse. Payload: `table`, `column` (or `alias` / `collection` + `path`), `codec`, `wirePreview`. When a Mongo codec raised the code itself, its own details (for the target's codecs, `codecId` and `received`) are kept alongside. An `InternalError` from a codec is a bug in Prisma, not a bad stored value, so it is not wrapped and surfaces unchanged. On Mongo the message also names the document it read, `Failed to decode field <path> of the document with _id <id> in collection '<collection>' …`, with the id (an `ObjectId` as hex, a string quoted) in `documentId`; for a document an insert returns, `<path>` starts at that document and the id is its `_id`; `wirePreview` is the JSON text of the stored value, each BSON class in its own JSON form, cut at 100 characters.
 
-Codecs also raise this code directly, as a structured envelope with `meta.codecId` and `meta.received`. The integer guards: `pg/int8number@1` and `sqlite/bigintnumber@1` (the `BigIntNumber` type), and `mongo/int64Number@1` (the `Int64Number` type), refuse a stored value outside the safe integer range ±(2^53 − 1) and any non-integral value rather than rounding it; on a stored fractional double, `mongo/int64@1` and `mongo/int64Number@1` say how to rewrite it as a long; `pg/int8@1`, `pg/unboundedint@1`, and `sqlite/bigint@1` refuse a wire or JSON value that is not a decimal integer. Every built-in codec's `decodeJson` follows the rule on [`Codec.decodeJson`](https://github.com/prisma/orm/blob/main/packages/1-framework/1-core/framework-components/src/shared/codec.ts): it refuses a JSON value that is not a stored form of its type, including one its type parameters rule out, with the message `<codecId> JSON value must be <what it takes>` and `meta.received`, the value as JSON text cut to 100 characters, as in `pg/text@1 JSON value must be a string`, `pg/int4@1 JSON value must be an integer from -2147483648 to 2147483647`, or `sql/varchar@1 JSON value must be a string of at most 3 characters`. Each accepts every form PostgreSQL or SQLite writes for the type in JSON. A float codec's `decodeJson` takes a finite number or the text `NaN`, `Infinity` or `-Infinity`, which PostgreSQL writes for those values. On SQLite, `sqlite/real@1` and `sql/float@1` refuse `NaN`, which SQLite stores as NULL: their `decodeJson` raises this code for the text `"NaN"`, and their `encode` and `encodeJson` raise `RUNTIME.ENCODE_FAILED`, so a `.default(NaN)` fails when the contract is built. The Mongo codecs' `decodeJson` refuses a JSON value of another kind the same way, as in `mongo/int32@1 JSON value must be an integer from -2147483648 to 2147483647`. In both families, the PSL reader reads each `enum` member with the enum's codec: a member the codec refuses is reported as `PSL_EXTENSION_INVALID_VALUE`, with the codec's message, or `PSL_ENUM_BARE_MEMBER_NON_STRING_CODEC` for a member written without a value under a codec that does not take text. On a flat read the codec's envelope surfaces unchanged; on an `.include()` read the ORM client wraps it in a fresh `RUNTIME.DECODE_FAILED` carrying `table`, `column`, and `codec`, with the codec's envelope on `cause`. One SQLite caveat: on a flat read, `node:sqlite` itself refuses an INTEGER outside the safe range before any codec runs, so for an out-of-band stored value the structured envelope is guaranteed on the include/JSON path, not the flat path.
+Codecs also raise this code directly, as a structured envelope with `meta.codecId` and `meta.received`. The integer guards: `pg/int8number@1` and `sqlite/bigintnumber@1` (the `BigIntNumber` type), and `mongo/int64Number@1` (the `Int64Number` type), refuse a stored value outside the safe integer range ±(2^53 − 1) and any non-integral value rather than rounding it; on a stored fractional double, `mongo/int64@1` and `mongo/int64Number@1` say how to rewrite it as a long; `pg/int8@1`, `pg/unboundedint@1`, and `sqlite/bigint@1` refuse a wire or JSON value that is not a decimal integer. Every built-in codec's `decodeJson` follows the rule on [`Codec.decodeJson`](https://github.com/prisma/orm/blob/main/packages/1-framework/1-core/framework-components/src/shared/codec.ts): it refuses a JSON value that is not a stored form of its type, including one its type parameters rule out, with the message `<codecId> JSON value must be <what it takes>` and `meta.received`, the value as JSON text cut to 100 characters, as in `pg/text@1 JSON value must be a string`, `pg/int4@1 JSON value must be an integer from -2147483648 to 2147483647`, or `sql/varchar@1 JSON value must be a string of at most 3 characters`. Each accepts every form PostgreSQL or SQLite writes for the type in JSON. A float codec's `decodeJson` takes a finite number or the text `NaN`, `Infinity` or `-Infinity`, which PostgreSQL writes for those values. On SQLite, `sqlite/real@1` and `sql/float@1` refuse `NaN`, which SQLite stores as NULL: their `decodeJson` raises this code for the text `"NaN"`, and their `encode` and `encodeJson` raise `RUNTIME.ENCODE_FAILED`, so a `.default(NaN)` fails when the contract is built. The Mongo codecs' `decodeJson` refuses a JSON value of another kind the same way, as in `mongo/int32@1 JSON value must be an integer from -2147483648 to 2147483647`. In both families, the PSL reader reads each `enum` member with the enum's codec: a member the codec refuses is reported as `PSL_EXTENSION_INVALID_VALUE`, with the codec's message, or `PSL_ENUM_BARE_MEMBER_NON_STRING_CODEC` for a member written without a value under a codec that does not take text. The SQL reader reads a member written as a number from its source text, as it reads a default, so `A = 9007199254740993` under `pg/int8@1` keeps every digit; a refusal of such a member carries the default reader's reason, as in `enum "Priority" member "Low": pg/text has no cast from pg/int2; it casts from nothing`. On a flat read the codec's envelope surfaces unchanged; on an `.include()` read the ORM client wraps it in a fresh `RUNTIME.DECODE_FAILED` carrying `table`, `column`, and `codec`, with the codec's envelope on `cause`. One SQLite caveat: on a flat read, `node:sqlite` itself refuses an INTEGER outside the safe range before any codec runs, so for an out-of-band stored value the structured envelope is guaranteed on the include/JSON path, not the flat path.
 
 On Mongo, `mongo/json@1` (a `Json` field) raises this code when the stored value is not JSON at some depth: `mongo/json@1 wire value contains a non-JSON BSON <type> at <path>`, where `<type>` is the BSON `$type` alias (`date`, `objectId`, `decimal`, `binData`, `regex`, `timestamp`, `long` for one outside the safe-integer range, `undefined`, `symbol`, `javascript`, `minKey`, `maxKey`, or the constructor name of an object the driver does not produce) and `<path>` is the dot-notation path inside the field, with array indices as segments, or `the root`. A stored `NaN`, `Infinity` or `-Infinity` is named as such: `mongo/json@1 wire value contains NaN at <path>; a JSON number cannot be NaN or Infinity`, with `meta.received` set to that value. A subdocument with `$ref` and `$id`, which the driver reads as a `DBRef`, decodes back to the document it was stored as, each member checked at its own path (`link.$id`). A stored subdocument that merely has a `_bsontype` key is read as that document, not as the type it names. The codec's envelope carries `meta.codecId`, `meta.received` (the BSON type) and `meta.valuePath` (the path inside the field); the runtime's wrapper copies them into its `details` beside `collection` and `path`, the field's own path in the document. A `long` in the safe-integer range and the driver's `Int32` and `Double` wrappers decode as numbers. Such a field should be `Bson`, which admits any BSON value.
 
@@ -62292,11 +62306,11 @@ The database's marker table (`prisma_contract.marker` on Postgres, `_prisma_mark
 
 ### MIGRATION.MARKER_CAS_FAILURE [#MIGRATION.MARKER_CAS_FAILURE]
 
-While finalizing an apply, the compare-and-swap update of the database's contract marker found the marker had been modified by another process mid-migration: a concurrent migration raced this one. Payload: `space`, `expectedStorageHash`, `destinationStorageHash`.
+While finalizing an apply, the compare-and-swap update of the database's contract marker found the marker had been modified by another process mid-migration: a concurrent migration raced this one. `db sign` reports the same code as a diagnostic, one per space, when a space's marker changed between the moment `db sign` read it and the moment it came to write it; that space is not signed and the command exits with code 4. Run `db sign` again once the other process has finished. Payload, from both: `space`; `expectedStorageHash`, the marker's storage hash when the process read it (`null` for no marker); `foundStorageHash`, the one it found when it came to write (`null` for no marker); `destinationStorageHash`, the one it would have written.
 
 ### MIGRATION.MARKER_MISMATCH [#MIGRATION.MARKER_MISMATCH]
 
-The live database marker's contract hash is not reachable anywhere in the on-disk migration graph: the database and the local migration history have diverged. The fix depends on which side is canonical: `migration plan` (catch the graph up), `migration ref set db <markerHash>` (fix a drifted local ref), or investigate out-of-band migration. Payload: `markerHash`, `reachableHashes`.
+The live database marker's contract hash is not reachable anywhere in the on-disk migration graph: the database and the local migration history have diverged. The fix depends on which side is canonical: `db sign` (overwrite the marker when the database already matches the contract, as after an upgrade that changed contract hashes), `migration plan` (catch the graph up), `migration ref set db <markerHash>` (fix a drifted local ref), or investigate out-of-band migration. Payload: `markerHash`, `reachableHashes`.
 
 ### MIGRATION.MARKER_NOT_IN_HISTORY [#MIGRATION.MARKER_NOT_IN_HISTORY]
 
@@ -62396,7 +62410,7 @@ A ref name resolves to nothing: no pointer file with that name exists, and the f
 
 ### MIGRATION.REF_WRONG_GRAMMAR [#MIGRATION.REF_WRONG_GRAMMAR]
 
-A reference parsed, but as the wrong kind for the argument position, e.g. a migration-only reference where a contract reference is required (raised by the shared ref-resolution mapper). The message and fix come from the resolver's own diagnosis. Payload: `input`, `expectedGrammar`.
+A reference parsed, but as the wrong kind for the argument position, e.g. a migration-only reference where a contract reference is required (raised by the shared ref-resolution mapper). The message and fix come from the resolver's own diagnosis. `db sign` and `db update --to` raise it for the reserved references `@contract`, `@db`, and `@empty`, which they do not accept, and `migration plan --to @empty` raises it because `@empty` is only valid as an origin. Payload: `input`, `expectedGrammar`.
 
 ### MIGRATION.RUNNER_FAILED [#MIGRATION.RUNNER_FAILED]
 
@@ -62409,6 +62423,10 @@ A migration's `from` and `to` hashes are identical and it declares no data-trans
 ### MIGRATION.SCHEMA_VERIFY_FAILED [#MIGRATION.SCHEMA_VERIFY_FAILED]
 
 After applying migrations, the runner introspected the database and the resulting schema does not satisfy the destination contract; the apply is rolled back. Runner-level failure during `db init`/`db update`/`db migrate`. Payload: `issues` (schema diff issues).
+
+### MIGRATION.SIGN_REFS_NOT_WRITTEN [#MIGRATION.SIGN_REFS_NOT_WRITTEN]
+
+`db sign` wrote the database markers, so the database is signed, but it could not write one or more refs or the contract snapshot of the app space afterwards, for example because the refs directory is not writable. The command still tries every ref, and the error names each one it could not write and why. It also names the spaces it did not sign: those whose schema failed verification and those whose marker changed while it ran. Fix what stopped the write and run `db sign` again with the same arguments: the markers already hold the contracts, so the second run writes only the refs. Payload: `signedSpaces`, `failedSpaces`, `conflictSpaces`, `unwrittenRefs` (each with `space`, `name`, `hash`, `reason`), `advancedRefs`.
 
 ### MIGRATION.SNAPSHOT_MISSING [#MIGRATION.SNAPSHOT_MISSING]
 
@@ -69630,7 +69648,7 @@ Prisma Postgres routes application traffic through a tenant-isolated PgBouncer i
 
 |                        | Free | Starter | Pro | Business |
 | ---------------------- | ---- | ------- | --- | -------- |
-| **Pooled connections** | 50   | 50      | 250 | 500      |
+| **Pooled connections** | 10   | 100     | 500 | 1,000    |
 | **Direct connections** | 10   | 10      | 50  | 100      |
 
 These are concurrent connection limits per plan. 5 direct connections are reserved for platform operations (maintenance, monitoring) and are not available to your workload.
@@ -69673,7 +69691,7 @@ Getting this wrong has asymmetric failure modes. Running migrations through the 
 Your application is exceeding the pooled connection limit for your plan. Common causes:
 
 1. **Creating a new database client per request.** Prisma Client should be instantiated once and reused across requests. In serverless environments, instantiate the client outside the handler function so it persists across warm invocations.
-2. **Too many concurrent serverless instances.** Each function instance holds its own connection(s). If your platform auto-scales to 200 instances and your plan allows 50 pooled connections, you will hit the limit. Cap concurrency at the platform level or upgrade your plan.
+2. **Too many concurrent serverless instances.** Each function instance holds its own connection(s). If your platform auto-scales to 200 instances and your plan allows 100 pooled connections, you will hit the limit. Cap concurrency at the platform level or upgrade your plan.
 3. **Using the direct hostname for application traffic.** Direct connection limits are much lower (10–100 depending on plan). Switch application traffic to `pooled.db.prisma.io`.
 
 ### Migration fails with lock, session, or prepared statement errors [#migration-fails-with-lock-session-or-prepared-statement-errors]
@@ -140265,618 +140283,6 @@ test("should fail if user does not accept terms", async () => {
 
 - [`Integration testing`](https://www.prisma.io/docs/orm/v7/prisma-client/testing/integration-testing): Learn how to setup and run integration tests with Prisma and Docker
 
-# Type safety Overview (Prisma ORM v7) (/docs/orm/v7/prisma-client/type-safety)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-Prisma Client provides full type safety for queries, even for partial queries or included relations. This page explains how to leverage the generated types and utilities
-
-Location: ORM > v7 > Prisma Client > Type safety Overview
-
-The generated code for Prisma Client contains several helpful types and utilities that you can use to make your application more type-safe. This page describes patterns for leveraging them.
-
-> **Note**: For advanced type safety topics with Prisma ORM, see this [blog post](https://www.prisma.io/blog/satisfies-operator-ur8ys8ccq7zb) about improving your Prisma Client workflows with the new TypeScript `satisfies` keyword.
-
-## Importing generated types [#importing-generated-types]
-
-You can import the `Prisma` namespace and use dot notation to access types and utilities. The following example shows how to import the `Prisma` namespace and use it to access and use the `Prisma.UserSelect` [generated type](#what-are-generated-types):
-
-```ts
-import { Prisma } from "../path/to/generated/prisma/client";
-
-// Build 'select' object
-const userEmail: Prisma.UserSelect = {
-  email: true,
-};
-
-// Use select object
-const createUser = await prisma.user.create({
-  data: {
-    email: "bob@prisma.io",
-  },
-  select: userEmail,
-});
-```
-
-See also: [Using the `Prisma.UserCreateInput` generated type](https://www.prisma.io/docs/orm/v7/prisma-client/queries/crud#create-a-single-record)
-
-## What are generated types? [#what-are-generated-types]
-
-Generated types are TypeScript types that are derived from your models. You can use them to create typed objects that you pass into top-level methods like `prisma.user.create(...)` or `prisma.user.update(...)`, or options such as `select` or `include`.
-
-For example, `select` accepts an object of type `UserSelect`. Its object properties match those that are supported by `select` statements according to the model.
-
-The first tab below shows the `UserSelect` generated type and how each property on the object has a type annotation. The second tab shows the original schema from which the type was generated.
-
-  
-
-#### Generated type
-
-```ts
-type Prisma.UserSelect = {
-    id?: boolean | undefined;
-    email?: boolean | undefined;
-    name?: boolean | undefined;
-    posts?: boolean | Prisma.PostFindManyArgs | undefined;
-    profile?: boolean | Prisma.ProfileArgs | undefined;
-}
-```
-
-#### Model
-
-```prisma
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
-}
-```
-
-In TypeScript the concept of [type annotations](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-annotations-on-variables) is when you declare a variable and add a type annotation to describe the type of the variable. See the below example.
-
-```ts
-const myAge: number = 37;
-const myName: string = "Rich";
-```
-
-Both of these variable declarations have been given a type annotation to specify what primitive type they are, `number` and `string` respectively. Most of the time this kind of annotation is not needed as TypeScript will infer the type of the variable based on how its initialized. In the above example `myAge` was initialized with a number so TypeScript guesses that it should be typed as a number.
-
-Going back to the `UserSelect` type, if you were to use dot notation on the created object `userEmail`, you would have access to all of the fields on the `User` model that can be interacted with using a `select` statement.
-
-```prisma
-model User {
-  id      Int      @id @default(autoincrement())
-  email   String   @unique
-  name    String?
-  posts   Post[]
-  profile Profile?
-}
-```
-
-```ts
-import { Prisma } from "../path/to/generated/prisma/client";
-
-const userEmail: Prisma.UserSelect = {
-  email: true,
-};
-
-// properties available on the typed object
-userEmail.id;
-userEmail.email;
-userEmail.name;
-userEmail.posts;
-userEmail.profile;
-```
-
-In the same mould, you can type an object with an `include` generated type then your object would have access to those properties on which you can use an `include` statement.
-
-```ts
-import { Prisma } from "../path/to/generated/prisma/client";
-
-const userPosts: Prisma.UserInclude = {
-  posts: true,
-};
-
-// properties available on the typed object
-userPosts.posts;
-userPosts.profile;
-```
-
-> See the [model query options](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#model-query-options) reference for more information about the different types available.
-
-### Generated `UncheckedInput` types [#generated-uncheckedinput-types]
-
-The `UncheckedInput` types are a special set of generated types that allow you to perform some operations that Prisma Client considers "unsafe", like directly writing [relation scalar fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations). You can choose either the "safe" `Input` types or the "unsafe" `UncheckedInput` type when doing operations like `create`, `update`, or `upsert`.
-
-For example, this Prisma schema has a one-to-many relation between `User` and `Post`:
-
-```prisma
-model Post {
-  id       Int     @id @default(autoincrement())
-  title    String  @db.VarChar(255)
-  content  String?
-  author   User    @relation(fields: [authorId], references: [id])
-  authorId Int
-}
-
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
-}
-```
-
-The first tab shows the `PostUncheckedCreateInput` generated type. It contains the `authorId` property, which is a relation scalar field. The second tab shows an example query that uses the `PostUncheckedCreateInput` type. This query will result in an error if a user with an `id` of `1` does not exist.
-
-  
-
-#### Generated type
-
-```ts
-type PostUncheckedCreateInput = {
-  id?: number;
-  title: string;
-  content?: string | null;
-  authorId: number;
-};
-```
-
-#### Example query
-
-```ts
-prisma.post.create({
-  data: {
-    title: "First post",
-    content: "Welcome to the first post in my blog...",
-    authorId: 1,
-  },
-});
-```
-
-The same query can be rewritten using the "safer" `PostCreateInput` type. This type does not contain the `authorId` field but instead contains the `author` relation field.
-
-  
-
-#### Generated type
-
-```ts
-type PostCreateInput = {
-  title: string;
-  content?: string | null;
-  author: UserCreateNestedOneWithoutPostsInput;
-};
-
-type UserCreateNestedOneWithoutPostsInput = {
-  create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>;
-  connectOrCreate?: UserCreateOrConnectWithoutPostsInput;
-  connect?: UserWhereUniqueInput;
-};
-```
-
-#### Example query
-
-```ts
-prisma.post.create({
-  data: {
-    title: "First post",
-    content: "Welcome to the first post in my blog...",
-    author: {
-      connect: {
-        id: 1,
-      },
-    },
-  },
-});
-```
-
-This query will also result in an error if an author with an `id` of `1` does not exist. In this case, Prisma Client will give a more descriptive error message. You can also use the [`connectOrCreate`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#connectorcreate) API to safely create a new user if one does not already exist with the given `id`.
-
-We recommend using the "safe" `Input` types whenever possible.
-
-## Type utilities [#type-utilities]
-
-To help you create highly type-safe applications, Prisma Client provides a set of type utilities that tap into input and output types. These types are fully dynamic, which means that they adapt to any given model and schema. You can use them to improve autocompletion in your projects.
-
-This is especially useful in [shared Prisma Client extensions](https://www.prisma.io/docs/orm/v7/prisma-client/client-extensions/shared-extensions).
-
-The following type utilities are available in Prisma Client:
-
-* `Exact<Input, Shape>`: Enforces strict type safety on `Input`. `Exact` makes sure that a generic type `Input` strictly complies with the type that you specify in `Shape`. It [narrows](https://www.typescriptlang.org/docs/handbook/2/narrowing.html) `Input` down to the most precise types.
-* `Args<Type, Operation>`: Retrieves the input arguments for any given model and operation. This is particularly useful for extension authors who want to do the following:
-  * Re-use existing types to extend or modify them.
-  * Benefit from the same auto-completion experience as on existing operations.
-* `Result<Type, Arguments, Operation>`: Takes the input arguments and provides the result for a given model and operation. You would usually use this in conjunction with `Args`. As with `Args`, `Result` helps you to re-use existing types to extend or modify them.
-* `Payload<Type, Operation>`: Retrieves the entire structure of the result, as scalars and relations objects for a given model and operation. For example, you can use this to determine which keys are scalars or objects at a type level.
-
-As an example, here's a quick way you can enforce that the arguments to a function matches what you will pass to a `post.create`:
-
-```ts
-type PostCreateBody = Prisma.Args<typeof prisma.post, "create">["data"];
-
-const addPost = async (postBody: PostCreateBody) => {
-  const post = await prisma.post.create({ data: postBody });
-  return post;
-};
-
-await addPost(myData);
-//              ^ guaranteed to match the input of `post.create`
-```
-
-## Related pages
-
-- [`Fields & types`](https://www.prisma.io/docs/orm/v7/prisma-client/special-fields-and-types): Learn how to use about special fields and types with Prisma Client
-- [`What are Client Extensions`](https://www.prisma.io/docs/orm/v7/prisma-client/client-extensions): Extend the functionality of Prisma Client
-- [`Write your own SQL`](https://www.prisma.io/docs/orm/v7/prisma-client/using-raw-sql): Learn how to use raw SQL queries in Prisma Client
-
-# Operating against partial structures of your model types (Prisma ORM v7) (/docs/orm/v7/prisma-client/type-safety/operating-against-partial-structures-of-model-types)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-This page documents various scenarios for using the generated types from the Prisma namespace
-
-Location: ORM > v7 > Prisma Client > Type Safety > Operating against partial structures of your model types
-
-When using Prisma Client, every model from your [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) is translated into a dedicated TypeScript type. For example, assume you have the following `User` and `Post` models:
-
-```prisma
-model User {
-  id    Int     @id
-  email String  @unique
-  name  String?
-  posts Post[]
-}
-
-model Post {
-  id        Int     @id
-  author    User    @relation(fields: [userId], references: [id])
-  title     String
-  published Boolean @default(false)
-  userId    Int
-}
-```
-
-The Prisma Client code that's generated from this schema contains this representation of the `User` type:
-
-```ts
-export type User = {
-  id: string;
-  email: string;
-  name: string | null;
-};
-```
-
-## Problem: Using variations of the generated model type [#problem-using-variations-of-the-generated-model-type]
-
-### Description [#description]
-
-In some scenarios, you may need a *variation* of the generated `User` type. For example, when you have a function that expects an instance of the `User` model that carries the `posts` relation. Or when you need a type to pass only the `User` model's `email` and `name` fields around in your application code.
-
-### Solution [#solution]
-
-As a solution, you can customize the generated model type using Prisma Client's helper types.
-
-The `User` type only contains the model's [scalar](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#scalar-fields) fields, but doesn't account for any relations. That's because [relations are not included by default](https://www.prisma.io/docs/orm/v7/prisma-client/queries/select-fields#return-the-default-fields) in Prisma Client queries.
-
-However, sometimes it's useful to have a type available that **includes a relation** (i.e. a type that you'd get from an API call that uses [`include`](https://www.prisma.io/docs/orm/v7/prisma-client/queries/select-fields#return-nested-objects-by-selecting-relation-fields)). Similarly, another useful scenario could be to have a type available that **includes only a subset of the model's scalar fields** (i.e. a type that you'd get from an API call that uses [`select`](https://www.prisma.io/docs/orm/v7/prisma-client/queries/select-fields#select-specific-fields)).
-
-One way of achieving this would be to define these types manually in your application code:
-
-```ts
-// 1: Define a type that includes the relation to `Post`
-type UserWithPosts = {
-  id: string;
-  email: string;
-  name: string | null;
-  posts: Post[];
-};
-
-// 2: Define a type that only contains a subset of the scalar fields
-type UserPersonalData = {
-  email: string;
-  name: string | null;
-};
-```
-
-While this is certainly feasible, this approach increases the maintenance burden upon changes to the Prisma schema as you need to manually maintain the types. A cleaner solution to this is to use the `UserGetPayload` type that is generated and exposed by Prisma Client under the `Prisma` namespace in combination with TypeScript's `satisfies` operator.
-
-The following example uses the `satisfies` operator to create two type-safe objects and then uses the `Prisma.UserGetPayload` utility function to create a type that can be used to return all users and their posts.
-
-```ts
-import { Prisma } from "@prisma/client";
-
-// 1: Define a type that includes the relation to `Post`
-const userWithPosts = { include: { posts: true } } satisfies Prisma.UserDefaultArgs;
-
-// 2: Define a type that only contains a subset of the scalar fields
-const userPersonalData = { select: { email: true, name: true } } satisfies Prisma.UserDefaultArgs;
-
-// 3: This type will include a user and all their posts
-type UserWithPosts = Prisma.UserGetPayload<typeof userWithPosts>;
-```
-
-The main benefits of the latter approach are:
-
-* Cleaner approach as it leverages Prisma Client's generated types
-* Reduced maintenance burden and improved type safety when the schema changes
-
-## Problem: Getting access to the return type of a function [#problem-getting-access-to-the-return-type-of-a-function]
-
-### Description [#description-1]
-
-When doing [`select`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#select) or [`include`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#include) operations on your models and returning these variants from a function, it can be difficult to gain access to the return type, e.g:
-
-```ts
-// Function definition that returns a partial structure
-async function getUsersWithPosts() {
-  const users = await prisma.user.findMany({ include: { posts: true } });
-  return users;
-}
-```
-
-Extracting the type that represents "users with posts" from the above code snippet requires some advanced TypeScript usage:
-
-```ts
-// Function definition that returns a partial structure
-async function getUsersWithPosts() {
-  const users = await prisma.user.findMany({ include: { posts: true } });
-  return users;
-}
-
-// Extract `UsersWithPosts` type with
-type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
-type UsersWithPosts = ThenArg<ReturnType<typeof getUsersWithPosts>>;
-
-// run inside `async` function
-const usersWithPosts: UsersWithPosts = await getUsersWithPosts();
-```
-
-### Solution [#solution-1]
-
-Use the native TypeScript utility types [`Awaited`](https://www.typescriptlang.org/docs/handbook/utility-types.html#awaitedtype) and [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype) to extract the type:
-
-```ts
-type UsersWithPosts = Awaited<ReturnType<typeof getUsersWithPosts>>;
-```
-
-## Related pages
-
-- [`How to use Prisma ORM's type system`](https://www.prisma.io/docs/orm/v7/prisma-client/type-safety/prisma-type-system): How to use Prisma ORM's type system
-
-# How to use Prisma ORM's type system (Prisma ORM v7) (/docs/orm/v7/prisma-client/type-safety/prisma-type-system)
-
-> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
-
-How to use Prisma ORM's type system
-
-Location: ORM > v7 > Prisma Client > Type Safety > How to use Prisma ORM's type system
-
-This guide introduces Prisma ORM's type system and explains how to introspect existing native types in your database, and how to use types when you apply schema changes to your database with Prisma Migrate or `db push`.
-
-## How does Prisma ORM's type system work? [#how-does-prisma-orms-type-system-work]
-
-Prisma ORM uses *types* to define the kind of data that a field can hold. Prisma ORM provides a small number of core [scalar types](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#model-field-scalar-types) that cover most default use cases. For example, take the following blog post model:
-
-```prisma title="schema.prisma" showLineNumbers
-datasource db {
-  provider = "postgresql"
-}
-
-model Post {
-  id        Int      @id
-  title     String
-  createdAt DateTime
-}
-```
-
-The `title` field of the `Post` model uses the `String` scalar type, while the `createdAt` field uses the `DateTime` scalar type.
-
-Databases also have their own type system, which defines the type of value that a column can hold. Most databases provide a large number of data types to allow fine-grained control over exactly what a column can store. For example, a database might provide inbuilt support for multiple sizes of integers, or for XML data. The names of these types vary between databases. For example, in PostgreSQL the column type for booleans is `boolean`, whereas in MySQL the `tinyint(1)` type is typically used.
-
-In the blog post example above, we are using the PostgreSQL connector. This is specified in the `datasource` block of the Prisma schema.
-
-### Default type mappings [#default-type-mappings]
-
-To allow you to get started with our core scalar types, Prisma ORM provides *default type mappings* that map each scalar type to a default type in the underlying database. For example:
-
-* by default Prisma ORM's `String` type gets mapped to PostgreSQL's `text` type and MySQL's `varchar` type
-* by default Prisma ORM's `DateTime` type gets mapped to PostgreSQL's `timestamp(3)` type and SQL Server's `datetime2` type
-
-See Prisma ORM's [database connector pages](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases) for the default type mappings for a given database. For example, [this table](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/postgresql#prisma-to-postgresql) gives the default type mappings for PostgreSQL.\
-To see the default type mappings for all databases for a specific given Prisma ORM type, see the [model field scalar types section](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#model-field-scalar-types) of the Prisma schema reference. For example, [this table](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#float) gives the default type mappings for the `Float` scalar type.
-
-### Native type mappings [#native-type-mappings]
-
-Sometimes you may need to use a more specific database type that is not one of the default type mappings for your Prisma ORM type. For this purpose, Prisma ORM provides [native type attributes](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#native-types-mapping) to refine the core scalar types. For example, in the `createdAt` field of your `Post` model above you may want to use a date-only column in your underlying PostgreSQL database, by using the `date` type instead of the default type mapping of `timestamp(3)`. To do this, add a `@db.Date` native type attribute to the `createdAt` field:
-
-```prisma title="schema.prisma" showLineNumbers
-model Post {
-  id        Int      @id
-  title     String
-  createdAt DateTime @db.Date
-}
-```
-
-Native type mappings allow you to express all the types in your database. However, you do not need to use them if the Prisma ORM defaults satisfy your needs. This leads to a shorter, more readable Prisma schema for common use cases.
-
-## How to introspect database types [#how-to-introspect-database-types]
-
-When you [introspect](https://www.prisma.io/docs/orm/v7/prisma-schema/introspection) an existing database, Prisma ORM will take the database type of each table column and represent it in your Prisma schema using the correct Prisma ORM type for the corresponding model field. If the database type is not the default database type for that Prisma ORM scalar type, Prisma ORM will also add a native type attribute.
-
-As an example, take a `User` table in a PostgreSQL database, with:
-
-* an `id` column with a data type of `serial`
-* a `name` column with a data type of `text`
-* an `isActive` column with a data type of `boolean`
-
-You can create this with the following SQL command:
-
-```sql
-CREATE TABLE "public"."User" (
-  id serial PRIMARY KEY NOT NULL,
-  name text NOT NULL,
-  "isActive" boolean NOT NULL
-);
-```
-
-Introspect your database with the following command run from the root directory of your project:
-
-  
-
-#### bun
-
-```bash
-bunx prisma db pull
-```
-
-#### pnpm
-
-```bash
-pnpm prisma db pull
-```
-
-#### yarn
-
-```bash
-yarn prisma db pull
-```
-
-#### npm
-
-```bash
-npx prisma db pull
-```
-
-You will get the following Prisma schema:
-
-```prisma title="schema.prisma" showLineNumbers
-model User {
-  id       Int     @id @default(autoincrement())
-  name     String
-  isActive Boolean
-}
-```
-
-The `id`, `name` and `isActive` columns in the database are mapped respectively to the `Int`, `String` and `Boolean` Prisma ORM types. The database types are the *default* database types for these Prisma ORM types, so Prisma ORM does not add any native type attributes.
-
-Now add a `createdAt` column to your database with a data type of `date` by running the following SQL command:
-
-```sql
-ALTER TABLE "public"."User"
-ADD COLUMN "createdAt" date NOT NULL;
-```
-
-Introspect your database again:
-
-  
-
-#### bun
-
-```bash
-bunx prisma db pull
-```
-
-#### pnpm
-
-```bash
-pnpm prisma db pull
-```
-
-#### yarn
-
-```bash
-yarn prisma db pull
-```
-
-#### npm
-
-```bash
-npx prisma db pull
-```
-
-Your Prisma schema now includes the new `createdAt` field with a Prisma ORM type of `DateTime`. The `createdAt` field also has a `@db.Date` native type attribute, because PostgreSQL's `date` is not the default type for the `DateTime` type:
-
-```prisma title="schema.prisma" highlight=5;add showLineNumbers
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  isActive  Boolean
-  createdAt DateTime @db.Date // [!code ++]
-}
-```
-
-## How to use types when you apply schema changes to your database [#how-to-use-types-when-you-apply-schema-changes-to-your-database]
-
-When you apply schema changes to your database using Prisma Migrate or `db push`, Prisma ORM will use both the Prisma ORM scalar type of each field and any native attribute it has to determine the correct database type for the corresponding column in the database.
-
-As an example, create a Prisma schema with the following `Post` model:
-
-```prisma title="schema.prisma" showLineNumbers
-model Post {
-  id        Int      @id
-  title     String
-  createdAt DateTime
-  updatedAt DateTime @db.Date
-}
-```
-
-This `Post` model has:
-
-* an `id` field with a Prisma ORM type of `Int`
-* a `title` field with a Prisma ORM type of `String`
-* a `createdAt` field with a Prisma ORM type of `DateTime`
-* an `updatedAt` field with a Prisma ORM type of `DateTime` and a `@db.Date` native type attribute
-
-Now apply these changes to an empty PostgreSQL database with the following command, run from the root directory of your project:
-
-  
-
-#### bun
-
-```bash
-bunx prisma db push
-```
-
-#### pnpm
-
-```bash
-pnpm prisma db push
-```
-
-#### yarn
-
-```bash
-yarn prisma db push
-```
-
-#### npm
-
-```bash
-npx prisma db push
-```
-
-You will see that the database has a newly created `Post` table, with:
-
-* an `id` column with a database type of `integer`
-* a `title` column with a database type of `text`
-* a `createdAt` column with a database type of `timestamp(3)`
-* an `updatedAt` column with a database type of `date`
-
-Notice that the `@db.Date` native type attribute modifies the database type of the `updatedAt` column to `date`, rather than the default of `timestamp(3)`.
-
-## More on using Prisma ORM's type system [#more-on-using-prisma-orms-type-system]
-
-For further reference information on using Prisma ORM's type system, see the following resources:
-
-* The [database connector](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases) page for each database provider has a type mapping section with a table of default type mappings between Prisma ORM types and database types, and a table of database types with their corresponding native type attribute in Prisma ORM. For example, the type mapping section for PostgreSQL is in [Prisma to PostgreSQL](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/postgresql#prisma-to-postgresql).
-* The [model field scalar types](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#model-field-scalar-types) section of the Prisma schema reference has a subsection for each Prisma ORM scalar type. This includes a table of default mappings for that Prisma ORM type in each database, and a table for each database listing the corresponding database types and their native type attributes in Prisma ORM. For example, the entry for the `String` Prisma ORM type is in [`String`](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#string).
-
-## Related pages
-
-- [`Operating against partial structures of your model types`](https://www.prisma.io/docs/orm/v7/prisma-client/type-safety/operating-against-partial-structures-of-model-types): This page documents various scenarios for using the generated types from the Prisma namespace
-
 # Write your own SQL (Prisma ORM v7) (/docs/orm/v7/prisma-client/using-raw-sql)
 
 > For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
@@ -142501,6 +141907,618 @@ This feature was heavily inspired by [PgTyped](https://github.com/adelsz/pgtyped
 
 - [`Raw queries`](https://www.prisma.io/docs/orm/v7/prisma-client/using-raw-sql/raw-queries): Learn how you can send raw SQL and MongoDB queries to your database using the raw() methods from the Prisma Client API
 - [`SafeQL & Prisma Client`](https://www.prisma.io/docs/orm/v7/prisma-client/using-raw-sql/safeql): Learn how to use SafeQL and Prisma Client extensions to work around features not natively supported by Prisma, such as PostGIS
+
+# Type safety Overview (Prisma ORM v7) (/docs/orm/v7/prisma-client/type-safety)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+Prisma Client provides full type safety for queries, even for partial queries or included relations. This page explains how to leverage the generated types and utilities
+
+Location: ORM > v7 > Prisma Client > Type safety Overview
+
+The generated code for Prisma Client contains several helpful types and utilities that you can use to make your application more type-safe. This page describes patterns for leveraging them.
+
+> **Note**: For advanced type safety topics with Prisma ORM, see this [blog post](https://www.prisma.io/blog/satisfies-operator-ur8ys8ccq7zb) about improving your Prisma Client workflows with the new TypeScript `satisfies` keyword.
+
+## Importing generated types [#importing-generated-types]
+
+You can import the `Prisma` namespace and use dot notation to access types and utilities. The following example shows how to import the `Prisma` namespace and use it to access and use the `Prisma.UserSelect` [generated type](#what-are-generated-types):
+
+```ts
+import { Prisma } from "../path/to/generated/prisma/client";
+
+// Build 'select' object
+const userEmail: Prisma.UserSelect = {
+  email: true,
+};
+
+// Use select object
+const createUser = await prisma.user.create({
+  data: {
+    email: "bob@prisma.io",
+  },
+  select: userEmail,
+});
+```
+
+See also: [Using the `Prisma.UserCreateInput` generated type](https://www.prisma.io/docs/orm/v7/prisma-client/queries/crud#create-a-single-record)
+
+## What are generated types? [#what-are-generated-types]
+
+Generated types are TypeScript types that are derived from your models. You can use them to create typed objects that you pass into top-level methods like `prisma.user.create(...)` or `prisma.user.update(...)`, or options such as `select` or `include`.
+
+For example, `select` accepts an object of type `UserSelect`. Its object properties match those that are supported by `select` statements according to the model.
+
+The first tab below shows the `UserSelect` generated type and how each property on the object has a type annotation. The second tab shows the original schema from which the type was generated.
+
+  
+
+#### Generated type
+
+```ts
+type Prisma.UserSelect = {
+    id?: boolean | undefined;
+    email?: boolean | undefined;
+    name?: boolean | undefined;
+    posts?: boolean | Prisma.PostFindManyArgs | undefined;
+    profile?: boolean | Prisma.ProfileArgs | undefined;
+}
+```
+
+#### Model
+
+```prisma
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  posts   Post[]
+  profile Profile?
+}
+```
+
+In TypeScript the concept of [type annotations](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-annotations-on-variables) is when you declare a variable and add a type annotation to describe the type of the variable. See the below example.
+
+```ts
+const myAge: number = 37;
+const myName: string = "Rich";
+```
+
+Both of these variable declarations have been given a type annotation to specify what primitive type they are, `number` and `string` respectively. Most of the time this kind of annotation is not needed as TypeScript will infer the type of the variable based on how its initialized. In the above example `myAge` was initialized with a number so TypeScript guesses that it should be typed as a number.
+
+Going back to the `UserSelect` type, if you were to use dot notation on the created object `userEmail`, you would have access to all of the fields on the `User` model that can be interacted with using a `select` statement.
+
+```prisma
+model User {
+  id      Int      @id @default(autoincrement())
+  email   String   @unique
+  name    String?
+  posts   Post[]
+  profile Profile?
+}
+```
+
+```ts
+import { Prisma } from "../path/to/generated/prisma/client";
+
+const userEmail: Prisma.UserSelect = {
+  email: true,
+};
+
+// properties available on the typed object
+userEmail.id;
+userEmail.email;
+userEmail.name;
+userEmail.posts;
+userEmail.profile;
+```
+
+In the same mould, you can type an object with an `include` generated type then your object would have access to those properties on which you can use an `include` statement.
+
+```ts
+import { Prisma } from "../path/to/generated/prisma/client";
+
+const userPosts: Prisma.UserInclude = {
+  posts: true,
+};
+
+// properties available on the typed object
+userPosts.posts;
+userPosts.profile;
+```
+
+> See the [model query options](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#model-query-options) reference for more information about the different types available.
+
+### Generated `UncheckedInput` types [#generated-uncheckedinput-types]
+
+The `UncheckedInput` types are a special set of generated types that allow you to perform some operations that Prisma Client considers "unsafe", like directly writing [relation scalar fields](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/relations). You can choose either the "safe" `Input` types or the "unsafe" `UncheckedInput` type when doing operations like `create`, `update`, or `upsert`.
+
+For example, this Prisma schema has a one-to-many relation between `User` and `Post`:
+
+```prisma
+model Post {
+  id       Int     @id @default(autoincrement())
+  title    String  @db.VarChar(255)
+  content  String?
+  author   User    @relation(fields: [authorId], references: [id])
+  authorId Int
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+```
+
+The first tab shows the `PostUncheckedCreateInput` generated type. It contains the `authorId` property, which is a relation scalar field. The second tab shows an example query that uses the `PostUncheckedCreateInput` type. This query will result in an error if a user with an `id` of `1` does not exist.
+
+  
+
+#### Generated type
+
+```ts
+type PostUncheckedCreateInput = {
+  id?: number;
+  title: string;
+  content?: string | null;
+  authorId: number;
+};
+```
+
+#### Example query
+
+```ts
+prisma.post.create({
+  data: {
+    title: "First post",
+    content: "Welcome to the first post in my blog...",
+    authorId: 1,
+  },
+});
+```
+
+The same query can be rewritten using the "safer" `PostCreateInput` type. This type does not contain the `authorId` field but instead contains the `author` relation field.
+
+  
+
+#### Generated type
+
+```ts
+type PostCreateInput = {
+  title: string;
+  content?: string | null;
+  author: UserCreateNestedOneWithoutPostsInput;
+};
+
+type UserCreateNestedOneWithoutPostsInput = {
+  create?: XOR<UserCreateWithoutPostsInput, UserUncheckedCreateWithoutPostsInput>;
+  connectOrCreate?: UserCreateOrConnectWithoutPostsInput;
+  connect?: UserWhereUniqueInput;
+};
+```
+
+#### Example query
+
+```ts
+prisma.post.create({
+  data: {
+    title: "First post",
+    content: "Welcome to the first post in my blog...",
+    author: {
+      connect: {
+        id: 1,
+      },
+    },
+  },
+});
+```
+
+This query will also result in an error if an author with an `id` of `1` does not exist. In this case, Prisma Client will give a more descriptive error message. You can also use the [`connectOrCreate`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#connectorcreate) API to safely create a new user if one does not already exist with the given `id`.
+
+We recommend using the "safe" `Input` types whenever possible.
+
+## Type utilities [#type-utilities]
+
+To help you create highly type-safe applications, Prisma Client provides a set of type utilities that tap into input and output types. These types are fully dynamic, which means that they adapt to any given model and schema. You can use them to improve autocompletion in your projects.
+
+This is especially useful in [shared Prisma Client extensions](https://www.prisma.io/docs/orm/v7/prisma-client/client-extensions/shared-extensions).
+
+The following type utilities are available in Prisma Client:
+
+* `Exact<Input, Shape>`: Enforces strict type safety on `Input`. `Exact` makes sure that a generic type `Input` strictly complies with the type that you specify in `Shape`. It [narrows](https://www.typescriptlang.org/docs/handbook/2/narrowing.html) `Input` down to the most precise types.
+* `Args<Type, Operation>`: Retrieves the input arguments for any given model and operation. This is particularly useful for extension authors who want to do the following:
+  * Re-use existing types to extend or modify them.
+  * Benefit from the same auto-completion experience as on existing operations.
+* `Result<Type, Arguments, Operation>`: Takes the input arguments and provides the result for a given model and operation. You would usually use this in conjunction with `Args`. As with `Args`, `Result` helps you to re-use existing types to extend or modify them.
+* `Payload<Type, Operation>`: Retrieves the entire structure of the result, as scalars and relations objects for a given model and operation. For example, you can use this to determine which keys are scalars or objects at a type level.
+
+As an example, here's a quick way you can enforce that the arguments to a function matches what you will pass to a `post.create`:
+
+```ts
+type PostCreateBody = Prisma.Args<typeof prisma.post, "create">["data"];
+
+const addPost = async (postBody: PostCreateBody) => {
+  const post = await prisma.post.create({ data: postBody });
+  return post;
+};
+
+await addPost(myData);
+//              ^ guaranteed to match the input of `post.create`
+```
+
+## Related pages
+
+- [`Fields & types`](https://www.prisma.io/docs/orm/v7/prisma-client/special-fields-and-types): Learn how to use about special fields and types with Prisma Client
+- [`What are Client Extensions`](https://www.prisma.io/docs/orm/v7/prisma-client/client-extensions): Extend the functionality of Prisma Client
+- [`Write your own SQL`](https://www.prisma.io/docs/orm/v7/prisma-client/using-raw-sql): Learn how to use raw SQL queries in Prisma Client
+
+# Operating against partial structures of your model types (Prisma ORM v7) (/docs/orm/v7/prisma-client/type-safety/operating-against-partial-structures-of-model-types)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+This page documents various scenarios for using the generated types from the Prisma namespace
+
+Location: ORM > v7 > Prisma Client > Type Safety > Operating against partial structures of your model types
+
+When using Prisma Client, every model from your [Prisma schema](https://www.prisma.io/docs/orm/v7/prisma-schema/overview) is translated into a dedicated TypeScript type. For example, assume you have the following `User` and `Post` models:
+
+```prisma
+model User {
+  id    Int     @id
+  email String  @unique
+  name  String?
+  posts Post[]
+}
+
+model Post {
+  id        Int     @id
+  author    User    @relation(fields: [userId], references: [id])
+  title     String
+  published Boolean @default(false)
+  userId    Int
+}
+```
+
+The Prisma Client code that's generated from this schema contains this representation of the `User` type:
+
+```ts
+export type User = {
+  id: string;
+  email: string;
+  name: string | null;
+};
+```
+
+## Problem: Using variations of the generated model type [#problem-using-variations-of-the-generated-model-type]
+
+### Description [#description]
+
+In some scenarios, you may need a *variation* of the generated `User` type. For example, when you have a function that expects an instance of the `User` model that carries the `posts` relation. Or when you need a type to pass only the `User` model's `email` and `name` fields around in your application code.
+
+### Solution [#solution]
+
+As a solution, you can customize the generated model type using Prisma Client's helper types.
+
+The `User` type only contains the model's [scalar](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#scalar-fields) fields, but doesn't account for any relations. That's because [relations are not included by default](https://www.prisma.io/docs/orm/v7/prisma-client/queries/select-fields#return-the-default-fields) in Prisma Client queries.
+
+However, sometimes it's useful to have a type available that **includes a relation** (i.e. a type that you'd get from an API call that uses [`include`](https://www.prisma.io/docs/orm/v7/prisma-client/queries/select-fields#return-nested-objects-by-selecting-relation-fields)). Similarly, another useful scenario could be to have a type available that **includes only a subset of the model's scalar fields** (i.e. a type that you'd get from an API call that uses [`select`](https://www.prisma.io/docs/orm/v7/prisma-client/queries/select-fields#select-specific-fields)).
+
+One way of achieving this would be to define these types manually in your application code:
+
+```ts
+// 1: Define a type that includes the relation to `Post`
+type UserWithPosts = {
+  id: string;
+  email: string;
+  name: string | null;
+  posts: Post[];
+};
+
+// 2: Define a type that only contains a subset of the scalar fields
+type UserPersonalData = {
+  email: string;
+  name: string | null;
+};
+```
+
+While this is certainly feasible, this approach increases the maintenance burden upon changes to the Prisma schema as you need to manually maintain the types. A cleaner solution to this is to use the `UserGetPayload` type that is generated and exposed by Prisma Client under the `Prisma` namespace in combination with TypeScript's `satisfies` operator.
+
+The following example uses the `satisfies` operator to create two type-safe objects and then uses the `Prisma.UserGetPayload` utility function to create a type that can be used to return all users and their posts.
+
+```ts
+import { Prisma } from "@prisma/client";
+
+// 1: Define a type that includes the relation to `Post`
+const userWithPosts = { include: { posts: true } } satisfies Prisma.UserDefaultArgs;
+
+// 2: Define a type that only contains a subset of the scalar fields
+const userPersonalData = { select: { email: true, name: true } } satisfies Prisma.UserDefaultArgs;
+
+// 3: This type will include a user and all their posts
+type UserWithPosts = Prisma.UserGetPayload<typeof userWithPosts>;
+```
+
+The main benefits of the latter approach are:
+
+* Cleaner approach as it leverages Prisma Client's generated types
+* Reduced maintenance burden and improved type safety when the schema changes
+
+## Problem: Getting access to the return type of a function [#problem-getting-access-to-the-return-type-of-a-function]
+
+### Description [#description-1]
+
+When doing [`select`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#select) or [`include`](https://www.prisma.io/docs/orm/v7/reference/prisma-client-reference#include) operations on your models and returning these variants from a function, it can be difficult to gain access to the return type, e.g:
+
+```ts
+// Function definition that returns a partial structure
+async function getUsersWithPosts() {
+  const users = await prisma.user.findMany({ include: { posts: true } });
+  return users;
+}
+```
+
+Extracting the type that represents "users with posts" from the above code snippet requires some advanced TypeScript usage:
+
+```ts
+// Function definition that returns a partial structure
+async function getUsersWithPosts() {
+  const users = await prisma.user.findMany({ include: { posts: true } });
+  return users;
+}
+
+// Extract `UsersWithPosts` type with
+type ThenArg<T> = T extends PromiseLike<infer U> ? U : T;
+type UsersWithPosts = ThenArg<ReturnType<typeof getUsersWithPosts>>;
+
+// run inside `async` function
+const usersWithPosts: UsersWithPosts = await getUsersWithPosts();
+```
+
+### Solution [#solution-1]
+
+Use the native TypeScript utility types [`Awaited`](https://www.typescriptlang.org/docs/handbook/utility-types.html#awaitedtype) and [`ReturnType`](https://www.typescriptlang.org/docs/handbook/utility-types.html#returntypetype) to extract the type:
+
+```ts
+type UsersWithPosts = Awaited<ReturnType<typeof getUsersWithPosts>>;
+```
+
+## Related pages
+
+- [`How to use Prisma ORM's type system`](https://www.prisma.io/docs/orm/v7/prisma-client/type-safety/prisma-type-system): How to use Prisma ORM's type system
+
+# How to use Prisma ORM's type system (Prisma ORM v7) (/docs/orm/v7/prisma-client/type-safety/prisma-type-system)
+
+> For the complete Prisma documentation index, see [llms.txt](https://www.prisma.io/docs/llms.txt). A markdown version of any docs page is available by appending `.md` to its URL.
+
+How to use Prisma ORM's type system
+
+Location: ORM > v7 > Prisma Client > Type Safety > How to use Prisma ORM's type system
+
+This guide introduces Prisma ORM's type system and explains how to introspect existing native types in your database, and how to use types when you apply schema changes to your database with Prisma Migrate or `db push`.
+
+## How does Prisma ORM's type system work? [#how-does-prisma-orms-type-system-work]
+
+Prisma ORM uses *types* to define the kind of data that a field can hold. Prisma ORM provides a small number of core [scalar types](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#model-field-scalar-types) that cover most default use cases. For example, take the following blog post model:
+
+```prisma title="schema.prisma" showLineNumbers
+datasource db {
+  provider = "postgresql"
+}
+
+model Post {
+  id        Int      @id
+  title     String
+  createdAt DateTime
+}
+```
+
+The `title` field of the `Post` model uses the `String` scalar type, while the `createdAt` field uses the `DateTime` scalar type.
+
+Databases also have their own type system, which defines the type of value that a column can hold. Most databases provide a large number of data types to allow fine-grained control over exactly what a column can store. For example, a database might provide inbuilt support for multiple sizes of integers, or for XML data. The names of these types vary between databases. For example, in PostgreSQL the column type for booleans is `boolean`, whereas in MySQL the `tinyint(1)` type is typically used.
+
+In the blog post example above, we are using the PostgreSQL connector. This is specified in the `datasource` block of the Prisma schema.
+
+### Default type mappings [#default-type-mappings]
+
+To allow you to get started with our core scalar types, Prisma ORM provides *default type mappings* that map each scalar type to a default type in the underlying database. For example:
+
+* by default Prisma ORM's `String` type gets mapped to PostgreSQL's `text` type and MySQL's `varchar` type
+* by default Prisma ORM's `DateTime` type gets mapped to PostgreSQL's `timestamp(3)` type and SQL Server's `datetime2` type
+
+See Prisma ORM's [database connector pages](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases) for the default type mappings for a given database. For example, [this table](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/postgresql#prisma-to-postgresql) gives the default type mappings for PostgreSQL.\
+To see the default type mappings for all databases for a specific given Prisma ORM type, see the [model field scalar types section](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#model-field-scalar-types) of the Prisma schema reference. For example, [this table](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#float) gives the default type mappings for the `Float` scalar type.
+
+### Native type mappings [#native-type-mappings]
+
+Sometimes you may need to use a more specific database type that is not one of the default type mappings for your Prisma ORM type. For this purpose, Prisma ORM provides [native type attributes](https://www.prisma.io/docs/orm/v7/prisma-schema/data-model/models#native-types-mapping) to refine the core scalar types. For example, in the `createdAt` field of your `Post` model above you may want to use a date-only column in your underlying PostgreSQL database, by using the `date` type instead of the default type mapping of `timestamp(3)`. To do this, add a `@db.Date` native type attribute to the `createdAt` field:
+
+```prisma title="schema.prisma" showLineNumbers
+model Post {
+  id        Int      @id
+  title     String
+  createdAt DateTime @db.Date
+}
+```
+
+Native type mappings allow you to express all the types in your database. However, you do not need to use them if the Prisma ORM defaults satisfy your needs. This leads to a shorter, more readable Prisma schema for common use cases.
+
+## How to introspect database types [#how-to-introspect-database-types]
+
+When you [introspect](https://www.prisma.io/docs/orm/v7/prisma-schema/introspection) an existing database, Prisma ORM will take the database type of each table column and represent it in your Prisma schema using the correct Prisma ORM type for the corresponding model field. If the database type is not the default database type for that Prisma ORM scalar type, Prisma ORM will also add a native type attribute.
+
+As an example, take a `User` table in a PostgreSQL database, with:
+
+* an `id` column with a data type of `serial`
+* a `name` column with a data type of `text`
+* an `isActive` column with a data type of `boolean`
+
+You can create this with the following SQL command:
+
+```sql
+CREATE TABLE "public"."User" (
+  id serial PRIMARY KEY NOT NULL,
+  name text NOT NULL,
+  "isActive" boolean NOT NULL
+);
+```
+
+Introspect your database with the following command run from the root directory of your project:
+
+  
+
+#### bun
+
+```bash
+bunx prisma db pull
+```
+
+#### pnpm
+
+```bash
+pnpm prisma db pull
+```
+
+#### yarn
+
+```bash
+yarn prisma db pull
+```
+
+#### npm
+
+```bash
+npx prisma db pull
+```
+
+You will get the following Prisma schema:
+
+```prisma title="schema.prisma" showLineNumbers
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  isActive Boolean
+}
+```
+
+The `id`, `name` and `isActive` columns in the database are mapped respectively to the `Int`, `String` and `Boolean` Prisma ORM types. The database types are the *default* database types for these Prisma ORM types, so Prisma ORM does not add any native type attributes.
+
+Now add a `createdAt` column to your database with a data type of `date` by running the following SQL command:
+
+```sql
+ALTER TABLE "public"."User"
+ADD COLUMN "createdAt" date NOT NULL;
+```
+
+Introspect your database again:
+
+  
+
+#### bun
+
+```bash
+bunx prisma db pull
+```
+
+#### pnpm
+
+```bash
+pnpm prisma db pull
+```
+
+#### yarn
+
+```bash
+yarn prisma db pull
+```
+
+#### npm
+
+```bash
+npx prisma db pull
+```
+
+Your Prisma schema now includes the new `createdAt` field with a Prisma ORM type of `DateTime`. The `createdAt` field also has a `@db.Date` native type attribute, because PostgreSQL's `date` is not the default type for the `DateTime` type:
+
+```prisma title="schema.prisma" highlight=5;add showLineNumbers
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  isActive  Boolean
+  createdAt DateTime @db.Date // [!code ++]
+}
+```
+
+## How to use types when you apply schema changes to your database [#how-to-use-types-when-you-apply-schema-changes-to-your-database]
+
+When you apply schema changes to your database using Prisma Migrate or `db push`, Prisma ORM will use both the Prisma ORM scalar type of each field and any native attribute it has to determine the correct database type for the corresponding column in the database.
+
+As an example, create a Prisma schema with the following `Post` model:
+
+```prisma title="schema.prisma" showLineNumbers
+model Post {
+  id        Int      @id
+  title     String
+  createdAt DateTime
+  updatedAt DateTime @db.Date
+}
+```
+
+This `Post` model has:
+
+* an `id` field with a Prisma ORM type of `Int`
+* a `title` field with a Prisma ORM type of `String`
+* a `createdAt` field with a Prisma ORM type of `DateTime`
+* an `updatedAt` field with a Prisma ORM type of `DateTime` and a `@db.Date` native type attribute
+
+Now apply these changes to an empty PostgreSQL database with the following command, run from the root directory of your project:
+
+  
+
+#### bun
+
+```bash
+bunx prisma db push
+```
+
+#### pnpm
+
+```bash
+pnpm prisma db push
+```
+
+#### yarn
+
+```bash
+yarn prisma db push
+```
+
+#### npm
+
+```bash
+npx prisma db push
+```
+
+You will see that the database has a newly created `Post` table, with:
+
+* an `id` column with a database type of `integer`
+* a `title` column with a database type of `text`
+* a `createdAt` column with a database type of `timestamp(3)`
+* an `updatedAt` column with a database type of `date`
+
+Notice that the `@db.Date` native type attribute modifies the database type of the `updatedAt` column to `date`, rather than the default of `timestamp(3)`.
+
+## More on using Prisma ORM's type system [#more-on-using-prisma-orms-type-system]
+
+For further reference information on using Prisma ORM's type system, see the following resources:
+
+* The [database connector](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases) page for each database provider has a type mapping section with a table of default type mappings between Prisma ORM types and database types, and a table of database types with their corresponding native type attribute in Prisma ORM. For example, the type mapping section for PostgreSQL is in [Prisma to PostgreSQL](https://www.prisma.io/docs/orm/v7/core-concepts/supported-databases/postgresql#prisma-to-postgresql).
+* The [model field scalar types](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#model-field-scalar-types) section of the Prisma schema reference has a subsection for each Prisma ORM scalar type. This includes a table of default mappings for that Prisma ORM type in each database, and a table for each database listing the corresponding database types and their native type attributes in Prisma ORM. For example, the entry for the `String` Prisma ORM type is in [`String`](https://www.prisma.io/docs/orm/v7/reference/prisma-schema-reference#string).
+
+## Related pages
+
+- [`Operating against partial structures of your model types`](https://www.prisma.io/docs/orm/v7/prisma-client/type-safety/operating-against-partial-structures-of-model-types): This page documents various scenarios for using the generated types from the Prisma namespace
 
 # Limitations and known issues (Prisma ORM v7) (/docs/orm/v7/prisma-migrate/understanding-prisma-migrate/limitations-and-known-issues)
 

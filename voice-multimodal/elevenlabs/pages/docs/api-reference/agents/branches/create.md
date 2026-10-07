@@ -106,6 +106,7 @@ Validation Error
   - `uui` (UUITransferConfig, optional, nullable) — User-to-User Information (RFC 7433) to attach to SIP REFER transfers. Carries call context such as CRM identifiers or escalation reason across the transfer boundary.
 - `type`: `standalone_agent` (WorkflowStandaloneAgentNodeModel)
   - `agent_id` (string, optional, nullable) — The ID of the agent to transfer the conversation to. None means transfer within the current agent.
+  - `branch_id` (string, optional, nullable) — Optional branch ID for the target agent. None follows the target agent's traffic deployment, or uses its main branch when node_id is set.
   - `delay_ms` (integer, optional, default: 0) — Artificial delay in milliseconds applied before transferring the conversation.
   - `edge_order` (list of string, optional) — The ids of outgoing edges in the order they should be evaluated.
   - `enable_transferred_agent_first_message` (boolean, optional, default: false) — Whether to enable the transferred agent to send its configured first message after the transfer.
@@ -327,7 +328,7 @@ Message spoken by this node. Use `literal` for exact text or `prompt` to have th
 - `spelling_patience` (enum, optional, nullable, default: auto) — Controls if the agent should be more patient when user is spelling numbers and named entities. Auto = model based, Off = never wait extra
   - Allowed values: `auto`, `off`
 - `speculative_turn` (boolean, optional, nullable) — When enabled, starts generating LLM responses during silence before full turn confidence is reached, reducing perceived latency. May increase LLM costs.
-- `retranscribe_on_turn_timeout` (boolean, optional, nullable) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing for affected turns.
+- `retranscribe_on_turn_timeout` (boolean, optional, nullable) — When enabled, if VAD detects no speech, attempts to re-transcribe accumulated audio at turn timeout. Disables silence discount billing while enabled for the active agent or workflow node.
 - `turn_model` (enum, optional, nullable, default: turn_v3) — Version of the turn detection model to use.
   - Allowed values: `turn_v2`, `turn_v3`
 - `interruption_ignore_terms` (list of string, optional, nullable) — List of terms that should not trigger an interruption when spoken by the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact matching.
@@ -892,6 +893,7 @@ Wrapper for anyOf/allOf composition constraints scoped to required fields.
 
 - `condition` (string, required)
 - `agent_id` (string, optional, nullable)
+- `branch_id` (string, optional, nullable)
 - `node_id` (string, optional, nullable)
 - `delay_ms` (integer, optional, default: 0)
 - `transfer_message` (string, optional, nullable)

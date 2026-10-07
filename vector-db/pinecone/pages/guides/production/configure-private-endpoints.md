@@ -1,70 +1,50 @@
 ---
-title: "Configure Private Endpoints"
+title: "Configure private endpoints"
 source: https://docs.pinecone.io/guides/production/configure-private-endpoints
 path: guides/production/configure-private-endpoints
 ---
 
-Configure Pinecone Private Endpoints with AWS PrivateLink or Azure Private Link to keep index traffic off the public internet and secure VPCs.
+Configure Pinecone private endpoints with AWS PrivateLink or Azure Private Link to keep index traffic off the public internet.
 
-This page describes how to create and use [Private Endpoints](/guides/production/security-overview#private-endpoints) to connect to Pinecone through AWS PrivateLink or Azure Private Link, keeping your traffic private from the public internet.
+[Private endpoints](/guides/production/security-overview#private-endpoints) let your applications reach Pinecone indexes through AWS PrivateLink or Azure Private Link, so traffic between your network and Pinecone stays off the public internet.
 
-## Use Private Endpoints with Pinecone
+* Private endpoints carry [data plane](/guides/core-concepts/architecture#data-plane) traffic only. [Control plane](/guides/core-concepts/architecture#control-plane) requests, such as creating or describing an index, still go over the public internet.
+* Each private endpoint belongs to one project and connects only to that project's indexes in one region. You can add up to 10 private endpoints per project.
 
-### Before you begin
+## Before you begin
 
-The following steps assume you have:
+Make sure you have the following:
+
+* A [Pinecone Enterprise plan](https://www.pinecone.io/pricing/)
+* The owner role in the Pinecone project you want to connect to
+* A [serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in one of the regions listed in [step 1](#1-create-a-private-endpoint-in-your-cloud-provider)
 
 <Tabs>
   <Tab title="AWS">
-    * Access to the [AWS console](https://console.aws.amazon.com/console/home).
-    * [Created an Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the same AWS [region](/guides/index-data/create-an-index#cloud-regions) as the index you want to connect to. You can optionally enable DNS hostnames and resolution, if you want your VPC to automatically discover the DNS CNAME for your PrivateLink and don't want to configure a CNAME.
-
-      * To [configure the routing](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-vpc-interface-endpoint.html) yourself, use one of Pinecone's DNS entry for the corresponding region:
-
-      | Index region | Pinecone DNS entry |
-      | - | - |
-      | `us-east-1` (N. Virginia) | `*.private.aped-4627-b74a.pinecone.io` |
-      | `us-west-2` (Oregon) | `*.private.apw5-4e34-81fa.pinecone.io` |
-      | `eu-west-1` (Ireland) | `*.private.apu-57e2-42f6.pinecone.io` |
-      | `eu-central-1` (Frankfurt) | `*.private.apec-a2ee-38c6.pinecone.io` |
-      | `ap-southeast-1` (Singapore) | `*.private.aps-d9bb-582b.pinecone.io` |
+    - Access to the [AWS console](https://console.aws.amazon.com/console/home)
+    - An [Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the same region as your index
   </Tab>
 
   <Tab title="Azure">
-    * Access to the [Azure portal](https://portal.azure.com).
-    * [Created an Azure VNet](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal) in the same [region](/guides/index-data/create-an-index#cloud-regions) as the index you want to connect to.
-    * A subnet with **Private endpoint network policies** set to **Disabled**. This is required for Azure Private Endpoints.
-
-      * DNS resolution for private endpoints requires a manual setup step after creating the endpoint (unlike AWS, where DNS can be auto-configured). See the [DNS setup note below](#1-create-a-private-endpoint-in-your-cloud-provider).
-
-      | Index region | Pinecone DNS entry |
-      | - | - |
-      | `eastus2` (Virginia) | `*.private.eastus2-5e25.prod-azure.pinecone.io` |
+    * Access to the [Azure portal](https://portal.azure.com)
+    * An [Azure VNet](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal) in the same region as your index, with a subnet whose **Private endpoint network policies** setting is **Disabled**
   </Tab>
 </Tabs>
 
-* A [Pinecone Enterprise plan](https://www.pinecone.io/pricing/).
-* [Created a serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in the same [region](/guides/index-data/create-an-index#cloud-regions) as your VPC or VNet.
-
-<Note>
-  Private Endpoints are configured at the project-level and you can add up to 10 endpoints per project. If you have multiple projects in your organization, Private Endpoints need to be set up separately for each.
-</Note>
+## Set up a private endpoint
 
 ### 1. Create a private endpoint in your cloud provider
 
+Create an endpoint in your VPC or VNet that connects to Pinecone's service in your index's region:
+
 <Tabs>
   <Tab title="AWS">
-    In the [AWS console](https://console.aws.amazon.com/console/home):
+    1. In the [Amazon VPC console](https://console.aws.amazon.com/vpc/), go to **Endpoints** and click **Create endpoint**.
 
-    1. Open the [Amazon VPC console](https://console.aws.amazon.com/vpc/).
+    2. For **Type**, select **Endpoint services that use NLBs and GWLBs**.
 
-    2. In the navigation pane, click **Endpoint**.
+    3. For **Service name**, enter the service name for your index's region, and then click **Verify service**:
 
-    3. Click **Create endpoint**.
-
-    4. For **Service category**, select **Other endpoint services**.
-
-    5. In **Service settings**, enter the **Service name**, based on the region your Pinecone index is in:
        | Index region | Service name |
        | - | - |
        | `us-east-1` (N. Virginia) | `com.amazonaws.vpce.us-east-1.vpce-svc-05ef6f1f0b9130b54` |
@@ -73,95 +53,125 @@ The following steps assume you have:
        | `eu-central-1` (Frankfurt) | `com.amazonaws.vpce.eu-central-1.vpce-svc-037997ff6b3d25e34` |
        | `ap-southeast-1` (Singapore) | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-0c12f00812e786068` |
 
-    6. Click **Verify service**.
+    4. For **VPC**, select the VPC your clients connect from.
 
-    7. Select the **VPC** to host the endpoint.
+    5. (Optional) In **Additional settings**, select **Enable DNS name**. This lets clients in the VPC resolve Pinecone's private DNS names without extra setup. It requires [DNS hostnames and DNS resolution](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-updating) to be enabled on the VPC. If you leave it off, or clients outside the VPC need to connect, you'll set up DNS yourself in [step 3](#3-configure-dns).
 
-    8. (Optional) In **Additional settings**, **Enable DNS name**.
-       The enables you to access our service with the DNS name we configure. An additional CNAME record is needed if you disable this option.
+    6. Select the **Subnets** for the endpoint, and select **Security groups** that allow inbound HTTPS (port 443) from your clients.
 
-    9. Select the **Subnets** and **Subnet ID** for the endpoint.
+    7. Click **Create endpoint**.
 
-    10. Select the **Security groups** to apply to the endpoint.
-
-    11. Click **Create endpoint**.
-
-    12. Copy the **VPC endpoint ID** (e.g., `vpce-XXXXXXX`).
-        This will be used to [add a Private Endpoint in Pinecone](#2-add-a-private-endpoint-in-pinecone).
+    8. Copy the **VPC endpoint ID** (e.g., `vpce-XXXXXXX`). You'll enter it in Pinecone in the next step.
   </Tab>
 
   <Tab title="Azure">
-    In the [Azure portal](https://portal.azure.com):
+    1. In the [Azure portal](https://portal.azure.com), search for **Private Link** and select **Private Link Center**. Then go to **Private endpoints** and click **Create**.
 
-    1. Search for **Private Link** and select **Private Link Center**.
+    2. Select your **Subscription** and **Resource group**, enter a **Name** for the private endpoint, and select the **Region** that matches your index. Then click **Next: Resource**.
 
-    2. In the navigation pane, click **Private endpoints**.
-
-    3. Click **Create**.
-
-    4. Select your **Subscription** and **Resource group**.
-
-    5. Enter a **Name** for the private endpoint and select the **Region** matching your Pinecone index.
-
-    6. Click **Next: Resource**.
-
-    7. For **Connection method**, select **Connect to an Azure resource by resource ID or alias**.
-
-    8. Enter the **Resource ID or alias** for Pinecone's Private Link Service, based on the region your Pinecone index is in:
+    3. For **Connection method**, select **Connect to an Azure resource by resource ID or alias**, and enter the **Resource ID or alias** for your index's region:
 
        | Index region | Private Link Service alias |
        | - | - |
        | `eastus2` (Virginia) | `pinecone.bdbc7759-0243-46c1-af51-794c4602745b.eastus2.azure.privatelinkservice` |
 
-    9. Click **Next: Virtual Network**.
+    4. Click **Next: Virtual Network**, and select the **Virtual network** and **Subnet** for the private endpoint.
 
-    10. Select the **Virtual network** and **Subnet** for the private endpoint.
+    5. Click **Next: DNS**, and skip this tab. You'll set up DNS in [step 3](#3-configure-dns).
 
-    11. Click **Next: DNS**. Skip the DNS integration tab (you will configure DNS manually after setup).
+    6. Click **Next: Tags**, then **Review + create**, and then **Create**.
 
-    12. Click **Next: Tags**.
+    7. After Azure creates the private endpoint, open it, go to **Properties**, and copy the **Resource ID** (e.g., `/subscriptions/<sub-uuid>/resourceGroups/<rg>/providers/Microsoft.Network/privateEndpoints/<name>`). You'll enter it in Pinecone in the next step.
+  </Tab>
+</Tabs>
 
-    13. Click **Review + create**, then **Create**.
+### 2. Add a private endpoint in Pinecone
 
-    14. Once the private endpoint is created, open it and copy the **Resource ID** from the **Properties** tab (or the **Overview** tab — it's the `/subscriptions/…/privateEndpoints/<name>` ARM ID).
-        This will be used to [add a Private Endpoint in Pinecone](#2-add-a-private-endpoint-in-pinecone).
+Add the endpoint to your Pinecone project so Pinecone accepts connections through it:
+
+1. In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), select your project and go to **Settings > Network**.
+2. On the **PRIVATE ENDPOINTS** tab, click **Add an endpoint**.
+3. Select your cloud provider and your index's region, and then click **Next**.
+4. Enter the ID you copied in [step 1](#1-create-a-private-endpoint-in-your-cloud-provider), and then click **Next**:
+   * **AWS**: The VPC endpoint ID.
+   * **Azure**: The private endpoint's resource ID.
+5. Leave **Restrict access to only private endpoints** off for now. Turning it on cuts off internet access to the project before your private endpoint works. You can [turn it on later](#restrict-access-to-private-endpoints).
+6. Click **Finish setup**.
+
+### 3. Configure DNS
+
+Clients reach an index through its [private endpoint URL](#4-connect-to-your-index), such as `docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io`. Public DNS doesn't resolve these names, so DNS on your network must resolve them to your private endpoint's IP address. Clients must connect by hostname rather than IP address, because Pinecone's TLS certificate is issued for the hostname, not the IP address.
+
+Each region has one private DNS zone. A single wildcard record (`*`) in that zone covers every index in the region:
+
+| Cloud | Index region | Private DNS zone |
+| - | - | - |
+| AWS | `us-east-1` (N. Virginia) | `private.aped-4627-b74a.pinecone.io` |
+| AWS | `us-west-2` (Oregon) | `private.apw5-4e34-81fa.pinecone.io` |
+| AWS | `eu-west-1` (Ireland) | `private.apu-57e2-42f6.pinecone.io` |
+| AWS | `eu-central-1` (Frankfurt) | `private.apec-a2ee-38c6.pinecone.io` |
+| AWS | `ap-southeast-1` (Singapore) | `private.aps-d9bb-582b.pinecone.io` |
+| Azure | `eastus2` (Virginia) | `private.eastus2-5e25.prod-azure.pinecone.io` |
+
+Clients also need a network route to the private endpoint's IP address on port 443. For clients outside the VPC or VNet, such as on-premises servers, that usually means a VPN, AWS Direct Connect, Azure ExpressRoute, or network peering.
+
+<Tabs>
+  <Tab title="AWS">
+    If you selected **Enable DNS name** when you created the VPC endpoint, clients in that VPC already resolve Pinecone's private DNS names. Set up DNS yourself if you turned that option off, or if clients outside the VPC need to connect:
+
+    * **Route 53 private hosted zone**: Create a [private hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zone-private-creating.html) named after your region's private DNS zone and associate it with your VPCs. Then add a wildcard record (`*`) that [routes traffic to the VPC endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-vpc-interface-endpoint.html).
+    * **Your own DNS server**: On your organization's DNS server, create a zone named after your region's private DNS zone. Add a wildcard CNAME record (`*`) that points to the VPC endpoint's regional DNS name, which has the form `vpce-XXXXXXX.vpce-svc-XXXXXXX.REGION.vpce.amazonaws.com`. AWS publishes that name in public DNS, and it resolves to the endpoint's private IP addresses. To get it, run `aws ec2 describe-vpc-endpoints --vpc-endpoint-ids VPC_ENDPOINT_ID --query 'VpcEndpoints[*].DnsEntries'`. The first entry is the regional DNS name.
+    * **Forward to Route 53**: If you selected **Enable DNS name**, you can keep AWS as the source of these records instead. Create a [Route 53 Resolver inbound endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-inbound-queries.html) in the VPC, and then add a conditional forwarder on your DNS server that sends queries for the private DNS zone to the inbound endpoint's IP addresses.
+  </Tab>
+
+  <Tab title="Azure">
+    Azure doesn't resolve Pinecone's private DNS names automatically, so you must set up DNS. First, find your private endpoint's IP address. In the Azure portal, open your private endpoint, and on its **Overview** page, select its network interface. The network interface's **Overview** page shows the **Private IP address** (e.g., `172.30.0.6`).
+
+    Then set up DNS in one of the following ways.
+
+    #### Use an Azure Private DNS zone
+
+    Use this option if your clients use Azure-provided DNS.
+
+    1. Create an [Azure Private DNS zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal) named `private.eastus2-5e25.prod-azure.pinecone.io`.
+    2. [Link the zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links) to the VNet where you created the private endpoint, and to any other VNets whose clients connect to Pinecone.
+    3. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
+
+    #### Use your own DNS server
+
+    Use this option if your organization runs its own DNS server.
+
+    1. On your DNS server, create a zone named `private.eastus2-5e25.prod-azure.pinecone.io`.
+    2. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
+    3. Make sure the clients that connect to Pinecone use this DNS server.
+
+    #### Forward to an Azure Private DNS zone
+
+    Use this option if your organization runs its own DNS but manages private endpoint records in Azure.
+
+    1. Set up an [Azure Private DNS zone](#use-an-azure-private-dns-zone) as described above.
+    2. Create an [Azure DNS Private Resolver](https://learn.microsoft.com/en-us/azure/dns/dns-private-resolver-overview) with an inbound endpoint in a VNet that's linked to the zone.
+    3. On your DNS server, add a conditional forwarder that sends queries for `private.eastus2-5e25.prod-azure.pinecone.io` to the inbound endpoint's IP address.
+
+    For more on these patterns, see [Azure Private Endpoint DNS integration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration).
 
     <Note>
-      After creating the private endpoint, configure DNS so that `*.private.{subdomain}.pinecone.io` resolves to your private endpoint's IP address:
-
-      1. Find your private endpoint's IP address: in the Azure portal, open your private endpoint, go to **Overview**, and note the **Private IP address** (e.g., `172.30.0.6`).
-      2. Create an [Azure Private DNS Zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal) named `private.{subdomain}.pinecone.io` (e.g., `private.eastus2-5e25.prod-azure.pinecone.io`). You can find the `{subdomain}` in your index's host URL — it's the portion after `svc.` and before `.pinecone.io`.
-      3. [Link the zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links) to the VNet where your private endpoint is created.
-      4. Add a **wildcard A record** (`*`) pointing to your private endpoint's IP address.
+      A private endpoint keeps its IP address for as long as it exists. If you point an A record at that address and later delete and re-create the endpoint, update the record with the new address.
     </Note>
   </Tab>
 </Tabs>
 
-### 2. Add a Private Endpoint in Pinecone
+To check your setup, look up your index's private endpoint URL from a client machine. Replace the example host with your index's **Private host** value from [step 4](#4-connect-to-your-index):
 
-To add a Private Endpoint using the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
+```bash Terminal theme={null}
+nslookup docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io
+```
 
-1. Select your project.
-2. Go to **Manage > Network**.
-3. Click **Add a connection**.
-4. Select your cloud provider and region.
-   Only indexes in the selected region in this project will be affected.
-5. Click **Next**.
-6. Enter the endpoint ID you copied in the [section above](#1-create-a-private-endpoint-in-your-cloud-provider):
-   * **AWS**: The VPC endpoint ID (e.g., `vpce-XXXXXXX`)
-   * **Azure**: The private endpoint's ARM Resource ID (e.g., `/subscriptions/<sub-uuid>/resourceGroups/<rg>/providers/Microsoft.Network/privateEndpoints/<name>`)
-7. Click **Next**.
-8. (optional) To **enable private endpoint access only**, turn the toggle on.
-   This can also be enabled later. For more information, see [Manage internet access to your project](#manage-internet-access-to-your-project).
-9. Click **Finish setup**.
+The response should return your private endpoint's IP address. If the lookup fails or returns a different address, the client isn't using the DNS server or zone you configured.
 
-<Note>
-  Private Endpoints only affect [data plane](/guides/core-concepts/architecture#data-plane) access. [Control plane](/guides/core-concepts/architecture#control-plane) access will continue over the public internet.
-</Note>
+### 4. Connect to your index
 
-## Read and write data
-
-Once your private endpoint is configured, you can run data operations against an index as usual, but you must target the index using its private endpoint URL. The only difference in the URL is that `.svc.` is changed to `.svc.private.`.
+To send data operations through your private endpoint, target the index by its private endpoint URL instead of its standard host. The only difference is that `.svc.` becomes `.svc.private.`.
 
 You can get the private endpoint URL for an index from the Pinecone console or API.
 
@@ -172,7 +182,7 @@ You can get the private endpoint URL for an index from the Pinecone console or A
     1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
     2. Select the project containing the index.
     3. Select the index.
-    4. Copy the URL under **PRIVATE ENDPOINT**.
+    4. Copy the **Private host** value.
   </Tab>
 
   <Tab title="API">
@@ -323,45 +333,30 @@ You can get the private endpoint URL for an index from the Pinecone console or A
 </Tabs>
 
 <Note>
-  If you run data operations against an index from outside the Private Endpoint, you will get an `Unauthorized` response.
+  If you [restrict access to private endpoints](/guides/production/configure-private-endpoints#restrict-access-to-private-endpoints), requests that don't come through a private endpoint get an `Unauthorized` response. Requests through a private endpoint that isn't registered to the index's project also get `Unauthorized`.
 </Note>
 
-## Manage internet access to your project
+## Restrict access to private endpoints
 
-Once your Private Endpoint is configured, you can turn off internet access to your project. To enable private endpoint access only:
+After your private endpoint works, you can turn off internet access to the project. Then only requests that come through a private endpoint can read or write the project's indexes.
 
-1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-2. Select your project.
-3. Go to **Network > Access**.
-4. Turn the **Private endpoint access only** toggle on.
-   This will turn off internet access to the project. This can be turned off at any point.
+<Warning>
+  This setting applies to the whole project. Any application that reaches an index in the project over the internet stops working.
+</Warning>
 
-   <Warning>
-     This access control is set at the *project-level* and can unintentionally affect Pinecone indexes that communicate via the internet in the same project. Only indexes communicating through Private Endpoints will continue to work.
-   </Warning>
+1. In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), select your project and go to **Settings > Network**.
+2. On the **ACCESS** tab, turn on **Restrict access to only private endpoints**.
+3. Click **Confirm and proceed**.
 
-## Manage Private Endpoints
+To turn internet access back on, turn the toggle off.
 
-In addition to [creating Private Endpoints](#2-add-a-private-endpoint-in-pinecone), you can also:
+## Manage private endpoints
 
-* [View Private Endpoints](#view-private-endpoints)
-* [Delete a Private Endpoint](#delete-a-private-endpoint)
+To view a project's private endpoints, open the [Pinecone console](https://app.pinecone.io/organizations/-/projects), select the project, and go to **Settings > Network**. The **PRIVATE ENDPOINTS** tab lists each endpoint's ID, cloud, and region.
 
-### View Private Endpoints
+To delete a private endpoint:
 
-To view Private Endpoints using the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
+1. On the **PRIVATE ENDPOINTS** tab, open the **Actions** menu for the endpoint and click **Delete**.
+2. Enter the endpoint ID to confirm, and then click **Delete Endpoint**.
 
-1. Select your project.
-2. Go to **Manage > Network**.
-   A list of Private Endpoints displays with the associated endpoint ID and cloud provider.
-
-### Delete a Private Endpoint
-
-To delete a Private Endpoint using the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
-
-1. Select your project.
-2. Go to **Manage > Network**.
-3. For the Private Endpoint you want to delete, click the *...* (Actions) icon.
-4. Click **Delete**.
-5. Enter the endpoint name.
-6. Click **Delete Endpoint**.
+Deleting a private endpoint in Pinecone doesn't delete the endpoint in your AWS or Azure account. Delete it there separately if you no longer need it.

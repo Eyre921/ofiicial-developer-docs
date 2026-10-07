@@ -491,9 +491,9 @@ curl -X POST https://api.stripe.com/v2/core/vault/us_bank_accounts/{{BANKACCOUNT
   }'
 ```
 
-#### OSI (50+ countries)
+#### Outbound Setup Intent
 
-Create a payout method globally with the [OutboundSetupIntents API](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents.md?api-version=preview). In this sample, the response shows required next steps to obtain payee confirmation and that the status requires action, because the country of the bank account requires it.
+Create a payout method for a bank account in any of more than 50 countries with the [OutboundSetupIntents API](https://docs.stripe.com/api/v2/money-management/outbound-setup-intents.md?api-version=preview). In this sample, the response shows required next steps to obtain payee confirmation and that the status requires action, because the country of the bank account requires it.
 
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \

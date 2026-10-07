@@ -257,30 +257,30 @@ For how write units are calculated, see [Understanding cost](/guides/manage-cost
 * [Tokenization](https://www.pinecone.io/learn/tokenization/)
 
 
-# Pinecone documentation
+# Pinecone Database
 Source: https://docs.pinecone.io/guides/get-started/overview
 
-Pinecone is the vector database for AI agents and applications, built for semantic search, knowledge retrieval, and long-term memory at scale.
+Pinecone Database is the retrieval foundation of Pinecone's trusted AI knowledge platform, bringing full-text and semantic search into one managed database.
 
-## Get started
-
-<CardGroup>
-  <Card title="Database quickstart" icon="database" href="/guides/get-started/quickstart">
-    Build semantic search and knowledge retrieval into your agent or app
-  </Card>
-
-  <Card title="Assistant quickstart" icon="comments" href="/guides/assistant/quickstart/sdk-quickstart">
-    Create an AI assistant that answers questions about your proprietary data
-  </Card>
-
-  <Card title="Nexus quickstart" icon="brain-circuit" href="/guides/nexus/quickstart">
-    Compile your data into a context and query it for grounded, cited answers
-  </Card>
-</CardGroup>
-
-## Build
+Pinecone Database powers retrieval for AI agents and applications, including search, recommendations, and long-term memory. Each index has a schema that declares the fields you need, such as full-text-search fields, dense vectors, and sparse vectors, so one index can serve whichever retrieval approach a query calls for.
 
 <CardGroup>
+  <Card title="Quickstart" icon="rocket" href="/guides/get-started/quickstart">
+    Pick a search path and run your first search in minutes
+  </Card>
+
+  <Card title="Key terms" icon="book" href="/guides/core-concepts/key-terms">
+    Organizations, projects, indexes, namespaces, documents, and records
+  </Card>
+
+  <Card title="Data modeling" icon="table" href="/guides/index-data/data-modeling">
+    Design the fields your index needs for the searches you'll run
+  </Card>
+
+  <Card title="Search overview" icon="magnifying-glass" href="/guides/search/search-overview">
+    Compare search types and choose the right approach for each query
+  </Card>
+
   <Card title="IDEs & CLIs" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
     Use Pinecone with Claude Code, Codex, Gemini CLI, Cursor, and other agentic tools
   </Card>
@@ -288,21 +288,56 @@ Pinecone is the vector database for AI agents and applications, built for semant
   <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">
     Connect any MCP-compatible agent to Pinecone for search and index management
   </Card>
+</CardGroup>
 
+## What you can do
+
+With Pinecone Database, you can:
+
+* Serve [full-text search](/guides/search/full-text-search), [semantic search](/guides/search/semantic-search), [sparse-vector search](/guides/search/lexical-search), and [hybrid search](/guides/search/hybrid-search) from one index. To choose an approach, see [Search overview](/guides/search/search-overview).
+* Upsert and query with text instead of vectors. With [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding), Pinecone generates the vectors from your text server-side.
+* Narrow results with [metadata filters](/guides/search/filter-by-metadata), then [rerank](/guides/search/rerank-results) them for relevance.
+* Keep each tenant's data separate within one index by using [namespaces](/guides/index-data/implement-multitenancy).
+* Scale reads for sustained, high query volumes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
+* Run in production by [backing up](/guides/manage-data/backups-overview) your indexes and deploying in your own cloud account with [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud).
+
+## Resources
+
+<CardGroup>
   <Card title="API reference" icon="code-simple" href="/reference">
-    Comprehensive details about the Pinecone APIs, SDKs, and architecture
+    Details about the Pinecone APIs, SDKs, and architecture
   </Card>
 
   <Card title="Examples" icon="grid-round" href="/examples">
     Notebooks and sample apps with common AI patterns
   </Card>
 
+  <Card title="Models" icon="cube" href="/models/overview">
+    Embedding and reranking models hosted by Pinecone
+  </Card>
+
   <Card title="Integrations" icon="link-simple" href="/integrations/overview">
     Third-party integrations for LangChain, LlamaIndex, and more
   </Card>
 
+  <Card title="Troubleshooting" icon="screwdriver-wrench" href="/troubleshooting/contact-support">
+    Common errors, account help, and how to contact support
+  </Card>
+
   <Card title="Changelog" icon="party-horn" href="/release-notes">
     What's new in Pinecone
+  </Card>
+</CardGroup>
+
+## Other Pinecone products
+
+<CardGroup>
+  <Card title="Pinecone Assistant" icon="comments" href="/guides/assistant/overview">
+    A managed service for RAG chat and agent applications grounded in your data
+  </Card>
+
+  <Card title="Pinecone Nexus" icon="brain-circuit" href="/guides/nexus/overview">
+    The knowledge engine for agents, serving grounded, cited answers in one call
   </Card>
 </CardGroup>
 
@@ -25240,70 +25275,50 @@ Before a key can be deleted from a project, all indexes in the project must be d
 * You can add only one key per project.
 
 
-# Configure Private Endpoints
+# Configure private endpoints
 Source: https://docs.pinecone.io/guides/production/configure-private-endpoints
 
-Configure Pinecone Private Endpoints with AWS PrivateLink or Azure Private Link to keep index traffic off the public internet and secure VPCs.
+Configure Pinecone private endpoints with AWS PrivateLink or Azure Private Link to keep index traffic off the public internet.
 
-This page describes how to create and use [Private Endpoints](/guides/production/security-overview#private-endpoints) to connect to Pinecone through AWS PrivateLink or Azure Private Link, keeping your traffic private from the public internet.
+[Private endpoints](/guides/production/security-overview#private-endpoints) let your applications reach Pinecone indexes through AWS PrivateLink or Azure Private Link, so traffic between your network and Pinecone stays off the public internet.
 
-## Use Private Endpoints with Pinecone
+* Private endpoints carry [data plane](/guides/core-concepts/architecture#data-plane) traffic only. [Control plane](/guides/core-concepts/architecture#control-plane) requests, such as creating or describing an index, still go over the public internet.
+* Each private endpoint belongs to one project and connects only to that project's indexes in one region. You can add up to 10 private endpoints per project.
 
-### Before you begin
+## Before you begin
 
-The following steps assume you have:
+Make sure you have the following:
+
+* A [Pinecone Enterprise plan](https://www.pinecone.io/pricing/)
+* The owner role in the Pinecone project you want to connect to
+* A [serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in one of the regions listed in [step 1](#1-create-a-private-endpoint-in-your-cloud-provider)
 
 <Tabs>
   <Tab title="AWS">
-    * Access to the [AWS console](https://console.aws.amazon.com/console/home).
-    * [Created an Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the same AWS [region](/guides/index-data/create-an-index#cloud-regions) as the index you want to connect to. You can optionally enable DNS hostnames and resolution, if you want your VPC to automatically discover the DNS CNAME for your PrivateLink and don't want to configure a CNAME.
-
-      * To [configure the routing](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-vpc-interface-endpoint.html) yourself, use one of Pinecone's DNS entry for the corresponding region:
-
-      | Index region | Pinecone DNS entry |
-      | - | - |
-      | `us-east-1` (N. Virginia) | `*.private.aped-4627-b74a.pinecone.io` |
-      | `us-west-2` (Oregon) | `*.private.apw5-4e34-81fa.pinecone.io` |
-      | `eu-west-1` (Ireland) | `*.private.apu-57e2-42f6.pinecone.io` |
-      | `eu-central-1` (Frankfurt) | `*.private.apec-a2ee-38c6.pinecone.io` |
-      | `ap-southeast-1` (Singapore) | `*.private.aps-d9bb-582b.pinecone.io` |
+    - Access to the [AWS console](https://console.aws.amazon.com/console/home)
+    - An [Amazon VPC](https://docs.aws.amazon.com/vpc/latest/userguide/create-vpc.html#create-vpc-and-other-resources) in the same region as your index
   </Tab>
 
   <Tab title="Azure">
-    * Access to the [Azure portal](https://portal.azure.com).
-    * [Created an Azure VNet](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal) in the same [region](/guides/index-data/create-an-index#cloud-regions) as the index you want to connect to.
-    * A subnet with **Private endpoint network policies** set to **Disabled**. This is required for Azure Private Endpoints.
-
-      * DNS resolution for private endpoints requires a manual setup step after creating the endpoint (unlike AWS, where DNS can be auto-configured). See the [DNS setup note below](#1-create-a-private-endpoint-in-your-cloud-provider).
-
-      | Index region | Pinecone DNS entry |
-      | - | - |
-      | `eastus2` (Virginia) | `*.private.eastus2-5e25.prod-azure.pinecone.io` |
+    * Access to the [Azure portal](https://portal.azure.com)
+    * An [Azure VNet](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal) in the same region as your index, with a subnet whose **Private endpoint network policies** setting is **Disabled**
   </Tab>
 </Tabs>
 
-* A [Pinecone Enterprise plan](https://www.pinecone.io/pricing/).
-* [Created a serverless index](/guides/index-data/create-an-index#create-a-serverless-index) in the same [region](/guides/index-data/create-an-index#cloud-regions) as your VPC or VNet.
-
-<Note>
-  Private Endpoints are configured at the project-level and you can add up to 10 endpoints per project. If you have multiple projects in your organization, Private Endpoints need to be set up separately for each.
-</Note>
+## Set up a private endpoint
 
 ### 1. Create a private endpoint in your cloud provider
 
+Create an endpoint in your VPC or VNet that connects to Pinecone's service in your index's region:
+
 <Tabs>
   <Tab title="AWS">
-    In the [AWS console](https://console.aws.amazon.com/console/home):
+    1. In the [Amazon VPC console](https://console.aws.amazon.com/vpc/), go to **Endpoints** and click **Create endpoint**.
 
-    1. Open the [Amazon VPC console](https://console.aws.amazon.com/vpc/).
+    2. For **Type**, select **Endpoint services that use NLBs and GWLBs**.
 
-    2. In the navigation pane, click **Endpoint**.
+    3. For **Service name**, enter the service name for your index's region, and then click **Verify service**:
 
-    3. Click **Create endpoint**.
-
-    4. For **Service category**, select **Other endpoint services**.
-
-    5. In **Service settings**, enter the **Service name**, based on the region your Pinecone index is in:
        | Index region | Service name |
        | - | - |
        | `us-east-1` (N. Virginia) | `com.amazonaws.vpce.us-east-1.vpce-svc-05ef6f1f0b9130b54` |
@@ -25312,95 +25327,125 @@ The following steps assume you have:
        | `eu-central-1` (Frankfurt) | `com.amazonaws.vpce.eu-central-1.vpce-svc-037997ff6b3d25e34` |
        | `ap-southeast-1` (Singapore) | `com.amazonaws.vpce.ap-southeast-1.vpce-svc-0c12f00812e786068` |
 
-    6. Click **Verify service**.
+    4. For **VPC**, select the VPC your clients connect from.
 
-    7. Select the **VPC** to host the endpoint.
+    5. (Optional) In **Additional settings**, select **Enable DNS name**. This lets clients in the VPC resolve Pinecone's private DNS names without extra setup. It requires [DNS hostnames and DNS resolution](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-dns.html#vpc-dns-updating) to be enabled on the VPC. If you leave it off, or clients outside the VPC need to connect, you'll set up DNS yourself in [step 3](#3-configure-dns).
 
-    8. (Optional) In **Additional settings**, **Enable DNS name**.
-       The enables you to access our service with the DNS name we configure. An additional CNAME record is needed if you disable this option.
+    6. Select the **Subnets** for the endpoint, and select **Security groups** that allow inbound HTTPS (port 443) from your clients.
 
-    9. Select the **Subnets** and **Subnet ID** for the endpoint.
+    7. Click **Create endpoint**.
 
-    10. Select the **Security groups** to apply to the endpoint.
-
-    11. Click **Create endpoint**.
-
-    12. Copy the **VPC endpoint ID** (e.g., `vpce-XXXXXXX`).
-        This will be used to [add a Private Endpoint in Pinecone](#2-add-a-private-endpoint-in-pinecone).
+    8. Copy the **VPC endpoint ID** (e.g., `vpce-XXXXXXX`). You'll enter it in Pinecone in the next step.
   </Tab>
 
   <Tab title="Azure">
-    In the [Azure portal](https://portal.azure.com):
+    1. In the [Azure portal](https://portal.azure.com), search for **Private Link** and select **Private Link Center**. Then go to **Private endpoints** and click **Create**.
 
-    1. Search for **Private Link** and select **Private Link Center**.
+    2. Select your **Subscription** and **Resource group**, enter a **Name** for the private endpoint, and select the **Region** that matches your index. Then click **Next: Resource**.
 
-    2. In the navigation pane, click **Private endpoints**.
-
-    3. Click **Create**.
-
-    4. Select your **Subscription** and **Resource group**.
-
-    5. Enter a **Name** for the private endpoint and select the **Region** matching your Pinecone index.
-
-    6. Click **Next: Resource**.
-
-    7. For **Connection method**, select **Connect to an Azure resource by resource ID or alias**.
-
-    8. Enter the **Resource ID or alias** for Pinecone's Private Link Service, based on the region your Pinecone index is in:
+    3. For **Connection method**, select **Connect to an Azure resource by resource ID or alias**, and enter the **Resource ID or alias** for your index's region:
 
        | Index region | Private Link Service alias |
        | - | - |
        | `eastus2` (Virginia) | `pinecone.bdbc7759-0243-46c1-af51-794c4602745b.eastus2.azure.privatelinkservice` |
 
-    9. Click **Next: Virtual Network**.
+    4. Click **Next: Virtual Network**, and select the **Virtual network** and **Subnet** for the private endpoint.
 
-    10. Select the **Virtual network** and **Subnet** for the private endpoint.
+    5. Click **Next: DNS**, and skip this tab. You'll set up DNS in [step 3](#3-configure-dns).
 
-    11. Click **Next: DNS**. Skip the DNS integration tab (you will configure DNS manually after setup).
+    6. Click **Next: Tags**, then **Review + create**, and then **Create**.
 
-    12. Click **Next: Tags**.
+    7. After Azure creates the private endpoint, open it, go to **Properties**, and copy the **Resource ID** (e.g., `/subscriptions/<sub-uuid>/resourceGroups/<rg>/providers/Microsoft.Network/privateEndpoints/<name>`). You'll enter it in Pinecone in the next step.
+  </Tab>
+</Tabs>
 
-    13. Click **Review + create**, then **Create**.
+### 2. Add a private endpoint in Pinecone
 
-    14. Once the private endpoint is created, open it and copy the **Resource ID** from the **Properties** tab (or the **Overview** tab — it's the `/subscriptions/…/privateEndpoints/<name>` ARM ID).
-        This will be used to [add a Private Endpoint in Pinecone](#2-add-a-private-endpoint-in-pinecone).
+Add the endpoint to your Pinecone project so Pinecone accepts connections through it:
+
+1. In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), select your project and go to **Settings > Network**.
+2. On the **PRIVATE ENDPOINTS** tab, click **Add an endpoint**.
+3. Select your cloud provider and your index's region, and then click **Next**.
+4. Enter the ID you copied in [step 1](#1-create-a-private-endpoint-in-your-cloud-provider), and then click **Next**:
+   * **AWS**: The VPC endpoint ID.
+   * **Azure**: The private endpoint's resource ID.
+5. Leave **Restrict access to only private endpoints** off for now. Turning it on cuts off internet access to the project before your private endpoint works. You can [turn it on later](#restrict-access-to-private-endpoints).
+6. Click **Finish setup**.
+
+### 3. Configure DNS
+
+Clients reach an index through its [private endpoint URL](#4-connect-to-your-index), such as `docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io`. Public DNS doesn't resolve these names, so DNS on your network must resolve them to your private endpoint's IP address. Clients must connect by hostname rather than IP address, because Pinecone's TLS certificate is issued for the hostname, not the IP address.
+
+Each region has one private DNS zone. A single wildcard record (`*`) in that zone covers every index in the region:
+
+| Cloud | Index region | Private DNS zone |
+| - | - | - |
+| AWS | `us-east-1` (N. Virginia) | `private.aped-4627-b74a.pinecone.io` |
+| AWS | `us-west-2` (Oregon) | `private.apw5-4e34-81fa.pinecone.io` |
+| AWS | `eu-west-1` (Ireland) | `private.apu-57e2-42f6.pinecone.io` |
+| AWS | `eu-central-1` (Frankfurt) | `private.apec-a2ee-38c6.pinecone.io` |
+| AWS | `ap-southeast-1` (Singapore) | `private.aps-d9bb-582b.pinecone.io` |
+| Azure | `eastus2` (Virginia) | `private.eastus2-5e25.prod-azure.pinecone.io` |
+
+Clients also need a network route to the private endpoint's IP address on port 443. For clients outside the VPC or VNet, such as on-premises servers, that usually means a VPN, AWS Direct Connect, Azure ExpressRoute, or network peering.
+
+<Tabs>
+  <Tab title="AWS">
+    If you selected **Enable DNS name** when you created the VPC endpoint, clients in that VPC already resolve Pinecone's private DNS names. Set up DNS yourself if you turned that option off, or if clients outside the VPC need to connect:
+
+    * **Route 53 private hosted zone**: Create a [private hosted zone](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zone-private-creating.html) named after your region's private DNS zone and associate it with your VPCs. Then add a wildcard record (`*`) that [routes traffic to the VPC endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-to-vpc-interface-endpoint.html).
+    * **Your own DNS server**: On your organization's DNS server, create a zone named after your region's private DNS zone. Add a wildcard CNAME record (`*`) that points to the VPC endpoint's regional DNS name, which has the form `vpce-XXXXXXX.vpce-svc-XXXXXXX.REGION.vpce.amazonaws.com`. AWS publishes that name in public DNS, and it resolves to the endpoint's private IP addresses. To get it, run `aws ec2 describe-vpc-endpoints --vpc-endpoint-ids VPC_ENDPOINT_ID --query 'VpcEndpoints[*].DnsEntries'`. The first entry is the regional DNS name.
+    * **Forward to Route 53**: If you selected **Enable DNS name**, you can keep AWS as the source of these records instead. Create a [Route 53 Resolver inbound endpoint](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-inbound-queries.html) in the VPC, and then add a conditional forwarder on your DNS server that sends queries for the private DNS zone to the inbound endpoint's IP addresses.
+  </Tab>
+
+  <Tab title="Azure">
+    Azure doesn't resolve Pinecone's private DNS names automatically, so you must set up DNS. First, find your private endpoint's IP address. In the Azure portal, open your private endpoint, and on its **Overview** page, select its network interface. The network interface's **Overview** page shows the **Private IP address** (e.g., `172.30.0.6`).
+
+    Then set up DNS in one of the following ways.
+
+    #### Use an Azure Private DNS zone
+
+    Use this option if your clients use Azure-provided DNS.
+
+    1. Create an [Azure Private DNS zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal) named `private.eastus2-5e25.prod-azure.pinecone.io`.
+    2. [Link the zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links) to the VNet where you created the private endpoint, and to any other VNets whose clients connect to Pinecone.
+    3. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
+
+    #### Use your own DNS server
+
+    Use this option if your organization runs its own DNS server.
+
+    1. On your DNS server, create a zone named `private.eastus2-5e25.prod-azure.pinecone.io`.
+    2. Add a wildcard A record (`*.private.eastus2-5e25.prod-azure.pinecone.io`) that points to your private endpoint's IP address.
+    3. Make sure the clients that connect to Pinecone use this DNS server.
+
+    #### Forward to an Azure Private DNS zone
+
+    Use this option if your organization runs its own DNS but manages private endpoint records in Azure.
+
+    1. Set up an [Azure Private DNS zone](#use-an-azure-private-dns-zone) as described above.
+    2. Create an [Azure DNS Private Resolver](https://learn.microsoft.com/en-us/azure/dns/dns-private-resolver-overview) with an inbound endpoint in a VNet that's linked to the zone.
+    3. On your DNS server, add a conditional forwarder that sends queries for `private.eastus2-5e25.prod-azure.pinecone.io` to the inbound endpoint's IP address.
+
+    For more on these patterns, see [Azure Private Endpoint DNS integration](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration).
 
     <Note>
-      After creating the private endpoint, configure DNS so that `*.private.{subdomain}.pinecone.io` resolves to your private endpoint's IP address:
-
-      1. Find your private endpoint's IP address: in the Azure portal, open your private endpoint, go to **Overview**, and note the **Private IP address** (e.g., `172.30.0.6`).
-      2. Create an [Azure Private DNS Zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-getstarted-portal) named `private.{subdomain}.pinecone.io` (e.g., `private.eastus2-5e25.prod-azure.pinecone.io`). You can find the `{subdomain}` in your index's host URL — it's the portion after `svc.` and before `.pinecone.io`.
-      3. [Link the zone](https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links) to the VNet where your private endpoint is created.
-      4. Add a **wildcard A record** (`*`) pointing to your private endpoint's IP address.
+      A private endpoint keeps its IP address for as long as it exists. If you point an A record at that address and later delete and re-create the endpoint, update the record with the new address.
     </Note>
   </Tab>
 </Tabs>
 
-### 2. Add a Private Endpoint in Pinecone
+To check your setup, look up your index's private endpoint URL from a client machine. Replace the example host with your index's **Private host** value from [step 4](#4-connect-to-your-index):
 
-To add a Private Endpoint using the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
+```bash Terminal theme={null}
+nslookup docs-example-jl7boae.svc.private.aped-4627-b74a.pinecone.io
+```
 
-1. Select your project.
-2. Go to **Manage > Network**.
-3. Click **Add a connection**.
-4. Select your cloud provider and region.
-   Only indexes in the selected region in this project will be affected.
-5. Click **Next**.
-6. Enter the endpoint ID you copied in the [section above](#1-create-a-private-endpoint-in-your-cloud-provider):
-   * **AWS**: The VPC endpoint ID (e.g., `vpce-XXXXXXX`)
-   * **Azure**: The private endpoint's ARM Resource ID (e.g., `/subscriptions/<sub-uuid>/resourceGroups/<rg>/providers/Microsoft.Network/privateEndpoints/<name>`)
-7. Click **Next**.
-8. (optional) To **enable private endpoint access only**, turn the toggle on.
-   This can also be enabled later. For more information, see [Manage internet access to your project](#manage-internet-access-to-your-project).
-9. Click **Finish setup**.
+The response should return your private endpoint's IP address. If the lookup fails or returns a different address, the client isn't using the DNS server or zone you configured.
 
-<Note>
-  Private Endpoints only affect [data plane](/guides/core-concepts/architecture#data-plane) access. [Control plane](/guides/core-concepts/architecture#control-plane) access will continue over the public internet.
-</Note>
+### 4. Connect to your index
 
-## Read and write data
-
-Once your private endpoint is configured, you can run data operations against an index as usual, but you must target the index using its private endpoint URL. The only difference in the URL is that `.svc.` is changed to `.svc.private.`.
+To send data operations through your private endpoint, target the index by its private endpoint URL instead of its standard host. The only difference is that `.svc.` becomes `.svc.private.`.
 
 You can get the private endpoint URL for an index from the Pinecone console or API.
 
@@ -25411,7 +25456,7 @@ You can get the private endpoint URL for an index from the Pinecone console or A
     1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
     2. Select the project containing the index.
     3. Select the index.
-    4. Copy the URL under **PRIVATE ENDPOINT**.
+    4. Copy the **Private host** value.
   </Tab>
 
   <Tab title="API">
@@ -25562,48 +25607,33 @@ You can get the private endpoint URL for an index from the Pinecone console or A
 </Tabs>
 
 <Note>
-  If you run data operations against an index from outside the Private Endpoint, you will get an `Unauthorized` response.
+  If you [restrict access to private endpoints](/guides/production/configure-private-endpoints#restrict-access-to-private-endpoints), requests that don't come through a private endpoint get an `Unauthorized` response. Requests through a private endpoint that isn't registered to the index's project also get `Unauthorized`.
 </Note>
 
-## Manage internet access to your project
+## Restrict access to private endpoints
 
-Once your Private Endpoint is configured, you can turn off internet access to your project. To enable private endpoint access only:
+After your private endpoint works, you can turn off internet access to the project. Then only requests that come through a private endpoint can read or write the project's indexes.
 
-1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects).
-2. Select your project.
-3. Go to **Network > Access**.
-4. Turn the **Private endpoint access only** toggle on.
-   This will turn off internet access to the project. This can be turned off at any point.
+<Warning>
+  This setting applies to the whole project. Any application that reaches an index in the project over the internet stops working.
+</Warning>
 
-   <Warning>
-     This access control is set at the *project-level* and can unintentionally affect Pinecone indexes that communicate via the internet in the same project. Only indexes communicating through Private Endpoints will continue to work.
-   </Warning>
+1. In the [Pinecone console](https://app.pinecone.io/organizations/-/projects), select your project and go to **Settings > Network**.
+2. On the **ACCESS** tab, turn on **Restrict access to only private endpoints**.
+3. Click **Confirm and proceed**.
 
-## Manage Private Endpoints
+To turn internet access back on, turn the toggle off.
 
-In addition to [creating Private Endpoints](#2-add-a-private-endpoint-in-pinecone), you can also:
+## Manage private endpoints
 
-* [View Private Endpoints](#view-private-endpoints)
-* [Delete a Private Endpoint](#delete-a-private-endpoint)
+To view a project's private endpoints, open the [Pinecone console](https://app.pinecone.io/organizations/-/projects), select the project, and go to **Settings > Network**. The **PRIVATE ENDPOINTS** tab lists each endpoint's ID, cloud, and region.
 
-### View Private Endpoints
+To delete a private endpoint:
 
-To view Private Endpoints using the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
+1. On the **PRIVATE ENDPOINTS** tab, open the **Actions** menu for the endpoint and click **Delete**.
+2. Enter the endpoint ID to confirm, and then click **Delete Endpoint**.
 
-1. Select your project.
-2. Go to **Manage > Network**.
-   A list of Private Endpoints displays with the associated endpoint ID and cloud provider.
-
-### Delete a Private Endpoint
-
-To delete a Private Endpoint using the [Pinecone console](https://app.pinecone.io/organizations/-/projects):
-
-1. Select your project.
-2. Go to **Manage > Network**.
-3. For the Private Endpoint you want to delete, click the *...* (Actions) icon.
-4. Click **Delete**.
-5. Enter the endpoint name.
-6. Click **Delete Endpoint**.
+Deleting a private endpoint in Pinecone doesn't delete the endpoint in your AWS or Azure account. Delete it there separately if you no longer need it.
 
 
 # Configure SSO with Okta
@@ -63903,22 +63933,35 @@ The official Pinecone plugin for [Codex](https://developers.openai.com/codex) ad
 ## Prerequisites
 
 * A [Pinecone API key](https://app.pinecone.io/organizations/-/keys)
-* The [Codex](https://developers.openai.com/codex) desktop app or CLI installed. The plugin runs locally, so it doesn't work in Codex cloud tasks.
+* The [ChatGPT desktop app](https://developers.openai.com/codex/app) (which includes Codex) or the [Codex CLI](https://developers.openai.com/codex/cli)
+* A local Codex session, since the plugin runs on your machine and doesn't work in Codex cloud tasks
 * [Node.js](https://nodejs.org/) installed and on your `PATH` (required for the bundled MCP server)
 * [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone:cli` skill)
 
 ## Install the plugin
 
-Install the plugin from the Codex plugin directory or the command line, then set your API key and launch Codex.
+Install the plugin from the plugin directory or the command line, then set your API key and launch Codex.
 
 <Steps>
   <Step title="Add the plugin to Codex">
     <Tabs>
       <Tab title="Plugin directory">
-        1. In the Codex app, select **Plugins** in the sidebar.
-        2. Find **Pinecone** and select it.
-        3. Select **Install plugin**.
+        Open the [Pinecone plugin](https://chatgpt.com/codex/open-app?target=plugin\&plugin_id=plugins_6ab1957381a88191b41034b7a47dc51f) in the ChatGPT desktop app, then click **Install plugin**.
+
+        To find it yourself instead:
+
+        1. In the ChatGPT desktop app, click your profile in the bottom left, then click **Settings**.
+
+        2. In the left navigation, click **Plugins**.
+
+           You'll see a list of the plugins you already have.
+
+        3. Click **Browse directory**.
+
+        4. Search for Pinecone, then select **Pinecone**.
+
+        5. Click **Install plugin**.
 
         For more about installing plugins, see [Plugins in ChatGPT](https://help.openai.com/en/articles/20001256-plugins-in-chatgpt) in the OpenAI Help Center.
       </Tab>
@@ -63949,35 +63992,62 @@ Install the plugin from the Codex plugin directory or the command line, then set
     Installing the plugin doesn't set your API key. Codex reads it from the environment it launches in.
 
     <Tabs>
-      <Tab title="Codex CLI">
-        Export the key in the same shell where you run `codex`:
+      <Tab title="CLI (macOS, Linux)">
+        1. Set the key in the same shell where you run Codex:
 
-        ```shell theme={null}
-        export PINECONE_API_KEY="YOUR_API_KEY"
-        codex
-        ```
+           ```shell theme={null}
+           export PINECONE_API_KEY="YOUR_API_KEY"
+           ```
 
-        Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). To keep the key across terminal sessions, add the `export` line to your shell profile, such as `~/.zshrc`.
+           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). To keep it across terminal sessions, add the line to your shell profile, such as `~/.zshrc`.
+
+        2. Start Codex:
+
+           ```shell theme={null}
+           codex
+           ```
       </Tab>
 
-      <Tab title="Codex desktop app (macOS)">
-        Quit Codex, then export the key and relaunch Codex from the same terminal:
+      <Tab title="CLI (Windows)">
+        If you run Codex in WSL, use the **CLI (macOS, Linux)** tab instead.
 
-        ```shell theme={null}
-        osascript -e 'quit app "Codex"'
-        export PINECONE_API_KEY="YOUR_API_KEY"
-        open -a Codex
-        ```
+        1. Set the key in the same PowerShell session where you run Codex:
 
-        Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys).
+           ```powershell theme={null}
+           $env:PINECONE_API_KEY="YOUR_API_KEY"
+           ```
 
-        To make the key available when you open Codex from the Dock or Spotlight, set it for all macOS apps instead, then quit and reopen Codex:
+           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). This lasts for the current session only. To keep it across sessions, run `setx PINECONE_API_KEY "YOUR_API_KEY"` and open a new terminal.
 
-        ```shell theme={null}
-        launchctl setenv PINECONE_API_KEY "YOUR_API_KEY"
-        ```
+        2. Start Codex:
 
-        This setting doesn't persist after you restart your Mac, so run it again after each restart.
+           ```powershell theme={null}
+           codex
+           ```
+      </Tab>
+
+      <Tab title="Desktop app (macOS)">
+        1. Set the key for all macOS apps:
+
+           ```shell theme={null}
+           launchctl setenv PINECONE_API_KEY "YOUR_API_KEY"
+           ```
+
+           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). This setting doesn't persist after you restart your Mac, so run it again after each restart.
+
+        2. Quit the ChatGPT desktop app completely, then reopen it.
+      </Tab>
+
+      <Tab title="Desktop app (Windows)">
+        1. Set the key for your Windows user account:
+
+           ```powershell theme={null}
+           setx PINECONE_API_KEY "YOUR_API_KEY"
+           ```
+
+           Replace `YOUR_API_KEY` with your [Pinecone API key](https://app.pinecone.io/organizations/-/keys). `setx` persists across restarts.
+
+        2. Quit the ChatGPT desktop app completely, then reopen it.
       </Tab>
     </Tabs>
   </Step>
@@ -64029,8 +64099,10 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 
 <AccordionGroup>
   <Accordion title="API key not found or 401 errors">
-    * **Codex desktop app (macOS):** Run `launchctl getenv PINECONE_API_KEY`. If it returns nothing, set the key again and quit and reopen Codex.
-    * **Codex CLI:** In the same shell where you run `codex`, run `[ -n "$PINECONE_API_KEY" ] && echo "set" || echo "not set"`. If it prints `not set`, export the key again.
+    * **CLI (macOS, Linux):** In the same shell where you run `codex`, run `[ -n "$PINECONE_API_KEY" ] && echo "set" || echo "not set"`. If it prints `not set`, set the key again.
+    * **CLI (Windows):** In the same PowerShell session where you run `codex`, run `if ($env:PINECONE_API_KEY) { "set" } else { "not set" }`. If it prints `not set`, set the key again.
+    * **Desktop app (macOS):** Run `launchctl getenv PINECONE_API_KEY`. If it returns nothing, set the key again, then quit and reopen the app.
+    * **Desktop app (Windows):** In PowerShell, run `[Environment]::GetEnvironmentVariable("PINECONE_API_KEY", "User")`. If it returns nothing, set the key again, then quit and reopen the app.
   </Accordion>
 
   <Accordion title="MCP server not responding">
@@ -78953,25 +79025,43 @@ To learn about other assistant-related limits, see [Pinecone Assistant limits](/
 # Pinecone Assistant
 Source: https://docs.pinecone.io/guides/assistant/overview
 
-Overview of Pinecone Assistant, a managed service for building production-grade RAG chat and agent applications grounded in your data.
+Pinecone Assistant is a managed service for building production-grade RAG chat and agent applications grounded in your data.
+
+Pinecone Assistant answers questions about your proprietary data. You upload files to an assistant, then chat with it or retrieve context snippets, and get back answers grounded in your data.
 
 <CardGroup>
-  <Card title="Assistant quickstart" icon="comments" href="/guides/assistant/quickstart/sdk-quickstart">
-    Create an AI assistant that answers complex questions about your proprietary data
+  <Card title="Quickstart" icon="rocket" href="/guides/assistant/quickstart/sdk-quickstart">
+    Create an assistant, upload a file, and chat with it
   </Card>
 
-  <Card title="Database quickstart" icon="database" href="/guides/get-started/quickstart">
-    Set up a fully managed vector database for high-performance semantic search
+  <Card title="Files" icon="file" href="/guides/assistant/files-overview">
+    Supported file types, metadata, and how files are processed
+  </Card>
+
+  <Card title="Chat with an assistant" icon="comments" href="/guides/assistant/chat-with-assistant">
+    Ask questions and get grounded answers with citations
+  </Card>
+
+  <Card title="Context snippets" icon="scissors" href="/guides/assistant/context-snippets-overview">
+    Retrieve relevant context to use with your own LLM or agent
+  </Card>
+
+  <Card title="Pricing and limits" icon="tag" href="/guides/assistant/pricing-and-limits">
+    Costs for ingestion, chat, and storage, plus plan limits
+  </Card>
+
+  <Card title="MCP server" icon="server" href="/guides/assistant/mcp-server">
+    Connect AI agents to your assistant through its MCP server
   </Card>
 </CardGroup>
 
-## Use cases
+## What you can do
 
-Pinecone Assistant is useful for a variety of tasks, especially for the following:
+With Pinecone Assistant, you can:
 
-* Prototyping and deploying an AI assistant quickly.
-* Providing context-aware answers about your proprietary data without training an LLM.
-* Retrieving answers grounded in your data, with references.
+* Prototype and deploy an AI assistant without building your own retrieval pipeline.
+* Get context-aware answers about your proprietary data without training an LLM.
+* Get answers grounded in your data, with references to the files each answer draws from.
 
 ## SDK support
 
@@ -78979,241 +79069,42 @@ You can use the [Assistant API](/reference/api/assistant/introduction) directly,
 
 ## Workflow
 
-You can use the Pinecone Assistant through the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant) or [Pinecone API](/reference/api/assistant/introduction).
+These steps outline the Pinecone Assistant workflow, which you can follow in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/assistant) or with the [Pinecone API](/reference/api/assistant/introduction):
 
-<Tabs>
-  <Tab title="Overview">
-    The following steps outline the general Pinecone Assistant workflow:
+1. [Create an assistant](/guides/assistant/create-assistant) to answer questions about your documents.
+2. [Upload documents](/guides/assistant/upload-files) to your assistant. Your assistant manages chunking, embedding, and storage for you.
+3. [Chat with your assistant](/guides/assistant/chat-with-assistant) and receive responses as a JSON object or as a text stream. For each chat, your assistant queries a large language model (LLM) with context from your documents, so the LLM's responses are grounded in them.
+4. [Evaluate the assistant's responses](/guides/assistant/evaluation-overview) for correctness and completeness.
+5. [Add instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant) to tailor your assistant's behavior and responses to specific use cases or requirements. [Filter chat by file metadata](/guides/assistant/chat-with-assistant#filter-chat-with-metadata) to reduce latency and improve the accuracy of responses.
+6. [Retrieve context snippets](/guides/assistant/retrieve-context-snippets) to understand what relevant data snippets Pinecone Assistant is using to generate responses. You can use the retrieved snippets with your own LLM, RAG application, or agentic workflow.
 
-    <Steps>
-      <Step title="Create an assistant">
-        [Create an assistant](/guides/assistant/create-assistant) to answer questions about your documents.
-      </Step>
+To learn how Pinecone Assistant processes files and generates answers, see [Assistant architecture](/reference/architecture/assistant-architecture).
 
-      <Step title="Upload documents">
-        [Upload documents](/guides/assistant/upload-files) to your assistant. Your assistant manages chunking, embedding, and storage for you.
-      </Step>
-
-      <Step title="Chat with an assistant">
-        [Chat with your assistant](/guides/assistant/chat-with-assistant) and receive responses as a JSON object or as a text stream. For each chat, your assistant queries a large language model (LLM) with context from your documents to ensure the LLM provides grounded responses.
-      </Step>
-
-      <Step title="Evaluate answers">
-        [Evaluate the assistant's responses](/guides/assistant/evaluation-overview) for correctness and completeness.
-      </Step>
-
-      <Step title="Optimize performance">
-        [Use custom instructions](https://www.pinecone.io/learn/assistant-api-deep-dive/#Custom-Instructions) to tailor your assistant's behavior and responses to specific use cases or requirements. [Filter by metadata associated with files](https://www.pinecone.io/learn/assistant-api-deep-dive/#Using-Metadata) to reduce latency and improve the accuracy of responses.
-      </Step>
-
-      <Step title="Retrieve context snippets">
-        [Retrieve context snippets](/guides/assistant/retrieve-context-snippets) to understand what relevant data snippets Pinecone Assistant is using to generate responses. You can use the retrieved snippets with your own LLM, RAG application, or agentic workflow.
-      </Step>
-    </Steps>
-
-    <Note>
-      For information on how the Pinecone Assistant works, see [Assistant architecture](/reference/architecture/assistant-architecture).
-    </Note>
-  </Tab>
-
-  <Tab title="Code sample">
-    The following code samples outline the Pinecone Assistant workflow using either the [Pinecone Python SDK](/reference/sdks/python/overview) and [Pinecone Assistant plugin](/reference/sdks/python/overview#install-the-pinecone-assistant-python-plugin) or the [Pinecone Node.js SDK](/reference/sdks/node/overview).
-
-    <CodeGroup>
-      ```python Python theme={null}
-      # pip install pinecone
-      # pip install pinecone-plugin-assistant
-
-      from pinecone import Pinecone
-      import requests
-      from pinecone_plugins.assistant.models.chat import Message
-
-      pc = Pinecone(api_key="YOUR_API_KEY")
-
-      # Create an assistant.
-      assistant = pc.assistant.create_assistant(
-          assistant_name="example-assistant", 
-          instructions="Use American English for spelling and grammar.", # Description or directive for the assistant to apply to all responses.
-          region="us", # Region to deploy assistant. Options: "us" (default) or "eu".    
-          timeout=30 # Maximum seconds to wait for assistant status to become "Ready" before timing out.
-      )
-
-      # Upload a file to your assistant.
-      response = assistant.upload_file(
-          file_path="/Users/jdoe/Downloads/Netflix-10-K-01262024.pdf",
-          metadata={"company": "netflix", "document_type": "form 10k"},
-          timeout=None
-      )
-
-      # Set up for evaluation later.
-      payload = {
-          "question": "Who is the CFO of Netflix?", # Question to ask the assistant.
-          "ground_truth_answer": "Spencer Neumann" # Expected answer to evaluate the assistant's response.
-      }
-
-      # Chat with the assistant.
-      msg = Message(role="user", content=payload["question"])
-      resp = assistant.chat(messages=[msg], model="gpt-4o")
-      print(resp)
-
-      # {
-      #    'id': '0000000000000000163008a05b317b7b', 
-      #    'model': 'gpt-4o-2024-05-13', 
-      #    'usage': {
-      #        'prompt_tokens': 9259, 
-      #        'completion_tokens': 30, 
-      #        'total_tokens': 9289
-      #        }, 
-      #        'message': {
-      #            'content': 'The Chief Financial Officer (CFO) of Netflix is Spencer Neumann.', 
-      #            'role': '"assistant"'
-      #            }, 
-      #            'finish_reason': 'stop', 
-      #            'citations': [
-      #                {
-      #                    'position': 63, 
-      #                    'references': [
-      #                        {
-      #                            'pages': [78, 72, 79], 
-      #                            'file': {
-      #                                'name': 'Netflix-10-K-01262024.pdf', 
-      #                                'id': '76a11dd1...', 
-      #                                'metadata': {
-      #                                    'company': 'netflix', 
-      #                                    'document_type': 'form 10k'
-      #                                    }, 
-      #                                    'created_on': '2024-12-06T01:29:07.369208590Z', 
-      #                                    'updated_on': '2024-12-06T01:29:50.923493799Z', 
-      #                                    'status': 'Available', 
-      #                                    'signed_url': 'https://storage.googleapis.com/...',
-      #                                    'size': 1073470.0
-      #                                }
-      #                            }
-      #                        ]
-      #                    }
-      #                ]
-      #            }
-
-      # Evaluate the assistant's response.
-      payload["answer"] = resp.message.content
-
-      headers = {
-          "Api-Key": "YOUR_API_KEY",
-          "Content-Type": "application/json"
-      }
-
-      url = "https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment"
-
-      response = requests.request("POST", url, json=payload, headers=headers)
-
-      print(response.text)
-
-      # {
-      #    "metrics":
-      #    {
-      #        "correctness":1.0,
-      #        "completeness":1.0,
-      #        "alignment":1.0
-      #    },
-      #    "reasoning":
-      #    {
-      #        "evaluated_facts":
-      #        [
-      #            {
-      #                "fact":
-      #                {
-      #                    "content":"Spencer Neumann is the CFO of Netflix."
-      #                    },
-      #                    "entailment":"entailed"
-      #                }
-      #            ]
-      #        },
-      #        "usage":
-      #        {
-      #            "prompt_tokens":1221,
-      #            "completion_tokens":24,
-      #            "total_tokens":1245
-      #            }
-      #        }
-      ```
-
-      ```javascript JavaScript theme={null}
-      import { Pinecone } from "@pinecone-database/pinecone";
-
-      function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-      }
-
-      async function testPinecone() {
-        try {
-          console.log("Initializing Pinecone client...");
-
-          const pc = new Pinecone({
-            apiKey: "YOUR_API_KEY",
-          });
-
-          console.log("Pinecone client initialized successfully.");
-
-          const assistantName = "test-assistant";
-
-          // Create a new assistant.
-          console.log(`Creating new assistant: ${assistantName}...`);
-          await pc.createAssistant({
-            name: assistantName,
-            region: "us",
-            metadata: { 'test-key': 'test-value' },
-          });
-
-          // Validate Assistant was created through describe.
-          const asstDesc = await pc.describeAssistant(assistantName);
-          console.log(`Described Assistant: ${JSON.stringify(asstDesc)}`);
-
-          // Delay to ensure the Assistant is ready.
-          await sleep(4000);
-
-          // Upload file
-          const assistant = pc.Assistant(assistantName);
-          await assistant.uploadFile({
-            path: '/Users/jdoe/Downloads/Netflix-10-K-01262024.pdf',
-            metadata: { 'test-key': 'test-value' },
-          });
-          console.log("File uploaded. Processsing...");
-
-          // Delay to ensure file is available.
-          await sleep(45000);
-
-          // Chat
-          const chatResp = await assistant.chat({
-            messages: [{ role: 'user', content: 'Who is the CFO of Netflix?' }]
-          });
-          console.log(chatResp);
-          
-        // Error handling
-        } catch (error) {
-          console.error("Error:", error);
-        }
-      }
-
-      // Run the sample code
-      testAssistant();
-      ```
-    </CodeGroup>
-  </Tab>
-</Tabs>
-
-## Learn more
+## Resources
 
 <CardGroup>
-  <Card title="API Reference" icon="code-simple" href="/reference">
-    Comprehensive details about the Pinecone APIs, SDKs, utilities, and architecture.
+  <Card title="API reference" icon="code-simple" href="/reference/api/assistant/introduction">
+    Details about the Assistant API and its SDK support
   </Card>
 
-  <Card title="Blog" icon="blog" href="https://www.pinecone.io/learn/assistant-api-deep-dive/">
-    Four features of the Assistant API you aren't using - but should
+  <Card title="Examples" icon="grid-round" href="/examples/assistant">
+    Sample apps and notebooks built with Pinecone Assistant
   </Card>
 
   <Card title="Changelog" icon="party-horn" href="/release-notes">
-    News about features and changes in Pinecone and related tools.
+    What's new in Pinecone
+  </Card>
+</CardGroup>
+
+## Other Pinecone products
+
+<CardGroup>
+  <Card title="Pinecone Database" icon="database" href="/guides/get-started/overview">
+    The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
+  </Card>
+
+  <Card title="Pinecone Nexus" icon="brain-circuit" href="/guides/nexus/overview">
+    The knowledge engine for agents, serving grounded, cited answers in one call
   </Card>
 </CardGroup>
 
@@ -79678,7 +79569,86 @@ The example above returns a response like the following:
   [`signed_url`](https://cloud.google.com/storage/docs/access-control/signed-urls) provides temporary, read-only access to the relevant file. Anyone with the link can access the file, so treat it as sensitive data. Expires in one hour.
 </Warning>
 
-## 6. Clean up
+## 6. Evaluate the answer (Standard and Enterprise plans)
+
+<Note>
+  Response evaluation is only available for [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
+</Note>
+
+To check the quality of the response, [evaluate it](/guides/assistant/evaluation-overview) against a ground truth answer. The evaluation scores the answer for correctness, completeness, and alignment, and lists the facts it checked.
+
+<CodeGroup>
+  ```python Python theme={null}
+  # pip install requests
+  import requests
+
+  payload = {
+      "question": "Who is the CFO of Netflix?",
+      "answer": resp.message.content, # Answer from the assistant.
+      "ground_truth_answer": "Spencer Neumann" # Expected answer to evaluate the assistant's response against.
+  }
+
+  headers = {
+      "Api-Key": "{{YOUR_API_KEY}}",
+      "Content-Type": "application/json"
+  }
+
+  url = "https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment"
+
+  response = requests.post(url, json=payload, headers=headers)
+
+  print(response.text)
+  ```
+
+  ```javascript JavaScript theme={null}
+  const evalResp = await fetch(
+    'https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment',
+    {
+      method: 'POST',
+      headers: {
+        'Api-Key': '{{YOUR_API_KEY}}',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        question: 'Who is the CFO of Netflix?',
+        answer: chatResp.message.content, // Answer from the assistant.
+        ground_truth_answer: 'Spencer Neumann', // Expected answer to evaluate the assistant's response against.
+      }),
+    }
+  );
+
+  console.log(await evalResp.json());
+  ```
+</CodeGroup>
+
+The example above returns a response like the following:
+
+```json theme={null}
+{
+  "metrics": {
+    "correctness": 1.0,
+    "completeness": 1.0,
+    "alignment": 1.0
+  },
+  "reasoning": {
+    "evaluated_facts": [
+      {
+        "fact": {
+          "content": "Spencer Neumann is the CFO of Netflix."
+        },
+        "entailment": "entailed"
+      }
+    ]
+  },
+  "usage": {
+    "prompt_tokens": 1221,
+    "completion_tokens": 24,
+    "total_tokens": 1245
+  }
+}
+```
+
+## 7. Clean up
 
 When you no longer need the `example-assistant`, [delete the assistant](/reference/api/latest/assistant/delete_assistant):
 
@@ -79702,7 +79672,7 @@ When you no longer need the `example-assistant`, [delete the assistant](/referen
 
 * Learn more about [Pinecone Assistant](/guides/assistant/overview)
 * Learn about [additional assistant features](https://www.pinecone.io/learn/assistant-api-deep-dive/)
-* [Evaluate](/guides/assistant/evaluate-answers) the assistant's responses
+* See [Evaluate answers](/guides/assistant/evaluate-answers) for more evaluation options
 * View a [sample app](/examples/sample-apps/pinecone-assistant) that uses Pinecone Assistant
 
 
@@ -85137,7 +85107,7 @@ You don't have to stay within one provider. Because the available models depend 
 # Pinecone Nexus
 Source: https://docs.pinecone.io/guides/nexus/overview
 
-Pinecone Nexus is the knowledge engine for agents. It compiles your data into queryable knowledge once, then serves grounded, cited answers to agents on every call.
+Pinecone Nexus is the knowledge engine for agents. It compiles your data into queryable knowledge once, then serves grounded, cited answers on every call.
 
 You point Nexus at your sources and curate them into a context. Agents then query that context with a single call and get back a structured, grounded answer with citations, instead of re-assembling context from raw chunks on every request.
 
@@ -85145,42 +85115,78 @@ Traditional RAG hands an agent ranked chunks and leaves it to search, stitch, an
 
 <CardGroup>
   <Card title="Quickstart" icon="rocket" href="/guides/nexus/quickstart">
-    Prepare your first context, then query it.
+    Prepare your first context, then query it
   </Card>
 
   <Card title="Key concepts" icon="book" href="/guides/nexus/concepts">
-    Contexts, manifests, artifacts, sessions, and the Query API.
+    Contexts, manifests, artifacts, sessions, and the Query API
   </Card>
 
   <Card title="How Nexus works" icon="lightbulb" href="/guides/nexus/how-it-works">
-    Curated artifacts for retrieval, then answers composed over a retrieval SDK.
+    Curated artifacts for retrieval, then answers composed over a retrieval SDK
+  </Card>
+
+  <Card title="Context design" icon="sitemap" href="/guides/nexus/context-design">
+    How a context's manifest turns your sources into queryable knowledge
   </Card>
 
   <Card title="Bring Your Own Cloud" icon="cloud" href="/guides/nexus/byoc/overview">
-    Deploy Nexus in your own cloud account.
+    Deploy Nexus in your own cloud account
+  </Card>
+
+  <Card title="MCP server" icon="server" href="/guides/nexus/mcp-server">
+    Query your contexts from any MCP client
   </Card>
 </CardGroup>
 
 ## What you can do
 
-* **Turn raw sources into queryable knowledge.** Upload documents or connect a data source, then curate them into a searchable context. There is no chunking pipeline or eval set to hand-build.
-* **Ask in one call.** Agents issue a KnowQL query (`ask` plus `scope`, optionally a typed `shape`) and get back a grounded, cited answer. One query is a turn. Multi-turn conversations are sessions.
-* **Compose across domains.** A single query can span multiple contexts, so knowledge is a graph of contexts rather than one monolithic index.
-* **Keep answers grounded and scoped.** Answers carry citations, and access is scoped to your Pinecone project.
+With Pinecone Nexus, you can:
+
+* Turn raw sources into queryable knowledge. Upload documents or connect a data source, then curate them into a searchable context, without building a chunking pipeline or an eval set by hand.
+* Get an answer in one call. Agents issue a KnowQL query (`ask` plus `scope`, optionally a typed `shape`) and get back a grounded, cited answer. Each query is a turn, and multi-turn conversations are sessions.
+* Query across domains. A single query can span multiple contexts, so your knowledge forms a graph of contexts instead of one large index.
+* Keep answers grounded and scoped. Every answer carries citations, and access is scoped to your Pinecone project.
 
 ## Why Nexus
 
-The most expensive part of an agent is not reasoning. It is knowledge acquisition. Agents built on raw retrieval burn tokens re-orienting on every call and loop through retrieve, evaluate, and re-retrieve cycles. Nexus compiles the knowledge once and serves it on every call:
+The most expensive part of an agent is knowledge acquisition. Agents built on raw retrieval burn tokens re-orienting on every call and loop through retrieve, evaluate, and re-retrieve cycles. Nexus compiles the knowledge once and serves it on every call:
 
-* **Cheaper than agentic RAG.** The expensive work happens once at curation time, not per query, so agents spend far fewer tokens.
-* **Faster than a retrieval loop.** A single query replaces the multi-step retrieve, evaluate, and re-retrieve cycle.
-* **Trusted, grounded answers.** Each one carries citations and is scoped to your Pinecone project, running on the Pinecone Database underneath.
+* It's cheaper than agentic RAG. The expensive work happens once at curation time instead of on every query, so agents spend far fewer tokens.
+* It's faster than a retrieval loop. A single query replaces the multi-step retrieve, evaluate, and re-retrieve cycle.
+* Its answers are trusted and grounded. Each answer carries citations and is scoped to your Pinecone project, with Pinecone Database running underneath.
 
 ## What Nexus is not
 
-* **Not a vector database.** The Pinecone Database sits *underneath* Nexus as the retrieval substrate. Nexus is the engine layer above it.
-* **Not RAG.** RAG returns ranked chunks for a human to read. Nexus compiles typed, grounded artifacts purpose-built for agents and returns answers.
-* **Not an agent framework.** Nexus is knowledge infrastructure: query in, answer out. Your agent decides what to do with the answer.
+Nexus is sometimes confused with other kinds of AI tools. Here's how it differs:
+
+* Nexus isn't a vector database. Pinecone Database sits underneath Nexus as its retrieval layer, and Nexus is the engine layer above it.
+* Nexus isn't RAG. RAG returns ranked chunks for a human to read, while Nexus compiles typed, grounded artifacts for agents and returns answers.
+* Nexus isn't an agent framework. Your agent sends Nexus a query, gets back an answer, and decides what to do with it.
+
+## Resources
+
+<CardGroup>
+  <Card title="API reference" icon="code-simple" href="/reference/api/nexus/introduction">
+    Details about the Nexus control plane and data plane APIs
+  </Card>
+
+  <Card title="Changelog" icon="party-horn" href="/release-notes">
+    What's new in Pinecone
+  </Card>
+</CardGroup>
+
+## Other Pinecone products
+
+<CardGroup>
+  <Card title="Pinecone Database" icon="database" href="/guides/get-started/overview">
+    The retrieval foundation, bringing full-text and semantic search with metadata filtering into one managed database
+  </Card>
+
+  <Card title="Pinecone Assistant" icon="comments" href="/guides/assistant/overview">
+    A managed service for RAG chat and agent applications grounded in your data
+  </Card>
+</CardGroup>
 
 
 # Query tracing

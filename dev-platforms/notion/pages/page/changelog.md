@@ -4,6 +4,16 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 6, 2026">
+  ### No more tool-specific Notion MCP rate limits
+
+  `notion-search` and `notion-query-data-sources` no longer have their own rate limits. Calls to these tools now count toward the standard [request limits](/reference/request-limits), like other Notion MCP tools. See [Supported tools](/guides/mcp/mcp-supported-tools#rate-limits).
+
+  ### Create teamspace root pages with Notion MCP
+
+  `notion-create-pages` now supports creating pages directly in a teamspace with `parent.teamspace_id`. Use a user-backed connection with permission to add top-level pages; see [Teamspace root pages](/guides/mcp/mcp-supported-tools#teamspace-root-pages) for details and an example.
+</Update>
+
 <Update label="September 30, 2026">
   ### Custom blocks in markdown
 

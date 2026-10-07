@@ -176,6 +176,8 @@ An MCP client can call several tools in one task. For example, it can search for
 
     Creates one or more Notion pages with specified properties and content. Supports applying [database templates](/guides/data-apis/creating-pages-from-templates) to pre-populate new pages with content and property values. Each page can optionally have an icon (an emoji character, a custom emoji by name, a Notion icon identifier as returned by fetch such as "icons/pizza\_blue", or an external image URL) and a cover image. Set `is_skill: true` to create a page as a [Notion Skill](/guides/mcp/notion-skills). If a parent is not specified, a private page will be created.
 
+    To create a top-level page in a teamspace, pass `parent: {"teamspace_id": "…"}` with an ID from `notion-get-teams`. All pages in the call share that parent. See [Teamspace root pages](#teamspace-root-pages) for permissions and an example.
+
     Use `creation_mode: "draft"` when the user wants a durable page but has not named a destination. Draft mode creates a workspace-level private page and cannot be combined with `parent`. If the user names a private or shared destination, omit `creation_mode` and create the page under that parent.
 
     The tool description recommends `allow_async: true` for most page creates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
@@ -487,6 +489,34 @@ An MCP client can call several tools in one task. For example, it can search for
   </Accordion>
 </AccordionGroup>
 
+## Teamspace root pages
+
+`notion-create-pages` accepts `parent.teamspace_id` to create pages directly in a teamspace, alongside its other top-level pages. Get the ID from `notion-get-teams`; IDs with or without dashes are accepted. Pass only one parent ID per call.
+
+Use a connection that acts as a Notion user. Bot-scoped workspace connections don't support this destination. The user must have permission to edit the teamspace's pages and add top-level pages. If the teamspace limits top-level page edits to owners, the user must be a teamspace owner. Listing a teamspace with `notion-get-teams` doesn't grant permission to create pages there.
+
+New pages inherit the teamspace's permissions, so people with access to its pages can access the new pages. The teamspace must be active and belong to the connected workspace. Omit `creation_mode`: draft mode creates private pages and can't be combined with a teamspace parent.
+
+For example, replace the sample ID with a teamspace ID returned by `notion-get-teams`:
+
+```json theme={null}
+{
+  "tool": "notion-create-pages",
+  "arguments": {
+    "parent": { "teamspace_id": "195de922-1179-449f-ab80-75a27c979105" },
+    "allow_async": true,
+    "pages": [
+      {
+        "properties": { "title": "Project kickoff" },
+        "content": "# Project kickoff\n\nGoals, owners, and next steps."
+      }
+    ]
+  }
+}
+```
+
+Teamspace root creation supports both synchronous and [async page creation](#async-page-create-and-update). When the tool returns an `async_task`, wait for it to succeed before using the new pages. This parent option is specific to Notion MCP; it isn't a parent option for the REST [Create a page](/reference/post-page) endpoint.
+
 ## Async page create and update
 
 The `notion-create-pages` and `notion-update-page` tools support `allow_async: true` for page create and update work. Their tool descriptions recommend that assistants pass it for most page writes. This is guidance to assistants, not a schema or server default: omitting `allow_async` has the same meaning as before. The same validation, permissions, and write operation still apply.
@@ -565,13 +595,10 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 
 ## Rate limits
 
-Notion MCP allows each user at least the standard [API request limits](/reference/request-limits), counted across all tool calls. Some MCP tools also have their own, stricter limits. These values can change over time:
-
-* **`notion-search`** (including user lookups): 20 calls per 10 seconds. The limit counts every `notion-search` call, including a content search that runs AI search. `notion-ai-search` has no tool-specific limit.
-* **`notion-query-data-sources`** (including saved view queries): 20 calls per 10 seconds.
+Notion MCP uses the standard [API request limits](/reference/request-limits). Every tool call counts toward them. These limits can change over time.
 
 ### What to do if you're rate-limited
 
-If you encounter rate limit errors, prompt your LLM tool to reduce parallel searches or operations, or try again later. A client that runs many searches or data source queries in a burst is more likely to hit a tool-specific limit.
+If you encounter rate limit errors, prompt your LLM tool to reduce parallel operations, or try again later.
 
 Notion MCP retries a rate limit once when the wait is 2 seconds or less. Otherwise it returns the rate limit as a tool error right away instead of waiting it out. The error's `structuredContent.error` has `code: "rate_limited"`, the wait in seconds as `retry_after_seconds` when known, and the limit that was hit as `rate_limit_reason`. The text content includes the same `structuredContent` JSON for clients that read only text. See [Request limits](/reference/request-limits#rate-limit-responses).
