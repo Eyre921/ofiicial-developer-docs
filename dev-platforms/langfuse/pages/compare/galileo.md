@@ -99,6 +99,8 @@ The following tables break down how Langfuse and Galileo AI approach the three c
 
 Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/galileo.mdx) with up to date information.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 <!-- agent-instructions -->
 
 ---

@@ -164,6 +164,7 @@ The following definitions highlight terms related to site deploys. For definitio
 | Default setup | Netlify automatically builds Deploy Previews for pull/merge requests and [agent runs](/build/build-with-ai/agent-runners/overview/) unless you change the [Deploy Preview controls](/deploy/deploy-overview#deploy-preview-controls). | Requires [setup in Netlify UI](/deploy/deploy-overview#branch-deploy-controls). Set up branch deploys for only specific branches or for all new branches. |
 | URL | For pull/merge requests: URL includes `deploy-preview-` and the PR/MR number. For agent runs: URL includes `agent-` and the run ID. | Default URL generated from the branch name. Can customize your branch deploy domain with Netlify DNS.
 | Scope | Preview site changes scoped to a single pull/merge request or agent run. | Preview site changes scoped to a branch. |
+| Search engine indexing | Netlify adds an `X-Robots-Tag: noindex` header. To ensure Deploy Previews stay out of search indexes, we recommend you set your project to private (Credit-based plans only) or turn on password protection for non-production deploys. Learn more about [search engine indexing](/deploy/deploy-overview#search-engine-indexing). | Netlify doesn't add an `X-Robots-Tag: noindex` header to the most recent branch deploy for each branch, so it can be indexed in case you're using branch deploys to manage different versions of your project. To ensure branch deploys stay out of search indexes, we recommend you set your project to private (Credit-based plans only) or turn on password protection for non-production deploys. Learn more about [search engine indexing](/deploy/deploy-overview#search-engine-indexing). |
 
 Netlify generates a new branch deploy for every commit to your _branch deploy_ branch.  Site visitors can visit your branch deploy at the same stable branch deploy URL.
 
@@ -265,7 +266,16 @@ Netlify builds Deploy Previews by default for pull requests and merge requests. 
 
 ### Search engine indexing
 
-Netlify automatically ensures that only your currently published production deploy and most recent branch deploys can be indexed by search engines. Requests to Deploy Previews, unpublished production deploys, and old branch deploys will have an `X-Robots-Tag: noindex` header included in the response. Depending on how you use branch deploys, you may want to prevent even your most recent branch deploys from being indexed by search engines. You can do so by configuring [custom headers](/manage/routing/headers) in your branch.
+Netlify adds an `X-Robots-Tag: noindex` header to Deploy Previews and older branch deploys to help them stay out of search results. However, Netlify does not add this header to the most recent branch deploy for a branch so that branch deploys can be used as different versions of your app or site. 
+
+The `X-Robots-Tag: noindex` header is not a guarantee though that your preview URLs will stay protected or out of search results. 
+
+To keep your Deploy Previews and branch deploys out of search indexes, we recommend you restrict access to them in one of these ways:
+
+- Set your project to private using [project visibility](/manage/security/secure-access-to-sites/project-visibility). Available on Credit-based plans only.
+- Turn on [Password Protection](/manage/security/secure-access-to-sites/password-protection) for non-production deploys.
+
+Both options prevent search engines and unauthorized visitors from accessing your non-production deploys.
 
 ## Deploy contexts
 
@@ -482,6 +492,8 @@ Preview URLs for Deploy Previews or Branch deploys can be shared with anyone wit
 - [team login protection](/manage/security/secure-access-to-sites/password-protection#basic-password-protection-versus-team-login-protection)
 
 Preview Server URLs require a Netlify login to preview.
+
+Netlify adds an `X-Robots-Tag: noindex` header to Deploy Previews but not to the most recent branch deploy for each branch. To keep previews out of search indexes, we recommend you set your project to private (Credit-based plans only) or turn on password protection. Learn more about [search engine indexing](/deploy/deploy-overview#search-engine-indexing).
 
 ## More site deploys resources
 

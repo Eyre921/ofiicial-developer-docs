@@ -42,7 +42,7 @@ To reduce a customer’s charges, redeem a coupon to create a [Discount](https:/
 
 ### Create a coupon
 
-Create coupons in the Dashboard or with the [API](https://docs.stripe.com/api/coupons/create.md):
+Create coupons in the Dashboard or with the [Create a Coupon method](https://docs.stripe.com/api/coupons/create.md):
 
 #### Dashboard
 
@@ -153,7 +153,7 @@ You can still create a subscription when a customer doesn’t have a stored paym
 
 ### Apply coupons to Checkout 
 
-Apply coupons to subscriptions in a Checkout Session by setting the `discounts` parameter in the [API](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-discounts). To create a session with an applied discount, pass the coupon ID in the `coupon` parameter of the `discounts` array.
+Apply coupons to subscriptions in a Checkout Session by setting the `discounts` parameter when you [Create a Checkout Session](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-discounts). To create a session with an applied discount, pass the coupon ID in the `coupon` parameter of the `discounts` array.
 
 #### curl
 
@@ -169,7 +169,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
 
 ### Delete coupons 
 
-You can delete coupons with the Dashboard or the [API](https://docs.stripe.com/api/coupons/delete.md).
+You can delete coupons with the Dashboard or the [Delete a Coupon method](https://docs.stripe.com/api/coupons/delete.md).
 
 Deleting a coupon prevents it from being applied to future subscriptions or invoices, but it doesn’t remove the discount from any subscription or invoice that already has it.
 

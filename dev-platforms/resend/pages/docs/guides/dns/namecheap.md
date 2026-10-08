@@ -1,7 +1,7 @@
 ---
 title: "Namecheap"
-source: https://resend.com/docs/knowledge-base/namecheap
-path: docs/knowledge-base/namecheap
+source: https://resend.com/docs/guides/dns/namecheap
+path: docs/guides/dns/namecheap
 ---
 
 Verify your domain on Namecheap with Resend.

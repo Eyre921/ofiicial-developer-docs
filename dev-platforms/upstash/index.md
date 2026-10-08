@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 965 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 972 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -269,6 +269,8 @@
 - `docs/qstash/sdks/py/gettingstarted` — [Getting Started](pages/docs/qstash/sdks/py/gettingstarted.md) · [原文](https://upstash.com/docs/qstash/sdks/py/gettingstarted)
 - `docs/qstash/sdks/py/overview` — [Overview](pages/docs/qstash/sdks/py/overview.md) · [原文](https://upstash.com/docs/qstash/sdks/py/overview)
 - `docs/qstash/sdks/ts/gettingstarted` — [Getting Started](pages/docs/qstash/sdks/ts/gettingstarted.md) · [原文](https://upstash.com/docs/qstash/sdks/ts/gettingstarted)
+- `docs/qstash/sdks/ts/mcp-events` — [MCP Events with QStash](pages/docs/qstash/sdks/ts/mcp-events.md) · [原文](https://upstash.com/docs/qstash/sdks/ts/mcp-events)
+- `docs/qstash/sdks/ts/mcp-tasks` — [Long-Running MCP Tools with QStash](pages/docs/qstash/sdks/ts/mcp-tasks.md) · [原文](https://upstash.com/docs/qstash/sdks/ts/mcp-tasks)
 - `docs/qstash/sdks/ts/overview` — [Overview](pages/docs/qstash/sdks/ts/overview.md) · [原文](https://upstash.com/docs/qstash/sdks/ts/overview)
 - `docs/readme` — [README](pages/docs/readme.md) · [原文](https://upstash.com/docs/README)
 - `docs/realtime/features/channels` — [Channels](pages/docs/realtime/features/channels.md) · [原文](https://upstash.com/docs/realtime/features/channels)
@@ -638,6 +640,7 @@
 - `docs/redis/howto/datadog` — [Datadog - Upstash Redis Integration](pages/docs/redis/howto/datadog.md) · [原文](https://upstash.com/docs/redis/howto/datadog)
 - `docs/redis/howto/emqxintegration` — [EMQX - Upstash Redis Integration](pages/docs/redis/howto/emqxintegration.md) · [原文](https://upstash.com/docs/redis/howto/emqxintegration)
 - `docs/redis/howto/importexport` — [Import/Export Data](pages/docs/redis/howto/importexport.md) · [原文](https://upstash.com/docs/redis/howto/importexport)
+- `docs/redis/howto/insights` — [Insights](pages/docs/redis/howto/insights.md) · [原文](https://upstash.com/docs/redis/howto/insights)
 - `docs/redis/howto/ipallowlist` — [Use IP Allowlist](pages/docs/redis/howto/ipallowlist.md) · [原文](https://upstash.com/docs/redis/howto/ipallowlist)
 - `docs/redis/howto/keyspacenotifications` — [Listen Keyspace Notifications](pages/docs/redis/howto/keyspacenotifications.md) · [原文](https://upstash.com/docs/redis/howto/keyspacenotifications)
 - `docs/redis/howto/metrics-and-charts` — [Metrics and Charts](pages/docs/redis/howto/metrics-and-charts.md) · [原文](https://upstash.com/docs/redis/howto/metrics-and-charts)
@@ -675,6 +678,10 @@
 - `docs/redis/sdks/agentkit/ai-sdk` — [Vercel AI SDK Memory, RAG & Chat History with Redis](pages/docs/redis/sdks/agentkit/ai-sdk-2.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/ai-sdk)
 - `docs/redis/sdks/agentkit/eve` — [Memory, Chat History, RAG, Rate Limiting & Sandboxes for the Vercel Eve Agent Framework](pages/docs/redis/sdks/agentkit/eve.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/eve)
 - `docs/redis/sdks/agentkit/eve` — [Memory, Chat History, RAG, Rate Limiting & Sandboxes for the Vercel Eve Agent Framework](pages/docs/redis/sdks/agentkit/eve-2.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/eve)
+- `docs/redis/sdks/agentkit/mcp-events` — [MCP Events with Redis and QStash](pages/docs/redis/sdks/agentkit/mcp-events.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/mcp-events)
+- `docs/redis/sdks/agentkit/mcp-events` — [MCP Events with Redis and QStash](pages/docs/redis/sdks/agentkit/mcp-events-2.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/mcp-events)
+- `docs/redis/sdks/agentkit/mcp-tasks` — [Long-Running MCP Tools with Redis and QStash](pages/docs/redis/sdks/agentkit/mcp-tasks.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/mcp-tasks)
+- `docs/redis/sdks/agentkit/mcp-tasks` — [Long-Running MCP Tools with Redis and QStash](pages/docs/redis/sdks/agentkit/mcp-tasks-2.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/mcp-tasks)
 - `docs/redis/sdks/agentkit/tanstack-ai` — [TanStack AI Persistence, Resumable Streams & Memory with Redis](pages/docs/redis/sdks/agentkit/tanstack-ai.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/tanstack-ai)
 - `docs/redis/sdks/agentkit/tanstack-ai` — [TanStack AI Persistence, Resumable Streams & Memory with Redis](pages/docs/redis/sdks/agentkit/tanstack-ai-2.md) · [原文](https://upstash.com/docs/redis/sdks/agentkit/tanstack-ai)
 - `docs/redis/sdks/mcp` — [Upstash Redis MCP](pages/docs/redis/sdks/mcp.md) · [原文](https://upstash.com/docs/redis/sdks/mcp)

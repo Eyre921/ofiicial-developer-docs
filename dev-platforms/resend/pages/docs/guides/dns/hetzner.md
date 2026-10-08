@@ -1,7 +1,7 @@
 ---
 title: "Hetzner"
-source: https://resend.com/docs/knowledge-base/hetzner
-path: docs/knowledge-base/hetzner
+source: https://resend.com/docs/guides/dns/hetzner
+path: docs/guides/dns/hetzner
 ---
 
 Verify your domain on Hetzner with Resend.

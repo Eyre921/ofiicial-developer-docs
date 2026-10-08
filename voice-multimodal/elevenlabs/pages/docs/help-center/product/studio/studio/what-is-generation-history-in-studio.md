@@ -10,7 +10,7 @@ path: docs/help-center/product/studio/studio/what-is-generation-history-in-studi
 
 Generation History allows you to listen to, download and restore previous audio generations for each paragraph.
 
-![Generation history in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/94402fb3c1b118e30f7e3c6f185f849416de954a23a9142185fa76c3e175acfe/assets/images/product-guides/studio/studio-generation-history.webp)
+![Generation history in Studio](/docs/_fern-img/94402fb3c1b118e30f7e3c6f185f849416de954a23a9142185fa76c3e175acfe.webp)
 
 The Generation History for each paragraph appears in the left sidebar when you select it. You can see and listen to all the previous generations for the selected paragraph.
 

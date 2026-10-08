@@ -1,7 +1,7 @@
 ---
 title: "Squarespace"
-source: https://resend.com/docs/knowledge-base/squarespace
-path: docs/knowledge-base/squarespace
+source: https://resend.com/docs/guides/dns/squarespace
+path: docs/guides/dns/squarespace
 ---
 
 Verify your domain on Squarespace with Resend.

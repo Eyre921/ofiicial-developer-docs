@@ -1,7 +1,7 @@
 ---
 title: "DreamHost"
-source: https://resend.com/docs/knowledge-base/dreamhost
-path: docs/knowledge-base/dreamhost
+source: https://resend.com/docs/guides/dns/dreamhost
+path: docs/guides/dns/dreamhost
 ---
 
 Verify your domain on DreamHost with Resend.

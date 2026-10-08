@@ -14,6 +14,7 @@
 - [Guides](https://docs.vapi.ai/guides.md): Browse real-world, cloneable Vapi examples that build voice agents with assistants and squads, from appointment booking to multilingual support routing.
 - [Composer](https://docs.vapi.ai/composer.md): Build and configure Vapi voice agents through natural conversation with Composer, which creates assistants, sets up numbers and integrations, and troubleshoots.
 - [Vapi CLI](https://docs.vapi.ai/cli.md): Command-line interface for building voice AI applications faster
+- [Vapi Skills for AI coding assistants](https://docs.vapi.ai/agent-skills.md): Install Vapi Skills for AI coding assistants and find skills for assistants, tools, Squads, calls, campaigns, phone numbers, webhooks, structured outputs, and Simulations.
 - [Config as code (GitOps)](https://docs.vapi.ai/config-as-code.md): Use Vapi GitOps to manage assistants, squads, tools, structured outputs, simulations, and evals as code, then review and promote changes across environments.
 - [Path to production](https://docs.vapi.ai/quickstart/path-to-production.md): Take a Vapi assistant from a first test call to production. Choose a model preset, publish a version, test it with Simulations, and monitor live calls.
 - [Assistants quickstart](https://docs.vapi.ai/assistants/quickstart.md): Build your first Vapi assistant, connect it to a phone number, and make a call, working through the steps in the Dashboard or with the Vapi API.

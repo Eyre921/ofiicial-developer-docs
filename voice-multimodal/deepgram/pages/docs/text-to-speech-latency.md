@@ -57,13 +57,13 @@ You can measure the time it takes to connect to Deepgram’s servers:
 **`cURL`**
 
 ```bash cURL
-curl -sSf -w "latency: %{time_connect}\\n" -so /dev/null https://api.deepgram.com
+curl -sS -w "latency: %{time_connect}\\n" -so /dev/null https://api.deepgram.com
 # latency: 0.203186
 ```
 
 > **Info**
 >
-> Deepgram’s servers are exclusively in the United States. If you are making API requests from another country, this will incur relatively higher network latency than requests from the USA.
+> Network latency increases with the distance between your application and the Deepgram endpoint you connect to. If your users are in or near the EU, Australia, or India, a regional endpoint can reduce network latency: `api.eu.deepgram.com`, `api.au.deepgram.com`, and `api.in.deepgram.com`. They support Text-to-Speech on `/v1/speak` and `/v2/speak`, use your existing API keys, and only require changing the base URL. See [Regional Endpoints](/reference/regional-endpoints).
 
 ### Time to First Byte (TTFB)
 
@@ -204,6 +204,10 @@ From the Total Latency example, we can take the values for the SSL handshake and
 ## Minimizing Latency
 
 Latency in text-to-speech (TTS) technology can be influenced by various factors. Here are some common elements that can affect latency, along with actionable tips to mitigate their impact.
+
+### Use a Regional Endpoint
+
+If your users are in or near the EU, Australia, or India, connect to the regional endpoint closest to them to reduce network latency. Regional endpoints in the EU, Australia, and India support Text-to-Speech, use your existing API keys, and only require changing the base URL. See [Regional Endpoints](/reference/regional-endpoints) for setup details.
 
 ### Self-Host
 

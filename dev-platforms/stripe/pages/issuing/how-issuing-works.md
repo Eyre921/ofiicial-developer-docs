@@ -115,7 +115,7 @@ Treasury for platforms only supports connected accounts that don’t use a Strip
 
 ### Financial accounts
 
-You can create individual financial accounts for your connected accounts using the [API](https://docs.stripe.com/api/treasury.md). These financial accounts have routing numbers from our US banking partners, and their balances are eligible for FDIC pass-through insurance. You can fund the financial accounts of your platform’s connected accounts and move money between them. The connected accounts on your platform can also fund their financial accounts using an external bank account. Issuing allows you to link commercial cards to the financial account balance of your connected accounts.
+You can [create individual Financial Accounts](https://docs.stripe.com/api/treasury/financial_accounts/create.md) for your connected accounts using the Treasury API. These financial accounts have routing numbers from our US banking partners, and their balances are eligible for FDIC pass-through insurance. You can fund the financial accounts of your platform’s connected accounts and move money between them. The connected accounts on your platform can also fund their financial accounts using an external bank account. Issuing allows you to link commercial cards to the financial account balance of your connected accounts.
 
 Treasury for platforms supports multiple financial accounts for each connected account.
 

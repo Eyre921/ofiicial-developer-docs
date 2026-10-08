@@ -54,7 +54,7 @@ path: docs/_llms/docs
 - [Latest Model Resolution](https://openrouter.ai/docs/guides/routing/routers/latest-resolution.md): Always target the newest version of a model family with a single slug
 - [Pareto Router](https://openrouter.ai/docs/guides/routing/routers/pareto-router.md): Pick a coding model by minimum coding score without choosing a specific model
 - [Fusion Router](https://openrouter.ai/docs/guides/routing/routers/fusion-router.md): Multi-model deliberation as a model slug
-- [Jev Router](https://openrouter.ai/docs/guides/routing/routers/jev-router.md): Let Jev pick the model and reasoning effort for each request, within model lists you control
+- [Jev Router](https://openrouter.ai/docs/guides/routing/routers/jev-router.md): Route requests with Jev, choose a cost tier, and control model selection and reasoning effort
 - [Switchyard Router](https://openrouter.ai/docs/guides/routing/routers/switchyard-router.md): Switch between multiple models of your choice to optimize the cost of the request
 
 ### Tool Calling

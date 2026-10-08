@@ -106,8 +106,10 @@ For the [Payment Element created without an Intent](https://docs.stripe.com/paym
     - `fonts`
       An array of custom fonts, which elements created from the `Elements` object can use. Fonts can be specified as [CssFontSource](#css_font_source_object) or [CustomFontSource](#custom_font_source_object) objects.
     - `locale`
-      A [locale](#supported_locales) to display placeholders and error strings in.
+      The [locale](#supported_locales) used to localize all text that Elements displays, including labels, placeholders, buttons, and error messages.
 Default is `auto` (Stripe detects the locale of the browser).
+
+This option doesn't affect content that Stripe doesn't render, such as browser and wallet payment sheets (for example, Apple Pay and Google Pay), which use the customer's browser or device language. It also doesn't translate text you provide, such as custom payment method names.
 
 Setting the locale does not affect the behavior of postal code validation—a valid postal code for the billing country of the card is still required.
 
@@ -195,8 +197,10 @@ This reference applies to the [Payment Element created without an Intent](https:
     - `fonts`
       An array of custom fonts, which elements created from the `Elements` object can use. Fonts can be specified as [CssFontSource](#css_font_source_object) or [CustomFontSource](#custom_font_source_object) objects.
     - `locale`
-      A [locale](#supported_locales) to display placeholders and error strings in.
+      The [locale](#supported_locales) used to localize all text that Elements displays, including labels, placeholders, buttons, and error messages.
 Default is `auto` (Stripe detects the locale of the browser).
+
+This option doesn't affect content that Stripe doesn't render, such as browser and wallet payment sheets (for example, Apple Pay and Google Pay), which use the customer's browser or device language. It also doesn't translate text you provide, such as custom payment method names.
 
 Setting the locale does not affect the behavior of postal code validation—a valid postal code for the billing country of the card is still required.
 
@@ -684,8 +688,10 @@ You can also listen for the `update-end` event as an alternative to awaiting the
 - `options`
   A set of options to update this `Elements` instance with.
     - `locale`
-      A [locale](#supported_locales) to display placeholders and error strings in.
+      The [locale](#supported_locales) used to localize all text that Elements displays, including labels, placeholders, buttons, and error messages.
 Default is `auto` (Stripe detects the locale of the browser).
+
+This option doesn't affect content that Stripe doesn't render, such as browser and wallet payment sheets (for example, Apple Pay and Google Pay), which use the customer's browser or device language. It also doesn't translate text you provide, such as custom payment method names.
 
 Setting the locale does not affect the behavior of postal code validation—a valid postal code for the billing country of the card is still required.
 
@@ -8670,8 +8676,10 @@ see the [ElementsProvider without an intent](https://docs.stripe.com/js/react_st
     - `fonts`
       An array of custom fonts, which elements created from the `Elements` object can use. Fonts can be specified as [CssFontSource](#css_font_source_object) or [CustomFontSource](#custom_font_source_object) objects.
     - `locale`
-      A [locale](#supported_locales) to display placeholders and error strings in.
+      The [locale](#supported_locales) used to localize all text that Elements displays, including labels, placeholders, buttons, and error messages.
 Default is `auto` (Stripe detects the locale of the browser).
+
+This option doesn't affect content that Stripe doesn't render, such as browser and wallet payment sheets (for example, Apple Pay and Google Pay), which use the customer's browser or device language. It also doesn't translate text you provide, such as custom payment method names.
 
 Setting the locale does not affect the behavior of postal code validation—a valid postal code for the billing country of the card is still required.
 
@@ -8769,8 +8777,10 @@ For other elements, see the [ElementsProvider](https://docs.stripe.com/js/react_
     - `fonts`
       An array of custom fonts, which elements created from the `Elements` object can use. Fonts can be specified as [CssFontSource](#css_font_source_object) or [CustomFontSource](#custom_font_source_object) objects.
     - `locale`
-      A [locale](#supported_locales) to display placeholders and error strings in.
+      The [locale](#supported_locales) used to localize all text that Elements displays, including labels, placeholders, buttons, and error messages.
 Default is `auto` (Stripe detects the locale of the browser).
+
+This option doesn't affect content that Stripe doesn't render, such as browser and wallet payment sheets (for example, Apple Pay and Google Pay), which use the customer's browser or device language. It also doesn't translate text you provide, such as custom payment method names.
 
 Setting the locale does not affect the behavior of postal code validation—a valid postal code for the billing country of the card is still required.
 

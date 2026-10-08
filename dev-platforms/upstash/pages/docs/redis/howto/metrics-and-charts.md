@@ -6,6 +6,8 @@ path: docs/redis/howto/metrics-and-charts
 
 The Upstash Console exposes metrics in two places: the database list, and the detail page of a single database. This page explains what each chart shows.
 
+Databases with [Prod Pack](/docs/redis/overall/enterprise#prod-pack-features) also have an [Insights](/docs/redis/howto/insights) tab, with request routing, latency, limits and keyspace details.
+
 ## Database List
 
 The list view aggregates summary information across all of your databases.

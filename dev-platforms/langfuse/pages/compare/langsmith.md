@@ -302,6 +302,8 @@ SmithDB is LangSmith's proprietary trace database ([launched May 13, 2026](https
 
   This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/langsmith.mdx) with up-to-date information.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 <!-- agent-instructions -->
 
 ---

@@ -30,7 +30,7 @@ ElevenLabs provides AI voice infrastructure: text-to-speech, speech-to-text, voi
 
 ## Choose your path
 
-[![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d/assets/images/overview/voice-library-bg.webp)](/docs/eleven-creative/overview)
+[![](/docs/_fern-img/12097a437e55f60c199946cf59c9528eb8349d110142394833d67fe93b50e68d.webp)](/docs/eleven-creative/overview)
 
 ### ElevenCreative
 
@@ -42,7 +42,7 @@ Learn how to use the ElevenCreative platform with step-by-step guides
 
 Learn how to build, launch, and scale agents with ElevenLabs
 
-[![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded/assets/images/overview/scribe-code-bg.webp)](/docs/eleven-api/quickstart)
+[![](/docs/_fern-img/002b2432fa6ab18befc9f1a6e7fadf348f46506a5a5a72a2358ba1e7f92d8ded.webp)](/docs/eleven-api/quickstart)
 
 ### ElevenAPI
 

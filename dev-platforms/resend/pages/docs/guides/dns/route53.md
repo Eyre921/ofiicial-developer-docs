@@ -1,7 +1,7 @@
 ---
 title: "AWS Route 53"
-source: https://resend.com/docs/knowledge-base/route53
-path: docs/knowledge-base/route53
+source: https://resend.com/docs/guides/dns/route53
+path: docs/guides/dns/route53
 ---
 
 Verify your domain on Route 53 with Resend.

@@ -214,7 +214,7 @@ ngrok http 5000
 
 Copy the ngrok domain (without https\://) to use in your environment variables.
 
-![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/830a701ecee4b2bd32f44a891806a91e00f27dcf263c5917fa20a91a3353d6a1/assets/images/cookbooks/ngrok.webp)
+![](/docs/_fern-img/830a701ecee4b2bd32f44a891806a91e00f27dcf263c5917fa20a91a3353d6a1.webp)
 
 ## Update your environment variables
 
@@ -242,7 +242,7 @@ In the "A call comes in" section, enter the full URL to your application (make s
 
 E.g. https\://**\*\*\***&#x6E;grok.app/call/incoming
 
-![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/8f57f550bca8ac451980d98482ff5877c4f8fac30035e712cd0375a6527686ff/assets/images/cookbooks/twilio.webp)
+![](/docs/_fern-img/8f57f550bca8ac451980d98482ff5877c4f8fac30035e712cd0375a6527686ff.webp)
 
 ## Make a phone call
 

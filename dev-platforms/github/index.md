@@ -1,6 +1,6 @@
 # dev-platforms/github 文档索引
 
-> 共 92 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 100 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api
@@ -27,6 +27,7 @@
 - `en/actions/get-started/understand-github-actions` — [Understand GitHub Actions](pages/en/actions/get-started/understand-github-actions.md) · [原文](https://docs.github.com/en/actions/get-started/understand-github-actions.md)
 - `en/actions/how-tos/manage-runners/github-hosted-runners` — [GitHub-hosted runners](pages/en/actions/how-tos/manage-runners/github-hosted-runners.md) · [原文](https://docs.github.com/en/actions/how-tos/manage-runners/github-hosted-runners.md)
 - `en/actions/reference/workflows-and-actions/workflow-commands` — [Workflow commands](pages/en/actions/reference/workflows-and-actions/workflow-commands.md) · [原文](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands.md)
+- `en/actions/reference/workflows-and-actions/workflow-syntax` — [Workflow syntax](pages/en/actions/reference/workflows-and-actions/workflow-syntax.md) · [原文](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax.md)
 - `en/actions/tutorials/migrate-to-github-actions/manual-migrations/migrate-from-circleci` — [Migrate from CircleCI](pages/en/actions/tutorials/migrate-to-github-actions/manual-migrations/migrate-from-circleci.md) · [原文](https://docs.github.com/en/actions/tutorials/migrate-to-github-actions/manual-migrations/migrate-from-circleci.md)
 - `en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps` — [About creating apps](pages/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps.md) · [原文](https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps.md)
 - `en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps` — [Authorizing OAuth apps](pages/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps.md) · [原文](https://docs.github.com/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps.md)
@@ -50,9 +51,15 @@
 - `en/codespaces` — [Codespaces](pages/en/codespaces.md) · [原文](https://docs.github.com/en/codespaces.md)
 - `en/copilot` — [GitHub Copilot](pages/en/copilot.md) · [原文](https://docs.github.com/en/copilot.md)
 - `en/copilot/concepts/copilot-surfaces/copilot-on-github` — [Copilot on GitHub.com](pages/en/copilot/concepts/copilot-surfaces/copilot-on-github.md) · [原文](https://docs.github.com/en/copilot/concepts/copilot-surfaces/copilot-on-github.md)
+- `en/copilot/concepts/models/auto-model-selection` — [Auto model selection](pages/en/copilot/concepts/models/auto-model-selection.md) · [原文](https://docs.github.com/en/copilot/concepts/models/auto-model-selection.md)
+- `en/copilot/get-started/best-practices` — [Best practices](pages/en/copilot/get-started/best-practices.md) · [原文](https://docs.github.com/en/copilot/get-started/best-practices.md)
+- `en/copilot/get-started/plans` — [Plans](pages/en/copilot/get-started/plans.md) · [原文](https://docs.github.com/en/copilot/get-started/plans.md)
+- `en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli` — [Install Copilot CLI](pages/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/set-up-copilot-cli/install-copilot-cli.md)
 - `en/copilot/how-tos/copilot-cli/use-copilot-cli/overview` — [Overview](pages/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview.md)
+- `en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/get-ide-code-suggestions` — [Get IDE code suggestions](pages/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/get-ide-code-suggestions.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/get-ide-code-suggestions.md)
 - `en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/use-the-github-mcp-server` — [Use the GitHub MCP Server](pages/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/use-the-github-mcp-server.md) · [原文](https://docs.github.com/en/copilot/how-tos/copilot-in-your-ide/copilot-for-common-tasks/use-the-github-mcp-server.md)
 - `en/copilot/how-tos/manage-your-account/manage-policies` — [Manage policies](pages/en/copilot/how-tos/manage-your-account/manage-policies.md) · [原文](https://docs.github.com/en/copilot/how-tos/manage-your-account/manage-policies.md)
+- `en/copilot/reference/ai-models/supported-models` — [Supported models](pages/en/copilot/reference/ai-models/supported-models.md) · [原文](https://docs.github.com/en/copilot/reference/ai-models/supported-models.md)
 - `en/copilot/reference/copilot-billing/models-and-pricing` — [Models and pricing](pages/en/copilot/reference/copilot-billing/models-and-pricing.md) · [原文](https://docs.github.com/en/copilot/reference/copilot-billing/models-and-pricing.md)
 - `en/copilot/responsible-use/chat` — [Chat](pages/en/copilot/responsible-use/chat.md) · [原文](https://docs.github.com/en/copilot/responsible-use/chat.md)
 - `en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop` — [Installation](pages/en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop.md) · [原文](https://docs.github.com/en/desktop/installing-and-authenticating-to-github-desktop/installing-github-desktop.md)
@@ -99,4 +106,5 @@
 - `en/rest` — [REST API](pages/en/rest.md) · [原文](https://docs.github.com/en/rest.md)
 - `en/rest/apps/marketplace` — [Marketplace](pages/en/rest/apps/marketplace.md) · [原文](https://docs.github.com/en/rest/apps/marketplace.md)
 - `en/rest/authentication/authenticating-to-the-rest-api` — [Authenticating](pages/en/rest/authentication/authenticating-to-the-rest-api.md) · [原文](https://docs.github.com/en/rest/authentication/authenticating-to-the-rest-api.md)
+- `en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens` — [Permissions for fine-grained PATs](pages/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens.md) · [原文](https://docs.github.com/en/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens.md)
 - `en/search-github/github-code-search/understanding-github-code-search-syntax` — [Code search syntax](pages/en/search-github/github-code-search/understanding-github-code-search-syntax.md) · [原文](https://docs.github.com/en/search-github/github-code-search/understanding-github-code-search-syntax.md)

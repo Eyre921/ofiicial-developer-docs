@@ -12,7 +12,7 @@ If you make changes to your project, you need to export a new version of your ch
 
 If you choose to export your full project, Studio will automatically convert any paragraphs that are not yet converted throughout all chapters in your project, which will cost credits. If this is the case, you will be notified of how many credits it will cost before you confirm the export.
 
-![Export project controls in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/389b34be84f8b6120d0e474d225e831764687773416b82672e8419005da26a5b/assets/images/product-guides/studio/studio-export.webp)
+![Export project controls in Studio](/docs/_fern-img/389b34be84f8b6120d0e474d225e831764687773416b82672e8419005da26a5b.webp)
 
 If you have already generated audio for all paragraphs, there will be no cost, but the audio still needs to be exported to a new version before it is reflected in your download. You will be notified when the conversion is complete and your download is ready.
 

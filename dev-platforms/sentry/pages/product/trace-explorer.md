@@ -29,13 +29,12 @@ The [**Trace Explorer**](https://sentry.io/orgredirect/organizations/:orgslug/tr
 
 * Each span has:
 
-  * **Attributes**: Key-value pairs like `http.method`, `db.query`, `span.description`, or custom attributes like `cart.value`, provide additional context that can be useful for debugging and investigating patterns. These are either numbers or strings. Note: numeric span attributes can be used to calculate a metric based on span data, shown below.
+  * **Attributes**: Key-value pairs such as `http.method` or custom attributes such as `payment.provider` provide context for debugging an operation and investigating patterns. Numeric attributes can also be aggregated across sampled spans.
   * **Duration (`span.duration`)**: The time the operation took, used to measure performance.
 
-### [Span Metrics](https://docs.sentry.io/product/trace-explorer.md#span-metrics)
+### [Aggregating Span Attributes](https://docs.sentry.io/product/trace-explorer.md#aggregating-span-attributes)
 
-* [Span metrics](https://docs.sentry.io/concepts/key-terms/tracing/span-metrics.md) are derived from applying a function to your span attributes (default or custom), like `p50(cart.value)` or `sum(ai.token_use)`, over a granular time frame. This calculation extrapolates metrics that then populate dashboards and alerts. based on that rolling time window.
-* These 'metrics' aren't stored separately from your span data. Rather, they're queried on the fly. This reduces your need to manage, ingest, and store custom metrics.
+You can group span durations by custom span attributes to investigate patterns, such as `p95(span.duration)` by `payment.provider`. These aggregations query sampled span data. See your SDK's [tracing instrumentation guide](https://docs.sentry.io/platform-redirect.md?next=%2Ftracing%2Finstrumentation%2F) for examples of adding attributes to spans. For counters, gauges, and distributions independent of trace sampling, use [Application Metrics](https://docs.sentry.io/product/metrics.md).
 
 ## [Practical Examples](https://docs.sentry.io/product/trace-explorer.md#practical-examples)
 

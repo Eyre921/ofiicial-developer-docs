@@ -1,7 +1,7 @@
 ---
 title: "Cloudflare"
-source: https://resend.com/docs/knowledge-base/cloudflare
-path: docs/knowledge-base/cloudflare
+source: https://resend.com/docs/guides/dns/cloudflare
+path: docs/guides/dns/cloudflare
 ---
 
 Verify your domain on Cloudflare with Resend.

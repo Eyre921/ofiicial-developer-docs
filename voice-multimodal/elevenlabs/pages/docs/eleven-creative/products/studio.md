@@ -174,7 +174,7 @@ To upgrade your plan, visit your [Subscription page](https://elevenlabs.io/app/s
 
 Select **Export** to render the current chapter or project. Studio generates any required narration and creates an audio or video file based on the project's tracks and settings.
 
-![Export your project](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/389b34be84f8b6120d0e474d225e831764687773416b82672e8419005da26a5b/assets/images/product-guides/studio/studio-export.webp)
+![Export your project](/docs/_fern-img/389b34be84f8b6120d0e474d225e831764687773416b82672e8419005da26a5b.webp)
 
 You can continue editing after export. Select **Export** again to create a version that includes the updated media.
 
@@ -272,11 +272,11 @@ Breaks affect generated speech delivery only; they don't move or pause other tim
 
 For an overview of Actor Mode, see [this video](https://www.youtube.com/watch?v=Kj2dgXITrPw).
 
-![Actor Mode pop-up](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/8468aa50ffb04f6460e535a9693b59f09354836609d104f62b1549d5d8a181a1/assets/images/product-guides/studio/studio-actor-mode-popup.webp)
+![Actor Mode pop-up](/docs/_fern-img/8468aa50ffb04f6460e535a9693b59f09354836609d104f62b1549d5d8a181a1.webp)
 
 Either upload or record your audio, and you will then see the option to listen back to the audio or remove it. You will also see how many credits it will cost to generate the selected text using the audio you've provided.
 
-![Actor Mode pop-up](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/71dccdcc6f102001b78f75972202e8e8964c20318c1bbfbe9188d7ed06bd3b42/assets/images/product-guides/studio/studio-actor-mode-popup-2.webp)
+![Actor Mode pop-up](/docs/_fern-img/71dccdcc6f102001b78f75972202e8e8964c20318c1bbfbe9188d7ed06bd3b42.webp)
 
 If you're happy with the audio, click **Generate**, and your audio will be used to guide the delivery of the selected text.
 
@@ -290,7 +290,7 @@ If you're happy with the audio, click **Generate**, and your audio will be used 
 
 Upload or record audio files for your project. You can drag and drop files into the panel, click **Upload file**, or use the **Record** button to capture audio directly. Toggle between **This project** and **Workspace** to browse files. Uploaded audio cannot be published to distribution platforms.
 
-![Insert audio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/f95c2c8e6f5608e6bb1babc89c07fb967aa8644e402a0f1e4362b51431486ca7/assets/images/product-guides/studio/studio-audio.webp)
+![Insert audio](/docs/_fern-img/f95c2c8e6f5608e6bb1babc89c07fb967aa8644e402a0f1e4362b51431486ca7.webp)
 
 #### Music
 
@@ -298,13 +298,13 @@ Upload or record audio files for your project. You can drag and drop files into 
 
 Generate music in ElevenCreative Studio and place it on a separate timeline track. Create music from a prompt or import an existing track. You can trim, duplicate, move, and adjust the volume of each clip. Stereo sources remain stereo.
 
-![Insert music](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/d66ca0218816ded54dbf2fbdf408224e690bbd5cc500d0c67151e17cb886c246/assets/images/product-guides/studio/studio-music.webp)
+![Insert music](/docs/_fern-img/d66ca0218816ded54dbf2fbdf408224e690bbd5cc500d0c67151e17cb886c246.webp)
 
 #### Sound effects
 
 #### Sound effects
 
-![Insert sound effect](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/837893c19fe3f882d9c50d8264b281eb3f3e008688198411132ff599c4f35be7/assets/images/product-guides/studio/studio-sound-effect.webp)
+![Insert sound effect](/docs/_fern-img/837893c19fe3f882d9c50d8264b281eb3f3e008688198411132ff599c4f35be7.webp)
 
 Add sound effects as separate clips on the timeline. You can position them anywhere, layer multiple effects, and adjust their timing precisely with trimming and duplication.
 
@@ -321,7 +321,7 @@ You can regenerate previews to explore variants and then apply your chosen effec
 
 #### Lock paragraph
 
-![Lock paragraph Button](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/5e43af1d6f6bd4f1f964e58458e2f3c75fee0004de3e8c940b1585eb6356b718/assets/images/product-guides/studio/studio-lock.webp)
+![Lock paragraph Button](/docs/_fern-img/5e43af1d6f6bd4f1f964e58458e2f3c75fee0004de3e8c940b1585eb6356b718.webp)
 
 Select **Lock paragraph** to prevent changes to a paragraph.
 
@@ -333,7 +333,7 @@ A lock icon appears to the left of locked paragraphs. Select **Lock paragraph** 
 
 #### Keyboard shortcuts
 
-![Keyboard Shortcuts](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/acec379471272ba116f392a65a0f2c9d105ec649a48ebd1ad149a7baf75b6eba/assets/images/product-guides/studio/studio-keyboard-shortcuts.webp)
+![Keyboard Shortcuts](/docs/_fern-img/acec379471272ba116f392a65a0f2c9d105ec649a48ebd1ad149a7baf75b6eba.webp)
 
 Select **Project options** > **Keyboard shortcuts** to view the available keyboard shortcuts.
 
@@ -430,7 +430,7 @@ If you’re unhappy with a voice, but you’re happy with the delivery of the na
 
 ### Voice settings
 
-![Studio voice settings](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/15a9c18bec595b6716f5d33102c8c31b007a598f065b70f0e2cf8f6ee18bf2f1/assets/images/product-guides/studio/studio-voice-settings.webp)
+![Studio voice settings](/docs/_fern-img/15a9c18bec595b6716f5d33102c8c31b007a598f065b70f0e2cf8f6ee18bf2f1.webp)
 
 Our users have found different workflows that work for them. The most common setting is stability around 50 and similarity near 75, with minimal changes thereafter. Of course, this all depends on the original voice and the style of performance you're aiming for.
 
@@ -476,7 +476,7 @@ This setting boosts the similarity to the original speaker. However, using this 
 
 ### Pronunciation dictionaries
 
-![Studio pronunciation dictionaries](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c/assets/images/product-guides/studio/studio-pronunciation-dictionaries.webp)
+![Studio pronunciation dictionaries](/docs/_fern-img/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c.webp)
 
 Sometimes you may want to specify the pronunciation of certain words, such as character or brand names, or specify how acronyms should be read. Pronunciation dictionaries allow this functionality by enabling you to upload a lexicon or dictionary file that includes rules about how specified words should be pronounced, either using a phonetic alphabet (phoneme tags) or word substitutions (alias tags).
 
@@ -543,7 +543,7 @@ You can access and download all previous exports, of both chapters and projects,
 
 From the editor, create a read‑only link so others can play your timeline and review your mix without downloading files. You can revoke access at any time. Commenting is also available, including anonymous comments.
 
-![Studio share project](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/f2cf13471019a920e4b8483b40fb4a92b6d70f85da6bdfd82a7560287fa20efd/assets/images/product-guides/studio/studio-share-project.webp)
+![Studio share project](/docs/_fern-img/f2cf13471019a920e4b8483b40fb4a92b6d70f85da6bdfd82a7560287fa20efd.webp)
 
 #### Commenting
 
@@ -562,7 +562,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
     <td>
       #### Free regenerations
 
-      ![Studio free regenerations](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/ac7e53c3ac7f58bb0f0d6ff90618779dd80a5a93e6c39237e35d775eb60979a8/assets/images/product-guides/studio/studio-free-regen.webp)
+      ![Studio free regenerations](/docs/_fern-img/ac7e53c3ac7f58bb0f0d6ff90618779dd80a5a93e6c39237e35d775eb60979a8.webp)
 
       In ElevenCreative Studio, provided you don't change the text or voice, you can regenerate a selected paragraph or section of text twice for free.
 
@@ -650,7 +650,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       Select the **Chapters** tab to open the sidebar.
 
-      ![Chapters sidebar in a Studio Audio project](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/6f636820458f31c4388e8e6f5ce5433fba73340fc4e8712f0ec818f5966365d9/assets/images/product-guides/studio/studio-chapters.webp)
+      ![Chapters sidebar in a Studio Audio project](/docs/_fern-img/6f636820458f31c4388e8e6f5ce5433fba73340fc4e8712f0ec818f5966365d9.webp)
 
       Select **+** to add a chapter. Use **Chapter actions** to rename or remove a chapter. Drag chapters to reorder them.
     </td>
@@ -666,7 +666,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       If the selection is eligible for a free regeneration, you will see that the Generate/Regenerate button in the toolbar says **Regenerate**, and if you hover over it, you will see a notification letting you know how many free regenerations are remaining.
 
-      ![Generate and Regenerate controls in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/648aadb17d5d4c3bb29a3d1e568f37ad4139f941e092e7fce740c7f34821374c/assets/images/product-guides/studio/studio_generate.webp)
+      ![Generate and Regenerate controls in Studio](/docs/_fern-img/648aadb17d5d4c3bb29a3d1e568f37ad4139f941e092e7fce740c7f34821374c.webp)
 
       If your selection isn't eligible for a free regeneration, the button will say **Generate**, and you will be charged for the generation.
     </td>
@@ -869,7 +869,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       If you do this while you have a word selected, this word will automatically populate the input field. Otherwise, you can enter the word yourself. You can use the Play button in the Output to preview how it will sound.
 
-      ![Pronunciation dictionaries in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c/assets/images/product-guides/studio/studio-pronunciation-dictionaries.webp)
+      ![Pronunciation dictionaries in Studio](/docs/_fern-img/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c.webp)
 
       When you add a new rule, you can either select an existing dictionary to add the rule to, or create a new dictionary. If you add the rule to an existing dictionary, this will automatically connect it to your project.
     </td>
@@ -883,13 +883,13 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       In the image below, the highlighted paragraph has audio generated, whereas the second one does not.
 
-      ![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/f5a047c2eb727975df8391ead8e0946961360e2e153fe9de6199fa8301620bfd/assets/images/help-center/product/studio/studio-generated-light.webp)
+      ![](/docs/_fern-img/f5a047c2eb727975df8391ead8e0946961360e2e153fe9de6199fa8301620bfd.webp)
 
       In Dark Mode, this color scheme adjusts slightly: a light grey line still represents ungenerated audio, while a white line indicates that the paragraph has been converted to audio.
 
       The image below demonstrates this: audio has been generated for the highlighted paragraph, but not for the second one.
 
-      ![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/0e18235843df57486ec2e38e2dd764f5977250d4c098d3f6b0e53d0719211c9a/assets/images/help-center/product/studio/studio-generated-dark.webp)
+      ![](/docs/_fern-img/0e18235843df57486ec2e38e2dd764f5977250d4c098d3f6b0e53d0719211c9a.webp)
     </td>
   </tr>
 
@@ -901,7 +901,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       The lock button locks the current version of the selected paragraph. This means that you no longer have the option to regenerate the paragraph, change the voice or settings, or access the generation history for the paragraph. You can unlock a paragraph at any time by clicking the lock button.
 
-      ![Lock paragraph control in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/5e43af1d6f6bd4f1f964e58458e2f3c75fee0004de3e8c940b1585eb6356b718/assets/images/product-guides/studio/studio-lock.webp)
+      ![Lock paragraph control in Studio](/docs/_fern-img/5e43af1d6f6bd4f1f964e58458e2f3c75fee0004de3e8c940b1585eb6356b718.webp)
 
       This feature is only available after you have generated audio for the selected paragraph.
     </td>
@@ -946,7 +946,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       Generation History allows you to listen to, download and restore previous audio generations for each paragraph.
 
-      ![Generation history in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/94402fb3c1b118e30f7e3c6f185f849416de954a23a9142185fa76c3e175acfe/assets/images/product-guides/studio/studio-generation-history.webp)
+      ![Generation history in Studio](/docs/_fern-img/94402fb3c1b118e30f7e3c6f185f849416de954a23a9142185fa76c3e175acfe.webp)
 
       The Generation History for each paragraph appears in the left sidebar when you select it. You can see and listen to all the previous generations for the selected paragraph.
 
@@ -1002,7 +1002,7 @@ When feedback is addressed, mark the thread as **Resolved**; it will collapse in
 
       If you choose to export your full project, Studio will automatically convert any paragraphs that are not yet converted throughout all chapters in your project, which will cost credits. If this is the case, you will be notified of how many credits it will cost before you confirm the export.
 
-      ![Export project controls in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/389b34be84f8b6120d0e474d225e831764687773416b82672e8419005da26a5b/assets/images/product-guides/studio/studio-export.webp)
+      ![Export project controls in Studio](/docs/_fern-img/389b34be84f8b6120d0e474d225e831764687773416b82672e8419005da26a5b.webp)
 
       If you have already generated audio for all paragraphs, there will be no cost, but the audio still needs to be exported to a new version before it is reflected in your download. You will be notified when the conversion is complete and your download is ready.
 

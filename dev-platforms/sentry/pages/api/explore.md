@@ -20,6 +20,8 @@ Explore allow you to slice and dice your events
 * #### [Query Explore Events in Timeseries Format](https://docs.sentry.io/api/explore/query-explore-events-in-timeseries-format.md)
 * #### [Retrieve an Organization's AI Conversation](https://docs.sentry.io/api/explore/retrieve-an-organizations-ai-conversation.md)
 * #### [Retrieve Trace Item Statistics](https://docs.sentry.io/api/explore/retrieve-trace-item-statistics.md)
+* #### [Star a Service Span](https://docs.sentry.io/api/explore/star-a-service-span.md)
+* #### [Unstar a Service Span](https://docs.sentry.io/api/explore/unstar-a-service-span.md)
 
 ## Pages in this section
 
@@ -30,4 +32,6 @@ Explore allow you to slice and dice your events
 - [Query Explore Events in Timeseries Format](https://docs.sentry.io/api/explore/query-explore-events-in-timeseries-format.md)
 - [Retrieve an Organization's AI Conversation](https://docs.sentry.io/api/explore/retrieve-an-organizations-ai-conversation.md)
 - [Retrieve Trace Item Statistics](https://docs.sentry.io/api/explore/retrieve-trace-item-statistics.md)
+- [Star a Service Span](https://docs.sentry.io/api/explore/star-a-service-span.md)
+- [Unstar a Service Span](https://docs.sentry.io/api/explore/unstar-a-service-span.md)
 

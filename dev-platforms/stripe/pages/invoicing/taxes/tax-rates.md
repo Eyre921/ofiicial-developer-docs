@@ -19,7 +19,7 @@ After you [create a tax rate](https://docs.stripe.com/tax/tax-rates.md), you can
 
 ## Set tax rates on individual items 
 
-You can set tax rates on individual items using the [Dashboard](https://dashboard.stripe.com/invoices/create) or [API](https://docs.stripe.com/api/tax_rates.md). You can add up to ten tax rates to each line item.
+You can set tax rates on individual items using the [Dashboard](https://dashboard.stripe.com/invoices/create) or [Tax Rates](https://docs.stripe.com/api/tax_rates.md). You can add up to ten tax rates to each line item.
 
 #### Dashboard
 

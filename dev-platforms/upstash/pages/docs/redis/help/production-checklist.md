@@ -84,6 +84,7 @@ Prod Pack includes comprehensive monitoring:
 * Prometheus integration
 * Datadog integration
 * Extended console metrics (up to one month)
+* [Insights](/docs/redis/howto/insights): request routing, latency, limits, Lua and keyspace analysis
 
 ## High Availability & Backup
 

@@ -22,7 +22,7 @@ ElevenLabs supports three types of post-call webhooks:
 
 Post-call webhooks can be enabled for all agents in your workspace through the ElevenAgents [settings page](https://elevenlabs.io/app/agents/settings).
 
-![Post-call webhook settings](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807/assets/images/conversational-ai/postcallwebhooksettings.webp)
+![Post-call webhook settings](/docs/_fern-img/eb5d768612d6461a21bc3127611f60724be3e1a55005af43faf48f2d7bf23807.webp)
 
 > **Warning**
 >

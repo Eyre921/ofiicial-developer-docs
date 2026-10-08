@@ -20,13 +20,17 @@ Download and customize the sample app locally to test your integration.
 
 ### Add your products and prices
 
-Create or select *Products* (Products represent what your business sells—whether that's a good or a service) and *Prices* (Prices define how much and how often to charge for products. This includes how much the product costs, what currency to use, and the interval if the price is for subscriptions) that you can use in this sample.
+In the [Dashboard](https://dashboard.stripe.com/test/products), create or select a *product* (Products represent what your business sells—whether that's a good or a service) with a recurring *price* (Prices define how much and how often to charge for products. This includes how much the product costs, what currency to use, and the interval if the price is for subscriptions). Set a lookup key for the price, then replace the following placeholders in the sample code:
+
+- `{{PRODUCT_NAME}}`: Your product’s name.
+- `{{FORMATTED_RECURRING_PRICE}}`: The price’s amount, currency, and billing interval.
+- `{{LOOKUP_KEY_VALUE}}`: The price’s lookup key.
 
 > Sign in to your Stripe account to configure your products and prices.
 
 ### Add features to your product
 
-Create features, such as an annual birthday gift, and associate them with your subscription to [entitle](https://docs.stripe.com/billing/entitlements.md) new subscribers to them.
+In the Dashboard, create or select features and [add them to your product](https://docs.stripe.com/billing/entitlements.md) to grant subscribers access to them.
 
 Listen to the [active entitlements summary events](https://docs.stripe.com/billing/entitlements.md#webhooks) for your [event destination](https://docs.stripe.com/events/how-events-work.md#event-destinations), and use the [list active entitlements API](https://docs.stripe.com/api/entitlements/active-entitlement/list.md) for a given customer to fulfill your customer’s entitlements.
 

@@ -270,6 +270,8 @@ Keep your OpenInference instrumentation and point it at Langfuse's OTLP endpoint
 
   This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/arize-phoenix.mdx) with up-to-date information.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 <!-- agent-instructions -->
 
 ---

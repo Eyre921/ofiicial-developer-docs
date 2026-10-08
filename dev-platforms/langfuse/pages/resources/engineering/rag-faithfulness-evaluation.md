@@ -14,6 +14,8 @@ tags: [guide, evaluation]
 
 **TL;DR:** Faithfulness measures whether a RAG answer is grounded in the retrieved context: extract the factual claims the answer makes, check each claim against the retrieved documents, and score the share of supported claims. It is reference-free, so it needs no ground-truth answers, which makes it the RAG metric you can run on any dataset and on live traffic. This page defines the metric, shows how to design a faithfulness judge prompt, and implements it end to end with the Langfuse Python SDK: as an offline experiment with `run_experiment`, and as a managed LLM-as-a-judge evaluator on production traces.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 ## What RAG faithfulness measures
 
 Faithfulness (also called groundedness) is the degree to which an answer is supported by the context that was retrieved for it. A faithful answer only states things the retrieved documents say or directly imply. An unfaithful answer mixes in claims from the model's parametric knowledge, or invents details outright, even when the prose reads well and the answer happens to be correct.
@@ -257,6 +259,8 @@ Make the individual judge decisions binary and let the numeric score emerge from
 No. Faithfulness is a metric, not a library feature: any LLM judge with a claim-extraction prompt implements it, as the experiment code on this page does with the Langfuse SDK alone. Ragas provides a maintained implementation of that judge along with other RAG metrics, and its scores can be pushed into Langfuse through the integration. Choose based on where you want the judge to live: in your own prompt under version control, or in a library you import.
 
 [Ask another question](/docs/ask-ai)
+
+**Start with Langfuse** [Sign up](/cloud)
 
 <!-- agent-instructions -->
 

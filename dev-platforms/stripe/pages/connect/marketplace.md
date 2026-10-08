@@ -16,7 +16,7 @@ Use this guide if you’re creating a marketplace where:
 
 - You’re the *merchant of record* (The legal entity responsible for facilitating the sale of products to a customer that handles any applicable regulations and liabilities, including sales taxes. In a Connect integration, it can be the platform or a connected account), legally responsible for the goods and services that connected accounts provide to customers.
 - Stripe handles onboarding.
-- Each connected account has an [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md) or a custom dashboard created with [embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md) or the [API](https://docs.stripe.com/api/account_sessions/create.md).
+- Each connected account has an [Express Dashboard](https://docs.stripe.com/connect/express-dashboard.md) or a custom dashboard created with [embedded components](https://docs.stripe.com/connect/get-started-connect-embedded-components.md) or using an [Account Session](https://docs.stripe.com/api/account_sessions/create.md).
 - You process payments directly with Stripe.
 - You pay Stripe fees and manage disputes and refunds.
 - You collect per-payment application fees from connected accounts.

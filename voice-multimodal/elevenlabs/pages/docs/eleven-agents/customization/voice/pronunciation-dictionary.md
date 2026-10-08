@@ -34,7 +34,7 @@ Pronunciation dictionaries allow you to customize how your AI agent pronounces s
 
 Open your agent in the dashboard, navigate to **Voice Settings**, and add a pronunciation dictionary. Save your changes.
 
-![Add a pronunciation dictionary from the agent's voice settings](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757/assets/images/conversational-ai/pd-agents.webp)
+![Add a pronunciation dictionary from the agent's voice settings](/docs/_fern-img/1e7c851096776b9b8cb39cc95b54d394cc02ec7e4771d13958a259accf0ad757.webp)
 
 #### Update via the CLI
 

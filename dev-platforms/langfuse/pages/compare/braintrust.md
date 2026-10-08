@@ -292,6 +292,8 @@ Run both in parallel, swap the SDK wrappers or repoint your OpenTelemetry export
 
   This comparison is out of date? Please [raise a pull request](https://github.com/langfuse/langfuse-docs/blob/main/content/compare/braintrust.mdx) with up-to-date information.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 <!-- agent-instructions -->
 
 ---

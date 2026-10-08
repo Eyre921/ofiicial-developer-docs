@@ -1,10 +1,10 @@
 ---
-title: "Hostinger"
-source: https://resend.com/docs/knowledge-base/hostinger
-path: docs/knowledge-base/hostinger
+title: "Porkbun"
+source: https://resend.com/docs/guides/dns/porkbun
+path: docs/guides/dns/porkbun
 ---
 
-Verify your domain on Hostinger with Resend.
+Verify your domain on Porkbun with Resend.
 
 ## Add Domain to Resend
 
@@ -20,45 +20,37 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
   (e.g. marketing) and is especially important if receiving emails with Resend.
 </Tip>
 
-## Log in to Hostinger
+## Log in to Porkbun
 
-Log in to your [Hostinger account](https://auth.hostinger.com/login):
+Log in to your [Porkbun account](https://porkbun.com/account/domainsSpeedy):
 
-1. Select the `Domains` tab
-2. Choose your Domain from the `Domain portfolio` list.
-3. Select the `DNS / Nameservers` to get to the page to manage DNS records.
+1. Select the `DNS` option under your domain to manage DNS records.
 
 <img alt="Domain Details" />
 
 ## Add MX SPF Record
 
-Copy and paste the values MX in Resend to Hostinger.
+In the `DNS` section on Porkbun copy and paste the values MX from Resend:
 
-1. Set the Type to `MX`.
-2. Type `send` for the `Name` of the record.
-3. Copy the MX Value from Resend into the `Mail Server` field.
-4. Add `10` for the `Priority`.
-5. Set the TTL to `3600`.
-6. Select `Add Record`.
-
-<Info>
-  Omit your domain from the record values in Resend when you paste. Instead of
-  `send.example.com`, paste only `send` (or `send.subdomain` if you're using a
-  subdomain).
-</Info>
+1. On the `Type` page, choose `MX`.
+2. Type `send` for the `Host` of the record.
+3. Copy the MX Value from Resend into the `Answer / Value` field.
+4. Use the default TTL of `600`.
+5. In the `Priority` field enter `10`.
+6. Select `Add`.
 
 <img alt="Domain Details" />
 
 <img alt="Domain Details" />
 
-Below is a mapping of the record fields from Resend to Hostinger:
+Below is a mapping of the record fields from Resend to Porkbun:
 
-| Hostinger | Resend | Example Value |
+| Porkbun | Resend | Example Value |
 | - | - | - |
 | Type | Type | `MX Record` |
-| Name | Name | `send` |
-| Mail Server | Content | `feedback-smtp.us-east-1.amazonses.com` |
-| TTL | - | `Set to 3660` |
+| Host | Name | `send` |
+| Answer / Value | Content | `feedback-smtp.us-east-1.amazonses.com` |
+| TTL | TTL | `600` |
 | Priority | Priority | `10` |
 
 <Info>
@@ -68,12 +60,12 @@ Below is a mapping of the record fields from Resend to Hostinger:
 
 ## Add TXT SPF Record
 
-In the same section, add another record in Hostinger.
+On the same section:
 
-1. Set the Type to `TXT`.
-2. Type `send` for the `Name` of the record.
-3. Copy the TXT Value Resend into the `TXT value` field.
-4. Set the TTL to `3600`.
+1. On the `Type` page, choose `TXT`.
+2. Type `send` for the `Host` of the record.
+3. Copy the TXT Value Resend into the `Answer / Value` field.
+4. Use the default TTL of `600`.
 5. Select `Add Record`.
 
 <Info>
@@ -86,23 +78,23 @@ In the same section, add another record in Hostinger.
 
 <img alt="Domain Details" />
 
-Below is a mapping of the record fields from Resend to Hostinger:
+Below is a mapping of the record fields from Resend to Porkbun:
 
-| Hostinger | Resend | Example Value |
+| Porkbun | Resend | Example Value |
 | - | - | - |
 | Type | Type | `TXT Record` |
-| Name | Name | `send` |
-| TXT value | Content | `"v=spf1 include:amazonses.com ~all"` |
-| TTL | - | `Set to 3600` |
+| Host | Name | `send` |
+| Answer / Value | Content | `"v=spf1 include:amazonses.com ~all"` |
+| TTL | TTL | `600` |
 
 ## Add TXT DKIM Records
 
-In the same section, add another record in Hostinger.
+On the same `Create Record` section:
 
-1. Set the Type to `TXT`.
-2. Type `resend._domainkey` for the `Name` of the record.
-3. Copy the record value from Resend into the `TXT value` field.
-4. Set the TTL to `3600`.
+1. On the `Type` page, choose `TXT`.
+2. Type `resend._domainkey` for the `Host` of the record.
+3. Copy the TXT Value Resend into the `Answer / Value` field.
+4. Use the default TTL of `600`.
 5. Select `Add Record`.
 
 <Info>
@@ -115,14 +107,14 @@ In the same section, add another record in Hostinger.
 
 <img alt="Domain Details" />
 
-Below is a mapping of the record fields from Resend to Hostinger:
+Below is a mapping of the record fields from Resend to Porkbun:
 
-| Hostinger | Resend | Example Value |
+| Porkbun | Resend | Example Value |
 | - | - | - |
 | Type | Type | `TXT Record` |
-| Name | Name | `send` |
-| TXT value | Content | `p=example_domain_key_value` |
-| TTL | - | `Set to 3600` |
+| Host | Name | `send` |
+| Answer / Value | Content | `p=example_domain_key_value` |
+| TTL | TTL | `600` |
 
 ## Receiving Emails
 
@@ -139,23 +131,23 @@ If you want to receive emails at your domain, toggle the "Receiving" switch on t
   records](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records).
 </Warning>
 
-Copy and paste the values MX in Resend to Hostinger:
+In the `DNS` section on Porkbun:
 
-1. Set the Type to `MX`.
-2. Type `inbound` (or whatever your subdomain is) for the `Name` of the record.
-3. Copy the MX Value from Resend into the `Mail Server` field.
-4. Add `10` for the `Priority`.
-5. Set the TTL to `3600`.
-6. Select `Add Record`.
+1. On the `Type` page, choose `MX`.
+2. Type `inbound` (or whatever your subdomain is) for the `Host` of the record.
+3. Copy the MX Value from Resend into the `Answer / Value` field.
+4. Use the default TTL of `600`.
+5. In the `Priority` field enter `10`.
+6. Select `Add`.
 
-Below is a mapping of the record fields from Resend to Hostinger:
+Below is a mapping of the record fields from Resend to Porkbun:
 
-| Hostinger | Resend | Example Value |
+| Porkbun | Resend | Example Value |
 | - | - | - |
 | Type | Type | `MX Record` |
-| Name | Name | `inbound` |
-| Mail Server | Content | `inbound-smtp.us-east-1.amazonaws.com` |
-| TTL | - | `Set to 3660` |
+| Host | Name | `inbound` |
+| Answer / Value | Content | `inbound-smtp.us-east-1.amazonaws.com` |
+| TTL | TTL | `600` |
 | Priority | Priority | `10` |
 
 After verifying your domain, create a webhook to process incoming emails. For help setting up a webhook, how to access email data and attachments, forward emails, and more, see [our guide on receiving emails with Resend](/docs/dashboard/receiving/introduction).
@@ -170,7 +162,7 @@ If your domain is not successfully verified, these are some common troubleshooti
 
 <AccordionGroup>
   <Accordion title="Resend shows my domain verification failed.">
-    Review the records you added to Hostinger to rule out copy and paste errors.
+    Review the records you added to Porkbun to rule out copy and paste errors.
   </Accordion>
 
   <Accordion title="It has been longer than 72 hours and my domain is still Pending.">

@@ -12,6 +12,6 @@ In Studio, you can lock a paragraph once you're happy with it, and this will pre
 
 The lock button locks the current version of the selected paragraph. This means that you no longer have the option to regenerate the paragraph, change the voice or settings, or access the generation history for the paragraph. You can unlock a paragraph at any time by clicking the lock button.
 
-![Lock paragraph control in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/5e43af1d6f6bd4f1f964e58458e2f3c75fee0004de3e8c940b1585eb6356b718/assets/images/product-guides/studio/studio-lock.webp)
+![Lock paragraph control in Studio](/docs/_fern-img/5e43af1d6f6bd4f1f964e58458e2f3c75fee0004de3e8c940b1585eb6356b718.webp)
 
 This feature is only available after you have generated audio for the selected paragraph.

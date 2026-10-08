@@ -14,6 +14,8 @@ tags: [guide, evaluation]
 
 Keep your application code and existing checks. Wrap the function you want to test in an experiment task, run it on a fixed dataset, and use Langfuse to compare outputs and review failures. This works for a single model call, a retrieval pipeline, or an agent that calls tools.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 This example tests a small refund-policy function. The candidate fixes one case and breaks another, so the average score stays the same. Both SDK examples run without a model provider or an LLM judge. Replace the sample function with your application to evaluate fresh outputs from your own system.
 
 ## Set up Langfuse [#setup]
@@ -440,6 +442,8 @@ Open the experiment link printed by the script, then [share the comparison](/doc
 Choose a reviewed baseline, keep the dataset and evaluator versions fixed, and fail CI when a previously passing critical case fails. See [Compare against an approved baseline](/docs/evaluation/experiments/experiments-ci-cd#approved-baseline) for a gate that checks individual cases as well as aggregate scores.
 
 Hosted datasets are useful for sharing and versioning cases. You can also run [experiments on local data](/docs/evaluation/experiments/experiments-via-sdk). In Langfuse v4, these experiments appear in the same experiment list without requiring a hosted dataset.
+
+**Start with Langfuse** [Sign up](/cloud)
 
 <!-- agent-instructions -->
 

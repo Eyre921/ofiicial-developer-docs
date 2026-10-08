@@ -238,7 +238,7 @@ Workspace admins can assign and manage seat types from Settings → [Members](ht
 
 When inviting new users to your workspace, you can select their seat type during the invite flow.
 
-![Inviting a new member to workspace](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b/assets/images/product-guides/administration/members-invite-new.webp)
+![Inviting a new member to workspace](/docs/_fern-img/7f526bee02bc0530073df4473b8319f3ed59c3e284b9ca019799c2b2a8c4c70b.webp)
 
 ### Adding more seats
 

@@ -242,7 +242,7 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Manage Products, Prices, and Customers
 
-First, create a price for your product in the [Dashboard](https://docs.stripe.com/invoicing/products-prices.md) or through the [API](https://docs.stripe.com/api/prices/create.md). After you create a price and associate it with a product, store its ID in your database.
+First, create a price for your product in the [Dashboard](https://docs.stripe.com/invoicing/products-prices.md) or by creating a [Price](https://docs.stripe.com/api/prices/create.md). After you create a price and associate it with a product, store its ID in your database.
 
 Next, look up a [Customer](https://docs.stripe.com/api/customers.md) in your database by [email](https://docs.stripe.com/api/customers/object.md?lang=dotnet#customer_object-email). If that customer doesn’t exist, create the `Customer` and store their ID for future purchases. The next step, for example, uses the [id](https://docs.stripe.com/api/customers/object.md#customer_object-id) of [Customer object](https://docs.stripe.com/api/customers/object.md) to create an invoice.
 
@@ -250,7 +250,7 @@ Next, look up a [Customer](https://docs.stripe.com/api/customers.md) in your dat
 
 ### Manage Products, Prices, and customer-configured Accounts
 
-First, create a price for your product in the [Dashboard](https://docs.stripe.com/invoicing/products-prices.md) or through the [API](https://docs.stripe.com/api/prices/create.md). After you create a price and associate it with a product, store its ID in your database.
+First, create a price for your product in the [Dashboard](https://docs.stripe.com/invoicing/products-prices.md) or by creating a [Price](https://docs.stripe.com/api/prices/create.md). After you create a price and associate it with a product, store its ID in your database.
 
 Next, look up a customer in your database by email. If that customer doesn’t exist, create the [Account](https://docs.stripe.com/api/v2/core/accounts.md) for the [customer](https://docs.stripe.com/connect/account-capabilities.md?accounts-namespace=v2#customer) and store their ID for future purchases. The next step, for example, uses the [id](https://docs.stripe.com/api/v2/core/accounts/object.md#v2_account_object-id) of [Account object](https://docs.stripe.com/api/v2/core/accounts/object.md) to create an invoice.
 

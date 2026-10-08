@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 197 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 199 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -156,6 +156,8 @@
 - `docs/cookbook/administration/tax-id` — [Adding a Tax ID to Your Invoices](pages/docs/cookbook/administration/tax-id.md) · [原文](https://openrouter.ai/docs/cookbook/administration/tax-id.md)
 - `docs/cookbook/administration/usage-accounting` — [Usage Accounting](pages/docs/cookbook/administration/usage-accounting.md) · [原文](https://openrouter.ai/docs/cookbook/administration/usage-accounting.md)
 - `docs/cookbook/administration/user-tracking` — [User Tracking](pages/docs/cookbook/administration/user-tracking.md) · [原文](https://openrouter.ai/docs/cookbook/administration/user-tracking.md)
+- `docs/cookbook/audio/push-to-talk-button` — [Add a Push-to-Talk Voice Button to Your App](pages/docs/cookbook/audio/push-to-talk-button.md) · [原文](https://openrouter.ai/docs/cookbook/audio/push-to-talk-button.md)
+- `docs/cookbook/audio/two-voice-podcast` — [Turn Any Text into a Two-Voice Podcast](pages/docs/cookbook/audio/two-voice-podcast.md) · [原文](https://openrouter.ai/docs/cookbook/audio/two-voice-podcast.md)
 - `docs/cookbook/building-agents/advisor-server-tool` — [Build a Token-Efficient Review Agent](pages/docs/cookbook/building-agents/advisor-server-tool.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/advisor-server-tool.md)
 - `docs/cookbook/building-agents/create-agent-harness-tui` — [Build Your Own Agent TUI](pages/docs/cookbook/building-agents/create-agent-harness-tui.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/create-agent-harness-tui.md)
 - `docs/cookbook/building-agents/create-headless-agent` — [Build Your Own Headless Agent](pages/docs/cookbook/building-agents/create-headless-agent.md) · [原文](https://openrouter.ai/docs/cookbook/building-agents/create-headless-agent.md)
@@ -181,12 +183,12 @@
 - `docs/cookbook/evaluate-and-optimize/jev-verified-cascade` — [Cut LLM Cost with a Jev-Verified Cascade](pages/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/jev-verified-cascade.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6` — [Claude 4.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7` — [Claude 4.7 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5` — [Claude 5.5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1` — [Claude Fable 5.1 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4` — [GPT-5.4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6` — [GPT-5.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6` — [GPT-6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/opus-5` — [Claude Opus 5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5.md)
-- `docs/cookbook/evaluate-and-optimize/model-migrations/opus-5-5` — [Claude Opus 5.5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/opus-5-5.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5` — [Claude 5 Sonnet Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md)
 - `docs/cookbook/evaluate-and-optimize/rag` — [RAG with Embeddings & Rerank](pages/docs/cookbook/evaluate-and-optimize/rag.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/rag.md)
 - `docs/cookbook/evaluate-and-optimize/red-teaming` — [Red Teaming](pages/docs/cookbook/evaluate-and-optimize/red-teaming.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/red-teaming.md)

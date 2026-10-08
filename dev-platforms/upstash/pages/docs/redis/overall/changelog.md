@@ -4,6 +4,10 @@ source: https://upstash.com/docs/redis/overall/changelog
 path: docs/redis/overall/changelog
 ---
 
+<Update label="October 2026">
+* Added the [Insights](/docs/redis/howto/insights) tab to the console for databases with Prod Pack: request routing between regions, client IP ranges and SDKs, latency and throughput charts, usage against plan limits, Lua script statistics and a keyspace analysis.
+</Update>
+
 <Update label="September 2026">
 * Added [Vector](/docs/redis/commands/vector/overview) feature for storing embeddings and running nearest-neighbor queries directly in Redis.
 * Added [Array commands](/docs/redis/commands/array/overview) for sparse, index-addressed data, including range operations, scans, and fixed-size rings.
@@ -70,7 +74,7 @@ commands introduced in Redis 7.
 <Update label="July 2024">
 * Added REST API support for [`MONITOR`](/docs/redis/commands/server/monitor) and [`SUBSCRIBE`](/docs/redis/commands/pub-sub/subscribe)
 commands using [SSE](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events).
-See [Monitor](../features/restapi#monitor-command) and [Subscribe](../features/restapi#subscribe-command) docs.
+See [Monitor](../features/restapi#monitor-command) and [Subscribe](../features/restapi#subscribe-and-publish-commands) docs.
 * Added [`JSON.MSET`](/docs/redis/commands/json/json-mset) and [`JSON.MERGE`](/docs/redis/commands/json/json-merge) commands.
 * Introduced the `IP Allowlist` feature for enhanced security on newly created databases. By default, all IP addresses will be allowed.
 However, access can be restricted by specifying permitted IP addresses or CIDR ranges.

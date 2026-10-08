@@ -8,7 +8,7 @@ path: docs/eleven-creative/voices/voice-library
 
 # Voice Library
 
-![Voice Library](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/a716446ac7de888e68a67612121b1c589595f246fcebfad5e3507fe07f803e84/assets/images/product-guides/voices/voices-voice-library.webp)
+![Voice Library](/docs/_fern-img/a716446ac7de888e68a67612121b1c589595f246fcebfad5e3507fe07f803e84.webp)
 
 ## Overview
 

@@ -14,6 +14,8 @@ tags: [guide, evaluation]
 
 A hallucination is an output that asserts something false or unsupported: a fabricated citation, a confident wrong number, an API method that does not exist. Hallucination detection is the practice of scoring outputs for unsupported claims automatically, so that the failure shows up as a metric on a dashboard instead of a complaint from a user. This page covers what counts as a hallucination, the detection methods that work in practice, and how to design the judge that does the detecting, with Langfuse as the worked implementation.
 
+**Start with Langfuse** [Sign up](/cloud)
+
 **TL;DR:** Production hallucination detection runs an LLM-as-a-judge evaluator on a sample of live traffic; the judge is reference-free, checking the output against the input and context recorded on the same observation, so no ground truth is required. Offline detection runs experiments against a dataset with reference answers before each release, where a judge can verify claims against known-correct outputs. Deterministic code pre-screens (missing citations, numbers absent from context) flag risk signals for free and route only flagged traces to the paid judge. Score verdicts as binary hallucinated/clean, with the failing claims listed in the score comment.
 
 ## What counts as a hallucination
@@ -195,6 +197,8 @@ Reliable enough to trend on and to route with, not reliable enough to treat ever
 No. Evaluator scores are produced asynchronously, after the response has shipped, which makes them the right tool for detecting regressions, routing traces to review, and building regression datasets. A check that must stop an answer in flight is a guardrail and belongs in your application code at request time, and the guardrail's decisions should then be scored like any other output.
 
 [Ask another question](/docs/ask-ai)
+
+**Start with Langfuse** [Sign up](/cloud)
 
 <!-- agent-instructions -->
 

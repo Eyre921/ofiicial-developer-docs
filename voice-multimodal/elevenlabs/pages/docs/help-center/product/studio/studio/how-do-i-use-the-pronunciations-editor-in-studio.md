@@ -20,6 +20,6 @@ You can add aliases and phonemes from directly within Studio by clicking the **O
 
 If you do this while you have a word selected, this word will automatically populate the input field. Otherwise, you can enter the word yourself. You can use the Play button in the Output to preview how it will sound.
 
-![Pronunciation dictionaries in Studio](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c/assets/images/product-guides/studio/studio-pronunciation-dictionaries.webp)
+![Pronunciation dictionaries in Studio](/docs/_fern-img/529a45f8a99dd533047caade26211cacfae53245a43f791efe34d8723555619c.webp)
 
 When you add a new rule, you can either select an existing dictionary to add the rule to, or create a new dictionary. If you add the rule to an existing dictionary, this will automatically connect it to your project.

@@ -12,10 +12,10 @@ In Studio, the grey line to the left of a paragraph indicates the audio generati
 
 In the image below, the highlighted paragraph has audio generated, whereas the second one does not.
 
-![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/f5a047c2eb727975df8391ead8e0946961360e2e153fe9de6199fa8301620bfd/assets/images/help-center/product/studio/studio-generated-light.webp)
+![](/docs/_fern-img/f5a047c2eb727975df8391ead8e0946961360e2e153fe9de6199fa8301620bfd.webp)
 
 In Dark Mode, this color scheme adjusts slightly: a light grey line still represents ungenerated audio, while a white line indicates that the paragraph has been converted to audio.
 
 The image below demonstrates this: audio has been generated for the highlighted paragraph, but not for the second one.
 
-![](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/0e18235843df57486ec2e38e2dd764f5977250d4c098d3f6b0e53d0719211c9a/assets/images/help-center/product/studio/studio-generated-dark.webp)
+![](/docs/_fern-img/0e18235843df57486ec2e38e2dd764f5977250d4c098d3f6b0e53d0719211c9a.webp)

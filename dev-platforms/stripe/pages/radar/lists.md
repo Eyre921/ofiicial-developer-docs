@@ -72,7 +72,7 @@ You can create lists of your own that contain items that are a specific type of 
 - SEPA Direct Debit fingerprint
 - ACH Direct Debit fingerprint
 
-Use the [Dashboard](https://dashboard.stripe.com/test/radar/lists) or the [API](https://docs.stripe.com/api/radar/value_lists/create.md) to create lists. To create a new list in the Dashboard:
+Use the [Dashboard](https://dashboard.stripe.com/test/radar/lists) or [Create a Value List](https://docs.stripe.com/api/radar/value_lists/create.md) to create lists. To create a new list in the Dashboard:
 
 1. Click **New**.
 2. Enter a name for the list (we automatically generate an alias to use as a reference when writing rules, but you can override this).

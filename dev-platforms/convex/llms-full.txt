@@ -524,7 +524,7 @@ Agentic workflows are built up by combining contextual prompting (threads, messa
 
 ## Basic Agent definition[​](#basic-agent-definition "Direct link to Basic Agent definition")
 
-These examples use the [Convex AI Gateway](/ai-gateway/overview.md). See [Getting Started](/agents/getting-started.md) for installation and requirements.
+These examples use the [Convex AI Gateway](https://docs.convex.dev/ai-gateway). See [Getting Started](/agents/getting-started.md) for installation and requirements.
 
 ```
 import { components } from "./_generated/api";
@@ -1331,11 +1331,13 @@ const supportAgent = new Agent(components.agent, {
 
 ## Tracing LLM calls with OpenTelemetry[​](#tracing-llm-calls-with-opentelemetry "Direct link to Tracing LLM calls with OpenTelemetry")
 
-When you pass [`experimental_telemetry`](https://ai-sdk.dev/docs/ai-sdk-core/telemetry) to a generate or stream call, the AI SDK emits OpenTelemetry spans with the model, token usage, prompt, and response.
+The AI SDK can emit OpenTelemetry spans with the model, token usage, prompt, and response for generate and stream calls. Install `@ai-sdk/otel`, `@opentelemetry/api`, `@opentelemetry/exporter-trace-otlp-http`, `@opentelemetry/resources`, and `@opentelemetry/sdk-trace-base`, then register the AI SDK's OpenTelemetry integration to enable them.
 
-To export them to an OTLP backend, register a tracer provider:
+To export them to an OTLP backend, register a tracer provider and the AI SDK integration:
 
 ```
+import { OpenTelemetry } from "@ai-sdk/otel";
+
 import { trace } from "@opentelemetry/api";
 
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
@@ -1349,6 +1351,8 @@ import {
   SimpleSpanProcessor,
 
 } from "@opentelemetry/sdk-trace-base";
+
+import { registerTelemetry } from "ai";
 
 
 
@@ -1379,9 +1383,11 @@ const tracerProvider = new BasicTracerProvider({
 });
 
 trace.setGlobalTracerProvider(tracerProvider);
+
+registerTelemetry(new OpenTelemetry());
 ```
 
-Then enable telemetry on the call, and flush the spans before the handler returns so their exports are [awaited](https://docs.convex.dev/understanding/best-practices/#await-all-promises):
+Then add metadata for the call, and flush the spans before the handler returns so their exports are [awaited](https://docs.convex.dev/understanding/best-practices/#await-all-promises):
 
 ```
 export const generateTextWithTelemetry = action({
@@ -1402,9 +1408,7 @@ export const generateTextWithTelemetry = action({
 
         prompt,
 
-        experimental_telemetry: {
-
-          isEnabled: true,
+        telemetry: {
 
           functionId: "debugging/telemetry",
 
@@ -1684,7 +1688,7 @@ Run `npm create convex` or follow any of the [quickstarts](https://docs.convex.d
 
 ## Installation[​](#installation "Direct link to Installation")
 
-These examples use the [Convex AI Gateway](/ai-gateway/overview.md), available to paid teams on Convex Cloud and [project-linked local deployments](/ai-gateway/setup.md#local-development). See [Gateway setup](/ai-gateway/setup.md#vercel-ai-sdk) for package and Node.js runtime requirements. On the Free plan, use an [AI SDK provider](https://ai-sdk.dev/providers/ai-sdk-providers) with your own API key stored in an [environment variable](/production/environment-variables.md).
+These examples use the [Convex AI Gateway](https://docs.convex.dev/ai-gateway), available to paid teams on Convex Cloud and [project-linked local deployments](https://docs.convex.dev/ai-gateway/setup#local-development). See [Gateway setup](https://docs.convex.dev/ai-gateway/setup#vercel-ai-sdk) for package and Node.js runtime requirements. On the Free plan, use an [AI SDK provider](https://ai-sdk.dev/providers/ai-sdk-providers) with your own API key stored in an [environment variable](https://docs.convex.dev/production/environment-variables).
 
 Install the component and Gateway provider:
 
@@ -1716,7 +1720,7 @@ Then run `npx convex dev` to generate code for the component. This needs to succ
 
 ## Defining your first Agent[​](#defining-your-first-agent "Direct link to Defining your first Agent")
 
-The Gateway provider obtains a service token automatically when the model is called inside a Convex action; no provider API key is needed. See [Gateway setup](/ai-gateway/setup.md) for details.
+The Gateway provider obtains a service token automatically when the model is called inside a Convex action; no provider API key is needed. See [Gateway setup](https://docs.convex.dev/ai-gateway/setup) for details.
 
 ```
 import { components } from "./_generated/api";
@@ -2621,6 +2625,64 @@ Then visit the [hosted version](https://get-convex.github.io/agent/).
 
 It will ask for your Convex deployment URL, which can be found in `.env.local`. It will also ask for your API key that you generated above. If you used a different path for `convex/playground.ts` you can enter it. E.g. if you had `convex/foo/bar.ts` where you exported the playground API, you'd put in `foo/bar`.
 
+### Agents that need `"use node"`[​](#agents-that-need-use-node "Direct link to agents-that-need-use-node")
+
+Queries and mutations must run in the Convex runtime, so `convex/playground.ts` cannot import an agents module that needs Node APIs. Split the API in two: queries in a Convex-runtime file, given the agents' metadata rather than the instances, and actions next to the agents.
+
+```
+// convex/playground.ts
+
+import { definePlaygroundQueries } from "@convex-dev/agent";
+
+import { components } from "./_generated/api";
+
+
+
+export const {
+
+  isApiKeyValid,
+
+  listAgents,
+
+  listUsers,
+
+  listThreads,
+
+  listMessages,
+
+  createThread,
+
+} = definePlaygroundQueries(components.agent, {
+
+  agents: [{ name: "Weather Agent", tools: ["getWeather"] }],
+
+});
+```
+
+```
+// convex/playgroundNode.ts
+
+"use node";
+
+import { definePlaygroundActions } from "@convex-dev/agent";
+
+import { components } from "./_generated/api";
+
+import { weatherAgent } from "./example";
+
+
+
+export const { generateText, fetchPromptContext } = definePlaygroundActions(
+
+  components.agent,
+
+  { agents: [weatherAgent] },
+
+);
+```
+
+In the playground, set the API path to `playground` and the actions path to `playgroundNode`. The `name` given to `definePlaygroundQueries` must match the agent's `name` option, since the actions look the agent up by it. `definePlaygroundAPI` composes `definePlaygroundQueries` and `definePlaygroundActions` for the common case where one file can hold everything.
+
 ## Running it locally[​](#running-it-locally "Direct link to Running it locally")
 
 You can run the playground locally with:
@@ -3400,7 +3462,7 @@ It consists of using the `DeltaStreamer` class to save the deltas to the databas
 
 The requirements for reading and writing the streams are just that they use a `threadId` from the Agent component, and that each stream is saved with a distinct `order`, for ordering on the client side.
 
-The example uses the [Convex AI Gateway](/ai-gateway/overview.md); see [Getting Started](/agents/getting-started.md) for installation and requirements.
+The example uses the [Convex AI Gateway](https://docs.convex.dev/ai-gateway); see [Getting Started](/agents/getting-started.md) for installation and requirements.
 
 ```
 import { components } from "./_generated/api";
@@ -5503,6 +5565,8 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `anthropic/claude-fable-5:batch`
 * `anthropic/claude-haiku-4.5`
 * `anthropic/claude-haiku-4.5:batch`
+* `anthropic/claude-haiku-5.5`
+* `anthropic/claude-haiku-5.5:batch`
 * `anthropic/claude-opus-4.1`
 * `anthropic/claude-opus-4.1:batch`
 * `anthropic/claude-opus-4.5`
@@ -5564,6 +5628,7 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `google/gemini-3.7-flash:batch`
 * `google/gemini-3.8-flash`
 * `google/gemini-3.8-flash:batch`
+* `google/gemini-nano-banana-2.1`
 * `google/gemma-2-27b-it`
 * `google/gemma-3-12b-it`
 * `google/gemma-3-27b-it`
@@ -5640,6 +5705,7 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `mistralai/mistral-large-2407`
 * `mistralai/mistral-large-2512`
 * `mistralai/mistral-large-2512:batch`
+* `mistralai/mistral-large-4-0`
 * `mistralai/mistral-medium-3`
 * `mistralai/mistral-medium-3-5`
 * `mistralai/mistral-medium-3-5:batch`
@@ -5726,7 +5792,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `qwen/qwen3.7-plus`
 * `qwen/qwen3.8-2.4t-a95b`
 * `qwen/qwen3.8-27b`
-* `qwen/qwen3.8-27b:free`
 * `qwen/qwen3.8-flash`
 * `qwen/qwen3.8-max-0902`
 * `qwen/qwen3.8-max-prime`
@@ -5775,6 +5840,7 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `nvidia/nemotron-3.5-content-safety:free`
 * `nvidia/nemotron-3.5-lightning`
 * `nvidia/nemotron-3.5-lightning:free`
+* `nvidia/switchyard`
 
 ## Microsoft[​](#microsoft "Direct link to Microsoft")
 
@@ -5810,10 +5876,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 * `tencent/hy3`
 * `tencent/hy3-preview`
 * `tencent/hy4-preview`
-
-## Baidu[​](#baidu "Direct link to Baidu")
-
-* `baidu/ernie-4.5-vl-424b-a47b`
 
 ## Xiaomi[​](#xiaomi "Direct link to Xiaomi")
 
@@ -5888,7 +5950,7 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 
 * `inclusionai/ling-3.0-flash`
 * `inclusionai/ling-3.0-flash-fin`
-* `inclusionai/ling-3.0-flash-sante:free`
+* `inclusionai/ling-3.0-flash-sante`
 * `inclusionai/ling-3.0-flash-vl`
 * `inclusionai/ling-3.1-flash`
 
@@ -5896,10 +5958,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 
 * `inference-net/schematron-v2-small`
 * `inference-net/schematron-v2-turbo`
-
-## KwaiPilot[​](#kwaipilot "Direct link to KwaiPilot")
-
-* `kwaipilot/kat-coder-pro-v2.5`
 
 ## Liquid AI[​](#liquid-ai "Direct link to Liquid AI")
 
@@ -5972,6 +6030,7 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 
 * `stepfun/step-3.5-flash`
 * `stepfun/step-3.7-flash`
+* `stepfun/step-5-preview`
 
 ## TheDrummer[​](#thedrummer "Direct link to TheDrummer")
 
@@ -6012,10 +6071,6 @@ Model names use the `provider/model` form. Pass the string as `model` to the Ope
 ## fireworks[​](#fireworks "Direct link to fireworks")
 
 * `fireworks/ember-1`
-
-## stealth[​](#stealth "Direct link to stealth")
-
-* `stealth/space-bunny-alpha`
 
 ## typesafe[​](#typesafe "Direct link to typesafe")
 
@@ -25659,7 +25714,7 @@ The JSON representation of `value`.
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[values/value.ts:484](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L484)
+[values/value.ts:488](https://github.com/get-convex/convex-js/blob/main/src/values/value.ts#L488)
 
 
 ---
@@ -38460,6 +38515,8 @@ Practically speaking, a component is defined in a folder containing a `convex.co
  └-- …folders/files.ts  # Queries, mutations, and actions for the component.
 ```
 
+Module paths are the component's API: apps call a `send` mutation defined in `component/messages.ts` as `components.myComponent.messages.send`. A component with a single module often names it `lib.ts`. If your component has more than one module, name each after the object it deals with, such as `messages.ts` or `jobs.ts`.
+
 The component's `convex.config.ts` file configures the component's default name and child components.
 
 component/convex.config.ts
@@ -46286,7 +46343,7 @@ Key implications:
 
 * **Access control happens before the URL is shared**: You can choose who receives a file URL, but you cannot prevent them from reusing or sharing it.
 * **Shared URLs are revoked by deleting the file**: If you still need to serve the file, upload it again and share the new URL only with authorized users.
-* **Changing access to the same file requires app-level checks**: If a user's access can change over time, use an [HTTP action](/file-storage/serve-files.md#serving-files-from-http-actions) to check permissions before returning file bytes. HTTP action responses are limited to 20MB, so they aren't a fit for serving larger files through Convex.
+* **Changing access to the same file requires app-level checks**: If a user's access can change over time, use an [HTTP action](/file-storage/serve-files.md#serving-files-from-http-actions) to check permissions before returning file bytes. HTTP action responses are limited to 100 MiB, so they aren't a fit for serving larger files through Convex.
 
 If you need file URLs that automatically expire after some time, consider the [Cloudflare R2 component](https://www.convex.dev/components/cloudflare-r2). Use Convex File Storage URLs only when bearer URL access is acceptable for your use case.
 
@@ -46381,7 +46438,7 @@ For files requiring access control on every request, serve files directly from [
 
 If your permissions live on another app document, use that document's ID in the URL, such as a message ID or file document ID. Then look up the storage ID server-side after checking permissions.
 
-It is also fine for the client to pass an `Id<"_storage">` to an authenticated HTTP action, as long as the action checks that the caller can access that file. Do not use the storage ID as the only access check. HTTP action responses are [currently limited](/functions/http-actions.md#limits) to 20MB, so they aren't a fit for serving larger files through Convex.
+It is also fine for the client to pass an `Id<"_storage">` to an authenticated HTTP action, as long as the action checks that the caller can access that file. Do not use the storage ID as the only access check. HTTP action responses are [currently limited](/functions/http-actions.md#limits) to 100 MiB, so they aren't a fit for serving larger files through Convex.
 
 If you need file URLs that automatically expire after some time, consider the [Cloudflare R2 component](https://www.convex.dev/components/cloudflare-r2). Use Convex File Storage URLs as described [above](#generating-file-urls-in-queries) only when bearer URL access is acceptable for your use case.
 
@@ -46755,7 +46812,7 @@ The file size is not limited, but upload POST request has a 2 minute timeout.
 
 The file upload process can be more tightly controlled by leveraging [HTTP action](/functions/http-actions.md)s, performing the whole upload flow using a single request, but requiring correct CORS headers configuration.
 
-The custom upload HTTP action can control who can upload files to your Convex storage. But note that the HTTP action request size is [currently limited](/functions/http-actions.md#limits) to 20MB. For larger files you need to use upload URLs as described [above](#uploading-files-via-upload-urls).
+The custom upload HTTP action can control who can upload files to your Convex storage.
 
 **Example:** [File Storage with HTTP Actions](https://github.com/get-convex/convex-demos/tree/main/file-storage-with-http)
 
@@ -47543,7 +47600,14 @@ The nature of bundling comes with a few limitations.
 
 ### Code size limits[​](#code-size-limits "Direct link to Code size limits")
 
-The total size of your bundled function code in your `convex/` folder is **limited to 32MiB (\~33.55MB)**. Other platform limits can be found [here](/production/state/limits.md).
+The total size of your source code and [external packages](/functions/bundling.md#external-packages) cannot exceed the following:
+
+* 90MB (after compression)
+* 230MB (before compression)
+
+Your code bundle is automatically compressed as part of the code push process.
+
+Other platform limits can be found [here](/production/state/limits.md).
 
 While this limit in itself is quite high for just source code, certain dependencies can quickly make your bundle size cross over this limit, particularly if they are not effectively [tree-shakeable](https://webpack.js.org/guides/tree-shaking/) (such as [aws-sdk](https://www.npmjs.com/package/aws-sdk) or [snowflake-sdk](https://www.npmjs.com/package/snowflake-sdk))
 
@@ -47573,7 +47637,7 @@ You can follow these steps to debug bundle size:
 
 Code bundled for the Convex runtime will be in the `isolate` directory while code bundled for node actions will be in the `node` directory.
 
-Large node dependencies can be eliminated from the bundle by marking them as [external packages](/functions/bundling.md#external-packages).
+[External packages](/functions/bundling.md#external-packages) count towards the size limit, but will not be uploaded when pushing code to your deployment. Marking large node dependencies as external can make pushing code faster. However, external packages are installed in full rather than tree-shaken, so marking a dependency as external can increase your total code size.
 
 Upgrade to optimize your bundle
 
@@ -47675,11 +47739,6 @@ const { Foo } = SomeModule;
 ```
 
 ### Limitations[​](#limitations "Direct link to Limitations")
-
-The total size of your source code bundle and external packages cannot exceed the following:
-
-* 45MB zipped
-* 240MB unzipped
 
 Packages that are known not to work at this time:
 
@@ -48287,7 +48346,7 @@ HTTP actions run in the same environment as queries and mutations so also do not
 
 Like [actions](/functions/actions.md#error-handling), HTTP actions may have side-effects and will not be automatically retried by Convex when errors occur. It is a responsibility of the caller to handle errors and retry the request if appropriate.
 
-Request and response size is limited to 20MB.
+There is no specific limit on request size, except `multipart/form-data` bodies, which are limited to 20 MiB. Response size is limited to 100 MiB. HTTP actions in the Convex runtime have 64 MiB of memory, so to return a response larger than that, stream the body with a `ReadableStream` instead of building it in memory.
 
 HTTP actions support request and response body types of `.text()`, `.json()`, `.blob()`, and `.arrayBuffer()`.
 
@@ -53520,7 +53579,7 @@ Schema:
 
 * `provider`: string naming the provider that reported the usage
 
-* `endpoint`: string, one of `["chat_completions", "decisions", "embeddings", "images", "messages", "responses", "videos"]`
+* `endpoint`: string, one of `["chat_completions", "decisions", "embeddings", "images", "messages", "responses", "speech", "transcriptions", "videos"]`
 
 * `upstream_id`: optional provider request identifier
 
@@ -54672,10 +54731,10 @@ Applied to every [Convex value](/database/types.md), including values in documen
 | Function calls                                                   | Free: 1,000,000/month total<br />Starter: 1,000,000/month included;<br />$2.20 per additional 1,000,000 | 25,000,000/month included;<br />$2 per additional 1,000,000 | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Serverless: $2 per 1,000,000<br />Dedicated: $0.20 per 1,000,000           | Explicit client calls, scheduled executions, subscription updates, and file accesses count as function calls. |
 | Query / mutation compute                                         | Free                                                                                                    | Free                                                        | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Serverless: Free<br />Dedicated: $0.45/GB-hour                             | Query and mutation compute is only billed on dedicated deployments.                                           |
 | Action compute                                                   | Free: 20 GB-hours/month total<br />Starter: 20 GB-hours/month included;<br />$0.33/GB-hour additional   | 250 GB-hours included;<br />$0.30/GB-hour additional        | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: $0.16/GB-hour CPU time<br />Node.js runtime: $0.32/GB-hour | Convex runtime: 64 MiB RAM.<br />Node.js runtime: 512 MiB RAM.                                                |
-| Code size                                                        | 32 MiB                                                                                                  | 32 MiB                                                      | 32 MiB                                                                     | 32 MiB                                                                     | Per deployment.                                                                                               |
+| Code size                                                        | 90 MB compressed<br />230 MB uncompressed                                                               | 90 MB compressed<br />230 MB uncompressed                   | 90 MB compressed<br />230 MB uncompressed                                  | 90 MB compressed<br />230 MB uncompressed                                  | Per deployment. See [bundling limits](/functions/bundling.md#code-size-limits).                               |
 | Function argument size                                           | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     | Node actions only support arguments up to 5MiB.                                                               |
 | Function return value size                                       | 16 MiB                                                                                                  | 16 MiB                                                      | 16 MiB                                                                     | 16 MiB                                                                     |                                                                                                               |
-| HTTP action response size                                        | 20 MiB                                                                                                  | 20 MiB                                                      | 20 MiB                                                                     | 20 MiB                                                                     | There is no specific limit on request size                                                                    |
+| HTTP action response size                                        | 100 MiB                                                                                                 | 100 MiB                                                     | 100 MiB                                                                    | 100 MiB                                                                    | There is no specific limit on request size                                                                    |
 | Length of a console.log line                                     | 4 KiB                                                                                                   | 4 KiB                                                       | 4 KiB                                                                      | 4 KiB                                                                      |                                                                                                               |
 | Log lines per function                                           | 256                                                                                                     | 256                                                         | 256                                                                        | 256                                                                        | Additional logs will be dropped.                                                                              |
 | [Log streaming](/production/integrations/log-streams/.md) limits | 4096 logs, flushed every 5 seconds                                                                      | 4096 logs, flushed every 5 seconds                          | 4096 logs, flushed every 5 seconds                                         | 4096 logs, flushed every 5 seconds                                         | How many logs can be buffered when streaming                                                                  |

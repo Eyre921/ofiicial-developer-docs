@@ -39,14 +39,14 @@ In the WordPress admin console, click on "Code Snippets". Add the Audio Native e
     <script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
 ```
 
-![Audio Native](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/ce6368db32162ddccd68639525a54eeb477eacf3ecd64f9fac559f7a4bac1e01/assets/images/product-guides/audio-native/audio-native-wordpress-1.webp)
+![Audio Native](/docs/_fern-img/ce6368db32162ddccd68639525a54eeb477eacf3ecd64f9fac559f7a4bac1e01.webp)
 
 Pick "Auto Insert" for the insert method and set the location to be "Insert Before Content".
 
-![Audio Native](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/301598cd60b04b9df9465b057eeb955518b94dfbf676c9cbfee194fe6653fa90/assets/images/product-guides/audio-native/audio-native-wordpress-2.webp)
+![Audio Native](/docs/_fern-img/301598cd60b04b9df9465b057eeb955518b94dfbf676c9cbfee194fe6653fa90.webp)
 
 #### Publish your changes
 
 Finally, publish your changes and navigate to the live version of the blog post. You should see a message to let you know that the Audio Native project is being created. After a few minutes the text in your blog will be converted to an audio article and the embedded audio player will appear.
 
-![Audio Native](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/d28e7eb952db6f03f5c1007f43eea0dcda3dc5413d98ab2a3aa5610d242ed8b8/assets/images/product-guides/audio-native/audio-native-wordpress-3.webp)
+![Audio Native](/docs/_fern-img/d28e7eb952db6f03f5c1007f43eea0dcda3dc5413d98ab2a3aa5610d242ed8b8.webp)

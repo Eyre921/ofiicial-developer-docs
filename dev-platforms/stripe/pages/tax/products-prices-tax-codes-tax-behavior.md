@@ -123,7 +123,7 @@ curl https://api.stripe.com/v1/checkout/sessions \
 
 ## Create a shipping rate with tax code  (Optional)
 
-Checkout payment mode allows you to set shipping rates and charge tax on shipping. You can automatically calculate tax on shipping charges by setting the tax code on the shipping rate in the Dashboard or [API](https://docs.stripe.com/api/shipping_rates.md).
+Checkout payment mode allows you to set shipping rates and charge tax on shipping. You can automatically calculate tax on shipping charges by setting the tax code on the shipping rate in the Dashboard or on the [Shipping Rates](https://docs.stripe.com/api/shipping_rates.md) object.
 
 ```curl
 curl https://api.stripe.com/v1/shipping_rates \

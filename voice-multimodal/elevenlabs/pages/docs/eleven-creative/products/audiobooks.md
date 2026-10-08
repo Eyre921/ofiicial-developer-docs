@@ -39,7 +39,7 @@ Drag and drop your manuscript into the upload area, or browse your device to sel
 
 ### Choose a narration style
 
-![Audiobooks narration style selection](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2/assets/images/product-guides/studio/audiobooks-narration-style.webp)
+![Audiobooks narration style selection](/docs/_fern-img/7a260dd3129eed27bde661e753a049b11ff845e7f4f8949f59bdb65048dae5f2.webp)
 
 Select how you want your audiobook to be narrated:
 
@@ -87,7 +87,7 @@ Review the detected structure carefully before continuing. Manuscript formatting
 
 In the **Characters** step, you select the voices for your audiobook.
 
-![Audiobooks character casting](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad/assets/images/product-guides/studio/audiobooks-characters.webp)
+![Audiobooks character casting](/docs/_fern-img/8ada24df5144f84856f1440d93ab85265bf002ece92e297fb0db37ac939588ad.webp)
 
 ### Cast a multi-cast audiobook
 
@@ -129,7 +129,7 @@ You can preview voices before assigning them.
 
 The **Pronunciations** step helps you control how names, places, invented words, and other unusual terms are spoken.
 
-![Audiobooks pronunciations editor](/docs/_fern-files/elevenlabs.docs.buildwithfern.com/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf/assets/images/product-guides/studio/audiobooks-pronunciations.webp)
+![Audiobooks pronunciations editor](/docs/_fern-img/123ec06328152f7464f0cfad028cf1049489a8beb1283338ba30100c2c4308cf.webp)
 
 ### Review automatically detected terms
 

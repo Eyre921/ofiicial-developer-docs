@@ -65,6 +65,10 @@ Upstash Prod Pack and Enterprise plans offer Prometheus metrics collection, enab
 
 Upstash Prod Pack and Enterprise plans include integration with Datadog, allowing you to monitor your Redis databases with Datadog in addition to console metrics. Learn more about [Datadog integration](/docs/redis/howto/datadog).
 
+### Insights
+
+The Insights tab on the database page shows request routing between regions, the IP ranges and SDKs your clients use, latency and throughput charts, usage against plan limits, Lua script statistics and a keyspace analysis. Databases without Prod Pack see the tab with sample data. Learn more about [Insights](/docs/redis/howto/insights).
+
 ### More metrics on the Console
 
 Max interval of the metrics that are available on the Upstash Console increases from one week to one month for databases with Prod Pack.

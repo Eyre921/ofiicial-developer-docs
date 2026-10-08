@@ -62,7 +62,14 @@ Some individuals or entities might be tax exempt. For example, some US states ha
 
 If you’re collecting taxes, you must file and remit (transfer) the taxes collected in every location that you’re registered in. Make sure you understand and comply with obligations of each state or country and consult your tax advisor if you need help. You can export your transactions in an itemized format when you need detailed records. [Read more about Stripe Tax reports](https://docs.stripe.com/tax/reports.md).
 
-Stripe can help automate tax filings globally. For US locations, you can [file with Stripe](https://docs.stripe.com/tax/file-with-stripe.md). For regions outside the US, Stripe Tax has filing partners—Taxually, Marosa, and Hands-off Sales Tax (HOST)—to help automate your tax filing. These partners automatically sync your tax transaction data, eliminating the need for manual data entry or file transfers. Learn more about [tax filing](https://docs.stripe.com/tax/filing.md).
+Stripe can help you automate tax filing globally:
+
+- **US**: [File with Stripe](https://docs.stripe.com/tax/file-with-stripe.md).
+- **Canada**: [File with Stripe](https://docs.stripe.com/tax/file-with-stripe-outside-us.md#canada-simplified-gsthst-filing) for simplified GST/HST registrations.
+- **EU**: [File with Stripe](https://docs.stripe.com/tax/file-with-stripe-outside-us.md#eu-non-union-oss-filing-through-ireland) for non-Union One Stop Shop (OSS) registrations in Ireland.
+- **Other supported locations**: Stripe Tax works with filing partners—Taxually, Marosa, and Hands-off Sales Tax (HOST)—to help automate your tax filing in other supported locations. These partners automatically sync your tax transaction data, so you don’t need to enter data manually or transfer files.
+
+Learn more about [tax filing](https://docs.stripe.com/tax/filing.md).
 
 ## Pricing 
 

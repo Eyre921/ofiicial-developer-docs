@@ -83,9 +83,9 @@ If you create [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.
 
 Enabling tax and configuring automatic collection in your integration doesn’t update your existing subscription, invoice, and payment link instances. You must update them separately to begin calculating and collecting tax. You can complete these updates in the Dashboard or by setting `automatic_tax.enabled=true` in the respective APIs:
 
-- Subscriptions [Dashboard](https://dashboard.stripe.com/subscriptions) or [API](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled)
-- Payment links [Dashboard](https://dashboard.stripe.com/payment-links) or [API](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled)
-- Invoices [Dashboard](https://dashboard.stripe.com/invoices) or [API](https://docs.stripe.com/api/invoices/update.md#update_invoice-automatic_tax-enabled)
+- Subscriptions [Dashboard](https://dashboard.stripe.com/subscriptions) or [Update a subscription](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled)
+- Use the [Payment links Dashboard page](https://dashboard.stripe.com/payment-links) or update each [Payment Link](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled) programmatically.
+- Invoices [Dashboard](https://dashboard.stripe.com/invoices) or [Update an invoice](https://docs.stripe.com/api/invoices/update.md#update_invoice-automatic_tax-enabled)
 
 ## Set up filing
 

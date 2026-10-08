@@ -12,7 +12,7 @@ Learn what you need to get started with Atlas.
 
 Stripe Atlas incorporates your company in Delaware, gets your company tax ID (EIN) from the IRS, issues founders equity, and files your 83(b) election. After incorporating you can open a business bank account, charge customers using Stripe payments, and access discounts on tools for founders.
 
-Atlas costs 500 USD, which covers incorporation (plus state fees), and your first year of registered agent services. After that, we charge 100 USD annually to maintain your registered agent. We’ll refund your fee if we’re unable to support your business. Read more about Stripe Atlas’ [restricted business categories](https://support.stripe.com/questions/stripe-atlas-restricted-business-categories).
+See [Stripe Atlas pricing](https://stripe.com/pricing#atlas) for incorporation and registered agent service fees. We’ll refund your fee if we’re unable to support your business. Read more about Stripe Atlas’ [restricted business categories](https://support.stripe.com/questions/stripe-atlas-restricted-business-categories).
 
 Atlas provides legal information and self-serve tools that assist you in providing this information, filling out template documents, and filing these with the appropriate government offices. Atlas isn’t a law firm and doesn’t provide legal, tax, or accounting advice. Atlas can’t guarantee that your business will be approved to use Stripe payments. Using Atlas isn’t a substitute for individual advice from qualified legal, tax, or accounting professionals. Double-check that the documents we populate are aligned with your company’s unique circumstances, because you’ll need to work with a lawyer to make any changes after your incorporation documents are executed.
 
@@ -111,7 +111,7 @@ If any of these assumptions are incorrect prior to incorporation, please work wi
 
 ## Registered agent service 
 
-To maintain good standing, Delaware requires that companies have a registered agent to receive official notices. The initial 500 USD setup fee includes one year of registered agent services, which automatically renews each year for 100 USD. Your registered agent might contact you directly to share legal notices and official communications from Delaware. Your registered agent address isn’t a general purpose mail-forwarding address for your company and shouldn’t be listed as a company address. You can separately use a virtual address service to receive general mail, for customer contact, and to apply to open a bank account.
+To maintain good standing, Delaware requires that companies have a registered agent to receive official notices. Atlas includes one year of registered agent services, which automatically renews each year. See [Stripe Atlas pricing](https://stripe.com/pricing#atlas) for fee details. Your registered agent might contact you directly to share legal notices and official communications from Delaware. Your registered agent address isn’t a general purpose mail-forwarding address for your company and shouldn’t be listed as a company address. You can separately use a virtual address service to receive general mail, for customer contact, and to apply to open a bank account.
 
 Maintaining a registered agent is only one requirement for good standing with the State of Delaware. Other actions that are required include:
 

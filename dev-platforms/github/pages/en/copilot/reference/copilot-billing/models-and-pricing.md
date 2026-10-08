@@ -181,7 +181,9 @@ For most Copilot features, the model used for each interaction is visible to you
 
 Each code review is billed in two ways: token consumption is billed in AI credits, and the agentic infrastructure that powers the review consumes GitHub Actions minutes.
 
-GitHub Actions minutes are attributed to the repository, and from there to the enterprise or cost center where applicable. AI credits are charged to the person who requests the review, or to the author of a pull request where a policy automatically triggers a review. If that person does not have a Copilot seat, usage is billed to the enterprise or cost center instead. For pull requests authored by Copilot cloud agent, usage is attributed first to the human co-author associated with the change. If the co-author cannot be billed, usage is billed directly to the organization. For pull requests authored by other bots, or when a bot requests the review, usage is also billed directly to the organization. These pull requests are eligible for agentic review.
+GitHub Actions minutes are attributed to the repository, and from there to the enterprise or cost center where applicable. For requests associated with organization members who have paid Copilot licenses, AI credits are charged to the member or organization, depending on how the **Choose how members with a Copilot license are billed** policy is configured.
+
+If the person associated with a review does not have a Copilot seat, usage is billed to the enterprise or cost center instead. For pull requests authored by Copilot cloud agent, usage is attributed first to the human co-author associated with the change. If the co-author cannot be billed, usage is billed directly to the organization. For pull requests authored by other bots, or when a bot requests the review, usage is also billed directly to the organization. These pull requests are eligible for agentic review.
 
 You can view your current GitHub Actions usage for Copilot code review in the following ways:
 

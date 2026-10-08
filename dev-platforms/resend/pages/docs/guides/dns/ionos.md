@@ -1,10 +1,10 @@
 ---
-title: "Porkbun"
-source: https://resend.com/docs/knowledge-base/porkbun
-path: docs/knowledge-base/porkbun
+title: "IONOS"
+source: https://resend.com/docs/guides/dns/ionos
+path: docs/guides/dns/ionos
 ---
 
-Verify your domain on Porkbun with Resend.
+Verify your domain on IONOS with Resend.
 
 ## Add Domain to Resend
 
@@ -20,53 +20,25 @@ First, log in to your [Resend Account](https://resend.com/login) and [add a doma
   (e.g. marketing) and is especially important if receiving emails with Resend.
 </Tip>
 
-## Log in to Porkbun
+## Log in to IONOS
 
-Log in to your [Porkbun account](https://porkbun.com/account/domainsSpeedy):
+Log in to your [IONOS account](https://my.ionos.com/domains):
 
-1. Select the `DNS` option under your domain to manage DNS records.
+1. Choose your Domain from the `Domain` list.
+2. Select the `DNS` tab to get to the page to manage DNS records.
 
 <img alt="Domain Details" />
 
 ## Add MX SPF Record
 
-In the `DNS` section on Porkbun copy and paste the values MX from Resend:
+Select “Add record” on IONOS to copy and paste the values MX from Resend.
 
-1. On the `Type` page, choose `MX`.
-2. Type `send` for the `Host` of the record.
-3. Copy the MX Value from Resend into the `Answer / Value` field.
-4. Use the default TTL of `600`.
-5. In the `Priority` field enter `10`.
-6. Select `Add`.
-
-<img alt="Domain Details" />
-
-<img alt="Domain Details" />
-
-Below is a mapping of the record fields from Resend to Porkbun:
-
-| Porkbun | Resend | Example Value |
-| - | - | - |
-| Type | Type | `MX Record` |
-| Host | Name | `send` |
-| Answer / Value | Content | `feedback-smtp.us-east-1.amazonses.com` |
-| TTL | TTL | `600` |
-| Priority | Priority | `10` |
-
-<Info>
-  Do not use the same priority for multiple records. If Priority `10` is already
-  in use on another record, try a higher value `20` or `30`.
-</Info>
-
-## Add TXT SPF Record
-
-On the same section:
-
-1. On the `Type` page, choose `TXT`.
-2. Type `send` for the `Host` of the record.
-3. Copy the TXT Value Resend into the `Answer / Value` field.
-4. Use the default TTL of `600`.
-5. Select `Add Record`.
+1. On the `Add a DNS Record` page, select `MX`.
+2. Type `send` for the `Name` of the record.
+3. Copy the MX Value from Resend into the `Points to` field.
+4. Use the default `Priority` of `10`.
+5. Use the default TTL of `1 hour`.
+6. Select `Save`.
 
 <Info>
   Omit your domain from the record values in Resend when you paste. Instead of
@@ -78,24 +50,59 @@ On the same section:
 
 <img alt="Domain Details" />
 
-Below is a mapping of the record fields from Resend to Porkbun:
+Below is a mapping of the record fields from Resend to IONOS:
 
-| Porkbun | Resend | Example Value |
+| IONOS | Resend | Example Value |
+| - | - | - |
+| Type | Type | `MX Record` |
+| Name | Name | `send` |
+| Points to | Content | `feedback-smtp.us-east-1.amazonses.com` |
+| TTL | TTL | `1 hour` |
+| Priority | Priority | `10` |
+
+<Info>
+  Do not use the same priority for multiple records. If Priority `10` is already
+  in use on another record, try a higher value `20` or `30`.
+</Info>
+
+## Add TXT SPF Record
+
+In the same section, select “Add record” again.
+
+1. On the `Add a DNS Record` page, select `TXT`.
+2. Type `send` for the `Host name` of the record.
+3. Copy the TXT Value Resend into the `TXT value` field.
+4. Use the default TTL of `1 hour`.
+5. Select `Save`.
+
+<Info>
+  Omit your domain from the record values in Resend when you paste. Instead of
+  `send.example.com`, paste only `send` (or `send.subdomain` if you're using a
+  subdomain).
+</Info>
+
+<img alt="Domain Details" />
+
+<img alt="Domain Details" />
+
+Below is a mapping of the record fields from Resend to IONOS:
+
+| IONOS | Resend | Example Value |
 | - | - | - |
 | Type | Type | `TXT Record` |
-| Host | Name | `send` |
-| Answer / Value | Content | `"v=spf1 include:amazonses.com ~all"` |
-| TTL | TTL | `600` |
+| Host name | Name | `send` |
+| TXT value | Content | `"v=spf1 include:amazonses.com ~all"` |
+| TTL | - | `1 hour` |
 
 ## Add TXT DKIM Records
 
-On the same `Create Record` section:
+In the same section, select “Add record” again.
 
-1. On the `Type` page, choose `TXT`.
-2. Type `resend._domainkey` for the `Host` of the record.
-3. Copy the TXT Value Resend into the `Answer / Value` field.
-4. Use the default TTL of `600`.
-5. Select `Add Record`.
+1. On the `Add a DNS Record` page, select `TXT`.
+2. Type `resend._domainkey` for the `Host name` of the record.
+3. Copy the record value from Resend into the `TXT value` field.
+4. Use the default TTL of `1 hour`.
+5. Select `Save`.
 
 <Info>
   Omit your domain from the record values in Resend when you paste. Instead of
@@ -107,14 +114,14 @@ On the same `Create Record` section:
 
 <img alt="Domain Details" />
 
-Below is a mapping of the record fields from Resend to Porkbun:
+Below is a mapping of the record fields from Resend to IONOS:
 
-| Porkbun | Resend | Example Value |
+| IONOS | Resend | Example Value |
 | - | - | - |
 | Type | Type | `TXT Record` |
-| Host | Name | `send` |
-| Answer / Value | Content | `p=example_domain_key_value` |
-| TTL | TTL | `600` |
+| Host name | Name | `send` |
+| TXT value | Content | `p=example_domain_key_value` |
+| TTL | - | `1 hour` |
 
 ## Receiving Emails
 
@@ -131,23 +138,23 @@ If you want to receive emails at your domain, toggle the "Receiving" switch on t
   records](/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records).
 </Warning>
 
-In the `DNS` section on Porkbun:
+Select “Add record” on IONOS:
 
-1. On the `Type` page, choose `MX`.
-2. Type `inbound` (or whatever your subdomain is) for the `Host` of the record.
-3. Copy the MX Value from Resend into the `Answer / Value` field.
-4. Use the default TTL of `600`.
-5. In the `Priority` field enter `10`.
-6. Select `Add`.
+1. On the `Add a DNS Record` page, select `MX`.
+2. Type `inbound` (or whatever your subdomain is) for the `Name` of the record.
+3. Copy the MX Value from Resend into the `Points to` field.
+4. Use the default `Priority` of `10`.
+5. Use the default TTL of `1 hour`.
+6. Select `Save`.
 
-Below is a mapping of the record fields from Resend to Porkbun:
+Below is a mapping of the record fields from Resend to IONOS:
 
-| Porkbun | Resend | Example Value |
+| IONOS | Resend | Example Value |
 | - | - | - |
 | Type | Type | `MX Record` |
-| Host | Name | `inbound` |
-| Answer / Value | Content | `inbound-smtp.us-east-1.amazonaws.com` |
-| TTL | TTL | `600` |
+| Name | Name | `inbound` |
+| Points to | Content | `inbound-smtp.us-east-1.amazonaws.com` |
+| TTL | TTL | `1 hour` |
 | Priority | Priority | `10` |
 
 After verifying your domain, create a webhook to process incoming emails. For help setting up a webhook, how to access email data and attachments, forward emails, and more, see [our guide on receiving emails with Resend](/docs/dashboard/receiving/introduction).
@@ -162,7 +169,7 @@ If your domain is not successfully verified, these are some common troubleshooti
 
 <AccordionGroup>
   <Accordion title="Resend shows my domain verification failed.">
-    Review the records you added to Porkbun to rule out copy and paste errors.
+    Review the records you added to IONOS to rule out copy and paste errors.
   </Accordion>
 
   <Accordion title="It has been longer than 72 hours and my domain is still Pending.">

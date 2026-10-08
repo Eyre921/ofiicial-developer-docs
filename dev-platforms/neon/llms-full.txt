@@ -96900,7 +96900,7 @@ The Neon API provides endpoints for managing VPC endpoints and project-level VPC
 
 ## Private Networking limits
 
-The Private Networking feature supports a maximum of **10 private networking configurations per AWS region**. Supported AWS regions are listed [above](https://neon.com/docs/guides/neon-private-networking#create-an-aws-vpc-endpoint).
+The Private Networking feature supports a maximum of **20 private networking configurations per AWS region**. Supported AWS regions are listed [above](https://neon.com/docs/guides/neon-private-networking#create-an-aws-vpc-endpoint).
 
 ## Limitations
 
@@ -118194,7 +118194,7 @@ Neon connects to external systems (for example, when replicating data into Neon 
 
 Allow **all** NAT gateway IP addresses listed for your project's region, not just the ones you connect through today, and add the new addresses to your allowlist after Neon expands a region. Expansions are announced in the [changelog](https://neon.com/docs/changelog).
 
-_NAT gateway IP lists last updated: August 28, 2026._
+_NAT gateway IP lists last updated: October 7, 2026._
 
 ### AWS NAT Gateway IP Addresses
 

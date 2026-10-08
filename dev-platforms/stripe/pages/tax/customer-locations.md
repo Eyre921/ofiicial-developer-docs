@@ -332,7 +332,7 @@ To review subscriptions without automatic tax calculations in your Stripe Dashbo
 
 ### Exceptions to automatically disabling tax
 
-Stripe returns an error and leaves the `Invoice` in a `draft` status when finalizing with the [API](https://docs.stripe.com/api/invoices/finalize.md) or Dashboard without a valid customer location. In the API, this returns an HTTP 400 error with a `code` of `customer_tax_location_invalid`.
+Stripe returns an error and leaves the `Invoice` in a `draft` status when you finalize the invoice [programmatically](https://docs.stripe.com/api/invoices/finalize.md) or using the Dashboard without a valid customer location. In the API, this returns an HTTP 400 error with a `code` of `customer_tax_location_invalid`.
 
 Similarly, for automatic finalization of standalone invoices without a `Subscription`, the `Invoice` remains a draft if the customer location isn’t valid. We send an [invoice.finalization_failed](https://docs.stripe.com/api/events/types.md#event_types-invoice.finalization_failed) event with the `Invoice` [last_finalization_error[code]](https://docs.stripe.com/api/invoices/object.md#invoice_object-last_finalization_error-code) being `customer_tax_location_invalid`.
 
