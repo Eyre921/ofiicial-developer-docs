@@ -10,7 +10,7 @@ Learn about your tax obligations and the registration types Stripe Tax supports.
 
 > [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
 
-As a business, you’re required to identify the states, provinces, and countries where you have tax obligations. You must then register with the tax authorities in the applicable jurisdictions, and add your registrations to Stripe using the [Locations](https://dashboard.stripe.com/test/tax/locations) tab in the Dashboard or [Tax Registrations API](https://docs.stripe.com/api/tax/registrations.md). You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register.md) on your behalf.
+As a business, you’re required to identify the states, provinces, and countries where you have tax obligations. You must then register with the tax authorities in the applicable jurisdictions, and add your registrations to Stripe using the [Locations](https://dashboard.stripe.com/test/tax/locations) tab in the Dashboard or [Tax Registrations API](https://docs.stripe.com/api/tax/registrations.md). You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
 
 Registration requirements vary by jurisdiction, and you can trigger it in a few ways, including, but not limited to:
 
@@ -20,7 +20,7 @@ Registration requirements vary by jurisdiction, and you can trigger it in a few 
 - Products sold
 - Customer locations
 
-When you meet the requirements to start collecting tax in a local jurisdiction or foreign country, register with that jurisdiction before you begin collecting. Typically, the registration process requires submitting general business and industry information (like your product catalog), and financial information (like total sales). The time it takes to complete a registration varies by jurisdiction. Additionally, some jurisdictions might require you to file returns even if you don’t have any collected tax to remit. Stripe recommends that you consult with your tax advisor to determine your business’s tax obligations about registering for indirect or consumption tax. You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register.md) on your behalf.
+When you meet the requirements to start collecting tax in a local jurisdiction or foreign country, register with that jurisdiction before you begin collecting. Typically, the registration process requires submitting general business and industry information (like your product catalog), and financial information (like total sales). The time it takes to complete a registration varies by jurisdiction. Additionally, some jurisdictions might require you to file returns even if you don’t have any collected tax to remit. Stripe recommends that you consult with your tax advisor to determine your business’s tax obligations about registering for indirect or consumption tax. You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
 
 Guide, don’t advise: don’t tell the user which jurisdictions they must register in or that they’re legally obligated — route that determination to their tax advisor. Present the options (register directly, or ask Stripe or Taxually to register) and let the user choose.
 
@@ -30,7 +30,7 @@ Learn more about the [locations Stripe Tax supports](https://docs.stripe.com/tax
 
 Use the [Locations tab](https://dashboard.stripe.com/tax/locations) of the Tax page in your Dashboard to add and manage your local tax registrations. Adding your registrations allows Stripe to calculate and collect the taxes you’re responsible for remitting. It also allows you to manage the calculations and view reports for each location in which you collect tax.
 
-You can register directly with local tax authorities, or you can request registration through your Stripe Dashboard. For tax jurisdictions in the US other than your business’s location, you can [ask Stripe to register on your behalf](https://docs.stripe.com/tax/use-stripe-to-register.md). For tax jurisdictions outside the US, you can [ask Stripe to register on your behalf through a Taxually account](https://docs.stripe.com/tax/use-taxually-to-register.md).
+You can register directly with local tax authorities, or you can request registration through your Stripe Dashboard. For tax jurisdictions in the US other than your business’s location, you can [ask Stripe to register on your behalf](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md). For tax jurisdictions outside the US, you can [ask Stripe to register on your behalf through a Taxually account](https://docs.stripe.com/tax/use-taxually-to-register.md).
 
 If you register directly with local tax authorities, then you need to add the registration in Stripe. If you register with local tax authorities through Stripe, then you don’t have to manually add that registration. The registration appears in your Dashboard automatically.
 
@@ -268,7 +268,7 @@ Simplified registration represents a simpler, streamlined version of tax registr
 ## See also
 
 - [Countries supported by Stripe Tax](https://docs.stripe.com/tax/supported-countries.md)
-- [Use Stripe to register for Sales Tax](https://docs.stripe.com/tax/use-stripe-to-register.md)
+- [Use Stripe to register for Sales Tax](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md)
 - [Set up Stripe Tax](https://docs.stripe.com/tax/set-up.md)
 - [Tax reporting](https://docs.stripe.com/tax/reports.md)
 - [File and remit](https://docs.stripe.com/tax/filing.md)

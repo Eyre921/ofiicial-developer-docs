@@ -6,19 +6,19 @@ path: integrations/haystack
 
 Use Deepset Haystack's PineconeDocumentStore to build production NLP pipelines that index, embed, and query documents for question answering and RAG.
 
-Haystack is the open source Python framework by Deepset for building custom apps with large language models (LLMs). It lets you quickly try out the latest models in natural language processing (NLP) while being flexible and easy to use. Their community of users and builders has helped shape Haystack into what it is today: a complete framework for building production-ready NLP apps.
+Haystack is the open-source Python framework by Deepset for building custom apps with large language models (LLMs). It lets you try out the latest models in natural language processing (NLP), and it's flexible to work with. Its community of users and builders has helped shape Haystack into a complete framework for building NLP apps for production.
 
-Haystack and Pinecone integration can be used to keep your NLP-driven apps up-to-date with Haystack's indexing pipelines that help you prepare and maintain your data.
+You can use the Haystack and Pinecone integration to keep your NLP-driven apps up to date, with Haystack's indexing pipelines to help you prepare and maintain your data.
 
 <PrimarySecondaryCTA />
 
 ## Setup guide
 
-In this guide we will see how to integrate Pinecone and the popular [Haystack library](https://github.com/deepset-ai/haystack) for *Question-Answering*.
+This guide shows how to integrate Pinecone and the [Haystack library](https://github.com/deepset-ai/haystack) for question answering.
 
 ### Install Haystack
 
-We start by installing the latest version of Haystack with all dependencies required for the `PineconeDocumentStore`.
+Install the latest version of Haystack with all dependencies required for the `PineconeDocumentStore`.
 
 ```Python Python theme={null}
 pip install -U farm-haystack>=1.3.0 pinecone[grpc] datasets
@@ -26,7 +26,7 @@ pip install -U farm-haystack>=1.3.0 pinecone[grpc] datasets
 
 ### Initialize the PineconeDocumentStore
 
-We initialize a `PineconeDocumentStore` by providing an API key and environment name. [Create an account](https://app.pinecone.io) to get your free API key.
+Initialize a `PineconeDocumentStore` by providing an API key and environment name. [Create an account](https://app.pinecone.io) to get your free API key.
 
 ```Python Python theme={null}
 from haystack.document_stores import PineconeDocumentStore
@@ -45,9 +45,9 @@ INFO - haystack.document_stores.pinecone -  Index statistics: name: haystack-ext
 
 ### Prepare data
 
-Before adding data to the document store, we must download and convert data into the Document format that Haystack uses.
+Before you add data to the document store, you must download the data and convert it into the Document format that Haystack uses.
 
-We will use the SQuAD dataset available from Hugging Face Datasets.
+This guide uses the SQuAD dataset available from Hugging Face Datasets.
 
 ```Python Python theme={null}
 from datasets import load_dataset
@@ -56,7 +56,7 @@ from datasets import load_dataset
 data = load_dataset("squad", split="train")
 ```
 
-Next, we remove duplicates and unecessary columns.
+Next, remove duplicates and unnecessary columns.
 
 ```Python Python theme={null}
 # convert to a pandas dataframe
@@ -95,9 +95,9 @@ for d in df.iterrows():
     docs.append(doc)
 ```
 
-This `Document` format contains two fields; *'content'* for the text content or paragraphs, and *'meta'* where we can place any additional information that can later be used to apply metadata filtering in our search.
+This `Document` format contains two fields: `content` for the text content or paragraphs, and `meta` for any additional information you can later use to apply metadata filtering in your search.
 
-Now we upsert the documents to Pinecone.
+Upsert the documents to Pinecone.
 
 ```Python Python theme={null}
 # upsert the data document to pinecone index
@@ -106,7 +106,7 @@ document_store.write_documents(docs)
 
 ### Initialize retriever
 
-The next step is to create embeddings from these documents. We will use Haystacks `EmbeddingRetriever` with a SentenceTransformer model (`multi-qa-MiniLM-L6-cos-v1`) which has been designed for question-answering.
+The next step is to create embeddings from these documents. This guide uses Haystack's `EmbeddingRetriever` with a SentenceTransformer model (`multi-qa-MiniLM-L6-cos-v1`), which is designed for question answering.
 
 ```Python Python theme={null}
 from haystack.retriever.dense import EmbeddingRetriever
@@ -118,7 +118,7 @@ retriever = EmbeddingRetriever(
 )
 ```
 
-Then we run the `PineconeDocumentStore.update_embeddings` method with the `retriever` provided as an argument. GPU acceleration can greatly reduce the time required for this step.
+Then run the `PineconeDocumentStore.update_embeddings` method with the `retriever` provided as an argument. GPU acceleration can greatly reduce the time required for this step.
 
 ```Python Python theme={null}
 document_store.update_embeddings(
@@ -129,13 +129,13 @@ document_store.update_embeddings(
 
 ### Inspect documents and embeddings
 
-We can get documents by their ID with the `PineconeDocumentStore.get_documents_by_id` method.
+You can get documents by their ID with the `PineconeDocumentStore.get_documents_by_id` method.
 
 ```Python Python theme={null}
 d = document_store.get_documents_by_id(ids=['49091c797d2236e73fab510b1e9c7f6b'], return_embedding=True)[0]
 ```
 
-From here we return can view document content with `d.content` and the document embedding with `d.embedding`.
+From here, you can view document content with `d.content` and the document embedding with `d.embedding`.
 
 ### Initialize an extractive QA pipeline
 
@@ -145,7 +145,7 @@ An `ExtractiveQAPipeline` contains three key components by default:
 * a retriever model
 * a reader model
 
-We use the `deepset/electra-base-squad2` model from the HuggingFace model hub as our reader model.
+This guide uses the `deepset/electra-base-squad2` model from the Hugging Face model hub as the reader model.
 
 ```Python Python theme={null}
 from haystack.nodes import FARMReader
@@ -156,7 +156,7 @@ reader = FARMReader(
 )
 ```
 
-We're now ready to initialize the `ExtractiveQAPipeline`.
+Now initialize the `ExtractiveQAPipeline`.
 
 ```Python Python theme={null}
 from haystack.pipelines import ExtractiveQAPipeline
@@ -164,9 +164,9 @@ from haystack.pipelines import ExtractiveQAPipeline
 pipe = ExtractiveQAPipeline(reader, retriever)
 ```
 
-### Ask Questions
+### Ask questions
 
-Using our QA pipeline we can begin querying with `pipe.run`.
+Use your QA pipeline to start querying with `pipe.run`.
 
 ```Python Python theme={null}
 from haystack.utils import print_answers
@@ -260,7 +260,7 @@ Answers:
 }>]
 ```
 
-We can return multiple answers by setting the `top_k` parameter.
+You can return multiple answers by setting the `top_k` parameter.
 
 ```Python Python theme={null}
 query = "Who was the first person to step foot on the moon?"

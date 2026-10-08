@@ -6,11 +6,14 @@ path: integrations/build-integration/connect-your-users-to-pinecone
 
 Embed a Connect to Pinecone flow in your app or notebook so users can sign in, choose a project, and receive an API key without leaving your integration.
 
-To reduce friction for users using your integration, you can create a [custom object](#custom-object), like a button or link, to trigger a **Connect to Pinecone** popup from your app, website, or [Colab](https://colab.google/) notebook. Within this popup, your users can sign up for or log in to Pinecone, select or create an organization and project to connect to, and generate an API key. The API key is then communicated back to the user to copy or directly sent to the hosting page, app, or notebook.
+Add a **Connect to Pinecone** flow to your app, website, or [Colab](https://colab.google/) notebook so your users can get a Pinecone API key without leaving your integration. In the flow, users sign up for or log in to Pinecone, select or create an organization and project, and generate an API key. The API key is then shown to the user to copy, or sent directly to your page, app, or notebook.
 
-Alternatively, you can embed our [pre-built widget](#pre-built-widget), which provides the same functionality, but with the ease of a drop-in component.
+You can add the flow in two ways:
 
-To start, [create an integration ID](#create-an-integration-id) for your app.
+* [Add a Connect popup](#add-a-connect-popup) that opens from your own button or link.
+* [Embed the Connect widget](#embed-the-connect-widget), a drop-in component with the same functionality.
+
+Both require an integration ID, so start by [creating one](#create-an-integration-id).
 
 <Note>
   Only [organization owners](/guides/organizations/manage-organization-members) can add or manage integrations.
@@ -18,209 +21,212 @@ To start, [create an integration ID](#create-an-integration-id) for your app.
 
 ## Create an integration ID
 
-Create a unique `integrationId` to enable usage of the **Connect to Pinecone** [popup](#custom-object) and [widget](#pre-built-widget):
+Create a unique `integrationId` to use with the **Connect to Pinecone** popup and widget:
 
-1. On the the [**Integrations**](https://app.pinecone.io/organizations/-/settings/integrations) tab in the Pinecone console, click the **Create Integration** button.
+<Steps>
+  <Step title="Open the Integrations tab">
+    On the [**Integrations**](https://app.pinecone.io/organizations/-/settings/integrations) tab in the Pinecone console, click **Create Integration**.
 
-   <Note>The **Integrations** tab doesn't display unless your organization already has integrations. [Follow this link to create your first integration](https://app.pinecone.io/organizations/-/settings/integrations?create=true).</Note>
+    <Note>
+      The **Integrations** tab doesn't appear until your organization has an integration. To create your first one, go to the [**Create integration**](https://app.pinecone.io/organizations/-/settings/integrations?create=true) form directly.
+    </Note>
+  </Step>
 
-2. Fill out the **Create integration** form:
-   * **Integration name**: Give your integration a name.
+  <Step title="Fill out the form">
+    In the **Create integration** form, fill out these fields:
 
-   * **URL Slug**: This is your `integrationID`. Enter a human-readable string that uniquely identifies your integration and that may appear in URLs. Your integration URL slug is public and can't be changed.
+    * **Integration name**: A name for your integration.
+    * **URL Slug**: Your `integrationId`. Enter a human-readable string that uniquely identifies your integration and that may appear in URLs. The URL slug is public and can't be changed.
+    * **Logo**: A logo for your integration.
+    * **Return mechanism**: How the generated API key is returned:
+      * **Web Message**: Your application receives the API key through a web message, and only the allowed origins you list below receive it. Select this option if you use the [`@pinecone-database/connect` library](#javascript).
+      * **Copy/Paste**: The API key appears in the success message, and users copy and paste it into your application.
+    * **Allowed origin**: If you selected **Web Message**, list the URL origins where your integration is hosted. An [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin) is the part of a URL that specifies the protocol, hostname, and port.
+  </Step>
 
-   * **Logo**: Upload a logo for your integration.
+  <Step title="Create the integration">
+    Click **Create**.
+  </Step>
+</Steps>
 
-   * **Return mechanism**: Select one of the following return methods for the generated API key:
-     * **Web Message**: Your application will receive the Pinecone API key via a web message. Select this option if you are using the [@pinecone-database/connect library](/integrations/build-integration/connect-your-users-to-pinecone#javascript). The API key will only be provided to the allowed origin(s) specified below.
-     * **Copy/Paste**: The API key will display in the success message, and users will need to copy and paste their Pinecone API keys into your application.
-
-   * **Allowed origin**: If you selected **Web Message** as your **Return mechanism**, list the URL origin(s) where your integration is hosted. The [origin](https://developer.mozilla.org/en-US/docs/Glossary/Origin) is the part of the URL that specifies the protocol, hostname, and port.
-
-3. Click **Create**.
+After you create your integration, [attribute usage to your integration](/integrations/build-integration/attribute-usage-to-your-integration).
 
 <Note>
-  Anyone can create an integration, but [becoming an official Pinecone partner](/integrations/build-integration/integration-ecosystem) can help accelerate your go-to-market and add value to your customers.
+  Anyone can create an integration. To apply to become an official Pinecone partner, see [Integration ecosystem](/integrations/build-integration/integration-ecosystem).
 </Note>
 
-## Custom object
+## Add a Connect popup
 
-[Once you have created your `integrationId`](#create-an-integration-id), you can create a custom object, like a button or link, that loads a **Connect to Pinecone** popup that displays as follows:
+After you [create your `integrationId`](#create-an-integration-id), you can open the **Connect to Pinecone** popup from your own button or link. You can use the JavaScript library or the script. The library is the most common method. Use the script when you can't build with a custom library, such as in a content management system (CMS).
 
-<img alt="Connect popup" />
+<Steps>
+  <Step title="Load the library or script">
+    Install the [`@pinecone-database/connect` library](https://www.npmjs.com/package/@pinecone-database/connect), or load the script in your page's `<head>`:
 
-The `ConnectPopup` function can be called with either the JavaScript library or script. The JavaScript library is the most commonly used method, but the script can be used in instances where you can't build and use a custom library, like within the constraints of a content management system (CMS).
+    <CodeGroup>
+      ```shell JavaScript library theme={null}
+      npm i -S @pinecone-database/connect
+      ```
 
-The function includes the following **required** configuration option:
+      ```html JavaScript script theme={null}
+      <script src="https://connect.pinecone.io/embed.js"></script>
+      ```
+    </CodeGroup>
+  </Step>
 
-* `integrationId`: The slug assigned to the integration. If `integrationId` isn't passed, the widget won't render.
+  <Step title="Create the popup">
+    Call the `ConnectPopup` function. It takes one required configuration option:
 
-  <Note>To create a unique `integrationId`, fill out the [Create Integration form](#create-an-integration-id).</Note>
+    * `integrationId`: The URL slug of your integration. If you don't pass `integrationId`, the popup doesn't render.
 
-The function returns an object containing the following:
+    When the user completes the flow, the `onConnect` callback receives the API key. The function returns an object with an `open` function that opens the popup.
 
-* `open`: A function that opens the popup. Suitable for use as an on-click handler.
+    <CodeGroup>
+      ```javascript JavaScript library theme={null}
+      import { ConnectPopup } from '@pinecone-database/connect'
 
-Example usage of the library and script:
-
-<CodeGroup>
-  ```javascript JavaScriptlibrary theme={null}
-  import { ConnectPopup } from '@pinecone-database/connect'
-
-  /*  Define a function called connectWithAPIKey */
-  const connectWithAPIKey = () => {
-    return new Promise((resolve, reject) => {
-      /* Call ConnectPopup function with an object containing options */
       const popup = ConnectPopup({
-        onConnect: (key) => {
-          resolve(key);
-        },
+        onConnect: (key) => console.log("API Key:", key),
         integrationId: 'myApp'
-      }).open();
-    });
-  };
-
-  /* Handle button click event */
-  document.getElementById('connectButton').addEventListener('click', () => {
-    connectWithAPIKey()
-      .then(apiKey => {
-        console.log("API Key:", apiKey);
-      })
-      .catch(error => {
-        console.error("Error:", error);
       });
-  });
-  ```
+      ```
 
-  ```html JavaScript script theme={null}
-  <head>
-  ...
-  <script src="https://connect.pinecone.io/embed.js"></script>
-  <script>
-    const pineconePopup = ConnectPopup({
-      onConnect: (key) => console.log(key),
-      onCancel: () => console.log("Cancelled"),
-      integrationId: 'myApp'
-    });
-  </script>
-  ...
-  </head>
-  <body>
-  ...
-  <button onclick="pineconePopup.open()">Connect to Pinecone!</button>
-  ...
-  </body>
-  ```
-</CodeGroup>
+      ```html JavaScript script theme={null}
+      <script>
+        const pineconePopup = ConnectPopup({
+          onConnect: (key) => console.log(key),
+          onCancel: () => console.log("Cancelled"),
+          integrationId: 'myApp'
+        });
+      </script>
+      ```
+    </CodeGroup>
+  </Step>
 
-Once you have created your integration, be sure to [attribute usage to your integration](/integrations/build-integration/attribute-usage-to-your-integration).
+  <Step title="Open the popup from your button or link">
+    Call `open` when the user clicks your button or link:
 
-## Pre-built widget
+    <CodeGroup>
+      ```javascript JavaScript library theme={null}
+      document.getElementById('connectButton').addEventListener('click', () => {
+        popup.open();
+      });
+      ```
 
-The pre-built **Connect** widget displays as follows:
+      ```html JavaScript script theme={null}
+      <button onclick="pineconePopup.open()">Connect to Pinecone</button>
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
 
-<img alt="Connect widget" />
+## Embed the Connect widget
 
-[Once you have created your `integrationId`](#create-an-integration-id), you can embed the **Connect** widget multiple ways:
+The **Connect** widget is a drop-in component with the same functionality as the popup. After you [create your `integrationId`](#create-an-integration-id), you can embed it in two ways:
 
-* [JavaScript](#javascript) library (`@pinecone-database/connect`) or script: Renders the widget in apps and websites.
-* [Colab](#colab) (`pinecone-notebooks`): Renders the widget in Colab notebooks using Python.
-
-Once you have created your integration, be sure to [attribute usage to your integration](/integrations/build-integration/attribute-usage-to-your-integration).
+* Use the [JavaScript](#javascript) library (`@pinecone-database/connect`) or script to render the widget in apps and websites.
+* Use the [Colab](#colab) library (`pinecone-notebooks`) to render the widget in Colab notebooks with Python.
 
 ### JavaScript
 
-To embed the **Connect to Pinecone** widget in your app or website using the [`@pinecone-database/connect` library](https://www.npmjs.com/package/@pinecone-database/connect), install the necessary dependencies:
+To embed the widget in your app or website, use the [`@pinecone-database/connect` library](https://www.npmjs.com/package/@pinecone-database/connect) or, if you can't use the library, the script.
 
-```shell Shell theme={null}
-# Install dependencies
-npm i -S @pinecone-database/connect
-```
+<Steps>
+  <Step title="Load the library or script">
+    Install the library, or load the script in your page's `<head>`:
 
-You can use the JavaScript library to render the **Connect to Pinecone** widget and obtain the API key with the [`connectToPinecone` function](#connecttopinecone-function). It displays the widget and calls the provided callback function with the Pinecone API key, once the user completes the flow.
+    <CodeGroup>
+      ```shell JavaScript library theme={null}
+      npm i -S @pinecone-database/connect
+      ```
 
-The function includes the following **required** configuration options:
+      ```html JavaScript script theme={null}
+      <script src="https://connect.pinecone.io/embed.js"></script>
+      ```
+    </CodeGroup>
+  </Step>
 
-* `integrationId`: The slug assigned to the integration. If `integrationId` isn't passed, the widget won't render.
+  <Step title="Add a container for the widget">
+    Add the HTML element where the widget renders:
 
-  <Note>To create a unique `integrationId`, [fill out the Create Integration form](#create-an-integration-id) with Pinecone.</Note>
+    ```html HTML theme={null}
+    <div id="connect-widget"></div>
+    ```
+  </Step>
 
-* `container`: The HTML element where the **Connect** widget will render.
+  <Step title="Render the widget">
+    Call the `connectToPinecone` function. It takes two required configuration options:
 
-Example usage:
+    * `integrationId`: The URL slug of your integration. If you don't pass `integrationId`, the widget doesn't render.
+    * `container`: The HTML element where the widget renders.
 
-```JavaScript JavaScript theme={null}
-import {connectToPinecone} from '@pinecone-database/connect'
+    When the user completes the flow, the function calls your callback with the Pinecone API key. If you use the script, place the inline `<script>` in the page body after the container element, so the container exists when `connectToPinecone` runs.
 
-const setupPinecone = (apiKey) => { /* Set up a Pinecone client using the API key */ }
+    <CodeGroup>
+      ```javascript JavaScript library theme={null}
+      import { connectToPinecone } from '@pinecone-database/connect'
 
-connectToPinecone(
-  setupPinecone,
-  {
-    integrationId: 'myApp',
-    container: document.getElementById('connect-widget')
-  }
-)
-```
+      const setupPinecone = (apiKey) => { /* Set up a Pinecone client using the API key */ }
 
-If you can't use the JavaScript library, you can directly call the script. For example:
+      connectToPinecone(
+        setupPinecone,
+        {
+          integrationId: 'myApp',
+          container: document.getElementById('connect-widget')
+        }
+      )
+      ```
 
-```html HTML theme={null}
-<head>
-  ...
-  <script src="https://connect.pinecone.io/embed.js">
-  ...
-</head>
-<body>
-
-<div id="widgetContainer"></div>
-...
-
-<script>
-  connectToPinecone(
-    (apiKey) => {/* Use the apiKey to create an index*/},
-    {
-      integrationId: 'myApp',
-      container: document.getElementById('widgetContainer'),
-    }
-  );
-</script>
-
-...
-</body>
-```
+      ```html JavaScript script theme={null}
+      <script>
+        connectToPinecone(
+          (apiKey) => { /* Set up a Pinecone client using the API key */ },
+          {
+            integrationId: 'myApp',
+            container: document.getElementById('connect-widget'),
+          }
+        );
+      </script>
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
 
 ### Colab
 
-To embed the **Connect** widget in your Colab notebook, use the [`pinecone-notebooks` Python library](https://pypi.org/project/pinecone-notebooks/#description):
+To embed the widget in a Colab notebook, use the [`pinecone-notebooks` Python library](https://pypi.org/project/pinecone-notebooks/#description).
 
-```shell theme={null}
-# Install dependencies using Colab syntax
+<Steps>
+  <Step title="Install the libraries">
+    ```shell theme={null}
+    pip install -qU pinecone-notebooks pinecone[grpc]
+    ```
+  </Step>
 
-pip install -qU pinecone-notebooks pinecone[grpc]
-```
+  <Step title="Render the widget">
+    Call `Authenticate` to render the widget, so the user can log in and generate an API key:
 
-```python theme={null}
-# Render the Connect widget for the user to authenticate and generate an API key
+    ```python theme={null}
+    from pinecone_notebooks.colab import Authenticate
 
-from pinecone_notebooks.colab import Authenticate
+    Authenticate()
+    ```
+  </Step>
 
-Authenticate()
+  <Step title="Use the API key">
+    After the user completes the flow, the API key is available in the `PINECONE_API_KEY` environment variable. Use it to initialize the Pinecone client:
 
-# The generated API key is available in the PINECONE_API_KEY environment variable
+    ```python theme={null}
+    import os
+    from pinecone.grpc import PineconeGRPC as Pinecone
 
-from pinecone.grpc import PineconeGRPC as Pinecone
-from pinecone import ServerlessSpec
-import os
-
-api_key = os.environ.get('PINECONE_API_KEY')
-
-# Use the API key to initialize the Pinecone client
-pc = Pinecone(api_key=api_key)
-```
+    pc = Pinecone(api_key=os.environ.get('PINECONE_API_KEY'))
+    ```
+  </Step>
+</Steps>
 
 <Tip>
-  To see this flow in practice, see our [example notebook](https://colab.research.google.com/drive/1VZ-REFRbleJG4tfJ3waFIrSveqrYQnNx?usp=sharing).
+  To see this flow in practice, open the [example notebook](https://colab.research.google.com/drive/1VZ-REFRbleJG4tfJ3waFIrSveqrYQnNx?usp=sharing).
 </Tip>
 
 ## Manage generated API keys

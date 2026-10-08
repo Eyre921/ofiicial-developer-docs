@@ -4,6 +4,30 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 7, 2026">
+  ### One search tool in Notion MCP
+
+  Hosted Notion MCP sessions now list one content-search tool, [`notion-search`](/guides/mcp/mcp-supported-tools) (`search` for OpenAI clients). Its description matches the user's AI search access. It describes AI search when the user has it, and keyword search otherwise, with a one-line upgrade note when the plan lacks AI search. `notion-ai-search` no longer appears in `tools/list`, but it stays callable by name, so clients with a cached tool list keep working. Workspace-owned MCP connections, which have a selected tool list, keep the earlier tool list and descriptions. In the other sessions, the server instructions also tell clients to use the Notion search tool for every content search.
+
+  ### `notion-get-tool-access` is optional
+
+  Except on workspace-owned connections, tool descriptions no longer tell clients to call `notion-get-tool-access` before they use a tool. Tools apply access limits themselves and report them in their results. Call [`notion-get-tool-access`](/guides/mcp/mcp-supported-tools) only when you want plan or parameter details up front. This replaces the September 17, 2026 advice to call it first.
+
+  ### OpenAI's search and fetch shape for ChatGPT
+
+  For ChatGPT connections, a content search with `search` returns `{ results: [{ id, title, url }] }` and `fetch` returns `{ id, title, text, url, metadata }`, as both `structuredContent` and JSON text. This is the shape that [OpenAI's MCP requirements](https://developers.openai.com/api/docs/mcp) set for company knowledge and deep research. ChatGPT search results no longer include highlights, `path`, timestamps, or `notices`. When `fetch` gets `include_file_urls: true`, file download URLs are under `metadata.references`. User lookups and other clients don't change; see [Supported tools](/guides/mcp/mcp-supported-tools).
+
+  ### Status group filters beta
+
+  Status filters can now match a status group with `status.group`, for example every option in the "In progress" group. Before, a group that shared a name with an option, like the default "In progress", could only be matched as the option.
+
+  Send `Notion-Beta: status-group-filters-2026-10-06` to opt in. With the header, `equals` and `does_not_equal` match only option names, and [views](/reference/view) return saved group filters as `group`. Without it, nothing changes. See [Status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta).
+
+  ### Warnings from `notion-update-page`
+
+  `notion-update-page` now returns an optional `warnings` array, for direct and queued updates, when it changed or ignored part of the input, such as lines dropped for incorrect indentation or text auto-corrected to match the page. Each warning has a `code` and a `message`, and Markdown parser warnings also carry `category` and `autofix`. Each message is at most 500 characters; a longer one is cut and ends with a note giving its original length. A clean update has no `warnings` key; see [Supported tools](/guides/mcp/mcp-supported-tools).
+</Update>
+
 <Update label="October 6, 2026">
   ### No more tool-specific Notion MCP rate limits
 

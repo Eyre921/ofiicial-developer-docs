@@ -47,20 +47,18 @@ The following steps demonstrate how to create an assistant, provide it with a PD
 First, if you don't have one, [create an assistant](/reference/api/2025-10/assistant/create_assistant):
 
 <CodeGroup>
-  ```Python Python theme={null}
-  from pprint import pprint
+  ```python Python theme={null}
   from pinecone import Pinecone
 
-  pc = Pinecone("YOUR_API_KEY") 
-  assistant = pc.assistant.create_assistant(
-      assistant_name="example-assistant-multimodal", 
+  pc = Pinecone(api_key="YOUR_API_KEY")
+
+  assistant = pc.assistants.create(
+      name="example-assistant-multimodal",
       instructions="You are a helpful assistant that can understand both text and images in documents.",
       region="us",
-      timeout=30
   )
 
-  print(f"Type: {type(assistant).__name__}")
-  pprint(assistant)
+  print(assistant)
   ```
 
   ```bash curl theme={null}
@@ -81,15 +79,7 @@ Response:
 
 <CodeGroup>
   ```shell Python theme={null}
-  Type: AssistantModel
-  {'created_at': '2025-08-28T23:35:26.917953498Z',
-    'host': 'https://prod-1-data.ke.pinecone.io',
-    'instructions': 'You are a helpful assistant that can understand both text '
-                    'and images in documents.',
-    'metadata': {},
-    'name': 'example-assistant-multimodal',
-    'status': 'Ready',
-    'updated_at': '2025-08-28T23:35:28.507639215Z'}
+  AssistantModel(name='example-assistant-multimodal', status='Ready', region='us', host='https://prod-1-data.ke.pinecone.io', instructions='You are a helpful assistant that can und...')
   ```
 
   ```json curl theme={null}
@@ -124,22 +114,19 @@ To enable multimodal context for a PDF, when [uploading the file](/reference/api
 </Tip>
 
 <CodeGroup>
-  ```Python Python theme={null}
-  from pprint import pprint
+  ```python Python theme={null}
   from pinecone import Pinecone
 
-  pc = Pinecone("YOUR_API_KEY") 
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant-multimodal")
+  pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # timeout=None allows the SDK to wait for file processing to complete before returning.
-  # This parameter is only available in the SDK, not in direct API calls.
-  file_model = assistant.upload_file(
+  # The SDK waits for file processing to finish before it returns.
+  file = pc.assistants.upload_file(
+      assistant_name="example-assistant-multimodal",
       file_path="./document.pdf",
       multimodal=True,
-      timeout=None
   )
 
-  pprint(file_model)
+  print(file)
   ```
 
   ```bash curl theme={null}
@@ -158,17 +145,7 @@ Response:
 
 <CodeGroup>
   ```shell Python theme={null}
-  # Formatted for readability
-  FileModel(
-    name='document.pdf',
-    id='9c322597-58d6-4ebc-84b5-a398b620da01',
-    metadata=None,
-    created_on='2025-08-28T23:41:41.982805815Z',
-    updated_on='2025-08-28T23:42:09.562949544Z',
-    status='Available',
-    signed_url=None,
-    size=1236044.0
-  )
+  AssistantFileModel(name='document.pdf', id='9c322597-58d6-4ebc-84b5-a398b620da01', status='Available', size=1236044)
   ```
 
   ```json curl theme={null}
@@ -201,30 +178,28 @@ Now, [chat with your assistant](/reference/api/2025-10/assistant/chat_assistant)
 </Note>
 
 <CodeGroup>
-  ```Python Python theme={null}
-  from pprint import pprint
+  ```python Python theme={null}
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
-  pc = Pinecone("YOUR_API_KEY") 
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant-multimodal")
+  pc = Pinecone(api_key="YOUR_API_KEY")
 
-  msg = Message(
-      role="user", 
-      content="Describe the symbol on the paper tray that indicates the maximum fill level."
+  chat_response = pc.assistants.chat(
+      assistant_name="example-assistant-multimodal",
+      messages=[
+          {
+              "role": "user",
+              "content": "Describe the symbol on the paper tray that indicates the maximum fill level.",
+          }
+      ],
+      context_options={
+          "multimodal": True,
+          "include_binary_content": True,
+          "top_k": 10,
+          "snippet_size": 2048,
+      },
   )
 
-  chat_response = assistant.chat(
-    messages=[msg],
-    context_options={
-        "multimodal": True,
-        "include_binary_content": True,
-        "top_k": 10,
-        "snippet_size": 2048
-    }
-  )
-
-  pprint(chat_response)
+  print(chat_response)
   ```
 
   ```bash curl theme={null}
@@ -256,43 +231,7 @@ Response:
 
 <CodeGroup>
   ```shell Python theme={null}
-  # Formatted for readability
-  ChatResponse(
-    id='00000000000000000fe49626f3ee5164', 
-    model='gpt-4o-2024-11-20', 
-    usage=Usage(
-      prompt_tokens=8703, 
-      completion_tokens=41, 
-      total_tokens=8744
-    ), 
-    message=Message(
-      content='The symbol on the paper tray that indicates...', 
-      role='assistant'
-    ), 
-    finish_reason='stop', 
-    citations=[
-      Citation(
-        position=209, 
-        references=[
-          Reference(
-              file=FileModel(
-                name='document.pdf', 
-                id='9c322597-58d6-4ebc-84b5-a398b620da01', 
-                metadata=None, 
-                created_on='2025-08-28T23:41:41.982805815Z', 
-                updated_on='2025-08-28T23:42:09.562949544Z', 
-                status='Available', 
-                signed_url='https://storage.googleapis.com/...',
-                size=1236044.0,
-                multimodal=True
-            ), 
-            pages=[3, 4, 5, 6, 7, 8, 9, 10, 11], 
-            highlight=None
-          )
-        ]
-      )
-    ]
-  )
+  ChatResponse(id='00000000000000000fe49626f3ee5164', model='gpt-4o-2024-11-20', finish_reason='stop', citations=1, context_snippet_count=10, usage=ChatUsage(prompt=8703, completion=41, total=8744))
   ```
 
   ```json curl theme={null}
@@ -346,19 +285,19 @@ To query context for a custom RAG workflow, you can [retrieve context snippets](
 To fetch image-related context snippets (as well as text snippets), set the `multimodal` request parameter to true (default). When `multimodal` is true, use `include_binary_content` to specify what image context you'd like to receive: base64 image data and captions (true) or captions only (false).
 
 <CodeGroup>
-  ```Python Python theme={null}
-  from pprint import pprint
+  ```python Python theme={null}
   from pinecone import Pinecone
 
-  pc = Pinecone("PINECONE_API_KEY") 
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant-multimodal")
-  context_response = assistant.context(
+  pc = Pinecone(api_key="YOUR_API_KEY")
+
+  context_response = pc.assistants.context(
+      assistant_name="example-assistant-multimodal",
       query="Describe the symbol on the paper tray that indicates the maximum fill level.",
       multimodal=True,
-      include_binary_content=True
+      include_binary_content=True,
   )
 
-  pprint(context_response)
+  print(context_response)
   ```
 
   ```bash curl theme={null}
@@ -386,45 +325,7 @@ Response:
 
 <CodeGroup>
   ```shell Python theme={null}
-  # Formatted for readability
-  ContextResponse(
-    id='00000000000000001e3ef84bd493e612', 
-    snippets=[
-      MultimodalSnippet(
-        type='multimodal', 
-        content=[
-          TextBlock(type='text', text="..."), 
-          ImageBlock(
-            type='image', 
-            caption='...', 
-            image=Image(mime_type='image/jpeg', data='...', type='base64')), 
-          // ...
-        ], 
-        score=0.16321887, 
-        reference=PdfReference(
-          type='pdf', 
-          pages=[3, 4, 5, 6, 7, 8, 9, 10, 11], 
-          file=FileModel(
-            name='document.pdf', 
-            id='9c322597-58d6-4ebc-84b5-a398b620da01', 
-            metadata=None, 
-            created_on='2025-08-28T23:41:41.982805815Z', 
-            updated_on='2025-08-28T23:42:09.562949544Z', 
-            status='Available', 
-            signed_url='https://storage.googleapis.com/...',
-            size=1236044,
-            multimodal=True
-          )
-        )
-      ), 
-      // ...
-    ], 
-    usage=TokenCounts(
-      prompt_tokens=7061, 
-      completion_tokens=0, 
-      total_tokens=7061
-    )
-  )
+  ContextResponse(id='00000000000000001e3ef84bd493e612', snippets=15, usage=ChatUsage(prompt=7061, completion=0, total=7061))
   ```
 
   ```json curl theme={null}

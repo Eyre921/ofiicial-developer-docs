@@ -16,7 +16,7 @@ Automated US filing is available in all 46 US locations with a state-level sales
 
 ## Before you begin
 
-- **Set up Stripe Tax**: To enable calculations and collection with Stripe Tax, see [Set up Tax](https://docs.stripe.com/tax/set-up.md). Make sure you’ve [added your tax registrations](https://docs.stripe.com/tax/set-up.md#add-registrations). If you haven’t registered with the taxing authorities and you sell remotely in the US, [Stripe can register with local tax authorities](https://docs.stripe.com/tax/use-stripe-to-register.md) on your behalf.
+- **Set up Stripe Tax**: To enable calculations and collection with Stripe Tax, see [Set up Tax](https://docs.stripe.com/tax/set-up.md). Make sure you’ve [added your tax registrations](https://docs.stripe.com/tax/set-up.md#add-registrations). If you haven’t registered with the taxing authorities and you sell remotely in the US, [Stripe can register with local tax authorities](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
 - **Sign up for Tax Complete**: For TaxJar to file on your behalf, you need a [Tax Complete](https://stripe.com/tax/pricing) subscription plan.
 - **Make sure you have a US-based bank account**: TaxJar uses this account to remit your collected tax to the applicable state taxing authorities. If you’re an international business without a US bank account, you can use a service like [Mercury](https://mercury.com/) to set one up.
 - **Gather relevant state tax information**: To sign up for automated filing, you’ll need to provide information about your business. This varies by state, but usually includes data such as your filing frequency and state tax identification number.

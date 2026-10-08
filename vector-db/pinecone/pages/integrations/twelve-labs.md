@@ -6,19 +6,17 @@ path: integrations/twelve-labs
 
 Store Twelve Labs multimodal video embeddings in Pinecone to power video search, recommendations, and content moderation with fast similarity retrieval.
 
-[Twelve Labs](https://twelvelabs.io) is an AI company that provides state-of-the-art video understanding capabilities through its easy-to-use APIs. Our newly released product is the Embed API, which enables developers to create high-quality multimodal embeddings that capture the rich context and interactions between different modalities in videos, such as visual expressions, body language, spoken words, and overall context.
+[Twelve Labs](https://twelvelabs.io) is an AI company that provides video understanding capabilities through its APIs. Its Embed API lets developers create multimodal embeddings that capture the context and interactions between different modalities in videos, such as visual expressions, body language, spoken words, and overall context.
 
-By integrating Twelve Labs' Embed API with Pinecone's vector database, developers can efficiently store, index, and retrieve these multimodal embeddings at scale. This integration empowers developers to build cutting-edge AI applications that use video data, such as video search, recommendation systems, content moderation, and more. Developers can seamlessly generate embeddings using Twelve Labs' API and store them in Pinecone for fast and accurate similarity search and retrieval.
+By integrating Twelve Labs' Embed API with Pinecone Database, developers can store, index, and retrieve these multimodal embeddings at scale. This integration lets developers build AI applications that use video data, such as video search, recommendation systems, and content moderation. Developers generate embeddings using Twelve Labs' API and store them in Pinecone for fast, accurate similarity search and retrieval.
 
-The integration of Twelve Labs and Pinecone offers developers a powerful toolkit to process and understand video content in a more human-like manner. By combining Twelve Labs' video-native approach with Pinecone's purpose-built vector search capabilities, developers can unlock new possibilities and build innovative applications across various industries, including media and entertainment, e-commerce, education, and beyond.
+Together, Twelve Labs and Pinecone let developers process and understand video content in a more human-like manner. By combining Twelve Labs' video-native approach with Pinecone's purpose-built vector search, developers can build applications across industries, including media and entertainment, e-commerce, and education.
 
 <PrimarySecondaryCTA />
 
 ## Setup guide
 
-To integrate Twelve Labs' Embed API with Pinecone:
-
-1. Sign up for a [Twelve Labs](https://twelvelabs.io) and obtain your API key.
+1. Sign up for a [Twelve Labs account](https://twelvelabs.io) and get your API key.
 2. Install the [Twelve Labs Python client library](https://github.com/twelvelabs-io/twelvelabs-python).
 3. Sign up for a [Pinecone account](https://app.pinecone.io/) and [create an index](/guides/index-data/create-an-index).
 4. Install the [Pinecone client library](/reference/pinecone-sdks).
@@ -26,4 +24,4 @@ To integrate Twelve Labs' Embed API with Pinecone:
 6. Connect to your Pinecone index and [upsert the embeddings](/guides/index-data/upsert-data).
 7. [Query the Pinecone index](/guides/search/search-overview) to retrieve similar videos based on embeddings.
 
-For more detailed information and code examples, please see the [Twelve Labs documentation](https://docs.twelvelabs.io).
+For more information and code examples, see the [Twelve Labs documentation](https://docs.twelvelabs.io).

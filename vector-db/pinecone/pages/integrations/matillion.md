@@ -6,16 +6,15 @@ path: integrations/matillion
 
 Use Matillion Data Productivity Cloud to chunk, embed, and upsert data into Pinecone with low-code AI pipelines for RAG, ETL, and GenAI apps.
 
-[Matillion Data Productivity Cloud](https://www.matillion.com/) is a unified platform that helps your team move faster with one central place to build and manage graphical, low-code data pipelines. It allows data teams to use structured, semi-structured, and unstructured data in analytics; build AI pipelines for new use cases; and be more productive.
+[Matillion Data Productivity Cloud](https://www.matillion.com/) is a platform for building and managing graphical, low-code data pipelines in one place. Data teams use it to bring structured, semi-structured, and unstructured data into analytics and to build AI pipelines. You can use Matillion Data Productivity Cloud with Pinecone for retrieval-augmented generation (RAG) use cases without writing code.
 
-Matillion Data Productivity Cloud and Pinecone can be used together for retrieval augmented generation (RAG) use cases, helping to contextualize business insights without code.
+Matillion supports 150+ pre-built data source connectors, and you can build custom connectors to any REST API source system. You can use them to chunk unstructured datasets, create embeddings, and upsert to Pinecone.
 
-Matillion supports 150+ pre-built data source connectors, as well as the ability to build custom connectors to any REST API source system, making it easy to chunk unstructured datasets, create embeddings, and upsert to Pinecone.
-Matillion's graphical AI Prompt Components integrate with large language models (LLM) running in OpenAI, Amazon Bedrock, Azure OpenAI, and Snowpark Container Services. They enable no-code lookup of external knowledge stored in Pinecone, enabling data engineers to enrich GenAI answers with contextualized and proprietary data.
+Matillion's graphical AI Prompt Components integrate with large language models (LLMs) running in OpenAI, Amazon Bedrock, Azure OpenAI, and Snowpark Container Services. They provide no-code lookup of external knowledge stored in Pinecone, so data engineers can enrich generative AI answers with contextual, proprietary data.
 
 <PrimarySecondaryCTA />
 
-## Additional resources
+## Resources
 
 * Video: [Use RAG with a Pinecone Vector database on the Data Productivity Cloud](https://www.youtube.com/watch?v=BsH7WlJdoFs)
 * Video: [How to upsert to your Pinecone Vector database](https://www.youtube.com/watch?v=l9qt-EzLkgY)

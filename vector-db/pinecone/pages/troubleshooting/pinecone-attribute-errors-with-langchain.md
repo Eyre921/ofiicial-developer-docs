@@ -26,4 +26,4 @@ Previously, the Python classes for both LangChain and Pinecone had objects named
 pip install --upgrade langchain-pinecone
 ```
 
-Depending on which version of LangChain you are upgrading from, you may need to update your code. You can find more information about using LangChain with Pinecone in our [documentation](/integrations/langchain#4-initialize-a-langchain-vector-store).
+Depending on which version of LangChain you are upgrading from, you may need to update your code. You can find more information about using LangChain with Pinecone in our [documentation](/integrations/langchain#initialize-a-langchain-vector-store).

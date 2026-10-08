@@ -38,7 +38,7 @@ Select where you want to file taxes. Only select locations where:
 - You’re registered to collect taxes
 - You’ve [added your registration to Stripe](https://docs.stripe.com/tax/registering.md#add-a-registration)
 
-If you don’t have any registrations, you must register with local tax authorities where you have tax obligations. If you sell remotely in the US, [Stripe can register with local tax authorities](https://docs.stripe.com/tax/use-stripe-to-register.md) for you.
+If you don’t have any registrations, you must register with local tax authorities where you have tax obligations. If you sell remotely in the US, [Stripe can register with local tax authorities](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) for you.
 ![Select Jurisdictions](https://b.stripecdn.com/docs-statics-srv/assets/select-jurisdictions.459d2c51896b41fea86006a0ac0f47dd.png)
 
 ## Provide documentation

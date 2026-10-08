@@ -6,12 +6,12 @@ path: integrations/ai-engine
 
 Use the AI Engine WordPress plugin with Pinecone to power chatbots, semantic search, and RAG over site content directly from your WordPress dashboard.
 
-AI Engine seamlessly connects WordPress with the world's leading AI models. Create intelligent chatbots, generate content, build AI forms, and automate tasks—all from your WordPress dashboard.
+AI Engine is a WordPress plugin that connects WordPress with AI models. You can use it to create chatbots, generate content, build AI forms, and automate tasks from your WordPress dashboard. With Pinecone, AI Engine can power chatbots, semantic search, and retrieval-augmented generation (RAG) over your site content.
 
-With AI Engine, you can create a chatbot to assist your visitors, answer support questions, or guide users through your products and services. Need fresh content? AI Engine can write posts in your voice, help rewrite existing ones, or translate them naturally into other languages. It can also generate custom images for your articles, refine messy text, or just lend a hand when you're stuck.
+With AI Engine, you can create a chatbot to assist your visitors, answer support questions, or guide users through your products and services. AI Engine can also write posts in your voice, rewrite existing ones, translate them into other languages, generate custom images for your articles, and refine text.
 
-For developers and power users, AI Engine offers internal APIs, shortcode flexibility, and advanced features like function calling and real-time audio chat. You can build your own AI-powered tools, automate tasks, or even create AI-driven SaaS applications on top of WordPress. And with support for a wide range of providers — OpenAI, Anthropic, Google, Hugging Face, and more — you have full control over the models you want to use.
+For developers, AI Engine offers internal APIs, shortcodes, and features like function calling and real-time audio chat. You can build your own AI tools, automate tasks, or create AI-driven SaaS applications on top of WordPress. AI Engine supports a range of model providers, including OpenAI, Anthropic, Google, and Hugging Face.
 
-Everything is designed to feel native to WordPress. Whether you're exploring ideas in the AI Playground, using Copilot to help in the editor, or letting an AI agent manage your content through MCP, AI Engine is built to grow with you — and shaped by real user feedback every step of the way.
+You can explore ideas in the AI Playground, use Copilot in the editor, or let an AI agent manage your content through MCP.
 
 <PrimarySecondaryCTA />

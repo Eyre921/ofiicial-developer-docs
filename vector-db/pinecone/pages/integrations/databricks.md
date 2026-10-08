@@ -6,9 +6,9 @@ path: integrations/databricks
 
 Use Databricks and the Pinecone Spark connector to distribute embedding jobs across a cluster and upsert vectors at scale for semantic search and RAG.
 
-Databricks is a Unified Analytics Platform on top of Apache Spark. The primary advantage of using Spark is its ability to distribute workloads across a cluster of machines. By adding more machines or increasing the number of cores on each machine, it's easy to horizontally scale a cluster to handle computationally intensive tasks like vector embedding, where parallelization can save many hours of precious computation time and resources. Using GPUs with Spark can produce even better results — enjoying the benefits of the fast computation of a GPU combined with parallelization will ensure optimal performance.
+Databricks is a Unified Analytics Platform on top of Apache Spark. The primary advantage of using Spark is its ability to distribute workloads across a cluster of machines. By adding more machines or increasing the number of cores on each machine, you can horizontally scale a cluster to handle computationally intensive tasks like vector embedding, where parallelization can save many hours of computation time and resources. Using GPUs with Spark can produce even better results, because it combines the fast computation of a GPU with parallelization.
 
-Efficiently create, ingest, and update vector embeddings at scale with Databricks and Pinecone.
+Use Databricks and Pinecone to create, ingest, and update vector embeddings at scale.
 
 <PrimarySecondaryCTA />
 
@@ -24,7 +24,7 @@ Ensure you have the following:
 * A [Pinecone account](https://app.pinecone.io/)
 * A [Pinecone API key](/guides/projects/understanding-projects#api-keys)
 
-### 1. Install the Spark-Pinecone connector
+### Install the Spark-Pinecone connector
 
 <Tabs>
   <Tab title="Databricks platform">
@@ -69,9 +69,9 @@ Ensure you have the following:
   </Tab>
 </Tabs>
 
-### 2. Load the dataset into partitions
+### Load the dataset into partitions
 
-As your example dataset, use a collection of news articles from Hugging Face's datasets library:
+This guide uses a collection of news articles from the Hugging Face Datasets library as the example dataset. To load it, follow these steps:
 
 1. [Create a new notebook](https://docs.databricks.com/en/notebooks/notebooks-manage.html#create-a-notebook) attached to your cluster.
 
@@ -97,7 +97,7 @@ As your example dataset, use a collection of news articles from Hugging Face's d
    dataset_df = spark.read.parquet("/tmp/dataset_parquet.pq").repartition(num_workers)  
    ```
 
-   Once the repartition is complete, you get back a DataFrame, which is a distributed collection of the data organized into named columns. It's conceptually equivalent to a table in a relational database or a dataframe in R/Python, but with richer optimizations under the hood. As mentioned above, each partition in the dataframe has an equal amount of the original data.
+   Once the repartition is complete, you get back a DataFrame, which is a distributed collection of the data organized into named columns. It's conceptually equivalent to a table in a relational database or a dataframe in R/Python, but with richer optimizations under the hood. Each partition in the DataFrame has an equal amount of the original data.
 
 5. The dataset doesn't have identifiers associated with each document, so add them:
 
@@ -109,9 +109,11 @@ As your example dataset, use a collection of news articles from Hugging Face's d
 
    As its name suggests, `withColumn` adds a column to the dataframe, containing a simple increasing identifier that you cast to a string.
 
-### 3. Create the vector embeddings
+### Create embeddings
 
-1. Create a UDF (User-Defined Function) to create the embeddings, using the AutoTokenizer and AutoModel classes from the Hugging Face transformers library:
+Generate an embedding for each document, and then convert the results to the schema Pinecone expects:
+
+1. Create a user-defined function (UDF) to create the embeddings, using the AutoTokenizer and AutoModel classes from the Hugging Face transformers library:
 
    ```Python Python theme={null}
    from transformers import AutoTokenizer, AutoModel  
@@ -152,7 +154,9 @@ As your example dataset, use a collection of news articles from Hugging Face's d
    embeddings_df = spark.createDataFrame(data=embeddings,schema=schema)  
    ```
 
-### 4. Save the embeddings in Pinecone
+### Store the embeddings
+
+Write the embeddings to a Pinecone index with the Spark-Pinecone connector, and then query the index:
 
 1. Initialize the connection to Pinecone:
 
@@ -197,9 +201,9 @@ As your example dataset, use a collection of news articles from Hugging Face's d
    pineconeOptions: scala.collection.immutable.Map[String,String] = Map(pinecone.apiKey -><YOUR API KEY>, pinecone.indexName -> "news")  
    ```
 
-   This means the process was completed successfully and the embeddings have been stored in Pinecone.
+   This means the process completed successfully and the embeddings are stored in Pinecone.
 
-4. Perform a similarity search using the embeddings you loaded into Pinecone by providing a set of vector values or a vector ID. The [query endpoint](/reference/api/2025-10/data-plane/query) will return the IDs of the most similar records in the index, along with their similarity scores:
+4. Perform a similarity search using the embeddings you loaded into Pinecone by providing a set of vector values or a vector ID. The [query endpoint](/reference/api/2025-10/data-plane/query) returns the IDs of the most similar records in the index, along with their similarity scores:
    ```Python Python theme={null}
        index.query(
            namespace="example-namespace",

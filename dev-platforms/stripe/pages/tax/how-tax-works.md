@@ -40,7 +40,7 @@ As your business grows and you sell to more locations, you need to register to c
 
 You must register with the tax authority in a location to collect taxes there. In some countries and states you have to register before your first transaction, while others have a registration threshold (such as the number of sales or sales volume). Take a look at the [locations Stripe Tax supports](https://docs.stripe.com/tax/supported-countries.md) along with the different tax thresholds that apply and links to the tax authority websites.
 
-Stripe can help you register globally. For US locations where you’re a remote seller, you can [start a registration with Stripe](https://docs.stripe.com/tax/use-stripe-to-register.md). In all other locations, including if you have physical presence (for example, employees or warehouses) in a US state, you can [register with Taxually](https://docs.stripe.com/tax/use-taxually-to-register.md).
+Stripe can help you register globally. For US locations where you’re a remote seller, you can [start a registration with Stripe](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md). In all other locations, including if you have physical presence (for example, employees or warehouses) in a US state, you can [register with Taxually](https://docs.stripe.com/tax/use-taxually-to-register.md).
 
 Stripe Tax tracks your registrations and uses them to calculate and collect taxes. [Read more about adding your registrations to Stripe](https://docs.stripe.com/tax/registering.md).
 

@@ -6,7 +6,7 @@ path: integrations/terraform
 
 Manage Pinecone indexes, collections, API keys, and projects with the Terraform provider for repeatable infrastructure-as-code and DevOps workflows.
 
-Terraform is an infrastructure as code tool that lets you create, update, and version infrastructure by defining resources in configuration files. This allows for a repeated workflow for provisioning and managing your infrastructure.
+Terraform is an infrastructure-as-code tool that lets you create, update, and version infrastructure by defining resources in configuration files. This gives you a repeatable workflow for provisioning and managing your infrastructure.
 
 This page describes how to use the [Terraform Provider for Pinecone](https://registry.terraform.io/providers/pinecone-io/pinecone/latest/docs) to manage Pinecone indexes, collections, projects, API keys, service accounts, role bindings, invites, and users.
 
@@ -39,13 +39,13 @@ Ensure you have the following:
 
 ````
 
-1. Run `terraform init` to install the provider from the [Terraform Registry](https://registry.terraform.io/providers/pinecone-io/pinecone/latest). Alternatively, you can download the latest binary for your target platform from the [GitHub repository](https://github.com/pinecone-io/terraform-provider-pinecone/releases).
+2. Run `terraform init` to install the provider from the [Terraform Registry](https://registry.terraform.io/providers/pinecone-io/pinecone/latest). Alternatively, you can download the latest binary for your target platform from the [GitHub repository](https://github.com/pinecone-io/terraform-provider-pinecone/releases).
 
 <Note>
 Upgrading from v2 doesn't require configuration changes. No arguments were removed or renamed in v3 or v4, so existing configuration keeps working. Both releases only add resources, data sources, and index options. For the full list, see the [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) and [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) release notes.
 </Note>
 
-## Authenticate 
+## Authenticate
 
 The provider uses two kinds of credentials, and each resource requires a specific one. The provider needs at least one of them and fails to configure if neither is set. If your configuration manages both indexes and organization-level resources, set both.
 
@@ -54,7 +54,7 @@ The provider uses two kinds of credentials, and each resource requires a specifi
 | [API key](/guides/projects/manage-api-keys) | `PINECONE_API_KEY` | `pinecone_index`, `pinecone_collection` |
 | [Service account](/guides/organizations/manage-service-accounts) | `PINECONE_CLIENT_ID`, `PINECONE_CLIENT_SECRET` | `pinecone_project`, `pinecone_api_key`, `pinecone_service_account`, `pinecone_role_binding`, `pinecone_invite`, `pinecone_user` |
 
-To authenticate:
+Follow these steps to authenticate:
 
 1. Set environment variables for authentication:
 
@@ -67,7 +67,7 @@ To authenticate:
     export PINECONE_CLIENT_SECRET="YOUR_CLIENT_SECRET"
 ````
 
-1. Append the following to your Terraform configuration file:
+2. Append the following to your Terraform configuration file:
 
    ```terraform theme={null}
    provider "pinecone" {}
@@ -479,7 +479,7 @@ resource "pinecone_invite" "example_project_editor" {
 The read-only `status` attribute reports `pending`, `expired`, or `processed`. Invites expire 7 days after creation, and the provider doesn't expose a way to change that. Once an invite is accepted, its status is `processed` and Terraform stops acting on it. Destroying an accepted invite is a no-op.
 
 <Warning>
-  Invites are immutable, so changing `email` or `role_bindings` sends a new invite. Don't change either one after the invite is accepted — the replacement re-invites an address that already belongs to a member, and the operation fails. Manage an existing member's roles with [`pinecone_role_binding`](#role-bindings) instead.
+  Invites are immutable, so changing `email` or `role_bindings` sends a new invite. Don't change either one after the invite is accepted. The replacement re-invites an address that already belongs to a member, and the operation fails. Manage an existing member's roles with [`pinecone_role_binding`](#role-bindings) instead.
 </Warning>
 
 <Note>
@@ -595,11 +595,8 @@ The Terraform Provider for Pinecone doesn't support the following:
 * BYOC environment provisioning (you reference an existing environment by its identifier, which Pinecone provisions for you).
 * Full-text search fields (the index `schema` block accepts only `filterable`, so you can't configure fields for [full-text search](/guides/search/full-text-search)).
 
-## See also
+## Resources
 
-* Documentation can be found on the [Terraform
-  Registry](https://registry.terraform.io/providers/pinecone-io/pinecone/latest/docs).
-* See the [GitHub repository](https://github.com/pinecone-io/terraform-provider-pinecone/tree/main/examples)
-  for additional usage examples.
-* For support requests, create an issue in the [GitHub
-  repository](https://github.com/pinecone-io/terraform-provider-pinecone).
+* For the full provider documentation, see the [Terraform Registry](https://registry.terraform.io/providers/pinecone-io/pinecone/latest/docs).
+* For more usage examples, see the [GitHub repository](https://github.com/pinecone-io/terraform-provider-pinecone/tree/main/examples).
+* For support requests, create an issue in the [GitHub repository](https://github.com/pinecone-io/terraform-provider-pinecone).

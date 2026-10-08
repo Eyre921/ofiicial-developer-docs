@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/integrations/vercel
 path: integrations/vercel
 ---
 
-Deploy AI apps on Vercel with Pinecone as long-term memory: one-click setup, scalable vector search, and RAG for Next.js and edge-deployed frontends.
+Use the Pinecone integration for Vercel to connect your Vercel AI projects to Pinecone indexes for long-term memory and search.
 
-Vercel is a platform for developers that provides the tools, workflows, and infrastructure you need to build and deploy your web apps faster, without the need for additional configuration. Vercel supports popular frontend frameworks out-of-the-box, and its scalable, secure infrastructure is globally distributed to serve content from data centers near your users for optimal speeds.
+Vercel is a developer platform with the tools, workflows, and infrastructure you need to build and deploy web apps without additional configuration. Vercel supports popular frontend frameworks out of the box, and its infrastructure is globally distributed to serve content from data centers near your users.
 
-Pinecone provides the long-term memory for your Vercel AI projects. Using Pinecone with Vercel enables you to quickly set up and authenticate a connection to your Pinecone data/indexes, and then easily scale to support billions of data points. The integration is designed to be self-serve with strong defaults for a smooth setup, with optional advanced settings.
+Pinecone provides long-term memory for your Vercel AI projects. The integration lets you set up and authenticate a connection to your Pinecone data and indexes, then scale to billions of data points. It's self-serve. You can keep the default settings or configure optional advanced settings.
 
 <PrimarySecondaryCTA />

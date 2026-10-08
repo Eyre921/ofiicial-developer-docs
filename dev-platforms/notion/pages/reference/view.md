@@ -45,7 +45,7 @@ The response of View APIs like [Retrieve a view](/reference/retrieve-a-view) con
 | `data_source_id` | String \| null | The ID of the data source this view is scoped to, or `null` for dashboard views. |
 | `name` | String | The display name of the view. |
 | `type` | String | One of the [supported view types](#supported-view-types). |
-| `filter` | Object \| null | The [filter](/reference/filter-data-source-entries) applied to this view, or `null` if no filter is set. |
+| `filter` | Object \| null | The [filter](/reference/filter-data-source-entries) applied to this view, or `null` if no filter is set. Status group filters come back as `group` only with the [status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta). |
 | `sorts` | Array \| null | The [sorts](/reference/sort-data-source-entries) applied to this view, or `null` if no sorts are set. |
 | `configuration` | Object \| null | View-specific layout configuration, discriminated by `type`. See [Working with views](/guides/data-apis/working-with-views#view-configuration) for details. |
 | `created_time` | String | ISO 8601 timestamp when the view was created. |

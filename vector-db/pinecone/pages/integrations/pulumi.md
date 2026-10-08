@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/integrations/pulumi
 path: integrations/pulumi
 ---
 
-Provision Pinecone indexes and collections as code with Pulumi in Python, TypeScript, Go, or C# for infrastructure-as-code vector database DevOps.
+Provision Pinecone indexes and collections as code with Pulumi in Python, TypeScript, Go, or C#.
 
-Pulumi is an infrastructure as code platform that allows you to use familiar programming languages and tools to build, deploy, and manage cloud infrastructure. Pulumi is free, open source, and optionally pairs with the Pulumi Cloud to make managing infrastructure secure, reliable, and hassle-free.
+Pulumi is an infrastructure-as-code platform that lets you use familiar programming languages and tools to build, deploy, and manage cloud infrastructure. Pulumi is free and open source, and optionally pairs with Pulumi Cloud to help you manage infrastructure.
 
-This Pulumi Pinecone Provider enables you to manage your Pinecone collections and indexes using any language of Pulumi Infrastructure as Code.
+The Pulumi Pinecone Provider lets you manage your Pinecone collections and indexes in any language that Pulumi supports.
 
 <PrimarySecondaryCTA />

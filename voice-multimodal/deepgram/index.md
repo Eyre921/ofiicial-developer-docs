@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 390 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -67,6 +67,7 @@
 - `docs/certificates-endpoint` — [Certificate Status](pages/docs/certificates-endpoint.md) · [原文](https://developers.deepgram.com/docs/certificates-endpoint.md)
 - `docs/channels` — [Channels](pages/docs/channels.md) · [原文](https://developers.deepgram.com/docs/channels.md)
 - `docs/close-stream` — [Close Stream](pages/docs/close-stream.md) · [原文](https://developers.deepgram.com/docs/close-stream.md)
+- `docs/confidence` — [Understanding Word Confidence Scores](pages/docs/confidence.md) · [原文](https://developers.deepgram.com/docs/confidence.md)
 - `docs/configure` — [Configure](pages/docs/configure.md) · [原文](https://developers.deepgram.com/docs/configure.md)
 - `docs/configure-deepgram-modal-deployment` — [Configure Deepgram on Modal](pages/docs/configure-deepgram-modal-deployment.md) · [原文](https://developers.deepgram.com/docs/configure-deepgram-modal-deployment.md)
 - `docs/configure-sagemaker-deployments` — [Configure Amazon SageMaker Deployments](pages/docs/configure-sagemaker-deployments.md) · [原文](https://developers.deepgram.com/docs/configure-sagemaker-deployments.md)
@@ -85,6 +86,7 @@
 - `docs/detect-entities` — [Entity Detection](pages/docs/detect-entities.md) · [原文](https://developers.deepgram.com/docs/detect-entities.md)
 - `docs/determining-your-audio-format-for-live-streaming-audio` — [Determining Your Audio Format for Live Streaming Audio](pages/docs/determining-your-audio-format-for-live-streaming-audio.md) · [原文](https://developers.deepgram.com/docs/determining-your-audio-format-for-live-streaming-audio.md)
 - `docs/diarization` — [Speaker Diarization](pages/docs/diarization.md) · [原文](https://developers.deepgram.com/docs/diarization.md)
+- `docs/dictation` — [Dictation](pages/docs/dictation.md) · [原文](https://developers.deepgram.com/docs/dictation.md)
 - `docs/dockerpodman` — [Docker/Podman](pages/docs/dockerpodman.md) · [原文](https://developers.deepgram.com/docs/dockerpodman.md)
 - `docs/drivers-and-containerization-platforms` — [Drivers and Container Orchestration Tools](pages/docs/drivers-and-containerization-platforms.md) · [原文](https://developers.deepgram.com/docs/drivers-and-containerization-platforms.md)
 - `docs/encoding` — [Encoding](pages/docs/encoding.md) · [原文](https://developers.deepgram.com/docs/encoding.md)
@@ -126,6 +128,7 @@
 - `docs/flux/quickstart` — [Getting Started with Flux](pages/docs/flux/quickstart.md) · [原文](https://developers.deepgram.com/docs/flux/quickstart.md)
 - `docs/flux/state` — [Understanding the Flux State Machine](pages/docs/flux/state.md) · [原文](https://developers.deepgram.com/docs/flux/state.md)
 - `docs/flux/voice-agent-eager-eot` — [Optimize Voice Agent Latency with Eager End of Turn](pages/docs/flux/voice-agent-eager-eot.md) · [原文](https://developers.deepgram.com/docs/flux/voice-agent-eager-eot.md)
+- `docs/gcp-docker-podman` — [Google Cloud Platform](pages/docs/gcp-docker-podman.md) · [原文](https://developers.deepgram.com/docs/gcp-docker-podman.md)
 - `docs/gcp-k8s` — [Google Cloud Platform](pages/docs/gcp-k8s.md) · [原文](https://developers.deepgram.com/docs/gcp-k8s.md)
 - `docs/generating-and-saving-transcripts-from-the-terminal` — [Generating and Saving Transcripts From the Terminal](pages/docs/generating-and-saving-transcripts-from-the-terminal.md) · [原文](https://developers.deepgram.com/docs/generating-and-saving-transcripts-from-the-terminal.md)
 - `docs/genesys-and-deepgram-voice-agent` — [Genesys Cloud CX and Deepgram Voice Agent](pages/docs/genesys-and-deepgram-voice-agent.md) · [原文](https://developers.deepgram.com/docs/genesys-and-deepgram-voice-agent.md)
@@ -225,6 +228,7 @@
 - `docs/terraform-deploy-sagemaker` — [Deploy with Terraform](pages/docs/terraform-deploy-sagemaker.md) · [原文](https://developers.deepgram.com/docs/terraform-deploy-sagemaker.md)
 - `docs/test-amazon-sagemaker-endpoint` — [Validate a Deepgram SageMaker Endpoint](pages/docs/test-amazon-sagemaker-endpoint.md) · [原文](https://developers.deepgram.com/docs/test-amazon-sagemaker-endpoint.md)
 - `docs/text-chunking-for-tts-optimization` — [Text Chunking for TTS REST Optimization](pages/docs/text-chunking-for-tts-optimization.md) · [原文](https://developers.deepgram.com/docs/text-chunking-for-tts-optimization.md)
+- `docs/text-intelligence` — [Getting Started](pages/docs/text-intelligence.md) · [原文](https://developers.deepgram.com/docs/text-intelligence.md)
 - `docs/text-intelligence-callback` — [Text Intelligence Callback](pages/docs/text-intelligence-callback.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-callback.md)
 - `docs/text-intelligence-feature-overview` — [Feature Overview](pages/docs/text-intelligence-feature-overview.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-feature-overview.md)
 - `docs/text-intelligence-tagging` — [Tagging Intelligence Requests](pages/docs/text-intelligence-tagging.md) · [原文](https://developers.deepgram.com/docs/text-intelligence-tagging.md)
@@ -235,6 +239,7 @@
 - `docs/text-to-speech` — [Getting Started](pages/docs/text-to-speech.md) · [原文](https://developers.deepgram.com/docs/text-to-speech.md)
 - `docs/text-to-speech-latency` — [Text to Speech Latency](pages/docs/text-to-speech-latency.md) · [原文](https://developers.deepgram.com/docs/text-to-speech-latency.md)
 - `docs/text-to-speech-prompting` — [Text to Speech Prompting](pages/docs/text-to-speech-prompting.md) · [原文](https://developers.deepgram.com/docs/text-to-speech-prompting.md)
+- `docs/text-topic-detection` — [Topic Detection](pages/docs/text-topic-detection.md) · [原文](https://developers.deepgram.com/docs/text-topic-detection.md)
 - `docs/the-deepgram-model-improvement-partnership-program` — [Model Improvement Partnership Program](pages/docs/the-deepgram-model-improvement-partnership-program.md) · [原文](https://developers.deepgram.com/docs/the-deepgram-model-improvement-partnership-program.md)
 - `docs/topic-detection` — [Topic Detection](pages/docs/topic-detection.md) · [原文](https://developers.deepgram.com/docs/topic-detection.md)
 - `docs/troubleshooting-sagemaker` — [Troubleshooting](pages/docs/troubleshooting-sagemaker.md) · [原文](https://developers.deepgram.com/docs/troubleshooting-sagemaker.md)

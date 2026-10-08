@@ -6,15 +6,15 @@ path: integrations/gemini-cli
 
 Install the official Pinecone extension for Gemini CLI to manage indexes, run vector search, and build RAG assistants with natural-language commands.
 
-The official Pinecone extension for [Gemini CLI](https://github.com/google-gemini/gemini-cli) provides AI-powered skills and MCP server integration directly in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants.
+The official Pinecone extension for [Gemini CLI](https://github.com/google-gemini/gemini-cli) adds Pinecone skills and the Pinecone MCP server to Gemini CLI in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants.
 
 <PrimarySecondaryCTA />
 
 ## Features
 
-* **7 built-in skills** for index management, semantic search, assistant creation, and more
-* **MCP server integration** for direct Pinecone operations from Gemini CLI
-* **Natural language activation** — just describe what you want and the right skill is invoked automatically
+* Seven built-in skills cover index management, semantic search, assistant creation, and more.
+* The integrated MCP server runs Pinecone operations directly from Gemini CLI.
+* Gemini CLI invokes the right skill automatically when you describe what you want.
 
 ## Prerequisites
 
@@ -57,13 +57,13 @@ The official Pinecone extension for [Gemini CLI](https://github.com/google-gemin
 
 | Skill | Description |
 | - | - |
-| **quickstart** | Step-by-step onboarding — create an index, upload data, and run your first search. |
-| **query** | Search integrated indexes using natural language text via the Pinecone MCP. |
-| **assistant** | Create, manage, and chat with Pinecone Assistants for document Q\&A with citations. |
-| **cli** | Guide for using the Pinecone CLI from the terminal. |
-| **mcp** | Reference for all available Pinecone MCP server tools and their parameters. |
-| **pinecone-docs** | Curated links to official Pinecone documentation, organized by topic. |
-| **help** | Overview of all skills and what you need to get started. |
+| `quickstart` | Step-by-step onboarding that walks you through creating an index, uploading data, and running your first search. |
+| `query` | Search integrated indexes using natural language text via the Pinecone MCP. |
+| `assistant` | Create, manage, and chat with Pinecone Assistants for document Q\&A with citations. |
+| `cli` | Guide for using the Pinecone CLI from the terminal. |
+| `mcp` | Reference for all available Pinecone MCP server tools and their parameters. |
+| `pinecone-docs` | Curated links to official Pinecone documentation, organized by topic. |
+| `help` | Overview of all skills and what you need to get started. |
 
 Skills are activated automatically based on your conversation. If the agent doesn't pick up a specific skill, explicitly ask for it: *"Use the quickstart skill to help me get started."*
 
@@ -71,15 +71,15 @@ Skills are activated automatically based on your conversation. If the agent does
 
 The extension includes the Pinecone MCP server, which provides the following tools:
 
-* `search-docs` — Search the official Pinecone documentation.
-* `list-indexes` — List all available Pinecone indexes.
-* `describe-index` — Get index configuration and namespaces.
-* `describe-index-stats` — Get record counts and namespace statistics.
-* `create-index-for-model` — Create a new index with integrated embeddings.
-* `upsert-records` — Insert or update records in an index.
-* `search-records` — Search records with optional metadata filtering and reranking.
-* `cascading-search` — Search across multiple indexes with deduplication and reranking.
-* `rerank-documents` — Rerank documents using a specified reranking model.
+* `search-docs`: Search the official Pinecone documentation.
+* `list-indexes`: List all available Pinecone indexes.
+* `describe-index`: Get index configuration and namespaces.
+* `describe-index-stats`: Get record counts and namespace statistics.
+* `create-index-for-model`: Create a new index with integrated embeddings.
+* `upsert-records`: Insert or update records in an index.
+* `search-records`: Search records with optional metadata filtering and reranking.
+* `cascading-search`: Search across multiple indexes with deduplication and reranking.
+* `rerank-documents`: Rerank documents using a specified reranking model.
 
 For full MCP server documentation, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
 

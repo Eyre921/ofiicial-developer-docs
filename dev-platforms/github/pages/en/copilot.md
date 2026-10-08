@@ -700,11 +700,11 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
 * [Using local sandboxing](/en/copilot/how-tos/cloud-and-local-sandboxes/using-local-sandboxing)
 
-  Enable local sandboxing so that Copilot CLI runs the commands and tools it invokes on your behalf inside an operating-system sandbox.
+  Enable local sandboxing to restrict what Copilot can access on your machine in Copilot CLI or VS Code.
 
 * [Configuring local sandbox settings](/en/copilot/how-tos/cloud-and-local-sandboxes/configuring-local-sandbox-settings)
 
-  Use the `/sandbox` slash command in Copilot CLI to control how the local sandbox restricts filesystem access, network connectivity, and system capabilities.
+  Configure local sandboxing in the GitHub Copilot app or Copilot CLI to restrict filesystem access, network connectivity, and credential use.
 
 * [Customizing the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/customize-github-copilot-app)
 
@@ -717,10 +717,6 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Using the GitHub Copilot app to interact with desktop applications](/en/copilot/how-tos/github-copilot-app/computer-use)
 
   With computer use, allow Copilot to interact with local desktop applications from the GitHub Copilot app.
-
-* [Configuring local sandboxing in the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/configure-local-sandboxing)
-
-  Use the `/sandbox` slash command and project settings in the GitHub Copilot app to control how local sandboxing restricts filesystem access, network connectivity, and credential use.
 
 * [Working with canvas extensions in the GitHub Copilot app](/en/copilot/how-tos/github-copilot-app/working-with-canvas-extensions)
 

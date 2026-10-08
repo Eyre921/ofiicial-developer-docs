@@ -10,7 +10,7 @@ path: docs/api-reference/triage-tickets/list-for-workspace
 
 GET https://api.elevenlabs.io/v1/convai/triage-tickets
 
-List conversation triage tickets across every agent in the workspace, ordered by most recently created first. Use this to build a workspace-wide view (for example, tickets assigned to the caller); for a single agent's tickets, use the per-agent endpoint instead. Tickets for agents the caller cannot access are omitted.
+List conversation triage tickets across every agent in the workspace, ordered by most recently created first. Use this to build a workspace-wide view (for example, tickets assigned to the caller). Supports the same filters, sorting and search as the per-agent endpoint. Tickets for agents the caller cannot access are omitted.
 
 Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/list-for-workspace
 
@@ -27,9 +27,22 @@ Reference: https://elevenlabs.io/docs/api-reference/triage-tickets/list-for-work
 ### Query parameters
 
 - `page_size` (integer, optional, default: 100) — How many agent conversation tickets to return. Can not exceed 100.
+- `agent_id` (string, optional, nullable) — Only tickets for this agent.
 - `status` (enum, optional, nullable) — Filter tickets by status.
   - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `sources` (list of enum, optional, nullable) — Filter tickets by how they were raised (qa, agent, manual). Repeat the parameter to filter by multiple sources.
+  - Allowed values: `qa`, `agent`, `manual`
+- `priorities` (list of enum, optional, nullable) — Filter tickets by priority. Repeat the parameter to filter by multiple priorities.
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `sort_by` (enum, optional) — Order by most recently created, or by priority (most urgent first, then most recently created).
+  - Allowed values: `created_at`, `priority`
+- `owner_user_id` (string, optional, nullable) — Filter tickets by creator. Use 'agent' for agent-raised tickets.
 - `assignee_user_id` (string, optional, nullable) — Filter tickets by assignee. Use 'unassigned' for tickets with no assignee.
+- `issue_type` (enum, optional, nullable) — Filter clusters by issue type.
+  - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
+- `label` (string, optional, nullable) — Filter tickets by an exact label.
+- `merged_into_ticket_id` (string, optional, nullable) — Filter tickets merged into this ticket.
+- `search` (string, optional, nullable) — Case-insensitive free-text search across the ticket's title, description, comments, and turn comments.
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response

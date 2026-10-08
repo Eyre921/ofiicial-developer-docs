@@ -8,23 +8,26 @@ Create a Pinecone Assistant with custom instructions, metadata, and region setti
 
 This page shows you how to create an [assistant](/guides/assistant/overview).
 
-You can [create an assistant](/reference/api/latest/assistant/create_assistant), as in the following example:
+You can [create an assistant](/reference/api/latest/assistant/create_assistant) with the following parameters:
+
+* `name`: A name for the assistant, unique within the project.
+* `instructions`: A directive the assistant applies to every response it gives.
+* `metadata`: Optional key-value pairs, up to 16 KB, that help you organize assistants.
+* `region`: Where the assistant is deployed, `us` (default) or `eu`. You can't change it later.
+
+The Python SDK waits until the assistant is ready before it returns. The Node.js SDK and the API return right away, while the assistant's status is still `Initializing`. To find out when it's ready, [get the status of the assistant](/guides/assistant/manage-assistants#get-the-status-of-an-assistant).
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistant.create_assistant(
-      assistant_name="example-assistant", 
-      instructions="Use American English for spelling and grammar.", # Description or directive for the assistant to apply to all responses.
-      metadata={"team": "customer-support", "version": "1.0"}, # Optional metadata (max 16KB) for organizing assistants.
-      region="us", # Region to deploy assistant. Options: "us" (default) or "eu".
-      timeout=30 # Maximum seconds to wait for assistant status to become "Ready" before timing out.
+  assistant = pc.assistants.create(
+      name="example-assistant",
+      instructions="Use American English for spelling and grammar.",
+      metadata={"team": "customer-support", "version": "1.0"},
+      region="us",
   )
   ```
 
@@ -33,11 +36,11 @@ You can [create an assistant](/reference/api/latest/assistant/create_assistant),
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = await pc.createAssistant({
+  const assistant = await pc.assistants.create({
     name: 'example-assistant',
     instructions: 'Use American English for spelling and grammar.',
-    metadata: { team: 'customer-support', version: '1.0' }, // Optional metadata (max 16KB) for organizing assistants.
-    region: 'us'
+    metadata: { team: 'customer-support', version: '1.0' },
+    region: 'us',
   });
   ```
 

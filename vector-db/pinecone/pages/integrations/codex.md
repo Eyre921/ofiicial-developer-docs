@@ -12,9 +12,9 @@ The official Pinecone plugin for [Codex](https://developers.openai.com/codex) ad
 
 ## Features
 
-* **Built-in skills** for index management, semantic search, full-text search, assistant creation, and more
-* **Bundled MCP server** for direct Pinecone operations from Codex, with no extra setup
-* **Natural language activation** — Codex invokes the right skill based on your conversation
+* Built-in skills cover index management, semantic search, full-text search, assistant creation, and more.
+* The bundled MCP server runs Pinecone operations directly from Codex, with no extra setup.
+* Codex invokes the right skill based on your conversation.
 
 ## Prerequisites
 
@@ -25,7 +25,7 @@ The official Pinecone plugin for [Codex](https://developers.openai.com/codex) ad
 * [uv](https://docs.astral.sh/uv/getting-started/installation/) installed (required to run the bundled Python scripts, including the quickstart skill)
 * [Pinecone CLI](/reference/cli/quickstart) installed (optional, enables the `pinecone:cli` skill)
 
-## Install the plugin
+## Installation
 
 Install the plugin from the plugin directory or the command line, then set your API key and launch Codex.
 
@@ -185,10 +185,12 @@ For full MCP server documentation, see [Use the Pinecone MCP server](/guides/ope
 
 <AccordionGroup>
   <Accordion title="API key not found or 401 errors">
-    * **CLI (macOS, Linux):** In the same shell where you run `codex`, run `[ -n "$PINECONE_API_KEY" ] && echo "set" || echo "not set"`. If it prints `not set`, set the key again.
-    * **CLI (Windows):** In the same PowerShell session where you run `codex`, run `if ($env:PINECONE_API_KEY) { "set" } else { "not set" }`. If it prints `not set`, set the key again.
-    * **Desktop app (macOS):** Run `launchctl getenv PINECONE_API_KEY`. If it returns nothing, set the key again, then quit and reopen the app.
-    * **Desktop app (Windows):** In PowerShell, run `[Environment]::GetEnvironmentVariable("PINECONE_API_KEY", "User")`. If it returns nothing, set the key again, then quit and reopen the app.
+    Check whether your API key is set in the environment Codex runs in:
+
+    * For the CLI on macOS or Linux, in the same shell where you run `codex`, run `[ -n "$PINECONE_API_KEY" ] && echo "set" || echo "not set"`. If it prints `not set`, set the key again.
+    * For the CLI on Windows, in the same PowerShell session where you run `codex`, run `if ($env:PINECONE_API_KEY) { "set" } else { "not set" }`. If it prints `not set`, set the key again.
+    * For the desktop app on macOS, run `launchctl getenv PINECONE_API_KEY`. If it returns nothing, set the key again, then quit and reopen the app.
+    * For the desktop app on Windows, run `[Environment]::GetEnvironmentVariable("PINECONE_API_KEY", "User")` in PowerShell. If it returns nothing, set the key again, then quit and reopen the app.
   </Accordion>
 
   <Accordion title="MCP server not responding">

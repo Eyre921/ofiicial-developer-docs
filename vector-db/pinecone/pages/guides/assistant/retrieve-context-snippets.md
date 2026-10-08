@@ -18,27 +18,25 @@ You can [retrieve context snippets](/reference/api/latest/assistant/context_assi
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant")
 
-  response = assistant.context(query="Who is the CFO of Netflix?")
+  response = pc.assistants.context(
+      assistant_name="example-assistant",
+      query="Who is the CFO of Netflix?",
+  )
 
   for snippet in response.snippets:
       print(snippet)
   ```
 
   ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone'
+  import { Pinecone } from '@pinecone-database/pinecone';
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistantName = 'example-assistant';
-  const assistant = pc.Assistant(assistantName);
+  const assistant = pc.assistant({ name: 'example-assistant' });
   const response = await assistant.context({
     query: 'Who is the CFO of Netflix?',
   });
@@ -112,15 +110,16 @@ While additional tokens will be used for other parameters, adjusting the `top_k`
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant")
 
-  response = assistant.context(query="Who is the CFO of Netflix?", top_k=10, snippet_size=2500)
+  response = pc.assistants.context(
+      assistant_name="example-assistant",
+      query="Who is the CFO of Netflix?",
+      top_k=10,
+      snippet_size=2500,
+  )
 
   for snippet in response.snippets:
       print(snippet)

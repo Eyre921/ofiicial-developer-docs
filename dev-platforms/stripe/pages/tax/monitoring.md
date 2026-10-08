@@ -8,7 +8,7 @@ path: tax/monitoring
 
 Use our tool to see where you might need to register to collect tax based on past transactions.
 
-Stripe Tax provides insights about your potential tax registration obligations (called economic nexus in the US). We help you understand where you might have to register, collect, and remit tax based on your sales into a state or country, even if you don’t have physical presence there. You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register.md) on your behalf.
+Stripe Tax provides insights about your potential tax registration obligations (called economic nexus in the US). We help you understand where you might have to register, collect, and remit tax based on your sales into a state or country, even if you don’t have physical presence there. You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf.
 
 > Tax provides threshold monitoring primarily for payments processed by Stripe. The only out of band payments we currently include are invoices processed off of Stripe and transactions created using the Stripe Tax APIs.
 

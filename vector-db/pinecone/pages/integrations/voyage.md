@@ -4,27 +4,27 @@ source: https://docs.pinecone.io/integrations/voyage
 path: integrations/voyage
 ---
 
-Generate top-ranked Voyage AI embeddings and rerankers, then index them in Pinecone for high-accuracy RAG, semantic search, and code retrieval apps.
+Generate Voyage AI embeddings for consumer contract documents, index them in Pinecone, and run semantic search queries against the index.
 
-[Voyage AI](https://www.voyageai.com) provides cutting-edge embedding and rerankers. Voyage AI's generalist [embedding models](https://docs.voyageai.com/docs/embeddings) continually top the [MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard), and the [domain-specific embeddings](https://blog.voyageai.com/2024/01/23/voyage-code-2-elevate-your-code-retrieval/) enhance the retrieval quality for enterprise use cases significantly.
+[Voyage AI](https://www.voyageai.com) provides embedding models and rerankers. Voyage AI's generalist [embedding models](https://docs.voyageai.com/docs/embeddings) continually top the [MTEB leaderboard](https://huggingface.co/spaces/mteb/leaderboard), and the [domain-specific embeddings](https://blog.voyageai.com/2024/01/23/voyage-code-2-elevate-your-code-retrieval/) improve retrieval quality for enterprise use cases.
 
 <PrimarySecondaryCTA />
 
 ## Setup guide
 
-In this guide, we use the [Voyage Embedding API endpoint](https://docs.voyageai.com/docs/embeddings) to generate text embeddings for terms of service and consumer contract documents, and then index those embeddings in the Pinecone vector database.
+In this guide, you use the [Voyage Embedding API endpoint](https://docs.voyageai.com/docs/embeddings) to generate text embeddings for terms of service and consumer contract documents, and then index those embeddings in Pinecone Database.
 
-This is a powerful and common combination for building retrieval-augmented generation (RAG), semantic search, question-answering, code assistants, and other applications that rely on NLP and search over a large corpus of text data.
+This is a common combination for building retrieval-augmented generation (RAG), semantic search, question-answering, code assistants, and other applications that rely on NLP and search over a large corpus of text data.
 
-### 1. Set up the environment
+### Set up the environment
 
-Start by installing the Voyage and Pinecone clients and HuggingFace *Datasets* for downloading the *LegalBench: Consumer Contracts QA* ([`mteb/legalbench_consumer_contracts_qa`](https://huggingface.co/datasets/mteb/legalbench_consumer_contracts_qa)) dataset used in this guide:
+Start by installing the Voyage and Pinecone clients, along with Hugging Face Datasets for downloading the *LegalBench: Consumer Contracts QA* ([`mteb/legalbench_consumer_contracts_qa`](https://huggingface.co/datasets/mteb/legalbench_consumer_contracts_qa)) dataset used in this guide:
 
 ```shell Shell theme={null}
 pip install -U voyageai pinecone[grpc] datasets
 ```
 
-### 2. Create embeddings
+### Create embeddings
 
 Sign up for an API key at [Voyage AI](https://dash.voyageai.com) and then use it to initialize your connection.
 
@@ -34,7 +34,7 @@ import voyageai
 vc = voyageai.Client(api_key="<YOUR_VOYAGE_API_KEY>")
 ```
 
-Load the *LegalBench: Consumer Contracts QA*  dataset, which contains 154 consumer contract documents and 396 labeled queries about these documents.
+Load the *LegalBench: Consumer Contracts QA* dataset, which contains 154 consumer contract documents and 396 labeled queries about these documents.
 
 ```Python Python theme={null}
 from datasets import load_dataset
@@ -45,7 +45,7 @@ queries = load_dataset('mteb/legalbench_consumer_contracts_qa', 'queries', cache
 
 ```
 
-Each document in `mteb/legalbench_consumer_contracts_qa` contains a `text` field by which we will embed using the Voyage AI client.
+Each document in `mteb/legalbench_consumer_contracts_qa` contains a `text` field, which you embed with the Voyage AI client.
 
 ```Python Python theme={null}
 num_documents = len(documents['text'])
@@ -60,7 +60,7 @@ while len(embeds) < num_documents:
     ).embeddings)
 ```
 
-Check the dimensionality of the returned vectors. You will need to save the embedding dimensionality from this to be used when initializing your Pinecone index later.
+Check the dimensionality of the returned vectors. Save the embedding dimensionality, because you need it when you create your Pinecone index later.
 
 ```Python Python theme={null}
 import numpy as np
@@ -74,13 +74,13 @@ print(shape)
 (154, 1024)
 ```
 
-In this example, you can see that for each of the `154` documents, we created a `1024`-dimensional embedding with the Voyage AI `voyage-law-2` model.
+In this example, you can see that for each of the `154` documents, the code creates a `1024`-dimensional embedding with the Voyage AI `voyage-law-2` model.
 
-### 3. Store the Embeddings
+### Store the embeddings
 
-Now that you have your embeddings, you can move on to indexing them in the Pinecone vector database. For this, you need a Pinecone API key. [Sign up for one here](https://app.pinecone.io).
+Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a Pinecone API key. [Sign up for one](https://app.pinecone.io).
 
-You first initialize our connection to Pinecone and then create a new index called `voyageai-pinecone-legalbench` for storing the embeddings. When creating the index, you specify that you would like to use the cosine similarity metric to align with Voyage AI's embeddings, and also pass the embedding dimensionality of `1024`.
+First, initialize your connection to Pinecone, and then create a new index called `voyageai-pinecone-legalbench` for storing the embeddings. When you create the index, specify the cosine similarity metric to align with Voyage AI's embeddings, and pass the embedding dimensionality of `1024`.
 
 ```Python Python theme={null}
 from pinecone.grpc import PineconeGRPC as Pinecone
@@ -107,9 +107,9 @@ if not pc.has_index(index_name):
 index = pc.Index(index_name)
 ```
 
-Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format (`id`, `vector`, `metadata`), where the `metadata` field is an optional extra field where you can store anything you want in a dictionary format. For this example, you will store the original text of the embeddings.
+Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format (`id`, `vector`, `metadata`), where the `metadata` field is an optional extra field where you can store anything you want in a dictionary format. For this example, you'll store the original text of the embeddings.
 
-While uploading your data, you will batch everything to avoid pushing too much data in one go.
+Upload the data in batches to avoid pushing too much data at once.
 
 ```Python Python theme={null}
 batch_size = 128
@@ -137,11 +137,11 @@ print(index.describe_index_stats())
  'total_vector_count': 154}
 ```
 
-You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *154* embeddings. The `indexFullness` metric tells you how full your index is. At the moment, it's empty. Using the default value of one *p1* pod, you can fit around 750K embeddings before the `indexFullness` reaches capacity. The [Usage Estimator](https://www.pinecone.io/pricing/) can be used to identify the number of pods required for a given number of *n*-dimensional embeddings.
+You can see from `index.describe_index_stats` that you have a 1024-dimensional index populated with 154 embeddings. The `indexFullness` metric tells you how full your index is. At the moment, it's empty. Using the default value of one `p1` pod, you can fit around 750K embeddings before the `indexFullness` reaches capacity. You can use the [Usage Estimator](https://www.pinecone.io/pricing/) to identify the number of pods required for a given number of *n*-dimensional embeddings.
 
-### 4. Semantic search
+### Run a semantic search
 
-Now that you have your indexed vectors, you can perform a few search queries. When searching, you will first embed your query using `voyage-law-2`, and then search using the returned vector in Pinecone.
+Now that you have your indexed vectors, you can perform a few search queries. To search, first embed your query with `voyage-law-2`, and then search Pinecone with the returned vector.
 
 ```Python Python theme={null}
 # get a sample query from the dataset, "Will Google help me if I think someone has taken and used content Ive created without my permission?" 
@@ -160,7 +160,7 @@ xq = vc.embed(
 res = index.query(vector=xq, top_k=3, include_metadata=True)
 ```
 
-The response from Pinecone includes your original text in the `metadata` field. Let's print out the `top_k` most similar questions and their respective similarity scores.
+The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
 
 ```Python Python theme={null}
 for match in res['matches']:

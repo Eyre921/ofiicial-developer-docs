@@ -8,33 +8,35 @@ Evaluate RAG system answers with Pinecone Assistant using correctness, completen
 
 This page shows you how to [evaluate responses](/guides/assistant/evaluation-overview) from an assistant or other RAG systems using the `metrics_alignment` operation.
 
-You can [evaluate a response](/reference/api/latest/assistant/metrics_alignment) from an assistant, as in the following example:
+You can [evaluate a response](/reference/api/latest/assistant/metrics_alignment) from an assistant, as in the following example. The `question` is what you asked, the `answer` is the response to evaluate, and `ground_truth_answer` (`groundTruth` in Node.js) is the response you expect.
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-  # pip install requests
+  from pinecone import Pinecone
 
-  import requests
-  from pinecone_plugins.assistant.models.chat import Message
+  pc = Pinecone(api_key="YOUR_API_KEY")
 
-  payload = {
-      "question": "What are the capital cities of France, England and Spain?", # Question to ask the assistant.
-      "answer": "Paris is the capital city of France and Barcelona of Spain", # Answer from the assistant.
-      "ground_truth_answer": "Paris is the capital city of France, London of England and Madrid of Spain." # Expected answer to evaluate the assistant's response.
-  }
+  result = pc.assistants.evaluate_alignment(
+      question="What are the capital cities of France, England and Spain?",
+      answer="Paris is the capital city of France and Barcelona of Spain",
+      ground_truth_answer="Paris is the capital city of France, London of England and Madrid of Spain.",
+  )
 
-  headers = {
-      "Api-Key": "YOUR_API_KEY",
-      "Content-Type": "application/json"
-  }
+  print(result)
+  ```
 
-  url = "https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment"
+  ```javascript JavaScript theme={null}
+  import { Pinecone } from '@pinecone-database/pinecone';
 
-  response = requests.request("POST", url, json=payload, headers=headers)
+  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  print(response.text)
+  const result = await pc.assistants.evaluate({
+    question: 'What are the capital cities of France, England and Spain?',
+    answer: 'Paris is the capital city of France and Barcelona of Spain',
+    groundTruth: 'Paris is the capital city of France, London of England and Madrid of Spain.',
+  });
+
+  console.log(result);
   ```
 
   ```bash curl theme={null}

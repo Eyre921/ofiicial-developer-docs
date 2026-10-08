@@ -84,10 +84,6 @@ Prepare your application to handle errors gracefully:
 
 Prepare to [monitor the production performance and availability of your indexes](/guides/production/monitoring).
 
-## Configure CI/CD
-
-Use [Pinecone in CI/CD](/guides/production/automated-testing) to safely test changes before deploying them to production.
-
 ## Know how to get support
 
 If you need help, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket), or talk to the [Pinecone community](https://www.pinecone.io/community/). Ensure that your [plan tier](https://www.pinecone.io/pricing/) matches the support and availability SLAs you need. This may require you to upgrade to Enterprise.

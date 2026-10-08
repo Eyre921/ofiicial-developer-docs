@@ -18,7 +18,7 @@ Response evaluation is useful when performing tasks like the following:
 
 ## SDK support
 
-You can [evaluate responses](/reference/api/latest/assistant/metrics_alignment) directly or through the [Pinecone Python SDK](/reference/sdks/python/overview).
+You can [evaluate responses](/reference/api/latest/assistant/metrics_alignment) directly or through the [Pinecone Python SDK](/reference/sdks/python/overview) or [Pinecone Node.js SDK](/reference/sdks/node/overview).
 
 ## Request
 

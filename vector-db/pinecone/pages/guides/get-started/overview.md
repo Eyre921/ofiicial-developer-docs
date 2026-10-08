@@ -25,7 +25,7 @@ Pinecone Database powers retrieval for AI agents and applications, including sea
     Compare search types and choose the right approach for each query
   </Card>
 
-  <Card title="IDEs & CLIs" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
+  <Card title="AI coding tools" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
     Use Pinecone with Claude Code, Codex, Gemini CLI, Cursor, and other agentic tools
   </Card>
 

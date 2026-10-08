@@ -4,74 +4,75 @@ source: https://docs.pinecone.io/integrations/trulens
 path: integrations/trulens
 ---
 
-Evaluate and track Pinecone RAG apps with TruLens: measure grounding, relevance, and hallucinations to iterate on vector search configurations fast.
+Use TruLens to evaluate and track RAG apps built on Pinecone by measuring groundedness, relevance, and hallucinations as you iterate.
 
-TruLens is a powerful open source library for evaluating and tracking large language model-based applications. TruLens provides a set of tools for developing and monitoring neural nets, including large language models (LLMs). This includes both tools for evaluation of LLMs and LLM-based applications with TruLens-Eval and deep learning explainability with TruLens-Explain.
+TruLens is an open-source library for evaluating and tracking large language model-based applications. TruLens provides tools for developing and monitoring neural nets, including large language models (LLMs). These include TruLens-Eval, for evaluating LLMs and LLM-based applications, and TruLens-Explain, for deep learning explainability.
 
-To build an effective RAG-style LLM application, it's important to experiment with various configuration choices while setting up your Pinecone vector database, and study their impact on performance metrics. Tracking and evaluation with TruLens enables fast iteration of your application.
+To build an effective RAG-style LLM application, experiment with different configuration choices as you set up your Pinecone index, and study their impact on performance metrics. Tracking and evaluation with TruLens help you iterate on your application.
 
 <PrimarySecondaryCTA />
 
 ## Setup guide
 
-[TruLens](https://github.com/truera/trulens) is a powerful open source library for evaluating and tracking large language model-based applications. In this guide, we will show you how to use TruLens to evaluate applications built on top of a high performance Pinecone vector database.
+[TruLens](https://github.com/truera/trulens) is an open-source library for evaluating and tracking large language model-based applications. In this guide, you'll learn how to use TruLens to evaluate applications built on Pinecone Database.
 
-### Why TruLens?
+### TruLens for LLM evaluation
 
-Systematic evaluation is needed to support reliable, non-hallucinatory LLM-based applications. TruLens contains instrumentation and evaluation tools for large language model (LLM)-based applications. For evaluation, TruLens provides a set of feedback functions, analogous to labeling functions, to programmatically score the input, output and intermediate text of an LLM app. Each LLM application request can be scored on its question-answer relevance, context relevance and groundedness. These feedback functions provide evidence that your LLM-application is non-hallucinatory.
+Reliable, non-hallucinatory LLM-based applications need systematic evaluation. TruLens contains instrumentation and evaluation tools for large language model (LLM)-based applications. For evaluation, TruLens provides a set of feedback functions, analogous to labeling functions, to programmatically score the input, output, and intermediate text of an LLM app. You can score each LLM application request on its question-answer relevance, context relevance, and groundedness. These feedback functions provide evidence that your LLM application is non-hallucinatory.
 
 <img alt="diagram-1" />
 
-In addition to the above, feedback functions also support the evaluation of ground truth agreement, sentiment, model agreement, language match, toxicity, and a full suite of moderation evaluations, including hate, violence and more. TruLens implements feedback functions as an extensible framework that can evaluate your custom needs as well.
+Feedback functions also support the evaluation of ground truth agreement, sentiment, model agreement, language match, toxicity, and a full suite of moderation evaluations, including hate and violence. TruLens implements feedback functions as an extensible framework, so you can also write evaluations for your own needs.
 
-During the development cycle, TruLens supports the iterative development of a wide range of LLM applications by wrapping your application to log cost, latency, key metadata and evaluations of each application run. This allows you to track and identify failure modes, pinpoint their root cause, and measure improvement across experiments.
+During the development cycle, TruLens supports the iterative development of a wide range of LLM applications by wrapping your application to log cost, latency, key metadata, and evaluations of each application run. This lets you track and identify failure modes, find their root cause, and measure improvement across experiments.
 
 <img alt="application-screenshot" />
 
-### Why Pinecone?
+### Pinecone for retrieval-augmented generation
 
-Large language models alone have a hallucination problem. Several decades of machine learning research have optimized models, including modern LLMs, for generalization, while actively penalizing memorization. However, many of today's applications require factual, grounded answers. LLMs are also expensive to train, and provided by third party APIs. This means the knowledge of an LLM is fixed. Retrieval-augmented generation (RAG) is a way to reliably ensure models are grounded, with Pinecone as the curated source of real world information, long term memory, application domain knowledge, or whitelisted data.
+Large language models alone have a hallucination problem. Several decades of machine learning research have optimized models, including modern LLMs, for generalization, while actively penalizing memorization. However, many of today's applications require factual, grounded answers. LLMs are also expensive to train and are provided by third-party APIs, so the knowledge of an LLM is fixed. Retrieval-augmented generation (RAG) is a way to reliably ensure models are grounded, with Pinecone as the curated source of real-world information, long-term memory, application domain knowledge, or allowlisted data.
 
-In the RAG paradigm, rather than just passing a user question directly to a language model, the system retrieves any documents that could be relevant in answering the question from the knowledge base, and then passes those documents (along with the original question) to the language model to generate the final response. The most popular method for RAG involves chaining together LLMs with vector databases, such as the widely used Pinecone vector DB.
+In the RAG paradigm, the system first retrieves documents from the knowledge base that could help answer a user's question. It then passes those documents, along with the original question, to the language model to generate the final response. The most popular method for RAG involves chaining together LLMs with a retrieval system such as Pinecone Database.
 
-In this process, a numerical vector (an embedding) is calculated for all documents, and those vectors are then stored in a database optimized for storing and querying vectors. Incoming queries are vectorized as well, typically using an encoder LLM to convert the query into an embedding. The query embedding is then matched via embedding similarity against the document embeddings in the vector database to retrieve the documents that are relevant to the query.
+In this process, the system calculates a numerical vector (an embedding) for each document and stores those vectors in a database optimized for storing and querying vectors. It vectorizes incoming queries as well, typically using an encoder LLM to convert the query into an embedding. It then matches the query embedding against the document embeddings in the vector database by embedding similarity to retrieve the documents that are relevant to the query.
 
 <img alt="diagram-2" />
 
-Pinecone makes it easy to build high-performance vector search applications, including retrieval-augmented question answering. Pinecone can easily handle very large scales of hundreds of millions and even billions of vector embeddings. Pinecone's large scale allows it to handle long term memory or a large corpus of rich external and domain-appropriate data so that the LLM component of RAG application can focus on tasks like summarization, inference and planning. This setup is optimal for developing a non-hallucinatory application.\
-In addition, Pinecone is fully managed, so it's easy to change configurations and components. Combined with the tracking and evaluation with TruLens, this is a powerful combination that enables fast iteration of your application.
+You can use Pinecone to build high-performance vector search applications, including retrieval-augmented question answering. Pinecone can handle hundreds of millions and even billions of vector embeddings. At that scale, Pinecone can hold long-term memory or a large corpus of external and domain-specific data, so the LLM component of a RAG application can focus on tasks like summarization, inference, and planning. This setup is well suited to developing a non-hallucinatory application.
 
-### Using Pinecone and TruLens to improve LLM performance and reduce hallucination
+Pinecone is also fully managed, so you can change configurations and components without managing infrastructure. Together with tracking and evaluation in TruLens, this lets you iterate on your application quickly.
 
-To build an effective RAG-style LLM application, it's important to experiment with various configuration choices while setting up the vector database, and study their impact on performance metrics.
+### Use Pinecone and TruLens to improve LLM performance and reduce hallucination
 
-In this example, we explore the downstream impact of some of these configuration choices on response quality, cost and latency with a sample LLM application built with Pinecone as the vector DB. The evaluation and experiment tracking is done with the [TruLens](https://www.trulens.org/) open source library. TruLens offers an extensible set of [feedback functions](https://truera.com/ai-quality-education/generative-ai-and-llms/whats-missing-to-evaluate-foundation-models-at-scale/) to evaluate LLM apps and enables developers to easily track their LLM app experiments.
+To build an effective RAG-style LLM application, experiment with different configuration choices as you set up your Pinecone index, and study their impact on performance metrics.
 
-In each component of this application, different configuration choices can be made that can impact downstream performance. Some of these choices include the following:
+This example explores how some of these configuration choices affect response quality, cost, and latency in a sample LLM application built on Pinecone Database. It uses the open-source [TruLens](https://www.trulens.org/) library for evaluation and experiment tracking. TruLens offers an extensible set of [feedback functions](https://truera.com/ai-quality-education/generative-ai-and-llms/whats-missing-to-evaluate-foundation-models-at-scale/) to evaluate LLM apps and lets you track your LLM app experiments.
 
-**Constructing the Vector DB**
+Each component of this application has configuration choices that can affect downstream performance. Some of these choices include the following.
+
+When you construct the index, you choose the following:
 
 * Data preprocessing and selection
-* Chunk Size and Chunk Overlap
+* Chunk size and chunk overlap
 * Index distance metric
 * Selection of embeddings
 
-**Retrieval**
+For retrieval, you choose the following:
 
 * Amount of context retrieved (top k)
 * Query planning
 
-**LLM**
+For the LLM, you choose the following:
 
 * Prompting
 * Model choice
 * Model parameters (size, temperature, frequency penalty, model retries, etc.)
 
-These configuration choices are useful to keep in mind when constructing your app. In general, there is no optimal choice for all use cases. Rather, we recommend that you experiment with and evaluate a variety of configurations to find the optimal selection as you are building your application.
+These configuration choices are useful to keep in mind when constructing your app. In general, there's no optimal choice for all use cases. Instead, we recommend that you experiment with and evaluate a variety of configurations to find the best selection as you build your application.
 
-#### Creating the index in Pinecone
+#### Create the index in Pinecone
 
-Here we'll download a pre-embedded dataset from the `pinecone-datasets` library allowing us to skip the embedding and preprocessing steps.
+First, download a pre-embedded dataset from the `pinecone-datasets` library, which lets you skip the embedding and preprocessing steps.
 
 ```Python Python theme={null}
 import pinecone_datasets
@@ -80,7 +81,7 @@ dataset = pinecone_datasets.load_dataset('wikipedia-simple-text-embedding-ada-00
 dataset.head()
 ```
 
-After downloading the data, we can initialize our pinecone environment and create our first index. Here, we have our first potentially important choice, by selecting the **distance metric** used for our index.
+After downloading the data, initialize your Pinecone environment and create your first index. This is your first potentially important choice, because you select the distance metric for the index.
 
 ```Python Python theme={null}
 pinecone.create_index(
@@ -90,7 +91,7 @@ pinecone.create_index(
 )
 ```
 
-Then, we can upsert our documents into the index in batches.
+Then, upsert your documents into the index in batches.
 
 ```Python Python theme={null}
 for batch in dataset.iter_documents(batch_size=100):
@@ -99,7 +100,7 @@ for batch in dataset.iter_documents(batch_size=100):
 
 #### Build the vector store
 
-Now that we've built our index, we can start using LangChain to initialize our vector store.
+Now that you've built your index, use LangChain to initialize your vector store.
 
 ```Python Python theme={null}
 embed = OpenAIEmbeddings(
@@ -119,11 +120,11 @@ vectorstore = Pinecone(
 )
 ```
 
-In RAG, we take the query as a question that is to be answered by an LLM, but the LLM must answer the question based on the information it receives from the `vectorstore`.
+In RAG, an LLM answers the query as a question, but it must base its answer on the information it receives from the `vectorstore`.
 
-#### Initialize our RAG application
+#### Initialize the RAG application
 
-To do this, we initialize a `RetrievalQA` as our app:
+To do this, initialize a `RetrievalQA` as your app:
 
 ```Python Python theme={null}
 from langchain.chat_models import ChatOpenAI
@@ -142,9 +143,9 @@ qa = RetrievalQA.from_chain_type(
 )
 ```
 
-#### TruLens for evaluation and tracking of LLM experiments
+#### Evaluate and track LLM experiments with TruLens
 
-Once we've set up our app, we should put together our [feedback functions](https://truera.com/ai-quality-education/generative-ai-and-llms/whats-missing-to-evaluate-foundation-models-at-scale/). As a reminder, feedback functions are an extensible method for evaluating LLMs. Here we'll set up two feedback functions: `qs_relevance` and `qa_relevance`. They're defined as follows:
+Once you've set up your app, put together your [feedback functions](https://truera.com/ai-quality-education/generative-ai-and-llms/whats-missing-to-evaluate-foundation-models-at-scale/). As a reminder, feedback functions are an extensible method for evaluating LLMs. This example sets up two feedback functions, `qs_relevance` and `qa_relevance`, which are defined as follows:
 
 *QS Relevance: query-statement relevance is the average of relevance (0 to 1) for each context chunk returned by the semantic search.*
 *QA Relevance: question-answer relevance is the relevance (again, 0 to 1) of the final answer to the original question.*
@@ -172,23 +173,23 @@ qs_relevance = (
 
 ```
 
-Our use of selectors here also requires an explanation.
+The selectors in this code also need some explanation.
 
-QA Relevance is the simpler of the two. Here, we're using `.on_input_output()` to specify that the feedback function should be applied on both the input and output of the application.
+QA Relevance is the simpler of the two. It uses `.on_input_output()` to specify that the feedback function should be applied on both the input and output of the application.
 
-For QS Relevance, we use TruLens selectors to locate the context chunks retrieved by our application. Let's break it down into simple parts:
+QS Relevance uses TruLens selectors to locate the context chunks retrieved by the application. It breaks down into the following parts:
 
-1. Argument Specification – The `on_input` which appears first is a convenient shorthand and states that the first argument to `qs_relevance` (the question) is to be the main input of the app.
+1. The `on_input` call, which appears first, is an argument specification. It's shorthand stating that the first argument to `qs_relevance` (the question) is the main input of the app.
 
-2. Argument Specification – The `on(Select...)` line specifies where the statement argument to the implementation comes from. We want to evaluate the context chunks, which are an intermediate step of the LLM app. This form references the langchain app object call chain, which can be viewed from `tru.run_dashboard()`. This flexibility allows you to apply a feedback function to any intermediate step of your LLM app. Below is an example where TruLens displays how to select each piece of the context.
+2. The `on(Select...)` line is also an argument specification. It specifies where the statement argument to the implementation comes from. In this case, you want to evaluate the context chunks, which are an intermediate step of the LLM app. This form references the LangChain app object call chain, which you can view from `tru.run_dashboard()`. This lets you apply a feedback function to any intermediate step of your LLM app. The following example shows how TruLens displays the selector for each piece of the context.
 
    <img alt="subcomponents" />
 
-3. Aggregation specification -- The last line aggregate (`np.mean`) specifies how feedback outputs are to be aggregated. This only applies to cases where the argument specification names more than one value for an input or output.
+3. The last line, `aggregate(np.mean)`, is the aggregation specification. It specifies how to aggregate feedback outputs, and it only applies when the argument specification names more than one value for an input or output.
 
-The result of these lines is that `f_qs_relevance` can be now be run on apps/records and will automatically select the specified components of those apps/records
+As a result, you can run `qs_relevance` on apps and records, and it automatically selects the specified components of those apps and records.
 
-To finish up, we just wrap our Retrieval QA app with TruLens along with a list of the feedback functions we will use for eval.
+To finish up, wrap your Retrieval QA app with TruLens along with a list of the feedback functions to use for evaluation.
 
 ```Python Python theme={null}
 # wrap with TruLens
@@ -199,21 +200,21 @@ truchain = TruChain(qa,
 truchain("Which state is Washington D.C. in?")
 ```
 
-After submitting a number of queries to our application, we can track our experiment and evaluations with the TruLens dashboard.
+After submitting a number of queries to your application, track your experiment and evaluations with the TruLens dashboard.
 
 ```Python Python theme={null}
 tru.run_dashboard()
 ```
 
-Here is a view of our first experiment:
+The dashboard shows the results of the first experiment:
 
 <img alt="trulens-dashboard-1" />
 
 #### Experiment with distance metrics
 
-Now that we've walked through the process of building our tracked RAG application using cosine as the distance metric, all we have to do for the next two experiments is to rebuild the index with `euclidean` or `dotproduct` as the metric and follow the rest of the steps above as is.
+You've now built a tracked RAG application using cosine as the distance metric. To run the next two experiments, rebuild the index with `euclidean` or `dotproduct` as the metric and follow the rest of the preceding steps as is.
 
-Because we're using OpenAI embeddings, which are normalized to length 1, dot product and cosine distance are equivalent - and Euclidean will also yield the same ranking. See the OpenAI docs for more information. With the same document ranking, we shouldn't expect a difference in response quality, but computation latency may vary across the metrics. Indeed, OpenAI advises that dot product computation may be a bit faster than cosine. We will be able to confirm this expected latency difference with TruLens.
+Because this example uses OpenAI embeddings, which are normalized to length 1, dot product and cosine distance are equivalent, and Euclidean also yields the same ranking. See the OpenAI docs for more information. With the same document ranking, you shouldn't expect a difference in response quality, but computation latency may vary across the metrics. OpenAI advises that dot product computation may be a bit faster than cosine. You can confirm this expected latency difference with TruLens.
 
 ```Python Python theme={null}
 index_name_v2 = 'langchain-rag-euclidean'
@@ -224,25 +225,25 @@ pinecone.create_index(
     )
 ```
 
-After doing so, we can view our evaluations for all three LLM apps sitting on top of the different indexes. All three apps are struggling with query-statement relevance. In other words, the context retrieved is only somewhat relevant to the original query.
+After doing so, you can view the evaluations for all three LLM apps running on the different indexes. All three apps are struggling with query-statement relevance. In other words, the context retrieved is only somewhat relevant to the original query.
 
-**We can also see that both the Euclidean and dot-product metrics performed at a lower latency than cosine at roughly the same evaluation quality.**
+Both the Euclidean and dot-product metrics also performed at a lower latency than cosine at roughly the same evaluation quality.
 
 <img alt="trulens-dashboard-2" />
 
-### Problem: hallucination
+### Diagnose hallucination
 
-Digging deeper into the Query Statement Relevance, we notice one problem in particular with a question about famous dental floss brands. The app responds correctly, but isn't backed up by the context retrieved, which doesn't mention any specific brands.
+Looking more closely at Query Statement Relevance shows one problem in particular, with a question about famous dental floss brands. The app responds correctly, but isn't backed up by the context retrieved, which doesn't mention any specific brands.
 
 <img alt="trulens-dashboard-feedback-1" />
 
-#### Quickly evaluate app components with LangChain and TruLens
+#### Evaluate app components with LangChain and TruLens
 
-Using a less powerful model is a common way to reduce hallucination for some applications. We'll evaluate ada-001 in our next experiment for this purpose.
+Using a less capable model is a common way to reduce hallucination for some applications. The next experiment evaluates ada-001 for this purpose.
 
 <img alt="trulens-dashboard-3" />
 
-Changing different components of apps built with frameworks like LangChain is really easy. In this case we just need to call `text-ada-001` from the LangChain LLM store. Adding in easy evaluation with TruLens allows us to quickly iterate through different components to find our optimal app configuration.
+With frameworks like LangChain, you can swap out components of your app. In this case, you call `text-ada-001` from the LangChain LLM store. Evaluating each change with TruLens lets you iterate through different components to find the best app configuration.
 
 ```Python Python theme={null}
 # completion llm
@@ -266,17 +267,17 @@ truchain = TruChain(qa_with_sources,
     feedbacks=[qa_relevance, qs_relevance])
 ```
 
-**However, this configuration with a less powerful model struggles to return a relevant answer given the context provided.**
+However, this configuration with a less capable model struggles to return a relevant answer given the context provided.
 
 <img alt="trulens-dashboard-4" />
 
-For example, when asked “Which year was Hawaii's state song written?”, the app retrieves context that contains the correct answer but fails to respond with that answer, instead simply responding with the name of the song.
+For example, when asked “Which year was Hawaii's state song written?”, the app retrieves context that contains the correct answer but responds with only the name of the song.
 
 <img alt="trulens-dashboard-feedback-2" />
 
-While our relevance function isn't doing a great job here in differentiating which context chunks are relevant, we can manually see that only the one (the 4th chunk) mentions the year the song was written. Narrowing our `top_k`, or the number of context chunks retrieved by the semantic search, may help.
+The relevance function doesn't do a great job here of differentiating which context chunks are relevant, but you can see manually that only one chunk (the fourth) mentions the year the song was written. Narrowing `top_k`, the number of context chunks retrieved by the semantic search, may help.
 
-We can do so as follows:
+To narrow `top_k`, update the retriever:
 
 ```Python Python theme={null}
 qa = RetrievalQA.from_chain_type(
@@ -286,7 +287,7 @@ qa = RetrievalQA.from_chain_type(
 )
 ```
 
-The way the `top_k` is implemented in LangChain's RetrievalQA is that the documents are still retrieved by semantic search and only the `top_k` are passed to the LLM. Therefore, TruLens also captures all of the context chunks that are being retrieved. To calculate an accurate QS Relevance metric that matches what's being passed to the LLM, we only calculate the relevance of the top context chunk retrieved by slicing the `input_documents` passed into the TruLens Select function:
+The way the `top_k` is implemented in LangChain's RetrievalQA is that the documents are still retrieved by semantic search and only the `top_k` are passed to the LLM. Therefore, TruLens also captures all of the context chunks that are retrieved. To calculate an accurate QS Relevance metric that matches what's passed to the LLM, calculate the relevance of only the top context chunk by slicing the `input_documents` passed into the TruLens Select function:
 
 ```Python Python theme={null}
 qs_relevance = Feedback(openai.qs_relevance).on_input().on(
@@ -294,18 +295,18 @@ qs_relevance = Feedback(openai.qs_relevance).on_input().on(
 ).aggregate(np.mean)
 ```
 
-Once we've done so, our final application has much improved `qs_relevance`, `qa_relevance` and latency!
+With this change, the final application has much improved `qs_relevance`, `qa_relevance`, and latency.
 
 <img alt="trulens-dashboard-5" />
 
-With that change, our application is successfully retrieving the one piece of context it needs, and successfully forming an answer from that context.
+The application now retrieves the one piece of context it needs and forms an answer from that context.
 
 <img alt="trulens-dashboard-feedback-3" />
 
-Even better, the application now knows what it doesn't know:
+The application also now recognizes when it doesn't know the answer:
 
 <img alt="trulens-dashboard-feedback-4" />
 
 ### Summary
 
-In conclusion, we note that exploring the downstream impact of some Pinecone configuration choices on response quality, cost and latency is an important part of the LLM app development process, ensuring that we make the choices that lead to the app performing the best. Overall, TruLens and Pinecone are the perfect combination for building reliable RAG-style applications. Pinecone provides a way to efficiently store and retrieve context used by LLM apps, and TruLens provides a way to track and evaluate each iteration of your application.
+Exploring the downstream impact of Pinecone configuration choices on response quality, cost, and latency is an important part of the LLM app development process, because it helps you make the choices that lead to the best-performing app. You can use TruLens and Pinecone together to build reliable RAG-style applications. Pinecone stores and retrieves the context used by LLM apps, and TruLens tracks and evaluates each iteration of your application.

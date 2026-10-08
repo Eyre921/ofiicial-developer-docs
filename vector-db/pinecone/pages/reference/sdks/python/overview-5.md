@@ -18,7 +18,7 @@ The Pinecone Python SDK is distributed on PyPI using the package name `pinecone`
 
 ## Requirements
 
-The Pinecone Python SDK requires Python 3.9 or later. It has been tested with CPython versions from 3.9 to 3.13.
+The Pinecone Python SDK requires Python 3.10 or later. It has been tested with CPython versions from 3.10 to 3.14.
 
 ## SDK versions
 

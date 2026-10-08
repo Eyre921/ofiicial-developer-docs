@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/integrations/new-relic
 path: integrations/new-relic
 ---
 
-Monitor Pinecone with New Relic's Prometheus quickstart: dashboards, alerts, and AI observability for vector database latency and RAG performance.
+Monitor Pinecone with New Relic's Prometheus quickstart, which includes dashboards, alerts, and AI observability for query latency and RAG performance.
 
-New Relic is an all-in-one observability platform and provides the industry’s first APM solution for AI-powered applications. New Relic is pioneering AI observability with AIM to provide engineers unprecedented visibility and insights across the AI application stack, making it easier to troubleshoot and optimize their AI applications for performance, quality, cost, and responsible use of AI.
+New Relic is an observability platform that includes application performance monitoring (APM) for AI-powered applications. Its AI monitoring (AIM) gives engineers visibility across the AI application stack, so they can troubleshoot and optimize AI applications for performance, quality, cost, and responsible use of AI.
 
-Implement monitoring and integrate your Pinecone application with New Relic for performance analysis and insights. The New Relic for Pinecone (Prometheus) quickstart contains one dashboard. These interactive visualizations let you easily explore your data, understand context, and resolve problems faster. It also includes three alerts to detect changes in key performance metrics. Integrate these alerts with your favorite tools (like Slack, PagerDuty, etc.) and New Relic will let you know when something needs your attention.
+Integrate your Pinecone application with New Relic to monitor and analyze its performance. The New Relic for Pinecone (Prometheus) quickstart contains one dashboard with interactive visualizations that let you explore your data, understand context, and resolve problems. It also includes three alerts that detect changes in key performance metrics. You can connect these alerts to tools such as Slack or PagerDuty, and New Relic notifies you when something needs your attention.
 
 <PrimarySecondaryCTA />

@@ -1374,10 +1374,10 @@ All bank debit methods follow the `processing` to `succeeded` or `payment_failed
 
 | Method | Test values | Expected webhooks for success | Expected webhooks for failure |
 | --- | --- | --- | --- |
-| SEPA Direct Debit | [See SEPA Direct Debit](https://docs.stripe.com/testing.md#sepa-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
-| ACH Direct Debit | [See ACH Direct Debit](https://docs.stripe.com/testing.md#ach-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
-| BACS Direct Debit | [See BACS Direct Debit](https://docs.stripe.com/testing.md#bacs-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
-| AU BECS Direct Debit | [See AU BECS Direct Debit](https://docs.stripe.com/testing.md#au-becs-direct-debit) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+| SEPA Direct Debit | [See SEPA Direct Debit](https://docs.stripe.com/testing.md?payment-method=sepa-direct-debit#non-card-payments) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+| ACH Direct Debit | [See ACH Direct Debit](https://docs.stripe.com/testing.md?payment-method=ach-direct-debit#non-card-payments) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+| BACS Direct Debit | [See BACS Direct Debit](https://docs.stripe.com/testing.md?payment-method=bacs-direct-debit#non-card-payments) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
+| AU BECS Direct Debit | [See AU BECS Direct Debit](https://docs.stripe.com/testing.md?payment-method=au-becs-direct-debit#non-card-payments) | `payment_intent.processing`, then `payment_intent.succeeded` | `payment_intent.processing`, then `payment_intent.payment_failed` |
 
 ### Review voucher-based webhook sequence
 

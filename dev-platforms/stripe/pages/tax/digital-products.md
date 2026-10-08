@@ -42,7 +42,7 @@ Select the PTC that most closely matches your product’s delivery method, acces
 1. Follow [Set up your Stripe Tax account](https://docs.stripe.com/tax/set-up.md), including [registrations](https://docs.stripe.com/tax/registering.md).
 2. Use [threshold monitoring](https://docs.stripe.com/tax/monitoring.md) to track where you need to register based on your sales volume.
 3. [Assign PTCs](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md) to your products using the tax codes that most closely match your product. Use the [digital products filter](https://docs.stripe.com/tax/tax-codes.md?type=digital) to browse all available digital product tax codes.
-4. File tax returns with [Stripe](https://docs.stripe.com/tax/file-with-stripe.md) or our [filing partners](https://docs.stripe.com/tax/file-with-taxually.md).
+4. File tax returns with [Stripe or our filing partners](https://docs.stripe.com/tax/filing.md).
 
 ## Regional considerations
 

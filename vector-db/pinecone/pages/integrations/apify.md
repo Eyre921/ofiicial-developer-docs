@@ -10,6 +10,6 @@ Use the Apify Pinecone integration to crawl and scrape websites, embed the resul
 
 For example, the [Website Content Crawler](https://apify.com/apify/website-content-crawler) Actor can deeply crawl websites, clean their HTML by removing a cookies modal, footer, or navigation, and then transform the HTML into Markdown. This Markdown can then be used as training data for AI models or to feed LLM and generative AI applications with web content.
 
-The Apify integration for Pinecone makes it easy to transfer results from Actors to the Pinecone vector database, enabling Retrieval-Augmented Generation (RAG) or semantic search over data extracted from the web.
+The Apify integration for Pinecone transfers results from Actors to a Pinecone index, so you can use data extracted from the web for retrieval-augmented generation (RAG) or semantic search.
 
 <PrimarySecondaryCTA />

@@ -4,11 +4,11 @@ source: https://docs.pinecone.io/integrations/cohere
 path: integrations/cohere
 ---
 
-Connect Pinecone and Cohere to ship vector search and RAG applications: generate Cohere embeddings, index them in Pinecone, and rerank results.
+Generate embeddings with the Cohere Embed API, index them in Pinecone, and run semantic search queries against the index.
 
 The Cohere platform builds natural language processing and generation into your product with a few lines of code. Cohere's large language models (LLMs) can solve a broad spectrum of natural language use cases, including classification, semantic search, paraphrasing, summarization, and content generation.
 
-Use the Cohere Embed API endpoint to generate language embeddings, and then index those embeddings in the Pinecone vector database for fast and scalable vector search.
+Use the Cohere Embed API endpoint to generate language embeddings, and then index those embeddings in Pinecone for fast and scalable vector search.
 
 <PrimarySecondaryCTA />
 
@@ -18,15 +18,15 @@ Use the Cohere Embed API endpoint to generate language embeddings, and then inde
 
 [Open in Colab](https://colab.research.google.com/github/pinecone-io/examples/blob/master/integrations/cohere/semantic%5Fsearch%5Ftrec.ipynb)
 
-In this guide, you will learn how to use the [Cohere Embed API endpoint](https://docs.cohere.ai/reference/embed) to generate language embeddings, and then index those embeddings in the [Pinecone vector database](https://www.pinecone.io) for fast and scalable vector search.
+In this guide, you'll learn how to use the [Cohere Embed API endpoint](https://docs.cohere.ai/reference/embed) to generate language embeddings, and then index those embeddings in [Pinecone Database](/guides/get-started/overview) for fast and scalable vector search.
 
-This is a powerful and common combination for building semantic search, question-answering, threat-detection, and other applications that rely on NLP and search over a large corpus of text data.
+This is a common combination for building semantic search, question-answering, threat-detection, and other applications that rely on NLP and search over a large corpus of text data.
 
 The basic workflow looks like this:
 
 * Embed and index
   * Use the Cohere Embed API endpoint to generate vector embeddings of your documents (or any text data).
-  * Upload those vector embeddings into Pinecone, which can store and index millions/billions of these vector embeddings, and search through them at ultra-low latencies.
+  * Upload those vector embeddings into Pinecone, which can store and index millions or billions of these vector embeddings and search through them at low latency.
 * Search
   * Pass your query text or document through the Cohere Embed API endpoint again.
   * Take the resulting vector embedding and send it as a [query](/guides/search/search-overview) to Pinecone.
@@ -36,7 +36,7 @@ The basic workflow looks like this:
 
 ### Set up the environment
 
-Start by installing the Cohere and Pinecone clients and HuggingFace *Datasets* for downloading the TREC dataset used in this guide:
+Start by installing the Cohere and Pinecone clients, along with Hugging Face Datasets for downloading the TREC dataset used in this guide:
 
 ```shell Shell theme={null}
 pip install -U cohere pinecone datasets
@@ -52,7 +52,7 @@ import cohere
 co = cohere.Client("<YOUR_API_KEY>")
 ```
 
-Load the **T**ext **RE**trieval **C**onference (TREC) question classification dataset, which contains 5.5K labeled questions. You will take only the first 1K samples for this walkthrough, but this can be scaled to millions or even billions of samples.
+Load the Text REtrieval Conference (TREC) question classification dataset, which contains 5.5K labeled questions. You'll take only the first 1K samples for this walkthrough, but you can scale this to millions or even billions of samples.
 
 ```Python Python theme={null}
 from datasets import load_dataset
@@ -61,7 +61,7 @@ from datasets import load_dataset
 trec = load_dataset('trec', split='train[:1000]')
 ```
 
-Each sample in `trec` contains two label features and the *text* feature. Pass the questions from the *text* feature to Cohere to create embeddings.
+Each sample in `trec` contains two label features and the `text` feature. Pass the questions from the `text` feature to Cohere to create embeddings.
 
 ```Python Python theme={null}
 embeds = co.embed(
@@ -72,7 +72,7 @@ embeds = co.embed(
 ).embeddings
 ```
 
-Check the dimensionality of the returned vectors. You will need to save the embedding dimensionality from this to be used when initializing your Pinecone index later
+Check the dimensionality of the returned vectors. Save the embedding dimensionality, because you need it when you create your Pinecone index later.
 
 ```Python Python theme={null}
 import numpy as np
@@ -86,11 +86,11 @@ print(shape)
 
 You can see the `1024` embedding dimensionality produced by Cohere's `embed-english-v3.0` model, and the `1000` samples you built embeddings for.
 
-### Store the Embeddings
+### Store the embeddings
 
-Now that you have your embeddings, you can move on to indexing them in the Pinecone vector database. For this, you need a [Pinecone API key](/guides/projects/manage-api-keys).
+Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a [Pinecone API key](/guides/projects/manage-api-keys).
 
-You first initialize our connection to Pinecone and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When creating the index, you specify that you would like to use the cosine similarity metric to align with Cohere's embeddings, and also pass the embedding dimensionality of `1024`.
+First, initialize your connection to Pinecone, and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When you create the index, specify the cosine similarity metric to align with Cohere's embeddings, and pass the embedding dimensionality of `1024`.
 
 ```Python Python theme={null}
 from pinecone import Pinecone
@@ -116,9 +116,9 @@ if not pc.has_index(index_name):
 index = pc.Index(index_name)
 ```
 
-Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format *(id, vector, metadata)*, where the *metadata* field is an optional extra field where you can store anything you want in a dictionary format. For this example, you will store the original text of the embeddings.
+Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format `(id, vector, metadata)`, where the `metadata` field is an optional extra field where you can store anything you want in a dictionary format. For this example, you'll store the original text of the embeddings.
 
-While uploading your data, you will batch everything to avoid pushing too much data in one go.
+Upload the data in batches to avoid pushing too much data at once.
 
 ```Python Python theme={null}
 batch_size = 128
@@ -144,11 +144,11 @@ print(index.describe_index_stats())
 #  'total_vector_count': 1000}
 ```
 
-You can see from `index.describe_index_stats` that you have a *1024-dimensionality* index populated with *1000* embeddings. For serverless on-demand indexes, the `index_fullness` metric is typically `0` because storage and compute scale automatically. If you're using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), `index_fullness` (along with `memory_fullness` and `storage_fullness`) tells you how close the index is to its allocated capacity.
+You can see from `index.describe_index_stats` that you have a 1024-dimensional index populated with 1000 embeddings. For serverless on-demand indexes, the `index_fullness` metric is typically `0` because storage and compute scale automatically. If you're using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), `index_fullness` (along with `memory_fullness` and `storage_fullness`) tells you how close the index is to its allocated capacity.
 
-### Semantic search
+### Run a semantic search
 
-Now that you have your indexed vectors, you can perform a few search queries. When searching, you will first embed your query using Cohere, and then search using the returned vector in Pinecone.
+Now that you have your indexed vectors, you can perform a few search queries. To search, first embed your query with Cohere, and then search Pinecone with the returned vector.
 
 ```Python Python theme={null}
 query = "What caused the 1929 Great Depression?"
@@ -167,7 +167,7 @@ print(np.array(xq).shape)
 res = index.query(vector=xq, top_k=5, include_metadata=True)
 ```
 
-The response from Pinecone includes your original text in the `metadata` field. Let's print out the `top_k` most similar questions and their respective similarity scores.
+The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
 
 ```Python Python theme={null}
 for match in res['matches']:
@@ -181,7 +181,7 @@ for match in res['matches']:
 # 0.31: What causes pneumonia ?
 ```
 
-Looks good! Let's make it harder and replace *"depression"* with the incorrect term *"recession"*.
+The top results are relevant. To make the search harder, replace "depression" with the incorrect term "recession."
 
 ```Python Python theme={null}
 query = "What was the cause of the major recession in the early 20th century?"
@@ -208,7 +208,7 @@ for match in res['matches']:
 # 0.32: What crop failure caused the Irish Famine ?
 ```
 
-Let's perform one final search using the definition of depression rather than the word or related words.
+Finally, search using the definition of depression rather than the word or related words.
 
 ```Python Python theme={null}
 query = "Why was there a long-term economic downturn in the early 20th century?"
@@ -240,4 +240,4 @@ for match in res['matches']:
 # 0.28: What were popular songs and types of songs in the 1920s ?
 ```
 
-It's clear from this example that the semantic search pipeline is clearly able to identify the meaning between each of your queries. Using these embeddings with Pinecone allows you to return the most semantically similar questions from the already indexed TREC dataset.
+This example shows that the semantic search pipeline can identify the meaning behind each of your queries. Using these embeddings with Pinecone lets you return the most semantically similar questions from the already indexed TREC dataset.

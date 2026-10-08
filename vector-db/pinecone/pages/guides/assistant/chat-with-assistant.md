@@ -34,24 +34,16 @@ The following example sends a message and requests a default response:
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant")
 
-  msg = Message(role="user", content="Who is the CFO of Netflix?")
-  response = assistant.chat(messages=[msg])
-
-  # Alternatively, you can provide a dictionary as the message:
-  # msg = {"role": "user", "content": "Who is the CFO of Netflix?"}
-  # response = assistant.chat(messages=[msg])
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[{"role": "user", "content": "Who is the CFO of Netflix?"}],
+  )
 
   print(response)
-
   ```
 
   ```javascript JavaScript theme={null}
@@ -59,12 +51,11 @@ The following example sends a message and requests a default response:
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistantName = 'example-assistant';
-  const assistant = pc.Assistant(assistantName);
-  const chatResp = await assistant.chat({
+  const assistant = pc.assistant({ name: 'example-assistant' });
+  const response = await assistant.chat({
     messages: [{ role: 'user', content: 'Who is the CFO of Netflix?' }],
   });
-  console.log(chatResp);
+  console.log(response);
   ```
 
   ```bash curl theme={null}
@@ -153,40 +144,32 @@ The following example sends a message and requests a streaming response:
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant")
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[{"role": "user", "content": "What is the inciting incident of Pride and Prejudice?"}],
+      stream=True,
+  )
 
-  msg = Message(role="user", content="What is the inciting incident of Pride and Prejudice?")
-
-  response = assistant.chat(messages=[msg], stream=True)
-
-  for data in response:
-      if data:
-          print(data)
+  for chunk in response:
+      print(chunk)
   ```
 
   ```javascript JavaScript theme={null}
   import { Pinecone } from '@pinecone-database/pinecone';
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-  const assistantName = 'example-assistant';
 
-  const assistant = pc.Assistant(assistantName);
-  const chatResp = await assistant.chatStream({
-        messages: [{ role: 'user', content: 'Who is the CFO of Netflix?' }]
-      });
+  const assistant = pc.assistant({ name: 'example-assistant' });
+  const response = await assistant.chatStream({
+    messages: [{ role: 'user', content: 'What is the inciting incident of Pride and Prejudice?' }],
+  });
 
-  for await (const response of chatResp) {
-      if (response) {
-          console.log(response);
-      }
+  for await (const chunk of response) {
+    console.log(chunk);
   }
   ```
 
@@ -242,22 +225,17 @@ The following example uses the `json_response` parameter to instruct the assista
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
-  import json
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant")
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[{"role": "user", "content": "Who is the CFO and CEO of Netflix?"}],
+      json_response=True,
+  )
 
-  msg = Message(role="user", content="Who is the CFO and CEO of Netflix?")
-
-  response = assistant.chat(messages=[msg], json_response=True)
-
-  print(json.loads(response))
+  print(response)
   ```
 
   ```javascript JavaScript theme={null}
@@ -265,12 +243,12 @@ The following example uses the `json_response` parameter to instruct the assista
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistantName = 'example-assistant';
-  const assistant = pc.Assistant(assistantName);
-  const chatResp = await assistant.chat({
-    messages: [{ role: 'user', content: 'Who is the CFO and CEO of Netflix?', json_response: true }],
+  const assistant = pc.assistant({ name: 'example-assistant' });
+  const response = await assistant.chat({
+    messages: [{ role: 'user', content: 'Who is the CFO and CEO of Netflix?' }],
+    jsonResponse: true,
   });
-  console.log(chatResp);
+  console.log(response);
   ```
 
   ```bash curl theme={null}
@@ -344,7 +322,7 @@ The example above returns a result like the following:
 In the assistant's response, the message string is contained in the following JSON object:
 
 * `message.content` for the default chat response
-* `delta.content` for the streaming chat response
+* `delta.content` for the streaming chat response (the Python SDK's `response.text()` yields this for you)
 * `message.content` for the JSON response
 
 You can extract the message content and print it to the console:
@@ -353,19 +331,20 @@ You can extract the message content and print it to the console:
   <Tab title="Default response">
     <CodeGroup>
       ```python Python theme={null}
-      msg = Message(role="user", content="What is the maximum height of a red pine?")
+      response = pc.assistants.chat(
+          assistant_name="example-assistant",
+          messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+      )
 
-      response = assistant.chat(messages=[msg])
-
-      print(str(response.message.content))
+      print(response.message.content)
       ```
 
       ```javascript JavaScript theme={null}
-      const assistant = pc.Assistant(assistantName);
-      const chatResp = await assistant.chat({
+      const assistant = pc.assistant({ name: 'example-assistant' });
+      const response = await assistant.chat({
         messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
       });
-      console.log(chatResp.message.content);
+      console.log(response.message.content);
       ```
 
       ```bash curl theme={null}
@@ -383,13 +362,14 @@ You can extract the message content and print it to the console:
   <Tab title="Streaming response">
     <CodeGroup>
       ```python Python theme={null}
-      msg = Message(role="user", content="What is the maximum height of a red pine?")
+      response = pc.assistants.chat(
+          assistant_name="example-assistant",
+          messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+          stream=True,
+      )
 
-      response = assistant.chat(messages=[msg], stream=True)
-
-      for data in response:
-          if hasattr(data, "delta"):
-              print(data.delta.content)
+      for text in response.text():
+          print(text)
       ```
 
       ```bash curl theme={null}
@@ -430,9 +410,11 @@ You can extract the message content and print it to the console:
       ```python Python theme={null}
       import json
 
-      msg = Message(role="user", content="What is the maximum height of a red pine?")
-
-      response = assistant.chat(messages=[msg], json_response=True)
+      response = pc.assistants.chat(
+          assistant_name="example-assistant",
+          messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+          json_response=True,
+      )
 
       print(json.loads(response.message.content))
       ```
@@ -479,25 +461,17 @@ To choose a non-default model for your assistant, set the `model` parameter in t
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # Get your assistant.
-  assistant = pc.assistant.Assistant(
-      assistant_name="example-assistant", 
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+      model="gpt-4.1",
   )
 
-  # Chat with the assistant.
-  chat_context = [Message(role="user", content="What is the maximum height of a red pine?")]
-  response = assistant.chat(
-      messages=chat_context, 
-      model="gpt-4.1"
-  )
+  print(response)
   ```
 
   ```javascript JavaScript theme={null}
@@ -505,14 +479,13 @@ To choose a non-default model for your assistant, set the `model` parameter in t
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistantName = 'example-assistant';
-  const assistant = pc.Assistant(assistantName);
-  const chatResp = await assistant.chat({
+  const assistant = pc.assistant({ name: 'example-assistant' });
+  const response = await assistant.chat({
     messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
     model: 'gpt-4.1',
   });
 
-  console.log(chatResp);
+  console.log(response);
   ```
 
   ```bash curl theme={null}
@@ -543,26 +516,20 @@ In the following example, the `messages` object includes prior messages that are
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # Get your assistant.
-  assistant = pc.assistant.Assistant(
-      assistant_name="example-assistant", 
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[
+          {"role": "user", "content": "What is the maximum height of a red pine?"},
+          {"role": "assistant", "content": "The maximum height of a red pine (Pinus resinosa) is up to 25 meters."},
+          {"role": "user", "content": "What is its maximum diameter?"},
+      ],
   )
 
-  # Chat with the assistant.
-  chat_context = [
-      Message(content="What is the maximum height of a red pine?", role="user"),
-      Message(content="The maximum height of a red pine (Pinus resinosa) is up to 25 meters.", role="assistant"),
-      Message(content="What is its maximum diameter?", role="user")
-  ]
-  response = assistant.chat(messages=chat_context)
+  print(response)
   ```
 
   ```bash curl theme={null}
@@ -619,37 +586,30 @@ You can [filter which documents to use for chat completions](/guides/assistant/f
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  # Get your assistant.
-  assistant = pc.assistant.Assistant(
-      assistant_name="example-assistant", 
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[{"role": "user", "content": "What is the maximum height of a red pine?"}],
+      filter={"resource": "encyclopedia"},
   )
 
-  # Chat with the assistant.
-  chat_context = [Message(role="user", content="What is the maximum height of a red pine?")]
-  response = assistant.chat(messages=chat_context, stream=True, filter={"resource": "encyclopedia"})
+  print(response)
   ```
 
   ```javascript JavaScript theme={null}
   import { Pinecone } from '@pinecone-database/pinecone';
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-  const assistantName = 'example-assistant';
-  const assistant = pc.Assistant(assistantName);
-  const chatResp = await assistant.chat({
+
+  const assistant = pc.assistant({ name: 'example-assistant' });
+  const response = await assistant.chat({
     messages: [{ role: 'user', content: 'What is the maximum height of a red pine?' }],
-    filter: {
-      'resource': 'encyclopedia'
-    }
+    filter: { resource: 'encyclopedia' },
   });
-  console.log(chatResp);
+  console.log(response);
   ```
 
   ```bash curl theme={null}
@@ -691,17 +651,15 @@ While additional tokens will be used for other parameters (e.g., the system prom
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant")
 
-  msg = Message(role="user", content="Who is the CFO of Netflix?")
-  response = assistant.chat(messages=[msg], context_options={"snippet_size": 2500, "top_k": 10})
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[{"role": "user", "content": "Who is the CFO of Netflix?"}],
+      context_options={"top_k": 10, "snippet_size": 2500},
+  )
 
   print(response)
   ```
@@ -711,14 +669,13 @@ While additional tokens will be used for other parameters (e.g., the system prom
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistantName = 'example-assistant';
-  const assistant = pc.Assistant(assistantName);
-  const chatResp = await assistant.chat({
+  const assistant = pc.assistant({ name: 'example-assistant' });
+  const response = await assistant.chat({
     messages: [{ role: 'user', content: 'Who is the CFO of Netflix?' }],
     contextOptions: { topK: 10, snippetSize: 2500 },
   });
 
-  console.log(chatResp);
+  console.log(response);
   ```
 
   ```bash curl theme={null}
@@ -758,23 +715,18 @@ The example will return up to 10 snippets and each snippet will be up to 2500 to
 
 Temperature is a parameter that controls the randomness of a model's predictions during text generation. Lower temperatures (\~0.0) yield more consistent, predictable answers, while higher temperatures increase the model's explanatory power and is generally better for creative tasks.
 
-To control the sampling temperature for a model, set the `temperarture` parameter in the request. If a model doesn't support a temperature parameter, the parameter is ignored.
+To control the sampling temperature for a model, set the `temperature` parameter in the request. If a model doesn't support a temperature parameter, the parameter is ignored.
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
-  from pinecone_plugins.assistant.models.chat import Message
 
   pc = Pinecone(api_key="YOUR_API_KEY")
-  assistant = pc.assistant.Assistant(assistant_name="example-assistant")
 
-  msg = Message(role="user", content="Who is the CFO of Netflix?")
-  response = assistant.chat(
-      messages=[msg], 
-      temperature=0.8
+  response = pc.assistants.chat(
+      assistant_name="example-assistant",
+      messages=[{"role": "user", "content": "Who is the CFO of Netflix?"}],
+      temperature=0.8,
   )
 
   print(response)
@@ -785,13 +737,12 @@ To control the sampling temperature for a model, set the `temperarture` paramete
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistantName = 'example-assistant';
-  const assistant = pc.Assistant(assistantName);
-  const chatResp = await assistant.chat({
+  const assistant = pc.assistant({ name: 'example-assistant' });
+  const response = await assistant.chat({
     messages: [{ role: 'user', content: 'Who is the CFO of Netflix?' }],
     temperature: 0.8,
   });
-  console.log(chatResp);
+  console.log(response);
   ```
 
   ```bash curl theme={null}

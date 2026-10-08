@@ -6,16 +6,16 @@ path: integrations/claude-code
 
 Install the official Pinecone plugin for Claude Code to manage indexes, run vector search, and build RAG assistants from the terminal with slash commands.
 
-The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides AI-powered skills, MCP server integration, and slash commands directly in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants — all with up-to-date Pinecone API knowledge.
+The official Pinecone plugin for [Claude Code](https://claude.ai/code) adds Pinecone skills, the Pinecone MCP server, and slash commands to Claude Code in your terminal. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants, with up-to-date Pinecone API knowledge.
 
 <PrimarySecondaryCTA />
 
 ## Features
 
-* **Built-in skills** for index management, semantic search, full-text search, assistant creation, and more
-* **MCP server integration** for direct Pinecone operations from Claude Code
-* **Slash commands** like `/pinecone:quickstart` and `/pinecone:query` for quick access
-* **Natural language recognition** — assistant commands work without explicit slash commands
+* Built-in skills cover index management, semantic search, full-text search, assistant creation, and more.
+* The integrated MCP server runs Pinecone operations directly from Claude Code.
+* Slash commands like `/pinecone:quickstart` and `/pinecone:query` give you quick access to skills.
+* Assistant commands work from natural language, without explicit slash commands.
 
 ## Prerequisites
 
@@ -59,29 +59,29 @@ The official Pinecone plugin for [Claude Code](https://claude.ai/code) provides 
 
 | Skill | Command | Description |
 | - | - | - |
-| **Help** | `/pinecone:help` | Overview of all skills and setup requirements. |
-| **Quickstart** | `/pinecone:quickstart` | Interactive onboarding — create an index, upsert data, and query. |
-| **Query** | `/pinecone:query` | Search integrated indexes using natural language. |
-| **Assistant** | `/pinecone:assistant` | Create, upload, sync, and chat with Pinecone Assistants. |
-| **CLI** | `/pinecone:cli` | Guide for using the Pinecone CLI from the terminal. |
-| **Full-text search** | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. Requires Python SDK v10.0.0 or later. |
-| **n8n** | `/pinecone:n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
-| **MCP** | `/pinecone:mcp` | Reference for all Pinecone MCP server tools. |
-| **Docs** | `/pinecone:docs` | Curated links to official Pinecone documentation. |
+| Help | `/pinecone:help` | Overview of all skills and setup requirements. |
+| Quickstart | `/pinecone:quickstart` | Interactive onboarding that walks you through creating an index, upserting data, and running a query. |
+| Query | `/pinecone:query` | Search integrated indexes using natural language. |
+| Assistant | `/pinecone:assistant` | Create, upload, sync, and chat with Pinecone Assistants. |
+| CLI | `/pinecone:cli` | Guide for using the Pinecone CLI from the terminal. |
+| Full-text search | `/pinecone:full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. Requires Python SDK v10.0.0 or later. |
+| n8n | `/pinecone:n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
+| MCP | `/pinecone:mcp` | Reference for all Pinecone MCP server tools. |
+| Docs | `/pinecone:docs` | Curated links to official Pinecone documentation. |
 
 ## MCP tools
 
 The plugin includes the Pinecone MCP server, which provides the following tools:
 
-* `search-docs` — Search the official Pinecone documentation.
-* `list-indexes` — List all available Pinecone indexes.
-* `describe-index` — Get index configuration and namespaces.
-* `describe-index-stats` — Get record counts and namespace statistics.
-* `create-index-for-model` — Create a new index with integrated embeddings.
-* `upsert-records` — Insert or update records in an index.
-* `search-records` — Search records with optional metadata filtering and reranking.
-* `cascading-search` — Search across multiple indexes with deduplication and reranking.
-* `rerank-documents` — Rerank documents using a specified reranking model.
+* `search-docs`: Search the official Pinecone documentation.
+* `list-indexes`: List all available Pinecone indexes.
+* `describe-index`: Get index configuration and namespaces.
+* `describe-index-stats`: Get record counts and namespace statistics.
+* `create-index-for-model`: Create a new index with integrated embeddings.
+* `upsert-records`: Insert or update records in an index.
+* `search-records`: Search records with optional metadata filtering and reranking.
+* `cascading-search`: Search across multiple indexes with deduplication and reranking.
+* `rerank-documents`: Rerank documents using a specified reranking model.
 
 For full MCP server documentation, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
 

@@ -519,7 +519,7 @@
 - `tax/tax-for-platforms` — [Tax for software platforms](pages/tax/tax-for-platforms.md) · [原文](https://docs.stripe.com/tax/tax-for-platforms.md)
 - `tax/tax-rates` — [Tax rates](pages/tax/tax-rates.md) · [原文](https://docs.stripe.com/tax/tax-rates.md)
 - `tax/testing` — [Testing Stripe Tax](pages/tax/testing.md) · [原文](https://docs.stripe.com/tax/testing.md)
-- `tax/use-stripe-to-register` — [Use Stripe to register for US sales tax](pages/tax/use-stripe-to-register.md) · [原文](https://docs.stripe.com/tax/use-stripe-to-register.md)
+- `tax/use-stripe-to-register/united-states` — [Use Stripe to register for US sales tax](pages/tax/use-stripe-to-register/united-states.md) · [原文](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md)
 - `tax/zero-tax` — [Zero tax amounts and reverse charges](pages/tax/zero-tax.md) · [原文](https://docs.stripe.com/tax/zero-tax.md)
 
 ## terminal

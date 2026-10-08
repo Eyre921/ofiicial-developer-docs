@@ -10,11 +10,11 @@ Monitor Pinecone with the Datadog integration to track request latency, index fu
   This feature is available on the [Builder, Standard, and Enterprise plans](https://www.pinecone.io/pricing/).
 </Note>
 
-Datadog is a monitoring and analytics tool that can be used to determine performance metrics as well as event monitoring for infrastructure and cloud services. Use Datadog to:
+Datadog is a monitoring and analytics tool that tracks performance metrics and monitors events for infrastructure and cloud services. You can use Datadog with Pinecone in the following ways:
 
-* Optimize performance and control usage: Observe and track specific actions (e.g., request count) within Pinecone to identify application requests with high latency or usage. Monitor trends and gain actionable insights to improve resource utilization and reduce spend.
-* Automatically alert on metrics: Get alerted when index fullness reaches a certain threshold. You can also create your own customized monitors to alert on specific metrics and thresholds.
-* Locate and triage unexpected spikes in usage or latency: Quickly visualize anomalies in usage or latency in Pinecone's Datadog dashboard. View metrics over time to better understand trends and determine the severity of a spike.
+* Track specific actions within Pinecone, such as request count, to find application requests with high latency or usage. Monitor trends over time to improve resource utilization and reduce spend.
+* Get alerted automatically when index fullness reaches a certain threshold. You can also create your own monitors to alert on specific metrics and thresholds.
+* Find and triage unexpected spikes in usage or latency by visualizing anomalies in Pinecone's Datadog dashboard. View metrics over time to understand trends and determine the severity of a spike.
 
 <PrimarySecondaryCTA />
 

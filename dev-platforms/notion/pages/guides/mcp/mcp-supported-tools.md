@@ -16,50 +16,35 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Search Notion">
     `notion-search`
 
-    Before a content search, call `notion-get-tool-access` with `{}` and reuse the returned `current_tool_access` map. Follow the routing guidance in "Check tool access" below, and select only tools exposed by the connection. User lookup has additional permission requirements described under "AI search".
+    Searches Notion for content, or looks up a workspace user by name or email. Hosted Notion MCP sessions list this as their one content-search tool, except for the sessions described at the end of this section. Use it for every content search. You don't need to call another tool first.
 
-    `notion-search` supports short, specific keywords, location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results.
+    The tool's description in `tools/list` matches the user's AI search access in the workspace:
 
-    When the connection can use AI search, a keyword content search sent to `notion-search` runs AI search instead. It returns the same unified Notion and connected-source results as `notion-ai-search` and reports `type: "ai_search"`. A call that passes an exact filter, an empty query, or a sort other than `relevance` stays on Notion workspace search and reports `type: "workspace_search"`. Routing follows the access that `notion-get-tool-access` reports for the connection, so a connection whose tool list leaves out `notion-ai-search` keeps its content searches on Notion workspace search. A user lookup with `query_type: "user"` always runs the user search.
+    * When the user has AI search, `notion-search` runs AI search. It takes keywords, a page title, or a natural-language question, and it searches Notion plus connected sources available to the user, such as Slack, Mail, Calendar, Google Drive, and Jira. Keep a question under about 50 words, with one topic per call. The response reports `type: "ai_search"`.
+    * When the workspace's plan doesn't include AI search, `notion-search` runs a keyword search in Notion. Its description adds one line saying that AI search needs a Business or Enterprise plan with Notion AI. Use short, specific keywords.
+    * When an admin setting or a billing restriction, such as an unpaid invoice, blocks AI search, `notion-search` runs a keyword search in Notion. Its description has no upgrade line, because an upgrade wouldn't help.
 
-    Workspace search results may include `path` and `verification` details. Fetch important matches before relying on them. Unified results from AI search omit `verification`, so fetch a Notion result with `notion-fetch` when verification state matters.
+    A call that passes an exact filter, an empty query, or a sort other than `relevance` stays on Notion workspace search and reports `type: "workspace_search"`, even when the user has AI search. A connection whose selected tool list leaves out AI search also keeps its content searches on Notion workspace search.
+
+    `notion-search` supports location (page, data source, or teamspace), creator or editor, date, title, content-status filters, sorting, and up to 50 results. Workspace search results may include `path` and `verification` details. Fetch important matches before relying on them. Results from AI search omit `verification`, so fetch a Notion result with `notion-fetch` when verification state matters. Connected-app results can't be fetched with `notion-fetch`.
 
     A filter or sort that the workspace's plan doesn't include doesn't fail the call. Notion drops the unavailable options, runs the rest of the search, and adds a `notices` array to the response. A notice names the dropped fields, such as `filters.title_only`, and may include an upgrade link. Results can be broader than requested and use relevance sorting. On a plan without multiple-teamspace search, when `teamspace_id` and `filters.teamspace_ids` select different teamspaces, both are dropped. If dropping the options leaves an empty query with no supported constraint, the response returns no results and a notice asking for a non-empty query or a supported filter.
 
     <Note>
-      Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan. On a plan without them, `restricted_parameters` lists each option with the reason it's unavailable. Read the entry for the search tool you're calling, and check each restriction's reason against the values you plan to send.
+      Full Notion MCP on Business or Enterprise is required to filter by editor, last-edited date, multiple teamspaces, title only, or content status, and to sort by date. Other filters are available on every plan. To see these limits before you call, `notion-get-tool-access` lists each restricted option under `restricted_parameters` with the reason it's unavailable.
     </Note>
+
+    For a user lookup, call the search tool the connection lists with `query_type: "user"` and a name or email. `notion-search` and `notion-ai-search` both support it, with the same requirements. Omit content filters and sorting, which return a `validation_error` for a user lookup. The response reports `type: "user_search"` and lists the matching users. A user lookup doesn't need AI access. It requires user information [capabilities](/reference/capabilities), and workspace-owned MCP connections must also expose `notion-get-users`. AI search access alone doesn't grant user lookup. Omit `query_type`, or set it to `internal`, for a content search.
+
+    In sessions that list one search tool, `notion-ai-search` (`ai-search` for OpenAI clients) no longer appears in `tools/list`. It stays callable by name, so a client with a cached tool list keeps working, and it behaves as before. In new code, call `notion-search`.
+
+    **Workspace-owned connections keep the earlier behavior.** A connection with a selected tool list lists exactly the tools an admin selected, which can be `notion-search`, `notion-ai-search`, or both. Use the search tool it lists, for both content search and user lookup. Its tool descriptions still say to call `notion-get-tool-access` first, and its access map includes `ai_search` only when `notion-ai-search` is selected. A session where Notion can't read the user's AI search access while it builds the tool list also gets the earlier tool list.
 
     **Example prompts:**
 
     * "Search for documents mentioning 'budget approval process'"
     * "Look for meeting notes from last week with John"
-    * "Find all project pages that mention 'ready for dev'"
-  </Accordion>
-
-  <Accordion title="AI search">
-    `notion-ai-search`
-
-    Use the "Check tool access" guidance below to select an exposed search tool. Search Notion and sources connected to your workspace, such as Slack, Mail, Calendar, Google Drive, and Jira, with keywords, a page title, or a concise natural-language question. It searches a source only when it is connected and available to you. Keep the query under about 50 words, and use one query per call. Narrow results to a page and its descendants, a data source, or a teamspace, and return up to 50 results.
-
-    This tool also accepts the exact filters, sorting, and filter-only browsing supported by `notion-search`. These options return Notion-only results to enforce the constraints exactly; omit them to search Notion and connected sources together. Access to advanced filters and sorting is separate from AI access, so check `current_tool_access.ai_search.restricted_parameters` before sending them. A restricted option is dropped with a notice, the same as on `notion-search`.
-
-    This tool also handles a user lookup. Set `query_type: "user"` and pass a name or email, and omit content filters and sorting, which return a `validation_error` for a user lookup. The response reports `type: "user_search"` and lists the matching users. A user lookup doesn't need AI access. Both search tools require user information [capabilities](/reference/capabilities); workspace-owned MCP connections must also expose `notion-get-users`. AI-search availability alone doesn't grant user lookup, and switching to `notion-search` doesn't bypass these requirements. Omit `query_type`, or set it to `internal`, for a content search.
-
-    Results use the same shape as `notion-search` and may include `path`. Unified results omit `verification` details, so fetch a Notion result with `notion-fetch` when verification state matters. Connected-app results cannot be fetched with `notion-fetch`. The response reports `type: "ai_search"` for every `notion-ai-search` content-search call, including the Notion-only results returned for exact filters, non-relevance sorting, and filter-only browsing.
-
-    When the workspace's plan doesn't include AI search, a content search sent to this exposed tool runs a keyword search in Notion only instead of returning an upgrade error. The response still reports `type: "ai_search"` and adds a `notices` entry saying that connected sources weren't searched, with an upgrade link when available.
-
-    <Note>
-      Listed on all plans. Searching connected sources requires Notion AI. An administrator can exclude AI search from a workspace MCP connection's selected tool list. In that case, the connection omits both the tool and its `ai_search` entry in `current_tool_access`. `notion-get-tool-access` reports the API key `ai_search` as `available` when the workspace can use AI search. Otherwise it reports `upgrade_required` with an `upgrade_url`, or `plan_required` with a `landing_page_url` and `landing_page_action` when Notion routes the user through a plan landing page. If the workspace has a billing restriction, such as an unpaid invoice, calls return a permission error that asks a workspace owner to manage billing instead of falling back to keyword search, and `current_tool_access` reports the `ai_search` key as `not_enabled`.
-    </Note>
-
-    **Example prompts:**
-
-    * "How did we solve similar authentication bugs?"
     * "What decisions have we made about the mobile launch?"
-    * "Find context about our customer onboarding strategy"
-    * "Find related work on improving search results for AI workspaces"
     * "Find discussions about this launch in my connected Slack and Mail"
     * "Look up the workspace user with the email [ada@example.com](mailto:ada@example.com)"
   </Accordion>
@@ -67,25 +52,23 @@ An MCP client can call several tools in one task. For example, it can search for
   <Accordion title="Check tool access">
     `notion-get-tool-access`
 
-    Reports which tools run on the connected workspace's plan, which of their parameters are restricted, and where to upgrade. Call it before you use a tool whose availability depends on the plan, unless you already know that tool's access. Those tools say so in their own descriptions. Ask for the whole map in one call and reuse it across those tools instead of checking them one at a time. It reads connection metadata, so it doesn't grant access or change the workspace.
+    Reports which tools run on the connected workspace's plan, which of their parameters are restricted, and where to upgrade. Calling it is optional, except where a workspace-owned connection's descriptions still ask for it (see "Search Notion" above). Tools enforce their own access limits when you call them, so you don't need to check first. Use it when your client wants plan or parameter details before calling a tool, when the user asks which Notion tools or features they can use, or after a result reports restricted access or an upgrade requirement. It reads connection metadata, so it doesn't grant access or change the workspace.
 
-    Pass `tool_names` to narrow the response, for example `["search", "ai_search"]`. Omit it to get every tool visible to the connection. Unknown names and tools the connection doesn't expose are left out, and an empty list returns an empty map.
+    Pass `tool_names` to narrow the response, for example `["search", "ai_search"]`. Request both search keys, because the map reports only one of them when AI search is available. Omit it to get every tool visible to the connection. Unknown names and tools the connection doesn't expose are left out, and an empty list returns an empty map.
 
-    The response contains `current_tool_access`, a map of tool names to their access state on this workspace's plan. Each entry's `status` is `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `plan_required`, `upgrade_required` (full access requires an upgrade; tools such as AI search can still return fallback results with a notice), `full_version_required`, or `not_enabled`. An entry carries an `upgrade_url` when a workspace upgrade changes the status, a `full_version_url` when the tool needs the full version of Notion MCP, and a `landing_page_url` with a `landing_page_action` of `start_trial`, `request_trial`, or `learn_more` when Notion routes the user through a plan landing page.
+    The response contains `current_tool_access`, a map of tool names to their access state on this workspace's plan. Each entry's `status` is `available`, `available_with_limit` (calls can be made up to the limit included with the workspace's plan), `plan_required`, `upgrade_required` (full access requires an upgrade; tools can still return fallback results with a notice), `full_version_required`, or `not_enabled`. An entry carries an `upgrade_url` when a workspace upgrade changes the status, a `full_version_url` when the tool needs the full version of Notion MCP, and a `landing_page_url` with a `landing_page_action` of `start_trial`, `request_trial`, or `learn_more` when Notion routes the user through a plan landing page.
 
     An entry can also carry `restricted_parameters`, a map from a parameter path such as `filters.title_only` to the reason it's unavailable. These restrictions are independent of the entry's `status`. Read each reason and check whether it applies to your requested value. For example, `filters.teamspace_ids` restricts multiple distinct teamspaces below Business; a single teamspace remains supported. Likewise, a restriction on date sorting doesn't prevent `sort: "relevance"`.
 
-    For content search, prefer `notion-ai-search` when `ai_search.status` is `available`. In that case, the map omits `search`, even if you request it by name. Otherwise, use `notion-search` if the connection exposes it. If only `notion-ai-search` is exposed and its status is `upgrade_required` or `plan_required`, it can still return Notion-only keyword results with a notice. A `not_enabled` status doesn't promise this fallback; billing restrictions still return errors. If neither search tool is exposed, the connection needs an administrator to enable one.
+    In sessions that list one search tool, the map still reports AI search access under the key `ai_search`, even though `tools/list` doesn't show `notion-ai-search`. Its status is `available` when the user has AI search. Otherwise it's `upgrade_required` with an `upgrade_url`, or `plan_required` with a landing page, when the plan lacks AI search. It's `not_enabled` when an admin setting or a billing restriction blocks AI search. When `ai_search` is `available`, the map leaves out `search`, even if you request it by name. Either way, keep calling `notion-search`. The `search` and `ai_search` entries carry the same `restricted_parameters`.
 
-    The map can include both `search` and an unavailable `ai_search` entry. A missing entry means the map doesn't advertise that tool; it doesn't identify a usable fallback. For user lookup, choose an exposed search tool and satisfy the separate user-information and `notion-get-users` requirements above, regardless of AI access.
-
-    Tools can be listed on every plan. Consult this map together with each tool's documented fallback behavior. The map covers the tools in a current tool list, so a tool that is no longer advertised has no entry, even when a cached tool list can still call it. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access.
+    Tools can be listed on every plan. Read this map together with each tool's documented fallback behavior. A missing entry means the map doesn't advertise that tool; it doesn't identify a usable fallback. For `query_data_sources`, view mode is always available; Business and Enterprise plans with Notion AI can query any number of data sources, while other plans receive metered single-data-source access.
 
     Keys are the tools' base names. A tool that appears with a `notion-` prefix and hyphens, such as `notion-query-data-sources`, corresponds to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
 
     **Example prompts:**
 
-    * "Can this connection use AI search, or should you use keyword search?"
+    * "Which Notion tools can I use on this workspace's plan?"
     * "Which search filters aren't available on this workspace's plan?"
   </Accordion>
 
@@ -116,8 +99,6 @@ An MCP client can call several tools in one task. For example, it can search for
     Signed icon URLs expire after five minutes, the same as cover URLs, and re-fetching the page returns a fresh URL. An omitted `icon` means the metadata is unavailable or not applicable, not that the page has no icon. The `icon` field is read-only. To set or change an icon, pass the icon string that `notion-create-pages` and `notion-update-page` accept: an emoji character (e.g. "🚀"), a custom emoji by name (e.g. ":rocket\_ship:"), a Notion icon identifier as returned by fetch (e.g. "icons/pizza\_blue"), or an external image URL.
 
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
-
-    To check tool availability, call `notion-get-tool-access` with `{}` and reuse the map. See "Check tool access" above for search routing, user-lookup requirements, statuses, recovery links, and parameter restrictions.
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
 
@@ -202,6 +183,20 @@ An MCP client can call several tools in one task. For example, it can search for
     <Note>
       The `update_content` command applies content-changing search-and-replace operations as a batch. If any such operation's `old_str` doesn't match content on the page, the call returns a validation error naming the unmatched value and the page is left unchanged. An operation whose `old_str` and `new_str` are identical is ignored without checking for a match. Each `old_str` must be a non-empty string that matches exactly one location, unless `replace_all_matches: true` is set for that operation.
     </Note>
+
+    When part of the input was changed or ignored, the result includes a `warnings` array. Examples are lines dropped for incorrect indentation and text auto-corrected to match the page. Each warning has a `code` and a `message`. Each message is at most 500 characters; a longer one is cut and ends with a note giving its original length, such as `… (truncated from 12000 characters)`. Markdown parser warnings also carry `category`, such as `unsupported_tag`, and `autofix`, which is `true` when the parser changed the content to apply it. A clean update has no `warnings` key. Read any warnings before you treat the edit as done.
+
+    ```json theme={null}
+    {
+      "page_id": "3f20509d-d76d-81a9-8a48-ebb7c86a786e",
+      "warnings": [
+        {
+          "code": "update_warning",
+          "message": "The following lines were dropped due to incorrect indentation: Dropped line"
+        }
+      ]
+    }
+    ```
 
     The tool description recommends `allow_async: true` for most page updates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
 
@@ -585,12 +580,18 @@ When `allow_async` is omitted or `false`, `notion-create-pages` keeps its synchr
 }
 ```
 
-If the task is still `queued`, `running`, or `retrying`, wait at least the suggested `poll_after_seconds` before polling again. A `succeeded` task includes the operation result. A `failed` task includes an error object that the assistant can summarize or use to retry with a corrected request.
+If the task is still `queued`, `running`, or `retrying`, wait at least the suggested `poll_after_seconds` before polling again. A `succeeded` task includes the operation result. For `notion-update-page`, that result includes the same `warnings` array as a direct call. A `failed` task includes an error object that the assistant can summarize or use to retry with a corrected request.
 
 <Info>
-  **Tool names may vary for OpenAI**
+  **Tool names and results differ for OpenAI clients**
 
-  When connecting with an OpenAI MCP client (e.g. ChatGPT), the `notion-` prefix is automatically omitted from the `notion-fetch`, `notion-search`, and `notion-ai-search` tools, making them appear as `fetch`, `search`, and `ai-search`, respectively. This hyphenated `ai-search` is an OpenAI presentation name; access responses use the underscored API key `ai_search`. The `fetch` and `search` names are required as part of the [Deep Research specification](https://platform.openai.com/docs/guides/deep-research#remote-mcp-servers) for remote MCP servers.
+  When you connect with an OpenAI MCP client, such as ChatGPT, Notion MCP drops the `notion-` prefix from `notion-fetch` and `notion-search`, so they appear as `fetch` and `search`. OpenAI's [MCP requirements](https://developers.openai.com/api/docs/mcp) use these names for ChatGPT company knowledge and deep research. A client with a cached tool list can still call `notion-ai-search` by its OpenAI name, `ai-search`. Access responses use the API key `ai_search`.
+
+  For ChatGPT connections, content searches with `search` and calls to `fetch` return OpenAI's result shape, as both `structuredContent` and JSON text. A user lookup with `query_type: "user"` keeps the standard response. A connection counts as ChatGPT when its OAuth redirect URI is a trusted ChatGPT redirect URI. Other clients, including other OpenAI clients such as Codex, get the standard results. So do `ai-search` calls.
+
+  `search` returns `{ results: [{ id, title, url }] }`. Each `id` works with `fetch`, so results that `fetch` can't open, such as connected-app results, are left out. These results don't include highlights, `path`, timestamps, or `notices`.
+
+  `fetch` returns `{ id, title, text, url, metadata }`, where `id` is the id you passed. When you pass `include_file_urls: true`, `metadata.references` maps each uploaded file's `notion-file-block://` source in `text` to a signed download URL. Without it, the response has no `references`.
 </Info>
 
 ## Rate limits

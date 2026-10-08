@@ -26,7 +26,7 @@ For information about file size and storage limits, see [Pricing and limits](/gu
 
 ### File storage
 
-Files are uploaded to Google Cloud Storage (`us-central1` region) and to your organization's Pinecone vector database. The assistant processes the files, so data isn't sent outside of blob storage or Pinecone.
+Files are uploaded to Google Cloud Storage in the assistant's region (`us` or `eu`). The assistant processes the files and stores the resulting embeddings in a Pinecone-managed index, separate from the indexes in your projects.
 
 Some API responses include a `signed_url` field, which provides temporary, read-only access to one of the assistant's files. The URL is [signed](https://cloud.google.com/storage/docs/access-control/signed-urls) and hard to guess, but publicly accessible, so treat it as sensitive. `signed_url` links expire in one hour.
 

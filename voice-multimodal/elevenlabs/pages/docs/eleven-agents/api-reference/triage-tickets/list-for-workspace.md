@@ -10,7 +10,7 @@ path: docs/eleven-agents/api-reference/triage-tickets/list-for-workspace
 
 GET https://api.elevenlabs.io/v1/convai/triage-tickets
 
-List conversation triage tickets across every agent in the workspace, ordered by most recently created first. Use this to build a workspace-wide view (for example, tickets assigned to the caller); for a single agent's tickets, use the per-agent endpoint instead. Tickets for agents the caller cannot access are omitted.
+List conversation triage tickets across every agent in the workspace, ordered by most recently created first. Use this to build a workspace-wide view (for example, tickets assigned to the caller). Supports the same filters, sorting and search as the per-agent endpoint. Tickets for agents the caller cannot access are omitted.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets/list-for-workspace
 
@@ -27,9 +27,22 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/triage-tickets
 ### Query parameters
 
 - `page_size` (integer, optional, default: 100) — How many agent conversation tickets to return. Can not exceed 100.
+- `agent_id` (string, optional) — Only tickets for this agent.
 - `status` (enum, optional) — Filter tickets by status.
   - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `sources` (enum, optional) — Filter tickets by how they were raised (qa, agent, manual). Repeat the parameter to filter by multiple sources.
+  - Allowed values: `qa`, `agent`, `manual`
+- `priorities` (enum, optional) — Filter tickets by priority. Repeat the parameter to filter by multiple priorities.
+  - Allowed values: `low`, `medium`, `high`, `urgent`
+- `sort_by` (enum, optional) — Order by most recently created, or by priority (most urgent first, then most recently created).
+  - Allowed values: `created_at`, `priority`
+- `owner_user_id` (string, optional) — Filter tickets by creator. Use 'agent' for agent-raised tickets.
 - `assignee_user_id` (string, optional) — Filter tickets by assignee. Use 'unassigned' for tickets with no assignee.
+- `issue_type` (enum, optional) — Filter clusters by issue type.
+  - Allowed values: `knowledge_gap`, `incorrect_information`, `documentation_gap`, `product_feedback`, `platform_bug`, `tool_issue`, `missing_tool`, `unnecessary_escalation`, `wrong_action`
+- `label` (string, optional) — Filter tickets by an exact label.
+- `merged_into_ticket_id` (string, optional) — Filter tickets merged into this ticket.
+- `search` (string, optional) — Case-insensitive free-text search across the ticket's title, description, comments, and turn comments.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
 
 ## Response
@@ -192,7 +205,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/triage-tickets"
 
-querystring = {"assignee_user_id":"assignee_user_id","cursor":"cursor","page_size":"1","status":"open"}
+querystring = {"agent_id":"agent_id","assignee_user_id":"assignee_user_id","cursor":"cursor","issue_type":"knowledge_gap","label":"label","merged_into_ticket_id":"merged_into_ticket_id","owner_user_id":"owner_user_id","page_size":"1","priorities":"[\"low\"]","search":"search","sort_by":"created_at","sources":"[\"qa\"]","status":"open"}
 
 response = requests.get(url, params=querystring)
 
@@ -200,7 +213,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open';
+const url = 'https://api.elevenlabs.io/v1/convai/triage-tickets?agent_id=agent_id&assignee_user_id=assignee_user_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open';
 const options = {method: 'GET'};
 
 try {
@@ -223,7 +236,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open"
+	url := "https://api.elevenlabs.io/v1/convai/triage-tickets?agent_id=agent_id&assignee_user_id=assignee_user_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -242,7 +255,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open")
+url = URI("https://api.elevenlabs.io/v1/convai/triage-tickets?agent_id=agent_id&assignee_user_id=assignee_user_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -257,7 +270,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/triage-tickets?agent_id=agent_id&assignee_user_id=assignee_user_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")
   .asString();
 ```
 
@@ -267,7 +280,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/triage-tickets?agent_id=agent_id&assignee_user_id=assignee_user_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open');
 
 echo $response->getBody();
 ```
@@ -275,7 +288,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/triage-tickets?agent_id=agent_id&assignee_user_id=assignee_user_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -283,7 +296,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/triage-tickets?assignee_user_id=assignee_user_id&cursor=cursor&page_size=1&status=open")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/triage-tickets?agent_id=agent_id&assignee_user_id=assignee_user_id&cursor=cursor&issue_type=knowledge_gap&label=label&merged_into_ticket_id=merged_into_ticket_id&owner_user_id=owner_user_id&page_size=1&priorities=%5B%22low%22%5D&search=search&sort_by=created_at&sources=%5B%22qa%22%5D&status=open")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

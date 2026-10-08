@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1676 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1683 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -376,6 +376,7 @@
 - `langsmith/javascript/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-overview)
 - `langsmith/javascript/managed-deep-agents-project-structure` — [Managed Deep Agents project structure](pages/langsmith/javascript/managed-deep-agents-project-structure.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-project-structure)
 - `langsmith/javascript/managed-deep-agents-quickstart` — [Managed Deep Agents quickstart](pages/langsmith/javascript/managed-deep-agents-quickstart.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-quickstart)
+- `langsmith/javascript/managed-deep-agents-runtime` — [Managed Deep Agents runtime](pages/langsmith/javascript/managed-deep-agents-runtime.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-runtime)
 - `langsmith/javascript/managed-deep-agents-sandboxes` — [Add a sandbox to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-sandboxes)
 - `langsmith/javascript/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/javascript/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-schedules)
 - `langsmith/javascript/managed-deep-agents-search` — [Built-in search powered by Parallel](pages/langsmith/javascript/managed-deep-agents-search.md) · [原文](https://docs.langchain.com/langsmith/javascript/managed-deep-agents-search)
@@ -407,11 +408,12 @@
 - `langsmith/llm-gateway-direct-model-access` — [Direct model access](pages/langsmith/llm-gateway-direct-model-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-direct-model-access)
 - `langsmith/llm-gateway-fallbacks` — [Model fallbacks](pages/langsmith/llm-gateway-fallbacks.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-fallbacks)
 - `langsmith/llm-gateway-header-policies` — [Per-customer policies](pages/langsmith/llm-gateway-header-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-header-policies)
-- `langsmith/llm-gateway-how-it-works` — [How the gateway works](pages/langsmith/llm-gateway-how-it-works.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-how-it-works)
+- `langsmith/llm-gateway-how-it-works` — [How the LLM Gateway works](pages/langsmith/llm-gateway-how-it-works.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-how-it-works)
 - `langsmith/llm-gateway-model-access-policies` — [Model access policies](pages/langsmith/llm-gateway-model-access-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-model-access-policies)
 - `langsmith/llm-gateway-monitoring` — [Monitor LLM Gateway spend](pages/langsmith/llm-gateway-monitoring.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-monitoring)
 - `langsmith/llm-gateway-quickstart` — [LLM Gateway quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-rate-limit-policies` — [Rate limit policies](pages/langsmith/llm-gateway-rate-limit-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-rate-limit-policies)
+- `langsmith/llm-gateway-self-hosted` — [Enable the LLM Gateway](pages/langsmith/llm-gateway-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-self-hosted)
 - `langsmith/llm-gateway-spend-policies` — [Spend policies](pages/langsmith/llm-gateway-spend-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-spend-policies)
 - `langsmith/local` — [How to run an evaluation locally (Python only)](pages/langsmith/local.md) · [原文](https://docs.langchain.com/langsmith/local)
 - `langsmith/local-dev-testing` — [Local development & testing](pages/langsmith/local-dev-testing.md) · [原文](https://docs.langchain.com/langsmith/local-dev-testing)
@@ -497,6 +499,7 @@
 - `langsmith/python/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/python/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-overview)
 - `langsmith/python/managed-deep-agents-project-structure` — [Managed Deep Agents project structure](pages/langsmith/python/managed-deep-agents-project-structure.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-project-structure)
 - `langsmith/python/managed-deep-agents-quickstart` — [Managed Deep Agents quickstart](pages/langsmith/python/managed-deep-agents-quickstart.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-quickstart)
+- `langsmith/python/managed-deep-agents-runtime` — [Managed Deep Agents runtime](pages/langsmith/python/managed-deep-agents-runtime.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-runtime)
 - `langsmith/python/managed-deep-agents-sandboxes` — [Add a sandbox to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-sandboxes)
 - `langsmith/python/managed-deep-agents-schedules` — [Add schedules to Managed Deep Agents](pages/langsmith/python/managed-deep-agents-schedules.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-schedules)
 - `langsmith/python/managed-deep-agents-search` — [Built-in search powered by Parallel](pages/langsmith/python/managed-deep-agents-search.md) · [原文](https://docs.langchain.com/langsmith/python/managed-deep-agents-search)
@@ -553,10 +556,14 @@
 - `langsmith/self-host-external-postgres` — [Connect to an external PostgreSQL database](pages/langsmith/self-host-external-postgres.md) · [原文](https://docs.langchain.com/langsmith/self-host-external-postgres)
 - `langsmith/self-host-external-redis` — [Connect to an external Redis or Valkey database](pages/langsmith/self-host-external-redis.md) · [原文](https://docs.langchain.com/langsmith/self-host-external-redis)
 - `langsmith/self-host-fips` — [FIPS-compliant images](pages/langsmith/self-host-fips.md) · [原文](https://docs.langchain.com/langsmith/self-host-fips)
+- `langsmith/self-host-gke-vertex-ai-workload-identity` — [Authenticate Vertex AI with GKE workload identity](pages/langsmith/self-host-gke-vertex-ai-workload-identity.md) · [原文](https://docs.langchain.com/langsmith/self-host-gke-vertex-ai-workload-identity)
 - `langsmith/self-host-ingress` — [Create an Ingress for installations (Kubernetes)](pages/langsmith/self-host-ingress.md) · [原文](https://docs.langchain.com/langsmith/self-host-ingress)
 - `langsmith/self-host-mirroring-images` — [Mirror images for your LangSmith installation](pages/langsmith/self-host-mirroring-images.md) · [原文](https://docs.langchain.com/langsmith/self-host-mirroring-images)
 - `langsmith/self-host-organization-charts` — [View trace counts across your organization](pages/langsmith/self-host-organization-charts.md) · [原文](https://docs.langchain.com/langsmith/self-host-organization-charts)
 - `langsmith/self-host-playground-environment-settings` — [Use environment variables for model providers](pages/langsmith/self-host-playground-environment-settings.md) · [原文](https://docs.langchain.com/langsmith/self-host-playground-environment-settings)
+- `langsmith/self-host-sandbox-architecture` — [Self-hosted Sandbox architecture](pages/langsmith/self-host-sandbox-architecture.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-architecture)
+- `langsmith/self-host-sandbox-operations` — [Operate self-hosted Sandboxes](pages/langsmith/self-host-sandbox-operations.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-operations)
+- `langsmith/self-host-sandbox-scaling` — [Scale self-hosted Sandboxes](pages/langsmith/self-host-sandbox-scaling.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-scaling)
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
 - `langsmith/self-host-slack` — [Connect self-hosted LangSmith to Slack](pages/langsmith/self-host-slack.md) · [原文](https://docs.langchain.com/langsmith/self-host-slack)
 - `langsmith/self-host-smithdb` — [Enable SmithDB on self-hosted LangSmith](pages/langsmith/self-host-smithdb.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb)

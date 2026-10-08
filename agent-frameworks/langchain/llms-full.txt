@@ -713,7 +713,7 @@ Source: https://docs.langchain.com/index
         Build and run agents without code using LangSmith Fleet.
       </Card>
 
-      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
+      <Card title="Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine-overview">
         Find and fix recurring agent issues automatically with LangSmith Engine.
       </Card>
 
@@ -19696,7 +19696,7 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
     | `--host TEXT` | `127.0.0.1` | Host to bind the server to |
     | `--port INTEGER` | `2024` | Port to bind the server to |
     | `--no-reload` | | Disable auto-reload |
-    | `--n-jobs-per-worker INTEGER` | | Number of jobs per worker. Default is 10 |
+    | `--n-jobs-per-worker INTEGER` | `1` | Maximum number of concurrent jobs per worker |
     | `--debug-port INTEGER` | | Port for debugger to listen on |
     | `--wait-for-client` | `False` | Wait for a debugger client to connect to the debug port before starting the server |
     | `--no-browser` | | Skip automatically opening the browser when the server starts |
@@ -19816,9 +19816,10 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
     | `--agent-environment TEXT` | | Environment the deployment reports into: `development`, `staging`, or `production`. Requires `--agent-id`. Can also be set via `LANGSMITH_AGENT_ENVIRONMENT`. Available in `langgraph-cli>=0.4.32`. |
     | `--deployment-type TEXT` | `serverless` | Deployment type when creating a new deployment on Cloud: `serverless` or `dedicated` on the new usage-based pricing; `dev` or `prod` for organizations still on previous pricing. |
     | `--remote / --no-remote` | | Force remote or local build. By default, builds remotely if Docker is not available locally. |
-    | `--push-to TEXT` | | Push the image to this repository in a registry you manage (for example `123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent`), then deploy from it. Required for self-hosted LangSmith and for workspaces that deploy through a listener. Uses your existing Docker credentials. Give the tag in the value or with `-t`. Cannot be combined with `--remote`. |
+    | `--push-to TEXT` | | Push the image to this repository in a registry you manage (for example `123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent`), then deploy from it. Required for self-hosted LangSmith and for workspaces that deploy through a listener, unless you use `--image-uri` instead. Uses your existing Docker credentials. Give the tag in the value or with `-t`. Cannot be combined with `--remote` or `--image-uri`. |
     | `--image TEXT` | | Use an existing local image (for example `my-agent:dev`) instead of building. The image must target `linux/amd64`. With `--push-to`, the image is retagged and pushed. |
     | `-t, --tag TEXT` | `latest` | Tag for the pushed image. |
+    | `--image-uri TEXT` | | Deploy an image that's already in a registry you manage (for example `123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent@sha256:<digest>`), with no build, retag, or push. For self-hosted LangSmith and for workspaces that deploy through a listener. Must include a digest; a mutable tag is rejected, since Kubernetes can cache images by tag and would silently keep running the previous one. Cannot be combined with `--push-to`, `--image`, `-t`, or `--remote`. |
     | `--listener-id TEXT` | | Listener that will run the deployment, for workspaces that deploy through a listener in your own cluster. Used only when creating a deployment with `--push-to`. On LangSmith Cloud, defaults to the workspace's only listener. |
     | `--k8s-namespace TEXT` | | Kubernetes namespace the listener deploys into. Used only when creating a deployment with `--push-to`. Defaults to the listener's only namespace. |
     | `--no-wait` | `False` | Skip waiting for deployment status after pushing. |
@@ -19871,6 +19872,18 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
 
     The control plane URL is derived from `LANGSMITH_ENDPOINT`, read from the project `.env` file or the environment: `https://<host>/api-host` for a self-hosted instance, and the matching LangSmith Cloud control plane for cloud endpoints. To override it, set the `LANGGRAPH_HOST_URL` environment variable to the full control plane URL, including `/api-host` on a self-hosted instance (for example `https://langsmith.example.com/api-host`).
 
+    #### Deploy an image you've already pushed
+
+    If your CI/CD pipeline builds and pushes the image in a separate job from the one that deploys, `--push-to` does not work: it always builds (or retags a local `--image`) and pushes, and `--image` requires the image to be present in the local Docker daemon. Use `--image-uri` instead to deploy an image that's already in a registry, with no build, retag, or push at all:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    langgraph deploy --image-uri 123456789.dkr.ecr.us-east-1.amazonaws.com/agents/my-agent@sha256:1a2b3c4d...
+    ```
+
+    `--image-uri` must include a digest (`@sha256:<digest>`), not a mutable tag. Kubernetes can cache images by tag, so redeploying the same tag could silently keep running the previous image. If your pipeline already captures the digest from its push step, pass it straight through; otherwise resolve it first, for example with `docker buildx imagetools inspect <repository>:<tag> --format '{{json .Manifest.Digest}}'` or your registry's own CLI.
+
+    Deployments created with `--image-uri` use the same `external_docker` source as `--push-to`, so either option can update a deployment the other one created.
+
     #### Choose a listener and namespace
 
     When a workspace deploys through a listener, the control plane needs to know which listener runs a new deployment and which Kubernetes namespace it deploys into.
@@ -19888,7 +19901,7 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
       --listener-id 2b1f0e9c-2d4a-4f1e-9a3b-2c7d8e5f4a10 --k8s-namespace agents
     ```
 
-    On a self-hosted instance, the CLI looks up listeners only when you pass `--listener-id` or `--k8s-namespace`.
+    On a self-hosted instance, the CLI looks up listeners only when you pass `--listener-id` or `--k8s-namespace`. To find a listener's id and namespaces ahead of time, for example to pass `--listener-id` from a script without hardcoding it, use [`deploy listeners list`](#deploy-listeners-list).
 
     The listener and the namespace are fixed when the deployment is created and cannot be changed afterward, so both options are refused on an existing deployment. Later revisions need only `--push-to`.
 
@@ -19909,6 +19922,47 @@ To build and run a valid application, the LangGraph CLI requires a JSON configur
     | Option | Default | Description |
     | - | - | - |
     | `--name-contains TEXT` | | Only show deployments whose names contain this value. |
+    | `--api-key TEXT` | | API key. Can also be set via `LANGGRAPH_HOST_API_KEY`, `LANGSMITH_API_KEY`, or `LANGCHAIN_API_KEY` environment variable or `.env` file. |
+    | `--help` | | Show this message and exit. |
+
+    #### `deploy listeners`
+
+    \[Beta] Inspect listeners available to this workspace.
+
+    **Usage**
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    langgraph deploy listeners [OPTIONS] COMMAND [ARGS]...
+    ```
+
+    **Options**
+
+    | Option | Default | Description |
+    | - | - | - |
+    | `--help` | | Show this message and exit. |
+
+    **Commands**
+
+    | Command | Description |
+    | - | - |
+    | `list` | \[Beta] List listeners available to this workspace. |
+
+    #### `deploy listeners list`
+
+    \[Beta] List listeners available to this workspace, with their cluster (`compute_id`) and Kubernetes namespaces.
+
+    Pass a listener's id to `langgraph deploy --listener-id` to deploy through it. See [Choose a listener and namespace](#choose-a-listener-and-namespace).
+
+    **Usage**
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    langgraph deploy listeners list [OPTIONS]
+    ```
+
+    **Options**
+
+    | Option | Default | Description |
+    | - | - | - |
     | `--api-key TEXT` | | API key. Can also be set via `LANGGRAPH_HOST_API_KEY`, `LANGSMITH_API_KEY`, or `LANGCHAIN_API_KEY` environment variable or `.env` file. |
     | `--help` | | Show this message and exit. |
 
@@ -25778,6 +25832,16 @@ Deployed apps appear under **Custom Apps** in the sidebar for everyone in the wo
 
 An app runs in a sandbox with no network access of its own. The host forwards its LangSmith API requests with the viewer's credentials, so each person sees only the data their [permissions](/langsmith/organization-workspace-operations) allow. The host forwards nothing else, and it blocks the endpoints for API keys, members, users, identities, roles, permissions, SCIM, and service accounts.
 
+## Configure self-hosted chat
+
+<Warning>
+  On self-hosted deployments, building and editing apps with chat requires [sandbox service URLs](/langsmith/deploy-self-hosted-full-platform#optional-enable-service-urls). Enabling Sandboxes alone is not sufficient.
+</Warning>
+
+<Note>
+  Building and editing apps with chat is enabled starting with Helm chart version 0.17.3 for v0.17 and 0.18.0-rc.13 for the v0.18 preview.
+</Note>
+
 ## Build an app
 
 Build an app by [chatting with LangSmith Chat](#build-with-chat) in the browser, or [locally with the CLI](#build-locally-with-the-cli) and your own coding agent. Both paths produce the same app and store the same source, so either one can [edit](#edit-an-app) what the other built.
@@ -25786,7 +25850,7 @@ Build an app by [chatting with LangSmith Chat](#build-with-chat) in the browser,
 
 Building in the browser has two requirements:
 
-* **Sandboxes**: Each session runs in a [sandbox](/langsmith/sandboxes). On self-hosted deployments, [enable sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes) first.
+* **Sandboxes**: Each session runs in a [sandbox](/langsmith/sandboxes). On self-hosted deployments, complete the [self-hosted chat setup](#configure-self-hosted-chat) first.
 * **Permissions**: The `custom-apps:create`, `custom-apps:update`, `custom-apps:delete`, and `custom-apps:download` permissions, plus the [sandbox permissions](#permissions).
 
 Without both, the **App** action opens the CLI instructions instead. Chat also needs a [model API key set for the workspace](/langsmith/chat#get-started) before it can send a message.
@@ -31503,6 +31567,8 @@ To enable LangSmith Deployment, update your [`langsmith_config.yaml`](/langsmith
 
 Each feature requires a Fernet encryption key. You can enable all three features in a single Helm configuration.
 
+If Chat or Insights uses Vertex AI on GKE, [configure GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) for keyless authentication. The same guide covers Playground.
+
 ### Components
 
 Enabling these features provisions the following components in your cluster for each feature (Fleet, Insights, Chat):
@@ -32208,6 +32274,8 @@ polly:
 
 Sandboxes are disabled by default. After installation, see [LangSmith Sandboxes](/langsmith/sandboxes) for user workflows in the LangSmith UI and APIs.
 
+For the infrastructure model and production planning, see [Sandbox architecture](/langsmith/self-host-sandbox-architecture), [scaling and capacity](/langsmith/self-host-sandbox-scaling), and [upgrades and operations](/langsmith/self-host-sandbox-operations).
+
 ### Supported platforms
 
 Self-hosted Sandboxes are supported on:
@@ -32535,6 +32603,10 @@ sandboxes:
 ```
 
 This requires wildcard DNS and TLS for `*.sandbox-services.example.com`. When `ingress.enabled` is `true`, the chart also adds a wildcard ingress rule that routes these service URLs to the LangSmith platform backend.
+
+Service URLs also require an Ed25519 private JWKS with a nonempty `kid` on its first key. Set `config.signingJwks`, or add `langsmith_signing_jwks` to your [existing LangSmith app Secret](/langsmith/self-host-using-an-existing-secret). This is separate from `sandboxes.callbackSigningJwk`. For key generation instructions, see [Configure a signing JWKS](/langsmith/langsmith-remote-mcp#enabling-remote-mcp).
+
+Service URLs are required to [build and edit custom apps with chat](/langsmith/custom-apps#configure-self-hosted-chat), even though they are optional for other sandbox workflows.
 
 ### Verify the installation
 
@@ -34148,7 +34220,7 @@ Once deployed, agents work with [Agent Server](/langsmith/assistants)'s executio
 </CardGroup>
 
 <CardGroup>
-  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/oHF6ZolKSFmH17u5/images/brand/engine-icon-dark.png?fit=max&auto=format&n=oHF6ZolKSFmH17u5&q=85&s=739a487161804691a14c36c2768d278d" href="/langsmith/engine-overview">
+  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-dark.png?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=a49c49604f90440bfb95fbdc44a2b927" href="/langsmith/engine-overview">
     Once agents are in production, use LangSmith Engine to detect recurring failures in their traces, diagnose root causes, and resolve them.
   </Card>
 </CardGroup>
@@ -57039,7 +57111,7 @@ To define the agent, use `defineDeepAgent`:
   ```
 </CodeGroup>
 
-Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/javascript/managed-deep-agents-project-structure).
+Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/javascript/managed-deep-agents-project-structure). To select the system prompt, skills, MCP servers, or sandbox for each run, see [Select configuration per run](#select-configuration-per-run).
 
 `defineDeepAgent` does not compile an agent. It returns a definition, and the managed runtime compiles it with [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) at deploy time. The options below are the [createDeepAgent](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) surface without the ones the runtime owns. See [Relationship to Deep Agents](/langsmith/javascript/managed-deep-agents-overview#relationship-to-deep-agents).
 
@@ -57055,6 +57127,109 @@ Configure the system prompt, skills, memory, sandbox, identity, channels, and sc
 | `permissions` | Control path-level access for filesystem tools. Pass filesystem permission rules to control which paths the agent's built-in filesystem tools can read or write. Cleared when the project declares a [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes), because a permission rule disables the sandbox `execute` tool. See [Permissions](/oss/javascript/deepagents/permissions). |
 | `interruptOn` | Pause before selected tool calls for human approval. Set `interruptOn` to pause before selected tool calls, so a person can approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/javascript/managed-deep-agents-tools#human-in-the-loop). |
 | `responseFormat` | Set when the agent must return data that matches a schema instead of an unconstrained text response. See [Structured output](/oss/javascript/langchain/structured-output). |
+
+## Select configuration per run
+
+To select the agent's configuration for each run, export a function as `agent` instead of a definition. One deployment can then adapt to different users, tasks, or repositories. The function is a graph factory, the same pattern LangGraph uses to [rebuild a graph at runtime](/langsmith/graph-rebuild): it receives the runtime and returns a definition.
+
+This example selects instructions and skills for the repository a run works on. It assumes the project has `skills/python-service/` and `skills/typescript-web/`, each with a [`SKILL.md`](/langsmith/javascript/managed-deep-agents-skills).
+
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { defineDeepAgent, type ManagedServerRuntime } from "managed-deepagents";
+import { z } from "zod";
+
+const contextSchema = z.object({ repository: z.string().optional() });
+
+export function agent(
+  runtime: ManagedServerRuntime<z.infer<typeof contextSchema>>
+) {
+  const context = runtime.executionRuntime?.context;
+  const pythonService = context?.repository === "payments-service";
+
+  return defineDeepAgent({
+    name: "open-swe",
+    model: "openai:gpt-5.5",
+    instructions: pythonService
+      ? "Follow the payments service's API and reliability conventions."
+      : "Follow the storefront's frontend and accessibility conventions.",
+    skills: [pythonService ? "./skills/python-service" : "./skills/typescript-web"],
+    contextSchema,
+  });
+}
+```
+
+The factory can be sync or async. It receives a `ManagedServerRuntime`, which extends the native LangGraph `ServerRuntime`. Read run context from `executionRuntime.context`. It is `undefined` on channel runs, and `executionRuntime` is `null` when Agent Server loads the agent for inspection.
+
+Callers choose the configuration through the run's `context`:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await client.runs.create(threadId, "open-swe", {
+  input: { messages: [{ role: "user", content: "Run the service test suite." }] },
+  context: { repository: "payments-service" },
+});
+```
+
+Run context is application data, not verified identity. Check authorization in [tools](/langsmith/javascript/managed-deep-agents-tools) against the verified caller on the runtime.
+
+### Select managed resources
+
+A factory can also select the resources that a static agent reads from project files. Omitting a field keeps the project's configuration. Providing a value replaces it for that run:
+
+| Field | Omitted | Selected | Cleared |
+| - | - | - | - |
+| `instructions` | Uses `instructions.md`. | Uses the supplied prompt. | `""` removes authored instructions. |
+| `skills` | Exposes all project skills. | Exposes only the selected skills. | `[]` exposes no skills. |
+| `mcp` | Uses the `mcp` declaration. | Uses only the selected MCP definitions. | `[]` exposes no MCP tools. |
+| `sandbox` | Uses the `sandbox` declaration. | Uses the supplied sandbox. | `null` disables the sandbox. |
+
+Static definitions cannot set these fields. A skill path must end in `skills/<name>` and point to a skill in the project. A factory can also return generated skill definitions, whose names must not duplicate project skill names.
+
+This example enables the docs MCP server on request and gives one repository a longer sandbox timeout. It imports the declarations from [`tools/mcp`](/langsmith/javascript/managed-deep-agents-mcp-connectors) and [`sandbox/`](/langsmith/javascript/managed-deep-agents-sandboxes):
+
+```ts agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import {
+  defineDeepAgent,
+  defineSandbox,
+  type ManagedServerRuntime,
+} from "managed-deepagents";
+import { z } from "zod";
+
+import { sandbox } from "./sandbox/index";
+import { mcp } from "./tools/mcp";
+
+const contextSchema = z.object({
+  repository: z.string().optional(),
+  needsDocs: z.boolean().optional(),
+});
+
+export function agent(
+  runtime: ManagedServerRuntime<z.infer<typeof contextSchema>>
+) {
+  const context = runtime.executionRuntime?.context;
+  const pythonService = context?.repository === "payments-service";
+
+  return defineDeepAgent({
+    name: "open-swe",
+    model: "openai:gpt-5.5",
+    mcp: context?.needsDocs ? [mcp] : [],
+    sandbox: pythonService ? defineSandbox({ defaultTimeout: 600 }) : sandbox,
+    contextSchema,
+  });
+}
+```
+
+Memory is not selected per run. Declare it in the project's memory file, and control access for each run with an `allow` policy. See [Control access to a layer](/langsmith/javascript/managed-deep-agents-memory#control-access-to-a-layer).
+
+### Keep the factory repeatable
+
+Managed Deep Agents calls the factory at the start of each run, and again when a run resumes or retries. Agent Server also calls it to read schemas and state. Follow these rules:
+
+* **No side effects**: Return the same definition for the same context. Do not create records, call external APIs, or change shared state in the factory.
+* **Stable interrupts**: Keep middleware that can interrupt a run in every configuration. When a run resumes, the middleware that raised the interrupt must still be present.
+* **Inline name**: Set `name` as an inline string. `mda build` reads it without calling the factory and uses it as the graph ID and default deployment name.
+* **Model dependencies**: Install the integration package for every model the factory can return. The build does not detect them.
+
+To change behavior between model calls within a run, use [custom middleware](/langsmith/javascript/managed-deep-agents-middleware).
 
 ## Use LLM Gateway
 
@@ -57706,19 +57881,11 @@ A `202` means the run was accepted, not that it finished. The agent's answer arr
 
 ## Read the event in the agent
 
-Each run carries channel data in [run context](/langsmith/javascript/managed-deep-agents-middleware#use-runtime-context). The parser examples explicitly include the provider event. These fields appear inside the channel context:
+Tools and middleware read the delivery from [`runtime.channel`](/langsmith/javascript/managed-deep-agents-runtime#channel). For the parser examples, `runtime.channel.provider` is `"orders"`.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "channel": {
-    "provider": "orders",
-    "target": "A-1024",
-    "rawEvent": { "type": "order.comment", "order": { "id": "A-1024" } }
-  }
-}
-```
+Return `rawEvent` from `parse` to expose JSON provider data at `runtime.channel.rawEvent`. If omitted, `runtime.channel.rawEvent` is `undefined`.
 
-Return `rawEvent` from `parse` to expose JSON provider data at `runtime.channel.rawEvent` and `runtime.context.channel.rawEvent`. If omitted, this field stays absent.
+The reply `target` stays private. Code cannot read it from `runtime.channel`.
 
 Managed Deep Agents builds `runtime.channel.event` from the parsed message. It does not decode the body again or preserve the provider event automatically.
 
@@ -57879,6 +58046,98 @@ export const channel = channels.slack({
   Whether messages from other Slack bots can start agent runs.
 </ParamField>
 
+## React to the message that starts a run
+
+When a run picks up an inbound message, the agent reacts to it with an emoji, so
+the sender knows it was seen before the agent has anything to say. The reaction
+never blocks or delays the reply.
+
+Every message gets the same emoji by default. Pass a function to choose one per
+message:
+
+<ParamField type="false | string | function">
+  Pass `false` to turn reactions off, a Slack emoji short name to use that emoji
+  instead, or a function taking `{ text }` and returning a short name. The
+  function may return a promise.
+</ParamField>
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { channels } from "managed-deepagents";
+
+export const channel = channels.slack({
+  name: "Support Bot",
+  reactions: ({ text }) => (text.includes("broken") ? "bug" : "eyes"),
+});
+```
+
+Return a Slack short name without the surrounding colons. A name Slack does not
+recognize is chosen but never appears, so the reaction is simply missing. A
+chooser that throws, that takes longer than five seconds, or that returns
+anything else falls back to the default emoji, and the run continues either way.
+
+### Choose the emoji with a decision model
+
+A [decision model](/langsmith/llm-gateway-decision-models) scores a fixed set of
+options and answers with one of their keys, so the reaction reflects what the
+message says and there is no reply to parse. The answer is always one of the
+options you supplied. `TypeSafeClassifier`
+([Python](/oss/python/integrations/providers/typesafe),
+[JavaScript](/oss/javascript/integrations/providers/typesafe)) exposes this as a
+`Runnable`, and records traces and token usage in LangSmith.
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+npm install @langchain/typesafe
+```
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { TypeSafeClassifier } from "@langchain/typesafe";
+import { channels } from "managed-deepagents";
+
+// The description is what the model matches on, so describe the situation
+// rather than the picture. Keep an option for anything unremarkable.
+const VOCABULARY = {
+  bug: "A defect or incorrect behaviour.",
+  rotating_light: "A declared incident or outage.",
+  mag: "A code review, pull request, or diff to look at.",
+  hourglass: "Waiting on someone or something else; blocked.",
+  speech_balloon: "A question, or a request to explain something.",
+  wave: "A greeting or hello.",
+  eyes: "Anything that does not clearly fit another option.",
+};
+
+let cached: TypeSafeClassifier | undefined;
+const classifier = () =>
+  (cached ??= new TypeSafeClassifier({
+    model: "typesafe/jev-latest",
+    timeout: 5_000,
+    questions: {
+      emoji: {
+        type: "choice",
+        instructions: "Which emoji best acknowledges this message?",
+        criteria: VOCABULARY,
+      },
+    },
+  }));
+
+export const channel = channels.slack({
+  name: "Support Bot",
+  reactions: async ({ text }) => {
+    const { emoji } = (await classifier().invoke(text.slice(0, 2000))).choices;
+    // Below this the model has no real view, so prefer a generic reaction.
+    return emoji.confidence >= 0.25 ? emoji.choice : "eyes";
+  },
+});
+```
+
+Both build the classifier on first use rather than at import, because
+deployment imports this module to read the channel declaration and the
+classifier needs a key to construct.
+
+Set `TYPESAFE_API_KEY` on the deployment. To route through the LangSmith gateway
+instead, set `TYPESAFE_BASE_URL=https://gateway.smith.langchain.com` and use a
+workspace-scoped LangSmith API key, with `TYPESAFE_API_KEY` in your workspace
+[provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets).
+
 ## Deploy the agent
 
 During deployment, Managed Deep Agents provisions your agent in Slack from the channel declaration.
@@ -57953,6 +58212,8 @@ Files stay scoped to the Slack thread they arrived in, because every thread gets
 ## See also
 
 * [Channels overview](/langsmith/javascript/managed-deep-agents-channels): understand how channels connect messaging services to an agent.
+* [Decision models](/langsmith/llm-gateway-decision-models): configure the model that scores reaction emoji.
+* [LLM Gateway setup](/langsmith/llm-gateway-admin-setup): enable the gateway and add the provider secret reactions need.
 * [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts): post a Slack form from a tool and resume the run on submit.
 * [Sandboxes](/langsmith/javascript/managed-deep-agents-sandboxes): give the agent the filesystem that file transfers read and write.
 * [Deploy an agent](/langsmith/javascript/managed-deep-agents-deploy): configure and deploy a managed deep agent.
@@ -60734,6 +60995,8 @@ Middleware can read per-run context through the normal LangChain runtime APIs. U
 
 For examples, see [Custom middleware](/oss/javascript/langchain/middleware/custom).
 
+For the caller, channel, and sandbox fields that Managed Deep Agents adds, see [Runtime](/langsmith/javascript/managed-deep-agents-runtime).
+
 To read or write files in the thread's sandbox from a middleware hook, use `runtime.backend`. See [Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code).
 
 ## Deployment
@@ -61579,6 +61842,181 @@ Or paste this prompt into your coding agent:
 </div>
 
 
+# Managed Deep Agents runtime
+Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-runtime
+
+Read run context, the verified caller, the channel delivery, and the sandbox from the native runtime types that agent factories, tools, and middleware receive.
+
+Agent factories, tools, and middleware hooks each receive a runtime. It is the native LangChain or LangGraph runtime with three managed fields added. Context, state, and the store work as they do in [LangChain](/oss/javascript/langchain/runtime), and your type checker sees your own context type.
+
+<Note>
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+</Note>
+
+## Understand the runtime types
+
+Managed Deep Agents extends one native type for each place your code runs:
+
+| Code | Type | Extends |
+| - | - | - |
+| Agent factory | `ManagedServerRuntime<Context>` | `ServerRuntime` from `@langchain/langgraph-sdk` |
+| Tool | `ManagedToolRuntime<State, Context>` | `ToolRuntime` from `@langchain/core/tools` |
+| Middleware hook | `ManagedRuntime<Context>` | `Runtime` from `langchain` |
+
+Type parameters follow the native order, so `ManagedToolRuntime` takes state first, then context. Both parameters are optional. `ManagedDeepAgentRuntime` is an alias for `ManagedToolRuntime`.
+
+Each type keeps every native field and method, such as `context`, `state`, `store`, `writer`, and `toolCallId`. Managed Deep Agents adds three fields:
+
+* **`serverInfo`**: Native server metadata plus the verified caller. Tools and middleware receive it.
+* **`channel`**: The verified channel delivery that started the run. `undefined` on direct API and schedule runs.
+* **`backend`**: The thread's [sandbox](/langsmith/javascript/managed-deep-agents-sandboxes) filesystem. `undefined` when the project declares no sandbox.
+
+## Separate context, caller, and delivery
+
+Context, the caller, and the channel delivery come from different sources and have different trust levels. The runtime keeps them in separate fields:
+
+* **Context** comes from the `context` parameter of an API call. LangGraph validates it against your context schema. Use it to select behavior, not to grant access.
+* **Server info** comes from [identity](/langsmith/javascript/managed-deep-agents-identity), which resolves the caller from a verified token. Managed Deep Agents strips identity keys that a client sends through `configurable`, so use this field for authorization.
+* **Channel** comes from managed [channel](/langsmith/javascript/managed-deep-agents-channels) ingress, which verifies the delivery before the run starts. A `channel` key in a direct API call's context does not create `runtime.channel`.
+
+API callers pass context next to the input:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await client.runs.create(threadId, "support", {
+  input: { messages: [{ role: "user", content: "Where is my order?" }] },
+  context: { tier: "fast" },
+});
+```
+
+### Handle channel runs without context
+
+A channel delivery carries no application context. Managed Deep Agents removes delivery data before LangGraph validates context, so required context fields do not reject channel runs. Direct API runs keep native validation.
+
+On channel runs, context is `undefined` in the agent factory and tools, and an empty object in native middleware.
+
+To tell a channel run from a direct run, check `runtime.channel`.
+
+## Read the runtime in the agent factory
+
+An agent factory receives a `ManagedServerRuntime`: the native [`ServerRuntime`](/langsmith/graph-rebuild) plus `channel` and `backend`. To write a factory, see [Select configuration per run](/langsmith/javascript/managed-deep-agents-agent-definition#select-configuration-per-run).
+
+Agent Server also calls the factory to read schemas and state. `accessContext` names the operation. [`executionRuntime`](/langsmith/graph-rebuild#access-contexts) is `null` outside `threads.create_run`, so read run context from `executionRuntime.context`. Return the same graph structure and schemas from every call.
+
+`channel` is available, so a factory can choose configuration per channel. `backend` is always `undefined`, because the factory selects the sandbox.
+
+## Read the runtime in tools
+
+Annotate the runtime parameter with `ManagedToolRuntime`:
+
+```ts tools/check-order.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import type { ManagedToolRuntime } from "managed-deepagents";
+import { z } from "zod";
+
+type AppContext = { region?: string };
+
+export const checkOrder = tool(
+  async ({ orderId }, runtime: ManagedToolRuntime<unknown, AppContext>) => {
+    const principal = runtime.serverInfo?.principal;
+    if (!principal) return "Sign in to check orders.";
+    await runtime.channel?.post?.({
+      type: "content",
+      content: "Checking that order now.",
+    });
+    const region = runtime.context?.region ?? "us";
+    return `Order ${orderId} for ${principal.id} ships from ${region}.`;
+  },
+  {
+    name: "check_order",
+    description: "Check the status of an order.",
+    schema: z.object({ orderId: z.string() }),
+  }
+);
+```
+
+`principal` is absent when no caller resolved, because identity is opt-in. `post` sends an additional message, and the agent's final reply still posts automatically. For more on writing tools, see [Custom tools](/langsmith/javascript/managed-deep-agents-tools).
+
+## Read the runtime in middleware
+
+Cast the hook's runtime to `ManagedRuntime` to read the managed fields:
+
+```ts middleware/log-caller.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware } from "langchain";
+import type { ManagedRuntime } from "managed-deepagents";
+
+type AppContext = { region?: string };
+
+export const logCaller = createMiddleware({
+  name: "LogCaller",
+  beforeModel: (_state, runtime) => {
+    const { serverInfo, channel } = runtime as ManagedRuntime<AppContext>;
+    const caller = serverInfo?.principal?.id ?? "anonymous";
+    console.log(`${caller} via ${channel?.provider ?? "api"}`);
+    return undefined;
+  },
+});
+```
+
+Tool-call hooks receive a `ManagedToolRuntime`. Declarative subagents receive the same managed fields. Neither requires an identity or sandbox declaration. For more on writing middleware, see [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware).
+
+## Reference the managed fields
+
+### Server info
+
+`runtime.serverInfo` is a `ManagedServerInfo`. It keeps the native `assistantId`, `graphId`, and `user` fields and adds the caller:
+
+* **`principal`**: The verified caller. `id` is the caller ID, `kind` is `"person"`, `"service"`, or `"channel"`, and `claims` holds the token claims. `claims.groups` is always a string array, and `claims.email` is always a string.
+* **`subject`**: The authority the run acts with. `authority` is `"agent"` or `"user"`, with `agent_id` and `user_id`.
+* **`link`**: The account link. `status` currently reports `"not_required"`.
+* **`source`**: Where the run entered. `provider` is a value such as `"http"`, `"schedule"`, `"studio"`, or `"slack"`, with an optional `threadId`.
+
+Read the caller from `principal`, not from the native `user`. For identity providers and claim mapping, see [Identity](/langsmith/javascript/managed-deep-agents-identity).
+
+### Channel
+
+`runtime.channel` is a `RuntimeChannel`:
+
+* **`name`**: The configured channel name.
+* **`provider`**: The provider label, such as `"slack"`.
+* **`event`**: The typed delivery. See the event types below.
+* **`rawEvent`**: The original provider payload, when the channel supplies one. For Slack, this is the inner Slack event without HTTP headers or the Trigger envelope. A resume can omit it.
+* **`post`**: An async function that sends a message to the conversation that started the run. `undefined` when the channel cannot send.
+
+`event.type` is one of:
+
+* **`message`**: A new message. `messages` holds the incoming messages.
+* **`user_prompt_response`**: A reply to an interactive prompt. Carries `action`, an optional `value`, and an optional `correlation_id`. See [Agent-owned interrupts](/langsmith/javascript/managed-deep-agents-agent-owned-interrupts).
+* **`interrupt_resume`**: A resume for a pending interrupt. `resume` holds the resume value.
+
+`post` accepts a content message, `{"type": "content", "content": ...}`, or a native message, `{"type": "native", "native": ...}`. The built-in Slack channel sends text content only. The reply target stays private: `post` has no address or destination override, and code cannot read or replace the target.
+
+### Backend
+
+`runtime.backend` reads and writes files in the thread's sandbox. See [Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code).
+
+## See also
+
+* [Runtime](/oss/javascript/langchain/runtime)
+* [Rebuild graph at runtime](/langsmith/graph-rebuild)
+* [Agent definition](/langsmith/javascript/managed-deep-agents-agent-definition)
+* [Custom tools](/langsmith/javascript/managed-deep-agents-tools)
+* [Custom middleware](/langsmith/javascript/managed-deep-agents-middleware)
+* [Channels](/langsmith/javascript/managed-deep-agents-channels)
+* [Identity](/langsmith/javascript/managed-deep-agents-identity)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-runtime.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Add a sandbox to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-sandboxes
 
@@ -61892,7 +62330,7 @@ For more information, see [Project structure](/langsmith/javascript/managed-deep
 # Add schedules to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/javascript/managed-deep-agents-schedules
 
-Declare managed cron schedules for Managed Deep Agents deployments.
+Declare managed cron schedules for Managed Deep Agents deployments, or create them at runtime.
 
 Managed Deep Agents can run agents on a cron schedule. When you deploy the project, `mda deploy` provisions each schedule as a LangSmith cron after the deployment is live.
 
@@ -62033,11 +62471,142 @@ To test the agent behavior a schedule triggers, send the schedule's `prompt` or 
 
 Test the project locally with [`mda dev`](/langsmith/javascript/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/javascript/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
+When the deployment reaches `DEPLOYED`, `mda deploy` deletes the cron jobs that earlier `schedules/` declarations created and creates cron jobs for the current declarations. Removing a local schedule file and redeploying removes the corresponding managed cron. Schedules created at runtime are unaffected.
 
 <Warning>
   If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy` without `--no-wait` when adding, changing, or removing schedules.
 </Warning>
+
+## Create schedules at runtime
+
+<Note>
+  Runtime schedules require `managed-deepagents` 0.9.0 or later.
+</Note>
+
+Declarations in `schedules/` are fixed when you deploy. The `schedules` API creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. Call it from a tool or from [middleware](/langsmith/javascript/managed-deep-agents-middleware). Each schedule belongs to the current user or to the agent.
+
+The agent reaches this API only through tools that you write. Expose the calls the agent needs, and leave out the ones it should not reach.
+
+When a tool creates a schedule during a [channel](/langsmith/javascript/managed-deep-agents-channels) run, such as a Slack conversation, the schedule inherits that channel. Each run posts its final answer back to it. A new thread posts a new Slack message, and the current thread replies in the existing Slack thread.
+
+`newThread` decides which of the two a schedule uses.
+
+### Create a recurring schedule
+
+`remind_me` gives the agent a way to set up a recurring reminder for the person it is talking to. The agent calls it with the prompt to run and a cron expression for how often to run it. Each time the cron fires, a new run starts with that prompt as its user message. The agent decides what each scheduled run is asked to do.
+
+```ts tools/schedules.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { z } from "zod";
+import { schedules } from "managed-deepagents";
+
+export const remindMe = tool(
+  async ({ prompt, cron, timezone }) => {
+    const item = await schedules.create({
+      owner: { type: "user" },
+      cron,
+      timezone,
+      prompt,
+    });
+    return `Created schedule ${item.id}.`;
+  },
+  {
+    name: "remind_me",
+    description: "Run a prompt for the current user on a cron schedule.",
+    schema: z.object({
+      prompt: z.string(),
+      cron: z.string(),
+      timezone: z.string().default("UTC"),
+    }),
+  },
+);
+```
+
+Asked in Slack to send a standup reminder every weekday, the agent calls `remind_me`. It passes a prompt of its own wording and the cron `0 9 * * 1-5`. Each weekday run posts its answer to that Slack conversation as a new message, because `cron` schedules default to a new thread.
+
+### Create a one-time schedule
+
+Pass `at` in place of `cron` for work that runs once. `follow_up_later` gives the agent a way to set a single follow-up, such as checking a deploy after it finishes.
+
+```ts tools/follow-up.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import { z } from "zod";
+import { schedules } from "managed-deepagents";
+
+export const followUpLater = tool(
+  async ({ prompt, hours }) => {
+    const item = await schedules.create({
+      owner: { type: "user" },
+      at: new Date(Date.now() + hours * 60 * 60_000),
+      prompt,
+    });
+    return `Scheduled a one-time follow-up: ${item.id}.`;
+  },
+  {
+    name: "follow_up_later",
+    description: "Run a prompt once, a number of hours from now.",
+    schema: z.object({
+      prompt: z.string(),
+      hours: z.number(),
+    }),
+  },
+);
+```
+
+A one-time schedule defaults to the current thread, so its run continues the conversation that created it and replies in the same Slack thread.
+
+### Create options
+
+<ParamField type="object">
+  `{ type: "user" }` selects the authenticated person of the current run, and the schedule runs as that person. An optional `id` must match that person. `{ type: "agent" }` selects the schedules the agent owns, which run as the agent's service identity.
+</ParamField>
+
+<ParamField type="string">
+  A five-field cron expression for a recurring schedule. Give exactly one of `cron` and `at`.
+</ParamField>
+
+<ParamField type="Date | string">
+  A `Date`, or an ISO 8601 timestamp that ends with `Z` or a UTC offset. The schedule runs once. The runtime rounds it up to the next whole minute. It must be at least one minute and at most 365 days in the future.
+</ParamField>
+
+<ParamField type="string">
+  An IANA time zone for `cron`, such as `America/Los_Angeles`. Do not pass it with `at`.
+</ParamField>
+
+<ParamField type="string">
+  A prompt that each run receives as a user message. Give exactly one of `prompt` and `input`.
+</ParamField>
+
+<ParamField type="object | object[]">
+  A structured LangGraph input for each run.
+</ParamField>
+
+<ParamField type="boolean">
+  `true` starts each run on a new thread. `false` continues the current thread. Defaults to `true` with `cron` and `false` with `at`.
+</ParamField>
+
+<ParamField type="boolean">
+  Create the schedule without running it.
+</ParamField>
+
+<ParamField type="object">
+  JSON metadata for your own use. Keys that start with `mda_` are reserved.
+</ParamField>
+
+### Manage schedules
+
+`list`, `get`, `update`, and `delete` cover the rest of a schedule's life. Expose them as tools when the agent should manage the schedules it created. An agent with `list` and `delete` can answer "what reminders do I have?" and cancel one on request. Pause a schedule with `update` instead of deleting it when the person wants it back later.
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const owner = { type: "user" } as const;
+
+const page = await schedules.list({ owner, limit: 20 });
+const item = await schedules.get(page.items[0].id, { owner });
+await schedules.update(item.id, { paused: true }, { owner });
+await schedules.delete(item.id, { owner });
+```
+
+`update` accepts `cron`, `at`, `timezone`, `prompt`, `input`, `paused`, and `metadata`. The channel and the thread choice are fixed at creation. `list` hides expired one-time schedules unless you pass `includeExpired: true`. For the agent owner, `list` and `get` also return the schedules in `schedules/`, which you change in code.
 
 ## Troubleshoot schedules
 
@@ -62427,6 +62996,8 @@ If a tool requires an API key or OAuth token, use a connection to resolve the cr
 ## Access runtime context
 
 For per-run values such as request metadata or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/javascript/langchain/tools#access-context).
+
+For the caller, channel, and sandbox fields that Managed Deep Agents adds, see [Runtime](/langsmith/javascript/managed-deep-agents-runtime).
 
 To read or write files in the thread's sandbox from a tool, use `runtime.backend`. See [Read and write sandbox files from code](/langsmith/javascript/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code).
 
@@ -65984,43 +66555,7 @@ Use one [LangSmith API key](/langsmith/create-account-api-key) to call models ac
 
 <Note>
   **Beta:** The LLM Gateway is in [beta](/langsmith/release-stages).
-
-  The gateway is also available on [BYOC](/langsmith/byoc), where it runs inside your data plane. Send requests to your [data plane endpoint](/langsmith/byoc-usage#find-your-data-plane-endpoint) behind the `/gateway` path prefix, and authenticate with an API key scoped to a workspace in that data plane. For more information, see [Use a BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane).
 </Note>
-
-<Note>
-  **Self-hosted availability:** LLM Gateway is not included in the LangSmith v0.16.0 self-hosted stable release. It will be available in a future stable release. To express interest, submit the [LLM Gateway self-hosted access request](https://www.langchain.com/langsmith-llm-gateway-self-hosted-access-request). You can also try LLM Gateway on v17 RC versions or BYOC (bring your own cloud) ahead of the stable release.
-</Note>
-
-## Make your first request
-
-<Info>
-  An administrator must [enable the gateway, add a provider secret, and grant access](/langsmith/llm-gateway-admin-setup) once for your workspace. After setup, developers need only a workspace-scoped LangSmith API key.
-</Info>
-
-Set your key and make a standard Chat Completions request. This example assumes the workspace has an Anthropic provider secret:
-
-<CodeGroup>
-  ```bash Cloud theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
-
-  curl https://gateway.smith.langchain.com/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
-
-  ```bash BYOC theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
-
-  curl https://<data_plane_host>/gateway/v1/chat/completions \
-      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
-  ```
-</CodeGroup>
-
-A `200` response confirms that the gateway, your LangSmith API key, permissions, and the selected provider secret are configured correctly. For Python, TypeScript, alternative API formats, and troubleshooting, follow the [quickstart](/langsmith/llm-gateway-quickstart).
 
 ## What the gateway provides
 
@@ -66028,6 +66563,21 @@ A `200` response confirms that the gateway, your LangSmith API key, permissions,
 * **One request format, multiple models:** Use Chat Completions, Messages, or Responses with models across configured providers.
 * **Built-in observability:** Every gateway call appears as a [LangSmith trace](/langsmith/llm-gateway-access).
 * **Central governance:** Apply [spend limits](/langsmith/llm-gateway-spend-policies), [rate limits](/langsmith/llm-gateway-rate-limit-policies), and [data policies](/langsmith/llm-gateway-data-policy).
+
+## See what a request looks like
+
+Once an administrator has [completed the setup](/langsmith/llm-gateway-admin-setup), a gateway call is a standard Chat Completions request authenticated with a workspace-scoped LangSmith API key. This example calls the US gateway on LangSmith Cloud and assumes the workspace has an Anthropic provider secret:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
+
+curl https://gateway.smith.langchain.com/v1/chat/completions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{"model":"anthropic/claude-sonnet-4-6","messages":[{"role":"user","content":"Hello!"}]}'
+```
+
+A `200` response confirms that the gateway, your LangSmith API key, permissions, and the selected provider secret are configured correctly. To make this request yourself in cURL, Python, TypeScript, or Deep Agents, follow the [quickstart](/langsmith/llm-gateway-quickstart).
 
 ## Use the standard API
 
@@ -66041,9 +66591,9 @@ Choose the request format already used by your application. The format does not 
 
 Set `model` to a provider-prefixed bring-your-own-key ID such as `openai/gpt-5.4-mini`, `anthropic/claude-opus-5`, or `azure/<deployment-name>`, or use a [Gateway Credits](/langsmith/llm-gateway-credits) model slug such as `moonshotai/kimi-k3`. The model ID determines the upstream route. When the selected provider uses a different native format, the gateway translates the request and response.
 
-On BYOC, the same paths sit behind the `/gateway` prefix, such as `POST /gateway/v1/chat/completions`.
+The gateway runs on LangSmith Cloud in every region, on [BYOC](/langsmith/byoc), and on [self-hosted](/langsmith/self-hosted) LangSmith. On BYOC and self-hosted, the same paths sit behind the `/gateway` prefix, such as `POST /gateway/v1/chat/completions`. For the hostname to use in each case, see [Check availability](/langsmith/llm-gateway-how-it-works#check-availability). Self-hosted installations also need an administrator to [enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted).
 
-For base URLs, examples, translation behavior, regional endpoints, and BYOC data plane endpoints, see [API formats](/langsmith/llm-gateway-api-formats).
+For base URLs, examples, and translation behavior, see [API formats](/langsmith/llm-gateway-api-formats).
 
 ## Choose how credentials are managed
 
@@ -66212,6 +66762,8 @@ One-time setup to enable the LLM Gateway for your LangSmith [organization](/lang
 
 You need [`organization:manage` permission](/langsmith/organization-workspace-operations) in LangSmith. [Step 2 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) also requires a plan that includes [RBAC](/langsmith/rbac) (custom roles).
 
+On self-hosted LangSmith, [enable the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted) before you complete these steps.
+
 ## 1. Add Provider Secrets
 
 Skip this step for LangChain-hosted models: they use your LangSmith API key, not provider secrets. See [Gateway Credits](/langsmith/llm-gateway-credits) for paid chat models or [Decision models](/langsmith/llm-gateway-decision-models#semif) for SemIf. Continue with step 2 to grant gateway access.
@@ -66322,7 +66874,7 @@ The standard LLM Gateway API supports three request and response formats. Choose
 
 All formats authenticate with a workspace-scoped LangSmith API key. Pass it as the provider API key or as an `Authorization: Bearer` token.
 
-These base URLs are for the US gateway on LangSmith Cloud. For other regions and for BYOC data planes, see [Check availability](/langsmith/llm-gateway-how-it-works#check-availability).
+These base URLs are for the US gateway on LangSmith Cloud. For other regions, BYOC data planes, and self-hosted installations, see [Check availability](/langsmith/llm-gateway-how-it-works#check-availability).
 
 For bring-your-own-key models, set `model` to `<provider>/<model>`, such as `openai/gpt-5.4-mini`, `anthropic/claude-opus-5`, or `azure/<deployment-name>`. For Gateway Credits models, pass a supported model name, such as `moonshotai/kimi-k3`.
 
@@ -66651,7 +67203,7 @@ Claude Code supports two separate authentication methods. Choose one before conf
 
 Set `ANTHROPIC_API_KEY` to your LangSmith API key. Claude Code reads these variables from your shell environment or from the `env` block in a settings file passed with `--settings`.
 
-If your LangSmith deployment is on a regional or self-hosted instance, replace the gateway hostname in the examples below with your [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) hostname.
+If your LangSmith deployment is on a regional instance, replace the gateway hostname in the examples below with your [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) hostname. On a [self-hosted installation](/langsmith/llm-gateway-how-it-works#use-a-self-hosted-installation), replace `https://gateway.smith.langchain.com` with `https://<your-hostname>/gateway`.
 
 #### Use Anthropic models only
 
@@ -67167,17 +67719,23 @@ The coverage boundary matters. If your security model requires that sensitive da
 # Decision models
 Source: https://docs.langchain.com/langsmith/llm-gateway-decision-models
 
-Use SemIf through the LangSmith LLM Gateway for structured classification and scoring with the System One API.
+Call SemIf, TypeSafe, and OpenAI decision models through the LangSmith LLM Gateway using the System One API or the OpenAI Decisions API.
 
-Decision models classify or score text and return structured answers instead of generated chat messages. Call them through the [LLM Gateway](/langsmith/llm-gateway) with the System One API.
+Decision models classify or score text and return structured answers instead of generated chat messages. Call them through the [LLM Gateway](/langsmith/llm-gateway) with one of two APIs:
 
-LangSmith provides an open source decision model, SemIf (`semif-qwen3.5-4b`), through the gateway for free through September 28, 2026.
+| Model | API | Endpoint | Credentials |
+| - | - | - | - |
+| [SemIf](#semif) | System One | `/v1/systemone` | LangSmith API key only |
+| [TypeSafe (Jev)](#typesafe-jev) | System One | `/v1/systemone` | `TYPESAFE_API_KEY` provider secret |
+| [OpenAI decision models](#use-the-openai-decisions-api) | OpenAI Decisions | `/openai/v1/decisions` | `OPENAI_API_KEY` provider secret |
+
+## Quickstart
+
+This example calls [SemIf](#semif), which needs no provider secret.
 
 <Note>
   SemIf is enabled for US organizations on Free, Developer, and Plus plans.
 </Note>
-
-## Quickstart
 
 Set your [LangSmith API key](/langsmith/create-account-api-key):
 
@@ -67261,9 +67819,11 @@ Then run a request:
   </Tab>
 </Tabs>
 
-## Understand decision models
+## Use the System One API
 
-Pass the text to evaluate in `state` and between 1 and 32 named questions in `questions`. Decision models support three question types:
+SemIf and TypeSafe (Jev) both use the System One API. The `model` field selects which one handles the request.
+
+Pass the text to evaluate in `state` and between 1 and 32 named questions in `questions`. System One supports three question types:
 
 * **`noul`**: Returns the probability that the answer is true.
 * **`choice`**: Classifies the state into one of the supplied options.
@@ -67271,15 +67831,15 @@ Pass the text to evaluate in `state` and between 1 and 32 named questions in `qu
 
 The response contains `answers` keyed by question name rather than a chat message. Streaming is not supported.
 
-## SemIf
+### SemIf
 
-You can select SemIf from the hosted models on the gateway home page to get a request example. For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-direct-model-access#use-a-regional-gateway).
+LangSmith hosts SemIf (`semif-qwen3.5-4b`), an open source decision model, on the gateway. You can select SemIf from the hosted models on the gateway home page to get a request example. For regional base URLs, see [Regional gateways](/langsmith/llm-gateway-direct-model-access#use-a-regional-gateway).
 
 SemIf calls do not consume Gateway Credits. Gateway [access](/langsmith/llm-gateway-model-access-policies), [rate-limit](/langsmith/llm-gateway-rate-limit-policies), and [budget policies](/langsmith/llm-gateway-spend-policies) still apply.
 
-## TypeSafe (Jev)
+### TypeSafe (Jev)
 
-The gateway also supports TypeSafe decision models with bring-your-own-key (BYOK). Configure `TYPESAFE_API_KEY` as a workspace [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). See [TypeSafe setup](/oss/python/integrations/providers/typesafe#setup) to create a key and install the LangChain integration.
+The gateway supports TypeSafe decision models with bring-your-own-key (BYOK). Configure `TYPESAFE_API_KEY` as a workspace [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets). See [TypeSafe setup](/oss/python/integrations/providers/typesafe#setup) to create a key and install the LangChain integration.
 
 Set `LANGSMITH_API_KEY` to your workspace-scoped LangSmith API key. The `typesafe/` prefix routes the request through your workspace's TypeSafe provider secret, not the hosted SemIf model. Do not pass your TypeSafe API key as the SDK's `api_key` or `apiKey` when calling the gateway. Use the gateway base URL without `/v1` for the SDKs:
 
@@ -67356,6 +67916,58 @@ Set `LANGSMITH_API_KEY` to your workspace-scoped LangSmith API key. The `typesaf
     ```
   </Tab>
 </Tabs>
+
+## Use the OpenAI Decisions API
+
+The OpenAI Decisions API has its own request and response format, separate from System One. The gateway supports the OpenAI Decisions API through [direct model access](/langsmith/llm-gateway-direct-model-access). Configure `OPENAI_API_KEY` as a workspace [provider secret](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets).
+
+Send requests to `POST /openai/v1/decisions` using your workspace-scoped LangSmith API key. Set `model` to the native OpenAI model name without the `openai/` prefix:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl https://gateway.smith.langchain.com/openai/v1/decisions \
+    -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-6-luna",
+      "input": "The package arrived with a broken screen.",
+      "questions": [
+        {
+          "type": "predicate",
+          "name": "damaged",
+          "instructions": "Does the customer report a damaged item?"
+        }
+      ]
+    }'
+```
+
+The gateway preserves the native request and response format:
+
+```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+{
+  "model": "gpt-6-luna",
+  "answers": [
+    {
+      "type": "predicate",
+      "name": "damaged",
+      "probability": 1.0
+    }
+  ],
+  "usage": {
+    "input_tokens": 164,
+    "input_tokens_details": {
+      "cached_tokens": 0,
+      "cache_write_tokens": 0
+    },
+    "output_tokens": 0,
+    "output_tokens_details": {
+      "reasoning_tokens": 0
+    },
+    "total_tokens": 164
+  }
+}
+```
+
+Gateway [access](/langsmith/llm-gateway-model-access-policies), [rate-limit](/langsmith/llm-gateway-rate-limit-policies), and [budget policies](/langsmith/llm-gateway-spend-policies) apply to Decisions requests, and token usage counts toward spend caps. The gateway traces each request to LangSmith with the request as input and the answers and token usage as output.
 
 ## See also
 
@@ -67925,7 +68537,7 @@ The sync script in [step 3](#step-3-sync-policies-with-your-customer-list) appli
 </div>
 
 
-# How the gateway works
+# How the LLM Gateway works
 Source: https://docs.langchain.com/langsmith/llm-gateway-how-it-works
 
 Understand what the LLM Gateway does to each request, how upstream credentials are resolved, and where the gateway is available.
@@ -67969,7 +68581,13 @@ The gateway resolves an upstream credential for every call. A workspace can use 
 
 ## Check availability
 
-The gateway runs on LangSmith Cloud in every LangSmith region, and on [BYOC](/langsmith/byoc), where it runs inside your data plane so that model requests and their traces stay in your VPC. Both use the same API formats, model IDs, policies, and tracing; only the hostname and path prefix differ.
+The gateway runs on:
+
+* LangSmith Cloud in every LangSmith region
+* [BYOC](/langsmith/byoc), where it runs inside your data plane so that model requests and their traces stay in your VPC
+* [Self-hosted](/langsmith/self-hosted) LangSmith
+
+All three use the same API formats, model IDs, policies, and tracing; only the hostname and path prefix differ.
 
 ### Use a regional gateway
 
@@ -67998,9 +68616,17 @@ Authenticate with an API key scoped to a workspace in that data plane, passed ei
   Data planes are provisioned with a private endpoint by default, so you need private connectivity to reach the base URL, such as Tailscale, AWS PrivateLink, or VPC peering.
 </Warning>
 
-<Note>
-  **Self-hosted availability:** LLM Gateway is not included in the LangSmith v0.16.0 self-hosted stable release. It becomes available in a future stable release. To express interest, submit the [LLM Gateway self-hosted access request](https://www.langchain.com/langsmith-llm-gateway-self-hosted-access-request). You can also try the LLM Gateway on v17 RC versions or BYOC ahead of the stable release.
-</Note>
+### Use a self-hosted installation
+
+On self-hosted LangSmith, an administrator first [enables the gateway in the Helm chart](/langsmith/llm-gateway-self-hosted). Then replace the gateway hostname with your LangSmith hostname and prefix the path with `/gateway`:
+
+| API format | Base URL | Prompt endpoint |
+| - | - | - |
+| OpenAI Chat Completions | `https://<your-hostname>/gateway/v1` | `POST /chat/completions` |
+| Anthropic Messages | `https://<your-hostname>/gateway` | `POST /v1/messages` |
+| OpenAI Responses | `https://<your-hostname>/gateway/v1` | `POST /responses` |
+
+Authenticate with an API key scoped to a workspace in your installation, passed as an `Authorization: Bearer` token or an `X-Api-Key` header.
 
 ## See also
 
@@ -68199,6 +68825,13 @@ Call models across providers with one LangSmith API key, then view the trace and
 
 The LLM Gateway calls models across configured providers through one endpoint with one [LangSmith API key](/langsmith/create-account-api-key). Send a request, view its trace, then set a spend limit.
 
+<Note>
+  This quickstart uses LangSmith Cloud in the US region: the gateway at `gateway.smith.langchain.com` and the LangSmith UI at `smith.langchain.com`. Setting `LANGSMITH_GATEWAY="true"` in the Deep Agents examples also resolves to the US gateway.
+
+  * **Other Cloud regions and BYOC**: Replace the gateway hostname in each example with your [regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway) or [BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane) base URL. For Deep Agents, set `LANGSMITH_GATEWAY` to that gateway's root URL instead of `true`.
+  * **Self-hosted**: Follow [Enable the LLM Gateway on self-hosted](/langsmith/llm-gateway-self-hosted), which includes its own first call.
+</Note>
+
 <Info>
   An administrator must [enable the gateway, add a provider secret, and grant access](/langsmith/llm-gateway-admin-setup) once for your workspace. After that, you need only a workspace-scoped LangSmith API key attached to a role with the `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations).
 </Info>
@@ -68297,14 +68930,12 @@ The LLM Gateway calls models across configured providers through one endpoint wi
     Go to **LLM Gateway** in LangSmith and create a spend policy, such as a daily \$10 cap on your API key. Once the cap is reached, the gateway returns a `402` with a message naming the policy that blocked the request:
 
     ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    {"error": "Request blocked by gateway policies: R&D Spend Cap"}
+    {"type": "error", "error": {"message": "request blocked by gateway policies: R&D Spend Cap"}}
     ```
 
     For the full guide, see [Spend policies](/langsmith/llm-gateway-spend-policies).
   </Step>
 </Steps>
-
-These examples use the US gateway. For the EU, APAC, and AWS hostnames, see [Use a regional gateway](/langsmith/llm-gateway-how-it-works#use-a-regional-gateway). For BYOC, see [Use a BYOC data plane](/langsmith/llm-gateway-how-it-works#use-a-byoc-data-plane).
 
 ## Next steps
 
@@ -68419,6 +69050,246 @@ A rate limit policy can also carry a condition on a custom request header, so tr
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-rate-limit-policies.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Enable the LLM Gateway
+Source: https://docs.langchain.com/langsmith/llm-gateway-self-hosted
+
+Enable the agent-gateway service on a self-hosted LangSmith install using the Helm chart, then make your first gateway call.
+
+<Note>
+  The LLM Gateway is in [beta](/langsmith/release-stages).
+</Note>
+
+The LLM Gateway (the `agent-gateway` service) proxies model calls from agents and coding agents to upstream LLM providers. The gateway applies policies at granular scopes for reliability, spend limits, and redaction of PII and secrets. You can also route your LangSmith deployment's model calls through the gateway.
+
+This guide enables it on a self-hosted Kubernetes install using the Helm chart. For the SaaS equivalent, see [LLM Gateway](/langsmith/llm-gateway).
+
+<Note>
+  Enabling the gateway requires Helm chart version 0.17.1 or later, which ships LangSmith version 0.17.30.
+</Note>
+
+<Info>
+  The [Spend Monitoring dashboard](/langsmith/llm-gateway-monitoring) is available with SmithDB, but not ClickHouse.
+</Info>
+
+## Enable the gateway
+
+<Steps>
+  <Step title="Add Helm values" icon="settings">
+    <Note>
+      The `agent-gateway` service requires access to Postgres and Redis, and network access to other LangSmith pods, similar to `backend` and `platform-backend`. You may need to configure network policies, Kubernetes service accounts, and pod annotations to enable this access.
+    </Note>
+
+    Add these values to your Helm values file:
+
+    ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    agentGateway:
+      enabled: true
+
+      # Defaults shown for reference—override only if you have a reason.
+      # containerPort: 8083
+      # deployment:
+      #   replicas: 1
+      #   resources:
+      #     limits:   { cpu: 2, memory: 2Gi }
+      #     requests: { cpu: 1, memory: 1Gi }
+      # autoscaling:
+      #   enabled: true
+      #   minReplicas: 1
+      #   maxReplicas: 5
+      #   targetCPUUtilizationPercentage: 50
+      #   targetMemoryUtilizationPercentage: 70
+      # service:
+      #   type: ClusterIP
+      #   port: 8083
+    ```
+
+    Autoscaling is enabled by default. With the default resources, each replica handled \~100 concurrent streams on N2 instances or similar in testing, with prompts from \~40 to \~7,500 tokens.
+  </Step>
+
+  <Step title="Apply and verify" icon="rocket">
+    Apply the chart with chart version 0.17.1 or later. See [Upgrade an installation](/langsmith/self-host-upgrades) for additional instructions.
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    helm search repo langchain/langsmith --versions
+
+    helm upgrade --install langsmith langchain/langsmith \
+      --version <chart-version> \
+      -f values.yaml --timeout=20m
+    ```
+
+    Verify the deployment is healthy. The Deployment is named `<release-fullname>-agent-gateway`, which is `langsmith-agent-gateway` for a release named `langsmith`:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    kubectl get deploy langsmith-agent-gateway
+    kubectl rollout status deploy/langsmith-agent-gateway
+    ```
+  </Step>
+</Steps>
+
+## Enable Presidio PII detection (optional)
+
+[Presidio Analyzer](https://microsoft.github.io/presidio/) is a Microsoft-maintained NER service the gateway can call to detect PII in prompts before they reach upstream providers.
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+presidioAnalyzer:
+  enabled: true
+```
+
+When enabled, the chart injects `PRESIDIO_ANALYZER_URL` into the gateway pod so it discovers the analyzer in-cluster. No further app configuration is required.
+
+## Expose the gateway externally
+
+The gateway uses the same Ingress as the LangSmith UI and API. If `ingress.enabled=true` is already set in your Helm values, the gateway becomes reachable at `https://<your-hostname>/gateway/` as soon as you set `agentGateway.enabled=true`. No separate Ingress, LoadBalancer, or DNS record is required. If you set `config.basePath`, the route moves to `https://<your-hostname>/<basePath>/gateway/`, and every gateway URL on this page needs the same prefix.
+
+Check from any host that can reach your Ingress:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+curl -sS -o /dev/null -w '%{http_code}\n' https://<your-hostname>/gateway/health
+# Expected: 200
+```
+
+The chart does not create a dedicated Ingress for `langsmith-agent-gateway`, and the Service is `ClusterIP` by default. Exposing port `8083` directly (through a separate Ingress, `service.type: LoadBalancer`, or `hostNetwork`) is supported by the chart's service block (`agentGateway.service.type`, `loadBalancerIP`, `loadBalancerSourceRanges`), but it is not the intended path. Use the frontend `/gateway/` route unless you have a specific reason not to.
+
+## Roll back
+
+Disabling the gateway removes the Deployment and Service and disables gateway features in the UI. Model calls routed to the gateway fail.
+
+```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+agentGateway:
+  enabled: false
+```
+
+## Make your first call
+
+This mirrors the [SaaS quickstart](/langsmith/llm-gateway-quickstart) with the base URL adjusted for self-hosted. Complete the steps above (gateway deployed, Ingress up) before continuing.
+
+<Info>
+  An organization admin must add provider API keys to workspace or organization model provider secrets for the models you want to reach, then grant users a role with the `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations) and [distribute a workspace-scoped API key](/langsmith/llm-gateway-admin-setup#4-distribute-api-keys-to-users). See [Admin setup](/langsmith/llm-gateway-admin-setup).
+</Info>
+
+<Steps>
+  <Step title="Set environment variables" icon="terminal">
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    # Replace with your Ingress hostname.
+    export LANGSMITH_GATEWAY_BASE_URL="https://<your-hostname>/gateway/v1"
+    export LANGSMITH_API_KEY="lsv2_..."
+    ```
+
+    For LangChain and Deep Agents, the convenience variables work the same way as the SaaS docs describe: they append `/openai/v1` to whatever you set if you're using OpenAI models.
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    export LANGSMITH_GATEWAY="https://<your-hostname>/gateway"
+    export LANGSMITH_GATEWAY_API_KEY="$LANGSMITH_API_KEY"
+    ```
+  </Step>
+
+  <Step title="Make a call" icon="send">
+    Either header works: `Authorization: Bearer <key>` or `X-Api-Key: <key>`. The examples below use the `Authorization` header. You can also test a call through the LLM Gateway home page simulator.
+
+    <CodeGroup>
+      ```bash cURL theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      curl "$LANGSMITH_GATEWAY_BASE_URL/chat/completions" \
+          -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"model":"openai/gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+      ```
+
+      ```python Python (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import os
+
+      from openai import OpenAI
+
+      client = OpenAI(
+          base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
+          api_key=os.environ["LANGSMITH_API_KEY"],
+      )
+      response = client.chat.completions.create(
+          model="openai/gpt-4o-mini",
+          messages=[{"role": "user", "content": "ping"}],
+      )
+      print(response.choices[0].message.content)
+      ```
+
+      ```typescript TypeScript (OpenAI SDK) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import OpenAI from "openai";
+
+      const client = new OpenAI({
+        baseURL: process.env.LANGSMITH_GATEWAY_BASE_URL,
+        apiKey: process.env.LANGSMITH_API_KEY,
+      });
+      const response = await client.chat.completions.create({
+        model: "openai/gpt-4o-mini",
+        messages: [{ role: "user", content: "ping" }],
+      });
+      console.log(response.choices[0].message.content);
+      ```
+
+      ```python Python (LangChain) theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      import os
+
+      from langchain.agents import create_agent
+      from langchain.chat_models import init_chat_model
+
+      model = init_chat_model(
+          model="openai/gpt-4o-mini",
+          model_provider="openai",
+          base_url=os.environ["LANGSMITH_GATEWAY_BASE_URL"],
+          api_key=os.environ["LANGSMITH_API_KEY"],
+      )
+      agent = create_agent(model=model, system_prompt="You are a helpful assistant.")
+      result = agent.invoke({"messages": [{"role": "user", "content": "ping"}]})
+      print(result["messages"][-1].content)
+      ```
+    </CodeGroup>
+
+    A `200` confirms the gateway, API key, and provider secret are all wired correctly.
+  </Step>
+
+  <Step title="View the trace" icon="activity">
+    In the LangSmith UI, go to the tracing project named `gateway` in the workspace tied to your API key. Every call routed through the gateway appears there with input, output, latency, and token usage, if tracing contents are enabled.
+  </Step>
+
+  <Step title="Set a spend policy (optional)" icon="shield">
+    Go to **LLM Gateway** and select **Cost Controls** to cap spend per workspace or per API key. Once a request exceeds the cap, the gateway returns a `402` with a message naming the policies that blocked the request:
+
+    ```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    {"type": "error", "error": {"message": "request blocked by gateway policies: R&D Spend Cap"}}
+    ```
+
+    For the full guide, see [Spend policies](/langsmith/llm-gateway-spend-policies).
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+* **Gateway pod `CrashLoopBackOff` immediately after upgrade**: Check `kubectl logs deploy/langsmith-agent-gateway`.
+* **Model calls fail with connection refused or timeout to `agent-gateway`**: Verify the gateway pod is `Running` and that no NetworkPolicy in your cluster blocks port `8083` between pods in the LangSmith namespace.
+
+## Security notes
+
+* The gateway makes outbound HTTP calls to provider LLM endpoints. Any custom provider URLs you configure must be validated against your egress policy; the service uses LangSmith's SSRF-protection library for custom and configured provider URLs. Built-in providers resolve to fixed, provider-owned hostnames and aren't a user-controlled-URL path.
+* External clients should reach the gateway through the frontend's `/gateway/` path so requests inherit the same TLS termination, auth, and rate limiting as the rest of the LangSmith API. Creating a second Ingress or LoadBalancer directly to port `8083` bypasses those controls.
+* `AGENT_GATEWAY_URL` is derived from the Helm release fullname and the chart's `agentGateway.name`, `agentGateway.service.port`, `namespace`, and `clusterDomain` values. Overriding any of those on an existing install requires a rolling restart of every pod that reads the value.
+
+## Next steps
+
+* [Quickstart](/langsmith/llm-gateway-quickstart): the SaaS equivalent of the steps above.
+* [Admin setup](/langsmith/llm-gateway-admin-setup): grant workspace users gateway access and configure provider secrets.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): cap spend at the organization, workspace, API key, or user level.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-self-hosted.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -78540,7 +79411,7 @@ Instrument your LLM application, investigate traces, and monitor performance in 
       </Card>
     </CardGroup>
 
-    <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
+    <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/DcM1RJP509SEqR6s/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=DcM1RJP509SEqR6s&q=85&s=17cb861b0ae9666e1eb0876aa6aca68a" href="/langsmith/engine-overview">
       Automatically detect recurring issues in your traces, diagnose their root cause, and resolve them with LangSmith Engine.
     </Card>
 
@@ -82533,16 +83404,18 @@ Before you use this model, ensure you have a [Google Cloud project](https://clou
 
 ### Authentication
 
-Gemini Enterprise Agent Platform uses a **service account JSON key** for authentication in the LangSmith Playground. This is a JSON file you download from the Google Cloud Console that contains credentials for a service account with Gemini Enterprise Agent Platform access.
+#### Service account JSON key
 
-#### Step 1: Create a service account
+You can authenticate by storing a service account JSON key in LangSmith. This JSON file contains credentials for a service account with Gemini Enterprise Agent Platform access.
+
+**Step 1: Create a service account**
 
 1. Go to the [Google Cloud Console > IAM & Admin > Service Accounts](https://console.cloud.google.com/iam-admin/serviceaccounts).
 2. Select your project and click **Create Service Account**.
 3. Give it a name (e.g., `langsmith-vertex-ai`) and click **Create and Continue**.
 4. Assign the role **Vertex AI User** (`roles/aiplatform.user`) and click **Done**.
 
-#### Step 2: Download the JSON key
+**Step 2: Download the JSON key**
 
 1. Click on the service account you just created.
 2. Go to the **Keys** tab and click **Add Key > Create new key**.
@@ -82563,13 +83436,17 @@ The downloaded file looks like this:
 }
 ```
 
-#### Step 3: Configure in the LangSmith Playground
+**Step 3: Configure in the LangSmith Playground**
 
 In the LangSmith Playground, open the Gemini Enterprise Agent Platform provider configuration and paste the **entire contents** of the downloaded JSON key file into the **Service Account JSON** field.
 
 <Warning>
   Treat your service account JSON key like a password. Do not share it or commit it to source control. If a key is compromised, revoke it immediately from the [Google Cloud Console](https://console.cloud.google.com/iam-admin/serviceaccounts) and create a new one.
 </Warning>
+
+#### Workload identity for self-hosted LangSmith
+
+Self-hosted LangSmith on GKE can use Workload Identity Federation and Application Default Credentials (ADC) instead of a JSON key. This keyless alternative supports Playground, Chat (`polly` in Helm), and Insights. See [Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) to configure each workload identity.
 
 ### Available models
 
@@ -85733,7 +86610,7 @@ To define the agent, use `define_deep_agent`:
   ```
 </CodeGroup>
 
-Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/python/managed-deep-agents-project-structure).
+Configure the system prompt, skills, memory, sandbox, identity, channels, and schedules through their project files rather than the agent definition. See [Project structure](/langsmith/python/managed-deep-agents-project-structure). To select the system prompt, skills, MCP servers, or sandbox for each run, see [Select configuration per run](#select-configuration-per-run).
 
 `define_deep_agent` does not compile an agent. It returns a definition, and the managed runtime compiles it with [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) at deploy time. The parameters below are the [create\_deep\_agent](https://reference.langchain.com/python/deepagents/graph/create_deep_agent) surface without the ones the runtime owns. See [Relationship to Deep Agents](/langsmith/python/managed-deep-agents-overview#relationship-to-deep-agents).
 
@@ -85749,6 +86626,110 @@ Configure the system prompt, skills, memory, sandbox, identity, channels, and sc
 | `permissions=` | Controls path-level access for filesystem tools. Pass filesystem permission rules to control which paths the agent's built-in filesystem tools can read or write. Cleared when the project declares a [sandbox](/langsmith/python/managed-deep-agents-sandboxes), because a permission rule disables the sandbox `execute` tool. See [Permissions](/oss/python/deepagents/permissions). |
 | `interrupt_on=` | Pauses before selected tool calls for human approval. Set `interrupt_on` to pause before selected tool calls, so a person can approve, edit, or reject the call before it runs. See [Human-in-the-loop](/langsmith/python/managed-deep-agents-tools#human-in-the-loop). |
 | `response_format=` | Set when the agent must return data that matches a schema instead of an unconstrained text response. See [Structured output](/oss/python/langchain/structured-output). |
+
+## Select configuration per run
+
+To select the agent's configuration for each run, export a function as `agent` instead of a definition. One deployment can then adapt to different users, tasks, or repositories. The function is a graph factory, the same pattern LangGraph uses to [rebuild a graph at runtime](/langsmith/graph-rebuild): it receives the runtime and returns a definition.
+
+This example selects instructions and skills for the repository a run works on. It assumes the project has `skills/python-service/` and `skills/typescript-web/`, each with a [`SKILL.md`](/langsmith/python/managed-deep-agents-skills).
+
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import TypedDict
+
+from managed_deepagents import ManagedServerRuntime, define_deep_agent
+
+
+class AppContext(TypedDict, total=False):
+    repository: str
+
+
+def agent(runtime: ManagedServerRuntime[AppContext]):
+    execution = runtime.execution_runtime
+    context = execution.context if execution is not None else None
+    python_service = context is not None and context.get("repository") == "payments-service"
+    return define_deep_agent(
+        name="open-swe",
+        model="openai:gpt-5.5",
+        instructions=(
+            "Follow the payments service's API and reliability conventions."
+            if python_service
+            else "Follow the storefront's frontend and accessibility conventions."
+        ),
+        skills=["./skills/python-service" if python_service else "./skills/typescript-web"],
+        context_schema=AppContext,
+    )
+```
+
+The factory can be sync or async. It receives a `ManagedServerRuntime`, which extends the native LangGraph `ServerRuntime`. Read run context from `execution_runtime.context`. It is `None` on channel runs, and `execution_runtime` is `None` when Agent Server loads the agent for inspection.
+
+Callers choose the configuration through the run's `context`:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await client.runs.create(
+    thread_id,
+    "open-swe",
+    input={"messages": [{"role": "user", "content": "Run the service test suite."}]},
+    context={"repository": "payments-service"},
+)
+```
+
+Run context is application data, not verified identity. Check authorization in [tools](/langsmith/python/managed-deep-agents-tools) against the verified caller on the runtime.
+
+### Select managed resources
+
+A factory can also select the resources that a static agent reads from project files. Omitting a field keeps the project's configuration. Providing a value replaces it for that run:
+
+| Field | Omitted | Selected | Cleared |
+| - | - | - | - |
+| `instructions` | Uses `instructions.md`. | Uses the supplied prompt. | `""` removes authored instructions. |
+| `skills` | Exposes all project skills. | Exposes only the selected skills. | `[]` exposes no skills. |
+| `mcp` | Uses the `mcp` declaration. | Uses only the selected MCP definitions. | `[]` exposes no MCP tools. |
+| `sandbox` | Uses the `sandbox` declaration. | Uses the supplied sandbox. | `None` disables the sandbox. |
+
+Static definitions cannot set these fields. A skill path must end in `skills/<name>` and point to a skill in the project. A factory can also return generated skill definitions, whose names must not duplicate project skill names.
+
+This example enables the docs MCP server on request and gives one repository a longer sandbox timeout. It imports the declarations from [`tools/mcp`](/langsmith/python/managed-deep-agents-mcp-connectors) and [`sandbox/`](/langsmith/python/managed-deep-agents-sandboxes):
+
+```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import TypedDict
+
+from managed_deepagents import ManagedServerRuntime, define_deep_agent, define_sandbox
+
+from sandbox import sandbox
+from tools.mcp import mcp
+
+
+class AppContext(TypedDict, total=False):
+    repository: str
+    needs_docs: bool
+
+
+def agent(runtime: ManagedServerRuntime[AppContext]):
+    execution = runtime.execution_runtime
+    context = execution.context if execution is not None else None
+    python_service = context is not None and context.get("repository") == "payments-service"
+    needs_docs = context is not None and context.get("needs_docs", False)
+    return define_deep_agent(
+        name="open-swe",
+        model="openai:gpt-5.5",
+        mcp=[mcp] if needs_docs else [],
+        sandbox=define_sandbox(default_timeout=600) if python_service else sandbox,
+        context_schema=AppContext,
+    )
+```
+
+Memory is not selected per run. Declare it in the project's memory file, and control access for each run with an `allow` policy. See [Control access to a layer](/langsmith/python/managed-deep-agents-memory#control-access-to-a-layer).
+
+### Keep the factory repeatable
+
+Managed Deep Agents calls the factory at the start of each run, and again when a run resumes or retries. Agent Server also calls it to read schemas and state. Follow these rules:
+
+* **No side effects**: Return the same definition for the same context. Do not create records, call external APIs, or change shared state in the factory.
+* **Stable interrupts**: Keep middleware that can interrupt a run in every configuration. When a run resumes, the middleware that raised the interrupt must still be present.
+* **Inline name**: Set `name` as an inline string. `mda build` reads it without calling the factory and uses it as the graph ID and default deployment name.
+* **Model dependencies**: Install the integration package for every model the factory can return. The build does not detect them.
+
+To change behavior between model calls within a run, use [custom middleware](/langsmith/python/managed-deep-agents-middleware).
 
 ## Use LLM Gateway
 
@@ -86374,19 +87355,11 @@ A `202` means the run was accepted, not that it finished. The agent's answer arr
 
 ## Read the event in the agent
 
-Each run carries channel data in [run context](/langsmith/python/managed-deep-agents-middleware#use-runtime-context). The parser examples explicitly include the provider event. These fields appear inside the channel context:
+Tools and middleware read the delivery from [`runtime.channel`](/langsmith/python/managed-deep-agents-runtime#channel). For the parser examples, `runtime.channel.provider` is `"orders"`.
 
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "channel": {
-    "provider": "orders",
-    "target": "A-1024",
-    "raw_event": { "type": "order.comment", "order": { "id": "A-1024" } }
-  }
-}
-```
+Return `raw_event` from `parse` to expose JSON provider data at `runtime.channel.raw_event`. If omitted, `runtime.channel.raw_event` is `None`.
 
-Return `raw_event` from `parse` to expose JSON provider data at `runtime.channel.raw_event` and `runtime.context.channel["raw_event"]`. If omitted, the context has no `raw_event` key and `runtime.channel.raw_event` is `None`.
+The reply `target` stays private. Code cannot read it from `runtime.channel`.
 
 Managed Deep Agents builds `runtime.channel.event` from the parsed message. It does not decode the body again or preserve the provider event automatically.
 
@@ -86517,6 +87490,97 @@ channel = channels.slack(
   Whether messages from other Slack bots can start agent runs.
 </ParamField>
 
+## React to the message that starts a run
+
+When a run picks up an inbound message, the agent reacts to it with an emoji, so
+the sender knows it was seen before the agent has anything to say. The reaction
+never blocks or delays the reply.
+
+Every message gets the same emoji by default. Pass a function to choose one per
+message:
+
+<ParamField type="bool | str | Callable">
+  Pass `False` to turn reactions off, a Slack emoji short name to use that emoji
+  instead, or a callable taking `{"text": ...}` and returning a short name. The
+  callable may be sync or async.
+</ParamField>
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from managed_deepagents import channels
+
+async def choose_emoji(context: dict) -> str:
+    return "bug" if "broken" in context["text"].lower() else "eyes"
+
+channel = channels.slack(name="Support Bot", reactions=choose_emoji)
+```
+
+Return a Slack short name without the surrounding colons. A name Slack does not
+recognize is chosen but never appears, so the reaction is simply missing. A
+chooser that throws, that takes longer than five seconds, or that returns
+anything else falls back to the default emoji, and the run continues either way.
+
+### Choose the emoji with a decision model
+
+A [decision model](/langsmith/llm-gateway-decision-models) scores a fixed set of
+options and answers with one of their keys, so the reaction reflects what the
+message says and there is no reply to parse. The answer is always one of the
+options you supplied. `TypeSafeClassifier`
+([Python](/oss/python/integrations/providers/typesafe),
+[JavaScript](/oss/javascript/integrations/providers/typesafe)) exposes this as a
+`Runnable`, and records traces and token usage in LangSmith.
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+uv add langchain-typesafe
+```
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from functools import lru_cache
+
+from langchain_typesafe import Choice, TypeSafeClassifier
+from managed_deepagents import channels
+
+# The description is what the model matches on, so describe the situation
+# rather than the picture. Keep an option for anything unremarkable.
+QUESTION = Choice(
+    instructions="Which emoji best acknowledges this message?",
+    criteria={
+        "bug": "A defect or incorrect behaviour.",
+        "rotating_light": "A declared incident or outage.",
+        "mag": "A code review, pull request, or diff to look at.",
+        "hourglass": "Waiting on someone or something else; blocked.",
+        "speech_balloon": "A question, or a request to explain something.",
+        "wave": "A greeting or hello.",
+        "eyes": "Anything that does not clearly fit another option.",
+    },
+)
+
+
+@lru_cache(maxsize=1)
+def classifier() -> TypeSafeClassifier:
+    return TypeSafeClassifier(model="typesafe/jev-latest")
+
+
+async def choose_emoji(context: dict) -> str:
+    answer = await classifier().ainvoke(
+        {"state": context["text"][:2000], "questions": {"emoji": QUESTION}}
+    )
+    emoji = answer.choices["emoji"]
+    # Below this the model has no real view, so prefer a generic reaction.
+    return emoji.choice if emoji.confidence >= 0.25 else "eyes"
+
+
+channel = channels.slack(name="Support Bot", reactions=choose_emoji)
+```
+
+Both build the classifier on first use rather than at import, because
+deployment imports this module to read the channel declaration and the
+classifier needs a key to construct.
+
+Set `TYPESAFE_API_KEY` on the deployment. To route through the LangSmith gateway
+instead, set `TYPESAFE_BASE_URL=https://gateway.smith.langchain.com` and use a
+workspace-scoped LangSmith API key, with `TYPESAFE_API_KEY` in your workspace
+[provider secrets](/langsmith/llm-gateway-admin-setup#1-add-provider-secrets).
+
 ## Deploy the agent
 
 During deployment, Managed Deep Agents provisions your agent in Slack from the channel declaration.
@@ -86581,6 +87645,8 @@ Files stay scoped to the Slack thread they arrived in, because every thread gets
 ## See also
 
 * [Channels overview](/langsmith/python/managed-deep-agents-channels): understand how channels connect messaging services to an agent.
+* [Decision models](/langsmith/llm-gateway-decision-models): configure the model that scores reaction emoji.
+* [LLM Gateway setup](/langsmith/llm-gateway-admin-setup): enable the gateway and add the provider secret reactions need.
 * [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts): post a Slack form from a tool and resume the run on submit.
 * [Sandboxes](/langsmith/python/managed-deep-agents-sandboxes): give the agent the filesystem that file transfers read and write.
 * [Deploy an agent](/langsmith/python/managed-deep-agents-deploy): configure and deploy a managed deep agent.
@@ -89066,6 +90132,8 @@ Middleware can read per-run context through the normal LangChain runtime APIs. U
 
 For examples, see [Custom middleware](/oss/python/langchain/middleware/custom).
 
+For the caller, channel, and sandbox fields that Managed Deep Agents adds, see [Runtime](/langsmith/python/managed-deep-agents-runtime).
+
 To read or write files in the thread's sandbox from a middleware hook, use `runtime.backend`. See [Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code).
 
 ## Deployment
@@ -89969,6 +91037,187 @@ Or paste this prompt into your coding agent:
 </div>
 
 
+# Managed Deep Agents runtime
+Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-runtime
+
+Read run context, the verified caller, the channel delivery, and the sandbox from the native runtime types that agent factories, tools, and middleware receive.
+
+Agent factories, tools, and middleware hooks each receive a runtime. It is the native LangChain or LangGraph runtime with three managed fields added. Context, state, and the store work as they do in [LangChain](/oss/python/langchain/runtime), and your type checker sees your own context type.
+
+<Note>
+  Managed Deep Agents is in **public [beta](/langsmith/release-stages)** and available on [LangSmith Cloud](/langsmith/cloud) in the US region only.
+</Note>
+
+## Understand the runtime types
+
+Managed Deep Agents extends one native type for each place your code runs:
+
+| Code | Type | Extends |
+| - | - | - |
+| Agent factory | `ManagedServerRuntime[Context]` | `ServerRuntime` from `langgraph_sdk.runtime` |
+| Tool | `ManagedToolRuntime[Context, State]` | `ToolRuntime` from `langchain.tools` |
+| Middleware hook | `ManagedRuntime[Context]` | `Runtime` from `langgraph.runtime` |
+
+Type parameters follow the native order, so `ManagedToolRuntime` takes context first, then state. Both parameters are optional. `ManagedDeepAgentRuntime` is an alias for `ManagedToolRuntime`.
+
+Each type keeps every native field and method, such as `context`, `state`, `store`, `stream_writer`, and `tool_call_id`. Managed Deep Agents adds three fields:
+
+* **`server_info`**: Native server metadata plus the verified caller. Tools and middleware receive it.
+* **`channel`**: The verified channel delivery that started the run. `None` on direct API and schedule runs.
+* **`backend`**: The thread's [sandbox](/langsmith/python/managed-deep-agents-sandboxes) filesystem. `None` when the project declares no sandbox.
+
+## Separate context, caller, and delivery
+
+Context, the caller, and the channel delivery come from different sources and have different trust levels. The runtime keeps them in separate fields:
+
+* **Context** comes from the `context` parameter of an API call. LangGraph validates it against your context schema. Use it to select behavior, not to grant access.
+* **Server info** comes from [identity](/langsmith/python/managed-deep-agents-identity), which resolves the caller from a verified token. Managed Deep Agents strips identity keys that a client sends through `configurable`, so use this field for authorization.
+* **Channel** comes from managed [channel](/langsmith/python/managed-deep-agents-channels) ingress, which verifies the delivery before the run starts. A `channel` key in a direct API call's context does not create `runtime.channel`.
+
+API callers pass context next to the input:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+await client.runs.create(
+    thread_id,
+    "support",
+    input={"messages": [{"role": "user", "content": "Where is my order?"}]},
+    context={"tier": "fast"},
+)
+```
+
+### Handle channel runs without context
+
+A channel delivery carries no application context. Managed Deep Agents removes delivery data before LangGraph validates context, so required context fields do not reject channel runs. Direct API runs keep native validation.
+
+On channel runs, context is `None` in the agent factory, tools, and middleware.
+
+To tell a channel run from a direct run, check `runtime.channel`.
+
+## Read the runtime in the agent factory
+
+An agent factory receives a `ManagedServerRuntime`: the native [`ServerRuntime`](/langsmith/graph-rebuild) plus `channel` and `backend`. To write a factory, see [Select configuration per run](/langsmith/python/managed-deep-agents-agent-definition#select-configuration-per-run).
+
+Agent Server also calls the factory to read schemas and state. `access_context` names the operation. [`execution_runtime`](/langsmith/graph-rebuild#access-contexts) is `None` outside `threads.create_run`, so read run context from `execution_runtime.context`. Return the same graph structure and schemas from every call.
+
+`channel` is available, so a factory can choose configuration per channel. `backend` is always `None`, because the factory selects the sandbox. The native `user`, `store`, and `ensure_user()` remain available.
+
+## Read the runtime in tools
+
+Annotate the runtime parameter with `ManagedToolRuntime`. Managed Deep Agents injects the managed runtime for that parameter, whatever its name:
+
+```python tools/check_order.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from langchain.tools import tool
+from managed_deepagents import ManagedToolRuntime
+
+
+@dataclass
+class AppContext:
+    region: str = "us"
+
+
+@tool
+async def check_order(order_id: str, runtime: ManagedToolRuntime[AppContext]) -> str:
+    """Check the status of an order."""
+    principal = runtime.server_info.principal if runtime.server_info else None
+    if principal is None:
+        return "Sign in to check orders."
+    if runtime.channel is not None and runtime.channel.post is not None:
+        await runtime.channel.post({"type": "content", "content": "Checking that order now."})
+    region = runtime.context.region if runtime.context else "us"
+    return f"Order {order_id} for {principal.id} ships from {region}."
+```
+
+`principal` is absent when no caller resolved, because identity is opt-in. `post` sends an additional message, and the agent's final reply still posts automatically. For more on writing tools, see [Custom tools](/langsmith/python/managed-deep-agents-tools).
+
+## Read the runtime in middleware
+
+Lifecycle and model hooks keep the native `Runtime[Context]` signature. Narrow with `isinstance` to read the managed fields:
+
+```python middleware/log_caller.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from dataclasses import dataclass
+
+from langchain.agents.middleware import AgentState, before_model
+from langgraph.runtime import Runtime
+from managed_deepagents import ManagedRuntime
+
+
+@dataclass
+class AppContext:
+    region: str = "us"
+
+
+@before_model
+def log_caller(state: AgentState, runtime: Runtime[AppContext]) -> None:
+    if not isinstance(runtime, ManagedRuntime):
+        return None
+    principal = runtime.server_info.principal if runtime.server_info else None
+    source = runtime.channel.provider if runtime.channel else "api"
+    print(f"{principal.id if principal else 'anonymous'} via {source}")
+    return None
+```
+
+Tool-call hooks receive a `ManagedToolRuntime`. Declarative subagents receive the same managed fields. Neither requires an identity or sandbox declaration. For more on writing middleware, see [Custom middleware](/langsmith/python/managed-deep-agents-middleware).
+
+## Reference the managed fields
+
+### Server info
+
+`runtime.server_info` is a `ManagedServerInfo`. It keeps the native `assistant_id`, `graph_id`, and `user` fields and adds the caller:
+
+* **`principal`**: The verified caller. `id` is the caller ID, `kind` is `"person"`, `"service"`, or `"channel"`, and `claims` holds the token claims. `claims["groups"]` is always a tuple of strings, and `claims["email"]` is always a string.
+* **`subject`**: The authority the run acts with. `authority` is `"agent"` or `"user"`, with `agent_id` and `user_id`.
+* **`link`**: The account link. `status` currently reports `"not_required"`.
+* **`source`**: Where the run entered. `provider` is a value such as `"http"`, `"schedule"`, `"studio"`, or `"slack"`, with an optional `thread_id`.
+
+Read the caller from `principal`, not from the native `user`. For identity providers and claim mapping, see [Identity](/langsmith/python/managed-deep-agents-identity).
+
+### Channel
+
+`runtime.channel` is a `RuntimeChannel`:
+
+* **`name`**: The configured channel name.
+* **`provider`**: The provider label, such as `"slack"`.
+* **`event`**: The typed delivery. See the event types below.
+* **`raw_event`**: The original provider payload, when the channel supplies one. For Slack, this is the inner Slack event without HTTP headers or the Trigger envelope. A resume can omit it.
+* **`post`**: An async function that sends a message to the conversation that started the run. `None` when the channel cannot send.
+
+`event.type` is one of:
+
+* **`message`**: A new message. `messages` holds the incoming messages.
+* **`user_prompt_response`**: A reply to an interactive prompt. Carries `action`, an optional `value`, and an optional `correlation_id`. See [Agent-owned interrupts](/langsmith/python/managed-deep-agents-agent-owned-interrupts).
+* **`interrupt_resume`**: A resume for a pending interrupt. `resume` holds the resume value.
+
+`post` accepts a content message, `{"type": "content", "content": ...}`, or a native message, `{"type": "native", "native": ...}`. The built-in Slack channel sends text content only. The reply target stays private: `post` has no address or destination override, and code cannot read or replace the target.
+
+### Backend
+
+`runtime.backend` reads and writes files in the thread's sandbox. See [Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code).
+
+## See also
+
+* [Runtime](/oss/python/langchain/runtime)
+* [Rebuild graph at runtime](/langsmith/graph-rebuild)
+* [Agent definition](/langsmith/python/managed-deep-agents-agent-definition)
+* [Custom tools](/langsmith/python/managed-deep-agents-tools)
+* [Custom middleware](/langsmith/python/managed-deep-agents-middleware)
+* [Channels](/langsmith/python/managed-deep-agents-channels)
+* [Identity](/langsmith/python/managed-deep-agents-identity)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-runtime.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Add a sandbox to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-sandboxes
 
@@ -90266,7 +91515,7 @@ For more information, see [Project structure](/langsmith/python/managed-deep-age
 # Add schedules to Managed Deep Agents
 Source: https://docs.langchain.com/langsmith/python/managed-deep-agents-schedules
 
-Declare managed cron schedules for Managed Deep Agents deployments.
+Declare managed cron schedules for Managed Deep Agents deployments, or create them at runtime.
 
 Managed Deep Agents can run agents on a cron schedule. When you deploy the project, `mda deploy` provisions each schedule as a LangSmith cron after the deployment is live.
 
@@ -90407,11 +91656,125 @@ To test the agent behavior a schedule triggers, send the schedule's `prompt` or 
 
 Test the project locally with [`mda dev`](/langsmith/python/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/python/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-When the deployment reaches `DEPLOYED`, `mda deploy` searches for existing Managed Deep Agents-owned cron jobs on the deployed Agent Server, deletes them, and creates cron jobs for the current `schedules/` declarations. Removing a local schedule file and redeploying removes the corresponding managed cron.
+When the deployment reaches `DEPLOYED`, `mda deploy` deletes the cron jobs that earlier `schedules/` declarations created and creates cron jobs for the current declarations. Removing a local schedule file and redeploying removes the corresponding managed cron. Schedules created at runtime are unaffected.
 
 <Warning>
   If you deploy with `--no-wait`, the CLI triggers the remote build and exits before the deployment reaches `DEPLOYED`, so it does not reconcile schedules during that invocation. Run `mda deploy` without `--no-wait` when adding, changing, or removing schedules.
 </Warning>
+
+## Create schedules at runtime
+
+<Note>
+  Runtime schedules require `managed-deepagents` 0.9.0 or later.
+</Note>
+
+Declarations in `schedules/` are fixed when you deploy. The `schedules` API creates schedules while the agent runs, so the agent can set up recurring or one-time work in response to a conversation. Call it from a tool or from [middleware](/langsmith/python/managed-deep-agents-middleware). Each schedule belongs to the current user or to the agent.
+
+The agent reaches this API only through tools that you write. Expose the calls the agent needs, and leave out the ones it should not reach.
+
+When a tool creates a schedule during a [channel](/langsmith/python/managed-deep-agents-channels) run, such as a Slack conversation, the schedule inherits that channel. Each run posts its final answer back to it. A new thread posts a new Slack message, and the current thread replies in the existing Slack thread.
+
+`new_thread` decides which of the two a schedule uses.
+
+### Create a recurring schedule
+
+`remind_me` gives the agent a way to set up a recurring reminder for the person it is talking to. The agent calls it with the prompt to run and a cron expression for how often to run it. Each time the cron fires, a new run starts with that prompt as its user message. The agent decides what each scheduled run is asked to do.
+
+```python tools/schedules.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+from managed_deepagents import schedules
+
+
+@tool
+async def remind_me(prompt: str, cron: str, timezone: str = "UTC") -> str:
+    """Run a prompt for the current user on a cron schedule."""
+    item = await schedules.create(
+        owner={"type": "user"},
+        cron=cron,
+        timezone=timezone,
+        prompt=prompt,
+    )
+    return f"Created schedule {item['id']}."
+```
+
+Asked in Slack to send a standup reminder every weekday, the agent calls `remind_me`. It passes a prompt of its own wording and the cron `0 9 * * 1-5`. Each weekday run posts its answer to that Slack conversation as a new message, because `cron` schedules default to a new thread.
+
+### Create a one-time schedule
+
+Pass `at` in place of `cron` for work that runs once. `follow_up_later` gives the agent a way to set a single follow-up, such as checking a deploy after it finishes.
+
+```python tools/follow_up.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from datetime import datetime, timedelta, timezone
+
+from langchain.tools import tool
+from managed_deepagents import schedules
+
+
+@tool
+async def follow_up_later(prompt: str, hours: int) -> str:
+    """Run a prompt once, a number of hours from now."""
+    item = await schedules.create(
+        owner={"type": "user"},
+        at=datetime.now(timezone.utc) + timedelta(hours=hours),
+        prompt=prompt,
+    )
+    return f"Scheduled a one-time follow-up: {item['id']}."
+```
+
+A one-time schedule defaults to the current thread, so its run continues the conversation that created it and replies in the same Slack thread.
+
+### Create options
+
+<ParamField type="object">
+  `{ type: "user" }` selects the authenticated person of the current run, and the schedule runs as that person. An optional `id` must match that person. `{ type: "agent" }` selects the schedules the agent owns, which run as the agent's service identity.
+</ParamField>
+
+<ParamField type="string">
+  A five-field cron expression for a recurring schedule. Give exactly one of `cron` and `at`.
+</ParamField>
+
+<ParamField type="datetime | str">
+  A `datetime` with a time zone, or an ISO 8601 timestamp that ends with `Z` or a UTC offset. The schedule runs once. The runtime rounds it up to the next whole minute. It must be at least one minute and at most 365 days in the future.
+</ParamField>
+
+<ParamField type="string">
+  An IANA time zone for `cron`, such as `America/Los_Angeles`. Do not pass it with `at`.
+</ParamField>
+
+<ParamField type="string">
+  A prompt that each run receives as a user message. Give exactly one of `prompt` and `input`.
+</ParamField>
+
+<ParamField type="object | object[]">
+  A structured LangGraph input for each run.
+</ParamField>
+
+<ParamField type="bool">
+  `True` starts each run on a new thread. `False` continues the current thread. Defaults to `True` with `cron` and `False` with `at`.
+</ParamField>
+
+<ParamField type="boolean">
+  Create the schedule without running it.
+</ParamField>
+
+<ParamField type="object">
+  JSON metadata for your own use. Keys that start with `mda_` are reserved.
+</ParamField>
+
+### Manage schedules
+
+`list`, `get`, `update`, and `delete` cover the rest of a schedule's life. Expose them as tools when the agent should manage the schedules it created. An agent with `list` and `delete` can answer "what reminders do I have?" and cancel one on request. Pause a schedule with `update` instead of deleting it when the person wants it back later.
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+owner = {"type": "user"}
+
+page = await schedules.list(owner=owner, limit=20)
+item = await schedules.get(page["items"][0]["id"], owner=owner)
+await schedules.update(item["id"], {"paused": True}, owner=owner)
+await schedules.delete(item["id"], owner=owner)
+```
+
+`update` accepts `cron`, `at`, `timezone`, `prompt`, `input`, `paused`, and `metadata`. The channel and the thread choice are fixed at creation. `list` hides expired one-time schedules unless you pass `include_expired=True`. For the agent owner, `list` and `get` also return the schedules in `schedules/`, which you change in code.
 
 ## Troubleshoot schedules
 
@@ -90796,6 +92159,8 @@ If a tool requires an API key or OAuth token, use a connection to resolve the cr
 ## Access runtime context
 
 For per-run values such as request metadata or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/python/langchain/tools#access-context).
+
+For the caller, channel, and sandbox fields that Managed Deep Agents adds, see [Runtime](/langsmith/python/managed-deep-agents-runtime).
 
 To read or write files in the thread's sandbox from a tool, use `runtime.backend`. See [Read and write sandbox files from code](/langsmith/python/managed-deep-agents-sandboxes#read-and-write-sandbox-files-from-code).
 
@@ -98795,7 +100160,7 @@ From the [LangSmith homepage](https://smith.langchain.com?utm_source=docs\&utm_m
   On BYOC, use an API key that belongs to a BYOC workspace.
 </Warning>
 
-For self-hosted LangSmith deployments, see [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes).
+For self-hosted LangSmith deployments, see [Enable Sandboxes on self-hosted deployments](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes). For the infrastructure model, scaling, and upgrades, see [Self-hosted Sandbox architecture](/langsmith/self-host-sandbox-architecture).
 
 ## Network access
 
@@ -100300,6 +101665,10 @@ Self-hosted LangSmith is composed of stateless services backed by four state sto
 
 <Warning>
   All durable data stores must be protected together. Postgres, ClickHouse, and blob storage are the three stores that hold durable data; Redis is ephemeral and does not need to be backed up. Restoring Postgres without ClickHouse and blob storage (or vice versa) produces an inconsistent installation. References from Postgres to runs in ClickHouse and to objects in blob storage break across the divergence point. Always take coordinated backups, or use point-in-time recovery (PITR) targets that are close together across stores.
+</Warning>
+
+<Warning>
+  The Redis guidance above applies to the platform's caches and queues, not the JuiceFS metadata store used by Sandboxes. JuiceFS Redis holds durable filesystem metadata and requires persistence and backups alongside object storage. See [Protect sandbox storage](/langsmith/self-host-sandbox-operations#protect-sandbox-storage).
 </Warning>
 
 ## Plan your RPO and RTO
@@ -102783,6 +104152,116 @@ The `-fips` naming convention applies identically when mirroring images to a pri
 </div>
 
 
+# Authenticate Vertex AI with GKE workload identity
+Source: https://docs.langchain.com/langsmith/self-host-gke-vertex-ai-workload-identity
+
+Configure keyless Vertex AI authentication for Playground, Chat, and Insights on self-hosted LangSmith running on GKE.
+
+GKE Workload Identity Federation lets these self-hosted LangSmith services call Vertex AI without long-lived service account keys:
+
+* Playground
+* Chat (`polly` in Helm)
+* Insights
+
+Each workload uses its Kubernetes service account (KSA) to impersonate a Google service account (GSA) through Application Default Credentials (ADC).
+
+<Note>
+  Keyless authentication for Chat and Insights requires Helm chart version 0.17.0 or later and LangSmith application version 0.17.29 or later.
+</Note>
+
+To configure keyless authentication:
+
+1. **Enable GKE Workload Identity Federation.** Enable it on the cluster and the node pools that run LangSmith. See [Workload Identity Federation for GKE](https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity).
+
+2. **Grant the GSA Vertex AI access.** Create or select a GSA for these model calls. Grant it only `roles/aiplatform.user` in the project that hosts the models:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   gcloud projects add-iam-policy-binding "<vertex-project-id>" \
+     --member="serviceAccount:<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com" \
+     --role="roles/aiplatform.user"
+   ```
+
+3. **Allow each KSA to impersonate the GSA.** Grant each calling KSA `roles/iam.workloadIdentityUser` on the GSA. Replace the five KSA placeholders with the names rendered by your Helm release:
+
+   ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   for ksa in \
+     "<playground-ksa>" \
+     "<polly-api-ksa>" \
+     "<polly-queue-ksa>" \
+     "<insights-api-ksa>" \
+     "<insights-queue-ksa>"; do
+     gcloud iam service-accounts add-iam-policy-binding \
+       "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com" \
+       --role="roles/iam.workloadIdentityUser" \
+       --member="serviceAccount:<cluster-project-id>.svc.id.goog[<namespace>/${ksa}]"
+   done
+   ```
+
+   Bind only these specific KSA subjects. If the workloads use different namespaces, run the command separately with each KSA's namespace.
+
+4. **Annotate every KSA.** Add the GSA annotation through your Helm values. The Chat and Insights API and queue identities are separate callers. Every API and queue identity needs an annotation and IAM binding:
+
+   ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   # Playground
+   playground:
+     deployment:
+       extraEnv:
+         - name: GOOGLE_CLOUD_PROJECT
+           value: "<vertex-project-id>"
+     serviceAccount:
+       annotations:
+         iam.gke.io/gcp-service-account: "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com"
+
+   # Chat
+   polly:
+     apiServer:
+       serviceAccount:
+         annotations:
+           iam.gke.io/gcp-service-account: "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com"
+     queue:
+       serviceAccount:
+         annotations:
+           iam.gke.io/gcp-service-account: "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com"
+
+   # Insights
+   engineInsightsAgent:
+     apiServer:
+       serviceAccount:
+         annotations:
+           iam.gke.io/gcp-service-account: "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com"
+       deployment:
+         extraEnv:
+           - name: CLIO_VERTEX_AI_ADC_ENABLED
+             value: "true"
+           - name: GOOGLE_CLOUD_PROJECT
+             value: "<vertex-project-id>"
+     queue:
+       serviceAccount:
+         annotations:
+           iam.gke.io/gcp-service-account: "<gsa-name>@<gsa-project-id>.iam.gserviceaccount.com"
+       deployment:
+         extraEnv:
+           - name: CLIO_VERTEX_AI_ADC_ENABLED
+             value: "true"
+           - name: GOOGLE_CLOUD_PROJECT
+             value: "<vertex-project-id>"
+   ```
+
+5. **Use ADC instead of explicit credentials.** In each Vertex AI or Gemini provider configuration, leave **Service Account JSON** empty. Keep `GOOGLE_VERTEX_AI_WEB_CREDENTIALS` and `GOOGLE_APPLICATION_CREDENTIALS` unset. LangSmith uses explicit JSON credentials instead of ADC when both are present.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-gke-vertex-ai-workload-identity.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Create an Ingress for installations (Kubernetes)
 Source: https://docs.langchain.com/langsmith/self-host-ingress
 
@@ -103466,35 +104945,7 @@ playground:
 
 ### Using workload identity
 
-You can configure the playground service account to use GCP Workload Identity to assume a GCP service account role without storing credentials. This is the recommended approach for GKE clusters.
-
-#### GCP Workload Identity (GKE)
-
-For GKE clusters, use GCP Workload Identity:
-
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  playground:
-    deployment:
-      extraEnv:
-        # Optional: Set project/location if not in model config
-        - name: GOOGLE_CLOUD_PROJECT
-          value: "your-gcp-project-id"
-        - name: VERTEXAI_PROJECT_ID
-          value: "your-gcp-project-id"
-        - name: VERTEXAI_LOCATION
-          value: "us-central1"
-      # No credentials needed - pod assumes GCP SA role via annotation
-    serviceAccount:
-      create: true  # Enable if not exists
-      annotations:
-        iam.gke.io/gcp-service-account: "vertexai-sa@your-gcp-project.iam.gserviceaccount.com"
-  ```
-</CodeGroup>
-
-<Note>
-  When using GCP Workload Identity, ensure the GCP service account has the required Gemini Enterprise Agent Platform permissions (e.g., `roles/aiplatform.user`).
-</Note>
+On self-hosted LangSmith running on GKE, Playground can use Workload Identity Federation and ADC instead of a service account JSON key. See [Authenticate Vertex AI with GKE workload identity](/langsmith/self-host-gke-vertex-ai-workload-identity) to configure Playground alongside Chat and Insights.
 
 ## AWS IRSA (EKS)
 
@@ -103523,6 +104974,499 @@ For EKS clusters, you can use AWS IRSA (IAM Roles for Service Accounts) to grant
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-playground-environment-settings.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Self-hosted Sandbox architecture
+Source: https://docs.langchain.com/langsmith/self-host-sandbox-architecture
+
+Understand how self-hosted LangSmith Sandboxes use microVMs, Kubernetes hosts, and shared storage to run and resume workloads.
+
+[LangSmith Sandboxes](/langsmith/sandboxes) run code in isolated microVMs on a dedicated pool of Kubernetes nodes. This guide explains where the components run, how requests reach a sandbox, and which state survives a host restart.
+
+For supported platforms, prerequisites, and installation instructions, see [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes). The architecture below describes the `sandbox-host` runtime. Storage mounting and configuration options can differ across Helm releases.
+
+<CardGroup>
+  <Card title="Scaling and capacity" icon="arrows-maximize" href="/langsmith/self-host-sandbox-scaling">
+    Size the host pool, configure autoscaling, and plan memory and cache capacity.
+  </Card>
+
+  <Card title="Upgrades and operations" icon="server" href="/langsmith/self-host-sandbox-operations">
+    Understand host draining, failure recovery, and production monitoring.
+  </Card>
+</CardGroup>
+
+## Understand the deployment model
+
+A sandbox is a Firecracker microVM, not a Kubernetes pod. Each `sandbox-host` pod manages multiple microVMs, each with its own guest kernel. Kubernetes schedules the hosts; LangSmith places sandboxes onto them.
+
+The host Deployment uses required pod anti-affinity to place at most one host pod on each node. Its node selector and tolerations target a dedicated, KVM-capable node pool. Adding a sandbox does not create another pod.
+
+<Frame>
+  <SandboxDiagram name="architecture" />
+</Frame>
+
+### Understand component failure impact
+
+Each component has a different failure scope. Distinguish temporary unavailability from loss of its stored data when planning recovery.
+
+<div>
+  | Component | Where it runs and what it holds | If unavailable or lost |
+  | - | - | - |
+  | `platform-backend` | Existing LangSmith node pool. Authenticates and authorizes requests, chooses hosts, and proxies traffic. Holds no durable sandbox state. | <span>API unavailable</span><br />Sandbox API and proxied traffic fail while the service is unavailable. Restarting it does not delete sandbox disks. |
+  | PostgreSQL | Existing LangSmith database. Holds sandbox records, the host registry, and placement. | <span>API unavailable</span><br />An outage blocks operations that need sandbox records or placement.<br /><br /><span>Persistent data at risk</span><br />Losing database contents requires restoring those records, not just restarting hosts. |
+  | `sandbox-host` | Dedicated sandbox node pool, one pod per node. Holds running microVMs and their memory. | <span>One host affected</span><br />Abrupt loss stops that host's sandboxes and loses running memory. Persistent disks remain on shared storage. |
+  | JuiceFS client | Host-owned mount inside each host pod. Connects the VMs to shared storage and manages a local cache. | <span>One host affected</span><br />Mount failure fences the host and stops its VMs. Restart requires working shared storage. |
+  | Kubernetes API | Kubernetes control plane. Holds host Leases and the host Deployment. | <span>Pool-wide disruption</span><br />Hosts that cannot renew Leases eventually fence themselves. A prolonged cluster-wide outage can stop the entire pool. |
+  | JuiceFS Redis | Dedicated metadata store. Holds the file tree, file sizes, and the mapping to data chunks. | <span>Pool-wide disruption</span><br />An outage stalls or fails filesystem operations across hosts.<br /><br /><span>Persistent data at risk</span><br />Lost metadata requires recovery from backup. Object storage alone cannot reconstruct the filesystem. |
+  | Object storage | Shared bucket or container. Holds data blocks for disk images, saved memory, and snapshots. | <span>Pool-wide disruption</span><br />An outage blocks uncached reads and uploads. New hosts may fail readiness.<br /><br /><span>Persistent data at risk</span><br />Deleted data blocks require recovery from backup for the affected disks and snapshots. |
+  | Node-local cache | Each sandbox node. Holds disposable copies of JuiceFS data blocks. | <span>Cache rebuild only</span><br />Persisted data remains on shared storage. Hosts fetch cached copies again, with slower I/O while the cache warms. |
+</div>
+
+For fencing, recovery behavior, and storage protection, see [Understand failure impact](/langsmith/self-host-sandbox-operations#understand-failure-impact).
+
+One elected host observes pool health and runs the [host autoscaler](/langsmith/self-host-sandbox-scaling#understand-the-two-scaling-layers). Other hosts continue serving sandboxes without holding leadership.
+
+### Inspect one sandbox node
+
+A host pod runs the sandbox daemon and Firecracker processes. In deployments with a host-owned JuiceFS mount, it also runs the JuiceFS client. The daemon connects to the agent inside each guest through `vsock`.
+
+<Frame>
+  <SandboxDiagram name="node" />
+</Frame>
+
+The host uses host networking on port `19190`. The platform backend connects to the host's node address; clients use the LangSmith API or [service URLs](/langsmith/sandbox-service-urls), not the host listener directly. Keep host listeners on private networks.
+
+Host pods require privileged access for virtualization, networking, and mounts. Use dedicated nodes and restrict administrative access to them. Guest isolation does not make the host pod an unprivileged workload.
+
+## Follow a request
+
+Creating a sandbox passes through the platform backend before reaching a host. Subsequent command, file, and service requests follow the same authorization boundary.
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+%%{init: {'theme': 'base', 'themeVariables': {'fontFamily': 'TWK Lausanne, Inter', 'fontSize': '15px', 'lineColor': '#40668D', 'primaryColor': '#E5F4FF', 'primaryTextColor': '#030710', 'primaryBorderColor': '#006DDD', 'actorBkg': '#E5F4FF', 'actorBorder': '#006DDD', 'actorTextColor': '#030710', 'actorLineColor': '#40668D', 'signalColor': '#40668D', 'signalTextColor': '#030710'}, 'sequence': {'width': 130, 'actorMargin': 30, 'mirrorActors': false, 'wrap': true}}}%%
+sequenceDiagram
+    accTitle: Create and use a self-hosted sandbox
+    accDescr: The client calls the platform backend, which records and places the sandbox. The selected host prepares its filesystem and boots a microVM. Later requests pass through the backend and host to the guest.
+    participant C as Client
+    participant P as Platform<br/>backend
+    participant D as PostgreSQL
+    participant H as Sandbox<br/>host
+    participant V as MicroVM
+    C->>P: Create sandbox
+    P->>P: Authenticate<br/>and authorize
+    P->>D: Record sandbox<br/>and assign host
+    P->>H: Create
+    H->>H: Prepare disk<br/>on JuiceFS
+    H->>V: Warm restore<br/>or cold boot
+    V->>H: Guest ready
+    H->>P: Created
+    P->>D: Mark ready
+    P->>C: Ready
+    C->>P: Execute / files /<br/>service URL
+    P->>P: Authenticate<br/>and authorize
+    P->>H: Authorized request
+    H->>V: Forward to guest
+    V->>H: Response
+    H->>P: Response
+    P->>C: Response
+```
+
+Placement considers committed CPU and prefers the sandbox's previous host when its load is close to the least-loaded candidate. Returning to that host can reuse cached data. It is a preference, not a guarantee that a sandbox stays on one node.
+
+<Note>
+  The utilization target controls scaling, not admission. A busy pool can still place work on an existing host. With no ready hosts, creation fails with `NoSandboxHostsAvailable` rather than waiting in a capacity queue. See [Plan for bursts](/langsmith/self-host-sandbox-scaling#plan-for-bursts).
+</Note>
+
+## Track persistent state
+
+JuiceFS separates a filesystem's metadata from its contents:
+
+* **Redis metadata**: Directory entries, file sizes, and the mapping from files to data chunks.
+* **Object storage**: Data chunks for disk images, saved memory images, and snapshots.
+* **Local cache**: Copies of data blocks on individual nodes. A node replacement loses that cache, not the shared filesystem.
+
+<Warning>
+  JuiceFS Redis is durable storage, not the LangSmith cache Redis. Object storage alone cannot reconstruct the filesystem without its metadata. Protect both stores, use `noeviction` for metadata Redis, and test recovery. See [Protect sandbox storage](/langsmith/self-host-sandbox-operations#protect-sandbox-storage).
+</Warning>
+
+### Distinguish suspend from a crash
+
+A persistent sandbox can resume on a different compatible host because its disk and successfully saved memory live on shared storage.
+
+```mermaid theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+%%{init: {'theme': 'base', 'themeVariables': {'fontFamily': 'TWK Lausanne, Inter', 'fontSize': '15px', 'lineColor': '#40668D', 'primaryTextColor': '#030710', 'textColor': '#030710', 'edgeLabelBackground': '#F2FAFF'}, 'flowchart': {'nodeSpacing': 80, 'rankSpacing': 100, 'curve': 'linear'}}}%%
+flowchart TB
+    accTitle: Persistent sandbox lifecycle
+    accDescr: Provisioning leads to running. A graceful stop saves memory and moves to stopped. A later start or wake restores on a compatible host. Host loss instead requires fencing and a cold boot from persisted disk, without the previous running memory.
+    P[Provisioning] --> R[Running]
+    R -->|Graceful stop| S[Stopped: memory saved]
+    S -->|Start or wake| R
+    R -->|Host loss| F[Wait for fencing]
+    F -->|Cold boot from disk| R
+    S -->|Delete| D[Deleted]
+    R -->|Delete| D
+    classDef process fill:#E5F4FF,stroke:#006DDD,stroke-width:2px,color:#030710
+    classDef output fill:#EBD0F0,stroke:#885270,stroke-width:2px,color:#441E33
+    classDef alert fill:#F8E8E6,stroke:#634643,stroke-width:2px,color:#634643
+    classDef neutral fill:#F2FAFF,stroke:#40668D,stroke-width:1px,color:#2F4B68
+    class P,R process
+    class S output
+    class F alert
+    class D neutral
+```
+
+* **Graceful stop**: The host saves VM memory and stops the VM. A later start or wake request can restore running processes from that image.
+* **Host loss**: Running memory is lost. Recovery waits for the fencing window before another host can start the sandbox from persisted disk.
+* **Deletion**: Removes the sandbox rather than moving it to another host. A separately captured [snapshot](/langsmith/sandbox-snapshots) has its own lifecycle.
+
+Restoring memory requires a complete, compatible memory image. It is not live migration and does not preserve an open client connection. Unflushed writes and in-memory work can be lost after an abrupt failure. These persistence guarantees do not apply to ephemeral sandbox storage.
+
+## See also
+
+* [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)
+* [Scale self-hosted Sandboxes](/langsmith/self-host-sandbox-scaling)
+* [Operate self-hosted Sandboxes](/langsmith/self-host-sandbox-operations)
+* [Sandbox permissions](/langsmith/sandbox-permissions)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-architecture.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Operate self-hosted Sandboxes
+Source: https://docs.langchain.com/langsmith/self-host-sandbox-operations
+
+Plan self-hosted Sandbox upgrades, understand host drains and failure recovery, protect shared storage, and monitor production capacity.
+
+Self-hosted Sandbox operations center on the host pool and its shared storage. Host replacements affect running workloads; storage failures can affect the entire pool. Use this guide to plan upgrades and distinguish a recoverable interruption from loss of persistent data.
+
+Start with [Sandbox architecture](/langsmith/self-host-sandbox-architecture) and [capacity planning](/langsmith/self-host-sandbox-scaling). Follow the [self-hosted upgrade guide](/langsmith/self-host-upgrades) for the platform-wide upgrade procedure and release requirements.
+
+## Understand a rolling upgrade
+
+The `sandbox-host` image packages the host daemon and runtime artifacts, including Firecracker, guest artifacts, and the JuiceFS client. Set `images.sandboxHostImage.tag` to the runtime image for your LangSmith release. Follow release-specific instructions when upgrading older storage layouts.
+
+The host Deployment uses `maxSurge: 0` and `maxUnavailable: 1`. Kubernetes terminates a host before creating its replacement, then waits for the replacement to become ready. Required one-host-per-node placement and the shared host port prevent two host pods from occupying the same node.
+
+<Frame>
+  <SandboxDiagram name="rollout" />
+</Frame>
+
+A normal rollout temporarily removes one host's capacity. With a single-host pool, requests to create a sandbox fail until the replacement host is ready. Existing unready hosts or infrastructure failures can reduce capacity further; `maxUnavailable` is not a guarantee against unrelated outages.
+
+For host-owned JuiceFS mounts, startup includes mounting the filesystem and checking storage access before opening the host listener. A replacement that cannot access storage blocks progress instead of accepting sandbox traffic.
+
+<Warning>
+  A rolling upgrade is not live migration or uninterrupted execution. Sandboxes on a draining host pause, and their open connections can disconnect. Applications must handle reconnects and interrupted work.
+</Warning>
+
+## Follow a host drain
+
+A graceful host shutdown attempts to suspend persistent sandboxes before the pod exits:
+
+<Steps>
+  <Step title="Stop new placement">
+    The host enters a draining state and notifies the platform backend. New sandbox placements use other ready hosts.
+  </Step>
+
+  <Step title="Save running sandboxes">
+    The host stops routing to each sandbox as it suspends that VM. It attempts to save the VM's memory to JuiceFS and reports the sandbox stopped.
+  </Step>
+
+  <Step title="Release the host">
+    The host keeps renewing its Lease while stopping workloads. Once the VMs have stopped, it releases the Lease and tears down its storage mount.
+  </Step>
+
+  <Step title="Resume on demand">
+    A later start or wake request places the sandbox on an available, compatible host. A complete saved memory image allows processes to resume; otherwise recovery uses the persisted filesystem.
+  </Step>
+</Steps>
+
+Stopped sandboxes do not all restart when the replacement host becomes ready. They remain stopped until explicitly started or reached through a request path that wakes them.
+
+Open execution streams, tunnels, and service connections to affected sandboxes need to reconnect. A saved memory image does not preserve a client's network connection.
+
+### Budget enough time to drain
+
+`sandboxes.sandboxHost.deployment.terminationGracePeriodSeconds` defaults to `300`. Kubernetes can kill the host when that grace period expires, even if the host has not finished saving every sandbox's memory.
+
+Measure a drain with representative sandbox density and memory use. Check the shutdown summary for the drain duration and how many sandboxes suspended successfully or failed to suspend. Increase the grace period when the host cannot save every sandbox's memory in time, and keep node-maintenance drain timeouts longer than that period.
+
+An incomplete drain can lose running memory and require crash recovery for affected sandboxes. Increasing the timeout does not solve storage unavailability or insufficient capacity.
+
+### Coordinate node maintenance
+
+Node replacement and Kubernetes upgrades also terminate host pods. Configure your node maintenance process to respect graceful shutdown and avoid draining several sandbox hosts simultaneously.
+
+Enable `sandboxes.sandboxHost.pdb.enabled` to use the chart's PodDisruptionBudget for voluntary evictions. Its default budget permits one unavailable host. A PDB does not prevent node failure, direct pod deletion, or every provider-specific maintenance action.
+
+Keep node autoscaling consistent with the host autoscaler. Where your node autoscaler supports eviction protection, prevent it from independently evicting active host pods during routine consolidation. Let host scale-down drain workloads before removing empty nodes. Check your autoscaler's behavior rather than assuming one annotation works for every provider.
+
+Do not accelerate a rollout by deleting multiple host pods or increasing disruption beyond the capacity you have tested.
+
+### Diagnose a stalled rollout
+
+Compare desired, ready, and updated host counts. Then inspect pod events and node provisioning:
+
+* **Hosts stay `Pending`**: Check node pool limits, infrastructure quota, regional capacity, node selectors, taints, and resource requests.
+* **Hosts start but do not become ready**: Check KVM availability, runtime logs, and access to JuiceFS metadata and object storage.
+* **Hosts remain terminating**: Inspect drain progress and storage latency before changing the grace period.
+
+If desired replicas exceed schedulable capacity, the rollout may be unable to meet its availability floor. Restore capacity first. The `sandbox-host.smith.langchain.com/autoscale-override` Deployment annotation can temporarily pin the host count when autoscaling is enabled. Use it only after evaluating remaining capacity, and remove the override afterward. A lower target does not fix the underlying capacity shortage.
+
+## Plan machine changes
+
+Memory snapshots include CPU and virtual machine state. Do not assume that a saved VM can resume across different CPU models or incompatible host kernels. [Firecracker's snapshot compatibility guidance](https://github.com/firecracker-microvm/firecracker/blob/main/docs/snapshotting/snapshot-support.md#where-can-i-resume-my-snapshots) requires matching hardware and software configurations, with limited, explicitly caveated exceptions.
+
+Keep a consistent CPU model in the sandbox pool. Treat changes to the CPU vendor or model, host kernel, or sandbox runtime as transitions that require restore testing. A newer CPU or kernel does not automatically make a destination compatible. Compatibility in one direction does not establish compatibility in reverse.
+
+### Example transitions, not a support matrix
+
+<Note>
+  These are documentation-based examples, not a tested LangSmith compatibility matrix or an expansion of supported platforms. Every lower-risk candidate still requires validation on your exact deployment. Keep the exposed CPU model and features, host kernel, and sandbox runtime consistent. Confirm that the destination meets the [Sandbox platform and KVM requirements](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes).
+</Note>
+
+The examples concern host-node changes, not changes to a saved microVM's guest configuration.
+
+| Cloud | Lower-risk candidate to validate | Do not assume memory-restore compatibility |
+| - | - | - |
+| AWS | Replace an `m6i.metal` node with another using the same exposed CPU configuration and software versions. [M6i instances](https://aws.amazon.com/ec2/instance-types/m6i/) use Intel Ice Lake processors. | `m6i.metal` (Ice Lake) → `m5n.metal` (Cascade Lake). Firecracker explicitly identifies this direction as incompatible. See also the [M5n processor specifications](https://aws.amazon.com/ec2/instance-types/m5/). |
+| GCP | Replace or resize N2 nodes while preserving the same exposed CPU platform, kernel, and runtime. Verify the actual CPU rather than relying on the machine-family name. | An N2 node on Ice Lake → an N2 node on Cascade Lake. The [N2 series](https://docs.cloud.google.com/compute/docs/general-purpose-machines#n2_series) includes both platforms; staying within N2 does not establish memory compatibility. |
+| Azure | `Standard_D16ds_v6` → `Standard_D32ds_v6`, with the same kernel and runtime. Both [Ddsv6 sizes](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/ddsv6-series) list the Intel Xeon Platinum 8573C (Emerald Rapids). Matching the listed processor makes this a candidate to test, not a guarantee. | A Dsv3 node replacement that exposes a different CPU model, even without a SKU change. The [Dsv3 series](https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/general-purpose/dsv3-series) lists multiple generations, from Haswell through Emerald Rapids. |
+
+A matching SKU or family is not sufficient evidence. Provider placement and available processors can vary. For example, [Google's CPU platform documentation](https://docs.cloud.google.com/compute/docs/cpu-platforms) describes machine types with multiple CPU platforms and how platform selection works.
+
+<Warning>
+  An x86-64 memory snapshot cannot resume on an Arm CPU. An instruction-set change also requires architecture-compatible guest software; booting the same x86-64 filesystem on Arm is not a recovery strategy. Do not treat a CPU architecture change as an ordinary node resize.
+</Warning>
+
+### Validate a transition before rollout
+
+To validate the source-to-target transition:
+
+1. Confirm that the target exposes `/dev/kvm` and meets the supported platform requirements.
+2. Record the exposed CPU model and features, host kernel, and `sandbox-host` image version on both source and target nodes.
+3. Use isolated test capacity matching the target configuration. Resume a persistent sandbox suspended on a source node, and separately create a sandbox from a memory snapshot captured there. Confirm both run on a target node, not the original host.
+4. Verify that in-memory state survives, then exercise representative workload paths. A successful VM boot alone does not establish compatibility.
+5. Test the reverse direction if the rollout requires rollback. Do not assume that a snapshot captured on the target can resume on an older source configuration.
+
+If restoration is incompatible, plan for cold starts and loss of in-memory work rather than relying on memory migration. Persistent disk recovery is separate from memory restore. Applications that need durable progress should write it to persistent storage rather than rely only on saved process memory.
+
+## Understand failure impact
+
+<div>
+  | Event | Platform behavior | Workload impact |
+  | - | - | - |
+  | Host crash or node loss | Waits for fencing before starting affected sandboxes on another host. | <span>One host affected</span><br />Running memory is lost. Persistent sandboxes recover from persisted disk on a later start or wake request. |
+  | Prolonged loss of Kubernetes API access | Hosts that cannot renew their Leases fence themselves to avoid conflicting writers. | <span>One host or whole pool</span><br />Can stop workloads on one host or across the pool, depending on the outage. |
+  | Host-owned JuiceFS mount failure | The host stops accepting work and stops its VMs before exiting. | <span>One host affected</span><br />Affected sandboxes lose running memory; recovery requires working shared storage. |
+  | Metadata Redis unavailable | Filesystem operations stall or fail; sustained mount health failures can stop hosts. | <span>Pool-wide disruption</span><br />Sandbox creation and running workloads can fail across the pool. |
+  | Object storage unavailable or throttled | Uncached reads and uploads stall or fail; new hosts may fail readiness. | <span>Pool-wide disruption</span><br />Slow or failing I/O and reduced ready capacity. |
+  | No ready hosts | Requests to create a sandbox fail with `NoSandboxHostsAvailable`. | <span>Sandbox creation affected</span><br />Clients must retry after capacity becomes available. |
+  | Metadata or object data lost | Restoring hosts alone cannot restore the filesystem. | <span>Persistent data loss</span><br />Recover the backing stores from tested backups. |
+</div>
+
+Fencing prevents a replacement from writing a persistent sandbox's disk while the old host might still be running. Recovery is therefore not instantaneous after a host disappears. Do not bypass that delay by manually changing sandbox ownership or deleting shared storage state.
+
+## Protect sandbox storage
+
+The JuiceFS metadata store and object store form one persistent filesystem. Protect them separately from the platform's cache and queue Redis.
+
+* **Dedicated metadata Redis**: Use `noeviction`, high availability, persistence, and backups. Do not flush or recreate it as part of cache maintenance.
+* **Memory headroom**: Alert before Redis reaches its memory limit. With `noeviction`, writes fail when memory is exhausted rather than evicting filesystem metadata.
+* **Object retention**: Do not apply lifecycle rules that delete live JuiceFS objects or move them to an inaccessible storage tier.
+* **Recovery testing**: Test restoring filesystem metadata and object data together. A replica improves availability but does not replace backups.
+* **Private access**: Keep storage and host endpoints private. Use the installation guide's identity and secret configuration for your environment.
+
+Choose backup frequency and retention for your recovery objectives. Do not assume an object-store backup alone contains the file tree needed to recover a sandbox.
+
+## Monitor the pool
+
+The host exposes Prometheus metrics on its internal `/metrics` endpoint. Scrape it through your private monitoring infrastructure, not public ingress. See [Export LangSmith telemetry](/langsmith/export-backend) for platform monitoring setup.
+
+The elected host exports these pool gauges:
+
+| Metric | Meaning |
+| - | - |
+| `langsmith_sandbox_host_pool_assigned_cpu_millicores` | CPU committed to sandboxes on ready hosts. |
+| `langsmith_sandbox_host_pool_capacity_cpu_millicores` | CPU capacity of ready hosts. |
+| `langsmith_sandbox_host_pool_ready_hosts` | Ready hosts in the pool. |
+| `langsmith_sandbox_host_pool_desired_replicas` | Replica target when autoscaling is active. |
+
+Also monitor host pod readiness, `Pending` pods, node memory and disk pressure, storage latency, Redis memory and evictions, sandbox startup failures, and drain duration. A persistent gap between desired and ready hosts calls for checking node provisioning and host startup, not only workload demand.
+
+### Check production readiness
+
+Before running production workloads:
+
+* Confirm the dedicated nodes expose KVM and match the host selector and tolerations.
+* Reserve memory for guests, the host runtime, JuiceFS, and Kubernetes overhead.
+* Align host limits, node limits, infrastructure quotas, and workspace quotas.
+* Test scaling from the minimum pool size with a cold cache.
+* Test one-host loss and a one-host-at-a-time upgrade under load.
+* Verify application behavior when execution streams or service connections disconnect.
+* Measure drain duration and set compatible pod and node shutdown timeouts.
+* Confirm metadata Redis uses `noeviction` and has tested backups and restore procedures.
+* Monitor object-store access, metadata capacity, and the gap between desired and ready hosts.
+
+## See also
+
+* [Sandbox architecture and lifecycle](/langsmith/self-host-sandbox-architecture)
+* [Scale self-hosted Sandboxes](/langsmith/self-host-sandbox-scaling)
+* [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes)
+* [Upgrade self-hosted LangSmith](/langsmith/self-host-upgrades)
+* [Plan platform disaster recovery](/langsmith/self-host-disaster-recovery)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-operations.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Scale self-hosted Sandboxes
+Source: https://docs.langchain.com/langsmith/self-host-sandbox-scaling
+
+Plan self-hosted Sandbox capacity with host autoscaling, Kubernetes node scaling, memory headroom, and shared filesystem caching.
+
+Self-hosted Sandboxes scale in two layers: LangSmith adjusts the host Deployment, and your node autoscaler supplies Kubernetes nodes. Plan both layers together so new hosts are ready before the existing pool runs out of capacity.
+
+This guide builds on [Sandbox architecture](/langsmith/self-host-sandbox-architecture). For cloud-specific infrastructure setup, see [Enable Sandboxes](/langsmith/deploy-self-hosted-full-platform#enable-sandboxes).
+
+## Understand the two scaling layers
+
+The built-in host autoscaler runs on an elected `sandbox-host`. Hosts publish their committed vCPU and sandbox counts through Kubernetes Leases. The leader uses that information to adjust the Deployment's replica count.
+
+<Frame>
+  <SandboxDiagram name="autoscaling" />
+</Frame>
+
+The host autoscaler does not use an HPA, KEDA, or a Prometheus adapter. Do not configure another controller to manage the same Deployment's replica count.
+
+A new host pod needs an eligible node without another host pod. When none is available, it stays `Pending` until your node autoscaler adds capacity. Configure that autoscaler for the dedicated KVM-capable node pool, including compatible labels, taints, and instance requirements.
+
+During normal scale-down, the host autoscaler retains the recent peak target for a stabilization window. It then removes at most one host per window. Pod deletion costs favor less-loaded hosts. Removing a running host [drains its sandboxes](/langsmith/self-host-sandbox-operations#follow-a-host-drain); it is not a disruption-free operation.
+
+## Calculate a host target
+
+Committed vCPU is the CPU requested by running sandboxes on ready hosts, not measured CPU usage. For a pool of equally sized hosts, the load-based target is:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+desired hosts = ceil(committed vCPU / (host vCPU × target fraction)) + headroom hosts
+```
+
+The autoscaler clamps the result to `minReplicas` and `maxReplicas`. Without a host capacity signal, it starts from the minimum. Use a homogeneous pool: the calculation assumes a common per-host CPU capacity.
+
+For example, with 16-vCPU hosts, a 70% target, and one headroom host:
+
+* **Per-host target**: `16 × 0.70 = 11.2` committed vCPU.
+* **Workload**: 60 sandboxes requesting 0.5 vCPU each commit 30 vCPU.
+* **Pool target**: `ceil(30 / 11.2) + 1 = 4` hosts, subject to the configured bounds.
+
+The 70% target is not a per-host capacity limit. Placement can exceed it while the pool scales or when it reaches its maximum.
+
+### Plan for bursts
+
+The replica target can rise before nodes and hosts become ready. Headroom covers some of that delay; it does not make node provisioning instantaneous.
+
+<Frame>
+  <SandboxDiagram name="scaling-behavior" />
+</Frame>
+
+Choose `minReplicas` and `headroomHosts` for the burst you need to absorb while a node starts. Keep at least two hosts for a pool that must continue accepting work during a one-host rollout. Measure node startup, host readiness, and sandbox creation latency under representative load.
+
+If the pool reaches its maximum, investigate demand and infrastructure limits rather than assuming the utilization target prevents overload. With no ready hosts, requests to create a sandbox fail. Clients need bounded retries and backoff for transient capacity failures.
+
+## Configure the host autoscaler
+
+The Helm values below live under `sandboxes.sandboxHost.autoscaling`. Check the values shipped with your chart version; existing overrides can change the effective settings.
+
+| Value | Chart default | Operational guidance |
+| - | - | - |
+| `enabled` | `false` | Enable host autoscaling when your node pool can scale with it. |
+| `minReplicas` | `1` | Use at least `2` to avoid zero ready hosts during a normal rollout. |
+| `maxReplicas` | `10` | Align with eligible node capacity and infrastructure quotas. |
+| `targetUtilizationPercent` | `70` | Lower values leave more CPU headroom. This measures commitment, not live usage. |
+| `headroomHosts` | `1` | Adds spare capacity above the load-based target. |
+| `scaleDownStabilizationSeconds` | `300` | Increase to reduce repeated drains during short demand dips. |
+
+When autoscaling is enabled, the chart leaves the Deployment's replica count to the host autoscaler. Otherwise, `sandboxes.sandboxHost.deployment.replicas` sets a fixed host count.
+
+Deployment annotations prefixed with `sandbox-host.smith.langchain.com/autoscale-` can override the baseline settings without restarting hosts. Inspect existing overrides when Helm values and observed scaling disagree. Prefer durable Helm configuration for normal operation.
+
+Align three separate limits:
+
+1. Set the host replica maximum for the peak workload.
+2. Allow the node pool and infrastructure quotas to supply that many eligible nodes.
+3. Set workspace sandbox quotas for the expected concurrent CPU, memory, and sandbox count.
+
+Workspace quotas control what users can request. They do not provision nodes or guarantee physical capacity.
+
+## Size CPU and memory together
+
+The following example applies the same 70% target and one headroom host to 500 running sandboxes. It shows the CPU-based target before `maxReplicas` clamps it, not a performance guarantee.
+
+| vCPU per sandbox | Total committed vCPU | 16-vCPU hosts | 32-vCPU hosts | 64-vCPU hosts |
+| - | - | - | - | - |
+| 0.5 | 250 | 24 | 13 | 7 |
+| 1 | 500 | 46 | 24 | 13 |
+| 2 | 1,000 | 91 | 46 | 24 |
+
+Check memory separately. For example, 500 sandboxes configured with 2 GiB each request 1,000 GiB of guest memory, before host and filesystem overhead.
+
+<Warning>
+  Host autoscaling uses committed CPU, not memory pressure. A CPU-sized pool can still run out of memory. Budget for guest memory, the host daemon, JuiceFS, caches, and Kubernetes overhead.
+</Warning>
+
+The host pod's memory request must reflect the workloads it contains. A small request for the daemon alone does not reserve memory for its microVMs. Review `sandboxes.sandboxHost.deployment.resources` against node allocatable memory and measured peak use.
+
+## Balance node size and cache capacity
+
+Larger nodes let more sandboxes share a local JuiceFS cache and amortize host overhead. However, each host failure or drain affects more sandboxes and can take longer to save their memory.
+
+Choose nodes based on these constraints:
+
+* **Virtualization**: Expose `/dev/kvm` on a supported Linux node configuration.
+* **CPU compatibility**: Keep a consistent CPU model across the pool. See [Plan machine changes](/langsmith/self-host-sandbox-operations#plan-machine-changes).
+* **Memory**: Leave capacity for host and filesystem overhead, not only the requested guest memory.
+* **Local storage**: Provide cache space for the working set and monitor disk pressure.
+* **Failure impact**: Keep enough hosts and spare capacity to tolerate losing or draining one.
+
+For host-owned JuiceFS mounts, `sandboxes.juicefs.hostMount.cacheDirs` selects node-local cache paths. `sandboxes.juicefs.hostMount.mountOptions` controls cache options. The chart's default cache budget is 50 GiB across the configured directories; installing a larger disk does not automatically raise that budget.
+
+A cache can survive a pod replacement on the same node, but not replacement of that node. Treat cache warm-up as part of capacity testing, not as durable storage recovery.
+
+## See also
+
+* [Sandbox architecture and lifecycle](/langsmith/self-host-sandbox-architecture)
+* [Upgrade and operate Sandboxes](/langsmith/self-host-sandbox-operations)
+* [Configure self-hosted resource usage](/langsmith/self-host-usage)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to your agent of choice via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-host-sandbox-scaling.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -113536,6 +115480,7 @@ A self-hosted LangSmith instance includes:
 **Storage services:**
 
 * ClickHouse (traces and feedback data)
+* SmithDB (optional columnar datastore for agent trace data)
 * PostgreSQL (operational data)
 * Redis (queuing and caching)
 * Blob storage (optional, but recommended for production)
@@ -113566,6 +115511,7 @@ To access the LangSmith UI and send API requests, you will need to expose the [L
 | Service | Description |
 | - | - |
 |  **ClickHouse** | [ClickHouse](https://clickhouse.com/docs/en/intro) is a high-performance, column-oriented SQL database management system (DBMS) for online analytical processing (OLAP).<br /><br />LangSmith uses ClickHouse as the primary data store for traces and feedback (high-volume data).<br /><br />💡 [Connect to external ClickHouse](/langsmith/self-host-external-clickhouse) |
+|  **SmithDB** | SmithDB is an optional columnar datastore built for agent trace data: deeply nested spans, multi-modal content, and spans that stay open for hours.<br /><br />SmithDB is available on LangSmith 0.17 and later.<br /><br />💡 [Enable SmithDB](/langsmith/self-host-smithdb) |
 |  **PostgreSQL** | [PostgreSQL](https://www.postgresql.org/about/) is a powerful, open source object-relational database system that uses and extends the SQL language combined with many features that safely store and scale the most complicated data workloads.<br /><br />LangSmith uses PostgreSQL as the primary data store for transactional workloads and operational data (almost everything besides traces and feedback).<br /><br />💡 [Connect to external PostgreSQL](/langsmith/self-host-external-postgres) - AWS RDS, GCP Cloud SQL, Azure Database |
 |  **Redis / Valkey** | [Redis](https://github.com/redis/redis) is a powerful in-memory key-value database that persists on disk. By holding data in memory, Redis offers high performance for operations like caching.<br /><br />LangSmith uses Redis to back queuing and caching operations. [Valkey](https://valkey.io/) is also officially supported as a drop-in replacement for Redis.<br /><br />💡 [Connect to external Redis or Valkey](/langsmith/self-host-external-redis) - AWS ElastiCache, GCP Memorystore, Azure Cache |
 |  **Blob storage** | LangSmith supports several blob storage providers, including [AWS S3](https://aws.amazon.com/s3/), [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/), and [Google Cloud Storage](https://cloud.google.com/storage).<br /><br />LangSmith uses blob storage to store large files, such as trace artifacts, feedback attachments, and other large data objects. Blob storage is optional, but highly recommended for production deployments.<br /><br />💡 [Enable blob storage](/langsmith/self-host-blob-storage) - AWS S3, GCP GCS, Azure Blob |
@@ -113794,7 +115740,7 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
   ### Observability and evaluation
 
   * Analyze traces in the conversational trajectory view, score them with online evaluators, and add them to annotation queues and datasets.
-  * Build and publish custom apps for annotation, experiments, traces, and other LangSmith data using LangSmith Chat, templates, or your coding agent.
+  * Build and publish [custom apps](/langsmith/custom-apps) for annotation, experiments, traces, and other LangSmith data using LangSmith Chat, templates, or your coding agent. Building and editing with chat requires the [self-hosted chat setup](/langsmith/custom-apps#configure-self-hosted-chat), including sandbox service URLs and a signing key.
   * Use Jev and SemIf decision models for online and offline evaluators.
   * Construct filter queries with a new, expressive query syntax and filtering interface.
   * Custom charts include built-in templates, more supported metrics, and layout improvements.
@@ -113957,7 +115903,7 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
   * Edited a Context Hub webhook to load its saved custom headers instead of unrelated response headers, preventing overwriting upon saving.
   * Allowed self-hosted Insights deployments to explicitly opt in to Google Application Default Credentials for Vertex AI models instead of storing service account JSON.
   * Enabled self-hosted LangSmith Chat to authenticate Vertex AI workspace models with Google Application Default Credentials when no stored service account credential or LLM auth proxy credential was available.
-  * Offered Custom Apps browser creation and editing only when sandbox service URLs and signing keys were configured, preventing provisioning failures on incompletely configured deployments.
+  * Offered Custom Apps browser creation and editing only when sandbox service URLs and signing keys were configured, preventing provisioning failures on incompletely configured deployments. See [Configure self-hosted chat](/langsmith/custom-apps#configure-self-hosted-chat) for setup requirements.
 
   **Download the Helm chart:** [`langsmith-0.17.0-rc.54.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.17.0-rc.54/langsmith-0.17.0-rc.54.tgz)
 </Update>
@@ -123184,8 +125130,9 @@ The shape of `config` depends on policy_type:
 - `spend_cap` / `default_spend_cap`, a limit per window:
 `{"version": 2, "limits": [{"window": "hourly"|"daily"|"weekly"|"monthly", "limit_usd": <number>}]}`
 - `guard`:
-`{"version": 1, "detect": {"pii": <bool>, "secrets": <bool>}, "timeout_seconds": <number>, "timeout_action": "allow"|"block"}`
+`{"version": 1, "detect": {"pii": <bool>, "secrets": <bool>, "custom": [{"pattern": "<regex>"}]}, "timeout_seconds": <number>, "timeout_action": "allow"|"block"}`
 `timeout_seconds` (optional, 0.1–30) caps guard pipeline execution time; defaults to 2s. `timeout_action` defaults to `allow`.
+`detect.custom` (optional) holds at most one Go regexp (RE2 syntax) of up to 512 bytes; matching text is redacted. Avoid capture groups: if present, only the first group is redacted, wherever that text appears.
 - `route_config`:
 `{"strategy": "priority_fallback", "triggers": {"status_codes": [<int>]}, "fallbacks": [{"model_configs": [{"model_config_id": "<playground-settings-uuid>"}]}]}`
 `triggers` is required, with no default: `status_codes` must be a non-empty list (include 502 and 504 for upstream transport failures). `fallbacks` contains an entry whose `model_configs` are tried in priority order (1–5). `subject_matchers` must be a single `workspace_id` entry.
@@ -135155,11 +137102,12 @@ Read a trace's token and cost totals from `trace_aggregates` instead of the root
         PROJECT_ID=$(curl -s "https://api.smith.langchain.com/api/v1/sessions?name=default&limit=1" \
           -H "x-api-key: $LANGSMITH_API_KEY" | jq -r '.[0].id')
 
-        curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
+        START_TIME=$(date -u -d '-1 month' +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -v-1m +%Y-%m-%dT%H:%M:%SZ)
+        RESP=$(curl -s -X POST "https://api.smith.langchain.com/api/v1/runs/query" \
           -H "x-api-key: $LANGSMITH_API_KEY" \
           -H "Content-Type: application/json" \
-          -d "$(jq -n --arg pid "$PROJECT_ID" '{"session": [$pid], "is_root": true, "limit": 5}')" \
-          | jq '.runs[] | {trace_id, total_tokens, total_cost}'
+          -d "$(jq -n --arg pid "$PROJECT_ID" --arg start "$START_TIME" '{"session": [$pid], "is_root": true, "limit": 5, "start_time": $start}')")
+        echo "$RESP" | jq '(.runs // [])[] | {trace_id, total_tokens, total_cost}'
         ```
       </Tab>
 
@@ -139987,7 +141935,7 @@ Source: https://docs.langchain.com/langsmith/trace-anthropic
 
 The Anthropic wrapper methods in Python ([`wrap_anthropic`](https://reference.langchain.com/python/langsmith/wrappers/_anthropic/wrap_anthropic)) and Typescript ([`wrapAnthropic`](https://reference.langchain.com/javascript/functions/langsmith.wrappers_anthropic.wrapAnthropic.html)) allow you to wrap your Anthropic client in order to log traces automatically. Using the wrapper ensures that messages, including tool calls and multimodal content blocks will be rendered nicely in LangSmith. The wrapper works seamlessly alongside the `@traceable` decorator (Python) or `traceable` function (TypeScript), so you can trace your Anthropic calls with the wrapper and trace other parts of your application with the decorator or function.
 
-The wrapper also supports [Claude managed agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents) (TypeScript only). Refer to [Trace Claude managed agents](#trace-claude-managed-agents).
+The wrapper also supports [Claude managed agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents) (TypeScript only). Refer to [Trace Claude Managed Agents](/langsmith/trace-with-claude-managed-agents).
 
 <Note>
   The `LANGSMITH_TRACING` environment variable must be set to `'true'` in order for traces to be logged to LangSmith, even when using `wrap_anthropic` or `wrapAnthropic`. This allows you to toggle tracing on and off without changing your code.
@@ -140057,73 +142005,9 @@ The wrapper also supports [Claude managed agents](https://docs.anthropic.com/en/
   ```
 </CodeGroup>
 
-## Trace Claude managed agents
+## Trace Claude Managed Agents with the SDK
 
-The `wrapAnthropic` wrapper also supports [Claude managed agents](https://docs.anthropic.com/en/docs/claude-code/managed-agents) (TypeScript only). Wrap the Anthropic client with `wrapAnthropic`. The wrapper will automatically trace agent creation, session creation, and all events that flow through the session.
-
-```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import Anthropic from "@anthropic-ai/sdk";
-import { wrapAnthropic } from "langsmith/wrappers/anthropic";
-
-const anthropic = wrapAnthropic(new Anthropic());
-
-// Create a managed agent
-const agent = await anthropic.beta.agents.create({
-  name: "my-agent",
-  model: "claude-opus-4-8",
-  system: "You are a helpful assistant.",
-  tools: [
-    // ... your tools here
-  ],
-});
-
-// Create a cloud environment for the agent to run in
-const environment = await anthropic.beta.environments.create({
-  name: "my-environment",
-  config: {
-    type: "cloud",
-    networking: { type: "unrestricted" },
-  },
-});
-
-// Create a session connecting the agent and environment
-const session = await anthropic.beta.sessions.create({
-  agent: agent.id,
-  environment_id: environment.id,
-  title: "My session",
-});
-
-// Stream session events
-const stream = await anthropic.beta.sessions.events.stream(session.id);
-
-// Send a message to the agent
-await anthropic.beta.sessions.events.send(session.id, {
-  events: [
-    {
-      type: "user.message",
-      content: [
-        {
-          type: "text",
-          text: "Hello! Can you help me with something?",
-        },
-      ],
-    },
-  ],
-});
-
-// Consume the event stream until the session is idle
-for await (const event of stream) {
-  if (event.type === "session.status_idle") {
-    break;
-  }
-}
-```
-
-<Note>
-  Full tracing of subagents in Anthropic's multi-agent architecture requires
-  tapping into a separate event stream and is not yet supported. Only top-level
-  session events are traced.
-</Note>
+To trace Claude Managed Agents sessions with the TypeScript `wrapAnthropic` wrapper, see [Trace Claude Managed Agents](/langsmith/trace-with-claude-managed-agents).
 
 ***
 
@@ -157965,6 +159849,16 @@ dcode --clear-default-model
 
 You can also pin a default from the interactive `/model` switcher (`Ctrl+S`) or set `[models].default` in `config.toml`. See [Set a default model](/oss/deepagents/code/providers#set-a-default-model).
 
+### Set reasoning effort
+
+`/effort` controls reasoning effort for the current model. Open the picker to see the levels supported by that model, or pass a level directly with `/effort <level>`.
+
+Deep Agents Code saves the selection per `provider:model` in `~/.deepagents/config.toml` for future sessions. Run `/effort clear` to remove the current model's saved preference and session override. Configured model parameters can still supply an effort value.
+
+You can open `/effort` or click the footer's effort label while the agent works. A selection waits until the current task completes; it does not change the model request already in progress. If the model changes before the selection applies, reopen the picker for the new model.
+
+For Anthropic models with `thinking.type` set to `between_tools`, the available levels are the model-supported subset of `low`, `medium`, and `high`.
+
 ### Choose a summarization model
 
 Use a separate model for automatic context compaction, `/offload`, and `/compact` without changing the main agent model:
@@ -158374,6 +160268,7 @@ Run OAuth login for an MCP server marked `auth: "oauth"` with `dcode mcp login <
 | `--sandbox-snapshot-name NAME` | Sandbox snapshot name to use or create (`langsmith`, `runloop`, and providers that advertise snapshot support) |
 | `--sandbox-setup PATH` | Path to setup script to run in sandbox after creation |
 | `--mcp-config PATH` | Add an explicit MCP config as the highest-precedence source (merged with auto-discovered configs) |
+| `--no-tracing` | Disable LangSmith agent tracing for this session. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith) |
 | `--no-mcp` | Disable all MCP tool loading |
 | `--trust-project-mcp` | Trust project-level MCP servers without prompting for the current run. Explicit denies still apply. |
 | `-e`, `--extension PATH` | Load a Python extension file or directory for this run. Repeat to add multiple paths. Requires `DEEPAGENTS_CODE_EXPERIMENTAL=1` and extension discovery enabled (`[extensions].enabled` / `DEEPAGENTS_CODE_EXTENSIONS`). See [Python extensions](/oss/deepagents/code/extensions) |
@@ -158444,7 +160339,7 @@ Pair `dcode doctor` with `dcode config show` when you need both a high-level hea
 | `dcode skills create NAME [--project]` | Create a new skill with template `SKILL.md`. Idempotent—re-creating an existing skill prints an informational message instead of an error |
 | `dcode skills info NAME [--project]` | Show detailed information about a skill |
 | `dcode skills delete NAME [--project] [-f]` | Delete a skill and its contents. Supports `--dry-run` |
-| `dcode threads list [--agent NAME] [--limit N]` | List sessions (alias: `ls`). Default limit: 20. Set `DEEPAGENTS_CODE_RECENT_THREADS` to change the default, or use `-n` as a short flag for `--limit`. Additional flags: `--sort {created,updated}`, `--branch TEXT` (filter by git branch), `--cwd [PATH]` (filter by working directory; bare flag uses current directory), `-v`/`--verbose` (show all columns including branch, created time, and initial prompt), `-r`/`--relative` (relative timestamps) |
+| `dcode threads list [--agent NAME] [--limit N]` | List sessions (alias: `ls`). Default limit: 100. Set `DEEPAGENTS_CODE_RECENT_THREADS` to change the default, or use `-n` as a short flag for `--limit`. Additional flags: `--sort {created,updated}`, `--branch TEXT` (filter by git branch), `--cwd [PATH]` (filter by working directory; bare flag uses current directory), `-v`/`--verbose` (show all columns including branch, created time, and initial prompt), `-r`/`--relative` (relative timestamps) |
 | `dcode threads delete ID` | Delete a session. Supports `--dry-run` |
 | `dcode mcp login [NAME] [--mcp-config PATH]` | With `NAME`, run the OAuth login flow for a server marked `auth: "oauth"`. Omit `NAME` to list configured OAuth servers that need login. See [MCP tools](/oss/deepagents/code/mcp-tools#oauth-login) |
 | `dcode mcp config` | Show MCP config discovery paths |
@@ -158648,6 +160543,26 @@ show_diff_line_numbers = false
 ```
 
 Run `/line-numbers` in a session to toggle the preference and save it to `config.toml`. The change applies to new diffs; already rendered diffs do not change.
+
+## Customize terminal tab titles
+
+In interactive sessions, the terminal tab title shows the command name and active conversation name. The default template is `{app_name} - {thread_name}`. Unnamed conversations show only the command name.
+
+Set `terminal.tab_title` in `~/.deepagents/config.toml` to override the default:
+
+```toml title="~/.deepagents/config.toml" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+[terminal]
+tab_title = "{app_name} - {thread_name} | {cwd} [{branch}]"
+```
+
+The template supports these placeholders:
+
+* **`{app_name}`**: Command name used to launch the app, such as `dcode` or a custom shim name.
+* **`{thread_name}`**: Active conversation name, or an empty string for an unnamed conversation.
+* **`{cwd}`**: Active working directory.
+* **`{branch}`**: Active Git branch.
+
+Titles update as the conversation name, directory, or branch changes. Set `tab_title = "{app_name}"` to keep only the command name. Restart Deep Agents Code after editing the template.
 
 ## Limit thread resume age
 
@@ -159198,6 +161113,14 @@ extra_paths = [
 <ResponseField name="extra_paths" type="string[]">
   Add user-authorized Python extension files or directories. Relative paths resolve from the Deep Agents Code profile directory; `~` expands to your home directory.
 </ResponseField>
+
+## Set MCP tool-call timeouts
+
+The `[mcp].tool_timeout` setting limits how long each MCP tool call can run before returning an error.
+
+The default is `120` seconds. Set `tool_timeout` in the `[mcp]` table. `DEEPAGENTS_CODE_MCP_TOOL_TIMEOUT` overrides the user config value. Invalid values fall through to the next configuration source.
+
+A timed-out operation may still run on the server. Check its state before retrying to avoid duplicate work.
 
 ## Agent runtime limits
 
@@ -159976,8 +161899,16 @@ All Deep Agents Code-specific environment variables use the `DEEPAGENTS_CODE_` p
   A second LangSmith project to *also* write agent traces to. When set and tracing is active, each agent run is dual-written to the primary project (from `DEEPAGENTS_CODE_LANGSMITH_PROJECT`, or `deepagents-code` by default) and this project. Off by default. See [Trace with LangSmith](/oss/deepagents/code/quickstart#trace-with-langsmith).
 </ResponseField>
 
+<ResponseField name="DEEPAGENTS_CODE_LANGSMITH_TRACING" type="string">
+  Set to `false` to disable LangSmith agent tracing. An explicit `false` overrides other tracing-enable flags, including `LANGSMITH_TRACING=true`. The `--no-tracing` flag sets this override for one launch. Local history and model-provider requests are unchanged. See [Disable agent tracing](/oss/deepagents/code/quickstart#trace-with-langsmith).
+</ResponseField>
+
 <ResponseField name="DEEPAGENTS_CODE_MEMORY_AUTO_SAVE" type="string">
   Let the agent proactively save learnings to memory. Set to a falsy value (or empty) to keep loading memory while stopping unprompted auto-saving; explicit saves still work. Overrides `[memory].auto_save`. See [Automatic memory](/oss/deepagents/code/memory-and-skills#automatic-memory).
+</ResponseField>
+
+<ResponseField name="DEEPAGENTS_CODE_MCP_TOOL_TIMEOUT" type="number">
+  Maximum duration of an MCP tool call, in seconds. Accepts values from `1` through `900` and overrides `[mcp].tool_timeout` in user config. Invalid values fall through to the next configuration source. A timeout does not guarantee server-side cancellation, so retries can duplicate work.
 </ResponseField>
 
 <ResponseField name="DEEPAGENTS_CODE_NO_UPDATE_CHECK" type="string">
@@ -160918,6 +162849,12 @@ flowchart LR
 
 The diagram covers the tool-call path only. `PermissionRequest` is a separate client-owned event when Deep Agents Code is about to show a permission prompt.
 
+### Notify before the prompt cache expires
+
+The `cache_expiring` notification warns before a tracked prompt-cache retention window ends. Use it to trigger your own reminder before the next turn risks a cache miss.
+
+In `hooks.json`, add a handler group under `Notification` with `matcher` set to `cache_expiring`. Deep Agents Code emits it once per thread and cache window during the final 60 seconds. The payload includes `notification_type`, `message`, and `title`.
+
 ## Input payload
 
 Every handler receives a JSON object on stdin. All events share a common envelope, plus event-specific fields.
@@ -161413,6 +163350,8 @@ Each key under `mcpServers` is a server name. The server's fields determine how 
 
 stdio servers are spawned as child processes. Deep Agents Code communicates with them over stdin/stdout.
 
+Approved project servers and servers supplied through `--mcp-config` start in the session working directory. User-level and plugin servers inherit the backend process directory instead. Set a server's `cwd` field to override either default.
+
 ```json title="mcp-config.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 {
   "mcpServers": {
@@ -161450,7 +163389,7 @@ For remote MCP servers, set `type` to `"sse"` or `"http"` and provide a `url`:
 
 <AccordionGroup>
   <Accordion title="stdio (default)">
-    **Required:** `command`. **Optional:** `args`, `env`, plus the shared [tool-filter fields](#tool-filtering).
+    **Required:** `command`. **Optional:** `args`, `env`, `cwd`, plus the shared [tool-filter fields](#tool-filtering).
 
     <ResponseField name="command" type="string">
       The executable to run.
@@ -161462,6 +163401,10 @@ For remote MCP servers, set `type` to `"sse"` or `"http"` and provide a `url`:
 
     <ResponseField name="env" type="object">
       Environment variables set for the subprocess. Use this to pass API keys and other credentials without exposing them in shell history.
+    </ResponseField>
+
+    <ResponseField name="cwd" type="string">
+      Working directory for the subprocess. Overrides the default directory for this server's configuration source.
     </ResponseField>
   </Accordion>
 
@@ -161554,6 +163497,14 @@ You can configure as many servers as you need. Tools from all servers are merged
   }
 }
 ```
+
+## Set tool-call timeouts
+
+MCP tool calls return an error after 120 seconds by default, so a stalled server does not block the agent indefinitely.
+
+Set `[mcp].tool_timeout` in `~/.deepagents/config.toml` to a number of seconds from `1` through `900`. Set `DEEPAGENTS_CODE_MCP_TOOL_TIMEOUT` to override the user config value. Invalid values fall through to the next configuration source rather than disabling the timeout.
+
+A timeout does not guarantee that the server canceled the operation. Check its state before retrying a tool that changes data: another call can duplicate work.
 
 ## Tool filtering
 
@@ -161763,6 +163714,8 @@ The legacy flat `[mcp].enabled_project_servers` list is ignored in `config.toml`
 ### Advanced allow and deny policy
 
 Use `[mcp].disabled_project_servers` in `~/.deepagents/config.toml`, or `DEEPAGENTS_CODE_DISABLED_PROJECT_MCP_SERVERS` in your shell or global `~/.deepagents/.env`, to always reject project MCP servers by name. Denies win over saved approvals and over the `--trust-project-mcp` flag.
+
+The interactive startup prompt also offers session-only denial or permanent denial of selected server names. Permanent denials apply across all projects, unlike project-scoped approvals. To undo a saved denial, remove the name from `[mcp].disabled_project_servers` in `~/.deepagents/config.toml`.
 
 For automation that must pre-approve project MCP servers by name, set `DEEPAGENTS_CODE_DANGEROUSLY_ENABLE_PROJECT_MCP_SERVERS` in your shell or global `~/.deepagents/.env` to a comma-separated list of server names. This is a process-wide escape hatch: A different project, command change, or URL change under the same server name still matches. When this variable is set, Deep Agents Code ignores saved approvals for that process. Prefer saved approvals or `--trust-project-mcp` unless you need name-based approval across projects and server-definition changes.
 
@@ -162188,6 +164141,12 @@ To browse marketplaces and manage plugins in a `dcode` session:
 The plugin manager also lets you enable, disable, and uninstall installed plugins. Disabling a plugin keeps it installed but excludes its skills, MCP servers, and hooks after you run `/reload` or start a new session. Python extensions stay loaded in the current graph until you run `/restart` or start a new session.
 
 Removing a marketplace uninstalls its plugins and removes managed cache data. Deep Agents Code preserves the original source when the marketplace came from a local directory or file. Run `/reload` or start a new session to apply the removal to an active session.
+
+## Discover plugins with the agent
+
+The agent can search your configured marketplace catalogs for missing capabilities and report available plugins.
+
+Ask the agent about available, disabled, or not-yet-installed plugins. It reads local catalogs through `dcode plugin list --json` and `dcode plugin marketplace list --json`, using the current profile. It does not search unconnected marketplaces on the internet.
 
 ## Automatically update plugins
 
@@ -163181,11 +165140,13 @@ Use `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to name the project that receives Deep A
 
 To override the project for a specific working directory, add `DEEPAGENTS_CODE_LANGSMITH_PROJECT` to a `.env` in that directory. See [environment variables](/oss/deepagents/code/configuration#environment-variables) for the full loading order.
 
-For CI, headless runs, or temporary overrides, set shell environment variables instead. Shell exports always take precedence over `.env` values:
+<Accordion title="Disable agent tracing">
+  Launch `dcode --no-tracing` to disable LangSmith agent tracing for one session. For future launches, set `DEEPAGENTS_CODE_LANGSMITH_TRACING=false` in your shell or `~/.deepagents/.env`.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_TRACING=false
-```
+  The flag overrides the environment setting. An explicit `false` in `DEEPAGENTS_CODE_LANGSMITH_TRACING` overrides other tracing-enable flags, including `LANGSMITH_TRACING=true`. Shell exports take precedence over `.env` values for the same variable.
+
+  Disabling agent tracing does not disable local conversation history or model-provider requests. It is separate from trace redaction and tracing emitted by applications run in shell commands.
+</Accordion>
 
 <Accordion title="Separate agent traces from app traces">
   Deep Agents Code can produce two kinds of LangSmith traces:
@@ -287143,6 +289104,8 @@ In Deep Agents, [`SkillsMiddleware`](https://reference.langchain.com/python/deep
 2. **Read** (level 2): When the agent invokes a skill, it reads the full `SKILL.md` content via `read_file`.
 3. **Execute** (level 3): After invocation, the agent follows the skill's instructions and reads supporting files (scripts, references, assets) only as the instructions require.
 
+To give the agent a skill's instructions without waiting for it to choose the skill, [pin the skill](#pin-skills).
+
 ## When to use skills
 
 If you find yourself giving similar instructions to an agent, especially if they are detailed and contain multiple steps, consider codifying the instructions for the agent. That way, in future when you want to accomplish a similar task, the agent will already know what to do.
@@ -287317,6 +289280,7 @@ Skill tools follow these rules:
 
 * Skill tools are gated. Until the agent reads the skill's `SKILL.md`, a call to one fails as an unknown tool, even if the model guesses its name and arguments.
 * When [summarization](/oss/python/deepagents/context-engineering#summarization) drops that read from the conversation, the tool is unavailable until the agent reads the skill again.
+* [Pinning a skill](#pin-skills) makes its tools available the same way reading its `SKILL.md` does. They stay available until summarization drops the pinned skill's message.
 
 <Note>
   On models that accept new tools mid-conversation, Deep Agents adds a skill tool after the read, which keeps the prompt cache valid. On other models, it adds the tool to the request's `tools`, which invalidates the cache. See the [Anthropic](/oss/python/integrations/chat/anthropic#change-tools-mid-conversation) and [OpenAI](/oss/python/integrations/chat/openai#add-tools-mid-conversation) integration pages.
@@ -287960,6 +289924,66 @@ class ReloadEditedSkills(AgentMiddleware[SkillsState]):
             return None
         return {"skills_metadata": None}
 ```
+
+## Pin skills
+
+The agent reads a skill only when it decides the skill matches the task. When a user names a skill in your app, for example by typing `/langgraph-docs` or choosing it from a menu, pin the skill. Deep Agents then adds the skill's instructions to the conversation, so the agent does not have to choose it.
+
+<Note>Pinning skills requires `deepagents>=0.7.23`.</Note>
+
+Pass skill names in `pinned_skills` with the run input:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": "What is LangGraph?"}],
+        "pinned_skills": ["langgraph-docs"],
+    },
+    config={"configurable": {"thread_id": "1"}},
+)
+```
+
+Before the next model call, `SkillsMiddleware` reads each named skill's `SKILL.md` and appends it to the conversation as a `HumanMessage`. It adds one message per skill, in the order you name them. Each message holds the file without its frontmatter:
+
+```text theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+<skill name="langgraph-docs" path="/skills/langgraph-docs/SKILL.md">
+# langgraph-docs
+
+## Overview
+...
+</skill>
+```
+
+Each message also sets `additional_kwargs["lc_source"]` to `"pinned_skill"`, and puts the skill's `name`, `path`, and `description` in `additional_kwargs["skill"]`. A chat UI can use these fields to show a pinned skill as a label instead of its full text.
+
+Pinned skills follow these rules:
+
+* The message stays in the conversation as written. Editing `SKILL.md` later does not change it, and pinning the skill again appends the current text. Earlier messages never change, so the prompt cache stays valid.
+* The middleware skips a name that matches no loaded skill, and a skill whose `SKILL.md` it cannot read. It logs each skip at debug level.
+  -When you pin a skill, its [skill tools](#add-tools-to-skills) become available to the agent, the same as when the agent reads its `SKILL.md`.
+
+### Pin skills named in a message
+
+Deep Agents does not look for skill names in messages. Your app chooses the syntax, finds the names, and passes them in `pinned_skills`. The following example pins each skill named as `/skill-name` anywhere in the message, and sends the text unchanged:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import re
+
+SKILL_REFERENCE = re.compile(r"(?<!\S)/([a-z0-9-]+)")
+
+message = "/langgraph-docs How do I add a checkpointer to my graph?"
+pinned_skills = SKILL_REFERENCE.findall(message)  # ["langgraph-docs"]
+
+result = agent.invoke(
+    {
+        "messages": [{"role": "user", "content": message}],
+        "pinned_skills": pinned_skills,
+    },
+    config={"configurable": {"thread_id": "1"}},
+)
+```
+
+The pattern matches a `/` followed by a skill name, at the start of the message or after a space. It does not check names against your skills, because the middleware skips unknown names. To support another syntax, such as `$skill-name`, change the pattern.
 
 ## Skills for subagents
 
@@ -289004,6 +291028,8 @@ Use [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm
 2. **Reduce overlap between skills.** If multiple skills have similar descriptions, the agent may skip the right one or pick the wrong one. Differentiate descriptions or [consolidate related skills](#write-effective-skills).
 
 3. **Confirm the skill is in the `skills` array.** Skills load only from paths you pass at agent creation or from subagent-specific `skills` parameters.
+
+4. **Pin the skill.** When the user or your app already knows which skill applies, [pin it](#pin-skills). The agent then gets the skill's instructions without having to choose the skill.
 
 ### Skills missing at startup
 

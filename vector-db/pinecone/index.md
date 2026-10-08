@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 573 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 569 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -183,7 +183,6 @@
 - `guides/operations/integrations/integrate-with-azure-blob-storage` — [Integrate with Azure Blob Storage](pages/guides/operations/integrations/integrate-with-azure-blob-storage.md) · [原文](https://docs.pinecone.io/guides/operations/integrations/integrate-with-azure-blob-storage)
 - `guides/operations/integrations/integrate-with-google-cloud-storage` — [Integrate with Google Cloud Storage](pages/guides/operations/integrations/integrate-with-google-cloud-storage.md) · [原文](https://docs.pinecone.io/guides/operations/integrations/integrate-with-google-cloud-storage)
 - `guides/operations/integrations/manage-storage-integrations` — [Manage storage integrations](pages/guides/operations/integrations/manage-storage-integrations.md) · [原文](https://docs.pinecone.io/guides/operations/integrations/manage-storage-integrations)
-- `guides/operations/local-development` — [Local development with Pinecone Local](pages/guides/operations/local-development.md) · [原文](https://docs.pinecone.io/guides/operations/local-development)
 - `guides/operations/mcp-server` — [Use the Pinecone MCP server](pages/guides/operations/mcp-server.md) · [原文](https://docs.pinecone.io/guides/operations/mcp-server)
 - `guides/optimize/decrease-latency` — [Decrease latency](pages/guides/optimize/decrease-latency.md) · [原文](https://docs.pinecone.io/guides/optimize/decrease-latency)
 - `guides/optimize/increase-relevance` — [Increase search relevance](pages/guides/optimize/increase-relevance.md) · [原文](https://docs.pinecone.io/guides/optimize/increase-relevance)
@@ -200,7 +199,6 @@
 - `guides/organizations/manage-organization-members` — [Manage organization members](pages/guides/organizations/manage-organization-members.md) · [原文](https://docs.pinecone.io/guides/organizations/manage-organization-members)
 - `guides/organizations/manage-service-accounts` — [Manage service accounts at the organization-level](pages/guides/organizations/manage-service-accounts.md) · [原文](https://docs.pinecone.io/guides/organizations/manage-service-accounts)
 - `guides/organizations/understanding-organizations` — [Understanding organizations](pages/guides/organizations/understanding-organizations.md) · [原文](https://docs.pinecone.io/guides/organizations/understanding-organizations)
-- `guides/production/automated-testing` — [CI/CD with Pinecone Local and GitHub Actions](pages/guides/production/automated-testing.md) · [原文](https://docs.pinecone.io/guides/production/automated-testing)
 - `guides/production/bring-your-own-cloud` — [Bring Your Own Cloud (BYOC)](pages/guides/production/bring-your-own-cloud.md) · [原文](https://docs.pinecone.io/guides/production/bring-your-own-cloud)
 - `guides/production/configure-audit-logs` — [Configure audit logs](pages/guides/production/configure-audit-logs.md) · [原文](https://docs.pinecone.io/guides/production/configure-audit-logs)
 - `guides/production/configure-cmek` — [Configure customer-managed encryption keys](pages/guides/production/configure-cmek.md) · [原文](https://docs.pinecone.io/guides/production/configure-cmek)
@@ -236,12 +234,11 @@
 ## integrations
 
 - `integrations/agent-skills` — [Agent Skills](pages/integrations/agent-skills.md) · [原文](https://docs.pinecone.io/integrations/agent-skills)
-- `integrations/ai-coding-tools` — [Agentic IDEs and CLIs](pages/integrations/ai-coding-tools.md) · [原文](https://docs.pinecone.io/integrations/ai-coding-tools)
+- `integrations/ai-coding-tools` — [AI coding tools](pages/integrations/ai-coding-tools.md) · [原文](https://docs.pinecone.io/integrations/ai-coding-tools)
 - `integrations/ai-engine` — [AI Engine](pages/integrations/ai-engine.md) · [原文](https://docs.pinecone.io/integrations/ai-engine)
 - `integrations/airbyte` — [Airbyte](pages/integrations/airbyte.md) · [原文](https://docs.pinecone.io/integrations/airbyte)
 - `integrations/amazon-bedrock` — [Amazon Bedrock](pages/integrations/amazon-bedrock.md) · [原文](https://docs.pinecone.io/integrations/amazon-bedrock)
 - `integrations/amazon-sagemaker` — [Amazon SageMaker](pages/integrations/amazon-sagemaker.md) · [原文](https://docs.pinecone.io/integrations/amazon-sagemaker)
-- `integrations/anyscale` — [Anyscale](pages/integrations/anyscale.md) · [原文](https://docs.pinecone.io/integrations/anyscale)
 - `integrations/apify` — [Apify](pages/integrations/apify.md) · [原文](https://docs.pinecone.io/integrations/apify)
 - `integrations/aryn` — [Aryn](pages/integrations/aryn.md) · [原文](https://docs.pinecone.io/integrations/aryn)
 - `integrations/aws-marketplace` — [AWS Marketplace](pages/integrations/aws-marketplace.md) · [原文](https://docs.pinecone.io/integrations/aws-marketplace)
@@ -258,16 +255,15 @@
 - `integrations/cursor` — [Cursor plugin](pages/integrations/cursor.md) · [原文](https://docs.pinecone.io/integrations/cursor)
 - `integrations/databricks` — [Databricks](pages/integrations/databricks.md) · [原文](https://docs.pinecone.io/integrations/databricks)
 - `integrations/datadog` — [Datadog](pages/integrations/datadog.md) · [原文](https://docs.pinecone.io/integrations/datadog)
-- `integrations/datavolo` — [Datavolo](pages/integrations/datavolo.md) · [原文](https://docs.pinecone.io/integrations/datavolo)
 - `integrations/estuary` — [Estuary](pages/integrations/estuary.md) · [原文](https://docs.pinecone.io/integrations/estuary)
 - `integrations/fleak` — [Fleak](pages/integrations/fleak.md) · [原文](https://docs.pinecone.io/integrations/fleak)
 - `integrations/flowise` — [FlowiseAI](pages/integrations/flowise.md) · [原文](https://docs.pinecone.io/integrations/flowise)
 - `integrations/gathr` — [Gathr](pages/integrations/gathr.md) · [原文](https://docs.pinecone.io/integrations/gathr)
 - `integrations/gemini-cli` — [Gemini CLI extension](pages/integrations/gemini-cli.md) · [原文](https://docs.pinecone.io/integrations/gemini-cli)
 - `integrations/genkit` — [Genkit](pages/integrations/genkit.md) · [原文](https://docs.pinecone.io/integrations/genkit)
-- `integrations/github-copilot` — [GitHub Copilot](pages/integrations/github-copilot.md) · [原文](https://docs.pinecone.io/integrations/github-copilot)
 - `integrations/google-cloud-marketplace` — [Google Cloud Marketplace](pages/integrations/google-cloud-marketplace.md) · [原文](https://docs.pinecone.io/integrations/google-cloud-marketplace)
 - `integrations/haystack` — [Haystack](pages/integrations/haystack.md) · [原文](https://docs.pinecone.io/integrations/haystack)
+- `integrations/honeyhive` — [HoneyHive](pages/integrations/honeyhive.md) · [原文](https://docs.pinecone.io/integrations/honeyhive)
 - `integrations/hugging-face-inference-endpoints` — [Hugging Face Inference Endpoints](pages/integrations/hugging-face-inference-endpoints.md) · [原文](https://docs.pinecone.io/integrations/hugging-face-inference-endpoints)
 - `integrations/instill` — [Instill AI](pages/integrations/instill.md) · [原文](https://docs.pinecone.io/integrations/instill)
 - `integrations/jina` — [Jina AI](pages/integrations/jina.md) · [原文](https://docs.pinecone.io/integrations/jina)
@@ -279,13 +275,13 @@
 - `integrations/n8n` — [n8n](pages/integrations/n8n.md) · [原文](https://docs.pinecone.io/integrations/n8n)
 - `integrations/new-relic` — [New Relic](pages/integrations/new-relic.md) · [原文](https://docs.pinecone.io/integrations/new-relic)
 - `integrations/nexla` — [Nexla](pages/integrations/nexla.md) · [原文](https://docs.pinecone.io/integrations/nexla)
-- `integrations/nuclia` — [Nuclia](pages/integrations/nuclia.md) · [原文](https://docs.pinecone.io/integrations/nuclia)
-- `integrations/octoai` — [OctoAI](pages/integrations/octoai.md) · [原文](https://docs.pinecone.io/integrations/octoai)
 - `integrations/openai` — [OpenAI](pages/integrations/openai.md) · [原文](https://docs.pinecone.io/integrations/openai)
-- `integrations/overview` — [Integrations](pages/integrations/overview.md) · [原文](https://docs.pinecone.io/integrations/overview)
+- `integrations/overview` — [Integrations overview](pages/integrations/overview.md) · [原文](https://docs.pinecone.io/integrations/overview)
+- `integrations/progress-agentic-rag` — [Progress Agentic RAG](pages/integrations/progress-agentic-rag.md) · [原文](https://docs.pinecone.io/integrations/progress-agentic-rag)
 - `integrations/pulumi` — [Pulumi](pages/integrations/pulumi.md) · [原文](https://docs.pinecone.io/integrations/pulumi)
 - `integrations/redpanda` — [Redpanda](pages/integrations/redpanda.md) · [原文](https://docs.pinecone.io/integrations/redpanda)
 - `integrations/snowflake` — [Snowflake](pages/integrations/snowflake.md) · [原文](https://docs.pinecone.io/integrations/snowflake)
+- `integrations/snowflake-openflow` — [Snowflake Openflow](pages/integrations/snowflake-openflow.md) · [原文](https://docs.pinecone.io/integrations/snowflake-openflow)
 - `integrations/streamnative` — [StreamNative](pages/integrations/streamnative.md) · [原文](https://docs.pinecone.io/integrations/streamnative)
 - `integrations/terraform` — [Terraform](pages/integrations/terraform.md) · [原文](https://docs.pinecone.io/integrations/terraform)
 - `integrations/traceloop` — [Traceloop](pages/integrations/traceloop.md) · [原文](https://docs.pinecone.io/integrations/traceloop)

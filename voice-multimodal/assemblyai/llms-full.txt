@@ -123,7 +123,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Streaming Endpoints and Data Zones](#streaming-endpoints-and-data-zones-docs-streaming-endpoints-and-data-zones-mdx)
 - [Rate limits](#rate-limits-docs-streaming-rate-limits-mdx)
 - [Self-Hosted Streaming](#self-hosted-streaming-docs-streaming-self-hosted-streaming-mdx)
-- [Universal-3.6 Pro on LiveKit](#universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx)
+- [Universal-3.6 Pro on LiveKit](#universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-6-pro-mdx)
 - [Universal-3.6 Pro on Pipecat](#universal-3-6-pro-on-pipecat-docs-voice-agents-pipecat-universal-3-5-pro-mdx)
 - [Universal-3.6 Pro on Vapi](#universal-3-6-pro-on-vapi-docs-voice-agents-vapi-mdx)
 - [Universal-3.6 Pro on Bolna](#universal-3-6-pro-on-bolna-docs-voice-agents-bolna-mdx)
@@ -1387,7 +1387,7 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
         <path d="M46.3409 183.984V138.234V92.4671V46.7178V0.950684H0.57373V46.7178V92.4671V138.234V183.984V229.751H46.3409H92.0902H137.857V183.984H92.0902H46.3409Z" fill="currentColor" />
       </svg>
     }
-    href="/voice-agents/livekit-universal-3-5-pro"
+    href="/voice-agents/livekit-universal-3-6-pro"
   >
     Use AssemblyAI with Livekit's voice agent orchestrator.
   
@@ -26783,7 +26783,7 @@ This measures the time from when the user actually finishes speaking (end of spe
   the user will use when the turn ends. AssemblyAI provides native endpointing
   in our models, but you can also use our outputs with other providers and their
   End-of-Turn models like
-  [LiveKit](/voice-agents/livekit-universal-3-5-pro),
+  [LiveKit](/voice-agents/livekit-universal-3-6-pro),
   [Pipecat](/voice-agents/pipecat-universal-3-5-pro),
   or [Vapi](https://vapi.ai).
 
@@ -26924,7 +26924,7 @@ Another benefit of doing a vibe-evals is that truth files don't have to be sourc
 
 **LLM as a judge:** An LLM can automatically identify differences between two transcriptions and pick a winner. However, be cautious: an LLM judge can be misled by outputs that look correct but contain subtle errors (such as translated code-switching segments that read well in English but don't reflect what was actually spoken). Always pair LLM-based judgments with spot-checking against the actual audio. For a structured LLM-based scoring approach, see [LASER](#laser-score-llm-based-asr-evaluation-rubric) above and [aai-cli](https://github.com/alexkroman/aai-cli) for an implementation.
 
-**Live A/B testing:** Set up your voice agent with different STT providers using integrations like [LiveKit](/voice-agents/livekit-universal-3-5-pro) where you can swap out providers. Serve transcripts from different providers and collect feedback — ask users to score agent interactions directly, or track indirect signals like support ticket complaints about the agent misunderstanding users.
+**Live A/B testing:** Set up your voice agent with different STT providers using integrations like [LiveKit](/voice-agents/livekit-universal-3-6-pro) where you can swap out providers. Serve transcripts from different providers and collect feedback — ask users to score agent interactions directly, or track indirect signals like support ticket complaints about the agent misunderstanding users.
 
 ## Conclusion
 
@@ -27246,12 +27246,12 @@ For deployment questions, image access, license issues, or to report bugs, conta
 
 ---
 
-<a id="universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-5-pro-mdx"></a>
+<a id="universal-3-6-pro-on-livekit-docs-voice-agents-livekit-universal-3-6-pro-mdx"></a>
 
 # Universal-3.6 Pro on LiveKit
 
-URL: https://www.assemblyai.com/docs/voice-agents/livekit-universal-3-5-pro
-Source: docs/voice-agents/livekit-universal-3-5-pro.mdx
+URL: https://www.assemblyai.com/docs/voice-agents/livekit-universal-3-6-pro
+Source: docs/voice-agents/livekit-universal-3-6-pro.mdx
 Navigation: Real-time STT > Integrations
 Description: Integrate AssemblyAI's Universal-3.6 Pro speech-to-text model into a LiveKit voice agent
 
@@ -27351,16 +27351,15 @@ async def entrypoint(ctx: agents.JobContext):
     session = AgentSession(
         stt=assemblyai.STT(
             model="universal-3-6-pro",
-            min_turn_silence=100,
-            max_turn_silence=1000,  # When turn_detection="stt", override plugin default of 100.
-            # If using MultilingualModel(), the plugin defaults (min: 100, max: 100) work well. Omit min_turn_silence and max_turn_silence above if preferred.
-            vad_threshold=0.3,  # Match Silero's activation_threshold
-            # interruption_delay=0,  # Optional: faster first partial (~300ms effective). Default: 500 (~800ms effective).
+            mode="balanced",  # With turn_detection="stt": applies min_turn_silence=128, max_turn_silence=1280.
+            # If using MultilingualModel(), omit mode so the plugin defaults (min: 100, max: 100) hand off transcripts fastest.
+            vad_threshold=0.2,  # AssemblyAI's default; keep equal to Silero's activation_threshold
+            # interruption_delay=0,  # Optional: faster first partial (~256ms effective). Default: 500 (~756ms effective).
         ),
         # llm=your_llm_plugin(),  # Add your LLM provider here
         # tts=your_tts_plugin(),  # Add your TTS provider here
         vad=silero.VAD.load(
-            activation_threshold=0.3,  # Match AssemblyAI's internal VAD threshold
+            activation_threshold=0.2,  # Match AssemblyAI's vad_threshold
         ),
         turn_handling=TurnHandlingOptions(
             turn_detection="stt",
@@ -27405,15 +27404,17 @@ Then test it in the LiveKit Playground:
 
 These are the key parameters to tune for LiveKit when using **Universal-3.6 Pro**:
 
-  The streaming model. Set it to `"universal-3-6-pro"`, our recommended
-  flagship model. The plugin still defaults to `"universal-3-5-pro"`, so pass
-  `model` explicitly.
+  The streaming model. The plugin defaults to `"universal-3-6-pro"`, our
+  recommended flagship model, on `livekit-agents` **1.8.4+**. Earlier 1.8.x
+  releases default to `"universal-3-5-pro"`, so pass `model` explicitly if you
+  pin an older version.
 
   Accuracy/latency preset: `"min_latency"`, `"balanced"`, or `"max_accuracy"`. Sets
-  the defaults for mode-dependent fields (`min_turn_silence`, `vad_threshold`,
-  `interruption_delay`, `previous_context_n_turns`); any value
-  you set explicitly still takes precedence. Leave unset for the server's default
-  preset. Connect-time only — cannot be changed with `update_options`. Universal-3.6 Pro and 3.5 Pro
+  the defaults for `min_turn_silence`, `max_turn_silence`, `vad_threshold`, and
+  `interruption_delay`; any value you set explicitly still takes precedence. The
+  server default is `"balanced"`. When `mode` is set, the plugin leaves
+  `min_turn_silence` and `max_turn_silence` unset so the preset's values apply.
+  Connect-time only — cannot be changed with `update_options`. Universal-3.6 Pro and 3.5 Pro
   only. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
 
   List of terms to boost recognition for. Applied automatically alongside any
@@ -27446,15 +27447,18 @@ These are the key parameters to tune for LiveKit when using **Universal-3.6 Pro*
 
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation to decide whether the turn has
-  ended.
+  ended. The plugin sends `100` when `mode` is unset; set `mode` to use the
+  preset's value instead.
 
   Maximum milliseconds of silence before the turn is forced to end, regardless
-  of punctuation. **The LiveKit plugin defaults to `100`.** Set to `1000` when
-  using `turn_detection="stt"`.
+  of punctuation. **When `mode` is unset, the LiveKit plugin defaults to `100`**
+  (matching `min_turn_silence`). When using `turn_detection="stt"`, set
+  `mode="balanced"` (which applies `1280`) or set `max_turn_silence=1280`
+  explicitly.
 
-  AssemblyAI's internal Silero VAD threshold. **Universal-3.6 Pro**
-  defaults to `0.3`, unlike Universal-Streaming's `0.4`. Align with LiveKit's
-  Silero `activation_threshold` for consistent behavior.
+  AssemblyAI's internal VAD onset threshold. **Universal-3.6 Pro** and
+  **Universal-3.5 Pro** default to `0.2` in every `mode`. Set LiveKit's Silero
+  `activation_threshold` to the same value for consistent behavior.
 
   Server-side noise suppression that isolates the primary speaker. `"near-field"`
   for close-talking mics, `"far-field"` for distant capture. Connect-time only.
@@ -27466,9 +27470,10 @@ These are the key parameters to tune for LiveKit when using **Universal-3.6 Pro*
   How soon the first partial transcript is emitted during a turn, in
   milliseconds. Range: `0`–`1000`. Lower values produce faster time to first
   token (TTFT) for barge-in and speculative inference; higher values produce
-  more confident first partials. The server adds a minimum of 300ms on top of
-  the configured value (`interruption_delay: 0` → ~300ms effective,
-  `interruption_delay: 500` → ~800ms effective). See
+  more confident first partials. Set by `mode` when unset: `0` on
+  `min_latency`, `500` otherwise. The server adds a fixed 256 ms on top of the
+  configured value (`interruption_delay: 0` → ~256 ms effective,
+  `interruption_delay: 500` → ~756 ms effective). See
   [Tuning early partial timing](/streaming/getting-started/transcribe-streaming-audio)
   for details.
 
@@ -27504,12 +27509,14 @@ In LiveKit, how your agent detects the end of a user's turn is controlled by the
 This means the `min_turn_silence` and `max_turn_silence` parameters you pass to AssemblyAI directly control when transcripts are emitted and when turns end. For more details on how this works, see [Configuring turn detection](/streaming/getting-started/transcribe-streaming-audio).
 
   When not explicitly provided, the default endpointing parameters for **Universal-3.6 Pro** differ on **LiveKit** versus using **AssemblyAI's API directly**:
-  - LiveKit AssemblyAI plugin defaults:
+  - LiveKit AssemblyAI plugin defaults (when `mode` is unset):
     - `min_turn_silence=100`
     - `max_turn_silence=100`
-  - AssemblyAI API defaults:
-    - `min_turn_silence=100`
-    - `max_turn_silence=1000`
+  - AssemblyAI API defaults (the `balanced` mode):
+    - `min_turn_silence=128`
+    - `max_turn_silence=1280`
+
+  Setting `mode` on the plugin applies that mode's values instead of the 100 ms defaults.
 
   However, you can always override these by passing your own preferred values explicitly. Misconfiguring these parameters is the most common cause of poor performance — read the recommended values per mode below.
 
@@ -27517,12 +27524,12 @@ This means the `min_turn_silence` and `max_turn_silence` parameters you pass to 
 
 **Universal-3.6 Pro's** endpointing is controlled by two AssemblyAI API parameters, `min_turn_silence` and `max_turn_silence`, that you pass to the STT plugin. These are separate from LiveKit's `endpointing.min_delay` and `endpointing.max_delay` (set inside `TurnHandlingOptions`).
 
-| Parameter             | AssemblyAI API default | LiveKit plugin default | Description                                                                                                                                                         |
-| --------------------- | ---------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `min_turn_silence`    | `100` ms               | `100` ms               | Silence before a speculative end-of-turn check. If terminal punctuation (`.` `?` `!`) is found, the turn ends. If not, a partial is emitted and the turn continues. |
-| `max_turn_silence`    | **`1000`** ms          | **`100`** ms           | Maximum silence before forcing the turn to end, regardless of punctuation.                                                                                          |
+| Parameter             | AssemblyAI API default (`balanced`) | LiveKit plugin default (`mode` unset) | Description                                                                                                                                                         |
+| --------------------- | ----------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `min_turn_silence`    | `128` ms                            | `100` ms                              | Silence before a speculative end-of-turn check. If terminal punctuation (`.` `?` `!`) is found, the turn ends. If not, a partial is emitted and the turn continues. |
+| `max_turn_silence`    | **`1280`** ms                       | **`100`** ms                          | Maximum silence before forcing the turn to end, regardless of punctuation.                                                                                          |
 
-The LiveKit plugin defaults are optimized for third-party turn detection models, where you want transcripts handed off as fast as possible. When using `turn_detection="stt"`, you should explicitly set `max_turn_silence=1000` if you'd like to mimic the behavior of streaming directly to the API without LiveKit.
+The LiveKit plugin defaults are optimized for third-party turn detection models, where you want transcripts handed off as fast as possible. When using `turn_detection="stt"`, set `mode="balanced"` (or `min_turn_silence=128` and `max_turn_silence=1280`) to match the behavior of streaming directly to the API without LiveKit.
 
   **Tuning endpointing parameters**
 
@@ -27539,7 +27546,7 @@ With `turn_detection="stt"`, AssemblyAI's built-in punctuation-based turn detect
 
 In this mode, we recommend explicitly setting `mode="balanced"` or `min_turn_silence=128` and `max_turn_silence=1280`.
 
-**The LiveKit plugin defaults to `min_turn_silence=100` and `max_turn_silence=100`, which might be too aggressive for STT-based turn detection.**
+**When `mode` is unset, the LiveKit plugin defaults to `min_turn_silence=100` and `max_turn_silence=100`, which might be too aggressive for STT-based turn detection.**
 
 **Recommended starting parameters** (set on `assemblyai.STT()`, not on `AgentSession`):
 
@@ -27575,10 +27582,10 @@ session = AgentSession(
         min_turn_silence=128,   # Silence (ms) before a speculative end-of-turn check
         max_turn_silence=1280,  # Max silence (ms) before forcing the turn to end
         # Or replace both with mode="balanced", which sets these values
-        vad_threshold=0.3,
+        vad_threshold=0.2,
     ),
     vad=silero.VAD.load(
-        activation_threshold=0.3,
+        activation_threshold=0.2,
     ),
 )
 ```
@@ -27589,7 +27596,7 @@ As a third-party turn detection model, LiveKit's [turn detector](https://docs.li
 
 Use `MultilingualModel()` rather than `EnglishModel()`, as **Universal-3.6 Pro** supports 32 languages. `MultilingualModel()` covers support for all of these languages.
 
-The LiveKit plugin defaults of `min_turn_silence=100` and `max_turn_silence=100` work well here, as **`max_turn_silence` is brought down to match `min_turn_silence` so that transcripts are handed off to the turn detection model as fast as possible.**
+The LiveKit plugin defaults of `min_turn_silence=100` and `max_turn_silence=100` work well here (leave `mode` unset so the plugin keeps them), as **`max_turn_silence` is brought down to match `min_turn_silence` so that transcripts are handed off to the turn detection model as fast as possible.**
 
 **`MultilingualModel` parameters** (set inside `TurnHandlingOptions` → `endpointing`, not on the STT plugin):
 
@@ -27620,10 +27627,10 @@ session = AgentSession(
     ),
     stt=assemblyai.STT(
         model="universal-3-6-pro",
-        vad_threshold=0.3,
+        vad_threshold=0.2,
     ),
     vad=silero.VAD.load(
-        activation_threshold=0.3,
+        activation_threshold=0.2,
     ),
 )
 ```
@@ -27634,7 +27641,7 @@ session = AgentSession(
 
   - Detect end of turn from speech and silence data alone using [Silero VAD](https://docs.livekit.io/agents/logic/turns/vad/).
   - Turn boundaries are determined purely by voice activity without semantic context.
-  - AssemblyAI's turn detection parameters still control when transcripts are emitted, but it is recommended to leave them at the plugin defaults (`min_turn_silence=100`, `max_turn_silence=100`) so transcripts arrive as quickly as possible.
+  - AssemblyAI's turn detection parameters still control when transcripts are emitted, but it is recommended to leave them at the plugin defaults (`min_turn_silence=100`, `max_turn_silence=100`, with `mode` unset) so transcripts arrive as quickly as possible.
 
 - **`manual`**:
   - Disable automatic turn detection entirely.
@@ -27651,20 +27658,20 @@ With `MultilingualModel()`, Silero VAD is **required**, as it is the only source
 
 #### Threshold alignment
 
-LiveKit's Silero VAD defaults to an `activation_threshold` of **0.5**. AssemblyAI's `vad_threshold` defaults to **0.3**. For best performance, we recommend setting both to **0.3**.
+LiveKit's Silero VAD defaults to an `activation_threshold` of **0.5**. AssemblyAI's `vad_threshold` defaults to **0.2** on Universal-3.6 Pro and Universal-3.5 Pro. For best performance, set Silero's `activation_threshold` to **0.2** to match.
 
 Both should be adjusted together to the same value to ensure accurate transcription and consistent barge-in thresholds.
 
-When the thresholds are mismatched, you get a dead zone: if Silero is at `0.5` and AssemblyAI is at `0.3`, AssemblyAI will be actively transcribing speech that LiveKit hasn't detected yet, delaying interruption. Keeping them aligned eliminates this.
+When the thresholds are mismatched, you get a dead zone: if Silero is at `0.5` and AssemblyAI is at `0.2`, AssemblyAI will be actively transcribing speech that LiveKit hasn't detected yet, delaying interruption. Keeping them aligned eliminates this.
 
 ```python
 session = AgentSession(
     stt=assemblyai.STT(
         model="universal-3-6-pro",
-        vad_threshold=0.3,         # AssemblyAI's internal VAD onset
+        vad_threshold=0.2,         # AssemblyAI's internal VAD onset (default)
     ),
     vad=silero.VAD.load(
-        activation_threshold=0.3,  # Match AssemblyAI's threshold
+        activation_threshold=0.2,  # Match AssemblyAI's threshold
     ),
 )
 ```
@@ -27731,18 +27738,18 @@ stt=assemblyai.STT(
 )
 ```
 
-`mode` is set at construction time (it can't be changed mid-session) and influences the defaults of `min_turn_silence`, `vad_threshold`, `interruption_delay`, and `previous_context_n_turns`. Any value you set explicitly still wins. Leave it unset to use the server's default preset. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
+`mode` is set at construction time (it can't be changed mid-session) and sets the defaults of `min_turn_silence`, `max_turn_silence`, `vad_threshold`, and `interruption_delay`. Any value you set explicitly still wins. The server default is `balanced`. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
 
 From there, fine-tune the individual levers:
 
 - **Endpointing delay (STT mode).** LiveKit's `endpointing.min_delay` is applied *on top of* AssemblyAI's own end-of-turn timing and adds up to `500ms` by default. Set `endpointing={"min_delay": 0}` when using `turn_detection="stt"` — see [STT-based turn detection](#stt-based-turn-detection-recommended).
 - **End-of-turn timing.** `min_turn_silence` (speculative check) and `max_turn_silence` (forced end) directly control how soon a turn ends. Lower is faster but risks splitting entities — see [Turn detection](#turn-detection).
-- **Time to first partial.** `interruption_delay` controls how soon the first partial is emitted, which drives faster barge-in and speculative inference. The server adds a minimum of `300ms` on top of the configured value.
+- **Time to first partial.** `interruption_delay` controls how soon the first partial is emitted, which drives faster barge-in and speculative inference. The server adds a fixed `256ms` on top of the configured value.
 
 ```python
 # Tune first-partial timing for faster barge-in
 stt.update_options(
-    interruption_delay=0,  # ~300ms effective TTFT
+    interruption_delay=0,  # ~256ms effective TTFT
 )
 ```
 
@@ -27755,8 +27762,8 @@ stt.update_options(
 | ------------------------------------------ | ---------------------------------------------------- | ----------------------- |
 | Network round trip                         | ~50 ms                                               | —                       |
 | Speech-to-text                             | ~200–300 ms                                          | model                   |
-| First partial (TTFT)                       | configured `interruption_delay` + ~300 ms server min | `interruption_delay`    |
-| End of turn (terminal punctuation found)   | `min_turn_silence` (default 100 ms)                  | `min_turn_silence`      |
+| First partial (TTFT)                       | configured `interruption_delay` + 256 ms             | `interruption_delay`    |
+| End of turn (terminal punctuation found)   | `min_turn_silence` (128 ms on `balanced`)            | `min_turn_silence`      |
 | End of turn (no punctuation, forced)       | up to `max_turn_silence`                             | `max_turn_silence`      |
 | LiveKit endpointing (STT mode)             | + `min_delay` (set to `0`)                           | `endpointing.min_delay` |
 
@@ -27912,12 +27919,16 @@ LiveKit Cloud users should reach for adaptive interruption handling first. Self-
 LiveKit Agents v1.5.0 introduced [adaptive interruption handling](https://docs.livekit.io/agents/logic/turns/adaptive-interruption-handling/), a server-side model that classifies overlapping speech as a real interrupt or a backchannel. On a false interrupt the agent's TTS resumes from where it left off. No re-generation is needed. The feature is recommended for LiveKit Cloud users and is included on all Cloud plans.
 
 ```python
+from livekit.agents import AgentSession, TurnHandlingOptions
+
 session = AgentSession(
     stt=assemblyai.STT(model="universal-3-6-pro"),
     # llm=your_llm_plugin(),
     # tts=your_tts_plugin(),
     vad=silero.VAD.load(),
-    interruption={"mode": "adaptive"},  # default in v1.5.0+
+    turn_handling=TurnHandlingOptions(
+        interruption={"mode": "adaptive"},  # omit "mode" to let the session auto-select
+    ),
 )
 ```
 
@@ -28145,9 +28156,9 @@ stt.update_options(
     max_turn_silence=3000,  # Increase for entity dictation
 )
 
-# Later, reset to default
+# Later, reset to the balanced default
 stt.update_options(
-    max_turn_silence=1000,
+    max_turn_silence=1280,
 )
 ```
 
@@ -28166,7 +28177,7 @@ For more information, see [Updating configuration mid-stream](/streaming/updatin
 | Issue                                     | Cause                                                     | Solution                                                                                             |
 | ----------------------------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
 | Extra latency with `turn_detection="stt"` | LiveKit's endpointing `min_delay` is additive in STT mode | Set `endpointing={"min_delay": 0}` inside `TurnHandlingOptions` on `AgentSession`                    |
-| No interruption handling                  | Missing VAD                                               | Ensure `vad=silero.VAD` is set, with `activation_threshold` equal to `vad_threshold` (default `0.3`) |
+| No interruption handling                  | Missing VAD                                               | Ensure `vad=silero.VAD` is set, with `activation_threshold` equal to `vad_threshold` (default `0.2`) |
 | Turn over-segmentation                    | `min_turn_silence` too low                                | Increase from `100` to `200`–`500`                                                                   |
 | Entities split across turns               | `max_turn_silence` too low                                | Increase `max_turn_silence` (e.g., `1500`–`3500`)                                                    |
 | Latency on non-terminal utterances        | `max_turn_silence` too high                               | Lower `max_turn_silence`                                                                             |
@@ -28181,8 +28192,8 @@ To balance accuracy, latency, turn-taking, and interruption handling, map your c
 
 | Today | Recommended on AssemblyAI |
 | --- | --- |
-| Your STT provider's own end-of-turn model (e.g. Deepgram endpointing) | `turn_detection="stt"` with `min_turn_silence=100`, `max_turn_silence=1000`, `endpointing={"min_delay": 0}`. AssemblyAI's punctuation-based end-of-turn replaces it. |
-| Silence / VAD only | Prefer `turn_detection="stt"` for semantic endpointing, or `turn_detection="vad"` to stay silence-only. Align Silero `activation_threshold` and `vad_threshold` at `0.3`. |
+| Your STT provider's own end-of-turn model (e.g. Deepgram endpointing) | `turn_detection="stt"` with `mode="balanced"` (`min_turn_silence=128`, `max_turn_silence=1280`), `endpointing={"min_delay": 0}`. AssemblyAI's punctuation-based end-of-turn replaces it. |
+| Silence / VAD only | Prefer `turn_detection="stt"` for semantic endpointing, or `turn_detection="vad"` to stay silence-only. Align Silero `activation_threshold` and `vad_threshold` at `0.2`. |
 | LiveKit's turn-detector model | `turn_detection=MultilingualModel()`, keep the plugin defaults (`min_turn_silence=100`, `max_turn_silence=100`), set `endpointing={"min_delay": 0.5, "max_delay": 3.0}`, and keep Silero VAD (required). |
 
 ### Which model and settings are you migrating from?
@@ -28200,7 +28211,7 @@ To balance accuracy, latency, turn-taking, and interruption handling, map your c
 
 | Today | Recommended |
 | --- | --- |
-| Silero VAD | Keep it; set `activation_threshold=0.3` to match `vad_threshold` |
+| Silero VAD | Keep it; set `activation_threshold=0.2` to match `vad_threshold` |
 | Adaptive vs. VAD-based barge-in | LiveKit Cloud → [adaptive interruption handling](#recommended-adaptive-interruption-handling); self-hosted → the [self-hosted filters](#self-hosted-alternative) |
 | Telephony / SIP routing | `sample_rate=8000` and `encoding="pcm_mulaw"` for 8 kHz telephony |
 | Client-side noise cancellation | Drop it; use server-side [Voice Focus](#voice-focus) instead |
@@ -28215,8 +28226,8 @@ If you're coming from AssemblyAI's standard streaming model:
 | Model                              | `assemblyai.STT()`                         | `assemblyai.STT(model="universal-3-6-pro")`                                                      |
 | Turn detection                     | `turn_detection="stt"` or `EnglishModel()` | `turn_detection="stt"` or `MultilingualModel()`                                          |
 | VAD                                | Optional                                   | Set `vad=silero.VAD.load()` to match `vad_threshold`                                     |
-| `min_turn_silence`                 | `400` (old default)                        | `100` (new default)                                                                      |
-| `max_turn_silence`                 | `1280` (old default)                       | `1000` (API default) or `100` (with 3rd-party turn detector)                             |
+| `min_turn_silence`                 | `400` (old default)                        | `128` (API default, `balanced`) or `100` (plugin default without `mode`)                 |
+| `max_turn_silence`                 | `1280` (old default)                       | `1280` (API default, `balanced`) or `100` (plugin default, for a 3rd-party turn detector) |
 | `end_of_turn_confidence_threshold` | Configurable                               | **Not applicable**: **Universal-3.6 Pro** uses punctuation-based turn detection |
 | `endpointing.min_delay` (formerly `min_endpointing_delay`) | Default `0.5`                              | Set to `0` inside `TurnHandlingOptions` when using `turn_detection="stt"`                |
 
@@ -34814,7 +34825,7 @@ For a cascading architecture, AssemblyAI has the best speech-to-text model. For 
 
 **LiveKit Agents (recommended)**
 
-LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [Universal-3.6 Pro on LiveKit](/voice-agents/livekit-universal-3-5-pro) for a full guide.
+LiveKit provides the fastest path to a working voice agent with AssemblyAI. See [Universal-3.6 Pro on LiveKit](/voice-agents/livekit-universal-3-6-pro) for a full guide.
 
 ```python
 from livekit.agents import AgentSession
@@ -34990,7 +35001,7 @@ Users often produce short backchannel utterances ("mhm", "yeah", "um", "okay") w
 The fix is to gate barge-in on each `Turn` event during agent speech: suppress the interrupt when the transcript is short or every token is a known backchannel. Implementation depends on your stack:
 
 - **Voice Agent API**: semantic interruption classification is built in. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions).
-- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-universal-3-5-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
+- **LiveKit**: LiveKit Cloud users should enable [adaptive interruption handling](/voice-agents/livekit-universal-3-6-pro#interruption-handling). Self-hosted deployments use the two custom filters in the same section.
 - **Direct WebSocket**: see [Interruption handling](/voice-agents/universal-3-5-pro-streaming-api#interruption-handling) on the Universal-3.5 Pro Streaming API page for the combined word-count + filler-word filter.
 
 ### VAD threshold alignment
@@ -35319,7 +35330,7 @@ For a complete evaluation framework including accuracy metrics, latency metrics,
 - [Message sequence](/streaming/getting-started/transcribe-streaming-audio)
 - [Streaming diarization and multichannel](/streaming/label-speakers-and-separate-channels)
 - [Supported languages](/streaming/getting-started/transcribe-streaming-audio)
-- [LiveKit integration](/voice-agents/livekit-universal-3-5-pro)
+- [LiveKit integration](/voice-agents/livekit-universal-3-6-pro)
 - [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)
 - [API Playground](https://www.assemblyai.com/playground/streaming)
 - [Changelog](https://www.assemblyai.com/changelog)
@@ -53056,7 +53067,7 @@ To create or update the Cekura agent through [Cekura's API](https://docs.cekura.
 ```json
 {
   "transcript_provider": "assemblyai",
-  "assistant_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+  "assistant_id": "agent_7ad24396-b822-4dca-871a-be9cc4781cf9",
   "assemblyai_api_key": "<your-assemblyai-api-key>",
   "assemblyai_data": {
     "region": "us"
@@ -80022,7 +80033,7 @@ def on_message(ws, message):
 
   The `BACKCHANNELS` set is domain-customizable. "yes" and "no" are deliberately excluded because they often represent genuine confirmations in booking or IVR scenarios. Edit the set for your use case. `MIN_WORDS = 2` is a reasonable default. Raise it if you see frequent two-word filler ("uh okay", "yeah right") slipping through.
 
-  If you're building on LiveKit, prefer LiveKit's adaptive interruption handling. See [LiveKit > Interruption handling](/voice-agents/livekit-universal-3-5-pro#interruption-handling). The strategy on this page is the equivalent for direct-WebSocket integrations.
+  If you're building on LiveKit, prefer LiveKit's adaptive interruption handling. See [LiveKit > Interruption handling](/voice-agents/livekit-universal-3-6-pro#interruption-handling). The strategy on this page is the equivalent for direct-WebSocket integrations.
 
 ## Recommended configuration
 
@@ -80057,7 +80068,7 @@ For cross-cutting topics like dynamic configuration updates, scaling, latency bu
 
 - [Universal-3.5 Pro Streaming overview](/streaming/getting-started/transcribe-streaming-audio)
 - [Universal-3.5 Pro message sequence](/streaming/getting-started/transcribe-streaming-audio)
-- [LiveKit integration](/voice-agents/livekit-universal-3-5-pro)
+- [LiveKit integration](/voice-agents/livekit-universal-3-6-pro)
 - [Pipecat integration](/voice-agents/pipecat-universal-3-5-pro)
 - [Voice agent best practices](/voice-agents/best-practices)
 

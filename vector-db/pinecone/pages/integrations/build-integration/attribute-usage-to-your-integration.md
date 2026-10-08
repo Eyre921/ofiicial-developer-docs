@@ -4,24 +4,26 @@ source: https://docs.pinecone.io/integrations/build-integration/attribute-usage-
 path: integrations/build-integration/attribute-usage-to-your-integration
 ---
 
-Attribute Pinecone SDK and REST usage to your integration with source tags and User-Agent values so support and analytics can trace traffic to your product.
+Learn how to set a source tag in the Pinecone SDKs or the API User-Agent header so that usage from your integration is attributed to it.
 
-Once you have created your integration with Pinecone, specify a **source tag** when instantiating clients with Pinecone SDKs, or pass a source tag as part of the `User-Agent` header when using the API directly.
+After you create your integration, specify a source tag when you create a client with a Pinecone SDK. If you call the API directly, pass the source tag in the `User-Agent` header.
 
 <Note>
-  Anyone can create an integration, but [becoming an official Pinecone partner](/integrations/build-integration/integration-ecosystem) can help accelerate your go-to-market and add value to your customers.
+  Anyone can create an integration. To apply to become an official Pinecone partner, see [Integration ecosystem](/integrations/build-integration/integration-ecosystem).
 </Note>
 
-### Source tag naming conventions
+## Source tag naming conventions
 
 Your source tag must follow these conventions:
 
 * Clearly identify your integration.
 * Use only lowercase letters, numbers, underscores, and colons.
 
-For example, for an integration called "New Framework", `"new_framework"` is valid, but `"new framework"` and `"New_framework"` aren't valid.
+For example, for an integration called "New Framework", `"new_framework"` is valid, but `"new framework"` and `"New_framework"` aren't.
 
-### Specify a source tag
+## Specify a source tag
+
+Source tags require these minimum SDK versions:
 
 | Pinecone SDK | Required version |
 | - | - |
@@ -29,6 +31,8 @@ For example, for an integration called "New Framework", `"new_framework"` is val
 | [Node.js](/reference/sdks/node/overview) | v2.2.0+ |
 | [Java](/reference/sdks/java/overview) | v1.0.0+ |
 | [Go](/reference/sdks/go/overview) | v0.4.1+ |
+
+Pass the source tag when you create the client, or in the `User-Agent` header with curl:
 
 <CodeGroup>
   ```python Python theme={null}

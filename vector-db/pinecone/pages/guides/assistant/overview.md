@@ -57,7 +57,7 @@ These steps outline the Pinecone Assistant workflow, which you can follow in the
 5. [Add instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant) to tailor your assistant's behavior and responses to specific use cases or requirements. [Filter chat by file metadata](/guides/assistant/chat-with-assistant#filter-chat-with-metadata) to reduce latency and improve the accuracy of responses.
 6. [Retrieve context snippets](/guides/assistant/retrieve-context-snippets) to understand what relevant data snippets Pinecone Assistant is using to generate responses. You can use the retrieved snippets with your own LLM, RAG application, or agentic workflow.
 
-To learn how Pinecone Assistant processes files and generates answers, see [Assistant architecture](/reference/architecture/assistant-architecture).
+To try these steps with the Python or Node.js SDK, see the [SDK quickstart](/guides/assistant/quickstart/sdk-quickstart). To learn how Pinecone Assistant processes files and generates answers, see [Assistant architecture](/reference/architecture/assistant-architecture).
 
 ## Resources
 

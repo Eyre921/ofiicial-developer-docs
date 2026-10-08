@@ -6,41 +6,39 @@ path: integrations/hugging-face-inference-endpoints
 
 Generate embeddings with Hugging Face Inference Endpoints and index them in Pinecone for semantic search, RAG, and transformer model deployment.
 
-Hugging Face Inference Endpoints offers a secure production solution to easily deploy any Hugging Face Transformers, Sentence-Transformers and Diffusion models from the Hub on dedicated and autoscaling infrastructure managed by Hugging Face.
+Hugging Face Inference Endpoints offers a secure production solution for deploying any Hugging Face Transformers, Sentence-Transformers, and Diffusion models from the Hub on dedicated, autoscaling infrastructure managed by Hugging Face.
 
-Coupled with Pinecone, you can use Hugging Face to generate and index high-quality vector embeddings with ease.
+With Pinecone, you can use Hugging Face to generate and index vector embeddings.
 
 <PrimarySecondaryCTA />
 
 ## Setup guide
 
-Hugging Face Inference Endpoints allows access to straightforward model inference. Coupled with Pinecone we can generate and index high-quality vector embeddings with ease.
-
-Let's get started by initializing an Inference Endpoint for generating vector embeddings.
+Hugging Face Inference Endpoints provides access to model inference. In this guide, you create an Inference Endpoint that generates vector embeddings, index the embeddings in Pinecone, and search them.
 
 ### Create an endpoint
 
-We start by heading over to the [Hugging Face Inference Endpoints homepage](https://ui.endpoints.huggingface.co/endpoints) and signing up for an account if needed. After, we should find ourselves on this page:
+Go to the [Hugging Face Inference Endpoints homepage](https://ui.endpoints.huggingface.co/endpoints) and sign up for an account if needed. You should then see this page:
 
 <img alt="endpoints 0" />
 
-We click on **Create new endpoint**, choose a model repository (eg name of the model), endpoint name (this can be anything), and select a cloud environment. Before moving on it's *very important* that we set the **Task** to **Sentence Embeddings** (found within the *Advanced configuration* settings).
+Click **Create new endpoint**, choose a model repository (e.g., the name of the model) and an endpoint name (this can be anything), and select a cloud environment. Before you move on, make sure you set **Task** to **Sentence Embeddings** (in the **Advanced configuration** settings).
 
 <img alt="endpoints 1" />
 
 <img alt="endpoints 2" />
 
-Other important options include the *Instance Type*, by default this uses CPU which is cheaper but also slower. For faster processing we need a GPU instance. And finally, we set our privacy setting near the end of the page.
+Another important option is **Instance Type**. By default, this uses a CPU, which is cheaper but also slower. For faster processing, you need a GPU instance. Finally, set your privacy setting near the end of the page.
 
-After setting our options we can click **Create Endpoint** at the bottom of the page. This action should take use to the next page where we will see the current status of our endpoint.
+After you set your options, click **Create Endpoint** at the bottom of the page. This takes you to the next page, where you can see the current status of your endpoint.
 
 <img alt="endpoints 3" />
 
-Once the status has moved from **Building** to **Running** (this can take some time), we're ready to begin creating embeddings with it.
+Once the status has moved from **Building** to **Running** (this can take some time), you're ready to create embeddings with it.
 
-## Create embeddings
+### Create embeddings
 
-Each endpoint is given an **Endpoint URL**, it can be found on the endpoint **Overview** page. We need to assign this endpoint URL to the `endpoint_url` variable.
+Each endpoint has an **Endpoint URL**, which you can find on the endpoint **Overview** page. Assign this endpoint URL to the `endpoint` variable.
 
 <img alt="endpoints 4" />
 
@@ -48,7 +46,7 @@ Each endpoint is given an **Endpoint URL**, it can be found on the endpoint **Ov
 endpoint = "<ENDPOINT_URL>"
 ```
 
-We will also need the organization API token, we find this via the organization settings on Hugging Face (`https://huggingface.co/organizations/<ORG_NAME>/settings/profile`). This is assigned to the `api_org` variable.
+You also need the organization API token, which you can find in the organization settings on Hugging Face (`https://huggingface.co/organizations/<ORG_NAME>/settings/profile`). Assign it to the `api_org` variable.
 
 <img alt="endpoints 5" />
 
@@ -56,7 +54,7 @@ We will also need the organization API token, we find this via the organization 
 api_org = "<API_ORG_TOKEN>"
 ```
 
-Now we're ready to create embeddings via Inference Endpoints. Let's start with a toy example.
+Now you're ready to create embeddings with Inference Endpoints. Start with a small example.
 
 ```Python Python theme={null}
 import requests
@@ -75,7 +73,7 @@ res = requests.post(
 )
 ```
 
-We should see a `200` response.
+You should see a `200` response.
 
 ```Python Python theme={null}
 res
@@ -85,7 +83,7 @@ res
 <Response [200]>
 ```
 
-Inside the response we should find two embeddings...
+The response should contain two embeddings.
 
 ```Python Python theme={null}
 len(res.json()['embeddings'])
@@ -95,7 +93,7 @@ len(res.json()['embeddings'])
 2
 ```
 
-We can also see the dimensionality of our embeddings like so:
+You can also check the dimensionality of your embeddings.
 
 ```Python Python theme={null}
 dim = len(res.json()['embeddings'][0])
@@ -106,7 +104,7 @@ dim
 768
 ```
 
-We will need more than two items to search through, so let's download a larger dataset. For this we will use Hugging Face datasets.
+You need more than two items to search through, so download a larger dataset with Hugging Face Datasets.
 
 ```Python Python theme={null}
 from datasets import load_dataset
@@ -127,7 +125,7 @@ Dataset({
 })
 ```
 
-SNLI contains 550K sentence pairs, many of these include duplicate items so we will take just one set of these (the *hypothesis*) and deduplicate them.
+SNLI contains 550K sentence pairs, and many of them include duplicate items, so take just one set of these (the `hypothesis` column) and deduplicate it.
 
 ```Python theme={null}
 passages = list(set(snli['hypothesis']))
@@ -138,15 +136,15 @@ len(passages)
 480042
 ```
 
-We will drop to 50K sentences so that the example is quick to run, if you have time, feel free to keep the full 480K.
+To keep the example quick to run, reduce the set to 50K sentences. If you have time, you can keep the full 480K.
 
 ```Python Python theme={null}
 passages = passages[:50_000]
 ```
 
-## Create a Pinecone index
+### Create an index
 
-With our endpoint and dataset ready, all that we're missing is a vector database. For this, we need to initialize our connection to Pinecone, this requires a [free API key](https://app.pinecone.io/).
+With your endpoint and dataset ready, all that's missing is a Pinecone index. First, initialize your connection to Pinecone, which requires a [free API key](https://app.pinecone.io/).
 
 ```Python Python theme={null}
 import pinecone
@@ -156,7 +154,7 @@ pinecone.init(api_key="YOUR_API_KEY", environment="YOUR_ENVIRONMENT")
 
 ```
 
-Now we create a new index called `'hf-endpoints'`, the name isn't important *but* the `dimension` must align to our endpoint model output dimensionality (we found this in `dim` above) and the model metric (typically `cosine` is okay, but not for all models).
+Now create a new index called `'hf-endpoints'`. You can use any name. The `dimension` must match your endpoint model's output dimensionality (which you found in `dim` earlier), and the metric must match the model (`cosine` typically works, but not for all models).
 
 ```Python Python theme={null}
 index_name = 'hf-endpoints'
@@ -174,9 +172,9 @@ if index_name not in pinecone.list_indexes():
 index = pinecone.Index(index_name)
 ```
 
-## Create and index embeddings
+### Store the embeddings
 
-Now we have all of our components ready; endpoints, dataset, and Pinecone. Let's go ahead and create our dataset embeddings and index them within Pinecone.
+With the endpoint, dataset, and Pinecone index ready, create embeddings for the dataset and index them in Pinecone.
 
 ```Python Python theme={null}
 from tqdm.auto import tqdm
@@ -218,7 +216,9 @@ index.describe_index_stats()
  'total_vector_count': 50000}
 ```
 
-With everything indexed we can begin querying. We will take a few examples from the *premise* column of the dataset.
+### Run a semantic search
+
+With everything indexed, you can begin querying. Use a few examples from the `premise` column of the dataset as queries.
 
 ```Python Python theme={null}
 query = snli['premise'][0]
@@ -244,7 +244,7 @@ person rides horse
 A woman riding a horse jumps over a bar.
 ```
 
-These look good, let's try a couple more examples.
+These results are relevant. Try a couple more examples.
 
 ```Python Python theme={null}
 query = snli['premise'][100]
@@ -270,7 +270,7 @@ The woman walked across the street.
 A woman walking on the street with a monkey on her back.
 ```
 
-And one more...
+Try one more example.
 
 ```Python Python theme={null}
 query = snli['premise'][200]
@@ -296,9 +296,7 @@ Group of bike riders stopped in the street.
 There are bicycles outside.
 ```
 
-All of these results look excellent. If you aren't planning on running your endpoint and vector DB beyond this tutorial, you can shut down both.
-
-## Clean up
+### Clean up
 
 Shut down the endpoint by navigating to the Inference Endpoints **Overview** page and selecting **Delete endpoint**. Delete the Pinecone index with:
 

@@ -4,10 +4,10 @@ source: https://docs.pinecone.io/integrations/streamnative
 path: integrations/streamnative
 ---
 
-Pipe Apache Pulsar topics to Pinecone via the StreamNative sink connector for real-time vector ingestion, event streaming, and Kafka-compatible RAG.
+Use the StreamNative Pinecone sink connector to write messages from Apache Pulsar topics to a Pinecone index for real-time vector ingestion.
 
-Founded by the original developers of Apache Pulsar and Apache BookKeeper, [StreamNative](https://streamnative.io) provides StreamNative Cloud, offering Apache Pulsar as a Service. The company also supports on-premise Pulsar deployments and related commercial support. StreamNative Cloud provides a scalable, resilient, and secure messaging and event streaming platform for enterprises. Additionally, StreamNative offers Kafka compatibility, enabling seamless integration with existing Kafka-based systems.
+[StreamNative](https://streamnative.io) provides StreamNative Cloud, a messaging and event streaming platform that offers Apache Pulsar as a Service. The Pinecone integration with StreamNative connects a Pulsar topic to Pinecone. The sink connector takes in messages and, if they're in the correct format, writes them to a Pinecone index.
 
-The Pinecone integration with StreamNative allows access to pinecone.io with a Pulsar topic. The sink connector takes in messages and writes them if they're in a proper format to a Pinecone index.
+StreamNative was founded by the original developers of Apache Pulsar and Apache BookKeeper. It also supports on-premises Pulsar deployments with commercial support, and offers Kafka compatibility for integrating with existing Kafka-based systems.
 
 <PrimarySecondaryCTA />

@@ -1,12 +1,12 @@
 ---
-title: "Agentic IDEs and CLIs"
+title: "AI coding tools"
 source: https://docs.pinecone.io/integrations/ai-coding-tools
 path: integrations/ai-coding-tools
 ---
 
-Use Pinecone with agentic IDEs and CLIs like Claude Code, Codex, Gemini CLI, and Cursor via MCP server, plugins, and agent skills for vector search.
+Use Pinecone with AI coding tools like Claude Code, Codex, Gemini CLI, and Cursor through the Pinecone MCP server, plugins, and agent skills.
 
-Pinecone provides official plugins, extensions, and agent skills for agentic IDEs and CLIs. Use the Pinecone [MCP server](/guides/operations/mcp-server) (Model Context Protocol) and built-in skills to manage vector database indexes, run semantic search, and build RAG applications — all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
+Pinecone provides official plugins, extensions, and agent skills for AI coding tools. Use the Pinecone [MCP server](/guides/operations/mcp-server) (Model Context Protocol) and built-in skills to manage indexes, run semantic search, and build RAG applications, all through natural language in your development environment. For direct, scriptable access from the same terminal, the [Pinecone CLI](/reference/cli/quickstart) (`pc`) lets you manage indexes, namespaces, and records without an agent in the loop.
 
 ## Choose your tool
 
@@ -36,16 +36,16 @@ Pinecone provides official plugins, extensions, and agent skills for agentic IDE
   </Card>
 
   <Card title="Pinecone CLI" icon="rectangle-terminal" href="/reference/cli/quickstart">
-    Direct terminal access to Pinecone — manage indexes, namespaces, and records with `pc` commands.
+    Direct terminal access to Pinecone. Manage indexes, namespaces, and records with `pc` commands.
   </Card>
 </CardGroup>
 
-## Which tool should I use?
+## Tool recommendations
 
-| If you use... | Install... | Command |
+| Your tool | What to install | Command |
 | - | - | - |
 | [Claude Code](https://claude.ai/code) | [Pinecone plugin for Claude Code](/integrations/claude-code) | `claude plugin install pinecone` |
-| [Codex](https://developers.openai.com/codex) | [Pinecone plugin for Codex](/integrations/codex) | See [install steps](/integrations/codex#install-the-plugin) |
+| [Codex](https://developers.openai.com/codex) | [Pinecone plugin for Codex](/integrations/codex) | See [install steps](/integrations/codex#installation) |
 | [Gemini CLI](https://github.com/google-gemini/gemini-cli) | [Pinecone Gemini CLI extension](/integrations/gemini-cli) | `gemini extensions install https://github.com/pinecone-io/gemini-cli-extension` |
 | [Cursor](https://www.cursor.com/) | [Pinecone Cursor plugin](/integrations/cursor) | `/add-plugin pinecone` |
 | [GitHub Copilot](https://github.com/features/copilot) or another agentic IDE | [Pinecone Agent Skills](/integrations/agent-skills) | `npx skills add pinecone-io/skills` |
@@ -60,14 +60,14 @@ Each tool provides access to the following Pinecone skills:
 
 | Skill | Description |
 | - | - |
-| **quickstart** | Step-by-step onboarding — create an index, upload data, and run your first search. |
-| **query** | Search integrated indexes using natural language text via the Pinecone MCP. |
-| **assistant** | Create, manage, and chat with Pinecone Assistants for document Q\&A with citations. |
-| **cli** | Use the Pinecone CLI for terminal-based index and vector management. |
-| **full-text-search** | Create, ingest into, and query a Pinecone full-text-search (FTS) index. |
-| **n8n** | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
-| **mcp** | Reference for all available Pinecone MCP server tools and their parameters. |
-| **pinecone-docs** | Curated links to official Pinecone documentation, organized by topic. |
-| **help** | Overview of all skills and what you need to get started. |
+| `quickstart` | Step-by-step onboarding that walks you through creating an index, uploading data, and running your first search. |
+| `query` | Search integrated indexes using natural language text via the Pinecone MCP. |
+| `assistant` | Create, manage, and chat with Pinecone Assistants for document Q\&A with citations. |
+| `cli` | Use the Pinecone CLI for terminal-based index and vector management. |
+| `full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. |
+| `n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
+| `mcp` | Reference for all available Pinecone MCP server tools and their parameters. |
+| `pinecone-docs` | Curated links to official Pinecone documentation, organized by topic. |
+| `help` | Overview of all skills and what you need to get started. |
 
 In addition, the [Pinecone MCP server](/guides/operations/mcp-server) provides tools for listing indexes, creating indexes, upserting records, searching, reranking, and more.

@@ -255,5 +255,5 @@ In addition to the general testing guidance, follow the guidelines for the produ
 - [Invoicing](https://docs.stripe.com/invoicing/integration/testing.md): Test webhook notifications, payment failures, and other scenarios.
 - [Connect](https://docs.stripe.com/connect/testing.md): Create [test accounts](https://docs.stripe.com/connect/testing.md?accounts-namespace=v2#creating-accounts) and use them for [verification testing](https://docs.stripe.com/connect/testing-verification.md).
 - [Terminal](https://docs.stripe.com/terminal/references/testing.md): Test [simulated reader updates](https://docs.stripe.com/terminal/references/testing.md?terminal-card-present-integration=terminal#simulated-reader-updates).
-- [Payment Intents](https://docs.stripe.com/payments/quickstart-payment-intents.md#test-payment): Create PaymentIntents and use test card numbers to simulate payments.
+- [Payment Intents](https://docs.stripe.com/payments/accept-a-payment-intent-first.md#web-test-the-integration): Create PaymentIntents and use test card numbers to simulate payments.
 

@@ -4,28 +4,28 @@ source: https://docs.pinecone.io/integrations/langchain
 path: integrations/langchain
 ---
 
-Build LangChain RAG apps, agents, and chatbots on Pinecone: manage embeddings, vector stores, retrievers, and chains for LLM-powered search.
+Use Pinecone with LangChain to build RAG apps, agents, and chatbots, and manage embeddings, vector stores, retrievers, and chains for LLM-powered search.
 
-LangChain provides modules for managing and optimizing the use of large language models (LLMs) in applications. Its core philosophy is to facilitate data-aware applications where the language model interacts with other data sources and its environment. This framework consists of several parts that simplify the entire application lifecycle:
+LangChain provides modules for managing and optimizing the use of large language models (LLMs) in applications. Its core philosophy is to support data-aware applications where the language model interacts with other data sources and its environment. The framework includes several parts that simplify the application lifecycle:
 
-* Write your applications in LangChain/LangChain.js. Get started quickly by using Templates for reference.
-* Use LangSmith to inspect, test, and monitor your chains to constantly improve and deploy with confidence.
+* Write your applications in LangChain or LangChain.js. Use Templates as a reference to get started.
+* Use LangSmith to inspect, test, and monitor your chains so you can keep improving them and deploy with confidence.
 * Turn any chain into an API with LangServe.
 
-By integrating Pinecone with LangChain, you can add knowledge to LLMs via retrieval augmented generation (RAG), greatly enhancing LLM ability for autonomous agents, chatbots, question-answering, and multi-agent systems.
+By integrating Pinecone with LangChain, you can add knowledge to LLMs with retrieval-augmented generation (RAG), which improves what LLMs can do in autonomous agents, chatbots, question-answering, and multi-agent systems.
 
 <PrimarySecondaryCTA />
 
 ## Setup guide
 
-This guide shows you how to integrate Pinecone, a high-performance vector database, with [LangChain](https://www.langchain.com/), a framework for building applications powered by large language models (LLMs).
+This guide shows you how to integrate Pinecone Database with [LangChain](https://www.langchain.com/), a framework for building applications powered by large language models (LLMs).
 
-Pinecone enables developers to build scalable, real-time recommendation and search systems based on vector similarity search. LangChain, on the other hand, provides modules for managing and optimizing the use of language models in applications. Its core philosophy is to facilitate data-aware applications where the language model interacts with other data sources and its environment.
+Pinecone lets you build scalable, real-time recommendation and search systems based on vector similarity search. LangChain provides modules for managing and optimizing the use of language models in applications. Its core philosophy is to support data-aware applications where the language model interacts with other data sources and its environment.
 
-By integrating Pinecone with LangChain, you can add knowledge to LLMs via [Retrieval Augmented Generation (RAG)](https://www.pinecone.io/learn/series/rag/), greatly enhancing LLM ability for autonomous agents, chatbots, question-answering, and multi-agent systems.
+By integrating Pinecone with LangChain, you can add knowledge to LLMs with [retrieval-augmented generation (RAG)](https://www.pinecone.io/learn/series/rag/), which improves what LLMs can do in autonomous agents, chatbots, question-answering, and multi-agent systems.
 
 <Note>
-  This guide demonstrates only one way out of many that you can use LangChain and Pinecone together. For additional examples, see:
+  This guide shows one of many ways to use LangChain and Pinecone together. For more examples, see the following:
 
   * [LangChain AI Handbook](https://www.pinecone.io/learn/series/langchain/)
   * [Retrieval Augmentation for LLMs](https://github.com/pinecone-io/examples/blob/master/learn/generation/langchain/handbook/05-langchain-retrieval-augmentation.ipynb)
@@ -34,11 +34,11 @@ By integrating Pinecone with LangChain, you can add knowledge to LLMs via [Retri
 
 ## Key concepts
 
-The `PineconeVectorStore` class provided by LangChain can be used to interact with Pinecone indexes. It's important to remember that you must have an existing Pinecone index before you can create a `PineconeVectorStore` object.
+The `PineconeVectorStore` class from LangChain lets you interact with Pinecone indexes. You must have an existing Pinecone index before you can create a `PineconeVectorStore` object.
 
-### Initializing a vector store
+### Initialize a vector store
 
-To initialize a `PineconeVectorStore` object, you must provide the name of the Pinecone index and an `Embeddings` object initialized through LangChain. There are two general approaches to initializing a `PineconeVectorStore` object:
+To initialize a `PineconeVectorStore` object, you must provide the name of the Pinecone index and an `Embeddings` object initialized through LangChain. You can initialize a `PineconeVectorStore` object in two ways:
 
 1. Initialize without adding records:
 
@@ -62,7 +62,7 @@ You can also use the `from_existing_index` method of LangChain's `PineconeVector
 
 The `from_documents` and `from_texts` methods of LangChain's `PineconeVectorStore` class add records to a Pinecone index and return a `PineconeVectorStore` object.
 
-The `from_documents` method accepts a list of LangChain's `Document` class objects, which can be created using LangChain's `CharacterTextSplitter` class. The `from_texts` method accepts a list of strings. Similarly to above, you must provide the name of an existing Pinecone index and an `Embeddings` object.
+The `from_documents` method accepts a list of LangChain's `Document` class objects, which you can create with LangChain's `CharacterTextSplitter` class. The `from_texts` method accepts a list of strings. As with the first approach, you must provide the name of an existing Pinecone index and an `Embeddings` object.
 
 Both of these methods handle the embedding of the provided text data and the creation of records in your Pinecone index.
 
@@ -102,9 +102,9 @@ Both of these methods handle the embedding of the provided text data and the cre
 
 ### Add more records
 
-Once you have initialized a `PineconeVectorStore` object, you can add more records to the underlying Pinecone index (and thus also the linked LangChain object) using either the `add_documents` or `add_texts` methods.
+After you initialize a `PineconeVectorStore` object, you can add more records to the underlying Pinecone index (and thus also the linked LangChain object) with the `add_documents` or `add_texts` method.
 
-Like their counterparts that also initialize a `PineconeVectorStore` object, both of these methods also handle the embedding of the provided text data and the creation of records in your Pinecone index.
+Like `from_documents` and `from_texts`, both of these methods handle the embedding of the provided text data and the creation of records in your Pinecone index.
 
 ```Python Python theme={null}
     # path to an example text file
@@ -143,7 +143,7 @@ The `similarity_search` method accepts raw text and automatically embeds it usin
     # ]   
 ```
 
-You can also optionally apply a metadata filter to your similarity search. The filtering query language is the same as for Pinecone queries, as detailed in [Filtering with metadata](https://docs.pinecone.io/guides/index-data/indexing-overview#metadata).
+You can also apply a metadata filter to your similarity search. The filtering query language is the same as for Pinecone queries, as detailed in [Filtering with metadata](https://docs.pinecone.io/guides/index-data/indexing-overview#metadata).
 
 ```Python Python theme={null}
     query = "Tell me more about Ketanji Brown Jackson."
@@ -196,9 +196,9 @@ If you initialize your `PineconeVectorStore` object without a namespace, you can
 
 ## Tutorial
 
-### 1. Set up your environment
+### Set up the environment
 
-Before you begin, install some necessary libraries and set environment variables for your Pinecone and OpenAI API keys:
+Before you begin, install the necessary libraries and set environment variables for your Pinecone and OpenAI API keys:
 
 ```Shell theme={null}
 pip install -qU \
@@ -221,7 +221,9 @@ pinecone_api_key = os.environ.get('PINECONE_API_KEY')
 openai_api_key = os.environ.get('OPENAI_API_KEY')
 ```
 
-### 2. Build the knowledge base
+### Build the knowledge base
+
+Load a sample dataset and prepare it for Pinecone:
 
 1. Load a [sample Pinecone dataset](/guides/data/use-public-pinecone-datasets) into memory:
 
@@ -244,9 +246,11 @@ openai_api_key = os.environ.get('OPENAI_API_KEY')
    dataset.documents.rename(columns={'blob': 'metadata'}, inplace=True)  
    ```
 
-### 3. Index the data in Pinecone
+### Index the data in Pinecone
 
-1. Initialize your client connection to Pinecone and create an index. This step uses the Pinecone API key you set as an environment variable [earlier](#1-set-up-your-environment).
+Create an index and upsert the prepared data:
+
+1. Initialize your client connection to Pinecone and create an index. This step uses the Pinecone API key you set as an environment variable [earlier](#set-up-the-environment).
 
    ```Python Python theme={null}
    from pinecone.grpc import PineconeGRPC as Pinecone
@@ -281,16 +285,16 @@ openai_api_key = os.environ.get('OPENAI_API_KEY')
    # 'total_vector_count': 0}  
    ```
 
-   You'll see that the index has a `total_vector_count` of `0`, as you haven't added any vectors yet.
+   The index has a `total_vector_count` of `0` because you haven't added any vectors yet.
 
-3. Now upsert the data to Pinecone:
+3. Upsert the data to Pinecone:
 
    ```Python Python theme={null}
    for batch in dataset.iter_documents(batch_size=100):  
        index.upsert(batch)  
    ```
 
-4. Once the data is indexed, check the index stats once again:
+4. After the data is indexed, check the index stats again:
 
    ```Python Python theme={null}
    index.describe_index_stats()  
@@ -302,9 +306,9 @@ openai_api_key = os.environ.get('OPENAI_API_KEY')
    # 'total_vector_count': 70000} 
    ```
 
-### 4. Initialize a LangChain vector store
+### Initialize a LangChain vector store
 
-Now that you've built your Pinecone index, you need to initialize a LangChain vector store using the index. This step uses the OpenAI API key you set as an environment variable [earlier](#1-set-up-your-environment). Note that OpenAI is a paid service and so running the remainder of this tutorial may incur some small cost.
+Now that you've built your Pinecone index, initialize a LangChain vector store that uses it. This step uses the OpenAI API key you set as an environment variable [earlier](#set-up-the-environment). OpenAI is a paid service, so running the rest of this tutorial may incur a small cost.
 
 1. Initialize a LangChain embedding object:
 
@@ -322,7 +326,7 @@ Now that you've built your Pinecone index, you need to initialize a LangChain ve
 
    The `text_field` parameter sets the name of the metadata field that stores the raw text when you upsert records using a LangChain operation such as `vectorstore.from_documents` or `vectorstore.add_texts`.
    This metadata field is used as the `page_content` in the `Document` objects retrieved from query-like LangChain operations such as `vectorstore.similarity_search`.
-   If you don't specify a value for `text_field`, it will default to `"text"`.
+   If you don't specify a value for `text_field`, it defaults to `"text"`.
 
    ```Python Python theme={null}
    from langchain_pinecone import PineconeVectorStore  
@@ -332,7 +336,7 @@ Now that you've built your Pinecone index, you need to initialize a LangChain ve
    )  
    ```
 
-3. Now you can query the vector store directly using `vectorstore.similarity_search`:
+3. Query the vector store directly using `vectorstore.similarity_search`:
 
    ```Python Python theme={null}
    query = "who was Benito Mussolini?"  
@@ -347,13 +351,13 @@ Now that you've built your Pinecone index, you need to initialize a LangChain ve
    # Document(page_content='Veneto was made part of Italy in 1866 after a war with Austria. Italian soldiers won Latium in 1870. That was when...', metadata={'chunk': 5.0, 'source': 'https://simple.wikipedia.org/wiki/Italy', 'title': 'Italy', 'wiki-id': '363'})]
    ```
 
-All of these sample results are good and relevant. But what else can you do with this? There are many tasks, one of the most interesting (and well supported by LangChain) is called "Generative Question-Answering" or GQA.
+All of these sample results are relevant. You can also use the vector store for other tasks. One that LangChain supports well is generative question answering (GQA).
 
-### 5. Use Pinecone and LangChain for RAG
+### Use Pinecone and LangChain for RAG
 
-In RAG, you take the query as a question that is to be answered by an LLM, but the LLM must answer the question based on the information it's seeing from the vectorstore.
+In RAG, you pass the query to an LLM as a question, and the LLM must answer it based on the information it gets from the vector store. Follow these steps:
 
-1. To do this, initialize a `RetrievalQA` object like so:
+1. Initialize a `RetrievalQA` object:
 
    ```Python Python theme={null}
    from langchain_openai import ChatOpenAI  
@@ -392,7 +396,7 @@ In RAG, you take the query as a question that is to be answered by an LLM, but t
    # 'sources': 'https://simple.wikipedia.org/wiki/Benito%20Mussolini'}  
    ```
 
-### 6. Clean up
+### Clean up
 
 When you no longer need the index, use the `delete_index` operation to delete it:
 
@@ -400,6 +404,6 @@ When you no longer need the index, use the `delete_index` operation to delete it
 pc.delete_index(name=index_name)
 ```
 
-## Related articles
+## Resources
 
 * [LangChain AI Handbook](https://www.pinecone.io/learn/series/langchain/)

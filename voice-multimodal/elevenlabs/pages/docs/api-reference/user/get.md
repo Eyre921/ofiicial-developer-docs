@@ -29,6 +29,7 @@ Reference: https://elevenlabs.io/docs/api-reference/user/get
 Successful Response
 
 - `user_id` (string, required) — The unique identifier of the user.
+- `workspace_id` (string, required) — The unique identifier of the workspace this user's API key belongs to.
 - `subscription` (SubscriptionResponseModel, required) — Details of the user's subscription.
 - `is_onboarding_completed` (boolean, required) — Whether the user's onboarding is completed.
 - `is_onboarding_checklist_completed` (boolean, required) — Whether the user's onboarding checklist is completed.
@@ -111,6 +112,7 @@ Currency/amount pair.
 ```json
 {
   "user_id": "1234567890",
+  "workspace_id": "0987654321",
   "subscription": {
     "tier": "trial",
     "character_count": 17231,

@@ -12,13 +12,12 @@ You can [get the name, status, and metadata for each assistant](/reference/api/l
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
+
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistants = pc.assistant.list_assistants()
+  for assistant in pc.assistants.list():
+      print(assistant.name, assistant.status)
   ```
 
   ```javascript JavaScript theme={null}
@@ -26,7 +25,7 @@ You can [get the name, status, and metadata for each assistant](/reference/api/l
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistants = await pc.listAssistants();
+  const { assistants } = await pc.assistants.list();
   console.log(assistants);
   ```
 
@@ -67,15 +66,12 @@ You can [get the status and metadata for your assistant](/reference/api/latest/a
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
+
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistant.describe_assistant(
-      assistant_name="example-assistant", 
-  )
+  assistant = pc.assistants.describe(name="example-assistant")
+  print(assistant.status)
   ```
 
   ```javascript JavaScript theme={null}
@@ -83,8 +79,8 @@ You can [get the status and metadata for your assistant](/reference/api/latest/a
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  const assistant = await pc.describeAssistant('example-assistant');
-  console.log(assistant);
+  const assistant = await pc.assistants.describe('example-assistant');
+  console.log(assistant.status);
   ```
 
   ```bash curl theme={null}
@@ -140,17 +136,14 @@ For example:
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
 
-  pc = Pinecone(api_key=YOUR_API_KEY)
+  pc = Pinecone(api_key="YOUR_API_KEY")
 
-  assistant = pc.assistant.update_assistant(
-      assistant_name="example-assistant", 
+  assistant = pc.assistants.update(
+      name="example-assistant",
       instructions="Use American English for spelling and grammar.",
-      metadata={"team": "customer-support", "version": "1.1"} # Optional metadata (max 16KB) for organizing assistants.
+      metadata={"team": "customer-support", "version": "1.1"},
   )
   ```
 
@@ -159,9 +152,10 @@ For example:
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  await pc.updateAssistant('example-assistant', {
+  await pc.assistants.update({
+    name: 'example-assistant',
     instructions: 'Use American English for spelling and grammar.',
-    metadata: { team: 'customer-support', version: '1.1' }, // Optional metadata (max 16KB) for organizing assistants.
+    metadata: { team: 'customer-support', version: '1.1' },
   });
   ```
 
@@ -205,15 +199,11 @@ You can [delete an assistant](/reference/api/latest/assistant/delete_assistant) 
 
 <CodeGroup>
   ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
   from pinecone import Pinecone
+
   pc = Pinecone(api_key="YOUR_API_KEY")
 
-  pc.assistant.delete_assistant(
-      assistant_name="example-assistant", 
-  )
+  pc.assistants.delete(name="example-assistant")
   ```
 
   ```javascript JavaScript theme={null}
@@ -221,7 +211,7 @@ You can [delete an assistant](/reference/api/latest/assistant/delete_assistant) 
 
   const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
 
-  await pc.deleteAssistant('example-assistant');
+  await pc.assistants.delete('example-assistant');
   ```
 
   ```bash curl theme={null}

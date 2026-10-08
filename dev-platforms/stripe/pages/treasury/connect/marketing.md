@@ -70,7 +70,7 @@ Stripe Treasury accounts are stored value accounts that are held “for the bene
 We understand that FDIC pass-through insurance eligibility can be a valuable feature to your customers. Stripe has approved the variations of the phrase “FDIC Insurance **eligible**” noted below on marketing materials, as long as certain conditions are met. **Specifically**, the statement of FDIC pass-through insurance eligibility must always be paired with two disclosures:
 
 1. USD balances in financial accounts (unless otherwise indicated) can be eligible for [FDIC pass-through deposit insurance](https://www.fdic.gov/financial-institution-employees-guide-deposit-insurance/pass-through-deposit-insurance-coverage) if they meet certain requirements. The accounts are eligible only to the extent permitted by the rules and regulations of the FDIC, and if the requirements for pass-through insurance are satisfied. The FDIC insurance applies up to 250,000 USD per depositor, per financial institution, for deposits held in the same ownership category.
-2. You must also disclose that neither Stripe nor you’re an FDIC insured institution and that the FDIC’s deposit insurance coverage only protects against the failure of an FDIC insured depository institution.
+2. You must also disclose that neither Stripe nor you are an FDIC-insured institution and that the FDIC’s deposit insurance coverage only protects against the failure of an FDIC-insured depository institution.
 
 |  |
 | The following terms that incorporate the term “eligible” are approved: | Don’t use the following terms: |

@@ -35,7 +35,7 @@ Reference: https://elevenlabs.io/docs/api-reference/music/video-to-music
 This endpoint expects a multipart form with multiple files.
 
 - `videos` (files, required) — One or more video files sent via FormData array (multipart/form-data). They will be combined into one codec in order. A maximum of 10 videos is allowed, where the total size of the combined video is limited to 200MB. In total, the video can be up to 600 seconds long. Note that combining multiple videos may increase the request duration significantly. If possible, combine the videos beforehand.
-- `description` (string, optional) — Optional text description of the music you want. A maximum of 1000 characters is allowed.
+- `description` (string, optional) — Optional text description of the music you want. A maximum of 4100 characters is allowed.
 - `tags` (list of string, optional) — Optional list of style tags (e.g. ['upbeat', 'cinematic']). A maximum of 10 tags is allowed.
 - `model_id` (enum, optional) — The model to use for the generation.
 - `sign_with_c2pa` (boolean, optional) — Whether to sign the generated song with C2PA. Applicable only for mp3 files.

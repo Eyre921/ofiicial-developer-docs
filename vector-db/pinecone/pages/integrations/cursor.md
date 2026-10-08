@@ -6,16 +6,16 @@ path: integrations/cursor
 
 Install the official Pinecone plugin for Cursor to manage indexes, run vector search, and build RAG apps from the editor using MCP and slash commands.
 
-The official Pinecone plugin for [Cursor](https://www.cursor.com/) provides AI-powered skills, MCP server integration, and slash commands directly in your editor. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants — all with up-to-date Pinecone API knowledge.
+The official Pinecone plugin for [Cursor](https://www.cursor.com/) adds Pinecone skills, the Pinecone MCP server, and slash commands to your editor. Use natural language to manage indexes, query data, build RAG applications, and create document Q\&A assistants, with up-to-date Pinecone API knowledge.
 
 <PrimarySecondaryCTA />
 
 ## Features
 
-* **Built-in skills** for index management, semantic search, full-text search, assistant creation, and more
-* **Bundled MCP server** (`@pinecone-database/mcp`) for direct Pinecone operations from Cursor Agent
-* **Slash commands** like `/pinecone-quickstart` and `/pinecone-query` for quick access
-* **Natural language activation** — Cursor Agent invokes the right skill automatically based on your conversation
+* Built-in skills cover index management, semantic search, full-text search, assistant creation, and more.
+* The bundled MCP server (`@pinecone-database/mcp`) runs Pinecone operations directly from Cursor Agent.
+* Slash commands like `/pinecone-quickstart` and `/pinecone-query` give you quick access to skills.
+* Cursor Agent invokes the right skill automatically based on your conversation.
 
 ## Prerequisites
 
@@ -51,8 +51,8 @@ The official Pinecone plugin for [Cursor](https://www.cursor.com/) provides AI-p
   <Step title="Verify the installation">
     Open Cursor Agent chat and run `/pinecone-help` to confirm the skills are loaded. You can also check:
 
-    * **Skills:** Cursor Settings > Rules — listed under "Agent Decides"
-    * **MCP server:** Cursor Settings > Features > Model Context Protocol
+    * Skills are listed under **Agent Decides** in **Cursor Settings > Rules**.
+    * The MCP server is listed in **Cursor Settings > Features > Model Context Protocol**.
   </Step>
 </Steps>
 
@@ -60,29 +60,29 @@ The official Pinecone plugin for [Cursor](https://www.cursor.com/) provides AI-p
 
 | Skill | Command | Description |
 | - | - | - |
-| **Help** | `/pinecone-help` | Overview of all skills and setup requirements. |
-| **Quickstart** | `/pinecone-quickstart` | Interactive onboarding — create an index, upsert data, and query. Choose between a Database path or Assistant path. |
-| **Query** | `/pinecone-query` | Search integrated indexes using natural language via the Pinecone MCP server. |
-| **Assistant** | `/pinecone-assistant` | Create, upload, sync, and chat with Pinecone Assistants for document Q\&A with citations. |
-| **CLI** | `/pinecone-cli` | Guide for using the Pinecone CLI (`pc`) from the terminal. |
-| **Full-text search** | `/pinecone-full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. |
-| **n8n** | `/pinecone-n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
-| **MCP** | `/pinecone-mcp` | Reference for all Pinecone MCP server tools. |
-| **Docs** | `/pinecone-docs` | Curated links to official Pinecone documentation. |
+| Help | `/pinecone-help` | Overview of all skills and setup requirements. |
+| Quickstart | `/pinecone-quickstart` | Interactive onboarding that walks you through creating an index, upserting data, and running a query. Choose between a Database path or Assistant path. |
+| Query | `/pinecone-query` | Search integrated indexes using natural language via the Pinecone MCP server. |
+| Assistant | `/pinecone-assistant` | Create, upload, sync, and chat with Pinecone Assistants for document Q\&A with citations. |
+| CLI | `/pinecone-cli` | Guide for using the Pinecone CLI (`pc`) from the terminal. |
+| Full-text search | `/pinecone-full-text-search` | Create, ingest into, and query a Pinecone full-text-search (FTS) index. |
+| n8n | `/pinecone-n8n` | Build [n8n](/integrations/n8n) workflows with the Pinecone Assistant node or Pinecone Vector Store, including best practices and full workflow JSON generation. |
+| MCP | `/pinecone-mcp` | Reference for all Pinecone MCP server tools. |
+| Docs | `/pinecone-docs` | Curated links to official Pinecone documentation. |
 
 ## MCP tools
 
 The plugin includes the Pinecone MCP server, which provides the following tools:
 
-* `search-docs` — Search the official Pinecone documentation.
-* `list-indexes` — List all available Pinecone indexes.
-* `describe-index` — Get index configuration and namespaces.
-* `describe-index-stats` — Get record counts and namespace statistics.
-* `create-index-for-model` — Create a new index with integrated embeddings.
-* `upsert-records` — Insert or update records in an index.
-* `search-records` — Search records with optional metadata filtering and reranking.
-* `cascading-search` — Search across multiple indexes with deduplication and reranking.
-* `rerank-documents` — Rerank documents using a specified reranking model.
+* `search-docs`: Search the official Pinecone documentation.
+* `list-indexes`: List all available Pinecone indexes.
+* `describe-index`: Get index configuration and namespaces.
+* `describe-index-stats`: Get record counts and namespace statistics.
+* `create-index-for-model`: Create a new index with integrated embeddings.
+* `upsert-records`: Insert or update records in an index.
+* `search-records`: Search records with optional metadata filtering and reranking.
+* `cascading-search`: Search across multiple indexes with deduplication and reranking.
+* `rerank-documents`: Rerank documents using a specified reranking model.
 
 For full MCP server documentation, see [Use the Pinecone MCP server](/guides/operations/mcp-server).
 

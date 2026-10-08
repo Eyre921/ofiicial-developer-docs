@@ -746,3 +746,5 @@ For compatibility with multi-source databases, use the provided `parent.data_sou
 ## What’s Next
 
 Read the frequently asked questions for this API change:
+
+After this upgrade, you can continue to `2026-03-11` by following the [2026-03-11 upgrade guide](/guides/get-started/upgrade-guide-2026-03-11).

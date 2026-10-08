@@ -631,8 +631,15 @@ Notion's `/mcp` endpoint is stateless, so the id carries no server-side state:
 
 ### Check tool availability
 
-Call `notion-get-tool-access` with `{}` before using conditionally available tools,
-and reuse the returned map across tools for this connection.
+You don't need to check tool access before you call tools. Each tool enforces
+its own access limits when you call it. Use `notion-search` for every content
+search. It runs AI search when the user has it, and keyword search otherwise.
+Workspace-owned connections keep the earlier tool list: use the search tool the
+connection lists, which can be `notion-ai-search`. See
+[Supported tools](/guides/mcp/mcp-supported-tools) for that case.
+
+If your client wants plan or parameter details up front, call
+`notion-get-tool-access` with `{}` once and reuse the map for this connection.
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
@@ -652,15 +659,15 @@ and reuse the returned map across tools for this connection.
   ```
 </CodeGroup>
 
-The map includes only tools advertised for this connection. When `ai_search` is
-`available`, prefer `notion-ai-search`; the map omits `search` in that case.
-Otherwise, use `notion-search` if exposed. If only `notion-ai-search` is exposed,
-it can still perform Notion-only keyword search when its status is
-`upgrade_required` or `plan_required`. Billing restrictions still return errors.
+The map includes only tools the server exposes to this connection. In sessions
+that list one search tool, it still reports AI search access under `ai_search`.
+When that status is `available`, the map leaves out `search`, so request both
+keys if you narrow it with `tool_names`. Keep calling `notion-search`.
 
-User lookup has separate requirements: both search tools need user information
-capabilities, and workspace-owned MCP connections must also expose
-`notion-get-users`. AI-search availability doesn't grant these permissions.
+A user lookup (`query_type: "user"`) on the listed search tool has separate
+requirements: it needs user information capabilities, and workspace-owned MCP
+connections must also expose `notion-get-users`. AI search access doesn't grant
+these permissions.
 
 Read each `restricted_parameters` reason against your requested value. A listed
 parameter isn't always forbidden: a restriction on multiple teamspaces still

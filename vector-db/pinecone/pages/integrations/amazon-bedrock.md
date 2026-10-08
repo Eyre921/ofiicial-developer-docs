@@ -4,41 +4,43 @@ source: https://docs.pinecone.io/integrations/amazon-bedrock
 path: integrations/amazon-bedrock
 ---
 
-Select Pinecone as a Knowledge Base for Amazon Bedrock to ground LLMs with your enterprise data and build accurate, low-latency RAG applications on AWS.
+Use Pinecone as the vector store for a Knowledge Base for Amazon Bedrock, then create a Bedrock agent that retrieves your data for RAG on AWS.
 
-Users can now select Pinecone as a Knowledge Base for [Amazon Bedrock](https://aws.amazon.com/bedrock/), a fully managed service from Amazon Web Services (AWS) for building GenAI applications.
+You can select Pinecone as a Knowledge Base for [Amazon Bedrock](https://aws.amazon.com/bedrock/), a fully managed service from Amazon Web Services (AWS) for building GenAI applications.
 
-The Pinecone vector database is a key component of the AI tech stack, helping companies solve one of the biggest challenges in deploying GenAI solutions — hallucinations — by allowing them to store, search, and find the most relevant and up-to-date information from company data and send that context to Large Language Models (LLMs) with every query. This workflow is called Retrieval Augmented Generation (RAG), and with Pinecone, it aids in providing relevant, accurate, and fast responses from search or GenAI applications to end users.
+Pinecone Database helps companies reduce hallucinations, one of the biggest challenges in deploying GenAI solutions. With Pinecone, companies can store and search their own data, find the most relevant, up-to-date information, and send that context to large language models (LLMs) with every query. This workflow is called retrieval-augmented generation (RAG). With Pinecone, RAG helps search and GenAI applications return relevant, accurate, and fast responses to end users.
 
-With the release of Knowledge Bases for Amazon Bedrock, developers can integrate their enterprise data into Amazon Bedrock using Pinecone as the fully-managed vector database to build GenAI applications that are:
+With Knowledge Bases for Amazon Bedrock, you can integrate your enterprise data into Amazon Bedrock and use Pinecone as the vector store for your GenAI applications. Pinecone helps those applications in the following ways:
 
-* **Highly performant:** Speed through data in milliseconds. Use metadata filters and support for sparse-dense vectors in a single index for top-notch relevance, ensuring quick, accurate, and grounded results across diverse search tasks.
-* **Cost effective at scale:** Start for free on the starter plan and seamlessly scale usage with transparent usage-based pricing. Add or remove resources to meet your desired capacity and performance, upwards of billions of embeddings.
-* **Enterprise ready:** Launch, use, and scale your AI solution without needing to maintain infrastructure, monitor services, or troubleshoot algorithms. Pinecone meets the security and operational requirements of enterprises.
+* Pinecone searches through data in milliseconds. Metadata filters and support for sparse-dense vectors in a single index improve relevance, so results are quick, accurate, and grounded across diverse search tasks.
+* You can start for free on the Starter plan and scale usage with transparent usage-based pricing. Add or remove resources to meet your desired capacity and performance, upwards of billions of embeddings.
+* You can launch, use, and scale your AI solution without maintaining infrastructure, monitoring services, or troubleshooting algorithms. Pinecone meets the security and operational requirements of enterprises.
 
 <PrimarySecondaryCTA />
 
-## What are Agents for Amazon Bedrock?
+## Agents for Amazon Bedrock
 
-In Bedrock, users interact with **Agents** that are capable of combining the natural language interface of the supported LLMs with those of a **Knowledge Base.** Bedrock's Knowledge Base feature uses the supported LLMs to generate **embeddings** from the original data source. These embeddings are stored in Pinecone, and the Pinecone index is used to retrieve semantically relevant content upon the user's query to the agent.
+In Bedrock, users interact with agents, which combine the natural language interface of the supported LLMs with that of a knowledge base. Bedrock's Knowledge Base feature uses the supported LLMs to generate embeddings from the original data source. These embeddings are stored in Pinecone, and Bedrock uses the Pinecone index to retrieve semantically relevant content when a user queries the agent.
 
-**Note:** the LLM used for embeddings may be different than the one used for the natural language generation. For example, you may choose to use Amazon Titan to generate embeddings and use Anthropic's Claude to generate natural language responses.
+<Note>
+  The LLM used for embeddings can be different from the one used for natural language generation. For example, you can use Amazon Titan to generate embeddings and Anthropic's Claude to generate natural language responses.
+</Note>
 
-Additionally, Agents for Amazon Bedrock may be configured to execute various actions in the context of responding to a user's query - but we won't get into this functionality in this post.
+You can also configure Agents for Amazon Bedrock to execute various actions while responding to a user's query. This guide doesn't cover that functionality.
 
-## What is a Knowledge Base for Amazon Bedrock?
+## Knowledge Bases for Amazon Bedrock
 
-A Bedrock Knowledge base ingests raw text data or documents found in Amazon S3, embeds the content and upserts the embeddings into Pinecone. Then, a Bedrock agent can interact with the knowledge base to retrieve the most semantically relevant content given a user's query.
+A Bedrock knowledge base ingests raw text data or documents found in Amazon S3, embeds the content, and upserts the embeddings into Pinecone. Then, a Bedrock agent can interact with the knowledge base to retrieve the most semantically relevant content for a user's query.
 
-Overall, the Knowledge Base feature is a valuable tool for users who want to improve their AI models' performance. With Bedrock's LLMs and Pinecone, users can easily integrate their data from AWS storage solutions and enhance the accuracy and relevance of their AI models.
+The Knowledge Base feature helps you improve your AI models' performance. With Bedrock's LLMs and Pinecone, you can integrate your data from AWS storage solutions and improve the accuracy and relevance of your AI models.
 
-In this post, we'll go through the steps required for creating a Knowledge Base for Amazon Bedrock as well as an agent that will retrieve information from the knowledge base.
+This guide walks through creating a Knowledge Base for Amazon Bedrock and an agent that retrieves information from it.
 
 <img alt="" />
 
 ## Setup guide
 
-The process of using a Bedrock knowledge base with Pinecone works as follows:
+Using a Bedrock knowledge base with Pinecone involves the following steps:
 
 <Steps>
   <Step title="Create a Pinecone index.">
@@ -62,39 +64,39 @@ The process of using a Bedrock knowledge base with Pinecone works as follows:
   </Step>
 </Steps>
 
-### 1. Create a Pinecone index
+### Create a Pinecone index
 
-The knowledge base stores data in a Pinecone index. Decide which [supported embedding model](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html) to use with Bedrock before you create the index, as your index's dimensions will need to match the model's. For example, the AWS Titan Text Embeddings V2 model can use dimension sizes 1024, 384, and 256.
+The knowledge base stores data in a Pinecone index. Decide which [supported embedding model](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html) to use with Bedrock before you create the index, because your index's dimensions must match the model's. For example, the AWS Titan Text Embeddings V2 model can use dimension sizes 1024, 384, and 256.
 
-After signing up to Pinecone, follow the [quickstart guide](/guides/get-started/quickstart) to create your Pinecone index and retrieve your `apiKey` and index host from the [Pinecone console](https://app.pinecone.io).
+After you sign up for Pinecone, follow the [quickstart guide](/guides/get-started/quickstart) to create your Pinecone index and retrieve your `apiKey` and index host from the [Pinecone console](https://app.pinecone.io).
 
 <Note>
-  Your index must have the same dimensions as the model you will later select for creating your embeddings. Also, your index must be empty. All data must be ingested through Bedrock's sync process.
+  Your index must have the same dimensions as the model you'll later select for creating your embeddings. Also, your index must be empty. All data must be ingested through Bedrock's sync process.
 </Note>
 
-### 2. Set up your data source
+### Set up your data source
 
 #### Set up secrets
 
-After setting up your Pinecone index, you'll have to create a secret in [AWS Secrets Manager](https://console.aws.amazon.com/secretsmanager/newsecret):
+After you set up your Pinecone index, create a secret in [AWS Secrets Manager](https://console.aws.amazon.com/secretsmanager/newsecret):
 
 1. In the **Secret type** section, select **Other type of secret**.
-2. In the **Key/value pairs** section, enter a key value pair for the Pinecone API key name and its respective value. For example, use `apiKey` and the API key value.
+2. In the **Key/value pairs** section, enter a key-value pair for the Pinecone API key name and its respective value. For example, use `apiKey` and the API key value.
    <img alt="" />
 3. Click **Next**.
 4. Enter a **Secret name** and **Description**.
 5. Click **Next** to save your key.
 6. On the **Configure rotation** page, select all the default options in the next screen, and click **Next**.
 7. Click **Store**.
-8. Click on the new secret you created and save the secret ARN for a later step.
+8. Click the new secret you created and save the secret ARN for a later step.
 
 #### Set up S3
 
-The knowledge base is going to draw on data saved in S3. For this example, we use a [sample of research papers](https://huggingface.co/datasets/jamescalam/ai-arxiv2-semantic-chunks) obtained from a dataset. This data will be embedded and then saved in Pinecone.
+The knowledge base draws on data saved in S3. This example uses a [sample of research papers](https://huggingface.co/datasets/jamescalam/ai-arxiv2-semantic-chunks) obtained from a dataset. Bedrock embeds this data and then saves it in Pinecone. Follow these steps to set up S3:
 
 1. Create a new general purpose bucket in [Amazon S3](https://console.aws.amazon.com/s3/home).
 
-2. Once the bucket is created, upload a CSV file.
+2. After the bucket is created, upload a CSV file.
 
    <Note>
      The CSV file must have a field for text that will be embedded, and a field for metadata to upload with each embedded text.
@@ -102,7 +104,7 @@ The knowledge base is going to draw on data saved in S3. For this example, we us
 
 3. Save your bucket's address (`s3://…`) for the following configuration steps.
 
-### 3. Create a Bedrock knowledge base
+### Create a Bedrock knowledge base
 
 To [create a Bedrock knowledge base](https://console.aws.amazon.com/bedrock/home?#/knowledge-bases/create-knowledge-base), use the following steps:
 
@@ -113,47 +115,47 @@ To [create a Bedrock knowledge base](https://console.aws.amazon.com/bedrock/home
 5. If you don't want to use the default chunking strategy, select a chunking strategy.
 6. Click **Next**.
 
-### 4. Connect Pinecone to the knowledge base
+### Connect Pinecone to the knowledge base
 
-Now you will need to select an embedding model to configure with Bedrock and configure the data sources.
+Next, select an embedding model to configure with Bedrock, and configure the data sources:
 
 1. Select the embedding model you decided on earlier.
 2. For the **Vector database**, select **Choose a vector store you have created** and select **Pinecone**.
-3. Mark the check box for authorizing AWS to access your Pinecone index.
+3. Select the checkbox that authorizes AWS to access your Pinecone index.
 
    <Note>
      Ensure your Pinecone index is empty before proceeding. Bedrock can't work with indexes that contain existing data. All data must be ingested through Bedrock's sync process.
    </Note>
 4. For the **Endpoint URL**, enter the Pinecone index host retrieved from the Pinecone console.
 5. For the **Credentials secret ARN**, enter the secret ARN you created earlier.
-6. In the **Metadata field mapping** section, enter the **Text field name** you want to embed and the **Bedrock-managed metadata field name** that will be used for metadata managed by Bedrock (e.g., `metadata`).
+6. In the **Metadata field mapping** section, enter the **Text field name** you want to embed and the **Bedrock-managed metadata field name** that Bedrock uses for metadata it manages (e.g., `metadata`).
 7. Click **Next**.
 8. Review your selections and complete the creation of the knowledge base.
-9. On the [Knowledge Bases](https://console.aws.amazon.com/bedrock/home?#/knowledge-bases) page select the knowledge base you just created to view its details.
+9. On the [Knowledge Bases](https://console.aws.amazon.com/bedrock/home?#/knowledge-bases) page, select the knowledge base you just created to view its details.
 10. Click **Sync** for the newly created data source.
     <Note>
-      Sync the data source whenever you add new data to the data source to start the ingestion workflow of converting your Amazon S3 data into vector embeddings and upserting the embeddings into the vector database. Depending on the amount of data, this whole workflow can take some time.
+      Whenever you add new data, sync the data source to start the ingestion workflow, which converts your Amazon S3 data into vector embeddings and upserts them into your Pinecone index. Depending on the amount of data, this can take some time.
     </Note>
 
-### 5. Create and link an agent to Bedrock
+### Create and link an agent to Bedrock
 
 Lastly, [create an agent](https://console.aws.amazon.com/bedrock/home?#/agents) that will use the knowledge base for retrieval:
 
 1. Click **Create Agent**.
-2. Enter an **Name** and **Description**.
+2. Enter a **Name** and **Description**.
 3. Click **Create**.
 4. Select the LLM provider and model you'd like to use.
-5. Provide instructions for the agent. These will define what the agent is trying to accomplish.
+5. Provide instructions for the agent. These define what the agent is trying to accomplish.
 6. In the **Knowledge Bases** section, select the knowledge base you created.
 7. Prepare the agent by clicking **Prepare** near the top of the builder page.
 8. Test the agent after preparing it to verify it's using the knowledge base.
 9. Click **Save and exit**.
 
-Your agent is now set up and ready to go! In the next section, we'll show how to interact with the newly created agent.
+Your agent is now set up. The following sections show how to deploy and interact with it.
 
 #### Create an alias for your agent
 
-To deploy the agent, create an alias for it that points to a specific version of the agent. Once the alias is created, it will display in the agent view.
+To deploy the agent, create an alias for it that points to a specific version of the agent. After you create the alias, it appears in the agent view.
 
 1. On the [Agents](https://console.aws.amazon.com/bedrock/home?#/agents) page, select the agent you created.
 2. Click **Create Alias**.
@@ -162,16 +164,16 @@ To deploy the agent, create an alias for it that points to a specific version of
 
 #### Test the Bedrock agent
 
-To test the newly created agent, use the playground on the right of the screen when we open the agent.
+To test the newly created agent, open it and use the playground on the right of the screen.
 
-In this example, we used a dataset of research papers for our source data. We can ask a question about those papers and retrieve a detailed response, this time with the deployed version.
-
-<img alt="" />
-
-By inspecting the trace, we can see what chunks were used by the Agent and diagnose issues with responses.
+This example uses a dataset of research papers as its source data. You can ask a question about those papers and get a detailed response, this time from the deployed version.
 
 <img alt="" />
 
-## Related articles
+Inspect the trace to see which chunks the agent used and to diagnose issues with responses.
+
+<img alt="" />
+
+## Resources
 
 * [Pinecone as a Knowledge Base for Amazon Bedrock](https://www.pinecone.io/blog/amazon-bedrock-integration/)

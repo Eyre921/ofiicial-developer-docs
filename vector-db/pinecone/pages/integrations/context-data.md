@@ -6,10 +6,10 @@ path: integrations/context-data
 
 Use Context Data with Pinecone to build no-code flows from Postgres, S3, Salesforce, and more, embedding data and querying indexes in Query Studio.
 
-Using [Context Data](https://contextdata.ai/), you can easily create end-to-end data flows by connecting to a myriad of data sources (PostgreSQL, MySQL, Amazon S3, Salesforce, etc.), seamlessly embedding and writing the results to Pinecone using Context Data's super simple no-code web interface. These flows can also be configured to be triggered and run on a user-defined schedule.
+[Context Data](https://contextdata.ai/) lets you build end-to-end data flows in a no-code web interface. With the Pinecone integration, you can connect to data sources such as PostgreSQL, MySQL, Amazon S3, and Salesforce, embed the data, and write the results to Pinecone. You can also trigger these flows and run them on a schedule you define.
 
-Additionally, Context Data provides the ability to create transformations like aggregations, joins, and feature engineering using SQL common table expressions before writing to Pinecone.
+Before writing to Pinecone, you can transform data with aggregations, joins, and feature engineering using SQL common table expressions.
 
-You can also chat with your Pinecone indexes directly from Context Data's privacy-focused Query Studio.
+You can also chat with your Pinecone indexes from Context Data's privacy-focused Query Studio.
 
 <PrimarySecondaryCTA />
