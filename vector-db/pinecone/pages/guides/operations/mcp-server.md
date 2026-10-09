@@ -15,7 +15,7 @@ This page shows you how to configure [Antigravity](https://antigravity.google/),
 </Note>
 
 <Tip>
-  Pinecone also offers plugins and extensions with built-in skills for AI coding tools. See [AI coding tools](/integrations/ai-coding-tools) for an overview. You can also go straight to the [Claude Code plugin](/integrations/claude-code), [Codex plugin](/integrations/codex), [Gemini CLI extension](/integrations/gemini-cli), [Cursor plugin](/integrations/cursor), or [Agent Skills](/integrations/agent-skills) for GitHub Copilot and other IDEs.
+  Pinecone also offers plugins with built-in skills for AI coding tools. See [AI coding tools](/integrations/ai-coding-tools) for an overview. You can also go straight to the [Claude Code plugin](/integrations/claude-code), [Codex plugin](/integrations/codex), [Cursor plugin](/integrations/cursor), or [Agent Skills](/integrations/agent-skills) for GitHub Copilot and other IDEs.
 </Tip>
 
 ## Tools

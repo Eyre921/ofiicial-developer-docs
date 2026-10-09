@@ -8,7 +8,7 @@ Learn how to create, read, and update Notion page content using enhanced markdow
 
 ## Overview
 
-The Notion API supports reading, writing, and updating page content using **enhanced markdown** (also called "Notion-flavored Markdown") as an alternative to the [block-based API](/guides/data-apis/working-with-page-content). This is especially useful for agentic systems and developer tools that work natively with markdown.
+The Notion API supports reading, writing, and updating page content using **enhanced markdown** as an alternative to the [block-based API](/guides/data-apis/working-with-page-content). This is especially useful for agentic systems and developer tools that work natively with markdown.
 
 Three API surfaces are available:
 
@@ -19,8 +19,61 @@ Three API surfaces are available:
 | Update | `PATCH /v1/pages/:page_id/markdown` | Insert or replace content using markdown |
 
 <Tip>
-  All three endpoints use the same **enhanced markdown** format. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
+  All three endpoints use the same **enhanced markdown** format by default. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
 </Tip>
+
+## Markdown versions
+
+The markdown endpoints accept an optional `markdown_version` parameter. It picks the Markdown syntax for the request.
+
+| Value | Syntax | Status |
+| - | - | - |
+| `v1` | Enhanced markdown | Default |
+| `v2` | [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) | Opt-in preview |
+
+Leave `markdown_version` out, or set it to `v1`, to keep today's behavior. Set it to `v2` to read and write Notion-flavored Markdown. The version applies to the whole request: `v2` content is parsed as `v2`, and `v2` responses are rendered as `v2`.
+
+Where to send it:
+
+| Endpoint | Where |
+| - | - |
+| `GET /v1/pages/:page_id/markdown` | Query parameter |
+| `PATCH /v1/pages/:page_id/markdown` | Body parameter |
+| `POST /v1/pages` | Body parameter, next to `markdown` |
+| `POST /v1/comments` and `PATCH /v1/comments/:comment_id` | Body parameter, next to `markdown` |
+
+Any other value returns a `400` `validation_error`. On `POST /v1/pages` and the comment endpoints, `markdown_version` only applies to `markdown`. Sending it without `markdown` (for example, with `children` or `rich_text`) also returns a `400` `validation_error`.
+
+See the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown) for the full `v2` syntax. It's generated from the same specification the Notion MCP server gives AI agents.
+
+```bash cURL theme={null}
+curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
+
+### Transcripts are not yet available in v2
+
+`v2` can't render meeting note transcripts yet. A `GET` request with both `include_transcript=true` and `markdown_version=v2` returns a `400` `validation_error`. Use `v1` when you need transcripts.
+
+### Parser warnings
+
+A `v2` update can contain syntax that the parser doesn't support, such as an unknown tag. The update still runs, and the `PATCH /v1/pages/:page_id/markdown` response includes a `warnings` array that says what the parser changed or ignored:
+
+```json theme={null}
+{
+  "object": "page_markdown",
+  "id": "YOUR_PAGE_ID",
+  "markdown": "...",
+  "truncated": false,
+  "unknown_block_ids": [],
+  "warnings": [
+    { "code": "unsupported_tag", "message": "..." }
+  ]
+}
+```
+
+`code` is the warning category. The field is left out when there are no warnings, and it's never returned for `v1` requests or by other endpoints. Async updates (`allow_async: true`) don't return warnings in the task result.
 
 ## Block type support
 
@@ -126,7 +179,7 @@ The response is a standard [page object](/reference/page).
 
 ## Retrieving a page as markdown
 
-Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content rendered as enhanced markdown.
+Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content as markdown. It uses enhanced markdown unless you set `markdown_version=v2`.
 
 <CodeGroup>
   ```bash cURL theme={null}
@@ -283,7 +336,7 @@ Use `PATCH /v1/pages/:page_id/markdown` to insert or replace content in an exist
 The request body uses a **discriminated union** with four command variants. We recommend `update_content` and `replace_content` for new connections — they offer more precise control and better performance than the older `insert_content` and `replace_content_range` commands.
 
 <Tip>
-  The `content` field expects enhanced markdown with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
+  The `content` field expects markdown in the request's `markdown_version` syntax (enhanced markdown by default) with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
 
   When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
 </Tip>

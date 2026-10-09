@@ -10,7 +10,7 @@ There could be several reasons why a [Node.js application](/reference/sdks/node/
 
 To troubleshoot the issue, it's important to identify where the application is failing and compare the development and deployment environments to see what differences exist. It's also important to review any error messages or logs that are generated to help identify the issue.
 
-You may also reach out to our [community of Pinecone users](https://community.pinecone.io) for help.
+You can also ask for help in the [Pinecone Discord community](https://discord.gg/tJ8V62S3sH).
 
 Here are a few aspects to troubleshoot:
 

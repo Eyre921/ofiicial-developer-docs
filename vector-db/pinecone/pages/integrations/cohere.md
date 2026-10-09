@@ -10,15 +10,9 @@ The Cohere platform builds natural language processing and generation into your 
 
 Use the Cohere Embed API endpoint to generate language embeddings, and then index those embeddings in Pinecone for fast and scalable vector search.
 
-<PrimarySecondaryCTA />
-
 ## Setup guide
 
-[View source](https://github.com/pinecone-io/examples/blob/master/integrations/cohere/)
-
-[Open in Colab](https://colab.research.google.com/github/pinecone-io/examples/blob/master/integrations/cohere/semantic%5Fsearch%5Ftrec.ipynb)
-
-In this guide, you'll learn how to use the [Cohere Embed API endpoint](https://docs.cohere.ai/reference/embed) to generate language embeddings, and then index those embeddings in [Pinecone Database](/guides/get-started/overview) for fast and scalable vector search.
+In this guide, you'll learn how to use the [Cohere Embed API endpoint](https://docs.cohere.com/reference/embed) to generate language embeddings, and then index those embeddings in [Pinecone Database](/guides/get-started/overview) for fast and scalable vector search.
 
 This is a common combination for building semantic search, question-answering, threat-detection, and other applications that rely on NLP and search over a large corpus of text data.
 
@@ -34,210 +28,229 @@ The basic workflow looks like this:
 
 <img alt="Basic workflow of Cohere with Pinecone" />
 
-### Set up the environment
+<Steps>
+  <Step title="Set up the environment">
+    Start by installing the Cohere and Pinecone clients, along with Hugging Face Datasets for downloading the TREC dataset used in this guide:
 
-Start by installing the Cohere and Pinecone clients, along with Hugging Face Datasets for downloading the TREC dataset used in this guide:
+    ```shell Shell theme={null}
+    pip install -U cohere pinecone datasets
+    ```
+  </Step>
 
-```shell Shell theme={null}
-pip install -U cohere pinecone datasets
-```
+  <Step title="Create embeddings">
+    Sign up for an API key at [Cohere](https://dashboard.cohere.com/api-keys) and then use it to initialize your connection.
 
-### Create embeddings
+    ```Python Python theme={null}
+    import cohere
 
-Sign up for an API key at [Cohere](https://dashboard.cohere.com/api-keys) and then use it to initialize your connection.
+    co = cohere.ClientV2(api_key="<YOUR_COHERE_API_KEY>")
+    ```
 
-```Python Python theme={null}
-import cohere
+    Load the Text REtrieval Conference (TREC) question classification dataset, which contains 5.5K labeled questions. You'll take only the first 1K samples for this walkthrough, but you can scale this to millions or even billions of samples.
 
-co = cohere.Client("<YOUR_API_KEY>")
-```
+    ```Python Python theme={null}
+    from datasets import load_dataset
 
-Load the Text REtrieval Conference (TREC) question classification dataset, which contains 5.5K labeled questions. You'll take only the first 1K samples for this walkthrough, but you can scale this to millions or even billions of samples.
+    # load the first 1K rows of the TREC dataset
+    trec = load_dataset('CogComp/trec', revision='refs/convert/parquet', split='train[:1000]')
+    ```
 
-```Python Python theme={null}
-from datasets import load_dataset
+    Each sample in `trec` contains two label features and the `text` feature. Pass the questions from the `text` feature to Cohere to create embeddings. The Embed API accepts up to 96 texts per request, so send them in batches.
 
-# load the first 1K rows of the TREC dataset
-trec = load_dataset('trec', split='train[:1000]')
-```
+    ```Python Python theme={null}
+    embeds = []
+    batch_size = 96
 
-Each sample in `trec` contains two label features and the `text` feature. Pass the questions from the `text` feature to Cohere to create embeddings.
+    for i in range(0, len(trec['text']), batch_size):
+        res = co.embed(
+            texts=trec['text'][i:i+batch_size],
+            model='embed-english-v3.0',
+            input_type='search_document',
+            embedding_types=['float'],
+            truncate='END'
+        )
+        embeds.extend(res.embeddings.float_)
+    ```
 
-```Python Python theme={null}
-embeds = co.embed(
-    texts=trec['text'],
-    model='embed-english-v3.0',
-    input_type='search_document',
-    truncate='END'
-).embeddings
-```
+    Check the dimensionality of the returned vectors. Save the embedding dimensionality, because you need it when you create your Pinecone index later.
 
-Check the dimensionality of the returned vectors. Save the embedding dimensionality, because you need it when you create your Pinecone index later.
+    ```Python Python theme={null}
+    import numpy as np
 
-```Python Python theme={null}
-import numpy as np
+    shape = np.array(embeds).shape
+    print(shape)
+    ```
 
-shape = np.array(embeds).shape
-print(shape)
+    ```text Response theme={null}
+    (1000, 1024)
+    ```
 
-# [Out]:
-# (1000, 1024)
-```
+    You can see the `1024` embedding dimensionality produced by Cohere's `embed-english-v3.0` model, and the `1000` samples you built embeddings for.
+  </Step>
 
-You can see the `1024` embedding dimensionality produced by Cohere's `embed-english-v3.0` model, and the `1000` samples you built embeddings for.
+  <Step title="Store the embeddings">
+    Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a [Pinecone API key](/guides/projects/manage-api-keys).
 
-### Store the embeddings
+    First, initialize your connection to Pinecone, and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When you create the index, specify the cosine similarity metric to align with Cohere's embeddings, and pass the embedding dimensionality of `1024`.
 
-Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a [Pinecone API key](/guides/projects/manage-api-keys).
+    ```Python Python theme={null}
+    from pinecone import Pinecone, ServerlessSpec
 
-First, initialize your connection to Pinecone, and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When you create the index, specify the cosine similarity metric to align with Cohere's embeddings, and pass the embedding dimensionality of `1024`.
+    # initialize connection to pinecone (get API key at app.pinecone.io)
+    pc = Pinecone(api_key='<YOUR_PINECONE_API_KEY>')
 
-```Python Python theme={null}
-from pinecone import Pinecone
+    index_name = 'cohere-pinecone-trec'
 
-# initialize connection to pinecone (get API key at app.pinecone.io)
-pc = Pinecone(api_key='YOUR_API_KEY')
+    # if the index does not exist, we create it
+    if not pc.has_index(index_name):
+        pc.create_index(
+            name=index_name,
+            dimension=shape[1],
+            metric="cosine",
+            spec=ServerlessSpec(
+                cloud='aws', 
+                region='us-east-1'
+            ) 
+        )
 
-index_name = 'cohere-pinecone-trec'
+    # connect to index
+    index = pc.Index(index_name)
+    ```
 
-# if the index does not exist, we create it
-if not pc.has_index(index_name):
-    pc.create_index(
-        name=index_name,
-        dimension=shape[1],
-        metric="cosine",
-        spec=ServerlessSpec(
-            cloud='aws', 
-            region='us-east-1'
-        ) 
-    )
+    Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format `(id, vector, metadata)`, where the `metadata` field is an optional extra field where you can store anything you want in a dictionary format. For this example, you'll store the original text of the embeddings.
 
-# connect to index
-index = pc.Index(index_name)
-```
+    Upload the data in batches to avoid pushing too much data at once.
 
-Now you can begin populating the index with your embeddings. Pinecone expects you to provide a list of tuples in the format `(id, vector, metadata)`, where the `metadata` field is an optional extra field where you can store anything you want in a dictionary format. For this example, you'll store the original text of the embeddings.
+    ```Python Python theme={null}
+    batch_size = 128
 
-Upload the data in batches to avoid pushing too much data at once.
+    ids = [str(i) for i in range(shape[0])]
+    # create list of metadata dictionaries
+    meta = [{'text': text} for text in trec['text']]
 
-```Python Python theme={null}
-batch_size = 128
+    # create list of (id, vector, metadata) tuples to be upserted
+    to_upsert = list(zip(ids, embeds, meta))
 
-ids = [str(i) for i in range(shape[0])]
-# create list of metadata dictionaries
-meta = [{'text': text} for text in trec['text']]
+    for i in range(0, shape[0], batch_size):
+        i_end = min(i+batch_size, shape[0])
+        index.upsert(vectors=to_upsert[i:i_end])
 
-# create list of (id, vector, metadata) tuples to be upserted
-to_upsert = list(zip(ids, embeds, meta))
+    # let's view the index statistics
+    print(index.describe_index_stats())
+    ```
 
-for i in range(0, shape[0], batch_size):
-    i_end = min(i+batch_size, shape[0])
-    index.upsert(vectors=to_upsert[i:i_end])
+    ```text Response theme={null}
+    DescribeIndexStatsResponse(dimension=1024, total_vector_count=1000, metric='cosine', namespaces=1)
+    ```
 
-# let's view the index statistics
-print(index.describe_index_stats())
+    You can see from `index.describe_index_stats` that you have a 1024-dimensional index populated with 1000 embeddings.
+  </Step>
 
-# [Out]:
-# {'dimension': 1024,
-#  'index_fullness': 0.0,
-#  'namespaces': {'': {'vector_count': 1000}},
-#  'total_vector_count': 1000}
-```
+  <Step title="Run a semantic search">
+    Now that you have your indexed vectors, you can perform a few search queries. To search, first embed your query with Cohere, and then search Pinecone with the returned vector.
 
-You can see from `index.describe_index_stats` that you have a 1024-dimensional index populated with 1000 embeddings. For serverless on-demand indexes, the `index_fullness` metric is typically `0` because storage and compute scale automatically. If you're using [dedicated read nodes](/guides/index-data/dedicated-read-nodes/concepts#index-fullness), `index_fullness` (along with `memory_fullness` and `storage_fullness`) tells you how close the index is to its allocated capacity.
+    ```Python Python theme={null}
+    query = "What caused the 1929 Great Depression?"
 
-### Run a semantic search
+    # create the query embedding
+    xq = co.embed(
+        texts=[query],
+        model='embed-english-v3.0',
+        input_type='search_query',
+        embedding_types=['float'],
+        truncate='END'
+    ).embeddings.float_[0]
 
-Now that you have your indexed vectors, you can perform a few search queries. To search, first embed your query with Cohere, and then search Pinecone with the returned vector.
+    # query, returning the top 5 most similar results
+    res = index.query(vector=xq, top_k=5, include_metadata=True)
+    ```
 
-```Python Python theme={null}
-query = "What caused the 1929 Great Depression?"
+    The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
 
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    truncate='END'
-).embeddings
+    ```Python Python theme={null}
+    for match in res['matches']:
+        print(f"{match['score']:.2f}: {match['metadata']['text']}")
+    ```
 
-print(np.array(xq).shape)
+    ```text Response theme={null}
+    0.62: Why did the world enter a global depression in 1929 ?
+    0.49: When was `` the Great Depression '' ?
+    0.38: What crop failure caused the Irish Famine ?
+    0.32: What caused Harry Houdini 's death ?
+    0.31: What causes pneumonia ?
+    ```
 
-# query, returning the top 5 most similar results
-res = index.query(vector=xq, top_k=5, include_metadata=True)
-```
+    The top results are relevant. To make the search harder, replace "depression" with the incorrect term "recession."
 
-The response from Pinecone includes your original text in the `metadata` field. Print the `top_k` most similar questions and their similarity scores.
+    ```Python Python theme={null}
+    query = "What was the cause of the major recession in the early 20th century?"
 
-```Python Python theme={null}
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+    # create the query embedding
+    xq = co.embed(
+        texts=[query],
+        model='embed-english-v3.0',
+        input_type='search_query',
+        embedding_types=['float'],
+        truncate='END'
+    ).embeddings.float_[0]
 
-# [Out]:
-# 0.62: Why did the world enter a global depression in 1929 ?
-# 0.49: When was `` the Great Depression '' ?
-# 0.38: What crop failure caused the Irish Famine ?
-# 0.32: What caused Harry Houdini 's death ?
-# 0.31: What causes pneumonia ?
-```
+    # query, returning the top 5 most similar results
+    res = index.query(vector=xq, top_k=5, include_metadata=True)
 
-The top results are relevant. To make the search harder, replace "depression" with the incorrect term "recession."
+    for match in res['matches']:
+        print(f"{match['score']:.2f}: {match['metadata']['text']}")
+    ```
 
-```Python Python theme={null}
-query = "What was the cause of the major recession in the early 20th century?"
+    ```text Response theme={null}
+    0.43: When was `` the Great Depression '' ?
+    0.40: Why did the world enter a global depression in 1929 ?
+    0.39: When did World War I start ?
+    0.35: What are some of the significant historical events of the 1990s ?
+    0.32: What crop failure caused the Irish Famine ?
+    ```
 
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    truncate='END'
-).embeddings
+    Finally, search using the definition of depression rather than the word or related words.
 
-# query, returning the top 5 most similar results
-res = index.query(vector=xq, top_k=5, include_metadata=True)
+    ```Python Python theme={null}
+    query = "Why was there a long-term economic downturn in the early 20th century?"
 
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
+    # create the query embedding
+    xq = co.embed(
+        texts=[query],
+        model='embed-english-v3.0',
+        input_type='search_query',
+        embedding_types=['float'],
+        truncate='END'
+    ).embeddings.float_[0]
 
-# [Out]:
-# 0.43: When was `` the Great Depression '' ?
-# 0.40: Why did the world enter a global depression in 1929 ?
-# 0.39: When did World War I start ?
-# 0.35: What are some of the significant historical events of the 1990s ?
-# 0.32: What crop failure caused the Irish Famine ?
-```
+    # query, returning the top 10 most similar results
+    res = index.query(vector=xq, top_k=10, include_metadata=True)
 
-Finally, search using the definition of depression rather than the word or related words.
+    for match in res['matches']:
+        print(f"{match['score']:.2f}: {match['metadata']['text']}")
+    ```
 
-```Python Python theme={null}
-query = "Why was there a long-term economic downturn in the early 20th century?"
+    ```text Response theme={null}
+    0.40: When was `` the Great Depression '' ?
+    0.39: Why did the world enter a global depression in 1929 ?
+    0.35: When did World War I start ?
+    0.32: What are some of the significant historical events of the 1990s ?
+    0.31: What war did the Wanna-Go-Home Riots occur after ?
+    0.31: What do economists do ?
+    0.29: What historical event happened in Dogtown in 1899 ?
+    0.28: When did the Dow first reach ?
+    0.28: Who earns their money the hard way ?
+    0.28: What were popular songs and types of songs in the 1920s ?
+    ```
 
-# create the query embedding
-xq = co.embed(
-    texts=[query],
-    model='embed-english-v3.0',
-    input_type='search_query',
-    truncate='END'
-).embeddings
+    This example shows that the semantic search pipeline can identify the meaning behind each of your queries. Using these embeddings with Pinecone lets you return the most semantically similar questions from the already indexed TREC dataset.
+  </Step>
 
-# query, returning the top 10 most similar results
-res = index.query(vector=xq, top_k=10, include_metadata=True)
+  <Step title="Clean up">
+    When you're finished with the index, delete it.
 
-for match in res['matches']:
-    print(f"{match['score']:.2f}: {match['metadata']['text']}")
-
-# [Out]:
-# 0.40: When was `` the Great Depression '' ?
-# 0.39: Why did the world enter a global depression in 1929 ?
-# 0.35: When did World War I start ?
-# 0.32: What are some of the significant historical events of the 1990s ?
-# 0.31: What war did the Wanna-Go-Home Riots occur after ?
-# 0.31: What do economists do ?
-# 0.29: What historical event happened in Dogtown in 1899 ?
-# 0.28: When did the Dow first reach ?
-# 0.28: Who earns their money the hard way ?
-# 0.28: What were popular songs and types of songs in the 1920s ?
-```
-
-This example shows that the semantic search pipeline can identify the meaning behind each of your queries. Using these embeddings with Pinecone lets you return the most semantically similar questions from the already indexed TREC dataset.
+    ```Python Python theme={null}
+    pc.delete_index(name=index_name)
+    ```
+  </Step>
+</Steps>

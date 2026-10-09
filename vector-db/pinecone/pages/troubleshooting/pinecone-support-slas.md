@@ -35,4 +35,4 @@ Pinecone Support has first-response SLAs based on the support plan of the ticket
 
 The current business hours for Pinecone Support are 8 AM to 8 PM Eastern Time. SLAs only apply outside of our business hours for Sev-1 tickets created by users subscribed to Pro or Premium support. All first-response SLAs only apply to tickets created by users in an organization subscribed to a [support plan](https://www.pinecone.io/pricing/?plans=support).
 
-Pinecone Support is reserved for customers on the Standard billing plan. However, you may find helpful resources on our [community page](https://community.pinecone.io). This is a great place to ask questions and find answers from other Pinecone users and our community moderators.
+Pinecone Support is reserved for customers on the Standard billing plan. However, you can ask questions and find answers from other Pinecone users and the Pinecone team in the [Pinecone Discord community](https://discord.gg/tJ8V62S3sH).

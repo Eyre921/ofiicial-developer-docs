@@ -24,8 +24,6 @@ We can then create our initial application. This will be a really simple functio
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import openai
 from langsmith import traceable, Client
-import uuid
-
 client = openai.Client()
 
 available_topics = [

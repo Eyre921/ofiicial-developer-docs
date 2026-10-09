@@ -489,7 +489,8 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 | :- | :- | :- | :- |
 | equals | string or string\[] | The option name(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value matches any of the provided values. If a value matches no option but matches a status group name, it matches the group. With the [status group filters beta](#status-group-filters-beta), values must be option names. | "This week" or \["Not started", "In progress"] |
 | does\_not\_equal | string or string\[] | The option name(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value does not match any of the provided values. The same status group rule as `equals` applies. | "Backlog" or \["Done", "Archive"] |
-| group | object | Requires the [status group filters beta](#status-group-filters-beta). A status group filter condition with an `equals` or `does_not_equal` field. Each field takes one or more status group names, usually `"To-do"`, `"In progress"`, or `"Complete"`. An array must have at least one name. <br /><br /> Returns data source entries whose status option is (or is not) in any of the provided groups. | `{ "equals": "In progress" }` or `{ "does_not_equal": ["To-do", "Complete"] }` |
+| group\_equals | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to match. An array must have at least one name. <br /><br /> Returns entries whose status option belongs to any listed group. | `"In progress"` or `["To-do", "Complete"]` |
+| group\_does\_not\_equal | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to exclude. An array must have at least one name. <br /><br /> Returns entries whose status option belongs to none of the listed groups. | `"In progress"` or `["To-do", "Complete"]` |
 | is\_empty | true | Whether the status property value does not contain data. <br /><br /> Returns data source entries where the status property value is empty. | true |
 | is\_not\_empty | true | Whether the status property value contains data. <br /><br /> Returns data source entries where the status property value is not empty. | true |
 
@@ -514,12 +515,12 @@ Each status option belongs to a status group, such as "To-do", "In progress", or
 
 To fix this, send the `Notion-Beta: status-group-filters-2026-10-06` header. We recommend it for new integrations that filter by status. With the header:
 
-* `group` matches status groups. It works at the top level, inside `and` and `or`, in [view](/reference/view) quick filters, and inside rollup filters.
-* `equals` and `does_not_equal` match only option names. A group name there returns a `validation_error` that tells you to use `group`.
-* Some older databases store translated group names on status properties. For those, `group` on the status property accepts both the stored name and the English name. Inside a rollup filter, send the stored name.
-* [Views](/reference/view) return saved group filters as `group`, so you can send them back unchanged. A saved filter that matches both options and groups comes back as two conditions in a nested `or` for `equals`, or a nested `and` for `does_not_equal`. It comes back as plain names instead in quick filters, in rollups, and when the extra level would nest the view filter deeper than [compound filters](#compound-filter-conditions) allow.
+* `group_equals` and `group_does_not_equal` match status groups. They work in compound filters, quick filters, and rollup filters.
+* `equals` and `does_not_equal` match only option names. A group name there returns a `validation_error` with the correct group operator.
+* Some older databases store translated group names. Direct status filters accept the stored and English names. Inside a rollup filter, send the stored name.
+* [Views](/reference/view) return saved group filters with group operators. Mixed filters return nested `or` or `and` conditions when possible.
 
-Without the header, status filters and view responses work as they always have, and `group` returns a `validation_error`.
+Without the header, status filters and view responses work as before. Group operators return a `validation_error`.
 
 <CodeGroup>
   ```json Example status group filter condition theme={null}
@@ -527,9 +528,7 @@ Without the header, status filters and view responses work as they always have, 
     "filter": {
       "property": "Project status",
       "status": {
-        "group": {
-          "equals": "In progress"
-        }
+        "group_equals": "In progress"
       }
     }
   }

@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 250 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 251 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -26,6 +26,7 @@
 - `guides/data-apis/creating-pages-from-templates` — [Creating pages from templates](pages/guides/data-apis/creating-pages-from-templates.md) · [原文](https://developers.notion.com/guides/data-apis/creating-pages-from-templates)
 - `guides/data-apis/enhanced-markdown` — [Enhanced markdown format](pages/guides/data-apis/enhanced-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/enhanced-markdown)
 - `guides/data-apis/importing-external-files` — [Importing external files](pages/guides/data-apis/importing-external-files.md) · [原文](https://developers.notion.com/guides/data-apis/importing-external-files)
+- `guides/data-apis/notion-flavored-markdown` — [Notion-flavored Markdown format](pages/guides/data-apis/notion-flavored-markdown.md) · [原文](https://developers.notion.com/guides/data-apis/notion-flavored-markdown)
 - `guides/data-apis/query-large-data-sources` — [Query large data sources](pages/guides/data-apis/query-large-data-sources.md) · [原文](https://developers.notion.com/guides/data-apis/query-large-data-sources)
 - `guides/data-apis/read-page-property-values` — [Read every item in a page property](pages/guides/data-apis/read-page-property-values.md) · [原文](https://developers.notion.com/guides/data-apis/read-page-property-values)
 - `guides/data-apis/retrieving-files` — [Retrieving existing files](pages/guides/data-apis/retrieving-files.md) · [原文](https://developers.notion.com/guides/data-apis/retrieving-files)

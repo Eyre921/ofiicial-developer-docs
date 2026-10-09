@@ -19,4 +19,4 @@ Cloudera's Accelerators for Machine Learning Projects (AMPs) are prebuilt projec
 ## Resources
 
 * [Python script](https://github.com/cloudera/CML_llm-hol/blob/main/2_populate_vector_db/pinecone_vectordb_insert.py) - Example of creating vectors in Pinecone
-* [Jupyter notebook](https://github.com/cloudera/CML_llm-hol/blob/main/3_query_vector_db/pinecone_vectordb_query.ipynb) - Example of querying Pinecone collections
+* [Jupyter notebook](https://github.com/cloudera/CML_llm-hol/blob/main/3_query_vector_db/pinecone_vectordb_query.ipynb) - Example of querying a Pinecone index

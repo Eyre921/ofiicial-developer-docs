@@ -161,7 +161,7 @@ curl \
 
 ## Key Term Limits
 
-Key Terms are limited to 500 tokens per request; anything beyond that will return an error like so:
+Key Terms are limited to 500 tokens per request. A pre-recorded request or a streaming connection whose `keyterm` query parameters go over the limit returns an error like this:
 
 **`Error`**
 
@@ -169,7 +169,7 @@ Key Terms are limited to 500 tokens per request; anything beyond that will retur
 Keyterm limit exceeded. The maximum number of tokens across all keyterms is 500.
 ```
 
-The same limit applies to each mid-stream keyterm update. When you open a stream, an over-limit `keyterm` query parameter fails the connection with this error. An over-limit update sent in a [`Configure`](/docs/configure#errors) message during a Nova-3 stream returns an `Error` message instead, and the stream continues with its previous keyterms.
+The same limit applies to each mid-stream keyterm update. An over-limit update sent in a [`Configure`](/docs/configure#errors) message during a Nova-3 stream currently stops transcription without an `Error`. After about 30 seconds, the server closes the stream with `1011` (`NET-0000`). Check the list size before sending the update.
 
 ## Dynamic Keyterm Updates
 
@@ -189,6 +189,6 @@ You can replace a stream's keyterms mid-stream without reconnecting, so the keyt
 }
 ```
 
-On both, each `keyterms` array replaces the whole list, and an empty array `[]` clears all keyterms. The [keyterm limits](#key-term-limits) apply to each update. On Nova-3, mid-stream updates work on every streaming model, monolingual and multilingual, and behave the same as keyterms set when you open the stream. Updating keyterms mid-stream isn't available for pre-recorded audio.
+On both, each `keyterms` array replaces the whole list, and an empty array `[]` clears all keyterms. The [keyterm limits](#key-term-limits) apply to each update. On Nova-3, mid-stream updates work on every streaming model, monolingual and multilingual, and otherwise behave the same as keyterms set when you open the stream. Updating keyterms mid-stream isn't available for pre-recorded audio.
 
 Updating Nova-3 `keyterms` with `Configure` on `/v1/listen` is available on the global endpoint (`api.deepgram.com`). It isn't available yet on the EU (`api.eu.deepgram.com`), Australia (`api.au.deepgram.com`), or India (`api.in.deepgram.com`) [regional endpoints](/reference/regional-endpoints).

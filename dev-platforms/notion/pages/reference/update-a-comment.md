@@ -20,6 +20,8 @@ The comment body can be provided in one of two formats:
 
 Exactly one of `rich_text` or `markdown` must be provided. Providing both or neither will return a validation error.
 
+With `markdown`, set `markdown_version: "v2"` to write [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. Sending `markdown_version` with `rich_text` returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+
 ### Errors
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.

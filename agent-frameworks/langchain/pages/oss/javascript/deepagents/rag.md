@@ -200,7 +200,7 @@ Pass that question to a [Deep Agent](/oss/javascript/deepagents/overview) with n
   ```
 </CodeGroup>
 
-<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/55e6f247-1ae3-4542-bd54-75734ebeb6a0/r">
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/16b9c27f-3b1f-4eb2-99b1-a59eb58167c1/r">
   Open a public LangSmith run for this example.
 </Card>
 
@@ -774,13 +774,14 @@ Add this code to `agent.ts`:
     import { StateBackend } from "deepagents";
     import { tool } from "langchain";
     import * as z from "zod";
+    import { uuid7 } from "langsmith";
 
     const backend = new StateBackend();
 
     const searchDocumentation = tool(
       async ({ query }) => {
         const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-        const batchId = crypto.randomUUID().slice(0, 8);
+        const batchId = uuid7().slice(0, 8);
         const uploads: Array<[string, Uint8Array]> = [];
         const savedPaths: string[] = [];
         const encoder = new TextEncoder();
@@ -1141,6 +1142,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1214,7 +1216,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1325,6 +1327,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1398,7 +1401,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1509,6 +1512,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1582,7 +1586,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1693,6 +1697,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1766,7 +1771,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -1877,6 +1882,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -1950,7 +1956,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -2061,6 +2067,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -2134,7 +2141,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -2245,6 +2252,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { uuid7 } from "langsmith";
   import "dotenv/config";
 
   import { Document } from "@langchain/core/documents";
@@ -2318,7 +2326,7 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   const searchDocumentation = tool(
     async ({ query }) => {
       const retrievedDocs = await vectorStore.similaritySearch(query, 4);
-      const batchId = crypto.randomUUID().slice(0, 8);
+      const batchId = uuid7().slice(0, 8);
       const uploads: Array<[string, Uint8Array]> = [];
       const savedPaths: string[] = [];
       const encoder = new TextEncoder();
@@ -2428,6 +2436,10 @@ Save as `agent.ts` and run with `npx tsx agent.ts`:
   }
   ```
 </CodeGroup>
+
+<Card title="View example trace" icon="chart-line" href="https://smith.langchain.com/public/9bcce461-cc36-4d39-a790-b5e02ac3da26/r">
+  Open a public LangSmith run for this example.
+</Card>
 
 ## Next steps
 

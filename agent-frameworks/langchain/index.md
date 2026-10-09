@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1683 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1687 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -81,6 +81,7 @@
 - `langsmith/add-metadata-tags` — [Add metadata and tags to traces](pages/langsmith/add-metadata-tags.md) · [原文](https://docs.langchain.com/langsmith/add-metadata-tags)
 - `langsmith/admin` — [Account](pages/langsmith/admin.md) · [原文](https://docs.langchain.com/langsmith/admin)
 - `langsmith/administration-overview` — [Overview](pages/langsmith/administration-overview.md) · [原文](https://docs.langchain.com/langsmith/administration-overview)
+- `langsmith/aes-encryption` — [Configure AES encryption at rest](pages/langsmith/aes-encryption.md) · [原文](https://docs.langchain.com/langsmith/aes-encryption)
 - `langsmith/agent-auth` — [Set up Agent Auth](pages/langsmith/agent-auth.md) · [原文](https://docs.langchain.com/langsmith/agent-auth)
 - `langsmith/agent-environments` — [Agent environments](pages/langsmith/agent-environments.md) · [原文](https://docs.langchain.com/langsmith/agent-environments)
 - `langsmith/agent-server` — [Agent Server](pages/langsmith/agent-server.md) · [原文](https://docs.langchain.com/langsmith/agent-server)
@@ -230,6 +231,7 @@
 - `langsmith/custom-auth` — [Add custom authentication](pages/langsmith/custom-auth.md) · [原文](https://docs.langchain.com/langsmith/custom-auth)
 - `langsmith/custom-checkpointer` — [How to use a custom checkpointer](pages/langsmith/custom-checkpointer.md) · [原文](https://docs.langchain.com/langsmith/custom-checkpointer)
 - `langsmith/custom-docker` — [How to customize the Dockerfile](pages/langsmith/custom-docker.md) · [原文](https://docs.langchain.com/langsmith/custom-docker)
+- `langsmith/custom-encryption` — [Configure custom encryption at rest](pages/langsmith/custom-encryption.md) · [原文](https://docs.langchain.com/langsmith/custom-encryption)
 - `langsmith/custom-endpoint` — [Connect to a custom model](pages/langsmith/custom-endpoint.md) · [原文](https://docs.langchain.com/langsmith/custom-endpoint)
 - `langsmith/custom-lifespan` — [How to add custom lifespan events](pages/langsmith/custom-lifespan.md) · [原文](https://docs.langchain.com/langsmith/custom-lifespan)
 - `langsmith/custom-middleware` — [How to add custom middleware](pages/langsmith/custom-middleware.md) · [原文](https://docs.langchain.com/langsmith/custom-middleware)
@@ -272,7 +274,7 @@
 - `langsmith/diagnostics-self-hosted` — [Troubleshooting for self-hosted deployments](pages/langsmith/diagnostics-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/diagnostics-self-hosted)
 - `langsmith/distributed-tracing` — [Implement distributed tracing](pages/langsmith/distributed-tracing.md) · [原文](https://docs.langchain.com/langsmith/distributed-tracing)
 - `langsmith/double-texting` — [Double texting](pages/langsmith/double-texting.md) · [原文](https://docs.langchain.com/langsmith/double-texting)
-- `langsmith/encryption` — [Add encryption at rest](pages/langsmith/encryption.md) · [原文](https://docs.langchain.com/langsmith/encryption)
+- `langsmith/encryption` — [Encryption at rest](pages/langsmith/encryption.md) · [原文](https://docs.langchain.com/langsmith/encryption)
 - `langsmith/endpoint-deprecation` — [API and SDK deprecation policy](pages/langsmith/endpoint-deprecation.md) · [原文](https://docs.langchain.com/langsmith/endpoint-deprecation)
 - `langsmith/engine` — [Find and fix your agent's issues with LangSmith Engine](pages/langsmith/engine.md) · [原文](https://docs.langchain.com/langsmith/engine)
 - `langsmith/engine-github` — [Connect LangSmith Engine to GitHub](pages/langsmith/engine-github.md) · [原文](https://docs.langchain.com/langsmith/engine-github)
@@ -559,6 +561,7 @@
 - `langsmith/self-host-gke-vertex-ai-workload-identity` — [Authenticate Vertex AI with GKE workload identity](pages/langsmith/self-host-gke-vertex-ai-workload-identity.md) · [原文](https://docs.langchain.com/langsmith/self-host-gke-vertex-ai-workload-identity)
 - `langsmith/self-host-ingress` — [Create an Ingress for installations (Kubernetes)](pages/langsmith/self-host-ingress.md) · [原文](https://docs.langchain.com/langsmith/self-host-ingress)
 - `langsmith/self-host-mirroring-images` — [Mirror images for your LangSmith installation](pages/langsmith/self-host-mirroring-images.md) · [原文](https://docs.langchain.com/langsmith/self-host-mirroring-images)
+- `langsmith/self-host-observability-dashboards` — [Monitor self-hosted LangSmith with Datadog or Grafana](pages/langsmith/self-host-observability-dashboards.md) · [原文](https://docs.langchain.com/langsmith/self-host-observability-dashboards)
 - `langsmith/self-host-organization-charts` — [View trace counts across your organization](pages/langsmith/self-host-organization-charts.md) · [原文](https://docs.langchain.com/langsmith/self-host-organization-charts)
 - `langsmith/self-host-playground-environment-settings` — [Use environment variables for model providers](pages/langsmith/self-host-playground-environment-settings.md) · [原文](https://docs.langchain.com/langsmith/self-host-playground-environment-settings)
 - `langsmith/self-host-sandbox-architecture` — [Self-hosted Sandbox architecture](pages/langsmith/self-host-sandbox-architecture.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-architecture)
@@ -567,6 +570,7 @@
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
 - `langsmith/self-host-slack` — [Connect self-hosted LangSmith to Slack](pages/langsmith/self-host-slack.md) · [原文](https://docs.langchain.com/langsmith/self-host-slack)
 - `langsmith/self-host-smithdb` — [Enable SmithDB on self-hosted LangSmith](pages/langsmith/self-host-smithdb.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb)
+- `langsmith/self-host-smithdb-features` — [SmithDB feature availability](pages/langsmith/self-host-smithdb-features.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-features)
 - `langsmith/self-host-smithdb-infrastructure` — [Prepare SmithDB supporting infrastructure](pages/langsmith/self-host-smithdb-infrastructure.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-infrastructure)
 - `langsmith/self-host-smithdb-install` — [Install LangSmith with SmithDB](pages/langsmith/self-host-smithdb-install.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-install)
 - `langsmith/self-host-smithdb-metrics` — [SmithDB metrics reference](pages/langsmith/self-host-smithdb-metrics.md) · [原文](https://docs.langchain.com/langsmith/self-host-smithdb-metrics)

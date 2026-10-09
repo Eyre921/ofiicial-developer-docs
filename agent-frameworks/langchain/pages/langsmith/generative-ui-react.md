@@ -81,7 +81,6 @@ CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tai
 <Tabs>
   <Tab title="Python">
     ```python title="src/agent.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import uuid
     from typing import Annotated, Sequence, TypedDict
 
     from langchain.messages import AIMessage
@@ -109,7 +108,7 @@ CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tai
         )
 
         message = AIMessage(
-            id=str(uuid.uuid4()),
+            id=str(uuid7()),
             content=f"Here's the weather for {weather['city']}",
         )
 
@@ -129,6 +128,7 @@ CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tai
     Use the `typedUi` utility to emit UI elements from your agent nodes:
 
     ```typescript title="src/agent/index.ts" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { uuid7 } from "langsmith";
     import {
       typedUi,
       uiMessageReducer,
@@ -164,7 +164,7 @@ CSS and Tailwind 4.x is also supported out of the box, so you can freely use Tai
           .invoke(state.messages);
 
         const response = {
-          id: crypto.randomUUID(),
+          id: uuid7(),
           type: "ai",
           content: `Here's the weather for ${weather.city}`,
         };

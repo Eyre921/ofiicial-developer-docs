@@ -228,6 +228,8 @@ An agent (and optional branch) that participated in the call, in first-seen tran
   - `external_number` (string, required)
   - `phone_number_id` (string, required)
   - `stream_sid` (string, required)
+  - `call_result` (enum, optional)
+    - Allowed values: `answered`, `voicemail`, `busy`, `no_answer`, `failed`
 - `type`: `sip_trunking`
   - `agent_number` (string, required)
   - `call_sid` (string, required)
@@ -236,6 +238,8 @@ An agent (and optional branch) that participated in the call, in first-seen tran
   - `external_number` (string, required)
   - `phone_number_id` (string, required)
   - `call_id` (string, optional)
+  - `call_result` (enum, optional)
+    - Allowed values: `answered`, `voicemail`, `busy`, `no_answer`, `failed`
   - `sip_header_dynamic_variables` (map from string to string, optional)
 - `type`: `twilio`
   - `agent_number` (string, required)
@@ -245,6 +249,8 @@ An agent (and optional branch) that participated in the call, in first-seen tran
   - `external_number` (string, required)
   - `phone_number_id` (string, required)
   - `stream_sid` (string, required)
+  - `call_result` (enum, optional)
+    - Allowed values: `answered`, `voicemail`, `busy`, `no_answer`, `failed`
 
 ### ConversationHistoryBatchCallModel
 
@@ -485,6 +491,9 @@ Cost of running post-call analysis on this conversation. Present once an analysi
 
 - `campaign_id` (string, required)
 - `campaign_lead_id` (string, required)
+- `cold_attempt` (integer, optional)
+- `conversation_type` (enum, optional)
+  - Allowed values: `initial`, `retry`, `callback`, `redirect`
 
 ### FeatureStatusCommonModel
 
@@ -977,7 +986,8 @@ A locator for other documents to be able to reference a specific dictionary and 
       "direction": "inbound",
       "external_number": "external_number",
       "phone_number_id": "phone_number_id",
-      "stream_sid": "stream_sid"
+      "stream_sid": "stream_sid",
+      "call_result": "answered"
     },
     "batch_call": {
       "batch_call_id": "batch_call_id",

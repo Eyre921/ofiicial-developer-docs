@@ -87,6 +87,16 @@ Runnable Colab notebooks covering semantic search, lexical search, hybrid search
     <Tag />
   </ExampleCard>
 
+  <ExampleCard title="RAG with LlamaIndex and OpenAI">
+    <Tag icon="/images/examples/openai-icon.svg" />
+
+    <Tag icon="/images/examples/openai-icon.svg" />
+
+    <Tag />
+
+    <Tag />
+  </ExampleCard>
+
   <ExampleCard title="RAG with cascading retrieval and OpenAI ">
     <Tag icon="/images/examples/openai-icon.svg" />
 
@@ -99,6 +109,18 @@ Runnable Colab notebooks covering semantic search, lexical search, hybrid search
     <Tag />
 
     <Tag />
+  </ExampleCard>
+
+  <ExampleCard title="Retrieval agent with LangChain and OpenAI">
+    <Tag icon="/images/examples/openai-icon.svg" />
+
+    <Tag icon="/images/examples/openai-icon.svg" />
+
+    <Tag />
+
+    <Tag />
+
+    <Tag icon="/images/examples/huggingface-icon.svg" />
   </ExampleCard>
 
   <ExampleCard title="Retrieval Agents with Pinecone Assistant, LangChain and LangGraph">

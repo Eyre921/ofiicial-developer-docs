@@ -26,7 +26,7 @@ Pinecone Database powers retrieval for AI agents and applications, including sea
   </Card>
 
   <Card title="AI coding tools" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
-    Use Pinecone with Claude Code, Codex, Gemini CLI, Cursor, and other agentic tools
+    Use Pinecone with Claude Code, Codex, Cursor, and other agentic tools
   </Card>
 
   <Card title="MCP server" icon="server" href="/guides/operations/mcp-server">

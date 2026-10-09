@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1369 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1373 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -64,7 +64,6 @@
 - `docs/api-reference/audio-native/update` — [Update audio native project](pages/docs/api-reference/audio-native/update.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-native/update.md)
 - `docs/api-reference/audio-native/update-content-from-url` — [Update Audio-Native Content From Url](pages/docs/api-reference/audio-native/update-content-from-url.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-native/update-content-from-url.md)
 - `docs/api-reference/authentication` — [API Authentication](pages/docs/api-reference/authentication.md) · [原文](https://elevenlabs.io/docs/api-reference/authentication.md)
-- `docs/api-reference/batch-calling/cancel` — [Cancel batch calling job](pages/docs/api-reference/batch-calling/cancel.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/cancel.md)
 - `docs/api-reference/batch-calling/create` — [Submit batch calling job](pages/docs/api-reference/batch-calling/create.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/create.md)
 - `docs/api-reference/batch-calling/delete` — [Delete batch calling job](pages/docs/api-reference/batch-calling/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/delete.md)
 - `docs/api-reference/batch-calling/export` — [Export batch call results](pages/docs/api-reference/batch-calling/export.md) · [原文](https://elevenlabs.io/docs/api-reference/batch-calling/export.md)
@@ -334,6 +333,13 @@
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
 - `docs/api-reference/users/list` — [List users](pages/docs/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/api-reference/users/list.md)
 - `docs/api-reference/voices/accents/get` — [Get Voice Accents](pages/docs/api-reference/voices/accents/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/accents/get.md)
+- `docs/api-reference/voices/collections/add-voice` — [Add Voice To Collection](pages/docs/api-reference/voices/collections/add-voice.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/add-voice.md)
+- `docs/api-reference/voices/collections/create` — [Create Voice Collection](pages/docs/api-reference/voices/collections/create.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/create.md)
+- `docs/api-reference/voices/collections/delete` — [Delete Voice Collection](pages/docs/api-reference/voices/collections/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/delete.md)
+- `docs/api-reference/voices/collections/get` — [Get Voice Collection](pages/docs/api-reference/voices/collections/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/get.md)
+- `docs/api-reference/voices/collections/list` — [List Voice Collections](pages/docs/api-reference/voices/collections/list.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/list.md)
+- `docs/api-reference/voices/collections/remove-voice` — [Remove Voice From Collection](pages/docs/api-reference/voices/collections/remove-voice.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/remove-voice.md)
+- `docs/api-reference/voices/collections/update` — [Update Voice Collection](pages/docs/api-reference/voices/collections/update.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/collections/update.md)
 - `docs/api-reference/voices/delete` — [Delete voice](pages/docs/api-reference/voices/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/delete.md)
 - `docs/api-reference/voices/find-similar-voices` — [List similar voices](pages/docs/api-reference/voices/find-similar-voices.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/find-similar-voices.md)
 - `docs/api-reference/voices/get` — [Get voice](pages/docs/api-reference/voices/get.md) · [原文](https://elevenlabs.io/docs/api-reference/voices/get.md)
@@ -634,7 +640,6 @@
 - `docs/eleven-agents/customization/llm/custom-llm/samba-nova-cloud` — [SambaNova Cloud](pages/docs/eleven-agents/customization/llm/custom-llm/samba-nova-cloud.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/samba-nova-cloud.md)
 - `docs/eleven-agents/customization/llm/custom-llm/together-ai` — [Together AI](pages/docs/eleven-agents/customization/llm/custom-llm/together-ai.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/custom-llm/together-ai.md)
 - `docs/eleven-agents/customization/llm/llm-cascading` — [LLM Cascading](pages/docs/eleven-agents/customization/llm/llm-cascading.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/llm-cascading.md)
-- `docs/eleven-agents/customization/llm/optimizing-costs` — [Optimizing LLM costs](pages/docs/eleven-agents/customization/llm/optimizing-costs.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/llm/optimizing-costs.md)
 - `docs/eleven-agents/customization/multimodal-input` — [Multimodal input](pages/docs/eleven-agents/customization/multimodal-input.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/multimodal-input.md)
 - `docs/eleven-agents/customization/opentelemetry-traces` — [OpenTelemetry traces](pages/docs/eleven-agents/customization/opentelemetry-traces.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/opentelemetry-traces.md)
 - `docs/eleven-agents/customization/personalization` — [Personalization](pages/docs/eleven-agents/customization/personalization.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/personalization.md)
@@ -983,7 +988,6 @@
 - `docs/help-center/product/core-capabilities/speech-to-text` — [Speech to Text FAQ](pages/docs/help-center/product/core-capabilities/speech-to-text.md) · [原文](https://elevenlabs.io/docs/help-center/product/core-capabilities/speech-to-text.md)
 - `docs/help-center/product/core-capabilities/speech-to-text/how-many-speech-to-text-requests-can-i-make-and-can-i-increase-it` — [How many Speech to Text requests can I make and can I increase it?](pages/docs/help-center/product/core-capabilities/speech-to-text/how-many-speech-to-text-requests-can-i-make-and-can-i-increase-it.md) · [原文](https://elevenlabs.io/docs/help-center/product/core-capabilities/speech-to-text/how-many-speech-to-text-requests-can-i-make-and-can-i-increase-it.md)
 - `docs/help-center/product/core-capabilities/speech-to-text/what-is-speech-to-text` — [What is Speech to Text?](pages/docs/help-center/product/core-capabilities/speech-to-text/what-is-speech-to-text.md) · [原文](https://elevenlabs.io/docs/help-center/product/core-capabilities/speech-to-text/what-is-speech-to-text.md)
-- `docs/help-center/product/core-capabilities/speech-to-text/which-languages-does-speech-to-text-support` — [Which languages does Speech to Text support?](pages/docs/help-center/product/core-capabilities/speech-to-text/which-languages-does-speech-to-text-support.md) · [原文](https://elevenlabs.io/docs/help-center/product/core-capabilities/speech-to-text/which-languages-does-speech-to-text-support.md)
 - `docs/help-center/product/core-capabilities/text-to-speech` — [Text to Speech FAQ](pages/docs/help-center/product/core-capabilities/text-to-speech.md) · [原文](https://elevenlabs.io/docs/help-center/product/core-capabilities/text-to-speech.md)
 - `docs/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice` — [Can I change the pace of the voice?](pages/docs/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.md) · [原文](https://elevenlabs.io/docs/help-center/product/core-capabilities/text-to-speech/can-i-change-the-pace-of-the-voice.md)
 - `docs/help-center/product/core-capabilities/text-to-speech/can-i-use-the-same-cloned-designed-voice-across-languages` — [Can I use the same cloned/designed voice across languages?](pages/docs/help-center/product/core-capabilities/text-to-speech/can-i-use-the-same-cloned-designed-voice-across-languages.md) · [原文](https://elevenlabs.io/docs/help-center/product/core-capabilities/text-to-speech/can-i-use-the-same-cloned-designed-voice-across-languages.md)

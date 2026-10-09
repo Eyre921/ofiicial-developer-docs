@@ -134,9 +134,9 @@ Validation Error
 
 - `minimum_frequency_days` (integer, optional, default: 7) — Minimum frequency (in days) at which the document is refreshed. The actual interval may be shorter, never longer.
 - `auto_remove` (boolean, optional, default: false) — Whether to remove the document if the URL becomes unavailable
-- `auto_discover` (boolean, optional, default: false) — Whether new pages discovered during a refresh are crawled and added. Set from the owning crawl job at creation; the crawl job remains the source of truth for the discovery logic.
 - `consec_failures` (integer, optional, default: 0) — Number of consecutive sync failures
 - `next_refresh_by` (integer, optional) — Unix timestamp for the next scheduled sync or None (in case of folders)
+- `auto_discover` (boolean, optional, default: false, deprecated) — Deprecated. This field no longer has any effect and will be removed in a future release.
 
 ### KnowledgeBaseFolderPathSegmentResponseModel
 
@@ -242,7 +242,6 @@ Metadata for a KB folder that mirrors an external source folder.
   "auto_sync_info": {
     "minimum_frequency_days": 1,
     "auto_remove": true,
-    "auto_discover": true,
     "consec_failures": 1,
     "next_refresh_by": 1
   },

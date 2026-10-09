@@ -45,6 +45,8 @@ When applying a template, the `children` parameter is **not** allowed. The page 
 
 Returns a new [page object](/reference/page).
 
+When creating a page with the `markdown` body parameter, set `markdown_version: "v2"` to write [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. Sending `markdown_version` without `markdown` returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+
 When creating a page with the `markdown` body parameter, you can set `allow_async: true` to receive an HTTP `202` response with an `async_task` object instead of waiting for the page creation to finish in the original request. This is useful for high-block markdown requests that may take longer than typical HTTP client timeout budgets.
 
 If `allow_async` is omitted or `false`, this endpoint keeps its existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or which operation runs. See [Retrieve an async task](/reference/retrieve-async-task) and [Working with markdown content](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously) for polling examples.
@@ -60,6 +62,23 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 
   Formula, rollup, ID, creation, and last-edit values are set by Notion. Button actions cannot be set through a page write. Omit these fields from `properties`; see the [read-only property types](/reference/page-property-values#type-objects).
 </Warning>
+
+### Control notifications from page writes
+
+Set `notifications.mode` to `silent` to skip the notifications Notion sends people about the change:
+
+* Page update notifications to people who get updates for the page through **Notify me**.
+* Notifications to people the content @mentions.
+* Notifications to people the change adds to a Person property.
+
+Set it to `default`, or omit `notifications`, to use the standard behavior.
+
+Some effects of the change happen in either mode:
+
+* [Database automations](https://www.notion.com/help/database-automations) that the change triggers still run, including **Send notification to** actions.
+* Reminders set by the change still go off at their scheduled time.
+* [Connection webhooks](/reference/webhooks) still receive events for the change.
+* Page history, page activity, and workspace audit logs still record the change.
 
 <Info>
   **Requirements**

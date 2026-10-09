@@ -1,6 +1,6 @@
 # vector-db/pinecone 文档索引
 
-> 共 569 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 567 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -259,7 +259,6 @@
 - `integrations/fleak` — [Fleak](pages/integrations/fleak.md) · [原文](https://docs.pinecone.io/integrations/fleak)
 - `integrations/flowise` — [FlowiseAI](pages/integrations/flowise.md) · [原文](https://docs.pinecone.io/integrations/flowise)
 - `integrations/gathr` — [Gathr](pages/integrations/gathr.md) · [原文](https://docs.pinecone.io/integrations/gathr)
-- `integrations/gemini-cli` — [Gemini CLI extension](pages/integrations/gemini-cli.md) · [原文](https://docs.pinecone.io/integrations/gemini-cli)
 - `integrations/genkit` — [Genkit](pages/integrations/genkit.md) · [原文](https://docs.pinecone.io/integrations/genkit)
 - `integrations/google-cloud-marketplace` — [Google Cloud Marketplace](pages/integrations/google-cloud-marketplace.md) · [原文](https://docs.pinecone.io/integrations/google-cloud-marketplace)
 - `integrations/haystack` — [Haystack](pages/integrations/haystack.md) · [原文](https://docs.pinecone.io/integrations/haystack)
@@ -268,7 +267,6 @@
 - `integrations/instill` — [Instill AI](pages/integrations/instill.md) · [原文](https://docs.pinecone.io/integrations/instill)
 - `integrations/jina` — [Jina AI](pages/integrations/jina.md) · [原文](https://docs.pinecone.io/integrations/jina)
 - `integrations/langchain` — [LangChain](pages/integrations/langchain.md) · [原文](https://docs.pinecone.io/integrations/langchain)
-- `integrations/langtrace` — [Langtrace](pages/integrations/langtrace.md) · [原文](https://docs.pinecone.io/integrations/langtrace)
 - `integrations/llamaindex` — [LlamaIndex](pages/integrations/llamaindex.md) · [原文](https://docs.pinecone.io/integrations/llamaindex)
 - `integrations/matillion` — [Matillion](pages/integrations/matillion.md) · [原文](https://docs.pinecone.io/integrations/matillion)
 - `integrations/microsoft-marketplace` — [Microsoft Marketplace](pages/integrations/microsoft-marketplace.md) · [原文](https://docs.pinecone.io/integrations/microsoft-marketplace)
@@ -280,7 +278,6 @@
 - `integrations/progress-agentic-rag` — [Progress Agentic RAG](pages/integrations/progress-agentic-rag.md) · [原文](https://docs.pinecone.io/integrations/progress-agentic-rag)
 - `integrations/pulumi` — [Pulumi](pages/integrations/pulumi.md) · [原文](https://docs.pinecone.io/integrations/pulumi)
 - `integrations/redpanda` — [Redpanda](pages/integrations/redpanda.md) · [原文](https://docs.pinecone.io/integrations/redpanda)
-- `integrations/snowflake` — [Snowflake](pages/integrations/snowflake.md) · [原文](https://docs.pinecone.io/integrations/snowflake)
 - `integrations/snowflake-openflow` — [Snowflake Openflow](pages/integrations/snowflake-openflow.md) · [原文](https://docs.pinecone.io/integrations/snowflake-openflow)
 - `integrations/streamnative` — [StreamNative](pages/integrations/streamnative.md) · [原文](https://docs.pinecone.io/integrations/streamnative)
 - `integrations/terraform` — [Terraform](pages/integrations/terraform.md) · [原文](https://docs.pinecone.io/integrations/terraform)
@@ -484,6 +481,7 @@
 - `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-5.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
 - `reference/api/versioning` — [Pinecone API versioning](pages/reference/api/versioning-6.md) · [原文](https://docs.pinecone.io/reference/api/versioning)
 - `reference/architecture/assistant-architecture` — [Pinecone Assistant architecture](pages/reference/architecture/assistant-architecture.md) · [原文](https://docs.pinecone.io/reference/architecture/assistant-architecture)
+- `reference/architecture/assistant-architecture` — [Pinecone Assistant architecture](pages/reference/architecture/assistant-architecture-2.md) · [原文](https://docs.pinecone.io/reference/architecture/assistant-architecture)
 - `reference/cli/authentication` — [CLI authentication](pages/reference/cli/authentication.md) · [原文](https://docs.pinecone.io/reference/cli/authentication)
 - `reference/cli/authentication` — [CLI authentication](pages/reference/cli/authentication-2.md) · [原文](https://docs.pinecone.io/reference/cli/authentication)
 - `reference/cli/authentication` — [CLI authentication](pages/reference/cli/authentication-3.md) · [原文](https://docs.pinecone.io/reference/cli/authentication)

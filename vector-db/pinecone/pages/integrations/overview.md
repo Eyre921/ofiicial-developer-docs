@@ -8,7 +8,7 @@ Browse Pinecone integrations across vector embedding providers, data ingestion t
 
 ## AI coding tools
 
-Use Pinecone from AI coding tools with official plugins and skills. For setup across tools, see [AI coding tools](/integrations/ai-coding-tools).
+To compare setup across tools, see [AI coding tools](/integrations/ai-coding-tools).
 
 <CardGroup>
   <Card href="/integrations/agent-skills">
@@ -29,11 +29,6 @@ Use Pinecone from AI coding tools with official plugins and skills. For setup ac
   <Card href="/integrations/cursor">
     <div>Cursor plugin</div>
     <p>Official Pinecone plugin for Cursor with skills, MCP tools, and slash commands.</p>
-  </Card>
-
-  <Card href="/integrations/gemini-cli">
-    <div>Gemini CLI extension</div>
-    <p>Official Pinecone extension for Gemini CLI with skills and MCP tools.</p>
   </Card>
 </CardGroup>
 
@@ -155,15 +150,6 @@ Use Pinecone from AI coding tools with official plugins and skills. For setup ac
 
     <div>Redpanda</div>
     <p>Connect existing data sources to Pinecone with a Kafka-compatible streaming data platform built for data-intensive applications.</p>
-  </Card>
-
-  <Card href="/integrations/snowflake">
-    <div>
-      <img />
-    </div>
-
-    <div>Snowflake</div>
-    <p>Run Pinecone with Snowpark Container Services, designed to deploy, manage, and scale containerized applications within the Snowflake ecosystem.</p>
   </Card>
 
   <Card href="/integrations/snowflake-openflow">
@@ -459,15 +445,6 @@ Use Pinecone from AI coding tools with official plugins and skills. For setup ac
 
     <div>HoneyHive</div>
     <p>Visualize execution traces and spans from your Pinecone calls.</p>
-  </Card>
-
-  <Card href="/integrations/langtrace">
-    <div>
-      <img />
-    </div>
-
-    <div>Langtrace</div>
-    <p>Get high-cardinality tracing of your Pinecone API calls, exported to the observability tool of your choice.</p>
   </Card>
 
   <Card href="/integrations/new-relic">

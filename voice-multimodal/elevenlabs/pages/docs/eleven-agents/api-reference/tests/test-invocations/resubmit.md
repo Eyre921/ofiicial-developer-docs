@@ -361,6 +361,8 @@ Alerting configuration used at both per-agent and per-workspace level. Cascade o
 
 - `type`: `end`
   - `edge_order` (list of string, optional) — The ids of outgoing edges in the order they should be evaluated.
+  - `outcome` (enum, optional, default: success) — Whether reaching this End node ends the conversation as a success or a failure.
+    - Allowed values: `success`, `failure`
   - `position` (PositionInput, optional) — Position of the node in the workflow.
 - `type`: `override_agent`
   - `label` (string, required) — Human-readable label for the node used throughout the UI.
@@ -457,14 +459,14 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 ### EffectsSpecOutput
 
-Filter preset, distance (proximity EQ), and environment (convolution reverb).
+Audio effects applied to generated speech: a filter preset, perceived distance, a reverb environment, a background noise bed, and stereo panning. Leave every field at its default to get unprocessed audio.
 
-- `distance` (double, required, default: 0)
-- `send_level` (double, required, default: 1)
-- `filter_preset_id` (string, optional)
-- `environment_id` (string, optional)
-- `background_noise_id` (string, optional)
-- `seed` (integer, optional)
+- `distance` (double, required, default: 0) — How far the speaker sounds from the microphone, from 0 (close, unchanged) to 1 (far). Higher values roll off low and high frequencies and, when an environment is set, shift the balance from the dry voice toward the reverb.
+- `send_level` (double, required, default: 1) — How much of the voice feeds the reverb, from 0 (none) to 1 (full). Only applies when `environment_id` is set; 0 turns the reverb off.
+- `filter_preset_id` (string, optional) — ID of a filter preset that colors the voice, such as `phone` or `old_radio`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `environment_id` (string, optional) — ID of a reverb environment that places the voice in a space, such as `small_room` or `hall`. List valid IDs with `GET /v1/audio-effects/catalog`. Reverb is rendered in stereo and adds a tail of up to several seconds after the speech ends.
+- `background_noise_id` (string, optional) — ID of a background noise bed looped under the voice, such as `cafe` or `keyboard`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `seed` (integer, optional, deprecated) — Has no effect.
 
 ### FileInputConfig
 
@@ -768,7 +770,7 @@ Custom hold audio played on loop to callers waiting in the agent's queue. Set by
 
 - `enabled` (boolean, optional) — Whether this monitor is enabled and can notify
 - `threshold` (double, optional) — Failure rate threshold at which this monitor can notify.
-- `relative_increase_threshold` (double, optional) — Relative increase over the trailing baseline at which this monitor can notify (0.2 = 20% above baseline, 0 = any failure).
+- `relative_increase_threshold` (double, optional) — Relative increase over the trailing baseline at which this monitor can notify (0.2 = 20% above baseline, 0 = any failure). For conversation_volume_drop it is the share of the usual volume that must be missing, between 0.1 and 0.9 (0.5 = half).
 - `min_failure_count` (integer, optional) — Minimum failures in the window before this monitor can fire.
 - `min_history_bucket_count` (integer, optional) — Minimum trailing buckets with traffic before spike detection can fire.
 - `min_sample_count` (integer, optional) — Minimum samples in the window before this monitor can fire.
@@ -1468,14 +1470,14 @@ Value of this literal.
 
 ### EffectsSpecInput
 
-Filter preset, distance (proximity EQ), and environment (convolution reverb).
+Audio effects applied to generated speech: a filter preset, perceived distance, a reverb environment, a background noise bed, and stereo panning. Leave every field at its default to get unprocessed audio.
 
-- `filter_preset_id` (string, optional)
-- `distance` (double, optional, default: 0)
-- `environment_id` (string, optional)
-- `background_noise_id` (string, optional)
-- `send_level` (double, optional, default: 1)
-- `seed` (integer, optional)
+- `filter_preset_id` (string, optional) — ID of a filter preset that colors the voice, such as `phone` or `old_radio`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `distance` (double, optional, default: 0) — How far the speaker sounds from the microphone, from 0 (close, unchanged) to 1 (far). Higher values roll off low and high frequencies and, when an environment is set, shift the balance from the dry voice toward the reverb.
+- `environment_id` (string, optional) — ID of a reverb environment that places the voice in a space, such as `small_room` or `hall`. List valid IDs with `GET /v1/audio-effects/catalog`. Reverb is rendered in stereo and adds a tail of up to several seconds after the speech ends.
+- `background_noise_id` (string, optional) — ID of a background noise bed looped under the voice, such as `cafe` or `keyboard`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `send_level` (double, optional, default: 1) — How much of the voice feeds the reverb, from 0 (none) to 1 (full). Only applies when `environment_id` is set; 0 turns the reverb off.
+- `seed` (integer, optional, deprecated) — Has no effect.
 
 ### FileInputConfigWorkflowOverride
 

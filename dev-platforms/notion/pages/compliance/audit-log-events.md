@@ -46,6 +46,8 @@ Events are split into the following categories:
 * **Page permanently deleted**: That a page was permanently removed from Trash. This can be done by a user, but it can also be done automatically by Notion after 30 days, or within a [custom time frame](https://www.notion.com/help/custom-data-retention-settings) on Enterprise Plans.
 * **Page permission updated**: That a member or guest's page permissions were updated.
 * **Page properties edited**: That a user edited a page's property, like a page title or a database property.
+* **Page property access added**: That someone was added to a person property that controls access to a property on a page.
+* **Page property access removed**: That someone was removed from a person property that controls access to a property on a page.
 * **Page restored**: That a user restored a formerly deleted page from Trash.
 * **Page shared to web**: That a user enabled sharing (or disabled sharing) a page to the web.
 * **Page unarchived**: That a page was unarchived.
@@ -73,6 +75,10 @@ Events are split into the following categories:
 * **Data source permanently deleted**: That a collection was purged.
 * **Data source restored from Trash**: That a collection was restored.
 * **Database can create pages permission was updated**: That a database's can create pages permission was updated.
+* **Database property default access updated**: That a database property's default access was updated.
+* **Database property exception added**: That an exception was added to a database property's permissions.
+* **Database property exception removed**: That an exception was removed from a database property's permissions.
+* **Database property exception updated**: That an exception on a database property's permissions was updated.
 * **Database schema edited**: That a database schema was edited.
 
 ***

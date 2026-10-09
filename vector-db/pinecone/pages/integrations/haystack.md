@@ -4,311 +4,234 @@ source: https://docs.pinecone.io/integrations/haystack
 path: integrations/haystack
 ---
 
-Use Deepset Haystack's PineconeDocumentStore to build production NLP pipelines that index, embed, and query documents for question answering and RAG.
+Use deepset Haystack's PineconeDocumentStore to build production NLP pipelines that index, embed, and query documents for question answering and RAG.
 
-Haystack is the open-source Python framework by Deepset for building custom apps with large language models (LLMs). It lets you try out the latest models in natural language processing (NLP), and it's flexible to work with. Its community of users and builders has helped shape Haystack into a complete framework for building NLP apps for production.
+Haystack is the open-source Python framework by deepset for building custom apps with large language models (LLMs). It lets you try out the latest models in natural language processing (NLP), and it's flexible to work with. Its community of users and builders has helped shape Haystack into a complete framework for building NLP apps for production.
 
 You can use the Haystack and Pinecone integration to keep your NLP-driven apps up to date, with Haystack's indexing pipelines to help you prepare and maintain your data.
 
-<PrimarySecondaryCTA />
-
 ## Setup guide
 
-This guide shows how to integrate Pinecone and the [Haystack library](https://github.com/deepset-ai/haystack) for question answering.
+This guide shows how to integrate Pinecone and the [Haystack library](https://github.com/deepset-ai/haystack) for question answering. It uses OpenAI models to create embeddings and generate answers.
 
-### Install Haystack
+<Steps>
+  <Step title="Install Haystack">
+    Install the latest version of Haystack, the Pinecone integration for Haystack, and Hugging Face Datasets.
 
-Install the latest version of Haystack with all dependencies required for the `PineconeDocumentStore`.
+    ```shell Shell theme={null}
+    pip install -U "haystack-ai>=3.3.0" "pinecone-haystack>=6.4.1" "datasets"
+    ```
+  </Step>
 
-```Python Python theme={null}
-pip install -U farm-haystack>=1.3.0 pinecone[grpc] datasets
-```
+  <Step title="Set your API keys">
+    The `PineconeDocumentStore` reads your Pinecone API key from the `PINECONE_API_KEY` environment variable, and Haystack's OpenAI components read your OpenAI API key from `OPENAI_API_KEY`. [Create an account](https://app.pinecone.io) to get your free Pinecone API key.
 
-### Initialize the PineconeDocumentStore
+    ```Python Python theme={null}
+    import os
 
-Initialize a `PineconeDocumentStore` by providing an API key and environment name. [Create an account](https://app.pinecone.io) to get your free API key.
+    os.environ["PINECONE_API_KEY"] = "YOUR_API_KEY"
+    os.environ["OPENAI_API_KEY"] = "YOUR_OPENAI_API_KEY"
+    ```
+  </Step>
 
-```Python Python theme={null}
-from haystack.document_stores import PineconeDocumentStore
+  <Step title="Initialize the PineconeDocumentStore">
+    Initialize a `PineconeDocumentStore`. If the index doesn't exist, the document store creates a serverless index with the dimension, metric, and spec you provide. The dimension matches the `text-embedding-3-small` embedding model used later in this guide.
 
-document_store = PineconeDocumentStore(
-    api_key='<YOUR_API_KEY>',
-    index='haystack-extractive-qa',
-    similarity="cosine",
-    embedding_dim=384
-)
-```
+    ```Python Python theme={null}
+    from haystack_integrations.document_stores.pinecone import PineconeDocumentStore
 
-```
-INFO - haystack.document_stores.pinecone -  Index statistics: name: haystack-extractive-qa, embedding dimensions: 384, record count: 0
-```
-
-### Prepare data
-
-Before you add data to the document store, you must download the data and convert it into the Document format that Haystack uses.
-
-This guide uses the SQuAD dataset available from Hugging Face Datasets.
-
-```Python Python theme={null}
-from datasets import load_dataset
-
-# load the squad dataset
-data = load_dataset("squad", split="train")
-```
-
-Next, remove duplicates and unnecessary columns.
-
-```Python Python theme={null}
-# convert to a pandas dataframe
-df = data.to_pandas()
-# select only title and context column
-df = df[["title", "context"]]
-# drop rows containing duplicate context passages
-df = df.drop_duplicates(subset="context")
-df.head()
-```
-
-| title | context | |
-| - | - | - |
-| 0 | University\_of\_Notre\_Dame | Architecturally, the school has a Catholic cha... |
-| 5 | University\_of\_Notre\_Dame | As at most other universities, Notre Dame's st... |
-| 10 | University\_of\_Notre\_Dame | The university is the major seat of the Congre... |
-| 15 | University\_of\_Notre\_Dame | The College of Engineering was established in ... |
-| 20 | University\_of\_Notre\_Dame | All of Notre Dame's undergraduate students are... |
-
-Then convert these records into the Document format.
-
-```Python Python theme={null}
-from haystack import Document
-
-docs = []
-for d in df.iterrows():
-    d = d[1]
-    # create haystack document object with text content and doc metadata
-    doc = Document(
-        content=d["context"],
-        meta={
-            "title": d["title"],
-            'context': d['context']
-        }
+    document_store = PineconeDocumentStore(
+        index="haystack-qa",
+        namespace="squad",
+        dimension=1536,
+        metric="cosine",
+        spec={"serverless": {"cloud": "aws", "region": "us-east-1"}},
     )
-    docs.append(doc)
-```
+    ```
+  </Step>
 
-This `Document` format contains two fields: `content` for the text content or paragraphs, and `meta` for any additional information you can later use to apply metadata filtering in your search.
+  <Step title="Prepare data">
+    Before you add data to the document store, you must download the data and convert it into the Document format that Haystack uses.
 
-Upsert the documents to Pinecone.
+    This guide uses the SQuAD dataset available from Hugging Face Datasets.
 
-```Python Python theme={null}
-# upsert the data document to pinecone index
-document_store.write_documents(docs)
-```
+    ```Python Python theme={null}
+    from datasets import load_dataset
 
-### Initialize retriever
+    # load the squad dataset
+    data = load_dataset("rajpurkar/squad", split="train")
+    ```
 
-The next step is to create embeddings from these documents. This guide uses Haystack's `EmbeddingRetriever` with a SentenceTransformer model (`multi-qa-MiniLM-L6-cos-v1`), which is designed for question answering.
+    Next, remove duplicates and unnecessary columns.
 
-```Python Python theme={null}
-from haystack.retriever.dense import EmbeddingRetriever
+    ```Python Python theme={null}
+    # convert to a pandas dataframe
+    df = data.to_pandas()
+    # select only title and context column
+    df = df[["title", "context"]]
+    # drop rows containing duplicate context passages
+    df = df.drop_duplicates(subset="context")
+    df.head()
+    ```
 
-retriever = EmbeddingRetriever(
-    document_store=document_store,
-    embedding_model="multi-qa-MiniLM-L6-cos-v1",
-    model_format="sentence_transformers"
-)
-```
+    | | title | context |
+    | - | - | - |
+    | 0 | University\_of\_Notre\_Dame | Architecturally, the school has a Catholic cha... |
+    | 5 | University\_of\_Notre\_Dame | As at most other universities, Notre Dame's st... |
+    | 10 | University\_of\_Notre\_Dame | The university is the major seat of the Congre... |
+    | 15 | University\_of\_Notre\_Dame | The College of Engineering was established in ... |
+    | 20 | University\_of\_Notre\_Dame | All of Notre Dame's undergraduate students are... |
 
-Then run the `PineconeDocumentStore.update_embeddings` method with the `retriever` provided as an argument. GPU acceleration can greatly reduce the time required for this step.
+    Then convert these records into the Document format.
 
-```Python Python theme={null}
-document_store.update_embeddings(
-    retriever,
-    batch_size=16
-)
-```
+    ```Python Python theme={null}
+    from haystack import Document
 
-### Inspect documents and embeddings
+    docs = [
+        Document(content=row["context"], meta={"title": row["title"]})
+        for _, row in df.iterrows()
+    ]
+    ```
 
-You can get documents by their ID with the `PineconeDocumentStore.get_documents_by_id` method.
+    This `Document` format contains two fields: `content` for the text content or paragraphs, and `meta` for any additional information you can later use to apply metadata filtering in your search.
+  </Step>
 
-```Python Python theme={null}
-d = document_store.get_documents_by_id(ids=['49091c797d2236e73fab510b1e9c7f6b'], return_embedding=True)[0]
-```
+  <Step title="Embed and upsert documents">
+    Build an indexing pipeline that creates an embedding for each document with OpenAI's `text-embedding-3-small` model and writes the documents and their embeddings to Pinecone.
 
-From here, you can view document content with `d.content` and the document embedding with `d.embedding`.
+    ```Python Python theme={null}
+    from haystack import Pipeline
+    from haystack.components.embedders import OpenAIDocumentEmbedder
+    from haystack.components.writers import DocumentWriter
 
-### Initialize an extractive QA pipeline
+    indexing = Pipeline()
+    indexing.add_component("embedder", OpenAIDocumentEmbedder(model="text-embedding-3-small"))
+    indexing.add_component("writer", DocumentWriter(document_store=document_store))
+    indexing.connect("embedder.documents", "writer.documents")
 
-An `ExtractiveQAPipeline` contains three key components by default:
+    indexing.run({"embedder": {"documents": docs}})
+    ```
+  </Step>
 
-* a document store (`PineconeDocumentStore`)
-* a retriever model
-* a reader model
+  <Step title="Inspect documents and embeddings">
+    You can get documents by their metadata with the `PineconeDocumentStore.filter_documents` method.
 
-This guide uses the `deepset/electra-base-squad2` model from the Hugging Face model hub as the reader model.
+    ```Python Python theme={null}
+    docs_found = document_store.filter_documents(
+        filters={"field": "meta.title", "operator": "==", "value": "Egypt"}
+    )
+    d = docs_found[0]
+    ```
 
-```Python Python theme={null}
-from haystack.nodes import FARMReader
+    From here, you can view document content with `d.content` and the document embedding with `d.embedding`.
+  </Step>
 
-reader = FARMReader(
-    model_name_or_path='deepset/electra-base-squad2', 
-    use_gpu=True
-)
-```
+  <Step title="Initialize a question-answering pipeline">
+    A retrieval-augmented question-answering pipeline contains four components:
 
-Now initialize the `ExtractiveQAPipeline`.
+    * a text embedder that creates an embedding for the question
+    * a retriever (`PineconeEmbeddingRetriever`) that finds the most relevant documents in Pinecone
+    * a prompt builder that adds the retrieved documents and the question to a prompt
+    * a generator that answers the question with an LLM
 
-```Python Python theme={null}
-from haystack.pipelines import ExtractiveQAPipeline
+    This guide uses OpenAI's `gpt-4o-mini` model as the generator.
 
-pipe = ExtractiveQAPipeline(reader, retriever)
-```
+    ```Python Python theme={null}
+    from haystack.components.builders import ChatPromptBuilder
+    from haystack.components.embedders import OpenAITextEmbedder
+    from haystack.components.generators.chat import OpenAIChatGenerator
+    from haystack.dataclasses import ChatMessage
+    from haystack_integrations.components.retrievers.pinecone import PineconeEmbeddingRetriever
 
-### Ask questions
+    template = [
+        ChatMessage.from_user(
+            """Answer the question using only the context below.
 
-Use your QA pipeline to start querying with `pipe.run`.
+    Context:
+    {% for document in documents %}
+    {{ document.content }}
+    {% endfor %}
 
-```Python Python theme={null}
-from haystack.utils import print_answers
+    Question: {{ question }}
+    Answer:"""
+        )
+    ]
 
-query = "What was Albert Einstein famous for?"
-# get the answer
-answer = pipe.run(
-    query=query,
-    params={
-        "Retriever": {"top_k": 1},
-    }
-)
-# print the answer(s)
-print_answers(answer)
-```
+    pipe = Pipeline()
+    pipe.add_component("text_embedder", OpenAITextEmbedder(model="text-embedding-3-small"))
+    pipe.add_component("retriever", PineconeEmbeddingRetriever(document_store=document_store))
+    pipe.add_component("prompt_builder", ChatPromptBuilder(template=template, required_variables=["question", "documents"]))
+    pipe.add_component("llm", OpenAIChatGenerator(model="gpt-4o-mini"))
+    pipe.connect("text_embedder.embedding", "retriever.query_embedding")
+    pipe.connect("retriever.documents", "prompt_builder.documents")
+    pipe.connect("prompt_builder.prompt", "llm.messages")
+    ```
+  </Step>
 
-```
-Inferencing Samples: 100%|██████████| 1/1 [00:00<00:00,  3.53 Batches/s]
+  <Step title="Ask questions">
+    Define a helper function that runs the pipeline and prints the answer along with the title and score of each retrieved document. The `top_k` parameter sets how many documents the retriever passes to the LLM.
 
-Query: What was Albert Einstein famous for?
-Answers:
-[   <Answer {
-    'answer': 'his theories of special relativity and general relativity', 'type': 'extractive', 'score': 0.993550717830658,
-    'context': 'Albert Einstein is known for his theories of special relativity and general relativity. He also made important contributions to statistical mechanics,',
-    'offsets_in_document': [{'start': 29, 'end': 86}],
-    'offsets_in_context': [{'start': 29, 'end': 86}], 
-    'document_id': '23357c05e3e46bacea556705de1ea6a5',
-    'meta': {
-        'context': 'Albert Einstein is known for his theories of special relativity and general relativity. He also made important contributions to statistical mechanics, especially his mathematical treatment of Brownian motion, his resolution of the paradox of specific heats, and his connection of fluctuations and dissipation. Despite his reservations about its interpretation, Einstein also made contributions to quantum mechanics and, indirectly, quantum field theory, primarily through his theoretical studies of the photon.', 'title': 'Modern_history'
-    }
-}>]
-```
+    ```Python Python theme={null}
+    def ask(question, top_k=1):
+        result = pipe.run(
+            {
+                "text_embedder": {"text": question},
+                "retriever": {"top_k": top_k},
+                "prompt_builder": {"question": question},
+            },
+            include_outputs_from={"retriever"},
+        )
+        print("Query:", question)
+        print("Answer:", result["llm"]["replies"][0].text)
+        for doc in result["retriever"]["documents"]:
+            print("Source:", doc.meta["title"], round(doc.score, 3))
+    ```
 
-```Python Python theme={null}
-query = "How much oil is Egypt producing in a day?"
-# get the answer
-answer = pipe.run(
-    query=query,
-    params={
-        "Retriever": {"top_k": 1},
-    }
-)
-# print the answer(s)
-print_answers(answer)
-```
+    Use your QA pipeline to ask a few questions:
 
-```
-Inferencing Samples: 100%|██████████| 1/1 [00:00<00:00,  3.81 Batches/s]
+    ```Python Python theme={null}
+    ask("What was Albert Einstein famous for?")
+    ask("How much oil is Egypt producing in a day?")
+    ask("Who founded YouTube?")
+    ```
 
-Query: How much oil is Egypt producing in a day?
-Answers:
-[   <Answer {
-    'answer': '691,000 bbl/d', 'type': 'extractive', 'score': 0.9999906420707703,
-    'context': 'Egypt was producing 691,000 bbl/d of oil and 2,141.05 Tcf of natural gas (in 2013), which makes Egypt as the largest oil producer not member of the Or',
-    'offsets_in_document': [{'start': 20, 'end': 33}],
-    'offsets_in_context': [{'start': 20, 'end': 33}],
-    'document_id': '57ed9720050a17237e323da5e3969a9b',
-    'meta': {
-        'context': 'Egypt was producing 691,000 bbl/d of oil and 2,141.05 Tcf of natural gas (in 2013), which makes Egypt as the largest oil producer not member of the Organization of the Petroleum Exporting Countries (OPEC) and the second-largest dry natural gas producer in Africa. In 2013, Egypt was the largest consumer of oil and natural gas in Africa, as more than 20% of total oil consumption and more than 40% of total dry natural gas consumption in Africa. Also, Egypt possesses the largest oil refinery capacity in Africa 726,000 bbl/d (in 2012). Egypt is currently planning to build its first nuclear power plant in El Dabaa city, northern Egypt.', 'title': 'Egypt'
-    }
-}>]
-```
+    ```text Response theme={null}
+    Query: What was Albert Einstein famous for?
+    Answer: Albert Einstein was famous for his theories of special relativity and general relativity, as well as his contributions to statistical mechanics, quantum mechanics, and quantum field theory.
+    Source: Modern_history 0.635
 
-```Python Python theme={null}
-query = "What are the first names of the youtube founders?"
-# get the answer
-answer = pipe.run(
-    query=query,
-    params={
-        "Retriever": {"top_k": 1},
-    }
-)
-# print the answer(s)
-print_answers(answer)
-```
+    Query: How much oil is Egypt producing in a day?
+    Answer: Egypt was producing 691,000 bbl/d of oil.
+    Source: Egypt 0.674
 
-```
-Inferencing Samples: 100%|██████████| 1/1 [00:00<00:00,  3.83 Batches/s]
+    Query: Who founded YouTube?
+    Answer: Hurley and Chen founded YouTube.
+    Source: YouTube 0.636
+    ```
 
-Query: What are the first names of the youtube founders?
-Answers:
-[   <Answer {
-    'answer': 'Hurley and Chen', 'type': 'extractive', 'score': 0.9998972713947296,
-    'context': 'According to a story that has often been repeated in the media, Hurley and Chen developed the idea for YouTube during the early months of 2005, after ',
-    'offsets_in_document': [{'start': 64, 'end': 79}],
-    'offsets_in_context': [{'start': 64, 'end': 79}],
-    'document_id': 'bd1cbd61ab617d840c5f295e21e80092',
-    'meta': {
-        'context': 'According to a story that has often been repeated in the media, Hurley and Chen developed the idea for YouTube during the early months of 2005, after they had experienced difficulty sharing videos that had been shot at a dinner party at Chen\'s apartment in San Francisco. Karim did not attend the party and denied that it had occurred, but Chen commented that the idea that YouTube was founded after a dinner party "was probably very strengthened by marketing ideas around creating a story that was very digestible".', 'title': 'YouTube'
-    }
-}>]
-```
+    You can pass more context to the LLM by setting the `top_k` parameter.
 
-You can return multiple answers by setting the `top_k` parameter.
+    ```Python Python theme={null}
+    ask("Who was the first person to step foot on the moon?", top_k=3)
+    ```
 
-```Python Python theme={null}
-query = "Who was the first person to step foot on the moon?"
-# get the answer
-answer = pipe.run(
-    query=query,
-    params={
-        "Retriever": {"top_k": 3},
-    }
-)
-# print the answer(s)
-print_answers(answer)
-```
+    ```text Response theme={null}
+    Query: Who was the first person to step foot on the moon?
+    Answer: Neil Armstrong was the first person to step foot on the Moon.
+    Source: Space_Race 0.639
+    Source: Space_Race 0.613
+    Source: Space_Race 0.516
+    ```
+  </Step>
 
-```
-Inferencing Samples: 100%|██████████| 1/1 [00:00<00:00,  3.71 Batches/s]
-Inferencing Samples: 100%|██████████| 1/1 [00:00<00:00,  3.78 Batches/s]
-Inferencing Samples: 100%|██████████| 1/1 [00:00<00:00,  3.88 Batches/s]
+  <Step title="Clean up">
+    When you're finished with the index, delete it.
 
-Query: Who was the first person to step foot on the moon?
-Answers:
-[   <Answer {
-    'answer': 'Armstrong', 'type': 'extractive', 'score': 0.9998227059841156, 
-    'context': 'The trip to the Moon took just over three days. After achieving orbit, Armstrong and Aldrin transferred into the Lunar Module, named Eagle, and after ', 
-    'offsets_in_document': [{'start': 71, 'end': 80}], 
-    'offsets_in_context': [{'start': 71, 'end': 80}], 
-    'document_id': 'f74e1bf667e68d72e45437a7895df921', 
-    'meta': {
-        'context': 'The trip to the Moon took just over three days. After achieving orbit, Armstrong and Aldrin transferred into the Lunar Module, named Eagle, and after a landing gear inspection by Collins remaining in the Command/Service Module Columbia, began their descent. After overcoming several computer overload alarms caused by an antenna switch left in the wrong position, and a slight downrange error, Armstrong took over manual flight control at about 180 meters (590 ft), and guided the Lunar Module to a safe landing spot at 20:18:04 UTC, July 20, 1969 (3:17:04 pm CDT). The first humans on the Moon would wait another six hours before they ventured out of their craft. At 02:56 UTC, July 21 (9:56 pm CDT July 20), Armstrong became the first human to set foot on the Moon.', 'title': 'Space_Race'
-        }
-    }>, <Answer {
-    'answer': 'Frank Borman', 'type': 'extractive', 'score': 0.7770257890224457, 
-    'context': 'On December 21, 1968, Frank Borman, James Lovell, and William Anders became the first humans to ride the Saturn V rocket into space on Apollo 8. They ', 
-    'offsets_in_document': [{'start': 22, 'end': 34}], 
-    'offsets_in_context': [{'start': 22, 'end': 34}], 
-    'document_id': '2bc046ba90d94fe201ccde9d20552200', 
-    'meta': {
-        'context': "On December 21, 1968, Frank Borman, James Lovell, and William Anders became the first humans to ride the Saturn V rocket into space on Apollo 8. They also became the first to leave low-Earth orbit and go to another celestial body, and entered lunar orbit on December 24. They made ten orbits in twenty hours, and transmitted one of the most watched TV broadcasts in history, with their Christmas Eve program from lunar orbit, that concluded with a reading from the biblical Book of Genesis. Two and a half hours after the broadcast, they fired their engine to perform the first trans-Earth injection to leave lunar orbit and return to the Earth. Apollo 8 safely landed in the Pacific ocean on December 27, in NASA's first dawn splashdown and recovery.", 'title': 'Space_Race'
-        }
-    }>, <Answer {
-    'answer': 'Aldrin', 'type': 'extractive', 'score': 0.6680101901292801, 
-    'context': ' were, "That\'s one small step for [a] man, one giant leap for mankind." Aldrin joined him on the surface almost 20 minutes later. Altogether, they spe', 
-    'offsets_in_document': [{'start': 240, 'end': 246}], 
-    'offsets_in_context': [{'start': 72, 'end': 78}], 
-    'document_id': 'ae1c366b1eaf5fc9d32a8d81f76bd795', 
-    'meta': {
-        'context': 'The first step was witnessed by at least one-fifth of the population of Earth, or about 723 million people. His first words when he stepped off the LM\'s landing footpad were, "That\'s one small step for [a] man, one giant leap for mankind." Aldrin joined him on the surface almost 20 minutes later. Altogether, they spent just under two and one-quarter hours outside their craft. The next day, they performed the first launch from another celestial body, and rendezvoused back with Columbia.', 'title': 'Space_Race'
-        }
-    }>
-]
-```
+    ```Python Python theme={null}
+    from pinecone import Pinecone
+
+    pc = Pinecone()  # reads PINECONE_API_KEY
+    pc.delete_index(name="haystack-qa")
+    ```
+  </Step>
+</Steps>

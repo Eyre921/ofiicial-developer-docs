@@ -1120,6 +1120,8 @@ Events are split into the following categories:
 * **Page permanently deleted**: That a page was permanently removed from Trash. This can be done by a user, but it can also be done automatically by Notion after 30 days, or within a [custom time frame](https://www.notion.com/help/custom-data-retention-settings) on Enterprise Plans.
 * **Page permission updated**: That a member or guest's page permissions were updated.
 * **Page properties edited**: That a user edited a page's property, like a page title or a database property.
+* **Page property access added**: That someone was added to a person property that controls access to a property on a page.
+* **Page property access removed**: That someone was removed from a person property that controls access to a property on a page.
 * **Page restored**: That a user restored a formerly deleted page from Trash.
 * **Page shared to web**: That a user enabled sharing (or disabled sharing) a page to the web.
 * **Page unarchived**: That a page was unarchived.
@@ -1147,6 +1149,10 @@ Events are split into the following categories:
 * **Data source permanently deleted**: That a collection was purged.
 * **Data source restored from Trash**: That a collection was restored.
 * **Database can create pages permission was updated**: That a database's can create pages permission was updated.
+* **Database property default access updated**: That a database property's default access was updated.
+* **Database property exception added**: That an exception was added to a database property's permissions.
+* **Database property exception removed**: That an exception was removed from a database property's permissions.
+* **Database property exception updated**: That an exception on a database property's permissions was updated.
 * **Database schema edited**: That a database schema was edited.
 
 ***
@@ -1563,6 +1569,8 @@ When available, applicable events include a top-level `team_ids` array containin
 * **page.permissions.team\_role\_removed**: A teamspace's page permissions were removed, restricting teamspace members from accessing the page.
 * **page.permissions.team\_role\_updated**: A teamspace's page permissions were updated, changing the type of access for teamspace members.
 * **page.properties\_edited**: A user edited a page's property, like a page title or a database property.
+* **page.property.permissions.role\_added**: A user added someone to a person property that controls access to a property on a page.
+* **page.property.permissions.role\_removed**: A user removed someone from a person property that controls access to a property on a page.
 * **page.purged**: A page was permanently removed from Trash based on workspace data retention settings.
 * **page.recurrence\_automation\_created**: A recurring automation was created on a page.
 * **page.recurrence\_automation\_deleted**: A recurring automation was deleted from a page.
@@ -1599,6 +1607,10 @@ When available, applicable events include a top-level `team_ids` array containin
 * **database.permissions.can\_create\_pages.team\_enabled**: A teamspace's 'can create pages' permission was enabled for a database.
 * **database.permissions.can\_create\_pages.team\_owner\_disabled**: Teamspace owners' 'can create pages' permission was disabled for a database.
 * **database.permissions.can\_create\_pages.team\_owner\_enabled**: Teamspace owners' 'can create pages' permission was enabled for a database.
+* **database.property.permissions.default\_access\_updated**: A user changed the default access level for a database property.
+* **database.property.permissions.exception\_added**: A user added an access exception for a database property.
+* **database.property.permissions.exception\_removed**: A user removed an access exception for a database property.
+* **database.property.permissions.exception\_updated**: A user changed an access exception for a database property.
 * **database.schema\_edited**: A user edited the schema of a database.
 
 ### Workspace events
@@ -2248,11 +2260,11 @@ Putting the above flow together, your webhook handler can implement logic as fol
 # Enhanced markdown format
 Source: https://developers.notion.com/guides/data-apis/enhanced-markdown
 
-Reference for the Notion-flavored Markdown format used by the markdown content endpoints.
+Reference for the enhanced markdown format used by the markdown content endpoints.
 
 ## Overview
 
-Enhanced markdown (also called "Notion-flavored Markdown") is an extended Markdown format that supports all Notion block and rich text types. It is used by the markdown content endpoints: `POST /v1/pages` (via the `markdown` body param), `GET /v1/pages/:page_id/markdown`, and `PATCH /v1/pages/:page_id/markdown`.
+Enhanced markdown is an extended Markdown format that supports all Notion block and rich text types. It is the default format (`markdown_version: "v1"`) for the markdown content endpoints: `POST /v1/pages` (via the `markdown` body param), `GET /v1/pages/:page_id/markdown`, and `PATCH /v1/pages/:page_id/markdown`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) for the `v2` preview.
 
 This format extends standard Markdown with XML-like tags and attribute lists to represent Notion-specific features such as callouts, toggles, columns, mentions, and block-level colors.
 
@@ -2631,6 +2643,67 @@ A file upload with a status of `failed` cannot be reused, and a new one must be 
 ## Step 3 - Attach the file upload
 
 Using its ID, attach the File Upload (for example, to a block, page, or database) within one hour of creating it to avoid expiry.
+
+
+# Notion-flavored Markdown format
+Source: https://developers.notion.com/guides/data-apis/notion-flavored-markdown
+
+Reference for Notion-flavored Markdown, the syntax used by markdown_version v2.
+
+Notion-flavored Markdown is the syntax for `markdown_version: "v2"`, an opt-in preview on the markdown endpoints. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) for where to send the parameter. The default, `v1`, uses [enhanced markdown](/guides/data-apis/enhanced-markdown).
+
+The specification below comes from the same source as the Notion MCP server's Markdown spec. It is written for AI agents, so it is terse. You can paste it into your own agent's prompt.
+
+```markdown theme={null}
+# Notion-flavored Markdown
+
+CommonMark + GFM tables, task lists, strikethrough; custom emoji :smile:; inline math $...$; display math uses bare $$ lines around the equation (never same-line $$...$$ or \[...\]); citations [^URL] only (no footnotes). Notion XML tags below. Never write other HTML tags (e.g. <div>, <details>, <figure>, <small>, <sup>, <sub>, <mark>); they are saved as literal text.
+
+Rules:
+- Escape literal tags in text as \<tag> or &lt;tag&gt;; never inside code or mention labels, which are already literal.
+- Always fence code blocks; never indent them. One-copyable-block rule: make the opening and closing fence longer than the longest backtick run in the content. Triple-backtick content requires four-backtick outer fences; never use triple backticks both outside and inside.
+- Hard line break = trailing \ replacing the space before it. Empty paragraph = <p />.
+
+Inline tags:
+- <b>, <i>, <s>, <u> (the only underline); required when styled text has leading/trailing spaces.
+- <span color="..." discussion-urls="url,url">text</span>; nest to combine: <span color="orange"><u>word</u></span>.
+- Use <mention url="...">Label</mention> or <mention url="..." /> for mentioning Notion entities user://..., HTTPS page URLs, collection://..., agent://.... Database mentions use type="database" to distinguish them from page mentions. Regular links use [text](url).
+- <date start="YYYY-MM-DD" end="YYYY-MM-DD" start-time="HH:mm" end-time="HH:mm" time-zone="IANA_TZ" />
+
+Block tags: always use the tag form when a block needs attributes, children, or edge whitespace — <quote> not >, <li> not -. Most accept color="gray|brown|orange|yellow|green|blue|purple|pink|red" (text) or _bg forms like "blue_bg" (background). Color a whole block or cell with its color attribute; use <span color> only for words inside text.
+
+One container shape for <p>, <h1>-<h4>, <quote>, <toggle heading="h1|h2|h3|h4" color="...">, <li color="..."> in <ul>/<ol type="1|a|i">, <column> in <columns>, <tab icon="emoji or Notion Icon"> in <tabs>, <mail to="..." cc="..." bcc="..." from="..." subject="..." attachments="url,url">, <meeting-notes>:
+
+<quote color="purple_bg">
+Title text
+
+- child bullet
+
+<callout icon="💡" color="yellow_bg">
+Callout body child
+</callout>
+</quote>
+
+The title/label is body text right after the opening tag, never an attribute. Children follow a blank line — plain Markdown, no <p> wrappers or > prefixes. Blank lines touching the opening or closing tags become stray whitespace; never pad. <p /> = empty title.
+
+Other blocks:
+- <todo checked="true|false"> when a todo needs color; else - [ ] / - [x].
+- <equation color="...">x + y = z</equation>
+- <table-of-contents color="..." />
+- Media (body = optional caption): ![caption](url), or <image source="..." color="...">caption</image> for attributes; other embeds use their type's tag: <pdf source="...">caption</pdf>, likewise <file>, <audio>, <video>, <bookmark>, <embed>. Each image must be its own block: never inline it with text (paragraph, list-item, etc.) or another image, and separate consecutive images with a blank line. Use <external_object_instance integration="github|figma|google_drive">Embed name</external_object_instance> to create a rich integration embed placeholder.
+- <page url="..." color="...">Title</page>; represents a subpage on the current page. Warning: an update_content, replace_content, or replace_content_range update that leaves out this tag deletes the subpage when allow_deleting_content is true. Otherwise the update fails with a validation_error. Omit url only when creating a new subpage.
+- <folder url="...">Title</folder>; represents an existing folder. Use the retrieve page markdown endpoint to read its immediate children, then follow nested folder URLs to continue traversing. Preserve the tag unless intentionally moving or deleting the folder; folders cannot be created from Markdown.
+- <database url="..." data-source-url="..." inline="true|false" icon="emoji" wiki="true|false" color="...">Title</database>; same url/title rules. Wiki databases set wiki="true"; their pages use parent type "page" with the wiki page URL, not "dataSource".
+- <synced-block url="...">...</synced-block> (omit url for new); <synced-block-reference url="..." notice="...">...</synced-block-reference>.
+- <meeting-notes attendees="user://id,..." view-url="...">Title<meeting-notes-section-notes>Notes</meeting-notes-section-notes><meeting-notes-section-summary>Summary</meeting-notes-section-summary></meeting-notes>; content outside <meeting-notes-section-notes> is ignored; omit view-url and the summary section for new. An existing <meeting-notes> may also have an optional read-only <meeting-notes-section-transcript> child: a "Transcript omitted" body means the transcript was not loaded, so follow its instructions to load it; never edit its contents, and never add it to new meeting notes.
+- <custom-block definition-id="UUID" url="..." />; places an instance of a custom block definition deployed in this workspace. Use a self-closing tag on its own line; the instance inherits the definition's bindings. Omit url for a new instance; readback adds its instance URL. Preserve that URL when editing, reordering, or moving an existing instance.
+- Columns: <columns><column ratio="50">...</column><column ratio="50">...</column></columns>. ratio is an optional percentage of the column-list width.
+
+Tables:
+- Pipe tables (escape | in cells as \|) for plain tables; <table> only for styled ones; never mix the two.
+- <table fit-page-width="true|false" header-row="true|false" header-column="true|false">, optional <colgroup><col width="180" color="..." /></colgroup>, <tr color="..."> rows, <th>/<td color="..."> cells.
+- Cells are inline-only (<br /> for line breaks); copy the existing cells' formatting when adding rows (pad with blank lines if the existing cells do).
+```
 
 
 # Query large data sources
@@ -4351,7 +4424,7 @@ Learn how to create, read, and update Notion page content using enhanced markdow
 
 ## Overview
 
-The Notion API supports reading, writing, and updating page content using **enhanced markdown** (also called "Notion-flavored Markdown") as an alternative to the [block-based API](/guides/data-apis/working-with-page-content). This is especially useful for agentic systems and developer tools that work natively with markdown.
+The Notion API supports reading, writing, and updating page content using **enhanced markdown** as an alternative to the [block-based API](/guides/data-apis/working-with-page-content). This is especially useful for agentic systems and developer tools that work natively with markdown.
 
 Three API surfaces are available:
 
@@ -4362,8 +4435,61 @@ Three API surfaces are available:
 | Update | `PATCH /v1/pages/:page_id/markdown` | Insert or replace content using markdown |
 
 <Tip>
-  All three endpoints use the same **enhanced markdown** format. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
+  All three endpoints use the same **enhanced markdown** format by default. See the [Enhanced markdown format reference](/guides/data-apis/enhanced-markdown) for the full specification.
 </Tip>
+
+## Markdown versions
+
+The markdown endpoints accept an optional `markdown_version` parameter. It picks the Markdown syntax for the request.
+
+| Value | Syntax | Status |
+| - | - | - |
+| `v1` | Enhanced markdown | Default |
+| `v2` | [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) | Opt-in preview |
+
+Leave `markdown_version` out, or set it to `v1`, to keep today's behavior. Set it to `v2` to read and write Notion-flavored Markdown. The version applies to the whole request: `v2` content is parsed as `v2`, and `v2` responses are rendered as `v2`.
+
+Where to send it:
+
+| Endpoint | Where |
+| - | - |
+| `GET /v1/pages/:page_id/markdown` | Query parameter |
+| `PATCH /v1/pages/:page_id/markdown` | Body parameter |
+| `POST /v1/pages` | Body parameter, next to `markdown` |
+| `POST /v1/comments` and `PATCH /v1/comments/:comment_id` | Body parameter, next to `markdown` |
+
+Any other value returns a `400` `validation_error`. On `POST /v1/pages` and the comment endpoints, `markdown_version` only applies to `markdown`. Sending it without `markdown` (for example, with `children` or `rich_text`) also returns a `400` `validation_error`.
+
+See the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown) for the full `v2` syntax. It's generated from the same specification the Notion MCP server gives AI agents.
+
+```bash cURL theme={null}
+curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2' \
+  -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+  -H "Notion-Version: 2026-03-11"
+```
+
+### Transcripts are not yet available in v2
+
+`v2` can't render meeting note transcripts yet. A `GET` request with both `include_transcript=true` and `markdown_version=v2` returns a `400` `validation_error`. Use `v1` when you need transcripts.
+
+### Parser warnings
+
+A `v2` update can contain syntax that the parser doesn't support, such as an unknown tag. The update still runs, and the `PATCH /v1/pages/:page_id/markdown` response includes a `warnings` array that says what the parser changed or ignored:
+
+```json theme={null}
+{
+  "object": "page_markdown",
+  "id": "YOUR_PAGE_ID",
+  "markdown": "...",
+  "truncated": false,
+  "unknown_block_ids": [],
+  "warnings": [
+    { "code": "unsupported_tag", "message": "..." }
+  ]
+}
+```
+
+`code` is the warning category. The field is left out when there are no warnings, and it's never returned for `v1` requests or by other endpoints. Async updates (`allow_async: true`) don't return warnings in the task result.
 
 ## Block type support
 
@@ -4469,7 +4595,7 @@ The response is a standard [page object](/reference/page).
 
 ## Retrieving a page as markdown
 
-Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content rendered as enhanced markdown.
+Use `GET /v1/pages/:page_id/markdown` to retrieve a page's content as markdown. It uses enhanced markdown unless you set `markdown_version=v2`.
 
 <CodeGroup>
   ```bash cURL theme={null}
@@ -4626,7 +4752,7 @@ Use `PATCH /v1/pages/:page_id/markdown` to insert or replace content in an exist
 The request body uses a **discriminated union** with four command variants. We recommend `update_content` and `replace_content` for new connections — they offer more precise control and better performance than the older `insert_content` and `replace_content_range` commands.
 
 <Tip>
-  The `content` field expects enhanced markdown with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
+  The `content` field expects markdown in the request's `markdown_version` syntax (enhanced markdown by default) with actual newline characters. In your JSON request body, use `\n` to encode newlines — for example, `"## Heading\nParagraph text"` creates a heading followed by a paragraph block. To create a line break inside a single paragraph block, use `<br>`. Literal backslash-n sequences (like typing `\n` into a form field) will not be interpreted as newlines.
 
   When using cURL, wrap the `--data` body in **single quotes** so that `\n` is preserved for the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
 </Tip>
@@ -9022,7 +9148,7 @@ Make a POST request to the [Create a page](/reference/post-page) endpoint with m
   ```
 </CodeGroup>
 
-The `markdown` field accepts [Notion-flavored Markdown](/guides/data-apis/enhanced-markdown) — headings, lists, code blocks, links, and more. The API converts it to Notion blocks for you.
+The `markdown` field accepts [enhanced markdown](/guides/data-apis/enhanced-markdown) — headings, lists, code blocks, links, and more. The API converts it to Notion blocks for you.
 
 <Accordion title="Under the hood: markdown → blocks">
   Notion pages are made up of **blocks** — headings, paragraphs, lists, and more. When you send `markdown`, the API converts it into this block structure automatically.
@@ -17634,6 +17760,12 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+<Update label="October 8, 2026">
+  ### Control notifications from page writes
+
+  Page write endpoints now accept `notifications.mode`. Set it to `silent` to skip page update, @mention, and Person property notifications for the change. Database automations, reminders, and connection webhooks still work as usual. See [Create a page](/reference/post-page), [Update a page](/reference/patch-page), and [Append block children](/reference/patch-block-children) for details.
+</Update>
+
 <Update label="October 7, 2026">
   ### One search tool in Notion MCP
 
@@ -17649,9 +17781,9 @@ Source: https://developers.notion.com/page/changelog
 
   ### Status group filters beta
 
-  Status filters can now match a status group with `status.group`, for example every option in the "In progress" group. Before, a group that shared a name with an option, like the default "In progress", could only be matched as the option.
+  Status filters can now match groups with `group_equals` and `group_does_not_equal`. These operators remove option and group name ambiguity.
 
-  Send `Notion-Beta: status-group-filters-2026-10-06` to opt in. With the header, `equals` and `does_not_equal` match only option names, and [views](/reference/view) return saved group filters as `group`. Without it, nothing changes. See [Status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta).
+  Send `Notion-Beta: status-group-filters-2026-10-06` to opt in. With the header, `equals` and `does_not_equal` match only option names. [Views](/reference/view) return saved group filters with group operators. Without the header, nothing changes. See [Status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta).
 
   ### Warnings from `notion-update-page`
 
@@ -17678,6 +17810,10 @@ Source: https://developers.notion.com/page/changelog
   The SIEM and DLP event stream now sends `workspace.settings.meeting_notes_consent_setting_updated` when an admin changes whether a workspace requires consent before AI meeting notes transcription. The payload carries the final state, either `enabled` or `disabled`. See [SIEM events](/compliance/siem-events).
 
   This is separate from the existing audit log entry for a person confirming consent in a meeting. The new event records a change to the requirement, not an instance of consent.
+
+  ### Preview: Notion-flavored Markdown with `markdown_version`
+
+  The markdown endpoints accept a new optional `markdown_version` parameter. Set it to `v2` to read and write Notion-flavored Markdown. This is an opt-in preview: `v1` (enhanced markdown) stays the default, and requests without the parameter work as before. `v2` doesn't support `include_transcript` yet, and synchronous `v2` updates return parser `warnings`. Sending `markdown_version` without `markdown` on `POST /v1/pages` or the comment endpoints returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) and the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown).
 </Update>
 
 <Update label="September 29, 2026">
@@ -18632,7 +18768,7 @@ Respect recorded workspace and canonical-destination choices. Verify each resour
 Next, we are going to make a concrete offer to **import everything available**:
 
 * Import all saved memories and summaries this host exposes. Reuse the user’s existing memory destination. If none exists and the connection supports it, propose a private Memories database and show its exact schema before creating it.
-* Import recently created artifacts from accessible sources. Reuse an appropriate existing destination. If none exists, propose a private AI Artifacts database and show its exact schema before creating it.
+* Import recently created artifacts from accessible sources. Reuse an appropriate existing destination. If none exists, propose a private Documents database and show its exact schema before creating it.
 * Import eligible personal Skills this host exposes. Show their origin, owner, scope, supporting files, and intended native Notion Skills destination. Exclude repository-, project-, employer-, organization-, and third-party-scoped material unless the user has the right to copy it and explicitly selects it.
 * Deduplicate memories, artifacts, and Skills against existing Notion content. Preserve source links, dates, provenance, attachments, supporting files, and useful structure.
 * Apply recorded exclusions and forget requests before importing. Never import credentials, secrets, inaccessible content, or conversation transcripts.
@@ -18643,7 +18779,7 @@ To do this, we will give the user a short, concrete proposal. Use this structure
 >
 > * Import \[what is available] into \[existing memory destination], or create a private Memories database with \[brief schema].
 > * Import \[specific recent artifacts or categories] into \[existing destination].
-> * Create a private AI Artifacts database with \[brief schema] if there isn’t already a suitable place for this work.
+> * Create a private Documents database with \[brief schema] if there isn’t already a suitable place for this work.
 > * Import \[eligible personal Skills] into \[existing native Skills destination], or set up an approved private native destination.
 >
 > I won’t change your existing organization or touch anything outside this list. Want me to go ahead with all of it? You can also choose specific items or change where they go.
@@ -18658,7 +18794,7 @@ This approval does not authorize imports or schemas outside the proposal, an age
 
 Reuse the user’s existing workspace organization, page and database types, naming, destinations, and approved access boundaries. Do not impose another hierarchy or reorganize existing pages. If the right destination is unclear, use an approved private Inbox for the selected work and propose a permanent destination; cleanup is a separate choice.
 
-Create a Memories database, AI Artifacts database, Inbox, home page, or other destination only when no suitable destination exists and the user approved its exact schema. Add project or topic pages only when the selected imports justify them. Avoid empty departments, speculative trackers, and large generic workspace templates. Record the resulting destinations for future agents.
+Create a Memories database, Documents database, Inbox, home page, or other destination only when no suitable destination exists and the user approved its exact schema. Add project or topic pages only when the selected imports justify them. Avoid empty departments, speculative trackers, and large generic workspace templates. Record the resulting destinations for future agents.
 
 #### Import recent work
 
@@ -18686,7 +18822,9 @@ Preserve each Skill’s source, intended host, version, dependencies, and suppor
 
 The imported context is only useful in future chats if the agent remembers to look for it. Create or update a private **Agent Operating Guide** page in Notion as the complete, user-owned source of truth for how agents should read from and write to Notion. Include the approved standing rules below, version, publication date, canonical workspace, memory and Skills links, destinations, exclusions, and version history.
 
-Preserve any existing guide, approved rules, history, and unrelated custom instructions. If a guide already exists, treat it as authoritative and propose policy changes instead of replacing it with this template. Obtain separate approval before creating or changing the guide or persistent instructions.
+Store the guide as a page in a private database, not as a loose page. Reuse an appropriate existing private database for documents like this. For new setups, use the private Documents database from the approved setup. If no suitable private database exists, propose a private Documents database and obtain approval for its exact schema before creating it.
+
+Preserve any existing guide, approved rules, history, and unrelated custom instructions. If a guide already exists, treat it as authoritative and propose policy changes instead of replacing it with this template. Obtain separate approval for the guide's destination and before creating, moving, or changing the guide or persistent instructions.
 
 After approval, create or update the guide first so its verified Notion URL is available. Set its version to **0.0.3** and its publication date to **October 7th, 2026**. Then detect the current platform’s persistent custom-instructions mechanism and give one specific, accurate settings path. Do not list multiple platforms or guess. Respond using this structure:
 
@@ -21511,6 +21649,8 @@ The comment body can be provided in one of two formats:
 
 Exactly one of `rich_text` or `markdown` must be provided. Providing both or neither will return a validation error.
 
+With `markdown`, set `markdown_version: "v2"` to write [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. Sending `markdown_version` with `rich_text` returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+
 To see additional examples of creating a [page](/guides/data-apis/working-with-comments#adding-a-comment-to-a-page), [inline](/guides/data-apis/working-with-comments#adding-an-inline-comment), or [discussion](/guides/data-apis/working-with-comments#responding-to-a-discussion-thread) comment and to learn more about comments in Notion, see the [Working with comments](/guides/data-apis/working-with-comments) guide.
 
 ### Errors
@@ -22948,7 +23088,8 @@ A rollup value is stored as a `date` only if the "Earliest date", "Latest date",
 | :- | :- | :- | :- |
 | equals | string or string\[] | The option name(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value matches any of the provided values. If a value matches no option but matches a status group name, it matches the group. With the [status group filters beta](#status-group-filters-beta), values must be option names. | "This week" or \["Not started", "In progress"] |
 | does\_not\_equal | string or string\[] | The option name(s) to compare the status property value against. <br /><br /> Returns data source entries where the status property value does not match any of the provided values. The same status group rule as `equals` applies. | "Backlog" or \["Done", "Archive"] |
-| group | object | Requires the [status group filters beta](#status-group-filters-beta). A status group filter condition with an `equals` or `does_not_equal` field. Each field takes one or more status group names, usually `"To-do"`, `"In progress"`, or `"Complete"`. An array must have at least one name. <br /><br /> Returns data source entries whose status option is (or is not) in any of the provided groups. | `{ "equals": "In progress" }` or `{ "does_not_equal": ["To-do", "Complete"] }` |
+| group\_equals | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to match. An array must have at least one name. <br /><br /> Returns entries whose status option belongs to any listed group. | `"In progress"` or `["To-do", "Complete"]` |
+| group\_does\_not\_equal | string or string\[] | Requires the [status group filters beta](#status-group-filters-beta). The status group names to exclude. An array must have at least one name. <br /><br /> Returns entries whose status option belongs to none of the listed groups. | `"In progress"` or `["To-do", "Complete"]` |
 | is\_empty | true | Whether the status property value does not contain data. <br /><br /> Returns data source entries where the status property value is empty. | true |
 | is\_not\_empty | true | Whether the status property value contains data. <br /><br /> Returns data source entries where the status property value is not empty. | true |
 
@@ -22973,12 +23114,12 @@ Each status option belongs to a status group, such as "To-do", "In progress", or
 
 To fix this, send the `Notion-Beta: status-group-filters-2026-10-06` header. We recommend it for new integrations that filter by status. With the header:
 
-* `group` matches status groups. It works at the top level, inside `and` and `or`, in [view](/reference/view) quick filters, and inside rollup filters.
-* `equals` and `does_not_equal` match only option names. A group name there returns a `validation_error` that tells you to use `group`.
-* Some older databases store translated group names on status properties. For those, `group` on the status property accepts both the stored name and the English name. Inside a rollup filter, send the stored name.
-* [Views](/reference/view) return saved group filters as `group`, so you can send them back unchanged. A saved filter that matches both options and groups comes back as two conditions in a nested `or` for `equals`, or a nested `and` for `does_not_equal`. It comes back as plain names instead in quick filters, in rollups, and when the extra level would nest the view filter deeper than [compound filters](#compound-filter-conditions) allow.
+* `group_equals` and `group_does_not_equal` match status groups. They work in compound filters, quick filters, and rollup filters.
+* `equals` and `does_not_equal` match only option names. A group name there returns a `validation_error` with the correct group operator.
+* Some older databases store translated group names. Direct status filters accept the stored and English names. Inside a rollup filter, send the stored name.
+* [Views](/reference/view) return saved group filters with group operators. Mixed filters return nested `or` or `and` conditions when possible.
 
-Without the header, status filters and view responses work as they always have, and `group` returns a `validation_error`.
+Without the header, status filters and view responses work as before. Group operators return a `validation_error`.
 
 <CodeGroup>
   ```json Example status group filter condition theme={null}
@@ -22986,9 +23127,7 @@ Without the header, status filters and view responses work as they always have, 
     "filter": {
       "property": "Project status",
       "status": {
-        "group": {
-          "equals": "In progress"
-        }
+        "group_equals": "In progress"
       }
     }
   }
@@ -26079,6 +26218,23 @@ By default, blocks are appended to the end of the parent block's children. Use t
   You cannot specify both `after` and `position` in the same request.
 </Warning>
 
+### Control notifications from page writes
+
+Set `notifications.mode` to `silent` to skip the notifications Notion sends people about the change:
+
+* Page update notifications to people who get updates for the page through **Notify me**.
+* Notifications to people the content @mentions.
+* Notifications to people the change adds to a Person property.
+
+Set it to `default`, or omit `notifications`, to use the standard behavior.
+
+Some effects of the change happen in either mode:
+
+* [Database automations](https://www.notion.com/help/database-automations) that the change triggers still run, including **Send notification to** actions.
+* Reminders set by the change still go off at their scheduled time.
+* [Connection webhooks](/reference/webhooks) still receive events for the change.
+* Page history, page activity, and workspace audit logs still record the change.
+
 <Info>
   **Connection capabilities**
 
@@ -26139,6 +26295,23 @@ To add content, use the [append block children](/reference/patch-block-children)
 ### General behavior
 
 Returns the updated [page object](/reference/page).
+
+### Control notifications from page writes
+
+Set `notifications.mode` to `silent` to skip the notifications Notion sends people about the change:
+
+* Page update notifications to people who get updates for the page through **Notify me**.
+* Notifications to people the content @mentions.
+* Notifications to people the change adds to a Person property.
+
+Set it to `default`, or omit `notifications`, to use the standard behavior.
+
+Some effects of the change happen in either mode:
+
+* [Database automations](https://www.notion.com/help/database-automations) that the change triggers still run, including **Send notification to** actions.
+* Reminders set by the change still go off at their scheduled time.
+* [Connection webhooks](/reference/webhooks) still receive events for the change.
+* Page history, page activity, and workspace audit logs still record the change.
 
 <Info>
   **Requirements**
@@ -27127,6 +27300,8 @@ When applying a template, the `children` parameter is **not** allowed. The page 
 
 Returns a new [page object](/reference/page).
 
+When creating a page with the `markdown` body parameter, set `markdown_version: "v2"` to write [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. Sending `markdown_version` without `markdown` returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+
 When creating a page with the `markdown` body parameter, you can set `allow_async: true` to receive an HTTP `202` response with an `async_task` object instead of waiting for the page creation to finish in the original request. This is useful for high-block markdown requests that may take longer than typical HTTP client timeout budgets.
 
 If `allow_async` is omitted or `false`, this endpoint keeps its existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or which operation runs. See [Retrieve an async task](/reference/retrieve-async-task) and [Working with markdown content](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously) for polling examples.
@@ -27142,6 +27317,23 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 
   Formula, rollup, ID, creation, and last-edit values are set by Notion. Button actions cannot be set through a page write. Omit these fields from `properties`; see the [read-only property types](/reference/page-property-values#type-objects).
 </Warning>
+
+### Control notifications from page writes
+
+Set `notifications.mode` to `silent` to skip the notifications Notion sends people about the change:
+
+* Page update notifications to people who get updates for the page through **Notify me**.
+* Notifications to people the content @mentions.
+* Notifications to people the change adds to a Person property.
+
+Set it to `default`, or omit `notifications`, to use the standard behavior.
+
+Some effects of the change happen in either mode:
+
+* [Database automations](https://www.notion.com/help/database-automations) that the change triggers still run, including **Send notification to** actions.
+* Reminders set by the change still go off at their scheduled time.
+* [Connection webhooks](/reference/webhooks) still receive events for the change.
+* Page history, page activity, and workspace audit logs still record the change.
 
 <Info>
   **Requirements**
@@ -30238,17 +30430,19 @@ Use this API to get the details of a [File Upload](/reference/file-upload) objec
 Source: https://developers.notion.com/reference/retrieve-page-markdown
 
 get /v1/pages/{page_id}/markdown
-Retrieve the content of a page rendered as enhanced markdown.
+Retrieve the content of a page rendered as markdown.
 
 ### Use cases
 
-Use this endpoint to retrieve the full content of a Notion page as [enhanced markdown](/guides/data-apis/enhanced-markdown), instead of working with the [block-based API](/reference/get-block-children). This is especially useful for agentic systems and developer tools that work natively with markdown.
+Use this endpoint to retrieve the full content of a Notion page as markdown ([enhanced markdown](/guides/data-apis/enhanced-markdown) by default), instead of working with the [block-based API](/reference/get-block-children). This is especially useful for agentic systems and developer tools that work natively with markdown.
 
 The endpoint also accepts non-navigable block IDs returned in `unknown_block_ids` from a previous truncated response. Pass these IDs to fetch additional subtrees of a large page.
 
 ### General behavior
 
-Returns a `page_markdown` object containing the page content as an enhanced markdown string.
+Returns a `page_markdown` object containing the page content as a markdown string. It uses enhanced markdown by default.
+
+Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. This is an opt-in preview; `v1` (enhanced markdown) is the default. `include_transcript=true` isn't supported with `v2` yet and returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 <Info>
   **Requirements**
@@ -31334,6 +31528,8 @@ The comment body can be provided in one of two formats:
 
 Exactly one of `rich_text` or `markdown` must be provided. Providing both or neither will return a validation error.
 
+With `markdown`, set `markdown_version: "v2"` to write [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. Sending `markdown_version` with `rich_text` returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+
 ### Errors
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
@@ -31669,7 +31865,7 @@ Each Public API endpoint can return several possible error codes. See the [Error
 Source: https://developers.notion.com/reference/update-page-markdown
 
 patch /v1/pages/{page_id}/markdown
-Insert or replace content in a page using enhanced markdown.
+Insert or replace content in a page using markdown.
 
 ### Use cases
 
@@ -31699,9 +31895,11 @@ Use the `replace_content_range` command to replace a matched range of existing c
 
 ### General behavior
 
-Returns a `page_markdown` object containing the full page content as enhanced markdown after the update, including `truncated` and `unknown_block_ids` fields for large pages.
+Returns a `page_markdown` object containing the full page content as markdown after the update, in the request's `markdown_version` syntax, including `truncated` and `unknown_block_ids` fields for large pages.
 
 Set `allow_async: true` at the top level of the request body to receive an HTTP `202` response with an `async_task` object instead of waiting for the markdown update to finish in the original request. This is useful for high block-count markdown updates, especially `replace_content` requests and large batches of `update_content` operations.
+
+Set `markdown_version: "v2"` at the top level of the request body to write and read [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. A synchronous `v2` response can include a `warnings` array when the parser changed or ignored part of your content. Async updates (`allow_async: true`) don't return warnings. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 If `allow_async` is omitted or `false`, this endpoint keeps its existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or which operation runs. See [Retrieve an async task](/reference/retrieve-async-task) and [Working with markdown content](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously) for polling examples.
 
@@ -31716,7 +31914,7 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 <Tip>
   **Newlines in content**
 
-  The `content` field expects standard markdown with actual newline characters. In JSON, `\n` is the escape sequence for a newline — for example, `"## Heading\n\nParagraph"` creates a heading followed by a paragraph.
+  The `content` field expects markdown in the request's `markdown_version` syntax (enhanced markdown by default) with actual newline characters. In JSON, `\n` is the escape sequence for a newline — for example, `"## Heading\n\nParagraph"` creates a heading followed by a paragraph.
 
   When using cURL, wrap the `--data` body in **single quotes** (`'...'`) so that `\n` is passed through to the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
 
@@ -32196,7 +32394,7 @@ The response of View APIs like [Retrieve a view](/reference/retrieve-a-view) con
 | `data_source_id` | String \| null | The ID of the data source this view is scoped to, or `null` for dashboard views. |
 | `name` | String | The display name of the view. |
 | `type` | String | One of the [supported view types](#supported-view-types). |
-| `filter` | Object \| null | The [filter](/reference/filter-data-source-entries) applied to this view, or `null` if no filter is set. Status group filters come back as `group` only with the [status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta). |
+| `filter` | Object \| null | The [filter](/reference/filter-data-source-entries) applied to this view, or `null` if no filter is set. Status group filters use group operators only with the [status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta). |
 | `sorts` | Array \| null | The [sorts](/reference/sort-data-source-entries) applied to this view, or `null` if no sorts are set. |
 | `configuration` | Object \| null | View-specific layout configuration, discriminated by `type`. See [Working with views](/guides/data-apis/working-with-views#view-configuration) for details. |
 | `created_time` | String | ISO 8601 timestamp when the view was created. |

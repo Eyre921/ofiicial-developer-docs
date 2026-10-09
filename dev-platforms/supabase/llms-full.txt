@@ -97846,8 +97846,6 @@ curl 'https://api.supabase.com/v1/projects/{ref}/branches' \
 
 Management API endpoint: [`POST /v1/projects/{ref}/database/migrations`](https://api.supabase.com/api/v1#tag/database/post/v1/projects/\{ref}/database/migrations)
 
-Note: Only select customers have access to database migrations endpoint. Submit this [form](https://supabase.com/solutions/ai-builders#talk-to-partnerships-team) to get access.
-
 For this example we will create a todos table using the [`POST /v1/projects/{ref}/database/migrations`](https://api.supabase.com/api/v1#tag/database/post/v1/projects/\{ref}/database/migrations) endpoint.
 
 ```sql
@@ -108666,6 +108664,8 @@ const supabase = createClient('https://api.example.com', 'sb_publishable_...')
 
 Similarly, your Edge Functions will now be available at `https://api.example.com/functions/v1/your_function_name`, and your Storage objects at `https://api.example.com/storage/v1/object/public/your_file_path.ext`.
 
+Your custom domain supports the same TLS versions and cipher suites as your project's default domain. For details, see [TLS for project APIs](https://supabase.com/docs/guides/security/tls).
+
 ### Remove a custom domain
 
 Removing a custom domain may cause some issues when using Supabase Auth with OAuth or SAML. You may have to reverse the changes made in the *[Prepare to activate your domain](#prepare-to-activate-your-domain)* step above.
@@ -115820,7 +115820,7 @@ Enforce SSL usage for all Postgres connections
 
 Your Supabase project supports connecting to the Postgres DB without SSL enabled to maximize client compatibility. For increased security, you can prevent clients from connecting if they're not using SSL.
 
-Disabling SSL enforcement only applies to connections to Postgres, Supavisor (shared Connection Pooler) and PgBouncer (dedicated Connection Pooler); all HTTP APIs offered by Supabase (e.g., PostgREST, Storage, Auth) automatically enforce SSL on all incoming connections.
+Disabling SSL enforcement only applies to connections to Postgres, Supavisor (shared Connection Pooler) and PgBouncer (dedicated Connection Pooler); all HTTP APIs offered by Supabase (e.g., PostgREST, Storage, Auth) automatically enforce SSL on all incoming connections (see [TLS for project APIs](https://supabase.com/docs/guides/security/tls)).
 
 Caution: Applying or updating SSL enforcement triggers a fast database reboot. On small projects this usually completes in a few seconds, but larger databases may see a longer interruption.
 
@@ -129189,6 +129189,12 @@ For configuration information, see [Postgres SSL Enforcement](https://supabase.c
 
 Note: Controlling this at the organization level is on our roadmap.
 
+### TLS for project APIs
+
+All HTTP APIs of your project, including Auth, the Data API, Storage, Realtime, and Edge Functions, accept only HTTPS connections using TLS 1.2 or TLS 1.3.
+
+For supported cipher suites, see [TLS for project APIs](https://supabase.com/docs/guides/security/tls).
+
 ### Network restrictions
 
 Each Supabase project comes with configurable restrictions on the IP ranges that are allowed to connect to Postgres and its pooler ("your database"). These restrictions are enforced before traffic reaches the database. If a connection is not restricted by IP, it still needs to authenticate successfully with valid database credentials.
@@ -129372,6 +129378,90 @@ When dealing with PHI in the United States or for United States customers, HIPAA
 1. [System and Organization Controls: SOC Suite of Services](https://www.aicpa-cima.com/resources/landing/system-and-organization-controls-soc-suite-of-services)
 2. [Shared Responsibility Model](https://supabase.com/docs/guides/deployment/shared-responsibility-model)
 3. [Postgres connection logging](https://supabase.com/docs/guides/platform/postgres-connection-logging)
+
+
+---
+
+# TLS for project APIs
+
+TLS versions and cipher suites supported by Supabase project APIs, and the removal of CBC-mode ciphers.
+
+Your project's APIs accept only HTTPS connections. Use the TLS versions and cipher suites on this page to check whether a client can connect, or to answer findings from a security scan.
+
+These settings apply to your project's default domain, `<project_ref>.supabase.co`, and to [custom domains](https://supabase.com/docs/guides/platform/custom-domains). It covers every service on that domain: Auth, the Data API, Storage, Realtime, and Edge Functions. For direct Postgres connections and connections through the pooler, see [Postgres SSL Enforcement](https://supabase.com/docs/guides/platform/ssl-enforcement).
+
+Deprecation: On November 10, 2026, at the earliest, clients on old, unsupported operating systems, or embedded devices that haven't been updated might no longer be able to connect to your project's APIs. To check your clients, see [Removal of CBC-mode ciphers](#removal-of-cbc-mode-ciphers).
+
+## Supported TLS versions
+
+Project APIs accept connections using TLS 1.2 and TLS 1.3. SSL 3.0, TLS 1.0, and TLS 1.1 aren't supported.
+
+## Supported cipher suites
+
+Project APIs support all standard TLS 1.3 cipher suites.
+
+On TLS 1.2, project APIs offer the following cipher suites:
+
+| IANA name                                       | OpenSSL name                    |
+| ----------------------------------------------- | ------------------------------- |
+| `TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256`       | `ECDHE-ECDSA-AES128-GCM-SHA256` |
+| `TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256` | `ECDHE-ECDSA-CHACHA20-POLY1305` |
+| `TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256`         | `ECDHE-RSA-AES128-GCM-SHA256`   |
+| `TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256`   | `ECDHE-RSA-CHACHA20-POLY1305`   |
+| `TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384`       | `ECDHE-ECDSA-AES256-GCM-SHA384` |
+| `TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384`         | `ECDHE-RSA-AES256-GCM-SHA384`   |
+
+Until the removal date, project APIs also offer the deprecated CBC-mode cipher suites listed under [Removal of CBC-mode ciphers](#removal-of-cbc-mode-ciphers).
+
+## Removal of CBC-mode ciphers
+
+A cipher suite determines how a connection is encrypted. Cipher block chaining (CBC) mode cipher suites have known security weaknesses and security scanners commonly flag them. Supabase will stop offering the following TLS 1.2 cipher suites on project APIs **on November 10, 2026, at the earliest**:
+
+| IANA name                                 | OpenSSL name                |
+| ----------------------------------------- | --------------------------- |
+| `TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256` | `ECDHE-ECDSA-AES128-SHA256` |
+| `TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256`   | `ECDHE-RSA-AES128-SHA256`   |
+| `TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384` | `ECDHE-ECDSA-AES256-SHA384` |
+| `TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384`   | `ECDHE-RSA-AES256-SHA384`   |
+
+The date might move later based on customer feedback.
+
+### Affected clients
+
+A client is affected if it can't use TLS 1.3 and the only TLS 1.2 cipher suites it shares with project APIs are the CBC-mode ones. For the cipher suites that remain, see [Supported cipher suites](#supported-cipher-suites). After the removal, it fails during the TLS handshake and can't connect to your project's APIs.
+
+In September 2026, fewer than 0.0001% of connections to Supabase projects used these cipher suites. Clients that depend on them typically run end-of-life software, for example:
+
+- Unsupported operating system versions
+- Embedded devices, such as smart TVs or set-top boxes, that no longer receive updates
+- HTTP clients or runtimes built against outdated TLS libraries
+
+### Unaffected connections
+
+The removal doesn't affect the following connections:
+
+- TLS 1.3 connections
+- TLS 1.2 connections from clients that support at least one of the non-CBC cipher suites listed under [Supported cipher suites](#supported-cipher-suites)
+- Direct Postgres connections and connections through the pooler
+- The [Management API](https://supabase.com/docs/reference/api/introduction) at `api.supabase.com`
+
+### Prepare for the removal
+
+1. List every client that connects to your project's APIs, on `<project_ref>.supabase.co` and on any custom domain. Include Realtime connections, servers, embedded devices, and third-party integrations.
+2. Include every client version that's still in use, not only the latest release. Users might keep running older versions of your mobile or desktop apps, on operating systems that no longer receive updates.
+3. For each client, check its operating system, runtime, and TLS library. See [Check whether a client is affected](#check-whether-a-client-is-affected).
+4. Update affected clients. See [Update affected clients](#update-affected-clients).
+5. After you update, test the application itself. Until the removal date, project APIs still offer CBC-mode cipher suites, so a request that succeeds now doesn't show that the client will keep working after the removal.
+
+### Check whether a client is affected
+
+Check the TLS configuration your application actually uses: its operating system, runtime, and TLS library versions, and any TLS version or cipher suite settings in your code or configuration. A client that connects with TLS 1.3 isn't affected, whatever TLS 1.2 cipher suites it supports.
+
+### Update affected clients
+
+Update the affected client's operating system, runtime, or TLS library to a version that supports TLS 1.3 or a supported TLS 1.2 cipher suite. For error messages and workarounds for clients you can't update, see [TLS handshake failures after removal of CBC-mode ciphers](https://supabase.com/docs/guides/troubleshooting/tls-handshake-failures-after-cbc-cipher-removal).
+
+If you can't update your clients before the removal date, [open a support ticket](https://supabase.com/dashboard/support/new).
 
 
 ---
@@ -141034,6 +141124,7 @@ results = index.query(
 - [Supavisor error: "password authentication failed" after rotating database password](https://supabase.com/docs/guides/troubleshooting/supavisor-error-password-authentication-failed-after-password-rotation)
 - [Supavisor FAQ](https://supabase.com/docs/guides/troubleshooting/supavisor-faq-YyP5tI)
 - [Tenant or user not found when connecting through the shared pooler](https://supabase.com/docs/guides/troubleshooting/tenant-or-user-not-found)
+- [TLS handshake failures after removal of CBC-mode ciphers](https://supabase.com/docs/guides/troubleshooting/tls-handshake-failures-after-cbc-cipher-removal)
 - [Database: "Error: too many connections for database "postgres""](https://supabase.com/docs/guides/troubleshooting/too-many-connections-for-database-postgres)
 - [Identifying Dashboard SQL Editor Activity by User](https://supabase.com/docs/guides/troubleshooting/tracking-postgres-role-activity-to-specific-dashboard-users-8d3715)
 - [Transfer edge functions from one project to another](https://supabase.com/docs/guides/troubleshooting/transfer-edge-function-from-one-project-to-another)
@@ -153232,6 +153323,47 @@ If you connect as a custom role through the shared pooler, the username is `[ROL
 3. Copy the whole string, and replace only the password placeholder.
 
 For the full set of hosts, ports, and usernames, see [Connect to your database](https://supabase.com/docs/guides/database/connecting-to-postgres).
+
+
+---
+
+# TLS handshake failures after removal of CBC-mode ciphers
+
+Supabase will remove four cipher block chaining (CBC) mode cipher suites from TLS 1.2 on project APIs, on November 10, 2026 at the earliest. After the removal, clients that support only these ciphers can't connect to Auth, the Data API, Storage, Realtime, or Edge Functions. The removal applies to `<project_ref>.supabase.co` and to custom domains.
+
+Direct Postgres connections, connections through the pooler, and the Management API aren't affected.
+
+## Symptoms
+
+The client fails during the TLS handshake, before it sends any HTTP request, so the request doesn't appear in your project's API logs. Clients on up-to-date devices keep working.
+
+The error message depends on the client:
+
+| Client                                               | Error message                                                                     |
+| ---------------------------------------------------- | --------------------------------------------------------------------------------- |
+| OpenSSL-based clients, such as curl, Node.js, or PHP | `sslv3 alert handshake failure`                                                   |
+| Browsers                                             | `ERR_SSL_VERSION_OR_CIPHER_MISMATCH`                                              |
+| Windows PowerShell and .NET Framework                | `The request was aborted: Could not create SSL/TLS secure channel.`               |
+| Java                                                 | `javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure`    |
+| Apple platforms                                      | `An SSL error has occurred and a secure connection to the server cannot be made.` |
+
+## Cause
+
+The client can't use TLS 1.3, and the only TLS 1.2 cipher suites it shares with project APIs are the removed CBC-mode ones. This error usually means the client runs end-of-life software, such as an unsupported operating system or an embedded device that no longer receives updates. For the full list of removed and supported cipher suites, see [TLS for project APIs](https://supabase.com/docs/guides/security/tls).
+
+If you see these errors before the removal date, the CBC-mode removal isn't the cause. For example, project APIs don't support TLS 1.0 or TLS 1.1, so clients limited to those versions can't connect at all.
+
+## Diagnose the client
+
+Check the TLS configuration your application actually uses: its operating system, runtime, and TLS library versions, and any TLS version or cipher suite settings in your code or configuration. A client that connects with TLS 1.3 isn't affected by the removal, whatever TLS 1.2 cipher suites it supports.
+
+## Fix the client
+
+Update the client's operating system, runtime, or TLS library to a version that supports TLS 1.3 or a supported TLS 1.2 cipher suite.
+
+If you can't update a client, route its traffic through a proxy that you control. The proxy accepts the client's ciphers and forwards requests to Supabase over a supported TLS connection.
+
+If you can't update the client or add a proxy, [open a support ticket](https://supabase.com/dashboard/support/new).
 
 
 ---

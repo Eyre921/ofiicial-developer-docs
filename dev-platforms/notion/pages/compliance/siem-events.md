@@ -87,6 +87,8 @@ When available, applicable events include a top-level `team_ids` array containin
 * **page.permissions.team\_role\_removed**: A teamspace's page permissions were removed, restricting teamspace members from accessing the page.
 * **page.permissions.team\_role\_updated**: A teamspace's page permissions were updated, changing the type of access for teamspace members.
 * **page.properties\_edited**: A user edited a page's property, like a page title or a database property.
+* **page.property.permissions.role\_added**: A user added someone to a person property that controls access to a property on a page.
+* **page.property.permissions.role\_removed**: A user removed someone from a person property that controls access to a property on a page.
 * **page.purged**: A page was permanently removed from Trash based on workspace data retention settings.
 * **page.recurrence\_automation\_created**: A recurring automation was created on a page.
 * **page.recurrence\_automation\_deleted**: A recurring automation was deleted from a page.
@@ -123,6 +125,10 @@ When available, applicable events include a top-level `team_ids` array containin
 * **database.permissions.can\_create\_pages.team\_enabled**: A teamspace's 'can create pages' permission was enabled for a database.
 * **database.permissions.can\_create\_pages.team\_owner\_disabled**: Teamspace owners' 'can create pages' permission was disabled for a database.
 * **database.permissions.can\_create\_pages.team\_owner\_enabled**: Teamspace owners' 'can create pages' permission was enabled for a database.
+* **database.property.permissions.default\_access\_updated**: A user changed the default access level for a database property.
+* **database.property.permissions.exception\_added**: A user added an access exception for a database property.
+* **database.property.permissions.exception\_removed**: A user removed an access exception for a database property.
+* **database.property.permissions.exception\_updated**: A user changed an access exception for a database property.
 * **database.schema\_edited**: A user edited the schema of a database.
 
 ### Workspace events

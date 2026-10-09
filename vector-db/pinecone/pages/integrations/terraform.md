@@ -37,12 +37,10 @@ Ensure you have the following:
    }
    ```
 
-````
-
 2. Run `terraform init` to install the provider from the [Terraform Registry](https://registry.terraform.io/providers/pinecone-io/pinecone/latest). Alternatively, you can download the latest binary for your target platform from the [GitHub repository](https://github.com/pinecone-io/terraform-provider-pinecone/releases).
 
 <Note>
-Upgrading from v2 doesn't require configuration changes. No arguments were removed or renamed in v3 or v4, so existing configuration keeps working. Both releases only add resources, data sources, and index options. For the full list, see the [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) and [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) release notes.
+  Upgrading from v2 doesn't require configuration changes. No arguments were removed or renamed in v3 or v4, so existing configuration keeps working. Both releases only add resources, data sources, and index options. For the full list, see the [v3.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v3.0.0) and [v4.0.0](https://github.com/pinecone-io/terraform-provider-pinecone/releases/tag/v4.0.0) release notes.
 </Note>
 
 ## Authenticate
@@ -50,7 +48,7 @@ Upgrading from v2 doesn't require configuration changes. No arguments were remov
 The provider uses two kinds of credentials, and each resource requires a specific one. The provider needs at least one of them and fails to configure if neither is set. If your configuration manages both indexes and organization-level resources, set both.
 
 | Credential | Environment variables | Resources and data sources |
-| :--- | :--- | :--- |
+| :- | :- | :- |
 | [API key](/guides/projects/manage-api-keys) | `PINECONE_API_KEY` | `pinecone_index`, `pinecone_collection` |
 | [Service account](/guides/organizations/manage-service-accounts) | `PINECONE_CLIENT_ID`, `PINECONE_CLIENT_SECRET` | `pinecone_project`, `pinecone_api_key`, `pinecone_service_account`, `pinecone_role_binding`, `pinecone_invite`, `pinecone_user` |
 
@@ -58,14 +56,14 @@ Follow these steps to authenticate:
 
 1. Set environment variables for authentication:
 
-    ```bash
-    # For indexes and collections  
-    export PINECONE_API_KEY="YOUR_API_KEY"
+   ```bash theme={null}
+   # For indexes and collections  
+   export PINECONE_API_KEY="YOUR_API_KEY"
 
-    # For projects, API keys, service accounts, role bindings, invites, and users
-    export PINECONE_CLIENT_ID="YOUR_CLIENT_ID"
-    export PINECONE_CLIENT_SECRET="YOUR_CLIENT_SECRET"
-````
+   # For projects, API keys, service accounts, role bindings, invites, and users
+   export PINECONE_CLIENT_ID="YOUR_CLIENT_ID"
+   export PINECONE_CLIENT_SECRET="YOUR_CLIENT_SECRET"
+   ```
 
 2. Append the following to your Terraform configuration file:
 
@@ -73,10 +71,8 @@ Follow these steps to authenticate:
    provider "pinecone" {}
    ```
 
-````
-
 <Note>
-You can also set the API key and service account credentials as [input variables](https://developer.hashicorp.com/terraform/language/values/variables).
+  You can also set the API key and service account credentials as [input variables](https://developer.hashicorp.com/terraform/language/values/variables).
 </Note>
 
 ## Manage resources
@@ -84,7 +80,7 @@ You can also set the API key and service account credentials as [input variables
 The Terraform Provider for Pinecone provides the following resources:
 
 | Resource | Description | Credential |
-| :--- | :--- | :--- |
+| :- | :- | :- |
 | [`pinecone_index`](#indexes) | Create, update, and delete indexes. | API key |
 | [`pinecone_collection`](#collections) | Create and delete collections. | API key |
 | [`pinecone_project`](#projects) | Create, update, and delete projects. | Service account |
@@ -96,9 +92,9 @@ The Terraform Provider for Pinecone provides the following resources:
 
 ### Indexes
 
-The `pinecone_index` resource lets you create, update, and delete [indexes](/guides/index-data/indexing-overview). 
+The `pinecone_index` resource lets you create, update, and delete [indexes](/guides/index-data/indexing-overview).
 
-```terraform
+```terraform theme={null}
 # Index for dense vectors
 resource "pinecone_index" "example_index" {
   name        = "example-index"
@@ -139,7 +135,7 @@ resource "pinecone_index" "example_index_integrated" {
     }
   }
 }
-````
+```
 
 For an index with integrated embedding, `dimension` defaults to the model's dimension. The `model` can't be changed once set, but you can update `field_map`, `read_parameters`, and `write_parameters`. The read-only `embed.effective_read_parameters` and `embed.effective_write_parameters` attributes report the parameters the API applied, including server-side defaults you didn't set.
 
@@ -289,6 +285,7 @@ resource "pinecone_index" "example_index_timeouts" {
 The `pinecone_collection` resource lets you create and delete [collections](/guides/indexes/pods/understanding-collections) for pod-based indexes. Set `source` to the name of the source index.
 
 ```terraform theme={null}
+# Collections require a pod-based source index
 resource "pinecone_index" "example_index" {
   name      = "example-index"
   dimension = 10

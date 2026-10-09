@@ -5,7 +5,7 @@ path: reference/update-page-markdown
 ---
 
 patch /v1/pages/{page_id}/markdown
-Insert or replace content in a page using enhanced markdown.
+Insert or replace content in a page using markdown.
 
 ### Use cases
 
@@ -35,9 +35,11 @@ Use the `replace_content_range` command to replace a matched range of existing c
 
 ### General behavior
 
-Returns a `page_markdown` object containing the full page content as enhanced markdown after the update, including `truncated` and `unknown_block_ids` fields for large pages.
+Returns a `page_markdown` object containing the full page content as markdown after the update, in the request's `markdown_version` syntax, including `truncated` and `unknown_block_ids` fields for large pages.
 
 Set `allow_async: true` at the top level of the request body to receive an HTTP `202` response with an `async_task` object instead of waiting for the markdown update to finish in the original request. This is useful for high block-count markdown updates, especially `replace_content` requests and large batches of `update_content` operations.
+
+Set `markdown_version: "v2"` at the top level of the request body to write and read [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead of enhanced markdown. This is an opt-in preview; `v1` is the default. A synchronous `v2` response can include a `warnings` array when the parser changed or ignored part of your content. Async updates (`allow_async: true`) don't return warnings. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 If `allow_async` is omitted or `false`, this endpoint keeps its existing synchronous response behavior. `allow_async` changes response behavior only; it does not change validation, permissions, or which operation runs. See [Retrieve an async task](/reference/retrieve-async-task) and [Working with markdown content](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously) for polling examples.
 
@@ -52,7 +54,7 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 <Tip>
   **Newlines in content**
 
-  The `content` field expects standard markdown with actual newline characters. In JSON, `\n` is the escape sequence for a newline — for example, `"## Heading\n\nParagraph"` creates a heading followed by a paragraph.
+  The `content` field expects markdown in the request's `markdown_version` syntax (enhanced markdown by default) with actual newline characters. In JSON, `\n` is the escape sequence for a newline — for example, `"## Heading\n\nParagraph"` creates a heading followed by a paragraph.
 
   When using cURL, wrap the `--data` body in **single quotes** (`'...'`) so that `\n` is passed through to the JSON parser. Avoid `$'...'` quoting, which converts `\n` into a literal newline and produces invalid JSON.
 

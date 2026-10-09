@@ -4,11 +4,11 @@ source: https://developers.notion.com/guides/data-apis/enhanced-markdown
 path: guides/data-apis/enhanced-markdown
 ---
 
-Reference for the Notion-flavored Markdown format used by the markdown content endpoints.
+Reference for the enhanced markdown format used by the markdown content endpoints.
 
 ## Overview
 
-Enhanced markdown (also called "Notion-flavored Markdown") is an extended Markdown format that supports all Notion block and rich text types. It is used by the markdown content endpoints: `POST /v1/pages` (via the `markdown` body param), `GET /v1/pages/:page_id/markdown`, and `PATCH /v1/pages/:page_id/markdown`.
+Enhanced markdown is an extended Markdown format that supports all Notion block and rich text types. It is the default format (`markdown_version: "v1"`) for the markdown content endpoints: `POST /v1/pages` (via the `markdown` body param), `GET /v1/pages/:page_id/markdown`, and `PATCH /v1/pages/:page_id/markdown`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) for the `v2` preview.
 
 This format extends standard Markdown with XML-like tags and attribute lists to represent Notion-specific features such as callouts, toggles, columns, mentions, and block-level colors.
 

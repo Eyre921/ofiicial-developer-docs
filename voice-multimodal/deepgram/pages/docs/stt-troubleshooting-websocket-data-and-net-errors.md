@@ -119,12 +119,12 @@ If Deepgram encounters an error during real-time streaming, the Deepgram API ret
 
 Below are the most common WebSocket Close frame status codes and their descriptions.
 
-| Code   | Payload     | Description                                                                                                                                                                                                                   |
-| ------ | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `1008` | `DATA-0000` | The payload cannot be decoded as audio. The payload either is not audio data or is a codec unsupported by Deepgram.                                                                                                           |
-| `1011` | `NET-0000`  | The service has not transmitted a Text frame to the client within the timeout window. This may indicate an internal issue with Deepgram's systems, or Deepgram may have not received enough audio data to transcribe a frame. |
-| `1011` | `NET-0001`  | The service has not received a Binary or Text frame from the client within the timeout window. This may indicate an internal issue with Deepgram's systems, the client's systems, or the network connecting them.             |
-| `1011` | `NET-0002`  | No audio was received on the stream within the no-audio timeout window, and the stream was closed with a `no_audio_timeout` close reason. Send audio, or a `KeepAlive` message, to keep the stream open.                      |
+| Code   | Payload     | Description                                                                                                                                                                                                                                                      |
+| ------ | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `1008` | `DATA-0000` | The payload cannot be decoded as audio. The payload either is not audio data or is a codec unsupported by Deepgram.                                                                                                                                              |
+| `1011` | `NET-0000`  | The service has not transmitted a Text frame to the client within the timeout window. An over-limit `Configure` keyterm update can cause this; otherwise, it may indicate an internal issue with Deepgram's systems or insufficient audio to transcribe a frame. |
+| `1011` | `NET-0001`  | The service has not received a Binary or Text frame from the client within the timeout window. This may indicate an internal issue with Deepgram's systems, the client's systems, or the network connecting them.                                                |
+| `1011` | `NET-0002`  | No audio was received on the stream within the no-audio timeout window, and the stream was closed with a `no_audio_timeout` close reason. Send audio, or a `KeepAlive` message, to keep the stream open.                                                         |
 
 #### Troubleshooting `1008` - `DATA-0000`
 
@@ -137,7 +137,8 @@ Below are the most common WebSocket Close frame status codes and their descripti
 
 #### Troubleshooting `1011` - `NET-0000`
 
-* This indicates an internal server error.
+* If this follows an over-limit `Configure` keyterm update, reconnect and retry with a list under 500 tokens. That update currently does not send an `Error` message.
+* Otherwise, this may indicate an internal server error or insufficient audio to transcribe a frame.
 * Retry your request.
 * Check [Deepgram status](https://status.deepgram.com/) to see if there are any ongoing issues.
 * If Deepgram is operational, [contact Support](/support) for assistance.

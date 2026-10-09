@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 8, 2026">
+  ### Control notifications from page writes
+
+  Page write endpoints now accept `notifications.mode`. Set it to `silent` to skip page update, @mention, and Person property notifications for the change. Database automations, reminders, and connection webhooks still work as usual. See [Create a page](/reference/post-page), [Update a page](/reference/patch-page), and [Append block children](/reference/patch-block-children) for details.
+</Update>
+
 <Update label="October 7, 2026">
   ### One search tool in Notion MCP
 
@@ -19,9 +25,9 @@ path: page/changelog
 
   ### Status group filters beta
 
-  Status filters can now match a status group with `status.group`, for example every option in the "In progress" group. Before, a group that shared a name with an option, like the default "In progress", could only be matched as the option.
+  Status filters can now match groups with `group_equals` and `group_does_not_equal`. These operators remove option and group name ambiguity.
 
-  Send `Notion-Beta: status-group-filters-2026-10-06` to opt in. With the header, `equals` and `does_not_equal` match only option names, and [views](/reference/view) return saved group filters as `group`. Without it, nothing changes. See [Status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta).
+  Send `Notion-Beta: status-group-filters-2026-10-06` to opt in. With the header, `equals` and `does_not_equal` match only option names. [Views](/reference/view) return saved group filters with group operators. Without the header, nothing changes. See [Status group filters beta](/reference/filter-data-source-entries#status-group-filters-beta).
 
   ### Warnings from `notion-update-page`
 
@@ -48,6 +54,10 @@ path: page/changelog
   The SIEM and DLP event stream now sends `workspace.settings.meeting_notes_consent_setting_updated` when an admin changes whether a workspace requires consent before AI meeting notes transcription. The payload carries the final state, either `enabled` or `disabled`. See [SIEM events](/compliance/siem-events).
 
   This is separate from the existing audit log entry for a person confirming consent in a meeting. The new event records a change to the requirement, not an instance of consent.
+
+  ### Preview: Notion-flavored Markdown with `markdown_version`
+
+  The markdown endpoints accept a new optional `markdown_version` parameter. Set it to `v2` to read and write Notion-flavored Markdown. This is an opt-in preview: `v1` (enhanced markdown) stays the default, and requests without the parameter work as before. `v2` doesn't support `include_transcript` yet, and synchronous `v2` updates return parser `warnings`. Sending `markdown_version` without `markdown` on `POST /v1/pages` or the comment endpoints returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) and the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown).
 </Update>
 
 <Update label="September 29, 2026">

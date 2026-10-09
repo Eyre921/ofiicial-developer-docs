@@ -81,6 +81,8 @@ Validation Error
 
 - `type`: `end` (WorkflowEndNodeModel)
   - `edge_order` (list of string, required) — The ids of outgoing edges in the order they should be evaluated.
+  - `outcome` (enum, required, default: success) — Whether reaching this End node ends the conversation as a success or a failure.
+    - Allowed values: `success`, `failure`
   - `position` (Position-Output, required) — Position of the node in the workflow.
 - `type`: `override_agent` (WorkflowOverrideAgentNodeModel)
   - `additional_knowledge_base` (list of KnowledgeBaseLocator, required) — Additional knowledge base documents that the subagent has access to. These will be used in addition to the main agent's documents.
@@ -454,14 +456,14 @@ A locator for other documents to be able to reference a specific dictionary and 
 
 ### EffectsSpec-Output
 
-Filter preset, distance (proximity EQ), and environment (convolution reverb).
+Audio effects applied to generated speech: a filter preset, perceived distance, a reverb environment, a background noise bed, and stereo panning. Leave every field at its default to get unprocessed audio.
 
-- `filter_preset_id` (string, required, nullable)
-- `distance` (double, required, default: 0)
-- `environment_id` (string, required, nullable)
-- `background_noise_id` (string, required, nullable)
-- `send_level` (double, required, default: 1)
-- `seed` (integer, required, nullable)
+- `filter_preset_id` (string, required, nullable) — ID of a filter preset that colors the voice, such as `phone` or `old_radio`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `distance` (double, required, default: 0) — How far the speaker sounds from the microphone, from 0 (close, unchanged) to 1 (far). Higher values roll off low and high frequencies and, when an environment is set, shift the balance from the dry voice toward the reverb.
+- `environment_id` (string, required, nullable) — ID of a reverb environment that places the voice in a space, such as `small_room` or `hall`. List valid IDs with `GET /v1/audio-effects/catalog`. Reverb is rendered in stereo and adds a tail of up to several seconds after the speech ends.
+- `background_noise_id` (string, required, nullable) — ID of a background noise bed looped under the voice, such as `cafe` or `keyboard`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `send_level` (double, required, default: 1) — How much of the voice feeds the reverb, from 0 (none) to 1 (full). Only applies when `environment_id` is set; 0 turns the reverb off.
+- `seed` (integer, required, nullable, deprecated) — Has no effect.
 
 ### FileInputConfigWorkflowOverride
 

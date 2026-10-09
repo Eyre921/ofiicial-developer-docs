@@ -57,6 +57,23 @@ By default, blocks are appended to the end of the parent block's children. Use t
   You cannot specify both `after` and `position` in the same request.
 </Warning>
 
+### Control notifications from page writes
+
+Set `notifications.mode` to `silent` to skip the notifications Notion sends people about the change:
+
+* Page update notifications to people who get updates for the page through **Notify me**.
+* Notifications to people the content @mentions.
+* Notifications to people the change adds to a Person property.
+
+Set it to `default`, or omit `notifications`, to use the standard behavior.
+
+Some effects of the change happen in either mode:
+
+* [Database automations](https://www.notion.com/help/database-automations) that the change triggers still run, including **Send notification to** actions.
+* Reminders set by the change still go off at their scheduled time.
+* [Connection webhooks](/reference/webhooks) still receive events for the change.
+* Page history, page activity, and workspace audit logs still record the change.
+
 <Info>
   **Connection capabilities**
 

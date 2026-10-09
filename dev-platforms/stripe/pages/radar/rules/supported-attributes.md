@@ -74,10 +74,12 @@ For new rules, use the fraudulent payment, fraudulent dispute, and early fraud w
 
 ### Client information
 
+> Activity from multiple users of iCloud Private Relay can contribute to the same IP address counters, such as `card_count_for_ip_address_hourly`. Use the `isp` attribute to identify iCloud Private Relay traffic, and consider whether to exclude this traffic from your rules.
+
 | **Attribute** | **Type** | **Example value** | **Description** |
 | --- | --- | --- | --- |
 | `browser` | *Case-insensitive string* | Chrome 103.0.0 | The customer’s browser name and version. |
-| `isp` | *Case-insensitive string* | Cactus Practice ISP | The customer’s Internet Service Provider (ISP) name. |
+| `isp` | *Case-insensitive string* | iCloud Private Relay | The customer’s Internet Service Provider (ISP) name. |
 | `operating_system` | *Case-insensitive string* | Mac OS X 10.15.7 | The customer’s operating system name and version. |
 | `user_agent` | *Case-insensitive string* | mozilla/5.0 (macintosh; intel mac os x 10_15_7) applewebkit/537.36 (khtml, like gecko) chrome/103.0.0.0 safari/537.36 | The customer’s user agent. |
 

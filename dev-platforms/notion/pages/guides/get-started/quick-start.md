@@ -106,7 +106,7 @@ Make a POST request to the [Create a page](/reference/post-page) endpoint with m
   ```
 </CodeGroup>
 
-The `markdown` field accepts [Notion-flavored Markdown](/guides/data-apis/enhanced-markdown) — headings, lists, code blocks, links, and more. The API converts it to Notion blocks for you.
+The `markdown` field accepts [enhanced markdown](/guides/data-apis/enhanced-markdown) — headings, lists, code blocks, links, and more. The API converts it to Notion blocks for you.
 
 <Accordion title="Under the hood: markdown → blocks">
   Notion pages are made up of **blocks** — headings, paragraphs, lists, and more. When you send `markdown`, the API converts it into this block structure automatically.

@@ -875,9 +875,13 @@ components:
             intensifiers. The 500-token keyterm limit that
 
             applies to the `keyterm` query parameter also applies to each
-            update. An over-limit update returns an
+            update. An over-limit update currently stops
 
-            `Error`, and the stream keeps its previous keyterms.
+            transcription without an `Error`; after about 30 seconds, the server
+            closes the stream with `1011`
+
+            (`NET-0000`). Keep each list under the limit and check its size
+            before sending.
         features:
           type: object
           additionalProperties:

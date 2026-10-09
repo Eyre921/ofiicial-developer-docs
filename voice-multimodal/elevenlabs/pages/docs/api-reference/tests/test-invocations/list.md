@@ -28,6 +28,10 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/test-invocations/list
 
 - `agent_id` (string, optional, nullable) — Filter by agent ID
 - `branch_id` (string, optional, nullable) — Filter by branch ID
+- `test_id` (string, optional, nullable) — Filter to invocations that include a run of this test id
+- `start_time` (integer, optional, nullable) — Inclusive lower bound on created_at, in unix seconds
+- `end_time` (integer, optional, nullable) — Inclusive upper bound on created_at, in unix seconds
+- `version_id` (string, optional, nullable) — Filter by the agent version the tests ran against
 - `page_size` (integer, optional, default: 30) — How many Tests to return at maximum. Can not exceed 100, defaults to 30.
 - `search` (string, optional, nullable) — Search query to filter tests and folders by name.
 - `cursor` (string, optional, nullable) — Used for fetching next page. Cursor is returned in the response.

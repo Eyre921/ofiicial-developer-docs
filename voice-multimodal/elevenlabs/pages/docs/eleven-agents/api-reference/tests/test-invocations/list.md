@@ -28,6 +28,10 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/test-inv
 
 - `agent_id` (string, optional) — Filter by agent ID
 - `branch_id` (string, optional) — Filter by branch ID
+- `test_id` (string, optional) — Filter to invocations that include a run of this test id
+- `start_time` (integer, optional) — Inclusive lower bound on created_at, in unix seconds
+- `end_time` (integer, optional) — Inclusive upper bound on created_at, in unix seconds
+- `version_id` (string, optional) — Filter by the agent version the tests ran against
 - `page_size` (integer, optional, default: 30) — How many Tests to return at maximum. Can not exceed 100, defaults to 30.
 - `search` (string, optional) — Search query to filter tests and folders by name.
 - `cursor` (string, optional) — Used for fetching next page. Cursor is returned in the response.
@@ -151,7 +155,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/test-invocations"
 
-querystring = {"agent_id":"agent_id","branch_id":"branch_id","cursor":"cursor","page_size":"1","search":"search"}
+querystring = {"agent_id":"agent_id","branch_id":"branch_id","cursor":"cursor","end_time":"1","page_size":"1","search":"search","start_time":"1","test_id":"test_id","version_id":"version_id"}
 
 response = requests.get(url, params=querystring)
 
@@ -159,7 +163,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&search=search';
+const url = 'https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1&page_size=1&search=search&start_time=1&test_id=test_id&version_id=version_id';
 const options = {method: 'GET'};
 
 try {
@@ -182,7 +186,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&search=search"
+	url := "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1&page_size=1&search=search&start_time=1&test_id=test_id&version_id=version_id"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -201,7 +205,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&search=search")
+url = URI("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1&page_size=1&search=search&start_time=1&test_id=test_id&version_id=version_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -216,7 +220,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&search=search")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1&page_size=1&search=search&start_time=1&test_id=test_id&version_id=version_id")
   .asString();
 ```
 
@@ -226,7 +230,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&search=search');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1&page_size=1&search=search&start_time=1&test_id=test_id&version_id=version_id');
 
 echo $response->getBody();
 ```
@@ -234,7 +238,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&search=search");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1&page_size=1&search=search&start_time=1&test_id=test_id&version_id=version_id");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -242,7 +246,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&page_size=1&search=search")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/test-invocations?agent_id=agent_id&branch_id=branch_id&cursor=cursor&end_time=1&page_size=1&search=search&start_time=1&test_id=test_id&version_id=version_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

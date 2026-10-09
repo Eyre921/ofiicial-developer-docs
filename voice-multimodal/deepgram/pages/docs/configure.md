@@ -12,7 +12,7 @@ path: docs/configure
 
 Streaming:Nova
 
-Use the `Configure` message to change settings on an open `/v1/listen` WebSocket stream. The stream keeps running, so you don't drop audio or rebuild state to change what Deepgram listens for.
+Use the `Configure` message to change settings on an open `/v1/listen` WebSocket stream. A supported, in-limit update keeps the stream running, so you don't drop audio or rebuild state to change what Deepgram listens for.
 
 > **Info**
 >
@@ -95,11 +95,11 @@ A successful `Configure` on `/v1/listen` produces no response message; the next 
 
 Each array entry is a plain term or phrase. Pass a multi-word phrase as a single entry, for example `["customer service"]`. Like the `keyterm` query parameter, entries don't support the weight syntax from the legacy [Keywords](/docs/keywords) feature, so don't append a weight such as `"term:0.15"`.
 
-The 500-token [keyterm limit](/docs/keyterm#key-term-limits) that applies to the `keyterm` query parameter also applies to each `Configure` message. Keep each list to the terms that matter for the current step of the conversation instead of sending everything you might need. If an update goes over the limit, Deepgram rejects it with an [error](#errors) and the stream keeps its previous keyterms.
+The 500-token [keyterm limit](/docs/keyterm#key-term-limits) that applies to the `keyterm` query parameter also applies to each `Configure` message. Keep each list to the terms that matter for the current step of the conversation instead of sending everything you might need. An over-limit update currently stops transcription without an `Error`; see [Errors](#errors) for the stream-close behavior.
 
 ## Errors
 
-Rejected `Configure` messages return an `Error` message. The stream stays open with its previous settings.
+Most rejected `Configure` messages return an `Error` message. The stream stays open with its previous settings.
 
 Sending `keyterms` on a model other than Nova-3, such as Nova-2:
 
@@ -114,7 +114,7 @@ Sending `keyterms` on a model other than Nova-3, such as Nova-2:
 }
 ```
 
-Sending keyterms over the 500-token [keyterm limit](/docs/keyterm#key-term-limits) returns an `InvalidConfigureMessage` error whose `description` explains the limit. The stream keeps its previous keyterms.
+Sending keyterms over the 500-token [keyterm limit](/docs/keyterm#key-term-limits) currently does not return an `Error` message. Transcription stops, then the server closes the stream with `1011` (`NET-0000`) after about 30 seconds. Check the list size before sending the update.
 
 Sending a field the message doesn't support, for example `keyterm` instead of `keyterms`:
 

@@ -16,7 +16,7 @@ Add Pinecone to your app or agent and run your first search. Choose the path tha
 
 If you use an AI coding agent, the quickest path is to let it do the setup: it designs your schema, ingests your data, and runs your first query, all conversationally.
 
-The steps below use Claude Code. Using Cursor, Codex, Gemini CLI, or another agent? See [all supported AI coding tools](/integrations/ai-coding-tools) for the equivalent setup.
+The steps below use Claude Code. Using Cursor, Codex, or another agent? See [all supported AI coding tools](/integrations/ai-coding-tools) for the equivalent setup.
 
 <Steps>
   <Step title="Set your API key and install the plugin">

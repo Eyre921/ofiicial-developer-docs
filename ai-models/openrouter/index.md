@@ -6,7 +6,7 @@
 ## docs
 
 - `docs/_llms/api-reference` — [API Reference (166 pages)](pages/docs/_llms/api-reference.md) · [原文](https://openrouter.ai/docs/_llms/api-reference.md)
-- `docs/_llms/docs` — [Docs (148 pages)](pages/docs/_llms/docs.md) · [原文](https://openrouter.ai/docs/_llms/docs.md)
+- `docs/_llms/docs` — [Docs (150 pages)](pages/docs/_llms/docs.md) · [原文](https://openrouter.ai/docs/_llms/docs.md)
 - `docs/agent-sdk/agent-migration` — [Migrating to @openrouter/agent](pages/docs/agent-sdk/agent-migration.md) · [原文](https://openrouter.ai/docs/agent-sdk/agent-migration.md)
 - `docs/agent-sdk/call-model/api-reference` — [Agent SDK API Reference](pages/docs/agent-sdk/call-model/api-reference.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/api-reference.md)
 - `docs/agent-sdk/call-model/async-tools` — [Async Tools](pages/docs/agent-sdk/call-model/async-tools.md) · [原文](https://openrouter.ai/docs/agent-sdk/call-model/async-tools.md)

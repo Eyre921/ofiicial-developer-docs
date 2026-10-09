@@ -51,7 +51,19 @@ App resources are limited by the device specs, and app functionality might be co
 
 #### APK size limit
 
-APK files that you upload to the Stripe API have a 200 MB size limit.
+APK files that you upload to the Stripe API have a 200 MB size limit. To upload APK files up to 300 MB using a larger and more reliable upload flow, [request access to the private preview](https://docs.stripe.com/terminal/features/apps-on-devices/overview.md#large-apk-upload-preview).
+
+### Get early access to larger and more reliable APK uploads.
+
+Enter your email to request access to APK uploads up to 300 MB. Submitting this form doesn't immediately enable the feature.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/terminal/features/apps-on-devices/overview" \
+  -d '{"email": "EMAIL", "preview": "terminal_large_apk_uploads_preview"}'
+```
 
 #### Device specs
 

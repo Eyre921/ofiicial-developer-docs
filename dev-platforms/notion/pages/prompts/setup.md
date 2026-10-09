@@ -83,7 +83,7 @@ Respect recorded workspace and canonical-destination choices. Verify each resour
 Next, we are going to make a concrete offer to **import everything available**:
 
 * Import all saved memories and summaries this host exposes. Reuse the user’s existing memory destination. If none exists and the connection supports it, propose a private Memories database and show its exact schema before creating it.
-* Import recently created artifacts from accessible sources. Reuse an appropriate existing destination. If none exists, propose a private AI Artifacts database and show its exact schema before creating it.
+* Import recently created artifacts from accessible sources. Reuse an appropriate existing destination. If none exists, propose a private Documents database and show its exact schema before creating it.
 * Import eligible personal Skills this host exposes. Show their origin, owner, scope, supporting files, and intended native Notion Skills destination. Exclude repository-, project-, employer-, organization-, and third-party-scoped material unless the user has the right to copy it and explicitly selects it.
 * Deduplicate memories, artifacts, and Skills against existing Notion content. Preserve source links, dates, provenance, attachments, supporting files, and useful structure.
 * Apply recorded exclusions and forget requests before importing. Never import credentials, secrets, inaccessible content, or conversation transcripts.
@@ -94,7 +94,7 @@ To do this, we will give the user a short, concrete proposal. Use this structure
 >
 > * Import \[what is available] into \[existing memory destination], or create a private Memories database with \[brief schema].
 > * Import \[specific recent artifacts or categories] into \[existing destination].
-> * Create a private AI Artifacts database with \[brief schema] if there isn’t already a suitable place for this work.
+> * Create a private Documents database with \[brief schema] if there isn’t already a suitable place for this work.
 > * Import \[eligible personal Skills] into \[existing native Skills destination], or set up an approved private native destination.
 >
 > I won’t change your existing organization or touch anything outside this list. Want me to go ahead with all of it? You can also choose specific items or change where they go.
@@ -109,7 +109,7 @@ This approval does not authorize imports or schemas outside the proposal, an age
 
 Reuse the user’s existing workspace organization, page and database types, naming, destinations, and approved access boundaries. Do not impose another hierarchy or reorganize existing pages. If the right destination is unclear, use an approved private Inbox for the selected work and propose a permanent destination; cleanup is a separate choice.
 
-Create a Memories database, AI Artifacts database, Inbox, home page, or other destination only when no suitable destination exists and the user approved its exact schema. Add project or topic pages only when the selected imports justify them. Avoid empty departments, speculative trackers, and large generic workspace templates. Record the resulting destinations for future agents.
+Create a Memories database, Documents database, Inbox, home page, or other destination only when no suitable destination exists and the user approved its exact schema. Add project or topic pages only when the selected imports justify them. Avoid empty departments, speculative trackers, and large generic workspace templates. Record the resulting destinations for future agents.
 
 #### Import recent work
 
@@ -137,7 +137,9 @@ Preserve each Skill’s source, intended host, version, dependencies, and suppor
 
 The imported context is only useful in future chats if the agent remembers to look for it. Create or update a private **Agent Operating Guide** page in Notion as the complete, user-owned source of truth for how agents should read from and write to Notion. Include the approved standing rules below, version, publication date, canonical workspace, memory and Skills links, destinations, exclusions, and version history.
 
-Preserve any existing guide, approved rules, history, and unrelated custom instructions. If a guide already exists, treat it as authoritative and propose policy changes instead of replacing it with this template. Obtain separate approval before creating or changing the guide or persistent instructions.
+Store the guide as a page in a private database, not as a loose page. Reuse an appropriate existing private database for documents like this. For new setups, use the private Documents database from the approved setup. If no suitable private database exists, propose a private Documents database and obtain approval for its exact schema before creating it.
+
+Preserve any existing guide, approved rules, history, and unrelated custom instructions. If a guide already exists, treat it as authoritative and propose policy changes instead of replacing it with this template. Obtain separate approval for the guide's destination and before creating, moving, or changing the guide or persistent instructions.
 
 After approval, create or update the guide first so its verified Notion URL is available. Set its version to **0.0.3** and its publication date to **October 7th, 2026**. Then detect the current platform’s persistent custom-instructions mechanism and give one specific, accurate settings path. Do not list multiple platforms or guess. Respond using this structure:
 
