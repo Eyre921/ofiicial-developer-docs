@@ -76,7 +76,7 @@ In every SDK, `api_key` is the Fireworks key. Pass provider keys as extra header
 | Request rejected for data residency | The requested route is not residency-compatible | Pin a residency-compatible serverless model |
 | `404` `Model id not found` | Unknown id, or the account cannot use this router | Check the model id and account access |
 | `400` `no_credential` | The closed model you named has no provider key | Connect [Provider Keys](/nexus/provider-keys) where available. For Anthropic or OpenAI, you can instead send the provider header. |
-| Upstream provider authentication failure | The provider key is wrong or revoked | Check the Anthropic, OpenAI, or Amazon Bedrock key; exact status and message come from that provider |
+| Upstream provider authentication failure | The provider credential is wrong, revoked, or lacks permission | Check the Anthropic, OpenAI, or Amazon Bedrock credential and its permissions; exact status and message come from that provider |
 
 ## Model routers and deployment routers
 

@@ -1,5 +1,5 @@
 ---
-title: "Next.js Setup"
+title: "Run a Next.js App in a Cloud Sandbox with a Public URL"
 source: https://upstash.com/docs/box/guides/nextjs-setup
 path: docs/box/guides/nextjs-setup
 ---

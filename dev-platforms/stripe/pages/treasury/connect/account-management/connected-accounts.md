@@ -50,7 +50,7 @@ The account must not use a Stripe-hosted dashboard and you must be responsible f
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   --json '{
     "include": [
         "configuration.money_manager"
@@ -259,7 +259,7 @@ If you already have an eligible connected account, you can request to add `money
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   --json '{
     "include": [
         "configuration.money_manager"
@@ -359,7 +359,7 @@ Check for one of the following status results in the API or Dashboard:
    ```curl
    curl -G https://api.stripe.com/v2/core/accounts/{{CONNECTEDACCOUNT_ID}} \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-06-24.preview" \
+     -H "Stripe-Version: 2026-09-30.preview" \
      -d "include[0]=configuration.money_manager" \
      -d "include[1]=requirements"
    ```

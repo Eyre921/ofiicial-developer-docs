@@ -410,6 +410,7 @@ Are you having problems setting up the SDK?
 - [Nitro](https://docs.sentry.io/platforms/javascript/guides/nitro.md)
 - [Node.js](https://docs.sentry.io/platforms/javascript/guides/node.md)
 - [Nuxt](https://docs.sentry.io/platforms/javascript/guides/nuxt.md)
+- [Pi Durable](https://docs.sentry.io/platforms/javascript/guides/pi-durable.md)
 - [React](https://docs.sentry.io/platforms/javascript/guides/react.md)
 - [React Router Framework](https://docs.sentry.io/platforms/javascript/guides/react-router.md)
 - [Remix](https://docs.sentry.io/platforms/javascript/guides/remix.md)

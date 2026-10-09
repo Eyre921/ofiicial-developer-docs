@@ -1,5 +1,5 @@
 ---
-title: "TanStack AI Coding Agents"
+title: "Run TanStack AI Coding Agents in a Cloud Sandbox"
 source: https://upstash.com/docs/box/guides/tanstack-setup
 path: docs/box/guides/tanstack-setup
 ---

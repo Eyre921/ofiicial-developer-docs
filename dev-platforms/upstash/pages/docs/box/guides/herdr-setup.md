@@ -1,5 +1,5 @@
 ---
-title: "Herdr Plugin Setup"
+title: "Run Herdr Coding Agents in Isolated Cloud Sandboxes"
 source: https://upstash.com/docs/box/guides/herdr-setup
 path: docs/box/guides/herdr-setup
 ---

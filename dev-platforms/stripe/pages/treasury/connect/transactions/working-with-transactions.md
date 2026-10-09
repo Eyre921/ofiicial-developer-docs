@@ -33,7 +33,7 @@ Use the `related_object.url` from the event to retrieve the full transaction.
 ```curl
 curl https://api.stripe.com/v2/money_management/transactions/trxn_7X8Y9Z0A1B2C3D4E \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -50,7 +50,7 @@ Retrieve the OutboundPayment to get the full details of the flow that created th
 ```curl
 curl https://api.stripe.com/v2/money_management/outbound_payments/obp_3E4F5G6H7I8J9K0L \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-07-29.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 

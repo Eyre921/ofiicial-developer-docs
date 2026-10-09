@@ -541,6 +541,7 @@ post '/webhook' do
     rescue Stripe::SignatureVerificationError => e
       puts "⚠️  Webhook signature verification failed. #{e.message}"
       status 400
+      return
     end
   end
   \# Handle the event

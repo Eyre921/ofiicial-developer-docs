@@ -29407,6 +29407,8 @@ If you leave the two silence thresholds unset, Vapi doesn't send them and Assemb
 | `min_latency`  | `128` / `640` ms   | Callers answer in short, complete phrases. Pauses longer than `640` ms end the turn, so sentences and entities split more often.         |
 | `max_accuracy` | `512` / `2560` ms  | Accuracy matters more than speed. Turns rarely split, but every turn that needs the forced end waits up to `2560` ms.                     |
 
+  The quickstart and recommended configuration set `minEndOfTurnSilenceWhenConfident: 128` and `maxTurnSilence: 1280` explicitly. These values override any preset. If you switch `mode` to `min_latency` or `max_accuracy`, remove both fields so the new preset's thresholds apply, or update them to the values you want.
+
 #### Tuning `maxTurnSilence`
 
 `maxTurnSilence` sets how long the assistant waits whenever a turn doesn't read as complete:
@@ -29548,7 +29550,7 @@ Start with the **`mode` preset** — the highest-level dial for the accuracy/lat
 }
 ```
 
-Use `"min_latency"` for the fastest turns or `"max_accuracy"` for the best transcripts. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
+Use `"min_latency"` for the fastest turns or `"max_accuracy"` for the best transcripts. If you also set `minEndOfTurnSilenceWhenConfident` or `maxTurnSilence`, remove or update them when you change presets, because explicit values override the preset. See [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency).
 
 From there, fine-tune the individual levers:
 

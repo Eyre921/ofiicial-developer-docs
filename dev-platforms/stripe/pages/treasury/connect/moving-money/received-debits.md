@@ -140,7 +140,7 @@ After you authorize a third party’s mandate to directly debit a financial acco
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -189,7 +189,7 @@ curl https://api.stripe.com/v2/money_management/received_debits/{{RECEIVED_DEBIT
 ```curl
 curl https://api.stripe.com/v2/money_management/received_debits \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -202,7 +202,7 @@ You can dispute a `ReceivedDebit` within the dispute window specified in `disput
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/debit_disputes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "received_debit": "{{RECEIVED_DEBIT_ID}}",
@@ -219,7 +219,7 @@ curl -X POST https://api.stripe.com/v2/money_management/debit_disputes \
 ```curl
 curl https://api.stripe.com/v2/money_management/debit_disputes/{{DEBIT_DISPUTE_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -230,7 +230,7 @@ curl https://api.stripe.com/v2/money_management/debit_disputes/{{DEBIT_DISPUTE_I
 ```curl
 curl https://api.stripe.com/v2/money_management/debit_disputes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -245,7 +245,7 @@ If you simulate a Bacs GBP debit, the helper also creates a `ReceivedDebitMandat
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/test_helpers/financial_addresses/{{FINANCIAL_ADDRESS_ID}}/debit \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "amount": {

@@ -34,7 +34,6 @@ Profiling helps you quickly identify performance bottlenecks, enabling you to bu
 * [Browser JavaScript \[beta\]](https://docs.sentry.io/platforms/javascript/profiling.md)
 * [Ruby \[beta\]](https://docs.sentry.io/platforms/ruby/profiling.md)
 * [React Native \[beta\]](https://docs.sentry.io/platforms/react-native/profiling.md)
-* [Flutter \[experimental, iOS and macOS only\]](https://docs.sentry.io/platforms/dart/guides/flutter/profiling.md)
 * [.NET \[experimental\]](https://docs.sentry.io/platforms/dotnet/profiling.md)
 * [JVM (Java and other JVM based languages)](https://docs.sentry.io/platforms/java/profiling.md)
 

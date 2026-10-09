@@ -1,5 +1,5 @@
 ---
-title: "Vercel AI SDK Tools"
+title: "Vercel AI SDK Code Interpreter and Shell Tools"
 source: https://upstash.com/docs/box/guides/ai-sdk-setup
 path: docs/box/guides/ai-sdk-setup
 ---

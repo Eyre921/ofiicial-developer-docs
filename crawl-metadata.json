@@ -30,7 +30,8 @@
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
-    "status": "error: curl failed (28) for https://ai-sdk.dev/llms-full.txt: curl: (28) Operation timed out after 90379 milliseconds with 2252616 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 0 bytes received\ncurl: (28) Recv failure: Connection re"
+    "pages": 0,
+    "status": "ok"
   },
   "agent-frameworks/mcp": {
     "pages": 156,
@@ -185,11 +186,11 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 96,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 471,
+    "pages": 472,
     "status": "ok"
   },
   "ai-models/openrouter": {
@@ -201,8 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1373,
+    "pages": 1376,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-09T11:30:40Z"
+  "_last_crawl": "2026-10-09T23:30:32Z"
 }

@@ -500,7 +500,7 @@ export default async (req: Request, context: Context) => {
   const { key } = context.params;
 
   const uploads = getStore("file-uploads");
-  const { data, metadata } = await uploads.getWithMetadata(key);
+  const entry = await uploads.getWithMetadata(key);
 
   if (entry === null) {
     return new Response(`Could not find entry with key ${key}`, {
@@ -508,7 +508,9 @@ export default async (req: Request, context: Context) => {
     });
   }
 
-  return new Response(entry, { headers: { "X-Country": metadata.country } });
+  const { data, metadata } = entry;
+
+  return new Response(data, { headers: { "X-Country": metadata.country } });
 };
 ```
 </TabItem>
@@ -521,7 +523,7 @@ export default async (req: Request, context: Context) => {
   const { key } = context.params;
 
   const uploads = getStore("file-uploads");
-  const { data, metadata } = await uploads.getWithMetadata(key);
+  const entry = await uploads.getWithMetadata(key);
 
   if (entry === null) {
     return new Response(`Could not find entry with key ${key}`, {
@@ -529,7 +531,9 @@ export default async (req: Request, context: Context) => {
     });
   }
 
-  return new Response(entry, { headers: { "X-Country": metadata.country } });
+  const { data, metadata } = entry;
+
+  return new Response(data, { headers: { "X-Country": metadata.country } });
 };
 ```
 </TabItem>
@@ -539,13 +543,13 @@ export default async (req: Request, context: Context) => {
 
 export const onPostBuild = async () => {
   const uploads = getDeployStore("file-uploads");
-  const { data, metadata } = await uploads.getWithMetadata("my-key");
+  const entry = await uploads.getWithMetadata("my-key");
 
   if (entry === null) {
     console.log("Could not find entry");
   } else {
-    console.log("Data:", data);
-    console.log("Country:", metadata.country);
+    console.log("Data:", entry.data);
+    console.log("Country:", entry.metadata.country);
   }
 };
 ```

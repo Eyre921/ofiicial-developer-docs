@@ -28,7 +28,7 @@ The platform [creates the connected account](https://docs.stripe.com/api/v2/core
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   --json '{
     "include": [
         "configuration.money_manager"
@@ -131,7 +131,7 @@ The platform creates a [GBP storage financial account](https://docs.stripe.com/a
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "type": "storage",
@@ -189,7 +189,7 @@ Automatic transfer rules require scheduled payouts (not `manual`). The platform 
 ```curl
 curl https://api.stripe.com/v1/balance_settings \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Account: {{CONNECTEDACCOUNT_ID}}" \
   -d "payments[payouts][schedule][interval]=daily" \
   -d "payments[payouts][automatic_transfer_rules_by_currency][gbp][0][payout_method]={{FINANCIALACCOUNTID_ID}}" \
@@ -201,7 +201,7 @@ The platform listens for the `v2.money_management.received_credit.created` [webh
 ```curl
 curl https://api.stripe.com/v2/money_management/financial_accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -245,7 +245,7 @@ The platform [creates a connected account](https://docs.stripe.com/api/v2/core/a
 ```curl
 curl -X POST https://api.stripe.com/v2/core/accounts \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "include": [
@@ -325,7 +325,7 @@ After submitting required information, the platform confirms the recipient’s c
 ```curl
 curl -G https://api.stripe.com/v2/core/accounts/{{RECIPIENTACCOUNTID_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   -d "include[0]=configuration.recipient" \
   -d "include[1]=requirements"
@@ -363,7 +363,7 @@ The platform creates a payout method for the landlord in Norway using an [Outbou
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_setup_intents \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "payout_method_data": {
@@ -401,7 +401,7 @@ The platform creates an [OutboundPaymentQuote](https://docs.stripe.com/api/v2/mo
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payment_quotes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -469,7 +469,7 @@ The platform sends an [outbound payment](https://docs.stripe.com/treasury/connec
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {

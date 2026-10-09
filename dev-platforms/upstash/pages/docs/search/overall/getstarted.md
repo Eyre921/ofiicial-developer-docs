@@ -7,6 +7,10 @@ path: docs/search/overall/getstarted
 import { Catalog } from "/snippets/catalog.jsx";
 import { AgentSetup } from "/snippets/agent-setup.jsx";
 
+<Warning>
+Creating new Upstash Search databases is no longer supported. For new projects, use [Upstash Vector](/docs/vector/overall/getstarted) instead.
+</Warning>
+
 <AgentSetup product="Search" />
 
 <iframe

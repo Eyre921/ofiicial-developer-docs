@@ -1,5 +1,5 @@
 ---
-title: "OpenClaw Setup"
+title: "Self-Host an Always-On OpenClaw Agent in the Cloud"
 source: https://upstash.com/docs/box/guides/openclaw-setup
 path: docs/box/guides/openclaw-setup
 ---

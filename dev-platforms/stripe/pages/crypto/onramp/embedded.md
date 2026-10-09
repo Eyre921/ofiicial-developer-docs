@@ -570,6 +570,8 @@ For example, if a customer is topping up their balance during initial setup, you
 
 The [Onramp Quotes](https://docs.stripe.com/api/crypto/onramp_quotes.md) API lets you fetch estimated quotes for onramp conversions into various cryptocurrencies on different networks. You can specify a fixed source or destination amount and limit the quotes to a subset of destination currencies or networks. This API allows you to display quotes in your product UI before directing the customer to the onramp widget. If the quote expires before the customer visits the onramp widget, the customer might see a slightly different quote in the onramp widget.
 
+By default, transaction and network fees are added on top of `source_amount`, so `source_total_amount` is the total fiat amount the customer pays, including fees.
+
 ### Get a conversion quote 
 
 Use the [GET /v1/crypto/onramp/quotes](https://docs.stripe.com/api/crypto/onramp_quotes/retrieve.md) endpoint to get a conversion quote. The following table captures all of the available parameters for this endpoint:

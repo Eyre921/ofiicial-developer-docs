@@ -1,5 +1,5 @@
 ---
-title: "Remote Development"
+title: "Remote Development Environment for AI Coding Agents"
 source: https://upstash.com/docs/box/guides/remote-development
 path: docs/box/guides/remote-development
 ---

@@ -6,11 +6,11 @@ path: invoicing/integration/quickstart
 
 # Create and send an invoice
 
-Build an example Invoicing integration.
+Build a sample Invoicing integration.
 
 # Create and send an invoice 
 
-Build a full, working invoicing integration using Stripe Invoicing. Learn how to look up a customer, get a price from an object that represents a database, and create and send an invoice.
+Use the Stripe API to create an example of an automated invoicing integration. This involves creating products, prices, and customers and using those resources to create and send an invoice to a customer.
 
 1. Build the server
 
@@ -1311,10 +1311,6 @@ Listen for events on your Stripe account so your integration can automatically t
 #### [Customize invoices](https://docs.stripe.com/invoicing/customize.md)
 
 You can use the [Invoice template](https://dashboard.stripe.com/account/billing/invoice) to customize ​​the content of an invoice. You can also set a customer preferred language and include public information in your [account details](https://dashboard.stripe.com/settings/account/?support_details=true).
-
-#### [Invoicing API](https://docs.stripe.com/api/invoices.md)
-
-Learn more about the Invoicing API.
 
 #### [Stripe CLI](https://docs.stripe.com/cli.md)
 

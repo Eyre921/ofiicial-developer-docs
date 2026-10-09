@@ -18,6 +18,10 @@ path: docs/search/tutorials/nextjs
   instead of this product.
 </Visibility>
 
+<Warning>
+Creating new Upstash Search databases is no longer supported. For new projects, use [Upstash Vector](/docs/vector/overall/getstarted) instead.
+</Warning>
+
 ***
 
 ### 1. Create a Search Database

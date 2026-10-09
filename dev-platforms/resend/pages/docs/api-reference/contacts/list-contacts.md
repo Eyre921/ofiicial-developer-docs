@@ -7,13 +7,12 @@ path: docs/api-reference/contacts/list-contacts
 GET /contacts
 Show all contacts.
 
-## Path Parameters
-
-<ResendParamField type="string">
-  The Segment ID to filter contacts by. If provided, only contacts in this Segment will be returned.
-</ResendParamField>
-
 <QueryParams type="contacts" />
+
+<ParamField type="string">
+  The Segment ID to filter contacts by. If provided, only contacts in this
+  Segment will be returned.
+</ParamField>
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}

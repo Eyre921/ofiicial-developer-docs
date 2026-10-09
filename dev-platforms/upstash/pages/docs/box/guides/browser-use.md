@@ -1,5 +1,5 @@
 ---
-title: "Scheduled Browser Use Agent"
+title: "Run a Browser Use Agent on a Daily Schedule"
 source: https://upstash.com/docs/box/guides/browser-use
 path: docs/box/guides/browser-use
 ---

@@ -56,7 +56,7 @@ To move funds from your platform’s financial account to a connected account’
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   --json '{
     "from": {
         "financial_account": "{{FINANCIALACCOUNTID_ID}}",
@@ -86,7 +86,7 @@ This example creates an outbound payment between two financial accounts of diffe
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -122,7 +122,7 @@ Then [create an outbound payment](https://docs.stripe.com/api/v2/money-managemen
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -156,7 +156,7 @@ Create an [OutboundPaymentQuote](https://docs.stripe.com/api/v2/money-management
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payment_quotes \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -249,7 +249,7 @@ At this point, you have all the necessary pieces to pay the recipient from the c
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -276,7 +276,7 @@ If the payment is intra-EU, we need to use [Recipient Verifications](https://doc
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "recipient": "{{RECIPIENTACCOUNTID_ID}}",
@@ -308,7 +308,7 @@ In case of a partial match or mismatch, you must acknowledge the recipient verif
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/recipient_verifications/{{RECIPIENTVERIFICATIONID_ID}}/acknowledge \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -319,7 +319,7 @@ See [Global payments testing](https://docs.stripe.com/global-payouts/testing.md#
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -356,7 +356,7 @@ You can send US outbound payments using the following methods:
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -383,7 +383,7 @@ For payroll payments, set `"purpose": "payroll"` to comply with NACHA requiremen
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -417,7 +417,7 @@ Real-Time Payments (RTP) sends funds instantly through The Clearing House networ
 ```curl
 curl https://api.stripe.com/v2/money_management/payout_methods/{{RECIPIENTPAYOUTMETHODID_ID}} \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}"
 ```
 
@@ -426,7 +426,7 @@ If `"instant"` is present in `available_payout_speeds`, the bank account support
 ```curl
 curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
   -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-  -H "Stripe-Version: 2026-06-24.preview" \
+  -H "Stripe-Version: 2026-09-30.preview" \
   -H "Stripe-Context: {{CONTEXT_ID}}" \
   --json '{
     "from": {
@@ -460,7 +460,7 @@ Push-to-card sends funds to a recipient’s eligible US debit card through Visa 
    ```curl
    curl -X POST https://api.stripe.com/v2/core/accounts/{{RECIPIENTACCOUNTID_ID}} \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-06-24.preview" \
+     -H "Stripe-Version: 2026-09-30.preview" \
      --json '{
        "configuration": {
            "recipient": {
@@ -479,7 +479,7 @@ Push-to-card sends funds to a recipient’s eligible US debit card through Visa 
    ```curl
    curl -X POST https://api.stripe.com/v2/money_management/outbound_payments \
      -H "Authorization: Bearer <<YOUR_SECRET_KEY>>" \
-     -H "Stripe-Version: 2026-06-24.preview" \
+     -H "Stripe-Version: 2026-09-30.preview" \
      -H "Stripe-Context: {{CONTEXT_ID}}" \
      --json '{
        "from": {

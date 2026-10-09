@@ -1,5 +1,5 @@
 ---
-title: "Vercel Eve Sandboxes"
+title: "Vercel Eve Sandbox for Isolated Code Execution"
 source: https://upstash.com/docs/box/guides/eve-setup
 path: docs/box/guides/eve-setup
 ---

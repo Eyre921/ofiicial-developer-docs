@@ -29,7 +29,7 @@ Add the Sentry Dart SDK to your `pubspec.yaml`:
 
 ```yml
 dependencies:
-  sentry: ^9.30.1
+  sentry: ^10.0.0
 ```
 
 ## [Configure](https://docs.sentry.io/platforms/dart.md#configure)
@@ -116,7 +116,7 @@ Sentry.logger.info('Order completed', attributes: {
   'total': SentryAttribute.double(99.99),
 });
 
-Sentry.logger.warning('Warning message');
+Sentry.logger.warn('Warning message');
 Sentry.logger.error('Error occurred');
 ```
 

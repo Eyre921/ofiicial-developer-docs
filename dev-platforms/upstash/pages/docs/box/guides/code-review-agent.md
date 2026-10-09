@@ -1,5 +1,5 @@
 ---
-title: "Build a Code Review Agent"
+title: "Build an AI Code Review Agent for Pull Requests"
 source: https://upstash.com/docs/box/guides/code-review-agent
 path: docs/box/guides/code-review-agent
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Pi Setup"
+title: "Run Pi Agent Tool Calls in a Remote Sandbox"
 source: https://upstash.com/docs/box/guides/pi-setup
 path: docs/box/guides/pi-setup
 ---

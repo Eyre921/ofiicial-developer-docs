@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 472 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -555,6 +555,7 @@
 - `treasury/connect/account-management/financial-accounts` — [Financial accounts](pages/treasury/connect/account-management/financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/account-management/financial-accounts.md)
 - `treasury/connect/build-an-integration` — [Build an integration with Treasury for platforms](pages/treasury/connect/build-an-integration.md) · [原文](https://docs.stripe.com/treasury/connect/build-an-integration.md)
 - `treasury/connect/compliance` — [Treasury for platforms marketing compliance](pages/treasury/connect/compliance.md) · [原文](https://docs.stripe.com/treasury/connect/compliance.md)
+- `treasury/connect/disclosure-component` — [Treasury disclosure component](pages/treasury/connect/disclosure-component.md) · [原文](https://docs.stripe.com/treasury/connect/disclosure-component.md)
 - `treasury/connect/examples/cross-border-and-automatic-transfer-rules` — [Cross-border payouts and automatic transfer rules](pages/treasury/connect/examples/cross-border-and-automatic-transfer-rules.md) · [原文](https://docs.stripe.com/treasury/connect/examples/cross-border-and-automatic-transfer-rules.md)
 - `treasury/connect/examples/multi-financial-accounts` — [Multiple financial accounts and external funding](pages/treasury/connect/examples/multi-financial-accounts.md) · [原文](https://docs.stripe.com/treasury/connect/examples/multi-financial-accounts.md)
 - `treasury/connect/fraud-guide` — [Manage fraud](pages/treasury/connect/fraud-guide.md) · [原文](https://docs.stripe.com/treasury/connect/fraud-guide.md)

@@ -1,5 +1,5 @@
 ---
-title: "Playwright Web Scraping"
+title: "Playwright Web Scraping with a Cloud Browser"
 source: https://upstash.com/docs/box/guides/web-scraping-playwright
 path: docs/box/guides/web-scraping-playwright
 ---

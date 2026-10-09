@@ -19,7 +19,7 @@ Connect an Anthropic, OpenAI, or [Amazon Bedrock](/nexus/provider-keys/bedrock) 
   [Harness Compatibility](/nexus/harness-compatibility).
 </Note>
 
-FireConnect configures the developer's Fireworks credential through `fireconnect login`. The provider key stays with the account, so it is never distributed to developers or pasted into a chat. Fireworks encrypts it at rest and never shows it in full again.
+FireConnect configures the developer's Fireworks credential through `fireconnect login`. The provider key stays with the account, so it is never distributed to developers or pasted into a chat. Fireworks encrypts API keys at rest and never shows them in full again. IAM role ARNs are non-secret identifiers.
 
 <Tip>
   **Admin:** connect the provider key once. **Developer:** run
@@ -39,9 +39,17 @@ FireConnect configures the developer's Fireworks credential through `fireconnect
 
 ## Check provider support and connection states
 
-* **Providers:** The dashboard supports Anthropic, OpenAI, and Amazon Bedrock. The API and `firectl` support those providers, plus Grok when enabled for your account.
+Provider Keys supports these providers:
+
+| Provider | Dashboard | API and `firectl` | What you connect |
+| - | - | - | - |
+| Anthropic | Yes | Yes | API key |
+| OpenAI | Yes | Yes | API key |
+| Amazon Bedrock | Yes | Yes | API key or IAM role |
+| Grok | No | When enabled for your account | API key |
+
 * **One active key per provider:** You can upload several keys for one provider, but only one can be active for routing at a time.
-* **Bedrock also needs routes:** a Bedrock key is not enough. Each model you want to send through your AWS account needs a Bedrock model ID and region. See <a href="/nexus/provider-keys/bedrock">Amazon Bedrock</a>.
+* **Bedrock also needs routes:** a Bedrock key is not enough. Each model you want to send through your AWS account needs a Bedrock model ID and region. See <a href="/nexus/provider-keys/bedrock">Amazon Bedrock Setup</a>.
 
 Each provider is always in one of these states:
 
@@ -68,7 +76,7 @@ Connect a Provider Key from **Settings** without using a terminal. You can open 
   <Step title="Paste your key">
     For Anthropic or OpenAI, paste your key and click **Connect**. You will see a confirmation once it is saved.
 
-    For Amazon Bedrock, paste the key and select models. After the card connects, fill in each model's Bedrock model ID and region, then click **Save**. Full steps are in <a href="/nexus/provider-keys/bedrock">Amazon Bedrock</a>.
+    For Amazon Bedrock, choose an IAM role or API key, then select models. After the card connects, fill in each model's Bedrock model ID and region, then click **Save**. Full steps are in <a href="/nexus/provider-keys/bedrock">Amazon Bedrock Setup</a>.
   </Step>
 </Steps>
 
@@ -82,7 +90,7 @@ The provider then shows **Connected**. Requests typically begin using the key wi
 
 Open the menu on any connected provider to:
 
-* **Replace:** swap in a new key value for that provider. Bedrock routes stay in place when you update only the key.
+* **Replace:** swap in a new API key or IAM role ARN for that provider. Bedrock routes stay in place when you update only that value.
 
 <Frame>
   <img alt="Replacing the key value for a connected provider" />
@@ -109,6 +117,7 @@ The CLI can also stop using a key for routing without deleting it (`provider-key
 | Action | Step | Command |
 | - | - | - |
 | **Connect or replace** | Upload a key | `firectl provider-key upload --provider-type PROVIDER --api-key $PROVIDER_KEY` / `--from-file PATH` |
+| | Upload a Bedrock IAM role | `firectl provider-key upload --provider-type bedrock --aws-iam-role-arn ROLE_ARN` |
 | | Use the key | `firectl provider-key-binding bind PROVIDER KEY_ID` |
 | | Use a Bedrock key | `firectl provider-key-binding bind bedrock KEY_ID --routes-file=./routes.json` |
 | **Check status** | Check stored keys | `firectl provider-key list` / `firectl provider-key list --provider-type PROVIDER` |
@@ -142,7 +151,7 @@ firectl provider-key upload --provider-type anthropic --from-file ./anthropic.ke
 
 To rotate a provider, upload the new key and bind that key's ID. The old key stays stored until you delete it.
 
-For Amazon Bedrock, upload with `--from-file` and bind with `--routes-file`. Omitting `--routes-file` binds an empty route set, which serves no Bedrock traffic and replaces any existing routes. See <a href="/nexus/provider-keys/bedrock#manage-with-firectl">Amazon Bedrock</a>.
+For Amazon Bedrock, upload an API key with `--from-file` or an IAM role with `--aws-iam-role-arn`, then bind with `--routes-file`. Omitting `--routes-file` binds an empty route set, which serves no Bedrock traffic and replaces any existing routes. See <a href="/nexus/provider-keys/bedrock#manage-with-firectl">Amazon Bedrock Setup</a>.
 
 ### Check status
 
@@ -158,11 +167,11 @@ firectl provider-key-binding list --provider-type openai
 firectl provider-key-binding get openai
 ```
 
-`provider-key list` shows each stored key's ID, provider, masked preview, and display name. `provider-key-binding list` and `get` show each provider's connection state and active `key_id`. For Bedrock, also confirm that `routes` lists every model you intend to send through AWS.
+`provider-key list` shows each stored key's ID, provider, credential type, preview, and display name. API key previews are masked; IAM role previews show the full non-secret role ARN. `provider-key-binding list` and `get` show each provider's connection state, credential type, and active `PROVIDER_KEY` resource name. For Bedrock, also confirm that `routes` lists every model you intend to send through AWS.
 
 ### Delete a key
 
-Use the `key_id` from `upload` or `provider-key list`. If that key is live for the provider, unbind it first. Unbind stops routing from using it; the key stays stored until you delete it.
+Use the key ID or full resource name from `upload` or `provider-key list`. If that key is live for the provider, unbind it first. Unbind stops routing from using it; the key stays stored until you delete it.
 
 ```bash wrap theme={null}
 # If this key is currently in use
@@ -174,4 +183,4 @@ firectl provider-key delete KEY_ID
 
 * **Request-level credentials take precedence when supported.** If a request includes a provider key, that key is used and the stored one is skipped.
 * **Changes are not instant.** After you connect, replace, or remove a key, allow 30–60 seconds for the change to reach requests.
-* **Your key stays private.** The full key is stored securely and never returned. The dashboard and API only show the provider, state, masked preview, and dates.
+* **Your API key stays private.** The full API key is stored securely and never returned. For API keys, the dashboard and API only show the provider, state, masked preview, and dates. An IAM role ARN is a non-secret identifier and is returned as the credential preview.

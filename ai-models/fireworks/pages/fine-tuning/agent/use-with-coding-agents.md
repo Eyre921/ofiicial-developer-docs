@@ -16,7 +16,30 @@ One installation gives you three entry points. Open a chat and describe your goa
 
 The **fireworks-training** compatibility skill carries shared detailed references that **configure** and **debug** load. Keep it installed with the three entry skills.
 
+Works with Cursor, Codex, OpenCode, Claude Code, and other Agent Skills agents.
+
 ## Install
+
+### Paste this into your agent
+
+Copy this into the agent you already use. The agent installs the skills. You stay in the chat.
+
+```text theme={null}
+Install the Fireworks training skills in this agent: fireworks-training, research, configure, and debug. Do it yourself. Do not start a training run.
+
+Claude Code:
+claude plugin marketplace add fw-ai/cookbook
+claude plugin install fireworks-training@fw-ai-cookbook
+
+Cursor, Codex, or OpenCode. Set -a to cursor, codex, or opencode. Do not pass -a '*':
+npx --yes skills add fw-ai/cookbook -g -s fireworks-training research configure debug -a cursor -y
+
+If FIREWORKS_API_KEY is missing, walk me through https://app.fireworks.ai/settings/users/api-keys. Do not ask me to paste the key in chat. Then tell me which skills installed and how to invoke them.
+```
+
+<Note>
+  Every training page has a card that copies this prompt. Paste it into your agent. Installing the skills does not need a Fireworks account. The agent asks you to create an account and an API key before any training run.
+</Note>
 
 ### Claude Code
 
@@ -43,14 +66,20 @@ npx --yes skills add fw-ai/cookbook -g \
   -s fireworks-training research configure debug -a codex -y
 ```
 
-### Other compatible agents
-
-Install to every detected Agent Skills-compatible harness:
+### OpenCode
 
 ```bash theme={null}
 npx --yes skills add fw-ai/cookbook -g \
-  -s fireworks-training research configure debug -a '*' -y
+  -s fireworks-training research configure debug -a opencode -y
 ```
+
+### Other compatible agents
+
+Use the Cursor command and replace `cursor` with your agent's id. OpenCode's id is `opencode`.
+
+<Note>
+  `-a '*'` installs the skills into every agent the CLI supports, not only the agents on your machine. Pass one agent id unless you want that broader install.
+</Note>
 
 <Note>
   The commands above install skills globally with `-g`. They do not update automatically. Refresh the global copies with `npx --yes skills update -g -y`.

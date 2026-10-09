@@ -91,9 +91,11 @@ Enabling tax and configuring automatic collection in your integration doesn’t 
 
 After you add your registrations and start collecting tax, you can set up filing to automatically submit returns and remit tax in the regions where you’re registered. Stripe can help you file automatically in [over 90 countries](https://docs.stripe.com/tax/supported-countries.md) and in all US states.
 
-For US filings: [Use Stripe, powered by TaxJar](https://docs.stripe.com/tax/file-with-stripe.md)
+For filings in the US, [file with Stripe through TaxJar](https://docs.stripe.com/tax/file-with-stripe.md).
 
-For filings in other countries: [Use Taxually](https://docs.stripe.com/tax/file-with-taxually.md)
+For EU Non-Union One Stop Shop (OSS) filings through Ireland and simplified GST/HST filings in Canada, [file with Stripe](https://docs.stripe.com/tax/file-with-stripe-outside-us.md).
+
+For other filings outside the US, [file with Taxually](https://docs.stripe.com/tax/file-with-taxually.md).
 
 Automated filing can help you:
 

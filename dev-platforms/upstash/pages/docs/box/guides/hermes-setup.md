@@ -1,5 +1,5 @@
 ---
-title: "Hermes Setup"
+title: "Self-Host Hermes Agent in a Cloud Sandbox"
 source: https://upstash.com/docs/box/guides/hermes-setup
 path: docs/box/guides/hermes-setup
 ---

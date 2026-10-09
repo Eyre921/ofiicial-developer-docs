@@ -1,5 +1,5 @@
 ---
-title: "LangChain Deep Agents"
+title: "Sandbox Backend for LangChain Deep Agents"
 source: https://upstash.com/docs/box/guides/langchain-deep-agents
 path: docs/box/guides/langchain-deep-agents
 ---

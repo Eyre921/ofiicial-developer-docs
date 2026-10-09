@@ -1,5 +1,5 @@
 ---
-title: "Claude Managed Agents"
+title: "Self-Hosted Sandboxes for Claude Managed Agents"
 source: https://upstash.com/docs/box/guides/claude-managed-agents
 path: docs/box/guides/claude-managed-agents
 ---

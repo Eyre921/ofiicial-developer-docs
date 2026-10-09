@@ -257,7 +257,7 @@ The `api_token` is printed once; set it as `NEON_AI_GATEWAY_TOKEN`. Run it in a 
 
 In the Neon Console, click **Connect** at the top of the sidebar and open the **AI Gateway** tab. The snippet includes both gateway env vars (see [Environment variables](https://neon.com/docs/ai-gateway/authentication#environment-variables) below). Click **Reveal credential** to show the token, or **Copy snippet** to copy the full `.env`. Use **Rotate credential** to replace the token in place.
 
-The Connect dialog reveals and rotates the current credential. To list all credentials for the branch or revoke one, use the [Neon CLI](https://neon.com/docs/cli/credentials) or the API (below).
+The Connect dialog reveals and rotates the current credential. To create a credential with specific scopes, open your project's **Settings** > **Credentials** and select **Create credential**. To list all credentials for the branch or revoke one, use the [Neon CLI](https://neon.com/docs/cli/credentials) or the API (below).
 
 **API**
 
@@ -11292,6 +11292,10 @@ When you exceed a limit, the API returns **HTTP 429**:
 A paid account with prepaid credits can use every AI Gateway model.
 See [Model access](https://neon.com/docs/ai-gateway/overview#model-access) for details.
 
+After you buy credits, locked models unlock once Neon confirms access. If a
+model still shows a padlock on the **AI Gateway** page, reload the page. See
+[Some models are restricted in the Console](https://neon.com/docs/ai-gateway/troubleshooting#some-models-are-restricted-in-the-console).
+
 The model list is subject to change. See
 [Supported models](https://neon.com/docs/ai-gateway/models) for the current catalog.
 
@@ -11410,6 +11414,20 @@ See [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoi
 The request body does not contain a valid `model` field.
 
 **Fix:** Include `"model": "<model-id>"` in the request body.
+
+### Some models are restricted in the Console
+
+On your project's **AI Gateway** page, locked models show a padlock, and the **Some models are restricted** section lists them grouped by reason. Each reason links to the fix:
+
+| Message                                                  | What to do                                                                                                  |
+| -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **A paid plan is required to use these models**          | Select **Upgrade plan**. The AI Gateway is available on paid plans only.                                    |
+| **AI Gateway credits are required to use these models**  | Select **Add credits**. See [AI Gateway prepaid credits](https://neon.com/docs/ai-gateway/prepaid-credits). |
+| **Account verification is required to use these models** | Select **Complete verification**, or [contact Support](https://neon.com/docs/introduction/support).         |
+| **Your account is restricted from using these models**   | [Contact Support](https://neon.com/docs/introduction/support).                                              |
+| **Some models are not available to your account**        | [Contact Support](https://neon.com/docs/introduction/support).                                              |
+
+After you upgrade or buy credits, models unlock once Neon confirms access. Reload the page if a model still shows as locked.
 
 ### `403 model requires a verified account`
 
@@ -15766,7 +15784,7 @@ Managed Better Auth supports two verification methods:
 
 **Console**
 
-In your project's **Settings** → **Auth** page, enable **Sign-up with Email** and **Verify at Sign-up**. Choose your verification method.
+In your project's **Settings** → **Better Auth** page, enable **Sign-up with Email** and **Verify at Sign-up**. Choose your verification method.
 
 ![Email verification settings in Neon Console](https://neon.com/docs/auth/email-verification-settings.png)
 
@@ -16251,7 +16269,7 @@ Response (200 OK):
 | ------ | -------------------------------------------------------------- |
 | `name` | The name shown in user-facing auth messages (1-256 characters) |
 
-Each branch manages its own application name independently. You can also update this from the **Auth** page > **Configuration** tab > **Project Info** panel in the Neon Console.
+Each branch manages its own application name independently. You can also update this from **Settings** > **Better Auth** > **Project Info** in the Neon Console.
 
 ## Disable Managed Better Auth
 
@@ -16310,7 +16328,7 @@ Password reset allows users to securely reset forgotten passwords. Managed Bette
 
 ## Enable password reset
 
-In your project's **Settings** → **Auth** page, ensure **Sign-up with Email** is enabled. Password reset is automatically available when email authentication is enabled.
+In your project's **Settings** → **Better Auth** page, ensure **Sign-up with Email** is enabled. Password reset is automatically available when email authentication is enabled.
 
 ## Using UI components
 
@@ -16410,7 +16428,7 @@ Managed Better Auth is built on [Better Auth](https://www.better-auth.com/), whi
 
 Managed Better Auth is a **managed** Better Auth service. You **don't install or configure Better Auth plugins directly** - instead, Managed Better Auth exposes a supported subset of plugins through the Neon SDK.
 
-For plugins that have Console settings (for example [Organization](https://neon.com/docs/auth/guides/plugins/organization)), open **Auth** > **Plugins** (beta) in the Neon Console, or use the Neon API. From the terminal, [`neon neon-auth config organization update`](https://neon.com/docs/cli/neon-auth#config-organization-update) configures the Organization plugin, and [`neon neon-auth plugins list`](https://neon.com/docs/cli/neon-auth#plugins-list) shows the current plugin configurations. Additional plugin options may still arrive over time; see the [Managed Better Auth roadmap](https://neon.com/docs/auth/roadmap).
+For plugins that have Console settings (for example [Organization](https://neon.com/docs/auth/guides/plugins/organization)), open **Settings** > **Better Auth** in the Neon Console, or use the Neon API. From the terminal, [`neon neon-auth config organization update`](https://neon.com/docs/cli/neon-auth#config-organization-update) configures the Organization plugin, and [`neon neon-auth plugins list`](https://neon.com/docs/cli/neon-auth#plugins-list) shows the current plugin configurations. Additional plugin options may still arrive over time; see the [Managed Better Auth roadmap](https://neon.com/docs/auth/roadmap).
 
 The following Better Auth plugins are currently supported in Managed Better Auth:
 
@@ -16773,7 +16791,7 @@ Managed Better Auth UI and Neon SDK are client-side SDKs, so you only invoke the
 ## Prerequisites
 
 - A Neon project with **Auth enabled**
-- **Sign-up and Sign-in with Email** enabled in your project's **Settings** → **Auth**.
+- **Sign-up and Sign-in with Email** enabled in your project's **Settings** → **Better Auth**.
 
   **Note: Email verification during sign-up**
 
@@ -17300,13 +17318,11 @@ Magic Link lets users sign in by clicking a link sent to their email. No passwor
 **Console**
 
 1. Open the [Neon Console](https://console.neon.tech).
-2. Select your project and go to **Auth** > **Plugins**.
-3. Toggle **Magic Link** on.
+2. Select your project and go to **Settings** > **Better Auth**.
+3. In the **Magic Link** section, toggle **Enable Magic Link** on.
 4. Configure the options:
    - **Link Expiration** (5-1440 minutes, default: 5) controls how long a magic link stays valid.
    - **Allow New User Registration** controls whether magic links can be used to create new accounts. When off, magic links only work for existing users.
-
-![Neon Console Auth Plugins tab with Magic Link settings](https://neon.com/docs/auth/neon_auth_plugins_magic_link.png)
 
 **API**
 
@@ -17503,9 +17519,7 @@ The Organization plugin is enabled by default for each branch; you can disable i
 
 **Console**
 
-Open your project in the Neon Console, then go to **Auth** > **Plugins** (beta) and use the **Organizations** section (per branch). This tab is available when your project uses Managed Better Auth with **Better Auth**; other Auth settings, including your **Auth URL**, stay on the **Configuration** tab. From there you can customize:
-
-![Neon Console Auth Plugins tab with Organizations settings](https://neon.com/docs/changelog/neon_auth_plugins_organizations.png)
+Open your project in the Neon Console, then go to **Settings** > **Better Auth** and use the **Organizations** section (per branch). This section is available when your project uses **Managed Better Auth**. From there you can customize:
 
 - **Enable Organizations** (toggle): Turn the Organization plugin on or off for the branch. When off, all organization API calls are disabled and return an error.
 - **Limit:** Maximum total organization memberships (created + joined) per user. Once reached, the user cannot create new organizations. Default: 10.
@@ -18136,12 +18150,10 @@ Managed Better Auth does **not** deliver SMS for you. The plugin requires a `sen
 **Console**
 
 1. Open the [Neon Console](https://console.neon.tech).
-2. Select your project and go to **Auth** > **Plugins**.
-3. Toggle **Phone Authentication** on.
+2. Select your project and go to **Settings** > **Better Auth**.
+3. In the **Phone Authentication** section, toggle **Enable Phone Authentication** on.
 4. Configure the options:
    - **OTP Expiry** (60-600 seconds, default: 300) controls how long a generated OTP stays valid.
-
-![Neon Console Auth Plugins tab with Phone Number settings](https://neon.com/docs/auth/neon_auth_plugins_phone_number.png)
 
 **API**
 
@@ -18590,6 +18602,8 @@ You can update these fields with `updateUser()`:
 **Note:** Email address changes are not currently supported. To reset a forgotten password, see [Password Reset](https://neon.com/docs/auth/guides/password-reset).
 
 ## Change password
+
+Passwords can be up to 128 characters. Sign-up and sign-in reject longer passwords with a `400` `PASSWORD_TOO_LONG` error.
 
 Change a user's password while they are logged in using `changePassword()`. This requires the current password for security:
 
@@ -19136,7 +19150,7 @@ NEON_AUTH_COOKIE_SECRET=your-secret-at-least-32-characters-long
 
 **Note:** For React SPAs, use <code>VITE_NEON_AUTH_URL</code> instead. The <code>NEON_AUTH_COOKIE_SECRET</code> is only needed for Next.js (generate with <code>openssl rand -base64 32</code>).
 
-You can find your Auth URL in the Neon Console under **Auth** → **Configuration**.
+You can find your Auth URL in the Neon Console under **Settings** > **Better Auth** > **Project Info**.
 
 **What changed**  
 You replace multiple Stack Auth-specific keys with a single Better Auth URL that points at your Neon project. For Next.js, you also need a cookie secret for session caching.
@@ -19897,7 +19911,7 @@ You can also enable Managed Better Auth in the [Neon Console](https://console.ne
 
 Managed Better Auth is powered by [Better Auth](https://www.better-auth.com/), which means you get familiar APIs. You can use Better Auth UI components or call auth methods directly to build your own UI.
 
-Managed Better Auth currently supports Better Auth version **1.4.18**.
+Managed Better Auth runs Better Auth version **1.7.6**. The `@neondatabase/auth` SDK uses a Better Auth 1.6 client, and Managed Better Auth keeps 1.6 clients working, so you don't need to upgrade your SDK.
 
 ### When to use Managed Better Auth vs. self-hosting Better Auth
 
@@ -20031,7 +20045,7 @@ Complete these steps before taking your application to production with Managed B
 - [ ] [5. Enable email verification (recommended)](https://neon.com/docs/auth/guides/email-verification)
     **Email verification is not enabled by default.** Since anyone can sign up for your application, enabling email verification adds an important verification step to ensure users own their email address.
 - [ ] [6. Disable localhost access](https://neon.com/docs/auth/production-checklist#localhost-access)
-    Disable the "Allow Localhost" setting in your project's **Settings** → **Auth** page. This setting is enabled by default for development but should be disabled in production to improve security.
+    Disable the "Allow Localhost" setting in your project's **Settings** → **Better Auth** page. This setting is enabled by default for development but should be disabled in production to improve security.
 
 ## Email provider
 
@@ -20043,7 +20057,7 @@ A custom SMTP provider uses your sender address but still sends Neon's default e
 
 **Console**
 
-In your project's **Settings** → **Auth** page, configure your email provider:
+In your project's **Settings** → **Better Auth** page, configure your email provider:
 
 1. Select **Custom SMTP provider**
 2. Enter your SMTP credentials:
@@ -20088,9 +20102,8 @@ Managed Better Auth uses the application name in user-facing auth messages, such
 
 To set a custom application name:
 
-1. Go to **Auth** in your Neon project
-2. Select the **Configuration** tab
-3. In the **Project Info** panel, edit the **Application Name** field
+1. Go to **Settings** → **Better Auth** in your Neon project
+2. In the **Project Info** section, edit the **Application Name** field
 
 Each branch manages its own application name independently, so preview and development branches can use different names than production.
 
@@ -20098,13 +20111,13 @@ You can also update the application name via the API. See [Update auth configura
 
 ## Localhost access
 
-The "Allow Localhost" setting in your project's **Settings** → **Auth** page is enabled by default to allow authentication requests from localhost during development.
+The "Allow Localhost" setting in your project's **Settings** → **Better Auth** page is enabled by default to allow authentication requests from localhost during development.
 
 ### Disable for production
 
 For production environments, disable this setting to improve security:
 
-1. Go to **Settings** → **Auth** in your Neon project
+1. Go to **Settings** → **Better Auth** in your Neon project
 2. Find the **Allow Localhost** toggle
 3. Disable the toggle
 
@@ -20128,7 +20141,7 @@ This guide shows you how to integrate Managed Better Auth into a [Next.js](https
 
 If you don't have a Neon project yet, create one at [console.neon.tech](https://console.neon.tech).
 
-Go to the **Auth** page in your project dashboard and click **Enable Auth**, then copy your Auth URL from the Configuration tab.
+In the Neon Console, open the **Better Auth** page and click **Enable Auth**, then copy your Auth URL from **Settings** > **Better Auth** > **Project Info**.
 
 **Console path:** Project → Branch → Auth → Configuration
 
@@ -20518,7 +20531,7 @@ Run `npx neon@latest init` to connect the [Neon MCP server](https://neon.com/doc
 
 If you don't have a Neon project yet, create one at [console.neon.tech](https://console.neon.tech).
 
-Go to the **Auth** page in your project dashboard and click **Enable Auth**.
+In the Neon Console, open the **Better Auth** page and click **Enable Auth**.
 
 You can then find your Auth **Base URL** on the Configuration tab. Copy this URL - you'll need it in the next step.
 
@@ -20722,7 +20735,7 @@ Run `npx neon@latest init` to connect the [Neon MCP server](https://neon.com/doc
 
 If you don't have a Neon project yet, create one at [console.neon.tech](https://console.neon.tech).
 
-Go to the **Auth** page in your project dashboard and click **Enable Auth**.
+In the Neon Console, open the **Better Auth** page and click **Enable Auth**.
 
 You can then find your Auth URL on the Configuration tab. Copy this URL - you'll need it in the next step.
 
@@ -22639,6 +22652,12 @@ Link the current directory to a Neon project.
 
 Usage: `neon link [options]`
 
+### login (alias: `auth`)
+
+Sign in with a browser. See --help for API keys and profiles.
+
+Usage: `neon login [options]`
+
 ### logs
 
 Query branch logs.
@@ -22827,12 +22846,6 @@ Manage VPC endpoints and project VPC restrictions.
 | `neon vpc project remove <id>`   | Remove a VPC endpoint restriction from this project.                                           |
 | `neon vpc project restrict <id>` | Configure or update a VPC endpoint restriction for this project.                               |
 
-### login (alias: `auth`)
-
-Sign in with a browser. See --help for API keys and profiles.
-
-Usage: `neon login [options]`
-
 ## Global options
 
 Global options are optional and work with any Neon CLI command.
@@ -22842,7 +22855,7 @@ Global options are optional and work with any Neon CLI command.
 | `--analytics`     | Manage analytics. Example: --no-analytics, --analytics false                        | boolean | `true`                                                          |    No    |
 | `--api-key`       | Neon API key, authenticates without `neon login`                                    | string  | `""`                                                            |    No    |
 | `--color`         | Colorize the output. Example: --no-color, --color false                             | boolean | `true`                                                          |    No    |
-| `--config-dir`    | Path to config directory                                                            | string  | \~/.config/neonctl (or $XDG\_CONFIG\_HOME/neonctl)              |    No    |
+| `--config-dir`    | Path to config directory                                                            | string  | \~/.config/neon (or $XDG\_CONFIG\_HOME/neon)                    |    No    |
 | `--context-file`  | Context file with default org, project, and branch IDs, created by `neon link`      | string  | nearest .neon file, searching upward from the current directory |    No    |
 | `--help`, `-h`    | Show help for a command or subcommand                                               | boolean | —                                                               |    No    |
 | `--output`, `-o`  | Set output format Possible values: `json`, `yaml`, `table`                          | string  | `table`                                                         |    No    |
@@ -22854,7 +22867,7 @@ More about global options:
 - **Output:** table output may omit fields. Use `--output json` or `--output yaml` to see all data.
 - **Authentication:** the CLI checks credentials in this order: the `--api-key` option, the `NEON_API_KEY` environment variable (`export NEON_API_KEY=<neon_api_key>`), the `credentials.json` file that `neon login` creates in the config directory (override its location with `--config-dir`), then interactive web authentication. To get a key, see [Create an API key](https://neon.com/docs/manage/api-keys#creating-api-keys).
 - **Context file:** sets a default organization, project, or branch so you don't repeat IDs in every command. Create one with [`neon link`](https://neon.com/docs/cli/link) (preferred) or [`set-context`](https://neon.com/docs/cli/set-context).
-- **Analytics:** Neon collects anonymous data about which commands and options are used, never user-defined data such as project IDs or command payloads. Opt out with `--no-analytics`.
+- **Analytics:** Neon collects anonymous data about which commands and options are used, never user-defined data such as project IDs or command payloads. If the CLI crashes on an internal bug, it also sends an error report with the error type and a sanitized stack trace, without your arguments, environment variables, or file contents. Opt out of both with `--no-analytics`.
 - **Help:** `--help` works at every level: `neon --help`, `neon branches --help`, `neon branches create --help`.
 
 ## GitHub repository
@@ -22897,7 +22910,7 @@ neon api-keys list
 
 ```text filename="Output"
 Account API keys
-Id       Name       Created At            Last Used At          Last Used From Addr
+ID       Name       Created At            Last Used At          Last Used From Addr
 3225782  ci-deploy  2026-07-29T00:50:26Z  2026-07-29T18:06:55Z  192.0.2.10
 ```
 
@@ -22911,7 +22924,7 @@ This covers both scopes, since a project-scoped key is owned by the project's or
 
 ```text filename="Output"
 API keys in org-example-12345678
-Id       Name         Project                Created At            Last Used At          Last Used From Addr
+ID       Name         Project                Created At            Last Used At          Last Used From Addr
 3243240  preview-bot  green-breeze-12345678  2026-08-04T18:51:36Z  2026-08-05T18:51:36Z  192.0.2.10
 3177950  org-key      (all projects)         2026-07-08T01:28:49Z  2026-07-08T01:31:20Z  192.0.2.10
 ```
@@ -22958,7 +22971,7 @@ neon api-keys create --name ci-deploy
 
 ```text filename="Output"
 API key
-Id    3225782
+ID    3225782
 Name  ci-deploy
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
@@ -22974,7 +22987,7 @@ neon api-keys create --name org-key --org-id org-example-12345678
 
 ```text filename="Output"
 API key
-Id    3177950
+ID    3177950
 Name  org-key
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
@@ -22990,13 +23003,13 @@ neon api-keys create --name preview-bot --project-id green-breeze-12345678
 
 ```text filename="Output"
 API key
-Id       3243240
+ID       3243240
 Name     preview-bot
 Project  green-breeze-12345678
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
-INFO: Limited to green-breeze-12345678: it cannot create projects, mint API keys, or read any other project. It can still change and delete everything inside that project.
+Limited to green-breeze-12345678: it cannot create projects, mint API keys, or read any other project. It can still change and delete everything inside that project.
 ```
 
 **Important:** A project-scoped key is owned by the project's organization, so it needs `--org-id` to list or revoke.
@@ -23029,7 +23042,7 @@ neon api-keys revoke 3225782
 
 ```text filename="Output"
 API key
-Id            3225782
+ID            3225782
 Name          ci-deploy
 Revoked       true
 Last Used At  2026-07-29T18:06:55Z
@@ -23306,9 +23319,9 @@ neon branches list --project-id solitary-leaf-288182
 ```
 
 ```text filename="Output"
-Name                   Id                     Current State  Created At
-[default] production   br-wispy-cloud-123456  ready          2026-09-30T13:15:12Z
-[current] development  br-cool-forest-123456  ready          2026-09-30T14:45:50Z
+Name                   ID                     Current State  Expires At  Created At
+[default] production   br-wispy-cloud-123456  ready          never       2026-09-30T13:15:12Z
+[current] development  br-cool-forest-123456  ready          never       2026-09-30T14:45:50Z
 ```
 
 Branch names include text labels that indicate status: `[default]` marks the project's default branch, `[protected]` marks a protected branch, `[anon]` marks an anonymized branch, and `[current]` marks the branch pinned in your local `.neon` context file.
@@ -23397,16 +23410,16 @@ neon branches create
 ```text filename="Output"
 Branch
 Name           br-mute-sunset-123456
-Id             br-mute-sunset-123456
+ID             br-mute-sunset-123456
 Current State  ready
 Created At     2026-09-30T20:07:27Z
 
 Compute
-Id                       Created At
+ID                       Created At
 ep-floral-violet-123456  2026-09-30T20:07:27Z
 
 Connection string
-Connection Uri
+Connection URI
 postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
@@ -23572,7 +23585,7 @@ neon branches reset development --parent
 
 ```text filename="Output"
 Name           development
-Id             br-cool-forest-123456
+ID             br-cool-forest-123456
 Current State  ready
 Created At     2026-09-30T14:45:50Z
 Last Reset At  2026-09-30T15:36:32Z
@@ -23604,14 +23617,14 @@ neon branches restore main ^self@2026-09-29T10:00:00.000Z --preserve-under-name 
 ```
 
 ```text filename="Output"
-INFO: Restoring main to main at timestamp 2026-09-29T10:00:00.000Z
+Restoring main to main at timestamp 2026-09-29T10:00:00.000Z
 Restored branch
-Id             br-purple-dust-123456
+ID             br-purple-dust-123456
 Name           main
 Last Reset At  2026-09-30T09:45:21Z
 
 Backup branch
-Id    br-flat-forest-123456
+ID    br-flat-forest-123456
 Name  main_restore_backup_2026-09-29
 ```
 
@@ -23622,9 +23635,9 @@ neon branches restore feature/user-auth main
 ```
 
 ```text filename="Output"
-INFO: Restoring feature/user-auth to the head of main
+Restoring feature/user-auth to the head of main
 Restored branch
-Id             br-restless-frost-123456
+ID             br-restless-frost-123456
 Name           feature/user-auth
 Last Reset At  2026-09-30T15:42:34Z
 ```
@@ -23636,9 +23649,9 @@ neon branches restore feature/user-auth ^parent@2026-09-29T10:30:00.000Z
 ```
 
 ```text filename="Output"
-INFO: Restoring feature/user-auth to main at timestamp 2026-09-29T10:30:00.000Z
+Restoring feature/user-auth to main at timestamp 2026-09-29T10:30:00.000Z
 Restored branch
-Id             br-restless-frost-123456
+ID             br-restless-frost-123456
 Name           feature/user-auth
 Last Reset At  2026-09-30T15:55:04Z
 ```
@@ -23663,7 +23676,7 @@ neon branches rename mybranch teambranch
 
 ```text filename="Output"
 Name           teambranch
-Id             br-rough-sound-123456
+ID             br-rough-sound-123456
 Current State  ready
 Created At     2026-09-30T20:46:58Z
 ```
@@ -23751,7 +23764,7 @@ neon branches set-default mybranch
 
 ```text filename="Output"
 Name           [default] mybranch
-Id             br-odd-frog-123456
+ID             br-odd-frog-123456
 Current State  ready
 Created At     2026-09-30T12:22:12Z
 ```
@@ -23805,7 +23818,7 @@ neon branches add-compute mybranch --type read_only
 ```
 
 ```text filename="Output"
-Id    ep-rough-lab-123456
+ID    ep-rough-lab-123456
 Host  ep-rough-lab-123456.us-east-2.aws.neon.tech
 ```
 
@@ -23839,7 +23852,7 @@ neon branches delete br-rough-sky-123456
 
 ```text filename="Output"
 Name           my_child_branch
-Id             br-rough-sky-123456
+ID             br-rough-sky-123456
 Current State  ready
 Created At     2026-09-30T20:57:39Z
 ```
@@ -23864,7 +23877,7 @@ neon branches get production
 
 ```text filename="Output"
 Name           [default] production
-Id             br-wispy-cloud-123456
+ID             br-wispy-cloud-123456
 Current State  ready
 Created At     2026-09-30T13:15:12Z
 Logical Size   30.6 MiB
@@ -24120,16 +24133,19 @@ neon checkout main --project-id polished-snowflake-12345678
 ```
 
 ```text filename="Output"
-INFO: Checked out branch br-steep-math-aiu3vve7 on project polished-snowflake-12345678. Updated /path/to/cwd/.neon.
+Checked out branch br-steep-math-aiu3vve7 on project polished-snowflake-12345678 (org org-example-12345678). Updated /path/to/cwd/.neon.
+Pulled 3 Neon variables into .env.local
+  Postgres        DATABASE_URL, DATABASE_URL_UNPOOLED
+  Branch          NEON_BRANCH
 ```
 
 The updated `.neon` file:
 
 ```json
 {
-  "orgId": "org-abc123",
   "projectId": "polished-snowflake-12345678",
-  "branch": "br-steep-math-aiu3vve7"
+  "orgId": "org-example-12345678",
+  "branch": "main"
 }
 ```
 
@@ -24181,12 +24197,12 @@ Creates a temporary project and saves its identity assertion. Postgres is always
 neon claim create [options]
 ```
 
-| Option       | Description                                                                                                                                                                                                                                  | Type    | Default | Required |
-| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--config`   | Path to neon.ts for registration and the bundled env pull. Defaults to the neon.ts in the project directory (next to .neon, or cwd without one)                                                                                              | string  | —       |    No    |
-| `--env-pull` | Write the same Neon env vars `env pull` would                                                                                                                                                                                                | boolean | `true`  |    No    |
-| `--file`     | Target dotenv file. Defaults to an existing .env, otherwise .env.local                                                                                                                                                                       | string  | —       |    No    |
-| `--service`  | Services to request for the claimable project: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Postgres is always included. Services unavailable before claim are recorded and reported. | array   | —       |    No    |
+| Option                          | Description                                                                                                                                                                                                                                  | Type    | Default | Required |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--config`                      | Path to neon.ts for registration and the bundled env pull. Defaults to the neon.ts in the project directory (next to .neon, or cwd without one)                                                                                              | string  | —       |    No    |
+| `--env-pull`                    | Write the same Neon env vars `env pull` would                                                                                                                                                                                                | boolean | `true`  |    No    |
+| `--file`                        | Target dotenv file. Defaults to an existing .env, otherwise .env.local                                                                                                                                                                       | string  | —       |    No    |
+| `--service`, `-s`, `--services` | Services to request for the claimable project: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Postgres is always included. Services unavailable before claim are recorded and reported. | array   | —       |    No    |
 
 ```bash
 neon claim create --env-pull
@@ -24350,7 +24366,7 @@ source ~/.zshrc
 
 --- [Document source](https://neon.com/docs/cli/config.md) ---
 
-> Summary: The Neon CLI `neon config` command manages a branch declaratively with a neon.ts policy file. Use `neon config init` to scaffold a starter neon.ts and install the config packages, `neon config add` to declare a service, function, or bucket in an existing neon.ts, `neon config status` to show the branch's live Neon state (`neon status --current-branch` prints the pinned branch offline for shell prompts), `neon config plan` for a dry run of what an apply would change, and `neon config apply` (or its top-level alias `neon deploy`) to apply the policy to the branch. Supports --config to point at a neon.ts file, --env to load environment variables before evaluating it, and --allow-protected and --update-existing confirmation flags for non-interactive use.
+> Summary: The Neon CLI `neon config` command manages a branch declaratively with a neon.ts policy file. Use `neon config init` to scaffold a starter neon.ts and install the config packages, `neon config add` to declare a service, function, or bucket in an existing neon.ts, `neon config status` to show the branch's live Neon state (`neon status --current-branch` prints the pinned branch offline for shell prompts), `neon config plan` for a dry run of what an apply would change, and `neon config apply` (or its top-level alias `neon deploy`) to apply the policy to the branch. Supports --config to point at a neon.ts file, --env to load environment variables before evaluating it, and --allow-protected, --update-existing, or -y to answer the apply confirmation prompts in non-interactive use.
 
 # Neon CLI command: config
 
@@ -24397,13 +24413,13 @@ If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, `confi
 neon config init [options]
 ```
 
-| Option          | Description                                                                                                                                                                                                                                          | Type    | Default | Required |
-| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--from-branch` | Seed neon.ts from a branch's live Neon state instead of asking. Uses the branch pinned in .neon, or --branch \<name\|id>, or the project's default branch. The only mode of `config init` that calls the Neon API.                                   | boolean | —       |    No    |
-| `--install`     | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command.                                                                                                                                    | boolean | `true`  |    No    |
-| `--services`    | Services the scaffolded neon.ts declares: auth, functions, object-storage, ai-gateway. Pass "none" for the bare starter policy. Repeat the flag or comma-separate. Omitted: pick interactively on a terminal, starter policy in CI or without a TTY. | array   | —       |    No    |
-| `--branch`      | Branch ID or name                                                                                                                                                                                                                                    | string  | —       |    No    |
-| `--project-id`  | Project ID                                                                                                                                                                                                                                           | string  | —       |    No    |
+| Option                          | Description                                                                                                                                                                                                                                                                                          | Type    | Default | Required |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--from-branch`                 | Seed neon.ts from a branch's live Neon state instead of asking. Uses the branch pinned in .neon, or --branch \<name\|id>, or the project's default branch. The only mode of `config init` that calls the Neon API.                                                                                   | boolean | —       |    No    |
+| `--install`                     | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command.                                                                                                                                                                                    | boolean | `true`  |    No    |
+| `--services`, `-s`, `--service` | Services the scaffolded neon.ts declares: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. postgres alone writes the starter policy; every branch has Postgres. Omitted: pick interactively on a terminal, starter policy in CI or without a TTY. | array   | —       |    No    |
+| `--branch`                      | Branch ID or name                                                                                                                                                                                                                                                                                    | string  | —       |    No    |
+| `--project-id`                  | Project ID                                                                                                                                                                                                                                                                                           | string  | —       |    No    |
 
 ```bash
 neon config init
@@ -24517,10 +24533,11 @@ neon config add function sendemail
 ```
 
 ```text
-INFO: Created functions/sendemail.ts.
-INFO: Created neon.ts: added functions.sendemail.
-INFO: Install the Neon config packages to use neon.ts: npm install @neon/config @neon/env
-INFO: Next: `neon dev` to run it locally, `neon config apply` to deploy.
+Created functions/sendemail.ts.
+Created neon.ts: added functions.sendemail.
+Created package.json.
+Installing @neon/config, @neon/env with npm…
+Next: `neon dev` to run it locally, `neon config apply` to deploy.
 ```
 
 ### neon config add bucket
@@ -24635,18 +24652,21 @@ neon config apply [options]
 
 | Option              | Description                                                                                                                                                                                                                                     | Type    | Default | Required |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                                                      | boolean | `false` |    No    |
+| `--allow-protected` | Apply to a branch marked protected on Neon without asking                                                                                                                                                                                       | boolean | `false` |    No    |
 | `--config`          | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                         | string  | —       |    No    |
 | `--env`             | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string  | —       |    No    |
 | `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`).                                  | boolean | `true`  |    No    |
-| `--update-existing` | Auto-confirm overriding existing remote settings on the branch                                                                                                                                                                                  | boolean | `false` |    No    |
+| `--update-existing` | Override branch settings that differ from neon.ts without asking                                                                                                                                                                                | boolean | `false` |    No    |
+| `--yes`, `-y`       | Answer yes to every confirmation: --update-existing and --allow-protected                                                                                                                                                                       | boolean | `false` |    No    |
 | `--branch`          | Branch ID or name                                                                                                                                                                                                                               | string  | —       |    No    |
 | `--project-id`      | Project ID                                                                                                                                                                                                                                      | string  | —       |    No    |
 
-For non-interactive use (scripts, CI, agents), pass `--update-existing` and `--allow-protected` to auto-confirm the corresponding prompts.
+In a terminal, `apply` asks before it overrides branch settings that differ from `neon.ts` or applies to a branch marked protected on Neon. Declining applies nothing.
+
+Without a terminal, there's no prompt. This covers CI, runs with no TTY, and `-o json` or `-o yaml` output. In those cases, `apply` stops before changing anything and names the flag to re-run with. For scripts, CI, and agents, pass `--update-existing` to allow the overrides, `--allow-protected` to allow a protected branch, or `-y` for both:
 
 ```bash
-neon config apply --branch feature/auth --update-existing --allow-protected
+neon config apply --branch feature/auth -y
 ```
 
 --- [Document source](https://neon.com/docs/cli/connection-string.md) ---
@@ -24657,7 +24677,7 @@ neon config apply --branch feature/auth --update-existing --allow-protected
 
 Get Postgres connection strings for branches and databases
 
-The `connection-string` command gets a Postgres connection string for any database on any branch in your Neon project. The connection string includes the password for the specified role. For information about connecting to Neon, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app). If `--project-id` is omitted, the CLI resolves it from your [context file](https://neon.com/docs/cli/link), auto-selects when your account has only one project, and otherwise asks you to pass `--project-id`. `--role-name` and `--database-name` are needed only when the branch has more than one role or database.
+The `connection-string` command gets a Postgres connection string for any database on any branch in your Neon project. The connection string includes the password for the specified role. For information about connecting to Neon, see [Connect from any application](https://neon.com/docs/connect/connect-from-any-app). If `--project-id` is omitted, the CLI resolves it from your [context file](https://neon.com/docs/cli/link), auto-selects when your account has only one project, and otherwise asks you to pass `--project-id`. `--database-name` is needed only when the branch has more than one database. Without `--role-name`, the command uses the branch's only role, or `neondb_owner` when there are several. The roles that the [Data API](https://neon.com/docs/data-api/get-started) and [Managed Better Auth](https://neon.com/docs/auth/overview) add (`authenticator`, `anonymous`, and `authenticated`) don't count, so you don't need `--role-name` on those branches either. This is the same role [`neon env pull`](https://neon.com/docs/cli/env) writes into `DATABASE_URL`. If the command still can't pick a role, it asks you to pass `--role-name`.
 
 **Tip: Connect with psql**
 
@@ -24673,17 +24693,17 @@ The `[branch]` is the branch name or ID. If omitted, the default branch is used.
 
 ## Options
 
-| Option            | Description                                                             | Type    | Default   | Required |
-| ----------------- | ----------------------------------------------------------------------- | ------- | --------- | :------: |
-| `--database-name` | Database name                                                           | string  | —         |    No    |
-| `--endpoint-type` | Endpoint type                                                           | string  | —         |    No    |
-| `--extended`      | Show extended information                                               | boolean | —         |    No    |
-| `--pooled`        | Use pooled connection                                                   | boolean | `false`   |    No    |
-| `--prisma`        | Use connection string for Prisma setup                                  | boolean | `false`   |    No    |
-| `--project-id`    | Project ID                                                              | string  | —         |    No    |
-| `--psql`          | Connect to a database via psql using connection string                  | boolean | `false`   |    No    |
-| `--role-name`     | Role name                                                               | string  | —         |    No    |
-| `--ssl`           | SSL mode Possible values: `require`, `verify-ca`, `verify-full`, `omit` | string  | `require` |    No    |
+| Option            | Description                                                                                       | Type    | Default   | Required |
+| ----------------- | ------------------------------------------------------------------------------------------------- | ------- | --------- | :------: |
+| `--database-name` | Database name                                                                                     | string  | —         |    No    |
+| `--endpoint-type` | Endpoint type                                                                                     | string  | —         |    No    |
+| `--extended`      | Show extended information                                                                         | boolean | —         |    No    |
+| `--pooled`        | Use pooled connection                                                                             | boolean | `false`   |    No    |
+| `--prisma`        | Use connection string for Prisma setup                                                            | boolean | `false`   |    No    |
+| `--project-id`    | Project ID                                                                                        | string  | —         |    No    |
+| `--psql`          | Connect to a database via psql using connection string                                            | boolean | `false`   |    No    |
+| `--role-name`     | Role name. Defaults to neondb\_owner, else the only role besides the Data API and Neon Auth roles | string  | —         |    No    |
+| `--ssl`           | SSL mode Possible values: `require`, `verify-ca`, `verify-full`, `omit`                           | string  | `require` |    No    |
 
 The `--endpoint-type` value can be `read_write` (the default) or `read_only`. The `--psql` option doesn't require a psql installation: if `psql` isn't on your `$PATH`, the CLI uses a built-in TypeScript implementation. To save your project context to a file and avoid repeating `--project-id`, see [Using a named context file](https://neon.com/docs/cli/set-context#using-a-named-context-file).
 
@@ -24785,7 +24805,7 @@ neon credentials list --project-id solitary-heart-93902637 --branch main
 ```
 
 ```text filename="Output"
-Token Id                                   Name                               Principal Type  Scopes                       Created At
+Token ID                                   Name                               Principal Type  Scopes                       Created At
 nak_live_aaaa1111bbbb2222cccc3333dddd4444  Default AI gateway credential      user            ai_gateway:invoke            2026-09-10T20:02:49Z
 nak_live_eeee5555ffff6666aaaa7777bbbb8888  Default object storage credential  user            storage:read, storage:write  2026-09-10T20:02:50Z
 ```
@@ -24810,7 +24830,7 @@ neon credentials create --name uploads --scope storage:read --scope storage:writ
 ```
 
 ```text filename="Output"
-Token Id  nak_live_0123456789abcdef0123456789abcdef
+Token ID  nak_live_0123456789abcdef0123456789abcdef
 Name      uploads
 Scopes    storage:read, storage:write
 api_token: <api_token>
@@ -24857,7 +24877,7 @@ neon credentials reveal nak_live_0123456789abcdef0123456789abcdef --project-id s
 ```
 
 ```text filename="Output"
-Token Id  nak_live_0123456789abcdef0123456789abcdef
+Token ID  nak_live_0123456789abcdef0123456789abcdef
 api_token: <api_token>
 s3_secret_access_key: <s3_secret_access_key>
 WARNING: These are live secrets. Treat them like a password.
@@ -24881,7 +24901,7 @@ neon credentials rotate nak_live_0123456789abcdef0123456789abcdef --project-id s
 ```
 
 ```text filename="Output"
-Token Id  nak_live_0123456789abcdef0123456789abcdef
+Token ID  nak_live_0123456789abcdef0123456789abcdef
 Name      uploads
 Scopes    storage:read, storage:write
 api_token: <new api_token>
@@ -24907,7 +24927,7 @@ neon credentials revoke nak_live_0123456789abcdef0123456789abcdef --project-id s
 ```
 
 ```text filename="Output"
-INFO: Credential nak_live_0123456789abcdef0123456789abcdef revoked
+Credential nak_live_0123456789abcdef0123456789abcdef revoked
 ```
 
 --- [Document source](https://neon.com/docs/cli/data-api.md) ---
@@ -25167,18 +25187,21 @@ neon deploy [options]
 
 | Option              | Description                                                                                                                                                                                                                                     | Type    | Default | Required |
 | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--allow-protected` | Auto-confirm applying to a branch marked protected on Neon                                                                                                                                                                                      | boolean | `false` |    No    |
+| `--allow-protected` | Apply to a branch marked protected on Neon without asking                                                                                                                                                                                       | boolean | `false` |    No    |
 | `--branch`          | Branch ID or name                                                                                                                                                                                                                               | string  | —       |    No    |
 | `--config`          | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                         | string  | —       |    No    |
 | `--env`             | Path to a .env file to load into the environment before evaluating neon.ts so Function env values resolve from it. Existing env vars are not overridden. Function env values that read process.env must be set in this file or the environment. | string  | —       |    No    |
 | `--env-pull`        | Pull the branch's Neon env vars (DATABASE\_URL, …) into a local .env after a successful apply. On by default; use --no-env-pull to skip (e.g. when injecting env at runtime with `neon-env run` / `neon dev`).                                  | boolean | `true`  |    No    |
 | `--project-id`      | Project ID                                                                                                                                                                                                                                      | string  | —       |    No    |
-| `--update-existing` | Auto-confirm overriding existing remote settings on the branch                                                                                                                                                                                  | boolean | `false` |    No    |
+| `--update-existing` | Override branch settings that differ from neon.ts without asking                                                                                                                                                                                | boolean | `false` |    No    |
+| `--yes`, `-y`       | Answer yes to every confirmation: --update-existing and --allow-protected                                                                                                                                                                       | boolean | `false` |    No    |
 
-For non-interactive use (scripts, CI, agents), pass `--update-existing` and `--allow-protected` to auto-confirm the corresponding prompts.
+In a terminal, `deploy` asks before it overrides branch settings that differ from `neon.ts` or applies to a branch marked protected on Neon. Declining applies nothing.
+
+Without a terminal, there's no prompt. This covers CI, runs with no TTY, and `-o json` or `-o yaml` output. In those cases, `deploy` stops before changing anything and names the flag to re-run with. For scripts, CI, and agents, pass `--update-existing` to allow the overrides, `--allow-protected` to allow a protected branch, or `-y` for both:
 
 ```bash
-neon deploy --branch feature/auth --update-existing
+neon deploy --branch feature/auth -y
 ```
 
 --- [Document source](https://neon.com/docs/cli/dev.md) ---
@@ -25279,7 +25302,7 @@ neon diff main --branch feature/checkout
 ```
 
 ```diff filename="Output"
-INFO: → Comparing schema main → feature/checkout
+→ Comparing schema main → feature/checkout
 diff --neon database neondb
 --- main (br-solitary-block-atxzqx8a)
 +++ feature/checkout (br-wandering-bar-atq2lw6c)
@@ -25341,14 +25364,14 @@ Unset function env vars don't block a pull. If a declared function reads a `proc
 neon env pull [options]
 ```
 
-| Option         | Description                                                                                                                                                                                                               | Type   | Default | Required |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--config`     | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                   | string | —       |    No    |
-| `--env`, `-e`  |                                                                                                                                                                                                                           | array  | —       |    No    |
-| `--file`       | Target .env file to write, relative to cwd. Defaults to an existing .env, otherwise .env.local, in the project directory (next to .neon, or cwd without one). Only Neon variables are updated; other lines are preserved. | string | —       |    No    |
-| `--service`    | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name.                 | array  | —       |    No    |
-| `--branch`     | Branch ID or name                                                                                                                                                                                                         | string | —       |    No    |
-| `--project-id` | Project ID                                                                                                                                                                                                                | string | —       |    No    |
+| Option                          | Description                                                                                                                                                                                                                               | Type   | Default | Required |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--config`                      | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                   | string | —       |    No    |
+| `--env`, `-e`                   |                                                                                                                                                                                                                                           | array  | —       |    No    |
+| `--file`                        | Target .env file to write, relative to cwd. Defaults to an existing .env, otherwise .env.local, in the project directory (next to .neon, or cwd without one). Only Neon variables are updated; other lines are preserved.                 | string | —       |    No    |
+| `--service`, `-s`, `--services` | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. Combines with --env as a union. | array  | —       |    No    |
+| `--branch`                      | Branch ID or name                                                                                                                                                                                                                         | string | —       |    No    |
+| `--project-id`                  | Project ID                                                                                                                                                                                                                                | string | —       |    No    |
 
 Write the linked branch's Neon variables into `.env.local` (or `.env` if present):
 
@@ -25451,10 +25474,10 @@ neon functions deploy hello --src functions/hello.ts
 ```
 
 ```text filename="Output"
-INFO: Function deployment triggered for function hello.
+Function deployment triggered for function hello.
 Function hello
 URL            https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon.tech/
-Deployment Id  1
+Deployment ID  1
 Status         completed
 Runtime        nodejs24
 Memory         2048 MiB
@@ -25553,7 +25576,7 @@ URL         https://br-cool-darkness-123456-hello.compute.c-1.us-east-2.aws.neon
 Created At  2026-06-12T00:14:57.942988Z
 
 Deployment (current, active)
-Deployment Id  1
+Deployment ID  1
 Status         completed
 Runtime        nodejs24
 Memory         2048 MiB
@@ -25578,7 +25601,7 @@ neon functions delete hello
 ```
 
 ```text filename="Output"
-INFO: Function hello deleted from branch br-cool-darkness-123456
+Function hello deleted from branch br-cool-darkness-123456
 ```
 
 ## neon functions domains
@@ -25861,24 +25884,25 @@ It can also write a [`neon.ts` config](https://neon.com/docs/cli/config) you can
 
 ## Options
 
-| Option                    | Description                                                                                                                                                                                               | Type    | Default | Required |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a`           | Coding agent to install into (repeatable). Skips agent selection. Values listed below                                                                                                                     | array   | —       |    No    |
-| `--agent-setup`           | Install Neon into coding agents. Use --no-agent-setup to skip. Plugin vs skills is inferred from --skill and MCP flags                                                                                    | boolean | `true`  |    No    |
-| `--branch`, `--branch-id` | Forwarded to link: branch name or ID to pin                                                                                                                                                               | string  | —       |    No    |
-| `--claimable`             | Create a claimable project that expires in 72 hours unless claimed. Selects Custom                                                                                                                        | boolean | `false` |    No    |
-| `--config`                | Create neon.ts after linking. Use --no-config to skip. Omitted in Custom: you will be asked                                                                                                               | boolean | —       |    No    |
-| `--link`                  | Link a Neon project during setup. Use --no-link to skip without being asked                                                                                                                               | boolean | `true`  |    No    |
-| `--mcp-auth`              | MCP authentication. Selects skills and MCP setup. oauth is neon mcp --oauth Possible values: `oauth`, `api-key`                                                                                           | string  | —       |    No    |
-| `--mcp-config-location`   | Where to configure the Neon MCP server: global (user config, same as neon mcp) or project (this directory, same as neon mcp --project). Selects skills and MCP setup Possible values: `global`, `project` | string  | —       |    No    |
-| `--mcp-project-scoped`    | Limit MCP tools to the linked project, same as neon mcp --project-id. Selects skills and MCP setup                                                                                                        | boolean | `false` |    No    |
-| `--org-id`                | Forwarded to link: organization ID to link to                                                                                                                                                             | string  | —       |    No    |
-| `--package-manager`       | Package manager for neon.ts dependencies. -y uses this without asking. Custom asks only when none is detected Possible values: `npm`, `pnpm`, `yarn`, `bun`                                               | string  | —       |    No    |
-| `--project-id`            | Forwarded to link: existing project ID to link to                                                                                                                                                         | string  | —       |    No    |
-| `--project-name`          | Forwarded to link: name for a new project                                                                                                                                                                 | string  | —       |    No    |
-| `--region-id`             | Forwarded to link: region for a new project                                                                                                                                                               | string  | —       |    No    |
-| `--skill`                 | Neon skill to install (repeatable). Selects skills setup (not the plugin) and skips the skills picker. With MCP flags, also configures MCP. Values listed below                                           | array   | —       |    No    |
-| `--yes`, `-y`             | Skip prompts. Alone: Recommended (detected agents, link when authenticated, default neon.ts). With --skill, MCP flags, --no-agent-setup, or --claimable: Custom using those flags                         | boolean | `false` |    No    |
+| Option                          | Description                                                                                                                                                                                                                                                             | Type    | Default | Required |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a`                 | Coding agent to install into (repeatable). Skips agent selection. Values listed below                                                                                                                                                                                   | array   | —       |    No    |
+| `--agent-setup`                 | Install Neon into coding agents. Use --no-agent-setup to skip. Plugin vs skills is inferred from --skill and MCP flags                                                                                                                                                  | boolean | `true`  |    No    |
+| `--branch`, `--branch-id`       | Forwarded to link: branch name or ID to pin                                                                                                                                                                                                                             | string  | —       |    No    |
+| `--claimable`                   | Create a claimable project that expires in 72 hours unless claimed. Selects Custom                                                                                                                                                                                      | boolean | `false` |    No    |
+| `--config`                      | Create neon.ts after linking. Use --no-config to skip. Omitted in Custom: you will be asked                                                                                                                                                                             | boolean | —       |    No    |
+| `--link`                        | Link a Neon project during setup. Use --no-link to skip without being asked                                                                                                                                                                                             | boolean | `true`  |    No    |
+| `--mcp-auth`                    | MCP authentication. Selects skills and MCP setup. oauth is neon mcp --oauth Possible values: `oauth`, `api-key`                                                                                                                                                         | string  | —       |    No    |
+| `--mcp-config-location`         | Where to configure the Neon MCP server: global (user config, same as neon mcp) or project (this directory, same as neon mcp --project). Selects skills and MCP setup Possible values: `global`, `project`                                                               | string  | —       |    No    |
+| `--mcp-project-scoped`          | Limit MCP tools to the linked project, same as neon mcp --project-id. Selects skills and MCP setup                                                                                                                                                                      | boolean | `false` |    No    |
+| `--org-id`                      | Forwarded to link: organization ID to link to                                                                                                                                                                                                                           | string  | —       |    No    |
+| `--package-manager`             | Package manager for neon.ts dependencies. -y uses this without asking. Custom asks only when none is detected Possible values: `npm`, `pnpm`, `yarn`, `bun`                                                                                                             | string  | —       |    No    |
+| `--project-id`                  | Forwarded to link: existing project ID to link to                                                                                                                                                                                                                       | string  | —       |    No    |
+| `--project-name`                | Forwarded to link: name for a new project                                                                                                                                                                                                                               | string  | —       |    No    |
+| `--region-id`                   | Forwarded to link: region for a new project                                                                                                                                                                                                                             | string  | —       |    No    |
+| `--services`, `-s`, `--service` | Services to declare in neon.ts: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. postgres alone writes the starter policy; every branch has Postgres. Implies creating neon.ts. Cannot be combined with --no-config. | array   | —       |    No    |
+| `--skill`                       | Neon skill to install (repeatable). Selects skills setup (not the plugin) and skips the skills picker. With MCP flags, also configures MCP. Values listed below                                                                                                         | array   | —       |    No    |
+| `--yes`, `-y`                   | Skip prompts. Alone: Recommended (detected agents, link when authenticated, default neon.ts). With --skill, MCP flags, --no-agent-setup, or --claimable: Custom using those flags                                                                                       | boolean | `false` |    No    |
 
 Pass `-y` (alias `--yes`) to run each step with its defaults instead of prompting. On its own, `-y` runs the recommended setup: it detects agents from your global agent configuration, the project folders, and the host CLI agent you're running inside, then installs the plugin globally for each detected agent that supports it, and skills and MCP for the rest. Run `neon init --help` to see which agents fall into each family. If it detects no agent, it writes the default skills in the current directory. `-y` links your only organization and project, or prints the IDs and exits when you have several (pass `--org-id`/`--project-id` to choose), and it never opens a browser.
 
@@ -25908,6 +25932,8 @@ neon init -y --skill neon --mcp-auth oauth --mcp-config-location project
 ```
 
 Authenticate without a browser by setting `NEON_API_KEY` or passing `--api-key`. Agents can find the IDs with `neon orgs list --output json` and `neon projects list --org-id <org-id> --output json`. To control `neon.ts` in the same run, add `--config`, `--no-config`, or `--services`.
+
+When `-y` can't authenticate, it finishes every step it can and lists what's left under `Next`. With no credential at all, it skips the environment pull. If you also pass `--org-id`, `--project-id`, and `--branch`, it writes `.neon` without contacting Neon (like [`neon link --no-checks`](https://neon.com/docs/cli/link)), and Neon checks those IDs on the first command that reaches it. With fewer IDs, it skips linking and prints the `neon login` and `neon link` commands to run. A project-scoped or organization API key can link and pull, but it can't mint the API key the Neon MCP server uses. In that case, `init` configures MCP with OAuth instead. If you asked for `--mcp-auth api-key`, it skips MCP, finishes the other steps, and exits with an error that names the retry command.
 
 ## What gets created
 
@@ -25955,22 +25981,21 @@ neon init -y --claimable --agent cursor
 
 ```text
 Installing the Neon plugin...
-INFO: Installing the Neon plugin for Cursor (1/1)...
+Installing the Neon plugin for Cursor (1/1)...
 Plugins
 Scope    Plugin         Agent   Status
 project  neon-postgres  cursor  installed
-INFO: Installed the Neon plugin (project).
+Installed the Neon plugin (project).
 Creating a claimable project...
-Project Id            sweet-breeze-12345678
-Branch Id             br-restless-wildflower-a1b2c3d4
+Project ID            sweet-breeze-12345678
+Branch ID             br-restless-wildflower-a1b2c3d4
 State                 unclaimed
 Project Expires At    2026-09-29T01:51:07.360Z
 Granted Capabilities  postgres
 Creating neon.ts...
 Installing Neon dependencies with npm...
 Pulling Neon environment variables...
-INFO: → Pulling env from branch main (br-restless-wildflower-a1b2c3d4)
-Pulled 3 Neon variables into .env.local
+Pulled 3 Neon variables into .env.local from branch main (br-restless-wildflower-a1b2c3d4)
   Postgres        DATABASE_URL, DATABASE_URL_UNPOOLED
   Branch          NEON_BRANCH
 
@@ -26019,9 +26044,11 @@ neon inspect db <sub-command> [options]
 | `--database-name` | Database to inspect. Omit to cover every database the API lists for the branch. Ranking and row limits stay per database. One failing database fails the whole run. Compute-wide checks run once against the first listed database. Ignored with --db-url. | string | —       |    No    |
 | `--db-url`        | Inspect any Postgres via a connection string, bypassing the Neon API (project/branch resolution is skipped)                                                                                                                                                | string | —       |    No    |
 | `--project-id`    | Project ID                                                                                                                                                                                                                                                 | string | —       |    No    |
-| `--role-name`     | Role name                                                                                                                                                                                                                                                  | string | —       |    No    |
+| `--role-name`     | Role name. Defaults to neondb\_owner, else the only role besides the Data API and Neon Auth roles                                                                                                                                                          | string | —       |    No    |
 
 By default the command resolves the project, branch, database, and role from your [context](https://neon.com/docs/cli/link) and connects through the Neon API. Pass `--db-url` to inspect any Postgres directly from a connection string, which bypasses API resolution and lets you point `inspect` at a database outside Neon without being logged in to Neon.
+
+Without `--role-name`, `inspect` connects as the same role as [`neon connection-string`](https://neon.com/docs/cli/connection-string): the branch's only role, or `neondb_owner` on branches with several roles. If there's no `neondb_owner`, it uses the only role left after skipping the Data API and Managed Better Auth roles (`authenticator`, `anonymous`, and `authenticated`).
 
 When you omit `--database-name`, `inspect` covers every database on the branch and adds a `database` column so you can tell the rows apart. Pass `--database-name` to inspect a single database, which also scopes `locks` and `long-running-queries` to that database so lock and relation names resolve correctly. Database-scoped checks such as `table-sizes`, `locks`, and `outliers` run against each database, while compute-wide checks (`lfc-hit-rate`, `working-set`, and `replication-slots`) run once. If any database fails, the whole run fails, so pass `--database-name` to narrow to one when that happens. `--db-url` always inspects the single database in the connection string and never adds the `database` column.
 
@@ -26176,14 +26203,14 @@ neon inspect db lfc-hit-rate
 
 ### neon inspect db working-set
 
-Estimated working set size over several time windows, compared with the compute cache size. When `Exceeds Lfc` is `no`, your recent data fits in cache. A `yes` means the working set has outgrown the cache, and a larger compute may help. Needs the [`neon`](https://neon.com/docs/extensions/neon) extension.
+Estimated working set size over several time windows, compared with the compute cache size. When `Exceeds LFC` is `no`, your recent data fits in cache. A `yes` means the working set has outgrown the cache, and a larger compute may help. Needs the [`neon`](https://neon.com/docs/extensions/neon) extension.
 
 ```bash
 neon inspect db working-set
 ```
 
 ```text
-Window  Working Set  Lfc Size  Exceeds Lfc
+Window  Working Set  LFC Size  Exceeds LFC
 1m      48 MB        607 MB    no
 5m      48 MB        607 MB    no
 15m     48 MB        607 MB    no
@@ -26559,7 +26586,7 @@ neon link [options]
 | `--region-id`             | Region ID for a new project (e.g. aws-us-east-2). Required with --project-name.                                                                                                                                                                       | string  | —       |    No    |
 | `--yes`, `-y`             | Skip prompts. Select the only organization and project, or print IDs and the flag to pass. Pin the default branch when several exist. Does not create a project unless --project-name and --region-id are set.                                        | boolean | `false` |    No    |
 
-By default, linking pulls the linked branch's environment variables (such as `DATABASE_URL`) into a local `.env` file. Use `--no-env-pull` to skip this step, for example when you inject environment variables at runtime instead.
+By default, linking pulls the linked branch's environment variables (such as `DATABASE_URL`) into `.env.local` (or `.env` if present). Use `--no-env-pull` to skip this step, for example when you inject environment variables at runtime instead.
 
 After an interactive link, `link` also prompts you to create a [`neon.ts` config](https://neon.com/docs/cli/config) when the directory doesn't already have one, so you can manage the project's Neon setup as code. Accept the prompt to write `neon.ts`, or pass `--no-config` to skip it. This applies to interactive linking only; non-interactive runs never prompt.
 
@@ -26662,13 +26689,13 @@ The Neon CLI resolves authentication in this order:
 - The `--api-key` option, if provided.
 - The `NEON_API_KEY` environment variable, if set.
 - The `credentials.json` file created by `neon login`.
-- If none are found, the CLI starts the `neon login` web authentication flow.
+- If none are found, the CLI starts the `neon login` web authentication flow. `neon me` is the exception: it reports that you're signed out instead.
 
 ## Options
 
-| Option      | Description                                                                                                            | Type    | Default | Required |
-| ----------- | ---------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--keyring` | Store the credential in the OS keyring. Per profile; later auth without the flag stays there. See `neon profile list`. | boolean | —       |    No    |
+| Option      | Description                                                                                                               | Type    | Default | Required |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--keyring` | Store the credential in the OS keyring. Per profile; a later login without the flag stays there. See `neon profile list`. | boolean | —       |    No    |
 
 Pass `--keyring` to store the credential in your operating system's keyring instead of the `credentials.json` file. The choice is saved per profile, so once set, `neon login` keeps using the keyring for that profile even without the flag. Along with this option, `login` accepts the [global options](https://neon.com/docs/cli#global-options).
 
@@ -26898,12 +26925,12 @@ neon mcp --oauth --project --agent cursor
 ```
 
 ```text
-INFO: Wrote /home/user/my-app/.cursor/mcp.json
-INFO: URL: https://mcp.neon.tech/mcp
+Wrote /home/user/my-app/.cursor/mcp.json
+URL: https://mcp.neon.tech/mcp
 MCP
 Agent   Status
 cursor  installed
-INFO: The agent will prompt for Neon sign-in on first use.
+The agent will prompt for Neon sign-in on first use.
 ```
 
 Give the agent read-only access:
@@ -26955,6 +26982,12 @@ Login           sally
 Email           sally@example.com
 Name            Sally Smith
 Authentication  OAuth (profile DEFAULT)
+```
+
+When you're signed out, `me` doesn't start a browser sign-in. It prints a notice to stderr and exits with status `1`, so scripts and agents can run `neon me` as a sign-in check:
+
+```text filename="Output"
+Not signed in: profile "DEFAULT" has no stored credential. Run `neon login --profile DEFAULT` to sign in, or use an API key with --api-key or NEON_API_KEY.
 ```
 
 Show details with `--output json`, which includes data omitted from the `table` output:
@@ -27606,7 +27639,7 @@ neon open
 ```
 
 ```text
-INFO: Opening https://console.neon.tech/app/projects/cold-grass-40154007 in your browser.
+Opening https://console.neon.tech/app/projects/cold-grass-40154007 in your browser.
 ```
 
 Open a specific project without relying on the linked context:
@@ -27644,7 +27677,7 @@ neon operations list
 ```
 
 ```text filename="Output"
-Id                                    Action           Status    Created At
+ID                                    Action           Status    Created At
 fce8642e-259e-4662-bdce-518880aee723  apply_config     finished  2026-06-20T00:45:19Z
 dc1dfb0c-b854-474b-be20-2ea1d2172563  apply_config     finished  2026-06-20T00:43:17Z
 7a83e300-cf5f-4c1a-b9b5-569b6d6feab9  suspend_compute  finished  2026-06-19T23:50:56Z
@@ -27678,7 +27711,7 @@ neon orgs list
 
 ```text filename="Output"
 Organizations
-Id                     Name                   Plan
+ID                     Name                   Plan
 org-xxxxxxxx-xxxxxxxx  [current] Example Org  Launch
 org-yyyyyyyy-yyyyyyyy  Another Org            Free
 ```
@@ -27781,7 +27814,7 @@ Plugins
 Scope    Plugin         Agent        Status
 project  neon-postgres  claude-code  installed
 
-INFO: Installed the Neon plugin (project).
+Installed the Neon plugin (project).
 ```
 
 Install into several agents at once:
@@ -28013,12 +28046,12 @@ neon projects list [options]
 
   ```text
   Projects
-  Id                      Name      Region Id      Created At
+  ID                      Name      Region ID      Created At
   crimson-voice-12345678  frontend  aws-us-east-2  2026-04-15T11:17:30Z
   calm-thunder-12121212   backend   aws-us-east-2  2026-04-10T15:21:01Z
   nameless-hall-87654321  billing   aws-us-east-2  2026-04-10T14:35:17Z
   Shared with you
-  Id                 Name  Region Id         Created At
+  ID                 Name  Region ID         Created At
   noisy-fire-212121  API   aws-eu-central-1  2026-04-22T18:41:13Z
   ```
 
@@ -28038,7 +28071,7 @@ neon projects list --recoverable-only
 
 ```text filename="Output"
 Projects
-Id                   Name       Region Id      Created At            Deleted At            Recoverable Until
+ID                   Name       Region ID      Created At            Deleted At            Recoverable Until
 crimson-voice-12345  myproject  aws-us-east-2  2026-04-15T11:17:30Z  2026-04-16T14:22:15Z  2026-04-23T14:22:15Z
 ```
 
@@ -28086,13 +28119,13 @@ neon projects create --name mynewproject --region-id aws-us-west-2
 
 ```text filename="Output"
 Project
-Id          muddy-wood-123456
+ID          muddy-wood-123456
 Name        mynewproject
-Region Id   aws-us-west-2
+Region ID   aws-us-west-2
 Created At  2026-07-09T17:04:29Z
 
 Connection URIs
-Connection Uri
+Connection URI
 postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
@@ -28212,9 +28245,9 @@ neon projects update muddy-wood-123456 --name dev_project_1
 ```
 
 ```text filename="Output"
-Id          muddy-wood-123456
+ID          muddy-wood-123456
 Name        dev_project_1
-Region Id   aws-us-west-2
+Region ID   aws-us-west-2
 Created At  2026-07-09T17:04:29Z
 ```
 
@@ -28243,9 +28276,9 @@ neon projects delete muddy-wood-123456
 ```
 
 ```text filename="Output"
-Id          muddy-wood-123456
+ID          muddy-wood-123456
 Name        dev_project_1
-Region Id   aws-us-west-2
+Region ID   aws-us-west-2
 Created At  2026-07-09T17:04:29Z
 ```
 
@@ -28264,9 +28297,9 @@ neon projects recover crimson-voice-12345678
 ```
 
 ```text filename="Output"
-Id          crimson-voice-12345678
+ID          crimson-voice-12345678
 Name        myproject
-Region Id   aws-us-east-2
+Region ID   aws-us-east-2
 Created At  2026-04-15T11:17:30Z
 ```
 
@@ -28287,8 +28320,8 @@ neon projects get muddy-wood-123456
 ```text filename="Output"
 Project
 Name               dev_project_1
-Id                 muddy-wood-123456
-Region Id          aws-us-west-2
+ID                 muddy-wood-123456
+Region ID          aws-us-west-2
 Postgres Version   18
 Organization       org-xxxxxxxx-xxxx
 Default Compute    0.25 CU
@@ -28759,9 +28792,9 @@ neon branches list
 ```
 
 ```text filename="Output"
-Name            Id                      Current State  Created At
-development     br-raspy-meadow-123456  ready          2026-11-28T19:19:11Z
-[default] main  br-curly-bar-123456     ready          2026-10-23T12:49:41Z
+Name            ID                      Current State  Expires At  Created At
+development     br-raspy-meadow-123456  ready          never       2026-11-28T19:19:11Z
+[default] main  br-curly-bar-123456     ready          never       2026-10-23T12:49:41Z
 ```
 
 ## Using a named context file
@@ -28779,10 +28812,10 @@ neon branches list --context-file Documents/MyContext
 ```
 
 ```text filename="Output"
-Name            Id                         Current State  Created At
-development     br-soft-base-123456        ready          2026-11-21T18:41:47Z
-[default] main  br-young-bush-123456       ready          2026-11-21T18:00:10Z
-staging         br-billowing-union-123456  ready          2026-11-21T18:44:22Z
+Name            ID                         Current State  Expires At  Created At
+development     br-soft-base-123456        ready          never       2026-11-21T18:41:47Z
+[default] main  br-young-bush-123456       ready          never       2026-11-21T18:00:10Z
+staging         br-billowing-union-123456  ready          never       2026-11-21T18:44:22Z
 ```
 
 **Note:** These two `branches list` commands use independent contexts in the same account: the default `.neon` file points to `patient-frost-50125040`, while the named context file points to `plain-waterfall-84865553`. You can set as many context files as you'd like, using unique names or different directories.
@@ -28931,7 +28964,7 @@ Skills
 Scope           Skills                 Agents  Status
 this directory  neon, neon-ai-gateway  cursor  installed
 
-INFO: Wrote skills in this directory.
+Wrote skills in this directory.
 ```
 
 Install user-level skills that apply across your projects:
@@ -29286,7 +29319,7 @@ neon triggers list --project-id solitary-heart-93902637 --branch main
 The `Type` column shows each trigger's type, currently `schedule` or `storage_object_created`. `Schedule` holds the cron for schedule triggers; `Storage` holds the bucket (and prefix, if set) for storage triggers.
 
 ```text filename="Output"
-Trigger Id                                    Name            Type                    Function Slug  Function Path  Schedule   Storage        Enabled  Inherited  Next Run At
+Trigger ID                                    Name            Type                    Function Slug  Function Path  Schedule   Storage        Enabled  Inherited  Next Run At
 trigger-12345678-90ab-cdef-1234-567890abcdef  nightly-report  schedule                child404       /              0 6 * * *                 true     false      2026-09-11T06:00:00.000000Z
 trigger-abcdef12-3456-7890-abcd-ef1234567890  on-upload       storage_object_created  ingest         /object                       assets logos/  true     false
 ```
@@ -29392,7 +29425,7 @@ neon triggers create --function-slug child404 --name nightly-report --cron '0 6 
 ```
 
 ```text filename="Output"
-Trigger Id     trigger-12345678-90ab-cdef-1234-567890abcdef
+Trigger ID     trigger-12345678-90ab-cdef-1234-567890abcdef
 Name           nightly-report
 Type           schedule
 Function Slug  child404
@@ -29493,7 +29526,7 @@ neon triggers delete trigger-12345678-90ab-cdef-1234-567890abcdef --project-id s
 ```
 
 ```text filename="Output"
-INFO: Trigger trigger-12345678-90ab-cdef-1234-567890abcdef deleted
+Trigger trigger-12345678-90ab-cdef-1234-567890abcdef deleted
 ```
 
 --- [Document source](https://neon.com/docs/cli/vpc.md) ---
@@ -32947,6 +32980,12 @@ An agent doesn't have to wait for a client call. A scheduled [Function Trigger](
 
 Module memory is wiped when an isolate is evicted, and several isolates can run in parallel, so keep anything that must last in Postgres: conversation history, run metadata, results. For generated assets like images, declare a bucket in `neon.ts` (`buckets: { images: {} }`) and write them to [Object Storage](https://neon.com/docs/storage/objects), which branches with your database. When a bucket is declared, `neon deploy` injects `AWS_*` credentials automatically. For example, using the [Files SDK](https://files-sdk.dev):
 
+```bash
+npm install files-sdk @aws-sdk/client-s3 @aws-sdk/lib-storage @aws-sdk/s3-request-presigner
+```
+
+Install `@aws-sdk/lib-storage` even though the Files SDK lists it as optional. `neon deploy` bundles your function, and the bundle fails without it.
+
 ```typescript
 import { Files } from 'files-sdk';
 import { neon } from 'files-sdk/neon';
@@ -33135,7 +33174,7 @@ You need:
 
 **Console**
 
-1. In the Neon Console, open your project's **Settings**, then **Functions → Custom Domains**.
+1. In the Neon Console, open your project's **Settings**, then **Functions** > **Custom domains**.
 2. Enter the domain you own.
 3. Select **Function**, then select the function to serve from the domain.
 4. Select **Add custom domain**.
@@ -33273,7 +33312,7 @@ Encrypt.
 
 **Console**
 
-In the Neon Console, open your project's **Settings**, then **Functions → Custom Domains**. The table lists each domain, its target function, and its CNAME target.
+In the Neon Console, open your project's **Settings**, then **Functions** > **Custom domains**. The table lists each domain, its target function, and its CNAME target.
 
 **CLI**
 
@@ -33400,7 +33439,7 @@ dangling CNAME from continuing to point at Neon's custom-domain edge.
 
 **Console**
 
-Under **Settings → Functions → Custom Domains** in the Neon Console, open the actions menu (⋮) for the domain, select **Delete**, then select **Remove domain** to confirm.
+Under **Settings** > **Functions** > **Custom domains** in the Neon Console, open the actions menu (⋮) for the domain, select **Delete**, then select **Remove domain** to confirm.
 
 **CLI**
 
@@ -33447,6 +33486,11 @@ no longer serves it before reassigning the hostname.
 Deleting a function doesn't remove its custom-domain registration. Remove the
 domain explicitly when deleting a function.
 
+Deleting a project doesn't release its custom domains either. If you want to
+reuse a hostname, delete its custom-domain registration before you delete the
+project. If you've already deleted the project, [contact Support](https://neon.com/docs/introduction/support)
+to release the domain.
+
 --- [Document source](https://neon.com/docs/compute/functions/deploy.md) ---
 
 > Summary: Reference for deploying Neon Functions with neon deploy, neon functions deploy, or the Neon API, including flags, deployment states, and slug rules. Also covers checking status, listing functions, and deleting them.
@@ -33470,10 +33514,11 @@ neon deploy
 | `--env-pull`        | `true`                    | Pull the branch's env vars into a local `.env` after a successful apply (`--no-env-pull` to skip)    |
 | `--branch`          | linked branch             | Target branch ID or name                                                                             |
 | `--project-id`      | linked project            | Project ID                                                                                           |
-| `--update-existing` | `false`                   | Auto-confirm overriding existing remote settings on the branch                                       |
-| `--allow-protected` | `false`                   | Auto-confirm applying to a branch marked protected on Neon                                           |
+| `--update-existing` | `false`                   | Override branch settings that differ from `neon.ts` without asking                                   |
+| `--allow-protected` | `false`                   | Apply to a branch marked protected on Neon without asking                                            |
+| `--yes`, `-y`       | `false`                   | Answer yes to both confirmations: `--update-existing` and `--allow-protected`                        |
 
-`neon deploy` is an alias for `neon config apply`. To preview what a deploy would change without applying it, run `neon config plan`.
+In a terminal, `neon deploy` asks before it overrides branch settings or applies to a protected branch. In CI, or anywhere without a terminal, it stops and names the flag to pass instead. `neon deploy` is an alias for `neon config apply`. To preview what a deploy would change without applying it, run `neon config plan`.
 
 You can declare scheduled [Function Triggers](https://neon.com/docs/compute/functions/triggers/schedule) and [custom domains](https://neon.com/docs/compute/functions/custom-domains) in the same `neon.ts` config, so they deploy alongside the function.
 
@@ -38256,7 +38301,7 @@ You can check the current status of a compute on the **Branches** page in the Ne
 
 ![Compute status](https://neon.com/docs/connect/compute_endpoint_state.png)
 
-You can also view compute state transitions in the **Branches** widget on the Neon **Dashboard**.
+You can also see each branch's compute status and when it was last active on the **Branches** page.
 
 User actions that activate an idle compute include connecting from a client or application, running a query on your database from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor), or accessing the compute via the [Neon API](https://neon.com/docs/reference/api).
 
@@ -38952,7 +38997,7 @@ You can obtain a connection string by clicking the **Connect** button in the Con
 
 ![Connection details modal](https://neon.com/docs/connect/connect_to_branch_modal.png)
 
-From your terminal or command prompt, run the `psql` client with the connection string copied from the Neon **Dashboard**.
+From your terminal or command prompt, run the `psql` client with the connection string copied from the **Connect** dialog in the Neon Console.
 
 ```bash
 psql postgresql://[user]:[password]@[neon_hostname]/[dbname]
@@ -41016,7 +41061,7 @@ In the Neon Console, select your project and select **Postgres database** > **Da
 
 The Data API uses JWTs for access control. Configure a provider now or later from the **Settings** tab. For public data that doesn't require login, use the [`anonymous` role](https://neon.com/docs/data-api/access-control#2-the-anonymous-role) instead.
 
-- **Managed Better Auth**: Check the **Use Managed Better Auth** checkbox to enable [Managed Better Auth](https://neon.com/docs/auth/overview) as your provider. Managed Better Auth manages sign-up, login, and account access, issuing the JWTs required for API requests.
+- **Managed Better Auth**: Check the **Use Neon Auth** checkbox to enable [Managed Better Auth](https://neon.com/docs/auth/overview) as your provider. Managed Better Auth manages sign-up, login, and account access, issuing the JWTs required for API requests.
 - **Other providers**: Leave the checkbox unchecked and configure your provider (such as Auth0, Clerk, or Firebase Auth) later. See [Custom authentication providers](https://neon.com/docs/data-api/custom-authentication-providers) for setup instructions.
 
 ### 3. Configure schema access (optional)
@@ -41333,7 +41378,7 @@ If you're using [Managed Better Auth](https://neon.com/docs/auth/overview) and w
 
 The Auth API reference UI is an interactive browser-based tool for exploring and testing all Managed Better Auth endpoints. It is powered by [Better Auth's OpenAPI plugin](https://www.better-auth.com/docs/plugins/open-api#usage).
 
-1. **Open the Auth API reference:** Navigate to your Auth URL with `/reference` appended, for example, `https://ep-example.neonauth.us-east-1.aws.neon.tech/neondb/auth/reference`. You can find your **Auth URL** on the **Auth** page, **Configuration** tab in the Neon Console.
+1. **Open the Auth API reference:** Navigate to your Auth URL with `/reference` appended, for example, `https://ep-example.neonauth.us-east-1.aws.neon.tech/neondb/auth/reference`. You can find your **Auth URL** under **Settings** > **Better Auth** > **Project Info** in the Neon Console.
 
 2. **Create a test user:** Use the UI to call `POST /sign-up/email` with a JSON body:
 
@@ -41366,7 +41411,7 @@ The Auth API reference UI is an interactive browser-based tool for exploring and
 
 **cURL**
 
-The following steps walk through signing up, obtaining a JWT, and querying the Data API from the terminal. You can find your **Auth URL** on the **Auth** page and your **Data API URL** on the **Data API** page in the Neon Console.
+The following steps walk through signing up, obtaining a JWT, and querying the Data API from the terminal. You can find your **Auth URL** under **Settings** > **Better Auth** > **Project Info** and your **Data API URL** on the **Data API** page in the Neon Console.
 
 **1. Sign up (or sign in)**
 
@@ -41904,7 +41949,7 @@ The `sub` claim in this example: `41a5f680-89d2-474d-ae59-e27bfbbbd293` represen
 
 If you're using Managed Better Auth, you can use the Auth API reference UI to create test users and obtain JWT tokens for testing with tools like Postman or cURL.
 
-Navigate to your Auth URL with `/reference` appended (for example, `https://ep-example.neonauth.us-east-1.aws.neon.tech/neondb/auth/reference`). You can find your **Auth URL** on the **Auth** page, **Configuration** tab in the Neon Console. From there, you can:
+Navigate to your Auth URL with `/reference` appended (for example, `https://ep-example.neonauth.us-east-1.aws.neon.tech/neondb/auth/reference`). You can find your **Auth URL** under **Settings** > **Better Auth** > **Project Info** in the Neon Console. From there, you can:
 
 1. Create a test user with `POST /sign-up/email`.
 2. Sign in with `POST /sign-in/email`.
@@ -55018,7 +55063,7 @@ The `wal2json` plugin is available in all Postgres versions supported by Neon. F
 
 ## Enable logical replication
 
-Before using the `wal2json` plugin, you need to enable logical replication for your Neon project. Navigate to the **Settings** page in your Neon Project Dashboard, and select **Beta** from the list of options. Click **Enable** to enable logical replication.
+Before using the `wal2json` plugin, you need to enable logical replication for your Neon project. In the Neon Console, go to your project's **Settings** > **Postgres** page, find **Logical Replication**, and click **Enable**.
 
 **Note:** Once enabled for a project, logical replication cannot be reverted. This action triggers a restart of all active compute endpoints in your Neon project. Any active connections will be dropped and have to reconnect.
 
@@ -66523,7 +66568,7 @@ export default defineConfig({
 
 ```bash filename="Terminal"
 neon deploy
-npm install files-sdk @aws-sdk/client-s3 @aws-sdk/s3-request-presigner @aws-sdk/s3-presigned-post
+npm install files-sdk @aws-sdk/client-s3 @aws-sdk/lib-storage @aws-sdk/s3-request-presigner @aws-sdk/s3-presigned-post
 ```
 
 ```typescript filename="app/upload/actions.ts"
@@ -67582,14 +67627,14 @@ For a detailed guide on how to interact with your data using the **Tables** page
 
 Neon includes **managed authentication**, so your app's users live in your Postgres database and branch with the rest of your data.
 
-From the Neon Console sidebar, open the **Auth** page and toggle Managed Better Auth on for your project. You'll get:
+From the Neon Console sidebar, open the **Better Auth** page and toggle Managed Better Auth on for your project. You'll get:
 
 - A sign-up / sign-in flow ready to wire up to any framework
 - Users and sessions stored in your own Postgres database — query the `neon_auth.user` table directly alongside your application data
 - Branch-aware auth: every preview or development branch you create gets its own isolated copy of users and sessions
 - OAuth providers, email and password, magic links, and more, all configurable from the console
 
-For framework-specific setup, see the [Managed Better Auth quickstarts](https://neon.com/docs/auth/overview) (Next.js, React, TanStack Router) or open the **Auth** tab in the console and follow the prompts.
+For framework-specific setup, see the [Managed Better Auth quickstarts](https://neon.com/docs/auth/overview) (Next.js, React, TanStack Router) or open the **Better Auth** page in the console and follow the prompts.
 
 ## Working with your development branch
 
@@ -67635,7 +67680,7 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
 
    ```bash
    Projects
-   Id                    Name       Region Id      Created At
+   ID                    Name       Region ID      Created At
    cool-forest-12345678  myproject  aws-us-east-2  2026-10-14T14:33:43Z
    ```
 
@@ -67643,9 +67688,9 @@ Let's create a `development` branch and learn how to use the Neon CLI to manage 
 
    ```bash
    neon branches list --project-id cool-forest-12345678
-   Name                            Id                   Current State  Created At
-   development                     br-calm-sky-123456   ready          2026-12-23T21:05:05Z
-   [default] [current] production  br-bold-wind-123456  ready          2026-12-23T21:04:57Z
+   Name                            ID                   Current State  Expires At  Created At
+   development                     br-calm-sky-123456   ready          never       2026-12-23T21:05:05Z
+   [default] [current] production  br-bold-wind-123456  ready          never       2026-12-23T21:04:57Z
    ```
 
    This command shows your existing branches, including the `production` branch and the `development` branch you just created.
@@ -70844,7 +70889,7 @@ You can configure autoscaling configuration defaults for your project so that **
 
 To configure autoscaling defaults:
 
-1. Navigate to your Project Dashboard and select **Settings** from the sidebar.
+1. In your project, select **Settings** from the sidebar.
 2. Select **Postgres**.
 3. Under **Compute defaults**, select **Modify defaults** to open the compute settings modal.
 4. Use the slider to specify a minimum and maximum compute size and **Save** your changes.
@@ -70863,7 +70908,7 @@ The following table outlines the initial default autoscaling settings for newly 
 
 ## Monitor autoscaling
 
-From the Neon Console, you can view how your compute and RAM usage have scaled for the past 24 hours. On the **Project Dashboard** page, navigate down the page to the **Monitoring** section.
+From the Neon Console, you can view how your compute and RAM usage have scaled for the past 24 hours. Select **Monitoring** in the sidebar and view the **Metrics** tab.
 
 Some key points about this Autoscaling graph:
 
@@ -73358,7 +73403,7 @@ Bemi tracks changes made in a Postgres database through Change Data Capture (CDC
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -74321,8 +74366,8 @@ The Neon CLI [branches list](https://neon.com/docs/cli/branches#list) command sh
 
   ```bash
   neon branches list --project-id green-hat-46829796
-  Name            Id                       Current State  Created At
-  [default] main  br-muddy-firefly-123456  ready          2026-10-30T14:59:57Z
+  Name            ID                       Current State  Expires At  Created At
+  [default] main  br-muddy-firefly-123456  ready          never       2026-10-30T14:59:57Z
   ```
 
 **API**
@@ -75375,16 +75420,16 @@ neon branches create
 
 Branch
 Name           br-lucky-mud-123456
-Id             br-lucky-mud-123456
+ID             br-lucky-mud-123456
 Current State  ready
 Created At     2026-07-24T20:22:42Z
 
 Compute
-Id                    Created At
+ID                    Created At
 ep-mute-voice-123456  2026-07-24T20:22:42Z
 
 Connection string
-Connection Uri
+Connection URI
 postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
@@ -75402,16 +75447,16 @@ In this example, we're creating a hotfix branch called `hotfix/critical-fix` usi
 neon branches create --name hotfix/critical-fix --parent development --project-id crimson-voice-12345678
 Branch
 Name           hotfix/critical-fix
-Id             br-misty-mud-123456
+ID             br-misty-mud-123456
 Current State  ready
 Created At     2026-04-23T17:04:10Z
 
 Compute
-Id                      Created At
+ID                      Created At
 ep-orange-heart-123456  2026-04-23T17:04:10Z
 
 Connection string
-Connection Uri
+Connection URI
 postgresql://[user]:[password]@[neon_hostname]/[dbname]
 ```
 
@@ -75424,12 +75469,12 @@ First, list your projects to get your project ID:
 ```bash
 neon projects list
 Projects
-Id                      Name      Region Id      Created At
+ID                      Name      Region ID      Created At
 crimson-voice-12345678  frontend  aws-us-east-2  2026-04-15T11:17:30Z
 calm-thunder-12121212   backend   aws-us-east-2  2026-04-10T15:21:01Z
 nameless-hall-87654321  billing   aws-us-east-2  2026-04-10T14:35:17Z
 Shared with you
-Id                 Name  Region Id         Created At
+ID                 Name  Region ID         Created At
 noisy-fire-212121  API   aws-eu-central-1  2026-04-22T18:41:13Z
 ```
 
@@ -75437,9 +75482,9 @@ Now list your branches using your project ID:
 
 ```bash
 neon branches list --project-id crimson-voice-12345678
-Name                      Id                   Current State  Created At
-development               br-calm-sky-123456   ready          2026-04-23T21:05:05Z
-[default] [current] main  br-bold-wind-123456  ready          2026-04-23T21:04:57Z
+Name                      ID                   Current State  Expires At  Created At
+development               br-calm-sky-123456   ready          never       2026-04-23T21:05:05Z
+[default] [current] main  br-bold-wind-123456  ready          never       2026-04-23T21:04:57Z
 ```
 
 **Tip:** To avoid specifying `--project-id` with each command, use `neon set-context` to set your default project and organization. See [set-context](https://neon.com/docs/cli/set-context) for details.
@@ -75451,7 +75496,7 @@ The following Neon CLI command deletes the specified branch. This command requir
 ```bash
 neon branches delete br-lucky-mud-123456 --project-id crimson-voice-12345678
 Name           br-lucky-mud-123456
-Id             br-lucky-mud-123456
+ID             br-lucky-mud-123456
 Current State  ready
 Created At     2026-07-24T20:22:42Z
 ```
@@ -75516,7 +75561,7 @@ This example resets a feature branch to match the latest state of its parent bra
 ```bash
 neon branches reset feature/user-auth --parent --project-id crimson-voice-12345678
 Name           feature/user-auth
-Id             br-twilight-smoke-123456
+ID             br-twilight-smoke-123456
 Current State  ready
 Created At     2026-04-23T17:01:49Z
 Last Reset At  2026-04-23T17:57:35Z
@@ -75531,7 +75576,7 @@ For example, here we are resetting `feature/user-auth` to its parent while prese
 ```bash
 neon branches reset feature/user-auth --parent --preserve-under-name feature/user-auth-backup --project-id crimson-voice-12345678
 Name           feature/user-auth
-Id             br-twilight-smoke-123456
+ID             br-twilight-smoke-123456
 Current State  ready
 Created At     2026-04-23T17:01:49Z
 Last Reset At  2026-04-23T18:02:36Z
@@ -75556,14 +75601,14 @@ neon branches restore production ^self@2026-05-06T10:00:00.000Z --preserve-under
 Results of the operation:
 
 ```bash
-INFO: Restoring production to production at timestamp 2026-05-06T10:00:00.000Z
+Restoring production to production at timestamp 2026-05-06T10:00:00.000Z
 Restored branch
-Id             br-purple-dust-123456
+ID             br-purple-dust-123456
 Name           production
 Last Reset At  2026-05-07T09:45:21Z
 
 Backup branch
-Id    br-flat-forest-123456
+ID    br-flat-forest-123456
 Name  production_restore_backup_2026-05-06
 ```
 
@@ -75685,7 +75730,7 @@ To try out schema-only branches:
 Connecting to a schema-only branch works the same way as connecting to any Neon branch. You'll connect via a compute associated with the branch. Follow these steps to connect using `psql` and a connection string obtained from the Neon Console.
 
 1. In the Neon Console, select a project.
-2. From the project **Dashboard**, click **Connect**, and select your schema-only branch, the database, and the role you want to connect with.
+2. In the Neon Console, click **Connect**, and select your schema-only branch, the database, and the role you want to connect with.
    ![Connection details modal](https://neon.com/docs/guides/schema_only_branch_connect.png)
 3. Copy the connection string. A connection string includes your role name, the compute hostname, and the database name.
 
@@ -75771,7 +75816,7 @@ VALUES
 
 1. In the Neon Console, select your project.
 2. Select **Branches** in the sidebar.
-3. Click **Create branch** to open the branch creation dialog.
+3. Click **New Branch** to open the branch creation dialog.
    ![Create branch dialog](https://neon.com/docs/manage/create_branch.png)
 4. Enter a name for the branch. This guide uses the name `my_test_branch`.
 5. Select a parent branch. Select the branch defined as your default branch, such as production or main.
@@ -75986,7 +76031,7 @@ To follow along with this guide, you require:
 
 2. Click the **New Project** button to create a new project.
 
-3. From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+3. In the Neon Console, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE books_to_read (
@@ -76281,7 +76326,7 @@ To follow along with this guide, you will need:
 
 2. Click the **New Project** button to create a new project.
 
-3. From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+3. In the Neon Console, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE books_to_read (
@@ -77070,7 +77115,7 @@ Log in to the Neon Console and navigate to the [Projects](https://console.neon.t
 
 1. Click the **New Project** button to create a new project.
 
-2. From the Neon **Dashboard**, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+2. In the Neon Console, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE books_to_read (
@@ -77102,17 +77147,15 @@ To use Hyperdrive with Neon, you'll need to create a dedicated database role for
 1. In the Neon Console, navigate to your project.
 2. Select your branch from the project/branch menu at the top of the sidebar.
 3. Under **Postgres database**, select **Roles**.
-4. Click **New Role** and enter `hyperdrive-user` as the name (or your preferred name).
+4. Click **Add role** and enter `hyperdrive-user` as the name (or your preferred name).
 5. **Copy the password** that is generated. You'll use this password in the connection string in the next step.
 
 ### Get your Neon connection string for Hyperdrive
 
-1. In the Neon Console, select **Dashboard** from the sidebar.
-2. Go to the **Connection Details** pane.
-3. Select the **branch**, **database**, and **role** (for example, `hyperdrive-user`) that Hyperdrive will connect through.
-4. Select **Connection String** from the dropdown menu.
-5. **Important**: Uncheck the **Pooled connection** checkbox. Hyperdrive manages connection pooling, so you need the direct connection string.
-6. Copy the connection string, which should look like this:
+1. In the Neon Console, click **Connect** at the top of the sidebar.
+2. Select the **branch**, **database**, and **role** (for example, `hyperdrive-user`) that Hyperdrive will connect through.
+3. **Important**: Toggle **Connection pooling** off. Hyperdrive manages connection pooling, so you need the direct connection string.
+4. Copy the connection string, which should look like this:
 
    ```bash
    postgres://hyperdrive-user:PASSWORD@ep-cool-darkness-123456.us-east-2.aws.neon.tech/dbname
@@ -80455,7 +80498,7 @@ For your .NET project, you will create a project directory and add the required 
 
 Create a file named `appsettings.json` in your project's root directory. This is the standard .NET approach for storing configuration data like connection strings.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
 3. Select **.NET** as your connection method.
    ![Connection modal](https://neon.com/docs/connect/dotnet_connection_details.png)
@@ -81703,7 +81746,7 @@ To create the database:
 2. Select a project.
 3. Select **Postgres database** > **Databases**.
 4. Select the branch where you want to create the database.
-5. Click **New Database**.
+5. Click **Add database**.
 6. Enter a database name (`friends`), and select a database owner.
 7. Click **Create**.
 
@@ -81941,7 +81984,7 @@ For your Elixir project, create a project directory using `mix` and add the requ
 
 You'll configure your application to connect to Neon using the `config/config.exs` file. This method securely separates your credentials from your source code.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
 3. Select the **Parameters only** tab to view the connection string parameters.
    ![Connection modal](https://neon.com/docs/connect/connection_details_parameters_only.png)
@@ -83565,7 +83608,7 @@ When you are finished, you should have a _development_ branch and a _staging_ br
 
 ## Retrieve your Neon database connection strings
 
-From the Neon **Dashboard**, click **Connect** to retrieve the connection string for each branch (`production`, `development`, and `staging`) from the **Connect to your branch** modal. Use the **Branch** drop-down menu to select each branch before copying the connection string.
+In the Neon Console, click **Connect** to retrieve the connection string for each branch (`production`, `development`, and `staging`) from the **Connect to your branch** modal. Use the **Branch** drop-down menu to select each branch before copying the connection string.
 
 Your connection strings should look something like the ones shown below. Note that the hostname differs for each (the part starting with `ep-` and ending with `aws.neon.tech`). That's because each branch is hosted on its own compute.
 
@@ -83917,7 +83960,7 @@ For your Go project, create a project directory, initialize a Go module, and add
 
 Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
    ![Connection modal](https://neon.com/docs/connect/connect_to_branch_modal.png)
 3. Copy the connection string, which includes your password.
@@ -85240,7 +85283,7 @@ npm install @neondatabase/serverless
 
 A database connection string is required to forward queries to your Neon database. You can find your database connection string by clicking the **Connect** button in the Console nav.
 
-1. Navigate to the Neon **Project Dashboard**.
+1. Open your project in the Neon Console.
 
 2. Click **Connect** and copy the connection string for your database. The connection string should appear similar to the following:
 
@@ -85477,7 +85520,7 @@ To follow along with this guide, you will need:
 
 2. Click **New Project** to create a new project.
 
-3. In your project dashboard, go to **Postgres database** > **SQL Editor** and run the following SQL command to create a new table:
+3. In the Neon Console, go to **Postgres database** > **SQL Editor** and run the following SQL command to create a new table:
 
    ```sql
    CREATE TABLE music_albums (
@@ -86417,7 +86460,7 @@ Create a project using the Maven `archetype:generate` command. This sets up a st
 
 Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
 3. Select **Java** as your programming language.
    ![Connection modal](https://neon.com/docs/connect/java_connection_details.png)
@@ -86919,7 +86962,7 @@ For your Node.js project, create a project directory, initialize it with `npm`, 
 
 Create a file named `.env` in your project's root directory. This file will securely store your database connection string, keeping your credentials separate from your source code.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
    ![Connection modal](https://neon.com/docs/connect/connect_to_branch_modal.png)
 3. Select **Node.js** from the connection string dropdown and copy the full connection string.
@@ -87711,7 +87754,7 @@ Create a project using the Gradle `init` command. This sets up a standard Kotlin
 
 Create a file named `.env` in the `app` directory. This file will securely store your database connection string. Place it next to the application module so `dotenv-kotlin` can load it when you run the app with Gradle.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
 3. Select **Java** as your programming language. Kotlin uses the same JDBC connection string format.
    ![Connection modal](https://neon.com/docs/connect/java_connection_details.png)
@@ -89954,7 +89997,7 @@ This section describes how to prepare your source Neon database (the publisher) 
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -90276,7 +90319,7 @@ This section describes how to prepare your source Neon database (the publisher) 
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -90724,7 +90767,7 @@ To enable logical replication in Neon:
 **Console**
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -91873,7 +91916,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -92057,7 +92100,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -92214,7 +92257,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -92574,7 +92617,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -93071,7 +93114,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -93411,7 +93454,7 @@ In the Neon project containing your source database, enable logical replication.
 To enable logical replication:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -93537,7 +93580,7 @@ When replicating data from Neon, enable logical replication on your Neon project
 **Console**
 
 1. Select your project in the Neon Console.
-2. On the **Project Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -93928,7 +93971,7 @@ In the Neon project containing your source database, enable logical replication.
 To enable logical replication:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -94396,7 +94439,7 @@ Replication keeps compute active (no [scale to zero](https://neon.com/docs/intro
 To enable logical replication in Neon:
 
 1. Select your project in the Neon Console.
-2. On the Neon **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -94891,7 +94934,7 @@ Following successful registration, you will be redirected to the Medusa Admin da
 
 After the installation is complete, you can optionally verify the tables in the Neon Console:
 
-1. Navigate to your Neon Project dashboard.
+1. Open your project in the Neon Console.
 2. In the sidebar, select **Postgres database** > **Tables**.
 3. You should see all the Medusa tables created in your database.
 
@@ -96842,7 +96885,7 @@ After adding a restriction, you can check the status of the VPC endpoint to view
 
 ```bash
 neon vpc endpoint status vpce-1234567890abcdef0 --region-id=aws-eu-central-1 --org-id=org-nameless-block-72040075
-Vpc Endpoint Id              vpce-1234567890abcdef0
+VPC Endpoint ID              vpce-1234567890abcdef0
 State                        new
 Num Restricted Projects      1
 Example Restricted Projects  orange-credit-12345678
@@ -97613,7 +97656,7 @@ After logging into the Neon Console, proceed to the [Projects](https://console.n
 
 1. Click `New Project` to start a new one.
 
-2. In the Neon **Dashboard**, use **Postgres database** > **SQL Editor** from the sidebar to execute the SQL command below, creating a new table for coffee blends:
+2. In the Neon Console, use **Postgres database** > **SQL Editor** from the sidebar to execute the SQL command below, creating a new table for coffee blends:
 
    ```sql
    CREATE TABLE favorite_coffee_blends (
@@ -99553,7 +99596,7 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA api GRANT SELECT ON TABLES TO anonymous;
 
 Retrieve an unpooled database connection string. PostgREST requires a direct connection to your database.
 
-1. Navigate to your **Project Dashboard** in the Neon Console.
+1. Open your project in the Neon Console.
 2. Click the **Connect** button to open the **Connect to your branch** modal.
 3. Toggle **Connection pooling** to disable it; you need an unpooled connection string.
 4. Copy the connection string.
@@ -100482,9 +100525,9 @@ On plans that support it, you can use the protected branches feature in combinat
 To configure an allowlist:
 
 1. Select a project in the Neon Console.
-2. On the Project Dashboard, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Networking**.
-4. Under **Public internet access**, specify the IP addresses you want to permit. Separate multiple entries with commas.
+4. Under **Public internet access**, select **Only addresses on the allowlist**, then specify the IP addresses you want to permit. Separate multiple entries with commas.
 5. Click **Save changes**.
 
 **CLI**
@@ -100493,7 +100536,7 @@ The [Neon CLI ip-allow command](https://neon.com/docs/cli/ip-allow) supports IP 
 
 ```bash
 neon ip-allow add 203.0.113.0 203.0.113.1
-Id              wispy-haze-123456
+ID              wispy-haze-123456
 Name            wispy-haze-123456
 IP Addresses    203.0.113.0, 203.0.113.1
 Protected Only  false
@@ -100541,11 +100584,9 @@ For details about specifying IP addresses, see [How to specify IP addresses](htt
 
 ### Restrict IP access to protected branches only
 
-After defining an IP allowlist, the next step is to select the **Restrict access to protected branches only** option.
+After defining an IP allowlist, go to **Restricted branches** and select **Protected branches only**.
 
-![IP Allow configuration](https://neon.com/docs/guides/ip_allow_protected_branches.png)
-
-This option removes IP restrictions from _all branches_ in your Neon project and applies them to protected branches only.
+This option removes IP restrictions from _all branches_ in your Neon project and applies them to protected branches only. Every other branch keeps accepting any address.
 
 After you've selected the protected branches option, click **Save changes** to apply the new configuration.
 
@@ -100634,7 +100675,7 @@ For your Python project, create a project directory, set up a virtual environmen
 
 Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
    ![Connection modal](https://neon.com/docs/connect/connect_to_branch_modal.png)
 3. Copy the connection string, which includes your password.
@@ -101904,7 +101945,7 @@ To follow along with this guide, you will need:
 
 2. Click the `New Project` button to create a new project.
 
-3. From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+3. In the Neon Console, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
    ```sql
    CREATE TABLE plant_care_log (
@@ -102397,8 +102438,8 @@ curl --request POST \
 
 ### Connect to the read replica
 
-1. Once the read replica is created, go to your **Project Dashboard**.
-2. Under **Connection Details**, select the replica compute.
+1. Once the read replica is created, click **Connect** at the top of the sidebar.
+2. In the **Connect to your branch** modal, select the replica compute.
 3. Copy the connection string and use it to connect to the replica, either via `psql` or your application.
 
    Your connection string will look something like this:
@@ -103986,7 +104027,7 @@ Log in to the Neon Console and navigate to the [Projects](https://console.neon.t
 
 - Click the `New Project` button to create a new project.
 
-- From your project dashboard, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
+- In the Neon Console, navigate to **Postgres database** > **SQL Editor** from the sidebar, and run the following SQL command to create a new table in your database:
 
   ```sql
   CREATE TABLE books_to_read (
@@ -105559,7 +105600,7 @@ For your Rust project, use `cargo` to create a new project and add the required 
 
 Create a file named `.env` in your project's root directory. This file will securely store your database connection string.
 
-1. In the [Neon Console](https://console.neon.tech), select your project on the **Dashboard**.
+1. In the [Neon Console](https://console.neon.tech), open your project.
 2. Click **Connect** in the Console nav to open the **Connect to your branch** modal.
    ![Connection modal](https://neon.com/docs/connect/connect_to_branch_modal.png)
 3. Copy the connection string, which includes your password.
@@ -106229,8 +106270,8 @@ Configuring the scale to zero setting in your project's settings sets the projec
 To configure the scale to zero default for an existing project:
 
 1. Select a project in the Neon Console.
-2. On the **Dashboard**, select **Settings**.
-3. Navigate to the **Compute defaults** section.
+2. Select **Settings** in the sidebar.
+3. Select **Postgres** and find the **Compute defaults** section.
 4. Select **Modify defaults**.
 5. Enable or disable the scale to zero setting, and save your selection.
 
@@ -106240,7 +106281,7 @@ You can monitor scale to zero on the **Branches** page in the Neon Console. A co
 
 ![Compute status](https://neon.com/docs/introduction/compute_state.png)
 
-You can also view compute state transitions in the **Branches** widget on the Neon **Dashboard**.
+You can also see each branch's compute status and when it was last active on the **Branches** page.
 
 User actions that activate an idle compute include [connecting from a client such as psql](https://neon.com/docs/connect/query-with-psql-editor), running a query on your database from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor), or accessing the compute via the [Neon API](https://neon.com/docs/reference/api).
 
@@ -106283,7 +106324,7 @@ First, create a new database called `people` on the `production` branch and add 
 
 1. Create the database.
 
-   In the **Neon Console**, go to **Postgres database** > **Databases** → **New Database**. Make sure your `production` branch is selected, then create the new database called `people`.
+   In the **Neon Console**, go to **Postgres database** > **Databases** → **Add database**. Make sure your `production` branch is selected, then create the new database called `people`.
 
 2. Add the schema.
 
@@ -106525,7 +106566,7 @@ CREATE TABLE address (
    Response:
 
    ```bash
-   INFO: Connecting to the database using psql...
+   Connecting to the database; launching psql...
    psql (16.1, server 16.2)
    SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off)
    Type "help" for help.
@@ -107315,7 +107356,7 @@ Sequin uses the Write Ahead Log (WAL) to capture changes from your Postgres data
 To enable logical replication:
 
 1. Select your project in the Neon Console.
-2. On the **Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -110428,7 +110469,7 @@ After creation you'll land on Vercel's **Storage** tab that includes status, pla
 
 ## Optionally open the project in the Neon Console
 
-From the **Storage** tab, click **Open in Neon** to jump straight to your new Neon project dashboard in the Neon Console. You'll notice it lives in an organization named `Vercel: <your-vercel-team>`.
+From the **Storage** tab, click **Open in Neon** to jump straight to your new Neon project in the Neon Console. You'll notice it lives in an organization named `Vercel: <your-vercel-team>`.
 
 ---
 
@@ -111194,8 +111235,8 @@ We're focusing our infrastructure investment where our customers want to run Neo
 
 You can check from the Console, the CLI, or the API:
 
-- **Console.** Open your project, then check the **Project settings** widget on the project dashboard. The region is shown in the **Region** row.
-- **CLI.** Run `neon projects list`. The `Region Id` column shows each project's region.
+- **Console.** Open your project, then check the **Project** panel on the **Overview** page. The region is shown in the **Region** row.
+- **CLI.** Run `neon projects list`. The `Region ID` column shows each project's region.
 - **API.** Call `GET /projects` and check the `region_id` field on each project.
 
 ![Project settings widget showing the project region](https://neon.com/docs/import/azure-regions-deprecation/project-settings-region.png)
@@ -112454,7 +112495,7 @@ For more information, see [Create a database](https://neon.com/docs/manage/datab
 
 ### Retrieve Neon connection details
 
-1. In the Neon Console, go to your **Project Dashboard**.
+1. Open your project in the Neon Console.
 2. Click **Connect** to open the **Connect to your branch** modal.
 3. Copy the connection string. It will look similar to this:
 
@@ -112713,16 +112754,16 @@ This section describes how to prepare your destination Lakebase Postgres databas
 
 ### Create the Neon database
 
-1. In the Neon Console, go to your project dashboard.
+1. Open your project in the Neon Console.
 2. In the sidebar, select **Postgres database** > **Databases**.
-3. Click the **New Database** button.
+3. Click **Add database**.
 4. Enter a name for your database and click **Create**.
 
 For more information, see [Create a database](https://neon.com/docs/manage/databases#create-a-database).
 
 ### Retrieve Neon connection details
 
-1. In the Neon Console, go to your project dashboard.
+1. Open your project in the Neon Console.
 2. Click **Connect** to open the **Connect to your branch** modal, and select your database.
 3. Copy the connection string. It will look similar to this:
 
@@ -113517,7 +113558,7 @@ For more information, see [Create a database](https://neon.com/docs/manage/datab
 
 ### Retrieve Neon connection details
 
-1. In the Neon Console, go to your **Project Dashboard**.
+1. Open your project in the Neon Console.
 2. Select **Connect** to open the **Connect to your branch** modal.
 3. Select the user and database as needed for your connection. Make sure the **Connection pooling** toggle is disabled to get a direct connection string.
 4. Copy the connection string. It will look similar to this:
@@ -113697,7 +113738,7 @@ For more information, see [Create a database](https://neon.com/docs/manage/datab
 
 ### Retrieve Neon connection details
 
-1. In the Neon Console, go to your **Project Dashboard**.
+1. Open your project in the Neon Console.
 2. Select **Connect** to open the **Connect to your branch** modal.
 3. Select the user and database as needed for your connection. Make sure the **Connection pooling** toggle is disabled to get an unpooled connection string.
 4. Copy the connection string. It will look similar to this:
@@ -113885,7 +113926,7 @@ For more information, see [Create a database](https://neon.com/docs/manage/datab
 
 ### Retrieve Neon connection details
 
-1. In the Neon Console, go to your project dashboard.
+1. Open your project in the Neon Console.
 2. Select **Connect** to open the **Connect to your branch** modal.
 3. Copy the connection string. It will look similar to this:
 
@@ -116319,7 +116360,7 @@ If IP Allow is enabled on your project, add the following IP addresses to allow 
 
 ## IP Allow together with Protected Branches
 
-You can apply IP restrictions more precisely by designating specific branches in your Neon project as protected and enabling the **Restrict IP access to protected branches only** option. This will apply your IP allowlist to protected branches only with no IP restrictions on other branches in your project. Typically, the protected branches feature is used with branches that contain production or sensitive data. For step-by-step instructions, refer to our [Protected Branches guide](https://neon.com/docs/guides/protected-branches).
+You can apply IP restrictions more precisely by designating specific branches in your Neon project as protected and selecting **Protected branches only** under **Restricted branches** in your project's **Settings** > **Networking**. This will apply your IP allowlist to protected branches only with no IP restrictions on other branches in your project. Typically, the protected branches feature is used with branches that contain production or sensitive data. For step-by-step instructions, refer to our [Protected Branches guide](https://neon.com/docs/guides/protected-branches).
 
 **Tip:** If you are an AWS user, Neon also supports a **Private Networking** feature, which enables connections to your Neon databases via AWS PrivateLink, bypassing the open internet entirely. See [Private Networking](https://neon.com/docs/guides/neon-private-networking).
 
@@ -116715,7 +116756,7 @@ You can monitor usage and costs in the Neon Console or programmatically with the
 
 ## View usage in the Neon Console
 
-Neon exposes usage in three places in the Console: the **Billing** page (account-level charges and plan summary), the **Projects** page (org-level usage metrics), and the **Project dashboard** (project-level usage metrics when you are inside a project).
+Neon exposes usage in three places in the Console: the **Billing** page (account-level charges and plan summary), the **Projects** page (org-level usage metrics), and the project's **Overview** page (project-level usage metrics when you are inside a project).
 
 ### Billing page
 
@@ -116731,9 +116772,9 @@ To open the Billing page:
 
 From the **Projects** page (Organization → **Projects**) you see an org-level summary of four metrics across all projects: **Compute**, **Storage**, **History**, and **Network transfer**.
 
-### Project dashboard
+### Project overview
 
-When you open a project, the **Project dashboard** (Project → **Dashboard**) shows the same four metrics for that project only: **Compute**, **Storage**, **History**, and **Network transfer**.
+When you open a project, the **Usage** panel on the **Overview** page shows the same four metrics for that project only: **Compute**, **Storage**, **History**, and **Network transfer**.
 
 Usage is shown since the start of the current billing period. Metrics may be delayed by about an hour and are not updated for inactive projects.
 
@@ -117156,13 +117197,13 @@ The following are common causes of increased network transfer in Neon. See [How 
 
 ## How to monitor network transfer
 
-**Important:** The Billing page only displays network transfer when usage exceeds the included allowance. To track usage before it results in charges, check the usage panel on the Organization or Project dashboard, or use the Consumption API.
+**Important:** The Billing page only displays network transfer when usage exceeds the included allowance. To track usage before it results in charges, check the usage panel on the organization **Projects** page or the project **Overview** page, or use the Consumption API.
 
 Paid plans receive a weekly usage report by email that includes network transfer usage and cost.
 
 ### Console organization page
 
-The usage panel on the organization **Projects** page always displays current network transfer usage across all projects. Individual project dashboards show network transfer for that project.
+The usage panel on the organization **Projects** page always displays current network transfer usage across all projects. Each project's **Overview** page shows network transfer for that project.
 
 ![Organization page usage panel showing network transfer](https://neon.com/docs/introduction/dashboard_org_usage.png)
 
@@ -118175,7 +118216,7 @@ All branches and databases created in a Neon project are created in the region s
 
 To find the region an existing project runs in, use any of these:
 
-- **Console:** open the project and check the **Settings** widget on the **Project Dashboard**. The region is listed alongside the cloud provider.
+- **Console:** open the project and check the **Project** panel on the **Overview** page. The region is listed in the **Region** row.
 - **CLI:** run `neon projects list` or `neon projects get <project_id>`. The output includes the region ID (for example, `aws-us-east-2`).
 - **Connection string:** the region is the segment before `.aws.neon.tech` in the hostname. For example, `us-east-2.aws.neon.tech` is AWS US East (Ohio).
 - **API:** read the `region_id` field from `GET /projects/{project_id}`.
@@ -118337,7 +118378,7 @@ We're accelerating work on improving and scaling the core database on Neon as we
 - **Lakebase Postgres in Stripe Projects**: Neon is now part of Stripe Projects, so you can provision a Neon database as part of a Stripe CLI app setup alongside other services. [Read the announcement](https://neon.com/blog/neon-works-with-stripe-projects-for-agentic-provisioning)
 - **Automatic cache prewarming**: Neon now prewarms your compute's in-memory cache during scheduled compute updates, protecting query performance immediately after the update restarts Postgres. [Read the blog post](https://neon.com/blog/prewarming)
 - **Unlimited org members on the Free plan**: You can now add unlimited members to each organization on the Free plan. The members API supports pagination and sorting, and the Console shows a 2FA indicator per member. [Learn more](https://neon.com/docs/manage/orgs-manage).
-- **Managed Better Auth organization settings and webhooks**: Configure Managed Better Auth Organizations from the Console (**Auth** > **Plugins**, per branch) and use webhooks to receive HTTP callbacks for auth events (OTP, magic link, user creation). [Learn more](https://neon.com/docs/auth/guides/plugins/organization) and [Webhooks](https://neon.com/docs/auth/guides/webhooks).
+- **Managed Better Auth organization settings and webhooks**: Configure Managed Better Auth Organizations from the Console (**Settings** > **Better Auth**, per branch) and use webhooks to receive HTTP callbacks for auth events (OTP, magic link, user creation). [Learn more](https://neon.com/docs/auth/guides/plugins/organization) and [Webhooks](https://neon.com/docs/auth/guides/webhooks).
 - **Network transfer guide and egress optimizer agent skill**: A new guide explains how to monitor and reduce network transfer costs. An agent skill helps your AI assistant diagnose and fix query patterns that cause excessive egress. [Learn more](https://neon.com/docs/introduction/network-transfer).
 - **Two-factor authentication (2FA)**: Enable 2FA from Account settings for an extra layer of security at login. [Learn more](https://neon.com/docs/manage/accounts#two-factor-authentication).
 - **Data API advisors**: A new Monitoring tab scans your database when you use the Data API and reports security and performance issues (such as missing RLS or unindexed foreign keys) with recommended fixes. [Learn more](https://neon.com/docs/data-api/database-advisor).
@@ -118653,7 +118694,7 @@ Real-time uptime and incident status live on the Neon status page, not on this p
 >
 > [Open status page](https://neonstatus.com/)
 
-To monitor the status for your specific Neon project, check the region where your project is located. You can find your project's region on the **Project Dashboard** in the Neon Console, in the **Project settings** widget.
+To monitor the status for your specific Neon project, check the region where your project is located. You can find your project's region on the **Overview** page in the Neon Console, in the **Project** panel.
 
 The Neon status page tracks the following components:
 
@@ -119823,7 +119864,7 @@ neon api-keys create --name development
 
 ```text
 API key
-Id    3225999
+ID    3225999
 Name  development
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
@@ -119885,7 +119926,7 @@ neon api-keys create --name orgkey --org-id org-example-12345678
 
 ```text
 API key
-Id    3243302
+ID    3243302
 Name  orgkey
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
@@ -119943,13 +119984,13 @@ neon api-keys create --name only-this-project --project-id some-project-123
 
 ```text
 API key
-Id       3243162
+ID       3243162
 Name     only-this-project
 Project  some-project-123
 
 napi_examplekey1234567890abcdefghijklmnopqrstuvwxyz
 WARNING: Store this key now: it is not shown again.
-INFO: Limited to some-project-123: it cannot create projects, mint API keys, or read any other project. It can still change and delete everything inside that project.
+Limited to some-project-123: it cannot create projects, mint API keys, or read any other project. It can still change and delete everything inside that project.
 ```
 
 A project-scoped key is owned by the project's organization, not by your account, so it does not appear in `neon api-keys list`. Use `neon api-keys list --org-id <org-id>` to see it, and pass the same `--org-id` to revoke it.
@@ -120983,9 +121024,9 @@ neon branches list --project-id dry-heart-13671059
 ```
 
 ```text filename="Output"
-Name                  Id                        Current State  Created At
-[default] main        br-morning-meadow-123456  ready          2026-08-04T07:07:55Z
-br-curly-wave-123456  br-curly-wave-123456      ready          2026-08-04T07:13:09Z
+Name                  ID                        Current State  Expires At  Created At
+[default] main        br-morning-meadow-123456  ready          never       2026-08-04T07:07:55Z
+br-curly-wave-123456  br-curly-wave-123456      ready          never       2026-08-04T07:13:09Z
 ```
 
 **API**
@@ -121374,7 +121415,7 @@ For attribute definitions, find the [Delete branches](https://neon.com/docs/refe
 
 ## Check the data size
 
-You can check the logical data size for the databases on a branch by viewing the **Data size** value on the **Branches** page or page in the Neon Console. Alternatively, you can run the following query on your branch from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or any SQL client connected to your database:
+You can check the logical data size for the databases on a branch by viewing the **Storage** column on the **Branches** page in the Neon Console. Alternatively, you can run the following query on your branch from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or any SQL client connected to your database:
 
 ```sql
 SELECT pg_size_pretty(sum(pg_database_size(datname)))
@@ -122901,7 +122942,7 @@ For both types of updates, we strive to minimize disruption to database operatio
 | Type                     | Where to check                                         | Details                                                                                                                                                                                                                                                |
 | ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | **Platform maintenance** | [Neon Status](https://neonstatus.com/)                 | Check the regional status page where your Neon project resides for upcoming platform maintenance. Optionally, subscribe to a regional status page to receive status updates. See [Neon Status](https://neon.com/docs/introduction/status) for details. |
-| **Updates**              | [Neon Console](https://console.neon.tech/app/projects) | On your Neon project dashboard, go to **Settings** > **Postgres** to view your update window and check for update notices. Paid plans allow you to select a preferred update window.                                                                   |
+| **Updates**              | [Neon Console](https://console.neon.tech/app/projects) | In your Neon project, go to **Settings** > **Postgres** to view your update window and check for update notices. Paid plans allow you to select a preferred update window.                                                                             |
 
 --- [Document source](https://neon.com/docs/manage/operations.md) ---
 
@@ -123918,7 +123959,7 @@ Example:
 ```bash
 neon orgs list
 Organizations
-Id                      Name         Plan
+ID                      Name         Plan
 org-ocean-art-12345678  Example Org  Launch
 ```
 
@@ -123933,7 +123974,7 @@ Example: Listing all projects in an organization:
 ```bash
 neon projects list --org-id org-xxxx-xxxx
 Projects
-Id                       Name                      Region Id         Created At
+ID                       Name                      Region ID         Created At
 bright-moon-12345678     dev-backend-api           aws-us-east-2     2026-07-26T11:43:37Z
 silent-forest-87654321   test-integration-service  aws-eu-central-1  2026-05-30T22:14:49Z
 crystal-stream-23456789  staging-web-app           aws-us-east-2     2026-05-17T13:47:35Z
@@ -124126,7 +124167,7 @@ Before you transfer, review [Limits and requirements](https://neon.com/docs/mana
 **Console (single)**
 
 1. Open the project's **Settings** page.
-2. Select **Transfer** from the sidebar.
+2. On the **General** tab, under **Transfer project**, select **Transfer project**.
 3. Choose the destination organization.
 
 ![transfer single project to another org](https://neon.com/docs/manage/transfer_project.png)
@@ -124537,7 +124578,7 @@ You can create a project from the Console or the Neon CLI. To create one with th
 4. Under **Services**, choose what to enable. **Postgres database** is on by default (expand it to set the **Postgres version**). Where the selected region supports them, you can also enable **Object storage**, **Functions**, **AI gateway**, and **Neon Auth**. Services that aren't available in the selected region aren't shown.
 5. Click **Create project**.
 
-After creating a project, you are directed to the **Project Dashboard**.
+After creating a project, you are directed to the project's **Overview** page.
 
 **CLI**
 
@@ -124609,7 +124650,7 @@ Also note that adjusting the history window affects _all_ branches in your proje
 To configure the history window:
 
 1. Select a project in the Neon Console.
-2. On your **Project Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**.
 4. Under **History window**, use the slider to choose how long to keep change history.
 5. Click **Save**.
@@ -124671,10 +124712,10 @@ By default, Neon allows IP addresses from `0.0.0.0`, which means that Neon accep
 To configure an allowlist:
 
 1. Select a project in the Neon Console.
-2. On the **Project Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Networking**.
 4. Under **Public internet access**, select **Only addresses on the allowlist**, then specify the IP addresses you want to permit. Separate multiple entries with commas.
-5. Optionally, select **Restrict IP Access to protected branches only** to restrict access to only the branches you have designated as protected.
+5. Optionally, under **Restricted branches**, select **Protected branches only** to enforce the allowlist only on branches you've designated as protected. Every other branch keeps accepting any address.
 6. Click **Save changes**.
 
 **CLI**
@@ -124683,7 +124724,7 @@ The [Neon CLI ip-allow command](https://neon.com/docs/cli/ip-allow) supports IP 
 
 ```bash
 neon ip-allow add 203.0.113.0 203.0.113.1
-Id              wispy-haze-123456
+ID              wispy-haze-123456
 Name            wispy-haze-123456
 IP Addresses    203.0.113.0, 203.0.113.1
 Protected Only  false
@@ -124780,11 +124821,10 @@ To remove an IP configuration entirely to go back to the default "no IP restrict
 **Neon Console**
 
 1. Select a project in the Neon Console.
-2. On the **Project Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Networking**.
-4. Under **Public internet access**, clear the allowlisted IP addresses.
-5. If applicable, clear the **Restrict IP Access to protected branches only** checkbox.
-6. Click **Save changes**.
+4. Under **Public internet access**, select **Any IP address**.
+5. Click **Save changes**.
 
 **CLI**
 
@@ -124833,7 +124873,7 @@ Logical replication lets you replicate data changes from Neon to external data s
 **Console**
 
 1. Select your project in the Neon Console.
-2. On the **Project Dashboard**, select **Settings**.
+2. Select **Settings** in the sidebar.
 3. Select **Postgres**, then find **Logical replication**.
 4. Click **Enable** to enable logical replication.
 
@@ -124885,7 +124925,9 @@ To delete a project:
 1. Navigate to the [Neon Console](https://console.neon.tech).
 2. Select the project that you want to delete.
 3. Select **Settings**.
-4. Select **Delete**.
+4. On the **General** tab, under **Delete project**, select **Delete project**.
+
+**Note:** Deleting a project doesn't release its [custom domains](https://neon.com/docs/compute/functions/custom-domains#delete-a-custom-domain). Delete any domains you want to reuse before you delete the project.
 
 **Note:** For HIPAA-compliant projects, see [HIPAA Compliance](https://neon.com/docs/security/hipaa#delete-a-hipaa-compliant-project) before deleting a project—for example, to export audit logs you may need.
 
@@ -125428,9 +125470,9 @@ The command returns details about the recovered project.
 
 ```bash
 neon projects recover crimson-voice-12345678
-Id          crimson-voice-12345678
+ID          crimson-voice-12345678
 Name        myproject
-Region Id   aws-us-east-2
+Region ID   aws-us-east-2
 Created At  2026-04-15T11:17:30Z
 ```
 
@@ -125911,7 +125953,7 @@ On the **Free plan**, updates are scheduled and applied automatically. You can c
 
 To view planned updates:
 
-1. Go to the Neon project dashboard.
+1. Open your project in the Neon Console.
 2. Select **Settings** > **Postgres**.
 
    ![Free plan updates UI](https://neon.com/docs/manage/free_plan_updates.png)
@@ -125928,7 +125970,7 @@ You can specify an update window in your Neon project's settings or using the Ne
 
 In the Neon Console:
 
-1. Go to the Neon project dashboard.
+1. Open your project in the Neon Console.
 2. Select **Settings** > **Postgres**.
 3. Choose a day of the week and an hour. Updates will occur within this time window and take only a few seconds.
 
@@ -127233,7 +127275,7 @@ Neon manages **minor** Postgres version upgrades for you, as per the [Lakebase P
 
 Each Neon project is tied to a specific Postgres major version, which you selected when creating your Neon project.
 
-You can check your Neon project's Postgres version in the **Settings** widget on **Project Dashboard** or by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or any SQL client connection to your database:
+You can check your Neon project's Postgres version in the **Postgres** panel on the **Overview** page or by running the following query from the [Neon SQL Editor](https://neon.com/docs/get-started/query-with-neon-sql-editor) or any SQL client connection to your database:
 
 ```sql
 SELECT version();
@@ -127343,7 +127385,7 @@ SELECT version();
 
 The first number is the major version. The second is the minor version, which Neon updates automatically.
 
-Your Postgres major version is also displayed in the **Project settings** widget on your Neon **Project Dashboard**. With the [Neon CLI](https://neon.com/docs/cli) installed and authenticated, `neon projects get <project_id> --output json` returns the same value in its `pg_version` field.
+Your Postgres major version is also displayed in the **Postgres** panel on your project's **Overview** page. With the [Neon CLI](https://neon.com/docs/cli) installed and authenticated, `neon projects get <project_id> --output json` returns the same value in its `pg_version` field.
 
 ### Minor releases
 
@@ -129104,6 +129146,16 @@ Interface-specific indexes:
 - [Retrieve email server configuration](https://neon.com/docs/reference/api/auth-legacy/get-neon-auth-email-server.md) `GET /projects/{project_id}/auth/email_server`
 - [Update email server configuration](https://neon.com/docs/reference/api/auth-legacy/update-neon-auth-email-server.md) `PATCH /projects/{project_id}/auth/email_server`
 - [Update OAuth provider](https://neon.com/docs/reference/api/auth-legacy/update-neon-auth-oauth-provider.md) `PATCH /projects/{project_id}/auth/oauth_providers/{oauth_provider_id}`
+
+## Realtime
+
+[All realtime endpoints](https://neon.com/docs/reference/api/realtime.md)
+
+- [Disable Realtime](https://neon.com/docs/reference/api/realtime/disable-project-branch-realtime.md) `DELETE /projects/{project_id}/branches/{branch_id}/realtime`
+- [Enable Realtime](https://neon.com/docs/reference/api/realtime/enable-project-branch-realtime.md) `POST /projects/{project_id}/branches/{branch_id}/realtime`
+- [Retrieve Realtime state](https://neon.com/docs/reference/api/realtime/get-project-branch-realtime.md) `GET /projects/{project_id}/branches/{branch_id}/realtime`
+- [Retrieve the Realtime shared secret](https://neon.com/docs/reference/api/realtime/get-project-branch-realtime-secret.md) `GET /projects/{project_id}/branches/{branch_id}/realtime/secret`
+- [Rotate the Realtime shared secret](https://neon.com/docs/reference/api/realtime/rotate-project-branch-realtime-secret.md) `POST /projects/{project_id}/branches/{branch_id}/realtime/rotate_secret`
 
 --- [Document source](https://neon.com/docs/reference/api/get-started.md) ---
 
@@ -134546,7 +134598,7 @@ When you create a project, select the **Enable HIPAA compliance for this project
 To enable HIPAA compliance for an existing Neon project:
 
 1. In the Neon Console, navigate to your project's **Settings** page.
-2. Locate the **HIPAA support** section.
+2. Select the **HIPAA compliance** tab.
 3. Click **Enable**.
 
 **API**
@@ -134833,7 +134885,7 @@ Once HIPAA compliance is enabled for a Neon project, it cannot be disabled.
 
 ### Delete a HIPAA-compliant project
 
-You can delete a HIPAA-compliant project using the same self-serve flow as any other Neon project: in the Console (**Settings** → **Delete**), via the [Neon API](https://neon.com/docs/manage/projects#delete-a-project-with-the-api), or with the [Neon CLI](https://neon.com/docs/cli/projects#delete). Deleting a project is permanent and removes all computes, branches, databases, and roles in that project.
+You can delete a HIPAA-compliant project using the same self-serve flow as any other Neon project: in the Console (**Settings** → **General** → **Delete project**), via the [Neon API](https://neon.com/docs/manage/projects#delete-a-project-with-the-api), or with the [Neon CLI](https://neon.com/docs/cli/projects#delete). Deleting a project is permanent and removes all computes, branches, databases, and roles in that project.
 
 **Important:** Before deleting a HIPAA project, export any audit logs or data you may need.
 
@@ -135781,6 +135833,8 @@ The `api_token` and `s3_secret_access_key` are printed once, so store them right
 
 In the Neon Console, click **Connect** at the top of the sidebar and open the **Storage** tab. Use the client selector to pick **S3 client**, **Files SDK**, or **Python** for a ready-to-run snippet, or **Parameters only** for the raw `.env`. Click **Reveal credential** to show `AWS_SECRET_ACCESS_KEY`, **Copy credentials** to copy it, or **Rotate credentials** to issue new keys.
 
+To create a separate credential with only the scopes you need, open your project's **Settings** > **Credentials**, select **Create credential**, enter a name, and choose `storage:read`, `storage:write`, or both. The secret is shown only once, so copy it right away.
+
 ```text
 AWS_ENDPOINT_URL_S3=https://br-cool-darkness-a1b2c3d4.storage.c-1.us-east-2.aws.neon.tech
 AWS_ACCESS_KEY_ID=nak_live_...
@@ -136295,7 +136349,7 @@ export AWS_SECRET_ACCESS_KEY=nsk_live_...   # s3_secret_access_key
 
 ```bash
 # files-sdk uses @aws-sdk/* packages as peer dependencies; install them alongside it
-npm install files-sdk @aws-sdk/client-s3 @aws-sdk/s3-request-presigner @aws-sdk/s3-presigned-post dotenv
+npm install files-sdk @aws-sdk/client-s3 @aws-sdk/lib-storage @aws-sdk/s3-request-presigner @aws-sdk/s3-presigned-post dotenv
 ```
 
 **S3 Client**
@@ -137076,6 +137130,8 @@ Two limits are behavioral rather than fixed numbers:
 
 - **Region**: object storage is available in AWS US East (Ohio) (`aws-us-east-2`), AWS US East (N. Virginia) (`aws-us-east-1`), AWS Europe (Frankfurt) (`aws-eu-central-1`), and AWS Asia Pacific (Singapore) (`aws-ap-southeast-1`). Support is expanding toward all regions.
 - **Rate limiting**: requests may be throttled during heavy use, returning a `503 SlowDown` response. Back off and retry. See [Connection and performance errors](https://neon.com/docs/storage/troubleshooting#connection-and-performance-errors).
+
+To see how much Object Storage your project uses, check the **Object storage** row in the **Project** panel on your branch's **Overview** page. The value covers all branches in the project.
 
 Storage-volume limits apply to the Free plan only. Paid plans have no fixed limit on total storage or number of objects; storage is metered per GB (see [plans and pricing](https://neon.com/docs/introduction/plans#object-storage)). For large objects, use [multipart upload](https://neon.com/docs/storage/objects#multipart-upload), which AWS recommends for anything over 100 MB.
 

@@ -1,5 +1,5 @@
 ---
-title: "OpenAI Agents API"
+title: "Self-Hosted Sandboxes for the OpenAI Agents API"
 source: https://upstash.com/docs/box/guides/openai-agents-api
 path: docs/box/guides/openai-agents-api
 ---

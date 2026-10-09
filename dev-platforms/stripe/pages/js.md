@@ -574,6 +574,8 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
       - `upi`
         If this is a `upi` PaymentMethod, this sub-hash contains details about the UPI payment method options.
         - `setup_future_usage`
@@ -976,6 +978,10 @@ Incompatible with `paymentMethodCreation='manual'`.
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
+          - `on_session`
+            Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
       - `sepa_debit`
         If this is a `sepa_debit` PaymentMethod, this sub-hash contains details about the SEPA Debit payment method options.
         - `setup_future_usage`
@@ -1018,12 +1024,18 @@ Incompatible with `paymentMethodCreation='manual'`.
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
       - `upi`
         If this is a `upi` PaymentMethod, this sub-hash contains details about the UPI payment method options.
         - `setup_future_usage`
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
+          - `on_session`
+            Use `on_session` if you intend to only reuse the payment method when your customer is present in your checkout flow.
       - `us_bank_account`
         If this is a `us_bank_account` PaymentMethod, this sub-hash contains details about the US bank account payment method options.
         - `verification_method`
@@ -9154,6 +9166,8 @@ When providing a `customerSessionClientSecret` and using the Payment Element, th
           Indicates that you intend to make future payments with the payment details collected by the Payment Element.
           - `none`
             Use `none` if you do not intend to reuse this payment method and want to override the top-level setup_future_usage value for this payment method.
+          - `off_session`
+            Use `off_session` if your customer may or may not be present in your checkout flow.
       - `upi`
         If this is a `upi` PaymentMethod, this sub-hash contains details about the UPI payment method options.
         - `setup_future_usage`
