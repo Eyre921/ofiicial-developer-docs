@@ -16,7 +16,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  Learn the basics of core concepts and essential terminology in GitHub Actions.
+  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
@@ -28,7 +28,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
-  <p>You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.</p>
+  You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 

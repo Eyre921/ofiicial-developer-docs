@@ -38,7 +38,8 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "status": "error: curl failed (16) for https://docs.crewai.com/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 1196032 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
+    "pages": 243,
+    "status": "ok"
   },
   "ai-models/anthropic-api": {
     "pages": 0,
@@ -100,7 +101,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -150,8 +151,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 251,
-    "status": "ok"
+    "status": "error: curl failed (35) for https://developers.notion.com/llms-full.txt: curl: (35) Recv failure: Connection reset by peer\n"
   },
   "dev-platforms/twilio": {
     "pages": 0,
@@ -185,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 93,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -201,8 +201,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1376,
+    "pages": 1375,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-10T11:30:46Z"
+  "_last_crawl": "2026-10-10T23:30:26Z"
 }

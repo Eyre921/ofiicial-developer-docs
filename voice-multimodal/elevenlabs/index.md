@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1375 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -1121,7 +1121,6 @@
 - `docs/help-center/product/flows-image-video/flows/can-i-save-and-reuse-flows` — [Can I save and reuse flows?](pages/docs/help-center/product/flows-image-video/flows/can-i-save-and-reuse-flows.md) · [原文](https://elevenlabs.io/docs/help-center/product/flows-image-video/flows/can-i-save-and-reuse-flows.md)
 - `docs/help-center/product/flows-image-video/flows/can-multiple-people-edit-the-same-flow-at-the-same-time` — [Can multiple people edit the same flow at the same time?](pages/docs/help-center/product/flows-image-video/flows/can-multiple-people-edit-the-same-flow-at-the-same-time.md) · [原文](https://elevenlabs.io/docs/help-center/product/flows-image-video/flows/can-multiple-people-edit-the-same-flow-at-the-same-time.md)
 - `docs/help-center/product/flows-image-video/flows/can-people-outside-my-workspace-see-my-flow` — [Can people outside my workspace see my flow?](pages/docs/help-center/product/flows-image-video/flows/can-people-outside-my-workspace-see-my-flow.md) · [原文](https://elevenlabs.io/docs/help-center/product/flows-image-video/flows/can-people-outside-my-workspace-see-my-flow.md)
-- `docs/help-center/product/flows-image-video/flows/do-i-need-to-regenerate-everything-if-i-change-one-step` — [Do I need to regenerate everything if I change one step?](pages/docs/help-center/product/flows-image-video/flows/do-i-need-to-regenerate-everything-if-i-change-one-step.md) · [原文](https://elevenlabs.io/docs/help-center/product/flows-image-video/flows/do-i-need-to-regenerate-everything-if-i-change-one-step.md)
 - `docs/help-center/product/flows-image-video/flows/does-real-time-collaboration-cost-additional-credits` — [Does real-time collaboration cost additional credits in Flows?](pages/docs/help-center/product/flows-image-video/flows/does-real-time-collaboration-cost-additional-credits.md) · [原文](https://elevenlabs.io/docs/help-center/product/flows-image-video/flows/does-real-time-collaboration-cost-additional-credits.md)
 - `docs/help-center/product/flows-image-video/flows/how-are-credits-charged-in-flows` — [How are credits charged in Flows?](pages/docs/help-center/product/flows-image-video/flows/how-are-credits-charged-in-flows.md) · [原文](https://elevenlabs.io/docs/help-center/product/flows-image-video/flows/how-are-credits-charged-in-flows.md)
 - `docs/help-center/product/flows-image-video/flows/how-do-i-share-a-flow-with-my-team` — [How do I share a flow with my team?](pages/docs/help-center/product/flows-image-video/flows/how-do-i-share-a-flow-with-my-team.md) · [原文](https://elevenlabs.io/docs/help-center/product/flows-image-video/flows/how-do-i-share-a-flow-with-my-team.md)
