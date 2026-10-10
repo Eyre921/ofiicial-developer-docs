@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1687 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1692 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -259,7 +259,7 @@
 - `langsmith/deploy-nuxt` — [Deploy with Nuxt](pages/langsmith/deploy-nuxt.md) · [原文](https://docs.langchain.com/langsmith/deploy-nuxt)
 - `langsmith/deploy-other-frameworks` — [Deploy other frameworks](pages/langsmith/deploy-other-frameworks.md) · [原文](https://docs.langchain.com/langsmith/deploy-other-frameworks)
 - `langsmith/deploy-reference-overview` — [Reference](pages/langsmith/deploy-reference-overview.md) · [原文](https://docs.langchain.com/langsmith/deploy-reference-overview)
-- `langsmith/deploy-self-hosted-full-platform` — [Enable additional LangSmith features](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
+- `langsmith/deploy-self-hosted-full-platform` — [Enable LangSmith Deployment](pages/langsmith/deploy-self-hosted-full-platform.md) · [原文](https://docs.langchain.com/langsmith/deploy-self-hosted-full-platform)
 - `langsmith/deploy-standalone-server` — [Self-host standalone servers](pages/langsmith/deploy-standalone-server.md) · [原文](https://docs.langchain.com/langsmith/deploy-standalone-server)
 - `langsmith/deploy-sveltekit` — [Deploy with SvelteKit](pages/langsmith/deploy-sveltekit.md) · [原文](https://docs.langchain.com/langsmith/deploy-sveltekit)
 - `langsmith/deploy-to-agent-environment` — [Deploy to an agent environment](pages/langsmith/deploy-to-agent-environment.md) · [原文](https://docs.langchain.com/langsmith/deploy-to-agent-environment)
@@ -274,6 +274,8 @@
 - `langsmith/diagnostics-self-hosted` — [Troubleshooting for self-hosted deployments](pages/langsmith/diagnostics-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/diagnostics-self-hosted)
 - `langsmith/distributed-tracing` — [Implement distributed tracing](pages/langsmith/distributed-tracing.md) · [原文](https://docs.langchain.com/langsmith/distributed-tracing)
 - `langsmith/double-texting` — [Double texting](pages/langsmith/double-texting.md) · [原文](https://docs.langchain.com/langsmith/double-texting)
+- `langsmith/enable-self-hosted-fleet` — [Enable Fleet on self-hosted LangSmith](pages/langsmith/enable-self-hosted-fleet.md) · [原文](https://docs.langchain.com/langsmith/enable-self-hosted-fleet)
+- `langsmith/enable-self-hosted-sandboxes` — [Enable Sandboxes on self-hosted LangSmith](pages/langsmith/enable-self-hosted-sandboxes.md) · [原文](https://docs.langchain.com/langsmith/enable-self-hosted-sandboxes)
 - `langsmith/encryption` — [Encryption at rest](pages/langsmith/encryption.md) · [原文](https://docs.langchain.com/langsmith/encryption)
 - `langsmith/endpoint-deprecation` — [API and SDK deprecation policy](pages/langsmith/endpoint-deprecation.md) · [原文](https://docs.langchain.com/langsmith/endpoint-deprecation)
 - `langsmith/engine` — [Find and fix your agent's issues with LangSmith Engine](pages/langsmith/engine.md) · [原文](https://docs.langchain.com/langsmith/engine)
@@ -547,6 +549,7 @@
 - `langsmith/script-generate-query-stats` — [Generate query stats](pages/langsmith/script-generate-query-stats.md) · [原文](https://docs.langchain.com/langsmith/script-generate-query-stats)
 - `langsmith/script-running-ch-support-queries` — [Run support queries against ClickHouse](pages/langsmith/script-running-ch-support-queries.md) · [原文](https://docs.langchain.com/langsmith/script-running-ch-support-queries)
 - `langsmith/script-running-pg-support-queries` — [Run support queries against PostgreSQL](pages/langsmith/script-running-pg-support-queries.md) · [原文](https://docs.langchain.com/langsmith/script-running-pg-support-queries)
+- `langsmith/self-host-additional-features` — [Configure additional self-hosted features](pages/langsmith/self-host-additional-features.md) · [原文](https://docs.langchain.com/langsmith/self-host-additional-features)
 - `langsmith/self-host-basic-auth` — [Basic authentication with email and password](pages/langsmith/self-host-basic-auth.md) · [原文](https://docs.langchain.com/langsmith/self-host-basic-auth)
 - `langsmith/self-host-blob-storage` — [Enable blob storage](pages/langsmith/self-host-blob-storage.md) · [原文](https://docs.langchain.com/langsmith/self-host-blob-storage)
 - `langsmith/self-host-custom-tls-certificates` — [Configure custom TLS certificates](pages/langsmith/self-host-custom-tls-certificates.md) · [原文](https://docs.langchain.com/langsmith/self-host-custom-tls-certificates)
@@ -560,6 +563,7 @@
 - `langsmith/self-host-fips` — [FIPS-compliant images](pages/langsmith/self-host-fips.md) · [原文](https://docs.langchain.com/langsmith/self-host-fips)
 - `langsmith/self-host-gke-vertex-ai-workload-identity` — [Authenticate Vertex AI with GKE workload identity](pages/langsmith/self-host-gke-vertex-ai-workload-identity.md) · [原文](https://docs.langchain.com/langsmith/self-host-gke-vertex-ai-workload-identity)
 - `langsmith/self-host-ingress` — [Create an Ingress for installations (Kubernetes)](pages/langsmith/self-host-ingress.md) · [原文](https://docs.langchain.com/langsmith/self-host-ingress)
+- `langsmith/self-host-insights-chat` — [Configure Insights and Chat on self-hosted LangSmith](pages/langsmith/self-host-insights-chat.md) · [原文](https://docs.langchain.com/langsmith/self-host-insights-chat)
 - `langsmith/self-host-mirroring-images` — [Mirror images for your LangSmith installation](pages/langsmith/self-host-mirroring-images.md) · [原文](https://docs.langchain.com/langsmith/self-host-mirroring-images)
 - `langsmith/self-host-observability-dashboards` — [Monitor self-hosted LangSmith with Datadog or Grafana](pages/langsmith/self-host-observability-dashboards.md) · [原文](https://docs.langchain.com/langsmith/self-host-observability-dashboards)
 - `langsmith/self-host-organization-charts` — [View trace counts across your organization](pages/langsmith/self-host-organization-charts.md) · [原文](https://docs.langchain.com/langsmith/self-host-organization-charts)
@@ -1072,6 +1076,7 @@
 - `langsmith/smith-api/service-accounts/delete-service-account` — [Delete service account](pages/langsmith/smith-api/service-accounts/delete-service-account.md) · [原文](https://docs.langchain.com/langsmith/smith-api/service-accounts/delete-service-account)
 - `langsmith/smith-api/service-accounts/get-service-accounts` — [Get service accounts](pages/langsmith/smith-api/service-accounts/get-service-accounts.md) · [原文](https://docs.langchain.com/langsmith/smith-api/service-accounts/get-service-accounts)
 - `langsmith/smith-api/sessions/list-agent-versions-for-a-project` — [List agent versions for a project](pages/langsmith/smith-api/sessions/list-agent-versions-for-a-project.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sessions/list-agent-versions-for-a-project)
+- `langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta` — [Resolve an address to its tracing project (Beta)](pages/langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta.md) · [原文](https://docs.langchain.com/langsmith/smith-api/sessions/resolve-an-address-to-its-tracing-project-beta)
 - `langsmith/smith-api/settings/get-settings` — [Get settings](pages/langsmith/smith-api/settings/get-settings.md) · [原文](https://docs.langchain.com/langsmith/smith-api/settings/get-settings)
 - `langsmith/smith-api/settings/set-tenant-handle` — [Set tenant handle](pages/langsmith/smith-api/settings/set-tenant-handle.md) · [原文](https://docs.langchain.com/langsmith/smith-api/settings/set-tenant-handle)
 - `langsmith/smith-api/tag-transitions/get-tag-transition-history` — [Get tag transition history](pages/langsmith/smith-api/tag-transitions/get-tag-transition-history.md) · [原文](https://docs.langchain.com/langsmith/smith-api/tag-transitions/get-tag-transition-history)

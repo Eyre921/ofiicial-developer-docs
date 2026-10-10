@@ -26,11 +26,11 @@ When you create a collection, you can customize these index configuration values
 
     * `space` defines the distance function of the embedding space, and hence how similarity is defined. The default is `l2` (squared L2 norm), and other possible values are `cosine` (cosine similarity), and `ip` (inner product).
 
-    | Distance          | parameter |                                                                                                              Equation |                                                                          Intuition                                                                          |
-    | ----------------- | :-------: | --------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
-    | Squared L2        |    `l2`   |                                                                                      $d = \sum\left(A_i-B_i\right)^2$ |                        measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity.                       |
-    | Inner product     |    `ip`   |                                                                           $d = 1.0 - \sum\left(A_i \times B_i\right)$ |              focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences             |
-    | Cosine similarity |  `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
+    | Distance | parameter | Equation | Intuition |
+    | - | :-: | -: | :-: |
+    | Squared L2 | `l2` | $d = \sum\left(A_i-B_i\right)^2$ | measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity. |
+    | Inner product | `ip` | $d = 1.0 - \sum\left(A_i \times B_i\right)$ | focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences |
+    | Cosine similarity | `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
 
     <Warning>
       You should make sure that the `space` you choose is supported by your collection's embedding function. Every Chroma embedding function specifies its default space and a list of supported spaces.
@@ -128,11 +128,11 @@ When you create a collection, you can customize these index configuration values
 
     * `space` defines the distance function of the embedding space, and hence how similarity is defined. The default is `l2` (squared L2 norm), and other possible values are `cosine` (cosine similarity), and `ip` (inner product).
 
-    | Distance          | parameter |                                                                                                              Equation |                                                                          Intuition                                                                          |
-    | ----------------- | :-------: | --------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
-    | Squared L2        |    `l2`   |                                                                                      $d = \sum\left(A_i-B_i\right)^2$ |                        measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity.                       |
-    | Inner product     |    `ip`   |                                                                           $d = 1.0 - \sum\left(A_i \times B_i\right)$ |              focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences             |
-    | Cosine similarity |  `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
+    | Distance | parameter | Equation | Intuition |
+    | - | :-: | -: | :-: |
+    | Squared L2 | `l2` | $d = \sum\left(A_i-B_i\right)^2$ | measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity. |
+    | Inner product | `ip` | $d = 1.0 - \sum\left(A_i \times B_i\right)$ | focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences |
+    | Cosine similarity | `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
 
     * `search_nprobe` is the number of centers that are probed for a query. The higher the value the more accurate the result will be. The query response time also increases as `search_nprobe` increases. Recommended values are 64/128. We don't allow setting a value higher than 128 today. The default value is 64.
     * `write_nprobe` is the same as `search_nprobe` but for the index construction phase. It is the number of centers searched when appending or reassigning a point. It has the same limits as `search_nprobe`. The default value is 64.

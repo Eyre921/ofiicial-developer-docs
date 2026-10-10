@@ -149,7 +149,7 @@
 - `guides/indexes/pods/understanding-pod-based-indexes` — [Understanding pod-based indexes](pages/guides/indexes/pods/understanding-pod-based-indexes.md) · [原文](https://docs.pinecone.io/guides/indexes/pods/understanding-pod-based-indexes)
 - `guides/manage-cost/manage-cost` — [Manage cost](pages/guides/manage-cost/manage-cost.md) · [原文](https://docs.pinecone.io/guides/manage-cost/manage-cost)
 - `guides/manage-cost/monitor-usage-and-costs` — [Monitor usage and costs](pages/guides/manage-cost/monitor-usage-and-costs.md) · [原文](https://docs.pinecone.io/guides/manage-cost/monitor-usage-and-costs)
-- `guides/manage-cost/understanding-cost` — [Understanding Pinecone cost](pages/guides/manage-cost/understanding-cost.md) · [原文](https://docs.pinecone.io/guides/manage-cost/understanding-cost)
+- `guides/manage-cost/understanding-cost` — [Understand Pinecone cost](pages/guides/manage-cost/understanding-cost.md) · [原文](https://docs.pinecone.io/guides/manage-cost/understanding-cost)
 - `guides/manage-data/back-up-an-index` — [Back up an index](pages/guides/manage-data/back-up-an-index.md) · [原文](https://docs.pinecone.io/guides/manage-data/back-up-an-index)
 - `guides/manage-data/backups-overview` — [Backups overview](pages/guides/manage-data/backups-overview.md) · [原文](https://docs.pinecone.io/guides/manage-data/backups-overview)
 - `guides/manage-data/delete-data` — [Delete data](pages/guides/manage-data/delete-data.md) · [原文](https://docs.pinecone.io/guides/manage-data/delete-data)

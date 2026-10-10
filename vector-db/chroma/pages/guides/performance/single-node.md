@@ -20,14 +20,14 @@ Roughly speaking, here is the sort of performance you can expect from Chroma on 
 * Small documents (100-200 words)
 * Three metadata fields per record.
 
-| Instance Type   | System RAM | Approx. Max Collection Size | Mean Latency (query) | 99.9% Latency (query) | Mean Latency (insert, batch size=32) | 99.9% Latency (insert, batch size=32) | Monthly Cost |
-| --------------- | ---------- | --------------------------- | -------------------- | --------------------- | ------------------------------------ | ------------------------------------- | ------------ |
-| **r7i.2xlarge** | 64         | 15,000,000                  | 5ms                  | 7ms                   | 112ms                                | 405ms                                 | \$386.944    |
-| **t3.2xlarge**  | 32         | 7,500,000                   | 5ms                  | 33ms                  | 149ms                                | 520ms                                 | \$242.976    |
-| **t3.xlarge**   | 16         | 3,600,000                   | 4ms                  | 7ms                   | 159ms                                | 530ms                                 | \$121.888    |
-| **t3.large**    | 8          | 1,700,000                   | 4ms                  | 10ms                  | 199ms                                | 633ms                                 | \$61.344     |
-| **t3.medium**   | 4          | 700,000                     | 5ms                  | 18ms                  | 191ms                                | 722ms                                 | \$31.072     |
-| **t3.small**    | 2          | 250,000                     | 8ms                  | 29ms                  | 231ms                                | 1280ms                                | \$15.936     |
+| Instance Type | System RAM | Approx. Max Collection Size | Mean Latency (query) | 99.9% Latency (query) | Mean Latency (insert, batch size=32) | 99.9% Latency (insert, batch size=32) | Monthly Cost |
+| - | - | - | - | - | - | - | - |
+| **r7i.2xlarge** | 64 | 15,000,000 | 5ms | 7ms | 112ms | 405ms | \$386.944 |
+| **t3.2xlarge** | 32 | 7,500,000 | 5ms | 33ms | 149ms | 520ms | \$242.976 |
+| **t3.xlarge** | 16 | 3,600,000 | 4ms | 7ms | 159ms | 530ms | \$121.888 |
+| **t3.large** | 8 | 1,700,000 | 4ms | 10ms | 199ms | 633ms | \$61.344 |
+| **t3.medium** | 4 | 700,000 | 5ms | 18ms | 191ms | 722ms | \$31.072 |
+| **t3.small** | 2 | 250,000 | 8ms | 29ms | 231ms | 1280ms | \$15.936 |
 
 <br />
 

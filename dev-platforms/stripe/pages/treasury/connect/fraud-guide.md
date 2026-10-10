@@ -115,9 +115,10 @@ Review the account, assess recent activity, and consider whether to restrict out
 
 [Radar for platforms](https://docs.stripe.com/radar/account-fraud-prevention.md) is an optional paid risk tool that helps you manage fraud and credit risk across connected accounts. It provides a no-code rules engine, risk insights, review workflows, and automated actions that let your risk team respond to suspicious activity in a consistent way.
 
-If your platform uses Radar for platforms, you can create rules to identify risky inbound transfers, route suspicious activity to review, and pause outbound money movement in response to elevated risk. You can:
+If your platform uses Radar for platforms, you can create rules to identify risky inbound transfers and received credits, route suspicious activity to review, and pause outbound money movement in response to elevated risk. You can:
 
 - Use the bank debit risk score from Stripe to create rules for inbound bank transfers.
+- Create rules for received credits that fund a connected account.
 - Create rules to pause outbound money movement on high-risk connected accounts.
 - Trigger a review for activity that needs manual investigation.
 

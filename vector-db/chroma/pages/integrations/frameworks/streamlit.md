@@ -10,9 +10,9 @@ Streamlit is an open-source Python library that makes it easy to create and shar
 
 [Apache 2.0 License](https://github.com/streamlit/streamlit/blob/develop/LICENSE) | [Site](https://streamlit.io/)
 
-| Languages | Docs                               | Github                                         |
-| --------- | ---------------------------------- | ---------------------------------------------- |
-| Python    | [Docs](https://docs.streamlit.io/) | [Code](https://github.com/streamlit/streamlit) |
+| Languages | Docs | Github |
+| - | - | - |
+| Python | [Docs](https://docs.streamlit.io/) | [Code](https://github.com/streamlit/streamlit) |
 
 ### Install
 

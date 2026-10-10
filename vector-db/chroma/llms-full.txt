@@ -154,9 +154,9 @@ Chroma Cloud is SOC 2 Type II certified, and offers deployment flexibility to ma
 
 Chroma Cloud's multi-tenant offering currently runs in two regions:
 
-| Region                      | Slug               | Endpoint                         |
-| --------------------------- | ------------------ | -------------------------------- |
-| AWS US East (N. Virginia)   | `aws-us-east-1`    | `api.trychroma.com` (default)    |
+| Region | Slug | Endpoint |
+| - | - | - |
+| AWS US East (N. Virginia) | `aws-us-east-1` | `api.trychroma.com` (default) |
 | GCP Europe West 1 (Belgium) | `gcp-europe-west1` | `europe-west1.gcp.trychroma.com` |
 
 Each database is created in a single region and stays there — your data is stored and processed entirely within the region you select. Pick the region when creating a database in the dashboard, or pass it when creating a database via the API. Existing US databases are unaffected; to move data to the EU, create a new database in `gcp-europe-west1` and reindex.
@@ -165,12 +165,12 @@ Connecting to a non-default region only requires pointing the client at the righ
 
 #### Feature availability by region
 
-| Feature                                    | `aws-us-east-1` | `gcp-europe-west1` |
-| ------------------------------------------ | --------------- | ------------------ |
-| Core API (collections, search, forking)    | ✓               | ✓                  |
-| Chroma Sync (S3, GitHub, Web, file upload) | ✓               | —                  |
-| Chroma CLI (`chroma db`, `chroma browse`)  | ✓               | —                  |
-| Chroma Search Agent                        | ✓               | —                  |
+| Feature | `aws-us-east-1` | `gcp-europe-west1` |
+| - | - | - |
+| Core API (collections, search, forking) | ✓ | ✓ |
+| Chroma Sync (S3, GitHub, Web, file upload) | ✓ | — |
+| Chroma CLI (`chroma db`, `chroma browse`) | ✓ | — |
+| Chroma Search Agent | ✓ | — |
 
 ### Dashboard
 
@@ -190,11 +190,11 @@ Source: https://docs.trychroma.com/cloud/package-search/mcp
 
 The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/getting-started/intro) server designed to add ground truth context about code packages to AI agents. Our research demonstrates that by exposing the source code of a project's dependencies to a model, we improve its performance on coding tasks and reduce its potential for hallucination. Chroma's Package Search MCP server achieves this by exposing tools to allow the model to retrieve necessary context:
 
-| Tool Name                  | Usage                                                                                                                |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `package_search_grep`      | Use regex pattern matching to retrieve relevant lines from source code                                               |
-| `package_search_hybrid`    | Use semantic search with optional regex filtering to explore source code without existing knowledge of its structure |
-| `package_search_read_file` | Reads specific lines from a single file in the code package                                                          |
+| Tool Name | Usage |
+| - | - |
+| `package_search_grep` | Use regex pattern matching to retrieve relevant lines from source code |
+| `package_search_hybrid` | Use semantic search with optional regex filtering to explore source code without existing knowledge of its structure |
+| `package_search_read_file` | Reads specific lines from a single file in the code package |
 
 ## Getting Started
 
@@ -802,28 +802,28 @@ To ensure the stability and fairness in a multi-tenant environment, Chroma Cloud
   Most quotas can be increased upon request. If your application requires higher limits, please [contact us](mailto:support@trychroma.com).
 </Callout>
 
-| **Quota**                                          | **Value** |
-| -------------------------------------------------- | --------- |
-| Maximum embedding dimensions                       | 4,096     |
-| Maximum document bytes                             | 16,384    |
-| Maximum URI bytes                                  | 256       |
-| Maximum ID size bytes                              | 128       |
-| Maximum database name size bytes                   | 128       |
-| Maximum collection name size bytes                 | 128       |
-| Maximum record metadata value size bytes           | 8,182     |
-| Maximum collection metadata value size bytes       | 256       |
-| Maximum metadata key size bytes                    | 36        |
-| Maximum number of record metadata keys             | 32        |
-| Maximum number of collection metadata keys         | 32        |
-| Maximum number of where predicates                 | 8         |
-| Maximum size of full text search or regex search   | 256       |
-| Maximum number of results returned                 | 300       |
-| Maximum number of concurrent reads per collection  | 10        |
-| Maximum number of concurrent writes per collection | 10        |
-| Maximum number of collections                      | 1,000,000 |
-| Maximum number of records per collection           | 5,000,000 |
-| Maximum fork edges from root                       | 256       |
-| Maximum number of records per write                | 300       |
+| **Quota** | **Value** |
+| - | - |
+| Maximum embedding dimensions | 4,096 |
+| Maximum document bytes | 16,384 |
+| Maximum URI bytes | 256 |
+| Maximum ID size bytes | 128 |
+| Maximum database name size bytes | 128 |
+| Maximum collection name size bytes | 128 |
+| Maximum record metadata value size bytes | 8,182 |
+| Maximum collection metadata value size bytes | 256 |
+| Maximum metadata key size bytes | 36 |
+| Maximum number of record metadata keys | 32 |
+| Maximum number of collection metadata keys | 32 |
+| Maximum number of where predicates | 8 |
+| Maximum size of full text search or regex search | 256 |
+| Maximum number of results returned | 300 |
+| Maximum number of concurrent reads per collection | 10 |
+| Maximum number of concurrent writes per collection | 10 |
+| Maximum number of collections | 1,000,000 |
+| Maximum number of records per collection | 5,000,000 |
+| Maximum fork edges from root | 256 |
+| Maximum number of records per write | 300 |
 
 These limits apply per request or per collection as appropriate. For example, concurrent read/write limits are tracked independently per collection, and full-text query limits apply to the length of the input string, not the number of documents searched.
 
@@ -841,15 +841,15 @@ Comprehensive reference for all index types and their configuration parameters.
 
 Schema recognizes six value types, each with associated index types. Without providing a Schema, collections use these built-in defaults:
 
-| Config Class                | Value Type      | Default Behavior               | Use Case                        |
-| --------------------------- | --------------- | ------------------------------ | ------------------------------- |
-| `StringInvertedIndexConfig` | `string`        | Enabled for all metadata       | Filter on string values         |
-| `FtsIndexConfig`            | `string`        | Enabled for `K.DOCUMENT` only  | Full-text search on documents   |
-| `VectorIndexConfig`         | `float_list`    | Enabled for `K.EMBEDDING` only | Similarity search on embeddings |
-| `SparseVectorIndexConfig`   | `sparse_vector` | Disabled (requires config)     | Keyword-based search            |
-| `IntInvertedIndexConfig`    | `int_value`     | Enabled for all metadata       | Filter on integer values        |
-| `FloatInvertedIndexConfig`  | `float_value`   | Enabled for all metadata       | Filter on float values          |
-| `BoolInvertedIndexConfig`   | `boolean`       | Enabled for all metadata       | Filter on boolean values        |
+| Config Class | Value Type | Default Behavior | Use Case |
+| - | - | - | - |
+| `StringInvertedIndexConfig` | `string` | Enabled for all metadata | Filter on string values |
+| `FtsIndexConfig` | `string` | Enabled for `K.DOCUMENT` only | Full-text search on documents |
+| `VectorIndexConfig` | `float_list` | Enabled for `K.EMBEDDING` only | Similarity search on embeddings |
+| `SparseVectorIndexConfig` | `sparse_vector` | Disabled (requires config) | Keyword-based search |
+| `IntInvertedIndexConfig` | `int_value` | Enabled for all metadata | Filter on integer values |
+| `FloatInvertedIndexConfig` | `float_value` | Enabled for all metadata | Filter on float values |
+| `BoolInvertedIndexConfig` | `boolean` | Enabled for all metadata | Filter on boolean values |
 
 ## Simple Index Configs
 
@@ -883,13 +883,13 @@ These index types have no configuration parameters.
 
 **Parameters**:
 
-| Parameter            | Type              | Required | Description                                                                                                               |
-| -------------------- | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `space`              | string            | No       | Distance function: `l2` (geometric), `ip` (inner product), or `cosine` (angle-based, most common for text). Default: `l2` |
-| `embedding_function` | EmbeddingFunction | No       | Function to auto-generate embeddings from `K.DOCUMENT`. If not provided, supply embeddings manually                       |
-| `source_key`         | string            | No       | Reserved for future use. Currently always uses `K.DOCUMENT`                                                               |
-| `hnsw`               | HnswConfig        | No       | Advanced: HNSW algorithm tuning for single-node deployments                                                               |
-| `spann`              | SpannConfig       | No       | Advanced: SPANN algorithm tuning (clustering, probing) for Chroma Cloud                                                   |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `space` | string | No | Distance function: `l2` (geometric), `ip` (inner product), or `cosine` (angle-based, most common for text). Default: `l2` |
+| `embedding_function` | EmbeddingFunction | No | Function to auto-generate embeddings from `K.DOCUMENT`. If not provided, supply embeddings manually |
+| `source_key` | string | No | Reserved for future use. Currently always uses `K.DOCUMENT` |
+| `hnsw` | HnswConfig | No | Advanced: HNSW algorithm tuning for single-node deployments |
+| `spann` | SpannConfig | No | Advanced: SPANN algorithm tuning (clustering, probing) for Chroma Cloud |
 
 **Limitations**:
 
@@ -906,11 +906,11 @@ These index types have no configuration parameters.
 
 **Parameters**:
 
-| Parameter            | Type                    | Required | Description                                                                                                                                |
-| -------------------- | ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `source_key`         | string                  | No       | Field to generate sparse embeddings from. Typically `K.DOCUMENT`, but can be any text field                                                |
-| `embedding_function` | SparseEmbeddingFunction | No       | Sparse embedding function (e.g., `ChromaCloudSpladeEmbeddingFunction`, `HuggingFaceSparseEmbeddingFunction`, `Bm25EmbeddingFunction`)      |
-| `bm25`               | boolean                 | No       | Set to `true` when using `Bm25EmbeddingFunction` to enable inverse document frequency (IDF) scaling for queries. Not applicable for SPLADE |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `source_key` | string | No | Field to generate sparse embeddings from. Typically `K.DOCUMENT`, but can be any text field |
+| `embedding_function` | SparseEmbeddingFunction | No | Sparse embedding function (e.g., `ChromaCloudSpladeEmbeddingFunction`, `HuggingFaceSparseEmbeddingFunction`, `Bm25EmbeddingFunction`) |
+| `bm25` | boolean | No | Set to `true` when using `Bm25EmbeddingFunction` to enable inverse document frequency (IDF) scaling for queries. Not applicable for SPLADE |
 
 **Limitations**:
 
@@ -2917,11 +2917,11 @@ The `Key` class (aliased as `K` for brevity) provides a fluent interface for bui
 
 ## Filterable Fields
 
-| Field             | Usage                         | Description                  |
-| ----------------- | ----------------------------- | ---------------------------- |
-| `K.ID`            | `K.ID.is_in(["id1", "id2"])`  | Filter by document IDs       |
-| `K.DOCUMENT`      | `K.DOCUMENT.contains("text")` | Filter by document content   |
-| `K("field_name")` | `K("status") == "active"`     | Filter by any metadata field |
+| Field | Usage | Description |
+| - | - | - |
+| `K.ID` | `K.ID.is_in(["id1", "id2"])` | Filter by document IDs |
+| `K.DOCUMENT` | `K.DOCUMENT.contains("text")` | Filter by document content |
+| `K("field_name")` | `K("status") == "active"` | Filter by any metadata field |
 
 ## Comparison Operators
 
@@ -3174,12 +3174,12 @@ Use `contains()` to check if a metadata array includes a value, and `not_contain
 
 ### Supported Array Types
 
-| Type    | Python          | TypeScript      | Rust                              |
-| ------- | --------------- | --------------- | --------------------------------- |
-| String  | `["a", "b"]`    | `["a", "b"]`    | `MetadataValue::StringArray(...)` |
-| Integer | `[1, 2, 3]`     | `[1, 2, 3]`     | `MetadataValue::IntArray(...)`    |
-| Float   | `[1.5, 2.5]`    | `[1.5, 2.5]`    | `MetadataValue::FloatArray(...)`  |
-| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)`   |
+| Type | Python | TypeScript | Rust |
+| - | - | - | - |
+| String | `["a", "b"]` | `["a", "b"]` | `MetadataValue::StringArray(...)` |
+| Integer | `[1, 2, 3]` | `[1, 2, 3]` | `MetadataValue::IntArray(...)` |
+| Float | `[1.5, 2.5]` | `[1.5, 2.5]` | `MetadataValue::FloatArray(...)` |
+| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)` |
 
 <Warning>
   The `$contains` value must be a scalar that matches the array's element type. All elements in an array must be the same type, and nested arrays are not supported.
@@ -3617,10 +3617,10 @@ The `GroupBy` class specifies how to partition results and which records to keep
 
 ## GroupBy Parameters
 
-| Parameter   | Type              | Description                                                    |
-| ----------- | ----------------- | -------------------------------------------------------------- |
-| `keys`      | Key or List\[Key] | Metadata key(s) to group by                                    |
-| `aggregate` | MinK or MaxK      | Aggregation function to select top k records within each group |
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Metadata key(s) to group by |
+| `aggregate` | MinK or MaxK | Aggregation function to select top k records within each group |
 
 ## Aggregation Functions
 
@@ -3650,10 +3650,10 @@ Keeps the k records with the **smallest** values for the specified keys. Use `Mi
   ```
 </CodeGroup>
 
-| Parameter | Type              | Description                               |
-| --------- | ----------------- | ----------------------------------------- |
-| `keys`    | Key or List\[Key] | Key(s) to sort by in ascending order      |
-| `k`       | int               | Number of records to keep from each group |
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Key(s) to sort by in ascending order |
+| `k` | int | Number of records to keep from each group |
 
 ### MaxK
 
@@ -3681,10 +3681,10 @@ Keeps the k records with the **largest** values for the specified keys. Use `Max
   ```
 </CodeGroup>
 
-| Parameter | Type              | Description                               |
-| --------- | ----------------- | ----------------------------------------- |
-| `keys`    | Key or List\[Key] | Key(s) to sort by in descending order     |
-| `k`       | int               | Number of records to keep from each group |
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Key(s) to sort by in descending order |
+| `k` | int | Number of records to keep from each group |
 
 ## Key References
 
@@ -3971,19 +3971,19 @@ The score is negative because Chroma uses ascending order (lower scores = better
 
 ## Rrf Parameters
 
-| Parameter   | Type                 | Default  | Description                                                      |
-| ----------- | -------------------- | -------- | ---------------------------------------------------------------- |
-| `ranks`     | List\[Rank]          | Required | List of ranking expressions (must have `return_rank=True`)       |
-| `k`         | int                  | `60`     | Smoothing parameter - higher values reduce emphasis on top ranks |
-| `weights`   | List\[float] or None | `None`   | Weights for each ranking (defaults to 1.0 for each)              |
-| `normalize` | bool                 | `False`  | If `True`, normalize weights to sum to 1.0                       |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `ranks` | List\[Rank] | Required | List of ranking expressions (must have `return_rank=True`) |
+| `k` | int | `60` | Smoothing parameter - higher values reduce emphasis on top ranks |
+| `weights` | List\[float] or None | `None` | Weights for each ranking (defaults to 1.0 for each) |
+| `normalize` | bool | `False` | If `True`, normalize weights to sum to 1.0 |
 
 ## RRF vs Linear Combination
 
-| Approach               | Use Case                                      | Pros                               | Cons                           |
-| ---------------------- | --------------------------------------------- | ---------------------------------- | ------------------------------ |
-| **RRF**                | Different score scales (e.g., dense + sparse) | Scale-agnostic, robust to outliers | Requires `return_rank=True`    |
-| **Linear Combination** | Same score scales                             | Simple, preserves distances        | Sensitive to scale differences |
+| Approach | Use Case | Pros | Cons |
+| - | - | - | - |
+| **RRF** | Different score scales (e.g., dense + sparse) | Scale-agnostic, robust to outliers | Requires `return_rank=True` |
+| **Linear Combination** | Same score scales | Simple, preserves distances | Sensitive to scale differences |
 
 <CodeGroup>
   ```python Python theme={null}
@@ -4487,39 +4487,39 @@ Migrate from legacy `query()` and `get()` to the Search API.
 
 ### query() Parameters
 
-| Legacy `query()`   | Search API                         | Notes                                  |
-| ------------------ | ---------------------------------- | -------------------------------------- |
-| `query_embeddings` | `rank={"$knn": {"query": ...}}`    | Can use text or embeddings             |
-| `query_texts`      | `rank={"$knn": {"query": "text"}}` | Text queries now supported             |
-| `query_images`     | Not yet supported                  | Image queries coming in future release |
-| `query_uris`       | Not yet supported                  | URI queries coming in future release   |
-| `n_results`        | `limit`                            | Direct mapping                         |
-| `ids`              | `where={"#id": {"$in": [...]}}`    | Filter by IDs                          |
-| `where`            | `where`                            | Same syntax                            |
-| `where_document`   | `where={"#document": {...}}`       | Use #document field                    |
-| `include`          | `select`                           | See field mapping below                |
+| Legacy `query()` | Search API | Notes |
+| - | - | - |
+| `query_embeddings` | `rank={"$knn": {"query": ...}}` | Can use text or embeddings |
+| `query_texts` | `rank={"$knn": {"query": "text"}}` | Text queries now supported |
+| `query_images` | Not yet supported | Image queries coming in future release |
+| `query_uris` | Not yet supported | URI queries coming in future release |
+| `n_results` | `limit` | Direct mapping |
+| `ids` | `where={"#id": {"$in": [...]}}` | Filter by IDs |
+| `where` | `where` | Same syntax |
+| `where_document` | `where={"#document": {...}}` | Use #document field |
+| `include` | `select` | See field mapping below |
 
 ### get() Parameters
 
-| Legacy `get()`   | Search API                      | Notes                   |
-| ---------------- | ------------------------------- | ----------------------- |
-| `ids`            | `where={"#id": {"$in": [...]}}` | Filter by IDs           |
-| `where`          | `where`                         | Same syntax             |
-| `where_document` | `where={"#document": {...}}`    | Use #document field     |
-| `limit`          | `limit`                         | Direct mapping          |
-| `offset`         | `limit={"offset": ...}`         | Part of limit dict      |
-| `include`        | `select`                        | See field mapping below |
+| Legacy `get()` | Search API | Notes |
+| - | - | - |
+| `ids` | `where={"#id": {"$in": [...]}}` | Filter by IDs |
+| `where` | `where` | Same syntax |
+| `where_document` | `where={"#document": {...}}` | Use #document field |
+| `limit` | `limit` | Direct mapping |
+| `offset` | `limit={"offset": ...}` | Part of limit dict |
+| `include` | `select` | See field mapping below |
 
 ### Include/Select Field Mapping
 
-| Legacy `include` | Search API `select` | Description               |
-| ---------------- | ------------------- | ------------------------- |
-| `"ids"`          | Always included     | IDs are always returned   |
-| `"documents"`    | `"#document"`       | Document content          |
-| `"metadatas"`    | `"#metadata"`       | All metadata fields       |
-| `"embeddings"`   | `"#embedding"`      | Vector embeddings         |
-| `"distances"`    | `"#score"`          | Distance/score from query |
-| `"uris"`         | `"#uri"`            | Document URIs             |
+| Legacy `include` | Search API `select` | Description |
+| - | - | - |
+| `"ids"` | Always included | IDs are always returned |
+| `"documents"` | `"#document"` | Document content |
+| `"metadatas"` | `"#metadata"` | All metadata fields |
+| `"embeddings"` | `"#embedding"` | Vector embeddings |
+| `"distances"` | `"#score"` | Distance/score from query |
+| `"uris"` | `"#uri"` | Document URIs |
 
 ## Examples
 
@@ -4920,16 +4920,16 @@ The Search API provides a powerful, unified interface for all search operations 
 
 ## Feature Comparison
 
-| Feature                            | `query()`                | `get()`          | `search()` |
-| ---------------------------------- | ------------------------ | ---------------- | ---------- |
-| Vector similarity search           | Yes                      | No               | Yes        |
-| Filtering (metadata, document, ID) | Yes                      | Yes              | Yes        |
-| Custom ranking expressions         | No                       | No               | Yes        |
-| Result grouping/deduplication      | No                       | No               | Yes        |
-| Batch operations                   | Partial (Embedding only) | No               | Yes        |
-| Field selection                    | Partial (Coarse)         | Partial (Coarse) | Yes        |
-| Pagination                         | No                       | Yes              | Yes        |
-| Type safety                        | Partial                  | Partial          | Yes        |
+| Feature | `query()` | `get()` | `search()` |
+| - | - | - | - |
+| Vector similarity search | Yes | No | Yes |
+| Filtering (metadata, document, ID) | Yes | Yes | Yes |
+| Custom ranking expressions | No | No | Yes |
+| Result grouping/deduplication | No | No | Yes |
+| Batch operations | Partial (Embedding only) | No | Yes |
+| Field selection | Partial (Coarse) | Partial (Coarse) | Yes |
+| Pagination | No | Yes | Yes |
+| Type safety | Partial | Partial | Yes |
 
 ## Availability
 
@@ -5154,10 +5154,10 @@ Use `limit()` to control how many results to return and `offset` to skip results
 
 ## Limit Parameters
 
-| Parameter | Type        | Default | Description                                   |
-| --------- | ----------- | ------- | --------------------------------------------- |
-| `limit`   | int or None | `None`  | Maximum results to return (`None` = no limit) |
-| `offset`  | int         | `0`     | Number of results to skip (for pagination)    |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `limit` | int or None | `None` | Maximum results to return (`None` = no limit) |
+| `offset` | int | `0` | Number of results to skip (for pagination) |
 
 <Callout>
   For Chroma Cloud users: The actual number of results returned will be capped by your quota limits, regardless of the `limit` value specified. This applies even when no limit is set.
@@ -5297,14 +5297,14 @@ Control which fields are returned in your results to optimize data transfer and 
 
 ## Selectable Fields
 
-| Field          | Internal Key   | Usage                        | Description                          |
-| -------------- | -------------- | ---------------------------- | ------------------------------------ |
-| IDs            | `#id`          | Always included              | Document IDs are always returned     |
-| `K.DOCUMENT`   | `#document`    | `.select(K.DOCUMENT)`        | Full document text                   |
-| `K.EMBEDDING`  | `#embedding`   | `.select(K.EMBEDDING)`       | Vector embeddings                    |
-| `K.METADATA`   | `#metadata`    | `.select(K.METADATA)`        | All metadata fields as a dict        |
-| `K.SCORE`      | `#score`       | `.select(K.SCORE)`           | Search scores (when ranking is used) |
-| `"field_name"` | (user-defined) | `.select("title", "author")` | Specific metadata fields             |
+| Field | Internal Key | Usage | Description |
+| - | - | - | - |
+| IDs | `#id` | Always included | Document IDs are always returned |
+| `K.DOCUMENT` | `#document` | `.select(K.DOCUMENT)` | Full document text |
+| `K.EMBEDDING` | `#embedding` | `.select(K.EMBEDDING)` | Vector embeddings |
+| `K.METADATA` | `#metadata` | `.select(K.METADATA)` | All metadata fields as a dict |
+| `K.SCORE` | `#score` | `.select(K.SCORE)` | Search scores (when ranking is used) |
+| `"field_name"` | (user-defined) | `.select("title", "author")` | Specific metadata fields |
 
 <Callout>
   **Field constants:** `K.*` constants (e.g., `K.DOCUMENT`, `K.EMBEDDING`, `K.ID`) correspond to internal keys with `#` prefix (e.g., `#document`, `#embedding`, `#id`). Use the `K.*` constants in queries. Internal keys like `#document` and `#embedding` are used in schema configuration, while `#metadata` and `#score` are query-only fields not used in schema.
@@ -5651,13 +5651,13 @@ The `Knn` class performs K-nearest neighbor search to find similar vectors. It's
 
 ## Knn Parameters
 
-| Parameter     | Type                                           | Default        | Description                                                                                           |
-| ------------- | ---------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------- |
-| `query`       | str, List\[float], SparseVector, or np.ndarray | Required       | The query text or vector to search with                                                               |
-| `key`         | str                                            | `"#embedding"` | Field to search - `"#embedding"` for dense embeddings, or a metadata field name for sparse embeddings |
-| `limit`       | int                                            | `16`           | Maximum number of candidates to consider                                                              |
-| `default`     | float or None                                  | `None`         | Score for documents not in KNN results                                                                |
-| `return_rank` | bool                                           | `False`        | If `True`, return rank position (0, 1, 2...) instead of distance                                      |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `query` | str, List\[float], SparseVector, or np.ndarray | Required | The query text or vector to search with |
+| `key` | str | `"#embedding"` | Field to search - `"#embedding"` for dense embeddings, or a metadata field name for sparse embeddings |
+| `limit` | int | `16` | Maximum number of candidates to consider |
+| `default` | float or None | `None` | Score for documents not in KNN results |
+| `return_rank` | bool | `False` | If `True`, return rank position (0, 1, 2...) instead of distance |
 
 <Callout>
   `"#embedding"` (or `K.EMBEDDING`) refers to the default embedding field where Chroma stores dense embeddings. Sparse embeddings must be stored in metadata under a consistent key.
@@ -6614,16 +6614,16 @@ You can then poll [`GET /api/v1/invocations/{invocation_id}`](/reference/sync-ap
 
 ## Multipart Fields
 
-| Field             | Required | Description                                                                                                                            |
-| ----------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `database_name`   | Yes      | Database in which to index the file. **Must come before `file`.**                                                                      |
-| `collection_name` | Yes      | Target collection. Created on first use, otherwise appended to. **Must come before `file`.**                                           |
-| `file`            | Yes      | File content. Maximum 200 MiB. The filename in the part header is used as the document name.                                           |
-| `custom_id`       | No       | Custom document ID (max 120 bytes). Chunk IDs become `custom_id-{chunk}` instead of `sha256(filename)-{chunk}`.                        |
-| `metadata`        | No       | JSON object of additional metadata merged with chunk metadata. Maximum 16 KiB. Keys reserved by Chroma (e.g. `chroma_*`) are rejected. |
-| `embedding`       | No       | JSON `SourceEmbeddingConfig`. Defaults to Qwen3-Embedding-0.6B with `generic_retrieval` task plus Splade sparse embeddings.            |
-| `chunking`        | No       | JSON `SourceChunkingConfig`. Defaults to tree-sitter syntax-aware chunking with markdown/line-based fallbacks.                         |
-| `content_type`    | No       | MIME type override. Otherwise inferred from the file part header (if not `application/octet-stream`) or the filename extension.        |
+| Field | Required | Description |
+| - | - | - |
+| `database_name` | Yes | Database in which to index the file. **Must come before `file`.** |
+| `collection_name` | Yes | Target collection. Created on first use, otherwise appended to. **Must come before `file`.** |
+| `file` | Yes | File content. Maximum 200 MiB. The filename in the part header is used as the document name. |
+| `custom_id` | No | Custom document ID (max 120 bytes). Chunk IDs become `custom_id-{chunk}` instead of `sha256(filename)-{chunk}`. |
+| `metadata` | No | JSON object of additional metadata merged with chunk metadata. Maximum 16 KiB. Keys reserved by Chroma (e.g. `chroma_*`) are rejected. |
+| `embedding` | No | JSON `SourceEmbeddingConfig`. Defaults to Qwen3-Embedding-0.6B with `generic_retrieval` task plus Splade sparse embeddings. |
+| `chunking` | No | JSON `SourceChunkingConfig`. Defaults to tree-sitter syntax-aware chunking with markdown/line-based fallbacks. |
+| `content_type` | No | MIME type override. Otherwise inferred from the file part header (if not `application/octet-stream`) or the filename extension. |
 
 ## Limits
 
@@ -6946,27 +6946,27 @@ The IAM user behind the credential needs `s3:GetObject` (and `s3:ListBucket` if 
 
 ## S3 Source Configuration
 
-| Parameter               | Required | Description                                                                                                                                   |
-| ----------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bucket_name`           | Yes      | S3 bucket name.                                                                                                                               |
-| `region`                | Yes      | AWS region of the bucket.                                                                                                                     |
-| `collection_name`       | Yes      | Default target collection name for synced data.                                                                                               |
-| `aws_credential_id`     | \*       | ID of AWS credentials saved in the Chroma dashboard. Mutually exclusive with the inline access-key fields.                                    |
-| `aws_access_key_id`     | \*       | Inline AWS access key ID. Required together with `aws_secret_access_key` if `aws_credential_id` is not provided.                              |
-| `aws_secret_access_key` | \*       | Inline AWS secret access key. Required together with `aws_access_key_id` if `aws_credential_id` is not provided.                              |
-| `path_prefix`           | No       | Limits which S3 keys can be synced. Only keys starting with this prefix are allowed. Useful for [multi-tenant setups](#multi-tenant-buckets). |
-| `auto_sync`             | No       | Auto-sync mode: `none` (default), `direct`, or `metadata`. Configured by Chroma during [Auto-Sync](#auto-sync) setup.                         |
+| Parameter | Required | Description |
+| - | - | - |
+| `bucket_name` | Yes | S3 bucket name. |
+| `region` | Yes | AWS region of the bucket. |
+| `collection_name` | Yes | Default target collection name for synced data. |
+| `aws_credential_id` | \* | ID of AWS credentials saved in the Chroma dashboard. Mutually exclusive with the inline access-key fields. |
+| `aws_access_key_id` | \* | Inline AWS access key ID. Required together with `aws_secret_access_key` if `aws_credential_id` is not provided. |
+| `aws_secret_access_key` | \* | Inline AWS secret access key. Required together with `aws_access_key_id` if `aws_credential_id` is not provided. |
+| `path_prefix` | No | Limits which S3 keys can be synced. Only keys starting with this prefix are allowed. Useful for [multi-tenant setups](#multi-tenant-buckets). |
+| `auto_sync` | No | Auto-sync mode: `none` (default), `direct`, or `metadata`. Configured by Chroma during [Auto-Sync](#auto-sync) setup. |
 
 \* Provide either `aws_credential_id`, or both `aws_access_key_id` and `aws_secret_access_key`.
 
 ## S3 Invocation Parameters
 
-| Parameter                | Required | Description                                                                                                                                                                                                |
-| ------------------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `object_key`             | Yes      | Full S3 object key to sync. This is always relative to the bucket root, even if a `path_prefix` is configured on the source. The key must start with the `path_prefix` or the invocation will be rejected. |
-| `custom_id`              | No       | Custom document ID (max 120 bytes). Chunk IDs become `custom_id-{chunk}` instead of `sha256(object_key)-{chunk}`. Stored as `custom_id` metadata on each chunk.                                            |
-| `metadata`               | No       | Additional metadata merged with standard chunk metadata. Values can be scalars (string, number, boolean, or null) or homogeneous arrays of scalars (e.g. `["action", "comedy"]`).                          |
-| `target_collection_name` | No       | Overrides the source's `collection_name`. Collection is created if it doesn't exist.                                                                                                                       |
+| Parameter | Required | Description |
+| - | - | - |
+| `object_key` | Yes | Full S3 object key to sync. This is always relative to the bucket root, even if a `path_prefix` is configured on the source. The key must start with the `path_prefix` or the invocation will be rejected. |
+| `custom_id` | No | Custom document ID (max 120 bytes). Chunk IDs become `custom_id-{chunk}` instead of `sha256(object_key)-{chunk}`. Stored as `custom_id` metadata on each chunk. |
+| `metadata` | No | Additional metadata merged with standard chunk metadata. Values can be scalars (string, number, boolean, or null) or homogeneous arrays of scalars (e.g. `["action", "comedy"]`). |
+| `target_collection_name` | No | Overrides the source's `collection_name`. Collection is created if it doesn't exist. |
 
 ## Supported File Types
 
@@ -6976,15 +6976,15 @@ File types are detected by filename suffix.
 
 Document files are converted to markdown and incur a \$0.01/page extraction fee. Tables, headings, and structure are preserved. Images within documents get text descriptions extracted, but the images themselves are not stored.
 
-| Format        | Extensions                                                |
-| ------------- | --------------------------------------------------------- |
-| PDF           | `.pdf`                                                    |
-| Word          | `.doc`, `.docx`, `.odt`                                   |
-| Spreadsheets  | `.xls`, `.xlsx`, `.xlsm`, `.xltx`, `.csv`, `.ods`         |
-| Presentations | `.ppt`, `.pptx`, `.odp`                                   |
-| HTML          | `.html`                                                   |
-| Ebooks        | `.epub`                                                   |
-| Images        | `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, `.tiff`, `.tif` |
+| Format | Extensions |
+| - | - |
+| PDF | `.pdf` |
+| Word | `.doc`, `.docx`, `.odt` |
+| Spreadsheets | `.xls`, `.xlsx`, `.xlsm`, `.xltx`, `.csv`, `.ods` |
+| Presentations | `.ppt`, `.pptx`, `.odp` |
+| HTML | `.html` |
+| Ebooks | `.epub` |
+| Images | `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`, `.tiff`, `.tif` |
 
 ### Other Files
 
@@ -7044,13 +7044,13 @@ A metadata file is any file with a `.meta.json` suffix. It can have any name and
 }
 ```
 
-| Field                    | Required | Description                                                                                                     |
-| ------------------------ | -------- | --------------------------------------------------------------------------------------------------------------- |
-| `version`                | Yes      | Must be `"chroma-v1"`.                                                                                          |
-| `id`                     | Yes      | Custom ID for the document in Chroma.                                                                           |
-| `path`                   | Yes      | Full S3 object key of the document to index.                                                                    |
-| `target_collection_name` | No       | Overrides the target collection (created if it doesn't exist).                                                  |
-| `metadata`               | No       | Additional metadata. Values can be scalars (string, number, boolean, or null) or homogeneous arrays of scalars. |
+| Field | Required | Description |
+| - | - | - |
+| `version` | Yes | Must be `"chroma-v1"`. |
+| `id` | Yes | Custom ID for the document in Chroma. |
+| `path` | Yes | Full S3 object key of the document to index. |
+| `target_collection_name` | No | Overrides the target collection (created if it doesn't exist). |
+| `metadata` | No | Additional metadata. Values can be scalars (string, number, boolean, or null) or homogeneous arrays of scalars. |
 
 ### Example Workflow
 
@@ -7286,6 +7286,61 @@ The `list` command lists all the DBs you have under your current profile.
 ```bash theme={null}
 chroma db list
 ```
+
+
+# Repair HNSW configuration
+Source: https://docs.trychroma.com/docs/cli/hnsw-config-repair
+
+Recover local collections with invalid legacy construction settings.
+
+Older releases could persist an HNSW `ef_construction` outside the current range
+of 1–4096. Such collections reject writes before appending records to the local
+log. Restarting does not change the saved value, and the collection configuration
+update API does not expose this immutable setting.
+
+Use `chroma hnsw-config-repair` to replace invalid construction settings in a new
+copy of your local store:
+
+1. Stop every Chroma server and embedded client using the persistent directory.
+2. Obtain the collection UUID from the collection's `id` or the `collections`
+   table in `chroma.sqlite3`.
+3. Run the repair with an output directory that does not exist and is outside
+   the original persistent directory:
+
+```bash theme={null}
+chroma hnsw-config-repair \
+  --path ./chroma \
+  --output ./chroma-repaired \
+  --collection <collection-uuid> \
+  --ef-construction 100
+```
+
+4. After the command succeeds, start Chroma using `./chroma-repaired` as its
+   persistent directory and verify your collection.
+
+The command copies the entire store, including SQLite sidecar files, before
+applying pending database migrations and repairing the selected collection in
+the copy. Migration validation preserves the store's existing MD5 or SHA256 hash
+algorithm. Allow enough disk space for another complete
+copy. It preserves the original directory, queued records, replay watermarks,
+embeddings, and graph edges. Failed validation leaves no published output store.
+
+Repair updates invalid values in the collection configuration, schema, legacy
+metadata, and native HNSW header. Valid values remain unchanged. The replacement
+must be between 1 and 4096; the native header uses at least the index's existing
+neighbor count, matching HNSW creation behavior. This changes the construction
+effort for future insertions without rebuilding existing graph edges.
+
+This command repairs construction settings only. Other invalid settings,
+structural index corruption, missing checkpoint files, and distributed indexes
+require separate recovery. Symlinks and special files in the source are rejected.
+
+A SQLite **vector** watermark ahead of a new-format HNSW checkpoint violates the
+persistence ordering and should never occur in normal operation, including crash
+recovery. Chroma rejects this state to prevent skipped operations. Recovery for
+this case is intentionally deferred until an actual incident can be investigated;
+there is no supported repair procedure for it today. If you encounter it, preserve
+the store and report the issue so recovery can be developed for the observed case.
 
 
 # Installing the CLI
@@ -7836,11 +7891,11 @@ When you create a collection, you can customize these index configuration values
 
     * `space` defines the distance function of the embedding space, and hence how similarity is defined. The default is `l2` (squared L2 norm), and other possible values are `cosine` (cosine similarity), and `ip` (inner product).
 
-    | Distance          | parameter |                                                                                                              Equation |                                                                          Intuition                                                                          |
-    | ----------------- | :-------: | --------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
-    | Squared L2        |    `l2`   |                                                                                      $d = \sum\left(A_i-B_i\right)^2$ |                        measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity.                       |
-    | Inner product     |    `ip`   |                                                                           $d = 1.0 - \sum\left(A_i \times B_i\right)$ |              focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences             |
-    | Cosine similarity |  `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
+    | Distance | parameter | Equation | Intuition |
+    | - | :-: | -: | :-: |
+    | Squared L2 | `l2` | $d = \sum\left(A_i-B_i\right)^2$ | measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity. |
+    | Inner product | `ip` | $d = 1.0 - \sum\left(A_i \times B_i\right)$ | focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences |
+    | Cosine similarity | `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
 
     <Warning>
       You should make sure that the `space` you choose is supported by your collection's embedding function. Every Chroma embedding function specifies its default space and a list of supported spaces.
@@ -7938,11 +7993,11 @@ When you create a collection, you can customize these index configuration values
 
     * `space` defines the distance function of the embedding space, and hence how similarity is defined. The default is `l2` (squared L2 norm), and other possible values are `cosine` (cosine similarity), and `ip` (inner product).
 
-    | Distance          | parameter |                                                                                                              Equation |                                                                          Intuition                                                                          |
-    | ----------------- | :-------: | --------------------------------------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------: |
-    | Squared L2        |    `l2`   |                                                                                      $d = \sum\left(A_i-B_i\right)^2$ |                        measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity.                       |
-    | Inner product     |    `ip`   |                                                                           $d = 1.0 - \sum\left(A_i \times B_i\right)$ |              focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences             |
-    | Cosine similarity |  `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
+    | Distance | parameter | Equation | Intuition |
+    | - | :-: | -: | :-: |
+    | Squared L2 | `l2` | $d = \sum\left(A_i-B_i\right)^2$ | measures absolute geometric distance between vectors, making it suitable when you want true spatial proximity. |
+    | Inner product | `ip` | $d = 1.0 - \sum\left(A_i \times B_i\right)$ | focuses on vector alignment and magnitude, often used for recommendation systems where larger values indicate stronger preferences |
+    | Cosine similarity | `cosine` | $d = 1.0 - \frac{\sum\left(A_i \times B_i\right)}{\sqrt{\sum\left(A_i^2\right)} \cdot \sqrt{\sum\left(B_i^2\right)}}$ | measures only the angle between vectors (ignoring magnitude), making it ideal for text embeddings or cases where you care about direction rather than scale |
 
     * `search_nprobe` is the number of centers that are probed for a query. The higher the value the more accurate the result will be. The query response time also increases as `search_nprobe` increases. Recommended values are 64/128. We don't allow setting a value higher than 128 today. The default value is 64.
     * `write_nprobe` is the same as `search_nprobe` but for the index construction phase. It is the number of centers searched when appending or reassigning a point. It has the same limits as `search_nprobe`. The default value is 64.
@@ -8871,39 +8926,39 @@ library or remotely through an API.
 
 Chroma provides lightweight wrappers around popular embedding providers, making it easy to use them in your apps. You can set an embedding function when you [create](../collections/manage-collections) a Chroma collection, to be automatically used when adding and querying data, or you can call them directly yourself.
 
-|                                                                                          | Python | Typescript |
-| ---------------------------------------------------------------------------------------- | ------ | ---------- |
-| [Cloudflare Workers AI](../../integrations/embedding-models/cloudflare-workers-ai)       | ✓      | ✓          |
-| [Cohere](../../integrations/embedding-models/cohere)                                     | ✓      | ✓          |
-| [Google Generative AI](../../integrations/embedding-models/google-gemini)                | ✓      | ✓          |
-| [Hugging Face](../../integrations/embedding-models/hugging-face)                         | ✓      | -          |
-| [Hugging Face Embedding Server](../../integrations/embedding-models/hugging-face-server) | ✓      | ✓          |
-| [Jina AI](../../integrations/embedding-models/jina-ai)                                   | ✓      | ✓          |
-| [Mistral](../../integrations/embedding-models/mistral)                                   | ✓      | ✓          |
-| [Morph](../../integrations/embedding-models/morph)                                       | ✓      | ✓          |
-| [OpenAI](../../integrations/embedding-models/openai)                                     | ✓      | ✓          |
-| [Sentence Transformers](../../integrations/embedding-models/sentence-transformer)        | ✓      | ✓          |
-| [Together AI](../../integrations/embedding-models/together-ai)                           | ✓      | ✓          |
+| | Python | Typescript |
+| - | - | - |
+| [Cloudflare Workers AI](../../integrations/embedding-models/cloudflare-workers-ai) | ✓ | ✓ |
+| [Cohere](../../integrations/embedding-models/cohere) | ✓ | ✓ |
+| [Google Generative AI](../../integrations/embedding-models/google-gemini) | ✓ | ✓ |
+| [Hugging Face](../../integrations/embedding-models/hugging-face) | ✓ | - |
+| [Hugging Face Embedding Server](../../integrations/embedding-models/hugging-face-server) | ✓ | ✓ |
+| [Jina AI](../../integrations/embedding-models/jina-ai) | ✓ | ✓ |
+| [Mistral](../../integrations/embedding-models/mistral) | ✓ | ✓ |
+| [Morph](../../integrations/embedding-models/morph) | ✓ | ✓ |
+| [OpenAI](../../integrations/embedding-models/openai) | ✓ | ✓ |
+| [Sentence Transformers](../../integrations/embedding-models/sentence-transformer) | ✓ | ✓ |
+| [Together AI](../../integrations/embedding-models/together-ai) | ✓ | ✓ |
 
 For TypeScript users, Chroma provides packages for a number of embedding model providers. The Chromadb python package ships with all embedding functions included.
 
-| Provider                    | Embedding Function Package                                                                           |
-| --------------------------- | ---------------------------------------------------------------------------------------------------- |
-| All (installs all packages) | [@chroma-core/all](https://www.npmjs.com/package/@chroma-core/all)                                   |
-| Cloudflare Workers AI       | [@chroma-core/cloudflare-worker-ai](https://www.npmjs.com/package/@chroma-core/cloudflare-worker-ai) |
-| Cohere                      | [@chroma-core/cohere](https://www.npmjs.com/package/@chroma-core/cohere)                             |
-| Google Gemini               | [@chroma-core/google-gemini](https://www.npmjs.com/package/@chroma-core/google-gemini)               |
-| Hugging Face Server         | [@chroma-core/huggingface-server](https://www.npmjs.com/package/@chroma-core/huggingface-server)     |
-| Jina                        | [@chroma-core/jina](https://www.npmjs.com/package/@chroma-core/jina)                                 |
-| Mistral                     | [@chroma-core/mistral](https://www.npmjs.com/package/@chroma-core/mistral)                           |
-| Morph                       | [@chroma-core/morph](https://www.npmjs.com/package/@chroma-core/morph)                               |
-| Ollama                      | [@chroma-core/ollama](https://www.npmjs.com/package/@chroma-core/ollama)                             |
-| OpenAI                      | [@chroma-core/openai](https://www.npmjs.com/package/@chroma-core/openai)                             |
-| Perplexity                  | [@chroma-core/perplexity](https://www.npmjs.com/package/@chroma-core/perplexity)                     |
-| Qwen (via Chroma Cloud)     | [@chroma-core/chroma-cloud-qwen](https://www.npmjs.com/package/@chroma-core/chroma-cloud-qwen)       |
-| Sentence Transformers       | [@chroma-core/sentence-transformer](https://www.npmjs.com/package/@chroma-core/sentence-transformer) |
-| Together AI                 | [@chroma-core/together-ai](https://www.npmjs.com/package/@chroma-core/together-ai)                   |
-| Voyage AI                   | [@chroma-core/voyageai](https://www.npmjs.com/package/@chroma-core/voyageai)                         |
+| Provider | Embedding Function Package |
+| - | - |
+| All (installs all packages) | [@chroma-core/all](https://www.npmjs.com/package/@chroma-core/all) |
+| Cloudflare Workers AI | [@chroma-core/cloudflare-worker-ai](https://www.npmjs.com/package/@chroma-core/cloudflare-worker-ai) |
+| Cohere | [@chroma-core/cohere](https://www.npmjs.com/package/@chroma-core/cohere) |
+| Google Gemini | [@chroma-core/google-gemini](https://www.npmjs.com/package/@chroma-core/google-gemini) |
+| Hugging Face Server | [@chroma-core/huggingface-server](https://www.npmjs.com/package/@chroma-core/huggingface-server) |
+| Jina | [@chroma-core/jina](https://www.npmjs.com/package/@chroma-core/jina) |
+| Mistral | [@chroma-core/mistral](https://www.npmjs.com/package/@chroma-core/mistral) |
+| Morph | [@chroma-core/morph](https://www.npmjs.com/package/@chroma-core/morph) |
+| Ollama | [@chroma-core/ollama](https://www.npmjs.com/package/@chroma-core/ollama) |
+| OpenAI | [@chroma-core/openai](https://www.npmjs.com/package/@chroma-core/openai) |
+| Perplexity | [@chroma-core/perplexity](https://www.npmjs.com/package/@chroma-core/perplexity) |
+| Qwen (via Chroma Cloud) | [@chroma-core/chroma-cloud-qwen](https://www.npmjs.com/package/@chroma-core/chroma-cloud-qwen) |
+| Sentence Transformers | [@chroma-core/sentence-transformer](https://www.npmjs.com/package/@chroma-core/sentence-transformer) |
+| Together AI | [@chroma-core/together-ai](https://www.npmjs.com/package/@chroma-core/together-ai) |
+| Voyage AI | [@chroma-core/voyageai](https://www.npmjs.com/package/@chroma-core/voyageai) |
 
 We welcome contributions! If you create an embedding function that you think would be useful to others, please consider [submitting a pull request](https://github.com/chroma-core/chroma).
 
@@ -11045,12 +11100,12 @@ Use `$contains` to check if a metadata array includes a specific scalar value, a
 
 ### Supported Array Types
 
-| Type    | Python          | TypeScript      | Rust                              |
-| ------- | --------------- | --------------- | --------------------------------- |
-| String  | `["a", "b"]`    | `["a", "b"]`    | `MetadataValue::StringArray(...)` |
-| Integer | `[1, 2, 3]`     | `[1, 2, 3]`     | `MetadataValue::IntArray(...)`    |
-| Float   | `[1.5, 2.5]`    | `[1.5, 2.5]`    | `MetadataValue::FloatArray(...)`  |
-| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)`   |
+| Type | Python | TypeScript | Rust |
+| - | - | - | - |
+| String | `["a", "b"]` | `["a", "b"]` | `MetadataValue::StringArray(...)` |
+| Integer | `[1, 2, 3]` | `[1, 2, 3]` | `MetadataValue::IntArray(...)` |
+| Float | `[1.5, 2.5]` | `[1.5, 2.5]` | `MetadataValue::FloatArray(...)` |
+| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)` |
 
 **Constraints:**
 
@@ -14992,14 +15047,14 @@ Roughly speaking, here is the sort of performance you can expect from Chroma on 
 * Small documents (100-200 words)
 * Three metadata fields per record.
 
-| Instance Type   | System RAM | Approx. Max Collection Size | Mean Latency (query) | 99.9% Latency (query) | Mean Latency (insert, batch size=32) | 99.9% Latency (insert, batch size=32) | Monthly Cost |
-| --------------- | ---------- | --------------------------- | -------------------- | --------------------- | ------------------------------------ | ------------------------------------- | ------------ |
-| **r7i.2xlarge** | 64         | 15,000,000                  | 5ms                  | 7ms                   | 112ms                                | 405ms                                 | \$386.944    |
-| **t3.2xlarge**  | 32         | 7,500,000                   | 5ms                  | 33ms                  | 149ms                                | 520ms                                 | \$242.976    |
-| **t3.xlarge**   | 16         | 3,600,000                   | 4ms                  | 7ms                   | 159ms                                | 530ms                                 | \$121.888    |
-| **t3.large**    | 8          | 1,700,000                   | 4ms                  | 10ms                  | 199ms                                | 633ms                                 | \$61.344     |
-| **t3.medium**   | 4          | 700,000                     | 5ms                  | 18ms                  | 191ms                                | 722ms                                 | \$31.072     |
-| **t3.small**    | 2          | 250,000                     | 8ms                  | 29ms                  | 231ms                                | 1280ms                                | \$15.936     |
+| Instance Type | System RAM | Approx. Max Collection Size | Mean Latency (query) | 99.9% Latency (query) | Mean Latency (insert, batch size=32) | 99.9% Latency (insert, batch size=32) | Monthly Cost |
+| - | - | - | - | - | - | - | - |
+| **r7i.2xlarge** | 64 | 15,000,000 | 5ms | 7ms | 112ms | 405ms | \$386.944 |
+| **t3.2xlarge** | 32 | 7,500,000 | 5ms | 33ms | 149ms | 520ms | \$242.976 |
+| **t3.xlarge** | 16 | 3,600,000 | 4ms | 7ms | 159ms | 530ms | \$121.888 |
+| **t3.large** | 8 | 1,700,000 | 4ms | 10ms | 199ms | 633ms | \$61.344 |
+| **t3.medium** | 4 | 700,000 | 5ms | 18ms | 191ms | 722ms | \$31.072 |
+| **t3.small** | 2 | 250,000 | 8ms | 29ms | 231ms | 1280ms | \$15.936 |
 
 <br />
 
@@ -15107,22 +15162,22 @@ Embeddings are the AI-native way to represent any kind of data, making them the 
 
 Chroma provides lightweight wrappers around popular embedding providers, making it easy to use them in your apps. You can set an embedding function when you create a Chroma collection, which will be used automatically, or you can call them directly yourself.
 
-|                                                                                     | Python                | Typescript             |
-| :---------------------------------------------------------------------------------- | :-------------------- | :--------------------- |
-| [OpenAI](/integrations/embedding-models/openai)                                     | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Google Gemini](/integrations/embedding-models/google-gemini)                       | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Cohere](/integrations/embedding-models/cohere)                                     | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Baseten](/integrations/embedding-models/baseten)                                   | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Hugging Face](/integrations/embedding-models/hugging-face)                         | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Instructor](/integrations/embedding-models/instructor)                             | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Hugging Face Embedding Server](/integrations/embedding-models/hugging-face-server) | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Jina AI](/integrations/embedding-models/jina-ai)                                   | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Roboflow](/integrations/embedding-models/roboflow)                                 | <Icon icon="check" /> | <Icon icon="hyphen" /> |
-| [Ollama Embeddings](/integrations/embedding-models/ollama)                          | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Cloudflare Workers AI](/integrations/embedding-models/cloudflare-workers-ai)       | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Together AI](/integrations/embedding-models/together-ai)                           | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Mistral](/integrations/embedding-models/mistral)                                   | <Icon icon="check" /> | <Icon icon="check" />  |
-| [Morph](/integrations/embedding-models/morph)                                       | <Icon icon="check" /> | <Icon icon="check" />  |
+| | Python | Typescript |
+| :- | :- | :- |
+| [OpenAI](/integrations/embedding-models/openai) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Google Gemini](/integrations/embedding-models/google-gemini) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Cohere](/integrations/embedding-models/cohere) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Baseten](/integrations/embedding-models/baseten) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [Hugging Face](/integrations/embedding-models/hugging-face) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [Instructor](/integrations/embedding-models/instructor) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [Hugging Face Embedding Server](/integrations/embedding-models/hugging-face-server) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Jina AI](/integrations/embedding-models/jina-ai) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Roboflow](/integrations/embedding-models/roboflow) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [Ollama Embeddings](/integrations/embedding-models/ollama) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Cloudflare Workers AI](/integrations/embedding-models/cloudflare-workers-ai) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Together AI](/integrations/embedding-models/together-ai) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Mistral](/integrations/embedding-models/mistral) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Morph](/integrations/embedding-models/morph) | <Icon icon="check" /> | <Icon icon="check" /> |
 
 ### Framework Integrations
 
@@ -15130,21 +15185,21 @@ Chroma maintains integrations with many popular tools. These tools can be used t
 
 We welcome pull requests to add new Integrations to the community.
 
-|                                                         | Python                 | JS                     |
-| :------------------------------------------------------ | :--------------------- | :--------------------- |
-| [DeepEval](/integrations/frameworks/deepeval)           | <Icon icon="check" />  | <Icon icon="hyphen" /> |
-| [Langchain](/integrations/frameworks/langchain)         | <Icon icon="check" />  | <Icon icon="check" />  |
-| [LlamaIndex](/integrations/frameworks/llamaindex)       | <Icon icon="check" />  | <Icon icon="check" />  |
-| [Braintrust](/integrations/frameworks/braintrust)       | <Icon icon="check" />  | <Icon icon="check" />  |
-| [Contextual AI](/integrations/frameworks/contextual-ai) | <Icon icon="check" />  | <Icon icon="hyphen" /> |
-| [OpenLLMetry](/integrations/frameworks/openllmetry)     | <Icon icon="check" />  | Coming Soon!           |
-| [Streamlit](/integrations/frameworks/streamlit)         | <Icon icon="check" />  | <Icon icon="hyphen" /> |
-| [Haystack](/integrations/frameworks/haystack)           | <Icon icon="check" />  | <Icon icon="hyphen" /> |
-| [OpenLIT](/integrations/frameworks/openlit)             | <Icon icon="check" />  | Coming Soon!           |
-| [Anthropic MCP](/integrations/frameworks/anthropic-mcp) | <Icon icon="check" />  | Coming Soon!           |
-| [Google ADK](/integrations/frameworks/google-adk)       | <Icon icon="check" />  | <Icon icon="check" />  |
-| [VoltAgent](/integrations/frameworks/voltagent)         | <Icon icon="hyphen" /> | <Icon icon="check" />  |
-| [Mem0](/integrations/frameworks/mem0)                   | <Icon icon="check" />  | <Icon icon="hyphen" /> |
+| | Python | JS |
+| :- | :- | :- |
+| [DeepEval](/integrations/frameworks/deepeval) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [Langchain](/integrations/frameworks/langchain) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [LlamaIndex](/integrations/frameworks/llamaindex) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Braintrust](/integrations/frameworks/braintrust) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [Contextual AI](/integrations/frameworks/contextual-ai) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [OpenLLMetry](/integrations/frameworks/openllmetry) | <Icon icon="check" /> | Coming Soon! |
+| [Streamlit](/integrations/frameworks/streamlit) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [Haystack](/integrations/frameworks/haystack) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
+| [OpenLIT](/integrations/frameworks/openlit) | <Icon icon="check" /> | Coming Soon! |
+| [Anthropic MCP](/integrations/frameworks/anthropic-mcp) | <Icon icon="check" /> | Coming Soon! |
+| [Google ADK](/integrations/frameworks/google-adk) | <Icon icon="check" /> | <Icon icon="check" /> |
+| [VoltAgent](/integrations/frameworks/voltagent) | <Icon icon="hyphen" /> | <Icon icon="check" /> |
+| [Mem0](/integrations/frameworks/mem0) | <Icon icon="check" /> | <Icon icon="hyphen" /> |
 
 
 # Amazon Bedrock
@@ -16349,10 +16404,10 @@ Chroma provides a convenient wrapper around Perplexity's embedding API. This emb
 
 Perplexity offers two embedding models:
 
-| Model                | Dimensions | Context Window | Price             |
-| -------------------- | ---------- | -------------- | ----------------- |
-| `pplx-embed-v1-0.6b` | 1024       | 32K tokens     | \$0.004/1M tokens |
-| `pplx-embed-v1-4b`   | 2560       | 32K tokens     | \$0.03/1M tokens  |
+| Model | Dimensions | Context Window | Price |
+| - | - | - | - |
+| `pplx-embed-v1-0.6b` | 1024 | 32K tokens | \$0.004/1M tokens |
+| `pplx-embed-v1-4b` | 2560 | 32K tokens | \$0.03/1M tokens |
 
 ## Matryoshka Dimensions
 
@@ -18345,25 +18400,25 @@ Once connected, your ADK agent will have access to the following Chroma tools:
 
 ### Collection Management
 
-| Tool                          | Description                                              |
-| :---------------------------- | :------------------------------------------------------- |
-| `chroma_list_collections`     | List all collections with pagination support             |
-| `chroma_create_collection`    | Create a new collection with optional HNSW configuration |
-| `chroma_get_collection_info`  | Get detailed information about a collection              |
-| `chroma_get_collection_count` | Get the number of documents in a collection              |
-| `chroma_modify_collection`    | Update a collection's name or metadata                   |
-| `chroma_delete_collection`    | Delete a collection                                      |
-| `chroma_peek_collection`      | View a sample of documents in a collection               |
+| Tool | Description |
+| :- | :- |
+| `chroma_list_collections` | List all collections with pagination support |
+| `chroma_create_collection` | Create a new collection with optional HNSW configuration |
+| `chroma_get_collection_info` | Get detailed information about a collection |
+| `chroma_get_collection_count` | Get the number of documents in a collection |
+| `chroma_modify_collection` | Update a collection's name or metadata |
+| `chroma_delete_collection` | Delete a collection |
+| `chroma_peek_collection` | View a sample of documents in a collection |
 
 ### Document Operations
 
-| Tool                      | Description                                                   |
-| :------------------------ | :------------------------------------------------------------ |
-| `chroma_add_documents`    | Add documents with optional metadata and custom IDs           |
-| `chroma_query_documents`  | Query documents using semantic search with advanced filtering |
-| `chroma_get_documents`    | Retrieve documents by IDs or filters with pagination          |
-| `chroma_update_documents` | Update existing documents' content, metadata, or embeddings   |
-| `chroma_delete_documents` | Delete specific documents from a collection                   |
+| Tool | Description |
+| :- | :- |
+| `chroma_add_documents` | Add documents with optional metadata and custom IDs |
+| `chroma_query_documents` | Query documents using semantic search with advanced filtering |
+| `chroma_get_documents` | Retrieve documents by IDs or filters with pagination |
+| `chroma_update_documents` | Update existing documents' content, metadata, or embeddings |
+| `chroma_delete_documents` | Delete specific documents from a collection |
 
 ## Resources
 
@@ -18503,13 +18558,13 @@ pip install mem0ai chromadb
 
 Mem0 can be configured to use Chroma as its vector database backend. Here are the available configuration options:
 
-| Parameter         | Description                   | Default Value |
-| ----------------- | ----------------------------- | ------------- |
-| `collection_name` | Name of the Chroma collection | `mem0`        |
-| `client`          | Custom Chroma client          | `None`        |
-| `path`            | Path for the Chroma database  | `db`          |
-| `host`            | Chroma server host            | `None`        |
-| `port`            | Chroma server port            | `None`        |
+| Parameter | Description | Default Value |
+| - | - | - |
+| `collection_name` | Name of the Chroma collection | `mem0` |
+| `client` | Custom Chroma client | `None` |
+| `path` | Path for the Chroma database | `db` |
+| `host` | Chroma server host | `None` |
+| `port` | Chroma server port | `None` |
 
 ## Basic Usage
 
@@ -18661,9 +18716,9 @@ Streamlit is an open-source Python library that makes it easy to create and shar
 
 [Apache 2.0 License](https://github.com/streamlit/streamlit/blob/develop/LICENSE) | [Site](https://streamlit.io/)
 
-| Languages | Docs                               | Github                                         |
-| --------- | ---------------------------------- | ---------------------------------------------- |
-| Python    | [Docs](https://docs.streamlit.io/) | [Code](https://github.com/streamlit/streamlit) |
+| Languages | Docs | Github |
+| - | - | - |
+| Python | [Docs](https://docs.streamlit.io/) | [Code](https://github.com/streamlit/streamlit) |
 
 ### Install
 
@@ -20557,45 +20612,45 @@ Use the `K` (Key) builder to construct where filters in Python. Filters are pass
 
 ## Field references
 
-| Type           | DSL               | Example                       |
-| -------------- | ----------------- | ----------------------------- |
-| Metadata field | `K("field_name")` | `K("category")`, `K("year")`  |
-| Document       | `K.DOCUMENT`      | `K.DOCUMENT.contains("text")` |
-| ID             | `K.ID`            | `K.ID.is_in(["id1", "id2"])`  |
+| Type | DSL | Example |
+| - | - | - |
+| Metadata field | `K("field_name")` | `K("category")`, `K("year")` |
+| Document | `K.DOCUMENT` | `K.DOCUMENT.contains("text")` |
+| ID | `K.ID` | `K.ID.is_in(["id1", "id2"])` |
 
 ## Comparison operators
 
-| Predicate             | Operator | Example                   |
-| --------------------- | -------- | ------------------------- |
-| Equal                 | `==`     | `K("status") == "active"` |
-| Not equal             | `!=`     | `K("count") != 0`         |
-| Greater than          | `>`      | `K("price") > 100`        |
-| Greater than or equal | `>=`     | `K("year") >= 2020`       |
-| Less than             | `<`      | `K("stock") < 10`         |
-| Less than or equal    | `<=`     | `K("discount") <= 0.25`   |
+| Predicate | Operator | Example |
+| - | - | - |
+| Equal | `==` | `K("status") == "active"` |
+| Not equal | `!=` | `K("count") != 0` |
+| Greater than | `>` | `K("price") > 100` |
+| Greater than or equal | `>=` | `K("year") >= 2020` |
+| Less than | `<` | `K("stock") < 10` |
+| Less than or equal | `<=` | `K("discount") <= 0.25` |
 
 ## Set operators
 
-| Predicate   | DSL                        | Example                                    |
-| ----------- | -------------------------- | ------------------------------------------ |
-| In list     | `K("field").is_in([...])`  | `K("category").is_in(["tech", "ai"])`      |
+| Predicate | DSL | Example |
+| - | - | - |
+| In list | `K("field").is_in([...])` | `K("category").is_in(["tech", "ai"])` |
 | Not in list | `K("field").not_in([...])` | `K("status").not_in(["draft", "deleted"])` |
 
 ## Array operators
 
-| Predicate    | DSL                              | Example                           |
-| ------------ | -------------------------------- | --------------------------------- |
-| Contains     | `K("field").contains(value)`     | `K("tags").contains("action")`    |
+| Predicate | DSL | Example |
+| - | - | - |
+| Contains | `K("field").contains(value)` | `K("tags").contains("action")` |
 | Not contains | `K("field").not_contains(value)` | `K("tags").not_contains("draft")` |
 
 ## Document operators
 
-| Predicate       | DSL                              | Example                                   |
-| --------------- | -------------------------------- | ----------------------------------------- |
-| Contains        | `K.DOCUMENT.contains(value)`     | `K.DOCUMENT.contains("machine learning")` |
-| Not contains    | `K.DOCUMENT.not_contains(value)` | `K.DOCUMENT.not_contains("draft")`        |
-| Regex match     | `K.DOCUMENT.regex(pattern)`      | `K.DOCUMENT.regex("^quantum\\s+\\w+")`    |
-| Regex not match | `K.DOCUMENT.not_regex(pattern)`  | `K.DOCUMENT.not_regex("^draft")`          |
+| Predicate | DSL | Example |
+| - | - | - |
+| Contains | `K.DOCUMENT.contains(value)` | `K.DOCUMENT.contains("machine learning")` |
+| Not contains | `K.DOCUMENT.not_contains(value)` | `K.DOCUMENT.not_contains("draft")` |
+| Regex match | `K.DOCUMENT.regex(pattern)` | `K.DOCUMENT.regex("^quantum\\s+\\w+")` |
+| Regex not match | `K.DOCUMENT.not_regex(pattern)` | `K.DOCUMENT.not_regex("^draft")` |
 
 
 # Rust
@@ -20754,17 +20809,17 @@ See [Where Filters](./where-filter) for full operator and rule definitions.
 }
 ```
 
-| Operator                   | Format                                        |
-| -------------------------- | --------------------------------------------- |
-| `$sum`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$mul`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$max`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$min`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$sub` (l-r)               | `{ "left": "RankExpr", "right": "RankExpr" }` |
-| `$div` (l/r)               | `{ "left": "RankExpr", "right": "RankExpr" }` |
-| `$abs`                     | `"RankExpr"`                                  |
-| `$exp` (e<sup>x</sup>)     | `"RankExpr"`                                  |
-| `$log` (Natural logarithm) | `"RankExpr"`                                  |
+| Operator | Format |
+| - | - |
+| `$sum` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$mul` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$max` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$min` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$sub` (l-r) | `{ "left": "RankExpr", "right": "RankExpr" }` |
+| `$div` (l/r) | `{ "left": "RankExpr", "right": "RankExpr" }` |
+| `$abs` | `"RankExpr"` |
+| `$exp` (e<sup>x</sup>) | `"RankExpr"` |
+| `$log` (Natural logarithm) | `"RankExpr"` |
 
 ### `group_by`
 
@@ -20826,25 +20881,25 @@ Chroma can be configured through YAML and environment variables.
 
 These are the main environment variables for a current self-hosted Chroma server.
 
-| Env var                           | What it controls                        | Default or notes                                                                           |
-| --------------------------------- | --------------------------------------- | ------------------------------------------------------------------------------------------ |
-| `CHROMA_PERSIST_PATH`             | Directory used for persisted data       | Default: `./chroma` in the frontend config. Container deployments typically mount `/data`. |
-| `CHROMA_ALLOW_RESET`              | Enables destructive reset operations    | Default: `false`.                                                                          |
-| `CHROMA_PORT`                     | HTTP port for the frontend server       | Default: `8000`.                                                                           |
-| `CHROMA_LISTEN_ADDRESS`           | Bind address for the frontend server    | Default: `0.0.0.0`.                                                                        |
-| `CHROMA_MAX_PAYLOAD_SIZE_BYTES`   | Maximum request payload size            | Default: `41943040` (40 MiB).                                                              |
-| `CHROMA_CORS_ALLOW_ORIGINS`       | Allowed CORS origins                    | Current config key accepts a list, for example `["*"]`.                                    |
-| `CHROMA_SQLITEDB__MIGRATION_MODE` | SQLite migration mode                   | Allowed values: `apply`, `validate`. Default: `apply`.                                     |
-| `CHROMA_SQLITEDB__HASH_TYPE`      | SQLite migration hash algorithm         | Allowed values: `md5`, `sha256`. Default: `md5`.                                           |
-| `CHROMA_SQLITE_FILENAME`          | SQLite file name under the persist path | Default: `chroma.sqlite3`.                                                                 |
+| Env var | What it controls | Default or notes |
+| - | - | - |
+| `CHROMA_PERSIST_PATH` | Directory used for persisted data | Default: `./chroma` in the frontend config. Container deployments typically mount `/data`. |
+| `CHROMA_ALLOW_RESET` | Enables destructive reset operations | Default: `false`. |
+| `CHROMA_PORT` | HTTP port for the frontend server | Default: `8000`. |
+| `CHROMA_LISTEN_ADDRESS` | Bind address for the frontend server | Default: `0.0.0.0`. |
+| `CHROMA_MAX_PAYLOAD_SIZE_BYTES` | Maximum request payload size | Default: `41943040` (40 MiB). |
+| `CHROMA_CORS_ALLOW_ORIGINS` | Allowed CORS origins | Current config key accepts a list, for example `["*"]`. |
+| `CHROMA_SQLITEDB__MIGRATION_MODE` | SQLite migration mode | Allowed values: `apply`, `validate`. Default: `apply`. |
+| `CHROMA_SQLITEDB__HASH_TYPE` | SQLite migration hash algorithm | Allowed values: `md5`, `sha256`. Default: `md5`. |
+| `CHROMA_SQLITE_FILENAME` | SQLite file name under the persist path | Default: `chroma.sqlite3`. |
 
 These are specifically for OpenTelemetry:
 
-| Env var                               | What it controls            | Default or notes                                    |
-| ------------------------------------- | --------------------------- | --------------------------------------------------- |
-| `CHROMA_OPEN_TELEMETRY__ENDPOINT`     | OpenTelemetry OTLP endpoint | Used for traces in current deploy docs.             |
-| `CHROMA_OPEN_TELEMETRY__SERVICE_NAME` | OpenTelemetry service name  | Default: `chromadb`.                                |
-| `OTEL_EXPORTER_OTLP_HEADERS`          | OTLP exporter headers       | Commonly used for auth headers when sending traces. |
+| Env var | What it controls | Default or notes |
+| - | - | - |
+| `CHROMA_OPEN_TELEMETRY__ENDPOINT` | OpenTelemetry OTLP endpoint | Used for traces in current deploy docs. |
+| `CHROMA_OPEN_TELEMETRY__SERVICE_NAME` | OpenTelemetry service name | Default: `chromadb`. |
+| `OTEL_EXPORTER_OTLP_HEADERS` | OTLP exporter headers | Commonly used for auth headers when sending traces. |
 
 ## Legacy Auth Settings
 
@@ -21611,52 +21666,52 @@ Use the `K` (Key) factory to construct where filters in TypeScript. Filters are 
 
 ## Field references
 
-| Type           | DSL               | Example                       |
-| -------------- | ----------------- | ----------------------------- |
-| Metadata field | `K("field_name")` | `K("category")`, `K("year")`  |
-| Document       | `K.DOCUMENT`      | `K.DOCUMENT.contains("text")` |
-| ID             | `K.ID`            | `K.ID.isIn(["id1", "id2"])`   |
+| Type | DSL | Example |
+| - | - | - |
+| Metadata field | `K("field_name")` | `K("category")`, `K("year")` |
+| Document | `K.DOCUMENT` | `K.DOCUMENT.contains("text")` |
+| ID | `K.ID` | `K.ID.isIn(["id1", "id2"])` |
 
 ## Comparison operators
 
-| Predicate             | Method        | Example                    |
-| --------------------- | ------------- | -------------------------- |
-| Equal                 | `.eq(value)`  | `K("status").eq("active")` |
-| Not equal             | `.ne(value)`  | `K("count").ne(0)`         |
-| Greater than          | `.gt(value)`  | `K("price").gt(100)`       |
-| Greater than or equal | `.gte(value)` | `K("year").gte(2020)`      |
-| Less than             | `.lt(value)`  | `K("stock").lt(10)`        |
-| Less than or equal    | `.lte(value)` | `K("discount").lte(0.25)`  |
+| Predicate | Method | Example |
+| - | - | - |
+| Equal | `.eq(value)` | `K("status").eq("active")` |
+| Not equal | `.ne(value)` | `K("count").ne(0)` |
+| Greater than | `.gt(value)` | `K("price").gt(100)` |
+| Greater than or equal | `.gte(value)` | `K("year").gte(2020)` |
+| Less than | `.lt(value)` | `K("stock").lt(10)` |
+| Less than or equal | `.lte(value)` | `K("discount").lte(0.25)` |
 
 ## Set operators
 
-| Predicate   | Method           | Example                                   |
-| ----------- | ---------------- | ----------------------------------------- |
-| In list     | `.isIn(values)`  | `K("category").isIn(["tech", "ai"])`      |
+| Predicate | Method | Example |
+| - | - | - |
+| In list | `.isIn(values)` | `K("category").isIn(["tech", "ai"])` |
 | Not in list | `.notIn(values)` | `K("status").notIn(["draft", "deleted"])` |
 
 ## Array operators
 
-| Predicate    | Method                | Example                          |
-| ------------ | --------------------- | -------------------------------- |
-| Contains     | `.contains(value)`    | `K("tags").contains("action")`   |
+| Predicate | Method | Example |
+| - | - | - |
+| Contains | `.contains(value)` | `K("tags").contains("action")` |
 | Not contains | `.notContains(value)` | `K("tags").notContains("draft")` |
 
 ## Document operators
 
-| Predicate       | Method                          | Example                                   |
-| --------------- | ------------------------------- | ----------------------------------------- |
-| Contains        | `K.DOCUMENT.contains(value)`    | `K.DOCUMENT.contains("machine learning")` |
-| Not contains    | `K.DOCUMENT.notContains(value)` | `K.DOCUMENT.notContains("draft")`         |
-| Regex match     | `K.DOCUMENT.regex(pattern)`     | `K.DOCUMENT.regex("^quantum\\s+\\w+")`    |
-| Regex not match | `K.DOCUMENT.notRegex(pattern)`  | `K.DOCUMENT.notRegex("^draft")`           |
+| Predicate | Method | Example |
+| - | - | - |
+| Contains | `K.DOCUMENT.contains(value)` | `K.DOCUMENT.contains("machine learning")` |
+| Not contains | `K.DOCUMENT.notContains(value)` | `K.DOCUMENT.notContains("draft")` |
+| Regex match | `K.DOCUMENT.regex(pattern)` | `K.DOCUMENT.regex("^quantum\\s+\\w+")` |
+| Regex not match | `K.DOCUMENT.notRegex(pattern)` | `K.DOCUMENT.notRegex("^draft")` |
 
 ## Combining conditions
 
-| Logic | Method        | Example                                                  |
-| ----- | ------------- | -------------------------------------------------------- |
-| And   | `.and(other)` | `K("status").eq("active").and(K("year").gte(2020))`      |
-| Or    | `.or(other)`  | `K("status").eq("draft").or(K("status").eq("archived"))` |
+| Logic | Method | Example |
+| - | - | - |
+| And | `.and(other)` | `K("status").eq("active").and(K("year").gte(2020))` |
+| Or | `.or(other)` | `K("status").eq("draft").or(K("status").eq("archived"))` |
 
 
 # Where Filters
@@ -21762,23 +21817,23 @@ These filters can be combined using `$and` and `$or`:
 
 ### Scalar Comparison Operators
 
-| Operator | Description           | Valid Types                 | Example                         |
-| -------- | --------------------- | --------------------------- | ------------------------------- |
-| `$eq`    | Equal to              | string, int, float, boolean | `{"status": {"$eq": "active"}}` |
-| `$ne`    | Not equal to          | string, int, float, boolean | `{"count": {"$ne": 0}}`         |
-| `$gt`    | Greater than          | int, float                  | `{"price": {"$gt": 100}}`       |
-| `$gte`   | Greater than or equal | int, float                  | `{"rating": {"$gte": 4.5}}`     |
-| `$lt`    | Less than             | int, float                  | `{"stock": {"$lt": 10}}`        |
-| `$lte`   | Less than or equal    | int, float                  | `{"discount": {"$lte": 0.25}}`  |
+| Operator | Description | Valid Types | Example |
+| - | - | - | - |
+| `$eq` | Equal to | string, int, float, boolean | `{"status": {"$eq": "active"}}` |
+| `$ne` | Not equal to | string, int, float, boolean | `{"count": {"$ne": 0}}` |
+| `$gt` | Greater than | int, float | `{"price": {"$gt": 100}}` |
+| `$gte` | Greater than or equal | int, float | `{"rating": {"$gte": 4.5}}` |
+| `$lt` | Less than | int, float | `{"stock": {"$lt": 10}}` |
+| `$lte` | Less than or equal | int, float | `{"discount": {"$lte": 0.25}}` |
 
 ### Set Operators
 
 These operators check if a metadata value is in (or not in) a provided list. The list must contain values of the same type.
 
-| Operator | Description          | Valid List Types                        | Example                                      |
-| -------- | -------------------- | --------------------------------------- | -------------------------------------------- |
-| `$in`    | Value is in list     | string\[], int\[], float\[], boolean\[] | `{"category": {"$in": ["tech", "ai"]}}`      |
-| `$nin`   | Value is not in list | string\[], int\[], float\[], boolean\[] | `{"status": {"$nin": ["draft", "deleted"]}}` |
+| Operator | Description | Valid List Types | Example |
+| - | - | - | - |
+| `$in` | Value is in list | string\[], int\[], float\[], boolean\[] | `{"category": {"$in": ["tech", "ai"]}}` |
+| `$nin` | Value is not in list | string\[], int\[], float\[], boolean\[] | `{"status": {"$nin": ["draft", "deleted"]}}` |
 
 `$in` and `$nin` require arrays of the same type (all strings, all ints, all floats, or all booleans).
 
@@ -21786,9 +21841,9 @@ These operators check if a metadata value is in (or not in) a provided list. The
 
 These operators check if an array metadata field contains (or does not contain) a specific scalar value. The metadata field must be an array type (string\[], int\[], float\[], or boolean\[]).
 
-| Operator        | Description                    | Valid Types                             | Example                                  |
-| --------------- | ------------------------------ | --------------------------------------- | ---------------------------------------- |
-| `$contains`     | Array contains element         | string\[], int\[], float\[], boolean\[] | `{"tags": {"$contains": "tech"}}`        |
+| Operator | Description | Valid Types | Example |
+| - | - | - | - |
+| `$contains` | Array contains element | string\[], int\[], float\[], boolean\[] | `{"tags": {"$contains": "tech"}}` |
 | `$not_contains` | Array does not contain element | string\[], int\[], float\[], boolean\[] | `{"tags": {"$not_contains": "deleted"}}` |
 
 <Callout>
@@ -21800,19 +21855,19 @@ These operators check if an array metadata field contains (or does not contain) 
 
 ### Document Operators
 
-| Operator        | Description                           | Valid On    | Example                                            |
-| --------------- | ------------------------------------- | ----------- | -------------------------------------------------- |
-| `$contains`     | Document contains substring           | `#document` | `{"#document": {"$contains": "machine learning"}}` |
-| `$not_contains` | Document does not contain substring   | `#document` | `{"#document": {"$not_contains": "draft"}}`        |
-| `$regex`        | Document matches regex pattern        | `#document` | `{"#document": {"$regex": "quantum\\s+\\w+"}}`     |
-| `$not_regex`    | Document does not match regex pattern | `#document` | `{"#document": {"$not_regex": "^draft"}}`          |
+| Operator | Description | Valid On | Example |
+| - | - | - | - |
+| `$contains` | Document contains substring | `#document` | `{"#document": {"$contains": "machine learning"}}` |
+| `$not_contains` | Document does not contain substring | `#document` | `{"#document": {"$not_contains": "draft"}}` |
+| `$regex` | Document matches regex pattern | `#document` | `{"#document": {"$regex": "quantum\\s+\\w+"}}` |
+| `$not_regex` | Document does not match regex pattern | `#document` | `{"#document": {"$not_regex": "^draft"}}` |
 
 ### Logical Operators
 
-| Operator | Description               | Example                                                      |
-| -------- | ------------------------- | ------------------------------------------------------------ |
-| `$and`   | All conditions must match | `{"$and": [{"status": "active"}, {"year": {"$gte": 2020}}]}` |
-| `$or`    | Any condition can match   | `{"$or": [{"category": "tech"}, {"category": "science"}]}`   |
+| Operator | Description | Example |
+| - | - | - |
+| `$and` | All conditions must match | `{"$and": [{"status": "active"}, {"year": {"$gte": 2020}}]}` |
+| `$or` | Any condition can match | `{"$or": [{"category": "tech"}, {"category": "science"}]}` |
 
 ## Rules
 

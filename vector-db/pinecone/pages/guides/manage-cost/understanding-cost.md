@@ -1,21 +1,23 @@
 ---
-title: "Understanding Pinecone cost"
+title: "Understand Pinecone cost"
 source: https://docs.pinecone.io/guides/manage-cost/understanding-cost
 path: guides/manage-cost/understanding-cost
 ---
 
 Understand how Pinecone bills read units, write units, storage, egress, and embedding for full-text search, semantic search, and hybrid search.
 
-For the latest pricing details, see [Pricing](https://www.pinecone.io/pricing/).
+Pinecone serverless is usage-based, so you pay for the data you store and the operations you run. Many small workloads fit within the free [Starter plan](https://www.pinecone.io/pricing/).
 
-Pinecone serverless is usage-based, so you pay only for the data you store and the operations you run. Idle indexes cost nothing. Most early and small workloads fit within the free [Starter plan](https://www.pinecone.io/pricing/), and you can lower costs further as you scale.
+<Tip>
+  This page explains how usage is measured. For current rates, see [Pricing](https://www.pinecone.io/pricing/).
+</Tip>
 
 ## Ways to reduce cost
 
-* **Start free.** The Starter plan has no monthly minimum, so you can build and test before committing to any spend.
-* **Prepaid credits and annual commitments.** Committing usage upfront earns discounted rates. See [Prepaid credits](#prepaid-credits).
-* **Optimize your workload.** Use namespaces and right-size your reads to cut ongoing query cost. See [Save on costs](/guides/optimize/save-on-costs).
-* **Talk to us.** Standard and Enterprise customers can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to optimize costs and discuss volume discounts.
+* Build and test on the Starter plan, which is free and has no monthly minimum.
+* Buy prepaid credits or commit to annual usage for discounted rates. See [Prepaid credits](#prepaid-credits).
+* Split data into namespaces so each query scans less data, and keep read responses small. See [Save on costs](/guides/optimize/save-on-costs).
+* On the Standard or Enterprise plan, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) about volume discounts and ways to lower your costs.
 
 ## Minimum usage
 
@@ -76,7 +78,7 @@ For the latest serverless pricing rates, see [Pricing](https://www.pinecone.io/p
 
 ### Read units
 
-A **read unit (RU)** is the unit Pinecone uses to measure and price the cost of a read request. Read units (RUs) measure the compute, I/O, and network resources consumed by the following read requests:
+A read unit (RU) measures the compute, I/O, and network resources a read request uses. Pinecone bills these read requests in RUs:
 
 * [Query](#query)
 * [Fetch](#fetch)
@@ -84,7 +86,7 @@ A **read unit (RU)** is the unit Pinecone uses to measure and price the cost of 
 * [Full-text search](#full-text-search)
 
 <Tip>
-  Read requests return the number of RUs used. You can use this information to [monitor read costs](/guides/manage-cost/monitor-usage-and-costs#read-units).
+  Read responses include the number of RUs used, which you can use to [monitor read costs](/guides/manage-cost/monitor-usage-and-costs#read-units).
 </Tip>
 
 <Note>
@@ -93,7 +95,7 @@ A **read unit (RU)** is the unit Pinecone uses to measure and price the cost of 
 
 #### Query
 
-The cost of a query scales linearly with the size of the targeted namespace. Specifically, a query uses 1 RU for every 1 GB of namespace size, with a minimum of 0.25 RUs per query.
+A query uses 1 RU for every 1 GB of namespace size, with a minimum of 0.25 RUs per query.
 
 | Namespace size | Read units per query |
 | :- | :- |
@@ -106,7 +108,7 @@ The cost of a query scales linearly with the size of the targeted namespace. Spe
 To learn how to calculate your namespace size, see [Storage](#storage).
 
 <Note>
-  Parameters that affect the size of the query response, such as `top_k`, `include_metadata`, and `include_values`, aren't relevant for query cost; only the size of the namespace determines the number of RUs used.
+  Parameters that affect the size of the query response, such as `top_k`, `include_metadata`, and `include_values`, don't affect query cost. Only the size of the namespace does.
 </Note>
 
 #### Fetch
@@ -114,12 +116,12 @@ To learn how to calculate your namespace size, see [Storage](#storage).
 A fetch request uses 1 RU for every 10 records fetched, for example:
 
 | Fetched records | RUs |
-| - | - |
+| :- | :- |
 | 10 | 1 |
 | 50 | 5 |
 | 107 | 11 |
 
-Specifying a non-existent ID or adding the same ID more than once doesn't increase the number of RUs used. However, a fetch request will always use at least 1 RU.
+Specifying a non-existent ID or adding the same ID more than once doesn't increase the number of RUs used. A fetch request always uses at least 1 RU.
 
 <Note>
   [Fetching records by metadata](/guides/manage-data/fetch-data#fetch-records-by-metadata) uses the same cost model as fetching by ID: 1 RU for every 10 records fetched.
@@ -127,7 +129,7 @@ Specifying a non-existent ID or adding the same ID more than once doesn't increa
 
 #### List
 
-List has a fixed cost of 1 RU per call, with up to 100 records per call.
+A list request uses 1 RU and returns up to 100 IDs.
 
 #### Full-text search
 
@@ -137,7 +139,7 @@ A document index can declare `string` fields with `full_text_search` enabled and
 
 ### Write units
 
-A **write unit (WU)** is the unit Pinecone uses to measure and price the cost of a write request. Write units (WUs) measure the storage and compute resources used by the following write requests:
+A write unit (WU) measures the storage and compute resources a write request uses. Pinecone bills these write requests in WUs:
 
 * [Upsert](#upsert)
 * [Update](#update)
@@ -149,9 +151,9 @@ A **write unit (WU)** is the unit Pinecone uses to measure and price the cost of
 
 #### Upsert
 
-An upsert request uses 1 WU for each 1 KB of the request, with a minimum of 5 WUs per request. When an upsert modifies an existing record, the request uses 1 WU for each 1 KB of the existing record as well.
+An upsert request uses 1 WU for each 1 KB of the request, with a minimum of 5 WUs per request. When an upsert modifies an existing record, the request also uses 1 WU for each 1 KB of the existing record.
 
-For example, the following table shows the WUs used by upsert requests at different batch sizes and record sizes, assuming all records are new:
+The following table shows the WUs used by upsert requests at different batch sizes and record sizes, assuming all records are new:
 
 | Records per batch | Dimension | Avg. metadata size | Avg. record size | WUs |
 | :- | :- | :- | :- | :- |
@@ -159,13 +161,13 @@ For example, the following table shows the WUs used by upsert requests at differ
 | 2 | 768 | 100 bytes | 3.2 KB | 7 |
 | 10 | 1024 | 15,000 bytes | 19.10 KB | 191 |
 | 100 | 768 | 500 bytes | 3.57 KB | 357 |
-| 1000 | 1536 | 1000 bytes | 7.14 KB | 7140 |
+| 1,000 | 1536 | 1,000 bytes | 7.14 KB | 7,140 |
 
 #### Update
 
 An update request uses 1 WU for each 1 KB of the new and existing record, with a minimum of 5 WUs per request.
 
-For example, the following table shows the WUs used by an update at different record sizes:
+The following table shows the WUs used by an update at different record sizes:
 
 | New record size | Previous record size | WUs |
 | :- | :- | :- |
@@ -183,7 +185,7 @@ For example, the following table shows the WUs used by an update at different re
 
 A delete request uses 1 WU for each 1 KB of records deleted, with a minimum of 5 WUs per request.
 
-For example, the following table shows the WUs used by delete requests at different batch sizes and record sizes:
+The following table shows the WUs used by delete requests at different batch sizes and record sizes:
 
 | Records per batch | Dimension | Avg. metadata size | Avg. record size | WUs |
 | :- | :- | :- | :- | :- |
@@ -191,7 +193,7 @@ For example, the following table shows the WUs used by delete requests at differ
 | 2 | 768 | 100 bytes | 3.2 KB | 7 |
 | 10 | 1024 | 15,000 bytes | 19.10 KB | 191 |
 | 100 | 768 | 500 bytes | 3.57 KB | 357 |
-| 1000 | 1536 | 1000 bytes | 7.14 KB | 7140 |
+| 1,000 | 1536 | 1,000 bytes | 7.14 KB | 7,140 |
 
 Specifying a non-existent ID or adding the same ID more than once doesn't increase WU use.
 
@@ -203,12 +205,45 @@ Specifying a non-existent ID or adding the same ID more than once doesn't increa
 
 ### Storage
 
-Storage costs are based on the size of an index on a per-gigabyte (GB) monthly rate. The size of an index is defined as the total size of its records across all namespaces. For the latest storage pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
+Storage is billed monthly per gigabyte (GB) of index size. An index's size is the total size of its records or documents across all namespaces. For the latest storage pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
-A record can include a dense vector, a sparse vector, or both. Use the formula that matches your data to calculate total size:
+A document in a document index can include any combination of `string` fields with `full_text_search` enabled, a dense vector, and a sparse vector. A record in a vector index can include a dense vector, a sparse vector, or both. Use the formula that matches your index to calculate total size:
 
 <div>
   <Tabs>
+    <Tab title="Document index">
+      A [document index](/guides/index-data/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
+
+      ```text Calculate size theme={null}
+      Index size = Number of documents × (
+                     ID size +
+                     Metadata size +
+                     Total full-text-search field size +
+                     Dense vector dimensions × 4 bytes +
+                     Number of non-zero sparse values × 8 bytes
+                   )
+      ```
+
+      Where:
+
+      * `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
+      * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A field with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) but no `full_text_search` doesn't store its text, so only its generated vector counts. If a field has both, count its text here and its generated vector below.
+      * Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
+      * `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
+
+      These examples assume 8-byte IDs:
+
+      | Documents | Avg total full-text-search field size | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+      | :- | :- | :- | :- | :- | :- |
+      | 500,000 | 2,000 bytes | None | None | 500 bytes | 1.25 GB |
+      | 1,000,000 | 5,000 bytes | 1024 | None | 1,000 bytes | 10.1 GB |
+      | 5,000,000 | 2,000 bytes | 768 | 100 | 500 bytes | 31.9 GB |
+
+      <Note>
+        Example: 1,000,000 documents × (8-byte ID + 5,000 bytes of full-text-search text + (1024 dense vector dimensions × 4 bytes) + 1,000 bytes of metadata) = 10.1 GB
+      </Note>
+    </Tab>
+
     <Tab title="Index of dense vectors">
       An [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
 
@@ -216,9 +251,7 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
         Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/search/hybrid-search/single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
       </Note>
 
-      **Calculate size (assuming no sparse vectors)**
-
-      ```
+      ```text Calculate size (assuming no sparse vectors) theme={null}
       Index size = Number of records × (
                      ID size + 
                      Metadata size +
@@ -230,8 +263,6 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
       * Each `Dense vector dimension` uses 4 bytes.
-
-      **Example calculations**
 
       These examples assume 8-byte IDs:
 
@@ -250,9 +281,7 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
     <Tab title="Index of sparse vectors">
       An [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
 
-      **Calculate size**
-
-      ```
+      ```text Calculate size theme={null}
       Index size = Number of records × (
                      ID size + 
                      Metadata size +
@@ -264,8 +293,6 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
       * `Number of non-zero sparse values`: Average number across all records. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
-
-      **Example calculations**
 
       These examples assume 8-byte IDs:
 
@@ -284,9 +311,7 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
     <Tab title="Index with both dense and sparse vectors">
       An [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index) contains records that each have one dense vector and an optional sparse vector.
 
-      **Calculate size**
-
-      ```
+      ```text Calculate size theme={null}
       Index size = Number of records × (
                      ID size + 
                      Metadata size +
@@ -300,8 +325,6 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
       * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
       * Each `Dense vector dimension` uses 4 bytes.
       * `Number of non-zero sparse values`: Average number across all records, including those without sparse vectors. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
-
-      **Example calculations**
 
       These examples assume 8-byte IDs:
 
@@ -321,15 +344,15 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
 ### Egress
 
-**Egress** measures the data Pinecone returns to you on serverless reads. Egress is measured in GB of total response bytes returned by an in-scope read request, proportional to the record data returned (IDs, scores, values, and metadata).
+Egress measures the data Pinecone returns to you on serverless reads. Egress is measured in GB of total response bytes returned by an in-scope read request, proportional to the record or document data returned (IDs, scores, vector values, text fields, and metadata).
 
-Egress is metered on read requests that return per-record data:
+Egress is metered on read requests that return per-record or per-document data:
 
 * [Query](/guides/search/search-overview)
-* [Fetch](/guides/manage-data/fetch-data) (by ID and by metadata)
-* [List](/guides/manage-data/list-record-ids)
+* [Fetch](/guides/manage-data/fetch-data) (records and documents, by ID and by metadata)
+* [List](/guides/manage-data/list-record-ids) (record and document IDs)
 * [Text search](/reference/api/latest/data-plane/search_records) on integrated indexes
-* [Full-text search](/guides/search/full-text-search)
+* Search on a document index, whether it ranks by [full-text search](/guides/search/full-text-search) or by vector similarity
 
 Write requests (upsert, update, delete, import), index statistics (such as `describe_index_stats`), and index management requests aren't metered for egress.
 
@@ -352,40 +375,40 @@ Each plan includes a monthly egress allowance, which resets at the start of each
 
 What happens past the allowance depends on your plan:
 
-* **Usage-based plans (Standard, Enterprise):** egress beyond the allowance is billed at the per-GB overage rate and reads keep serving. For the latest egress rate, see [Pricing](https://www.pinecone.io/pricing/).
-* **Flat-fee plans (Starter, Builder):** in-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
+* **Usage-based plans (Standard, Enterprise):** Egress beyond the allowance is billed at the per-GB overage rate and reads keep serving. For the latest egress rate, see [Pricing](https://www.pinecone.io/pricing/).
+* **Flat-fee plans (Starter, Builder):** In-scope reads are blocked with a `RESOURCE_EXHAUSTED` (429) error and an upgrade prompt once the allowance is reached. Index statistics, index management, and write requests remain available, and the allowance resets at the start of the next billing period.
 
 ## Imports
 
-[Importing from object storage](/guides/index-data/import-data) is the most efficient and cost-effective method to load large numbers of records into an index. The cost of an import is based on the size of the records read, whether the records were imported successfully or not.
+[Importing from object storage](/guides/index-data/import-data) is the most cost-effective way to load large numbers of records into an index. An import is billed by the size of the records it reads, whether or not they import successfully.
 
-If the import operation fails (e.g., after encountering a vector of the wrong dimension in an import with `on_error="abort"`), you will still be charged for the records read. However, if the import fails because of an internal system error, you won't incur charges. In this case, the import will return the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
+If the import fails (e.g., after it reads a vector of the wrong dimension in an import with `on_error="abort"`), you're still charged for the records read. If the import fails because of an internal system error, you aren't charged, and the import returns the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
 
 For the latest import pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
 ## Backups and restores
 
-A [backup](/guides/manage-data/backups-overview) is a static copy of a serverless index. Both the cost of storing a backup and [restoring an index](/guides/manage-data/restore-an-index) from a backup is based on the size of the index. For the latest backup and restore pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
+A [backup](/guides/manage-data/backups-overview) is a static copy of a serverless index. Storing a backup and [restoring an index](/guides/manage-data/restore-an-index) from a backup are both billed by the size of the index. For the latest backup and restore pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
 ## Embedding
 
-Pinecone hosts several [embedding models](/guides/index-data/create-an-index#embedding-models) so it's easy to manage your vector storage and search process on a single platform. You can use a hosted model to embed your data as an integrated part of upserting and querying, or you can use a hosted model to embed your data as a standalone operation.
+Pinecone hosts several [embedding models](/guides/index-data/create-an-index#embedding-models). You can use a hosted model to embed your data as an integrated part of upserting and querying, or you can use a hosted model to embed your data as a standalone operation.
 
-Embedding costs are determined by how many [tokens](https://www.pinecone.io/learn/tokenization/) are in a request. In general, the more words contained in your passage or query, the more tokens you generate.
+Embedding is billed by the number of [tokens](https://www.pinecone.io/learn/tokenization/) in a request. The more words in your passage or query, the more tokens it generates.
 
-For example, if you generate embeddings for the query, "What is the maximum diameter of a red pine?", Pinecone Inference generates 10 tokens, then converts them into an embedding. If the price per token for your billing plan is \$.08 per million tokens, then this API call costs \$.00001.
+For example, if you generate embeddings for the query, "What is the maximum diameter of a red pine?", Pinecone Inference generates 10 tokens, then converts them into an embedding. If your plan's rate is \$0.08 per million tokens, this call costs \$0.0000008.
 
 To learn more about tokenization, see [Choosing an embedding model](https://www.pinecone.io/learn/series/rag/embedding-models-rundown/). For the latest embed pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
 <Tip>
-  Embedding requests returns the total tokens generated. You can use this information to [monitor and manage embedding costs](/guides/manage-cost/monitor-usage-and-costs#embedding-tokens).
+  Embedding requests return the total tokens generated. You can use this information to [monitor and manage embedding costs](/guides/manage-cost/monitor-usage-and-costs#embedding-tokens).
 </Tip>
 
 ## Reranking
 
-Pinecone hosts several [reranking models](/guides/search/rerank-results#reranking-models) so it's easy to manage two-stage vector retrieval on a single platform. You can use a hosted model to rerank results as an integrated part of a query, or you can use a hosted model to rerank results as a standalone operation.
+Pinecone hosts several [reranking models](/guides/search/rerank-results#reranking-models). You can use a hosted model to rerank results as an integrated part of a query, or you can use a hosted model to rerank results as a standalone operation.
 
-Reranking costs are determined by the number of requests to the reranking model. For the latest rerank pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
+Reranking is billed by the number of requests to the reranking model. For the latest rerank pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
 ## Assistant
 
@@ -395,7 +418,7 @@ For details on how costs are incurred in Pinecone Assistant, see [Assistant pric
 
 Full HIPAA compliance is included with the [Enterprise plan](https://www.pinecone.io/pricing/). On the Enterprise plan or with the add-on, HIPAA compliance requires you to [configure audit logs](/guides/production/configure-audit-logs).
 
-For **Standard plan** customers, HIPAA compliance is available as an optional add-on for **\$190 per month**. The add-on is billed monthly and added to your regular invoice. A 6-month minimum period is required.
+On the Standard plan, HIPAA compliance is available as an optional add-on for \$190 per month. The add-on is billed monthly and added to your regular invoice. A 6-month minimum period is required.
 
 The HIPAA compliance add-on includes:
 
@@ -411,7 +434,7 @@ The HIPAA compliance add-on includes:
 
 ### Enable the HIPAA compliance add-on
 
-To enable the HIPAA compliance add-on, [submit a HIPAA request](https://www.pinecone.io/contact/hipaa/). The Pinecone team will review your request and guide you through activation.
+To enable the HIPAA compliance add-on, [submit a HIPAA request](https://www.pinecone.io/contact/hipaa/). The Pinecone team reviews your request and guides you through activation.
 
 ## See also
 

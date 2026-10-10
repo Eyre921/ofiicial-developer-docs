@@ -593,5 +593,5 @@ The returned object looks like this:
 
 ## See also
 
-* [Understanding cost](/guides/manage-cost/understanding-cost)
+* [Understand Pinecone cost](/guides/manage-cost/understanding-cost)
 * [Manage cost](/guides/manage-cost/manage-cost)

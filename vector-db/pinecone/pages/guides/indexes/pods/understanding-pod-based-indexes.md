@@ -14,7 +14,7 @@ With pod-based indexes, you choose one or more pre-configured units of hardware 
 
 ## Pod types
 
-Different pod types are priced differently. See [Understanding cost](/guides/manage-cost/understanding-cost) for more details.
+Different pod types are priced differently. See [Understand Pinecone cost](/guides/manage-cost/understanding-cost) for more details.
 
 <Note>
   Once a pod-based index is created, you can't change its pod type. However, you can create a collection from an index and then [create a new index with a different pod type](/guides/indexes/pods/create-a-pod-based-index#create-a-pod-index-from-a-collection) from the collection.

@@ -104,23 +104,23 @@ These filters can be combined using `$and` and `$or`:
 
 ### Scalar Comparison Operators
 
-| Operator | Description           | Valid Types                 | Example                         |
-| -------- | --------------------- | --------------------------- | ------------------------------- |
-| `$eq`    | Equal to              | string, int, float, boolean | `{"status": {"$eq": "active"}}` |
-| `$ne`    | Not equal to          | string, int, float, boolean | `{"count": {"$ne": 0}}`         |
-| `$gt`    | Greater than          | int, float                  | `{"price": {"$gt": 100}}`       |
-| `$gte`   | Greater than or equal | int, float                  | `{"rating": {"$gte": 4.5}}`     |
-| `$lt`    | Less than             | int, float                  | `{"stock": {"$lt": 10}}`        |
-| `$lte`   | Less than or equal    | int, float                  | `{"discount": {"$lte": 0.25}}`  |
+| Operator | Description | Valid Types | Example |
+| - | - | - | - |
+| `$eq` | Equal to | string, int, float, boolean | `{"status": {"$eq": "active"}}` |
+| `$ne` | Not equal to | string, int, float, boolean | `{"count": {"$ne": 0}}` |
+| `$gt` | Greater than | int, float | `{"price": {"$gt": 100}}` |
+| `$gte` | Greater than or equal | int, float | `{"rating": {"$gte": 4.5}}` |
+| `$lt` | Less than | int, float | `{"stock": {"$lt": 10}}` |
+| `$lte` | Less than or equal | int, float | `{"discount": {"$lte": 0.25}}` |
 
 ### Set Operators
 
 These operators check if a metadata value is in (or not in) a provided list. The list must contain values of the same type.
 
-| Operator | Description          | Valid List Types                        | Example                                      |
-| -------- | -------------------- | --------------------------------------- | -------------------------------------------- |
-| `$in`    | Value is in list     | string\[], int\[], float\[], boolean\[] | `{"category": {"$in": ["tech", "ai"]}}`      |
-| `$nin`   | Value is not in list | string\[], int\[], float\[], boolean\[] | `{"status": {"$nin": ["draft", "deleted"]}}` |
+| Operator | Description | Valid List Types | Example |
+| - | - | - | - |
+| `$in` | Value is in list | string\[], int\[], float\[], boolean\[] | `{"category": {"$in": ["tech", "ai"]}}` |
+| `$nin` | Value is not in list | string\[], int\[], float\[], boolean\[] | `{"status": {"$nin": ["draft", "deleted"]}}` |
 
 `$in` and `$nin` require arrays of the same type (all strings, all ints, all floats, or all booleans).
 
@@ -128,9 +128,9 @@ These operators check if a metadata value is in (or not in) a provided list. The
 
 These operators check if an array metadata field contains (or does not contain) a specific scalar value. The metadata field must be an array type (string\[], int\[], float\[], or boolean\[]).
 
-| Operator        | Description                    | Valid Types                             | Example                                  |
-| --------------- | ------------------------------ | --------------------------------------- | ---------------------------------------- |
-| `$contains`     | Array contains element         | string\[], int\[], float\[], boolean\[] | `{"tags": {"$contains": "tech"}}`        |
+| Operator | Description | Valid Types | Example |
+| - | - | - | - |
+| `$contains` | Array contains element | string\[], int\[], float\[], boolean\[] | `{"tags": {"$contains": "tech"}}` |
 | `$not_contains` | Array does not contain element | string\[], int\[], float\[], boolean\[] | `{"tags": {"$not_contains": "deleted"}}` |
 
 <Callout>
@@ -142,19 +142,19 @@ These operators check if an array metadata field contains (or does not contain) 
 
 ### Document Operators
 
-| Operator        | Description                           | Valid On    | Example                                            |
-| --------------- | ------------------------------------- | ----------- | -------------------------------------------------- |
-| `$contains`     | Document contains substring           | `#document` | `{"#document": {"$contains": "machine learning"}}` |
-| `$not_contains` | Document does not contain substring   | `#document` | `{"#document": {"$not_contains": "draft"}}`        |
-| `$regex`        | Document matches regex pattern        | `#document` | `{"#document": {"$regex": "quantum\\s+\\w+"}}`     |
-| `$not_regex`    | Document does not match regex pattern | `#document` | `{"#document": {"$not_regex": "^draft"}}`          |
+| Operator | Description | Valid On | Example |
+| - | - | - | - |
+| `$contains` | Document contains substring | `#document` | `{"#document": {"$contains": "machine learning"}}` |
+| `$not_contains` | Document does not contain substring | `#document` | `{"#document": {"$not_contains": "draft"}}` |
+| `$regex` | Document matches regex pattern | `#document` | `{"#document": {"$regex": "quantum\\s+\\w+"}}` |
+| `$not_regex` | Document does not match regex pattern | `#document` | `{"#document": {"$not_regex": "^draft"}}` |
 
 ### Logical Operators
 
-| Operator | Description               | Example                                                      |
-| -------- | ------------------------- | ------------------------------------------------------------ |
-| `$and`   | All conditions must match | `{"$and": [{"status": "active"}, {"year": {"$gte": 2020}}]}` |
-| `$or`    | Any condition can match   | `{"$or": [{"category": "tech"}, {"category": "science"}]}`   |
+| Operator | Description | Example |
+| - | - | - |
+| `$and` | All conditions must match | `{"$and": [{"status": "active"}, {"year": {"$gte": 2020}}]}` |
+| `$or` | Any condition can match | `{"$or": [{"category": "tech"}, {"category": "science"}]}` |
 
 ## Rules
 

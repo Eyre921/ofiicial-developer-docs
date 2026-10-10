@@ -10,15 +10,15 @@ Comprehensive reference for all index types and their configuration parameters.
 
 Schema recognizes six value types, each with associated index types. Without providing a Schema, collections use these built-in defaults:
 
-| Config Class                | Value Type      | Default Behavior               | Use Case                        |
-| --------------------------- | --------------- | ------------------------------ | ------------------------------- |
-| `StringInvertedIndexConfig` | `string`        | Enabled for all metadata       | Filter on string values         |
-| `FtsIndexConfig`            | `string`        | Enabled for `K.DOCUMENT` only  | Full-text search on documents   |
-| `VectorIndexConfig`         | `float_list`    | Enabled for `K.EMBEDDING` only | Similarity search on embeddings |
-| `SparseVectorIndexConfig`   | `sparse_vector` | Disabled (requires config)     | Keyword-based search            |
-| `IntInvertedIndexConfig`    | `int_value`     | Enabled for all metadata       | Filter on integer values        |
-| `FloatInvertedIndexConfig`  | `float_value`   | Enabled for all metadata       | Filter on float values          |
-| `BoolInvertedIndexConfig`   | `boolean`       | Enabled for all metadata       | Filter on boolean values        |
+| Config Class | Value Type | Default Behavior | Use Case |
+| - | - | - | - |
+| `StringInvertedIndexConfig` | `string` | Enabled for all metadata | Filter on string values |
+| `FtsIndexConfig` | `string` | Enabled for `K.DOCUMENT` only | Full-text search on documents |
+| `VectorIndexConfig` | `float_list` | Enabled for `K.EMBEDDING` only | Similarity search on embeddings |
+| `SparseVectorIndexConfig` | `sparse_vector` | Disabled (requires config) | Keyword-based search |
+| `IntInvertedIndexConfig` | `int_value` | Enabled for all metadata | Filter on integer values |
+| `FloatInvertedIndexConfig` | `float_value` | Enabled for all metadata | Filter on float values |
+| `BoolInvertedIndexConfig` | `boolean` | Enabled for all metadata | Filter on boolean values |
 
 ## Simple Index Configs
 
@@ -52,13 +52,13 @@ These index types have no configuration parameters.
 
 **Parameters**:
 
-| Parameter            | Type              | Required | Description                                                                                                               |
-| -------------------- | ----------------- | -------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `space`              | string            | No       | Distance function: `l2` (geometric), `ip` (inner product), or `cosine` (angle-based, most common for text). Default: `l2` |
-| `embedding_function` | EmbeddingFunction | No       | Function to auto-generate embeddings from `K.DOCUMENT`. If not provided, supply embeddings manually                       |
-| `source_key`         | string            | No       | Reserved for future use. Currently always uses `K.DOCUMENT`                                                               |
-| `hnsw`               | HnswConfig        | No       | Advanced: HNSW algorithm tuning for single-node deployments                                                               |
-| `spann`              | SpannConfig       | No       | Advanced: SPANN algorithm tuning (clustering, probing) for Chroma Cloud                                                   |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `space` | string | No | Distance function: `l2` (geometric), `ip` (inner product), or `cosine` (angle-based, most common for text). Default: `l2` |
+| `embedding_function` | EmbeddingFunction | No | Function to auto-generate embeddings from `K.DOCUMENT`. If not provided, supply embeddings manually |
+| `source_key` | string | No | Reserved for future use. Currently always uses `K.DOCUMENT` |
+| `hnsw` | HnswConfig | No | Advanced: HNSW algorithm tuning for single-node deployments |
+| `spann` | SpannConfig | No | Advanced: SPANN algorithm tuning (clustering, probing) for Chroma Cloud |
 
 **Limitations**:
 
@@ -75,11 +75,11 @@ These index types have no configuration parameters.
 
 **Parameters**:
 
-| Parameter            | Type                    | Required | Description                                                                                                                                |
-| -------------------- | ----------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `source_key`         | string                  | No       | Field to generate sparse embeddings from. Typically `K.DOCUMENT`, but can be any text field                                                |
-| `embedding_function` | SparseEmbeddingFunction | No       | Sparse embedding function (e.g., `ChromaCloudSpladeEmbeddingFunction`, `HuggingFaceSparseEmbeddingFunction`, `Bm25EmbeddingFunction`)      |
-| `bm25`               | boolean                 | No       | Set to `true` when using `Bm25EmbeddingFunction` to enable inverse document frequency (IDF) scaling for queries. Not applicable for SPLADE |
+| Parameter | Type | Required | Description |
+| - | - | - | - |
+| `source_key` | string | No | Field to generate sparse embeddings from. Typically `K.DOCUMENT`, but can be any text field |
+| `embedding_function` | SparseEmbeddingFunction | No | Sparse embedding function (e.g., `ChromaCloudSpladeEmbeddingFunction`, `HuggingFaceSparseEmbeddingFunction`, `Bm25EmbeddingFunction`) |
+| `bm25` | boolean | No | Set to `true` when using `Bm25EmbeddingFunction` to enable inverse document frequency (IDF) scaling for queries. Not applicable for SPLADE |
 
 **Limitations**:
 

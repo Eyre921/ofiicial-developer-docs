@@ -160,13 +160,13 @@ Pinecone Inference is an API service that provides access to [embedding models](
 
 A read unit (RU) is the unit Pinecone uses to measure and price the cost of read requests to a serverless index, including [query](/guides/manage-cost/understanding-cost#query), [fetch](/guides/manage-cost/understanding-cost#fetch), and [list](/guides/manage-cost/understanding-cost#list).
 
-For how read units are calculated, see [Understanding cost](/guides/manage-cost/understanding-cost#read-units).
+For how read units are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost#read-units).
 
 ### Write unit (WU)
 
 A write unit (WU) is the unit Pinecone uses to measure and price the cost of write requests to a serverless index, including [upsert](/guides/manage-cost/understanding-cost#upsert), [update](/guides/manage-cost/understanding-cost#update), and [delete](/guides/manage-cost/understanding-cost#delete).
 
-For how write units are calculated, see [Understanding cost](/guides/manage-cost/understanding-cost#write-units).
+For how write units are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost#write-units).
 
 ## Learn more
 

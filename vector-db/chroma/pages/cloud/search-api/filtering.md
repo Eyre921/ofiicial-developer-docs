@@ -50,11 +50,11 @@ The `Key` class (aliased as `K` for brevity) provides a fluent interface for bui
 
 ## Filterable Fields
 
-| Field             | Usage                         | Description                  |
-| ----------------- | ----------------------------- | ---------------------------- |
-| `K.ID`            | `K.ID.is_in(["id1", "id2"])`  | Filter by document IDs       |
-| `K.DOCUMENT`      | `K.DOCUMENT.contains("text")` | Filter by document content   |
-| `K("field_name")` | `K("status") == "active"`     | Filter by any metadata field |
+| Field | Usage | Description |
+| - | - | - |
+| `K.ID` | `K.ID.is_in(["id1", "id2"])` | Filter by document IDs |
+| `K.DOCUMENT` | `K.DOCUMENT.contains("text")` | Filter by document content |
+| `K("field_name")` | `K("status") == "active"` | Filter by any metadata field |
 
 ## Comparison Operators
 
@@ -307,12 +307,12 @@ Use `contains()` to check if a metadata array includes a value, and `not_contain
 
 ### Supported Array Types
 
-| Type    | Python          | TypeScript      | Rust                              |
-| ------- | --------------- | --------------- | --------------------------------- |
-| String  | `["a", "b"]`    | `["a", "b"]`    | `MetadataValue::StringArray(...)` |
-| Integer | `[1, 2, 3]`     | `[1, 2, 3]`     | `MetadataValue::IntArray(...)`    |
-| Float   | `[1.5, 2.5]`    | `[1.5, 2.5]`    | `MetadataValue::FloatArray(...)`  |
-| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)`   |
+| Type | Python | TypeScript | Rust |
+| - | - | - | - |
+| String | `["a", "b"]` | `["a", "b"]` | `MetadataValue::StringArray(...)` |
+| Integer | `[1, 2, 3]` | `[1, 2, 3]` | `MetadataValue::IntArray(...)` |
+| Float | `[1.5, 2.5]` | `[1.5, 2.5]` | `MetadataValue::FloatArray(...)` |
+| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)` |
 
 <Warning>
   The `$contains` value must be a scalar that matches the array's element type. All elements in an array must be the same type, and nested arrays are not supported.

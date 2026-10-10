@@ -40,7 +40,7 @@ Partitioning tenants with [namespaces](/guides/index-data/implement-multitenancy
 
 ## Choose the right index capacity mode
 
-For sustained, high read throughput, [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) can be more cost-effective than on-demand when you fully use provisioned read capacity. For spiky or low-QPS workloads, on-demand may be cheaper. See [When to use dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#when-to-use-dedicated-read-nodes) and [Understanding cost](/guides/manage-cost/understanding-cost).
+For sustained, high read throughput, [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) can be more cost-effective than on-demand when you fully use provisioned read capacity. For spiky or low-QPS workloads, on-demand may be cheaper. See [When to use dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview#when-to-use-dedicated-read-nodes) and [Understand Pinecone cost](/guides/manage-cost/understanding-cost).
 
 ## See also
 

@@ -88,9 +88,10 @@ Backup limitations are as follows:
 * You can only restore an index to the same project and cloud provider as the source index. Restoring to a different region on the same cloud provider is supported using the `unstable` API version. For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
 * Backups only include vectors that were in the index at least 15 minutes prior to the backup time. This means that if a vector was inserted into an index and a backup was immediately taken after, the recently inserted vector may not be backed up. More specifically, if a backup is created only a few minutes after the source index was created, the backup may have 0 vectors.
 * You can only perform operations on backups in the current Pinecone project.
-* Backups are supported for indexes without a schema definition and for integrated embedding indexes that use the Records API. They're not supported for full-text search indexes with document schemas that include `full_text_search` string fields, `dense_vector` fields, or `sparse_vector` fields. Indexes with document schemas also don't support `semantic_text` fields.
+* Backups are supported for all serverless indexes, including document indexes with a schema (`full_text_search`, `dense_vector`, and `sparse_vector` fields) and indexes that use integrated embedding.
+* Backups aren't available for indexes in a project that uses [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek).
 
 ## Backup and restore cost
 
-* To understand how cost is calculated for backups and restores, see [Understanding cost](/guides/manage-cost/understanding-cost#backups-and-restores).
+* To understand how cost is calculated for backups and restores, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost#backups-and-restores).
 * For up-to-date pricing information, see [Pricing](https://www.pinecone.io/pricing/).

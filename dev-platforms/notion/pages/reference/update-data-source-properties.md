@@ -69,7 +69,7 @@ Set `name` on the existing entry. Its ID stays the same. Prefer the ID if anothe
   ```
 </CodeGroup>
 
-To update a property’s `description`, include it beside the type’s settings. Repeat the current description when changing settings if you want to keep it. A rename that sends only `name` preserves the description.
+To update a property’s `description`, include it beside the type’s settings. Omit `description` to keep the current one, or send `null` to clear it.
 
 ## Update property type
 
@@ -91,10 +91,6 @@ Supply the new type’s settings under the existing name or ID.
 
 Set `select.options` to the complete list of options you want to keep. Omitted options are removed. New names add options. Omitting `options` keeps the current list.
 
-<Warning>
-  When updating `select` or `multi_select` settings, include the current property-level `description` to keep it. Omitting it clears it. This is separate from each option’s description. The examples below assume the property descriptions shown; copy yours from the retrieved schema.
-</Warning>
-
 ```json Keep High and add Medium theme={null}
 {
   "properties": {
@@ -113,7 +109,7 @@ Set `select.options` to the complete list of options you want to keep. Omitted o
 
 #### Existing select options
 
-Use an existing option’s `id` or `name` to retain it. You can update its `description`. The API does not rename existing options or change their colors; make those changes in Notion. New options accept `name`, optional `color`, and optional `description`. See [Option fields](/reference/property-object#select-options).
+Use an existing option’s `id` or `name` to retain it. Names match without regard to case or surrounding spaces, so `high` keeps the existing `High` option. A retained option keeps its ID and name. You can update its `color` and `description`. Omitting either keeps the current value, and `null` clears the description. The API does not rename existing options; rename them in Notion. New options accept `name`, optional `color`, and optional `description`. See [Option fields](/reference/property-object#select-options).
 
 ### Multi-select configuration updates
 

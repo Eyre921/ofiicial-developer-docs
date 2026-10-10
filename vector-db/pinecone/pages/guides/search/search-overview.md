@@ -7,7 +7,7 @@ path: guides/search/search-overview
 Compare Pinecone search types and choose the right retrieval approach: full-text (BM25), semantic (dense vector), sparse-vector, and hybrid.
 
 <Tip>
-  Searches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understanding cost](/guides/manage-cost/understanding-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.
+  Searches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#query) for how query cost is calculated, [Pricing](https://www.pinecone.io/pricing/) for rates, and [Query limits](/reference/api/database-limits/operation-limits) for `top_k` and result-size limits.
 </Tip>
 
 ## Choosing a search approach

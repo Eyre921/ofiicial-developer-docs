@@ -51,16 +51,16 @@ You can then poll [`GET /api/v1/invocations/{invocation_id}`](/reference/sync-ap
 
 ## Multipart Fields
 
-| Field             | Required | Description                                                                                                                            |
-| ----------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `database_name`   | Yes      | Database in which to index the file. **Must come before `file`.**                                                                      |
-| `collection_name` | Yes      | Target collection. Created on first use, otherwise appended to. **Must come before `file`.**                                           |
-| `file`            | Yes      | File content. Maximum 200 MiB. The filename in the part header is used as the document name.                                           |
-| `custom_id`       | No       | Custom document ID (max 120 bytes). Chunk IDs become `custom_id-{chunk}` instead of `sha256(filename)-{chunk}`.                        |
-| `metadata`        | No       | JSON object of additional metadata merged with chunk metadata. Maximum 16 KiB. Keys reserved by Chroma (e.g. `chroma_*`) are rejected. |
-| `embedding`       | No       | JSON `SourceEmbeddingConfig`. Defaults to Qwen3-Embedding-0.6B with `generic_retrieval` task plus Splade sparse embeddings.            |
-| `chunking`        | No       | JSON `SourceChunkingConfig`. Defaults to tree-sitter syntax-aware chunking with markdown/line-based fallbacks.                         |
-| `content_type`    | No       | MIME type override. Otherwise inferred from the file part header (if not `application/octet-stream`) or the filename extension.        |
+| Field | Required | Description |
+| - | - | - |
+| `database_name` | Yes | Database in which to index the file. **Must come before `file`.** |
+| `collection_name` | Yes | Target collection. Created on first use, otherwise appended to. **Must come before `file`.** |
+| `file` | Yes | File content. Maximum 200 MiB. The filename in the part header is used as the document name. |
+| `custom_id` | No | Custom document ID (max 120 bytes). Chunk IDs become `custom_id-{chunk}` instead of `sha256(filename)-{chunk}`. |
+| `metadata` | No | JSON object of additional metadata merged with chunk metadata. Maximum 16 KiB. Keys reserved by Chroma (e.g. `chroma_*`) are rejected. |
+| `embedding` | No | JSON `SourceEmbeddingConfig`. Defaults to Qwen3-Embedding-0.6B with `generic_retrieval` task plus Splade sparse embeddings. |
+| `chunking` | No | JSON `SourceChunkingConfig`. Defaults to tree-sitter syntax-aware chunking with markdown/line-based fallbacks. |
+| `content_type` | No | MIME type override. Otherwise inferred from the file part header (if not `application/octet-stream`) or the filename extension. |
 
 ## Limits
 

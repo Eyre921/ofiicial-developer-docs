@@ -114,10 +114,10 @@ The `GroupBy` class specifies how to partition results and which records to keep
 
 ## GroupBy Parameters
 
-| Parameter   | Type              | Description                                                    |
-| ----------- | ----------------- | -------------------------------------------------------------- |
-| `keys`      | Key or List\[Key] | Metadata key(s) to group by                                    |
-| `aggregate` | MinK or MaxK      | Aggregation function to select top k records within each group |
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Metadata key(s) to group by |
+| `aggregate` | MinK or MaxK | Aggregation function to select top k records within each group |
 
 ## Aggregation Functions
 
@@ -147,10 +147,10 @@ Keeps the k records with the **smallest** values for the specified keys. Use `Mi
   ```
 </CodeGroup>
 
-| Parameter | Type              | Description                               |
-| --------- | ----------------- | ----------------------------------------- |
-| `keys`    | Key or List\[Key] | Key(s) to sort by in ascending order      |
-| `k`       | int               | Number of records to keep from each group |
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Key(s) to sort by in ascending order |
+| `k` | int | Number of records to keep from each group |
 
 ### MaxK
 
@@ -178,10 +178,10 @@ Keeps the k records with the **largest** values for the specified keys. Use `Max
   ```
 </CodeGroup>
 
-| Parameter | Type              | Description                               |
-| --------- | ----------------- | ----------------------------------------- |
-| `keys`    | Key or List\[Key] | Key(s) to sort by in descending order     |
-| `k`       | int               | Number of records to keep from each group |
+| Parameter | Type | Description |
+| - | - | - |
+| `keys` | Key or List\[Key] | Key(s) to sort by in descending order |
+| `k` | int | Number of records to keep from each group |
 
 ## Key References
 

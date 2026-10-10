@@ -88,16 +88,16 @@ The Search API provides a powerful, unified interface for all search operations 
 
 ## Feature Comparison
 
-| Feature                            | `query()`                | `get()`          | `search()` |
-| ---------------------------------- | ------------------------ | ---------------- | ---------- |
-| Vector similarity search           | Yes                      | No               | Yes        |
-| Filtering (metadata, document, ID) | Yes                      | Yes              | Yes        |
-| Custom ranking expressions         | No                       | No               | Yes        |
-| Result grouping/deduplication      | No                       | No               | Yes        |
-| Batch operations                   | Partial (Embedding only) | No               | Yes        |
-| Field selection                    | Partial (Coarse)         | Partial (Coarse) | Yes        |
-| Pagination                         | No                       | Yes              | Yes        |
-| Type safety                        | Partial                  | Partial          | Yes        |
+| Feature | `query()` | `get()` | `search()` |
+| - | - | - | - |
+| Vector similarity search | Yes | No | Yes |
+| Filtering (metadata, document, ID) | Yes | Yes | Yes |
+| Custom ranking expressions | No | No | Yes |
+| Result grouping/deduplication | No | No | Yes |
+| Batch operations | Partial (Embedding only) | No | Yes |
+| Field selection | Partial (Coarse) | Partial (Coarse) | Yes |
+| Pagination | No | Yes | Yes |
+| Type safety | Partial | Partial | Yes |
 
 ## Availability
 

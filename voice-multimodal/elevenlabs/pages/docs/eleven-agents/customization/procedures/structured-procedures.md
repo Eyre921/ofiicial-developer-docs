@@ -640,6 +640,8 @@ schemas.
 
 Each step type already enforces its own behavior, so you rarely need to spell it out. Write the intent of each step and let the step type do the rest. The guidance below covers the cases worth getting right.
 
+To test a structured procedure, follow [Iterating on a procedure](/docs/eleven-agents/customization/procedures/free-form-procedures#iterating-on-a-procedure).
+
 ### Choosing step types
 
 #### Ask one question per Ask step

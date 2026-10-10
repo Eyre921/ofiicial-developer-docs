@@ -53,10 +53,10 @@ Chroma provides a convenient wrapper around Perplexity's embedding API. This emb
 
 Perplexity offers two embedding models:
 
-| Model                | Dimensions | Context Window | Price             |
-| -------------------- | ---------- | -------------- | ----------------- |
-| `pplx-embed-v1-0.6b` | 1024       | 32K tokens     | \$0.004/1M tokens |
-| `pplx-embed-v1-4b`   | 2560       | 32K tokens     | \$0.03/1M tokens  |
+| Model | Dimensions | Context Window | Price |
+| - | - | - | - |
+| `pplx-embed-v1-0.6b` | 1024 | 32K tokens | \$0.004/1M tokens |
+| `pplx-embed-v1-4b` | 2560 | 32K tokens | \$0.03/1M tokens |
 
 ## Matryoshka Dimensions
 

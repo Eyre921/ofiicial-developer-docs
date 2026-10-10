@@ -5005,6 +5005,7 @@ All variants return the full page content as markdown after the update:
 | `validation_error` | The provided ID is a database or non-page block (use the appropriate API for those record types). |
 | `validation_error` | The target page is a synced page (`external_object_instance_page`). Synced pages cannot be updated. |
 | `validation_error` | The page content after the edit is too large or too heavily formatted to process in one call. The limit counts the whole page, not the edit, so retrying the same request fails the same way. Move some content into child pages or reduce the page size. |
+| `validation_error` | The page is too large to load in full (about 20,000 records, most of them blocks), and the edit targets a block that wasn't loaded or would remove content that wasn't loaded. Retrying the same request fails the same way. Content that wasn't loaded appears as `<unknown>` tags in the page's markdown, so edit only content outside those tags. `additional_data.limit_kind` is `page_record_count`. |
 | `object_not_found` | The page does not exist or the connection does not have access to it. |
 | `restricted_resource` | The connection lacks `update_content` capability. |
 
@@ -10651,6 +10652,7 @@ flow:
     authorization_endpoint: string
     token_endpoint: string
     registration_endpoint?: string
+    introspection_endpoint?: string
     code_challenge_methods_supported?: string[]
     grant_types_supported?: string[]
     response_types_supported?: string[]
@@ -10973,10 +10975,13 @@ Exchange the authorization code for access and refresh tokens:
     expires_in?: number
     refresh_token?: string
     scope?: string
-    // Identity fields, present on successful authorization-code exchanges
+    // Identity fields, sent only on authorization-code exchanges
     user_id?: string
     workspace_id?: string
     email_domain?: string
+    bot_id?: string
+    workspace_name?: string | null
+    workspace_icon?: string | null
   }
 
   async function exchangeCodeForTokens(
@@ -11027,16 +11032,26 @@ Exchange the authorization code for access and refresh tokens:
   ```
 </CodeGroup>
 
+A successful authorization-code exchange also says who connected. Refresh
+responses don't include these fields, so store them from the first exchange.
+
+| Field | Type | Description |
+| - | - | - |
+| `user_id` | `string` | ID of the Notion user who authorized the connection. |
+| `workspace_id` | `string` | ID of the connected workspace. |
+| `email_domain` | `string` | Lowercased domain of the user's email address. |
+| `bot_id` | `string` | ID of the Notion authorization behind this connection. |
+| `workspace_name` | `string` or `null` | Display name of the workspace. |
+| `workspace_icon` | `string` or `null` | Icon for the workspace, usually an image URL. |
+
+`user_id` and `workspace_id` come as a pair. If Notion can't resolve them, the
+response has none of these fields. `email_domain` is left out when the user has
+no email address. `bot_id`, `workspace_name`, and `workspace_icon` are left out
+when Notion doesn't have the connection's details, and the two workspace fields
+can be `null`. To get the user's name or email address, or to look up identity
+later, see [Identify the connected workspace](#identify-the-connected-workspace).
+
 <Note>
-  **Identity fields in the token response**
-
-  Successful authorization-code exchanges also return `user_id` and
-  `workspace_id`, the Notion IDs of the authorizing user and workspace, plus
-  `email_domain`, the lowercased domain of the authorizing user's email
-  address. Use them to associate the connection with a user and workspace
-  without an extra call. Refresh responses don't include these fields, so
-  store them from the initial exchange.
-
   Notion may add fields to the token response over time. Parse it leniently
   and [ignore fields you don't recognize](/reference/versioning#what-we-consider-backwards-compatible).
 </Note>
@@ -11146,6 +11161,176 @@ Notion's `/mcp` endpoint is stateless, so the id carries no server-side state:
   `404 Not Found` session error to recover from and no session to re-establish.
 * Echoing it lets Notion group the requests of one client session together,
   which helps when you report an issue — include the id in your report.
+
+### Identify the connected workspace
+
+Use the [token response fields](#step-6-exchange-authorization-code-for-tokens)
+first. They give you `user_id` and `workspace_id` without another request.
+For a user-authorized connection, call `notion-get-self` with an empty object to
+read the person who connected, including their name and email when available.
+If `user.type` is `bot`, the connection acts as a workspace bot and no person
+email is available; use `user_id` from the authorization-code token response to
+identify the person who authorized the connection.
+
+<CodeGroup>
+  ```typescript TypeScript theme={null}
+  const result = await client.callTool({
+    name: "notion-get-self",
+    arguments: {},
+  })
+
+  const [block] = result.content
+  if (result.isError || block?.type !== "text") {
+    throw new Error("Could not read identity from notion-get-self")
+  }
+
+  const { workspace, user } = JSON.parse(block.text)
+  console.log(workspace.id, workspace.name)
+  console.log(user.type, user.id, user.name, user.email)
+  ```
+</CodeGroup>
+
+The text block contains a JSON object with stable `workspace` and `user`
+fields. See [Supported tools](/guides/mcp/mcp-supported-tools) for their shapes.
+
+Older clients can still call `notion-fetch` with the id `self`. That response
+puts the same identity under a `self` field. New clients should use
+`notion-get-self`.
+
+An MCP access token works only with Notion MCP. Don't send it to the REST API,
+for example to `GET /v1/users/me`.
+
+OpenID Connect (OIDC) is the standard OAuth option for receiving identity in
+an ID token or from a UserInfo endpoint. It isn't available from Notion MCP
+yet. If Notion enables OIDC for your client, request `openid`. Add `profile`
+for the user's name and `email` for the user's verified email address. Notion
+grants these identity scopes only to clients the Notion team allows. The
+consent page tells the user, “See your name and email address.” Notion omits
+the email claim when the email isn't verified.
+
+To check whether a token is still active, and who it belongs to, send it to
+the `introspection_endpoint` from the
+[authorization server metadata](#step-1-oauth-discovery). This endpoint follows
+[RFC 7662](https://datatracker.ietf.org/doc/html/rfc7662). Send a `POST` with
+a form-encoded `token` parameter, and authenticate with the same method you
+use at the token endpoint. Public clients send only `client_id`. A client can
+only introspect its own tokens.
+
+<CodeGroup>
+  ```typescript TypeScript theme={null}
+  type TokenIntrospectionResponse = {
+    active: boolean
+    client_id?: string
+    scope?: string
+    token_type?: "bearer"
+    exp?: number
+    iat?: number
+    sub?: string
+    aud?: string | string[]
+    iss?: string
+    user_id?: string
+    workspace_id?: string
+  }
+
+  type TokenEndpointAuthMethod =
+    | "client_secret_basic"
+    | "client_secret_post"
+    | "none"
+
+  async function introspectToken(
+    token: string,
+    metadata: OAuthMetadata,
+    clientId: string,
+    tokenEndpointAuthMethod: TokenEndpointAuthMethod,
+    clientSecret: string | undefined
+  ): Promise<TokenIntrospectionResponse> {
+    const endpoint = metadata.introspection_endpoint
+    if (!endpoint) {
+      throw new Error("Authorization server does not support token introspection")
+    }
+
+    const body = new URLSearchParams({ token })
+    const headers = new Headers({
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json",
+    })
+
+    if (tokenEndpointAuthMethod === "client_secret_basic") {
+      if (!clientSecret) {
+        throw new Error("Client secret is required for client_secret_basic")
+      }
+      const credentials = `${encodeURIComponent(clientId)}:${encodeURIComponent(clientSecret)}`
+      headers.set("Authorization", `Basic ${btoa(credentials)}`)
+    } else if (tokenEndpointAuthMethod === "client_secret_post") {
+      if (!clientSecret) {
+        throw new Error("Client secret is required for client_secret_post")
+      }
+      body.set("client_id", clientId)
+      body.set("client_secret", clientSecret)
+    } else {
+      body.set("client_id", clientId)
+    }
+
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers,
+      body,
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.text()
+      throw new Error(
+        `Token introspection failed: ${response.status} - ${errorBody}`
+      )
+    }
+
+    const tokenInfo: unknown = await response.json()
+    if (!isTokenIntrospectionResponse(tokenInfo)) {
+      throw new Error("Invalid token introspection response")
+    }
+
+    return tokenInfo
+  }
+
+  function isTokenIntrospectionResponse(
+    value: unknown
+  ): value is TokenIntrospectionResponse {
+    if (
+      typeof value !== "object" ||
+      value === null ||
+      !("active" in value) ||
+      typeof value.active !== "boolean"
+    ) {
+      return false
+    }
+
+    return (
+      (!("client_id" in value) || typeof value.client_id === "string") &&
+      (!("scope" in value) || typeof value.scope === "string") &&
+      (!("token_type" in value) || value.token_type === "bearer") &&
+      (!("exp" in value) || typeof value.exp === "number") &&
+      (!("iat" in value) || typeof value.iat === "number") &&
+      (!("sub" in value) || typeof value.sub === "string") &&
+      (!("aud" in value) || isStringOrStringArray(value.aud)) &&
+      (!("iss" in value) || typeof value.iss === "string") &&
+      (!("user_id" in value) || typeof value.user_id === "string") &&
+      (!("workspace_id" in value) || typeof value.workspace_id === "string")
+    )
+  }
+
+  function isStringOrStringArray(value: unknown): value is string | string[] {
+    return (
+      typeof value === "string" ||
+      (Array.isArray(value) && value.every(item => typeof item === "string"))
+    )
+  }
+  ```
+</CodeGroup>
+
+An active token returns `active: true` with `client_id`, `scope`, `iat`, `sub`,
+and `iss`, plus `user_id`, `exp`, and `aud` when Notion has them. Access tokens
+also return `token_type: "bearer"` and, when Notion has it, `workspace_id`. An expired, revoked, or unknown
+token, or a token issued to another client, returns only `{ "active": false }`.
 
 ### Check tool availability
 
@@ -12392,6 +12577,24 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Which search filters aren't available on this workspace's plan?"
   </Accordion>
 
+  <Accordion title="Identify the current connection">
+    `notion-get-self`
+
+    Returns the workspace and user for the current connection. Call it with an empty object. The response contains these stable fields:
+
+    * `workspace.id` and `workspace.name`: the connected workspace. The name can be an empty string.
+    * `user.type`: `person` or `bot`.
+    * `user.id` and `user.name`: the connected user. The name can be an empty string.
+    * `user.email`: present only when `user.type` is `person` and the user has an email address.
+
+    For user and workspace IDs right after OAuth, prefer the fields in the [token response](/guides/mcp/build-mcp-client#identify-the-connected-workspace). They don't need a tool call.
+
+    **Example prompts:**
+
+    * "Which Notion workspace and user are connected?"
+    * "Show the name and email address for this Notion connection"
+  </Accordion>
+
   <Accordion title="Download a Notion Skill">
     `notion-download-skill`
 
@@ -12421,6 +12624,8 @@ An MCP client can call several tools in one task. For example, it can search for
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
+
+    Older clients can pass the id `self` to get the connected workspace and user instead of a page. This path still works, but new clients should [use `notion-get-self`](/guides/mcp/build-mcp-client#identify-the-connected-workspace).
 
     **Example prompts:**
 
@@ -12517,6 +12722,8 @@ An MCP client can call several tools in one task. For example, it can search for
       ]
     }
     ```
+
+    If the page is too large to load in full (about 20,000 records, most of them blocks) and the edit targets a block that wasn't loaded or would remove content that wasn't loaded, the call returns a `validation_error` and the page is left unchanged. Retrying the same call fails the same way. Content that wasn't loaded appears as `<unknown>` tags when you fetch the page, so edit only content outside those tags.
 
     The tool description recommends `allow_async: true` for most page updates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
 
@@ -12911,7 +13118,7 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 
   `search` returns `{ results: [{ id, title, url }] }`. Each `id` works with `fetch`, so results that `fetch` can't open, such as connected-app results, are left out. These results don't include highlights, `path`, timestamps, or `notices`.
 
-  `fetch` returns `{ id, title, text, url, metadata }`, where `id` is the id you passed. When you pass `include_file_urls: true`, `metadata.references` maps each uploaded file's `notion-file-block://` source in `text` to a signed download URL. Without it, the response has no `references`.
+  `fetch` returns `{ id, title, text, url, metadata }`, where `id` is the id you passed. Other fields of the standard response stay in place, so `fetch` with the id `self` still returns the `self` object. When you pass `include_file_urls: true`, `metadata.references` maps each uploaded file's `notion-file-block://` source in `text` to a signed download URL. Without it, the response has no `references`.
 </Info>
 
 ## Rate limits
@@ -17760,6 +17967,14 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+<Update label="October 9, 2026">
+  ### Data source schema update fixes
+
+  [Update a data source](/reference/update-a-data-source) now changes the `color` of an existing `select`, `multi_select`, or `status` option instead of returning a `validation_error`. Option names also match existing options without regard to case, so sending `high` keeps the existing `High` option and its ID instead of replacing it. See [Existing select options](/reference/update-data-source-properties#existing-select-options).
+
+  Property updates now keep the existing `description` when you omit it, for every property type and when you change a type. Send `null` to clear it. The same rule applies to an option’s own `description`. Omitting `options` on a `select` or `multi_select` update now keeps the current options. See [Update data source properties](/reference/update-data-source-properties).
+</Update>
+
 <Update label="October 8, 2026">
   ### Control notifications from page writes
 
@@ -17798,6 +18013,12 @@ Source: https://developers.notion.com/page/changelog
   ### Create teamspace root pages with Notion MCP
 
   `notion-create-pages` now supports creating pages directly in a teamspace with `parent.teamspace_id`. Use a user-backed connection with permission to add top-level pages; see [Teamspace root pages](/guides/mcp/mcp-supported-tools#teamspace-root-pages) for details and an example.
+</Update>
+
+<Update label="October 2, 2026">
+  ### Page edits return 400 when a page is too large to load
+
+  [Update a page's content as markdown](/reference/update-page-markdown) and the `notion-update-page` MCP tool now return HTTP 400 `validation_error` when a page is too large to load in full (about 20,000 records, most of them blocks) and the edit targets a block that wasn't loaded or would remove content that wasn't loaded. Before, they returned HTTP 500 `internal_server_error`. Retrying the same request fails the same way. Content that wasn't loaded appears as `<unknown>` tags when you retrieve the page as markdown, so edit only content outside those tags. The response's `additional_data.limit_kind` is `page_record_count`, and `additional_data.limit` holds the limit.
 </Update>
 
 <Update label="September 30, 2026">
@@ -18755,6 +18976,8 @@ First, let's take stock of the current state of things.
 
 Before proposing or making changes to the workspace architecture during setup, read the [Notion database guidance](https://www.notion.com/help/category/databases) and use it to inform how you organize the workspace. Reuse the existing structure and respect the approval requirements below.
 
+Before the first memory recall or save, fetch `notion://docs/memory` through the Notion MCP and follow its memory-specific requirements. Fetching `id: "memory"` retrieves the destination, not the guidance.
+
 Inspect the connected Notion account and other available sources of information in the workspace, available tools, existing workspace structure, project destinations, operating guide, canonical memory destination, Skills home, and this host’s user-level instruction mechanism. Look for existing memories and places where documents or other artifacts belong. Keep this step read-only and focused on relevant locations.
 
 Determine whether this is a personal or team workspace, and verify who can access each proposed destination. Reuse team destinations for appropriate shared work, but keep personal memories private. Ask before importing potentially sensitive information into a shared destination.
@@ -18915,7 +19138,7 @@ Respect exclusions until I reverse them. Do not save small talk, temporary progr
 
 Memory holds distilled knowledge plus links; project pages hold details and deliverables. Approved reusable procedures belong in Notion Skills. Publish new or changed personal skills by default only if that policy was explicitly enabled; apply the ownership and destination boundaries from setup. Update underlying memories where appropriate. When saving or updating a memory that changes the overall picture of me, update the About page in the same task. If About is empty or has onboarding text, replace it with a concise summary of verified memories. Verify both the memory and About updates before reporting completion.
 
-Use specific searchable titles without agent-name prefixes, project Scope where supported (otherwise in the body), and a Source line with the source/date, author/write date, and expiry when relevant. Preserve revisions and source links. Keep source date, import date and last confirmation distinct.
+Use specific searchable titles without agent-name prefixes and project Scope where supported (otherwise in the body). Keep content provenance in the body when useful, including source/date, author/write date, and expiry when relevant. For the MCP-managed `memory` destination, populate Type, Source, and Last updated by according to the MCP memory guide. Body provenance does not replace these properties. For other approved memory destinations, follow their existing schema. Preserve revisions and source links. Keep source date, import date and last confirmation distinct.
 
 ### Create work
 
@@ -31744,7 +31967,7 @@ Set `name` on the existing entry. Its ID stays the same. Prefer the ID if anothe
   ```
 </CodeGroup>
 
-To update a property’s `description`, include it beside the type’s settings. Repeat the current description when changing settings if you want to keep it. A rename that sends only `name` preserves the description.
+To update a property’s `description`, include it beside the type’s settings. Omit `description` to keep the current one, or send `null` to clear it.
 
 ## Update property type
 
@@ -31766,10 +31989,6 @@ Supply the new type’s settings under the existing name or ID.
 
 Set `select.options` to the complete list of options you want to keep. Omitted options are removed. New names add options. Omitting `options` keeps the current list.
 
-<Warning>
-  When updating `select` or `multi_select` settings, include the current property-level `description` to keep it. Omitting it clears it. This is separate from each option’s description. The examples below assume the property descriptions shown; copy yours from the retrieved schema.
-</Warning>
-
 ```json Keep High and add Medium theme={null}
 {
   "properties": {
@@ -31788,7 +32007,7 @@ Set `select.options` to the complete list of options you want to keep. Omitted o
 
 #### Existing select options
 
-Use an existing option’s `id` or `name` to retain it. You can update its `description`. The API does not rename existing options or change their colors; make those changes in Notion. New options accept `name`, optional `color`, and optional `description`. See [Option fields](/reference/property-object#select-options).
+Use an existing option’s `id` or `name` to retain it. Names match without regard to case or surrounding spaces, so `high` keeps the existing `High` option. A retained option keeps its ID and name. You can update its `color` and `description`. Omitting either keeps the current value, and `null` clears the description. The API does not rename existing options; rename them in Notion. New options accept `name`, optional `color`, and optional `description`. See [Option fields](/reference/property-object#select-options).
 
 ### Multi-select configuration updates
 
@@ -31939,6 +32158,7 @@ If `allow_async` is omitted or `false`, this endpoint keeps its existing synchro
 | `validation_error` | The provided ID is a database or non-page block. |
 | `validation_error` | The target page is a synced page. Synced pages cannot be updated. |
 | `validation_error` | The page content after the edit is too large or too heavily formatted to process in one call. The limit counts the whole page, not the edit, so retrying the same request fails the same way. Move some content into child pages or reduce the page size. |
+| `validation_error` | The page is too large to load in full (about 20,000 records, most of them blocks), and the edit targets a block that wasn't loaded or would remove content that wasn't loaded. Retrying the same request fails the same way. Content that wasn't loaded appears as `<unknown>` tags in the page's markdown, so edit only content outside those tags. `additional_data.limit_kind` is `page_record_count`. |
 | `object_not_found` | The page does not exist or the connection does not have access to it. |
 
 *Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.*
@@ -32016,7 +32236,7 @@ Set `name` on the existing entry. Its ID stays the same. Prefer the ID if anothe
   ```
 </CodeGroup>
 
-To update a property’s `description`, include it beside the type’s settings. Repeat the current description when changing settings if you want to keep it. A rename that sends only `name` preserves the description.
+To update a property’s `description`, include it beside the type’s settings. Omit `description` to keep the current one, or send `null` to clear it.
 
 ## Update property type
 
@@ -32038,10 +32258,6 @@ Supply the new type’s settings under the existing name or ID.
 
 Set `select.options` to the complete list of options you want to keep. Omitted options are removed. New names add options. Omitting `options` keeps the current list.
 
-<Warning>
-  When updating `select` or `multi_select` settings, include the current property-level `description` to keep it. Omitting it clears it. This is separate from each option’s description. The examples below assume the property descriptions shown; copy yours from the retrieved schema.
-</Warning>
-
 ```json Keep High and add Medium theme={null}
 {
   "properties": {
@@ -32060,7 +32276,7 @@ Set `select.options` to the complete list of options you want to keep. Omitted o
 
 #### Existing select options
 
-Use an existing option’s `id` or `name` to retain it. You can update its `description`. The API does not rename existing options or change their colors; make those changes in Notion. New options accept `name`, optional `color`, and optional `description`. See [Option fields](/reference/property-object#select-options).
+Use an existing option’s `id` or `name` to retain it. Names match without regard to case or surrounding spaces, so `high` keeps the existing `High` option. A retained option keeps its ID and name. You can update its `color` and `description`. Omitting either keeps the current value, and `null` clears the description. The API does not rename existing options; rename them in Notion. New options accept `name`, optional `color`, and optional `description`. See [Option fields](/reference/property-object#select-options).
 
 ### Multi-select configuration updates
 

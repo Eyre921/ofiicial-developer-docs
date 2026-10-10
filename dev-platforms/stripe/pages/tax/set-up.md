@@ -8,13 +8,15 @@ path: tax/set-up
 
 Enable Stripe Tax to automatically calculate and collect tax.
 
-To set up Stripe Tax, configure your tax settings through the Dashboard on the [tax settings page](https://dashboard.stripe.com/settings/tax). Alternatively, you can use the [Tax Settings API](https://docs.stripe.com/api/tax/settings.md). Depending on your integration, add [one line of code](https://docs.stripe.com/tax/set-up.md#integrate) to enable tax.
+You can set up Stripe Tax in the Dashboard by [configuring your tax settings](https://dashboard.stripe.com/settings/tax). After Stripe Tax is set up, you can either [enable tax in the Dashboard or by adding one line of code](https://docs.stripe.com/tax/set-up.md#integrate) depending on which Stripe products you integrate with.
 
-If you’re a platform that wants to set up Stripe Tax for your connected accounts that are responsible for collecting, filing, and reporting taxes, see [Tax for software platforms](https://docs.stripe.com/tax/tax-for-platforms.md).
+To set up Stripe Tax programmatically, use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md).
+
+If you’re a platform or marketplace that wants to set up Stripe Tax, see [Use Stripe Tax with Connect](https://docs.stripe.com/tax/connect.md).
 
 > [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
 
-## Get started with a video demo 
+## Video demo 
 
 This short video shows you how to enable automatic tax collection through the Dashboard.
 [Watch on YouTube](https://www.youtube.com/watch?v=PFzV64TjSmo)
@@ -54,48 +56,43 @@ Before you start collecting tax from your customers, you must [register](https:/
 
 Visit [Locations](https://dashboard.stripe.com/tax/locations) tab in the Dashboard to add your tax registrations. If you haven’t registered yet but are planning to do so, you can also schedule a tax registration to take effect at a date in the future. You can also use [Stripe to register](https://docs.stripe.com/tax/use-stripe-to-register/united-states.md) on your behalf. Additionally, you also can [use Taxually to register](https://docs.stripe.com/tax/use-taxually-to-register.md) in locations outside the US.
 
-## Enable Tax in your Stripe integration or use the Stripe Tax API
+## Enable Tax in your Stripe integration
 
 To enable automatic tax on your Stripe integration:
 
-#### No-code
+#### Dashboard
 
 After you click **Get started**, Stripe Tax is automatically enabled for new transactions that you create in the Dashboard. To disable it, go to the [tax settings](https://dashboard.stripe.com/settings/tax/integrations) page.
 
-| Integration | Definition |
-| --- | --- |
-| [Invoicing](https://docs.stripe.com/tax/invoicing.md) | Automatically calculate tax on your invoices using the Dashboard without any code. |
-| [Subscriptions](https://docs.stripe.com/tax/subscriptions/update.md) | Calculate the tax to collect on your recurring payments when using Stripe Billing. |
-| [Payment Links](https://docs.stripe.com/tax/payment-links.md) | Use Stripe Tax with Payment Links to automatically calculate and collect tax on a payment page and share a link to it with your customers, without writing any code. |
+|  |
+| [Invoicing](https://dashboard.stripe.com/invoices) | Automatically calculate tax on your invoices. To learn more, see [Automatically collect tax on invoices](https://docs.stripe.com/tax/invoicing.md). |
+| [Subscriptions](https://dashboard.stripe.com/subscriptions) | Calculate the tax to collect on your recurring payments. To learn more, see [Collect taxes for recurring payments](https://docs.stripe.com/tax/subscriptions.md). |
+| [Payment Links](https://dashboard.stripe.com/payment-links) | Automatically calculate and collect tax on a payment page and share a link to it with your customers. To learn more, see [Automatically collect tax on Payment Links](https://docs.stripe.com/tax/payment-links.md). |
 
-#### Low-code
+Enabling Stripe Tax doesn’t update your existing invoices, subscriptions, and payment links. To start calculating and collecting tax on them, edit each one in the Dashboard to enable automatic tax.
 
-If you create [Checkout Sessions](https://docs.stripe.com/api/checkout/sessions.md), [Subscriptions](https://docs.stripe.com/api/subscriptions.md), or [Invoices](https://docs.stripe.com/api/invoices.md) with the API, you need to add `automatic_tax.enabled=true` to your integration. Read our guides for more information:
+#### API
 
-| Integration | Definition |
-| --- | --- |
-| [Invoicing](https://docs.stripe.com/tax/invoicing.md?dashboard-or-api=api) | Automatically calculate tax on your invoices by adding as little as one line of code |
-| [Subscriptions](https://docs.stripe.com/tax/subscriptions.md) | Calculate the tax to collect on your recurring payments when using Stripe Billing. |
-| [Checkout](https://docs.stripe.com/tax/checkout.md) | Automatically calculate taxes on all purchases and subscriptions accumulated during a Checkout session. To get started, use our quickstart for Checkout Sessions that are [Stripe-hosted](https://docs.stripe.com/checkout/quickstart.md) or [embedded](https://docs.stripe.com/checkout/embedded/quickstart.md). |
+If you create Invoices, Subscriptions, Payment Links, or Checkout Sessions with the API, add `automatic_tax.enabled=true` to your integration.
+
+For custom `PaymentIntent` flows, use the [Tax API](https://docs.stripe.com/tax/payment-intent/custom.md) to calculate and record tax instead.
+
+|  |
+| [Invoicing](https://docs.stripe.com/api/invoices/update.md#update_invoice-automatic_tax-enabled) | Automatically calculate tax on your invoices. To learn more, see [Automatically collect tax on invoices](https://docs.stripe.com/tax/invoicing.md?dashboard-or-api=api). |
+| [Subscriptions](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled) | Calculate the tax to collect on your recurring payments. To learn more, see [Collect taxes for recurring payments](https://docs.stripe.com/tax/subscriptions.md#create-subscription). |
+| [Payment Links](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled) | Automatically calculate and collect tax on a payment page and share a link to it with your customers. To learn more, see [Automatically collect tax on Payment Links](https://docs.stripe.com/tax/payment-links.md?dashboard-or-api=api). |
+| [Checkout](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-automatic_tax-enabled) | Automatically calculate taxes on all purchases and subscriptions accumulated during a Checkout session. To learn more, see [Collect tax with Checkout](https://docs.stripe.com/tax/checkout.md). |
 | [Custom flows](https://docs.stripe.com/tax/payment-intent/custom.md) | Use Tax with [PaymentIntents](https://docs.stripe.com/api/payment_intents.md), or collect tax on payments collected outside of Stripe. To get started, use our quickstart for [custom payment flows with the Payment Intents API](https://docs.stripe.com/payments/quickstart-payment-intents.md). |
 
-### Update existing recurring items
+Enabling automatic tax in your integration doesn’t update your existing invoices, subscriptions, and payment links. To start calculating and collecting tax on them, update each one with `automatic_tax.enabled=true`:
 
-Enabling tax and configuring automatic collection in your integration doesn’t update your existing subscription, invoice, and payment link instances. You must update them separately to begin calculating and collecting tax. You can complete these updates in the Dashboard or by setting `automatic_tax.enabled=true` in the respective APIs:
-
-- Subscriptions [Dashboard](https://dashboard.stripe.com/subscriptions) or [Update a subscription](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled)
-- Use the [Payment links Dashboard page](https://dashboard.stripe.com/payment-links) or update each [Payment Link](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled) programmatically.
-- Invoices [Dashboard](https://dashboard.stripe.com/invoices) or [Update an invoice](https://docs.stripe.com/api/invoices/update.md#update_invoice-automatic_tax-enabled)
+- [Update an invoice](https://docs.stripe.com/api/invoices/update.md#update_invoice-automatic_tax-enabled)
+- [Update a subscription](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled)
+- [Update a payment link](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled)
 
 ## Set up filing
 
 After you add your registrations and start collecting tax, you can set up filing to automatically submit returns and remit tax in the regions where you’re registered. Stripe can help you file automatically in [over 90 countries](https://docs.stripe.com/tax/supported-countries.md) and in all US states.
-
-For filings in the US, [file with Stripe through TaxJar](https://docs.stripe.com/tax/file-with-stripe.md).
-
-For EU Non-Union One Stop Shop (OSS) filings through Ireland and simplified GST/HST filings in Canada, [file with Stripe](https://docs.stripe.com/tax/file-with-stripe-outside-us.md).
-
-For other filings outside the US, [file with Taxually](https://docs.stripe.com/tax/file-with-taxually.md).
 
 Automated filing can help you:
 
@@ -103,7 +100,8 @@ Automated filing can help you:
 - Receive email notifications and reminders to review your scheduled returns
 - Track the status of each filing and payment
 - View copies of your completed filings
-- Find other [filing options](https://docs.stripe.com/tax/filing.md#filing-with-stripe).
+
+You can [file with Stripe in the US](https://docs.stripe.com/tax/file-with-stripe.md). You can also [file with Stripe outside the US](https://docs.stripe.com/tax/file-with-stripe-outside-us.md) for simplified GST/HST registrations in Canada and non-Union One Stop Shop (OSS) registrations through Ireland. For other filings outside the US, [file with Taxually](https://docs.stripe.com/tax/file-with-taxually.md).
 
 ## Disable tax collection
 
@@ -111,9 +109,7 @@ To stop calculating and collecting tax in your payments integrations:
 
 1. Turn off automatic tax calculation in the [Tax](https://dashboard.stripe.com/settings/tax) page in the Dashboard.
 2. Remove active tax registrations in the [Dashboard](https://dashboard.stripe.com/tax/locations).
-3. Edit existing recurring integrations, such as:
+3. Edit existing recurring integrations, such as [subscriptions](https://dashboard.stripe.com/subscriptions), [payment links](https://dashboard.stripe.com/payment-links), and [invoices](https://dashboard.stripe.com/invoices).
 
-- [Subscriptions](https://dashboard.stripe.com/subscriptions)
-- [Payment links](https://dashboard.stripe.com/payment-links)
-- [Invoices](https://dashboard.stripe.com/invoices): You can also set `automatic_tax[enabled]=false` in the [subscriptions](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled), [payment-links](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled), or [invoices](https://docs.stripe.com/api/invoices/update.md#update_invoice-automatic_tax-enabled) APIs instead of the Dashboard.
+You can also set `automatic_tax[enabled]=false` in the [Subscriptions](https://docs.stripe.com/api/subscriptions/update.md#update_subscription-automatic_tax-enabled), [Payment Links](https://docs.stripe.com/api/payment-link/update.md#update_payment_link-automatic_tax-enabled), or [Invoices](https://docs.stripe.com/api/invoices/update.md#update_invoice-automatic_tax-enabled) APIs instead of the Dashboard.
 

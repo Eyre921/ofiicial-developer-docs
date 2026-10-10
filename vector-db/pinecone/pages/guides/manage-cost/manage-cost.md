@@ -8,7 +8,7 @@ Reduce Pinecone spend with strategies like spend alerts, ID-prefix listing, mult
 
 For the latest pricing details, see our [pricing page](https://www.pinecone.io/pricing/).
 
-For help estimating total cost, see [Understanding cost](/guides/manage-cost/understanding-cost). To view or download a detailed report of your current usage and costs, see [Monitor usage and costs](/guides/manage-cost/monitor-usage-and-costs#monitor-organization-level-usage).
+For help estimating total cost, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost). To view or download a detailed report of your current usage and costs, see [Monitor usage and costs](/guides/manage-cost/monitor-usage-and-costs#monitor-organization-level-usage).
 
 To lower your bill, see [Ways to reduce cost](/guides/manage-cost/understanding-cost#ways-to-reduce-cost) and [Save on costs](/guides/optimize/save-on-costs), which cover available credits and discounts plus ways to optimize your workload.
 
@@ -66,6 +66,6 @@ Users on Standard and Enterprise plans can [contact Support](https://app.pinecon
 
 ## See also
 
-* [Understanding cost](/guides/manage-cost/understanding-cost)
+* [Understand Pinecone cost](/guides/manage-cost/understanding-cost)
 * [Monitor usage and costs](/guides/manage-cost/monitor-usage-and-costs)
 * [Save on costs](/guides/optimize/save-on-costs)

@@ -624,25 +624,25 @@ Once connected, your ADK agent will have access to the following Chroma tools:
 
 ### Collection Management
 
-| Tool                          | Description                                              |
-| :---------------------------- | :------------------------------------------------------- |
-| `chroma_list_collections`     | List all collections with pagination support             |
-| `chroma_create_collection`    | Create a new collection with optional HNSW configuration |
-| `chroma_get_collection_info`  | Get detailed information about a collection              |
-| `chroma_get_collection_count` | Get the number of documents in a collection              |
-| `chroma_modify_collection`    | Update a collection's name or metadata                   |
-| `chroma_delete_collection`    | Delete a collection                                      |
-| `chroma_peek_collection`      | View a sample of documents in a collection               |
+| Tool | Description |
+| :- | :- |
+| `chroma_list_collections` | List all collections with pagination support |
+| `chroma_create_collection` | Create a new collection with optional HNSW configuration |
+| `chroma_get_collection_info` | Get detailed information about a collection |
+| `chroma_get_collection_count` | Get the number of documents in a collection |
+| `chroma_modify_collection` | Update a collection's name or metadata |
+| `chroma_delete_collection` | Delete a collection |
+| `chroma_peek_collection` | View a sample of documents in a collection |
 
 ### Document Operations
 
-| Tool                      | Description                                                   |
-| :------------------------ | :------------------------------------------------------------ |
-| `chroma_add_documents`    | Add documents with optional metadata and custom IDs           |
-| `chroma_query_documents`  | Query documents using semantic search with advanced filtering |
-| `chroma_get_documents`    | Retrieve documents by IDs or filters with pagination          |
-| `chroma_update_documents` | Update existing documents' content, metadata, or embeddings   |
-| `chroma_delete_documents` | Delete specific documents from a collection                   |
+| Tool | Description |
+| :- | :- |
+| `chroma_add_documents` | Add documents with optional metadata and custom IDs |
+| `chroma_query_documents` | Query documents using semantic search with advanced filtering |
+| `chroma_get_documents` | Retrieve documents by IDs or filters with pagination |
+| `chroma_update_documents` | Update existing documents' content, metadata, or embeddings |
+| `chroma_delete_documents` | Delete specific documents from a collection |
 
 ## Resources
 

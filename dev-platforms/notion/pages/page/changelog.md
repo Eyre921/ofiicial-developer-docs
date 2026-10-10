@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 9, 2026">
+  ### Data source schema update fixes
+
+  [Update a data source](/reference/update-a-data-source) now changes the `color` of an existing `select`, `multi_select`, or `status` option instead of returning a `validation_error`. Option names also match existing options without regard to case, so sending `high` keeps the existing `High` option and its ID instead of replacing it. See [Existing select options](/reference/update-data-source-properties#existing-select-options).
+
+  Property updates now keep the existing `description` when you omit it, for every property type and when you change a type. Send `null` to clear it. The same rule applies to an option’s own `description`. Omitting `options` on a `select` or `multi_select` update now keeps the current options. See [Update data source properties](/reference/update-data-source-properties).
+</Update>
+
 <Update label="October 8, 2026">
   ### Control notifications from page writes
 
@@ -42,6 +50,12 @@ path: page/changelog
   ### Create teamspace root pages with Notion MCP
 
   `notion-create-pages` now supports creating pages directly in a teamspace with `parent.teamspace_id`. Use a user-backed connection with permission to add top-level pages; see [Teamspace root pages](/guides/mcp/mcp-supported-tools#teamspace-root-pages) for details and an example.
+</Update>
+
+<Update label="October 2, 2026">
+  ### Page edits return 400 when a page is too large to load
+
+  [Update a page's content as markdown](/reference/update-page-markdown) and the `notion-update-page` MCP tool now return HTTP 400 `validation_error` when a page is too large to load in full (about 20,000 records, most of them blocks) and the edit targets a block that wasn't loaded or would remove content that wasn't loaded. Before, they returned HTTP 500 `internal_server_error`. Retrying the same request fails the same way. Content that wasn't loaded appears as `<unknown>` tags when you retrieve the page as markdown, so edit only content outside those tags. The response's `additional_data.limit_kind` is `page_record_count`, and `additional_data.limit` holds the limit.
 </Update>
 
 <Update label="September 30, 2026">

@@ -250,38 +250,38 @@ library or remotely through an API.
 
 Chroma provides lightweight wrappers around popular embedding providers, making it easy to use them in your apps. You can set an embedding function when you [create](../collections/manage-collections) a Chroma collection, to be automatically used when adding and querying data, or you can call them directly yourself.
 
-|                                                                                          | Python | Typescript |
-| ---------------------------------------------------------------------------------------- | ------ | ---------- |
-| [Cloudflare Workers AI](../../integrations/embedding-models/cloudflare-workers-ai)       | ✓      | ✓          |
-| [Cohere](../../integrations/embedding-models/cohere)                                     | ✓      | ✓          |
-| [Google Generative AI](../../integrations/embedding-models/google-gemini)                | ✓      | ✓          |
-| [Hugging Face](../../integrations/embedding-models/hugging-face)                         | ✓      | -          |
-| [Hugging Face Embedding Server](../../integrations/embedding-models/hugging-face-server) | ✓      | ✓          |
-| [Jina AI](../../integrations/embedding-models/jina-ai)                                   | ✓      | ✓          |
-| [Mistral](../../integrations/embedding-models/mistral)                                   | ✓      | ✓          |
-| [Morph](../../integrations/embedding-models/morph)                                       | ✓      | ✓          |
-| [OpenAI](../../integrations/embedding-models/openai)                                     | ✓      | ✓          |
-| [Sentence Transformers](../../integrations/embedding-models/sentence-transformer)        | ✓      | ✓          |
-| [Together AI](../../integrations/embedding-models/together-ai)                           | ✓      | ✓          |
+| | Python | Typescript |
+| - | - | - |
+| [Cloudflare Workers AI](../../integrations/embedding-models/cloudflare-workers-ai) | ✓ | ✓ |
+| [Cohere](../../integrations/embedding-models/cohere) | ✓ | ✓ |
+| [Google Generative AI](../../integrations/embedding-models/google-gemini) | ✓ | ✓ |
+| [Hugging Face](../../integrations/embedding-models/hugging-face) | ✓ | - |
+| [Hugging Face Embedding Server](../../integrations/embedding-models/hugging-face-server) | ✓ | ✓ |
+| [Jina AI](../../integrations/embedding-models/jina-ai) | ✓ | ✓ |
+| [Mistral](../../integrations/embedding-models/mistral) | ✓ | ✓ |
+| [Morph](../../integrations/embedding-models/morph) | ✓ | ✓ |
+| [OpenAI](../../integrations/embedding-models/openai) | ✓ | ✓ |
+| [Sentence Transformers](../../integrations/embedding-models/sentence-transformer) | ✓ | ✓ |
+| [Together AI](../../integrations/embedding-models/together-ai) | ✓ | ✓ |
 
 For TypeScript users, Chroma provides packages for a number of embedding model providers. The Chromadb python package ships with all embedding functions included.
 
-| Provider                    | Embedding Function Package                                                                           |
-| --------------------------- | ---------------------------------------------------------------------------------------------------- |
-| All (installs all packages) | [@chroma-core/all](https://www.npmjs.com/package/@chroma-core/all)                                   |
-| Cloudflare Workers AI       | [@chroma-core/cloudflare-worker-ai](https://www.npmjs.com/package/@chroma-core/cloudflare-worker-ai) |
-| Cohere                      | [@chroma-core/cohere](https://www.npmjs.com/package/@chroma-core/cohere)                             |
-| Google Gemini               | [@chroma-core/google-gemini](https://www.npmjs.com/package/@chroma-core/google-gemini)               |
-| Hugging Face Server         | [@chroma-core/huggingface-server](https://www.npmjs.com/package/@chroma-core/huggingface-server)     |
-| Jina                        | [@chroma-core/jina](https://www.npmjs.com/package/@chroma-core/jina)                                 |
-| Mistral                     | [@chroma-core/mistral](https://www.npmjs.com/package/@chroma-core/mistral)                           |
-| Morph                       | [@chroma-core/morph](https://www.npmjs.com/package/@chroma-core/morph)                               |
-| Ollama                      | [@chroma-core/ollama](https://www.npmjs.com/package/@chroma-core/ollama)                             |
-| OpenAI                      | [@chroma-core/openai](https://www.npmjs.com/package/@chroma-core/openai)                             |
-| Perplexity                  | [@chroma-core/perplexity](https://www.npmjs.com/package/@chroma-core/perplexity)                     |
-| Qwen (via Chroma Cloud)     | [@chroma-core/chroma-cloud-qwen](https://www.npmjs.com/package/@chroma-core/chroma-cloud-qwen)       |
-| Sentence Transformers       | [@chroma-core/sentence-transformer](https://www.npmjs.com/package/@chroma-core/sentence-transformer) |
-| Together AI                 | [@chroma-core/together-ai](https://www.npmjs.com/package/@chroma-core/together-ai)                   |
-| Voyage AI                   | [@chroma-core/voyageai](https://www.npmjs.com/package/@chroma-core/voyageai)                         |
+| Provider | Embedding Function Package |
+| - | - |
+| All (installs all packages) | [@chroma-core/all](https://www.npmjs.com/package/@chroma-core/all) |
+| Cloudflare Workers AI | [@chroma-core/cloudflare-worker-ai](https://www.npmjs.com/package/@chroma-core/cloudflare-worker-ai) |
+| Cohere | [@chroma-core/cohere](https://www.npmjs.com/package/@chroma-core/cohere) |
+| Google Gemini | [@chroma-core/google-gemini](https://www.npmjs.com/package/@chroma-core/google-gemini) |
+| Hugging Face Server | [@chroma-core/huggingface-server](https://www.npmjs.com/package/@chroma-core/huggingface-server) |
+| Jina | [@chroma-core/jina](https://www.npmjs.com/package/@chroma-core/jina) |
+| Mistral | [@chroma-core/mistral](https://www.npmjs.com/package/@chroma-core/mistral) |
+| Morph | [@chroma-core/morph](https://www.npmjs.com/package/@chroma-core/morph) |
+| Ollama | [@chroma-core/ollama](https://www.npmjs.com/package/@chroma-core/ollama) |
+| OpenAI | [@chroma-core/openai](https://www.npmjs.com/package/@chroma-core/openai) |
+| Perplexity | [@chroma-core/perplexity](https://www.npmjs.com/package/@chroma-core/perplexity) |
+| Qwen (via Chroma Cloud) | [@chroma-core/chroma-cloud-qwen](https://www.npmjs.com/package/@chroma-core/chroma-cloud-qwen) |
+| Sentence Transformers | [@chroma-core/sentence-transformer](https://www.npmjs.com/package/@chroma-core/sentence-transformer) |
+| Together AI | [@chroma-core/together-ai](https://www.npmjs.com/package/@chroma-core/together-ai) |
+| Voyage AI | [@chroma-core/voyageai](https://www.npmjs.com/package/@chroma-core/voyageai) |
 
 We welcome contributions! If you create an embedding function that you think would be useful to others, please consider [submitting a pull request](https://github.com/chroma-core/chroma).

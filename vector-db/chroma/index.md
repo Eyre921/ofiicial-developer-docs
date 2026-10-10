@@ -1,6 +1,6 @@
 # vector-db/chroma 文档索引
 
-> 共 146 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 147 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -43,6 +43,7 @@
 - `docs/cli/browse` — [Browse Collections](pages/docs/cli/browse.md) · [原文](https://docs.trychroma.com/docs/cli/browse)
 - `docs/cli/copy` — [Copy Collections](pages/docs/cli/copy.md) · [原文](https://docs.trychroma.com/docs/cli/copy)
 - `docs/cli/db` — [DB Management](pages/docs/cli/db.md) · [原文](https://docs.trychroma.com/docs/cli/db)
+- `docs/cli/hnsw-config-repair` — [Repair HNSW configuration](pages/docs/cli/hnsw-config-repair.md) · [原文](https://docs.trychroma.com/docs/cli/hnsw-config-repair)
 - `docs/cli/install` — [Installing the CLI](pages/docs/cli/install.md) · [原文](https://docs.trychroma.com/docs/cli/install)
 - `docs/cli/login` — [Login](pages/docs/cli/login.md) · [原文](https://docs.trychroma.com/docs/cli/login)
 - `docs/cli/profile` — [Profile Management](pages/docs/cli/profile.md) · [原文](https://docs.trychroma.com/docs/cli/profile)

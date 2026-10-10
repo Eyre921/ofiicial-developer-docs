@@ -98,7 +98,7 @@ To help prevent losses, you can set a rule to automatically pause outbound money
 
 ### Treasury transaction actions (Private preview)
 
-Treasury transaction rules apply to Treasury transactions on your connected accounts. Currently, only inbound transfers are supported.
+Treasury transaction rules apply to Treasury transactions on your connected accounts. Currently, inbound transfers and received credits are supported.
 
 #### Block 
 

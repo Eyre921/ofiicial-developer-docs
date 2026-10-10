@@ -498,7 +498,6 @@ Everything in this section applies to indexes with document schemas. For dense, 
 ### Not supported
 
 * Schema changes after index creation aren't yet supported, including backfilling a schema onto an index created before `2026-07`. Create a new index with the schema you want and reindex your documents.
-* Backup and restore aren't yet supported.
 * Indexes can't be created in projects with [customer-managed encryption keys (CMEK)](/guides/production/configure-cmek) enabled.
 * An index can't be changed from dedicated read capacity back to on-demand. Create a new on-demand index and reingest your data.
 

@@ -15,7 +15,7 @@ This page shows you how to update the data in an index [namespace](/guides/index
 To replace whole documents or records, use the [upsert](/guides/index-data/upsert-data) operation instead.
 
 <Tip>
-  Updates consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understanding cost](/guides/manage-cost/understanding-cost#update) for how update cost is calculated.
+  Updates consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#update) for how update cost is calculated.
 </Tip>
 
 ## Update documents

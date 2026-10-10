@@ -47,7 +47,7 @@ To upgrade your plan to Standard or Enterprise and pay with a credit/debit card,
 4. Enter your credit card information.
 5. Click **Upgrade**.
 
-After upgrading, you will immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understanding cost](/guides/manage-cost/understanding-cost).
+After upgrading, you will immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost).
 
 ### Pay through the Google Cloud Marketplace
 
@@ -65,7 +65,7 @@ To upgrade your plan to Standard or Enterprise and pay through the Google Cloud 
 8. Select an organization from the list. You can only connect to organizations that are on the [Starter plan](https://www.pinecone.io/pricing/). Alternatively, you can opt to create a new organization.
 9. Click **Connect to Pinecone** and follow the prompts.
 
-Once your organization is connected and upgraded, you will receive a confirmation message. You will then immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understanding cost](/guides/manage-cost/understanding-cost).
+Once your organization is connected and upgraded, you will receive a confirmation message. You will then immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost).
 
 ### Pay through the AWS Marketplace
 
@@ -87,7 +87,7 @@ To upgrade your plan to Standard or Enterprise and pay through the AWS Marketpla
 8. Select an organization from the list. You can only connect to organizations that are on the [Starter plan](https://www.pinecone.io/pricing/). Alternatively, you can opt to create a new organization.
 9. Click **Connect to Pinecone** and follow the prompts.
 
-Once your organization is connected and upgraded, you will receive a confirmation message. You will then immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understanding cost](/guides/manage-cost/understanding-cost).
+Once your organization is connected and upgraded, you will receive a confirmation message. You will then immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost).
 
 ### Pay through the Microsoft Marketplace
 
@@ -108,4 +108,4 @@ To upgrade your plan to Standard or Enterprise and pay through the Microsoft Mar
 11. Select an organization from the list. You can only connect to organizations that are on the [Starter plan](https://www.pinecone.io/pricing/). Alternatively, you can opt to create a new organization.
 12. Click **Connect to Pinecone** and follow the prompts.
 
-Once your organization is connected and upgraded, you will receive a confirmation message. You will then immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understanding cost](/guides/manage-cost/understanding-cost).
+Once your organization is connected and upgraded, you will receive a confirmation message. You will then immediately start paying for usage of your Pinecone indexes, including the serverless indexes that were free on the Starter plan. For more details about how costs are calculated, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost).

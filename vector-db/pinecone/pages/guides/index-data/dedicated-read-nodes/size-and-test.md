@@ -12,10 +12,43 @@ To determine how many [shards](/guides/index-data/dedicated-read-nodes/concepts#
 
 ### Index size
 
-A record can include a dense vector, a sparse vector, or both. Use the formula that matches your data to calculate total size:
+A document in a document index can include any combination of `string` fields with `full_text_search` enabled, a dense vector, and a sparse vector. A record in a vector index can include a dense vector, a sparse vector, or both. Use the formula that matches your index to calculate total size:
 
 <div>
   <Tabs>
+    <Tab title="Document index">
+      A [document index](/guides/index-data/indexing-overview#document-index) contains documents. Each document's size is its ID, its metadata, and the data in every schema field it holds.
+
+      ```text Calculate size theme={null}
+      Index size = Number of documents × (
+                     ID size +
+                     Metadata size +
+                     Total full-text-search field size +
+                     Dense vector dimensions × 4 bytes +
+                     Number of non-zero sparse values × 8 bytes
+                   )
+      ```
+
+      Where:
+
+      * `ID size` and `Metadata size` are measured in bytes, averaged across all documents. Metadata is every field that isn't declared in the schema.
+      * `Total full-text-search field size`: The combined UTF-8 byte length of the text in all `string` fields with `full_text_search` enabled, averaged across all documents. A field with [integrated embedding](/guides/index-data/indexing-overview#integrated-embedding) but no `full_text_search` doesn't store its text, so only its generated vector counts. If a field has both, count its text here and its generated vector below.
+      * Each `Dense vector dimension` uses 4 bytes. Sum the dimensions of every dense vector in the document, whether you upsert it or Pinecone generates it for an integrated-embedding field. Omit this term if the schema has no dense vector.
+      * `Number of non-zero sparse values`: Average number across all documents, including those without sparse vectors. Count every sparse vector in the document, whether you upsert it or Pinecone generates it. Each non-zero value uses 8 bytes. Omit this term if the schema has no sparse vector.
+
+      These examples assume 8-byte IDs:
+
+      | Documents | Avg total full-text-search field size | Dense vector dimensions | Avg number of non-zero sparse values | Avg metadata size | Index size |
+      | :- | :- | :- | :- | :- | :- |
+      | 500,000 | 2,000 bytes | None | None | 500 bytes | 1.25 GB |
+      | 1,000,000 | 5,000 bytes | 1024 | None | 1,000 bytes | 10.1 GB |
+      | 5,000,000 | 2,000 bytes | 768 | 100 | 500 bytes | 31.9 GB |
+
+      <Note>
+        Example: 1,000,000 documents × (8-byte ID + 5,000 bytes of full-text-search text + (1024 dense vector dimensions × 4 bytes) + 1,000 bytes of metadata) = 10.1 GB
+      </Note>
+    </Tab>
+
     <Tab title="Index of dense vectors">
       An [index of dense vectors](/guides/index-data/indexing-overview#indexes-with-dense-vectors) contains records with one dense vector each.
 
@@ -23,9 +56,7 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
         Records can also contain sparse vectors (when the index metric is set to `dotproduct`), which can be useful for [hybrid search](/guides/search/hybrid-search/single-index). To learn how to calculate size in that case, see [Index with both dense and sparse vectors](#index-with-both-dense-and-sparse-vectors).
       </Note>
 
-      **Calculate size (assuming no sparse vectors)**
-
-      ```
+      ```text Calculate size (assuming no sparse vectors) theme={null}
       Index size = Number of records × (
                      ID size + 
                      Metadata size +
@@ -37,8 +68,6 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
       * Each `Dense vector dimension` uses 4 bytes.
-
-      **Example calculations**
 
       These examples assume 8-byte IDs:
 
@@ -57,9 +86,7 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
     <Tab title="Index of sparse vectors">
       An [index of sparse vectors](/guides/index-data/indexing-overview#indexes-with-sparse-vectors) contains records with one sparse vector each.
 
-      **Calculate size**
-
-      ```
+      ```text Calculate size theme={null}
       Index size = Number of records × (
                      ID size + 
                      Metadata size +
@@ -71,8 +98,6 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
 
       * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
       * `Number of non-zero sparse values`: Average number across all records. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
-
-      **Example calculations**
 
       These examples assume 8-byte IDs:
 
@@ -91,9 +116,7 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
     <Tab title="Index with both dense and sparse vectors">
       An [index with both dense and sparse vectors](/guides/search/hybrid-search/single-index) contains records that each have one dense vector and an optional sparse vector.
 
-      **Calculate size**
-
-      ```
+      ```text Calculate size theme={null}
       Index size = Number of records × (
                      ID size + 
                      Metadata size +
@@ -107,8 +130,6 @@ A record can include a dense vector, a sparse vector, or both. Use the formula t
       * `ID size` and `Metadata size` are measured in bytes, averaged across all records.
       * Each `Dense vector dimension` uses 4 bytes.
       * `Number of non-zero sparse values`: Average number across all records, including those without sparse vectors. To find the count for a single record, check the length of the sparse vector's `indices` or `values` array. Each non-zero value uses 8 bytes.
-
-      **Example calculations**
 
       These examples assume 8-byte IDs:
 

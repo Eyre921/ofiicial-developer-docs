@@ -24,9 +24,9 @@ Chroma Cloud is SOC 2 Type II certified, and offers deployment flexibility to ma
 
 Chroma Cloud's multi-tenant offering currently runs in two regions:
 
-| Region                      | Slug               | Endpoint                         |
-| --------------------------- | ------------------ | -------------------------------- |
-| AWS US East (N. Virginia)   | `aws-us-east-1`    | `api.trychroma.com` (default)    |
+| Region | Slug | Endpoint |
+| - | - | - |
+| AWS US East (N. Virginia) | `aws-us-east-1` | `api.trychroma.com` (default) |
 | GCP Europe West 1 (Belgium) | `gcp-europe-west1` | `europe-west1.gcp.trychroma.com` |
 
 Each database is created in a single region and stays there — your data is stored and processed entirely within the region you select. Pick the region when creating a database in the dashboard, or pass it when creating a database via the API. Existing US databases are unaffected; to move data to the EU, create a new database in `gcp-europe-west1` and reindex.
@@ -35,12 +35,12 @@ Connecting to a non-default region only requires pointing the client at the righ
 
 #### Feature availability by region
 
-| Feature                                    | `aws-us-east-1` | `gcp-europe-west1` |
-| ------------------------------------------ | --------------- | ------------------ |
-| Core API (collections, search, forking)    | ✓               | ✓                  |
-| Chroma Sync (S3, GitHub, Web, file upload) | ✓               | —                  |
-| Chroma CLI (`chroma db`, `chroma browse`)  | ✓               | —                  |
-| Chroma Search Agent                        | ✓               | —                  |
+| Feature | `aws-us-east-1` | `gcp-europe-west1` |
+| - | - | - |
+| Core API (collections, search, forking) | ✓ | ✓ |
+| Chroma Sync (S3, GitHub, Web, file upload) | ✓ | — |
+| Chroma CLI (`chroma db`, `chroma browse`) | ✓ | — |
+| Chroma Search Agent | ✓ | — |
 
 ### Dashboard
 

@@ -133,6 +133,7 @@ flow:
     authorization_endpoint: string
     token_endpoint: string
     registration_endpoint?: string
+    introspection_endpoint?: string
     code_challenge_methods_supported?: string[]
     grant_types_supported?: string[]
     response_types_supported?: string[]
@@ -455,10 +456,13 @@ Exchange the authorization code for access and refresh tokens:
     expires_in?: number
     refresh_token?: string
     scope?: string
-    // Identity fields, present on successful authorization-code exchanges
+    // Identity fields, sent only on authorization-code exchanges
     user_id?: string
     workspace_id?: string
     email_domain?: string
+    bot_id?: string
+    workspace_name?: string | null
+    workspace_icon?: string | null
   }
 
   async function exchangeCodeForTokens(
@@ -509,16 +513,26 @@ Exchange the authorization code for access and refresh tokens:
   ```
 </CodeGroup>
 
+A successful authorization-code exchange also says who connected. Refresh
+responses don't include these fields, so store them from the first exchange.
+
+| Field | Type | Description |
+| - | - | - |
+| `user_id` | `string` | ID of the Notion user who authorized the connection. |
+| `workspace_id` | `string` | ID of the connected workspace. |
+| `email_domain` | `string` | Lowercased domain of the user's email address. |
+| `bot_id` | `string` | ID of the Notion authorization behind this connection. |
+| `workspace_name` | `string` or `null` | Display name of the workspace. |
+| `workspace_icon` | `string` or `null` | Icon for the workspace, usually an image URL. |
+
+`user_id` and `workspace_id` come as a pair. If Notion can't resolve them, the
+response has none of these fields. `email_domain` is left out when the user has
+no email address. `bot_id`, `workspace_name`, and `workspace_icon` are left out
+when Notion doesn't have the connection's details, and the two workspace fields
+can be `null`. To get the user's name or email address, or to look up identity
+later, see [Identify the connected workspace](#identify-the-connected-workspace).
+
 <Note>
-  **Identity fields in the token response**
-
-  Successful authorization-code exchanges also return `user_id` and
-  `workspace_id`, the Notion IDs of the authorizing user and workspace, plus
-  `email_domain`, the lowercased domain of the authorizing user's email
-  address. Use them to associate the connection with a user and workspace
-  without an extra call. Refresh responses don't include these fields, so
-  store them from the initial exchange.
-
   Notion may add fields to the token response over time. Parse it leniently
   and [ignore fields you don't recognize](/reference/versioning#what-we-consider-backwards-compatible).
 </Note>
@@ -628,6 +642,176 @@ Notion's `/mcp` endpoint is stateless, so the id carries no server-side state:
   `404 Not Found` session error to recover from and no session to re-establish.
 * Echoing it lets Notion group the requests of one client session together,
   which helps when you report an issue — include the id in your report.
+
+### Identify the connected workspace
+
+Use the [token response fields](#step-6-exchange-authorization-code-for-tokens)
+first. They give you `user_id` and `workspace_id` without another request.
+For a user-authorized connection, call `notion-get-self` with an empty object to
+read the person who connected, including their name and email when available.
+If `user.type` is `bot`, the connection acts as a workspace bot and no person
+email is available; use `user_id` from the authorization-code token response to
+identify the person who authorized the connection.
+
+<CodeGroup>
+  ```typescript TypeScript theme={null}
+  const result = await client.callTool({
+    name: "notion-get-self",
+    arguments: {},
+  })
+
+  const [block] = result.content
+  if (result.isError || block?.type !== "text") {
+    throw new Error("Could not read identity from notion-get-self")
+  }
+
+  const { workspace, user } = JSON.parse(block.text)
+  console.log(workspace.id, workspace.name)
+  console.log(user.type, user.id, user.name, user.email)
+  ```
+</CodeGroup>
+
+The text block contains a JSON object with stable `workspace` and `user`
+fields. See [Supported tools](/guides/mcp/mcp-supported-tools) for their shapes.
+
+Older clients can still call `notion-fetch` with the id `self`. That response
+puts the same identity under a `self` field. New clients should use
+`notion-get-self`.
+
+An MCP access token works only with Notion MCP. Don't send it to the REST API,
+for example to `GET /v1/users/me`.
+
+OpenID Connect (OIDC) is the standard OAuth option for receiving identity in
+an ID token or from a UserInfo endpoint. It isn't available from Notion MCP
+yet. If Notion enables OIDC for your client, request `openid`. Add `profile`
+for the user's name and `email` for the user's verified email address. Notion
+grants these identity scopes only to clients the Notion team allows. The
+consent page tells the user, “See your name and email address.” Notion omits
+the email claim when the email isn't verified.
+
+To check whether a token is still active, and who it belongs to, send it to
+the `introspection_endpoint` from the
+[authorization server metadata](#step-1-oauth-discovery). This endpoint follows
+[RFC 7662](https://datatracker.ietf.org/doc/html/rfc7662). Send a `POST` with
+a form-encoded `token` parameter, and authenticate with the same method you
+use at the token endpoint. Public clients send only `client_id`. A client can
+only introspect its own tokens.
+
+<CodeGroup>
+  ```typescript TypeScript theme={null}
+  type TokenIntrospectionResponse = {
+    active: boolean
+    client_id?: string
+    scope?: string
+    token_type?: "bearer"
+    exp?: number
+    iat?: number
+    sub?: string
+    aud?: string | string[]
+    iss?: string
+    user_id?: string
+    workspace_id?: string
+  }
+
+  type TokenEndpointAuthMethod =
+    | "client_secret_basic"
+    | "client_secret_post"
+    | "none"
+
+  async function introspectToken(
+    token: string,
+    metadata: OAuthMetadata,
+    clientId: string,
+    tokenEndpointAuthMethod: TokenEndpointAuthMethod,
+    clientSecret: string | undefined
+  ): Promise<TokenIntrospectionResponse> {
+    const endpoint = metadata.introspection_endpoint
+    if (!endpoint) {
+      throw new Error("Authorization server does not support token introspection")
+    }
+
+    const body = new URLSearchParams({ token })
+    const headers = new Headers({
+      "Content-Type": "application/x-www-form-urlencoded",
+      Accept: "application/json",
+    })
+
+    if (tokenEndpointAuthMethod === "client_secret_basic") {
+      if (!clientSecret) {
+        throw new Error("Client secret is required for client_secret_basic")
+      }
+      const credentials = `${encodeURIComponent(clientId)}:${encodeURIComponent(clientSecret)}`
+      headers.set("Authorization", `Basic ${btoa(credentials)}`)
+    } else if (tokenEndpointAuthMethod === "client_secret_post") {
+      if (!clientSecret) {
+        throw new Error("Client secret is required for client_secret_post")
+      }
+      body.set("client_id", clientId)
+      body.set("client_secret", clientSecret)
+    } else {
+      body.set("client_id", clientId)
+    }
+
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers,
+      body,
+    })
+
+    if (!response.ok) {
+      const errorBody = await response.text()
+      throw new Error(
+        `Token introspection failed: ${response.status} - ${errorBody}`
+      )
+    }
+
+    const tokenInfo: unknown = await response.json()
+    if (!isTokenIntrospectionResponse(tokenInfo)) {
+      throw new Error("Invalid token introspection response")
+    }
+
+    return tokenInfo
+  }
+
+  function isTokenIntrospectionResponse(
+    value: unknown
+  ): value is TokenIntrospectionResponse {
+    if (
+      typeof value !== "object" ||
+      value === null ||
+      !("active" in value) ||
+      typeof value.active !== "boolean"
+    ) {
+      return false
+    }
+
+    return (
+      (!("client_id" in value) || typeof value.client_id === "string") &&
+      (!("scope" in value) || typeof value.scope === "string") &&
+      (!("token_type" in value) || value.token_type === "bearer") &&
+      (!("exp" in value) || typeof value.exp === "number") &&
+      (!("iat" in value) || typeof value.iat === "number") &&
+      (!("sub" in value) || typeof value.sub === "string") &&
+      (!("aud" in value) || isStringOrStringArray(value.aud)) &&
+      (!("iss" in value) || typeof value.iss === "string") &&
+      (!("user_id" in value) || typeof value.user_id === "string") &&
+      (!("workspace_id" in value) || typeof value.workspace_id === "string")
+    )
+  }
+
+  function isStringOrStringArray(value: unknown): value is string | string[] {
+    return (
+      typeof value === "string" ||
+      (Array.isArray(value) && value.every(item => typeof item === "string"))
+    )
+  }
+  ```
+</CodeGroup>
+
+An active token returns `active: true` with `client_id`, `scope`, `iat`, `sub`,
+and `iss`, plus `user_id`, `exp`, and `aud` when Notion has them. Access tokens
+also return `token_type: "bearer"` and, when Notion has it, `workspace_id`. An expired, revoked, or unknown
+token, or a token issued to another client, returns only `{ "active": false }`.
 
 ### Check tool availability
 

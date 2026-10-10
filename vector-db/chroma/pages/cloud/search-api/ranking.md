@@ -145,13 +145,13 @@ The `Knn` class performs K-nearest neighbor search to find similar vectors. It's
 
 ## Knn Parameters
 
-| Parameter     | Type                                           | Default        | Description                                                                                           |
-| ------------- | ---------------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------- |
-| `query`       | str, List\[float], SparseVector, or np.ndarray | Required       | The query text or vector to search with                                                               |
-| `key`         | str                                            | `"#embedding"` | Field to search - `"#embedding"` for dense embeddings, or a metadata field name for sparse embeddings |
-| `limit`       | int                                            | `16`           | Maximum number of candidates to consider                                                              |
-| `default`     | float or None                                  | `None`         | Score for documents not in KNN results                                                                |
-| `return_rank` | bool                                           | `False`        | If `True`, return rank position (0, 1, 2...) instead of distance                                      |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `query` | str, List\[float], SparseVector, or np.ndarray | Required | The query text or vector to search with |
+| `key` | str | `"#embedding"` | Field to search - `"#embedding"` for dense embeddings, or a metadata field name for sparse embeddings |
+| `limit` | int | `16` | Maximum number of candidates to consider |
+| `default` | float or None | `None` | Score for documents not in KNN results |
+| `return_rank` | bool | `False` | If `True`, return rank position (0, 1, 2...) instead of distance |
 
 <Callout>
   `"#embedding"` (or `K.EMBEDDING`) refers to the default embedding field where Chroma stores dense embeddings. Sparse embeddings must be stored in metadata under a consistent key.

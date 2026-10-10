@@ -70,6 +70,8 @@ First, let's take stock of the current state of things.
 
 Before proposing or making changes to the workspace architecture during setup, read the [Notion database guidance](https://www.notion.com/help/category/databases) and use it to inform how you organize the workspace. Reuse the existing structure and respect the approval requirements below.
 
+Before the first memory recall or save, fetch `notion://docs/memory` through the Notion MCP and follow its memory-specific requirements. Fetching `id: "memory"` retrieves the destination, not the guidance.
+
 Inspect the connected Notion account and other available sources of information in the workspace, available tools, existing workspace structure, project destinations, operating guide, canonical memory destination, Skills home, and this host’s user-level instruction mechanism. Look for existing memories and places where documents or other artifacts belong. Keep this step read-only and focused on relevant locations.
 
 Determine whether this is a personal or team workspace, and verify who can access each proposed destination. Reuse team destinations for appropriate shared work, but keep personal memories private. Ask before importing potentially sensitive information into a shared destination.
@@ -230,7 +232,7 @@ Respect exclusions until I reverse them. Do not save small talk, temporary progr
 
 Memory holds distilled knowledge plus links; project pages hold details and deliverables. Approved reusable procedures belong in Notion Skills. Publish new or changed personal skills by default only if that policy was explicitly enabled; apply the ownership and destination boundaries from setup. Update underlying memories where appropriate. When saving or updating a memory that changes the overall picture of me, update the About page in the same task. If About is empty or has onboarding text, replace it with a concise summary of verified memories. Verify both the memory and About updates before reporting completion.
 
-Use specific searchable titles without agent-name prefixes, project Scope where supported (otherwise in the body), and a Source line with the source/date, author/write date, and expiry when relevant. Preserve revisions and source links. Keep source date, import date and last confirmation distinct.
+Use specific searchable titles without agent-name prefixes and project Scope where supported (otherwise in the body). Keep content provenance in the body when useful, including source/date, author/write date, and expiry when relevant. For the MCP-managed `memory` destination, populate Type, Source, and Last updated by according to the MCP memory guide. Body provenance does not replace these properties. For other approved memory destinations, follow their existing schema. Preserve revisions and source links. Keep source date, import date and last confirmation distinct.
 
 ### Create work
 

@@ -1059,27 +1059,22 @@ When an import fails, you'll see an error message with the reason for the failur
   </Accordion>
 
   <Accordion title="Duplicate records">
-    When your import contains duplicate vectors (records with identical vector values), the duplicates are marked as skipped and not imported. Only one occurrence of each unique vector is added to the index.
+    Bulk import deduplicates by record ID, not by vector value. If an import contains more than one record with the same ID in the same namespace, only one is kept and the rest are counted as skipped. Which record is kept isn't deterministic. Records that share identical vector values but have different IDs are all imported.
 
-    This applies to both `continue` and `abort` error modes:
-
-    * With `abort`: The import fails when it encounters a duplicate vector within the import.
-    * With `continue`: The import proceeds, skipping duplicate records silently.
+    This applies to both Parquet imports (vector indexes) and JSONL imports (document indexes). To control which record wins, deduplicate your source data by ID before importing.
 
     **Example scenario:**
-    If your Parquet file contains:
+    If your import file contains:
 
-    ```parquet theme={null}
+    ```text theme={null}
     id | values
     ---|---------
     1  | [0.1, 0.2, 0.3]
-    2  | [0.1, 0.2, 0.3]  ← Duplicate of record 1, will be skipped
-    3  | [0.4, 0.5, 0.6]
+    1  | [0.4, 0.5, 0.6]  ← Same ID as the first record; only one of the two is kept
+    2  | [0.7, 0.8, 0.9]
     ```
 
-    Only records 1 and 3 will be imported.
-
-    To prevent this from happening, deduplicate your source data before creating Parquet files by removing records with identical vector values.
+    Two records are imported: `2`, and one of the two records with ID `1`.
   </Accordion>
 
   <Accordion title="Import exceeds maximum data size for on-demand">

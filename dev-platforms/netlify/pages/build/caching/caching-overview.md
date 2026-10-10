@@ -13,6 +13,8 @@ description: "Customize cache key variations and set Cache-Control headers to co
 
 Netlify's global caching infrastructure is built to provide stellar performance without any stale pages or broken assets for your visitors.
 
+For a list of Netlify's network locations, check the [Trust Center](https://www.netlify.com/trust-center/). Learn more about [how to access network locations](/manage/security/overview/#access-the-trust-center).
+
 ## Default caching behavior
 
 Static asset responses on Netlify are cached on Netlify's global edge nodes and [automatically invalidated](#automatic-invalidation-with-atomic-deploys) whenever a deploy changes the content. Static asset responses can only change with new deploys. So, unless there is a new deploy or [manual purge](#on-demand-invalidation), we treat static asset responses as fresh for up to one year and ignore any attempts to set cache control headers with a shorter `max-age`.

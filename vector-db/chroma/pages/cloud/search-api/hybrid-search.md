@@ -60,19 +60,19 @@ The score is negative because Chroma uses ascending order (lower scores = better
 
 ## Rrf Parameters
 
-| Parameter   | Type                 | Default  | Description                                                      |
-| ----------- | -------------------- | -------- | ---------------------------------------------------------------- |
-| `ranks`     | List\[Rank]          | Required | List of ranking expressions (must have `return_rank=True`)       |
-| `k`         | int                  | `60`     | Smoothing parameter - higher values reduce emphasis on top ranks |
-| `weights`   | List\[float] or None | `None`   | Weights for each ranking (defaults to 1.0 for each)              |
-| `normalize` | bool                 | `False`  | If `True`, normalize weights to sum to 1.0                       |
+| Parameter | Type | Default | Description |
+| - | - | - | - |
+| `ranks` | List\[Rank] | Required | List of ranking expressions (must have `return_rank=True`) |
+| `k` | int | `60` | Smoothing parameter - higher values reduce emphasis on top ranks |
+| `weights` | List\[float] or None | `None` | Weights for each ranking (defaults to 1.0 for each) |
+| `normalize` | bool | `False` | If `True`, normalize weights to sum to 1.0 |
 
 ## RRF vs Linear Combination
 
-| Approach               | Use Case                                      | Pros                               | Cons                           |
-| ---------------------- | --------------------------------------------- | ---------------------------------- | ------------------------------ |
-| **RRF**                | Different score scales (e.g., dense + sparse) | Scale-agnostic, robust to outliers | Requires `return_rank=True`    |
-| **Linear Combination** | Same score scales                             | Simple, preserves distances        | Sensitive to scale differences |
+| Approach | Use Case | Pros | Cons |
+| - | - | - | - |
+| **RRF** | Different score scales (e.g., dense + sparse) | Scale-agnostic, robust to outliers | Requires `return_rank=True` |
+| **Linear Combination** | Same score scales | Simple, preserves distances | Sensitive to scale differences |
 
 <CodeGroup>
   ```python Python theme={null}

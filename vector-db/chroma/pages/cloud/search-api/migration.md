@@ -18,39 +18,39 @@ Migrate from legacy `query()` and `get()` to the Search API.
 
 ### query() Parameters
 
-| Legacy `query()`   | Search API                         | Notes                                  |
-| ------------------ | ---------------------------------- | -------------------------------------- |
-| `query_embeddings` | `rank={"$knn": {"query": ...}}`    | Can use text or embeddings             |
-| `query_texts`      | `rank={"$knn": {"query": "text"}}` | Text queries now supported             |
-| `query_images`     | Not yet supported                  | Image queries coming in future release |
-| `query_uris`       | Not yet supported                  | URI queries coming in future release   |
-| `n_results`        | `limit`                            | Direct mapping                         |
-| `ids`              | `where={"#id": {"$in": [...]}}`    | Filter by IDs                          |
-| `where`            | `where`                            | Same syntax                            |
-| `where_document`   | `where={"#document": {...}}`       | Use #document field                    |
-| `include`          | `select`                           | See field mapping below                |
+| Legacy `query()` | Search API | Notes |
+| - | - | - |
+| `query_embeddings` | `rank={"$knn": {"query": ...}}` | Can use text or embeddings |
+| `query_texts` | `rank={"$knn": {"query": "text"}}` | Text queries now supported |
+| `query_images` | Not yet supported | Image queries coming in future release |
+| `query_uris` | Not yet supported | URI queries coming in future release |
+| `n_results` | `limit` | Direct mapping |
+| `ids` | `where={"#id": {"$in": [...]}}` | Filter by IDs |
+| `where` | `where` | Same syntax |
+| `where_document` | `where={"#document": {...}}` | Use #document field |
+| `include` | `select` | See field mapping below |
 
 ### get() Parameters
 
-| Legacy `get()`   | Search API                      | Notes                   |
-| ---------------- | ------------------------------- | ----------------------- |
-| `ids`            | `where={"#id": {"$in": [...]}}` | Filter by IDs           |
-| `where`          | `where`                         | Same syntax             |
-| `where_document` | `where={"#document": {...}}`    | Use #document field     |
-| `limit`          | `limit`                         | Direct mapping          |
-| `offset`         | `limit={"offset": ...}`         | Part of limit dict      |
-| `include`        | `select`                        | See field mapping below |
+| Legacy `get()` | Search API | Notes |
+| - | - | - |
+| `ids` | `where={"#id": {"$in": [...]}}` | Filter by IDs |
+| `where` | `where` | Same syntax |
+| `where_document` | `where={"#document": {...}}` | Use #document field |
+| `limit` | `limit` | Direct mapping |
+| `offset` | `limit={"offset": ...}` | Part of limit dict |
+| `include` | `select` | See field mapping below |
 
 ### Include/Select Field Mapping
 
-| Legacy `include` | Search API `select` | Description               |
-| ---------------- | ------------------- | ------------------------- |
-| `"ids"`          | Always included     | IDs are always returned   |
-| `"documents"`    | `"#document"`       | Document content          |
-| `"metadatas"`    | `"#metadata"`       | All metadata fields       |
-| `"embeddings"`   | `"#embedding"`      | Vector embeddings         |
-| `"distances"`    | `"#score"`          | Distance/score from query |
-| `"uris"`         | `"#uri"`            | Document URIs             |
+| Legacy `include` | Search API `select` | Description |
+| - | - | - |
+| `"ids"` | Always included | IDs are always returned |
+| `"documents"` | `"#document"` | Document content |
+| `"metadatas"` | `"#metadata"` | All metadata fields |
+| `"embeddings"` | `"#embedding"` | Vector embeddings |
+| `"distances"` | `"#score"` | Distance/score from query |
+| `"uris"` | `"#uri"` | Document URIs |
 
 ## Examples
 

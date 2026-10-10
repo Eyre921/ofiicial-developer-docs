@@ -1,5 +1,5 @@
 ---
-title: "Docs (150 pages)"
+title: "Docs (151 pages)"
 source: https://openrouter.ai/docs/_llms/docs.md
 path: docs/_llms/docs
 ---
@@ -192,9 +192,13 @@ path: docs/_llms/docs
 - [Uptime Optimization](https://openrouter.ai/docs/guides/best-practices/uptime-optimization.md): OpenRouter tracks provider availability
 - [Reasoning Tokens](https://openrouter.ai/docs/guides/best-practices/reasoning-tokens.md)
 
+### Providers
+
+- [Provider Integration](https://openrouter.ai/docs/guides/providers/integration.md)
+- [How OpenRouter Routes Traffic Between Providers](https://openrouter.ai/docs/guides/providers/traffic-routing.md): How routing splits a model's traffic between provider endpoints, and the inputs that decide your share
+
 ### Community
 
-- [Provider Integration](https://openrouter.ai/docs/guides/community/for-providers.md)
 - [Frameworks and Integrations Overview](https://openrouter.ai/docs/guides/community/frameworks-and-integrations-overview.md): Using OpenRouter with Popular Frameworks and Integrations
 - [Awesome OpenRouter](https://openrouter.ai/docs/guides/community/awesome-openrouter.md): Community-curated list of projects built with OpenRouter
 - [Effect AI SDK](https://openrouter.ai/docs/guides/community/effect-ai-sdk.md): Integrate OpenRouter using the Effect AI SDK

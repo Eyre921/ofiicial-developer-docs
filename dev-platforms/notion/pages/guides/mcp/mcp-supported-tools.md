@@ -72,6 +72,24 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Which search filters aren't available on this workspace's plan?"
   </Accordion>
 
+  <Accordion title="Identify the current connection">
+    `notion-get-self`
+
+    Returns the workspace and user for the current connection. Call it with an empty object. The response contains these stable fields:
+
+    * `workspace.id` and `workspace.name`: the connected workspace. The name can be an empty string.
+    * `user.type`: `person` or `bot`.
+    * `user.id` and `user.name`: the connected user. The name can be an empty string.
+    * `user.email`: present only when `user.type` is `person` and the user has an email address.
+
+    For user and workspace IDs right after OAuth, prefer the fields in the [token response](/guides/mcp/build-mcp-client#identify-the-connected-workspace). They don't need a tool call.
+
+    **Example prompts:**
+
+    * "Which Notion workspace and user are connected?"
+    * "Show the name and email address for this Notion connection"
+  </Accordion>
+
   <Accordion title="Download a Notion Skill">
     `notion-download-skill`
 
@@ -101,6 +119,8 @@ An MCP client can call several tools in one task. For example, it can search for
     Pass a `view://` URL from a database response to read a saved view's filters, sorts, and display settings. A database URL with a `?v=` parameter still returns the database. To read the rows shown by a view, use `notion-query-data-sources` with `mode: "view"`.
 
     When a page is large enough that some subtrees could not be loaded, the response sets `truncated` to `true` and includes `unknown_block_ids` (up to 50 omitted subtree root IDs) and `unknown_block_count` (the total number of omitted subtree roots). Pass one of the returned IDs back to `notion-fetch` to retrieve that subtree directly. An ID may also represent content the caller cannot access, so treat an `object_not_found` error on retry as a permissions signal rather than a failure to handle.
+
+    Older clients can pass the id `self` to get the connected workspace and user instead of a page. This path still works, but new clients should [use `notion-get-self`](/guides/mcp/build-mcp-client#identify-the-connected-workspace).
 
     **Example prompts:**
 
@@ -197,6 +217,8 @@ An MCP client can call several tools in one task. For example, it can search for
       ]
     }
     ```
+
+    If the page is too large to load in full (about 20,000 records, most of them blocks) and the edit targets a block that wasn't loaded or would remove content that wasn't loaded, the call returns a `validation_error` and the page is left unchanged. Retrying the same call fails the same way. Content that wasn't loaded appears as `<unknown>` tags when you fetch the page, so edit only content outside those tags.
 
     The tool description recommends `allow_async: true` for most page updates. This is guidance to assistants, not a request default. See [Async page create and update](#async-page-create-and-update).
 
@@ -591,7 +613,7 @@ If the task is still `queued`, `running`, or `retrying`, wait at least the sugge
 
   `search` returns `{ results: [{ id, title, url }] }`. Each `id` works with `fetch`, so results that `fetch` can't open, such as connected-app results, are left out. These results don't include highlights, `path`, timestamps, or `notices`.
 
-  `fetch` returns `{ id, title, text, url, metadata }`, where `id` is the id you passed. When you pass `include_file_urls: true`, `metadata.references` maps each uploaded file's `notion-file-block://` source in `text` to a signed download URL. Without it, the response has no `references`.
+  `fetch` returns `{ id, title, text, url, metadata }`, where `id` is the id you passed. Other fields of the standard response stay in place, so `fetch` with the id `self` still returns the `self` object. When you pass `include_file_urls: true`, `metadata.references` maps each uploaded file's `notion-file-block://` source in `text` to a signed download URL. Without it, the response has no `references`.
 </Info>
 
 ## Rate limits

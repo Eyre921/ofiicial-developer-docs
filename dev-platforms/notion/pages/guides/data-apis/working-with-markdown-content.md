@@ -589,6 +589,7 @@ All variants return the full page content as markdown after the update:
 | `validation_error` | The provided ID is a database or non-page block (use the appropriate API for those record types). |
 | `validation_error` | The target page is a synced page (`external_object_instance_page`). Synced pages cannot be updated. |
 | `validation_error` | The page content after the edit is too large or too heavily formatted to process in one call. The limit counts the whole page, not the edit, so retrying the same request fails the same way. Move some content into child pages or reduce the page size. |
+| `validation_error` | The page is too large to load in full (about 20,000 records, most of them blocks), and the edit targets a block that wasn't loaded or would remove content that wasn't loaded. Retrying the same request fails the same way. Content that wasn't loaded appears as `<unknown>` tags in the page's markdown, so edit only content outside those tags. `additional_data.limit_kind` is `page_record_count`. |
 | `object_not_found` | The page does not exist or the connection does not have access to it. |
 | `restricted_resource` | The connection lacks `update_content` capability. |
 

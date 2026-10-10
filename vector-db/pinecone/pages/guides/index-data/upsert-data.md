@@ -11,7 +11,7 @@ This page shows you how to upsert records into a namespace in an index. [Namespa
 If a record ID already exists, upserting overwrites the entire record. To change only part of a record, [update ](/guides/manage-data/update-data) the record.
 
 <Tip>
-  Upserts consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understanding cost](/guides/manage-cost/understanding-cost#upsert) for how upsert cost is calculated.
+  Upserts consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#upsert) for how upsert cost is calculated.
 </Tip>
 
 <Tip>

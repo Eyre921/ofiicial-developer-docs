@@ -38,15 +38,14 @@
     "status": "ok"
   },
   "agent-frameworks/crewai": {
-    "pages": 242,
-    "status": "ok"
+    "status": "error: curl failed (16) for https://docs.crewai.com/llms-full.txt: curl: (28) Operation timed out after 90001 milliseconds with 1196032 bytes received\ncurl: (16) Error in the HTTP2 framing layer\n"
   },
   "ai-models/anthropic-api": {
     "pages": 0,
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1687,
+    "pages": 1692,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -65,7 +64,7 @@
     "status": "error: curl failed (22) for https://qdrant.tech/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "vector-db/chroma": {
-    "pages": 146,
+    "pages": 147,
     "status": "ok"
   },
   "vector-db/weaviate": {
@@ -101,7 +100,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -186,7 +185,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 93,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -205,5 +204,5 @@
     "pages": 1376,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-09T23:30:32Z"
+  "_last_crawl": "2026-10-10T11:30:46Z"
 }

@@ -16,7 +16,7 @@ This page shows you how to fetch the data in an index [namespace](/guides/index-
 </Tip>
 
 <Tip>
-  Fetches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understanding cost](/guides/manage-cost/understanding-cost#fetch) for how fetch cost is calculated.
+  Fetches consume [read units (RUs)](/guides/manage-cost/understanding-cost#read-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#fetch) for how fetch cost is calculated.
 </Tip>
 
 ## Fetch documents

@@ -629,12 +629,12 @@ Use `$contains` to check if a metadata array includes a specific scalar value, a
 
 ### Supported Array Types
 
-| Type    | Python          | TypeScript      | Rust                              |
-| ------- | --------------- | --------------- | --------------------------------- |
-| String  | `["a", "b"]`    | `["a", "b"]`    | `MetadataValue::StringArray(...)` |
-| Integer | `[1, 2, 3]`     | `[1, 2, 3]`     | `MetadataValue::IntArray(...)`    |
-| Float   | `[1.5, 2.5]`    | `[1.5, 2.5]`    | `MetadataValue::FloatArray(...)`  |
-| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)`   |
+| Type | Python | TypeScript | Rust |
+| - | - | - | - |
+| String | `["a", "b"]` | `["a", "b"]` | `MetadataValue::StringArray(...)` |
+| Integer | `[1, 2, 3]` | `[1, 2, 3]` | `MetadataValue::IntArray(...)` |
+| Float | `[1.5, 2.5]` | `[1.5, 2.5]` | `MetadataValue::FloatArray(...)` |
+| Boolean | `[true, false]` | `[true, false]` | `MetadataValue::BoolArray(...)` |
 
 **Constraints:**
 

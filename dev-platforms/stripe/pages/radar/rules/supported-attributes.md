@@ -844,7 +844,7 @@ These attributes apply to connected accounts and can be used to review or block 
 
 | Attribute | Type | Example value | **Description** |
 | --- | --- | --- | --- |
-| `transaction_type` | Case-insensitive string | INBOUND_TRANSFER | The Treasury transaction type. Currently, the only supported value is `INBOUND_TRANSFER`. |
+| `transaction_type` | Case-insensitive string | INBOUND_TRANSFER | The Treasury transaction type. The supported values are `INBOUND_TRANSFER` and `RECEIVED_CREDIT`. |
 | `amount_in_usd` | Numeric | 10.50 | The amount of the Treasury transaction, converted to USD. |
 | `currency` | Case-insensitive string | usd | The currency used to create the Treasury transaction. |
 | `source_bank_name` | Case-insensitive string | Wells Fargo | The name of the source bank. |

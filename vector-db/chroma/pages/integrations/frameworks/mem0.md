@@ -16,13 +16,13 @@ pip install mem0ai chromadb
 
 Mem0 can be configured to use Chroma as its vector database backend. Here are the available configuration options:
 
-| Parameter         | Description                   | Default Value |
-| ----------------- | ----------------------------- | ------------- |
-| `collection_name` | Name of the Chroma collection | `mem0`        |
-| `client`          | Custom Chroma client          | `None`        |
-| `path`            | Path for the Chroma database  | `db`          |
-| `host`            | Chroma server host            | `None`        |
-| `port`            | Chroma server port            | `None`        |
+| Parameter | Description | Default Value |
+| - | - | - |
+| `collection_name` | Name of the Chroma collection | `mem0` |
+| `client` | Custom Chroma client | `None` |
+| `path` | Path for the Chroma database | `db` |
+| `host` | Chroma server host | `None` |
+| `port` | Chroma server port | `None` |
 
 ## Basic Usage
 

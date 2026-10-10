@@ -6,11 +6,11 @@ path: cloud/package-search/mcp
 
 The Package Search MCP Server is an [MCP](https://modelcontextprotocol.io/docs/getting-started/intro) server designed to add ground truth context about code packages to AI agents. Our research demonstrates that by exposing the source code of a project's dependencies to a model, we improve its performance on coding tasks and reduce its potential for hallucination. Chroma's Package Search MCP server achieves this by exposing tools to allow the model to retrieve necessary context:
 
-| Tool Name                  | Usage                                                                                                                |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `package_search_grep`      | Use regex pattern matching to retrieve relevant lines from source code                                               |
-| `package_search_hybrid`    | Use semantic search with optional regex filtering to explore source code without existing knowledge of its structure |
-| `package_search_read_file` | Reads specific lines from a single file in the code package                                                          |
+| Tool Name | Usage |
+| - | - |
+| `package_search_grep` | Use regex pattern matching to retrieve relevant lines from source code |
+| `package_search_hybrid` | Use semantic search with optional regex filtering to explore source code without existing knowledge of its structure |
+| `package_search_read_file` | Reads specific lines from a single file in the code package |
 
 ## Getting Started
 

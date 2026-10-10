@@ -58,16 +58,16 @@ You can use the Stripe Dashboard or API to configure a meter. To use the API wit
 
 #### Dashboard
 
-1. On the [Meters](https://dashboard.stripe.com/test/meters) page, click **Create meter**.
-2. In the meter editor:
-   - For **Meter name**, enter the name of the meter to display and for organization purposes. For the Hypernian example, enter “Hypernian tokens.”
-   - For **Event name**, enter the name to display in meter events when reporting usage to Stripe. For the Hypernian example, enter “hypernian_tokens.”
-   - Set the **Aggregation method** in the dropdown:
-     - For the Hypernian example, select **Sum**. This will *sum the values* reported (in this example, number of tokens a customer uses) to determine the usage to bill for.
-     - Choose **Count** to bill based on the *number* of events reported.
-     - Choose **Last** to bill based on the *last value* reported.
-     - Use the preview pane to set example usage events and verify the aggregation method.
-   - Click **Create meter**.
+- On the [Meters](https://dashboard.stripe.com/test/meters) page, click **Create meter**.
+- In the meter editor:
+  - For **Meter name**, enter the name of the meter to display and for organization purposes. For the Hypernian example, enter “Hypernian tokens.”
+  - For **Event name**, enter the name to display in meter events when reporting usage to Stripe. For the Hypernian example, enter “hypernian_tokens.”
+  - Set the **Aggregation method** in the dropdown:
+    - For the Hypernian example, select **Sum**. This will *sum the values* reported (in this example, number of tokens a customer uses) to determine the usage to bill for.
+    - Choose **Count** to bill based on the *number* of events reported.
+    - Choose **Last** to bill based on the *last value* reported.
+    - Use the preview pane to set example usage events and verify the aggregation method.
+- Click **Create meter**.
 
 #### API
 

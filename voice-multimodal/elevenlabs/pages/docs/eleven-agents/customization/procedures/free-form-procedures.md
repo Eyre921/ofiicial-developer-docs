@@ -221,6 +221,39 @@ schemas.
 
 Writing procedures well means writing two parts well: a trigger that runs the procedure when it should, and content the agent can follow.
 
+### Iterating on a procedure
+
+We recommend starting small and using [agent tests](/docs/eleven-agents/customization/agent-testing) to check each change before you make the next one.
+
+#### Write a short procedure
+
+Write a trigger and short content. Expand the content only when a test shows that the agent
+needs more instructions.
+
+#### Add trigger tests
+
+Create simulation tests for requests that should start the procedure and for similar requests
+that should not. Most failures come from the trigger, so write more of these than full
+simulations.
+
+#### Add a full simulation
+
+Create a simulation test that runs the whole procedure and checks the outcome.
+
+#### Run the tests and fix failures
+
+When a test fails, fix the trigger or the content, then rerun every test.
+
+> **Tip**
+>
+> To iterate on a trigger quickly, create a simulation test whose [chat history](/docs/eleven-agents/customization/agent-testing#simulation-testing) ends with the user's
+> request, and set **Maximum conversation turns** to `1`. The agent replies once, which is enough to
+> show whether the request starts the right procedure, and each run stays short. Write the success
+> criteria as *The agent started the refund procedure*. Without chat history, an agent with a first
+> message spends the only turn on its greeting and the test checks nothing.
+
+When a test or a live conversation fails, look for the class of mistake behind it. If the agent said something wrong, adding *Don't say that* fixes one conversation. Search past conversations for similar failures and write one instruction that covers all of them. The cause can also be in the knowledge base or the agent configuration. [Architect](/docs/eleven-agents/operate/architect) can do this search: open the failed conversation, select **Architect**, and ask it to find similar failures and propose a fix. Architect can also turn the conversation into a test.
+
 ### Writing triggers
 
 #### Keep triggers concrete and disjoint
@@ -231,13 +264,23 @@ cancel a subscription* over *When the user has a question about their account*.
 #### Write from the user's perspective
 
 Describe what the user is asking for, not what the agent should do. Triggers phrased as agent
-actions are less reliable.
+actions are less reliable. Prefer *When the user asks to cancel their subscription* over *Cancel
+the user's subscription*.
 
 #### Cover the way users actually ask
 
 A narrow trigger can miss real requests when the user phrases things differently. Include the
 variations the user might say. *When the user asks to refund, return, or get money back for an
-order* runs more reliably than *When the user requests a refund*.
+order* runs more reliably than *When the user requests a refund*. [Search past conversations](/docs/eleven-agents/customization/agent-analysis/smart-search) to find how users
+phrase the request.
+
+#### Hand off between related procedures
+
+Users sometimes change their request partway through a procedure, and the trigger alone may not
+start the right one. For a switch you see often in past conversations, add an inline reference
+to the other procedure in the first procedure's content. For example, write *If the user wants a
+refund instead of an exchange, run* followed by an inline reference to the refund procedure. If
+most procedures need a hand-off, make the triggers more distinct instead.
 
 ### Writing content
 
@@ -253,25 +296,53 @@ Reasoning generalizes to edge cases the procedure does not enumerate. A short *b
 the order ID to issue a refund* helps the agent handle situations the steps did not anticipate.
 Avoid all-caps MUSTs and rigid scripts where a one-line explanation would do the same work.
 
-#### Keep each procedure focused on one task
+#### Say what to do instead of what to avoid
 
-If a procedure starts branching into unrelated outcomes, split it into smaller procedures and
-let the agent route between them.
+Describe the behavior you want. *If you can't find the order, ask the user to confirm the order
+ID* works better than *Don't make up order details*. For mistakes with a high cost, add a
+[guardrail](/docs/eleven-agents/best-practices/guardrails) as well.
+
+#### Use steps when order matters
+
+Numbered steps help when the agent must do things in a fixed order. For judgment calls, a few
+sentences of guidance often work better, especially with more capable models.
+
+#### Keep facts in the knowledge base
+
+A procedure describes what the agent should do in a situation. Specific information, such as
+prices, plan details, or opening hours, belongs in the [knowledge base](/docs/eleven-agents/customization/knowledge-base). Reference the document from the
+procedure that needs it. For example, instead of listing every plan's price in the procedure,
+write *Quote the price from* followed by an inline reference to a pricing document.
 
 ### Composing procedures
 
-#### Extract shared steps into their own procedure
+#### Write one procedure per situation
+
+If one situation is split across several narrow procedures, the agent has more triggers to
+choose from and starts the wrong one more often. If two procedures would start on the same
+request, merge them. Content longer than about 3,000 characters usually covers more than one
+situation.
+
+#### Extract shared steps into a sub-procedure
 
 If the same steps show up across multiple procedures (verifying a customer's identity, looking
-up an order, escalating to a human), extract them into a dedicated procedure and reference it
-from each one that needs it via the slash menu. Maintaining the shared steps in one place keeps
-every procedure that uses them consistent.
+up an order, escalating to a human), extract them into a [sub-procedure](#sub-procedures) and
+reference it from each one that needs it via the slash menu. Maintaining the shared steps in one
+place keeps every procedure that uses them consistent.
 
 #### Use sub-procedures for reactive actions
 
 Use a sub-procedure for an action the agent should run only when another procedure requests it,
 such as identity verification or escalation. Without a trigger, it does not compete with entry
 procedures at conversation start. Fewer trigger choices keep routing focused.
+
+#### Reference tools from the procedure that uses them
+
+Reference a tool from the procedure that uses it instead of attaching it to the whole agent. The
+tool then stays out of unrelated conversations. In a free-form procedure, the tool is available
+only while the procedure is one of the five most recently started, so mention the tool's task in
+the trigger too, for example *or when you need to look up an order*. See
+[Limitations](/docs/eleven-agents/customization/procedures#limitations).
 
 #### Use the system prompt for global behavior
 

@@ -4,7 +4,7 @@ source: https://docs.pinecone.io/guides/get-started/overview
 path: guides/get-started/overview
 ---
 
-Pinecone Database is the retrieval foundation of Pinecone's trusted AI knowledge platform, bringing full-text and semantic search into one managed database.
+Pinecone Database is a search engine for AI agents and applications, built for semantic search, knowledge retrieval, and long-term memory at scale.
 
 Pinecone Database powers retrieval for AI agents and applications, including search, recommendations, and long-term memory. Each index has a schema that declares the fields you need, such as full-text-search fields, dense vectors, and sparse vectors, so one index can serve whichever retrieval approach a query calls for.
 

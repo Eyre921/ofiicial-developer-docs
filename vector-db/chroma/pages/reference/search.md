@@ -149,17 +149,17 @@ See [Where Filters](./where-filter) for full operator and rule definitions.
 }
 ```
 
-| Operator                   | Format                                        |
-| -------------------------- | --------------------------------------------- |
-| `$sum`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$mul`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$max`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$min`                     | `["RankExpr", "RankExpr", "... (min 2)"]`     |
-| `$sub` (l-r)               | `{ "left": "RankExpr", "right": "RankExpr" }` |
-| `$div` (l/r)               | `{ "left": "RankExpr", "right": "RankExpr" }` |
-| `$abs`                     | `"RankExpr"`                                  |
-| `$exp` (e<sup>x</sup>)     | `"RankExpr"`                                  |
-| `$log` (Natural logarithm) | `"RankExpr"`                                  |
+| Operator | Format |
+| - | - |
+| `$sum` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$mul` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$max` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$min` | `["RankExpr", "RankExpr", "... (min 2)"]` |
+| `$sub` (l-r) | `{ "left": "RankExpr", "right": "RankExpr" }` |
+| `$div` (l/r) | `{ "left": "RankExpr", "right": "RankExpr" }` |
+| `$abs` | `"RankExpr"` |
+| `$exp` (e<sup>x</sup>) | `"RankExpr"` |
+| `$log` (Natural logarithm) | `"RankExpr"` |
 
 ### `group_by`
 

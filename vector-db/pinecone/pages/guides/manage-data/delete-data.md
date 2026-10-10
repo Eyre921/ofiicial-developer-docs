@@ -12,7 +12,7 @@ This page shows you how to delete the data in an index [namespace](/guides/index
 * **[Delete records](#delete-records-by-id)**: The same three options for a vector index.
 
 <Tip>
-  Deletes consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understanding cost](/guides/manage-cost/understanding-cost#delete) for how delete cost is calculated.
+  Deletes consume [write units (WUs)](/guides/manage-cost/understanding-cost#write-units). See [Understand Pinecone cost](/guides/manage-cost/understanding-cost#delete) for how delete cost is calculated.
 </Tip>
 
 ## Delete documents

@@ -234,8 +234,14 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
       query:
         deployment:
           resources:
-            requests: { cpu: "4", memory: "8Gi", ephemeral-storage: "200Gi" }
-            limits: { cpu: "4", memory: "8Gi", ephemeral-storage: "200Gi" }
+            requests:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "200Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "200Gi"
           volumes:
             - name: cache
               emptyDir:
@@ -243,8 +249,14 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
       ingestion:
         deployment:
           resources:
-            requests: { cpu: "4", memory: "8Gi", ephemeral-storage: "100Gi" }
-            limits: { cpu: "4", memory: "8Gi", ephemeral-storage: "100Gi" }
+            requests:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "100Gi"
+            limits:
+              cpu: "4"
+              memory: "8Gi"
+              ephemeral-storage: "100Gi"
           volumes:
             - name: cache
               emptyDir:
@@ -252,8 +264,14 @@ The examples below use the `small` tier. Substitute the sizes for your tier.
       compactionWorker:
         deployment:
           resources:
-            requests: { cpu: "8", memory: "16Gi", ephemeral-storage: "100Gi" }
-            limits: { cpu: "8", memory: "16Gi", ephemeral-storage: "100Gi" }
+            requests:
+              cpu: "8"
+              memory: "16Gi"
+              ephemeral-storage: "100Gi"
+            limits:
+              cpu: "8"
+              memory: "16Gi"
+              ephemeral-storage: "100Gi"
           volumes:
             - name: cache
               emptyDir:
