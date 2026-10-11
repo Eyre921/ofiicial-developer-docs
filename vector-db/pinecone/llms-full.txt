@@ -76619,7 +76619,7 @@ File uploads, upserts, and deletes are asynchronous operations. Each of these ac
 
 ### List operations
 
-You can [list all operations](/reference/api/2026-04/assistant/list_operations) for an assistant:
+You can [list all operations](/reference/api/latest/assistant/list_operations) for an assistant:
 
 <CodeGroup>
   ```bash curl theme={null}
@@ -76660,7 +76660,7 @@ This returns a list of operations:
 
 ### Describe an operation
 
-You can [get the status of a specific operation](/reference/api/2026-04/assistant/describe_operation):
+You can [get the status of a specific operation](/reference/api/latest/assistant/describe_operation):
 
 <CodeGroup>
   ```bash curl theme={null}
@@ -77141,7 +77141,7 @@ Response:
 
 <Note>
   * The `multimodal` parameter is only available for PDF files.
-  * Upload is asynchronous. To check the status, use the [describe operation](/reference/api/2026-04/assistant/describe_operation) endpoint or [track file operations](/guides/assistant/manage-files#track-file-operations).
+  * Upload is asynchronous. To check the status, use the [describe operation](/reference/api/latest/assistant/describe_operation) endpoint or [track file operations](/guides/assistant/manage-files#track-file-operations).
   * If upload processing fails, you'll need to re-upload the file.
 </Note>
 
@@ -77532,7 +77532,7 @@ When you upload or replace files for an assistant, usage is measured in **ingest
 
 Multimodal ingestion applies to content processed through the [multimodal PDF](/guides/assistant/multimodal) path. Standard ingestion applies to other supported file types.
 
-Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/2026-04/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
+Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/latest/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
 
 ### Tokens
 
@@ -78155,7 +78155,7 @@ You can [upload a file to your assistant](/reference/api/latest/assistant/upload
   ```
 </CodeGroup>
 
-File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/2026-04/assistant/describe_operation) or [List operations](/reference/api/2026-04/assistant/list_operations) to track progress; when a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
+File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/latest/assistant/describe_operation) or [List operations](/reference/api/latest/assistant/list_operations) to track progress; when a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
 
 Upload is asynchronous, and it may take several minutes for your assistant to process your file. The Python SDK waits until processing finishes before it returns. The Node.js SDK and the API return an operation, which you can [track](/guides/assistant/manage-files#track-file-operations) until it's no longer `Processing`, as the Node.js example does. You can also [check the status of your file](/guides/assistant/manage-files#get-the-status-of-a-file).
 
@@ -78215,7 +78215,7 @@ When a file is uploaded with metadata, you can use the metadata to [filter a lis
   This feature requires [API version](/reference/api/versioning) `2026-04` or later.
 </Note>
 
-You can create or replace a file by providing a custom file ID using the [upsert file](/reference/api/2026-04/assistant/upsert_file) endpoint. If a file with the given ID already exists, it's replaced. If not, a new file is created.
+You can create or replace a file by providing a custom file ID using the [upsert file](/reference/api/latest/assistant/upsert_file) endpoint. If a file with the given ID already exists, it's replaced. If not, a new file is created.
 
 File IDs must be 1-128 characters long and can contain alphanumeric characters, hyphens, and underscores.
 
@@ -79802,9 +79802,9 @@ Update a project's name, maximum number of Pods, or customer-managed encryption 
 
 
 # Chat with an assistant
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/chat_assistant
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/chat_assistant
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml POST /chat/{assistant_name}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml POST /chat/{assistant_name}
 Chat with an assistant and get back citations in structured form. 
 
 This is the recommended way to chat with an assistant, as it offers more functionality and control over the assistant's responses and references than the OpenAI-compatible chat interface.
@@ -79838,7 +79838,7 @@ For guidance and examples, see [Chat with an assistant](https://docs.pinecone.io
   curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "messages": [
       {
@@ -79852,116 +79852,11 @@ For guidance and examples, see [Chat with an assistant](https://docs.pinecone.io
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json Default response theme={null}
-  {
-    "finish_reason": "stop",
-    "message": {
-      "role": "assistant",
-      "content": "The inciting incident of \"Pride and Prejudice\" occurs when Mrs. Bennet informs Mr. Bennet that Netherfield Park has been let at last, and she is eager to share the news about the new tenant, Mr. Bingley, who is wealthy and single. This sets the stage for the subsequent events of the story, including the introduction of Mr. Bingley and Mr. Darcy to the Bennet family and the ensuing romantic entanglements."
-    },
-    "id": "00000000000000004ac3add5961aa757",
-    "model": "gpt-4o-2024-05-13",
-    "usage": {
-      "prompt_tokens": 9736,
-      "completion_tokens": 105,
-      "total_tokens": 9841
-    },
-    "citations": [
-      {
-        "position": 406,
-        "references": [
-          {
-            "file": {
-              "status": "Available",
-              "id": "ae79e447-b89e-4994-994b-3232ca52a654",
-              "name": "Pride-and-Prejudice.pdf",
-              "size": 2973077,
-              "metadata": null,
-              "updated_on": "2024-06-14T15:01:57.385425746Z",
-              "created_on": "2024-06-14T15:01:02.910452398Z",
-              "signed_url": "https://storage.googleapis.com/..."
-            },
-            "pages": [
-              1
-            ]
-          }
-        ]
-      }
-    ]
-  }
-
-  ```
-
-  ```text Streaming response theme={null}
-  data:{
-    "type":"message_start",
-    "id":"0000000000000000111b35de85e8a8f9",
-    "model":"gpt-4o-2024-05-13",
-    "role":"assistant"
-  }
-
-  data:
-  {
-    "type":"content_chunk",
-    "id":"0000000000000000111b35de85e8a8f9",
-    "model":"gpt-4o-2024-05-13",
-    "delta":
-    {
-      "content":"The"
-      }
-  }
-
-  ...
-
-  data:
-  {
-    "type":"citation",
-    "id":"0000000000000000111b35de85e8a8f9",
-    "model":"gpt-4o-2024-05-13",
-    "citation":
-    {
-      "position":406,
-      "references":
-      [
-        {
-          "file":{
-            "status":"Available",
-            "id":"ae79e447-b89e-4994-994b-3232ca52a654",
-            "name":"Pride-and-Prejudice.pdf",
-            "size":2973077,
-            "metadata":null,
-            "updated_on":"2024-06-14T15:01:57.385425746Z",
-            "created_on":"2024-06-14T15:01:02.910452398Z",
-            "signed_url":"https://storage.googleapis.com/..."
-            },
-        "pages":[1]
-        }
-      ]
-    }
-  }
-
-  data:
-  {
-    "type":"message_end",
-    "id":"0000000000000000111b35de85e8a8f9",
-    "model":"gpt-4o-2024-05-13",
-    "finish_reason":"stop",
-    "usage":
-    {
-      "prompt_tokens":9736,
-      "completion_tokens":102,
-      "total_tokens":9838
-      }
-  }
-  ```
-</ResponseExample>
-
 
 # Chat through an OpenAI-compatible interface
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/chat_completion_assistant
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/chat_completion_assistant
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml POST /chat/{assistant_name}/chat/completions
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml POST /chat/{assistant_name}/chat/completions
 Chat with an assistant. This endpoint is based on the OpenAI Chat Completion API, a commonly used and adopted API. 
 
 It is useful if you need inline citations or OpenAI-compatible responses, but has limited functionality compared to the standard chat interface.
@@ -79993,7 +79888,7 @@ For guidance and examples, see [Chat with an assistant](https://docs.pinecone.io
   curl "https://prod-1-data.ke.pinecone.io/assistant/chat/$ASSISTANT_NAME/chat/completions" \
     -H "Api-Key: $PINECONE_API_KEY "\
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "messages": [
       {
@@ -80006,86 +79901,11 @@ For guidance and examples, see [Chat with an assistant](https://docs.pinecone.io
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```JSON Default response theme={null}
-  {"chat_completion":
-    {
-      "id":"chatcmpl-9OtJCcR0SJQdgbCDc9JfRZy8g7VJR",
-      "choices":[
-        {
-          "finish_reason":"stop",
-          "index":0,
-          "message":{
-            "role":"assistant",
-            "content":"The maximum height of a red pine (Pinus resinosa) is up to 25 meters."
-          }
-        }
-      ],
-      "model":"my_assistant"
-    }
-  }
-  ```
-
-  ```text Streaming response theme={null}
-  {
-    'id': '000000000000000009de65aa87adbcf0',
-    'choices': [
-        {
-        'index': 0,
-        'delta':
-          {
-          'role': 'assistant',
-          'content': 'The'
-          },
-        'finish_reason': None
-        }
-      ],
-    'model': 'gpt-4o-2024-05-13'
-  }
-
-  ...
-
-  {
-    'id': '00000000000000007a927260910f5839',
-    'choices': [
-        {
-        'index': 0,
-        'delta':
-          {
-            'role': '',
-            'content': 'The'
-          },
-        'finish_reason': None
-        }
-      ],
-    'model': 'gpt-4o-2024-05-13'
-  }
-
-  ...
-
-  {
-    'id': '00000000000000007a927260910f5839',
-    'choices': [
-      {
-        'index': 0,
-        'delta':
-          {
-          'role': None,
-          'content': None
-          },
-        'finish_reason': 'stop'
-        }
-      ],
-    'model': 'gpt-4o-2024-05-13'
-  }
-  ```
-</ResponseExample>
-
 
 # Retrieve context from an assistant
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/context_assistant
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/context_assistant
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml POST /chat/{assistant_name}/context
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml POST /chat/{assistant_name}/context
 Retrieve context snippets from an assistant to use as part of RAG or any agentic flow.
 
 For guidance and examples, see [Retrieve context snippets](https://docs.pinecone.io/guides/assistant/retrieve-context-snippets).
@@ -80099,50 +79919,18 @@ For guidance and examples, see [Retrieve context snippets](https://docs.pinecone
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "accept: application/json" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "query": "Who is the CFO of Netflix?"
   }'
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-      "snippets":
-      [
-          {
-              "type":"text",
-              "content":"EXHIBIT 31.3\nCERTIFICATION OF CHIEF FINANCIAL OFFICER\nPURSUANT TO SECTION 302 OF THE SARBANES-OXLEY ACT OF 2002\nI, Spencer Neumann, certify that: ...",
-              "score":0.9960699,
-              "reference":
-              {
-                  "type":"pdf",
-                  "file":
-                  {
-                      "status":"Available","id":"e6034e51-0bb9-4926-84c6-70597dbd07a7",
-                      "name":"Netflix-10-K-01262024.pdf",
-                      "size":1073470,
-                      "metadata":null,
-                      "updated_on":"2024-11-21T22:59:10.426001030Z",
-                      "created_on":"2024-11-21T22:58:35.879120257Z",
-                      "signed_url":"https://storage.googleapis.com..."
-                      },
-                  "pages":[78]
-              }
-          },
-  {
-      "type":"text",
-      "content":"EXHIBIT 32.1\n..."
-  ...
-  ```
-</ResponseExample>
-
 
 # Create an assistant
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/create_assistant
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/create_assistant
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_control_2026-04.oas.yaml POST /assistants
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_control_2026-07.oas.yaml POST /assistants
 Create an assistant. This is where you specify the underlying training model, which cloud provider you would like to deploy with, and more.
 
 For guidance and examples, see [Create an assistant](https://docs.pinecone.io/guides/assistant/create-assistant)
@@ -80154,7 +79942,7 @@ For guidance and examples, see [Create an assistant](https://docs.pinecone.io/gu
   curl "https://api.pinecone.io/assistant/assistants" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "name": "example-assistant",
     "instructions": "Use American English for spelling and grammar.",
@@ -80164,25 +79952,11 @@ For guidance and examples, see [Create an assistant](https://docs.pinecone.io/gu
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "name": "example-assistant",
-    "instructions": "Use American English for spelling and grammar.",
-    "metadata": {"team": "customer-support", "version": "1.0"},
-    "status": "Initializing",
-    "host": "https://prod-1-data.ke.pinecone.io",
-    "created_at": "2025-10-01T12:30:00Z",
-    "updated_at": "2025-10-01T12:30:00Z"
-  }
-  ```
-</ResponseExample>
-
 
 # Delete an assistant
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/delete_assistant
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/delete_assistant
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_control_2026-04.oas.yaml DELETE /assistants/{assistant_name}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_control_2026-07.oas.yaml DELETE /assistants/{assistant_name}
 Delete an existing assistant.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#delete-an-assistant)
@@ -80194,15 +79968,15 @@ For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guid
 
   curl -X DELETE "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
 
 # Delete a file
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/delete_file
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/delete_file
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml DELETE /files/{assistant_name}/{assistant_file_id}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml DELETE /files/{assistant_name}/{assistant_file_id}
 [Delete an uploaded file](https://docs.pinecone.io/guides/assistant/manage-files#delete-a-file) from an assistant.
 
 This operation is asynchronous. The response includes an operation ID that can be used to poll for completion via the describe operation endpoint.
@@ -80215,32 +79989,15 @@ This operation is asynchronous. The response includes an operation ID that can b
 
   curl -X DELETE "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "id": "op-7777-ffff-0000",
-    "operation_type": "delete_file",
-    "file_id": "my-file-id-123",
-    "status": "Processing",
-    "created_on": "2025-10-01T12:30:00Z",
-    "percent_complete": 0
-  }
-  ```
-</ResponseExample>
-
-<Note>
-  This example shows a `Processing` operation. The `error_message` field is present only when the operation status is `Failed`.
-</Note>
-
 
 # Check assistant status
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/describe_assistant
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/describe_assistant
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_control_2026-04.oas.yaml GET /assistants/{assistant_name}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_control_2026-07.oas.yaml GET /assistants/{assistant_name}
 Get the status of an assistant.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#get-the-status-of-an-assistant)
@@ -80252,29 +80009,15 @@ For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guid
 
   curl -X GET "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "name": "example-assistant",
-    "instructions": "Use American English for spelling and grammar.",
-    "metadata": {"team": "customer-support", "version": "1.0"},
-    "status": "Ready",
-    "host": "https://prod-1-data.ke.pinecone.io",
-    "created_at": "2025-10-01T12:30:00Z",
-    "updated_at": "2025-10-01T12:45:00Z"
-  }
-  ```
-</ResponseExample>
-
 
 # Describe a file
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/describe_file
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/describe_file
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml GET /files/{assistant_name}/{assistant_file_id}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml GET /files/{assistant_name}/{assistant_file_id}
 [Get the current status and metadata of a file](https://docs.pinecone.io/guides/assistant/manage-files#get-the-status-of-a-file) uploaded to an assistant.
 
 <RequestExample>
@@ -80287,15 +80030,15 @@ https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-
   # To get a signed URL in the response, set `include_url` to `true`.
   curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID?include_url=true" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
 
 # Describe an operation
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/describe_operation
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/describe_operation
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml GET /operations/{assistant_name}/{operation_id}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml GET /operations/{assistant_name}/{operation_id}
 Get the status of an operation.
 
 
@@ -80307,7 +80050,7 @@ Get the status of an operation.
 
   curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME/$OPERATION_ID" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
@@ -80317,9 +80060,9 @@ Get the status of an operation.
 
 
 # List assistants
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/list_assistants
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/list_assistants
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_control_2026-04.oas.yaml GET /assistants
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_control_2026-07.oas.yaml GET /assistants
 List of all assistants in a project.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#list-assistants-for-a-project).
@@ -80330,33 +80073,15 @@ For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guid
 
   curl -X GET "https://api.pinecone.io/assistant/assistants" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "assistants": [
-      {
-        "name": "example-assistant",
-        "instructions": "Use American English for spelling and grammar.",
-        "metadata": {"team": "customer-support", "version": "1.0"},
-        "status": "Ready",
-        "host": "https://prod-1-data.ke.pinecone.io",
-        "created_at": "2025-10-01T12:30:00Z",
-        "updated_at": "2025-10-01T12:45:00Z"
-      }
-    ]
-  }
-  ```
-</ResponseExample>
-
 
 # List Files
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/list_files
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/list_files
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml GET /files/{assistant_name}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml GET /files/{assistant_name}
 List all files in an assistant, with an option to filter files with metadata.
 
 For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/assistant/manage-files#list-files-in-an-assistant).
@@ -80368,15 +80093,15 @@ For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/as
 
   curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
 
 # List operations
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/list_operations
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/list_operations
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml GET /operations/{assistant_name}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml GET /operations/{assistant_name}
 List all operations for an assistant. Returns operations that are in progress, as well as recently completed or failed operations.
 Both successful and failed operations are retained for 30 days after completion.
 Use the `operation_type` and `status` query parameters to filter results.
@@ -80390,20 +80115,20 @@ Use the `operation_type` and `status` query parameters to filter results.
   # List all operations
   curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04"
+    -H "X-Pinecone-Api-Version: 2026-07"
 
   # Filter by status
   # curl -X GET "https://prod-1-data.ke.pinecone.io/assistant/operations/$ASSISTANT_NAME?status=Processing" \
   #   -H "Api-Key: $PINECONE_API_KEY" \
-  #   -H "X-Pinecone-Api-Version: 2026-04"
+  #   -H "X-Pinecone-Api-Version: 2026-07"
   ```
 </RequestExample>
 
 
 # Evaluate an answer
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/metrics_alignment
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/metrics_alignment
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_evaluation_2026-04.oas.yaml POST /evaluation/metrics/alignment
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_evaluation_2026-07.oas.yaml POST /evaluation/metrics/alignment
 Evaluate the correctness and completeness of a response from an assistant or a RAG system. The correctness and completeness are evaluated based on the precision and recall of the generated answer with respect to the ground truth answer facts. Alignment is the harmonic mean of correctness and completeness.
 
 For guidance and examples, see [Evaluate answers](https://docs.pinecone.io/guides/assistant/evaluate-answers).
@@ -80415,7 +80140,7 @@ For guidance and examples, see [Evaluate answers](https://docs.pinecone.io/guide
   curl https://prod-1-data.ke.pinecone.io/assistant/evaluation/metrics/alignment \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
       "question": "What are the capital cities of France, England and Spain?",
       "answer": "Paris is the capital city of France and Barcelona of Spain",
@@ -80426,9 +80151,9 @@ For guidance and examples, see [Evaluate answers](https://docs.pinecone.io/guide
 
 
 # Update an assistant
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/update_assistant
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/update_assistant
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_control_2026-04.oas.yaml PATCH /assistants/{assistant_name}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_control_2026-07.oas.yaml PATCH /assistants/{assistant_name}
 Update an existing assistant. You can modify the assistant's instructions.
 
 For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guides/assistant/manage-assistants#add-instructions-to-an-assistant).
@@ -80441,7 +80166,7 @@ For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guid
   curl -X PATCH "https://api.pinecone.io/assistant/assistants/$ASSISTANT_NAME" \
     -H "Api-Key: $PINECONE_API_KEY" \
     -H "Content-Type: application/json" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -d '{
     "instructions": "Use American English for spelling and grammar.",
     "metadata": {"team": "customer-support", "version": "1.1"}
@@ -80449,25 +80174,11 @@ For guidance and examples, see [Manage assistants](https://docs.pinecone.io/guid
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "name": "example-assistant",
-    "instructions": "Use American English for spelling and grammar.",
-    "metadata": {"team": "customer-support", "version": "1.1"},
-    "status": "Ready",
-    "host": "https://prod-1-data.ke.pinecone.io",
-    "created_at": "2025-10-01T12:30:00Z",
-    "updated_at": "2025-10-01T12:45:00Z"
-  }
-  ```
-</ResponseExample>
-
 
 # Upload a file
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/upload_file
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/upload_file
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml POST /files/{assistant_name}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml POST /files/{assistant_name}
 Upload a file to the specified assistant.
 
 An identifier will be generated. To specify a file identifier or to replace file content, use the upsert endpoint (`PUT /files/{assistant_name}/{assistant_file_id}`).
@@ -80484,34 +80195,17 @@ For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/as
 
   curl -X POST "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME" \
        -H "Api-Key: $PINECONE_API_KEY" \
-       -H "X-Pinecone-Api-Version: 2026-04" \
+       -H "X-Pinecone-Api-Version: 2026-07" \
        -F "file=@$LOCAL_FILE_PATH" \
        -F 'metadata={"published": "2024-01-01", "document_type": "manuscript"}'
   ```
 </RequestExample>
 
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "id": "op-1234-abcd-5678",
-    "operation_type": "upload_file",
-    "file_id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
-    "status": "Processing",
-    "created_on": "2025-10-01T12:30:00Z",
-    "percent_complete": 0
-  }
-  ```
-</ResponseExample>
-
-<Note>
-  This example shows a `Processing` operation. The `error_message` field is present only when the operation status is `Failed`.
-</Note>
-
 
 # Upsert a file
-Source: https://docs.pinecone.io/reference/api/2026-04/assistant/upsert_file
+Source: https://docs.pinecone.io/reference/api/2026-07/assistant/upsert_file
 
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/assistant_data_2026-04.oas.yaml PUT /files/{assistant_name}/{assistant_file_id}
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/assistant_data_2026-07.oas.yaml PUT /files/{assistant_name}/{assistant_file_id}
 Create or replace a file in the specified assistant. If a file with the given `assistant_file_id` already exists, it will be replaced with the new file. If it doesn't exist, a new file will be created with that identifier.
 
 This operation is asynchronous. The file processing will occur in the background.
@@ -80527,27 +80221,10 @@ For guidance and examples, see [Manage files](https://docs.pinecone.io/guides/as
 
   curl -X PUT "https://prod-1-data.ke.pinecone.io/assistant/files/$ASSISTANT_NAME/$FILE_ID" \
     -H "Api-Key: $PINECONE_API_KEY" \
-    -H "X-Pinecone-Api-Version: 2026-04" \
+    -H "X-Pinecone-Api-Version: 2026-07" \
     -F "file=@$LOCAL_FILE_PATH"
   ```
 </RequestExample>
-
-<ResponseExample>
-  ```json curl theme={null}
-  {
-    "id": "op-1234-abcd-5678",
-    "operation_type": "upsert_file",
-    "file_id": "my-custom-file-id",
-    "status": "Processing",
-    "created_on": "2025-10-01T12:30:00Z",
-    "percent_complete": 0
-  }
-  ```
-</ResponseExample>
-
-<Note>
-  This example shows a `Processing` operation. The `error_message` field is present only when the operation status is `Failed`.
-</Note>
 
 
 # Pinecone Assistant limits
@@ -81349,6 +81026,1114 @@ def wait_on_index(index: str):
 Calling `wait_on_index()` would then allow your application to only continue to upsert data once the index is fully online and available to accept data, avoiding potential 403 or 404 errors.
 
 
+# Create an API key
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_api_key
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects/{project_id}/api-keys
+Create an API key for a project to authenticate Data Plane and Control Plane requests.
+
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  // `value` is returned only at creation time and cannot be retrieved later
+  const apiKey = await admin.apiKeys.create('YOUR_PROJECT_ID', {
+    name: 'Example API Key',
+    roles: ['ProjectEditor'],
+  });
+  console.log(apiKey);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{})
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      roles := []string{"ProjectEditor"}
+      apiKey, err := adminClient.APIKey.Create(ctx, "YOUR_PROJECT_ID", &pinecone.CreateAPIKeyParams{
+          Name:  "Example API Key",
+          Roles: &roles,
+      })
+      if err != nil {
+          log.Fatalf("Failed to create API key: %v", err)
+      }
+      // Value is returned only at creation time and cannot be retrieved later
+      fmt.Printf("Successfully created API key: %v\n", apiKey.Key.Id)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  resource "pinecone_api_key" "example" {
+    name       = "Example API Key"
+    project_id = "YOUR_PROJECT_ID"
+    roles      = ["ProjectEditor"]
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PINECONE_PROJECT_ID="YOUR_PROJECT_ID"
+
+  curl "https://api.pinecone.io/admin/projects/$PINECONE_PROJECT_ID/api-keys" \
+  	-H "X-Pinecone-Api-Version: 2026-04" \
+  	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+  	-d '{
+  		"name": "Example API Key",
+  		"roles": ["ProjectEditor"]
+  	}'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "key": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "Example API key",
+      "project_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "roles": [
+        "ProjectEditor"
+      ]
+    },
+    "value": "string"
+  }
+  ```
+</ResponseExample>
+
+
+# Create a new project
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/create_project
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml post /admin/projects
+Create a new project.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const project = await admin.projects.create({ name: 'example-project' });
+  console.log(project);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      project, err := adminClient.Project.Create(ctx, &pinecone.CreateProjectParams{
+          Name: "example-project",
+      })
+      if err != nil {
+          log.Fatalf("Failed to create project: %v", err)
+      }
+      fmt.Printf("Successfully created project: %v\n", project.Id)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  resource "pinecone_project" "example" {
+    name = "example-project"
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+
+  curl "https://api.pinecone.io/admin/projects" \
+      -H "X-Pinecone-Api-Version: 2026-04" \
+  	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+  	-d '{
+          "name":"example-project"
+          }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "example-project",
+    "max_pods": 0,
+    "force_encryption_with_cmek": false,
+    "organization_id": "string",
+    "created_at": "2025-03-16T22:46:45.030Z"
+  }
+  ```
+</ResponseExample>
+
+
+# Delete an API key
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_api_key
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/api-keys/{api_key_id}
+Delete an API key from a project.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  await admin.apiKeys.delete('YOUR_API_KEY_ID');
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      if err := adminClient.APIKey.Delete(ctx, "YOUR_API_KEY_ID"); err != nil {
+          log.Fatalf("Failed to delete API key: %v", err)
+      }
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  # This block defines the API key. To delete it, either remove the block and run
+  # `terraform apply`, or run:
+  #   terraform destroy -target=pinecone_api_key.example
+  resource "pinecone_api_key" "example" {
+    name       = "Example API Key"
+    project_id = "YOUR_PROJECT_ID"
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PINECONE_API_KEY_ID="YOUR_KEY_ID"
+
+  curl -X DELETE "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
+  	-H "X-Pinecone-Api-Version: 2026-04" \
+  	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
+  ```
+</RequestExample>
+
+
+# Delete a project
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/delete_project
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml delete /admin/projects/{project_id}
+Delete a project and all its configuration; delete its indexes, assistants, backups, and collections first.
+
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  await admin.projects.delete('YOUR_PROJECT_ID');
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      if err := adminClient.Project.Delete(ctx, "YOUR_PROJECT_ID"); err != nil {
+          log.Fatalf("Failed to delete project: %v", err)
+      }
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  # This block defines the project. To delete it, either remove the block and run
+  # `terraform apply`, or run:
+  #   terraform destroy -target=pinecone_project.example
+  resource "pinecone_project" "example" {
+    name = "example-project"
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PROJECT_ID="YOUR_PROJECT_ID"
+
+  curl -X DELETE "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+  	-H "X-Pinecone-Api-Version: 2026-04" \
+  	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN"
+  ```
+</RequestExample>
+
+
+# Get API key details
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/fetch_api_key
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/api-keys/{api_key_id}
+Get an API key's details, excluding its secret.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const apiKey = await admin.apiKeys.describe('YOUR_API_KEY_ID');
+  console.log(apiKey);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      apiKey, err := adminClient.APIKey.Describe(ctx, "YOUR_API_KEY_ID")
+      if err != nil {
+          log.Fatalf("Failed to describe API key: %v", err)
+      }
+      fmt.Printf("API key: %v (%v)\n", apiKey.Name, apiKey.Id)
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PINECONE_API_KEY_ID="3fa85f64-5717-4562-b3fc-2c963f66afa6"
+
+  curl -X GET "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
+  	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+      -H "accept: application/json" \
+      -H "X-Pinecone-Api-Version: 2026-04"
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "string",
+    "project_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "roles": [
+      "ProjectEditor"
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Get project details
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/fetch_project
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}
+Get a project's details.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const project = await admin.projects.describe('YOUR_PROJECT_ID');
+  console.log(project);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      project, err := adminClient.Project.Describe(ctx, "YOUR_PROJECT_ID")
+      if err != nil {
+          log.Fatalf("Failed to describe project: %v", err)
+      }
+      fmt.Printf("Project: %v (%v)\n", project.Name, project.Id)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  data "pinecone_project" "example" {
+    id = "YOUR_PROJECT_ID"
+  }
+
+  output "project_name" {
+    value = data.pinecone_project.example.name
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PROJECT_ID="3fa85f64-5717-4562-b3fc-2c963f66afa6"
+
+  curl -X GET "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+      -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+  	-H "X-Pinecone-Api-Version: 2026-04" \
+      -H "accept: application/json"
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "example-project",
+    "max_pods": 0,
+    "force_encryption_with_cmek": false,
+    "organization_id": "string",
+    "created_at": "2025-03-17T00:30:23.262Z"
+  }
+  ```
+</ResponseExample>
+
+
+# Create an access token
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/get_token
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/oauth_2026-04.oas.yaml post /oauth/token
+Obtain an access token for a service account using the OAuth2 client credentials flow. An access token is needed to authorize requests to the Pinecone Admin API.
+The host domain for OAuth endpoints is `login.pinecone.io`.
+
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // You don't call this endpoint directly when using the SDK. The AdminClient
+  // exchanges your service account credentials for an access token on the first
+  // admin request and reuses it for subsequent calls.
+  const admin = new AdminClient({
+    clientId: 'YOUR_CLIENT_ID',
+    clientSecret: 'YOUR_CLIENT_SECRET',
+  });
+
+  const { data: projects } = await admin.projects.list();
+  console.log(projects);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      // You don't call this endpoint directly when using the SDK. The AdminClient
+      // exchanges your service account credentials for an access token.
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     "YOUR_CLIENT_ID",
+          ClientSecret: "YOUR_CLIENT_SECRET",
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      projects, err := adminClient.Project.List(ctx)
+      if err != nil {
+          log.Fatalf("Failed to list projects: %v", err)
+      }
+      fmt.Printf("Found %v projects\n", len(projects))
+  }
+  ```
+
+  ```bash curl theme={null}
+  curl "https://login.pinecone.io/oauth/token" \ # Note: Base URL is login.pinecone.io
+  	-H "X-Pinecone-Api-Version: 2026-04" \
+  	-H "Content-Type: application/json" \
+  	-d '{
+  		"grant_type": "client_credentials",
+  		"client_id": "YOUR_CLIENT_ID",
+  		"client_secret": "YOUR_CLIENT_SECRET",
+  		"audience": "https://api.pinecone.io/"
+  	}'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+      "access_token":"YOUR_ACCESS_TOKEN",
+      "expires_in":86400,
+      "token_type":"Bearer"
+  }
+  ```
+</ResponseExample>
+
+
+# List API keys
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/list_api_keys
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects/{project_id}/api-keys
+List all API keys in a project.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const { data: apiKeys } = await admin.apiKeys.list('YOUR_PROJECT_ID');
+  console.log(apiKeys);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      apiKeys, err := adminClient.APIKey.List(ctx, "YOUR_PROJECT_ID")
+      if err != nil {
+          log.Fatalf("Failed to list API keys: %v", err)
+      }
+      for _, apiKey := range apiKeys {
+          fmt.Printf("API key: %v (%v)\n", apiKey.Name, apiKey.Id)
+      }
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PINECONE_PROJECT_ID="YOUR_PROJECT_ID"
+
+  curl -X GET "https://api.pinecone.io/admin/projects/$PINECONE_PROJECT_ID/api-keys" \
+      -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+      -H "X-Pinecone-Api-Version: 2026-04"
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "data": [
+      {
+        "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "name": "string",
+        "project_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "roles": [
+          "ProjectEditor"
+        ]
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# List projects
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/list_projects
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml get /admin/projects
+List all projects in an organization.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const { data: projects } = await admin.projects.list();
+  console.log(projects);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      projects, err := adminClient.Project.List(ctx)
+      if err != nil {
+          log.Fatalf("Failed to list projects: %v", err)
+      }
+      for _, project := range projects {
+          fmt.Printf("Project: %v (%v)\n", project.Name, project.Id)
+      }
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  data "pinecone_projects" "all" {}
+
+  output "project_names" {
+    value = [for project in data.pinecone_projects.all.projects : project.name]
+  }
+  ```
+
+  ```bash curl theme={null}
+  curl -X GET "https://api.pinecone.io/admin/projects" \
+      -H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+      -H "X-Pinecone-Api-Version: 2026-04"
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "data": [
+      {
+        "id": "3c90c3cc-0d44-4b50-8888-8dd25736052a",
+        "name": "example-project",
+        "max_pods": 0,
+        "force_encryption_with_cmek": true,
+        "organization_id": "<string>",
+        "created_at": "2023-11-07T05:31:56Z"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Update an API key
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/update_api_key
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/api-keys/{api_key_id}
+Update an API key's name and roles.
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const apiKey = await admin.apiKeys.update('YOUR_API_KEY_ID', {
+    name: 'New API key name',
+    roles: ['ProjectEditor'],
+  });
+  console.log(apiKey);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      name := "New API key name"
+      roles := []string{"ProjectEditor"}
+      apiKey, err := adminClient.APIKey.Update(ctx, "YOUR_API_KEY_ID", &pinecone.UpdateAPIKeyParams{
+          Name:  &name,
+          Roles: &roles,
+      })
+      if err != nil {
+          log.Fatalf("Failed to update API key: %v", err)
+      }
+      fmt.Printf("Successfully updated API key: %v\n", apiKey.Name)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  # Change the name or roles on an existing resource, then run `terraform apply`
+  resource "pinecone_api_key" "example" {
+    name       = "New API key name"
+    project_id = "YOUR_PROJECT_ID"
+    roles      = ["ProjectEditor"]
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PINECONE_API_KEY_ID="YOUR_API_KEY_ID"
+
+  curl -X PATCH "https://api.pinecone.io/admin/api-keys/$PINECONE_API_KEY_ID" \
+  	-H "X-Pinecone-Api-Version: 2026-04" \
+  	-H "Authorization: Bearer $PINECONE_ACCESS_TOKEN" \
+  	-d '{
+  		"name": "New API key name",
+  		"roles": ["ProjectEditor"]
+  	}'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "key": {
+      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "name": "New API key name",
+      "project_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "roles": [
+        "ProjectEditor"
+      ]
+    },
+    "value": "string"
+  }
+  ```
+</ResponseExample>
+
+
+# Update a project
+Source: https://docs.pinecone.io/reference/api/2026-04/admin-assistant/update_project
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-04/admin_2026-04.oas.yaml patch /admin/projects/{project_id}
+Update a project's name, maximum number of Pods, or customer-managed encryption key (CMEK).
+
+
+<RequestExample>
+  ```javascript JavaScript theme={null}
+  // Requires Node.js SDK v8.2.0 or later
+  import { AdminClient } from '@pinecone-database/pinecone';
+
+  // Reads PINECONE_CLIENT_ID and PINECONE_CLIENT_SECRET from the environment
+  const admin = new AdminClient();
+
+  const project = await admin.projects.update('YOUR_PROJECT_ID', {
+    name: 'updated-example-project',
+  });
+  console.log(project);
+  ```
+
+  ```go Go theme={null}
+  // Requires Go SDK v6.0.0 or later
+  package main
+
+  import (
+      "context"
+      "fmt"
+      "log"
+      "os"
+
+      "github.com/pinecone-io/go-pinecone/v6/pinecone"
+  )
+
+  func main() {
+      ctx := context.Background()
+
+      adminClient, err := pinecone.NewAdminClientWithContext(ctx, pinecone.NewAdminClientParams{
+          ClientId:     os.Getenv("PINECONE_CLIENT_ID"),
+          ClientSecret: os.Getenv("PINECONE_CLIENT_SECRET"),
+      })
+      if err != nil {
+          log.Fatalf("Failed to create AdminClient: %v", err)
+      }
+
+      name := "updated-example-project"
+      project, err := adminClient.Project.Update(ctx, "YOUR_PROJECT_ID", &pinecone.UpdateProjectParams{
+          Name: &name,
+      })
+      if err != nil {
+          log.Fatalf("Failed to update project: %v", err)
+      }
+      fmt.Printf("Successfully updated project: %v\n", project.Name)
+  }
+  ```
+
+  ```hcl Terraform theme={null}
+  # Requires Terraform provider v4.0.0 or later
+  # Change the name on an existing resource, then run `terraform apply`
+  resource "pinecone_project" "example" {
+    name = "updated-example-project"
+  }
+  ```
+
+  ```bash curl theme={null}
+  PINECONE_ACCESS_TOKEN="YOUR_ACCESS_TOKEN"
+  PROJECT_ID="YOUR_PROJECT_ID"
+
+  curl -X PATCH "https://api.pinecone.io/admin/projects/$PROJECT_ID" \
+    -H "accept: application/json" \
+    -H "Content-Type: application/json" \
+    -H "X-Pinecone-Api-Version: 2026-04" \
+    -d '{
+      "name": "updated-example-project"
+      }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json curl theme={null}
+  {
+    "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "name": "updated-example-project",
+    "max_pods": 0,
+    "force_encryption_with_cmek": false,
+    "organization_id": "string",
+    "created_at": "2025-03-17T00:42:31.912Z"
+  }
+  ```
+</ResponseExample>
+
+
+# Pinecone Assistant limits
+Source: https://docs.pinecone.io/reference/api/assistant/assistant-limits
+
+Reference for Pinecone Assistant limits, including file size, storage, chat token, and rate limits across the Starter, Builder, Standard, and Enterprise plans.
+
+Pinecone Assistant limits vary based on [subscription plan](https://www.pinecone.io/pricing/).
+
+### Object limits
+
+Object limits are restrictions on the number or size of assistant-related objects. Limits below are scoped **per organization** except for **Assistants per project**, which is scoped per project.
+
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Assistants per project | 5 | 200 | Unlimited | Unlimited |
+| File storage per org | 1 GB | 3 GB | Unlimited | Unlimited |
+| Chat input tokens per org | 500,000 / month | 2,000,000 / month | Unlimited | Unlimited |
+| Chat output tokens per org | 300,000 / month | 1,000,000 / month | Unlimited | Unlimited |
+| Context retrieval tokens per org | 500,000 / month | 2,000,000 / month | Unlimited | Unlimited |
+| Ingestion units per org | 1,000 / month | 10,000 / month | Unlimited | Unlimited |
+| File size (.docx, .json, .md, .txt) | 10 MB | 10 MB | 10 MB | 10 MB |
+| File size (.pdf) | 10 MB | 50 MB | 100 MB | 100 MB |
+| Metadata size per file | 16 KB | 16 KB | 16 KB | 16 KB |
+
+Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
+
+Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
+
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Max file size | 10 MB | 10 MB | 50 MB | 50 MB |
+| Page limit | 100 | 100 | 100 | 100 |
+
+### Rate limits
+
+Rate limits help protect your applications from misuse and maintain the health of our shared infrastructure. These limits are designed to support typical production workloads while ensuring reliable performance for all users.
+
+**Most rate limits can be adjusted upon request.** If you need higher limits to scale your application, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
+
+Requests that exceed a rate limit fail and return a `429 - TOO_MANY_REQUESTS` status.
+
+<Tip>To handle rate limits, implement [retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).</Tip>
+
+| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
+| :- | :- | :- | :- | :- |
+| Assistant list/get requests per minute | 40 | 50 | 100 | 500 |
+| Assistant create/update requests per minute | 20 | 25 | 50 | 100 |
+| Assistant delete requests per minute | 20 | 25 | 50 | 100 |
+| File get requests per minute | 100 | 150 | 300 | 6,000 |
+| File list requests per minute | 50 | 75 | 150 | 3,000 |
+| File upload requests per minute | 5 | 15 | 20 | 300 |
+| Multimodal PDF upload requests per minute | 5 | 10 | 20 | 40 |
+| File delete requests per minute | 5 | 15 | 20 | 300 |
+| Chat input tokens per minute | 100,000 | 200,000 | 300,000 | 1,000,000 |
+| Chat history tokens per query | 64,000 | 64,000 | 64,000 | 64,000 |
+| Evaluation input tokens per minute | Not available | Not available | 150,000 | 500,000 |
+
+
+# Authentication
+Source: https://docs.pinecone.io/reference/api/assistant/authentication
+
+Assistant API authentication with API keys, HTTP headers, and SDK client initialization for Pinecone Assistant requests and RAG apps.
+
+All requests to the [Pinecone Assistant API](/reference/api/assistant/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
+
+## Get an API key
+
+[Create a new API key](https://app.pinecone.io/organizations/-/projects/-/keys) in the Pinecone console, or use the connect widget below to generate a key.
+
+<div>
+  <div>
+    <div>
+      <div />
+    </div>
+  </div>
+</div>
+
+Copy your generated key:
+
+```
+PINECONE_API_KEY="{{YOUR_API_KEY}}"
+
+# This API key has ReadWrite access to all indexes in your project.
+```
+
+## Initialize a client
+
+When using a Pinecone SDK, initialize a client object with your API key and then reuse the authenicated client in subsquent function calls. For example:
+
+<CodeGroup>
+  ```python Python theme={null}
+  # To use the Python SDK, install the plugin:
+  # pip install --upgrade pinecone pinecone-plugin-assistant
+
+  from pinecone import Pinecone
+
+  pc = Pinecone(api_key="YOUR_API_KEY")
+
+  # Creates an assistant using the API key stored in the client 'pc'.
+  assistant = pc.assistant.create_assistant(
+      assistant_name="example-assistant",
+      instructions="Use American English for spelling and grammar.",
+      region="us" 
+  )
+  ```
+
+  ```javascript JavaScript theme={null}
+  import { Pinecone } from '@pinecone-database/pinecone';
+
+  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
+
+  // Creates an index using the API key stored in the client 'pc'.
+  const assistant = await pc.createAssistant({
+    name: 'example-assistant',
+    instructions: 'Use American English for spelling and grammar.',
+    region: 'us'
+  });
+  ```
+</CodeGroup>
+
+## Add headers to an HTTP request
+
+All HTTP requests to the Pinecone Assistant API must contain an `Api-Key` header that specifies a valid [API key](/guides/production/security-overview#api-keys) and must be encoded as JSON with the `Content-Type: application/json` header. For example:
+
+```bash curl theme={null}
+PINECONE_API_KEY="YOUR_API_KEY"
+
+curl "https://api.pinecone.io/assistant/assistants" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2025-01" \
+  -d '{
+  "name": "example-assistant",
+  "instructions": "Use American English for spelling and grammar.",
+  "region":"us"
+}'
+```
+
+
+# Assistant API reference
+Source: https://docs.pinecone.io/reference/api/assistant/introduction
+
+Assistant API reference overview covering document upload, chat, and RAG endpoints supported by the Pinecone Python and Node.js SDKs.
+
+Use the [Assistant API](/guides/assistant/quickstart/sdk-quickstart) to upload documents, ask questions, and receive responses that reference your documents. This is known as [retrieval-augmented generation (RAG)](https://www.pinecone.io/learn/retrieval-augmented-generation/).
+
+## SDK support
+
+The following Pinecone SDKs support the Assistant API:
+
+<CardGroup>
+  <Card title="Python SDK" icon="python" href="/reference/sdks/python/overview" />
+
+  <Card title="Node.js SDK" icon="node-js" href="/reference/sdks/node/overview" />
+</CardGroup>
+
+## Versioning
+
+The Assistant API is versioned to ensure that your applications continue to work as expected as the platform evolves. For more details, see [API versioning](/reference/api/versioning) in the Pinecone Database documentation.
+
+
+# Pinecone Assistant architecture
+Source: https://docs.pinecone.io/reference/architecture/assistant-architecture
+
+Pinecone Assistant architecture overview covering document ingestion, chunking, vector retrieval, and LLM response generation for RAG.
+
+This page describes the architecture for [Pinecone Assistant](/guides/assistant/overview).
+
+## Overview
+
+[Pinecone Assistant](/guides/assistant/overview) runs as a managed service on the Pinecone platform. It uses a combination of machine learning models and information retrieval techniques to provide responses that are informed by your documents. The assistant is designed to be easy to use, requiring minimal setup and no machine learning expertise.
+
+Pinecone Assistant simplifies complex tasks like data chunking, vector search, embedding, and querying while ensuring privacy and security.
+
+<img />
+
+<img />
+
+## Data ingestion
+
+When a [document is uploaded](/guides/assistant/manage-files), the assistant processes the content by chunking it into smaller parts and generating [vector embeddings](https://www.pinecone.io/learn/vector-embeddings-for-developers/) for each chunk. These embeddings are stored in an [index](/guides/index-data/indexing-overview), making them ready for retrieval.
+
+## Data retrieval
+
+During a [chat](/guides/assistant/chat-with-assistant), the assistant processes the message to formulate relevant search queries, which are used to query the index and identify the most relevant chunks from the uploaded content.
+
+## Response generation
+
+After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
+
+
 # Current identity (whoami)
 Source: https://docs.pinecone.io/api-reference/auth/current-identity-whoami
 
@@ -81365,11 +82150,43 @@ Exchange a Pinecone API key for the session token every other endpoint expects. 
 
 
 
+# Browse a connector's folders/files
+Source: https://docs.pinecone.io/api-reference/connectors/browse-a-connectors-foldersfiles
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors/{id}/items
+Browse the provider's folders and files to find the ids to import. Omit `folder` for the root.
+
+
+
+# Enable or disable a connector for a context
+Source: https://docs.pinecone.io/api-reference/connectors/enable-or-disable-a-connector-for-a-context
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml put /contexts/{slug}/connectors/{connector_id}
+Enable or disable one connector for this context.
+
+
+
 # Get a connector
 Source: https://docs.pinecone.io/api-reference/connectors/get-a-connector
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors/{id}
 One linked connector, secrets stripped.
+
+
+
+# Link a connector with an API key
+Source: https://docs.pinecone.io/api-reference/connectors/link-a-connector-with-an-api-key
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /connectors/keys/{provider}
+Link a key-based provider by supplying its API key directly, instead of running the OAuth flow.
+
+
+
+# List a context's connectors (with per-context enabled flag)
+Source: https://docs.pinecone.io/api-reference/connectors/list-a-contexts-connectors-with-per-context-enabled-flag
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/connectors
+The project's connectors, each with whether this context may import from it.
 
 
 
@@ -81381,11 +82198,147 @@ The project's linked source providers. Filter by `kind` to those valid for a con
 
 
 
+# Start the OAuth link flow for a provider
+Source: https://docs.pinecone.io/api-reference/connectors/start-the-oauth-link-flow-for-a-provider
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors/oauth/{provider}/start
+Returns an `authorize_url` for the user to open in a browser. The connector is persisted by the provider's OAuth redirect callback once the user approves access.
+
+
+
 # Unlink a connector
 Source: https://docs.pinecone.io/api-reference/connectors/unlink-a-connector
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /connectors/{id}
 Unlink the connector from the project. Sources it already imported stay in place.
+
+
+
+# Create a context
+Source: https://docs.pinecone.io/api-reference/contexts/create-a-context
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts
+Created empty, and not queryable until you import sources and curate them — curate is explicit. Optionally seed a `manifest`. A `work` context is the exception: queryable from day zero, built from traces of work rather than documents.
+
+
+
+# Delete a context (and its Pinecone indexes)
+Source: https://docs.pinecone.io/api-reference/contexts/delete-a-context-and-its-pinecone-indexes
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /contexts/{slug}
+Delete the context, its sources, its curated knowledge, and its Pinecone indexes. Not reversible.
+
+
+
+# Estimate the token + time cost of curating the in-progress manifest
+Source: https://docs.pinecone.io/api-reference/contexts/estimate-the-token-+-time-cost-of-curating-the-in-progress-manifest
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/profile
+Estimates the token and time cost of curating the sources under the manifest in the request body, reported as the task's `output` (see `ProfileEstimateOutput`). Persists nothing. Body is optional.
+
+
+
+# Get a context
+Source: https://docs.pinecone.io/api-reference/contexts/get-a-context
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}
+One context and its derived lifecycle flags.
+
+
+
+# List contexts (newest first, with stats)
+Source: https://docs.pinecone.io/api-reference/contexts/list-contexts-newest-first-with-stats
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts
+Every context in the active project, newest first, each with its aggregate task counters.
+
+
+
+# Per-context task statistics
+Source: https://docs.pinecone.io/api-reference/contexts/per-context-task-statistics
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/tasks/stats
+Aggregate counters over every task this context has run. The project-wide equivalent is `GET /stats`.
+
+
+
+# Run the Design-flow explore agent (propose a manifest)
+Source: https://docs.pinecone.io/api-reference/contexts/run-the-design-flow-explore-agent-propose-a-manifest
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/explore
+Inspects the uploaded source and proposes manifest-template matches in the task's `output` (see `ExploreOutput`). Persists nothing — review the proposal, then apply it with a manifest update and a forced curate. Body is optional.
+
+
+
+# Trigger an on-demand self-tuning optimize
+Source: https://docs.pinecone.io/api-reference/contexts/trigger-an-on-demand-self-tuning-optimize
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/optimize
+Tunes the manifest from real query traffic, then chains a forced re-curate. Every field of the required body is optional, so `{}` is valid — and a no-op without `candidate_queries`. The context must be curated, and only one optimize runs at a time.
+
+
+
+# Update a context
+Source: https://docs.pinecone.io/api-reference/contexts/update-a-context
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml put /contexts/{slug}
+All fields optional; an absent one is left untouched. An empty string clears `description`/`guide`, and `{}` clears the manifest back to defaults.
+
+
+
+# Build or rebuild the context's index from its sources
+Source: https://docs.pinecone.io/api-reference/curation/build-or-rebuild-the-contexts-index-from-its-sources
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/curate
+Curate the staged sources under the active manifest. **Required before querying** — there is no auto-curate. Body is optional; `force: true` rebuilds fully, which is what a manifest edit needs. Search contexts only: a work context builds via `work`/`groom`.
+
+
+
+# Drop named sources from the index + ledger
+Source: https://docs.pinecone.io/api-reference/curation/drop-named-sources-from-the-index-+-ledger
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/curate/delete-sources
+Drop named sources from the index and the curation ledger without re-reading the rest of the corpus.
+
+
+
+# Get the curation ledger
+Source: https://docs.pinecone.io/api-reference/curation/get-the-curation-ledger
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/curate
+What the last curate recorded: the per-source hash and timestamp map, artifact edges, corpus groups, the live version pin, delete tombstones, artifact-reclaim intents, and the pointer and glossary resume cursors. Chunk ids are tracked too but not served — an internal retrieval unit.
+
+
+
+# Knowledge file/dir/size counts
+Source: https://docs.pinecone.io/api-reference/knowledge/knowledge-filedirsize-counts
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/stats
+File, directory, and byte counts over the curated knowledge tree.
+
+
+
+# List curated knowledge (root)
+Source: https://docs.pinecone.io/api-reference/knowledge/list-curated-knowledge-root
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/list
+The root of the curated knowledge tree — chunks and artifacts the last curate wrote.
+
+
+
+# List curated knowledge under a path
+Source: https://docs.pinecone.io/api-reference/knowledge/list-curated-knowledge-under-a-path
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/list/{path}
+One directory of the curated knowledge tree.
+
+
+
+# Read a curated knowledge file (raw bytes)
+Source: https://docs.pinecone.io/api-reference/knowledge/read-a-curated-knowledge-file-raw-bytes
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/read/{path}
+The raw bytes of one curated knowledge file.
 
 
 
@@ -81425,6 +82378,22 @@ List the workspaces in the project. Results are paginated; the `pagination` obje
 
 
 
+# Get the context's manifest
+Source: https://docs.pinecone.io/api-reference/manifest/get-the-contexts-manifest
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/manifest
+The context's pinned manifest document. A context that pins nothing returns `null` — the runtime fills defaults. Writes go through the `manifest` field on `PUT /contexts/{slug}`.
+
+
+
+# List the built-in manifest templates
+Source: https://docs.pinecone.io/api-reference/manifest/list-the-built-in-manifest-templates
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /manifest/templates
+The templates a new context can be seeded from.
+
+
+
 # Get the active project
 Source: https://docs.pinecone.io/api-reference/project/get-the-active-project
 
@@ -81438,6 +82407,238 @@ Source: https://docs.pinecone.io/api-reference/project/project-wide-task-stats
 
 https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /stats
 Aggregate task counters across the whole project (all contexts), broken down by state and workflow. The per-context equivalent is `GET /contexts/{slug}/tasks/stats`.
+
+
+
+# Cancel an in-progress query turn
+Source: https://docs.pinecone.io/api-reference/query/cancel-an-in-progress-query-turn
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /queries/{id}/cancel
+Idempotent — an already-terminal query is returned unchanged. On success the turn's `status` becomes `cancelled`.
+
+
+
+# Delete a session and its queries
+Source: https://docs.pinecone.io/api-reference/query/delete-a-session-and-its-queries
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /sessions/{id}
+Delete a session and every turn belonging to it.
+
+
+
+# Fetch one query (turn)
+Source: https://docs.pinecone.io/api-reference/query/fetch-one-query-turn
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /queries/{id}
+One turn, including its steps, citations, and usage. This is what a background run is polled with.
+
+
+
+# Fetch the recorded trace for a query turn
+Source: https://docs.pinecone.io/api-reference/query/fetch-the-recorded-trace-for-a-query-turn
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /queries/{id}/trace
+The per-turn debug trace (steps, tool calls, strategy, cost, rollup). Trace persistence is unconditional — every turn lands a trace blob — so this is available once the turn is terminal.
+
+
+
+# Get a session with its queries (conversation order)
+Source: https://docs.pinecone.io/api-reference/query/get-a-session-with-its-queries-conversation-order
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /sessions/{id}
+One session with its turns in conversation order.
+
+
+
+# List project-wide query sessions (newest first)
+Source: https://docs.pinecone.io/api-reference/query/list-project-wide-query-sessions-newest-first
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /sessions
+Every conversation thread in the project, newest first.
+
+
+
+# List the selectable query models
+Source: https://docs.pinecone.io/api-reference/query/list-the-selectable-query-models
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /models
+What the `model` field on `POST /query` draws from: the default, every catalog entry, the tier → model-id map, per-phase defaults, and the curate-capable ids. Only entries with `available: true` are selectable; the rest are rejected with `400`.
+
+
+
+# Record thumbs-up/down feedback on a query turn
+Source: https://docs.pinecone.io/api-reference/query/record-thumbs-updown-feedback-on-a-query-turn
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /queries/{id}/feedback
+Record a thumbs-up or thumbs-down on a turn. The rating is returned on the turn thereafter.
+
+
+
+# Run one KnowQL query turn
+Source: https://docs.pinecone.io/api-reference/query/run-one-knowql-query-turn
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /query
+Send `ask` and, on a new session, a `scope` of 1–10 contexts; continue an existing one with
+`session_id` or `previous_query_id`. Scoped search contexts must be curated, and a scope may
+not mix work and search contexts. Read the answer from `output[].content[].text`.
+
+`stream` and `background` are mutually exclusive. `background: true` returns `202` with an
+`in_progress` query to poll. `stream: true` emits an SSE stream whose `event:` names are the
+event `type` (see `QueryEvent`), closed by a final `query` frame carrying the whole turn:
+
+```
+id: 1
+event: response.created
+data: {"type":"response.created","query_id":"qry_8b3d5f1a","session_id":"ses_4f9c1e2a"}
+
+id: 2
+event: response.output_text.delta
+data: {"type":"response.output_text.delta","query_id":"qry_8b3d5f1a","delta":"Revenue grew 12%..."}
+
+id: 3
+event: response.completed
+data: {"type":"response.completed","query_id":"qry_8b3d5f1a"}
+
+event: query
+data: {"id":"qry_8b3d5f1a","object":"query","status":"completed","output":[...]}
+```
+
+
+
+
+# Stream a query turn's events (SSE)
+Source: https://docs.pinecone.io/api-reference/query/stream-a-query-turns-events-sse
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /queries/{id}/events
+The turn's events as they land — the same `type`-named events `POST /query` emits with `stream: true`, as a standalone resumable subscription. Reconnect with `Last-Event-ID` to replay from where the stream dropped.
+
+
+
+# Delete a source file
+Source: https://docs.pinecone.io/api-reference/source-files/delete-a-source-file
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /contexts/{slug}/source/delete/{path}
+Remove one file from the source tree. Its index entries survive until the next curate.
+
+
+
+# Flat manifest of source files (path, size, last_modified)
+Source: https://docs.pinecone.io/api-reference/source-files/flat-manifest-of-source-files-path-size-last_modified
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/manifest
+Flat source-object inventory. Excludes the `_inbox/` staging directory.
+
+
+
+# Import source documents from a project connector
+Source: https://docs.pinecone.io/api-reference/source-files/import-source-documents-from-a-project-connector
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/import
+Pull source documents from a linked project connector (Box, ...) into the context. Supply either `folder` or `files`. Stages the source only — curate explicitly before querying.
+
+
+
+# List the source file tree (root)
+Source: https://docs.pinecone.io/api-reference/source-files/list-the-source-file-tree-root
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/list
+The root of the source tree — what has been staged but not necessarily curated.
+
+
+
+# List the source file tree under a path
+Source: https://docs.pinecone.io/api-reference/source-files/list-the-source-file-tree-under-a-path
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/list/{path}
+One directory of the source tree.
+
+
+
+# Read a source file (raw bytes)
+Source: https://docs.pinecone.io/api-reference/source-files/read-a-source-file-raw-bytes
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/read/{path}
+The raw bytes of one staged source file.
+
+
+
+# Source file/dir/size counts
+Source: https://docs.pinecone.io/api-reference/source-files/source-filedirsize-counts
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/stats
+Aggregate counts. Where source limits apply, five more fields carry the caps and usage against them (`max_files_per_context`, `max_bytes_per_context`, `max_bytes_per_file`, `used_files`, `used_bytes`); they are absent otherwise.
+
+
+
+# Upload a source file or archive
+Source: https://docs.pinecone.io/api-reference/source-files/upload-a-source-file-or-archive
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/import/upload
+One file per request, max 2 GiB; archives (`.zip`, `.tar`, `.tar.gz`, `.tgz`) are expanded by the import runtime. Stages the source without indexing it — curate explicitly before querying.
+
+
+
+# Delete a task file
+Source: https://docs.pinecone.io/api-reference/task-files/delete-a-task-file
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /tasks/{id}/files/delete/{path}
+Delete one file from a running task container.
+
+
+
+# List a task's files under a path
+Source: https://docs.pinecone.io/api-reference/task-files/list-a-tasks-files-under-a-path
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/list/{path}
+One directory inside the task's working directory.
+
+
+
+# List a task's working-directory files
+Source: https://docs.pinecone.io/api-reference/task-files/list-a-tasks-working-directory-files
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/list
+The root of the task's working directory.
+
+
+
+# Read a task file (raw bytes)
+Source: https://docs.pinecone.io/api-reference/task-files/read-a-task-file-raw-bytes
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/read/{path}
+Serves a task's files while it runs and after it finishes. This is how a finished pack's `<slug>.context.zip` is downloaded.
+
+
+
+# Stat a task file
+Source: https://docs.pinecone.io/api-reference/task-files/stat-a-task-file
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/metadata/{path}
+Stat one file in the task container without reading its bytes.
+
+
+
+# Cancel/terminate a task
+Source: https://docs.pinecone.io/api-reference/tasks/cancelterminate-a-task
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /tasks/{id}
+Body is optional. Max body 1 MiB.
+
+
+
+# Get a task (with steps)
+Source: https://docs.pinecone.io/api-reference/tasks/get-a-task-with-steps
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}
+Unlike the listing, this carries the task's `steps` — every one by default, or the newest N with `steps_limit`, where `steps_total` reports the true count.
+
+
+
+# List tasks (project-wide, paginated)
+Source: https://docs.pinecone.io/api-reference/tasks/list-tasks-project-wide-paginated
+
+https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks
+Task records across the project, newest first. Filter by workflow, state, or context, and page with `limit` plus `page` or `offset`.
 
 
 
@@ -82958,166 +84159,6 @@ Questions that span multiple documents work the same way. Asking "Which purchase
 To answer this, Nexus draws on the artifacts it compiled from your policies during curation, gathering the matching rules from across your documents, each with its own citation. A plain RAG search returns only the passages closest to your question, so it can miss rules in other documents. Reaching across your whole corpus is a core reason to use Nexus over RAG. For exact counts and enumerations over structured data, define a SQLite artifact, covered in [artifact formats](/guides/nexus/configure-artifact-formats). See [how queries work](/guides/nexus/how-queries-work) for what the runtime does on each turn, or the [overview](/guides/nexus/overview#what-nexus-is-not) for how Nexus compares to RAG.
 
 
-# Pinecone Assistant limits
-Source: https://docs.pinecone.io/reference/api/assistant/assistant-limits
-
-Reference for Pinecone Assistant limits, including file size, storage, chat token, and rate limits across the Starter, Builder, Standard, and Enterprise plans.
-
-Pinecone Assistant limits vary based on [subscription plan](https://www.pinecone.io/pricing/).
-
-### Object limits
-
-Object limits are restrictions on the number or size of assistant-related objects. Limits below are scoped **per organization** except for **Assistants per project**, which is scoped per project.
-
-| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :- | :- | :- | :- | :- |
-| Assistants per project | 5 | 200 | Unlimited | Unlimited |
-| File storage per org | 1 GB | 3 GB | Unlimited | Unlimited |
-| Chat input tokens per org | 500,000 / month | 2,000,000 / month | Unlimited | Unlimited |
-| Chat output tokens per org | 300,000 / month | 1,000,000 / month | Unlimited | Unlimited |
-| Context retrieval tokens per org | 500,000 / month | 2,000,000 / month | Unlimited | Unlimited |
-| Ingestion units per org | 1,000 / month | 10,000 / month | Unlimited | Unlimited |
-| File size (.docx, .json, .md, .txt) | 10 MB | 10 MB | 10 MB | 10 MB |
-| File size (.pdf) | 10 MB | 50 MB | 100 MB | 100 MB |
-| Metadata size per file | 16 KB | 16 KB | 16 KB | 16 KB |
-
-Additionally, the following limits apply to [multimodal PDFs](/guides/assistant/multimodal) (currently in [public preview](/release-notes/feature-availability)):
-
-Multimodal PDF processing uses the same [ingestion unit](/guides/assistant/pricing-and-limits#ingestion) as standard uploads; it's billed at about **twice** the standard per-unit rate (see [Pricing and limits](/guides/assistant/pricing-and-limits)). Object and rate limits for assistants also apply—see [#limits](/guides/assistant/pricing-and-limits#limits) and [#rate-limits](/guides/assistant/pricing-and-limits#rate-limits).
-
-| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :- | :- | :- | :- | :- |
-| Max file size | 10 MB | 10 MB | 50 MB | 50 MB |
-| Page limit | 100 | 100 | 100 | 100 |
-
-### Rate limits
-
-Rate limits help protect your applications from misuse and maintain the health of our shared infrastructure. These limits are designed to support typical production workloads while ensuring reliable performance for all users.
-
-**Most rate limits can be adjusted upon request.** If you need higher limits to scale your application, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) with details about your use case.
-
-Requests that exceed a rate limit fail and return a `429 - TOO_MANY_REQUESTS` status.
-
-<Tip>To handle rate limits, implement [retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).</Tip>
-
-| Metric | Starter plan | Builder plan | Standard plan | Enterprise plan |
-| :- | :- | :- | :- | :- |
-| Assistant list/get requests per minute | 40 | 50 | 100 | 500 |
-| Assistant create/update requests per minute | 20 | 25 | 50 | 100 |
-| Assistant delete requests per minute | 20 | 25 | 50 | 100 |
-| File get requests per minute | 100 | 150 | 300 | 6,000 |
-| File list requests per minute | 50 | 75 | 150 | 3,000 |
-| File upload requests per minute | 5 | 15 | 20 | 300 |
-| Multimodal PDF upload requests per minute | 5 | 10 | 20 | 40 |
-| File delete requests per minute | 5 | 15 | 20 | 300 |
-| Chat input tokens per minute | 100,000 | 200,000 | 300,000 | 1,000,000 |
-| Chat history tokens per query | 64,000 | 64,000 | 64,000 | 64,000 |
-| Evaluation input tokens per minute | Not available | Not available | 150,000 | 500,000 |
-
-
-# Authentication
-Source: https://docs.pinecone.io/reference/api/assistant/authentication
-
-Assistant API authentication with API keys, HTTP headers, and SDK client initialization for Pinecone Assistant requests and RAG apps.
-
-All requests to the [Pinecone Assistant API](/reference/api/assistant/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
-
-## Get an API key
-
-[Create a new API key](https://app.pinecone.io/organizations/-/projects/-/keys) in the Pinecone console, or use the connect widget below to generate a key.
-
-<div>
-  <div>
-    <div>
-      <div />
-    </div>
-  </div>
-</div>
-
-Copy your generated key:
-
-```
-PINECONE_API_KEY="{{YOUR_API_KEY}}"
-
-# This API key has ReadWrite access to all indexes in your project.
-```
-
-## Initialize a client
-
-When using a Pinecone SDK, initialize a client object with your API key and then reuse the authenicated client in subsquent function calls. For example:
-
-<CodeGroup>
-  ```python Python theme={null}
-  # To use the Python SDK, install the plugin:
-  # pip install --upgrade pinecone pinecone-plugin-assistant
-
-  from pinecone import Pinecone
-
-  pc = Pinecone(api_key="YOUR_API_KEY")
-
-  # Creates an assistant using the API key stored in the client 'pc'.
-  assistant = pc.assistant.create_assistant(
-      assistant_name="example-assistant",
-      instructions="Use American English for spelling and grammar.",
-      region="us" 
-  )
-  ```
-
-  ```javascript JavaScript theme={null}
-  import { Pinecone } from '@pinecone-database/pinecone';
-
-  const pc = new Pinecone({ apiKey: 'YOUR_API_KEY' });
-
-  // Creates an index using the API key stored in the client 'pc'.
-  const assistant = await pc.createAssistant({
-    name: 'example-assistant',
-    instructions: 'Use American English for spelling and grammar.',
-    region: 'us'
-  });
-  ```
-</CodeGroup>
-
-## Add headers to an HTTP request
-
-All HTTP requests to the Pinecone Assistant API must contain an `Api-Key` header that specifies a valid [API key](/guides/production/security-overview#api-keys) and must be encoded as JSON with the `Content-Type: application/json` header. For example:
-
-```bash curl theme={null}
-PINECONE_API_KEY="YOUR_API_KEY"
-
-curl "https://api.pinecone.io/assistant/assistants" \
-  -H "Api-Key: $PINECONE_API_KEY" \
-  -H "Content-Type: application/json" \
-  -H "X-Pinecone-Api-Version: 2025-01" \
-  -d '{
-  "name": "example-assistant",
-  "instructions": "Use American English for spelling and grammar.",
-  "region":"us"
-}'
-```
-
-
-# Assistant API reference
-Source: https://docs.pinecone.io/reference/api/assistant/introduction
-
-Assistant API reference overview covering document upload, chat, and RAG endpoints supported by the Pinecone Python and Node.js SDKs.
-
-Use the [Assistant API](/guides/assistant/quickstart/sdk-quickstart) to upload documents, ask questions, and receive responses that reference your documents. This is known as [retrieval-augmented generation (RAG)](https://www.pinecone.io/learn/retrieval-augmented-generation/).
-
-## SDK support
-
-The following Pinecone SDKs support the Assistant API:
-
-<CardGroup>
-  <Card title="Python SDK" icon="python" href="/reference/sdks/python/overview" />
-
-  <Card title="Node.js SDK" icon="node-js" href="/reference/sdks/node/overview" />
-</CardGroup>
-
-## Versioning
-
-The Assistant API is versioned to ensure that your applications continue to work as expected as the platform evolves. For more details, see [API versioning](/reference/api/versioning) in the Pinecone Database documentation.
-
-
 # Authentication
 Source: https://docs.pinecone.io/reference/api/nexus/authentication
 
@@ -83246,422 +84287,6 @@ During a [chat](/guides/assistant/chat-with-assistant), the assistant processes 
 ## Response generation
 
 After retrieving these chunks, the assistant performs a ranking step to determine which information is most relevant. This [context](/guides/assistant/context-snippets-overview), along with the chat history and [assistant instructions](/guides/assistant/manage-assistants#add-instructions-to-an-assistant), is then used by a large language model (LLM) to generate responses that are informed by your documents.
-
-
-# Browse a connector's folders/files
-Source: https://docs.pinecone.io/api-reference/connectors/browse-a-connectors-foldersfiles
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors/{id}/items
-Browse the provider's folders and files to find the ids to import. Omit `folder` for the root.
-
-
-
-# Enable or disable a connector for a context
-Source: https://docs.pinecone.io/api-reference/connectors/enable-or-disable-a-connector-for-a-context
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml put /contexts/{slug}/connectors/{connector_id}
-Enable or disable one connector for this context.
-
-
-
-# Link a connector with an API key
-Source: https://docs.pinecone.io/api-reference/connectors/link-a-connector-with-an-api-key
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /connectors/keys/{provider}
-Link a key-based provider by supplying its API key directly, instead of running the OAuth flow.
-
-
-
-# List a context's connectors (with per-context enabled flag)
-Source: https://docs.pinecone.io/api-reference/connectors/list-a-contexts-connectors-with-per-context-enabled-flag
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/connectors
-The project's connectors, each with whether this context may import from it.
-
-
-
-# Start the OAuth link flow for a provider
-Source: https://docs.pinecone.io/api-reference/connectors/start-the-oauth-link-flow-for-a-provider
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /connectors/oauth/{provider}/start
-Returns an `authorize_url` for the user to open in a browser. The connector is persisted by the provider's OAuth redirect callback once the user approves access.
-
-
-
-# Create a context
-Source: https://docs.pinecone.io/api-reference/contexts/create-a-context
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts
-Created empty, and not queryable until you import sources and curate them — curate is explicit. Optionally seed a `manifest`. A `work` context is the exception: queryable from day zero, built from traces of work rather than documents.
-
-
-
-# Delete a context (and its Pinecone indexes)
-Source: https://docs.pinecone.io/api-reference/contexts/delete-a-context-and-its-pinecone-indexes
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /contexts/{slug}
-Delete the context, its sources, its curated knowledge, and its Pinecone indexes. Not reversible.
-
-
-
-# Estimate the token + time cost of curating the in-progress manifest
-Source: https://docs.pinecone.io/api-reference/contexts/estimate-the-token-+-time-cost-of-curating-the-in-progress-manifest
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/profile
-Estimates the token and time cost of curating the sources under the manifest in the request body, reported as the task's `output` (see `ProfileEstimateOutput`). Persists nothing. Body is optional.
-
-
-
-# Get a context
-Source: https://docs.pinecone.io/api-reference/contexts/get-a-context
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}
-One context and its derived lifecycle flags.
-
-
-
-# List contexts (newest first, with stats)
-Source: https://docs.pinecone.io/api-reference/contexts/list-contexts-newest-first-with-stats
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts
-Every context in the active project, newest first, each with its aggregate task counters.
-
-
-
-# Per-context task statistics
-Source: https://docs.pinecone.io/api-reference/contexts/per-context-task-statistics
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/tasks/stats
-Aggregate counters over every task this context has run. The project-wide equivalent is `GET /stats`.
-
-
-
-# Run the Design-flow explore agent (propose a manifest)
-Source: https://docs.pinecone.io/api-reference/contexts/run-the-design-flow-explore-agent-propose-a-manifest
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/explore
-Inspects the uploaded source and proposes manifest-template matches in the task's `output` (see `ExploreOutput`). Persists nothing — review the proposal, then apply it with a manifest update and a forced curate. Body is optional.
-
-
-
-# Trigger an on-demand self-tuning optimize
-Source: https://docs.pinecone.io/api-reference/contexts/trigger-an-on-demand-self-tuning-optimize
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/optimize
-Tunes the manifest from real query traffic, then chains a forced re-curate. Every field of the required body is optional, so `{}` is valid — and a no-op without `candidate_queries`. The context must be curated, and only one optimize runs at a time.
-
-
-
-# Update a context
-Source: https://docs.pinecone.io/api-reference/contexts/update-a-context
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml put /contexts/{slug}
-All fields optional; an absent one is left untouched. An empty string clears `description`/`guide`, and `{}` clears the manifest back to defaults.
-
-
-
-# Build or rebuild the context's index from its sources
-Source: https://docs.pinecone.io/api-reference/curation/build-or-rebuild-the-contexts-index-from-its-sources
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/curate
-Curate the staged sources under the active manifest. **Required before querying** — there is no auto-curate. Body is optional; `force: true` rebuilds fully, which is what a manifest edit needs. Search contexts only: a work context builds via `work`/`groom`.
-
-
-
-# Drop named sources from the index + ledger
-Source: https://docs.pinecone.io/api-reference/curation/drop-named-sources-from-the-index-+-ledger
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/curate/delete-sources
-Drop named sources from the index and the curation ledger without re-reading the rest of the corpus.
-
-
-
-# Get the curation ledger
-Source: https://docs.pinecone.io/api-reference/curation/get-the-curation-ledger
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/curate
-What the last curate recorded: the per-source hash and timestamp map, artifact edges, corpus groups, the live version pin, delete tombstones, artifact-reclaim intents, and the pointer and glossary resume cursors. Chunk ids are tracked too but not served — an internal retrieval unit.
-
-
-
-# Knowledge file/dir/size counts
-Source: https://docs.pinecone.io/api-reference/knowledge/knowledge-filedirsize-counts
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/stats
-File, directory, and byte counts over the curated knowledge tree.
-
-
-
-# List curated knowledge (root)
-Source: https://docs.pinecone.io/api-reference/knowledge/list-curated-knowledge-root
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/list
-The root of the curated knowledge tree — chunks and artifacts the last curate wrote.
-
-
-
-# List curated knowledge under a path
-Source: https://docs.pinecone.io/api-reference/knowledge/list-curated-knowledge-under-a-path
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/list/{path}
-One directory of the curated knowledge tree.
-
-
-
-# Read a curated knowledge file (raw bytes)
-Source: https://docs.pinecone.io/api-reference/knowledge/read-a-curated-knowledge-file-raw-bytes
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/knowledge/read/{path}
-The raw bytes of one curated knowledge file.
-
-
-
-# Get the context's manifest
-Source: https://docs.pinecone.io/api-reference/manifest/get-the-contexts-manifest
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/manifest
-The context's pinned manifest document. A context that pins nothing returns `null` — the runtime fills defaults. Writes go through the `manifest` field on `PUT /contexts/{slug}`.
-
-
-
-# List the built-in manifest templates
-Source: https://docs.pinecone.io/api-reference/manifest/list-the-built-in-manifest-templates
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /manifest/templates
-The templates a new context can be seeded from.
-
-
-
-# Cancel an in-progress query turn
-Source: https://docs.pinecone.io/api-reference/query/cancel-an-in-progress-query-turn
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /queries/{id}/cancel
-Idempotent — an already-terminal query is returned unchanged. On success the turn's `status` becomes `cancelled`.
-
-
-
-# Delete a session and its queries
-Source: https://docs.pinecone.io/api-reference/query/delete-a-session-and-its-queries
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /sessions/{id}
-Delete a session and every turn belonging to it.
-
-
-
-# Fetch one query (turn)
-Source: https://docs.pinecone.io/api-reference/query/fetch-one-query-turn
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /queries/{id}
-One turn, including its steps, citations, and usage. This is what a background run is polled with.
-
-
-
-# Fetch the recorded trace for a query turn
-Source: https://docs.pinecone.io/api-reference/query/fetch-the-recorded-trace-for-a-query-turn
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /queries/{id}/trace
-The per-turn debug trace (steps, tool calls, strategy, cost, rollup). Trace persistence is unconditional — every turn lands a trace blob — so this is available once the turn is terminal.
-
-
-
-# Get a session with its queries (conversation order)
-Source: https://docs.pinecone.io/api-reference/query/get-a-session-with-its-queries-conversation-order
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /sessions/{id}
-One session with its turns in conversation order.
-
-
-
-# List project-wide query sessions (newest first)
-Source: https://docs.pinecone.io/api-reference/query/list-project-wide-query-sessions-newest-first
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /sessions
-Every conversation thread in the project, newest first.
-
-
-
-# List the selectable query models
-Source: https://docs.pinecone.io/api-reference/query/list-the-selectable-query-models
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /models
-What the `model` field on `POST /query` draws from: the default, every catalog entry, the tier → model-id map, per-phase defaults, and the curate-capable ids. Only entries with `available: true` are selectable; the rest are rejected with `400`.
-
-
-
-# Record thumbs-up/down feedback on a query turn
-Source: https://docs.pinecone.io/api-reference/query/record-thumbs-updown-feedback-on-a-query-turn
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /queries/{id}/feedback
-Record a thumbs-up or thumbs-down on a turn. The rating is returned on the turn thereafter.
-
-
-
-# Run one KnowQL query turn
-Source: https://docs.pinecone.io/api-reference/query/run-one-knowql-query-turn
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /query
-Send `ask` and, on a new session, a `scope` of 1–10 contexts; continue an existing one with
-`session_id` or `previous_query_id`. Scoped search contexts must be curated, and a scope may
-not mix work and search contexts. Read the answer from `output[].content[].text`.
-
-`stream` and `background` are mutually exclusive. `background: true` returns `202` with an
-`in_progress` query to poll. `stream: true` emits an SSE stream whose `event:` names are the
-event `type` (see `QueryEvent`), closed by a final `query` frame carrying the whole turn:
-
-```
-id: 1
-event: response.created
-data: {"type":"response.created","query_id":"qry_8b3d5f1a","session_id":"ses_4f9c1e2a"}
-
-id: 2
-event: response.output_text.delta
-data: {"type":"response.output_text.delta","query_id":"qry_8b3d5f1a","delta":"Revenue grew 12%..."}
-
-id: 3
-event: response.completed
-data: {"type":"response.completed","query_id":"qry_8b3d5f1a"}
-
-event: query
-data: {"id":"qry_8b3d5f1a","object":"query","status":"completed","output":[...]}
-```
-
-
-
-
-# Stream a query turn's events (SSE)
-Source: https://docs.pinecone.io/api-reference/query/stream-a-query-turns-events-sse
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /queries/{id}/events
-The turn's events as they land — the same `type`-named events `POST /query` emits with `stream: true`, as a standalone resumable subscription. Reconnect with `Last-Event-ID` to replay from where the stream dropped.
-
-
-
-# Delete a source file
-Source: https://docs.pinecone.io/api-reference/source-files/delete-a-source-file
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /contexts/{slug}/source/delete/{path}
-Remove one file from the source tree. Its index entries survive until the next curate.
-
-
-
-# Flat manifest of source files (path, size, last_modified)
-Source: https://docs.pinecone.io/api-reference/source-files/flat-manifest-of-source-files-path-size-last_modified
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/manifest
-Flat source-object inventory. Excludes the `_inbox/` staging directory.
-
-
-
-# Import source documents from a project connector
-Source: https://docs.pinecone.io/api-reference/source-files/import-source-documents-from-a-project-connector
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/import
-Pull source documents from a linked project connector (Box, ...) into the context. Supply either `folder` or `files`. Stages the source only — curate explicitly before querying.
-
-
-
-# List the source file tree (root)
-Source: https://docs.pinecone.io/api-reference/source-files/list-the-source-file-tree-root
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/list
-The root of the source tree — what has been staged but not necessarily curated.
-
-
-
-# List the source file tree under a path
-Source: https://docs.pinecone.io/api-reference/source-files/list-the-source-file-tree-under-a-path
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/list/{path}
-One directory of the source tree.
-
-
-
-# Read a source file (raw bytes)
-Source: https://docs.pinecone.io/api-reference/source-files/read-a-source-file-raw-bytes
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/read/{path}
-The raw bytes of one staged source file.
-
-
-
-# Source file/dir/size counts
-Source: https://docs.pinecone.io/api-reference/source-files/source-filedirsize-counts
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /contexts/{slug}/source/stats
-Aggregate counts. Where source limits apply, five more fields carry the caps and usage against them (`max_files_per_context`, `max_bytes_per_context`, `max_bytes_per_file`, `used_files`, `used_bytes`); they are absent otherwise.
-
-
-
-# Upload a source file or archive
-Source: https://docs.pinecone.io/api-reference/source-files/upload-a-source-file-or-archive
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml post /contexts/{slug}/import/upload
-One file per request, max 2 GiB; archives (`.zip`, `.tar`, `.tar.gz`, `.tgz`) are expanded by the import runtime. Stages the source without indexing it — curate explicitly before querying.
-
-
-
-# Delete a task file
-Source: https://docs.pinecone.io/api-reference/task-files/delete-a-task-file
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /tasks/{id}/files/delete/{path}
-Delete one file from a running task container.
-
-
-
-# List a task's files under a path
-Source: https://docs.pinecone.io/api-reference/task-files/list-a-tasks-files-under-a-path
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/list/{path}
-One directory inside the task's working directory.
-
-
-
-# List a task's working-directory files
-Source: https://docs.pinecone.io/api-reference/task-files/list-a-tasks-working-directory-files
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/list
-The root of the task's working directory.
-
-
-
-# Read a task file (raw bytes)
-Source: https://docs.pinecone.io/api-reference/task-files/read-a-task-file-raw-bytes
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/read/{path}
-Serves a task's files while it runs and after it finishes. This is how a finished pack's `<slug>.context.zip` is downloaded.
-
-
-
-# Stat a task file
-Source: https://docs.pinecone.io/api-reference/task-files/stat-a-task-file
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}/files/metadata/{path}
-Stat one file in the task container without reading its bytes.
-
-
-
-# Cancel/terminate a task
-Source: https://docs.pinecone.io/api-reference/tasks/cancelterminate-a-task
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml delete /tasks/{id}
-Body is optional. Max body 1 MiB.
-
-
-
-# Get a task (with steps)
-Source: https://docs.pinecone.io/api-reference/tasks/get-a-task-with-steps
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks/{id}
-Unlike the listing, this carries the task's `steps` — every one by default, or the newest N with `steps_limit`, where `steps_total` reports the true count.
-
-
-
-# List tasks (project-wide, paginated)
-Source: https://docs.pinecone.io/api-reference/tasks/list-tasks-project-wide-paginated
-
-https://raw.githubusercontent.com/pinecone-io/pinecone-api/refs/heads/main/2026-07/nexus_data_2026-07.oas.yaml get /tasks
-Task records across the project, newest first. Filter by workflow, state, or context, and page with `limit` plus `page` or `offset`.
-
 
 
 # Pinecone 2022 changelog

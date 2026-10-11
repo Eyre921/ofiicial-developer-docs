@@ -71,7 +71,7 @@ When you upload or replace files for an assistant, usage is measured in **ingest
 
 Multimodal ingestion applies to content processed through the [multimodal PDF](/guides/assistant/multimodal) path. Standard ingestion applies to other supported file types.
 
-Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/2026-04/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
+Usage and invoices reflect a single ingestion usage line item. With [API version](/reference/api/versioning) `2026-04` or later, a completed file-ingestion operation may include **`ingestion_units`**. Use [Describe an operation](/reference/api/latest/assistant/describe_operation) or [Track file operations](/guides/assistant/manage-files#track-file-operations) for details.
 
 ### Tokens
 

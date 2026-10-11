@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 229 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 230 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -15,6 +15,7 @@
 - `analytics` — [Track team usage with analytics](pages/analytics.md) · [原文](https://code.claude.com/docs/en/analytics)
 - `artifacts` — [Share session output as artifacts](pages/artifacts.md) · [原文](https://code.claude.com/docs/en/artifacts)
 - `authentication` — [Authentication](pages/authentication.md) · [原文](https://code.claude.com/docs/en/authentication)
+- `auto-mode-classifier-billing` — [Auto mode classifier request charges](pages/auto-mode-classifier-billing.md) · [原文](https://code.claude.com/docs/en/auto-mode-classifier-billing)
 - `auto-mode-config` — [Configure auto mode](pages/auto-mode-config.md) · [原文](https://code.claude.com/docs/en/auto-mode-config)
 - `best-practices` — [Best practices for Claude Code](pages/best-practices.md) · [原文](https://code.claude.com/docs/en/best-practices)
 - `champion-kit` — [Champion kit](pages/champion-kit.md) · [原文](https://code.claude.com/docs/en/champion-kit)

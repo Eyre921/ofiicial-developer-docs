@@ -242,7 +242,7 @@ File uploads, upserts, and deletes are asynchronous operations. Each of these ac
 
 ### List operations
 
-You can [list all operations](/reference/api/2026-04/assistant/list_operations) for an assistant:
+You can [list all operations](/reference/api/latest/assistant/list_operations) for an assistant:
 
 <CodeGroup>
   ```bash curl theme={null}
@@ -283,7 +283,7 @@ This returns a list of operations:
 
 ### Describe an operation
 
-You can [get the status of a specific operation](/reference/api/2026-04/assistant/describe_operation):
+You can [get the status of a specific operation](/reference/api/latest/assistant/describe_operation):
 
 <CodeGroup>
   ```bash curl theme={null}

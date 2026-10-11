@@ -162,7 +162,7 @@ Response:
 
 <Note>
   * The `multimodal` parameter is only available for PDF files.
-  * Upload is asynchronous. To check the status, use the [describe operation](/reference/api/2026-04/assistant/describe_operation) endpoint or [track file operations](/guides/assistant/manage-files#track-file-operations).
+  * Upload is asynchronous. To check the status, use the [describe operation](/reference/api/latest/assistant/describe_operation) endpoint or [track file operations](/guides/assistant/manage-files#track-file-operations).
   * If upload processing fails, you'll need to re-upload the file.
 </Note>
 

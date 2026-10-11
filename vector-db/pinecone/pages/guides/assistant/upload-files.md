@@ -58,7 +58,7 @@ You can [upload a file to your assistant](/reference/api/latest/assistant/upload
   ```
 </CodeGroup>
 
-File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/2026-04/assistant/describe_operation) or [List operations](/reference/api/2026-04/assistant/list_operations) to track progress; when a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
+File uploads are billed in [ingestion units](/guides/assistant/pricing-and-limits#ingestion). With [API version](/reference/api/versioning) `2026-04` or later, upload, upsert, and delete responses return an operation object. Poll [Describe an operation](/reference/api/latest/assistant/describe_operation) or [List operations](/reference/api/latest/assistant/list_operations) to track progress; when a file-ingestion operation completes, `ingestion_units` may be present on the operation. See [Track file operations](/guides/assistant/manage-files#track-file-operations).
 
 Upload is asynchronous, and it may take several minutes for your assistant to process your file. The Python SDK waits until processing finishes before it returns. The Node.js SDK and the API return an operation, which you can [track](/guides/assistant/manage-files#track-file-operations) until it's no longer `Processing`, as the Node.js example does. You can also [check the status of your file](/guides/assistant/manage-files#get-the-status-of-a-file).
 
@@ -118,7 +118,7 @@ When a file is uploaded with metadata, you can use the metadata to [filter a lis
   This feature requires [API version](/reference/api/versioning) `2026-04` or later.
 </Note>
 
-You can create or replace a file by providing a custom file ID using the [upsert file](/reference/api/2026-04/assistant/upsert_file) endpoint. If a file with the given ID already exists, it's replaced. If not, a new file is created.
+You can create or replace a file by providing a custom file ID using the [upsert file](/reference/api/latest/assistant/upsert_file) endpoint. If a file with the given ID already exists, it's replaced. If not, a new file is created.
 
 File IDs must be 1-128 characters long and can contain alphanumeric characters, hyphens, and underscores.
 

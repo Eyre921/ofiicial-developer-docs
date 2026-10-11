@@ -10,6 +10,10 @@ path: page/changelog
   [Update a data source](/reference/update-a-data-source) now changes the `color` of an existing `select`, `multi_select`, or `status` option instead of returning a `validation_error`. Option names also match existing options without regard to case, so sending `high` keeps the existing `High` option and its ID instead of replacing it. See [Existing select options](/reference/update-data-source-properties#existing-select-options).
 
   Property updates now keep the existing `description` when you omit it, for every property type and when you change a type. Send `null` to clear it. The same rule applies to an option’s own `description`. Omitting `options` on a `select` or `multi_select` update now keeps the current options. See [Update data source properties](/reference/update-data-source-properties).
+
+  ### Admin API list endpoints accept `start_cursor`
+
+  [List MCP client connections](/reference/admin/list-mcp-client-connections) and [List personal access tokens](/reference/admin/list-personal-access-tokens) now accept `start_cursor`, like other Admin API list endpoints. Before this change, these endpoints ignored `start_cursor` and returned the first page again. The `cursor` parameter still works but is deprecated. If you send both with different values, the request fails with a `400` error.
 </Update>
 
 <Update label="October 8, 2026">
