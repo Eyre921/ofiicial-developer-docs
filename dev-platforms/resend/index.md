@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 413 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 416 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -237,6 +237,9 @@
 - `docs/email-best-practices-skill` — [Email Best Practices Skill](pages/docs/email-best-practices-skill.md) · [原文](https://resend.com/docs/email-best-practices-skill)
 - `docs/email-types` — [Sending emails with Resend](pages/docs/email-types.md) · [原文](https://resend.com/docs/email-types)
 - `docs/examples` — [Examples](pages/docs/examples.md) · [原文](https://resend.com/docs/examples)
+- `docs/guides/account/can-i-merge-accounts-or-teams` — [Can I merge accounts or teams?](pages/docs/guides/account/can-i-merge-accounts-or-teams.md) · [原文](https://resend.com/docs/guides/account/can-i-merge-accounts-or-teams)
+- `docs/guides/account/how-to-recover-access-to-a-team` — [How to recover access to a team you can no longer sign in to](pages/docs/guides/account/how-to-recover-access-to-a-team.md) · [原文](https://resend.com/docs/guides/account/how-to-recover-access-to-a-team)
+- `docs/guides/account/locked-out-by-mfa` — [Locked out by MFA](pages/docs/guides/account/locked-out-by-mfa.md) · [原文](https://resend.com/docs/guides/account/locked-out-by-mfa)
 - `docs/guides/attio-integration` — [Send emails with Attio and Resend](pages/docs/guides/attio-integration.md) · [原文](https://resend.com/docs/guides/attio-integration)
 - `docs/guides/building-a-resend-oauth-client` — [Building an OAuth client for Resend](pages/docs/guides/building-a-resend-oauth-client.md) · [原文](https://resend.com/docs/guides/building-a-resend-oauth-client)
 - `docs/guides/devin` — [Send emails with Devin and Resend](pages/docs/guides/devin.md) · [原文](https://resend.com/docs/guides/devin)

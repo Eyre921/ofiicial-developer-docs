@@ -36657,23 +36657,6 @@ Caution: Invitation links expire after the duration configured in [Email OTP Exp
 
 ---
 
-# Local Dev with CLI
-
-Developing locally using the Supabase CLI.
-
-You can use the Supabase CLI to run the entire Supabase stack locally on your machine, by running `supabase init` and then `supabase start`. To install the CLI, read [the installation guide](https://supabase.com/docs/guides/cli/getting-started#installing-the-supabase-cli).
-
-The Supabase CLI provides tools to develop your project locally, deploy to the Supabase Platform, handle database migrations, and generate types directly from your database schema.
-
-## Resources
-
-[Supabase CLI: The Supabase CLI provides tools to develop manage your Supabase projects from your local machine.](https://github.com/supabase/cli)
-
-[GitHub Action: A GitHub action for interacting with your Supabase projects using the CLI.](https://github.com/supabase/setup-cli)
-
-
----
-
 # Cron
 
 Schedule Recurring Jobs with Cron Syntax in Postgres
@@ -41280,7 +41263,7 @@ You can get started with PostGIS by enabling the PostGIS extension in your Supab
 1. Go to the [Database](https://supabase.com/dashboard/project/_/database/tables) page in the Dashboard.
 2. Click on **Extensions** in the sidebar.
 3. Search for `postgis` and enable the extension.
-4. In the confirmation prompt select "Create a new schema" and name it `gis` for example.
+4. In the confirmation dialog, review the default `extensions` schema and click **Enable**.
 
 **SQL**
 
@@ -144955,7 +144938,7 @@ If you're not able to connect to the Supabase database and see one of the errors
   Is the server running on that host and accepting TCP/IP connections?`
 - `Circuit breaker open: Unable to establish connection to upstream database`
 
-These bans will clear after 30mins but you can unban the IPs using the Supabase CLI [https://supabase.com/docs/guides/cli](https://supabase.com/docs/guides/cli) following the commands below.
+These bans clear after 30 minutes, but you can unban the IPs using the Supabase CLI. See [Local Development & CLI](https://supabase.com/docs/guides/local-development)
 
 ## Unban IPs using the Dashboard
 

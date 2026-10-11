@@ -12344,6 +12344,12 @@ Resend uses standard HTTP response codes for success and failure notifications, 
 * **Message:** The `example.com` domain has been registered already.
 * **Suggested action:** Verify you are signed in to the correct Resend account and check whether a teammate already added the domain. If you still cannot access it, [contact support](https://resend.com/help). [Learn more about resolving this error](/docs/knowledge-base/domain-already-registered).
 
+### `validation_error`
+
+* **Status:** 403
+* **Message:** You have reached the inbox limit of your plan. Upgrade to add more.
+* **Suggested action:** Enable pay-as-you-go for inboxes in your [usage settings](https://resend.com/settings/usage) to create more than the 3 included inboxes (requires a paid plan).
+
 ### `not_found`
 
 * **Status:** 404
@@ -41555,6 +41561,10 @@ Once you add the MX record, confirm by clicking the **I've added the record** bu
     add the required MX record to your DNS provider, and click "I've added the record"
     to start verifying *only* the MX record.
   </Accordion>
+
+  <Accordion title="I want my domain to only receive emails, not send emails from Resend. Is that possible?">
+    Yes, on the domain details page, turn off "Enable Sending". You no longer need Resend's SPF records, so you can remove them from your DNS host. You still need our DKIM record to stay published, and the receiving `MX` record with "Enable Receiving" turned on.
+  </Accordion>
 </AccordionGroup>
 
 
@@ -45835,6 +45845,195 @@ TypeScript and JavaScript variants available. Links below point to the TypeScrip
     Full Phoenix web framework application
   </Card>
 </CardGroup>
+
+
+# Can I merge accounts or teams?
+Source: https://resend.com/docs/guides/account/can-i-merge-accounts-or-teams
+
+Teams cannot be merged, but you can move people, domains and your plan onto the one team you want to keep.
+
+No, teams can't be merged. Each team has its own API keys, billing, and usage, and API keys. Email history and plans can't be moved from one team to another. To consolidate teams, pick the team you want to keep and move people and domains into it.
+
+<Info>
+  Email history stays with the team it was sent from. Before you delete a team,
+  an admin can download emails, logs, domains, contacts, and other data as CSV
+  with the **Export** button on those pages.
+</Info>
+
+## Consolidate onto one team
+
+<Steps>
+  <Step title="Choose the team to keep">
+    If it needs a paid plan, select that team and upgrade it from
+    [Billing](https://resend.com/settings/billing).
+  </Step>
+
+  <Step title="Invite your teammates">
+    In [Team](https://resend.com/settings/team), click **Invite**, enter each
+    person's email address and choose **Admin** or **Member**. Those with access
+    to additional accounts can switch between teams using the switcher in the
+    top left corner.
+  </Step>
+
+  <Step title="Move each domain">
+    Delete each domain in the old team and re-add each domain to the team you
+    want to keep. Deleting a domain can't be undone.
+  </Step>
+
+  <Step title="Create new API keys">
+    Once your domains are verified on the kept team, create keys from [API
+    keys](https://resend.com/api-keys) and update your applications.
+  </Step>
+
+  <Step title="Retire the old teams">
+    Cancel any plan on the teams you no longer need. Then delete each team from
+    [the team settings](https://resend.com/settings/team). Deleting the team
+    removes all its data and isn't reversible. For more help, see [How to delete
+    your Resend team](/docs/knowledge-base/how-can-i-delete-my-team).
+  </Step>
+</Steps>
+
+## If you can no longer reach the other team
+
+If a domain sits on a team you no longer have access to, add the domain on the team you want to keep. Resend will prompt you to start a claim, which proves ownership with a TXT record. See [Claiming a domain](/docs/dashboard/domains/claim) for more information.
+
+## Several products or clients in one team
+
+One team can serve several products or clients. See the [multi tenant setup guide](/docs/knowledge-base/setting-up-resend-for-multi-tenants) for recommended setup.
+
+## Additional support
+
+If a domain claim is blocked or you are unsure which team to keep, contact [Resend support](https://resend.com/help) for assistance.
+
+
+# How to recover access to a team you can no longer sign in to
+Source: https://resend.com/docs/guides/account/how-to-recover-access-to-a-team
+
+How to get back into a Resend team when the email you signed in with no longer works or no admin is left on the team.
+
+If the email you signed in with no longer works (e.g., a former employee's mailbox, a deleted Google account, an expired domain), or no admin is left on the team, use the case below that matches to recover team access:
+
+* [An admin can still sign in](#an-admin-can-still-sign-in)
+* [No admin can sign in](#no-admin-can-sign-in)
+* [You only need the domain](#you-only-need-the-domain)
+
+<Info>
+  Support cannot change the email address on an existing login, so the fix is
+  always to give a login you control access to the team.
+</Info>
+
+## An admin can still sign in
+
+An admin can fix your access without contacting support:
+
+1. Signed in as an admin, go to [Team](https://resend.com/settings/team) and click **Invite**.
+2. Enter an email address you control and choose the **Admin** role.
+3. Accept the invite.
+
+If you are already a member, an admin can change your role instead. See [Managing Teams](/docs/dashboard/settings/team).
+
+<Tip>
+  Always transfer admin access to another member if you foresee losing access to
+  your email account. Invite the new admin from
+  [Team](https://resend.com/settings/team), then leave the team.
+</Tip>
+
+## No admin can sign in
+
+Support can restore access after you prove you own a domain on the team.
+
+1. If you aren't a member of the team, sign up for a new Resend account with an address you control. If the old login used a Google account that no longer exists, sign up with email rather than Google.
+2. [Contact support](https://resend.com/help). Include:
+   * A domain that is on the team.
+   * The email of the Resend account that should get access, and whether it's already a member of the team.
+3. Support replies with a verification value that is unique to your request. Add a `TXT` record on that domain with the host `verification` and that value. The host must be exactly `verification`.
+4. Reply to the support conversation with the name of the domain where you added the `TXT` record.
+
+Once ownership is verified, support gives your account admin access to the team. Nothing on the team is changed, revoked or deleted in the process.
+
+If you still control the old mailbox but the login asks for an MFA code you don't have access to, see our [Locked out by MFA](/docs/guides/account/locked-out-by-mfa) support article.
+
+## You only need the domain
+
+You can add the domain to a team you control and prove ownership with a self serve claim. See [Claiming a domain](/docs/dashboard/domains/claim). A claim moves the domain only and doesn't give you access to the old team. Safety checks can block a claim, for example when the domain was recently active on the other team.
+
+Please [reach out to support](https://resend.com/help) for help with a domain claim.
+
+
+# Locked out by MFA
+Source: https://resend.com/docs/guides/account/locked-out-by-mfa
+
+How to use your MFA recovery code when you lose your authenticator app, and how Resend support verifies ownership when you have no recovery code.
+
+If you turned on multi factor authentication (MFA) and can no longer get a code from your authenticator app, use your recovery code to turn MFA off and sign in. If you don't have a recovery code, Resend support can remove MFA from your login after verifying that you own the account.
+
+## Check the code first
+
+If your authenticator app still has a Resend entry but the codes are rejected:
+
+* Use the entry your authenticator app created when you turned on MFA in Resend.
+* Set your phone's clock to update automatically. A phone clock that is off produces codes that don't match.
+
+## Reset MFA with your recovery code
+
+Your recovery code is the single code Resend showed when you turned on MFA. It has ten characters split by a dash, in the format `XXXXX-XXXXX`.
+
+<Steps>
+  <Step title="Turn off MFA with your recovery code">
+    Using your recovery code turns off MFA and allows you to sign in with your usual method.
+
+    <Info>
+      If you also lost access to the email address you sign in with, see our
+      [recover access to a team](/docs/guides/account/how-to-recover-access-to-a-team)
+      support article.
+    </Info>
+
+    To use your recovery code, sign in with your usual method and enter your recovery code when Resend asks for your authenticator code. ([View help](#if-you-do-not-have-a-recovery-code) if you do not have a recovery code.)
+
+    The recovery code works once. Using it also:
+
+    * Signs out every other active session on your account.
+    * Sends an email titled "Your Resend two-factor authentication was reset" to your email address.
+
+    Removing MFA only removes the authenticator factor. The domains and API keys on the account stay untouched.
+  </Step>
+
+  <Step title="Turn on MFA again">
+    Enable MFA on again from your [Profile](https://resend.com/profile) with your new device. Resend shows you a new recovery code when you do. Save it before you close the dialog. See [how to add MFA](/docs/knowledge-base/how-can-i-add-mfa) for more details.
+
+    If you receive that email and did not use your recovery code, reset your password and [contact support](https://resend.com/help) immediately.
+  </Step>
+</Steps>
+
+## MFC recovery code security
+
+Resend shows the recovery code once, when you turn on MFA, and does not show it again. Copy it and store it somewhere other than the device that holds your authenticator app, such as a password manager.
+
+## What does not remove MFA
+
+* **A password reset.** After the reset, sign in still asks for the authenticator code.
+* **Another team member.** MFA belongs to each login, not to the team. Another member, including an admin, cannot reset or disable it for you.
+
+## If you do not have a recovery code
+
+You can ask support to remove MFA for you.
+
+1. Contact support from [Help](https://resend.com/help). In your first message, include:
+   * The email address you sign in with.
+   * A domain that is already on the account.
+   * A note if you never turned on MFA yourself, so support can review the account before anything changes.
+
+2. Support will reply with a verification value that is unique to your request. Add it as a DNS record on that domain to prove you own it:
+
+   | Host | Type | Value |
+   | - | - | - |
+   | `verification` | `TXT` | The value from support |
+
+   Most DNS providers display this record as `verification.yourdomain.com`. The host must be exactly `verification`.
+
+3. Once the record is in place, reply the support conversation and name the domain with the verification record.
+
+If there are no domains on the account, communicate with Support to verify ownership another way.
 
 
 # Send emails with Attio and Resend
@@ -51369,7 +51568,7 @@ If you have any questions, please let us know at [support@resend.com](mailto:sup
 # How to add multi-factor authentication to your Resend account
 Source: https://resend.com/docs/knowledge-base/how-can-i-add-mfa
 
-How to enable and disable multi-factor authentication (MFA) or two-factor authentication (2FA) on your Resend account.
+How to enable and disable multi-factor authentication (MFA) or two-factor authentication (2FA) on your Resend account, save your recovery code, and what to do if you lose your device.
 
 Multi-factor authentication (MFA), also called two-factor authentication (2FA), adds an extra layer of security by requiring a second verification factor when you sign in.
 
@@ -51381,8 +51580,15 @@ To enable MFA on your Resend account:
 2. Click **Enable MFA**.
 3. Scan the QR code with your preferred authenticator app.
 4. Enter the code provided by the authenticator app.
+5. Copy the recovery code Resend shows you, store it, and click **I've saved my recovery code**.
 
 Once MFA is enabled, you'll be asked for a code from your authenticator app whenever you sign in.
+
+## Save your recovery code
+
+If you lose access to your authenticator app, your recovery code turns off MFA so you can sign in and set it up again. The code works once, and Resend shows it only when you turn on MFA. Store it somewhere other than the device that holds your authenticator app, such as a password manager.
+
+If you turned on MFA before recovery codes were introduced on 8 October 2026, your account has no recovery code yet. Generate one from your [**Profile**](https://resend.com/profile) page while you can still sign in.
 
 ## Disable MFA
 
@@ -51392,6 +51598,12 @@ To disable MFA on your Resend account:
 2. Click **Revoke Access**.
 
 After revoking access, you can sign in with your email and password without an authenticator code.
+
+## If you change or lose your device
+
+* **Changing phones:** while you can still sign in, click **Revoke Access** on your [**Profile**](https://resend.com/profile) page, then click **Enable MFA**, scan the new QR code with the authenticator app on your new device, and save the new recovery code.
+* **Codes rejected:** use the entry your authenticator app created for Resend, not an entry for another service, and set your phone's clock to update automatically.
+* **Device lost:** enter your recovery code when Resend asks for your authenticator code. MFA is turned off, you are signed in, and you can turn MFA on again with your new device. Without a recovery code, a password reset does not remove MFA, and another team member, including an admin, cannot reset it for you. Resend support can remove MFA after verifying that you own a domain on the account. See [Locked out by MFA: lost authenticator device](/docs/guides/account/locked-out-by-mfa) for the steps.
 
 ## MFA for your team
 
@@ -51404,6 +51616,14 @@ Every member of the team can check who has enabled MFA from the [**Team Settings
 Source: https://resend.com/docs/knowledge-base/how-can-i-change-my-email-address
 
 How to change the email address associated with your Resend account.
+
+<Info>
+  If you signed up with Google or GitHub, you can't change your account's email
+  address on the Profile page. Instead, [invite the new email address as a team
+  member](/docs/dashboard/settings/team) with the Admin role. Once the new user can
+  sign in, you can remove the old user from the team. Your API keys, domains,
+  and settings stay with the team.
+</Info>
 
 To change the email address associated with your Resend account:
 

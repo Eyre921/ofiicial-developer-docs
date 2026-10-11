@@ -32,7 +32,7 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Setting your commit email address](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)
 
-  <p>You can set the email address that is used to author commits on GitHub and on your computer.</p>
+  You can set the email address that is used to author commits on GitHub and on your computer.
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
