@@ -53110,7 +53110,7 @@ You also know a session's `session_id` the moment it connects, since it arrives 
 
 ## List sessions
 
-`GET /v1/sessions` returns a page of sessions, newest first, without artifacts. Narrow the results with `status` and `agent_id`, size the page with `limit` (1 to 200, default 50), and page forward with `cursor`.
+`GET /v1/sessions` returns a page of sessions, newest first, without artifacts. The list is scoped to the project that owns your API key, not your whole account. To list sessions from another project, use an API key from that project. Narrow the results with `status` and `agent_id`, size the page with `limit` (1 to 200, default 50), and page forward with `cursor`.
 
 ```bash cURL
 curl "https://agents.assemblyai.com/v1/sessions?limit=50&agent_id=$AGENT_ID" \
@@ -88135,8 +88135,10 @@ paths:
     get:
       summary: List sessions
       description: |
-        List sessions for the authenticated account, newest first. Page forward by
-        passing the previous response's `response_metadata.next_cursor` back as `cursor`.
+        List sessions for the project that owns the API key, newest first. Results are
+        scoped to that project, not your whole account, so use an API key from each
+        project whose sessions you want to list. Page forward by passing the previous
+        response's `response_metadata.next_cursor` back as `cursor`.
       operationId: listSessions
       x-fern-sdk-group-name: Voice Agent API
       x-fern-sdk-method-name: listSessions

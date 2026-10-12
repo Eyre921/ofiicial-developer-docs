@@ -3,14 +3,14 @@
     "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/mistral": {
-    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15003 milliseconds\n"
   },
   "ai-models/cohere": {
     "pages": 2,
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 230,
@@ -58,8 +58,7 @@
     "status": "ok"
   },
   "vector-db/pinecone": {
-    "pages": 579,
-    "status": "ok"
+    "status": "error: curl failed (6) for https://docs.pinecone.io/llms-full.txt: curl: (6) Could not resolve host: docs.pinecone.io\ncurl: (6) Could not resolve host: docs.pinecone.io\ncurl: (6) Could not resolve host: docs.pinecone.io\n"
   },
   "vector-db/qdrant": {
     "status": "error: curl failed (22) for https://qdrant.tech/llms-full.txt: curl: (22) The requested URL returned error: 404\n"
@@ -93,15 +92,14 @@
     "status": "ok"
   },
   "dev-platforms/drizzle": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (6) for https://orm.drizzle.team/llms-full.txt: curl: (6) Could not resolve host: orm.drizzle.team\ncurl: (6) Could not resolve host: orm.drizzle.team\ncurl: (6) Could not resolve host: orm.drizzle.team\n"
   },
   "dev-platforms/resend": {
     "pages": 416,
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -155,7 +153,8 @@
     "status": "ok"
   },
   "dev-platforms/twilio": {
-    "status": "error: curl failed (28) for https://www.twilio.com/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "pages": 0,
+    "status": "ok"
   },
   "libraries/hono": {
     "pages": 0,
@@ -185,7 +184,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 95,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -197,12 +196,11 @@
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 390,
-    "status": "ok"
+    "status": "error: curl failed (6) for https://developers.deepgram.com/llms.txt: curl: (6) Could not resolve host: developers.deepgram.com\ncurl: (6) Could not resolve host: developers.deepgram.com\ncurl: (6) Could not resolve host: developers.deepgram.com\n"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 1376,
+    "pages": 1372,
     "status": "ok"
   },
-  "_last_crawl": "2026-10-11T23:30:32Z"
+  "_last_crawl": "2026-10-12T11:30:39Z"
 }

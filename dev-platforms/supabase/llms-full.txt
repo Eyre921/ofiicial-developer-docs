@@ -8463,12 +8463,12 @@ Supabase provides client libraries for the REST and Realtime APIs. Some librarie
 | Dart/Flutter          | [supabase-flutter](https://github.com/supabase/supabase-flutter/tree/main/packages/supabase_flutter) | [Docs](https://supabase.com/docs/reference/dart/introduction)       |
 | Swift                 | [supabase-swift](https://github.com/supabase/supabase-swift)                                         | [Docs](https://supabase.com/docs/reference/swift/introduction)      |
 | Python                | [supabase-py](https://github.com/supabase/supabase-py)                                               | [Docs](https://supabase.com/docs/reference/python/initializing)     |
+| C#                    | [supabase-csharp](https://github.com/supabase/supabase-csharp)                                       | [Docs](https://supabase.com/docs/reference/csharp/introduction)     |
 
 ## Community libraries
 
 | `Language`              | `Source Code`                                                                    | `Documentation`                                                 |
 | ----------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| C#                      | [supabase-csharp](https://github.com/supabase-community/supabase-csharp)         | [Docs](https://supabase.com/docs/reference/csharp/introduction) |
 | Go                      | [supabase-go](https://github.com/supabase-community/supabase-go)                 |                                                                 |
 | Kotlin                  | [supabase-kt](https://github.com/supabase-community/supabase-kt)                 | [Docs](https://supabase.com/docs/reference/kotlin/introduction) |
 | Ruby                    | [supabase-rb](https://github.com/supabase-community/supabase-rb)                 |                                                                 |
@@ -67175,7 +67175,12 @@ Insert-only tables don't require a primary key or replica identity. Updates and 
 
 ## Prepare DuckLake resources \[#understand-the-ducklake-components]
 
-DuckLake stores metadata in a Postgres catalog and data in object storage. With **Select Supabase projects**, choose a project for the catalog, then a project and bucket for storage. The catalog and storage can use the same project. Pipelines creates the connection credentials. With **Enter connection details**, you provide the catalog URL and storage credentials. You also need a compatible query engine to read the replicated data.
+DuckLake stores metadata in a Postgres catalog and data in object storage. Pipelines offers two ways to set them up:
+
+- **Use this Supabase project**: Pipelines uses this project's Postgres database as the catalog and a Storage bucket in the same project as object storage. It also creates the connection credentials.
+- **Enter connection details**: You provide the catalog URL and the storage credentials.
+
+To read the replicated data, you also need a compatible query engine.
 
 | Component        | Purpose                                                                                                                             |
 | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -67189,27 +67194,24 @@ You can query replicated tables, but treat them and their underlying catalog and
 
 Follow [Set up Pipelines](https://supabase.com/docs/guides/database/replication/pipelines#setup-overview). In **Add pipeline**, select **DuckLake**, enter a **Pipeline name**, choose a **Publication**, and set **Initial sync**. Then choose how to configure the catalog and storage.
 
-### Select Supabase projects \[#use-supabase]
+### Use this Supabase project \[#use-supabase]
 
-Choose Supabase projects for the Postgres catalog and Storage bucket. Pipelines creates the connection credentials when you create the destination.
+Use the current Supabase project's Postgres database for the catalog and a Storage bucket in the same project. Pipelines creates the connection credentials when you create the destination.
 
 Before you begin:
 
-- Choose active, healthy, non-branch projects from the same organization for the catalog and storage. You can use the same project for both.
-- Make sure your organization role can administer SQL in the catalog project and Storage in the storage project.
 - Choose a Files bucket for DuckLake data. You can create a private bucket from the destination form.
-- Choose an unused metadata schema name for this DuckLake. Pipelines creates the schema and its tables. Use only letters, numbers, and underscores. If the catalog project already uses the default `ducklake` schema for Warehouse, enter a different name.
-- Keep catalog and storage in the same region when possible, near the [managed pipeline region](https://supabase.com/docs/guides/database/replication/pipelines#region).
+- Choose an unused metadata schema name for this DuckLake. Pipelines creates the schema and its tables. Use only letters, numbers, and underscores. If the project already uses the default `ducklake` schema for Warehouse, enter a different name.
 
 To configure the destination:
 
-1. Select **Select Supabase projects** under **Configuration method**.
-2. Choose the **Catalog project** and **Metadata schema**.
-3. Choose the **Storage project** and **Bucket**. Select **New bucket** at the bottom of the bucket list if you haven't created one yet.
+1. Select **Use this Supabase project** under **Configuration method**.
+2. Enter the **Metadata schema**.
+3. Choose the **Bucket**. Select **New bucket** at the bottom of the bucket list if you haven't created one yet.
 4. Optionally adjust **Pool size** under **Advanced settings**. It allows 1 to 6 concurrent DuckDB connections; the default is 4.
 5. Click **Start pipeline**. Review any validation warnings, then confirm the estimated cost with **Create and start pipeline**.
 
-Credential-provisioning warnings are expected before creation: catalog and Storage credentials are provisioned when you save the destination. Review the selected resources before proceeding.
+Credential-provisioning warnings are expected before creation: catalog and Storage credentials are provisioned when you save the destination. Review the metadata schema and bucket before proceeding.
 
 ### Enter connection details \[#custom-parameters]
 
@@ -67221,7 +67223,7 @@ Prepare the following resources:
 2. An S3-compatible bucket and a dedicated prefix for this DuckLake.
 3. Object-storage credentials that can list, read, write, and delete objects under that prefix. Delete access is required for managed file cleanup.
 
-Choose an unused metadata schema name and a new data prefix for each destination. Pipelines creates the schema and its tables. Initialising a DuckLake catalog in that schema beforehand triggers a validation warning; reusing its schema or prefix can mix metadata or files from different DuckLakes.
+Choose an unused metadata schema name and a new data prefix for each destination. Pipelines creates the schema and its tables. Initializing a DuckLake catalog in that schema beforehand triggers a validation warning; reusing its schema or prefix can mix metadata or files from different DuckLakes.
 
 Select **Enter connection details** under **Configuration method**, then configure these fields:
 
@@ -67250,7 +67252,7 @@ A source `TRUNCATE` truncates the DuckLake table. A [table restart](https://supa
 
 Connect DuckDB with its `ducklake` extension, or another compatible engine, to the same catalog and storage path. Query through the catalog; reading raw Parquet files can miss inlined changes, delete files, and the current snapshot.
 
-If you selected Supabase projects, create separate read credentials for the catalog and Storage projects. The writer credentials generated for Pipelines aren't exposed. If you entered connection details, use separate read-only credentials when your catalog and storage provider support them.
+If you use this Supabase project, create separate read credentials for its Postgres database and Storage. The writer credentials generated for Pipelines aren't exposed. If you enter connection details, use separate read-only credentials when your catalog and storage provider support them.
 
 After attaching the catalog under an alias such as `my_ducklake`, source schemas and tables are available as qualified DuckLake tables:
 
@@ -67320,7 +67322,7 @@ For type changes, unsupported changes, and interrupted schema changes, see the s
 
 | Issue                                    | Resolution                                                                                                                                                       |
 | ---------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Credential-provisioning warnings         | Expected when you [select Supabase projects](#use-supabase) before saving. Review the selected resources.                                                        |
+| Credential-provisioning warnings         | Expected when you [use this Supabase project](#use-supabase) before saving. Review the metadata schema and bucket.                                               |
 | Catalog or storage validation fails      | Check the [connection details](#custom-parameters), credentials, connectivity, and permissions for the configured prefix. Local `file://` paths are unsupported. |
 | Metadata schema exists                   | Choose a new schema, unless intentionally reusing the same DuckLake and its corresponding data path.                                                             |
 | Inserts work but updates or deletes fail | Check [replica identity and published columns](#source-table-requirements).                                                                                      |
@@ -177276,43 +177278,43 @@ var objects = await supabase.Storage.From("avatars").List();
 
 ## 8.1.0 - 2026-09-07
 
-- Stream Edge Function responses ([#417](https://github.com/supabase-community/supabase-csharp/issues/417)).
-- Realtime: add an `enabled` flag to opt into the initial presence sync ([#407](https://github.com/supabase-community/supabase-csharp/issues/407)).
-- Fix: keep `!` and unary `-` attached to their values in `Where` filter expressions ([#414](https://github.com/supabase-community/supabase-csharp/issues/414)).
-- Fix: write integer arrays as JSON arrays and reject invalid literals with a `JsonException` ([#408](https://github.com/supabase-community/supabase-csharp/issues/408)).
+- Stream Edge Function responses ([#417](https://github.com/supabase/supabase-csharp/issues/417)).
+- Realtime: add an `enabled` flag to opt into the initial presence sync ([#407](https://github.com/supabase/supabase-csharp/issues/407)).
+- Fix: keep `!` and unary `-` attached to their values in `Where` filter expressions ([#414](https://github.com/supabase/supabase-csharp/issues/414)).
+- Fix: write integer arrays as JSON arrays and reject invalid literals with a `JsonException` ([#408](https://github.com/supabase/supabase-csharp/issues/408)).
 
 ## 8.0.0 - 2026-09-03
 
-Major release. All `Supabase.*` packages are versioned in lockstep. See the [migration guide](https://github.com/supabase-community/supabase-csharp/blob/master/docs/migrations/v8.0.0.md) for upgrade steps.
+Major release. All `Supabase.*` packages are versioned in lockstep. See the [migration guide](https://github.com/supabase/supabase-csharp/blob/master/docs/migrations/v8.0.0.md) for upgrade steps.
 
 **Breaking changes**
 
-- Migrate from `Newtonsoft.Json` to `System.Text.Json` across every package. Custom models with `[JsonProperty]` should move to `[JsonPropertyName]`; direct `JsonConvert` calls should move to `JsonSerializer` ([#360](https://github.com/supabase-community/supabase-csharp/issues/360)).
+- Migrate from `Newtonsoft.Json` to `System.Text.Json` across every package. Custom models with `[JsonProperty]` should move to `[JsonPropertyName]`; direct `JsonConvert` calls should move to `JsonSerializer` ([#360](https://github.com/supabase/supabase-csharp/issues/360)).
 - Retarget every package to `netstandard2.1` (from `netstandard2.0`). .NET Framework and pre-`netstandard2.1` runtimes (Mono < 6.4, older Xamarin/Unity) are no longer supported — move to a `netstandard2.1`-capable target (.NET Core 3.0+/.NET 5+).
-- Postgrest: parameterless `Table.Delete()` now returns `Task<ModeledResponse>` (the deleted rows) instead of `Task` ([#342](https://github.com/supabase-community/supabase-csharp/issues/342)).
-- Postgrest: `Single()` now throws a `PostgrestException` (status `406`) when more than one row matches, instead of returning `null` ([#346](https://github.com/supabase-community/supabase-csharp/issues/346)).
-- Realtime: registering a `postgres_changes` listener after `Subscribe()` now throws a `RealtimeException` ([#385](https://github.com/supabase-community/supabase-csharp/issues/385)).
-- Gotrue: stop sending the OAuth `state` parameter to `/authorize`; `SignInOptions.State` and `ProviderAuthState.State` are removed ([#388](https://github.com/supabase-community/supabase-csharp/issues/388)).
+- Postgrest: parameterless `Table.Delete()` now returns `Task<ModeledResponse>` (the deleted rows) instead of `Task` ([#342](https://github.com/supabase/supabase-csharp/issues/342)).
+- Postgrest: `Single()` now throws a `PostgrestException` (status `406`) when more than one row matches, instead of returning `null` ([#346](https://github.com/supabase/supabase-csharp/issues/346)).
+- Realtime: registering a `postgres_changes` listener after `Subscribe()` now throws a `RealtimeException` ([#385](https://github.com/supabase/supabase-csharp/issues/385)).
+- Gotrue: stop sending the OAuth `state` parameter to `/authorize`; `SignInOptions.State` and `ProviderAuthState.State` are removed ([#388](https://github.com/supabase/supabase-csharp/issues/388)).
 - Gotrue: rename `NetworkStatus.PingCheck` to `PingCheckAsync`.
 
 **Features**
 
-- Add the `Supabase.Extensions.DependencyInjection` package for DI registration ([#387](https://github.com/supabase-community/supabase-csharp/issues/387)).
-- Add retry/backoff and injectable `HttpClient` support across all services ([#383](https://github.com/supabase-community/supabase-csharp/issues/383)).
-- Support publishable and secret API keys ([#397](https://github.com/supabase-community/supabase-csharp/issues/397)).
-- Gotrue: support async session persistence ([#399](https://github.com/supabase-community/supabase-csharp/issues/399)) and soft-delete on admin `DeleteUser` ([#402](https://github.com/supabase-community/supabase-csharp/issues/402)).
-- Storage: expose the service error code ([#380](https://github.com/supabase-community/supabase-csharp/issues/380)).
+- Add the `Supabase.Extensions.DependencyInjection` package for DI registration ([#387](https://github.com/supabase/supabase-csharp/issues/387)).
+- Add retry/backoff and injectable `HttpClient` support across all services ([#383](https://github.com/supabase/supabase-csharp/issues/383)).
+- Support publishable and secret API keys ([#397](https://github.com/supabase/supabase-csharp/issues/397)).
+- Gotrue: support async session persistence ([#399](https://github.com/supabase/supabase-csharp/issues/399)) and soft-delete on admin `DeleteUser` ([#402](https://github.com/supabase/supabase-csharp/issues/402)).
+- Storage: expose the service error code ([#380](https://github.com/supabase/supabase-csharp/issues/380)).
 
 **Fixes**
 
-- Gotrue: a failed token refresh no longer signs the user out — only a server-reported invalid refresh token does ([#394](https://github.com/supabase-community/supabase-csharp/issues/394)).
-- Postgrest: drop the `.` before nested `and`/`or` groups ([#389](https://github.com/supabase-community/supabase-csharp/issues/389)).
-- Storage: percent-encode the object key in CDN purge URLs ([#384](https://github.com/supabase-community/supabase-csharp/issues/384)).
+- Gotrue: a failed token refresh no longer signs the user out — only a server-reported invalid refresh token does ([#394](https://github.com/supabase/supabase-csharp/issues/394)).
+- Postgrest: drop the `.` before nested `and`/`or` groups ([#389](https://github.com/supabase/supabase-csharp/issues/389)).
+- Storage: percent-encode the object key in CDN purge URLs ([#384](https://github.com/supabase/supabase-csharp/issues/384)).
 
 ## 1.6.0 - 2026-08-07
 
-- Bump Supabase dependencies ([#301](https://github.com/supabase-community/supabase-csharp/issues/301)).
-- Fix: match auth header names case-insensitively, enabling developer overrides ([#295](https://github.com/supabase-community/supabase-csharp/issues/295)).
+- Bump Supabase dependencies ([#301](https://github.com/supabase/supabase-csharp/issues/301)).
+- Fix: match auth header names case-insensitively, enabling developer overrides ([#295](https://github.com/supabase/supabase-csharp/issues/295)).
 
 ## 1.5.0 - 2026-07-30
 
@@ -177328,7 +177330,7 @@ Major release. All `Supabase.*` packages are versioned in lockstep. See the [mig
 
 This is the observability release: every child library now emits diagnostics through `System.Diagnostics`, making the SDK compatible with OpenTelemetry.
 
-- Expose aggregated telemetry source names for OpenTelemetry ([#285](https://github.com/supabase-community/supabase-csharp/issues/285)).
+- Expose aggregated telemetry source names for OpenTelemetry ([#285](https://github.com/supabase/supabase-csharp/issues/285)).
 - Update dependency: `Supabase.Core@1.2.0`
 - Add OpenTelemetry-compatible diagnostics primitives ([#6](https://github.com/supabase-community/core-csharp/issues/6)).
 - Update dependency: `Supabase.Gotrue@6.2.0`
@@ -177342,7 +177344,7 @@ This is the observability release: every child library now emits diagnostics thr
 
 ## 1.3.0 - 2026-07-20
 
-- Wire Realtime's Postgrest client automatically so models received from `postgres_changes` support `Update()` and `Delete()` ([#282](https://github.com/supabase-community/supabase-csharp/issues/282)).
+- Wire Realtime's Postgrest client automatically so models received from `postgres_changes` support `Update()` and `Delete()` ([#282](https://github.com/supabase/supabase-csharp/issues/282)).
 - Update dependency: `Supabase.Postgrest@4.3.0`
 - Add `Client.Attach()` to populate a model's client context for `Update`/`Delete` ([#135](https://github.com/supabase-community/postgrest-csharp/issues/135)).
 - Add `ClientOptions.SerializeEnumsAsStrings` to opt into string enum serialization ([#134](https://github.com/supabase-community/postgrest-csharp/issues/134)).
@@ -177352,7 +177354,7 @@ This is the observability release: every child library now emits diagnostics thr
 
 ## 1.2.0 - 2026-07-16
 
-- Lower the `Newtonsoft.Json` minimum version to `13.0.2` across all packages to ease dependency resolution ([#275](https://github.com/supabase-community/supabase-csharp/issues/275)).
+- Lower the `Newtonsoft.Json` minimum version to `13.0.2` across all packages to ease dependency resolution ([#275](https://github.com/supabase/supabase-csharp/issues/275)).
 - Update dependency: `Supabase.Gotrue@6.1.0`
 - Add an option for setting `redirect_url` on MagicLink sign-in.
 - Add `state` parameter support to OAuth provider sign-in.
@@ -177388,7 +177390,7 @@ This is the observability release: every child library now emits diagnostics thr
 - Update dependency: `Supabase.Realtime@7.0.2`
 - Updates dependency: `Websocket.Client@5.1.2`.
 - Updates dependency: `Supabase.Postgrest@4.0.3`.
-- Adds support for specifying `GetHeaders` on the `RealtimeClient`, which are included on the initial request to establish the websocket connection ([#167](https://github.com/supabase-community/supabase-csharp/issues/167)).
+- Adds support for specifying `GetHeaders` on the `RealtimeClient`, which are included on the initial request to establish the websocket connection ([#167](https://github.com/supabase/supabase-csharp/issues/167)).
 
 ## 1.1.0 - 2024-07-25
 
@@ -177441,10 +177443,10 @@ This is the observability release: every child library now emits diagnostics thr
 - Assembly Name has been changed to `Supabase.dll`
 - Update dependency: `postgrest-csharp@5.0.0`
 - \[MAJOR] Moves namespaces from `Postgrest` to `Supabase.Postgrest`
-- Re: [#135](https://github.com/supabase-community/supabase-csharp/issues/135) Update nuget package
+- Re: [#135](https://github.com/supabase/supabase-csharp/issues/135) Update nuget package
   name `postgrest-csharp` to `Supabase.Postgrest`
 - Update dependency: `gotrue-csharp@5.0.0`
-- Re: [#135](supabase-community/supabase-csharp#135) Update nuget package name `gotrue-csharp` to `Supabase.Gotrue`
+- Re: [#135](supabase/supabase-csharp#135) Update nuget package name `gotrue-csharp` to `Supabase.Gotrue`
 - Re: [#89](https://github.com/supabase-community/gotrue-csharp/issues/89), Only add `access_token` to request body
   when it is explicitly declared.
 - \[MINOR] Re: [#89](https://github.com/supabase-community/gotrue-csharp/issues/89) Update signature
@@ -177456,16 +177458,16 @@ This is the observability release: every child library now emits diagnostics thr
 - Update dependency: `realtime-csharp@7.0.0`
 - Merges [#45](https://github.com/supabase-community/realtime-csharp/pull/45) - Updating
   the `Websocket.Client@5.1.1`
-- Re: [#135](https://github.com/supabase-community/supabase-csharp/issues/135) Update nuget package
+- Re: [#135](https://github.com/supabase/supabase-csharp/issues/135) Update nuget package
   name `realtime-csharp` to `Supabase.Realtime`
 - Update dependency: `storage-csharp@2.0.0`
-- Re: [#135](https://github.com/supabase-community/supabase-csharp/issues/135) Update nuget package
+- Re: [#135](https://github.com/supabase/supabase-csharp/issues/135) Update nuget package
   name `storage-csharp` to `Supabase.Storage`
 - Update dependency: `functions-csharp@2.0.0`
-- Re: [#135](https://github.com/supabase-community/supabase-csharp/issues/135) Update nuget package
+- Re: [#135](https://github.com/supabase/supabase-csharp/issues/135) Update nuget package
   name `functions-csharp` to `Supabase.Functions`
 - Update dependency: `core-csharp@1.0.0`
-- Re: [#135](https://github.com/supabase-community/supabase-csharp/issues/135) Update nuget package
+- Re: [#135](https://github.com/supabase/supabase-csharp/issues/135) Update nuget package
   name `supabase-core`
   to `Supabase.Core`
 - Adds comments to the remaining undocumented code.

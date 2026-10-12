@@ -431,6 +431,37 @@ await client.conversationalAi.agents.branches.update('agent_7101k5zvyjhmfg983brh
 
 Archived branches can be unarchived by setting `archived=False`.
 
+## Duplicating a versioned agent
+
+Duplicating an agent creates a new agent that contains a copy of every unarchived branch of the source agent, not only the main branch.
+
+```python
+duplicate = client.conversational_ai.agents.duplicate(
+    agent_id="agent_7101k5zvyjhmfg983brhmhkd98n6",
+    name="Copy of my agent"
+)
+
+print(duplicate.agent_id)
+```
+
+```javascript
+const duplicate = await client.conversationalAi.agents.duplicate('agent_7101k5zvyjhmfg983brhmhkd98n6', {
+  name: 'Copy of my agent',
+});
+
+console.log(duplicate.agentId);
+```
+
+In the duplicated agent:
+
+* The main branch is created from the latest version on the source agent's main branch
+* Each other unarchived branch is recreated with the same name and description, starting from the latest version on that branch
+* Each branch starts with a single version, because version history is not copied
+* Archived branches and drafts are not copied
+* Traffic deployments are not copied, so all traffic goes to the main branch until you [deploy traffic](#deploying-traffic) to other branches
+
+Branch and version IDs in the duplicate are new, so update any references to the source agent's IDs.
+
 ## Retrieving specific versions
 
 You can retrieve an agent at a specific version or branch tip.

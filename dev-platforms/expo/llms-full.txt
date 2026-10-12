@@ -242,6 +242,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 - [Link preview](https://docs.expo.dev/router/reference/link-preview.md)
 - [Typed routes](https://docs.expo.dev/router/reference/typed-routes.md)
 - [Screen tracking for analytics](https://docs.expo.dev/router/reference/screen-tracking.md)
+- [Handle screen focus](https://docs.expo.dev/router/reference/focus-handling.md)
 - [Top-level src directory](https://docs.expo.dev/router/reference/src-directory.md)
 - [Testing configuration for Expo Router](https://docs.expo.dev/router/reference/testing.md)
 - [Troubleshooting](https://docs.expo.dev/router/reference/troubleshooting.md)
