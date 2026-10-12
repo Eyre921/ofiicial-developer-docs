@@ -27,7 +27,7 @@ Select your country to learn how to provide servicing to your connected accounts
 
 ### United States
 
-Stripe is the first line of support for your users’ inquiries. Every communication includes a support email [capital+support@stripe.com](mailto:capital+support@stripe.com) users can contact if they have questions. If a user contacts your platform with questions or concerns regarding their financing, forward the user and their questions to the Stripe team for support.
+Stripe is the first line of support for your users’ inquiries. Every communication includes a support email [capital-support@stripe.com](mailto:capital-support@stripe.com) users can contact if they have questions. If a user contacts your platform with questions or concerns regarding their financing, forward the user and their questions to the Stripe team for support.
 
 Stripe handles the following servicing functions:
 
@@ -42,7 +42,7 @@ Stripe handles the following servicing functions:
 
 ### United Kingdom
 
-Stripe and YouLend provide first-line support for your users’ inquiries. Every communication includes a support email [capital+support@stripe.com](mailto:capital+support@stripe.com) users can contact if they have questions. If a user contacts your platform with questions or concerns regarding their financing, forward the user and their questions to the Stripe team for support.
+Stripe and YouLend provide first-line support for your users’ inquiries. Every communication includes a support email [capital-support@stripe.com](mailto:capital-support@stripe.com) users can contact if they have questions. If a user contacts your platform with questions or concerns regarding their financing, forward the user and their questions to the Stripe team for support.
 
 Stripe and YouLend handle the following servicing functions:
 
@@ -84,7 +84,7 @@ YouLend handles the following servicing functions:
 
 ### Australia
 
-Stripe and Fundbox provide first-line support for your users’ inquiries. Every communication includes a support email [capital+support@stripe.com](mailto:capital+support@stripe.com) users can contact if they have questions. If a user contacts your platform with questions or concerns regarding their financing, forward the user and their questions to the Stripe team for support.
+Stripe and Fundbox provide first-line support for your users’ inquiries. Every communication includes a support email [capital-support@stripe.com](mailto:capital-support@stripe.com) users can contact if they have questions. If a user contacts your platform with questions or concerns regarding their financing, forward the user and their questions to the Stripe team for support.
 
 Stripe and Fundbox handle the following servicing functions:
 
@@ -99,7 +99,7 @@ Stripe and Fundbox handle the following servicing functions:
 
 ### Canada
 
-Stripe and Fundbox support financing inquiries from your users. Direct questions about eligibility or missed minimum payments to Fundbox at [stripe-capital-ca@fundbox.com](mailto:stripe-capital-ca@fundbox.com). Forward all other financing questions or concerns to Stripe at [capital+support@stripe.com](mailto:capital+support@stripe.com). Escalate complaints to Stripe as described below.
+Stripe and Fundbox support financing inquiries from your users. Direct questions about eligibility or missed minimum payments to Fundbox at [stripe-capital-ca@fundbox.com](mailto:stripe-capital-ca@fundbox.com). Forward all other financing questions or concerns to Stripe at [capital-support@stripe.com](mailto:capital-support@stripe.com). Escalate complaints to Stripe as described below.
 
 Stripe and Fundbox:
 
@@ -112,7 +112,7 @@ Stripe and Fundbox:
 
 ## Escalate complaints
 
-In every region, escalate all Capital-related complaints to [capital+support@stripe.com](mailto:capital+support@stripe.com). Stripe has a legal obligation to report all Capital-related complaints. To learn how to manage complaints, see [Regulatory compliance](https://docs.stripe.com/capital/regulatory-compliance.md).
+In every region, escalate all Capital-related complaints to [capital-support@stripe.com](mailto:capital-support@stripe.com). Stripe has a legal obligation to report all Capital-related complaints. To learn how to manage complaints, see [Regulatory compliance](https://docs.stripe.com/capital/regulatory-compliance.md).
 
 These terms can indicate a complaint, among other possible signals:
 

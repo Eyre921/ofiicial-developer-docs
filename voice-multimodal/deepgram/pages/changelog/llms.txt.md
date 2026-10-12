@@ -12,6 +12,7 @@ path: changelog/llms.txt
 
 ## Entries
 
+- [Update Nova-3 Keyterms Mid-Stream from the SDKs, Play Audio from the CLI, and Deepgram Skills v1.7.0](https://developers.deepgram.com/changelog/2026/10/12.md)
 - [October 8, 2026](https://developers.deepgram.com/changelog/2026/10/8.md)
 - [October 7, 2026](https://developers.deepgram.com/changelog/2026/10/7.md)
 - [October 6, 2026](https://developers.deepgram.com/changelog/2026/10/6.md)

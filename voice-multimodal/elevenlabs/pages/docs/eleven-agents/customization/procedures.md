@@ -116,10 +116,11 @@ the endpoint returns the published version.
 
 Publish the drafts by creating a new agent version with
 [Update agent](/docs/api-reference/agents/update). One request publishes every changed
-procedure draft on the branch, for both procedure types. If the branch has structured
-procedures, the publish validates and compiles them (turns their steps into the form the
-agent executes) and returns any errors. If validation passes, the agent configuration is
-published. You do not compile anything yourself.
+procedure draft on the branch, for both procedure types. Turning a structured procedure's
+steps into the form the agent executes is called compiling. The platform compiles every
+structured procedure when the agent draft is saved or the agent is published; authors never
+compile anything themselves. Both operations validate every structured procedure and return
+any errors. If validation passes, the agent configuration is saved or published.
 
 Follow the type-specific instructions for
 [free-form procedures](/docs/eleven-agents/customization/procedures/free-form-procedures#manage-a-free-form-procedure)

@@ -151,13 +151,13 @@ Conflicts could lead to UI warning messages in Sentry, as it can be interpreted 
 
 - [Extended Configuration](https://docs.sentry.io/platforms/rust/configuration.md)
 - [Capturing Errors](https://docs.sentry.io/platforms/rust/usage.md)
+- [Native Crash Reporting](https://docs.sentry.io/platforms/rust/native-crash-reporting.md)
 - [Enriching Events](https://docs.sentry.io/platforms/rust/enriching-events.md)
 - [Source Context](https://docs.sentry.io/platforms/rust/source-context.md)
 - [Data Management](https://docs.sentry.io/platforms/rust/data-management.md)
 - [Tracing](https://docs.sentry.io/platforms/rust/tracing.md)
 - [Logs](https://docs.sentry.io/platforms/rust/logs.md)
 - [Metrics](https://docs.sentry.io/platforms/rust/metrics.md)
-- [User Feedback](https://docs.sentry.io/platforms/rust/user-feedback.md)
 - [Security Policy Reporting](https://docs.sentry.io/platforms/rust/security-policy-reporting.md)
 - [Troubleshooting](https://docs.sentry.io/platforms/rust/troubleshooting.md)
 

@@ -1437,6 +1437,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/concepts/security/openid-connect
 /en/actions/concepts/security/artifact-attestations
 /en/actions/concepts/security/script-injections
+/en/actions/concepts/security/workflow-dependency-lockfiles
 /en/actions/concepts/security/compromised-runners
 /en/actions/concepts/security/kubernetes-admissions-controller
 /en/actions/concepts/metrics
@@ -1469,6 +1470,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/how-tos/reuse-automations/share-across-private-repositories
 /en/actions/how-tos/reuse-automations/share-with-your-organization
 /en/actions/how-tos/secure-your-work
+/en/actions/how-tos/secure-your-work/lock-workflow-dependencies
 /en/actions/how-tos/secure-your-work/use-artifact-attestations
 /en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations
 /en/actions/how-tos/secure-your-work/use-artifact-attestations/increase-security-rating
@@ -1478,6 +1480,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/how-tos/secure-your-work/security-harden-deployments
 /en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws
 /en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure
+/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-docker
 /en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-google-cloud-platform
 /en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-hashicorp-vault
 /en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-jfrog
@@ -1562,6 +1565,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/actions/how-tos/troubleshoot-workflows
 /en/actions/how-tos/administer
 /en/actions/how-tos/administer/control-workflow-execution
+/en/actions/how-tos/administer/enforce-workflow-lockfiles
 /en/actions/how-tos/administer/view-metrics
 /en/actions/how-tos/get-support
 /en/actions/reference

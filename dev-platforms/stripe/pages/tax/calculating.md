@@ -78,7 +78,9 @@ Instead, Stripe preserves the 79.20 EUR amount charged to the customer by report
 
 ## Tax breakdowns
 
-Stripe Tax provides detailed tax breakdowns for each transaction. All applicable taxes are calculated and applied simultaneously, and the order of items in the breakdown doesn’t indicate priority or application sequence. Stripe Tax orders the breakdown by jurisdiction level (country, then state, county, city, and district), then by tax amount, then by jurisdiction name.
+Stripe Tax calculates and records tax by jurisdiction for each transaction. All applicable taxes are calculated and applied simultaneously. When Stripe displays a jurisdiction-level breakdown, it orders the entries by jurisdiction level (country, then state, county, city, and district), then by tax amount, then by jurisdiction name. The order doesn’t indicate priority or application sequence.
+
+An invoice can combine taxes of the same type into one displayed rate. For example, an invoice in Philadelphia can display 8% sales tax instead of separate 6% Pennsylvania and 2% Philadelphia entries. To view one row per line item per jurisdiction, use the [itemized report](https://docs.stripe.com/tax/reports.md#itemized-exports).
 
 [Specify product tax codes and tax behavior](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md): Learn how to set up products and prices to automatically calculate tax.
 

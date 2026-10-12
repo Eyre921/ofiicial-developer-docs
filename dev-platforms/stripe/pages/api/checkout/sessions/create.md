@@ -150,7 +150,7 @@ Possible enum values:
   Configure fields for the Checkout Session to gather active consent from customers.
 
 - `currency` (enum, required conditionally)
-  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md). Required in `setup` mode when `payment_method_types` is not set.
+  Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html), in lowercase. Must be a [supported currency](https://docs.stripe.com/currencies.md). Required in `setup` mode when `allowed_payment_method_types` is not set.
 
 - [`custom_fields`](https://docs.stripe.com/api/checkout/sessions/create.md?query=custom_fields) (array of objects, optional)
   Collect additional information from your customer using custom fields. Up to 3 fields are supported. You can’t set this parameter if `ui_mode` is `elements`.

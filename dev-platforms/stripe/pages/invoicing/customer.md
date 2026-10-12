@@ -32,7 +32,7 @@ To create a customer, complete these steps:
 
 2. Click **Add customer**, or press **N**, on the **Customers** page.
 
-3. At a minimum, enter your customer’s **Name** and **Account email**.
+3. As you start typing your customer’s name or email, you might see it match to a [Stripe profile](https://docs.stripe.com/get-started/account/profile.md). You can choose to attach the customer’s Stripe profile to autofill in their business information. At a minimum, enter your customer’s **Name** and **Account email**.
 
 4. Click **Add customer** in the dialog.
 

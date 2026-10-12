@@ -29,7 +29,7 @@ Here are all the events that can be associated with an email:
 * `clicked` - The recipient clicked on a link in the email.
 * `complained` - The email was successfully delivered to the recipient's mail server, but the recipient marked it as spam.
 * `delivered` - Resend successfully delivered the email to the recipient's mail server.
-* `delivery_delayed` - The email couldn't be delivered to the recipient's mail server because a temporary issue occurred. Delivery delays can occur, for example, when the recipient's inbox is full, or when the receiving email server experiences a transient issue.
+* `delivery_delayed` - The email couldn't be delivered to the recipient's mail server because a temporary issue occurred. Delivery delays can occur, for example, when the recipient's inbox is full, or when the receiving email server experiences a transient issue. Resend keeps retrying automatically for up to 14 hours. If the recipient's mail server still hasn't accepted the email by then, it's marked as `bounced`.
 * `failed` - The email failed to be sent.
 * `opened` - The recipient opened the email. ([Open rates are not always accurate](/docs/knowledge-base/why-are-my-open-rates-not-accurate))
 * `queued` - The email created from Broadcasts or Batches is queued for delivery.

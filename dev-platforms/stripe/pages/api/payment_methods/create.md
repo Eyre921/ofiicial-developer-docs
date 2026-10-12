@@ -245,6 +245,9 @@ Possible enum values:
   - `wechat_pay`
     [WeChat Pay](https://docs.stripe.com/payments/wechat-pay.md) is a digital wallet payment method based in China.
 
+  - `wero`
+    Wero is a payment method.
+
   - `zip`
     [Zip](https://docs.stripe.com/payments/zip.md) is a Buy now, pay later Payment Method
 
@@ -439,6 +442,9 @@ Possible enum values:
 
 - `wechat_pay` (object, optional)
   If this is an `wechat_pay` PaymentMethod, this hash contains details about the wechat_pay payment method.
+
+- `wero` (object, optional)
+  If this is a Wero PaymentMethod, this hash contains details about the Wero payment method.
 
 - `zip` (object, optional)
   If this is a `zip` PaymentMethod, this hash contains details about the Zip payment method.

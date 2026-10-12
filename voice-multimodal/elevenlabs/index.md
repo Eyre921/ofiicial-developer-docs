@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1372 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -953,6 +953,7 @@
 - `docs/help-center/legal/do-i-own-the-files-i-upload` — [Do I own the files I upload?](pages/docs/help-center/legal/do-i-own-the-files-i-upload.md) · [原文](https://elevenlabs.io/docs/help-center/legal/do-i-own-the-files-i-upload.md)
 - `docs/help-center/legal/do-you-restrict-access-to-the-service-and-platform-for-any-specific-countries` — [Do you restrict access to the service and platform for any specific countries?](pages/docs/help-center/legal/do-you-restrict-access-to-the-service-and-platform-for-any-specific-countries.md) · [原文](https://elevenlabs.io/docs/help-center/legal/do-you-restrict-access-to-the-service-and-platform-for-any-specific-countries.md)
 - `docs/help-center/legal/how-do-i-make-a-data-subject-request` — [How do I make a Data Subject Request?](pages/docs/help-center/legal/how-do-i-make-a-data-subject-request.md) · [原文](https://elevenlabs.io/docs/help-center/legal/how-do-i-make-a-data-subject-request.md)
+- `docs/help-center/legal/how-do-i-opt-out-of-the-sale-or-sharing-of-my-personal-data` — [How do I opt out of the sale or sharing of my Personal Data?](pages/docs/help-center/legal/how-do-i-opt-out-of-the-sale-or-sharing-of-my-personal-data.md) · [原文](https://elevenlabs.io/docs/help-center/legal/how-do-i-opt-out-of-the-sale-or-sharing-of-my-personal-data.md)
 - `docs/help-center/legal/is-my-data-used-to-improve-eleven-labs-ai-models` — [Is my data used to improve ElevenLabs’ AI models?](pages/docs/help-center/legal/is-my-data-used-to-improve-eleven-labs-ai-models.md) · [原文](https://elevenlabs.io/docs/help-center/legal/is-my-data-used-to-improve-eleven-labs-ai-models.md)
 - `docs/help-center/legal/us-state-privacy-laws` — [U.S. State Privacy Laws](pages/docs/help-center/legal/us-state-privacy-laws.md) · [原文](https://elevenlabs.io/docs/help-center/legal/us-state-privacy-laws.md)
 - `docs/help-center/legal/what-are-no-go-voices` — [What are No-Go Voices?](pages/docs/help-center/legal/what-are-no-go-voices.md) · [原文](https://elevenlabs.io/docs/help-center/legal/what-are-no-go-voices.md)
@@ -1319,7 +1320,9 @@
 - `docs/overview/administration/workspaces/sso/scim` — [SCIM](pages/docs/overview/administration/workspaces/sso/scim.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/sso/scim.md)
 - `docs/overview/administration/workspaces/user-groups` — [User groups](pages/docs/overview/administration/workspaces/user-groups.md) · [原文](https://elevenlabs.io/docs/overview/administration/workspaces/user-groups.md)
 - `docs/overview/capabilities/ads-engine` — [Ads Engine](pages/docs/overview/capabilities/ads-engine.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/ads-engine.md)
+- `docs/overview/capabilities/dubbing` — [Dubbing](pages/docs/overview/capabilities/dubbing.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/dubbing.md)
 - `docs/overview/capabilities/forced-alignment` — [Forced Alignment](pages/docs/overview/capabilities/forced-alignment.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/forced-alignment.md)
+- `docs/overview/capabilities/image-video` — [Image & Video](pages/docs/overview/capabilities/image-video.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/image-video.md)
 - `docs/overview/capabilities/image-video/avatars` — [Avatars](pages/docs/overview/capabilities/image-video/avatars.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/image-video/avatars.md)
 - `docs/overview/capabilities/music` — [Eleven Music](pages/docs/overview/capabilities/music.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/music.md)
 - `docs/overview/capabilities/music/best-practices` — [Best practices](pages/docs/overview/capabilities/music/best-practices.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/music/best-practices.md)
@@ -1333,6 +1336,7 @@
 - `docs/overview/capabilities/text-to-speech/best-practices` — [Best practices](pages/docs/overview/capabilities/text-to-speech/best-practices.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/text-to-speech/best-practices.md)
 - `docs/overview/capabilities/text-to-speech/eleven-v4` — [Eleven v4](pages/docs/overview/capabilities/text-to-speech/eleven-v4.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/text-to-speech/eleven-v4.md)
 - `docs/overview/capabilities/voice-changer` — [Voice changer](pages/docs/overview/capabilities/voice-changer.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-changer.md)
+- `docs/overview/capabilities/voice-isolator` — [Voice isolator](pages/docs/overview/capabilities/voice-isolator.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-isolator.md)
 - `docs/overview/capabilities/voice-remixing` — [Voice remixing](pages/docs/overview/capabilities/voice-remixing.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voice-remixing.md)
 - `docs/overview/capabilities/voices` — [Voices](pages/docs/overview/capabilities/voices.md) · [原文](https://elevenlabs.io/docs/overview/capabilities/voices.md)
 - `docs/overview/intro` — [ElevenLabs Documentation](pages/docs/overview/intro.md) · [原文](https://elevenlabs.io/docs/overview/intro.md)

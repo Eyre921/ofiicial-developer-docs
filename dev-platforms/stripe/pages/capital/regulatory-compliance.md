@@ -27,7 +27,7 @@ Ensure you’ve completed the following checklist prior to launching your progra
 
 To create a responsive and equitable complaints handling process, you must detail and distribute clear pathways to where your customers can report complaints. Complaints are an important and mandatory part of the compliance system for financial services products. We regard complaints as *any expressions of dissatisfaction about our organization, products and services, policies, employees, and contracted partners*.
 
-If your customer contacts your support team with a complaint regarding the Stripe Capital product, direct them to Stripe Servicing ([capital+support@stripe.com](mailto:capital+support@stripe.com)). Stripe Servicing will intake any complaints received by your customers, and you must forward any Stripe Capital complaints your platform directly receives back to Stripe ([capital+support@stripe.com](mailto:capital+support@stripe.com)). Stripe will work with our financial partners to address the customer complaint.
+Redirect all customer complaints regarding the Stripe Capital product to Stripe Servicing ([capital-support@stripe.com](mailto:capital-support@stripe.com)). Stripe Servicing intakes any complaints received by your customers, and you must forward any further communication from the customer regarding the complaint to Stripe Servicing. Stripe works with our financial partners to address the customer complaint.
 
 ### Complaints reporting template
 

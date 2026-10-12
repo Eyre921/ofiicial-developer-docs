@@ -393,7 +393,7 @@ This example handles an order cancellation based on shipment status. It fixes a 
 
 ## How a structured procedure runs
 
-Turning a structured procedure's steps into the form the agent executes is called compiling. The platform compiles every structured procedure when you publish; you do not compile anything yourself. The compiled result is currently visible as read-only nodes in the **Workflow** tab.
+Turning a structured procedure's steps into the form the agent executes is called compiling. The platform compiles every structured procedure when the agent draft is saved or the agent is published; authors never compile anything themselves. The compiled result is currently visible as read-only nodes in the **Workflow** tab.
 
 When the user's request matches a procedure's trigger, the agent enters the procedure and runs its steps in order. While inside the structured procedure, the agent focuses on each step in isolation. When it reaches the end, it returns to the rest of the conversation.
 
@@ -567,10 +567,8 @@ when you save the agent draft with `POST /v1/convai/agents/{agent_id}/drafts`.
 ### Publish the changes
 
 Publish with [Update agent](/docs/api-reference/agents/update). The publish validates every
-structured procedure on the branch, compiles them, and stores the result with the new
-version. The request needs no `workflow` field; compilation happens as part of the publish.
-See [How a structured procedure runs](#how-a-structured-procedure-runs) for what compiling
-means.
+structured procedure on the branch and, if they all pass, publishes the procedures in the
+new version. The request needs no `workflow` field.
 
 ```python focus={5-8}
 from elevenlabs import ElevenLabs
@@ -624,12 +622,6 @@ If a structured procedure is invalid, the publish returns `400` and nothing is w
 
 `errors` is keyed by procedure ID. Each entry names the failing field and step. Fix the
 procedure draft and publish again.
-
-> **Note**
->
-> The `/procedures/compile` endpoint from earlier versions of this API still works, but it is
-> legacy and will eventually be deprecated. Publishing handles compilation; do not call the
-> compile endpoint in new code.
 
 See [Manage procedures](/docs/eleven-agents/customization/procedures#manage-procedures) for
 draft removal and discard behavior, or the

@@ -242,7 +242,7 @@ Inbound transfers in the UK require a mandate that affirms the bank account owne
 - `ip_address`: The IP address used by the connected account when they consented.
 - `user_agent`: The browser or client user agent used by the connected account when they consented.
 
-I authorise Stripe Payments UK Limited, at the direction of , to (A) send instructions to my bank to debit my account and (B) my bank to debit my account in accordance with those instructions, for the purpose of funding my  Financial Account, subject to the safeguards assured by the Direct Debit Guarantee. I confirm that I am the only person required to authorise debits from this bank account. I agree to receive notice of each debit two days prior to the debit.
+I authorise (A) Stripe Payments UK Limited, acting at the direction of , to send instructions to my bank to debit my account, and (B) my bank to debit my account in accordance with those instructions, for the purpose of funding my  Financial Account, subject to the safeguards assured by the Direct Debit Guarantee. I confirm that I am the only person required to authorise debits from this bank account. I agree to receive notice of each debit two days prior to the debit.
 
 ### Create the Inbound Mandate
 
@@ -457,7 +457,7 @@ curl https://api.stripe.com/v2/money_management/received_credits \
 
 [Retrieve a received credit](https://docs.stripe.com/api/v2/money-management/received-credits/retrieve.md?api-version=preview) by its ID to review details such as the `amount`, `status`, and `type` of transfer.
 
-> US platforms using ACH transfers can also obtain the private preview `bank_transfer.network_details.ach` resource, which provides additional information like `addenda` and originator and receiver details. [Contact sales](https://stripe.com/contact/embedded-finance) for access.
+> A `ReceivedCredit` from a USD ACH transfer can also include the private preview `bank_transfer.network_details.ach` property, which provides additional information like `addenda` and originator and receiver details. [Contact sales](https://stripe.com/contact/embedded-finance) for access.
 
 ```curl
 curl https://api.stripe.com/v2/money_management/received_credits/{{RECEIVED_CREDIT_ID}} \

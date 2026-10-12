@@ -596,38 +596,18 @@ To connect to a reader, your back end needs to give the SDK permission to use it
 
 ### Install the SDK
 
-The iOS SDK is [open source](https://github.com/stripe/stripe-terminal-ios), fully documented, and compatible with apps supporting iOS 10 or later. Import the Stripe SDK into your checkout screen’s UIViewController.
+The iOS SDK is [open source](https://github.com/stripe/stripe-terminal-ios), fully documented, and compatible with apps supporting iOS 16 or later. Import the Stripe SDK into your checkout screen’s UIViewController.
 
-#### CocoaPods
+Install the SDK with Swift Package Manager:
 
-Add this line to your Podfile, and use the .xcworkspace file to open your project in Xcode, instead of the .xcodeproj file, from here on out.
-
-```bash
-pod 'StripeTerminal', '~> 5.0'
-```
-
-#### Carthage
-
-Add this line to your Cartfile.
-
-```bash
-github "stripe/stripe-terminal-ios"
-```
-
-#### XCFramework
-
-1. Download StripeTerminal.xcframework.zip from the latest release on GitHub.
-2. Unzip it and drag the .xcframework in to your project making sure to select “Copy items if needed”.
-3. Ensure the xcframework is included in the “Frameworks, Libraries, and Embedded Content” section of your application target in Xcode and set to “Embed & Sign”.
-
-#### Swift Package Manager
-
-1. In Xcode, select **File** > **Add Packages…** from the menu bar.
+1. In Xcode, select **File** > **Add Package Dependencies…** from the menu bar.
 2. Enter the Stripe Terminal iOS SDK’s GitHub URL:
 
 ```bash
 https://github.com/stripe/stripe-terminal-ios-spm
 ```
+
+1. Enter the SDK version to install. The default value, **Up to Next Major Version**, gets security and feature updates without introducing breaking changes.
 
 ### Create Locations for your readers
 

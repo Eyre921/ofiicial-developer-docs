@@ -75,8 +75,8 @@ The table references the following terms:
 | [CM](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=cameroon) | Digital products | VAT | ❌ Not supported | ✓ Supported | 5/2/2025 |
 | [CA](https://docs.stripe.com/tax/supported-countries/canada.md) | All PTCs | GST and provincial taxes | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [CV](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=cape-verde) | Digital products | VAT | ❌ Not supported | ✓ Supported | 5/2/2025 |
-| [CL](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=chile) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
-| [CO](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=colombia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
+| [CL](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=chile) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
+| [CO](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=colombia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [CR](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=costa-rica) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/7/2024 |
 | [HR](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=croatia) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [CY](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=cyprus) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
@@ -97,7 +97,7 @@ The table references the following terms:
 | [HU](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=hungary) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [IS](https://docs.stripe.com/tax/supported-countries/europe/collect-tax.md?tax-jurisdiction-europe=iceland) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [IN](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=india) | Digital products | IGST | ❌ Not supported | ✓ Supported | 4/14/2025 |
-| [ID](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=indonesia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
+| [ID](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=indonesia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [IE](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=ireland) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [IT](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=italy) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [JP](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=japan) | All PTCs | JCT | ✓ Supported | ✓ Supported | 10/1/2023 |
@@ -109,7 +109,7 @@ The table references the following terms:
 | [LI](https://docs.stripe.com/tax/supported-countries/europe/collect-tax.md?tax-jurisdiction-europe=switzerland-and-liechtenstein) | All PTCs | VAT | ✓ Supported | ✓ Supported | 1/1/2025 |
 | [LT](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=lithuania) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [LU](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=luxembourg) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
-| [MY](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=malaysia) | Digital products | Service tax | ❌ Not supported | ✓ Supported | 8/17/2023 |
+| [MY](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=malaysia) | Digital products | Service tax | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [MT](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=malta) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [MR](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=mauritania) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
 | [MX](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=mexico) | All PTCs | VAT | ✓ Supported | ✓ Supported | 9/2/2025 |
@@ -130,14 +130,14 @@ The table references the following terms:
 | [PR](https://docs.stripe.com/tax/supported-countries/united-states/collect-tax.md?tax-jurisdiction-united-states=puerto-rico) | All PTCs | Sales tax | ✓ Supported | ✓ Supported | 10/17/2023 |
 | [RO](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=romania) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [RU](https://docs.stripe.com/tax/supported-countries/europe/collect-tax.md?tax-jurisdiction-europe=russia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/7/2024 |
-| [SA](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=saudi-arabia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
+| [SA](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=saudi-arabia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [SN](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=senegal) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
 | [RS](https://docs.stripe.com/tax/supported-countries/europe/collect-tax.md?tax-jurisdiction-europe=serbia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/7/2024 |
 | [SG](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=singapore) | All PTCs | GST | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [SK](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=slovakia) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [SI](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=slovenia) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [ZA](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=south-africa) | All PTCs | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
-| [KR](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=south-korea) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
+| [KR](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=south-korea) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [ES](https://docs.stripe.com/tax/supported-countries/european-union/collect-tax.md?tax-jurisdiction-european-union=spain) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [LK](https://docs.stripe.com/tax/supported-countries/asia-pacific/collect-tax.md?tax-jurisdiction-asia-pacific=sri-lanka) | Digital products | VAT | ❌ Not supported | ✓ Supported | 7/1/2026 |
 | [SR](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=suriname) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
@@ -146,8 +146,8 @@ The table references the following terms:
 | [TW](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=taiwan) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2025 |
 | [TJ](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=tajikistan) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
 | [TZ](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=tanzania) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/7/2024 |
-| [TH](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=thailand) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
-| [TR](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=turkiye) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
+| [TH](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=thailand) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
+| [TR](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=turkiye) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [UG](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=uganda) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
 | [UA](https://docs.stripe.com/tax/supported-countries/europe/collect-tax.md?tax-jurisdiction-europe=ukraine) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/30/2024 |
 | [AE](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=united-arab-emirates) | All PTCs | VAT | ✓ Supported | ✓ Supported | 10/1/2023 |
@@ -155,7 +155,7 @@ The table references the following terms:
 | [US](https://docs.stripe.com/tax/supported-countries/united-states.md) | All PTCs | Sales tax and some local taxes | ✓ Supported | ✓ Supported | 10/1/2023 |
 | [UY](https://docs.stripe.com/tax/supported-countries/latin-america-and-caribbean.md?tax-jurisdiction-latin-america=uruguay) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
 | [UZ](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=uzbekistan) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/7/2024 |
-| [VN](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=vietnam) | Digital products | VAT | ❌ Not supported | ✓ Supported | 8/17/2023 |
+| [VN](https://docs.stripe.com/tax/supported-countries/asia-pacific.md?tax-jurisdiction-asia-pacific=vietnam) | Digital products | VAT | ❌ Not supported | ✓ Supported | 10/1/2023 |
 | [ZM](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=zambia) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
 | [ZW](https://docs.stripe.com/tax/supported-countries/africa/collect-tax.md?tax-jurisdiction-africa=zimbabwe) | Digital products | VAT | ❌ Not supported | ✓ Supported | 12/18/2024 |
 
