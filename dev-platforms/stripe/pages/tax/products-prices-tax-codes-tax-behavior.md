@@ -57,7 +57,11 @@ After you set the default tax behavior, all prices that don’t have a `tax_beha
 - **Inclusive**: *Inclusive tax* (Inclusive tax is tax that doesn't change the final purchase price—the price the buyer sees already includes it. Examples of inclusive tax include VAT and GST outside of the US) is already included in the price. For example, a product has the price defined as 5.00 USD. The final price the customer pays is 5.00 USD.
 - **Exclusive**: *Exclusive tax* (Exclusive tax is tax that changes the final purchase price—the listed price the buyer sees doesn't include it, and it's added to the total. An example of exclusive tax is US sales tax) is added on top of the price. For example, a product has the price defined as 5.00 USD. The tax charged on this product could be 10% and would result in a final price of 5.50 USD. (Tax rates might differ—this is only an explanatory example.)
 
-To override this setting for an individual price, [set a tax behavior on a price](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#set-tax-behavior-on-price).
+Stripe doesn’t choose tax behavior based on customer location or tax jurisdiction, and you can’t configure tax behavior by customer location or tax jurisdiction. Your account default applies wherever tax behavior is unspecified. A top-level `tax_behavior` configures the Price’s default currency, while `currency_options.<currency>.tax_behavior` configures an additional currency on a multi-currency Price.
+
+If your integration uses different display-pricing approaches across markets, you must select or create the appropriate Price and currency configuration for each market. After `tax_behavior` is explicitly set to `inclusive` or `exclusive` on a Price or currency option, it can’t be changed. For more information, [set a tax behavior on a price](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#set-tax-behavior-on-price).
+
+For reporting, [itemized exports](https://docs.stripe.com/tax/reports.md#itemized-exports) include `tax_behavior`. For inclusive prices, `subtotal` includes tax and `total` remains tax-inclusive. Filing-currency fields provide converted amounts for tax filing reconciliation.
 
 ## Set tax behavior on a price  (Optional)
 

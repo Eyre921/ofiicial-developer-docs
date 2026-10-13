@@ -28,12 +28,12 @@ Guardrails protect conversations at three levels:
 
 System prompt hardening is the foundation. Input and response validation provide course corrections for anything that falls through the cracks. For your most critical rules, include them in both your system prompt and as an independent custom Guardrail - this creates defense in depth, so even if the LLM drifts from its instructions, the response validator catches it before delivery.
 
-| Guardrail    | What it does                                              | Protection                | Latency impact                               | Cost        | Exit strategy           | Release status |
-| ------------ | --------------------------------------------------------- | ------------------------- | -------------------------------------------- | ----------- | ----------------------- | -------------- |
-| Focus        | Keeps agents on-topic and aligned with your system prompt | System prompt hardening   | Minimal                                      | Included    | N/A                     | GA             |
-| Manipulation | Detects and blocks prompt injection                       | User input validation     | No effect                                    | Included    | Terminates conversation | GA             |
-| Content      | Flags and prevents inappropriate content                  | Agent response validation | [Depends on execution mode](#execution-mode) | Included    | Configurable            | Alpha          |
-| Custom       | Enforces your business-specific policies                  | Agent response validation | [Depends on execution mode](#execution-mode) | Usage-based | Configurable            | Alpha          |
+| Guardrail    | What it does                                              | Protection                | Latency impact                               | Cost        | Exit strategy           |
+| ------------ | --------------------------------------------------------- | ------------------------- | -------------------------------------------- | ----------- | ----------------------- |
+| Focus        | Keeps agents on-topic and aligned with your system prompt | System prompt hardening   | Minimal                                      | Included    | N/A                     |
+| Manipulation | Detects and blocks prompt injection                       | User input validation     | No effect                                    | Included    | Terminates conversation |
+| Content      | Flags and prevents inappropriate content                  | Agent response validation | [Depends on execution mode](#execution-mode) | Included    | Configurable            |
+| Custom       | Enforces your business-specific policies                  | Agent response validation | [Depends on execution mode](#execution-mode) | Usage-based | Configurable            |
 
 ## System Prompt Hardening
 
@@ -406,11 +406,3 @@ enforcement as a safety net. Using both creates defense in depth.
 * **[Testing](/docs/eleven-agents/customization/agent-testing):** Test your agent with different scenarios
 * **[Simulate conversations](/docs/eleven-agents/guides/simulate-conversation):** Programmatically test guardrail configurations
 * **[Conversation history redaction](/docs/eleven-agents/customization/privacy/conversation-history-redaction):** Redact sensitive information such as names and bank details from the conversation history
-
-## Release status
-
-Guardrails is generally available, including the Focus and Manipulation guardrails.
-
-The Content and Custom guardrails are in Alpha. We are actively improving them, and you can expect their defaults, dashboard controls, and API fields to continue evolving before general availability. Some changes may be breaking.
-
-If you use Content or Custom guardrails, we recommend validating your setup, monitoring guardrail behavior in your logs, and revisiting your configuration as updates roll out.

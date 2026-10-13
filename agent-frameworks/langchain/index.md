@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1692 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1694 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -569,6 +569,7 @@
 - `langsmith/self-host-organization-charts` — [View trace counts across your organization](pages/langsmith/self-host-organization-charts.md) · [原文](https://docs.langchain.com/langsmith/self-host-organization-charts)
 - `langsmith/self-host-playground-environment-settings` — [Use environment variables for model providers](pages/langsmith/self-host-playground-environment-settings.md) · [原文](https://docs.langchain.com/langsmith/self-host-playground-environment-settings)
 - `langsmith/self-host-sandbox-architecture` — [Self-hosted Sandbox architecture](pages/langsmith/self-host-sandbox-architecture.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-architecture)
+- `langsmith/self-host-sandbox-egress-proxy` — [Route self-hosted Sandbox egress through a forward proxy](pages/langsmith/self-host-sandbox-egress-proxy.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-egress-proxy)
 - `langsmith/self-host-sandbox-operations` — [Operate self-hosted Sandboxes](pages/langsmith/self-host-sandbox-operations.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-operations)
 - `langsmith/self-host-sandbox-scaling` — [Scale self-hosted Sandboxes](pages/langsmith/self-host-sandbox-scaling.md) · [原文](https://docs.langchain.com/langsmith/self-host-sandbox-scaling)
 - `langsmith/self-host-scale` — [Configure LangSmith for scale](pages/langsmith/self-host-scale.md) · [原文](https://docs.langchain.com/langsmith/self-host-scale)
@@ -1254,6 +1255,7 @@
 - `langsmith/troubleshooting-studio` — [Studio troubleshooting](pages/langsmith/troubleshooting-studio.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-studio)
 - `langsmith/troubleshooting-variable-caching` — [Troubleshoot variable caching](pages/langsmith/troubleshooting-variable-caching.md) · [原文](https://docs.langchain.com/langsmith/troubleshooting-variable-caching)
 - `langsmith/tuned-evaluators` — [Set up LangChain Tuned Evaluators](pages/langsmith/tuned-evaluators.md) · [原文](https://docs.langchain.com/langsmith/tuned-evaluators)
+- `langsmith/tunnels` — [Tunnels](pages/langsmith/tunnels.md) · [原文](https://docs.langchain.com/langsmith/tunnels)
 - `langsmith/typesafe-compatible-model` — [Connect to a TypeSafe-compatible model provider](pages/langsmith/typesafe-compatible-model.md) · [原文](https://docs.langchain.com/langsmith/typesafe-compatible-model)
 - `langsmith/upload-existing-experiments` — [How to upload experiments run outside of LangSmith with the REST API](pages/langsmith/upload-existing-experiments.md) · [原文](https://docs.langchain.com/langsmith/upload-existing-experiments)
 - `langsmith/upload-files-with-traces` — [Upload files with traces](pages/langsmith/upload-files-with-traces.md) · [原文](https://docs.langchain.com/langsmith/upload-files-with-traces)

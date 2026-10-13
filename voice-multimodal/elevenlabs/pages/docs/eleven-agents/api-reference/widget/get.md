@@ -104,6 +104,7 @@ Validation Error
 - `text_contents` (WidgetTextContents, optional) — Text contents of the widget
 - `styles` (WidgetStyles, optional) — Styles for the widget
 - `show_resize_button` (boolean, optional, default: true) — Whether to show the resize button
+- `end_confirmation_enabled` (boolean, optional, default: false) — Whether to ask the user to confirm before ending a chat or call
 - `supported_language_overrides` (list of string, optional)
 - `language_presets` (map from string to WidgetLanguagePresetResponse, optional) — Language presets for the widget
 - `text_only` (boolean, optional, default: false) — Whether the agent uses text-only mode
@@ -374,6 +375,7 @@ The avatar of the widget
       "dropdown_sheet_radius": 1.1
     },
     "show_resize_button": true,
+    "end_confirmation_enabled": true,
     "supported_language_overrides": [
       "es",
       "fr"

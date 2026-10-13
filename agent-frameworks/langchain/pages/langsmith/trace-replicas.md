@@ -326,7 +326,7 @@ Pass a configured `Client` directly into a replica to apply the desired mode at 
   @traceable()
   def joke():
       response = openai_client.chat.completions.create(
-          model="gpt-4o-mini",
+          model="gpt-5.4-mini",
           messages=[{"role": "user", "content": "Tell me a short joke."}],
       )
       return response.choices[0].message.content
@@ -375,7 +375,7 @@ Pass a configured `Client` directly into a replica to apply the desired mode at 
 
   async function jokeImpl() {
     const response = await openaiClient.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-5.4-mini",
       messages: [{ role: "user", content: "Tell me a short joke." }],
     });
     return response.choices[0].message.content;

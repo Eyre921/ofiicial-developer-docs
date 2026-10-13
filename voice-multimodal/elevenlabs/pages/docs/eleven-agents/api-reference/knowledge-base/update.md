@@ -34,7 +34,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/knowledge-base
 This endpoint expects an object.
 
 - `name` (string, optional) — A custom, human-readable name for the document.
-- `content` (string, optional) — Updated content for the document. Only supported for text documents, URL documents with auto-sync disabled, and file documents.
+- `content` (string, optional) — Updated content for the document. Only supported for text documents, URL documents with auto-sync disabled, and file documents that are not synced from an external source.
 
 ## Response
 

@@ -527,19 +527,27 @@ These settings can differ between versions and branches:
 
 ### Per-agent settings
 
-These settings are shared across all versions:
+These settings belong to the agent rather than to a version, so every branch shares them:
 
-| Setting        | Description                                                       |
-| -------------- | ----------------------------------------------------------------- |
-| `name`, `tags` | Agent name and tags (only updated when committing to main branch) |
-| `auth`         | Authentication settings and allowlist                             |
-| `call_limits`  | Concurrency and daily limits                                      |
-| `privacy`      | Retention settings and zero-retention mode                        |
-| `ban`          | Ban status (admin only)                                           |
+| Setting                                 | Description                                                    |
+| --------------------------------------- | -------------------------------------------------------------- |
+| `name`, `tags`                          | Agent name and tags                                            |
+| `auth`                                  | Authentication settings and allowlist                          |
+| `call_limits`                           | Concurrency and daily limits                                   |
+| `queueing_config`                       | Wait queue and hold audio for callers over the concurrency cap |
+| `privacy`                               | Retention settings, zero-retention mode, and user memories     |
+| `analysis_llm`                          | LLM used for post-call analysis                                |
+| `topic_discovery`, `sentiment_analysis` | Agent-level analysis settings                                  |
+| `simulation_library`                    | Simulation library settings                                    |
+| `alerting`                              | Alert webhooks and monitor thresholds                          |
+| `ban`                                   | Ban status (admin only)                                        |
 
-> **Note**
+> **Warning**
 >
-> Changes to name and tags on non-main branches don't persist to the agent until merged to main.
+> Per-agent settings can only be changed on the main branch. On other branches the dashboard shows
+> them as read-only, and publishing a version to a non-main branch discards any changes to them.
+> Merging the branch into main afterwards does not apply them either. Switch to the main branch to
+> change them; once published there, the change applies to every branch.
 
 ## Best practices
 

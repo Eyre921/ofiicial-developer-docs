@@ -20,11 +20,11 @@ Send a reply to a message in an inbox thread.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.32.1-preview-inboxes.6
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.22.0-preview-inboxes.9
     ```
   </CodeGroup>
@@ -37,6 +37,11 @@ recipients with `cc` and `bcc`. The total number of recipients can't exceed 50,
 counted after `reply_all` adds everyone on the message.
 
 At least one of `html` or `text` is required.
+
+The reply is threaded for the recipient. `In-Reply-To` is set to the
+`Message-ID` of the message you reply to, and `References` to that message's
+`References` followed by its `Message-ID`. These headers can't be set or
+overridden.
 
 ## Path Parameters
 
@@ -86,6 +91,40 @@ At least one of `html` or `text` is required.
   are never copied.
 </ParamField>
 
+<ParamField type="array">
+  Filename and content of attachments (max 25MB of content per message). A
+  `path` is fetched when the email is sent and does not count toward that limit.
+
+  [See examples](/docs/dashboard/emails/attachments)
+
+  <Expandable title="properties">
+    <ParamField type="buffer | string">
+      Content of an attached file, passed as a buffer or Base64 string.
+    </ParamField>
+
+    <ParamField type="string">
+      Name of attached file.
+    </ParamField>
+
+    <ParamField type="string">
+      Path where the attachment file is hosted
+    </ParamField>
+
+    <ResendParamField type="string">
+      Content type for the attachment.
+    </ResendParamField>
+
+    <ResendParamField type="string">
+      You can embed images using the content id parameter for the attachment. To show the image, you need to include the ID in the `src` attribute of the `img` tag (e.g., `<img src="cid:...">`) of your HTML. [Learn about inline images](/docs/dashboard/emails/embed-inline-images).
+    </ResendParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField type="object">
+  Custom headers to add to the email. `In-Reply-To`, `References`, and
+  `Reply-To` can't be set and return `422`.
+</ParamField>
+
 ## Headers
 
 <ParamField type="string">
@@ -104,62 +143,6 @@ At least one of `html` or `text` is required.
   The ID of the queued outbound email.
 </ParamField>
 
-<ParamField type="string">
-  The ID of the queued outbound email. Same value as `id`.
-</ParamField>
-
-<ParamField type="string">
-  Always `outbound`.
-</ParamField>
-
-<ParamField type="string">
-  Sender email address.
-</ParamField>
-
-<ParamField type="string[]">
-  The recipients of the message.
-</ParamField>
-
-<ParamField type="string[]">
-  The CC recipients of the message.
-</ParamField>
-
-<ParamField type="string[]">
-  The BCC recipients of the message.
-</ParamField>
-
-<ParamField type="string[]">
-  Always empty in this response.
-</ParamField>
-
-<ParamField type="string">
-  The subject of the sent reply.
-</ParamField>
-
-<ParamField type="string | null">
-  Always `null` in this response.
-</ParamField>
-
-<ParamField type="string | null">
-  The HTML body.
-</ParamField>
-
-<ParamField type="string | null">
-  The plain-text body.
-</ParamField>
-
-<ParamField type="array">
-  Always empty in this response.
-</ParamField>
-
-<ParamField type="boolean">
-  Always `true`.
-</ParamField>
-
-<ParamField type="string">
-  ISO 8601 timestamp when the message was sent.
-</ParamField>
-
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
   import { Resend } from 'resend';
@@ -174,6 +157,12 @@ At least one of `html` or `text` is required.
     bcc: ['records@example.com'],
     html: '<p>Refund issued for order 1041.</p>',
     text: 'Refund issued for order 1041.',
+    attachments: [
+      {
+        path: 'https://resend.com/static/sample/invoice.pdf',
+        filename: 'invoice.pdf',
+      },
+    ],
   });
   ```
 
@@ -185,7 +174,13 @@ At least one of `html` or `text` is required.
     "cc": ["billing@example.com"],
     "bcc": ["records@example.com"],
     "html": "<p>Refund issued for order 1041.</p>",
-    "text": "Refund issued for order 1041."
+    "text": "Refund issued for order 1041.",
+    "attachments": [
+      {
+        "path": "https://resend.com/static/sample/invoice.pdf",
+        "filename": "invoice.pdf"
+      }
+    ]
   }'
   ```
 
@@ -202,21 +197,7 @@ At least one of `html` or `text` is required.
 <ResponseExample>
   ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
   {
-    "id": "6a0c8e58-3d9e-4f7a-8b14-2e3f4a5b6c71",
-    "email_id": "6a0c8e58-3d9e-4f7a-8b14-2e3f4a5b6c71",
-    "direction": "outbound",
-    "from": "support@example.com",
-    "to": ["replies@example.org"],
-    "cc": ["billing@example.com"],
-    "bcc": ["records@example.com"],
-    "reply_to": [],
-    "subject": "Re: Refund for order 1041",
-    "message_id": null,
-    "html": "<p>Refund issued for order 1041.</p>",
-    "text": "Refund issued for order 1041.",
-    "attachments": [],
-    "read": true,
-    "received_at": "2026-08-05T14:12:04.110Z"
+    "id": "6a0c8e58-3d9e-4f7a-8b14-2e3f4a5b6c71"
   }
   ```
 </ResponseExample>

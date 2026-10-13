@@ -11,7 +11,7 @@ path: docs/eleven-agents/api-reference/agents/branches/update
 PATCH https://api.elevenlabs.io/v1/convai/agents/{agent_id}/branches/{branch_id}
 Content-Type: application/json
 
-Update agent branch properties such as archiving status and protection level
+Update agent branch properties such as archiving status, protection level, and auto-rebase onto main
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/update
 
@@ -38,6 +38,7 @@ This endpoint expects an object.
 - `is_archived` (boolean, optional) — Whether the branch should be archived
 - `protection_status` (enum, optional, default: writer_perms_required) — The protection level for the branch
   - Allowed values: `writer_perms_required`, `admin_perms_required`
+- `auto_rebase` (boolean, optional) — When true, rebase this branch onto main automatically after each new main version. Cannot be enabled on the main branch.
 
 ## Response
 
@@ -54,6 +55,7 @@ Successful Response
 - `is_archived` (boolean, required)
 - `protection_status` (enum, optional, default: writer_perms_required)
   - Allowed values: `writer_perms_required`, `admin_perms_required`
+- `auto_rebase` (boolean, optional, default: false)
 - `access_info` (ResourceAccessInfo, optional) — Access information for the branch
 - `current_live_percentage` (double, optional, default: 0) — Percentage of traffic live on the branch
 - `parent_branch` (AgentBranchBasicInfo, optional) — Parent branch of the branch
@@ -135,6 +137,7 @@ Validation Error
   "last_committed_at": 1,
   "is_archived": true,
   "protection_status": "writer_perms_required",
+  "auto_rebase": true,
   "access_info": {
     "is_creator": true,
     "creator_name": "John Doe",

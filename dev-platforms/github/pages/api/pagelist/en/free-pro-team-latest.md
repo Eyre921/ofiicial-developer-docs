@@ -458,6 +458,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/billing/how-tos/manage-plan-and-licenses
 /en/billing/how-tos/manage-plan-and-licenses/upgrade-plan
 /en/billing/how-tos/manage-plan-and-licenses/downgrade-plan
+/en/billing/how-tos/manage-plan-and-licenses/change-billing-cycle
 /en/billing/how-tos/manage-plan-and-licenses/manage-pending-changes
 /en/billing/how-tos/manage-plan-and-licenses/view-enterprise-usage
 /en/billing/how-tos/manage-plan-and-licenses/manage-user-licenses
@@ -748,7 +749,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/concepts/code-scanning/codeql/query-reference-files
 /en/code-security/concepts/code-scanning/codeql/query-packs
 /en/code-security/concepts/code-scanning/tool-status-page
-/en/code-security/concepts/code-scanning/pull-request-alert-metrics
+/en/code-security/concepts/code-scanning/code-scanning-on-pull-requests
 /en/code-security/concepts/code-scanning/repository-properties
 /en/code-security/concepts/supply-chain-security
 /en/code-security/concepts/supply-chain-security/supply-chain-security

@@ -38,7 +38,7 @@ This endpoint expects a CreateProcedureRequestModel.
 - `content` (string, optional, default: ) — Initial procedure content
 - `type` (enum, optional, default: free_form) — Procedure type
   - Allowed values: `free_form`, `deterministic`, `folder`
-- `trigger` (string, optional) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it. If omitted or null, the trigger is derived from the content instead. Also accepts `description` as an alias.
+- `trigger` (string, optional) — When the agent should use this procedure. Empty string means this is a sub-procedure that should only start when another procedure references it. Omit this field (or send null) to keep the stored trigger, which is empty on create. Send `""` to clear it. `description` is accepted as an alias.
 - `folder_parent_id` (string, optional) — Procedure ID of the folder to create this procedure in, or null for root.
 
 ## Response

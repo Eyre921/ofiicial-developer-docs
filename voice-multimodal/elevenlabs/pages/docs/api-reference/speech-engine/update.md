@@ -279,6 +279,7 @@ Audio effects applied to generated speech: a filter preset, perceived distance, 
 - `environment_id` (string, optional, nullable) — ID of a reverb environment that places the voice in a space, such as `small_room` or `hall`. List valid IDs with `GET /v1/audio-effects/catalog`. Reverb is rendered in stereo and adds a tail of up to several seconds after the speech ends.
 - `background_noise_id` (string, optional, nullable) — ID of a background noise bed looped under the voice, such as `cafe` or `keyboard`. List valid IDs with `GET /v1/audio-effects/catalog`.
 - `send_level` (double, optional, default: 1) — How much of the voice feeds the reverb, from 0 (none) to 1 (full). Only applies when `environment_id` is set; 0 turns the reverb off.
+- `pan` (double, optional, default: 0) — Stereo position of the voice, from -1 (hard left) through 0 (center) to 1 (hard right). Only the voice is panned; reverb and background noise stay centered.
 - `seed` (integer, optional, nullable, deprecated) — Has no effect.
 
 ### FileInputConfig
@@ -320,6 +321,7 @@ Audio effects applied to generated speech: a filter preset, perceived distance, 
 - `environment_id` (string, required, nullable) — ID of a reverb environment that places the voice in a space, such as `small_room` or `hall`. List valid IDs with `GET /v1/audio-effects/catalog`. Reverb is rendered in stereo and adds a tail of up to several seconds after the speech ends.
 - `background_noise_id` (string, required, nullable) — ID of a background noise bed looped under the voice, such as `cafe` or `keyboard`. List valid IDs with `GET /v1/audio-effects/catalog`.
 - `send_level` (double, required, default: 1) — How much of the voice feeds the reverb, from 0 (none) to 1 (full). Only applies when `environment_id` is set; 0 turns the reverb off.
+- `pan` (double, required, default: 0) — Stereo position of the voice, from -1 (hard left) through 0 (center) to 1 (hard right). Only the voice is panned; reverb and background noise stay centered.
 - `seed` (integer, required, nullable, deprecated) — Has no effect.
 
 ### ValidationErrorLocItems

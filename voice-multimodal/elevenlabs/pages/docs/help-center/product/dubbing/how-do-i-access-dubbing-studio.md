@@ -8,9 +8,9 @@ path: docs/help-center/product/dubbing/how-do-i-access-dubbing-studio
 
 # How do I access Dubbing Studio?
 
-By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic. There is no in-app option to edit the content. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
+By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic and can be edited in the UI. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
 
-If you want to use Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
+If you want to use legacy Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
 
 It's not possible to convert an existing automatic dub to a Dubbing project.
 

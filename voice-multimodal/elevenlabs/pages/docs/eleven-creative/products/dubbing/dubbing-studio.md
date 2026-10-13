@@ -239,9 +239,9 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
     <td>
       #### How do I access Dubbing Studio?
 
-      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic. There is no in-app option to edit the content. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
+      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic and can be edited in the UI. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
 
-      If you want to use Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
+      If you want to use legacy Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
 
       It's not possible to convert an existing automatic dub to a Dubbing project.
 
@@ -259,13 +259,14 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
     <td>
       #### Why can't I see the edit button next to my dub?
 
-      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic. There is no in-app edit button for Dubbing v2.
+      By default, when you create a new dub, our latest Dubbing v2 model will be used. Dubs created using the v2 model are automatic and can be edited in the UI.
 
-      The edit button is only available when using Dubbing Studio, which is only available for our legacy v1 Dubbing model. To use Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
+      The legacy Dubbing Studio is only available for the legacy v1 model. To use legacy Dubbing Studio, choose **Dubbing v1** as the model, then select **Dubbing project**.
 
       For Dubbing v2, you can edit transcripts and regenerate audio via the API on Enterprise plans only.
 
-      **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
+      **Note:** legacy Dubbing Studio is in maintenance mode and receives critical bug fixes
+      only.
     </td>
   </tr>
 
@@ -336,7 +337,7 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
       Select the language or languages you want to dub into in the **Choose languages** selector. You'll be charged for each language you select here. See [How much does Dubbing cost?](/docs/help-center/product/dubbing/how-much-does-dubbing-cost) for a full breakdown.
 
-      By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are automatic. There is no in-app option to edit the content. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
+      By default, you'll use our latest Dubbing model, v2. Dubs created using the v2 model are automatic and can be edited in the UI. Transcript editing and audio regeneration via the API are available on Enterprise plans only.
 
       When using Dubbing v2 via the website, there's a 2 GB and 180 minutes limit for the uploaded file, and you need to stay below both.
 
@@ -344,7 +345,7 @@ Adam,"0:00:06,000","0:00:10,000","I'm fine, thank you.","Estoy bien, gracias."
 
 
 
-      If you want to create a Dubbing Studio project so you can edit your dubs, choose **Dubbing v1** as the model, then select **Dubbing project**.
+      If you want to create a legacy Dubbing Studio project so you can edit your dubs, choose **Dubbing v1** as the model, then select **Dubbing project**.
 
       **Note:** Dubbing Studio is in maintenance mode and receives critical bug fixes only.
     </td>

@@ -128,6 +128,8 @@ Anthropic models include a cache write cost in addition to cached input.
 |                                       |                |           |         |                          |       |              |        |
 | Gemini 3.8 Flash[^gemini-flash-promo] | GA             | Versatile | Default | Not applicable           | $0.75 |       $0.075 |  $3.75 |
 |                                       |                |           |         |                          |       |              |        |
+| Gemini 4 Argon[^gemini-4-argon-promo] | GA             | Powerful  | Default | Not applicable           | $2.00 |        $0.10 | $10.00 |
+|                                       |                |           |         |                          |       |              |        |
 
 ### Fine-tuned (GitHub)
 
@@ -195,3 +197,9 @@ You can view your current GitHub Actions usage for Copilot code review in the fo
 Copilot Pro and Copilot Pro+ subscribers on **existing annual billing plans** using the **request-based billing** model have different model multipliers. See [Model multipliers for annual plans on request-based billing (legacy)](/en/copilot/reference/copilot-billing/request-based-billing-legacy/model-multipliers-for-annual-plans).
 
 [^gemini-flash-promo]: Gemini 3.7 Flash and Gemini 3.8 Flash are available at the promotional pricing of $0.75 per 1M input tokens, $0.075 per 1M cached input tokens, and $3.75 per 1M output tokens through December 31, 2026.
+
+<!-- expires 2026-12-01 -->
+
+[^gemini-4-argon-promo]: Gemini 4 Argon is available at the promotional pricing of $2.00 per 1M input tokens, $0.10 per 1M cached input tokens, and $10.00 per 1M output tokens until December 1, 2026.
+
+<!-- end expires 2026-12-01 -->

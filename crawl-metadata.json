@@ -1,6 +1,6 @@
 {
   "ai-models/xai-grok": {
-    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15005 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.x.ai/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15004 milliseconds\n"
   },
   "ai-models/mistral": {
     "status": "error: curl failed (28) for https://docs.mistral.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
@@ -46,7 +46,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1692,
+    "pages": 1694,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -101,7 +101,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -120,7 +120,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 972,
+    "pages": 973,
     "status": "ok"
   },
   "dev-platforms/expo": {
@@ -147,7 +147,7 @@
     "status": "ok"
   },
   "dev-platforms/sentry": {
-    "pages": 118,
+    "pages": 119,
     "status": "ok"
   },
   "dev-platforms/notion": {
@@ -183,18 +183,18 @@
     "status": "ok"
   },
   "dev-platforms/shopify": {
-    "status": "error: curl failed (56) for https://shopify.dev/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (56) Recv failure: Connection reset by peer\n"
+    "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 96,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
-    "pages": 472,
+    "pages": 471,
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 199,
+    "pages": 200,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -202,7 +202,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "status": "error: curl failed (28) for https://elevenlabs.io/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Operation timed out after 90002 milliseconds with 213151 bytes received\ncurl: (28) Operation timed out after 90001 milliseconds with"
+    "pages": 1377,
+    "status": "ok"
   },
-  "_last_crawl": "2026-10-13T11:30:39Z"
+  "_last_crawl": "2026-10-13T23:30:33Z"
 }

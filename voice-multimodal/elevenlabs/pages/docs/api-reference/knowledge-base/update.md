@@ -34,7 +34,7 @@ Reference: https://elevenlabs.io/docs/api-reference/knowledge-base/update
 This endpoint expects a Body_Update_document_v1_convai_knowledge_base__documentation_id__patch.
 
 - `name` (string, optional, nullable) — A custom, human-readable name for the document.
-- `content` (string, optional, nullable) — Updated content for the document. Only supported for text documents, URL documents with auto-sync disabled, and file documents.
+- `content` (string, optional, nullable) — Updated content for the document. Only supported for text documents, URL documents with auto-sync disabled, and file documents that are not synced from an external source.
 
 ## Response
 

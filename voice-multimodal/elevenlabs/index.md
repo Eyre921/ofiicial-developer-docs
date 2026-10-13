@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1376 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1377 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -55,6 +55,7 @@
 - `docs/api-reference/assets/delete` — [Delete Asset](pages/docs/api-reference/assets/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/delete.md)
 - `docs/api-reference/assets/get` — [Get Asset](pages/docs/api-reference/assets/get.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/get.md)
 - `docs/api-reference/assets/list` — [List Assets](pages/docs/api-reference/assets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/assets/list.md)
+- `docs/api-reference/audio-effects/get-catalog` — [Get Audio Effects Catalog](pages/docs/api-reference/audio-effects/get-catalog.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-effects/get-catalog.md)
 - `docs/api-reference/audio-isolation/convert` — [Audio isolation](pages/docs/api-reference/audio-isolation/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/convert.md)
 - `docs/api-reference/audio-isolation/delete` — [Delete Audio Isolation History Item](pages/docs/api-reference/audio-isolation/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/delete.md)
 - `docs/api-reference/audio-isolation/list` — [Get Audio Isolation History](pages/docs/api-reference/audio-isolation/list.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/list.md)

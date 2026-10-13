@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 199 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 200 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -185,6 +185,7 @@
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7` — [Claude 4.7 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5` — [Claude 5.5 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-5-5.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1` — [Claude Fable 5.1 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/fable-5-1.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/gemini-4` — [Gemini 4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gemini-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gemini-4.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4` — [GPT-5.4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6` — [GPT-5.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6` — [GPT-6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-6.md)

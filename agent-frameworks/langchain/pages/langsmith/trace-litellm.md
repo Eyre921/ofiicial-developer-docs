@@ -68,7 +68,7 @@ You can use `LANGSMITH_TRACING=true` together with `@traceable` for predictable 
    @traceable(name="LiteLLM Chat Completion")
    def run(messages):
        response = completion(
-           model="gpt-4o",
+           model="gpt-5.5",
            messages=messages,
        )
        # Return the assistant message so the LangSmith UI shows role + content
@@ -140,7 +140,7 @@ LiteLLM callbacks run in an asynchronous environment. When making asynchronous c
 
    async def main():
        response = await acompletion(
-           model="gpt-4o",
+           model="gpt-5.5",
            messages=[
                {"role": "user", "content": "Explain observability in LLM systems."}
            ],
@@ -208,7 +208,7 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
      )
 
      response = client.chat.completions.create(
-         model="gpt-4o",
+         model="gpt-5.5",
          messages=[
              {"role": "user", "content": "What is LiteLLM?"}
          ],
@@ -226,7 +226,7 @@ The LiteLLM proxy runs as a standalone server and exposes an OpenAI-compatible A
      });
 
      const response = await client.chat.completions.create({
-     model: "gpt-4o",
+     model: "gpt-5.5",
      messages: [
          { role: "user", content: "Explain LiteLLM tracing." }
      ],

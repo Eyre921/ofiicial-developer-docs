@@ -67,6 +67,6 @@ Our team will guide you through the integration process and help you leverage Se
 
 ## Pages in this section
 
+- [Account Provisioning API](https://docs.sentry.io/product/partnership-platform/account-provisioning-api.md)
 - [OAuth Integration](https://docs.sentry.io/product/partnership-platform/oauth-integration.md)
-- [account-provisioning-api](https://docs.sentry.io/product/partnership-platform/account-provisioning-api.md)
 

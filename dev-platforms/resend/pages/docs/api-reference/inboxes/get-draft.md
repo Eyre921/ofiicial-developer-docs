@@ -20,11 +20,11 @@ Retrieve a single draft by its ID.
   Once you have access, upgrade your Resend SDK to use the new methods:
 
   <CodeGroup>
-    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install resend@6.32.1-preview-inboxes.6
     ```
 
-    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+    ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
     npm install -g resend-cli@2.22.0-preview-inboxes.9
     ```
   </CodeGroup>
@@ -98,6 +98,28 @@ Retrieve a single draft by its ID.
   ISO 8601 timestamp when the draft was last saved.
 </ParamField>
 
+<ParamField type="array">
+  The files saved on the draft.
+
+  <Expandable title="properties">
+    <ParamField type="string">
+      The ID of the attachment.
+    </ParamField>
+
+    <ParamField type="string">
+      The filename of the attachment.
+    </ParamField>
+
+    <ParamField type="string">
+      The MIME type of the attachment, such as `application/pdf`.
+    </ParamField>
+
+    <ParamField type="number">
+      The size of the attachment in bytes.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
   import { Resend } from 'resend';
@@ -138,7 +160,15 @@ Retrieve a single draft by its ID.
     "reply_to_email_id": null,
     "email_id": null,
     "created_at": "2026-08-05T14:12:04.110Z",
-    "updated_at": "2026-08-05T14:12:04.110Z"
+    "updated_at": "2026-08-05T14:12:04.110Z",
+    "attachments": [
+      {
+        "id": "9d4f2b81-6c3a-4e7d-8b12-0a5c6d7e8f90",
+        "filename": "receipt.pdf",
+        "content_type": "application/pdf",
+        "size": 5
+      }
+    ]
   }
   ```
 </ResponseExample>

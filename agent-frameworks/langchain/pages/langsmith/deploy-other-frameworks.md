@@ -170,7 +170,7 @@ Follow the same steps for each framework. Choose your stack in the tabs inside e
 
         assistant = AssistantAgent(
             name="assistant",
-            model_client=OpenAIChatCompletionClient(model="gpt-4o"),
+            model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
         )
         ```
       </Tab>
@@ -483,7 +483,7 @@ The following examples combine agent definition, Functional API wrapping, tracin
 
     assistant = AssistantAgent(
         name="assistant",
-        model_client=OpenAIChatCompletionClient(model="gpt-4o"),
+        model_client=OpenAIChatCompletionClient(model="gpt-5.5"),
     )
 
     @task

@@ -218,7 +218,7 @@ path: docs/_llms/docs.txt
 - [TanStack AI](https://openrouter.ai/docs/guides/community/tanstack-ai.md): Using OpenRouter with TanStack AI
 - [Jev Documentation: Using the TypeSafe Decision Model on OpenRouter](https://openrouter.ai/docs/guides/community/jev.md): The OpenRouter hub for Jev, the TypeSafe decision model. What Jev is, how to get access, the Decisions API, TypeScript and Python SDKs, cookbooks, pricing, and demos
 - [Jev Tutorial: Make Your First Decision Call on OpenRouter](https://openrouter.ai/docs/guides/community/jev-tutorial.md): Step-by-step Jev tutorial. Send a typed decision request to the TypeSafe model on OpenRouter with curl, TypeScript, or Python and read the probabilities it returns
-- [Multimodal Decisions: Images in the Decisions API](https://openrouter.ai/docs/guides/community/multimodal-decisions.md): Send images to Decisions models on OpenRouter. Quickstart, the image part format, supported models, and size limits.
+- [Multimodal Decisions: Images, Audio, and Video in the Decisions API](https://openrouter.ai/docs/guides/community/multimodal-decisions.md): Send images, audio, and video to Decisions models on OpenRouter. Quickstart, part formats, supported models, and size limits.
 - [Jev SDK for TypeScript and Python (TypeSafe SDK)](https://openrouter.ai/docs/guides/community/typesafe-sdk.md): Point the official TypeSafe JavaScript or Python SDK at OpenRouter to call Jev with your OpenRouter API key
 - [Vercel AI SDK](https://openrouter.ai/docs/guides/community/vercel-ai-sdk.md): Using OpenRouter with Vercel AI SDK
 - [Xcode](https://openrouter.ai/docs/guides/community/xcode.md): Using OpenRouter with Apple Intelligence in Xcode

@@ -54,6 +54,7 @@ This endpoint expects a Body_text_to_speech_stream.
 - `apply_text_normalization` (enum, optional, default: auto) — This parameter controls text normalization with three modes: 'auto', 'on', and 'off'. When set to 'auto', the system will automatically decide whether to apply text normalization (e.g., spelling out numbers). With 'on', text normalization will always be applied, while with 'off', it will be skipped.
   - Allowed values: `auto`, `on`, `off`
 - `apply_language_text_normalization` (boolean, optional, default: false) — This parameter controls language text normalization. This helps with proper pronunciation of text in some supported languages. WARNING: This parameter can heavily increase the latency of the request. Currently only supported for Japanese.
+- `audio_effects` (EffectsSpec-Input, optional, nullable) — Audio effects applied to the generated audio. Unknown IDs return 404 with `param` naming the field. Reverb (`environment_id` with `send_level` above 0) and a non-zero `pan` produce stereo audio and are rejected with 400 for `ulaw_*`, `alaw_*`, and `pcm_*` output formats. Effects don't change the cost of the request.
 
 ## Response
 
@@ -85,6 +86,18 @@ Validation Error
 
 - `pronunciation_dictionary_id` (string, required) — The ID of the pronunciation dictionary.
 - `version_id` (string, optional, nullable) — The ID of the version of the pronunciation dictionary. If not provided, the latest version will be used.
+
+### EffectsSpec-Input
+
+Audio effects applied to generated speech: a filter preset, perceived distance, a reverb environment, a background noise bed, and stereo panning. Leave every field at its default to get unprocessed audio.
+
+- `filter_preset_id` (string, optional, nullable) — ID of a filter preset that colors the voice, such as `phone` or `old_radio`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `distance` (double, optional, default: 0) — How far the speaker sounds from the microphone, from 0 (close, unchanged) to 1 (far). Higher values roll off low and high frequencies and, when an environment is set, shift the balance from the dry voice toward the reverb.
+- `environment_id` (string, optional, nullable) — ID of a reverb environment that places the voice in a space, such as `small_room` or `hall`. List valid IDs with `GET /v1/audio-effects/catalog`. Reverb is rendered in stereo and adds a tail of up to several seconds after the speech ends.
+- `background_noise_id` (string, optional, nullable) — ID of a background noise bed looped under the voice, such as `cafe` or `keyboard`. List valid IDs with `GET /v1/audio-effects/catalog`.
+- `send_level` (double, optional, default: 1) — How much of the voice feeds the reverb, from 0 (none) to 1 (full). Only applies when `environment_id` is set; 0 turns the reverb off.
+- `pan` (double, optional, default: 0) — Stereo position of the voice, from -1 (hard left) through 0 (center) to 1 (hard right). Only the voice is panned; reverb and background noise stay centered.
+- `seed` (integer, optional, nullable, deprecated) — Has no effect.
 
 ### ValidationError
 

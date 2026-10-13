@@ -231,7 +231,7 @@ Here's an example:
               history[thread_id] = []
           history[thread_id] = history[thread_id] + [inputs]
           res = client.chat.completions.create(
-              model="gpt-5.4-nano",
+              model="gpt-5.4-mini",
               messages=[
                   {
                       "role": "system",
@@ -246,7 +246,7 @@ Here's an example:
 
       user = create_llm_simulated_user(
           system="You are a nice customer who wants a refund for their car.",
-          model="openai:gpt-5.4-nano",
+          model="openai:gpt-5.4-mini",
           fixed_responses=[
               inputs,
           ],
@@ -303,7 +303,7 @@ Here's an example:
           }
           history[threadId].push(inputs);
           const res = await client.chat.completions.create({
-            model: "gpt-5.4-nano",
+            model: "gpt-5.4-mini",
             messages: [
               {
                 role: "system",
@@ -321,7 +321,7 @@ Here's an example:
         const user = createLLMSimulatedUser({
           system:
             "You are a nice customer who wants a refund for their car.",
-          model: "openai:gpt-5.4-nano",
+          model: "openai:gpt-5.4-mini",
           fixedResponses: inputs.messages,
         });
 
@@ -402,7 +402,7 @@ Here's an example:
               history[thread_id] = []
           history[thread_id] = history[thread_id] + [next_message]
           res = client.chat.completions.create(
-              model="gpt-5.4-nano",
+              model="gpt-5.4-mini",
               messages=[
                   {
                       "role": "system",
@@ -417,7 +417,7 @@ Here's an example:
 
       user = create_llm_simulated_user(
           system="You are a nice customer who wants a refund for their car.",
-          model="openai:gpt-5.4-nano",
+          model="openai:gpt-5.4-mini",
           fixed_responses=inputs["messages"],
       )
       res = run_multiturn_simulation(
@@ -479,7 +479,7 @@ Here's an example:
       }
       history[threadId].push(nextMessage);
       const res = await client.chat.completions.create({
-        model: "gpt-5.4-nano",
+        model: "gpt-5.4-mini",
         messages: [
           {
             role: "system",
@@ -497,7 +497,7 @@ Here's an example:
     const user = createLLMSimulatedUser({
       system:
         "You are a nice customer who wants a refund for their car.",
-      model: "openai:gpt-5.4-nano",
+      model: "openai:gpt-5.4-mini",
       fixedResponses: inputs.messages,
     });
 
@@ -565,7 +565,7 @@ The above examples run using the same simulated user persona for all input examp
               history[thread_id] = []
           history[thread_id] = history[thread_id] + [next_message]
           res = client.chat.completions.create(
-              model="gpt-5.4-nano",
+              model="gpt-5.4-mini",
               messages=[
                   {
                       "role": "system",
@@ -580,7 +580,7 @@ The above examples run using the same simulated user persona for all input examp
 
       user = create_llm_simulated_user(
           system=inputs["simulated_user_prompt"],
-          model="openai:gpt-5.4-nano",
+          model="openai:gpt-5.4-mini",
           fixed_responses=inputs["messages"],
       )
       res = run_multiturn_simulation(
@@ -660,7 +660,7 @@ The above examples run using the same simulated user persona for all input examp
       }
       history[threadId].push(nextMessage);
       const res = await client.chat.completions.create({
-        model: "gpt-5.4-nano",
+        model: "gpt-5.4-mini",
         messages: [
           {
             role: "system",
@@ -677,7 +677,7 @@ The above examples run using the same simulated user persona for all input examp
 
     const user = createLLMSimulatedUser({
       system: inputs.simulated_user_prompt,
-      model: "openai:gpt-5.4-nano",
+      model: "openai:gpt-5.4-mini",
       fixedResponses: inputs.messages,
     });
 

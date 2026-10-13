@@ -174,7 +174,7 @@ Include the `{CHECKOUT_SESSION_ID}` template variable in the URL. Before redirec
 
 ### Define a product to sell
 
-Define the [products and prices](https://docs.stripe.com/products-prices/manage-prices.md) for your Checkout Session. Typically, that means using a predefined product [Price ID](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price). However, if you need dynamic pricing that can’t be known ahead of time, use [price_data](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price_data) to define prices inline.
+Define the [products and prices](https://docs.stripe.com/products-prices/manage-prices.md) for your Checkout Session. Typically, that means using a predefined product [Price ID](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price). However, if you need dynamic pricing that can’t be known ahead of time, use [price_data](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-line_items-price_data) to define prices inline. Learn more about [inline pricing](https://docs.stripe.com/products-prices/how-products-and-prices-work.md#inline-pricing).
 
 ### Handle different transaction types
 

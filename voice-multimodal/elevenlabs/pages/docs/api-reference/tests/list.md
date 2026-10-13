@@ -37,6 +37,7 @@ Reference: https://elevenlabs.io/docs/api-reference/tests/list
   - Allowed values: `default`, `folders_first`
 - `sharing_mode` (enum, optional) — Filter test visibility. Use `shared_with_me` to return only tests/folders shared with the current user that they did not create.
   - Allowed values: `all`, `shared_with_me`
+- `created_by_user_id` (string, optional, nullable) — Filter tests and folders by creator user ID. Use '@me' to refer to the authenticated user.
 
 ## Response
 

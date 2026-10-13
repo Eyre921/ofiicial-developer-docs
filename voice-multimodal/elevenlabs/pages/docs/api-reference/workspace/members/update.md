@@ -33,6 +33,7 @@ This endpoint expects a Body_Update_member_v1_workspace_members_post.
 - `is_locked` (boolean, optional, nullable) — Whether to lock or unlock the user account.
 - `workspace_seat_type` (enum, optional, nullable) — The workspace seat type
   - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
+- `allow_downgrade_to_basic_seat` (boolean, optional, default: false) — When unlocking a user whose original seat type has no seats available but a basic seat is available, downgrade the user to a basic seat instead of failing.
 - `workspace_role` (enum, optional, nullable, deprecated) — The workspace role of the user. This is deprecated, use `workspace_seat_type` instead.
   - Allowed values: `workspace_admin`, `workspace_member`, `workspace_lite_member`
 

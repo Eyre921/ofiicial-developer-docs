@@ -54,6 +54,20 @@ The account must meet all of the following criteria in the previous calendar yea
 - More than $20,000 in gross volume
 - More than 200 transactions
 
+## Connected accounts that share a legal entity 
+
+Stripe [groups connected accounts with the same tax identity](https://docs.stripe.com/connect/file-tax-forms.md#below-threshold-forms) to determine whether they meet filing thresholds. Stripe still creates a separate tax form for each connected account. It doesn’t automatically consolidate their totals onto one form.
+
+If you need one form for a legal entity instead of separate forms for its connected accounts, consolidate the totals before filing:
+
+1. On the [Tax reporting](https://dashboard.stripe.com/connect/taxes/forms) page, use the **Forms grouped with** filter to find the accounts in the group. If the grouping is unexpected, [review the accounts’ identity information](https://docs.stripe.com/connect/identify-forms-missing-information.md).
+2. [Export the forms as CSV](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv#export-tax-forms) and save the original totals. Choose a primary connected account for each form type and tax year.
+3. If any forms have existing Delta adjustments, import `0` for each adjusted field using a [Delta import](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv#adding-to-existing-values-with-delta). Wait for the import to finish. Update imports replace base totals but retain Delta adjustments.
+4. Using the saved original totals, add the amounts across the accounts for each reporting box. Prepare an Update CSV without any `*_delta` columns, keeping the original export separately for your calculations. Use a [CSV Update import](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv#overwriting-existing-values-with-update) to set the primary account’s amount to that combined total and the corresponding amounts on the other accounts to `0`. Handle withholding and state reporting amounts according to your filing obligations. For 1099-K forms, also sum `number_of_payment_transactions` from the saved export. Import the combined count on the primary form and `0` on the other forms.
+5. After processing finishes, confirm that the primary form contains the combined totals and the other forms contain the intended zero totals. Check that the other forms show **Will not file** before you file the primary form.
+
+Zero payment totals don’t remove every filing obligation. Withholding, state requirements, or a [filing requirement override](https://docs.stripe.com/connect/modify-tax-forms.md?method=csv#tax-form-status) can still require a form to be filed. Review these conditions with your tax advisor before excluding a form.
+
 ## See also
 
 - [Get started with the Stripe 1099 tax reporting product](https://docs.stripe.com/connect/get-started-tax-reporting.md)

@@ -59,7 +59,7 @@ Chunk-level detail of the transcription with timing information.
 - `transcription_id` (string, optional, nullable) — The transcription ID of the response.
 - `entities` (list of DetectedEntity, optional, nullable) — List of detected entities with their text, type, and character positions in the transcript.
 - `audio_duration_secs` (double, optional, nullable) — The duration of the audio that was transcribed in seconds.
-- `edited_transcript` (SpeechToTextChunkResponseModelEditedTranscript, optional, nullable) — Result of the optional transcript edit: the edited text, or an error if it could not be produced. Absent when no edit was requested.
+- `edited_transcript` (SpeechToTextChunkResponseModelEditedTranscript, optional, nullable) — Result of the optional transcript edit: the edited text, or an error if it could not be produced. Absent when no edit was requested. On success, both `text` and `edited_text` hold the edited transcript; compare them with the top-level `text` to see what changed.
 
 ### MultichannelSpeechToTextResponseModel
 
@@ -108,7 +108,7 @@ An entity detected within transcribed text.
 
 ### SpeechToTextChunkResponseModelEditedTranscript
 
-Result of the optional transcript edit: the edited text, or an error if it could not be produced. Absent when no edit was requested.
+Result of the optional transcript edit: the edited text, or an error if it could not be produced. Absent when no edit was requested. On success, both `text` and `edited_text` hold the edited transcript; compare them with the top-level `text` to see what changed.
 
 - `kind`: `error` (TranscriptEditError)
   - `error_type` ("edit_failed", required) — edit_failed: the edit could not be produced.

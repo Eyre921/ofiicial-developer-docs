@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 472 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 471 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -91,10 +91,9 @@
 - `billing/subscriptions/pause-payment` — [Pause payment collection](pages/billing/subscriptions/pause-payment.md) · [原文](https://docs.stripe.com/billing/subscriptions/pause-payment.md)
 - `billing/subscriptions/payment-methods-setting` — [Set payment methods per-subscription](pages/billing/subscriptions/payment-methods-setting.md) · [原文](https://docs.stripe.com/billing/subscriptions/payment-methods-setting.md)
 - `billing/subscriptions/quantities` — [Set product or subscription quantities](pages/billing/subscriptions/quantities.md) · [原文](https://docs.stripe.com/billing/subscriptions/quantities.md)
-- `billing/subscriptions/usage-based/implementation-guide` — [Set up a pay-as-you-go pricing model](pages/billing/subscriptions/usage-based/implementation-guide.md) · [原文](https://docs.stripe.com/billing/subscriptions/usage-based/implementation-guide.md)
-- `billing/subscriptions/usage-based/recording-usage` — [Record usage for billing](pages/billing/subscriptions/usage-based/recording-usage.md) · [原文](https://docs.stripe.com/billing/subscriptions/usage-based/recording-usage.md)
 - `billing/subscriptions/use-cases` — [Subscription Use Cases](pages/billing/subscriptions/use-cases.md) · [原文](https://docs.stripe.com/billing/subscriptions/use-cases.md)
 - `billing/taxes/collect-taxes` — [Collect taxes for recurring payments](pages/billing/taxes/collect-taxes.md) · [原文](https://docs.stripe.com/billing/taxes/collect-taxes.md)
+- `billing/usage-based` — [Metronome overview](pages/billing/usage-based.md) · [原文](https://docs.stripe.com/billing/usage-based.md)
 
 ## capital
 

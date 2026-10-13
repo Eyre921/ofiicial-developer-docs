@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 972 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 973 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -112,6 +112,7 @@
 - `docs/common/concepts/scale-to-zero` — [Scale to Zero](pages/docs/common/concepts/scale-to-zero.md) · [原文](https://upstash.com/docs/common/concepts/scale-to-zero)
 - `docs/common/concepts/serverless` — [Serverless](pages/docs/common/concepts/serverless.md) · [原文](https://upstash.com/docs/common/concepts/serverless)
 - `docs/common/help/compliance` — [Compliance](pages/docs/common/help/compliance.md) · [原文](https://upstash.com/docs/common/help/compliance)
+- `docs/common/help/feature-requests` — [Feature Requests](pages/docs/common/help/feature-requests.md) · [原文](https://upstash.com/docs/common/help/feature-requests)
 - `docs/common/help/legal` — [Legal](pages/docs/common/help/legal.md) · [原文](https://upstash.com/docs/common/help/legal)
 - `docs/common/help/prosupport` — [Professional Support](pages/docs/common/help/prosupport.md) · [原文](https://upstash.com/docs/common/help/prosupport)
 - `docs/common/help/sla` — [Uptime SLA](pages/docs/common/help/sla.md) · [原文](https://upstash.com/docs/common/help/sla)

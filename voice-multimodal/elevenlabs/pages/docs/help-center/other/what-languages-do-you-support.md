@@ -8,11 +8,17 @@ path: docs/help-center/other/what-languages-do-you-support
 
 # What languages do you support?
 
+> **Note**
+>
+> Language codes should be passed as lowercase values. Most languages use [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1) two-letter codes (e.g., `en`, `fr`, `de`).
+> Languages without an ISO 639-1 code use [ISO 639-3](https://en.wikipedia.org/wiki/ISO_639-3)
+> three-letter codes: Asturian (`ast`), Cantonese (`yue`), Cebuano (`ceb`), and Filipino (`fil`).
+
 **[Eleven v4](/docs/overview/capabilities/text-to-speech/eleven-v4) -** our latest and
 most advanced speech synthesis model. See that page for language coverage and what changed from
 Eleven v3.
 
-**Eleven v3 -** a previous expressive speech synthesis model. It produces natural,
+**Eleven v3 -** a previous expressive speech synthesis model. It produces natural,
 life-like speech with high emotional range and contextual understanding across multiple languages.
 
 **Eleven v3 Conversational** - a previous realtime Text to Speech model, built on
@@ -22,164 +28,169 @@ Eleven v3 and optimized for real-time dialogue.
 \
 
 
-Eleven v3 supports 74 languages:
+Eleven v3 supports the following languages:
 
-* **AFR** Afrikaans
-* **ARA** Arabic
-* **HYE** Armenian
-* **ASM** Assamese
-* **AZE** Azerbaijani
-* **BEL** Belarusian
-* **BEN** Bengali
-* **BOS** Bosnian
-* **BUL** Bulgarian
-* **CAT** Catalan
-* **CEB** Cebuano
-* **NYA** Chichewa
-* **HRV** Croatian
-* **CES** Czech
-* **DAN** Danish
-* **NLD** Dutch
-* **ENG** English
-* **EST** Estonian
-* **FIL** Filipino
-* **FIN** Finnish
-* **FRA** French
-* **GLG** Galician
-* **KAT** Georgian
-* **DEU** German
-* **ELL** Greek
-* **GUJ** Gujarati
-* **HAU** Hausa
-* **HEB** Hebrew
-* **HIN** Hindi
-* **HUN** Hungarian
-* **ISL** Icelandic
-* **IND** Indonesian
-* **GLE** Irish
-* **ITA** Italian
-* **JPN** Japanese
-* **JAV** Javanese
-* **KAN** Kannada
-* **KAZ** Kazakh
-* **KIR** Kirghiz
-* **KOR** Korean
-* **LAV** Latvian
-* **LIN** Lingala
-* **LIT** Lithuanian
-* **LTZ** Luxembourgish
-* **MKD** Macedonian
-* **MSA** Malay
-* **MAL** Malayalam
-* **CMN** Mandarin Chinese
-* **MAR** Marathi
-* **NEP** Nepali
-* **NOR** Norwegian
-* **PUS** Pashto
-* **FAS** Persian
-* **POL** Polish
-* **POR** Portuguese
-* **PAN** Punjabi
-* **RON** Romanian
-* **RUS** Russian
-* **SRP** Serbian
-* **SND** Sindhi
-* **SLK** Slovak
-* **SLV** Slovenian
-* **SOM** Somali
-* **SPA** Spanish
-* **SWA** Swahili
-* **SWE** Swedish
-* **TAM** Tamil
-* **TEL** Telugu
-* **THA** Thai
-* **TUR** Turkish
-* **UKR** Ukrainian
-* **URD** Urdu
-* **VIE** Vietnamese
-* **CYM** Welsh
-
-
+* **af** Afrikaans
+* **ar** Arabic
+* **hy** Armenian
+* **as** Assamese
+* **ast** Asturian
+* **az** Azerbaijani
+* **be** Belarusian
+* **bn** Bengali
+* **bs** Bosnian
+* **bg** Bulgarian
+* **my** Burmese
+* **yue** Cantonese
+* **ca** Catalan
+* **ceb** Cebuano
+* **ny** Chichewa
+* **hr** Croatian
+* **cs** Czech
+* **da** Danish
+* **nl** Dutch
+* **en** English
+* **et** Estonian
+* **fil** Filipino
+* **fi** Finnish
+* **fr** French
+* **gl** Galician
+* **ka** Georgian
+* **de** German
+* **el** Greek
+* **gu** Gujarati
+* **ha** Hausa
+* **he** Hebrew
+* **hi** Hindi
+* **hu** Hungarian
+* **is** Icelandic
+* **id** Indonesian
+* **ga** Irish
+* **it** Italian
+* **ja** Japanese
+* **jv** Javanese
+* **kn** Kannada
+* **kk** Kazakh
+* **ky** Kirghiz
+* **ko** Korean
+* **lv** Latvian
+* **ln** Lingala
+* **lt** Lithuanian
+* **lb** Luxembourgish
+* **mk** Macedonian
+* **ms** Malay
+* **ml** Malayalam
+* **mt** Maltese
+* **zh** Mandarin Chinese
+* **mi** Māori
+* **mr** Marathi
+* **mn** Mongolian
+* **ne** Nepali
+* **no** Norwegian
+* **oc** Occitan
+* **or** Odia
+* **ps** Pashto
+* **fa** Persian
+* **pl** Polish
+* **pt** Portuguese
+* **pa** Punjabi
+* **ro** Romanian
+* **ru** Russian
+* **sr** Serbian
+* **sd** Sindhi
+* **sk** Slovak
+* **sl** Slovenian
+* **so** Somali
+* **es** Spanish
+* **sw** Swahili
+* **sv** Swedish
+* **tg** Tajik
+* **ta** Tamil
+* **te** Telugu
+* **th** Thai
+* **tr** Turkish
+* **uk** Ukrainian
+* **ur** Urdu
+* **uz** Uzbek
+* **vi** Vietnamese
+* **cy** Welsh
+* **yo** Yoruba
 
 **Multilingual v2** - our most life-like, emotionally rich model. It's best for
 voiceovers, audiobooks and content creation.
 
 Multilingual v2 supports 29 languages:
 
-* **ARA** Arabic
-* **BUL** Bulgarian
-* **CMN** Chinese
-* **HRV** Croatian
-* **CES** Czech
-* **DAN** Danish
-* **NLD** Dutch
-* **ENG** English
-* **FIL** Filipino
-* **FIN** Finnish
-* **FRA** French
-* **DEU** German
-* **ELL** Greek
-* **HIN** Hindi
-* **IND** Indonesian
-* **ITA** Italian
-* **JPN** Japanese
-* **KOR** Korean
-* **MSA** Malay
-* **POL** Polish
-* **POR** Portuguese
-* **RON** Romanian
-* **RUS** Russian
-* **SLK** Slovak
-* **SPA** Spanish
-* **SWE** Swedish
-* **TAM** Tamil
-* **TUR** Turkish
-* **UKR** Ukrainian
-
-
+* **ar** Arabic
+* **bg** Bulgarian
+* **zh** Chinese
+* **hr** Croatian
+* **cs** Czech
+* **da** Danish
+* **nl** Dutch
+* **en** English
+* **fil** Filipino
+* **fi** Finnish
+* **fr** French
+* **de** German
+* **el** Greek
+* **hi** Hindi
+* **id** Indonesian
+* **it** Italian
+* **ja** Japanese
+* **ko** Korean
+* **ms** Malay
+* **pl** Polish
+* **pt** Portuguese
+* **ro** Romanian
+* **ru** Russian
+* **sk** Slovak
+* **es** Spanish
+* **sv** Swedish
+* **ta** Tamil
+* **tr** Turkish
+* **uk** Ukrainian
 
 **Flash v2.5** - our latest, ultra-low-latency model, generating speech in under 75ms.
 
 It supports 32 languages:
 
-* **ARA** Arabic
-* **BUL** Bulgarian
-* **CMN** Chinese
-* **HRV** Croatian
-* **CES** Czech
-* **DAN** Danish
-* **NLD** Dutch
-* **ENG** English
-* **FIL** Filipino
-* **FIN** Finnish
-* **FRA** French
-* **DEU** German
-* **ELL** Greek
-* **HUN** Hungarian
-* **HIN** Hindi
-* **IND** Indonesian
-* **ITA** Italian
-* **JPN** Japanese
-* **KOR** Korean
-* **MSA** Malay
-* **NOR** Norwegian
-* **POL** Polish
-* **POR** Portuguese
-* **RON** Romanian
-* **RUS** Russian
-* **SLK** Slovak
-* **SPA** Spanish
-* **SWE** Swedish
-* **TAM** Tamil
-* **TUR** Turkish
-* **UKR** Ukrainian
-* **VIE** Vietnamese
-
-
+* **ar** Arabic
+* **bg** Bulgarian
+* **zh** Chinese
+* **hr** Croatian
+* **cs** Czech
+* **da** Danish
+* **nl** Dutch
+* **en** English
+* **fil** Filipino
+* **fi** Finnish
+* **fr** French
+* **de** German
+* **el** Greek
+* **hu** Hungarian
+* **hi** Hindi
+* **id** Indonesian
+* **it** Italian
+* **ja** Japanese
+* **ko** Korean
+* **ms** Malay
+* **no** Norwegian
+* **pl** Polish
+* **pt** Portuguese
+* **ro** Romanian
+* **ru** Russian
+* **sk** Slovak
+* **es** Spanish
+* **sv** Swedish
+* **ta** Tamil
+* **tr** Turkish
+* **uk** Ukrainian
+* **vi** Vietnamese
 
 **Flash v2** - our latest, ultra-low-latency English-only model, generating speech in
 under 75ms. Best for developer use cases requiring speed.
 
-* **ENG** English
+* **en** English
 
 For details of our older models, please see [What models do you offer and what is the difference between them?](/docs/help-center/technical/what-models-do-you-offer-and-what-is-the-difference-between-them)

@@ -156,12 +156,14 @@ For more information on which customer address is valid, how they’re used, or 
 
 ### Inferred locations
 
-When a customer has no billing address on file, Stripe can match their email address to location data from a previous transaction on the Stripe network. An inferred location can include the country, postal code, and first address line, depending on the available data. This allows subscriptions that would otherwise fail migration to begin collecting tax. Inferred locations:
+Stripe checks the customer’s shipping address, billing address, payment-method billing details, and IP address before considering an inferred location. Stripe uses an inferred location only for missing or empty higher-priority sources. Stripe doesn’t substitute an inferred location for a present, but invalid or incomplete higher-priority address.
+
+When none of these sources is available, Stripe can match the customer’s email address to location data from a previous transaction on the Stripe network. An inferred location can include the country, postal code, and first address line, depending on the available data. This allows subscriptions that would otherwise fail migration to begin collecting tax. Inferred locations:
 
 - Apply only when the alternative is collecting no tax at all.
 - Include available country, postal code, and first address line data.
 - Must match within Stripe’s first-party network.
-- Take the lowest-priority. Any billing or shipping address automatically overrides the inferred location.
+- Are the lowest-priority source in the [customer location hierarchy](https://docs.stripe.com/tax/customer-locations.md#address-hierarchy-other).
 
 Using inferred locations requires an active [customer portal](https://docs.stripe.com/customer-management.md) with address updates enabled to allow your customers to provide a full address at any time for more precise tax calculation.
 
@@ -170,6 +172,17 @@ When an inferred location doesn’t include a street address, its postal code mi
 Stripe protects privacy by matching email addresses and location data only within its first-party network.
 
 To see whether a subscription is using an inferred location, check the customer details page or transaction details. Inferred locations are labeled **Inferred**.
+
+#### Customer update effects on stored inferred locations 
+
+Some customer updates affect inferred locations that Stripe previously stored through an eligible Stripe Tax subscription migration. Customer updates never create an inferred location.
+
+Whether you update a customer in the Dashboard or through the API, the updates affect a stored inferred location in the following ways:
+
+- **Change the email or name**: Stripe doesn’t recalculate, replace, or invalidate the stored inferred location.
+- **Add a valid billing or shipping address**: The address takes precedence over the stored inferred location.
+- **Add an invalid or incomplete address**: The invalid address takes precedence over the stored inferred location and invalid-location behavior applies. Any non-empty address supersedes an inferred address.
+- **Clear an address**: Stripe can reuse a previously stored inferred location for eligible subscription tax calculations if no higher-priority location source exists. Clearing a customer’s address doesn’t create a new inference or use an existing inferred location to repopulate cleared address fields.
 
 ## Update products and prices
 

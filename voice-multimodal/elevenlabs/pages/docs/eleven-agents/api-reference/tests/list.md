@@ -37,6 +37,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/tests/list
   - Allowed values: `default`, `folders_first`
 - `sharing_mode` (enum, optional) — Filter test visibility. Use `shared_with_me` to return only tests/folders shared with the current user that they did not create.
   - Allowed values: `all`, `shared_with_me`
+- `created_by_user_id` (string, optional) — Filter tests and folders by creator user ID. Use '@me' to refer to the authenticated user.
 
 ## Response
 
@@ -143,7 +144,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/agent-testing"
 
-querystring = {"cursor":"cursor","include_folders":"true","page_size":"1","parent_folder_id":"parent_folder_id","search":"search","sharing_mode":"all","sort_mode":"default","types":"[\"llm\"]"}
+querystring = {"created_by_user_id":"created_by_user_id","cursor":"cursor","include_folders":"true","page_size":"1","parent_folder_id":"parent_folder_id","search":"search","sharing_mode":"all","sort_mode":"default","types":"[\"llm\"]"}
 
 response = requests.get(url, params=querystring)
 
@@ -151,7 +152,7 @@ print(response.json())
 ```
 
 ```javascript
-const url = 'https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D';
+const url = 'https://api.elevenlabs.io/v1/convai/agent-testing?created_by_user_id=created_by_user_id&cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D';
 const options = {method: 'GET'};
 
 try {
@@ -174,7 +175,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D"
+	url := "https://api.elevenlabs.io/v1/convai/agent-testing?created_by_user_id=created_by_user_id&cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -193,7 +194,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D")
+url = URI("https://api.elevenlabs.io/v1/convai/agent-testing?created_by_user_id=created_by_user_id&cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -208,7 +209,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agent-testing?created_by_user_id=created_by_user_id&cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D")
   .asString();
 ```
 
@@ -218,7 +219,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agent-testing?created_by_user_id=created_by_user_id&cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D');
 
 echo $response->getBody();
 ```
@@ -226,7 +227,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agent-testing?created_by_user_id=created_by_user_id&cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -234,7 +235,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing?cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agent-testing?created_by_user_id=created_by_user_id&cursor=cursor&include_folders=true&page_size=1&parent_folder_id=parent_folder_id&search=search&sharing_mode=all&sort_mode=default&types=%5B%22llm%22%5D")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

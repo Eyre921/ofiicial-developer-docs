@@ -83,6 +83,7 @@ Validation Error
 - `status` (enum, required)
   - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
 - `priority_changes` (list of TicketPriorityChangeResponseModel, required)
+- `status_changes` (list of TicketStatusChangeResponseModel, required)
 - `source` (enum, required)
   - Allowed values: `qa`, `agent`, `manual`
 - `created_at_unix_secs` (integer, required)
@@ -124,6 +125,13 @@ Validation Error
 - `changed_at_unix_secs` (integer, required)
 - `priority` (enum, optional)
   - Allowed values: `low`, `medium`, `high`, `urgent`
+
+### TicketStatusChangeResponseModel
+
+- `status` (enum, required)
+  - Allowed values: `open`, `in_progress`, `resolved`, `cancelled`, `merged`
+- `changed_at_unix_secs` (integer, required)
+- `changed_by_user_id` (string, optional)
 
 ### TicketSearchMatchResponseModel
 
@@ -176,6 +184,13 @@ Validation Error
           "changed_by_user_id": "changed_by_user_id",
           "changed_at_unix_secs": 1,
           "priority": null
+        }
+      ],
+      "status_changes": [
+        {
+          "status": "open",
+          "changed_at_unix_secs": 1,
+          "changed_by_user_id": null
         }
       ],
       "source": "qa",

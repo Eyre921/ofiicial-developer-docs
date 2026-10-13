@@ -286,9 +286,9 @@ regeneration via the API are available on Enterprise plans only. See the [Dubbin
 
 #### Can I edit or regenerate a Dubbing v2 project?
 
-In the app, Dubbing v2 is automatic and has no in-app editor. Transcript editing and audio
-regeneration via the API are available on Enterprise plans only. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate). To edit in the UI, use the
-legacy v1 model with [Dubbing Studio](/docs/eleven-creative/products/dubbing/dubbing-studio).
+In the app, Dubbing v2 is automatic and can be edited in the UI. Transcript editing and audio
+regeneration via the API are available on Enterprise plans only. See [Refine and regenerate a dub](/docs/eleven-api/guides/how-to/dubbing/refine-and-regenerate). The legacy [Dubbing Studio](/docs/eleven-creative/products/dubbing/dubbing-studio) is available with the legacy v1
+model.
 
 #### How do I use the legacy v1 dubbing model?
 

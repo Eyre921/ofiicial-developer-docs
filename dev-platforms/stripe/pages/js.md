@@ -15488,9 +15488,9 @@ We highly recommend you collect name as this also results in collection of billi
 The billing address can be used to perform address verification and block fraudulent payments.
 For all other payment methods, the billing address is automatically collected when available.
     - `requestPayerEmail`
-      See the [`requestPayerName`](#payment_request_create-options-requestPayerName) option.
+      See the [`requestPayerName`](#stripe_payment_request-options-requestPayerName) option.
     - `requestPayerPhone`
-      See the [`requestPayerName`](#payment_request_create-options-requestPayerName) option.
+      See the [`requestPayerName`](#stripe_payment_request-options-requestPayerName) option.
     - `requestShipping`
       Collect shipping address by setting this option to `true`.
 The address appears in the [PaymentResponse](https://docs.stripe.com/js/appendix/payment_response.md).
@@ -15823,7 +15823,7 @@ The full shipping address appears in the [PaymentResponse](https://docs.stripe.c
       - `recipient`
         The name of the recipient. This might be a person, a business name, or contain "care of" (c/o) instructions.
       - `phone`
-        The phone number of the recipient. Note that this might be different from any phone number you collect with [`requestPayerPhone`](#payment_request_create-options-requestPayerPhone).
+        The phone number of the recipient. Note that this might be different from any phone number you collect with [`requestPayerPhone`](https://docs.stripe.com/js/payment_request/create.md#stripe_payment_request-options-requestPayerPhone).
       - `sortingCode`
         The sorting code as used in, for example, France. Not present on Apple platforms.
       - `dependentLocality`
@@ -16209,15 +16209,15 @@ Browsers may re-show the payment interface, or simply show a message and close.
 
 - `payerName`
   The customer's name.
-Only present if it was explicitly [asked for](#payment_request_create-options-requestPayerName) when [creating the PaymentRequest object](https://docs.stripe.com/js/payment_request/create.md).
+Only present if it was explicitly [asked for](https://docs.stripe.com/js/payment_request/create.md#stripe_payment_request-options-requestPayerName) when [creating the PaymentRequest object](https://docs.stripe.com/js/payment_request/create.md).
 
 - `payerEmail`
   The customer's email.
-Only present if it was explicitly [asked for](#payment_request_create-options-requestPayerEmail) when [creating the PaymentRequest object](https://docs.stripe.com/js/payment_request/create.md).
+Only present if it was explicitly [asked for](https://docs.stripe.com/js/payment_request/create.md#stripe_payment_request-options-requestPayerEmail) when [creating the PaymentRequest object](https://docs.stripe.com/js/payment_request/create.md).
 
 - `payerPhone`
   The customer's phone.
-Only present if it was explicitly [asked for](#payment_request_create-options-requestPayerPhone) when [creating the PaymentRequest object](https://docs.stripe.com/js/payment_request/create.md).
+Only present if it was explicitly [asked for](https://docs.stripe.com/js/payment_request/create.md#stripe_payment_request-options-requestPayerPhone) when [creating the PaymentRequest object](https://docs.stripe.com/js/payment_request/create.md).
 
 - `shippingAddress`
   The final shipping address the customer selected.
@@ -16236,7 +16236,7 @@ Only populated when `requestShipping` is `true` when [creating the PaymentReques
     - `recipient`
       The name of the recipient. This might be a person, a business name, or contain "care of" (c/o) instructions.
     - `phone`
-      The phone number of the recipient. Note that this might be different from any phone number you collect with [`requestPayerPhone`](#payment_request_create-options-requestPayerPhone).
+      The phone number of the recipient. Note that this might be different from any phone number you collect with [`requestPayerPhone`](https://docs.stripe.com/js/payment_request/create.md#stripe_payment_request-options-requestPayerPhone).
     - `sortingCode`
       The sorting code as used in, for example, France. Not present on Apple platforms.
     - `dependentLocality`

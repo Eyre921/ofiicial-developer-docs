@@ -10,7 +10,7 @@ path: docs/eleven-agents/customization/integrations/google_calendar
 
 ## Overview
 
-Connect your ElevenLabs AI agents with [Google Calendar](https://calendar.google.com) to manage scheduling and calendar appointments. This integration enables your agents to check availability, create events with attendees and optional Google Meet conferencing, list upcoming events, and discover accessible calendars through natural conversation.
+Connect your ElevenLabs AI agents with [Google Calendar](https://calendar.google.com) to manage scheduling and calendar appointments. This integration enables your agents to check availability, create, update, and delete events with attendees and optional Google Meet conferencing, list upcoming events, and discover accessible calendars through natural conversation.
 
 ## Capabilities
 
@@ -18,6 +18,12 @@ Connect your ElevenLabs AI agents with [Google Calendar](https://calendar.google
 | ------------------------- | ------------------------------------------ |
 | Zero retention mode (ZRM) | Not supported                              |
 | Attachments in tools      | Not supported — tools operate on text only |
+
+## Security warning
+
+> **Security warning: `google_calendar_update_event` and `google_calendar_delete_event` are privileged tools.** They run with the connected Google account's full calendar access, not just access to events your agent created. Anyone who can talk to the agent can change or cancel **any** event on that calendar, including events they did not create, because the agent can look up event IDs with `google_calendar_list_events`. A confirmation in the system prompt is a hint to the model, not a security control.
+>
+> Only enable these tools on agents with **authentication enabled**, or where the event ID comes from a trusted source. Do not add them to public agents. Attendees are always notified when an event is updated or deleted.
 
 ## Setup
 
@@ -114,7 +120,9 @@ Clarifications:
 - Do not inform the user that you are formatting the email; do it silently.
 - If the caller asks you to proceed with booking, do so with the existing information.
 - Use google_calendar_list_calendars if the caller asks to schedule on a specific calendar other than their primary one.
-- Use google_calendar_list_events if the caller asks what meetings they have coming up.
+- Use google_calendar_list_events if the caller asks what meetings they have coming up, or to find the event ID before changing or cancelling a meeting.
+- Use google_calendar_update_event to reschedule or edit an existing event. Check availability for the new time first, and confirm the change with the caller.
+- Use google_calendar_delete_event to cancel an event only after the caller has explicitly confirmed which event to cancel. For recurring events, confirm whether to cancel one occurrence or the whole series: list events with singleEvents=true and use the occurrence's ID for one occurrence, or its recurringEventId for the whole series.
 
 Guardrails:
 - Do not share any internal IDs or API details with the caller.
@@ -125,12 +133,14 @@ Guardrails:
 
 When you add Google Calendar tools to an agent, the following built-in tools are available:
 
-| Tool                                 | Description                                                                                                                                                                              |
-| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `google_calendar_check_availability` | Check free/busy availability for one or more calendars within a time range. Returns busy time blocks so the agent can find open slots. Use before creating events to avoid conflicts.    |
-| `google_calendar_create_event`       | Create a new event on a Google Calendar with optional attendees, location, and Google Meet conferencing. Sends email notifications to all participants.                                  |
-| `google_calendar_list_events`        | List upcoming events from a calendar within a time range, ordered by start time. Supports free-text search across event summaries, descriptions, locations, and attendee details.        |
-| `google_calendar_list_calendars`     | List all calendars accessible to the connected Google account. Returns calendar names and IDs. Use to discover which calendar to target before checking availability or creating events. |
+| Tool                                 | Description                                                                                                                                                                                                         |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `google_calendar_check_availability` | Check free/busy availability for one or more calendars within a time range. Returns busy time blocks so the agent can find open slots. Use before creating events to avoid conflicts.                               |
+| `google_calendar_create_event`       | Create a new event on a Google Calendar with optional attendees, location, and Google Meet conferencing. Sends email notifications to all participants.                                                             |
+| `google_calendar_list_events`        | List upcoming events from a calendar within a time range, ordered by start time. Supports free-text search across event summaries, descriptions, locations, and attendee details.                                   |
+| `google_calendar_update_event`       | **Privileged.** Update any event on the calendar, for example to reschedule it or change its title, location, or attendees. Only the fields provided are changed. Attendees are notified.                           |
+| `google_calendar_delete_event`       | **Privileged.** Delete any event on the calendar, cancelling it for all attendees. Use list events first to find the event ID. For recurring events, use an occurrence's ID or its recurringEventId (whole series). |
+| `google_calendar_list_calendars`     | List all calendars accessible to the connected Google account. Returns calendar names and IDs. Use to discover which calendar to target before checking availability or creating events.                            |
 
 ## Useful links
 

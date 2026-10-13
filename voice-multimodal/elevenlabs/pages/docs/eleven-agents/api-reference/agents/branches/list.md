@@ -64,6 +64,7 @@ Validation Error
 - `is_archived` (boolean, required)
 - `protection_status` (enum, optional, default: writer_perms_required)
   - Allowed values: `writer_perms_required`, `admin_perms_required`
+- `auto_rebase` (boolean, optional, default: false)
 - `access_info` (ResourceAccessInfo, optional) — Access information for the branch
 - `current_live_percentage` (double, optional, default: 0) — Percentage of traffic live on the branch
 - `parent_branch_id` (string, optional) — ID of the parent branch
@@ -117,6 +118,7 @@ Validation Error
       "last_committed_at": 1,
       "is_archived": true,
       "protection_status": "writer_perms_required",
+      "auto_rebase": true,
       "access_info": {
         "is_creator": true,
         "creator_name": "John Doe",

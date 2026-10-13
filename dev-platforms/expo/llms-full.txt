@@ -637,6 +637,7 @@ Fetch any page as markdown by adding the `Accept: text/markdown` header or appen
 ## Reference
 
 - [Webhooks](https://docs.expo.dev/eas/webhooks.md): Learn how to configure webhooks to get alerts on EAS Build and Submit completion.
+- [Protected resources](https://docs.expo.dev/eas/protected-resources.md)
 
 ### Expo accounts
 - [Account types](https://docs.expo.dev/accounts/account-types.md)

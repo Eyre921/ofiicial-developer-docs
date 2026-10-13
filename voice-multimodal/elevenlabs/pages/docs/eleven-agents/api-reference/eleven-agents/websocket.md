@@ -1458,6 +1458,7 @@ components:
         - claude-sonnet-5-5
         - claude-sonnet-4
         - claude-haiku-4-5
+        - claude-haiku-5-5
         - claude-3-7-sonnet
         - claude-3-5-sonnet
         - claude-3-5-sonnet-v1
@@ -1579,6 +1580,13 @@ components:
           items:
             type: string
           description: A list of IDs of tools used by the agent
+        tool_ids_strict:
+          type: boolean
+          description: >-
+            Only applies as a conversation override, allowed whenever tool_ids
+            may be overridden. When true, the overridden tool_ids is the full
+            list of tools allowed in the conversation, including tools on
+            workflow nodes. Ignored when set on the agent.
         native_mcp_server_ids:
           type: array
           items:

@@ -402,6 +402,7 @@ This breaks down into a few core APIs, suited to different parts of your voice p
 | [Pre-recorded Speech-to-Text API](/pre-recorded-audio/getting-started/transcribe-an-audio-file) | Transcribes recorded audio and video asynchronously across 99 languages, with support on speaker diarization, PII redaction, and more features. Built for teams processing recorded calls, podcasts, or meetings at scale. |
 | [Streaming Speech-to-Text API](/streaming/getting-started/transcribe-streaming-audio) | Handles live audio over WebSocket with ~150ms p50 latency, powering voice agents, live captions, and real-time agent-assist tools in contact centers. |
 | [Synchronous Speech-to-Text API](/sync-stt/getting-started/transcribe-a-short-audio-file) | Transcribes short audio clips (up to 120 seconds) in a single request-response call — no polling or webhooks needed. It's suited for quick, low-latency transcription use cases with need for limited transcription features. |
+| [Dictation API](/dictation) | Transcribes short audio clips (up to 120 seconds) and formats the text with an LLM in the same request. You include formatting instructions with your audio, and the transcript comes back already cleaned up and formatted. |
 | [Voice Agent API](/voice-agents/voice-agent-api) | A fully managed speech-to-speech pipeline — one connection handles STT, LLM reasoning, and TTS together at roughly one second end-to-end latency, for teams that want AssemblyAI to own the whole voice-agent stack rather than assembling it themselves. |
 | [Speech Understanding API](/speech-understanding/getting-started) | Layers speech analysis on top of transcripts — summarization, sentiment, topic detection, and more over audio — for extracting structured insight. |
 | [Guardrails API](/guardrails/getting-started) | Provides safety, privacy, and compliance controls — PII handling, content moderation, and related safeguards — for teams that need to govern what audio data flows through their pipeline. |
@@ -1273,12 +1274,12 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 | Code | Meaning |
 |------|---------|
-| `1008` | Unauthorized: missing/invalid Authorization or token |
+| `1008` | Unauthorized: missing or invalid key or token, expired temporary token, insufficient funds, or disabled key. Don't retry until fixed; tell it apart from the rate limit by the `Error` message's `error` text |
+| `1008` | Too many new sessions this minute (`error` text `Unauthorized Connection: Too many concurrent sessions`); back off and retry next minute |
 | `3005` | Session cancelled (server-side error) |
 | `3006` | Invalid message type / invalid JSON |
 | `3007` | Audio chunk outside 50–1000 ms, or sent faster than real-time |
 | `3008` | Session expired (3-hour cap) |
-| `3009` | Too many concurrent sessions |
 
 ### Streaming gotchas
 
@@ -26568,11 +26569,13 @@ When a session ends because of an error (rather than a normal closure), the serv
 | `error_code` | integer | The error code. The WebSocket then closes with this same value as its close code.  |
 | `error`      | string  | Human-readable description of what went wrong.                                     |
 
-  The WebSocket close-frame reason is limited to 123 bytes. For longer errors, the close reason reads `See Error message for details` and the full text is delivered in the `Error` frame above. Read the `Error` message rather than relying on the close reason.
+  When the server sends the `Error` frame, the close reason is always `See Error message for details`, whatever the length of the error, and the full text is in the `Error` frame above. The close reason carries the error text itself, cut to 123 bytes (the most a close frame can hold), only if the `Error` frame could not be sent. Read the `Error` message rather than relying on the close reason.
 
 ### Close codes
 
-| Code   | Reason                                                                         | Description                                                                                                                                                                                                                                                     |
+The **Error text** column shows the `error` field of the `Error` message that comes before the close.
+
+| Code   | Error text                                                                     | Description                                                                                                                                                                                                                                                     |
 | ------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `3008` | Session Expired: Maximum session duration exceeded                             | Session exceeded 3 hour limit (or max session duration set by [temporary token](/streaming/authenticate-with-a-temporary-token)). The session closes after the current turn ends, or up to 60 seconds after the limit. You are billed for the full session duration, including this extra time. Always [terminate sessions](/streaming/getting-started/transcribe-streaming-audio) explicitly to control costs. |
 | `3007` | Input duration violation: `<time>` ms. Expected between 50 and 1000 ms         | Audio chunk size less than 50ms or greater than 1000ms.                                                                                                                                                                                                         |
@@ -26582,14 +26585,23 @@ When a session ends because of an error (rather than a normal closure), the serv
 | `3006` | Session terminated due to inactivity: No messages received for `<n>` seconds   | The [`inactivity_timeout`](/streaming/message-sequence#keep-alive) you configured elapsed with no audio or messages. Send a [`KeepAlive`](/streaming/message-sequence#keep-alive) message to reset the timer if you need to hold the session open during silence. |
 | `3007` | Audio Transmission Rate Exceeded: Received `<time>` sec. audio in `<time>` sec | Audio sent faster than real-time.                                                                                                                                                                                                                               |
 | `3005` | Session Cancelled: An error occurred                                           | Unknown server error.                                                                                                                                                                                                                                           |
-| `3009` | Unauthorized Connection: Too many concurrent sessions                          | Streaming rate limit exceeded. For more on rate limits, see your [Account's Rate Limits](https://www.assemblyai.com/dashboard/home) and [how streaming rate limits work](/streaming/rate-limits). |
-| `1008` | Unauthorized Connection: Missing Authorization header                          | Missing or invalid API token. Your API tokens can be found on the [API Keys page](https://www.assemblyai.com/dashboard/home) of your account dashboard.                                                                                                     |
-| `1008` | Unauthorized Connection: `<reason>`                                            | Account related issue (insufficient account balance, account temporarily disabled, etc.).                                                                                                                                                                       |
-| `1011` | Internal error                                                                 | An unexpected server-side error occurred while establishing the connection (for example, during authentication). Retry the connection; if the problem persists, contact support@assemblyai.com. |
-| `410`  | Deprecated endpoint                                                            | The V2 streaming API has been retired. Use this endpoint instead: [`wss://streaming.assemblyai.com/v3/ws`](/streaming/getting-started/transcribe-streaming-audio). |
+| `1008` | Unauthorized Connection: Too many concurrent sessions                          | Your account opened more new sessions this minute than its streaming rate limit allows. Despite the wording, the limit counts session starts per minute, not open sessions. Back off and open the session again in the next minute. For more on rate limits, see your [Account's Rate Limits](https://www.assemblyai.com/dashboard/home) and [how streaming rate limits work](/streaming/rate-limits). |
+| `1008` | Unauthorized Connection: Missing Authorization header                          | No API key or temporary token was sent. Your API keys can be found on the [API Keys page](https://www.assemblyai.com/dashboard/home) of your account dashboard.                                                                                              |
+| `1008` | Unauthorized Connection: Invalid API key                                       | The API key or temporary token is not valid. Check the key on the [API Keys page](https://www.assemblyai.com/dashboard/home) of your account dashboard.                                                                                                     |
+| `1008` | Unauthorized Connection: Signature has expired                                 | The [temporary token](/streaming/authenticate-with-a-temporary-token) expired before it opened a session. Create a new temporary token and connect with it.                                                                                                  |
+| `1008` | Unauthorized Connection: Insufficient funds                                    | Your account balance is too low. Add funds before reconnecting.                                                                                                                                                                                                 |
+| `1008` | Unauthorized Connection: API key is disabled                                   | The API key, its project or the account is disabled. Use an enabled key, or contact support@assemblyai.com.                                                                                                                                                     |
+| `1008` | Unauthorized Connection: No metronome account found                            | The account's billing is not set up. Contact support@assemblyai.com.                                                                                                                                                                                            |
+| `1011` | Error authenticating connection                                                | An unexpected server-side error occurred while establishing the connection (for example, during authentication). Retry the connection; if the problem persists, contact support@assemblyai.com. |
+
+  **Deciding whether to retry a `1008`**
+
+  Code `1008` covers both the streaming rate limit and credential or account problems, so the code alone does not tell you whether retrying can help. Decide from the `error` text of the `Error` message: retry with backoff only on `Unauthorized Connection: Too many concurrent sessions`, in the next minute. For any other `1008` text, fix the key, token or account first; reconnecting unchanged fails again.
 
   Code `3005` is still used as a catch-all for server-side errors not covered by
   the more specific codes above.
+
+Connecting to the retired V2 streaming endpoint fails with HTTP status `410` on the upgrade request. This is an HTTP status, not a WebSocket close code. Use this endpoint instead: [`wss://streaming.assemblyai.com/v3/ws`](/streaming/getting-started/transcribe-streaming-audio).
 
   **Handling closed sessions**
 
@@ -27049,7 +27061,7 @@ Our services are infinitely scalable and we offer custom rate limits that scale 
 
 ## Auto-scaling
 
-Anytime you are utilizing **70% or more of your current limit**, the number of new streams able to be opened over the next minute will automatically increase by 10%.
+Anytime you open **80% or more of your current limit** in a minute, the number of new streams able to be opened over the next minute will automatically increase by 10%. Auto-scaling applies to paid accounts; free accounts stay at their starting limit.
 
 For example, assuming you max out your available new sessions rate limit each minute for 5 minutes:
 
@@ -27061,7 +27073,7 @@ For example, assuming you max out your available new sessions rate limit each mi
 | 4      | 133 (121 x 1.10)             | 464                |
 | 5      | 146 (133 x 1.10)             | 610                |
 
-At the start of the 6th minute, there would be 610 total open streams. Over the next 60 seconds, a maximum of 161 (146 x 1.10) new streams would be able to be opened.
+At the start of the 6th minute, there would be 610 total open streams. Over the next 60 seconds, a maximum of 160 (146 x 1.10, rounded down) new streams would be able to be opened.
 
 This usage pattern has no ceiling and can continue to scale up indefinitely to whatever your application requires.
 
@@ -27069,27 +27081,29 @@ This usage pattern has no ceiling and can continue to scale up indefinitely to w
 
 Based on the rate at which you are opening streams in comparison to your current limit, your new sessions per minute limit adjusts as follows:
 
-- **70% or more** -- Scale up by 10%.
-- **50-69%** -- Unchanged.
-- **Less than 50%** -- Begins to scale back down to your account's starting limit.
+- **80% or more**: scales up by 10%.
+- **60% to 79%**: unchanged.
+- **Less than 60%**: scales down by 5% for the next minute, but never below your account's starting limit.
+
+If you open no new sessions for 15 minutes, your limit returns to your account's starting limit.
 
 If your usage has been low for a period of time, the scale-down may impact your ability to immediately open a large number of new streams, even if you have a high number of open sessions.
 
 ## What happens when you hit the limit
 
-If you exceed your current new sessions per minute limit, you will receive a WebSocket closure with code `1008` and the message `Unauthorized connection: Too many concurrent sessions`.
+If you exceed your current new sessions per minute limit, the server sends an [`Error` message](/streaming/common-session-errors-and-closures) with the text `Unauthorized Connection: Too many concurrent sessions`, then closes the WebSocket with code `1008` and the reason `See Error message for details`. Despite the wording, the limit counts new sessions per minute, not open sessions. Back off and open the session again in the next minute.
+
+Credential and account problems, such as an invalid API key or insufficient funds, also close with code `1008`. Retry only when the `error` text is `Unauthorized Connection: Too many concurrent sessions`; for any other `1008`, fix the key or account first. See [Common session errors and closures](/streaming/common-session-errors-and-closures) for the full list.
 
 You can check your current limit on the [Rate Limits page](https://www.assemblyai.com/dashboard/home) of your dashboard.
 
-If you are receiving this error unexpectedly, verify that all of your sessions are being terminated properly. Sessions that are not properly closed continue to count against your rate limit.
+Only opening a session counts against the limit. Sessions that stay open do not, and closing sessions does not free up room within the current minute. If you are receiving this error unexpectedly, look for code that opens sessions in a loop, such as reconnecting without backoff.
 
 ## Properly terminating sessions
 
 To ensure sessions are cleaned up correctly:
 
 - If you are using the [WebSocket API](/streaming/api-spec/streaming-websocket) directly, send a `Terminate` message (`{"type": "Terminate"}`) to close the session.
-
-Failing to terminate sessions properly can cause your open-session count to remain artificially high, leading to unexpected rate limit errors when opening new sessions.
 
   **This also affects your bill**
 
@@ -77926,12 +77940,12 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 | Code | Meaning |
 |------|---------|
-| `1008` | Unauthorized: missing/invalid Authorization or token |
+| `1008` | Unauthorized: missing or invalid key or token, expired temporary token, insufficient funds, or disabled key. Don't retry until fixed; tell it apart from the rate limit by the `Error` message's `error` text |
+| `1008` | Too many new sessions this minute (`error` text `Unauthorized Connection: Too many concurrent sessions`); back off and retry next minute |
 | `3005` | Session cancelled (server-side error) |
 | `3006` | Invalid message type / invalid JSON |
 | `3007` | Audio chunk outside 50–1000 ms, or sent faster than real-time |
 | `3008` | Session expired (3-hour cap) |
-| `3009` | Too many concurrent sessions |
 
 ### Streaming gotchas
 
