@@ -28,7 +28,7 @@ The CLI auto-targets your default organization and its first project. Change wit
 
 ### Service account
 
-Authenticate with credentials from a [service account](/guides/organizations/manage-service-accounts).
+Authenticate with credentials from a [service account](/admin/organizations/manage-service-accounts).
 
 ```bash theme={null}
 pc auth configure --client-id "ID" --client-secret "SECRET"
@@ -42,7 +42,7 @@ The CLI auto-targets the service account's organization. For projects: auto-sele
 
 ### API key
 
-Authenticate with an [API key](/guides/projects/manage-api-keys). API keys can't access the Admin API.
+Authenticate with an [API key](/admin/projects/manage-api-keys). API keys can't access the Admin API.
 
 ```bash theme={null}
 pc auth configure --api-key "YOUR_API_KEY"

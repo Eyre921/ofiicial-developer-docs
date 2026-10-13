@@ -478,6 +478,8 @@ When multiple edge functions run for a given request, these limits are shared by
 
 The limits are not shared between serverless functions and edge functions, which means that each group of functions will have their own quota.
 
+Responses larger than 10 MB can't be added to the cache. If you pass a larger response to [`cache.put()`](#cacheput), it won't be stored, and later lookups won't find it. To cache larger content, compress it before storing it or split it across multiple cache entries.
+
 ## Notes and limitations
 
 Keep the following limitations in mind when working with the Cache API:

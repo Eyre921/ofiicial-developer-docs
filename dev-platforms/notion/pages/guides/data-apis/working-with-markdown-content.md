@@ -52,9 +52,9 @@ curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2'
   -H "Notion-Version: 2026-03-11"
 ```
 
-### Transcripts are not yet available in v2
+### Transcripts in v2
 
-`v2` can't render meeting note transcripts yet. A `GET` request with both `include_transcript=true` and `markdown_version=v2` returns a `400` `validation_error`. Use `v1` when you need transcripts.
+`v2` puts a meeting note's transcript in a `<meeting-notes-section-transcript>` tag inside `<meeting-notes>`. Without `include_transcript=true`, the tag holds a placeholder that starts with `Transcript omitted.` and says how to load the transcript.
 
 ### Parser warnings
 

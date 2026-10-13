@@ -14,7 +14,7 @@ As defined in the [Master Subscription Agreement](https://www.pinecone.io/legal/
 
 The deletion of customer data begins when you initiate a deletion request through the Pinecone API, console, or a connected service. A deletion request can delete a single resource, such as a record, or can delete a resource and all its dependent resources, such as an index and all its records.
 
-Deletion of your customer data also occurs automatically when you end your relationship with Pinecone. If your account is [deactivated for continued non-payment](/guides/organizations/manage-billing/non-payment-account-deactivation), account data is retained for 30 days before permanent deletion.
+Deletion of your customer data also occurs automatically when you end your relationship with Pinecone. If your account is [deactivated for continued non-payment](/admin/billing/non-payment-account-deactivation), account data is retained for 30 days before permanent deletion.
 
 ## Soft deletion
 
@@ -25,15 +25,15 @@ After you initiate a deletion request, Pinecone marks the data for deletion. The
 Before the end of the 90-day retention window, Pinecone permanently deletes the data from its system. Once the data is permanently deleted, it's no longer recoverable.
 
 <Note>
-  Pinecone creates an [audit log](/guides/production/security-overview#audit-logs) of user, service account, and API events. Events are captured within two hours of occurrence and are retained for 90 days, after which they're permanently deleted.
+  Pinecone creates an [audit log](/admin/security/security-overview#audit-logs) of user, service account, and API events. Events are captured within two hours of occurrence and are retained for 90 days, after which they're permanently deleted.
 </Note>
 
 ## See also
 
 * [Delete records](/guides/manage-data/delete-data)
 * [Delete an index](/guides/manage-data/manage-indexes#delete-an-index)
-* [Delete a project](/guides/projects/manage-projects#delete-a-project)
-* [Delete an API key](/guides/projects/manage-api-keys#delete-an-api-key)
-* [Delete a user](/guides/projects/manage-project-members#remove-members)
-* [Delete an organization](/troubleshooting/delete-your-organization)
+* [Delete a project](/admin/projects/manage-projects#delete-a-project)
+* [Delete an API key](/admin/projects/manage-api-keys#delete-an-api-key)
+* [Delete a user](/admin/projects/manage-project-members#remove-a-member)
+* [Delete an organization](/admin/organizations/delete-your-organization)
 * [Master Subscription Agreement](https://www.pinecone.io/legal/master-subscription-agreement/)

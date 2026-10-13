@@ -6,7 +6,7 @@ path: reference/api/nexus/authentication
 
 Authenticate to the Nexus API with your Pinecone API key, sent directly or exchanged for a short-lived session token.
 
-All requests to the [Pinecone Nexus API](/reference/api/nexus/introduction) authenticate with a valid [Pinecone API key](/guides/production/security-overview#api-keys) for the target project. The Pinecone project is the tenancy boundary. How you send the key depends on the plane:
+All requests to the [Pinecone Nexus API](/reference/api/nexus/introduction) authenticate with a valid [Pinecone API key](/admin/security/security-overview#api-keys) for the target project. The Pinecone project is the tenancy boundary. How you send the key depends on the plane:
 
 * **Control plane** (workspace management, `https://api.pinecone.io`): send the key directly in the `Api-Key` header.
 * **Data plane** (contexts, curation, and queries, your workspace host): exchange the key for a short-lived session token with `POST /auth/login`, or send it directly in the `Api-Key` header.

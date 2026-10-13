@@ -22,7 +22,7 @@ Ensure you have the following:
 
 * A [Databricks cluster](https://docs.databricks.com/en/compute/configure.html)
 * A [Pinecone account](https://app.pinecone.io/)
-* A [Pinecone API key](/guides/projects/understanding-projects#api-keys)
+* A [Pinecone API key](/admin/projects/understanding-projects#api-keys)
 
 <Steps>
   <Step title="Install the Spark-Pinecone connector">

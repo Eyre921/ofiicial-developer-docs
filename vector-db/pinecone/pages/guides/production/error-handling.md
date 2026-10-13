@@ -19,8 +19,8 @@ Pinecone uses [conventional HTTP response codes](/reference/api/errors) to indic
 Client errors indicate problems with your request. These errors typically require changes to your code or configuration:
 
 * **400 - Invalid Argument**: Your request contains invalid parameters. Check your request format and parameters.
-* **401 - Unauthenticated**: Your API key is missing or invalid. Verify your [API key](/guides/projects/manage-api-keys).
-* **402 - Payment Required**: Your account has a payment issue or may be deactivated for non-payment. Check your billing status in the [console](https://app.pinecone.io) and see [Account deactivation for non-payment](/guides/organizations/manage-billing/non-payment-account-deactivation).
+* **401 - Unauthenticated**: Your API key is missing or invalid. Verify your [API key](/admin/projects/manage-api-keys).
+* **402 - Payment Required**: Your account has a payment issue or may be deactivated for non-payment. Check your billing status in the [console](https://app.pinecone.io) and see [Account deactivation for non-payment](/admin/billing/non-payment-account-deactivation).
 * **403 - Forbidden**: You've exceeded a [quota](/reference/api/database-limits/object-limits) or hit [deletion protection](/guides/manage-data/manage-indexes#configure-deletion-protection).
 * **404 - Not Found**: The requested resource doesn't exist. Verify the resource name and that it hasn't been deleted.
 * **409 - Already Exists**: You're trying to create a resource that already exists.
@@ -241,7 +241,7 @@ Rate limits help protect your applications and maintain the health of the server
 
 If you've implemented error handling and retry logic but continue to experience issues:
 
-1. Review [How to work with Support](/troubleshooting/how-to-work-with-support) for best practices.
+1. Review [How to work with Support](/admin/support/how-to-work-with-support) for best practices.
 2. Gather the following information:
    * Index name and project name
    * Error messages and stack traces

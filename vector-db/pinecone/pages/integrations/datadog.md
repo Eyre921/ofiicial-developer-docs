@@ -25,8 +25,8 @@ Follow these steps to monitor a Pinecone project with Datadog:
 3. Click **+ Add New**.
 4. Enter a project name to identify your project in Datadog.
 5. If you're monitoring legacy [pod-based indexes](/guides/indexes/pods/understanding-pod-based-indexes), select their environment. For serverless indexes, leave it blank.
-6. Enter an [API key](/guides/projects/understanding-projects#api-keys) for the Pinecone project you want to monitor.
-7. Enter the [project ID](/guides/projects/understanding-projects#project-ids) of the Pinecone project you want to monitor.
+6. Enter an [API key](/admin/projects/understanding-projects#api-keys) for the Pinecone project you want to monitor.
+7. Enter the [project ID](/admin/projects/understanding-projects#project-ids) of the Pinecone project you want to monitor.
 8. Save the configuration.
 
 On the **Monitoring Resources** tab, you'll find dashboards for the serverless and legacy pod-based indexes in your project and recommendations for [configuring monitors](https://docs.datadoghq.com/monitors/configuration/?tab=thresholdalert) using [Pinecone's metrics](/guides/production/monitoring#available-metrics).

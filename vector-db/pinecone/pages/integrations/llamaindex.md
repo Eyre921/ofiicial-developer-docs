@@ -31,7 +31,7 @@ To run this guide in your browser, see the [LlamaIndex notebook](https://colab.r
 
     ```shell Shell theme={null}
     pip install -qU \
-        "pinecone[grpc]==9.1.0" \
+        pinecone==9.1.0 \
         llama-index==0.14.25 \
         llama-index-vector-stores-pinecone==0.9.0 \
         llama-index-readers-file==0.7.0 \

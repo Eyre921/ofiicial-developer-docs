@@ -11,12 +11,12 @@ This page shows you how to migrate a pod-based index to [serverless](/guides/cor
 <Warning>
   In most cases, migrating to serverless reduces costs significantly. For read-heavy workloads with more than 1 query per second and for indexes with many records in a single namespace, consider building your serverless indexes on [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 
-  Before migrating, [contact Pinecone Support](/troubleshooting/contact-support) for help estimating and managing cost implications.
+  Before migrating, [contact Pinecone Support](/admin/support/contact-support) for help estimating and managing cost implications.
 </Warning>
 
 ## Limitations
 
-Migration is supported for pod-based indexes with up to 500 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 500 million records, [contact Pinecone Support](/troubleshooting/contact-support) before you migrate.
+Migration is supported for pod-based indexes with up to 500 million records and 20,000 namespaces across all supported clouds (AWS, GCP, and Azure). If your index has more than 500 million records, [contact Pinecone Support](/admin/support/contact-support) before you migrate.
 
 After you migrate, note that serverless indexes don't support the following features:
 
@@ -25,7 +25,7 @@ After you migrate, note that serverless indexes don't support the following feat
   * Because high-cardinality metadata in serverless indexes doesn't cause high memory utilization, this operation isn't relevant.
 * [Filtering index statistics by metadata](/reference/api/latest/data-plane/describeindexstats)
 
-If you were using either feature with your pod-based index, you'll need to adapt your code. If you're blocked by these limitations, [contact Pinecone Support](/troubleshooting/contact-support).
+If you were using either feature with your pod-based index, you'll need to adapt your code. If you're blocked by these limitations, [contact Pinecone Support](/admin/support/contact-support).
 
 ## How it works
 
@@ -43,7 +43,7 @@ After migration, you will have both a new serverless index and the original pod-
 
 In most cases, migrating to serverless reduces costs significantly. However, costs can increase for read-heavy workloads with more than 1 query per second and for indexes with many records in a single namespace.
 
-Before migrating, consider [contacting Pinecone Support](/troubleshooting/contact-support) for help estimating and managing cost implications.
+Before migrating, consider [contacting Pinecone Support](/admin/support/contact-support) for help estimating and managing cost implications.
 
 ## 2. Prepare for migration
 
@@ -265,7 +265,7 @@ If you are using an older version of the Python, Node.js, Java, or Go SDK, you m
 
    <CodeGroup>
      ```Python Python theme={null}
-     pip install "pinecone[grpc]" --upgrade  
+     pip install pinecone --upgrade
      ```
 
      ```JavaScript JavaScript theme={null}

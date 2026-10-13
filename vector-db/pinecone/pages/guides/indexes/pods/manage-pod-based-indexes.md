@@ -210,7 +210,7 @@ Use the [Delete an index](/reference/api/latest/control-plane/delete_index) oper
 
 <CodeGroup>
   ```python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
 
   pc = Pinecone(api_key="YOUR_API_KEY")
@@ -468,7 +468,7 @@ To enable deletion protection when creating a new index:
 
 <CodeGroup>
   ```python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone, PodSpec
 
   pc = Pinecone(api_key="YOUR_API_KEY")
@@ -827,7 +827,7 @@ For example, the following code deletes all records with a `genre` field set to 
 
 <CodeGroup>
   ```Python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
@@ -962,7 +962,7 @@ When configuring an index, you can tag the index to help with index organization
 
 ### Set a project pod limit
 
-To control costs, [project owners](/guides/projects/understanding-projects#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
+To control costs, [project owners](/admin/projects/understanding-projects#project-roles) can set the maximum total number of pods allowed across all pod-based indexes in a project. The default pod limit is 5.
 
 <Tabs>
   <Tab title="Pinecone console">

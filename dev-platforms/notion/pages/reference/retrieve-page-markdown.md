@@ -17,7 +17,7 @@ The endpoint also accepts non-navigable block IDs returned in `unknown_block_ids
 
 Returns a `page_markdown` object containing the page content as a markdown string. It uses enhanced markdown by default.
 
-Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. This is an opt-in preview; `v1` (enhanced markdown) is the default. `include_transcript=true` isn't supported with `v2` yet and returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. This is an opt-in preview; `v1` (enhanced markdown) is the default. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 <Info>
   **Requirements**

@@ -224,16 +224,16 @@ Up to 100 namespaces are returned at a time by default, in sorted order (bitwise
 
 <CodeGroup>
   ```python Python theme={null}
-  # Not supported with pinecone["grpc"] extras installed
   from pinecone import Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
 
   index = pc.Index(host="INDEX_HOST")
 
-  # Implicit pagination using a generator function
-  for namespace in index.list_namespaces():
-      print(namespace.name, ":", namespace.record_count)
+  # Implicit pagination using a generator function that yields one page at a time
+  for page in index.list_namespaces():
+      for namespace in page.namespaces:
+          print(namespace.name, ":", namespace.record_count)
 
   # Manual pagination
   namespaces = index.list_namespaces_paginated(
@@ -349,20 +349,14 @@ The response will look like the following:
 
 <CodeGroup>
   ```plaintext Python theme={null}
-  # Implicit pagination (print output from: for n in index.list_namespaces(): print(n.name, ":", n.record_count))
+  # Implicit pagination (print output from the loop above)
   example-namespace : 20000
   example-namespace2 : 10500
   example-namespace3 : 10000
   ...
 
   # Manual pagination (response from list_namespaces_paginated())
-  {
-      "namespaces": [
-          {"name": "example-namespace", "record_count": "20000"},
-          {"name": "example-namespace2", "record_count": "10500"}
-      ],
-      "pagination": {"next": "Tm90aGluZyB0byBzZWUgaGVyZQo="}
-  }
+  ListNamespacesResponse(namespaces=[NamespaceDescription(name='example-namespace', record_count=20000, schema=None, indexed_fields=None, size_bytes=0), NamespaceDescription(name='example-namespace2', record_count=10500, schema=None, indexed_fields=None, size_bytes=0)], pagination=Pagination(next='Tm90aGluZyB0byBzZWUgaGVyZQo='), total_count=3)
   ```
 
   ```javascript JavaScript theme={null}
@@ -437,7 +431,6 @@ Use the [Describe a namespace](/reference/api/latest/data-plane/describenamespac
 
 <CodeGroup>
   ```python Python theme={null}
-  # Not supported with pinecone["grpc"] extras installed
   from pinecone import Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
@@ -590,7 +583,6 @@ If a [namespace alias](/guides/manage-data/namespace-aliases/overview) targets t
 
 <CodeGroup>
   ```python Python theme={null}
-  # Not supported with pinecone["grpc"] extras installed
   from pinecone import Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")

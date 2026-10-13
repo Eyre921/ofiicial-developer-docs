@@ -662,7 +662,7 @@ The response will look as follows. Each record is returned with a similarity sco
 
 ## Search with a record ID
 
-When you search with a record ID, Pinecone uses the dense vector associated with the record as the query. To search an index of dense vectors with a record ID, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
+When you search with a record ID, Pinecone uses the dense vector associated with the record as the query. Because search is approximate, the results aren't guaranteed to include that record, even with a high `top_k`. To retrieve a specific record, [fetch it by ID](/guides/manage-data/fetch-data#fetch-records-by-id). To search an index of dense vectors with a record ID, use the [Search with a vector](/reference/api/latest/data-plane/query) operation with the following parameters:
 
 * The `namespace` to query. To use the default namespace, set the namespace to `"__default__"`.
 * The `id` parameter with the unique record ID containing the vector to use as the query.

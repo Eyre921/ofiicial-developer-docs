@@ -33,7 +33,7 @@ For managed (serverless) indexes, the `cloud` and `region` fields in `deployment
 The cloud and region can't be changed after a serverless index is created.
 
 <Note>
-  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
+  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
 </Note>
 
 For BYOC indexes, set `deployment.environment` to the environment ID provisioned for your account instead. See [Bring Your Own Cloud](/guides/production/bring-your-own-cloud) for details.

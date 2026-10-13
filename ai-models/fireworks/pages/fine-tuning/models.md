@@ -8,6 +8,12 @@ Which base models you can train on Fireworks and the surfaces each one is availa
 
 Managed training, the Training API, and serverless training all draw from the same base model catalog, but availability is decided per model: managed jobs by method (SFT and DPO), Training API jobs by parameter mode (LoRA or full-parameter) and method (SFT, DPO, and RL).
 
+<Info>
+  Muse Glimmer 30B is free for SFT in the UI, and for SFT and RL via the Serverless Training API, until Oct 31. No credit card required.
+
+  [Start a job](https://app.fireworks.ai/dashboard/fine-tuning/create?type=supervised\&baseModel=accounts/fireworks/models/muse-glimmer-30b)
+</Info>
+
 ## Model availability
 
 Pick a model to see the surfaces and methods it is enabled for, plus any training shapes that back it. Switch to **All models** for the full matrix.

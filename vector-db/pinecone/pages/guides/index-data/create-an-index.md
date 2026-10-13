@@ -789,6 +789,10 @@ Other parameters are optional. See the [API reference](/reference/api/2026-04/co
   ```
 </CodeGroup>
 
+## Wait for the index to be ready
+
+A new index of any type can't accept data until its `status.ready` field is `true`. The Python SDK waits for this by default, and the Node.js SDK waits when you pass `waitUntilReady: true`. If you call the API directly, [describe the index](/guides/manage-data/manage-indexes#describe-an-index) repeatedly until `status.ready` is `true`, then upsert.
+
 ## Create an index from a backup
 
 You can restore an index from a backup, regardless of whether it stores dense or sparse vectors. For more details, see [Restore an index](/guides/manage-data/restore-an-index).
@@ -796,6 +800,10 @@ You can restore an index from a backup, regardless of whether it stores dense or
 ## Index options
 
 To index only the metadata fields you filter on, rather than all of them, see [Configure metadata indexing](/guides/index-data/configure-metadata-indexing).
+
+### Index names
+
+An index name must be unique within its project and 1 to 45 characters long. It can contain only lowercase letters, numbers, and hyphens (`-`), and it must start and end with a letter or number.
 
 ### Cloud regions
 
@@ -815,7 +823,7 @@ When creating an index, you must choose the cloud and region where you want the 
 The cloud and region can't be changed after a serverless index is created.
 
 <Note>
-  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
+  On the Starter plan, you can create serverless indexes in the `us-east-1` region of AWS only. To create indexes in other regions, [upgrade to the Builder, Standard, or Enterprise plan](/admin/billing/upgrade-billing-plan).
 </Note>
 
 ### Similarity metrics

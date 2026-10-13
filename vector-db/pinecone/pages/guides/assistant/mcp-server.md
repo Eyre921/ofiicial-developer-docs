@@ -37,7 +37,7 @@ https://<YOUR_PINECONE_ASSISTANT_HOST>/mcp/assistants/<YOUR_ASSISTANT_NAME>
 
 Before you begin, make sure you have the following values, which you'll use in the commands below:
 
-* `<YOUR_PINECONE_API_KEY>`: [A Pinecone API key](/guides/projects/manage-api-keys).
+* `<YOUR_PINECONE_API_KEY>`: [A Pinecone API key](/admin/projects/manage-api-keys).
 * `<YOUR_PINECONE_ASSISTANT_HOST>`: In the Pinecone console, this is your assistant's **Host** value.
 * `<YOUR_ASSISTANT_NAME>`: Your assistant's name, as displayed in the Pinecone console. For example, `example-assistant`.
 

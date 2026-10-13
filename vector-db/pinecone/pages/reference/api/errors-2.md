@@ -8,7 +8,7 @@ Look up the HTTP status codes the Pinecone API returns, what each 2xx success an
 
 Pinecone uses conventional HTTP response codes to indicate the success or failure of an API request. In general, codes in the `2xx` range indicate success, codes in the `4xx` range indicate an error that failed given the information provided, and codes in the `5xx` range indicate an error with Pinecone's servers.
 
-For guidance on handling errors in production, see [Error handling](/guides/production/error-handling).
+For guidance on handling errors in production, see [Error handling](/guides/production/error-handling). To look up a specific error message, see [Common error messages](/reference/api/error-messages).
 
 ## 200 - OK
 
@@ -28,11 +28,11 @@ The request failed due to an invalid argument.
 
 ## 401 - UNAUTHENTICATED
 
-The request failed due to a missing or invalid [API key](/guides/projects/understanding-projects#api-keys).
+The request failed due to a missing or invalid [API key](/admin/projects/understanding-projects#api-keys).
 
 ## 402 - PAYMENT REQUIRED
 
-The request failed due to delinquent payment or account deactivation for non-payment. See [Account deactivation for non-payment](/guides/organizations/manage-billing/non-payment-account-deactivation).
+The request failed due to delinquent payment or account deactivation for non-payment. See [Account deactivation for non-payment](/admin/billing/non-payment-account-deactivation).
 
 ## 403 - FORBIDDEN
 

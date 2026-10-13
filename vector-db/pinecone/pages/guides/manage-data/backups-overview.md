@@ -77,7 +77,7 @@ Backup and restore times depend upon the size of the index and number of namespa
 | Backups per project | N/A | N/A | 500 | 1000 |
 
 <Note>
-  Backups aren't available on the Starter or Builder plans. To create backups, [upgrade to the Standard or Enterprise plan](/guides/organizations/manage-billing/upgrade-billing-plan).
+  Backups aren't available on the Starter or Builder plans. To create backups, [upgrade to the Standard or Enterprise plan](/admin/billing/upgrade-billing-plan).
 </Note>
 
 ## Limitations

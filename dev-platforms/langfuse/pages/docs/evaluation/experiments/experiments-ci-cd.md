@@ -107,8 +107,7 @@ This context is created by the GitHub Action and handles the CI-specific setup f
 
 Use `context.runExperiment` (JS/TS) or `context.run_experiment` (Python) to run the experiment with these defaults.
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
+**Python SDK**
 
 ```python title="experiments/support-agent-gate.py"
 from langfuse import RunnerContext
@@ -127,8 +126,7 @@ def experiment(context: RunnerContext):
     )
 ```
 
-</Tab>
-<Tab>
+**JS/TS SDK**
 
 ```ts title="experiments/support-agent-gate.ts"
 import type { ExperimentTaskParams, RunnerContext } from "@langfuse/client";
@@ -145,9 +143,6 @@ export async function experiment(context: RunnerContext) {
   });
 }
 ```
-
-</Tab>
-</LangTabs>
 
 Pass explicit values to `context.runExperiment` / `context.run_experiment` when you want to override action-provided defaults such as `data` or `metadata`.
 
@@ -181,8 +176,7 @@ See the full input reference in the [`langfuse/experiment-action` README](https:
 
 Raise `RegressionError` when a result should block the workflow. The example below fails when average exact-match accuracy is below the threshold.
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
+**Python SDK**
 
 ```python title="experiments/support-agent-gate.py"
 from langfuse import Evaluation, RegressionError, RunnerContext
@@ -244,8 +238,7 @@ def avg_accuracy(*, item_results, **kwargs):
     return Evaluation(name="avg_accuracy", value=sum(scores) / len(scores) if scores else 0.0)
 ```
 
-</Tab>
-<Tab>
+**JS/TS SDK**
 
 ```ts title="experiments/support-agent-gate.ts"
 import {
@@ -324,9 +317,6 @@ async function avgAccuracy({
 }
 ```
 
-</Tab>
-</LangTabs>
-
 ### Action output
 
 When `github_token` is provided and the workflow has `pull-requests: write`, the action posts or updates a pull request comment with:
@@ -387,8 +377,7 @@ Keep a reviewed baseline artifact in your repository. Generate it from a complet
 
 The following helpers use the `case_id` metadata and `refund_window` evaluator from [Evaluate an existing application](/resources/engineering/evaluate-existing-application). Replace the example timestamp and run ID with those from your reviewed run. Use the same timestamp to load the dataset for the candidate. Pass that timestamp to the helper after running the experiment; this checks that the gate is using the approved configuration.
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
+**Python SDK**
 
 ```python title="experiments/baseline_gate.py"
 import json
@@ -457,8 +446,7 @@ def check_approved_baseline(result, *, dataset_version: str | datetime):
 
 Call `check_approved_baseline(result, dataset_version=version)` from your experiment entry point before returning `result`. Here, `version` is the timezone-aware `datetime` or ISO timestamp used to fetch the candidate dataset. Increment `EVALUATOR_VERSION` whenever the grader changes and review a new baseline before using it.
 
-</Tab>
-<Tab>
+**JS/TS SDK**
 
 ```typescript title="experiments/baseline-gate.ts"
 import { readFileSync } from "node:fs";
@@ -530,9 +518,6 @@ export function checkApprovedBaseline(
 
 Call `checkApprovedBaseline(result, version)` from your experiment entry point before returning `result`. Here, `version` is the ISO timestamp used to fetch the candidate dataset. Increment `EVALUATOR_VERSION` whenever the grader changes and review a new baseline before using it.
 
-</Tab>
-</LangTabs>
-
 This example treats every previously passing case as protected. If only a subset is release-critical, store that reviewed subset explicitly in the baseline policy. Keep aggregate thresholds as an additional check.
 
 Missing evaluations, duplicate identifiers, and changed case sets raise script errors; newly failing cases raise `RegressionError`. Keep both `should_fail_on_script_error` and `should_fail_on_regression` enabled. A failed evaluator must not silently disappear from the denominator and make a run look better.
@@ -557,8 +542,7 @@ Save your cases in this format, keeping IDs stable between releases:
 
 Set `APP_VERSION` to the application commit or release under test. The examples hash the case file and record a grader version; update that version whenever the grader changes. The application may make model calls according to its own configuration. To publish an already completed run without calling the application or grader again, see [Publish saved check results](/resources/engineering/evaluate-existing-application#saved-check-results).
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
+**Python SDK**
 
 ```python title="test_application_experiment.py"
 import hashlib
@@ -618,8 +602,7 @@ def test_application_checks():
 
 Run `pytest -s test_application_experiment.py` with Pytest installed. The `-s` flag keeps the experiment link visible in CI logs.
 
-</Tab>
-<Tab>
+**JS/TS SDK**
 
 ```typescript title="test/application-experiment.test.ts"
 import { createHash } from "node:crypto";
@@ -684,9 +667,6 @@ it("passes every required application check", async () => {
 ```
 
 Run `npx vitest run test/application-experiment.test.ts` with Vitest installed.
-
-</Tab>
-</LangTabs>
 
 These assertions implement the **every required case must pass** policy. For a suite with explicitly accepted failures, use the [approved-baseline gate](#approved-baseline) instead. A test that expects the gate's assertion to throw would turn a real regression into a passing CI job.
 

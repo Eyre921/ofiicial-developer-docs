@@ -49,7 +49,7 @@ The basic workflow looks like this:
 
     ```shell Shell theme={null}
     pip install -qU \
-        "pinecone[grpc]==10.0.0" \
+        pinecone==10.0.0 \
         openai==3.26.0 \
         datasets==5.1.0
     ```

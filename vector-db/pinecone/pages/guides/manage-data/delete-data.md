@@ -125,7 +125,7 @@ Since Pinecone records can always be efficiently accessed using their ID, deleti
 
 <CodeGroup>
   ```Python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
@@ -241,7 +241,7 @@ For example, the following code deletes all records with a `genre` field set to 
 
 <CodeGroup>
   ```Python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")
@@ -374,7 +374,7 @@ To delete all of the records in a namespace but not the namespace itself, provid
 
 <CodeGroup>
   ```Python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")

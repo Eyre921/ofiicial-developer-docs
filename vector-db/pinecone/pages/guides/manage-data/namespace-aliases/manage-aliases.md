@@ -12,7 +12,7 @@ Create, list, describe, repoint, and delete namespace aliases in a Pinecone inde
 
 Create, list, describe, repoint, and delete [namespace aliases](/guides/manage-data/namespace-aliases/overview) in an index. Each operation is a single REST call to your [index host](/guides/manage-data/target-an-index). To swap the data an application reads with no downtime, see [Swap a namespace](/guides/manage-data/namespace-aliases/swap-a-namespace).
 
-You need a [project role](/guides/production/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
+You need a [project role](/admin/security/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
 
 ## Operations
 

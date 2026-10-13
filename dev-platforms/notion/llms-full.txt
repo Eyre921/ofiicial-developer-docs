@@ -4468,9 +4468,9 @@ curl 'https://api.notion.com/v1/pages/YOUR_PAGE_ID/markdown?markdown_version=v2'
   -H "Notion-Version: 2026-03-11"
 ```
 
-### Transcripts are not yet available in v2
+### Transcripts in v2
 
-`v2` can't render meeting note transcripts yet. A `GET` request with both `include_transcript=true` and `markdown_version=v2` returns a `400` `validation_error`. Use `v1` when you need transcripts.
+`v2` puts a meeting note's transcript in a `<meeting-notes-section-transcript>` tag inside `<meeting-notes>`. Without `include_transcript=true`, the tag holds a placeholder that starts with `Transcript omitted.` and says how to load the transcript.
 
 ### Parser warnings
 
@@ -18038,7 +18038,7 @@ Source: https://developers.notion.com/page/changelog
 
   ### Preview: Notion-flavored Markdown with `markdown_version`
 
-  The markdown endpoints accept a new optional `markdown_version` parameter. Set it to `v2` to read and write Notion-flavored Markdown. This is an opt-in preview: `v1` (enhanced markdown) stays the default, and requests without the parameter work as before. `v2` doesn't support `include_transcript` yet, and synchronous `v2` updates return parser `warnings`. Sending `markdown_version` without `markdown` on `POST /v1/pages` or the comment endpoints returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) and the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown).
+  The markdown endpoints accept a new optional `markdown_version` parameter. Set it to `v2` to read and write Notion-flavored Markdown. This is an opt-in preview: `v1` (enhanced markdown) stays the default, and requests without the parameter work as before. Synchronous `v2` updates return parser `warnings`. Sending `markdown_version` without `markdown` on `POST /v1/pages` or the comment endpoints returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) and the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown).
 </Update>
 
 <Update label="September 29, 2026">
@@ -30669,7 +30669,7 @@ The endpoint also accepts non-navigable block IDs returned in `unknown_block_ids
 
 Returns a `page_markdown` object containing the page content as a markdown string. It uses enhanced markdown by default.
 
-Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. This is an opt-in preview; `v1` (enhanced markdown) is the default. `include_transcript=true` isn't supported with `v2` yet and returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
+Set the `markdown_version` query parameter to `v2` to get [Notion-flavored Markdown](/guides/data-apis/notion-flavored-markdown) instead. This is an opt-in preview; `v1` (enhanced markdown) is the default. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions).
 
 <Info>
   **Requirements**

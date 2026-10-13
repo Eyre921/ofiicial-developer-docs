@@ -35,7 +35,7 @@ Monthly rerank request limits vary by model:
 | `bge-reranker-v2-m3` | 500 | 1,000 | Unlimited | Unlimited |
 | `pinecone-rerank-v0` | 500 | Not available | Unlimited | Unlimited |
 
-Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/guides/organizations/manage-billing/upgrade-billing-plan) to continue.
+Reaching a monthly usage limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to continue.
 
 <Accordion title="Example error">
   ```
@@ -95,7 +95,7 @@ Per-minute request limits for reranking models:
 | `bge-reranker-v2-m3` | 60 | 60 | 60 | 60 |
 | `pinecone-rerank-v0` | 60 | Not available | 60 | 60 |
 
-Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/guides/organizations/manage-billing/upgrade-billing-plan) to increase it, or [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
+Reaching a per-minute model limit returns a `429 - TOO_MANY_REQUESTS`. [Upgrade your plan](/admin/billing/upgrade-billing-plan) to increase it, or [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic).
 
 <Accordion title="Example error">
   ```

@@ -10,11 +10,7 @@ Install and use the Pinecone SDK for Pinecone Python SDK: auth, typed clients, a
   For installation instructions, usage examples, and reference information, see the [Pinecone Python SDK documentation](https://sdk.pinecone.io/python/). To report an issue or request a feature, [file an issue on GitHub](https://github.com/pinecone-io/pinecone-python-client/issues).
 </Tip>
 
-The Pinecone Python SDK is distributed on PyPI using the package name `pinecone`. By default, the `pinecone` package has a minimal set of dependencies and interacts with Pinecone via HTTP requests. However, you can install the following extras to unlock additional functionality:
-
-* `pinecone[grpc]` adds dependencies on `grpcio` and related libraries needed to run data operations such as upserts and queries over [gRPC](https://grpc.io/) for a modest performance improvement.
-
-* `pinecone[asyncio]` adds a dependency on `aiohttp` and enables usage of `async` methods for use with [asyncio](https://docs.python.org/3/library/asyncio.html). For more details, see [Async requests](#async-requests).
+The Pinecone Python SDK is distributed on PyPI using the package name `pinecone`. The base install includes the sync and [async](#async-requests) clients and the [gRPC](https://grpc.io/) data-plane client, so there are no extras to install.
 
 ## Requirements
 
@@ -46,12 +42,6 @@ To install the latest version of the [Python SDK](https://github.com/pinecone-io
 ```shell theme={null}
 # Install the latest version
 pip install pinecone
-
-# Install the latest version with gRPC extras
-pip install "pinecone[grpc]"
-
-# Install the latest version with asyncio extras
-pip install "pinecone[asyncio]"
 ```
 
 To install a specific version of the Python SDK, run the following command:
@@ -59,13 +49,9 @@ To install a specific version of the Python SDK, run the following command:
 ```shell pip theme={null}
 # Install a specific version
 pip install pinecone==<version>
-
-# Install a specific version with gRPC extras
-pip install "pinecone[grpc]"==<version>
-
-# Install a specific version with asyncio extras
-pip install "pinecone[asyncio]"==<version>
 ```
+
+SDK versions 8.x and earlier shipped gRPC and asyncio support as optional extras. To use them on those versions, install `"pinecone[grpc]==<version>"` or `"pinecone[asyncio]==<version>"`.
 
 To check your SDK version, run the following command:
 
@@ -98,17 +84,11 @@ If you already have the Python SDK, upgrade to the latest version as follows:
 ```shell theme={null}
 # Upgrade to the latest version
 pip install pinecone --upgrade
-
-# Upgrade to the latest version with gRPC extras
-pip install "pinecone[grpc]" --upgrade
-
-# Upgrade to the latest version with asyncio extras
-pip install "pinecone[asyncio]" --upgrade
 ```
 
 ## Initialize
 
-Once installed, you can import the library and then use an [API key](/guides/projects/manage-api-keys) to initialize a client instance:
+Once installed, you can import the library and then use an [API key](/admin/projects/manage-api-keys) to initialize a client instance:
 
 <CodeGroup>
   ```Python HTTP theme={null}
@@ -224,7 +204,7 @@ Use the [`PineconeAsyncio`](https://sdk.pinecone.io/python/asyncio.html) class t
 
 <CodeGroup>
   ```python Manage indexes theme={null}
-  # pip install "pinecone[asyncio]"
+  # pip install pinecone
   import asyncio
   from pinecone import PineconeAsyncio, ServerlessSpec
 
@@ -249,7 +229,7 @@ Use the [`PineconeAsyncio`](https://sdk.pinecone.io/python/asyncio.html) class t
   ```
 
   ```python Read and write index data theme={null}
-  # pip install "pinecone[asyncio]"
+  # pip install pinecone
   import asyncio
   from pinecone import Pinecone
 
@@ -295,7 +275,7 @@ The `query_namespaces` method accepts most of the same arguments as `query` with
 
 <Tabs>
   <Tab title="Python SDK without gRPC">
-    When using the Python SDK without gRPC extras, to get good performance, it's important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks aren't computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
+    When using the Python SDK without gRPC, to get good performance, it's important to set values for the `pool_threads` and `connection_pool_maxsize` properties on the index client. The `pool_threads` setting is the number of threads available to execute requests, while `connection_pool_maxsize` is the number of cached http connections that will be held. Since these tasks aren't computationally heavy and are mainly i/o bound, it should be okay to have a high ratio of threads to cpus.
 
     The combined results include the sum of all read unit usage used to perform the underlying queries for each namespace.
 
@@ -328,7 +308,7 @@ The `query_namespaces` method accepts most of the same arguments as `query` with
   </Tab>
 
   <Tab title="Python SDK with gRPC">
-    When using the Python SDK with gRPC extras, there is no need to set the `connection_pool_maxsize` because grpc makes efficient use of open connections by default.
+    When using the Python SDK with gRPC, there is no need to set the `connection_pool_maxsize` because grpc makes efficient use of open connections by default.
 
     ```python Python theme={null}
     from pinecone.grpc import PineconeGRPC
@@ -360,31 +340,26 @@ The `query_namespaces` method accepts most of the same arguments as `query` with
 
 ## Upsert from a dataframe
 
-To quickly ingest data when using the [Python SDK](/reference/sdks/python/overview), use the `upsert_from_dataframe` method. The method includes retry logic and`batch_size`, and is performant especially with Parquet file data sets.
+To quickly ingest data with the [Python SDK](/reference/sdks/python/overview), use the `upsert_from_dataframe` method. It upserts in batches (set the size with `batch_size`), retries failed requests, and performs especially well with data loaded from Parquet files.
 
-The following example upserts the `uora_all-MiniLM-L6-bm25` dataset as a dataframe.
+The dataframe needs `id` and `values` columns, plus an optional `metadata` column.
 
 ```Python Python theme={null}
-from pinecone import Pinecone, ServerlessSpec
-from pinecone_datasets import list_datasets, load_dataset
+import pandas as pd
+from pinecone import Pinecone
 
 pc = Pinecone(api_key="API_KEY")
-
-dataset = load_dataset("quora_all-MiniLM-L6-bm25")
-
-pc.create_index(
-  name="docs-example",
-  dimension=384,
-  metric="cosine",
-  spec=ServerlessSpec(
-    cloud="aws",
-    region="us-east-1"
-  )
-)
 
 # To get the unique host for an index, 
 # see https://docs.pinecone.io/guides/manage-data/target-an-index
 index = pc.Index(host="INDEX_HOST")
 
-index.upsert_from_dataframe(dataset.drop(columns=["blob"]))
+# To load a Parquet file instead, use pd.read_parquet("path/to/file.parquet")
+df = pd.DataFrame({
+    "id": ["A", "B", "C"],
+    "values": [[0.1, 0.2, 0.3], [0.4, 0.5, 0.6], [0.7, 0.8, 0.9]],
+    "metadata": [{"genre": "drama"}, {"genre": "comedy"}, {"genre": "drama"}],
+})
+
+index.upsert_from_dataframe(df, namespace="example-namespace", batch_size=500)
 ```

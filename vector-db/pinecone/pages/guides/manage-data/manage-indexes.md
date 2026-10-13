@@ -594,7 +594,7 @@ Use the [Delete an index](/reference/api/latest/control-plane/delete_index) oper
 
 <CodeGroup>
   ```python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")

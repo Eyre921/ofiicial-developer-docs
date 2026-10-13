@@ -49,8 +49,8 @@ The provider uses two kinds of credentials, and each resource requires a specifi
 
 | Credential | Environment variables | Resources and data sources |
 | :- | :- | :- |
-| [API key](/guides/projects/manage-api-keys) | `PINECONE_API_KEY` | `pinecone_index`, `pinecone_collection` |
-| [Service account](/guides/organizations/manage-service-accounts) | `PINECONE_CLIENT_ID`, `PINECONE_CLIENT_SECRET` | `pinecone_project`, `pinecone_api_key`, `pinecone_service_account`, `pinecone_role_binding`, `pinecone_invite`, `pinecone_user` |
+| [API key](/admin/projects/manage-api-keys) | `PINECONE_API_KEY` | `pinecone_index`, `pinecone_collection` |
+| [Service account](/admin/organizations/manage-service-accounts) | `PINECONE_CLIENT_ID`, `PINECONE_CLIENT_SECRET` | `pinecone_project`, `pinecone_api_key`, `pinecone_service_account`, `pinecone_role_binding`, `pinecone_invite`, `pinecone_user` |
 
 Follow these steps to authenticate:
 
@@ -307,7 +307,7 @@ Collections also accept a `timeouts` block, with the same 5-minute defaults as i
 
 ### Projects
 
-The `pinecone_project` resource lets you create, update, and delete [projects](/guides/projects/understanding-projects). Once `force_encryption_with_cmek` is enabled, it can't be disabled. `max_pods` defaults to `0`, which allows serverless indexes only.
+The `pinecone_project` resource lets you create, update, and delete [projects](/admin/projects/understanding-projects). Once `force_encryption_with_cmek` is enabled, it can't be disabled. `max_pods` defaults to `0`, which allows serverless indexes only.
 
 <Warning>
   Pod-based indexes are legacy. Customers who signed up for a Standard or Enterprise plan on or after August 18, 2025 cannot create them. [Create a serverless index](/guides/index-data/create-an-index) instead. Serverless indexes use on-demand read capacity by default, or [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview) for sustained high query rates and workloads of millions of records or more.
@@ -341,7 +341,7 @@ output "project_organization_id" {
 
 ### API keys
 
-The `pinecone_api_key` resource lets you create, update, and delete [API keys](/guides/projects/manage-api-keys). Valid `roles` values are `ProjectEditor`, `ProjectViewer`, `ControlPlaneEditor`, `ControlPlaneViewer`, `DataPlaneEditor`, and `DataPlaneViewer`. `roles` defaults to `["ProjectEditor"]`.
+The `pinecone_api_key` resource lets you create, update, and delete [API keys](/admin/projects/manage-api-keys). Valid `roles` values are `ProjectEditor`, `ProjectViewer`, `ControlPlaneEditor`, `ControlPlaneViewer`, `DataPlaneEditor`, and `DataPlaneViewer`. `roles` defaults to `["ProjectEditor"]`.
 
 <Note>
   You can update only the name and roles of an API key. `project_id` is required when you create a key.
@@ -373,7 +373,7 @@ output "api_key_roles" {
 
 ### Service accounts
 
-The `pinecone_service_account` resource lets you create, update, and delete [service accounts](/guides/organizations/manage-service-accounts). A service account authenticates with an OAuth client ID and secret. Grant it roles with a [role binding](#role-bindings).
+The `pinecone_service_account` resource lets you create, update, and delete [service accounts](/admin/organizations/manage-service-accounts). A service account authenticates with an OAuth client ID and secret. Grant it roles with a [role binding](#role-bindings).
 
 ```terraform theme={null}
 resource "pinecone_service_account" "example_service_account" {
@@ -407,7 +407,7 @@ To rotate a client secret, change `rotate_trigger` from one non-empty value to a
 
 ### Role bindings
 
-The `pinecone_role_binding` resource lets you grant a role to a principal at organization or project scope. For details on the role model, see [Manage roles and access](/guides/production/manage-rbac).
+The `pinecone_role_binding` resource lets you grant a role to a principal at organization or project scope. For details on the role model, see [Manage roles and access](/admin/security/manage-rbac).
 
 * Set `principal_type` to `user`, `service_account`, or `api_key`, and `principal_id` to that principal's ID.
 * Set `resource_type` to `organization` or `project`. For project scope, `resource_id` is required and must be the project ID. For organization scope, omit `resource_id`. The binding applies to the caller's organization.
@@ -440,7 +440,7 @@ The `pinecone_role_binding` resource doesn't accept `principal_type = "invite"`.
 
 ### Invites
 
-The `pinecone_invite` resource manages an [organization invitation](/guides/organizations/manage-organization-members), not the resulting membership. Creating it sends an invite to the given email with a set of initial roles. Deleting it revokes an invite that's still pending. The `role_bindings` list must include at least one organization-scoped role that grants membership.
+The `pinecone_invite` resource manages an [organization invitation](/admin/organizations/manage-organization-members), not the resulting membership. Creating it sends an invite to the given email with a set of initial roles. Deleting it revokes an invite that's still pending. The `role_bindings` list must include at least one organization-scoped role that grants membership.
 
 ```terraform theme={null}
 # Invite a user as an organization member
@@ -485,7 +485,7 @@ The read-only `status` attribute reports `pending`, `expired`, or `processed`. I
 
 ### Users
 
-The `pinecone_user` resource manages an existing [organization member](/guides/organizations/manage-organization-members). You can't create or update users through Terraform. They join your organization by accepting an [invite](#invites). Bring an existing user under management with [`terraform import`](#import-existing-resources). To change a user's roles, use a [role binding](#role-bindings).
+The `pinecone_user` resource manages an existing [organization member](/admin/organizations/manage-organization-members). You can't create or update users through Terraform. They join your organization by accepting an [invite](#invites). Bring an existing user under management with [`terraform import`](#import-existing-resources). To change a user's roles, use a [role binding](#role-bindings).
 
 <Warning>
   Destroying a `pinecone_user` resource removes that person from your organization. A `terraform destroy`, or removing the resource from your configuration, revokes a colleague's access to every project in the organization.

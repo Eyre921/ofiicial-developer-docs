@@ -36,8 +36,7 @@ Already have a local suite? [Keep your JSON cases and grader in Pytest or Vitest
 
 The scripts create a new dataset, add two reviewed cases, and pin the latest server-assigned creation timestamp returned by those writes. Both runs use that exact version, avoiding dependence on your computer's clock. In an existing project, reuse your dataset and store its approved version timestamp with your test configuration.
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
+**Python SDK**
 
 ```bash
 pip install langfuse
@@ -113,8 +112,7 @@ finally:
     langfuse.flush()
 ```
 
-</Tab>
-<Tab>
+**JS/TS SDK**
 
 ```bash
 npm install @langfuse/client @langfuse/otel @opentelemetry/sdk-node
@@ -200,9 +198,6 @@ main().catch((error) => {
 });
 ```
 
-</Tab>
-</LangTabs>
-
 Open **Experiments** in Langfuse and select the two runs. The standard-refund case changes from pass to fail; the sale-item case changes from fail to pass. Both runs score 50%, which is why reviewing individual cases matters. Follow [Compare experiments](/docs/evaluation/experiments/compare-experiments) to inspect the differences.
 
 ## Connect your application [#connect-your-application]
@@ -226,8 +221,7 @@ For example, save this as `saved-outputs.json`:
 
 Use the following task in place of the task in the example above. Keep the same dataset and evaluators, set the run name to identify the recorded version, and add `execution_mode: replay` to the run metadata.
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
+**Python SDK**
 
 ```python
 import json
@@ -242,8 +236,7 @@ def replay_task(*, item, **kwargs):
 
 Pass `task=replay_task` to `dataset.run_experiment`.
 
-</Tab>
-<Tab>
+**JS/TS SDK**
 
 ```typescript
 import { readFileSync } from "node:fs";
@@ -260,9 +253,6 @@ const replayTask: ExperimentTask = async (item) => {
 ```
 
 Pass `task: replayTask` to `dataset.runExperiment`.
-
-</Tab>
-</LangTabs>
 
 This measures the quality of recorded outputs under the current graders. It does not validate a new prompt, model, or code change. For that, run the changed application on the same inputs. To score existing traces directly, use [Scores via API/SDK](/docs/evaluation/evaluation-methods/scores-via-sdk).
 
@@ -299,8 +289,7 @@ Export your existing results into this format. Keep stable case IDs and the orig
 
 Use the [credentials and dependencies above](#setup). The scripts validate the boolean check results before uploading and hash the complete artifact to identify its contents. Export task or grader errors separately and resolve them before publishing a complete scored run; never turn an error into a passing check.
 
-<LangTabs items={["Python SDK", "JS/TS SDK"]}>
-<Tab>
+**Python SDK**
 
 ```python title="publish_results.py"
 import hashlib
@@ -357,8 +346,7 @@ finally:
 
 Run `python publish_results.py`.
 
-</Tab>
-<Tab>
+**JS/TS SDK**
 
 ```typescript title="publish-results.ts"
 import { createHash } from "node:crypto";
@@ -429,9 +417,6 @@ main().catch((error) => {
 ```
 
 Run `npx tsx publish-results.ts`.
-
-</Tab>
-</LangTabs>
 
 These are new experiment observations containing the recorded outputs and scores. Their timing describes the import, not the original application's latency or cost, and they do not reconstruct its intermediate tool calls. Retain the original run or trace identifiers in item metadata when available. If the original traces are already in Langfuse, [attach scores to those traces](/docs/evaluation/evaluation-methods/scores-via-sdk) instead of creating duplicate observations.
 

@@ -6,7 +6,7 @@ path: reference/api/authentication
 
 Pinecone API authentication guide covering API key generation, SDK client setup, and HTTP header configuration for authorized requests.
 
-All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
+All requests to [Pinecone APIs](/reference/api/introduction) must contain a valid [API key](/admin/security/security-overview#api-keys) for the target project.
 
 ## Get an API key
 
@@ -154,7 +154,7 @@ When using a [Pinecone SDK](/reference/pinecone-sdks), initialize a client objec
 
 ## Add headers to an HTTP request
 
-All HTTP requests to Pinecone APIs must contain an `Api-Key` header that specifies a valid [API key](/guides/production/security-overview#api-keys) and must be encoded as JSON with the `Content-Type: application/json` header. For example:
+All HTTP requests to Pinecone APIs must contain an `Api-Key` header that specifies a valid [API key](/admin/security/security-overview#api-keys) and must be encoded as JSON with the `Content-Type: application/json` header. For example:
 
 ```shell curl theme={null}
 curl https://api.pinecone.io/indexes \

@@ -8,21 +8,11 @@ Pinecone Database is a search engine for AI agents and applications, built for s
 
 Pinecone Database powers retrieval for AI agents and applications, including search, recommendations, and long-term memory. Each index has a schema that declares the fields you need, such as full-text-search fields, dense vectors, and sparse vectors, so one index can serve whichever retrieval approach a query calls for.
 
+## Get started
+
 <CardGroup>
   <Card title="Quickstart" icon="rocket" href="/guides/get-started/quickstart">
     Pick a search path and run your first search in minutes
-  </Card>
-
-  <Card title="Key terms" icon="book" href="/guides/core-concepts/key-terms">
-    Organizations, projects, indexes, namespaces, documents, and records
-  </Card>
-
-  <Card title="Data modeling" icon="table" href="/guides/index-data/data-modeling">
-    Design the fields your index needs for the searches you'll run
-  </Card>
-
-  <Card title="Search overview" icon="magnifying-glass" href="/guides/search/search-overview">
-    Compare search types and choose the right approach for each query
   </Card>
 
   <Card title="AI coding tools" icon="wand-magic-sparkles" href="/integrations/ai-coding-tools">
@@ -45,6 +35,22 @@ With Pinecone Database, you can:
 * Scale reads for sustained, high query volumes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes/overview).
 * Run in production by [backing up](/guides/manage-data/backups-overview) your indexes and deploying in your own cloud account with [Bring Your Own Cloud (BYOC)](/guides/production/bring-your-own-cloud).
 
+## Learn
+
+<CardGroup>
+  <Card title="Key terms" icon="book" href="/guides/core-concepts/key-terms">
+    Organizations, projects, indexes, namespaces, documents, and records
+  </Card>
+
+  <Card title="Data modeling" icon="table" href="/guides/index-data/data-modeling">
+    Design the fields your index needs for the searches you'll run
+  </Card>
+
+  <Card title="Search overview" icon="magnifying-glass" href="/guides/search/search-overview">
+    Compare search types and choose the right approach for each query
+  </Card>
+</CardGroup>
+
 ## Resources
 
 <CardGroup>
@@ -64,7 +70,7 @@ With Pinecone Database, you can:
     Third-party integrations for LangChain, LlamaIndex, and more
   </Card>
 
-  <Card title="Troubleshooting" icon="screwdriver-wrench" href="/troubleshooting/contact-support">
+  <Card title="Troubleshooting" icon="screwdriver-wrench" href="/admin/support/contact-support">
     Common errors, account help, and how to contact support
   </Card>
 

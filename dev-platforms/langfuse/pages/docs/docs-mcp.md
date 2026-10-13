@@ -25,9 +25,7 @@ Install it from [GitHub](https://github.com/langfuse/skills) or follow the [Agen
 
 ## Install
 
-<Tabs items={["Claude Code", "Codex", "Cursor", "Windsurf", "Copilot (in VSCode)", "Other MCP Clients"]}>
-
-<Tab>
+**Claude Code**
 
 Add Langfuse Docs MCP to Claude Code via the CLI:
 
@@ -71,9 +69,7 @@ Once added, start a Claude Code session (`claude`) and type `/mcp` to confirm th
 
 </details>
 
-</Tab>
-
-<Tab>
+**Codex**
 
 Add Langfuse Docs MCP to Codex via the CLI:
 
@@ -95,9 +91,7 @@ Start a new Codex session, then run `codex mcp list` to confirm the server is re
 
 </details>
 
-</Tab>
-
-<Tab>
+**Cursor**
 
 Add Langfuse Docs MCP to Cursor via the one-click install:
 
@@ -128,9 +122,7 @@ Add the following to your `mcp.json`:
 
 </details>
 
-</Tab>
-
-<Tab>
+**Windsurf**
 
 Add Langfuse Docs MCP to Windsurf via the following steps:
 
@@ -150,9 +142,7 @@ Add Langfuse Docs MCP to Windsurf via the following steps:
    }
    ```
 
-</Tab>
-
-<Tab>
+**Copilot (in VSCode)**
 
 Add Langfuse Docs MCP to Copilot in VSCode via the one-click install:
 
@@ -180,9 +170,7 @@ Add Langfuse Docs MCP to Copilot in VSCode via the following steps:
 
 </details>
 
-</Tab>
-
-<Tab>
+**Other MCP Clients**
 
 Langfuse uses the `streamableHttp` protocol to communicate with the MCP server. This is supported by most clients.
 
@@ -208,10 +196,6 @@ If you use a client that does not support `streamableHttp` (e.g. Windsurf), you 
   }
 }
 ```
-
-</Tab>
-
-</Tabs>
 
 ## About
 

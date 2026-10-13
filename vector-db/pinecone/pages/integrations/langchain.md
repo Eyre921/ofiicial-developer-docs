@@ -95,6 +95,10 @@ vectorstore_from_texts = PineconeVectorStore.from_texts(
 )
 ```
 
+<Note>
+  If you get `Pinecone has no attribute 'from_texts'` or `Pinecone has no attribute 'from_documents'`, your code is calling these methods on the Pinecone SDK's `Pinecone` class instead of LangChain's vector store class. Import `PineconeVectorStore` from `langchain_pinecone`, as shown above.
+</Note>
+
 ### Add more records
 
 After you initialize a `PineconeVectorStore` object, you can add more records to the underlying Pinecone index (and thus also the linked LangChain object) with the `add_documents` or `add_texts` method.
@@ -221,7 +225,7 @@ vectorstore.similarity_search(query, namespace="example-namespace")
   <Step title="Build the knowledge base">
     Load a sample dataset and prepare it for Pinecone:
 
-    1. Load a [sample Pinecone dataset](/guides/data/use-public-pinecone-datasets) into memory:
+    1. Load a [sample Pinecone dataset](https://github.com/pinecone-io/pinecone-datasets) into memory:
 
        ```Python Python theme={null}
        import pinecone_datasets  

@@ -10,7 +10,7 @@ Set up a Pinecone storage integration with an Amazon S3 bucket using an IAM role
   This feature is in [public preview](/release-notes/feature-availability) and available only on [Standard and Enterprise plans](https://www.pinecone.io/pricing/).
 </Note>
 
-This page shows you how to integrate Pinecone with an Amazon S3 bucket. Once your integration is set up, you can use it to [import data](/guides/index-data/import-data) from your Amazon S3 bucket into a Pinecone index hosted on AWS, or to [export audit logs](/guides/production/configure-audit-logs) to your Amazon S3 bucket.
+This page shows you how to integrate Pinecone with an Amazon S3 bucket. Once your integration is set up, you can use it to [import data](/guides/index-data/import-data) from your Amazon S3 bucket into a Pinecone index hosted on AWS, or to [export audit logs](/admin/security/configure-audit-logs) to your Amazon S3 bucket.
 
 ## Before you begin
 
@@ -27,9 +27,9 @@ In the [AWS IAM console](https://console.aws.amazon.com/iam/home):
 2. Click **Create policy**.
 3. In **Select a service** section, select **S3**.
 4. Select the following actions to allow:
-   * `ListBucket`: Permission to list some or all of the objects in an S3 bucket. Required for [importing data](/guides/index-data/import-data) and [exporting audit logs](/guides/production/configure-audit-logs).
+   * `ListBucket`: Permission to list some or all of the objects in an S3 bucket. Required for [importing data](/guides/index-data/import-data) and [exporting audit logs](/admin/security/configure-audit-logs).
    * `GetObject`: Permission to retrieve objects from an S3 bucket. Required for [importing data](/guides/index-data/import-data).
-   * `PutObject`: Permission to add an object to an S3 bucket. Required for [exporting audit logs](/guides/production/configure-audit-logs).
+   * `PutObject`: Permission to add an object to an S3 bucket. Required for [exporting audit logs](/admin/security/configure-audit-logs).
 5. In the **Resources** section, select **Specific**.
 6. For the **bucket**, specify the ARN of the bucket you created. For example: `arn:aws:s3:::example-bucket-name`
 7. For the **object**, specify an object ARN as the target resource. For example: `arn:aws:s3:::example-bucket-name/*`
@@ -39,7 +39,7 @@ In the [AWS IAM console](https://console.aws.amazon.com/iam/home):
 
 ### Targeting a subdirectory (optional)
 
-To write [audit logs](/guides/production/configure-audit-logs) to a specific subdirectory within your S3 bucket (e.g., `my-bucket/pinecone-logs/`), you need to configure your IAM policy differently for `ListBucket` vs. object-level actions:
+To write [audit logs](/admin/security/configure-audit-logs) to a specific subdirectory within your S3 bucket (e.g., `my-bucket/pinecone-logs/`), you need to configure your IAM policy differently for `ListBucket` vs. object-level actions:
 
 1. For `ListBucket`, use a **Condition** block with `StringLike` to specify the prefix. Include both the directory path with and without the trailing wildcard:
 
@@ -148,7 +148,7 @@ In the [AWS IAM console](https://console.aws.amazon.com/iam/home):
 ## 3. Add a storage integration
 
 <Note>
-  This step is required for [importing data](/guides/index-data/import-data). It's not required for [storing audit logs](/guides/production/configure-audit-logs).
+  This step is required for [importing data](/guides/index-data/import-data). It's not required for [storing audit logs](/admin/security/configure-audit-logs).
 </Note>
 
 You can add a storage integration in the Pinecone console or with the API.
@@ -194,4 +194,4 @@ The response includes the integration's `id`, which you need to [import data](/g
 ## Next steps
 
 * [Import data](/guides/index-data/import-data) from your Amazon S3 bucket into a Pinecone index.
-* [Configure audit logs](/guides/production/configure-audit-logs) to export logs to your Amazon S3 bucket.
+* [Configure audit logs](/admin/security/configure-audit-logs) to export logs to your Amazon S3 bucket.

@@ -14,6 +14,8 @@ Install and use the Pinecone Node.js and TypeScript SDK to manage indexes, upser
 
 The Pinecone Node.js SDK requires Node.js 22 or later. Its type declarations support TypeScript 5.2 to 7.x.
 
+The SDK is for server-side use only. Running it in a browser exposes your API key, so call Pinecone from your backend instead.
+
 ## SDK versions
 
 SDK versions are pinned to specific [API versions](/reference/api/versioning). When a new API version is released, a new version of the SDK is also released.
@@ -71,7 +73,7 @@ npm install @pinecone-database/pinecone@latest
 
 ## Initialize
 
-Once installed, you can import the library and then use an [API key](/guides/projects/manage-api-keys) to initialize a client instance:
+Once installed, you can import the library and then use an [API key](/admin/projects/manage-api-keys) to initialize a client instance:
 
 ```JavaScript theme={null}
 import { Pinecone } from '@pinecone-database/pinecone';
@@ -81,7 +83,7 @@ const pc = new Pinecone({
 });
 ```
 
-To manage organizations, projects, API keys, and [role-based access control](/guides/production/manage-rbac), initialize an `AdminClient` with [service account](/guides/organizations/manage-service-accounts) credentials instead. This requires v8.2.0 or later:
+To manage organizations, projects, API keys, and [role-based access control](/admin/security/manage-rbac), initialize an `AdminClient` with [service account](/admin/organizations/manage-service-accounts) credentials instead. This requires v8.2.0 or later:
 
 ```JavaScript theme={null}
 import { AdminClient } from '@pinecone-database/pinecone';

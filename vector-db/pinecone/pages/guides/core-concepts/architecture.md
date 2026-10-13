@@ -26,7 +26,7 @@ Pinecone runs as a managed service on AWS, GCP, and Azure cloud platforms. When 
 
 ### API gateway
 
-Every request to Pinecone includes an [API key](/guides/projects/manage-api-keys) that's assigned to a specific [project](/guides/projects/understanding-projects). The API gateway first validates your API key to make sure you have permission to access the project. Once validated, it routes your request to either the global control plane (for managing projects and indexes) or a regional data plane (for reading and writing data), depending on what you're trying to do.
+Every request to Pinecone includes an [API key](/admin/projects/manage-api-keys) that's assigned to a specific [project](/admin/projects/understanding-projects). The API gateway first validates your API key to make sure you have permission to access the project. Once validated, it routes your request to either the global control plane (for managing projects and indexes) or a regional data plane (for reading and writing data), depending on what you're trying to do.
 
 ### Control plane
 

@@ -22504,6 +22504,7 @@ Manage a branch with a neon.ts policy.
 | `neon config add bucket <name>`   | Declare an Object Storage bucket                                                       |
 | `neon config add data-api`        | Enable the Data API (dataApi: true) and Neon Auth, which the default provider requires |
 | `neon config add function <slug>` | Declare a Neon Function and create its handler file                                    |
+| `neon config add realtime`        |                                                                                        |
 | `neon config apply`               | Apply a neon.ts policy to the branch                                                   |
 | `neon config init`                | Scaffold a neon.ts policy and install the Neon config packages                         |
 | `neon config plan`                | Show what `config apply` would change (dry run)                                        |
@@ -22772,6 +22773,15 @@ Connect to a database via psql.
 
 Usage: `neon psql [branch] [options]`
 
+### realtime
+
+Manage Neon Realtime for a branch.
+
+| Subcommand              | Description                  |
+| ----------------------- | ---------------------------- |
+| `neon realtime disable` | Disable Realtime on a branch |
+| `neon realtime enable`  | Enable Realtime on a branch  |
+
 ### roles (alias: `role`)
 
 Manage roles.
@@ -22817,6 +22827,12 @@ Manage snapshots.
 Show the branch's live Neon state (alias of `config status`).
 
 Usage: `neon status [options]`
+
+### subscribe
+
+Subscribe to a live SQL query with Neon Realtime.
+
+Usage: `neon subscribe <query> [options]`
 
 ### triggers (alias: `trigger`)
 
@@ -24413,13 +24429,13 @@ If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, `confi
 neon config init [options]
 ```
 
-| Option                          | Description                                                                                                                                                                                                                                                                                          | Type    | Default | Required |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--from-branch`                 | Seed neon.ts from a branch's live Neon state instead of asking. Uses the branch pinned in .neon, or --branch \<name\|id>, or the project's default branch. The only mode of `config init` that calls the Neon API.                                                                                   | boolean | —       |    No    |
-| `--install`                     | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command.                                                                                                                                                                                    | boolean | `true`  |    No    |
-| `--services`, `-s`, `--service` | Services the scaffolded neon.ts declares: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. postgres alone writes the starter policy; every branch has Postgres. Omitted: pick interactively on a terminal, starter policy in CI or without a TTY. | array   | —       |    No    |
-| `--branch`                      | Branch ID or name                                                                                                                                                                                                                                                                                    | string  | —       |    No    |
-| `--project-id`                  | Project ID                                                                                                                                                                                                                                                                                           | string  | —       |    No    |
+| Option                          | Description                                                                                                                                                                                                                                                                                                    | Type    | Default | Required |
+| ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--from-branch`                 | Seed neon.ts from a branch's live Neon state instead of asking. Uses the branch pinned in .neon, or --branch \<name\|id>, or the project's default branch. The only mode of `config init` that calls the Neon API.                                                                                             | boolean | —       |    No    |
+| `--install`                     | Install @neon/config and @neon/env if they're missing. On by default; use --no-install to just print the command.                                                                                                                                                                                              | boolean | `true`  |    No    |
+| `--services`, `-s`, `--service` | Services the scaffolded neon.ts declares: postgres, auth, data-api, functions, object-storage, ai-gateway, realtime. Repeat the flag or comma-separate. postgres alone writes the starter policy; every branch has Postgres. Omitted: pick interactively on a terminal, starter policy in CI or without a TTY. | array   | —       |    No    |
+| `--branch`                      | Branch ID or name                                                                                                                                                                                                                                                                                              | string  | —       |    No    |
+| `--project-id`                  | Project ID                                                                                                                                                                                                                                                                                                     | string  | —       |    No    |
 
 ```bash
 neon config init
@@ -24446,13 +24462,13 @@ Declares a service, function, or bucket in your `neon.ts`, creating the file if 
 neon config add <sub-command> [options]
 ```
 
-Subcommands: [ai-gateway](https://neon.com/docs/cli/config#add-ai-gateway), [auth](https://neon.com/docs/cli/config#add-auth), [bucket](https://neon.com/docs/cli/config#add-bucket), [data-api](https://neon.com/docs/cli/config#add-data-api), [function](https://neon.com/docs/cli/config#add-function)
+Subcommands: [ai-gateway](https://neon.com/docs/cli/config#add-ai-gateway), [auth](https://neon.com/docs/cli/config#add-auth), [bucket](https://neon.com/docs/cli/config#add-bucket), [data-api](https://neon.com/docs/cli/config#add-data-api), [function](https://neon.com/docs/cli/config#add-function), [realtime](https://neon.com/docs/cli/config#add-realtime)
 
 `config add` runs entirely locally: it edits files, and never authenticates or resolves a project. Provisioning stays a separate [`neon config apply`](https://neon.com/docs/cli/config#apply) step.
 
 It looks for your config in the project directory: the directory holding the nearest `.neon` file (found by searching up from the current directory), or the current directory when there's no `.neon`. A `neon.ts` in a parent directory no longer applies. When it finds none, it creates `neon.ts` there and installs the `@neon/config` and `@neon/env` packages; pass `--no-install` to print the install command instead. Editing an existing file never installs packages. Pass `--config <path>` to target a specific file; a path that doesn't exist is an error.
 
-It edits the file in place, keeping your comments and formatting. It refuses edits it can't make safely, such as a service declared under the deprecated `preview` block, and prints the lines to add by hand instead. Re-adding an already-enabled service exits `0` with "nothing to change"; a duplicate function slug or bucket name exits `1`; a bare `neon config add` exits `1` and lists what you can add.
+It edits the file in place, keeping your comments and formatting. It refuses edits it can't make safely, such as a graduated service still declared under the `preview` block, where it's a deprecated alias, and prints the lines to add by hand instead. Re-adding an already-enabled service exits `0` with "nothing to change"; a duplicate function slug or bucket name exits `1`; a bare `neon config add` exits `1` and lists what you can add.
 
 ### neon config add auth
 
@@ -24509,6 +24525,31 @@ neon config add ai-gateway [options]
 
 ```bash
 neon config add ai-gateway
+```
+
+### neon config add realtime
+
+Enables Neon Realtime by setting `preview.realtime: true`. Pass `--allowed-origin` (repeatable) to set the browser origins allowed to connect instead, which writes `preview.realtime: { allowedOrigins: [...] }`. Each origin must be `*` or an `http` or `https` origin with no path, query, or fragment, and the command checks them before editing the file. See [`neon realtime enable`](https://neon.com/docs/cli/realtime#enable) for the full rules.
+
+```bash
+neon config add realtime [options]
+```
+
+| Option             | Description                                                   | Type   | Default | Required |
+| ------------------ | ------------------------------------------------------------- | ------ | ------- | :------: |
+| `--allowed-origin` | Allowed browser origin (repeatable). "\*" allows every origin | array  | —       |    No    |
+| `--branch`         | Branch ID or name                                             | string | —       |    No    |
+| `--project-id`     | Project ID                                                    | string | —       |    No    |
+
+With an existing `neon.ts`, setting an allowed origin updates it in place:
+
+```bash
+neon config add realtime --allowed-origin https://app.example.com
+```
+
+```text
+Updated neon.ts: set preview.realtime to { allowedOrigins: ["https://app.example.com"] }.
+Next: `neon config plan` to preview, `neon config apply` to provision.
 ```
 
 ### neon config add function
@@ -25354,7 +25395,7 @@ Subcommands: [pull](https://neon.com/docs/cli/env#pull)
 
 Writes the branch's Neon environment variables to a local `.env` file.
 
-`neon env pull` works with or without a [`neon.ts`](https://neon.com/docs/reference/neon-ts) configuration file. Without one, it writes the branch's core variables (`DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`). With a `neon.ts`, it also writes credentials for each service you declare (Managed Better Auth, Data API, AI Gateway, Object Storage).
+`neon env pull` works with or without a [`neon.ts`](https://neon.com/docs/reference/neon-ts) configuration file. Without one, it writes everything the branch has: the core variables (`DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`), credentials for each service provisioned on the branch, and the default AI Gateway credential. With a `neon.ts`, it writes the core variables plus credentials for each service you declare (Managed Better Auth, Data API, AI Gateway, Object Storage, [Realtime](https://neon.com/docs/cli/realtime)).
 
 When your `neon.ts` declares functions, `neon env pull` also writes each one's invocation URL as `NEON_FUNCTION_<SLUG>_BASE_URL` (for example, `NEON_FUNCTION_DISCORD_BASE_URL`). The URL is derived from the branch, so the function doesn't have to be deployed yet; the value is the address it will answer at once you deploy it to that branch. Scoping the pull with `--service functions` instead writes URLs only for functions that are already deployed, so a declared-but-undeployed function appears in the default `neon.ts` pull but not with `--service functions`.
 
@@ -25364,14 +25405,14 @@ Unset function env vars don't block a pull. If a declared function reads a `proc
 neon env pull [options]
 ```
 
-| Option                          | Description                                                                                                                                                                                                                               | Type   | Default | Required |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
-| `--config`                      | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                   | string | —       |    No    |
-| `--env`, `-e`                   |                                                                                                                                                                                                                                           | array  | —       |    No    |
-| `--file`                        | Target .env file to write, relative to cwd. Defaults to an existing .env, otherwise .env.local, in the project directory (next to .neon, or cwd without one). Only Neon variables are updated; other lines are preserved.                 | string | —       |    No    |
-| `--service`, `-s`, `--services` | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. Combines with --env as a union. | array  | —       |    No    |
-| `--branch`                      | Branch ID or name                                                                                                                                                                                                                         | string | —       |    No    |
-| `--project-id`                  | Project ID                                                                                                                                                                                                                                | string | —       |    No    |
+| Option                          | Description                                                                                                                                                                                                                                         | Type   | Default | Required |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--config`                      | Path to a neon.ts policy (defaults to the neon.ts next to .neon, or in cwd without one)                                                                                                                                                             | string | —       |    No    |
+| `--env`, `-e`                   |                                                                                                                                                                                                                                                     | array  | —       |    No    |
+| `--file`                        | Target .env file to write, relative to cwd. Defaults to an existing .env, otherwise .env.local, in the project directory (next to .neon, or cwd without one). Only Neon variables are updated; other lines are preserved.                           | string | —       |    No    |
+| `--service`, `-s`, `--services` | Pull only these services' variables: postgres, auth, data-api, functions, object-storage, ai-gateway, realtime. Repeat the flag or comma-separate. Overrides neon.ts, and prunes only within the services you name. Combines with --env as a union. | array  | —       |    No    |
+| `--branch`                      | Branch ID or name                                                                                                                                                                                                                                   | string | —       |    No    |
+| `--project-id`                  | Project ID                                                                                                                                                                                                                                          | string | —       |    No    |
 
 Write the linked branch's Neon variables into `.env.local` (or `.env` if present):
 
@@ -25385,7 +25426,7 @@ Pull a specific branch into a specific file:
 neon env pull --branch preview --file .env.preview
 ```
 
-Pull only the variables for the services you name, ignoring `neon.ts`. Repeat `--service` or comma-separate the values (`postgres`, `auth`, `data-api`, `functions`, `object-storage`, `ai-gateway`):
+Pull only the variables for the services you name, ignoring `neon.ts`. Repeat `--service` or comma-separate the values (`postgres`, `auth`, `data-api`, `functions`, `object-storage`, `ai-gateway`, `realtime`):
 
 ```bash
 neon env pull --service ai-gateway --service postgres
@@ -25886,25 +25927,25 @@ It can also write a [`neon.ts` config](https://neon.com/docs/cli/config) you can
 
 ## Options
 
-| Option                          | Description                                                                                                                                                                                                                                                             | Type    | Default | Required |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
-| `--agent`, `-a`                 | Coding agent to install into (repeatable). Skips agent selection. Values listed below                                                                                                                                                                                   | array   | —       |    No    |
-| `--agent-setup`                 | Install Neon into coding agents. Use --no-agent-setup to skip. Plugin vs skills is inferred from --skill and MCP flags                                                                                                                                                  | boolean | `true`  |    No    |
-| `--branch`, `--branch-id`       | Forwarded to link: branch name or ID to pin                                                                                                                                                                                                                             | string  | —       |    No    |
-| `--claimable`                   | Create a claimable project that expires in 72 hours unless claimed. Selects Custom                                                                                                                                                                                      | boolean | `false` |    No    |
-| `--config`                      | Create neon.ts after linking. Use --no-config to skip. Omitted in Custom: you will be asked                                                                                                                                                                             | boolean | —       |    No    |
-| `--link`                        | Link a Neon project during setup. Use --no-link to skip without being asked                                                                                                                                                                                             | boolean | `true`  |    No    |
-| `--mcp-auth`                    | MCP authentication. Selects skills and MCP setup. oauth is neon mcp --oauth Possible values: `oauth`, `api-key`                                                                                                                                                         | string  | —       |    No    |
-| `--mcp-config-location`         | Where to configure the Neon MCP server: global (user config, same as neon mcp) or project (this directory, same as neon mcp --project). Selects skills and MCP setup Possible values: `global`, `project`                                                               | string  | —       |    No    |
-| `--mcp-project-scoped`          | Limit MCP tools to the linked project, same as neon mcp --project-id. Selects skills and MCP setup                                                                                                                                                                      | boolean | `false` |    No    |
-| `--org-id`                      | Forwarded to link: organization ID to link to                                                                                                                                                                                                                           | string  | —       |    No    |
-| `--package-manager`             | Package manager for neon.ts dependencies. -y uses this without asking. Custom asks only when none is detected Possible values: `npm`, `pnpm`, `yarn`, `bun`                                                                                                             | string  | —       |    No    |
-| `--project-id`                  | Forwarded to link: existing project ID to link to                                                                                                                                                                                                                       | string  | —       |    No    |
-| `--project-name`                | Forwarded to link: name for a new project                                                                                                                                                                                                                               | string  | —       |    No    |
-| `--region-id`                   | Forwarded to link: region for a new project                                                                                                                                                                                                                             | string  | —       |    No    |
-| `--services`, `-s`, `--service` | Services to declare in neon.ts: postgres, auth, data-api, functions, object-storage, ai-gateway. Repeat the flag or comma-separate. postgres alone writes the starter policy; every branch has Postgres. Implies creating neon.ts. Cannot be combined with --no-config. | array   | —       |    No    |
-| `--skill`                       | Neon skill to install (repeatable). Selects skills setup (not the plugin) and skips the skills picker. With MCP flags, also configures MCP. Values listed below                                                                                                         | array   | —       |    No    |
-| `--yes`, `-y`                   | Skip prompts. Alone: Recommended (detected agents, link when authenticated, default neon.ts). With --skill, MCP flags, --no-agent-setup, or --claimable: Custom using those flags                                                                                       | boolean | `false` |    No    |
+| Option                          | Description                                                                                                                                                                                                                                                                       | Type    | Default | Required |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--agent`, `-a`                 | Coding agent to install into (repeatable). Skips agent selection. Values listed below                                                                                                                                                                                             | array   | —       |    No    |
+| `--agent-setup`                 | Install Neon into coding agents. Use --no-agent-setup to skip. Plugin vs skills is inferred from --skill and MCP flags                                                                                                                                                            | boolean | `true`  |    No    |
+| `--branch`, `--branch-id`       | Forwarded to link: branch name or ID to pin                                                                                                                                                                                                                                       | string  | —       |    No    |
+| `--claimable`                   | Create a claimable project that expires in 72 hours unless claimed. Selects Custom                                                                                                                                                                                                | boolean | `false` |    No    |
+| `--config`                      | Create neon.ts after linking. Use --no-config to skip. Omitted in Custom: you will be asked                                                                                                                                                                                       | boolean | —       |    No    |
+| `--link`                        | Link a Neon project during setup. Use --no-link to skip without being asked                                                                                                                                                                                                       | boolean | `true`  |    No    |
+| `--mcp-auth`                    | MCP authentication. Selects skills and MCP setup. oauth is neon mcp --oauth Possible values: `oauth`, `api-key`                                                                                                                                                                   | string  | —       |    No    |
+| `--mcp-config-location`         | Where to configure the Neon MCP server: global (user config, same as neon mcp) or project (this directory, same as neon mcp --project). Selects skills and MCP setup Possible values: `global`, `project`                                                                         | string  | —       |    No    |
+| `--mcp-project-scoped`          | Limit MCP tools to the linked project, same as neon mcp --project-id. Selects skills and MCP setup                                                                                                                                                                                | boolean | `false` |    No    |
+| `--org-id`                      | Forwarded to link: organization ID to link to                                                                                                                                                                                                                                     | string  | —       |    No    |
+| `--package-manager`             | Package manager for neon.ts dependencies. -y uses this without asking. Custom asks only when none is detected Possible values: `npm`, `pnpm`, `yarn`, `bun`                                                                                                                       | string  | —       |    No    |
+| `--project-id`                  | Forwarded to link: existing project ID to link to                                                                                                                                                                                                                                 | string  | —       |    No    |
+| `--project-name`                | Forwarded to link: name for a new project                                                                                                                                                                                                                                         | string  | —       |    No    |
+| `--region-id`                   | Forwarded to link: region for a new project                                                                                                                                                                                                                                       | string  | —       |    No    |
+| `--services`, `-s`, `--service` | Services to declare in neon.ts: postgres, auth, data-api, functions, object-storage, ai-gateway, realtime. Repeat the flag or comma-separate. postgres alone writes the starter policy; every branch has Postgres. Implies creating neon.ts. Cannot be combined with --no-config. | array   | —       |    No    |
+| `--skill`                       | Neon skill to install (repeatable). Selects skills setup (not the plugin) and skips the skills picker. With MCP flags, also configures MCP. Values listed below                                                                                                                   | array   | —       |    No    |
+| `--yes`, `-y`                   | Skip prompts. Alone: Recommended (detected agents, link when authenticated, default neon.ts). With --skill, MCP flags, --no-agent-setup, or --claimable: Custom using those flags                                                                                                 | boolean | `false` |    No    |
 
 Pass `-y` (alias `--yes`) to run each step with its defaults instead of prompting. On its own, `-y` runs the recommended setup: it detects agents from your global agent configuration, the project folders, and the host CLI agent you're running inside, then installs the plugin globally for each detected agent that supports it, and skills and MCP for the rest. Run `neon init --help` to see which agents fall into each family. If it detects no agent, it writes the default skills in the current directory. `-y` links your only organization and project, or prints the IDs and exits when you have several (pass `--org-id`/`--project-id` to choose), and it never opens a browser.
 
@@ -28627,6 +28668,73 @@ Now that you're set up with the Neon CLI, you can:
 
 For more details on all available commands, see the [CLI Reference](https://neon.com/docs/cli).
 
+--- [Document source](https://neon.com/docs/cli/realtime.md) ---
+
+> Summary: The Neon CLI `neon realtime` command enables and disables Neon Realtime on a database branch. Use `enable` to provision Realtime and set the browser origins allowed to connect, and `disable` to remove it.
+
+# Neon CLI command: realtime
+
+Enable and disable Neon Realtime on a branch from the CLI
+
+The `realtime` command enables and disables Neon Realtime on a branch. Once Realtime is on, you can stream a live SQL query's results with [`neon subscribe`](https://neon.com/docs/cli/subscribe), and [`neon env pull`](https://neon.com/docs/cli/env) writes the branch's `NEON_REALTIME_URL` and `NEON_REALTIME_SECRET` to your `.env`. To manage Realtime declaratively instead, add it to your `neon.ts` with [`neon config add realtime`](https://neon.com/docs/cli/config#add-realtime).
+
+**Coming soon: Coming soon**
+
+Neon Realtime isn't available yet. The `realtime` and `subscribe` commands ship in Neon CLI 8.4.1 but stay hidden and print "Neon Realtime is coming soon!" until Realtime launches.
+
+Subcommands: [disable](https://neon.com/docs/cli/realtime#disable), [enable](https://neon.com/docs/cli/realtime#enable)
+
+If `--project-id` is omitted, the CLI reads it from your [context file](https://neon.com/docs/cli/link) or auto-selects your only project. If `--branch` is omitted, it uses the context file's branch, or the project's default branch.
+
+## neon realtime enable
+
+Requests Realtime provisioning for a branch. Provisioning finishes in the background, usually within a few seconds. Run it again on a branch that already has Realtime to replace its allowed origins with the ones you pass. Without `--allowed-origin`, a re-run keeps the existing origins.
+
+```bash
+neon realtime enable [options]
+```
+
+| Option             | Description                                                   | Type   | Default | Required |
+| ------------------ | ------------------------------------------------------------- | ------ | ------- | :------: |
+| `--allowed-origin` | Allowed browser origin (repeatable). "\*" allows every origin | array  | —       |    No    |
+| `--branch`         | Branch ID or name                                             | string | —       |    No    |
+| `--project-id`     | Project ID                                                    | string | —       |    No    |
+
+`--allowed-origin` sets the browser origins allowed to connect. Repeat the flag for each origin, up to 16. Each value must be `*`, which allows every origin, or an `http` or `https` origin with no path, query, or fragment, such as `https://app.example.com`. `*` can't be combined with other origins. The CLI checks the values before it sends the request.
+
+By default, any browser origin can connect. Pass `--allowed-origin` to limit connections to the origins you list. A new branch starts with its parent's list. A new list can take about a minute to apply after the change finishes. Allowed origins only restrict browsers: a client that sends no `Origin` header, such as a server, can connect either way.
+
+```bash
+neon realtime enable --allowed-origin https://app.example.com --allowed-origin http://localhost:3000
+```
+
+```text
+Realtime enable requested for branch br-cool-darkness-123456.
+```
+
+## neon realtime disable
+
+Requests Realtime deprovisioning for a branch.
+
+```bash
+neon realtime disable [options]
+```
+
+| Option         | Description       | Type   | Default | Required |
+| -------------- | ----------------- | ------ | ------- | :------: |
+| `--branch`     | Branch ID or name | string | —       |    No    |
+| `--project-id` | Project ID        | string | —       |    No    |
+
+```bash
+neon realtime disable
+```
+
+```text
+Realtime disable requested for branch br-cool-darkness-123456.
+```
+
+After you disable Realtime, `neon subscribe` on that branch fails with an error that points you back to `neon realtime enable`.
+
 --- [Document source](https://neon.com/docs/cli/roles.md) ---
 
 > Summary: The `neon roles` CLI command lists, creates, and deletes database roles in a Neon project, with subcommands scoped to a specific branch or the project default. Use it when you need to add a login role, create a passwordless role with `--no-login`, or remove an existing role from the command line. Role names are capped at 63 bytes; commands require the Neon CLI and either browser-based auth or an API key.
@@ -29285,6 +29393,117 @@ neon status [options]
 
 ```bash
 neon status
+```
+
+--- [Document source](https://neon.com/docs/cli/subscribe.md) ---
+
+> Summary: The Neon CLI `neon subscribe` command subscribes to a live SQL query with Neon Realtime and prints the full result each time it changes, or the raw reset and transaction batch events with `--changes`. Output is a table, newline-delimited JSON, or YAML.
+
+# Neon CLI command: subscribe
+
+Stream a live SQL query's results from the terminal with Neon Realtime
+
+The `subscribe` command runs a `SELECT` query as a live subscription with Neon Realtime and prints its results as they change. Use it to watch a table while you develop, or to check what a Realtime client would receive. The branch needs Realtime enabled first: run [`neon realtime enable`](https://neon.com/docs/cli/realtime#enable), or declare it in `neon.ts` with [`neon config add realtime`](https://neon.com/docs/cli/config#add-realtime) and apply.
+
+**Coming soon: Coming soon**
+
+Neon Realtime isn't available yet. The `realtime` and `subscribe` commands ship in Neon CLI 8.4.1 but stay hidden and print "Neon Realtime is coming soon!" until Realtime launches.
+
+## Usage
+
+```bash
+neon subscribe "<query>" [options]
+```
+
+## Options
+
+| Option         | Description                                                           | Type    | Default | Required |
+| -------------- | --------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--branch`     | Branch ID or name                                                     | string  | —       |    No    |
+| `--changes`    | Show raw resets and transaction batches instead of full query results | boolean | `false` |    No    |
+| `--project-id` | Project ID                                                            | string  | —       |    No    |
+
+The CLI resolves the branch's Realtime URL, secret, and database name for you, the same values [`neon env pull`](https://neon.com/docs/cli/env) writes. If `--project-id` is omitted, it reads it from your [context file](https://neon.com/docs/cli/link) or auto-selects your only project. If `--branch` is omitted, it uses the context file's branch, or the project's default branch.
+
+The subscription runs until you press Ctrl+C, or until the server closes it or reports an error.
+
+## Output
+
+By default, `subscribe` prints the full query result as a table when the subscription starts and again after every change. With `--changes`, it prints the raw events instead: a reset with the current rows, each with a row ID, and then one batch per transaction listing each change's type (`upsert` or `remove`), row ID, and row. The server can send a new reset at any point instead of a batch. A reset replaces the full row set and invalidates earlier row IDs.
+
+With `--output json`, each event is one JSON object per line. With `--output yaml`, each event is a separate YAML document. Each event has a `type` of `snapshot` (the default mode), or `reset` or `batch` (with `--changes`).
+
+## Examples
+
+Print the full result whenever it changes. `ORDER BY` keeps the rows in a stable order between frames:
+
+```bash
+neon subscribe "SELECT * FROM items ORDER BY id"
+```
+
+Here, a row is inserted and then another is renamed while the subscription runs:
+
+```text
+Query result
+ID  Name
+1   apple
+2   banana
+
+Query result
+ID  Name
+1   apple
+2   banana
+3   cherry
+
+Query result
+ID  Name
+1   apple
+2   blueberry
+3   cherry
+```
+
+Print the raw reset and transaction batch events:
+
+```bash
+neon subscribe --changes "SELECT * FROM items"
+```
+
+Here, a row is inserted, updated, and then deleted, one transaction each:
+
+<details>
+
+<summary>Show output</summary>
+
+```text
+Reset
+Row ID                                                            Row
+006722e9b9e49b81274c8805cc134836a9892ea5dbe86231a37d0c5915245761  {"id":3,"name":"cherry"}
+3011f41a263e1f0f53e37c346ac80887d8d8f300b79048db6a7b56ddda623403  {"id":2,"name":"blueberry"}
+
+Batch (txids: 1059)
+Type    Row ID                                                            Row
+upsert  e873de7799382fbeb7d09a5c320572c50ea7d2a9454244a19ea8a70ac09cbbb6  {"id":4,"name":"date"}
+
+Batch (txids: 1060)
+Type    Row ID                                                            Row
+upsert  006722e9b9e49b81274c8805cc134836a9892ea5dbe86231a37d0c5915245761  {"id":3,"name":"cranberry"}
+
+Batch (txids: 1061)
+Type    Row ID
+remove  e873de7799382fbeb7d09a5c320572c50ea7d2a9454244a19ea8a70ac09cbbb6
+```
+
+</details>
+
+Stream events as newline-delimited JSON, for example to pipe into another tool:
+
+```bash
+neon subscribe "SELECT * FROM items ORDER BY id" --output json
+```
+
+```json
+{"type":"snapshot","rows":[{"id":1,"name":"apple"},{"id":2,"name":"banana"}]}
+{"type":"snapshot","rows":[{"id":1,"name":"apple"},{"id":2,"name":"banana"},{"id":3,"name":"cherry"}]}
 ```
 
 --- [Document source](https://neon.com/docs/cli/triggers.md) ---
@@ -129146,6 +129365,16 @@ Interface-specific indexes:
 - [Set VPC endpoint restriction](https://neon.com/docs/reference/api/projects/assign-project-vpc-endpoint.md) `POST /projects/{project_id}/vpc_endpoints/{vpc_endpoint_id}`
 - [Update project](https://neon.com/docs/reference/api/projects/update-project.md) `PATCH /projects/{project_id}`
 
+## Realtime
+
+[All realtime endpoints](https://neon.com/docs/reference/api/realtime.md)
+
+- [Disable Realtime](https://neon.com/docs/reference/api/realtime/disable-project-branch-realtime.md) `DELETE /projects/{project_id}/branches/{branch_id}/realtime`
+- [Enable Realtime](https://neon.com/docs/reference/api/realtime/enable-project-branch-realtime.md) `POST /projects/{project_id}/branches/{branch_id}/realtime`
+- [Retrieve Realtime state](https://neon.com/docs/reference/api/realtime/get-project-branch-realtime.md) `GET /projects/{project_id}/branches/{branch_id}/realtime`
+- [Retrieve the Realtime shared secret](https://neon.com/docs/reference/api/realtime/get-project-branch-realtime-secret.md) `GET /projects/{project_id}/branches/{branch_id}/realtime/secret`
+- [Rotate the Realtime shared secret](https://neon.com/docs/reference/api/realtime/rotate-project-branch-realtime-secret.md) `POST /projects/{project_id}/branches/{branch_id}/realtime/rotate_secret`
+
 ## Regions
 
 [All regions endpoints](https://neon.com/docs/reference/api/regions.md)
@@ -129199,16 +129428,6 @@ Interface-specific indexes:
 - [Retrieve email server configuration](https://neon.com/docs/reference/api/auth-legacy/get-neon-auth-email-server.md) `GET /projects/{project_id}/auth/email_server`
 - [Update email server configuration](https://neon.com/docs/reference/api/auth-legacy/update-neon-auth-email-server.md) `PATCH /projects/{project_id}/auth/email_server`
 - [Update OAuth provider](https://neon.com/docs/reference/api/auth-legacy/update-neon-auth-oauth-provider.md) `PATCH /projects/{project_id}/auth/oauth_providers/{oauth_provider_id}`
-
-## Realtime
-
-[All realtime endpoints](https://neon.com/docs/reference/api/realtime.md)
-
-- [Disable Realtime](https://neon.com/docs/reference/api/realtime/disable-project-branch-realtime.md) `DELETE /projects/{project_id}/branches/{branch_id}/realtime`
-- [Enable Realtime](https://neon.com/docs/reference/api/realtime/enable-project-branch-realtime.md) `POST /projects/{project_id}/branches/{branch_id}/realtime`
-- [Retrieve Realtime state](https://neon.com/docs/reference/api/realtime/get-project-branch-realtime.md) `GET /projects/{project_id}/branches/{branch_id}/realtime`
-- [Retrieve the Realtime shared secret](https://neon.com/docs/reference/api/realtime/get-project-branch-realtime-secret.md) `GET /projects/{project_id}/branches/{branch_id}/realtime/secret`
-- [Rotate the Realtime shared secret](https://neon.com/docs/reference/api/realtime/rotate-project-branch-realtime-secret.md) `POST /projects/{project_id}/branches/{branch_id}/realtime/rotate_secret`
 
 --- [Document source](https://neon.com/docs/reference/api/get-started.md) ---
 
@@ -132431,7 +132650,7 @@ Configuration as code for your Neon project.
 
 Specifically:
 
-- **Declares services**: which Neon services (`auth`, `dataApi`, `aiGateway`, `functions`, `buckets`) exist on the project and are available on every branch.
+- **Declares services**: which Neon services (`auth`, `dataApi`, `aiGateway`, `functions`, `buckets`, and `preview.realtime`) exist on the project and are available on every branch.
 - **Configures branches**: optional per-branch tuning (TTLs, compute sizing, protected status) via a `branch` closure.
 
 Services and branch policy are independent. Use one, the other, or both.
@@ -132484,7 +132703,7 @@ export default defineConfig({
 
 `defineConfig` takes two optional parts:
 
-- **Static fields** (`auth`, `dataApi`, `aiGateway`, `functions`, `buckets`): declare which services exist. Same set on every branch.
+- **Static fields** (`auth`, `dataApi`, `aiGateway`, `functions`, `buckets`, `preview.realtime`): declare which services exist. Same set on every branch.
 - **`branch` closure**: receives a read-only `BranchTarget` and returns per-branch tuning. It can adjust settings, but can't add or remove services.
 
 ## Services
@@ -132493,18 +132712,19 @@ Declare services as top-level keys in `defineConfig`; declare only the ones you 
 
 To add any of these to an existing `neon.ts` without editing the file by hand, use [`neon config add`](https://neon.com/docs/cli/config#add); for a function it also creates the handler file.
 
-| Field       | Values / type                                                                       | Default | What it enables                                                                                                                                                                                                                                                                |
-| ----------- | ----------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `auth`      | `true`, `false`, `{ enabled: bool }`                                                | `false` | [Managed Better Auth](https://neon.com/docs/auth/overview). Injects `NEON_AUTH_BASE_URL`, `NEON_AUTH_JWKS_URL`                                                                                                                                                                 |
-| `dataApi`   | `true`, `false`, [`DataApiConfig`](https://neon.com/docs/reference/neon-ts#dataapi) | `false` | [Neon Data API](https://neon.com/docs/data-api/overview). Injects `NEON_DATA_API_URL`                                                                                                                                                                                          |
-| `aiGateway` | `true`, `false`, `{ enabled: bool }`                                                | `false` | [Neon AI Gateway](https://neon.com/docs/ai-gateway/overview). Injects `NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`                                                                                                                                                      |
-| `functions` | Record of slug → [function def](https://neon.com/docs/reference/neon-ts#functions)  | (none)  | [Neon Functions](https://neon.com/docs/compute/functions/overview). Long-running Node.js compute. The branch's service variables (`DATABASE_URL` and more) are injected at runtime; see [Environment variables](https://neon.com/docs/compute/functions/environment-variables) |
-| `buckets`   | Record of name → [bucket def](https://neon.com/docs/reference/neon-ts#buckets)      | (none)  | [Neon Object Storage](https://neon.com/docs/storage/overview). S3-compatible object storage, branched with your database. Injects `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, `AWS_REGION`                                                            |
-| `triggers`  | Record of name → [trigger def](https://neon.com/docs/reference/neon-ts#triggers)    | (none)  | [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview). Invoke a function on a schedule or when an object is created in a bucket.                                                                                                                      |
+| Field              | Values / type                                                                             | Default | What it enables                                                                                                                                                                                                                                                                |
+| ------------------ | ----------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `auth`             | `true`, `false`, `{ enabled: bool }`                                                      | `false` | [Managed Better Auth](https://neon.com/docs/auth/overview). Injects `NEON_AUTH_BASE_URL`, `NEON_AUTH_JWKS_URL`                                                                                                                                                                 |
+| `dataApi`          | `true`, `false`, [`DataApiConfig`](https://neon.com/docs/reference/neon-ts#dataapi)       | `false` | [Neon Data API](https://neon.com/docs/data-api/overview). Injects `NEON_DATA_API_URL`                                                                                                                                                                                          |
+| `aiGateway`        | `true`, `false`, `{ enabled: bool }`                                                      | `false` | [Neon AI Gateway](https://neon.com/docs/ai-gateway/overview). Injects `NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`                                                                                                                                                      |
+| `functions`        | Record of slug → [function def](https://neon.com/docs/reference/neon-ts#functions)        | (none)  | [Neon Functions](https://neon.com/docs/compute/functions/overview). Long-running Node.js compute. The branch's service variables (`DATABASE_URL` and more) are injected at runtime; see [Environment variables](https://neon.com/docs/compute/functions/environment-variables) |
+| `buckets`          | Record of name → [bucket def](https://neon.com/docs/reference/neon-ts#buckets)            | (none)  | [Neon Object Storage](https://neon.com/docs/storage/overview). S3-compatible object storage, branched with your database. Injects `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, `AWS_REGION`                                                            |
+| `triggers`         | Record of name → [trigger def](https://neon.com/docs/reference/neon-ts#triggers)          | (none)  | [Function Triggers](https://neon.com/docs/compute/functions/triggers/overview). Invoke a function on a schedule or when an object is created in a bucket.                                                                                                                      |
+| `preview.realtime` | `true`, `false`, [`{ allowedOrigins }`](https://neon.com/docs/reference/neon-ts#realtime) | (none)  | [Neon Realtime](https://neon.com/docs/cli/realtime). Live SQL query subscriptions. Injects `NEON_REALTIME_URL`, `NEON_REALTIME_SECRET`                                                                                                                                         |
 
-**Note: preview is deprecated**
+**Note: aiGateway, functions, and buckets moved out of preview**
 
-`@neon/config` 1.6.0 and later accept `aiGateway`, `functions`, and `buckets` as the top-level keys shown here. Declaring them under a `preview` block still works but logs a deprecation warning on `neon deploy`, so keep `preview` only if you're on a version earlier than 1.6.0. See [Troubleshooting](https://neon.com/docs/reference/neon-ts#troubleshooting) if a top-level config fails to apply on an older install.
+The `preview` block holds features that are still in preview, currently [`realtime`](https://neon.com/docs/reference/neon-ts#realtime). `aiGateway`, `functions`, and `buckets` used to live there too; `@neon/config` 1.6.0 and later accept them as the top-level keys shown here. Declaring those three under `preview` still works but logs a deprecation warning on `neon deploy`, so keep them there only if you're on a version earlier than 1.6.0. See [Troubleshooting](https://neon.com/docs/reference/neon-ts#troubleshooting) if a top-level config fails to apply on an older install.
 
 ### dataApi
 
@@ -132547,7 +132767,7 @@ functions: {
 },
 ```
 
-**preview (deprecated)**
+**Under preview (deprecated alias)**
 
 ```ts
 preview: {
@@ -132626,7 +132846,7 @@ buckets: {
 },
 ```
 
-**preview (deprecated)**
+**Under preview (deprecated alias)**
 
 ```ts
 preview: {
@@ -132639,6 +132859,22 @@ preview: {
 ```
 
 Bucket names follow S3 naming rules. `public_read` makes objects accessible without credentials at the branch's storage endpoint.
+
+### preview.realtime
+
+Enables [Neon Realtime](https://neon.com/docs/cli/realtime) on the branch, so clients can subscribe to live SQL queries. Requires `@neon/config` 1.9.0 or later. Pass `true`, or an object to set the browser origins allowed to connect:
+
+```ts
+preview: {
+  realtime: {
+    allowedOrigins?: string[],  // "*", or http(s) origins with no path; max 16
+  },
+},
+```
+
+Each origin must be `*` or an `http` or `https` origin with no path, query, or fragment, such as `https://app.example.com`. `*` allows every origin and can't be combined with others. `defineConfig` rejects invalid values before anything is sent. With `true`, any browser origin can connect unless the branch already has an origin list, which is kept. Allowed origins only restrict browsers, not server clients.
+
+On `neon deploy`, a branch without Realtime gets it enabled. Changing `allowedOrigins` on a branch that already has Realtime, or setting `realtime: false` to disable it, is reported as a conflict unless you pass `--update-existing`. Omitting the key leaves the branch's Realtime as it is. To add it without editing the file by hand, use [`neon config add realtime`](https://neon.com/docs/cli/config#add-realtime); to stream a query from the terminal, use [`neon subscribe`](https://neon.com/docs/cli/subscribe).
 
 ## Branch policy
 
@@ -132760,6 +132996,8 @@ env.storage.accessKeyId;          // AWS_ACCESS_KEY_ID        (env.storage when 
 env.storage.secretAccessKey;      // AWS_SECRET_ACCESS_KEY
 env.storage.endpoint;             // AWS_ENDPOINT_URL_S3
 env.storage.region;               // AWS_REGION
+env.realtime.url;                 // NEON_REALTIME_URL        (env.realtime when preview.realtime enabled)
+env.realtime.secret;              // NEON_REALTIME_SECRET
 env.functions['<slug>'].baseUrl;  // a deployed function's URL, keyed by slug (env.functions when functions declared)
 ```
 
@@ -132845,6 +133083,9 @@ export default defineConfig({
       source: "./functions/api.ts",
     },
   },
+  preview: {
+    realtime: { allowedOrigins: ["https://app.example.com"] },
+  },
 
   branch: (branch) => {
     if (branch.isDefault) {
@@ -132886,7 +133127,7 @@ export default defineConfig({
 These neon.ts keys are now GA and can be lifted out of preview: preview.aiGateway → aiGateway, preview.functions → functions, preview.buckets → buckets.
 ```
 
-Informational, not an error: your services still deploy. You're declaring GA services under the deprecated `preview` block on `@neon/config` 1.6.0 or later. Move those keys to the top level to clear it, or keep `preview` if you also run on installs older than 1.6.0.
+Informational, not an error: your services still deploy. You're declaring GA services under `preview`, where they're deprecated aliases, on `@neon/config` 1.6.0 or later. Move those keys to the top level to clear it, or keep `preview` if you also run on installs older than 1.6.0.
 
 ### "unknown keys" error
 

@@ -22,7 +22,7 @@ Pinecone is thread-safe, so you can send multiple [upsert](/guides/index-data/up
 
 ### Use gRPC
 
-Use the [Python SDK with gRPC extras](/reference/sdks/python/overview) to run data operations such as upserts and queries over [gRPC](https://grpc.io/) rather than HTTP for a modest performance improvement.
+Use the [Python SDK with gRPC](/reference/sdks/python/overview) to run data operations such as upserts and queries over [gRPC](https://grpc.io/) rather than HTTP for a modest performance improvement.
 
 ### Upsert from a dataframe
 

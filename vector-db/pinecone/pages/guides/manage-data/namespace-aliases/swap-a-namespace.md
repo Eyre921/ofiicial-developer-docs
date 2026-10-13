@@ -17,7 +17,7 @@ The primary use case for a [namespace alias](/guides/manage-data/namespace-alias
 Ensure you have the following:
 
 * An existing index containing the namespace serving live traffic.
-* A [project role](/guides/production/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
+* A [project role](/admin/security/manage-rbac#common-role-assignments) that can manage namespaces, such as `DataPlaneEditor`, `ProjectOwner`, or `ProjectManager`.
 
 ## Swap the namespace
 

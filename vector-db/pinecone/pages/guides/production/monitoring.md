@@ -55,9 +55,9 @@ scrape_configs:
       credentials: API_KEY
 ```
 
-* Replace `PROJECT_ID` with the unique ID of the project you want to monitor. You can [find the project ID](/guides/projects/understanding-projects#project-ids) in the Pinecone console.
+* Replace `PROJECT_ID` with the unique ID of the project you want to monitor. You can [find the project ID](/admin/projects/understanding-projects#project-ids) in the Pinecone console.
 
-* Replace both instances of `API_KEY` with an API key for the project you want to monitor. The first instance is for service discovery, and the second instance is for the discovered targets. If necessary, you can [create an new API key](/guides/projects/manage-api-keys) in the Pinecone console.
+* Replace both instances of `API_KEY` with an API key for the project you want to monitor. The first instance is for service discovery, and the second instance is for the discovered targets. If necessary, you can [create an new API key](/admin/projects/manage-api-keys) in the Pinecone console.
 
 For more configuration details, see the [Prometheus docs](https://prometheus.io/docs/prometheus/latest/configuration/configuration/).
 

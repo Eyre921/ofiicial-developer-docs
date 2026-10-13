@@ -142,7 +142,7 @@ To verify that your index contains the number of records you expect, [view index
 
 <CodeGroup>
   ```python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key="YOUR_API_KEY")

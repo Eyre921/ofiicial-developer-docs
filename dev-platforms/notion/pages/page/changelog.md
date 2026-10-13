@@ -75,7 +75,7 @@ path: page/changelog
 
   ### Preview: Notion-flavored Markdown with `markdown_version`
 
-  The markdown endpoints accept a new optional `markdown_version` parameter. Set it to `v2` to read and write Notion-flavored Markdown. This is an opt-in preview: `v1` (enhanced markdown) stays the default, and requests without the parameter work as before. `v2` doesn't support `include_transcript` yet, and synchronous `v2` updates return parser `warnings`. Sending `markdown_version` without `markdown` on `POST /v1/pages` or the comment endpoints returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) and the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown).
+  The markdown endpoints accept a new optional `markdown_version` parameter. Set it to `v2` to read and write Notion-flavored Markdown. This is an opt-in preview: `v1` (enhanced markdown) stays the default, and requests without the parameter work as before. Synchronous `v2` updates return parser `warnings`. Sending `markdown_version` without `markdown` on `POST /v1/pages` or the comment endpoints returns a `400` `validation_error`. See [Markdown versions](/guides/data-apis/working-with-markdown-content#markdown-versions) and the [Notion-flavored Markdown format reference](/guides/data-apis/notion-flavored-markdown).
 </Update>
 
 <Update label="September 29, 2026">

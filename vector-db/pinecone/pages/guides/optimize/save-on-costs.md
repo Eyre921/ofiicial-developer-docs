@@ -4,7 +4,9 @@ source: https://docs.pinecone.io/guides/optimize/save-on-costs
 path: guides/optimize/save-on-costs
 ---
 
-Save on Pinecone costs by using bulk import over upsert, namespaces for multitenancy, and query patterns that reduce read unit consumption.
+Lower Pinecone costs with prepaid credits and discounts, bulk import, namespaces for multitenancy, and read patterns that use fewer read units.
+
+You can lower your Pinecone bill with discounted rates and by changing how you load and read data. For how usage is measured, see [Understand Pinecone cost](/guides/manage-cost/understanding-cost).
 
 ## Credits and discounts
 
@@ -23,12 +25,15 @@ When you need to populate a new namespace or load a large dataset (for example, 
 
 Use upsert (including [batch upsert](/guides/index-data/upsert-data#upsert-in-batches)) for ongoing, incremental ingestion after your initial load. For how import and upsert compare, see the [data ingestion overview](/guides/index-data/data-ingestion-overview).
 
-Partitioning tenants with [namespaces](/guides/index-data/implement-multitenancy) instead of many separate indexes often lowers storage overhead and query cost, because cost depends in part on how much data each query scans. For patterns and rationale, see [Manage cost](/guides/manage-cost/manage-cost#use-namespaces-for-multitenancy).
+## Use namespaces for multitenancy
+
+If you need to isolate each customer's or user's data, [partition tenants with namespaces](/guides/index-data/implement-multitenancy) instead of creating separate indexes. This often lowers storage overhead and query cost, because a query's cost depends on the size of the namespace it scans.
 
 ## Right-size reads and queries
 
 * Avoid returning vector values from a query when you don't need them (`include_values=false`, the default), especially at high `top_k`. Values are typically the largest part of a response, so leaving them out lowers [egress](/guides/manage-cost/understanding-cost#egress) and helps you stay within your plan's egress allowance.
 * Use [metadata filters](/guides/search/filter-by-metadata) so queries scan fewer records where your workload allows.
+* To retrieve known records without a query, use a [hierarchical ID schema](/guides/index-data/data-modeling#use-structured-ids), [list record IDs](/guides/manage-data/list-record-ids) by prefix, and then [fetch](/guides/manage-data/fetch-data) the records you need. A [query's read units](/guides/manage-cost/understanding-cost#query) grow with namespace size, while fetch [uses 1 read unit per 10 records](/guides/manage-cost/understanding-cost#fetch).
 
 <Note>
   Omitting values lowers egress, not [read units](/guides/manage-cost/understanding-cost#read-units): query read unit cost depends on the size of the namespace scanned, not on the size of the response.
@@ -46,4 +51,5 @@ For sustained, high read throughput, [dedicated read nodes](/guides/index-data/d
 
 * [Decrease latency](/guides/optimize/decrease-latency)
 * [Increase throughput](/guides/optimize/increase-throughput)
-* [Manage cost](/guides/manage-cost/manage-cost)
+* [Understand Pinecone cost](/guides/manage-cost/understanding-cost)
+* [Monitor usage and costs](/guides/manage-cost/monitor-usage-and-costs)

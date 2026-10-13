@@ -19,7 +19,7 @@ This is a common combination for building retrieval-augmented generation (RAG), 
     Start by installing the Voyage and Pinecone clients, along with Hugging Face Datasets for downloading the *LegalBench: Consumer Contracts QA* ([`mteb/legalbench_consumer_contracts_qa`](https://huggingface.co/datasets/mteb/legalbench_consumer_contracts_qa)) dataset used in this guide:
 
     ```shell Shell theme={null}
-    pip install -U voyageai "pinecone[grpc]" datasets
+    pip install -U voyageai pinecone datasets
     ```
   </Step>
 

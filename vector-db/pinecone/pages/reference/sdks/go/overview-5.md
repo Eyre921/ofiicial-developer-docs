@@ -87,7 +87,7 @@ go get -u github.com/pinecone-io/go-pinecone/v7/pinecone@latest
 
 ## Initialize
 
-Once installed, you can import the SDK and then use an [API key](/guides/production/security-overview#api-keys) to initialize a client instance:
+Once installed, you can import the SDK and then use an [API key](/admin/security/security-overview#api-keys) to initialize a client instance:
 
 ```Go theme={null}
 package main
@@ -111,7 +111,7 @@ func main() {
 } 
 ```
 
-To manage organizations, projects, API keys, and [role-based access control](/guides/production/manage-rbac), initialize an `AdminClient` with [service account](/guides/organizations/manage-service-accounts) credentials instead:
+To manage organizations, projects, API keys, and [role-based access control](/admin/security/manage-rbac), initialize an `AdminClient` with [service account](/admin/organizations/manage-service-accounts) credentials instead:
 
 ```Go theme={null}
 package main

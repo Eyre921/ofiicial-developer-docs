@@ -12,15 +12,15 @@ This page provides recommendations and best practices for preparing your Pinecon
 
 One of the first steps towards building a production-ready Pinecone index is configuring your project correctly.
 
-* Consider [creating a separate project](/guides/projects/create-a-project) for your development and production indexes, to allow for testing changes to your index before deploying them to production.
-* Ensure that you have properly [configured user access](/guides/projects/understanding-projects#project-roles) to the Pinecone console, so that only those users who need to access the production index can do so.
-* Ensure that you have properly configured access through the API by [managing API keys](/guides/projects/manage-api-keys) and using API key permissions.
+* Consider [creating a separate project](/admin/projects/create-a-project) for your development and production indexes, to allow for testing changes to your index before deploying them to production.
+* Ensure that you have properly [configured user access](/admin/projects/understanding-projects#project-roles) to the Pinecone console, so that only those users who need to access the production index can do so.
+* Ensure that you have properly configured access through the API by [managing API keys](/admin/projects/manage-api-keys) and using API key permissions.
 
-Consider how best to [manage the API keys](/guides/projects/manage-api-keys) associated with your production project. To [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
+Consider how best to [manage the API keys](/admin/projects/manage-api-keys) associated with your production project. To [make calls to the Pinecone API](/guides/get-started/quickstart), you must provide a valid API key for the relevant Pinecone project.
 
 ## Enforce security
 
-Use Pinecone's [security features](/guides/production/security-overview) to protect your production data:
+Use Pinecone's [security features](/admin/security/security-overview) to protect your production data:
 
 * Data security
   * Private endpoints

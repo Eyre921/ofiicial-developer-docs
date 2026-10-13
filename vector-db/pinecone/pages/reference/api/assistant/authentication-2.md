@@ -6,7 +6,7 @@ path: reference/api/assistant/authentication
 
 Assistant API authentication with API keys, HTTP headers, and SDK client initialization for Pinecone Assistant requests and RAG apps.
 
-All requests to the [Pinecone Assistant API](/reference/api/assistant/introduction) must contain a valid [API key](/guides/production/security-overview#api-keys) for the target project.
+All requests to the [Pinecone Assistant API](/reference/api/assistant/introduction) must contain a valid [API key](/admin/security/security-overview#api-keys) for the target project.
 
 ## Get an API key
 
@@ -65,7 +65,7 @@ When using a Pinecone SDK, initialize a client object with your API key and then
 
 ## Add headers to an HTTP request
 
-All HTTP requests to the Pinecone Assistant API must contain an `Api-Key` header that specifies a valid [API key](/guides/production/security-overview#api-keys) and must be encoded as JSON with the `Content-Type: application/json` header. For example:
+All HTTP requests to the Pinecone Assistant API must contain an `Api-Key` header that specifies a valid [API key](/admin/security/security-overview#api-keys) and must be encoded as JSON with the `Content-Type: application/json` header. For example:
 
 ```bash curl theme={null}
 PINECONE_API_KEY="YOUR_API_KEY"

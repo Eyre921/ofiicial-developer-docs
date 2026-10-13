@@ -1733,15 +1733,9 @@ Send multiple upserts in parallel to help increase throughput. Vector operations
 
 ### Python SDK with gRPC
 
-Using the Python SDK with gRPC extras can provide higher upsert speeds. Through multiplexing, gRPC can handle large amounts of requests in parallel without slowing down the rest of the system (HoL blocking), unlike REST. Moreover, you can pass various retry strategies to the gRPC SDK, including [exponential backoff](/guides/production/error-handling#implement-retry-logic).
+Using the Python SDK with gRPC can provide higher upsert speeds. Through multiplexing, gRPC can handle large amounts of requests in parallel without slowing down the rest of the system (HoL blocking), unlike REST. Moreover, you can pass various retry strategies to the gRPC SDK, including [exponential backoff](/guides/production/error-handling#implement-retry-logic).
 
-To install the gRPC version of the SDK:
-
-```Shell Shell theme={null}
-pip install "pinecone[grpc]"
-```
-
-To use the gRPC SDK, import the `pinecone.grpc` subpackage and target an index as usual:
+gRPC support is included in the base `pinecone` package. To use it, import the `pinecone.grpc` subpackage and target an index as usual:
 
 ```Python Python theme={null}
 from pinecone.grpc import PineconeGRPC as Pinecone

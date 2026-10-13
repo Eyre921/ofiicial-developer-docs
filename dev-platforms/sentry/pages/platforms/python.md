@@ -220,6 +220,7 @@ Are you having problems setting up the SDK?
 - [Legacy SDK](https://docs.sentry.io/platforms/python/legacy-sdk.md)
 - [Extended Configuration](https://docs.sentry.io/platforms/python/configuration.md)
 - [Integrations](https://docs.sentry.io/platforms/python/integrations.md)
+- [Integrations](https://docs.sentry.io/platforms/python/integrations__v2.x.md)
 - [Data Management](https://docs.sentry.io/platforms/python/data-management.md)
 - [Security Policy Reporting](https://docs.sentry.io/platforms/python/security-policy-reporting.md)
 - [Migration Guide](https://docs.sentry.io/platforms/python/migration.md)

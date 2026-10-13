@@ -70,7 +70,7 @@ implementation "io.pinecone:pinecone-client:5.0.0"
 
 ## Initialize
 
-Once installed, you can import the SDK and then use an [API key](/guides/production/security-overview#api-keys) to initialize a client instance:
+Once installed, you can import the SDK and then use an [API key](/admin/security/security-overview#api-keys) to initialize a client instance:
 
 ```Java theme={null}
 import io.pinecone.clients.Pinecone;

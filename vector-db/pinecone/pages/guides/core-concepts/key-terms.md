@@ -12,13 +12,13 @@ This page defines the key terms and objects in Pinecone. For how these objects n
 
 An organization is a group of one or more [projects](#project) that use the same billing. Organizations allow one or more [users](#user) to control billing and permissions for all of the projects belonging to the organization.
 
-For more information, see [Understanding organizations](/guides/organizations/understanding-organizations).
+For more information, see [Understanding organizations](/admin/organizations/understanding-organizations).
 
 ## Project
 
 A project belongs to an [organization](#organization) and contains one or more [indexes](#index). Each project belongs to exactly one organization, but only [users](#user) who belong to the project can access the indexes in that project. [API keys](#api-key) and [Assistants](/guides/assistant/overview) are project-specific.
 
-For more information, see [Understanding projects](/guides/projects/understanding-projects).
+For more information, see [Understanding projects](/admin/projects/understanding-projects).
 
 ## Index
 
@@ -142,7 +142,7 @@ An API key is a unique token that [authenticates](/reference/api/authentication)
 
 A user is a member of organizations and projects. Users are assigned specific roles at the organization and project levels that determine the user's permissions in the [Pinecone console](https://app.pinecone.io).
 
-For more information, see [Manage organization members](/guides/organizations/manage-organization-members) and [Manage project members](/guides/projects/manage-project-members).
+For more information, see [Manage organization members](/admin/organizations/manage-organization-members) and [Manage project members](/admin/projects/manage-project-members).
 
 ### Backup or collection
 

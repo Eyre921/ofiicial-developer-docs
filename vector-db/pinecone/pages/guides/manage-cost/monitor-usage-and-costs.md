@@ -4,12 +4,12 @@ source: https://docs.pinecone.io/guides/manage-cost/monitor-usage-and-costs
 path: guides/manage-cost/monitor-usage-and-costs
 ---
 
-Monitor Pinecone usage and costs at the organization, index, and operation level by tracking read units, write units, and storage consumption.
+Monitor Pinecone usage and costs at the organization, index, and operation level, and set monthly spend alerts to catch unexpected charges.
 
 ## Monitor organization-level usage and costs
 
 <Note>
-  To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/guides/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.
+  To view usage and costs across your Pinecone organization, you must be an [organization owner or billing admin](/admin/organizations/understanding-organizations#organization-roles). Also, this feature is available only to organizations on the Standard or Enterprise plans.
 </Note>
 
 The **Usage** dashboard in the Pinecone console gives you a detailed report of usage and costs across your organization, broken down by each billable SKU or aggregated by project or service. You can view the report in the console or download it as a CSV file for more detailed analysis.
@@ -28,6 +28,32 @@ The **Usage** dashboard in the Pinecone console gives you a detailed report of u
    </Tip>
 
 Dates are shown in UTC to match billing invoices. Cost data is delayed up to three days from the actual usage date.
+
+## Set monthly spend alerts
+
+You can set up email alerts to monitor your organization's monthly spending. These alerts notify designated recipients when spending reaches specified thresholds. The alerts automatically reset at the start of each monthly billing cycle.
+
+<Note>
+  Spend alerts are available on the [Standard and Enterprise plans](https://www.pinecone.io/pricing/). They're not needed on the Starter or Builder plans, where usage is capped by plan quotas rather than billed per unit.
+</Note>
+
+To set a spend alert:
+
+1. Go to [Settings > Spend alerts](https://app.pinecone.io/organizations/-/settings/spend-alerts) in the Pinecone console
+2. Click **+ Add Alert**.
+3. Enter the dollar amount for the spend alert.
+4. Enter the email addresses to send the alert to. [Organization owners](/admin/organizations/understanding-organizations#organization-roles) are listed by default.
+5. Click **Create**.
+
+To edit a spend alert:
+
+1. In the row of the spend alert you want to edit, click **ellipsis (...) menu > Edit**.
+2. Change the dollar amount and/or email addresses for the spend alert.
+3. Click **Update**.
+
+<Note>
+  **Auto-spend spike alert**: To protect from unexpected cost increases, Pinecone sends an alert when spending exceeds double your previous month's invoice amount. While the alert threshold is fixed and the alert can't be deleted, you can modify which email addresses receive the alert and enable or disable the alert notifications.
+</Note>
 
 ## Monitor index-level usage
 
@@ -594,4 +620,4 @@ The returned object looks like this:
 ## See also
 
 * [Understand Pinecone cost](/guides/manage-cost/understanding-cost)
-* [Manage cost](/guides/manage-cost/manage-cost)
+* [Save on Pinecone costs](/guides/optimize/save-on-costs)

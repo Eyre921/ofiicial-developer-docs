@@ -6,7 +6,7 @@ path: guides/production/configure-private-endpoints
 
 Configure Pinecone private endpoints with AWS PrivateLink or Azure Private Link to keep index traffic off the public internet.
 
-[Private endpoints](/guides/production/security-overview#private-endpoints) let your applications reach Pinecone indexes through AWS PrivateLink or Azure Private Link, so traffic between your network and Pinecone stays off the public internet.
+[Private endpoints](/admin/security/security-overview#private-endpoints) let your applications reach Pinecone indexes through AWS PrivateLink or Azure Private Link, so traffic between your network and Pinecone stays off the public internet.
 
 * Private endpoints carry [data plane](/guides/core-concepts/architecture#data-plane) traffic only. [Control plane](/guides/core-concepts/architecture#control-plane) requests, such as creating or describing an index, still go over the public internet.
 * Each private endpoint belongs to one project and connects only to that project's indexes in one region. You can add up to 10 private endpoints per project.

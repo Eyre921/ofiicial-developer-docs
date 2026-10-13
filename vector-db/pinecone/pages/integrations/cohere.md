@@ -89,7 +89,7 @@ The basic workflow looks like this:
   </Step>
 
   <Step title="Store the embeddings">
-    Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a [Pinecone API key](/guides/projects/manage-api-keys).
+    Now that you have your embeddings, you can move on to indexing them in Pinecone Database. For this, you need a [Pinecone API key](/admin/projects/manage-api-keys).
 
     First, initialize your connection to Pinecone, and then create a new index called `cohere-pinecone-trec` for storing the embeddings. When you create the index, specify the cosine similarity metric to align with Cohere's embeddings, and pass the embedding dimensionality of `1024`.
 

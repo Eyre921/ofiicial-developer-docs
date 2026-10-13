@@ -24,7 +24,7 @@ The following example creates a [collection](/guides/indexes/pods/understanding-
 
 <CodeGroup>
   ```python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key="API_KEY")
@@ -119,7 +119,7 @@ The following example gets the creation status and size of a collection named `e
 
 <CodeGroup>
   ```python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key='API_KEY')
@@ -292,7 +292,7 @@ Deleting the collection takes several minutes. During this time, the [`describe_
 
 <CodeGroup>
   ```python Python theme={null}
-  # pip install "pinecone[grpc]"
+  # pip install pinecone
   from pinecone.grpc import PineconeGRPC as Pinecone
 
   pc = Pinecone(api_key='API_KEY')

@@ -416,7 +416,7 @@ For details on how costs are incurred in Pinecone Assistant, see [Assistant pric
 
 ## HIPAA compliance add-on
 
-Full HIPAA compliance is included with the [Enterprise plan](https://www.pinecone.io/pricing/). On the Enterprise plan or with the add-on, HIPAA compliance requires you to [configure audit logs](/guides/production/configure-audit-logs).
+Full HIPAA compliance is included with the [Enterprise plan](https://www.pinecone.io/pricing/). On the Enterprise plan or with the add-on, HIPAA compliance requires you to [configure audit logs](/admin/security/configure-audit-logs).
 
 On the Standard plan, HIPAA compliance is available as an optional add-on for \$190 per month. The add-on is billed monthly and added to your regular invoice. A 6-month minimum period is required.
 
@@ -438,9 +438,9 @@ To enable the HIPAA compliance add-on, [submit a HIPAA request](https://www.pine
 
 ## See also
 
-* [Manage cost](/guides/manage-cost/manage-cost)
+* [Save on Pinecone costs](/guides/optimize/save-on-costs)
 * [Monitor usage](/guides/manage-cost/monitor-usage-and-costs)
 * [Full-text search](/guides/search/full-text-search)
 * [Hybrid search](/guides/search/hybrid-search)
-* [Configure audit logs](/guides/production/configure-audit-logs)
+* [Configure audit logs](/admin/security/configure-audit-logs)
 * [Pricing](https://www.pinecone.io/pricing/)

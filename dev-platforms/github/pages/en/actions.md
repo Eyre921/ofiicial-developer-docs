@@ -12,19 +12,19 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Quickstart for GitHub Actions](/en/actions/get-started/quickstart)
 
-  <p>Try out the core features of GitHub Actions in minutes.</p>
+  Try out the core features of GitHub Actions in minutes.
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
+  Learn the basics of core concepts and essential terminology in GitHub Actions.
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
-  <p>You can assign a job to run on a virtual machine hosted by GitHub.</p>
+  You can assign a job to run on a virtual machine hosted by GitHub.
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
-  <p>A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.</p>
+  A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
@@ -32,7 +32,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 
-  <p>Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.</p>
+  Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 
@@ -40,7 +40,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
-  <p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p>
+  Learn how to avoid duplication when creating a workflow by reusing existing workflows.
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 
@@ -176,6 +176,10 @@ Automate, customize, and execute your software development workflows right in yo
 
   Understand the security risks associated with script injections and GitHub Actions workflows.
 
+* [Workflow dependency lockfiles](/en/actions/concepts/security/workflow-dependency-lockfiles)
+
+  A lockfile pins every action your workflows depend on to a verified commit, so the code you reviewed is the code that runs.
+
 * [Compromised runners](/en/actions/concepts/security/compromised-runners)
 
   Understand the security risks associated with compromised GitHub Actions runners.
@@ -280,6 +284,10 @@ Automate, customize, and execute your software development workflows right in yo
 
   You can share an action or reusable workflow with your enterprise without publishing the action or workflow publicly.
 
+* [Locking action dependencies in a repository's workflows](/en/actions/how-tos/secure-your-work/lock-workflow-dependencies)
+
+  Generate a lockfile that pins every action your workflows use to a verified commit, and keep it current as your dependencies change.
+
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 
   Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
@@ -307,6 +315,10 @@ Automate, customize, and execute your software development workflows right in yo
 * [Configuring OpenID Connect in Azure](/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure)
 
   Use OpenID Connect within your workflows to authenticate with Azure.
+
+* [Configuring OpenID Connect in Docker](/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-docker)
+
+  Use OpenID Connect within your workflows to authenticate with Docker without storing long-lived credentials.
 
 * [Configuring OpenID Connect in Google Cloud Platform](/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-google-cloud-platform)
 
@@ -588,9 +600,13 @@ Automate, customize, and execute your software development workflows right in yo
 
   You can use the tools in GitHub Actions to debug your workflows.
 
-* [Controlling who can execute GitHub Actions workflows](/en/actions/how-tos/administer/control-workflow-execution)
+* [Governing execution of GitHub Actions workflows](/en/actions/how-tos/administer/control-workflow-execution)
 
   Control who can trigger GitHub Actions workflows and which events are permitted to run them across an enterprise, organization, and repository.
+
+* [Enforcing lockfiles for action dependencies](/en/actions/how-tos/administer/enforce-workflow-lockfiles)
+
+  Require workflow dependency lockfiles across your repositories, and automatically keep the files up to date.
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 

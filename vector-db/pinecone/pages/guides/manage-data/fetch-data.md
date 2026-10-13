@@ -109,6 +109,8 @@ For the full request and response schema, see [Fetch documents](/reference/api/l
 
 In a vector index, fetch records by ID or by metadata filter.
 
+Pinecone stores vector values as 32-bit floats, so fetched values can differ slightly from high-precision values you upserted.
+
 ### Fetch records by ID
 
 To fetch records from a namespace based on their IDs, use the `fetch` operation with the following parameters:
