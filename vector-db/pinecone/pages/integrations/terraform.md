@@ -145,7 +145,7 @@ For an index with integrated embedding, `dimension` defaults to the model's dime
 
 #### BYOC indexes
 
-To create a [BYOC index](/guides/production/bring-your-own-cloud), set `spec.byoc.environment` to the environment identifier Pinecone provides for your deployment:
+To create a [BYOC index](/guides/production/bring-your-own-cloud/create-an-index), set `spec.byoc.environment` to the environment identifier Pinecone provides for your deployment:
 
 ```terraform theme={null}
 resource "pinecone_index" "example_index_byoc" {

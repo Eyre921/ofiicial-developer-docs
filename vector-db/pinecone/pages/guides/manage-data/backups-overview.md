@@ -85,7 +85,7 @@ Backup and restore times depend upon the size of the index and number of namespa
 Backup limitations are as follows:
 
 * Backups are stored in the same project, cloud provider, and region as the source index.
-* You can only restore an index to the same project and cloud provider as the source index. Restoring to a different region on the same cloud provider is supported using the `unstable` API version. For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
+* You can only restore an index to the same project and cloud provider as the source index. Restoring to a different region on the same cloud provider is supported using the `unstable` API version and incurs a cross-region transfer fee. For details, see [Restore to a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region).
 * Backups only include vectors that were in the index at least 15 minutes prior to the backup time. This means that if a vector was inserted into an index and a backup was immediately taken after, the recently inserted vector may not be backed up. More specifically, if a backup is created only a few minutes after the source index was created, the backup may have 0 vectors.
 * You can only perform operations on backups in the current Pinecone project.
 * Backups are supported for all serverless indexes, including document indexes with a schema (`full_text_search`, `dense_vector`, and `sparse_vector` fields) and indexes that use integrated embedding.

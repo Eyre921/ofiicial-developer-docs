@@ -486,6 +486,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/billing/how-tos/manage-for-client/manage-client-org
 /en/billing/how-tos/troubleshooting
 /en/billing/how-tos/troubleshooting/declined-card
+/en/billing/how-tos/troubleshooting/authorization-holds
 /en/billing/how-tos/troubleshooting/locked-account
 /en/billing/how-tos/troubleshooting/azure-sub-connection
 /en/billing/how-tos/troubleshooting/enterprise-license-usage
@@ -2636,6 +2637,8 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/activity/notifications
 /en/rest/activity/starring
 /en/rest/activity/watching
+/en/rest/agent-automations
+/en/rest/agent-automations/agent-automations
 /en/rest/agent-tasks
 /en/rest/agent-tasks/agent-tasks
 /en/rest/agents

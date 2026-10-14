@@ -11,7 +11,7 @@ path: docs/eleven-agents/api-reference/conversations/upload-file
 POST https://api.elevenlabs.io/v1/convai/conversations/{conversation_id}/files
 Content-Type: multipart/form-data
 
-Upload an image or PDF file for a conversation. Returns a unique file ID that can be used to reference the file in the conversation.
+Upload an image, PDF, or text file for a conversation. Returns a unique file ID that can be used to reference the file in the conversation.
 
 Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/upload-file
 
@@ -33,7 +33,7 @@ Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/conversations/
 
 This endpoint expects a multipart form containing a file.
 
-- `file` (file, required) — Image or PDF file to upload
+- `file` (file, required) — Image, PDF, or text file to upload
 
 ## Response
 

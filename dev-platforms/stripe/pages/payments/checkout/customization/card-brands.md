@@ -14,5 +14,6 @@ This article has multiple variants. Fetch one of the following URLs to view spec
 
 - [Full hosted page](https://docs.stripe.com/payments/checkout/customization/card-brands.md?payment-ui=stripe-hosted)
 - [Full embedded page](https://docs.stripe.com/payments/checkout/customization/card-brands.md?payment-ui=embedded-page)
+- [Elements with Checkout Sessions](https://docs.stripe.com/payments/checkout/customization/card-brands.md?payment-ui=elements)
 - [Embedded form](https://docs.stripe.com/payments/checkout/customization/card-brands.md?payment-ui=checkout-form)
 

@@ -636,7 +636,6 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | RevenueCat | Payments, analytics |
 | Runloop | Sandboxes, AI |
 | Schematic | Feature flags, payments |
-| Sentry | Observability |
 | Spaceship | Domains |
 | Squarespace | Domains |
 | Steelbrowser | Browser, AI |

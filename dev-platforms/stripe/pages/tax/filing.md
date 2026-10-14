@@ -40,6 +40,20 @@ Stripe Tax offers [automated filing in the US](https://docs.stripe.com/tax/file-
 | [Hands-off Sales Tax](https://marketplace.stripe.com/apps/hands-off-sales-tax) | - US and Canada filing
 - No-code Stripe integration | - US and Canada filing | [View pricing](https://handsoffsalestax.com/stripe/#:~:text=Pricing%20starts%20at%20%2455/return%20and%20you%20only%20pay%20for%20what%20you%20need) |
 
+### Global filing with Stripe  (Private preview)
+
+### Request to join the waitlist for global filing and registrations.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/tax/filing" \
+  -d '{"email": "EMAIL", "preview": "tax_global_filing_preview"}'
+```
+
 ## Benefits of automated filing with Stripe
 
 - Minimize errors: Use your Stripe Tax calculation and transaction data for filing without manual data entry, imports, or exports.

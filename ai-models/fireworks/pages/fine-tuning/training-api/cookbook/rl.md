@@ -6,13 +6,13 @@ path: fine-tuning/training-api/cookbook/rl
 
 Run experimental async GRPO with a custom rollout function while the recipe owns scheduling, training, and weight publication.
 
-The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe runs rollout production independently from serialized training. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
+The cookbook's primary RL recipe is [`async_rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/async_rl_loop.py). You provide dataset rows and a rollout function; the recipe overlaps rollout production with training submission. When a rollout finishes, the producer immediately tries to refill available capacity—even while forward/backward or optimizer work is running.
 
 <Warning>
   `async_rl_loop` is experimental. Its configuration and rollout protocol may
   change without backward-compatibility shims. This page describes the current
-  Cookbook paired with `fireworks-ai[training]>=1.2.11`; pin the Cookbook commit
-  and SDK version for production workloads.
+  Cookbook and its declared SDK dependencies; pin the Cookbook commit and SDK
+  version for reproducible workloads.
 </Warning>
 
 For the shared serverless pool, use the experimental
@@ -29,14 +29,14 @@ limits.
 | - | - |
 | Dataset rows through `Config.dataset` or `rows=` | Trainer and deployment setup, cleanup, and initial weight sync |
 | `rollout_fn_factory(setup) -> rollout_fn` | Rollout fan-out, admission, grouping, and advantages |
-| Environment interaction, scoring, and aligned rollout data | Reference and old-policy forwards, GRPO/TIS/KL, and optimizer steps |
-| Scheduling and algorithm configuration | Training chunks, sampler hotload and version publication, metrics, and checkpoints |
+| Environment interaction, scoring, and aligned rollout data | Built-in GRPO loss and one optimizer update per batch |
+| Scheduling and algorithm configuration | Ready-group submission, sampler hotload, structured metrics, and checkpoints |
 | Optional `dynamic_filter_fn` and `evaluation_fn` | Bounded failure handling, evaluation scheduling, and final-step deduplication |
 
 ## Minimal setup
 
 ```python theme={null}
-from training.examples.rl.single_turn_token_in.rollout import make_rollout_fn
+from training.examples.rl.deepmath.train_deepmath import make_rollout_fn
 from training.recipes.async_rl_loop import Config, main
 from training.utils import DeployConfig, TrainerConfig
 
@@ -45,7 +45,6 @@ cfg = Config(
     base_model="accounts/<account>/models/<model>",
     completions_per_prompt=8,
     prompt_groups_per_step=8,
-    pipeline_chunks_per_step=4,
     max_head_offpolicy_versions=2,
     max_concurrency_rollout_sample=128,
     trainer=TrainerConfig(
@@ -58,9 +57,9 @@ rows = [...]  # Each row is passed to rollout_fn as sample_prompt.
 main(cfg, rollout_fn_factory=make_rollout_fn, rows=rows)
 ```
 
-The example rollout above expects rows with `prompt_token_ids`. Fork the
-[single-turn example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/single_turn_token_in)
-for a minimal adapter. For multi-turn harnesses, tools, sandboxes, and exact
+The [DeepMath example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/deepmath)
+expects rows with chat `messages` and `ground_truth` answers. Fork its adapter
+to supply another task and reward. For multi-turn harnesses, tools, sandboxes, and exact
 token ancestry, read
 [Cookbook: Agentic Reinforcement Learning](/fine-tuning/training-api/cookbook/agentic-rl).
 Agentic RL changes the rollout adapter, not this async scheduling and training
@@ -97,7 +96,6 @@ These fields define the rollout/training pipeline:
 | - | -: | - |
 | `completions_per_prompt` | `4` | Trajectories per dataset row. Must be at least `2`. |
 | `prompt_groups_per_step` | `1` | Dataset rows grouped into one optimizer batch. |
-| `pipeline_chunks_per_step` | `1` | Balanced forward/backward chunks prepared for each optimizer batch. |
 | `max_head_offpolicy_versions` | `0` | Number of published policy versions that rollout admission may run ahead. `0` is fully on-policy. |
 | `max_concurrency_rollout_sample` | `None` | Optional cap on in-flight rollout calls. It must fit at least one complete row. |
 | `min_group_size` | `1` | Minimum surviving rollout runs required to train a row. |
@@ -109,15 +107,17 @@ staleness budget and concurrency budget can fit all of its completions.
 individual inference requests that a multi-turn agent makes. The shared
 `DeploymentSampler` owns inference-request concurrency separately.
 `max_head_offpolicy_versions=0` is fully on-policy: every optimizer batch
-trains groups from its current published policy version. Chunk training can
-still overlap remaining rollouts from the same optimizer batch.
+trains groups from its current published policy version. Training submission can
+still overlap remaining rollouts from the same optimizer batch. The synchronous
+[`rl_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/rl_loop.py)
+collects the full batch before training it.
 
 ## Runtime behavior
 
 1. The recipe syncs initial policy weights to the sampler.
 2. The producer submits complete rows while both admission budgets allow it.
-3. Every completed rollout retries refill. As soon as the first training chunk is ready, serialized trainer work can begin while rollout production continues.
-4. Later chunks queue and run in order. One optimizer step follows the final chunk.
+3. Every completed rollout retries refill. As soon as a complete group is ready, training submission can begin while rollouts continue. Each submission combines all groups currently ready in that batch, with no collection timer.
+4. Requests can remain pending together. One optimizer step follows only after every backward in the batch succeeds.
 5. The recipe waits for evaluation on the current sampler version before replacing that version, hotloads the updated weights, and publishes the next policy version. Publication reopens staleness capacity.
 
 There is one sampler hotload per optimizer batch; `async_rl_loop` does not
@@ -129,15 +129,14 @@ when at least `min_group_size` runs survive.
 
 ## Loss behavior
 
-The default path computes GRPO in the client and does not expose a general
-`policy_loss` or `loss_path` selector. Dedicated async RL can opt into the
-trainer's built-in PPO kernel with `server_side_grpo=True`; this changes only
-where the GRPO policy update executes, requires `kl_beta=0`, and is not a
-different algorithm. `anchor_logp="old_policy"` (the default) snapshots
-trainer logprobs and applies TIS against rollout behavior logprobs;
-`anchor_logp="rollout"` reuses aligned rollout logprobs and makes the TIS ratio
-identity. Set `kl_beta=0` to disable reference-policy KL and reference
-provisioning.
+The reference loops use the trainer's built-in clipped GRPO loss against the
+logprobs captured during rollout, with no reference-model KL penalty. Advantages
+are normalized within each prompt group. All backward requests accumulate into
+one optimizer update; gradients are normalized by the batch's trainable-token
+count once. SFT, DPO, and ORPO retain controlled dataset batches.
+
+Fork the recipe to change the objective, anchor, or correction. See the
+[custom-loss skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/rl-custom-loss.md).
 
 ## Evaluation
 
@@ -149,6 +148,20 @@ It uses the same rollout object, sampler, `max_completion_tokens`, and resolved
 optimizer. Evaluation is fail-open. It can overlap the next batch's rollout and
 trainer work, but it must finish before that sampler version is replaced, so a
 slow evaluation can delay weight publication.
+
+## Interruptions and cleanup
+
+The dedicated sync and async recipes and the serverless async adapter handle
+`SIGINT` and `SIGTERM` throughout setup, training, final saves, and cleanup.
+The first signal stops new work, waits for native calls already in progress,
+and unwinds cleanup according to the recipe's resource settings. Rollout
+cleanup runs before sampler and service closure. A second
+signal exits immediately and may leave remote resources running. The recipes
+restore the caller's signal handlers when they return.
+
+Interrupting a run does not guarantee a new final checkpoint. Set a positive
+`dcp_save_interval` to preserve resumable state during training; see
+[Checkpointing](/fine-tuning/training-api/cookbook/reference#checkpoints).
 
 ## Detailed reference
 
@@ -163,4 +176,7 @@ Keep implementation and tuning detail out of the recipe page:
 
 ## IGPO (Information Gain Policy Optimization)
 
-The [`igpo_loop`](https://github.com/fw-ai/cookbook/blob/main/training/recipes/igpo_loop.py) recipe extends the async RL pipeline with turn-level information-gain rewards for multi-turn agent trajectories. Start from [Cookbook RL](/fine-tuning/training-api/cookbook/rl) for the core rollout and weight-sync lifecycle, then switch to `igpo_loop` when your reward depends on per-turn information gain rather than a single scalar at episode end.
+IGPO prepares turn-level advantages through
+`rl_loop.main(..., prepare_batch_fn=igpo.prepare_batch(gamma=...))`. Answer
+scoring runs across the complete batch while advantage normalization remains
+group-local. Start with the [multi-hop QA example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa).

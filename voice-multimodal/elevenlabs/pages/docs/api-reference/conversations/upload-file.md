@@ -11,7 +11,7 @@ path: docs/api-reference/conversations/upload-file
 POST https://api.elevenlabs.io/v1/convai/conversations/{conversation_id}/files
 Content-Type: multipart/form-data
 
-Upload an image or PDF file for a conversation. Returns a unique file ID that can be used to reference the file in the conversation.
+Upload an image, PDF, or text file for a conversation. Returns a unique file ID that can be used to reference the file in the conversation.
 
 Reference: https://elevenlabs.io/docs/api-reference/conversations/upload-file
 
@@ -33,7 +33,7 @@ Reference: https://elevenlabs.io/docs/api-reference/conversations/upload-file
 
 This endpoint expects a multipart form containing a file.
 
-- `file` (file, required) — Image or PDF file to upload
+- `file` (file, required) — Image, PDF, or text file to upload
 
 ## Response
 
@@ -67,7 +67,7 @@ Validation Error
 
 ```json
 {
-  "file": "<file: iVBORw0KGgo=>"
+  "file": "<file: [object Object]>"
 }
 ```
 
@@ -75,7 +75,7 @@ Validation Error
 
 ```json
 {
-  "file_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+  "file_id": "string"
 }
 ```
 
@@ -86,7 +86,7 @@ import requests
 
 url = "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/files"
 
-files = { "file": "open('iVBORw0KGgo=', 'rb')" }
+files = { "file": "open('[object Object]', 'rb')" }
 
 response = requests.post(url, files=files)
 
@@ -96,7 +96,7 @@ print(response.json())
 ```javascript
 const url = 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id/files';
 const form = new FormData();
-form.append('file', 'iVBORw0KGgo=');
+form.append('file', '[object Object]');
 
 const options = {method: 'POST'};
 
@@ -125,7 +125,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/conversations/conversation_id/files"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"iVBORw0KGgo=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("POST", url, payload)
 
@@ -150,7 +150,7 @@ http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Post.new(url)
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"iVBORw0KGgo=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -161,7 +161,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/files")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"iVBORw0KGgo=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -175,7 +175,7 @@ $response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/conver
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'iVBORw0KGgo=',
+        'filename' => '[object Object]',
         'contents' => null
     ]
   ]
@@ -189,7 +189,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/conversation_id/files");
 var request = new RestRequest(Method.POST);
-request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"iVBORw0KGgo=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("undefined", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"[object Object]\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -198,7 +198,7 @@ import Foundation
 let parameters = [
   [
     "name": "file",
-    "fileName": "iVBORw0KGgo="
+    "fileName": "[object Object]"
   ]
 ]
 

@@ -15,7 +15,6 @@ from training.utils import TrainerConfig
 
 trainer = TrainerConfig(
     training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k",
-    reference_training_shape_id="accounts/fireworks/trainingShapes/qwen3-8b-128k-h200-forward",
 )
 ```
 
@@ -30,11 +29,8 @@ Use `training_shape_id` for explicit shape selection — this is the primary sha
 | `cleanup_reference_on_close` | `bool` | `True` | Delete the SDK-managed reference trainer when the service closes. |
 | `region` | `str \| None` | `None` | Region override (drives trainer + deployment colocation). |
 | `timeout_s` | `float` | `3600` | Timeout for trainer provisioning / readiness waits. |
-| `extra_args` | `list[str] \| None` | `None` | Extra trainer arguments. |
 | `replica_count` | `int \| None` | `None` | Data-parallel HSDP replica count for policy trainer launches. This is a run-level knob, not part of the validated training shape; reference trainers are launched without it. |
-| `skip_validations` | `bool` | `False` | Skip server-side shape validation. Requires elevated permissions. |
 | `use_reservation` | `bool` | `True` | Try reservation capacity first. Set to `False` for shared capacity only. |
-| `purpose` | `str \| None` | `None` | Optional platform purpose enum name for internal scheduling metadata. Most users leave this unset. |
 
 To request replicated HSDP for a run:
 
@@ -46,7 +42,7 @@ trainer = TrainerConfig(
 ```
 
 <Note>
-  On the shape path (`training_shape_id` set or auto-selected), `accelerator_type`, `accelerator_count`, `node_count`, and `custom_image_tag` are derived from the training shape. `TrainerConfig` still exposes those fields for the advanced manual path (`training_shape_id=None`), where they are sent directly and shape validation is skipped.
+  Trainer hardware comes from the validated training shape. Cookbook clients do not set trainer accelerator type or count.
 </Note>
 
 <Tip>
@@ -75,59 +71,49 @@ When `deployment_shape` is set (the recommended path), the shape owns deployment
 | `tokenizer_model` | `str \| None` | `None` | HuggingFace model name for client-side tokenization. Required for RL sampling. |
 | `tokenizer_revision` | `str \| None` | `None` | Optional HuggingFace tokenizer revision. |
 | `deployment_shape` | `str \| None` | `None` | Deployment shape resource name. When set, the shape owns GPU type and serving config. |
-| `deployment_region` | `str \| None` | `None` | Region override for the deployment |
 | `hot_load_bucket_type` | `str` | `"FW_HOSTED"` | Weight-sync storage backend |
 | `hot_load_trainer_job` | `str \| None` | `None` | Trainer job name whose weight-sync bucket this deployment should use. Format: `accounts/{account}/rlorTrainerJobs/{job_id}`. |
 | `deployment_timeout_s` | `float` | `5400` | Timeout for deployment provisioning / readiness waits |
 | `reattach_settle_timeout_s` | `int` | `600` | Timeout for the serving pod to settle after re-attaching a deployment to a new trainer bucket. |
-| `deployment_extra_args` | `list[str] \| None` | `None` | Extra serving arguments |
 | `sample_timeout` | `int` | `600` | HTTP read timeout for sampling completions |
 | `disable_speculative_decoding` | `bool` | `True` | Disable speculative decoding for weight-sync compatibility |
-| `extra_values` | `dict[str, str] \| None` | `None` | Extra deployment Helm values |
 | `replica_count` | `int \| None` | `None` | If set, pin the deployment to a fixed replica count (sets both min and max). |
-| `deployment_accelerator_type` | `str \| None` | `None` | Manual-path deployment GPU type used only when no `deployment_shape` is set. |
 
 <Note>
-  When `deployment_shape` is set, the deployment shape owns GPU type and serving configuration. Use `deployment_accelerator_type` only for advanced manual deployments without a deployment shape.
+  Deployment hardware and serving configuration come from the deployment shape resolved for the selected training shape.
 </Note>
 
 ## ConcurrencyConfig
 
-Rollout sampling concurrency settings used by RL-family recipes:
+Adaptive inference-request settings used by sampling utilities. Async trajectory admission is configured directly on the recipe `Config`; see [RL scheduling](/fine-tuning/training-api/cookbook/rl#scheduling-controls).
 
 | Field | Type | Default | Description |
 | - | - | - | - |
-| `mode` | `str \| None` | `"adaptive"` | Concurrency mode. RL recipes currently use adaptive concurrency. |
 | `initial_window` | `int \| None` | `None` | Starting adaptive concurrency window. When unset, recipes derive it from deployment capacity. |
 | `min_window` | `int` | `1` | Minimum adaptive concurrency window. |
 | `max_window` | `int` | `256` | Maximum adaptive concurrency window. |
 | `prefill_queue_target` | `float` | `0.5` | Target prefill queue duration in seconds for AIMD adjustment. |
 | `rollout_adjustment_interval` | `int` | `32` | Adjust adaptive concurrency every N completed rollout requests. Remaining requests adjust at the step boundary; set to `0` for step-boundary-only adjustment. |
-| `max_concurrency` | `int \| None` | `None` | Deprecated fixed-concurrency compatibility field. |
 
 ## Checkpoint & weight-sync fields
 
-Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). `rl_loop` and `igpo_loop` expose weight-sync cadence knobs. `async_rl_loop` always syncs once before training and once after every optimizer batch; only its timeout is configurable. Every recipe exposes `dcp_save_interval`:
+Weight-sync and checkpoint cadence are **top-level fields on the recipe `Config`** (no nested config object). Both RL loops sync before training and after each optimizer batch. The SFT, DPO, and RL recipes expose `dcp_save_interval`; SDFT uses its own `save_every` cadence:
 
 ```python theme={null}
 cfg = Config(
     # ... base_model, dataset, trainer, deployment ...
-    weight_sync_interval=1,               # rl_loop/igpo_loop: sync weights every N steps
-    weight_sync_before_training=False,    # rl_loop/igpo_loop: optional initial sync
     weight_sync_timeout=600,              # RL: per weight-sync timeout (seconds)
-    dcp_save_interval=10,                  # all recipes: save resumable DCP checkpoints every N steps
+    dcp_save_interval=10,                  # periodic resumable checkpoint interval
 )
 ```
 
 <Warning>
-  `dcp_save_interval` defaults to `0` (off). Without setting it to a positive value, **no DCP checkpoints are saved and training cannot be resumed**. If you need checkpoint-based resume, explicitly set `dcp_save_interval` (e.g. `dcp_save_interval=50`).
+  `dcp_save_interval=0` disables periodic saves, not the final checkpoint. Successful runs save final training state by default. Set a positive interval (e.g. `50`) for recovery from an interrupted run.
 </Warning>
 
 | Field | Recipes | Type | Default | Description |
 | - | - | - | - | - |
-| `dcp_save_interval` | All | `int` | `0` | Save resumable DCP checkpoints every N steps. `0` disables DCP saves. **Set to a positive value to enable resume.** |
-| `weight_sync_interval` | `rl_loop`, `igpo_loop` | `int` | `1` | Save + sync weights to the deployment every N optimizer steps. `0` disables weight sync. This field is not part of `async_rl_loop`. |
-| `weight_sync_before_training` | `rl_loop`, `igpo_loop` | `bool` | `False` | Save a base checkpoint and sync it to the deployment before the first training step. `async_rl_loop` performs this sync unconditionally. |
+| `dcp_save_interval` | SFT, DPO, RL | `int` | `0` | Save resumable DCP checkpoints every N steps. `0` disables periodic saves. Set a positive interval for recovery during a run. |
 | `weight_sync_timeout` | RL family | `int` | `600` | Timeout for each weight sync (seconds). |
 
 <Note>
@@ -156,7 +142,7 @@ wandb = WandBConfig(
 
 ## ReconnectableClient
 
-Blocking convenience wrapper around `FiretitanTrainingClient`. All cookbook recipes use this as their training client — it dispatches each call and blocks until the result is ready or the timeout expires. Failures propagate to the caller so the training loop can crash cleanly and resume from the last DCP checkpoint.
+Blocking convenience wrapper around `FiretitanTrainingClient`. Most recipe calls block until the result is ready or the timeout expires. Async RL uses its native-future submission helpers to overlap pending backward requests. Failures propagate to the caller so the training loop can crash cleanly and resume from the last DCP checkpoint.
 
 <Note>
   This is a recipe-internal wrapper. User code should not construct it with trainer managers. Recipes build it from the `FiretitanTrainingClient` returned by the SDK-managed service client.
@@ -230,10 +216,10 @@ Earlier cookbook releases provisioned trainers and deployments from the recipe l
 | `InfraConfig.ref_training_shape_id` | `TrainerConfig.reference_training_shape_id` |
 | `InfraConfig.trainer_timeout_s` | `TrainerConfig.timeout_s` |
 | `InfraConfig.trainer_replica_count` | `TrainerConfig.replica_count` |
-| `Config(weight_sync=WeightSyncConfig(weight_sync_interval=N))` | `Config(weight_sync_interval=N)` (top-level, `rl_loop` / `igpo_loop`; `async_rl_loop` always syncs after each optimizer batch) |
+| Nested weight-sync cadence | RL publishes weights after every optimizer batch; no interval field is exposed. |
 | `weight_sync.dcp_save_interval=N` | `Config(dcp_save_interval=N)` (top-level, all recipes) |
 | top-level `policy_job_id=...` | `TrainerConfig(job_id=...)` |
-| `setup_infra(rlor_mgr, deploy_mgr, ...)` | `build_service_client(...)` (see the [DPO API-level example](/fine-tuning/training-api/cookbook/dpo#step-by-step-api-level)) |
+| `setup_infra(rlor_mgr, deploy_mgr, ...)` | `build_service_client(...)` (see the [SDK migration skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-migrate.md)) |
 | `create_base_reference()` / `make_reference_client()` | `service.create_reference_client(...)` |
 | `with ResourceCleanup(...)` | `cleanup_trainer_on_close=True` + `service.close()` (see [Cleanup](/fine-tuning/training-api/reference/cleanup#automatic-cleanup-via-the-sdk-managed-service)) |
 
@@ -253,14 +239,14 @@ See also: [RL cookbook](/fine-tuning/training-api/cookbook/rl).
 
 ## Checkpoints and resume
 
-Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. Rerun with the same `log_path` to resume.
+Recipe users: set `dcp_save_interval` and `output_model_id` on the recipe `Config`. For continuation, attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`. Follow the [checkpoint skill](https://github.com/fw-ai/cookbook/blob/main/skills/fireworks-training/references/sdk-checkpoints.md) for serverless identity and explicit initialization.
 
 ```python theme={null}
 cfg = Config(
     log_path="./my_training",
     dcp_save_interval=10,
     output_model_id="my-model",
-    ...
+    # ... other recipe fields ...
 )
 ```
 

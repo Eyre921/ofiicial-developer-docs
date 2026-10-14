@@ -20,8 +20,8 @@ For current pricing, visit https://supabase.com/pricing.
 
 A Supabase project can be used as a standalone Postgres database. Connect with psql, Prisma, Drizzle, or any Postgres client or ORM using the project's connection string. Auth, Storage, Realtime, and Edge Functions are included in every project but optional. Unused products cost nothing.
 
-- Free: $0/month, including 500 MB database size. Free projects are paused after 1 week of inactivity. Limit of 2 active projects.
-- Pro: from $25/month, including 8 GB disk size per project and $10/month in compute credits that cover one project on Micro compute. A single database-only project on Micro compute costs $25/month before usage beyond the included quotas.
+- Free: $0/month, including 500 MB database size. Free projects are paused after 1 week of inactivity. Limit of 2 active projects.
+- Pro: from $25/month, including 8 GB disk size per project and $10/month in compute credits that cover one project on Micro compute. A single database-only project on Micro compute costs $25/month before usage beyond the included quotas.
 - Projects on paid plans are not paused for inactivity.
 
 Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgres.md
@@ -31,7 +31,7 @@ Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgr
 ### Free - from $0/month
 - Unlimited API requests
 - 50,000 monthly active users
-- 500 MB database size (Shared CPU • 500 MB RAM)
+- 500 MB database size (Shared CPU • 500 MB RAM)
 - 5 GB egress
 - 5 GB cached egress
 - 1 GB file storage
@@ -40,10 +40,10 @@ Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgr
 
 ### Pro - from $25/month
 - 100,000 monthly active users (then $0.00325 per MAU)
-- 8 GB disk size per project (then $0.125 per GB)
-- 250 GB egress (then $0.09 per GB)
-- 250 GB cached egress (then $0.03 per GB)
-- 100 GB file storage (then $0.0213 per GB)
+- 8 GB disk size per project (then $0.125 per GB)
+- 250 GB egress (then $0.09 per GB)
+- 250 GB cached egress (then $0.03 per GB)
+- 100 GB file storage (then $0.0213 per GB)
 - Email support
 - Daily backups stored for 7 days
 - 7-day log retention
@@ -59,7 +59,7 @@ Connection guide: https://supabase.com/docs/guides/database/connecting-to-postgr
 - 28-day log retention
 
 ### Enterprise - custom pricing
-- Designated Support manager
+- Technical Account Management
 - Uptime SLAs
 - Supports AWS PrivateLink
 - 24×7×365 premium enterprise support
@@ -98091,7 +98091,7 @@ Deploy a Next.js app with Supabase Vercel Storage now Uses the Next.js Supabase 
 
 ### Via Vercel Marketplace
 
-Details coming soon..
+Go to the [Supabase page](https://vercel.com/marketplace/supabase) in the Vercel Marketplace.
 
 ### Connecting to Supabase project
 
@@ -179574,7 +179574,12 @@ Optionally, a new row can be inserted into the migration history table to reflec
 
 If no entries exist in the migration history table, the behavior depends on the diff engine. Under `pg-delta`, the remote database is diffed against an empty shadow database. Under the legacy `migra` engine, the CLI uses `pg_dump` to capture all contents of the remote schemas you have created. Otherwise, this command only diffs schema changes against the remote database, similar to running `db diff --linked`.
 
-When `[experimental.pgdelta] enabled = true`, the migration-file `db pull` workflow uses pg-delta for the shadow diff step; pass `--diff-engine migra` to fall back for a single run. Projects without that setting use migra; pass `--diff-engine pg-delta` to use pg-delta for a single run. Pass `--declarative` to replace the declarative schema tree (`supabase/schemas` by default, configurable with `experimental.pgdelta.declarative_schema_path`) from the selected database instead of creating a migration.
+When `[experimental.pgdelta] enabled = true`, the migration-file `db pull` workflow uses pg-delta for the shadow diff step; pass `--diff-engine migra` to fall back for a single run. Projects without that setting use migra; pass `--diff-engine pg-delta` to use pg-delta for a single run. Pass `--declarative` to export the selected database into the declarative schema tree (`supabase/schemas` by default, configurable with `experimental.pgdelta.declarative_schema_path`) instead of creating a migration.
+
+On a project without pg-delta enabled, don't use `--declarative`. The export also points `[db.migrations].schema_paths` at the tree it writes. The next local `db diff` applies those files in lexicographic order without resolving dependencies between them, so it fails when a file sorts before an object it depends on. If you've already run it, enable pg-delta, or undo both changes:
+
+1. Delete the files the export wrote to the declarative directory (`supabase/schemas/` by default). Files that were already there are left in place.
+2. Restore `[db.migrations].schema_paths` in `config.toml` to its previous value, or remove it if the export added it.
 
 Under the pg-delta engine, your own customizations in Supabase-managed schemas are captured automatically, such as triggers on managed tables like `auth.users` and RLS policies on `storage.objects` and `storage.buckets`. Under the legacy migra engine, the initial pull's `pg_dump` skips managed schemas, but the diff pass that follows appends your trigger and RLS policy changes there to the same migration. If an older CLI reports that `auth` and `storage` were excluded, capture existing customizations there with `--schema auth,storage`.
 
@@ -179641,7 +179646,7 @@ Diffs schema changes made to the local or remote database.
 
 Requires the local development stack to be running when diffing against the local database. To diff against a remote or self-hosted database, specify the `--linked` or `--db-url` flag respectively.
 
-Compares schema differences between the target database and a shadow database. Projects with `[experimental.pgdelta] enabled = true` use the bundled pg-delta engine; other projects run the legacy [djrobstep/migra](https://github.com/djrobstep/migra) engine in a container. The shadow database is created by applying migrations in local `supabase/migrations` directory in a separate container. Output is written to stdout by default. For convenience, you can also save the schema diff as a new migration file by passing in `-f` flag.
+Compares schema differences between the target database and a shadow database. Projects with `[experimental.pgdelta] enabled = true` use the bundled pg-delta engine; other projects run the legacy [djrobstep/migra](https://github.com/djrobstep/migra) engine in a container, unless you pass `--use-pg-delta` for a single run. The shadow database is created by applying migrations in local `supabase/migrations` directory in a separate container. Output is written to stdout by default. For convenience, you can also save the schema diff as a new migration file by passing in `-f` flag.
 
 By default, all schemas in the target database are diffed. Use the `--schema public,extensions` flag to restrict diffing to a subset of schemas.
 

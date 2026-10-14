@@ -176,6 +176,7 @@ func main() {
 | sdkerrors.ForbiddenResponseError | 403 | application/json |
 | sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
 | sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.ClientClosedRequestResponseError | 499 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
 | sdkerrors.BadGatewayResponseError | 502 | application/json |
 | sdkerrors.ServiceUnavailableResponseError | 503 | application/json |

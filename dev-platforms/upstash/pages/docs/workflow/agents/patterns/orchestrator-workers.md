@@ -60,7 +60,7 @@ export const { POST } = serve(async (context) => {
 });
 ```
 
-If you wish to manually use the model results instead of utilizing a [manager LLM](/docs/workflow/agents/overview#multi-agents) as we did in this example, see the [parallelization example](/docs/workflow/agents/patterns/parallelization)
+If you wish to manually use the model results instead of utilizing a [manager LLM](/docs/workflow/agents/features#multi-agents) as we did in this example, see the [parallelization example](/docs/workflow/agents/patterns/parallelization)
 
 <img alt="Orchestrator manager workflow logs" />
 

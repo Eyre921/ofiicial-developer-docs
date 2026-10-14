@@ -253,6 +253,45 @@ An MCP client can call several tools in one task. For example, it can search for
     * "Reorganize all project documents under the 'Active Projects' section"
   </Accordion>
 
+  <Accordion title="Delete pages">
+    `notion-delete-pages`
+
+    Move up to 20 Notion pages to Trash. Database rows are pages. To move a whole database to Trash, use `notion-delete-databases`. Items in Trash can be restored with `notion-restore-pages` or from Trash in Notion. Locked pages can't be moved to Trash; unlock them in Notion first.
+
+    The call must set `user_confirmed: true`. Without it, nothing is moved to Trash, and the error lists the pages so the MCP client can confirm them with the user. The tool is marked destructive (`destructiveHint: true`), so MCP clients that honor tool annotations ask before running it. Requires the update content [capability](/reference/capabilities).
+
+    **Example prompts:**
+
+    * "Delete the 'Q3 offsite draft' page"
+    * "Move these three duplicate rows to Trash"
+  </Accordion>
+
+  <Accordion title="Delete databases">
+    `notion-delete-databases`
+
+    Move up to 20 Notion databases to Trash, with all of their rows. Each one must be a full-page or inline database that owns its data, not a linked view. To move a page or a single row to Trash, use `notion-delete-pages`. Items in Trash can be restored with `notion-restore-pages` or from Trash in Notion. Locked databases can't be moved to Trash; unlock them in Notion first.
+
+    The call must set `user_confirmed: true`. Without it, nothing is moved to Trash, and the error lists the databases and their row counts so the MCP client can confirm them with the user. The tool is marked destructive (`destructiveHint: true`), so MCP clients that honor tool annotations ask before running it. Requires the update content [capability](/reference/capabilities).
+
+    **Example prompts:**
+
+    * "Delete the 'Old sprint tracker' database"
+    * "Move the 'Q2 leads' database to Trash"
+  </Accordion>
+
+  <Accordion title="Restore pages">
+    `notion-restore-pages`
+
+    Restore up to 20 Notion pages or databases from Trash to where they were before they were deleted. Restoring an item that is already out of Trash succeeds and changes nothing. Requires the update content [capability](/reference/capabilities).
+
+    If a page's parent is still in Trash, the call returns an error that asks you to restore the parent first. Pages at the top level of a workspace, such as top-level private pages, can't be restored through Notion MCP yet. Restore them from Trash in Notion.
+
+    **Example prompts:**
+
+    * "Restore the 'Q3 offsite draft' page I just deleted"
+    * "Undo that deletion"
+  </Accordion>
+
   <Accordion title="Duplicate a page">
     `notion-duplicate-page`
 

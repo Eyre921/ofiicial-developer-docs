@@ -232,6 +232,7 @@ with OpenRouter(
 | errors.NotFoundResponseError | 404 | application/json |
 | errors.PayloadTooLargeResponseError | 413 | application/json |
 | errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.ClientClosedRequestResponseError | 499 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.ServiceUnavailableResponseError | 503 | application/json |
 | errors.OpenRouterDefaultError | 4XX, 5XX | \*/\* |

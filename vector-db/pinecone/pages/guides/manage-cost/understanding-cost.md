@@ -388,7 +388,11 @@ For the latest import pricing rates, see [Pricing](https://www.pinecone.io/prici
 
 ## Backups and restores
 
-A [backup](/guides/manage-data/backups-overview) is a static copy of a serverless index. Storing a backup and [restoring an index](/guides/manage-data/restore-an-index) from a backup are both billed by the size of the index. For the latest backup and restore pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
+A [backup](/guides/manage-data/backups-overview) is a static copy of a serverless index. Storing a backup and [restoring an index](/guides/manage-data/restore-an-index) from a backup are both billed by the size of the index.
+
+[Restoring a backup into a different region](/guides/manage-data/restore-an-index#restore-to-a-different-region) also incurs a cross-region transfer fee, charged per GB on top of the restore cost. The rate depends on the cloud provider and the backup's region. Restoring into the same region as the backup doesn't incur this fee. On your invoice, the fee appears as **Serverless Cross-Region Transfer**.
+
+For the latest backup, restore, and cross-region transfer pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 
 ## Embedding
 

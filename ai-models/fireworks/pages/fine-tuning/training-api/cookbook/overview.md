@@ -12,6 +12,10 @@ The [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training) i
 
 The cookbook is **optional** — everything it does can be done with the API directly. Use the cookbook when you want a working training loop quickly; use the API when you need full control.
 
+<Tip>
+  New to training on Fireworks? [Cookbook: Muse Glimmer First Fine-Tune](/fine-tuning/training-api/cookbook/muse-glimmer) runs a free LoRA SFT job on preloaded example data and compares base versus tuned.
+</Tip>
+
 ## Installation
 
 ```bash theme={null}
@@ -29,15 +33,16 @@ export FIREWORKS_API_KEY="your-api-key"
 
 | Recipe | Module | Use case |
 | - | - | - |
-| **RL** *(primary, experimental)* | `training.recipes.async_rl_loop` | Reinforcement learning — you write a rollout function, and the recipe owns completion-driven rollout production, bounded off-policy admission, serialized GRPO training, and weight publication. See [Cookbook RL](/fine-tuning/training-api/cookbook/rl). **No backward-compatibility guarantee.** |
+| **RL** *(primary, experimental)* | `training.recipes.async_rl_loop` | Reinforcement learning — you write a rollout function, and the recipe owns completion-driven rollout production, bounded off-policy admission, ready-group training submission, and weight publication. See [Cookbook RL](/fine-tuning/training-api/cookbook/rl). **No backward-compatibility guarantee.** |
 | **Serverless async RL** *(experimental)* | `training.recipes.experiment.async_rl_loop_serverless` | The same rollout and scheduling contract on the shared serverless training and sampling pool. See [Serverless Training](/fine-tuning/training-api/serverless). **No backward-compatibility guarantee.** |
 | **Agentic RL integration** | Either async loop plus your rollout adapter | Multi-turn rollouts. The structured Cookbook path uses Pi, OpenCode, or Mini-SWE-Agent with Harbor and an environment-local TITO sidecar in Docker or E2B. See [Cookbook Agentic RL](/fine-tuning/training-api/cookbook/agentic-rl). |
 | **HUD RL training** | `hud-python/cookbooks/fireworks-rl-training` | Train a Serverless Training LoRA from one-turn HUD environment rewards. See [Fireworks x HUD RL Training](/fine-tuning/training-api/cookbook/hud-rl-training). |
 | **RL** *(simpler, synchronous)* | `training.recipes.rl_loop` | Synchronous on-policy GRPO scaffold — reach for it when you don't need rollout/train overlap |
-| **IGPO** | `training.recipes.igpo_loop` | Information Gain-based Policy Optimization — turn-level IG rewards for multi-turn agent trajectories (extends GRPO) |
+| **IGPO** | `rl_loop` with `igpo.prepare_batch` | Turn-level information-gain advantages for multi-turn trajectories; see the [multi-hop example](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/multihop_qa). |
 | **DPO** | `training.recipes.dpo_loop` | Direct preference optimization from chosen/rejected pairs |
 | **SFT** | `training.recipes.sft_loop` | Supervised fine-tuning with cross-entropy loss |
-| **Distillation** | `training.recipes.distillation_loop` | On-policy distillation with sampled-token OPD, routed multi-teacher MOPD, and top-K SDFT |
+| **Distillation** | `training.recipes.distillation_loop` | On-policy distillation from a frozen teacher’s sampled-token scores |
+| **SDFT** | `training.recipes.sdft_loop` | Top-K self-distillation on serverless |
 | **ORPO** | `training.recipes.orpo_loop` | Odds ratio preference optimization |
 
 Each recipe follows the same pattern: import `Config` and `main`, set your config, and call `main(cfg)`. Dedicated recipes attach or create trainer and deployment resources from `TrainerConfig` / `DeployConfig`. Serverless recipes attach to the shared pool and publish session-scoped sampler snapshots instead of provisioning a deployment.
@@ -90,7 +95,6 @@ cfg = Config(
         deployment_id="grpo-serving",
         tokenizer_model="Qwen/Qwen3-8B",
     ),
-    weight_sync_interval=1,
 )
 
 main(cfg)
@@ -117,7 +121,7 @@ main(cfg)
 
 ## Vision-language model support
 
-All cookbook recipes support VLM training. Use a VLM training shape and tokenizer, and provide multimodal datasets with `image_url` content. See [Vision Inputs](/fine-tuning/models) for dataset format and examples.
+For vision-language training, choose a supported VLM recipe, training shape, and matching tokenizer, and provide multimodal datasets with `image_url` content. See [Vision Inputs](/fine-tuning/models) for dataset format and examples.
 
 ## Embedding loop
 

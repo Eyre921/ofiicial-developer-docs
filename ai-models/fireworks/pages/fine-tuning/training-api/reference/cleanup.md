@@ -128,7 +128,7 @@ Track the IDs you create (trainer job IDs + deployment ID) and clean those expli
 
 ## Operational guidance
 
-* **Delete both policy and reference trainers** when running GRPO (which uses 2 RLOR jobs).
+* **Clean up every trainer created by the run**, including a separate reference when needed. The default cookbook GRPO loop needs only a policy trainer.
 * **Close the managed service** in `finally` so trainer/reference/deployment cleanup runs on Ctrl+C or exceptions.
 * **Don't delete a trainer** while a `save_weights_for_sampler` operation is in progress — wait for it to complete first.
 

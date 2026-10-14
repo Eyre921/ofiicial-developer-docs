@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 1377 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -381,7 +381,6 @@
 - `docs/api-reference/workspace/auth-connections/delete` — [Delete Workspace Auth Connection](pages/docs/api-reference/workspace/auth-connections/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/delete.md)
 - `docs/api-reference/workspace/auth-connections/list` — [Get Workspace Auth Connections](pages/docs/api-reference/workspace/auth-connections/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/list.md)
 - `docs/api-reference/workspace/auth-connections/update` — [Update Workspace Auth Connection](pages/docs/api-reference/workspace/auth-connections/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/update.md)
-- `docs/api-reference/workspace/dashboard/get` — [Get dashboard settings](pages/docs/api-reference/workspace/dashboard/get.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/dashboard/get.md)
 - `docs/api-reference/workspace/dashboard/update` — [Update Convai Dashboard Settings](pages/docs/api-reference/workspace/dashboard/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/dashboard/update.md)
 - `docs/api-reference/workspace/get` — [Get settings](pages/docs/api-reference/workspace/get.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/get.md)
 - `docs/api-reference/workspace/groups/list` — [List workspace groups](pages/docs/api-reference/workspace/groups/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/groups/list.md)
@@ -619,7 +618,6 @@
 - `docs/eleven-agents/customization/integrations/freshdesk` — [Freshdesk](pages/docs/eleven-agents/customization/integrations/freshdesk.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/freshdesk.md)
 - `docs/eleven-agents/customization/integrations/genesys` — [Genesys](pages/docs/eleven-agents/customization/integrations/genesys.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/genesys.md)
 - `docs/eleven-agents/customization/integrations/google_calendar` — [Google Calendar](pages/docs/eleven-agents/customization/integrations/google_calendar.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/google_calendar.md)
-- `docs/eleven-agents/customization/integrations/google_drive` — [Google Drive](pages/docs/eleven-agents/customization/integrations/google_drive.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/google_drive.md)
 - `docs/eleven-agents/customization/integrations/hubspot` — [HubSpot](pages/docs/eleven-agents/customization/integrations/hubspot.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/hubspot.md)
 - `docs/eleven-agents/customization/integrations/intercom` — [Intercom](pages/docs/eleven-agents/customization/integrations/intercom.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/intercom.md)
 - `docs/eleven-agents/customization/integrations/jira` — [Jira](pages/docs/eleven-agents/customization/integrations/jira.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/integrations/jira.md)
@@ -956,7 +954,6 @@
 - `docs/help-center/legal/how-do-i-make-a-data-subject-request` — [How do I make a Data Subject Request?](pages/docs/help-center/legal/how-do-i-make-a-data-subject-request.md) · [原文](https://elevenlabs.io/docs/help-center/legal/how-do-i-make-a-data-subject-request.md)
 - `docs/help-center/legal/how-do-i-opt-out-of-the-sale-or-sharing-of-my-personal-data` — [How do I opt out of the sale or sharing of my Personal Data?](pages/docs/help-center/legal/how-do-i-opt-out-of-the-sale-or-sharing-of-my-personal-data.md) · [原文](https://elevenlabs.io/docs/help-center/legal/how-do-i-opt-out-of-the-sale-or-sharing-of-my-personal-data.md)
 - `docs/help-center/legal/is-my-data-used-to-improve-eleven-labs-ai-models` — [Is my data used to improve ElevenLabs’ AI models?](pages/docs/help-center/legal/is-my-data-used-to-improve-eleven-labs-ai-models.md) · [原文](https://elevenlabs.io/docs/help-center/legal/is-my-data-used-to-improve-eleven-labs-ai-models.md)
-- `docs/help-center/legal/us-state-privacy-laws` — [U.S. State Privacy Laws](pages/docs/help-center/legal/us-state-privacy-laws.md) · [原文](https://elevenlabs.io/docs/help-center/legal/us-state-privacy-laws.md)
 - `docs/help-center/legal/what-are-no-go-voices` — [What are No-Go Voices?](pages/docs/help-center/legal/what-are-no-go-voices.md) · [原文](https://elevenlabs.io/docs/help-center/legal/what-are-no-go-voices.md)
 - `docs/help-center/legal/what-is-your-billing-address-and-vat-ein-number` — [What is your billing address and VAT/EIN number?](pages/docs/help-center/legal/what-is-your-billing-address-and-vat-ein-number.md) · [原文](https://elevenlabs.io/docs/help-center/legal/what-is-your-billing-address-and-vat-ein-number.md)
 - `docs/help-center/other` — [Miscellaneous FAQ](pages/docs/help-center/other.md) · [原文](https://elevenlabs.io/docs/help-center/other.md)

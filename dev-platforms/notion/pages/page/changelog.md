@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="October 13, 2026">
+  ### Delete pages and databases in Notion MCP
+
+  Two new Notion MCP tools move content to Trash after the user confirms. `notion-delete-pages` moves up to 20 pages, and `notion-delete-databases` moves up to 20 databases with their rows. Both need the update content capability. Locked pages and databases can't be moved to Trash. To undo a deletion, use `notion-restore-pages` or restore the item from Trash in Notion. See [Supported tools](/guides/mcp/mcp-supported-tools).
+</Update>
+
 <Update label="October 9, 2026">
   ### Data source schema update fixes
 

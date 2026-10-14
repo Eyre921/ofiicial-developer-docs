@@ -10,6 +10,8 @@ Learn about filing with Stripe using TaxJar.
 
 You can set up and manage sales tax filing directly in the Stripe Dashboard. Stripe Tax integrates with TaxJar to automate filing for US sales tax, helping you file on time and avoid errors that can occur with manual filing.
 
+> Stripe also files Canada Simplified GST/HST and EU Non-Union OSS through Ireland. Learn about [filing outside the US](https://docs.stripe.com/tax/file-with-stripe-outside-us.md). Filing for other countries and registrations is in private preview. [Request to join the waitlist](https://docs.stripe.com/tax/file-with-stripe.md#request-global-filing-access).
+
 ## Availability
 
 Automated US filing is available in all 46 US locations with a state-level sales and use tax.
@@ -123,4 +125,18 @@ If all reviewed details are accurate, you don’t need to take further action. S
 If you need to make changes to an upcoming automatic filing, submit your request before the 6th of the month at 6 PM ET. In the details for the relevant location and period, click **Request changes** and provide details about the changes you need. After you submit your request, you’ll receive an update at the email address associated with your TaxJar account within three business days.
 
 You can view completed filings at any time in your [TaxJar Filing History](https://stripe-tax-filing.helpscoutdocs.com/article/1217-how-to-view-your-completed-filings).
+
+## Request preview access to global filing  (Private preview)
+
+### Request to join the waitlist for global filing and registrations.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/tax/file-with-stripe" \
+  -d '{"email": "EMAIL", "preview": "tax_global_filing_preview"}'
+```
 

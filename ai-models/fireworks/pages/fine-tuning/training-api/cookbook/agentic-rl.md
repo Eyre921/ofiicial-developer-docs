@@ -58,7 +58,7 @@ subagent handoff—continuous without changing its meaning.
 
 ## Fireworks support
 
-The public [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor)
+The public [Fireworks Cookbook](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl)
 separates the environment, harness, and task recipe. They are independent
 parts of one rollout rather than one Harbor integration.
 
@@ -79,9 +79,9 @@ task dataset -> Harbor trial -> Docker or E2B sandbox
 ### Supported harness adapters
 
 The reference adapters support
-[OpenCode](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/opencode),
-[Pi](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/pi),
-and [Mini-SWE-Agent](https://github.com/fw-ai/cookbook/tree/main/training/examples/rl/harbor/mini_swe)
+[OpenCode](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl/harnesses/opencode),
+[Pi](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl/harnesses/pi),
+and [Mini-SWE-Agent](https://github.com/fw-ai/cookbook/tree/main/training/examples/harbor_rl/harnesses/mini_swe)
 over the same Harbor/TITO contract.
 
 ### Supported task datasets
@@ -90,10 +90,10 @@ The Cookbook includes support for DABstep, Terminal-Bench 2.0, and DeepSWE.
 
 ### Example: Pi with DABstep
 
-Use the [Pi+DABstep training script](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/harbor/recipes/dabstep/train_pi.py)
+Use the [Pi+DABstep training script](https://github.com/fw-ai/cookbook/blob/main/training/examples/harbor_rl/train_pi.py)
 as the complete reference entrypoint. The Cookbook also provides task
-preparation scripts for [Terminal-Bench](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/harbor/opencode/prepare_tasks.py)
-and [DeepSWE](https://github.com/fw-ai/cookbook/blob/main/training/examples/rl/harbor/recipes/deep_swe/prepare_tasks.py).
+preparation scripts for [Terminal-Bench](https://github.com/fw-ai/cookbook/blob/main/training/examples/harbor_rl/harnesses/opencode/prepare_tasks.py)
+and [DeepSWE](https://github.com/fw-ai/cookbook/blob/main/training/examples/harbor_rl/tasks/deep_swe/prepare_tasks.py).
 
 These task entrypoints plug into the async RL lifecycles described in
 [Cookbook: Reinforcement Learning](/fine-tuning/training-api/cookbook/rl); this

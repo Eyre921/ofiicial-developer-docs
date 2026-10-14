@@ -47,7 +47,7 @@ for:
   <Card
     title="Analytics & Dashboard"
     icon="magnifying-glass-chart"
-    href="/redis/sdks/ratelimit-ts/features#analytics-and-dashboard"
+    href="/redis/sdks/ratelimit-ts/features#analytics-&-dashboard"
   >
     Collect information on which identifiers made how many requests and how many
     were blocked

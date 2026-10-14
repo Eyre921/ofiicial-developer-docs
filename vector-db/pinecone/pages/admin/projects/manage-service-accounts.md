@@ -1,5 +1,5 @@
 ---
-title: "Manage service accounts at the project-level"
+title: "Manage project service accounts"
 source: https://docs.pinecone.io/admin/projects/manage-service-accounts
 path: admin/projects/manage-service-accounts
 ---

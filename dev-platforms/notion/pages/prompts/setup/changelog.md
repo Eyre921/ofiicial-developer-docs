@@ -6,7 +6,13 @@ path: prompts/setup/changelog
 
 See what changed in each version of the Notion MCP setup prompt.
 
-The [latest setup prompt](/prompts/setup) is version **0.0.3**.
+The [latest setup prompt](/prompts/setup) is version **0.0.4**.
+
+<Update label="Version 0.0.4, October 13, 2026">
+  * Added a rule to fetch the user's enabled Notion Skills with `notion-get-enabled-skills` at the start of every session, in the custom instructions and the standing rules.
+
+  [View version 0.0.4](/prompts/setup)
+</Update>
 
 <Update label="Version 0.0.3, October 7, 2026">
   * Added database guidance during setup and in the standing rules and custom instructions.
@@ -14,7 +20,7 @@ The [latest setup prompt](/prompts/setup) is version **0.0.3**.
   * Added an About page update rule when saved memories change the user's overall profile.
   * Clarified how related information connects across databases and made setup transitions more conversational.
 
-  [View version 0.0.3](/prompts/setup)
+  [View version 0.0.3](/prompts/setup/versions/0.0.3)
 </Update>
 
 <Update label="Version 0.0.2, September 30, 2026">

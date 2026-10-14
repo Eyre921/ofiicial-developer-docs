@@ -182,7 +182,7 @@ path: docs/qstash/overall/changelog
 </Update>
 
 <Update label="May 2024">
-* [Retry-After](/docs/qstash/features/retry#retry-after-header) support for rate-limited endpoints
+* [Retry-After](/docs/qstash/features/retry#retry-after-headers) support for rate-limited endpoints
 * [Upstash-Timeout](/docs/qstash/api-reference/messages/publish-a-message) header
 </Update>
 

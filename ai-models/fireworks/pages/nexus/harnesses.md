@@ -558,6 +558,11 @@ codex resume <id> -c model_provider="fireworks-ai"
   **While connected, only Fireworks models work.** Cursor IDE's built-in models are hidden until you run `off`. Cursor IDE also enforces a server-side allowlist, so not every Fireworks model is selectable. Some features may still use Cursor's own backend, depending on plan and version.
 </Warning>
 
+<Accordion title="Troubleshooting">
+  * **`Model name is not valid: "firerouter"`, or the same error for another Fireworks ID:** Cursor IDE stopped sending your Fireworks key. Cursor can turn the key off after Fireworks rejects a request, such as when the key is revoked or a model ID is not found. Without a key, Cursor treats Fireworks IDs as unknown models. Open **Settings → Models**, turn **OpenAI API Key** back on, and retry.
+  * **The key was revoked:** turning it back on is not enough. Run `fireconnect login --force` for a new key, fully quit Cursor IDE, and run `fireconnect cursor`. With manual setup, paste a new key from [Fireworks settings](https://app.fireworks.ai/settings/users/api-keys).
+</Accordion>
+
 ## VS Code
 
 <Badge>OpenAI Chat Completions</Badge> <Badge>FireRouter</Badge>

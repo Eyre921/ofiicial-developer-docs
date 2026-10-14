@@ -177,6 +177,24 @@ The custom payment methods must be registered in the [Stripe Dashboard](https://
 
 The [external payment methods](https://docs.stripe.com/payments/external-payment-methods.md) to be displayed in the [Payment Element](https://docs.stripe.com/payments/payment-element.md) that you are already integrated with.
 Must be an [available external payment methods](https://docs.stripe.com/payments/external-payment-methods.md#available-external-payment-methods).
+    - `disallowedCardBrands`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+By default, the Payment Element supports [multiple card brands](https://docs.stripe.com/payments/cards/supported-card-brands.md) in the card input field, Apple Pay, and Google Pay.
+
+Provide a list of card brands to disallow. Valid values are `visa`, `mastercard`, `american_express`, and `discover_global_network`. The `discover_global_network` value includes Discover, Diners, JCB, UnionPay, and Elo.
+
+You can't disallow every supported card brand.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
+    - `disallowedCardFundingTypes`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+Provide a list of card funding types to disallow in the Payment Element. Valid values are `credit`, `debit`, and `prepaid`.
+
+You can't disallow every supported card funding type.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
 
 ### Example
 
@@ -671,6 +689,24 @@ The custom payment methods must be registered in the [Stripe Dashboard](https://
           The form type of the custom payment method.
         - `subtitle`
           A subtitle contains additional information about the custom payment method.
+    - `disallowedCardBrands`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+By default, the Payment Element supports [multiple card brands](https://docs.stripe.com/payments/cards/supported-card-brands.md) in the card input field, Apple Pay, and Google Pay.
+
+Provide a list of card brands to disallow. Valid values are `visa`, `mastercard`, `american_express`, and `discover_global_network`. The `discover_global_network` value includes Discover, Diners, JCB, UnionPay, and Elo.
+
+You can't disallow every supported card brand.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
+    - `disallowedCardFundingTypes`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+Provide a list of card funding types to disallow in the Payment Element. Valid values are `credit`, `debit`, and `prepaid`.
+
+You can't disallow every supported card funding type.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
 
 ### Example
 
@@ -8764,6 +8800,24 @@ The custom payment methods must be registered in the [Stripe Dashboard](https://
 
 The [external payment methods](https://docs.stripe.com/payments/external-payment-methods.md) to be displayed in the [Payment Element](https://docs.stripe.com/payments/payment-element.md) that you are already integrated with.
 Must be an [available external payment methods](https://docs.stripe.com/payments/external-payment-methods.md#available-external-payment-methods).
+    - `disallowedCardBrands`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+By default, the Payment Element supports [multiple card brands](https://docs.stripe.com/payments/cards/supported-card-brands.md) in the card input field, Apple Pay, and Google Pay.
+
+Provide a list of card brands to disallow. Valid values are `visa`, `mastercard`, `american_express`, and `discover_global_network`. The `discover_global_network` value includes Discover, Diners, JCB, UnionPay, and Elo.
+
+You can't disallow every supported card brand.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
+    - `disallowedCardFundingTypes`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+Provide a list of card funding types to disallow in the Payment Element. Valid values are `credit`, `debit`, and `prepaid`.
+
+You can't disallow every supported card funding type.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
 
 - `children`
   `Elements` renders its children once the Stripe object and Elements instance are ready.
@@ -9268,6 +9322,24 @@ The custom payment methods must be registered in the [Stripe Dashboard](https://
           The form type of the custom payment method.
         - `subtitle`
           A subtitle contains additional information about the custom payment method.
+    - `disallowedCardBrands`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+By default, the Payment Element supports [multiple card brands](https://docs.stripe.com/payments/cards/supported-card-brands.md) in the card input field, Apple Pay, and Google Pay.
+
+Provide a list of card brands to disallow. Valid values are `visa`, `mastercard`, `american_express`, and `discover_global_network`. The `discover_global_network` value includes Discover, Diners, JCB, UnionPay, and Elo.
+
+You can't disallow every supported card brand.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
+    - `disallowedCardFundingTypes`
+      Supported for the [Payment Element](https://docs.stripe.com/payments/payment-element.md).
+
+Provide a list of card funding types to disallow in the Payment Element. Valid values are `credit`, `debit`, and `prepaid`.
+
+You can't disallow every supported card funding type.
+
+The Payment Element applies this option as client-side validation. It isn't server-side enforcement of your payment policy. See [Enforce card restrictions](https://docs.stripe.com/payments/customize-payment-methods.md#enforce-card-restrictions) for server-side enforcement options.
 
 - `children`
   `Elements` renders its children once the Stripe object and Elements instance are ready.
@@ -14649,6 +14721,47 @@ Confirm with existing payment method
 
 ```title
 Confirm Bacs Debit setup
+```
+
+## Confirm BLIK setup
+
+`stripe.confirmBlikSetup(clientSecret: string, data: object, options?: object)`
+
+Use `stripe.confirmBlikSetup` in the [Set up future BLIK recurring payments](https://docs.stripe.com/payments/blik/set-up-payment.md) flow when the customer submits your setup form.
+Pass the customer's BLIK code in `payment_method_options.blik.code` to confirm the `SetupIntent`.
+By default, this method handles the next action while the customer authorizes the setup in their banking app.
+Refer to the [integration guide](https://docs.stripe.com/payments/blik/set-up-payment.md) for prerequisites and the full integration flow.
+
+> BLIK authorization can take several seconds. Disable your form while confirmation is in progress and show a waiting indicator.
+> If the result contains an error, display it to the customer, re-enable the form, and hide the waiting indicator.
+
+- `clientSecret`
+  The [client secret](https://docs.stripe.com/api/setup_intents/object.md#setup_intent_object-client_secret) of the `SetupIntent`.
+
+- `data`
+  Data to send with the request. Refer to the [Setup Intents API](https://docs.stripe.com/api/setup_intents/confirm.md) for a full list of parameters.
+    - `payment_method`
+      Data used to create the BLIK PaymentMethod.
+      - `blik`
+        An empty object identifying BLIK as the payment method.
+      - `billing_details`
+        The customer's [billing details](https://docs.stripe.com/api/payment_methods/create.md#create_payment_method-billing_details).
+    - `payment_method_options`
+      An object containing options specific to the payment method.
+      - `blik`
+        Options specific to BLIK.
+        - `code`
+          Your customer's 6-digit BLIK code.
+
+- `options`
+  An options object to control the behavior of this method.
+    - `handleActions`
+      Set this to `false` to handle any required customer actions yourself.
+
+### Example
+
+```title
+Confirm BLIK setup
 ```
 
 ## Confirm an Cash App Pay setup

@@ -17,6 +17,8 @@ Automated filing outside the US is available for the following registrations:
 
 This guide doesn’t cover other Canadian registrations, including normal GST/HST and provincial sales taxes. It also doesn’t cover other EU filing schemes, including Union OSS and Import One Stop Shop (IOSS). Learn about other [tax filing options](https://docs.stripe.com/tax/filing.md).
 
+> Filing for other countries and registrations is in private preview. [Request to join the waitlist](https://docs.stripe.com/tax/file-with-stripe-outside-us.md#request-global-filing-access).
+
 ## Before you begin
 
 To set up filing, you must:
@@ -129,6 +131,20 @@ You remain responsible to the applicable tax authority for the completeness and 
 ## Pricing
 
 You must subscribe to Tax Complete. Contact Stripe for availability and pricing for these filings.
+
+## Request preview access to global filing  (Private preview)
+
+### Request to join the waitlist for global filing and registrations.
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/tax/file-with-stripe-outside-us" \
+  -d '{"email": "EMAIL", "preview": "tax_global_filing_preview"}'
+```
 
 ## Next steps
 

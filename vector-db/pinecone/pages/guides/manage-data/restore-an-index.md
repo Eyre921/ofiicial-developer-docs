@@ -190,9 +190,11 @@ The following rules apply:
 * The backup must be in the current Pinecone project, and the new index is created in the same project.
 * The `dimension`, `metric`, and `vector_type` must match the source index.
 * Restoring to a different region isn't supported for BYOC indexes.
+* In the Pinecone console, you can choose a different region only while the source index still exists.
+* Restoring to a different region incurs a cross-region transfer fee, charged per GB on top of the standard restore cost. The fee depends on the cloud provider and the backup's region. For details, see [Backups and restores](/guides/manage-cost/understanding-cost#backups-and-restores).
 
 <Warning>
-  Restoring to a different region is in [public preview](/release-notes/feature-availability). It is available through the `unstable` API version and the REST API only.
+  Restoring to a different region is in [public preview](/release-notes/feature-availability). It is available in the Pinecone console and through the `unstable` version of the REST API.
 </Warning>
 
 For example, the following request restores a backup of a dense index hosted in the AWS `us-east-1` region into a new index in the AWS `us-west-2` region:

@@ -34,7 +34,7 @@ path: docs/workflow/changelog
 <Update label="August 2025">
 * **TypeScript SDK (`workflow-js`):**
     * Added `retryDelay` option to dynamically program the retry duration. It can be configured on
-    [trigger](/docs/workflow/basics/client/trigger#body-retrydelay), [context.call](/docs/workflow/steps/call)
+    [trigger](/docs/workflow/basics/client/trigger#param-retry-delay), [context.call](/docs/workflow/steps/call)
     or `serve` (later moved to `client.trigger`, see the [migration guide](/docs/workflow/howto/migrations#configuration-moved-from-serve-to-trigger))
     * Added ability to detect if a given url is a workflow or not. Starting with `0.2.17` trigger made via the sdk can fail (instead of hanging),
     if there is no workflow serve on the given url.

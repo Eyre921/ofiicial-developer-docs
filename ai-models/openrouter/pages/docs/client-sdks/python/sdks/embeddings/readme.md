@@ -80,6 +80,7 @@ with OpenRouter(
 | errors.RequestTimeoutResponseError | 408 | application/json |
 | errors.PayloadTooLargeResponseError | 413 | application/json |
 | errors.TooManyRequestsResponseError | 429 | application/json |
+| errors.ClientClosedRequestResponseError | 499 | application/json |
 | errors.InternalServerResponseError | 500 | application/json |
 | errors.BadGatewayResponseError | 502 | application/json |
 | errors.ServiceUnavailableResponseError | 503 | application/json |

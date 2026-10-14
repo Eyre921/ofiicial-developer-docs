@@ -1,5 +1,5 @@
 ---
-title: "Manage service accounts at the organization-level"
+title: "Manage organization service accounts"
 source: https://docs.pinecone.io/admin/organizations/manage-service-accounts
 path: admin/organizations/manage-service-accounts
 ---

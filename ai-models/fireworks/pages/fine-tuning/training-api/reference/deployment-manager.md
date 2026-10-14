@@ -165,12 +165,10 @@ When `deployment_shape` is set (the recommended path), the shape owns the deploy
 | `hot_load_bucket_type` | `str \| None` | `"FW_HOSTED"` | Weight sync storage backend |
 | `hot_load_trainer_job` | `str \| None` | `None` | Trainer job name whose weight-sync bucket this deployment should use. Format: `accounts/{account}/rlorTrainerJobs/{job_id}`. When set, the deployment shares the trainer's bucket for weight sync. |
 | `disable_speculative_decoding` | `bool` | `False` | Disable speculative decoding |
-| `extra_args` | `list[str] \| None` | `None` | Extra serving arguments |
-| `extra_values` | `dict[str, str] \| None` | `None` | Extra deployment Helm values |
 | `annotations` | `dict[str, str] \| None` | `None` | Deployment annotations |
 
 <Note>
-  On the recommended shape path, `deployment_shape` owns the deployment hardware and serving configuration, so do not override `accelerator_type`. Advanced manual deployments can omit `deployment_shape` and set `accelerator_type` directly. `skip_shape_validation` is for internal development and requires elevated permissions.
+  On the recommended shape path, `deployment_shape` owns the deployment hardware and serving configuration, so do not override `accelerator_type`. For current launch guidance, follow the [training shape guide](/fine-tuning/training-api/training-shapes).
 </Note>
 
 ## DeploymentInfo

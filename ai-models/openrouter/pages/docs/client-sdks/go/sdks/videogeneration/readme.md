@@ -86,7 +86,9 @@ func main() {
 | sdkerrors.NotFoundResponseError | 404 | application/json |
 | sdkerrors.PayloadTooLargeResponseError | 413 | application/json |
 | sdkerrors.TooManyRequestsResponseError | 429 | application/json |
+| sdkerrors.ClientClosedRequestResponseError | 499 | application/json |
 | sdkerrors.InternalServerResponseError | 500 | application/json |
+| sdkerrors.ServiceUnavailableResponseError | 503 | application/json |
 | sdkerrors.APIError | 4XX, 5XX | \*/\* |
 
 ## GetGeneration

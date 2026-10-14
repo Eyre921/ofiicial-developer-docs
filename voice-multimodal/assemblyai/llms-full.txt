@@ -4318,13 +4318,11 @@ The model training environment differs from the production environment. You can 
 
 ### LLM Gateway production environment
 
-- If you have an executed BAA and use either Anthropic or Google inference models, we offer zero data retention for LLM Gateway inputs and outputs. Certain metadata is stored for logging and billing purposes.
-
-- If you have a designated TTL on your LLM Gateway account, we delete inputs and outputs on an hourly basis. Certain metadata is stored for logging and billing purposes.
-
-- If a customer initiates a deletion request, inputs and outputs are deleted at the time of the request. Certain metadata is stored for logging and billing purposes. For deletion of speech understanding requests, please see below.
+- We offer zero data retention for LLM Gateway inputs and outputs. Certain metadata is stored for logging and billing purposes.
 
 - For speech understanding requests, such as translation, speaker ID, or custom formatting, the retention is linked to the life of an asynchronous Final Transcription Artifact, noted above.
+
+- For more information about how Anthropic, Google, and OpenAI retain data, please refer to the Available Models charts in our [LLM Gateway Overview](/llm-gateway/available-models).
 
 #### Provider-specific retention policies
 
@@ -4360,7 +4358,7 @@ Fireworks AI has [ZDR by default](https://docs.fireworks.ai/guides/security_comp
 
 See DigitalOcean's [inference data privacy documentation](https://docs.digitalocean.com/products/inference/details/data-privacy/) for more information.
 
-AssemblyAI has opted out of model training with all LLM Gateway providers. Please note this is separate from whether AssemblyAI may train our models with your data, and the model training environment differs from the production environment. You can find more information on model training in our [Model Training section](#model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
+AssemblyAI has opted out of model training with all LLM Gateway providers. Please note this is separate from whether AssemblyAI may train our models with your data, and the model training environment differs from the production environment. You can find more information on model training in our [Model Training FAQ](https://support.assemblyai.com/articles/4457054286-are-files-submitted-to-the-api-used-for-model-training). If you would like to opt out of model training, please see our [Opt-Out FAQ](https://support.assemblyai.com/articles/5930031898-how-to-opt-out-of-data-sharing-for-model-training).
 
 ---
 

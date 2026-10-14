@@ -229,7 +229,7 @@ The avatar of the widget
 
 ### FileInputConfig
 
-- `enabled` (boolean, optional, default: true) — When enabled, users may attach images or PDFs in chat when the LLM supports multimodal input.
+- `enabled` (boolean, optional, default: true) — When enabled, users may attach images, PDFs, or text files in chat when the LLM supports multimodal input.
 - `max_files_in_memory` (integer, optional, default: 10) — Number of most-recent files kept in memory during a conversation. Older files are summarized and their bytes freed.
 - `max_files_per_conversation` (integer, optional, default: 10) — Total files a user can upload in one conversation. Uploads are billed per file. Use -1 for no limit, or a value >= max_files_in_memory.
 

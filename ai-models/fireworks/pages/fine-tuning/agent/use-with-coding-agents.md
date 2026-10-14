@@ -89,11 +89,9 @@ Full post-install walkthrough: [cookbook `skills/GETTING-STARTED.md`](https://gi
 
 ## Prerequisites
 
-* [Fireworks CLI (`firectl`)](/tools-sdks/firectl/firectl) installed. Authenticate with either `firectl signin` or `FIREWORKS_API_KEY`.
-* Export `FIREWORKS_API_KEY` for Training API Python workflows.
-* Prefer a **scoped** service-account key over a personal admin key for agent use.
-
-If `firectl` blocks a mutating command inside an AI-agent environment, the skill gives you the exact command to run manually, then resumes read-only monitoring.
+* A Fireworks API key in `FIREWORKS_API_KEY`, exported in the agent's terminal or set in a gitignored `.env`. The skills create and manage training through the Python SDK with this key. Prefer a **scoped** service-account key over a personal admin key for agent use.
+* Python 3.11 or newer for running cookbook examples. The agent installs the cookbook when a run needs it.
+* [Fireworks CLI (`firectl`)](/tools-sdks/firectl/firectl) installed. The agent uses it for some read-only status checks, and gives you the `firectl` command when you ask to run a managed step yourself.
 
 Use [managed training](/fine-tuning/managed-finetuning-intro) for standard jobs, or the [Training API](/fine-tuning/training-api/introduction) for custom loops on [serverless or dedicated infrastructure](/fine-tuning/training-api/introduction#infrastructure).
 

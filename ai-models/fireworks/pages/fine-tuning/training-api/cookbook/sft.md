@@ -33,23 +33,8 @@ cfg = Config(
 main(cfg)
 ```
 
-<Warning>
-  **`batch_size_samples` is not supported in the V2 SFT `CookbookTrainingConfig`.**
-
-  Passing `batch_size_samples` to the V2 config has no effect — the parameter is accepted without error but silently ignored, which can lead to unexpected step counts.
-
-  **How batching works in V2:** Steps are calculated as:
-
-  ```
-  steps = (num_samples × num_epochs) / batch_size
-  ```
-
-  where `batch_size` is set by the training shape and the recipe’s `batch_size` field — not by `batch_size_samples`.
-
-  **Example:** 10 samples × 5 epochs ÷ batch size of 10 = **5 steps**, not 50.
-
-  To control training length, adjust `epochs` (and related recipe fields). Contact support for custom batch size configurations.
-</Warning>
+`batch_size` controls examples per optimizer batch. SFT keeps controlled dataset
+batches and does not need rollout streaming.
 
 ## Dataset format
 
@@ -74,7 +59,7 @@ Multi-turn conversations are supported:
 ]}
 ```
 
-The recipe automatically tokenizes conversations using the chat template, setting token weights to `0.0` for prompt tokens and `1.0` for response tokens.
+The recipe automatically tokenizes conversations using the chat template, masking context tokens and normalizing trainable response loss within each example.
 
 ### Vision datasets
 
@@ -82,7 +67,7 @@ The SFT recipe also supports vision-language model training. Use multimodal `con
 
 ## Checkpointing and resume
 
-The current `sft_loop` recipe manages the trainer-side loop only. It does **not** create a deployment or run weight sync during training, but it does expose DCP checkpointing and resume controls:
+By default, `sft_loop` needs only a trainer. It supports DCP checkpointing and resume; optional `generation_eval=True` samples held-out text after training using SDK-managed sampling resources:
 
 ```python theme={null}
 from training.utils import TrainerConfig, WandBConfig
@@ -110,10 +95,10 @@ main(cfg)
 
 * **Set `trainer.training_shape_id`** — cookbook trainer launches use training shapes.
 * **Only one trainer job needed** — SFT does not require a reference trainer.
-* **The current recipe does not provision a deployment** — use the API directly if you want deployment-side evaluation or weight sync during SFT.
+* **No sampling deployment is required by default** — optional generation evaluation uses the SDK-managed sampler.
 * **Use `batch_size`** to control the number of examples per optimizer step.
-* **Resume**: The recipe uses `checkpoint_utils.resolve_resume()` to automatically restore from the last saved state on restart.
-* **DCP checkpoints are disabled by default** (`dcp_save_interval=0`). If you need to resume training from a checkpoint, you must explicitly set `dcp_save_interval` to a positive value (e.g., `dcp_save_interval=50`).
+* **Resume**: Attach to the same trainer with `TrainerConfig(job_id=...)` and keep the same `log_path`; the recipe restores the saved training state and data cursor. See [checkpoints](/fine-tuning/training-api/cookbook/reference#checkpoints).
+* **Periodic checkpoints are disabled by default** (`dcp_save_interval=0`); successful runs save final state by default. Set a positive interval (e.g., `50`) to recover progress from an interrupted run.
 
 ## Related guides
 

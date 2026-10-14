@@ -158,7 +158,7 @@ The `logs` method retrieves workflow run logs using the [List Workflow Runs API]
 
         <ResponseField name="responseBody" type="string">
           Response body of the failure function/url.
-          When [failure function](/docs/workflow/basics/serve#failurefunction) is used, this contains
+          When [failure function](/docs/workflow/basics/serve/advanced#param-failure-function) is used, this contains
           the returned message from the failure function.
         </ResponseField>
 
